@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SB7fLRxPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:00 +0100
+	id 0GVxMHxZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781AA2F4B53
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30B32F6172
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3932303274C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 957E430DF83A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B671A6808;
-	Mon, 23 Mar 2026 14:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E194F265620;
+	Mon, 23 Mar 2026 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoarDkbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJqMjuxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0446E1A680D;
-	Mon, 23 Mar 2026 14:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A331C26B2DA;
+	Mon, 23 Mar 2026 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275506; cv=none; b=FVNTIevQPjzC80sySfbpdEJZnhCGUJBDup5O7gc5Biz+EeUlVglOcPdJTFt4SL5AwIyZ5OWiOwqKunCOXd6Cq4dvPOorlWvoGs+WF/mWtQiuaZ8t12DVILVzYI6zI01eg1rirCR+4LiDx5mh/08uEvJbrwOqmsK1qp91cQblYQo=
+	t=1774278103; cv=none; b=jX5nLXWZcRdrad0VjTgA3EBDgEIQtiJlvpKncbatePsy8jiI4jPwtu4xCDEU1bFMNhPRi9VQlZBl6r9CIyaqI8cvyCb341nPUP5i2H5Oeuiz2ewR/2jfskVOEj1RQ3CNsUIQaou392L9KsZ3Y4MdXa6L39F5zUeTxO6jraxLkC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275506; c=relaxed/simple;
-	bh=3UtXOoVtTtHSKH2kdrrxtCNl+ektB9rFyAkqAxboqQA=;
+	s=arc-20240116; t=1774278103; c=relaxed/simple;
+	bh=/qJO6Qdd32GiTOJUou3Fwc2NF9U++wbooMfVejPgGxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCbqgQ6cpTa3gImL7q5Hy3kDsT1Gndw1WBCvN+XXl6MKhmDv3qPG/kTBxFx5I885NQOoHw/QsGZ9TViGmXpmw7Mf9RiNQki6XC4twscFRxdLDrSbrO0Q34i0X/tuSm7JE/ZiTakGURFHlCypVdqZknQWTNdjVvXwF7dyi2L3VO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoarDkbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790BFC2BC9E;
-	Mon, 23 Mar 2026 14:18:25 +0000 (UTC)
+	 MIME-Version; b=dgy84z99kyM+I3ddNTDVk3w7NMYIu4zy0O11uR9DHV8+cn6pzs7+OKeNHN/+gDmFD51t/f6Xp9PrFZOsmPnRnI64rZxAI8LOHsbqJ5eYNiYdu4cJrHNuQ0JSTPTGRpIRKlYvmBCiqHegXyIOS0Cp8QzP3JxhARm8Yqs38/Uh3sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJqMjuxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C0CC4CEF7;
+	Mon, 23 Mar 2026 15:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275505;
-	bh=3UtXOoVtTtHSKH2kdrrxtCNl+ektB9rFyAkqAxboqQA=;
+	s=korg; t=1774278103;
+	bh=/qJO6Qdd32GiTOJUou3Fwc2NF9U++wbooMfVejPgGxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoarDkbRRHJOGXkMR54dhHbwmhPoLuO30k9ieE3tUTUCyMsNZ88AjXJCYzmq42kGH
-	 pvnyj/lAY9eZ42Xos57ie/yA5cOom0yv+2X8uymfDmmzyrQYj34fHoDDjsHJ3JucfD
-	 2KUGM5LeDUfayytwR5u5wdZAw9YVgmp8NJefYWy0=
+	b=FJqMjuxPEjCHmxObtte4IWVmvDcBa3rM8XMahW2E/plI6BTxs+UgE8t3PZsR37bG0
+	 Pt8frSD0j+SXIJ5mvkvjlYwePvgRvlEHn+J+o4tQ6WIvkOCB43qKMDZrHDtbfFhKe6
+	 FCYc+uhBK65bnWaZyeqQpyGO6gXz79wOmxZmwSF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 126/460] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
-Date: Mon, 23 Mar 2026 14:42:02 +0100
-Message-ID: <20260323134529.713045642@linuxfoundation.org>
+	Sofia Schneider <sofia@schn.dev>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 203/567] ACPI: OSI: Add DMI quirk for Acer Aspire One D255
+Date: Mon, 23 Mar 2026 14:42:03 +0100
+Message-ID: <20260323134538.867576322@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,153 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228580-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229114-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.900];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 781AA2F4B53
+X-Rspamd-Queue-Id: C30B32F6172
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Sofia Schneider <sofia@schn.dev>
 
-commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
+[ Upstream commit 5ede90206273ff156a778254f0f972a55e973c89 ]
 
-This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
-that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
-ceph_handle_auth_reply(), the value of the payload_len field of such a
-message is stored in a variable of type int. A value greater than
-INT_MAX leads to an integer overflow and is interpreted as a negative
-value. This leads to decrementing the pointer address by this value and
-subsequently accessing it because ceph_decode_need() only checks that
-the memory access does not exceed the end address of the allocation.
+The screen backlight turns off during boot (specifically during udev device
+initialization) when returning true for _OSI("Windows 2009").
 
-This patch fixes the issue by changing the data type of payload_len to
-u32. Additionally, the data type of result_msg_len is changed to u32,
-as it is also a variable holding a non-negative length.
+Analyzing the device's DSDT reveals that the firmware takes a different
+code path when Windows 7 is reported, which leads to the backlight shutoff.
+Add a DMI quirk to invoke dmi_disable_osi_win7 for this model.
 
-Also, an additional layer of sanity checks is introduced, ensuring that
-directly after reading it from the message, payload_len and
-result_msg_len are not greater than the overall segment length.
-
-BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
-Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
-
-CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: ceph-msgr ceph_con_workfn [libceph]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x76/0xa0
- print_report+0xd1/0x620
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? kasan_complete_mode_report_info+0x72/0x210
- kasan_report+0xe7/0x130
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- __asan_report_load_n_noabort+0xf/0x20
- ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- mon_dispatch+0x973/0x23d0 [libceph]
- ? apparmor_socket_recvmsg+0x6b/0xa0
- ? __pfx_mon_dispatch+0x10/0x10 [libceph]
- ? __kasan_check_write+0x14/0x30i
- ? mutex_unlock+0x7f/0xd0
- ? __pfx_mutex_unlock+0x10/0x10
- ? __pfx_do_recvmsg+0x10/0x10 [libceph]
- ceph_con_process_message+0x1f1/0x650 [libceph]
- process_message+0x1e/0x450 [libceph]
- ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
- ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
- ? save_fpregs_to_fpstate+0xb0/0x230
- ? raw_spin_rq_unlock+0x17/0xa0
- ? finish_task_switch.isra.0+0x13b/0x760
- ? __switch_to+0x385/0xda0
- ? __kasan_check_write+0x14/0x30
- ? mutex_lock+0x8d/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- ceph_con_workfn+0x248/0x10c0 [libceph]
- process_one_work+0x629/0xf80
- ? __kasan_check_write+0x14/0x30
- worker_thread+0x87f/0x1570
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? __pfx_try_to_wake_up+0x10/0x10
- ? kasan_print_address_stack_frame+0x1f7/0x280
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x396/0x830
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? __pfx_kthread+0x10/0x10
- ? __kasan_check_write+0x14/0x30
- ? recalc_sigpending+0x180/0x210
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x3f7/0x610
- ? __pfx_ret_from_fork+0x10/0x10
- ? __switch_to+0x385/0xda0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-[ idryomov: replace if statements with ceph_decode_need() for
-  payload_len and result_msg_len ]
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sofia Schneider <sofia@schn.dev>
+Link: https://patch.msgid.link/20260223025240.518509-1-sofia@schn.dev
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/auth.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/osi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/net/ceph/auth.c
-+++ b/net/ceph/auth.c
-@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
- 	s32 result;
- 	u64 global_id;
- 	void *payload, *payload_end;
--	int payload_len;
-+	u32 payload_len;
- 	char *result_msg;
--	int result_msg_len;
-+	u32 result_msg_len;
- 	int ret = -EINVAL;
+diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+index ae9620757865b..600af8814038a 100644
+--- a/drivers/acpi/osi.c
++++ b/drivers/acpi/osi.c
+@@ -389,6 +389,19 @@ static const struct dmi_system_id acpi_osi_dmi_table[] __initconst = {
+ 		},
+ 	},
  
- 	mutex_lock(&ac->mutex);
-@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
- 	result = ceph_decode_32(&p);
- 	global_id = ceph_decode_64(&p);
- 	payload_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, payload_len, bad);
- 	payload = p;
- 	p += payload_len;
- 	ceph_decode_need(&p, end, sizeof(u32), bad);
- 	result_msg_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, result_msg_len, bad);
- 	result_msg = p;
- 	p += result_msg_len;
- 	if (p != end)
++	/*
++	 * The screen backlight turns off during udev device creation
++	 * when returning true for _OSI("Windows 2009")
++	 */
++	{
++	.callback = dmi_disable_osi_win7,
++	.ident = "Acer Aspire One D255",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++		     DMI_MATCH(DMI_PRODUCT_NAME, "AOD255"),
++		},
++	},
++
+ 	/*
+ 	 * The wireless hotkey does not work on those machines when
+ 	 * returning true for _OSI("Windows 2012")
+-- 
+2.51.0
+
 
 
 
