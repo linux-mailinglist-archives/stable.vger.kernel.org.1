@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC6RMEhOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:28 +0100
+	id 8ASpL/dcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF712F4988
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1AE2F66EC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C9B43104751
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D2EC3008696
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99813B2FED;
-	Mon, 23 Mar 2026 14:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387B43AE70F;
+	Mon, 23 Mar 2026 14:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDZmBK50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVdwuTtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD663AF663;
-	Mon, 23 Mar 2026 14:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0274242D7F;
+	Mon, 23 Mar 2026 14:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275243; cv=none; b=a+dRjoxWV7sRLbrwcE0aAuBvT68irzu6LlsB/foakly4j3tQqx+ujyZwqjUL+ROu2vP/q+0K9qa8+OBGnKj0PZUgfJAu2y2fDbpqQHBRut3RF7XBX4zpWqTcDtvCnnux/X1XGJI1NJK50Eq+gedtPb6EW/J2doVjFD6hC+RvZNU=
+	t=1774277924; cv=none; b=i5y2wUIFY0wF4gYqN0DfH+h6tQFSLxDU2RxAr/CECsBrcBM/QonSYo/n5ng00W7wSkjSne9xpFpIjWRctOaBe/EvSWsdX/lFqEYVJYIzdzrjPyrrcj+gYpDZD7KzCZwFKj0y1KSoVWuqB9+AbHOpvBbI9b4JvEBnEPe3sORt2lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275243; c=relaxed/simple;
-	bh=xi+AzomZnFrGQxsUFflmKghbHdb5n0URBjeKv+Q1p2E=;
+	s=arc-20240116; t=1774277924; c=relaxed/simple;
+	bh=TfXj9J0vSit4sQ8dkz+JQq2VCYKidvG4c7xj6e50DhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGQf9bA7C6oz8R8HQ6/A7g186N+Kx/L6SLmCo9jcBIzp+bywyxfe5wgcuamhuB+53W/7AQbEUZQfAt5lj3uE4ToIgnT2gRYABeewRNV4bQFHh/TWghJ61hLGLAuaHgrqlJGcWdCYx+hkoymEyT97HDDlWtkZbhrW1jrhvB3wW9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDZmBK50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67B1C4CEF7;
-	Mon, 23 Mar 2026 14:14:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nszqqzwxpr1QbXh3393WD/Rvew8sOADDBkP69MwOeu+eePxC6zB8E8Myc0BGa9ZkGZZEUBXbYtBhuAfT6z5jzxc3Icp4MhyZPJ1O/FqFf6qGFSi67EpAndl4RPc9r7a+QebWirotJyuzYdvguz9yY18vvh9GMiVihLfzSol/g18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVdwuTtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36763C4CEF7;
+	Mon, 23 Mar 2026 14:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275243;
-	bh=xi+AzomZnFrGQxsUFflmKghbHdb5n0URBjeKv+Q1p2E=;
+	s=korg; t=1774277923;
+	bh=TfXj9J0vSit4sQ8dkz+JQq2VCYKidvG4c7xj6e50DhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDZmBK504cf7aARz7PL0Nb83tq7GTlFfp9bUdqrmxEALqMsYJFUDGG8tRQPQkYwA8
-	 NRwbzulLN8pXytl4+NGlUGdWGl3xQlF4ecw31s+rvpUSQx3EWxyT5fZebtjy3pvuzT
-	 gXj8D2C1sXNsgm64W4TpUOba2PJxyZbvA/HUKmNc=
+	b=JVdwuTtr0JhxUnG73xdsxcYVBHsb120P9I4tErN0UB3B5xiYmD5Jfth9xVA+tzuwN
+	 kovCmNJudk42GGr8bUbmA2w+g2rzzRfxVv6TccXKHng0X/FIxP49kiETNgwp5AG94o
+	 /zgKf5TU9BOiwZ/yvVRM60fLOv3WQHIkygLMmX2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/460] drm/msm/dsi: fix hdisplay calculation when programming dsi registers
+	Olexa Bilaniuk <obilaniu@gmail.com>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 102/567] platform/x86: dell-wmi: Add audio/mic mute key codes
 Date: Mon, 23 Mar 2026 14:40:22 +0100
-Message-ID: <20260323134527.335269458@linuxfoundation.org>
+Message-ID: <20260323134536.348239325@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +64,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228479-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-229057-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5BF712F4988
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: EF1AE2F66EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit ac47870fd795549f03d57e0879fc730c79119f4b ]
+commit 26a7601471f62b95d56a81c3a8ccb551b5a6630f upstream.
 
-Recently, the hdisplay calculation is working for 3:1 compressed ratio
-only. If we have a video panel with DSC BPP = 8, and BPC = 10, we still
-use the default bits_per_pclk = 24, then we get the wrong hdisplay. We
-can draw the conclusion by cross-comparing the calculation with the
-calculation in dsi_adjust_pclk_for_compression().
+Add audio/mic mute key codes found in Alienware m18 r1 AMD.
 
-Since CMD mode does not use this, we can remove
-!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO) safely.
-
-Fixes: efcbd6f9cdeb ("drm/msm/dsi: Enable widebus for DSI")
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/704822/
-Link: https://lore.kernel.org/r/20260214105145.105308-1-mitltlatltl@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+Suggested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Acked-by: Pali Rohár <pali@kernel.org>
+Link: https://patch.msgid.link/20260207-mute-keys-v2-1-c55e5471c9c1@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/platform/x86/dell/dell-wmi-base.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index d22e01751f5ee..c85d0d5fc5800 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -944,7 +944,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+--- a/drivers/platform/x86/dell/dell-wmi-base.c
++++ b/drivers/platform/x86/dell/dell-wmi-base.c
+@@ -80,6 +80,12 @@ static const struct dmi_system_id dell_w
+ static const struct key_entry dell_wmi_keymap_type_0000[] = {
+ 	{ KE_IGNORE, 0x003a, { KEY_CAPSLOCK } },
  
- 	if (msm_host->dsc) {
- 		struct drm_dsc_config *dsc = msm_host->dsc;
--		u32 bytes_per_pclk;
-+		u32 bits_per_pclk;
++	/* Audio mute toggle */
++	{ KE_KEY,    0x0109, { KEY_MUTE } },
++
++	/* Mic mute toggle */
++	{ KE_KEY,    0x0150, { KEY_MICMUTE } },
++
+ 	/* Meta key lock */
+ 	{ KE_IGNORE, 0xe000, { KEY_RIGHTMETA } },
  
- 		/* update dsc params with timing params */
- 		if (!dsc || !mode->hdisplay || !mode->vdisplay) {
-@@ -966,7 +966,9 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 
- 		/*
- 		 * DPU sends 3 bytes per pclk cycle to DSI. If widebus is
--		 * enabled, bus width is extended to 6 bytes.
-+		 * enabled, MDP always sends out 48-bit compressed data per
-+		 * pclk and on average, DSI consumes an amount of compressed
-+		 * data equivalent to the uncompressed pixel depth per pclk.
- 		 *
- 		 * Calculate the number of pclks needed to transmit one line of
- 		 * the compressed data.
-@@ -978,12 +980,12 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 		 * unused anyway.
- 		 */
- 		h_total -= hdisplay;
--		if (wide_bus_enabled && !(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO))
--			bytes_per_pclk = 6;
-+		if (wide_bus_enabled)
-+			bits_per_pclk = mipi_dsi_pixel_format_to_bpp(msm_host->format);
- 		else
--			bytes_per_pclk = 3;
-+			bits_per_pclk = 24;
- 
--		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc), bytes_per_pclk);
-+		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc) * 8, bits_per_pclk);
- 
- 		h_total += hdisplay;
- 		ha_end = ha_start + hdisplay;
--- 
-2.51.0
-
 
 
 
