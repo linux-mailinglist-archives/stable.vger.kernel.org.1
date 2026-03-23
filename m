@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-228224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SM56MsFNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:13 +0100
+	id 8D+6LkpcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3792F484B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 419C92F6584
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 328C3303E4B5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4A25308C836
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B96D3AB29B;
-	Mon, 23 Mar 2026 14:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D748C2737EB;
+	Mon, 23 Mar 2026 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTAAqtaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gz/O/7gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08AF3B0AD8;
-	Mon, 23 Mar 2026 14:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DD8283FEA;
+	Mon, 23 Mar 2026 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274501; cv=none; b=JM2ejbiyqWx+/YH06rLx21GVcQwsHVhgvKoqyGCx2RMSC+1SOB6gac9C9VouapFFBct6rSWE+ZZ4+09rl67vrdBCxn0eFZVFFLgOMkbj42w0FDaNBFGGcxK90nbWupiCBzTlJGNi5aBQxFWKqgaLv14ErL4TlCKujutTO4Dq9H8=
+	t=1774278481; cv=none; b=uMcaYGqfa4je1yLm3wih14bWbE4m0xJxQ1h5urmBySy2Tzv8hyqHfC7mFS1XKCV+f3MQldZRQfFFvTLWCV9jvdoFsuLEU76FBuHpjwvkCf2XhgtUpSwda4N65SmY9X36iH9Un5nk3Z+YMLfEcQ1UG99A6jD4EEMxCJbDw3pr1pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274501; c=relaxed/simple;
-	bh=iS7oSVBGeDs5pmxoCfByhjIrt4iDtyby4015LJKCAl8=;
+	s=arc-20240116; t=1774278481; c=relaxed/simple;
+	bh=9PVVOY5NQk27j1jQXSYVWWeoLciYSJnLZGYoklOM0Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zy0uQtLAD/vkfEUkisQc5Jws9wHPWSdXVX9aD8Lk9U0lzkztB6sIaUYFDWm0KtkjOYf3YeGSWVGDFhEDGMi7VI+VguP7B677HAWYIeZBp87fpoZ7iLDDgAY8gRZXFOjjcB0Bn2fCL0NhBvXYXhlAh7I8Abxqppbrlh9D7cRUWZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTAAqtaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524DDC4CEF7;
-	Mon, 23 Mar 2026 14:01:41 +0000 (UTC)
+	 MIME-Version; b=t/GkFg5UipRqwB16IdBLNEfIfdohxa8SGO92KeBsRP4cOznsez5UqJTX+QdeMzgKMVga7AOXqhK9b3vNHaQYWIKqUuytGQ75jCdIQ/g8nnFNdNwM+E31J53VNd6WmGdd5WRIl79ymWGoepSBr9m+ZwcuCroWJ1HyvdQ85lcL0VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gz/O/7gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F51C4CEF7;
+	Mon, 23 Mar 2026 15:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274501;
-	bh=iS7oSVBGeDs5pmxoCfByhjIrt4iDtyby4015LJKCAl8=;
+	s=korg; t=1774278481;
+	bh=9PVVOY5NQk27j1jQXSYVWWeoLciYSJnLZGYoklOM0Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTAAqtaWvymtZyCUUcI8R/OE51+XqBzV5aH26xmDnrMD0sO6AgapLFsSR4QRpE4Ap
-	 fUSUwEMXz1vCUnGK2CHo8jaebXuiFTxeQanOg9u78XjQ3p7bzsWlUbr0/JxaTOtpkC
-	 /GXl0H9rKj4F1jrpvg+tV5orDtkJ5tbQ9ePoixYM=
+	b=gz/O/7gry+rLOyL6UzililPn2h7NSWfTfqK9QOgj1XMm4kVLOnvzAjVQRApd9gDxq
+	 Tw0azePP+l2gaExhiToXLc5BQ3n1qZ96f7rY5Ot/1+bvyeKyhtSj25ZYT9z15tk2Gi
+	 17VEdKI/u/sHUmVLsEqDMasidJq2cnLZR46deju0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.18 018/212] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Huiwen He <hehuiwen@kylinos.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 319/567] tracing: Fix syscall events activation by ensuring refcount hits zero
 Date: Mon, 23 Mar 2026 14:43:59 +0100
-Message-ID: <20260323134504.338004241@linuxfoundation.org>
+Message-ID: <20260323134541.725958050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,72 +74,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228224-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229234-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2D3792F484B
+X-Rspamd-Queue-Id: 419C92F6584
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Huiwen He <hehuiwen@kylinos.cn>
 
-commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
+commit 0a663b764dbdf135a126284f454c9f01f95a87d4 upstream.
 
-When OGM aggregation state is toggled at runtime, an existing forwarded
-packet may have been allocated with only packet_len bytes, while a later
-packet can still be selected for aggregation. Appending in this case can
-hit skb_put overflow conditions.
+When multiple syscall events are specified in the kernel command line
+(e.g., trace_event=syscalls:sys_enter_openat,syscalls:sys_enter_close),
+they are often not captured after boot, even though they appear enabled
+in the tracing/set_event file.
 
-Reject aggregation when the target skb tailroom cannot accommodate the new
-packet. The caller then falls back to creating a new forward packet
-instead of appending.
+The issue stems from how syscall events are initialized. Syscall
+tracepoints require the global reference count (sys_tracepoint_refcount)
+to transition from 0 to 1 to trigger the registration of the syscall
+work (TIF_SYSCALL_TRACEPOINT) for tasks, including the init process (pid 1).
 
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+The current implementation of early_enable_events() with disable_first=true
+used an interleaved sequence of "Disable A -> Enable A -> Disable B -> Enable B".
+If multiple syscalls are enabled, the refcount never drops to zero,
+preventing the 0->1 transition that triggers actual registration.
+
+Fix this by splitting early_enable_events() into two distinct phases:
+1. Disable all events specified in the buffer.
+2. Enable all events specified in the buffer.
+
+This ensures the refcount hits zero before re-enabling, allowing syscall
+events to be properly activated during early boot.
+
+The code is also refactored to use a helper function to avoid logic
+duplication between the disable and enable phases.
+
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260224023544.1250787-1-hehuiwen@kylinos.cn
+Fixes: ce1039bd3a89 ("tracing: Fix enabling of syscall events on the command line")
+Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_iv_ogm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace_events.c |   52 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 15 deletions(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -473,6 +473,9 @@ batadv_iv_ogm_can_aggregate(const struct
- 	if (aggregated_bytes > max_bytes)
- 		return false;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -4140,26 +4140,22 @@ static __init int event_trace_memsetup(v
+ 	return 0;
+ }
  
-+	if (skb_tailroom(forw_packet->skb) < packet_len)
-+		return false;
+-__init void
+-early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
++/*
++ * Helper function to enable or disable a comma-separated list of events
++ * from the bootup buffer.
++ */
++static __init void __early_set_events(struct trace_array *tr, char *buf, bool enable)
+ {
+ 	char *token;
+-	int ret;
+-
+-	while (true) {
+-		token = strsep(&buf, ",");
+-
+-		if (!token)
+-			break;
+ 
++	while ((token = strsep(&buf, ","))) {
+ 		if (*token) {
+-			/* Restarting syscalls requires that we stop them first */
+-			if (disable_first)
++			if (enable) {
++				if (ftrace_set_clr_event(tr, token, 1))
++					pr_warn("Failed to enable trace event: %s\n", token);
++			} else {
+ 				ftrace_set_clr_event(tr, token, 0);
+-
+-			ret = ftrace_set_clr_event(tr, token, 1);
+-			if (ret)
+-				pr_warn("Failed to enable trace event: %s\n", token);
++			}
+ 		}
+ 
+ 		/* Put back the comma to allow this to be called again */
+@@ -4168,6 +4164,32 @@ early_enable_events(struct trace_array *
+ 	}
+ }
+ 
++/**
++ * early_enable_events - enable events from the bootup buffer
++ * @tr: The trace array to enable the events in
++ * @buf: The buffer containing the comma separated list of events
++ * @disable_first: If true, disable all events in @buf before enabling them
++ *
++ * This function enables events from the bootup buffer. If @disable_first
++ * is true, it will first disable all events in the buffer before enabling
++ * them.
++ *
++ * For syscall events, which rely on a global refcount to register the
++ * SYSCALL_WORK_SYSCALL_TRACEPOINT flag (especially for pid 1), we must
++ * ensure the refcount hits zero before re-enabling them. A simple
++ * "disable then enable" per-event is not enough if multiple syscalls are
++ * used, as the refcount will stay above zero. Thus, we need a two-phase
++ * approach: disable all, then enable all.
++ */
++__init void
++early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
++{
++	if (disable_first)
++		__early_set_events(tr, buf, false);
 +
- 	if (packet_num >= BATADV_MAX_AGGREGATION_PACKETS)
- 		return false;
- 
++	__early_set_events(tr, buf, true);
++}
++
+ static __init int event_trace_enable(void)
+ {
+ 	struct trace_array *tr = top_trace_array();
 
 
 
