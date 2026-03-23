@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-228696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLxgHc5mwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-228696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:06 +0100
+	id UMZTO55KwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6602F7C56
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5042F3FFB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DF773223D08
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43D453111B29
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC6A3B3890;
-	Mon, 23 Mar 2026 14:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803B93B6362;
+	Mon, 23 Mar 2026 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taPlFWA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0TjX1wt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90E73B3884;
-	Mon, 23 Mar 2026 14:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415823B6351;
+	Mon, 23 Mar 2026 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276878; cv=none; b=CDdRisSZrCAkOWnvxkYS+cR92X8HFWbLSYttYv9d1wKDGOXBS7AKCU1WLgMCD6Mb/i4+ViLbQ5hpEcfAPL0c3TJjIjnnOWlIsdFA0apOesZzPOcEnY+r4gISJ4lcUsfv01gXrP3EcVPDfuS7NqjBz/O/Qw4rIylKUbDAMkCgOWQ=
+	t=1774274480; cv=none; b=VN0K7hGDAS9law1bna/W1qRhFMh3CR0MzDq9TQotWb/dKd5yS31t/0m6DDosNP9Xm2qReDNK+Ikvj1D9SU4sy8aaSOZV7ZXevXvBB/ZNN2YkJh7qDxVVVqRgSDCuhLY0QxgTAGUx4fkZWfCgQ6NUbFH0Pp3NeMISEv8PYwGfbJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276878; c=relaxed/simple;
-	bh=82OmYBBaa8GiVOjiY2hvpj/KCHuMXq0z2J/RRPYFXn0=;
+	s=arc-20240116; t=1774274480; c=relaxed/simple;
+	bh=120DJpSQwN94ULG1GMyl/YyLuQ4BQodrvTRi+gQqfZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUuEsx874/IhDeGWsxdBOdDwUpQ/lRD66UqEnUJ4bjxftCuza4fUb+rtAcyP9YoDFJJvmr/2OpNjRFsh0kwuZ1D0J+3/nvAWtiWc5oZejip/0o0NHn5QHGU/oliZGMt69tofg3uNtly5sByJJRjoxBndGyD8ZG02LzmoC+h2hls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taPlFWA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2B6C4CEF7;
-	Mon, 23 Mar 2026 14:41:17 +0000 (UTC)
+	 MIME-Version; b=r+P9yxaCPJwQNIjOtkg8ezBgMWPlPaQxDuIsTjipDFAxi7NhoN7Q2jkVbAPquFdQn95z/BxdDNG79La7oCp8B/3ICUF7o+tQfd4i0Z4ZmHzxzO7ot1W3nNX6IVlNTYbdGGwIcb0NLwggpZf3cKaSDH9G5fyTCarYGV7H58XaYLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0TjX1wt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89182C4CEF7;
+	Mon, 23 Mar 2026 14:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276878;
-	bh=82OmYBBaa8GiVOjiY2hvpj/KCHuMXq0z2J/RRPYFXn0=;
+	s=korg; t=1774274480;
+	bh=120DJpSQwN94ULG1GMyl/YyLuQ4BQodrvTRi+gQqfZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taPlFWA9Is0hs0tplFNBDJDIaUd28ldvrb4gM6WdLLJaHoAU7oajeU/jEhDqE03e+
-	 SMYKBPECpjyZC+e6Fo97izOb/j2cK5K1a9Z3hYvjUssHOPE983yYcXD2z1jxUZyi0W
-	 uDFhy+XkgW2kbgXlKLxqp/qsqYj/1Wb8enDIZZ4k=
+	b=o0TjX1wts7VexcRxHQ68DZvIgYEOgfPSm+qjK2OqmFgKCBpe52p+WuDtOl5NUMc/4
+	 lRRjRKozIL0NC5eGAv+IyDmHVId0MUHb4+yevF0jHQxPsMEvOnwP4MVHYztcGj2xKw
+	 Y6IppdCl0yI7ugSuGpsZQlU5NpyYJY+Zgz33l0Sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/460] selftests: mptcp: join: check RM_ADDR not sent over same subflow
+	Wei Yang <richard.weiyang@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Gavin Guo <gavinguo@igalia.com>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 011/212] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared THP
 Date: Mon, 23 Mar 2026 14:43:52 +0100
-Message-ID: <20260323134532.296910120@linuxfoundation.org>
+Message-ID: <20260323134504.124697151@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,149 +69,141 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228696-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228217-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,nvidia.com,linux.dev,igalia.com,kernel.org,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EB6602F7C56
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,alibaba.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 4E5042F3FFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e ]
+commit 939080834fef3ce42fdbcfef33fd29c9ffe5bbed upstream.
 
-This validates the previous commit: RM_ADDR were sent over the first
-found active subflow which could be the same as the one being removed.
-It is more likely to loose this notification.
+Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+split_huge_pmd_locked()") return false unconditionally after
+split_huge_pmd_locked().  This may fail try_to_migrate() early when
+TTU_SPLIT_HUGE_PMD is specified.
 
-For this check, RM_ADDR are explicitly dropped when trying to send them
-over the initial subflow, when removing the endpoint attached to it. If
-it is dropped, the test will complain because some RM_ADDR have not been
-received.
+The reason is the above commit adjusted try_to_migrate_one() to, when a
+PMD-mapped THP entry is found, and TTU_SPLIT_HUGE_PMD is specified (for
+example, via unmap_folio()), return false unconditionally.  This breaks
+the rmap walk and fail try_to_migrate() early, if this PMD-mapped THP is
+mapped in multiple processes.
 
-Note that only the RM_ADDR are dropped, to allow the linked subflow to
-be quickly and cleanly closed. To only drop those RM_ADDR, a cBPF byte
-code is used. If the IPTables commands fail, that's OK, the tests will
-continue to pass, but not validate this part. This can be ignored:
-another subtest fully depends on such command, and will be marked as
-skipped.
+The user sensible impact of this bug could be:
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+  * On memory pressure, shrink_folio_list() may split partially mapped
+    folio with split_folio_to_list(). Then free unmapped pages without IO.
+    If failed, it may not be reclaimed.
+  * On memory failure, memory_failure() would call try_to_split_thp_page()
+    to split folio contains the bad page. If succeed, the PG_has_hwpoisoned
+    bit is only set in the after-split folio contains @split_at. By doing
+    so, we limit bad memory. If failed to split, the whole folios is not
+    usable.
 
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-3-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+One way to reproduce:
+
+    Create an anonymous THP range and fork 512 children, so we have a
+    THP shared mapped in 513 processes. Then trigger folio split with
+    /sys/kernel/debug/split_huge_pages debugfs to split the THP folio to
+    order 0.
+
+Without the above commit, we can successfully split to order 0.  With the
+above commit, the folio is still a large folio.
+
+And currently there are two core users of TTU_SPLIT_HUGE_PMD:
+
+  * try_to_unmap_one()
+  * try_to_migrate_one()
+
+try_to_unmap_one() would restart the rmap walk, so only
+try_to_migrate_one() is affected.
+
+We can't simply revert commit 60fbb14396d5 ("mm/huge_memory: adjust
+try_to_migrate_one() and split_huge_pmd_locked()"), since it removed some
+duplicated check covered by page_vma_mapped_walk().
+
+This patch fixes this by restart page_vma_mapped_walk() after
+split_huge_pmd_locked().  Since we cannot simply return "true" to fix the
+problem, as that would affect another case:
+
+    When invoking folio_try_share_anon_rmap_pmd() from
+    split_huge_pmd_locked(), the latter can fail and leave a large folio
+    mapped through PTEs, in which case we ought to return true from
+    try_to_migrate_one(). This might result in unnecessary walking of the
+    rmap but is relatively harmless.
+
+Link: https://lkml.kernel.org/r/20260305015006.27343-1-richard.weiyang@gmail.com
+Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   36 ++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ mm/rmap.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -91,6 +91,24 @@ CBPF_MPTCP_SUBOPTION_ADD_ADDR="14,
- 			       6 0 0 65535,
- 			       6 0 0 0"
- 
-+# IPv4: TCP hdr of 48B, a first suboption of 12B (DACK8), the RM_ADDR suboption
-+# generated using "nfbpf_compile '(ip[32] & 0xf0) == 0xc0 && ip[53] == 0x0c &&
-+#				  (ip[66] & 0xf0) == 0x40'"
-+CBPF_MPTCP_SUBOPTION_RM_ADDR="13,
-+			      48 0 0 0,
-+			      84 0 0 240,
-+			      21 0 9 64,
-+			      48 0 0 32,
-+			      84 0 0 240,
-+			      21 0 6 192,
-+			      48 0 0 53,
-+			      21 0 4 12,
-+			      48 0 0 66,
-+			      84 0 0 240,
-+			      21 0 1 64,
-+			      6 0 0 65535,
-+			      6 0 0 0"
-+
- init_partial()
- {
- 	capout=$(mktemp)
-@@ -3867,6 +3885,14 @@ endpoint_tests()
- 		chk_subflow_nr "after no reject" 3
- 		chk_mptcp_info subflows 2 subflows 2
- 
-+		# To make sure RM_ADDR are sent over a different subflow, but
-+		# allow the rest to quickly and cleanly close the subflow
-+		local ipt=1
-+		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
-+			-p tcp -m tcp --tcp-option 30 \
-+			-m bpf --bytecode \
-+			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-+			-j DROP || ipt=0
- 		local i
- 		for i in $(seq 3); do
- 			pm_nl_del_endpoint $ns2 1 10.0.1.2
-@@ -3879,6 +3905,7 @@ endpoint_tests()
- 			chk_subflow_nr "after re-add id 0 ($i)" 3
- 			chk_mptcp_info subflows 3 subflows 3
- 		done
-+		[ ${ipt} = 1 ] && ip netns exec "${ns2}" ${iptables} -D OUTPUT 1
- 
- 		mptcp_lib_kill_group_wait $tests_pid
- 
-@@ -3938,11 +3965,20 @@ endpoint_tests()
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
-+		# To make sure RM_ADDR are sent over a different subflow, but
-+		# allow the rest to quickly and cleanly close the subflow
-+		local ipt=1
-+		ip netns exec "${ns1}" ${iptables} -I OUTPUT -s "10.0.1.1" \
-+			-p tcp -m tcp --tcp-option 30 \
-+			-m bpf --bytecode \
-+			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-+			-j DROP || ipt=0
- 		pm_nl_del_endpoint $ns1 42 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
-+		[ ${ipt} = 1 ] && ip netns exec "${ns1}" ${iptables} -D OUTPUT 1
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2346,11 +2346,17 @@ static bool try_to_migrate_one(struct fo
+ 		/* PMD-mapped THP migration entry */
+ 		if (!pvmw.pte) {
+ 			if (flags & TTU_SPLIT_HUGE_PMD) {
++				/*
++				 * split_huge_pmd_locked() might leave the
++				 * folio mapped through PTEs. Retry the walk
++				 * so we can detect this scenario and properly
++				 * abort the walk.
++				 */
+ 				split_huge_pmd_locked(vma, pvmw.address,
+ 						      pvmw.pmd, true);
+-				ret = false;
+-				page_vma_mapped_walk_done(&pvmw);
+-				break;
++				flags &= ~TTU_SPLIT_HUGE_PMD;
++				page_vma_mapped_walk_restart(&pvmw);
++				continue;
+ 			}
+ #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+ 			subpage = folio_page(folio,
 
 
 
