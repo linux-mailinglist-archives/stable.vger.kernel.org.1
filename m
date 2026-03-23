@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-229340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOHkHI5dwWl0SgQAu9opvQ
-	(envelope-from <stable+bounces-229340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:38 +0100
+	id SKP3DaBLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0401A2F67F2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E278A2F41E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9BFD310B9F0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 35B2A305806C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C2C280335;
-	Mon, 23 Mar 2026 15:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C28B3B38A9;
+	Mon, 23 Mar 2026 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEISdrEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4EsTc2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6653925CC40;
-	Mon, 23 Mar 2026 15:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE173B38A3;
+	Mon, 23 Mar 2026 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278809; cv=none; b=AyUNQGx6YwGP2sKPaZnplh7epWorgIJOodaJ/U3OyqNy1UB3lf/Ze3+JweSo3g4S50LFIzwcrFXvTnqwyD5gelj5RraU8IigBMsbDfNJACPLHs8tAamoLyuTaGhoNnmWzQM7C/tRJajbPNiHa8Qb39rx37ClaZ38UIaD5vecSx0=
+	t=1774274884; cv=none; b=Lt3PGSiC3RtQNYGOuLue6lccx9rugU4j4+XdqIcpoFR1UtXa5tdbLJPrJjzvnSLoeKpFX4DVX03umnIDhhvaZJidaI3pNiL3stN8jLEq6cjSjkCz4y8u6AmOZaQf2yYpvYzEeDLNszi6xuqIqBxL+uPSX6s40k+4FACDh6mVDsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278809; c=relaxed/simple;
-	bh=/jqE3yJfq6R6W/SPTUtuKRTlyjHN0yLqEtg+jkQ2Us4=;
+	s=arc-20240116; t=1774274884; c=relaxed/simple;
+	bh=1qjj7iOjuzjDqfI+HhCibzCPZOnSS37BPA4qHHfEK8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9wLgXQwGJugOpe4zb9Crdvo6ct2sHrWhru9apavgfRa7jQSvUG57L1ThJDghhoRr6IpvdEGaiFLX+ms2gNRjc0XCGDxG/6HwHKuaH22gv6S2+xCDeEIKimWcN/b8TK4JDB6IoyanHFdcbgrpLOeraJaGWwJtmGckDnPgSwR5Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEISdrEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68F6C4CEF7;
-	Mon, 23 Mar 2026 15:13:28 +0000 (UTC)
+	 MIME-Version; b=tjpVQHWveA6nD+tLdZCpe/CzNcrhZ2D3WGWFzvGM1zriRfn//76I+vLQ1vyKVG0qNQ2fbUmNjBAiVPrUD6FIkQkeU7EjV75D59LcmzNsTZtuhGs8zfhbdkc05m38ltJXtj2ZpF/X7VzJqEDTRT+i1n04+ahRP89Nd0D8CEeVbqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4EsTc2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C816EC4CEF7;
+	Mon, 23 Mar 2026 14:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278809;
-	bh=/jqE3yJfq6R6W/SPTUtuKRTlyjHN0yLqEtg+jkQ2Us4=;
+	s=korg; t=1774274884;
+	bh=1qjj7iOjuzjDqfI+HhCibzCPZOnSS37BPA4qHHfEK8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEISdrEL9Kpa4aA0HARVLwNE74XKfspCGNgbgouo/O2FWpJXQf3up3uG2FV9rBjJ1
-	 Q0xzdU7mDFBJSuqBzr3ENZD6mQGgLonOwoWFLfxx0wYnRT5TF/iLjEsQ5TwkgDEi+T
-	 pMvQMQD7sSAUMi1T0IOOWMstiuxYR04KOkunC92w=
+	b=V4EsTc2tjGDRgkDL8q14V/2bLkpIG1Fj9stI/AilzpTsV/SicwsBDyTjlQ7WauZiq
+	 PXyhgQvS/TOEIfzKJVLhOetfqzHCzjeLzfu/Y7FLla8xK3zEyOlBPkXhj+Gjg6Swaj
+	 XsTPYJuIaB/7k7tk4ur6hhjU4IuwQyjpIZoaaZ7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 427/567] bpf: Forget ranges when refining tnum after JSET
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 126/212] Bluetooth: hci_sync: Fix hci_le_create_conn_sync
 Date: Mon, 23 Mar 2026 14:45:47 +0100
-Message-ID: <20260323134544.465275960@linuxfoundation.org>
+Message-ID: <20260323134507.751631244@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +64,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,linux.dev,kernel.org,suse.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229340-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-228351-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c711ce17dd78e5d4fdcf];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0401A2F67F2
+X-Rspamd-Queue-Id: E278A2F41E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-commit 6279846b9b2532e1b04559ef8bd0dec049f29383 upstream.
+[ Upstream commit 2cabe7ff1001b7a197009cf50ba71701f9cbd354 ]
 
-Syzbot reported a kernel warning due to a range invariant violation on
-the following BPF program.
+While introducing hci_le_create_conn_sync the functionality
+of hci_connect_le was ported to hci_le_create_conn_sync including
+the disable of the scan before starting the connection.
 
-  0: call bpf_get_netns_cookie
-  1: if r0 == 0 goto <exit>
-  2: if r0 & Oxffffffff goto <exit>
+When this code was run non synchronously the immediate call that was
+setting the flag HCI_LE_SCAN_INTERRUPTED had an impact. Since the
+completion handler for the LE_SCAN_DISABLE was not immediately called.
+In the completion handler of the LE_SCAN_DISABLE event, this flag is
+checked to set the state of the hdev to DISCOVERY_STOPPED.
 
-The issue is on the path where we fall through both jumps.
+With the synchronised approach the later setting of the
+HCI_LE_SCAN_INTERRUPTED flag has not the same effect. The completion
+handler would immediately fire in the LE_SCAN_DISABLE call, check for
+the flag, which is then not yet set and do nothing.
 
-That path is unreachable at runtime: after insn 1, we know r0 != 0, but
-with the sign extension on the jset, we would only fallthrough insn 2
-if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
-figure this out, so the verifier walks all branches. The verifier then
-refines the register bounds using the second condition and we end
-up with inconsistent bounds on this unreachable path:
+To fix this issue and make the function call work as before, we move the
+setting of the flag HCI_LE_SCAN_INTERRUPTED before disabling the scan.
 
-  1: if r0 == 0 goto <exit>
-    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
-  2: if r0 & 0xffffffff goto <exit>
-    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
-    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
-
-Improving the range refinement for JSET to cover all cases is tricky. We
-also don't expect many users to rely on JSET given LLVM doesn't generate
-those instructions. So instead of improving the range refinement for
-JSETs, Eduard suggested we forget the ranges whenever we're narrowing
-tnums after a JSET. This patch implements that approach.
-
-Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ shung-hsi.yu: no detection or kernel warning for invariant violation before
-  6.8, but the same umin=1,umax=0 state can occur when jset is preceed by r0 < 1.
-  Changes were made to adapt to older range refinement logic before commit
-  67420501e868 ("bpf: generalize reg_set_min_max() to handle non-const register
-  comparisons"). ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8e8b92ee60de ("Bluetooth: hci_sync: Add hci_le_create_conn_sync")
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/hci_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14158,6 +14158,10 @@ static void reg_set_min_max(struct bpf_r
- 		}
- 		break;
- 	case BPF_JSET:
-+		/* Forget the ranges before narrowing tnums, to avoid invariant
-+		 * violations if we're on a dead branch.
-+		 */
-+		__mark_reg_unbounded(false_reg);
- 		if (is_jmp32) {
- 			false_32off = tnum_and(false_32off, tnum_const(~val32));
- 			if (is_power_of_2(val32))
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 9f01837250a5e..e94b62844e1ef 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6578,8 +6578,8 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 	 * state.
+ 	 */
+ 	if (hci_dev_test_flag(hdev, HCI_LE_SCAN)) {
+-		hci_scan_disable_sync(hdev);
+ 		hci_dev_set_flag(hdev, HCI_LE_SCAN_INTERRUPTED);
++		hci_scan_disable_sync(hdev);
+ 	}
+ 
+ 	/* Update random address, but set require_privacy to false so
+-- 
+2.51.0
+
 
 
 
