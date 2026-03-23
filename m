@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDBxBRZxwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:58 +0100
+	id YE5lMt9hwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:53:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C06982F9319
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578212F70D5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 04DBA30CBD7E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A92A03555EC3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2403BE650;
-	Mon, 23 Mar 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E9D3BB9EE;
+	Mon, 23 Mar 2026 15:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwruZBYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Wh0xnye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E60739A7EF;
-	Mon, 23 Mar 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3F13B27C5;
+	Mon, 23 Mar 2026 15:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283202; cv=none; b=ichxcDiG1SaERlDcczdXMbJxB7hvWzY5W7g9oyCDp2dfguotbaXy5pIsTQPvAoLa1BWcN4di3xBMB6LZtYcLp/2KWB+4u21KZhzO8rx52MhMySjCyWXwJIkJPAZFxj6w+n3wPvCFLClHBHNIVwDVgjdrsisIYDY8r5wF9Uhi2LQ=
+	t=1774279187; cv=none; b=LG1xno4UjdtuUXMbiIFDccnqf5TTlFCibKl2uHCNnwTq4mA1J5CAp3tEk+8JR4CLjNHHQMB3qEQyMsqzmwBJwNhJ4DxmKa/EXxmidYNgFHcUjvSFYrI3JwKLyDvtuoWVXbdSlG0aUnkHEcyj3O4Fc3G8mSO497chcIGcbCfQLJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283202; c=relaxed/simple;
-	bh=6kbcdXOoJZ8puh2bmkPtN7azjcD3yGH5TSJq+/Qt/kY=;
+	s=arc-20240116; t=1774279187; c=relaxed/simple;
+	bh=k8KHGLCUXyhHfiFHHCaAZmdcg16OYJjmRgNNYab6OGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=If4l00KasAkpJc/MHTRPAHZbiGFSZ5MrF5lONPykkDRFCqXUuYxIcqDDaZauKXHAq+2/7jz/DEHT3KrH99pkEkFTjjdFenTUCCWLhrn26QyMUnE/vM4u4h+XeU+BbWbxi8Sd7ynixPSMyvX+XMHNFQUKwqRlnc02z8U8CdR9NJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwruZBYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEF6C2BC9E;
-	Mon, 23 Mar 2026 16:26:42 +0000 (UTC)
+	 MIME-Version; b=SEx2t8YWoP4uMxiN5KDfQrFLa+xd90YwVNaq9G3FjUBvvi/6twhV07lmgwg/5SMZo1qZ/30DlYmqVSOshtS0xrLWCklVx7Yq/bf89F73bJYqHDM56nNV9lpuu2fnhDcUJ4TVc011gZjKNZI+CTXxKdShS1k8ClGsqp5JtYWeS/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Wh0xnye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29AAC2BC9E;
+	Mon, 23 Mar 2026 15:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283202;
-	bh=6kbcdXOoJZ8puh2bmkPtN7azjcD3yGH5TSJq+/Qt/kY=;
+	s=korg; t=1774279187;
+	bh=k8KHGLCUXyhHfiFHHCaAZmdcg16OYJjmRgNNYab6OGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwruZBYD57Us8dfiQ/5EakjsLD0hLGGw+Z0Ak2HkVJr89BjYUrbLpw/lTqGo62nDg
-	 mlXT0QZNQ3Vx70Ox8E9FH6B0hx5+zS3hgwA2QZZMKknGQh/p8J39+DSgPckmSu4CM7
-	 KN7Q/tUSG7AYVjloORudsxEgCGztA2MBw/yezwzc=
+	b=1Wh0xnyeI739ukvEZHiDVPVbgKJH+3mG4rtUSLZwkj9Vvk15tSe27bZMfWvC3K2As
+	 Kkoc4YaqXbelPgbnBXAdTxM1mRsSzecMm9y9rsAW8dtpJquwHFGIKu64iHOqelrJJl
+	 HmQS4pXk0CMycypgprgL7rTVBP+zp1pIiyj1sDLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 440/481] hwmon: (pmbus/isl68137) Fix unchecked return value and use sysfs_emit()
+	Felix Gu <ustc.gu@gmail.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 502/567] firmware: arm_scpi: Fix device_node reference leak in probe path
 Date: Mon, 23 Mar 2026 14:47:02 +0100
-Message-ID: <20260323134535.935079650@linuxfoundation.org>
+Message-ID: <20260323134546.440865513@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229914-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-229419-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C06982F9319
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 578212F70D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 86259558e422b250aa6aa57163a6d759074573f5 upstream.
+[ Upstream commit 879c001afbac3df94160334fe5117c0c83b2cf48 ]
 
-isl68137_avs_enable_show_page() uses the return value of
-pmbus_read_byte_data() without checking for errors. If the I2C transaction
-fails, a negative error code is passed through bitwise operations,
-producing incorrect output.
+A device_node reference obtained from the device tree is not released
+on all error paths in the arm_scpi probe path. Specifically, a node
+returned by of_parse_phandle() could be leaked when the probe failed
+after the node was acquired. The probe function returns early and
+the shmem reference is not released.
 
-Add an error check to propagate the return value if it is negative.
-Additionally, modernize the callback by replacing sprintf()
-with sysfs_emit().
+Use __free(device_node) scope-based cleanup to automatically release
+the reference when the variable goes out of scope.
 
-Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260318193952.47908-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ed7ecb883901 ("firmware: arm_scpi: Add compatibility checks for shmem node")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Message-Id: <20260121-arm_scpi_2-v2-1-702d7fa84acb@gmail.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/isl68137.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_scpi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -80,8 +80,11 @@ static ssize_t isl68137_avs_enable_show_
- {
- 	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
+diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
+index 3de25e9d18ef8..2d85e783ae267 100644
+--- a/drivers/firmware/arm_scpi.c
++++ b/drivers/firmware/arm_scpi.c
+@@ -18,6 +18,7 @@
  
--	return sprintf(buf, "%d\n",
--		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
-+	if (val < 0)
-+		return val;
-+
-+	return sysfs_emit(buf, "%d\n",
-+			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
- }
+ #include <linux/bitmap.h>
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/export.h>
+@@ -945,13 +946,13 @@ static int scpi_probe(struct platform_device *pdev)
+ 		int idx = scpi_drvinfo->num_chans;
+ 		struct scpi_chan *pchan = scpi_drvinfo->channels + idx;
+ 		struct mbox_client *cl = &pchan->cl;
+-		struct device_node *shmem = of_parse_phandle(np, "shmem", idx);
++		struct device_node *shmem __free(device_node) =
++			of_parse_phandle(np, "shmem", idx);
  
- static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
+ 		if (!of_match_node(shmem_of_match, shmem))
+ 			return -ENXIO;
+ 
+ 		ret = of_address_to_resource(shmem, 0, &res);
+-		of_node_put(shmem);
+ 		if (ret) {
+ 			dev_err(dev, "failed to get SCPI payload mem resource\n");
+ 			return ret;
+-- 
+2.51.0
+
 
 
 
