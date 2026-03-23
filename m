@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8P9YOVRYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:20 +0100
+	id 2ECaKWdhwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:51:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A11D2F5F57
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1032F703F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A91B1331B7DC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81D483027355
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE803AA4FD;
-	Mon, 23 Mar 2026 14:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB9F3CB2F1;
+	Mon, 23 Mar 2026 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISJNGpIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVBjMdu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D5126D4F9;
-	Mon, 23 Mar 2026 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5083CB2EB;
+	Mon, 23 Mar 2026 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277419; cv=none; b=M/ApOmwlC5fQFA6qfLjitdx1GZlb1dmbvehQW0bFvX8O9Fbi59oVDi1+kMx0PbxMKFZF8OuJYhbzB0jxr7fZMRALPGXqfCAK/N3QttRS67vg11pWMlCrwpO+xlqqonHcA758eESaHWNN93CVi89rmEw3boWV4X0kWZhZVaCRfDU=
+	t=1774279199; cv=none; b=ejq44dPA4owEkpXVgmGdQxjEonT4zr8fCjQ0tK97ZBbzznaZZT7m6qd4P+9AWqukDulAK2KEfeM1UQRovP2D8B6IozmktOaMv3r/rSiaF2IQDGWEvJn9ciGNhpur+axb0vbb6EmsPWOq1zNCgwmuP22ubRN7d+1/jgb99bf1pa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277419; c=relaxed/simple;
-	bh=wwGoLN9PH1ovSKNwIEkSFro3tlS+eP3HxGxa5NKvxbQ=;
+	s=arc-20240116; t=1774279199; c=relaxed/simple;
+	bh=o1phMiveFS7z9JkDU2SiyqeBcWVkIQTxWp5mlDhOlxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCJgxsQyTnpBdpzLNNitQb+O1uCJYCZ5W1vp1/Cyg58QFymCPtf44B/qXVKfmKANIzIHFZuHEfjd3ikHPZc8pRgxdNKKteQEekIC975HHm1pv3/MlcaLTats8q8Thr1R3ln1eM2brEySeOOPg3VDpnvYAsmQR3mNkExP58XNQok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISJNGpIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786EBC4CEF7;
-	Mon, 23 Mar 2026 14:50:18 +0000 (UTC)
+	 MIME-Version; b=gUrgzFlN6kfrQW3QQlY9d+7DoiBFRur81eVBeefb1R/nt8LSw9uThxq134GLpgNZ/dG4ND229tub5F7Ut6hclUaMmmIweYP+IcgnDK68mfFMUg5293YtyR5H/MMfB/S5V9bDNneVZaoSqL73amlk/Yc9pAq+u7HIKWFRfWTTeM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVBjMdu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F125EC2BC9E;
+	Mon, 23 Mar 2026 15:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277418;
-	bh=wwGoLN9PH1ovSKNwIEkSFro3tlS+eP3HxGxa5NKvxbQ=;
+	s=korg; t=1774279199;
+	bh=o1phMiveFS7z9JkDU2SiyqeBcWVkIQTxWp5mlDhOlxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISJNGpIWKQJNMnr52UoxDpkIpSU8IK19KxHQuh32V16bCLCs3r0q/7ifn1CHitBHJ
-	 7+QimB2x21K0l31Jb9iQ57zRrundH5HKx3KnHEHb4aXYIkKCw8eYB1zkblmZzWus4Q
-	 Zat7UUxYjexVjKLVtQQM7KGocJcpIhiQ8Espouv4=
+	b=HVBjMdu+p5CxBFpPdWePedOmptjdYnT9NtSVAxS1GiktyWZq8bLzS1kvI86v/67R4
+	 LUiEXS7o7uk/GT8U4z/vEZWDrbq/ZPxoHFsjuNmvlLMVppNwTI7DhjnqGfEB7ry3mp
+	 na/rBa/k9FiG1QgnP77B+GMNbHSW/kD5BHo+jasU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zw Tang <shicenci@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 388/460] Bluetooth: qca: fix ROM version reading on WCN3998 chips
+Subject: [PATCH 6.6 464/567] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()
 Date: Mon, 23 Mar 2026 14:46:24 +0100
-Message-ID: <20260323134536.104899435@linuxfoundation.org>
+Message-ID: <20260323134545.464999559@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228893-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229423-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7A11D2F5F57
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5A1032F703F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-[ Upstream commit 99b2c531e0e797119ae1b9195a8764ee98b00e65 ]
+[ Upstream commit 5ef268cb7a0aac55521fd9881f1939fa94a8988e ]
 
-WCN3998 uses a bit different format for rom version:
+Remove unneeded warnings for handled errors from __arm_kprobe_ftrace()
+because all caller handled the error correctly.
 
-[    5.479978] Bluetooth: hci0: setting up wcn399x
-[    5.633763] Bluetooth: hci0: QCA Product ID   :0x0000000a
-[    5.645350] Bluetooth: hci0: QCA SOC Version  :0x40010224
-[    5.650906] Bluetooth: hci0: QCA ROM Version  :0x00001001
-[    5.665173] Bluetooth: hci0: QCA Patch Version:0x00006699
-[    5.679356] Bluetooth: hci0: QCA controller version 0x02241001
-[    5.691109] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
-[    6.680102] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
-[    6.842948] Bluetooth: hci0: QCA setup on UART is completed
+Link: https://lore.kernel.org/all/177261531182.1312989.8737778408503961141.stgit@mhiramat.tok.corp.google.com/
 
-Fixes: 523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998")
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Zw Tang <shicenci@gmail.com>
+Closes: https://lore.kernel.org/all/CAPHJ_V+J6YDb_wX2nhXU6kh466Dt_nyDSas-1i_Y8s7tqY-Mzw@mail.gmail.com/
+Fixes: 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btqca.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/kprobes.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index dd2c0485b9848..372427747cd64 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -804,6 +804,8 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	 */
- 	if (soc_type == QCA_WCN3988)
- 		rom_ver = ((soc_ver & 0x00000f00) >> 0x05) | (soc_ver & 0x0000000f);
-+	else if (soc_type == QCA_WCN3998)
-+		rom_ver = ((soc_ver & 0x0000f000) >> 0x07) | (soc_ver & 0x0000000f);
- 	else
- 		rom_ver = ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver & 0x0000000f);
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1078,12 +1078,12 @@ static int __arm_kprobe_ftrace(struct kp
+ 	lockdep_assert_held(&kprobe_mutex);
  
--- 
-2.51.0
-
+ 	ret = ftrace_set_filter_ip(ops, (unsigned long)p->addr, 0, 0);
+-	if (WARN_ONCE(ret < 0, "Failed to arm kprobe-ftrace at %pS (error %d)\n", p->addr, ret))
++	if (ret < 0)
+ 		return ret;
+ 
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
++		if (ret < 0) {
+ 			/*
+ 			 * At this point, sinec ops is not registered, we should be sefe from
+ 			 * registering empty filter.
 
 
 
