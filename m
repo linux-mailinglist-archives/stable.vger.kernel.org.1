@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBFBFgdOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:23 +0100
+	id iJ2ZNuJHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26E02F48EF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4862F3ABE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C098630DFF7A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 273FC305DD60
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573333B5825;
-	Mon, 23 Mar 2026 14:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FE63ACA68;
+	Mon, 23 Mar 2026 13:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTpnUCCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLIUO5M9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7323B27D4;
-	Mon, 23 Mar 2026 14:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5983A21D00A;
+	Mon, 23 Mar 2026 13:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274584; cv=none; b=URHrZXHJYsazzWCj/DEuCeOumGvpHHcoAQqKYbNMiF6JU4FLLrCaigmWOsvhKQi/NgacN/xcbogM8g8YhymxHzrLIl3khixHXCIHdiAy4jS+EX2MtP+n5QcxzMaY8hh8pg+THRZU9nb7IRjmXcCPBs81xFDJQqU7o9hjCjOJqBc=
+	t=1774274032; cv=none; b=KSXWpL0ORF8mYSMelBn5s+lH7aGXtQElGYg0CXIe5QMO57TzcV2U/gxQq4UoONCR2qKXdycCw+ZFWJAgaZAWd/Xxcr0K5HYOYfqdw5bpga28wva++FwCbL+Dnsukmlrbk2zdZ9gHi2FnzoV1HMQGqzEg/Vy5QAMU1HlAh/KmO/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274584; c=relaxed/simple;
-	bh=NHW1td60Obg8bmTUhrgdQncsGfE5ctadAI1aS/DvIKY=;
+	s=arc-20240116; t=1774274032; c=relaxed/simple;
+	bh=ROO00yyzXyFXoPQ0QMWPP4EdPbgGkE3v4WpzQzvcD5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDQsbrjyXzasiFap5CwIte5O3Sc9oQy/KVPyWscrMDzPTYyr7g5RdNjj4o4DJ35W/AHTo4hEWsdh8S2ltiEOcozrsn7Hx/Bn7dcBFZxdYZUx6mSMz+alR7oG1uRgpCWt8bP33YEfc3AyUQM9TLeHXVgm1IpS743PVaa4eEy2k5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTpnUCCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA4DC4CEF7;
-	Mon, 23 Mar 2026 14:03:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oxB0g3jGl8KrZlI0sq13YbfN0QGC8CC2080xpR+6ruELLuDr/iirSI+bUaSPcVgbIkqs+JjZY2k1wAbqApnd3wMXEE7CNm2ur1NWUMBDGdHDz4+RDGy75dQsP6u6V0XLmgGWiK4lki60RRCZYFTeD5QWVqXJ3whGGvcCEH4usgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLIUO5M9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF45AC4CEF7;
+	Mon, 23 Mar 2026 13:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274584;
-	bh=NHW1td60Obg8bmTUhrgdQncsGfE5ctadAI1aS/DvIKY=;
+	s=korg; t=1774274032;
+	bh=ROO00yyzXyFXoPQ0QMWPP4EdPbgGkE3v4WpzQzvcD5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTpnUCCUqOz4hlh1I/851M9vkmu484s6U5ht09ccdUSSqi6y+57vvb877Jm7qtwIq
-	 zVVcsvG8nr9PewW1RBJSlQLE27mNvvfmGjP0Av9bNVfhsnfY5i9P3RpQNvARFQbjik
-	 NGLqB61jEBNEYPz9k2818kp+m/l5fjw2v0AgYPw4=
+	b=JLIUO5M9dfYczDPjOpi/oBP6XhECccmr7ni0gumJA9PKmzW5YTx95tSkFk7MC6p/1
+	 kyi+CFI/TOT202+hqvxiB9jXzNYhnYPspzQQ9rwDt2iglOXq8J5cOhw6Yh9UyQ+gCe
+	 ZkmFCGcsx5UbEKCvQkspgwdXYmxGIHw5HScJuv90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.18 044/212] nsfs: tighten permission checks for ns iteration ioctls
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.19 088/220] drm/i915/psr: Disable PSR on update_m_n and update_lrr
 Date: Mon, 23 Mar 2026 14:44:25 +0100
-Message-ID: <20260323134505.158619792@linuxfoundation.org>
+Message-ID: <20260323134507.374642720@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228251-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[gitlab.freedesktop.org:query timed out];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228068-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C26E02F48EF
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 8B4862F3ABE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit e6b899f08066e744f89df16ceb782e06868bd148 ]
+commit b0a4dba7b623aa7cbc9efcc56b4af2ec8b274f3e upstream.
 
-Even privileged services should not necessarily be able to see other
-privileged service's namespaces so they can't leak information to each
-other. Use may_see_all_namespaces() helper that centralizes this policy
-until the nstree adapts.
+PSR/PR parameters might change based on update_m_n or update_lrr. Disable
+on update_m_n and update_lrr to ensure proper parameters are taken into use
+on next PSR enable in intel_psr_post_plane_update.
 
-Link: https://patch.msgid.link/20260226-work-visibility-fixes-v1-1-d2c2853313bd@kernel.org
-Fixes: a1d220d9dafa ("nsfs: iterate through mount namespaces")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@kernel.org # v6.12+
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15771
+Fixes: 2bc98c6f97af ("drm/i915/alpm: Compute ALPM parameters into crtc_state->alpm_state")
+Cc: <stable@vger.kernel.org> # v6.19+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260312083710.1593781-2-jouni.hogander@intel.com
+(cherry picked from commit 65852b56bfa929f99e28c96fd98b02058959da7f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nsfs.c                 |   13 +++++++++++++
- include/linux/ns_common.h |    2 ++
- kernel/nscommon.c         |    6 ++++++
- 3 files changed, 21 insertions(+)
+ drivers/gpu/drm/i915/display/intel_psr.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -194,6 +194,17 @@ static bool nsfs_ioctl_valid(unsigned in
- 	return false;
- }
- 
-+static bool may_use_nsfs_ioctl(unsigned int cmd)
-+{
-+	switch (_IOC_NR(cmd)) {
-+	case _IOC_NR(NS_MNT_GET_NEXT):
-+		fallthrough;
-+	case _IOC_NR(NS_MNT_GET_PREV):
-+		return may_see_all_namespaces();
-+	}
-+	return true;
-+}
-+
- static long ns_ioctl(struct file *filp, unsigned int ioctl,
- 			unsigned long arg)
- {
-@@ -209,6 +220,8 @@ static long ns_ioctl(struct file *filp,
- 
- 	if (!nsfs_ioctl_valid(ioctl))
- 		return -ENOIOCTLCMD;
-+	if (!may_use_nsfs_ioctl(ioctl))
-+		return -EPERM;
- 
- 	ns = get_proc_ns(file_inode(filp));
- 	switch (ioctl) {
---- a/include/linux/ns_common.h
-+++ b/include/linux/ns_common.h
-@@ -144,6 +144,8 @@ void __ns_common_free(struct ns_common *
- 
- #define ns_common_free(__ns) __ns_common_free(to_ns_common((__ns)))
- 
-+bool may_see_all_namespaces(void);
-+
- static __always_inline __must_check bool __ns_ref_put(struct ns_common *ns)
- {
- 	return refcount_dec_and_test(&ns->__ns_ref);
---- a/kernel/nscommon.c
-+++ b/kernel/nscommon.c
-@@ -75,3 +75,9 @@ void __ns_common_free(struct ns_common *
- {
- 	proc_free_inum(ns->inum);
- }
-+
-+bool may_see_all_namespaces(void)
-+{
-+	return (task_active_pid_ns(current) == &init_pid_ns) &&
-+	       ns_capable_noaudit(init_pid_ns.user_ns, CAP_SYS_ADMIN);
-+}
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -3087,6 +3087,8 @@ void intel_psr_pre_plane_update(struct i
+ 			 * - Display WA #1136: skl, bxt
+ 			 */
+ 			if (intel_crtc_needs_modeset(new_crtc_state) ||
++			    new_crtc_state->update_m_n ||
++			    new_crtc_state->update_lrr ||
+ 			    !new_crtc_state->has_psr ||
+ 			    !new_crtc_state->active_planes ||
+ 			    new_crtc_state->has_sel_update != psr->sel_update_enabled ||
 
 
 
