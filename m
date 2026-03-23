@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-229041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPV0HMhVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-229041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:28 +0100
+	id sGMXL/x6wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498F82F5A48
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D46F2FA270
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2D370303E7D5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66E88316E824
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434C93AD535;
-	Mon, 23 Mar 2026 14:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B4A3B19AF;
+	Mon, 23 Mar 2026 16:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yj/cFKyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/8v8vXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030A4383C7C;
-	Mon, 23 Mar 2026 14:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E753B19A2;
+	Mon, 23 Mar 2026 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277872; cv=none; b=R1uLxJzyU2Mi0r/til3irF90jeIKvsaYY1lr8HJcNrk5wkJLNa+ImA3ppKq8iKg1IC7fXJ0R5TMFWUCqQcfatBgLUsWaDffd8K8qz0K6LQRZ+iSNRWC7ld/Nczuaf0viLtJDZv3JFdNYLdoqtnkgXlCz0EKcNMI+QbwnxMH30+M=
+	t=1774282194; cv=none; b=BQ++TMvip14VrhRtkfHZT9YHylHxnf21kVHp/fImw7/zccsM/SLNkdtsNSpm92PyLi92pvesCQNrMNXGL5RqtlqmXuiY36+kWqEQgVOZh9csb3mZqzRYv7nUUCzC7SRrzZDDUjb3SuKBwWv4yon6IJbC6fl8dpKJ7dJKZHsh5y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277872; c=relaxed/simple;
-	bh=XDMoW/yalQeEj16OMZWAp8quSCNRSZqYZg10TyDx3vs=;
+	s=arc-20240116; t=1774282194; c=relaxed/simple;
+	bh=iNzJ3l0tCnfkuWP2/1TMruPfW0Lf4pRiC2U1szVdI9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2PygeNL2dbi0JNK/783+X8J2aKexeNnwv8GFhoAp46j7UE0/2ubmiuquIJ8Ki6Lo9BekObtZkUkbNnTcG3JKai9YKnEx7rZztulJEO7uQ6rHZsDqMStRpUU45nLekQoX2k/+b96LmfXHieWawjMU30oryACoYXNjAICj+jKViE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yj/cFKyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79654C4CEF7;
-	Mon, 23 Mar 2026 14:57:51 +0000 (UTC)
+	 MIME-Version; b=Aqf5SyJeMVSqrno0+4Whb304qVX8t4Cirzi/h4If++2Bi0iXpTBt9dxmLGcN6M2GG4+pVJnlSCFv6zNGE4oG/DOizY1XvJJkE5lYrFyGE+7XO78KmeV2hjEUuvCoknYFYRDOZCKnNNBhz155o8Xcnf9BR9FVHxlUR3pYq6XcWHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/8v8vXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EB7C2BC9E;
+	Mon, 23 Mar 2026 16:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277871;
-	bh=XDMoW/yalQeEj16OMZWAp8quSCNRSZqYZg10TyDx3vs=;
+	s=korg; t=1774282193;
+	bh=iNzJ3l0tCnfkuWP2/1TMruPfW0Lf4pRiC2U1szVdI9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yj/cFKyHURSB0t0WU10iWB9GPMC/p5Ovz9sPKWe+9I4uwmiLVKV4DuArepeJ9E4KP
-	 KxweXIe74405cN4+jTyhMwjl1QquJntHYZDGtg5tQzpD3CR7yr2+A6bOO/fs5c30zx
-	 3JfMEoaS7qOgXiuw9wdJGYAzVJrbcHeOl1D1HIiw=
+	b=h/8v8vXu5TfXshobAh99/ERt+jeIkGCxDD4AGJdi31yyF+iy98dhSzSQAIuhzVhG8
+	 5EYlc4d/r1exQCzeIhm10Vly8s9BFwa08mRmFr0miOo6mQ9gGU37HmnE4IypUvlvoo
+	 m+3LFpQ4InyfJQZSACfOh4xrfzXXWlbApbX1RRHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Crawford <frank@crawford.emu.id.au>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jean Delvare <jdelvare@suse.com>,
-	linux-hwmon@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
+	Simon Horman <horms@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/567] hwmon: (it87) Check the it87_lock() return value
+Subject: [PATCH 6.1 066/481] net: arcnet: com20020-pci: fix support for 2.5Mbit cards
 Date: Mon, 23 Mar 2026 14:40:48 +0100
-Message-ID: <20260323134536.973227899@linuxfoundation.org>
+Message-ID: <20260323134526.835887923@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,79 +69,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229041-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[acm.org:query timed out,roeck-us.net:query timed out,suse.com:query timed out,emu.id.au:query timed out];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-229539-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[frank.crawford.emu.id.au:query timed out,jdelvare.suse.com:query timed out,linux-hwmon.vger.kernel.org:query timed out,bvanassche.acm.org:query timed out];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 498F82F5A48
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2D46F2FA270
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit 07ed4f05bbfd2bc014974dcc4297fd3aa1cb88c0 ]
+[ Upstream commit c7d9be66b71af490446127c6ffcb66d6bb71b8b9 ]
 
-Return early in it87_resume() if it87_lock() fails instead of ignoring the
-return value of that function. This patch suppresses a Clang thread-safety
-warning.
+Commit 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
+converted the com20020-pci driver to use a card info structure instead
+of a single flag mask in driver_data. However, it failed to take into
+account that in the original code, driver_data of 0 indicates a card
+with no special flags, not a card that should not have any card info
+structure. This introduced a null pointer dereference when cards with
+no flags were probed.
 
-Cc: Frank Crawford <frank@crawford.emu.id.au>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: linux-hwmon@vger.kernel.org
-Fixes: 376e1a937b30 ("hwmon: (it87) Add calls to smbus_enable/smbus_disable as required")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20260223220102.2158611-15-bart.vanassche@linux.dev
-[groeck: Declare 'ret' at the beginning of it87_resume()]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Commit bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in
+com20020pci_probe()") then papered over this issue by rejecting cards
+with no driver_data instead of resolving the problem at its source.
+
+Fix the original issue by introducing a new card info structure for
+2.5Mbit cards that does not set any flags and using it if no
+driver_data is present.
+
+Fixes: 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
+Fixes: bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in com20020pci_probe()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20260213045510.32368-1-enelsonmoore@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/it87.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/arcnet/com20020-pci.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index fbe86cec60553..51882f7386cc8 100644
---- a/drivers/hwmon/it87.c
-+++ b/drivers/hwmon/it87.c
-@@ -3547,10 +3547,13 @@ static int it87_resume(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct it87_data *data = dev_get_drvdata(dev);
-+	int err;
+diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
+index e7db6a4e4dc9d..e9ee32b091a41 100644
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -114,6 +114,8 @@ static const struct attribute_group com20020_state_group = {
+ 	.attrs = com20020_state_attrs,
+ };
  
- 	it87_resume_sio(pdev);
++static struct com20020_pci_card_info card_info_2p5mbit;
++
+ static void com20020pci_remove(struct pci_dev *pdev);
  
--	it87_lock(data);
-+	err = it87_lock(data);
-+	if (err)
-+		return err;
+ static int com20020pci_probe(struct pci_dev *pdev,
+@@ -139,7 +141,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
  
- 	it87_check_pwm(dev);
- 	it87_check_limit_regs(data);
+ 	ci = (struct com20020_pci_card_info *)id->driver_data;
+ 	if (!ci)
+-		return -EINVAL;
++		ci = &card_info_2p5mbit;
+ 
+ 	priv->ci = ci;
+ 	mm = &ci->misc_map;
+@@ -346,6 +348,18 @@ static struct com20020_pci_card_info card_info_5mbit = {
+ 	.flags = ARC_IS_5MBIT,
+ };
+ 
++static struct com20020_pci_card_info card_info_2p5mbit = {
++	.name = "ARC-PCI",
++	.devcount = 1,
++	.chan_map_tbl = {
++		{
++			.bar = 2,
++			.offset = 0x00,
++			.size = 0x08,
++		},
++	},
++};
++
+ static struct com20020_pci_card_info card_info_sohard = {
+ 	.name = "SOHARD SH ARC-PCI",
+ 	.devcount = 1,
 -- 
 2.51.0
 
