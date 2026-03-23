@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-228458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHkKLClRwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:45 +0100
+	id eAlRCmlTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F422F5004
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7F32F54E2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47E1830DEE25
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60B1530E100C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E3A3B19AC;
-	Mon, 23 Mar 2026 14:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9349B3B19AF;
+	Mon, 23 Mar 2026 14:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+C6y+Yx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZAyGlRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBCF3AE6EE;
-	Mon, 23 Mar 2026 14:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567773AE6EE;
+	Mon, 23 Mar 2026 14:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275191; cv=none; b=Oh0BFf/6Qeq93rnc97gg4aGPnQUUh0CS4Zsc7CrCLjaOa8L2SLAZVk5U5rYl0P5dGm7zFzXInurTBdCScjxEEI0EqHv9YRFthBypari1Yi31xEyEXvuZJRHVPjJwlzoys3twIwqtA585yFVLPlOb7IWSav9xrPAisAcCQSDqlGM=
+	t=1774275194; cv=none; b=rb1PXlO7QkwUFdJFw487csywI0u9WqGDO3fGGYcoOzbrI6x3MkYhMgXz9NhVU4sC+D0wM6gWrcH2hmhRtgxZjYawq0cw9omzB1hGpEY/VEVeXXhMue+Gd+URgxFyjfJwquMwPDUv6sESlnLKHCeMDZtVLJnnwDhMf1LpgEGupQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275191; c=relaxed/simple;
-	bh=xFvPqxqm+9gta4rKtBJTKmybR9o4YkHYVe2f7RxiBJ8=;
+	s=arc-20240116; t=1774275194; c=relaxed/simple;
+	bh=BRVhRF2XPZdthfa4y5tN71zl2jgAjEwX0n8mt18iXgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ao1XFpdHxn/N1fDPtJUYYVbRTuek2UwRbO9WR5RVez72dQrP+q3yTWw/hHY4xv7GF6alpO6qB3ZKwdluOsgHSfpBUKRdPlwkBY3+qu3/4Fwo4Biv8TC7weSu6piuIQUF8TiFOS6XyqhkE50I77NGs0v/h1QXZnZh1ps3nooKm+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+C6y+Yx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4EEC4CEF7;
-	Mon, 23 Mar 2026 14:13:10 +0000 (UTC)
+	 MIME-Version; b=sucwZJKrm7bMaHfi2y5w/GTwD+9xxbB3TEex+W6Cj4lqRMndDyhgGQp6vnadxdEE9TGpQGnYkrLN1V8OzN+8okOl2HBixEuUPHN0CM2a+pCFhio+iIhA39JSFka1rf/yuIn1VGdIlzhUw4DbMpLcQPR4LMyLwLoulhoIAZmp480=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZAyGlRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18CAC4CEF7;
+	Mon, 23 Mar 2026 14:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275191;
-	bh=xFvPqxqm+9gta4rKtBJTKmybR9o4YkHYVe2f7RxiBJ8=;
+	s=korg; t=1774275194;
+	bh=BRVhRF2XPZdthfa4y5tN71zl2jgAjEwX0n8mt18iXgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+C6y+YxWEtjLK8rhiGYP9mSDUTJ/EL2N6fm1kH4K8kCCj2IdfigXeALNI0TI8sWi
-	 MSZL4peef5yQnJAeBYNp9tUyB5mAwpFe4GLRJ5hznFNylJSGucD+JxdKM9CH1pCMS6
-	 96Im+lS/K38ZgGTem8W46wgg2mZ7vM4yfAfKjB7g=
+	b=pZAyGlRYY/bvWmsxyXdHsszfQ8MHqSUJAS91ktHk46+VJ8Dl51Uw1a2SH4nv6ZJ3i
+	 ieuP913ac3amim6wHQCku8XmS9CXq7GGvUPu3NyDusupRnqIeG4+t9lmXFQt2LfENe
+	 qkjHqU8eEEbDycgFCceM2OoYqhGhkSMMEIRUb5pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/567] rseq: Clarify rseq registration rseq_size bound check comment
-Date: Mon, 23 Mar 2026 14:38:48 +0100
-Message-ID: <20260323134533.958431024@linuxfoundation.org>
+Subject: [PATCH 6.6 009/567] scsi: ufs: core: Move link recovery for hibern8 exit failure to wl_resume
+Date: Mon, 23 Mar 2026 14:38:49 +0100
+Message-ID: <20260323134533.985192808@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -66,31 +67,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228458-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228459-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 34F422F5004
+X-Rspamd-Queue-Id: 9E7F32F54E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,41 +99,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 26d43a90be81fc90e26688a51d3ec83188602731 ]
+[ Upstream commit 62c015373e1cdb1cdca824bd2dbce2dac0819467 ]
 
-The rseq registration validates that the rseq_size argument is greater
-or equal to 32 (the original rseq size), but the comment associated with
-this check does not clearly state this.
+Move the link recovery trigger from ufshcd_uic_pwr_ctrl() to
+__ufshcd_wl_resume(). Ensure link recovery is only attempted when hibern8
+exit fails during resume, not during hibern8 enter in suspend. Improve
+error handling and prevent unnecessary link recovery attempts.
 
-Clarify the comment to that effect.
-
-Fixes: ee3e3ac05c26 ("rseq: Introduce extensible rseq ABI")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260220200642.1317826-2-mathieu.desnoyers@efficios.com
+Fixes: 35dabf4503b9 ("scsi: ufs: core: Use link recovery when h8 exit fails during runtime resume")
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223103906.2533654-1-peter.wang@mediatek.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rseq.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index 810005f927d7c..e6ee81dd1e457 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -432,8 +432,9 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
- 	 * auxiliary vector AT_RSEQ_ALIGN. If rseq_len is the original rseq
- 	 * size, the required alignment is the original struct rseq alignment.
- 	 *
--	 * In order to be valid, rseq_len is either the original rseq size, or
--	 * large enough to contain all supported fields, as communicated to
-+	 * The rseq_len is required to be greater or equal to the original rseq
-+	 * size. In order to be valid, rseq_len is either the original rseq size,
-+	 * or large enough to contain all supported fields, as communicated to
- 	 * user-space through the ELF auxiliary vector AT_RSEQ_FEATURE_SIZE.
- 	 */
- 	if (rseq_len < ORIG_RSEQ_SIZE ||
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 808b648e1f388..0b74ef63e6721 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4289,14 +4289,6 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+ 	mutex_unlock(&hba->uic_cmd_mutex);
+ 
+-	/*
+-	 * If the h8 exit fails during the runtime resume process, it becomes
+-	 * stuck and cannot be recovered through the error handler.  To fix
+-	 * this, use link recovery instead of the error handler.
+-	 */
+-	if (ret && hba->pm_op_in_progress)
+-		ret = ufshcd_link_recovery(hba);
+-
+ 	return ret;
+ }
+ 
+@@ -10016,7 +10008,15 @@ static int __ufshcd_wl_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 		} else {
+ 			dev_err(hba->dev, "%s: hibern8 exit failed %d\n",
+ 					__func__, ret);
+-			goto vendor_suspend;
++			/*
++			 * If the h8 exit fails during the runtime resume
++			 * process, it becomes stuck and cannot be recovered
++			 * through the error handler. To fix this, use link
++			 * recovery instead of the error handler.
++			 */
++			ret = ufshcd_link_recovery(hba);
++			if (ret)
++				goto vendor_suspend;
+ 		}
+ 	} else if (ufshcd_is_link_off(hba)) {
+ 		/*
 -- 
 2.51.0
 
