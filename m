@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-228343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GZ2AlJSwWn+SAQAu9opvQ
-	(envelope-from <stable+bounces-228343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:42 +0100
+	id QFZ7JRxewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F702F52C8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DD02F6915
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27389322096F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E7835308A06B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E361C3B6342;
-	Mon, 23 Mar 2026 14:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC743B19B8;
+	Mon, 23 Mar 2026 15:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX3ZSy5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPnczLwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B0736F414;
-	Mon, 23 Mar 2026 14:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADF3B0AE2;
+	Mon, 23 Mar 2026 15:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274863; cv=none; b=DpsbGzy8AnXvpqMwKXI8BFyoRTlT7pp9hqhK/ZtJX5oRZoC/Bj4/H0iy//+uFIC/eLoGt6aYWByPvx3/5Ri8rA03mxj2szWqScGO8IIbBIqONTzdqd0EGxvtLyIlSRpcB5AFKCWlakauRt0M+ZefgTGHFupxg8ZaqV/x5JCcFKk=
+	t=1774278844; cv=none; b=OAbjBZ0d9lUryy/jWtHtPVhemgADi3Mgx8JTBxXyttQEMfwxgMn+HvBAwQW8ZRHniDni+xyUiC4/hKQrAy3eL2HV49dvi6Mf5JDrNftPpUYfACXmnrwIrwPHD6+4FqsQP/dqnGUcIjlB2Vau7qF4+ymvD32Hcbk3qX6hle7RYQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274863; c=relaxed/simple;
-	bh=Y9hnJvaRUzAx89XnlU56jfqrV6/f4Xhv7HcVCnDcbHs=;
+	s=arc-20240116; t=1774278844; c=relaxed/simple;
+	bh=+5Aqn9ru7qfiHkYJaSnmhWSw7PAlElXSHFFeHRBexhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZSllIuQTc+bleGEQd/bYcvS3O/TgrELJB0AgBUQBhvQ2j4mGNJ1bctQ1pVprxRGUSbp3U31+TwQ83R2NbFBEU4WQHs9X5NkziTGor4Q5d/xfcS/ekxUJsImTbCuQScufH2XlRPklTNPbqFxGNkrCNy7lJbJeCI61vH0ZLADKNws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX3ZSy5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20686C4CEF7;
-	Mon, 23 Mar 2026 14:07:42 +0000 (UTC)
+	 MIME-Version; b=OvEMHcbSWoCYaFyi4u7w3v+GX9hq7zI51260ADEKYYHsOwtsOQO/Nza9AOhkn5/Igb/9vrj3/2cVSIzvlGGtsX9DuSjWIetHn0Y/63lf9cGXK8sWJguCXK4eQwp8PMmDKW+6yz0js+Bx/gea9HW9a/Ob6t+CQPV9e0ArzerqjFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPnczLwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCCCC2BCB1;
+	Mon, 23 Mar 2026 15:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274863;
-	bh=Y9hnJvaRUzAx89XnlU56jfqrV6/f4Xhv7HcVCnDcbHs=;
+	s=korg; t=1774278844;
+	bh=+5Aqn9ru7qfiHkYJaSnmhWSw7PAlElXSHFFeHRBexhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HX3ZSy5DBR1WgsiK7N5gqIkAt64QGHBVNXf8xEiCZtgS/FamNFSgoCJJgQ9bzT+TU
-	 VotsYj8ovUCggafhzMdJ4IPizRvIfMdZKNq9BXXHZhp34pRdTUVko2Lv5kb5wXInMZ
-	 zxM9iNNj76p1Ww9VZTW3r/uiQDcpWJa4AyfRdLKQ=
+	b=HPnczLwlUhmH+E5irKJZaX9378uZ9VcFZGJaLzrbCqHResNL4cbT/eUb++Yh0c5o7
+	 DlOWd+d4o8+IokpadBwUeHSrwTGKA+OLLXGs4uzcCCDEgIOT9FO6tKiNKxxGgmcEJW
+	 MyvlwWNPfpyXFM7gwjaYUXbXmOBIf/wXVFRJ78So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 136/212] netfilter: nf_conntrack_h323: fix OOB read in decode_int() CONS case
+	"edumazet@google.com, kuniyu@google.com, kuba@kernel.org, dsahern@kernel.org, netdev@vger.kernel.org, Ruohan Lan" <ruohanlan@aliyun.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 6.6 437/567] net: dst: introduce dst->dev_rcu
 Date: Mon, 23 Mar 2026 14:45:57 +0100
-Message-ID: <20260323134508.067301563@linuxfoundation.org>
+Message-ID: <20260323134544.765373628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +65,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229351-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,aliyun.com,google.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228343-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 89F702F52C8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 32DD02F6915
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1e3a3593162c96e8a8de48b1e14f60c3b57fca8a ]
+[ Upstream commit caedcc5b6df1b2e2b5f39079e3369c1d4d5c5f50 ]
 
-In decode_int(), the CONS case calls get_bits(bs, 2) to read a length
-value, then calls get_uint(bs, len) without checking that len bytes
-remain in the buffer. The existing boundary check only validates the
-2 bits for get_bits(), not the subsequent 1-4 bytes that get_uint()
-reads. This allows a malformed H.323/RAS packet to cause a 1-4 byte
-slab-out-of-bounds read.
+Followup of commit 88fe14253e18 ("net: dst: add four helpers
+to annotate data-races around dst->dev").
 
-Add a boundary check for len bytes after get_bits() and before
-get_uint().
+We want to gradually add explicit RCU protection to dst->dev,
+including lockdep support.
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add an union to alias dst->dev_rcu and dst->dev.
+
+Add dst_dev_net_rcu() helper.
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Minor context conflict resolved. ]
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/dst.h |   16 +++++++++++-----
+ net/core/dst.c    |    2 +-
+ net/ipv4/route.c  |    4 ++--
+ 3 files changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index 62aa22a078769..c972e9488e16f 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -331,6 +331,8 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
- 		if (nf_h323_error_boundary(bs, 0, 2))
- 			return H323_ERROR_BOUND;
- 		len = get_bits(bs, 2) + 1;
-+		if (nf_h323_error_boundary(bs, len, 0))
-+			return H323_ERROR_BOUND;
- 		BYTE_ALIGN(bs);
- 		if (base && (f->attr & DECODE)) {	/* timeToLive */
- 			unsigned int v = get_uint(bs, len) + f->lb;
--- 
-2.51.0
-
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -24,7 +24,10 @@
+ struct sk_buff;
+ 
+ struct dst_entry {
+-	struct net_device       *dev;
++	union {
++		struct net_device       *dev;
++		struct net_device __rcu *dev_rcu;
++	};
+ 	struct  dst_ops	        *ops;
+ 	unsigned long		_metrics;
+ 	unsigned long           expires;
+@@ -571,9 +574,12 @@ static inline void skb_dst_update_pmtu_n
+ 
+ static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
+ {
+-	/* In the future, use rcu_dereference(dst->dev) */
+-	WARN_ON_ONCE(!rcu_read_lock_held());
+-	return READ_ONCE(dst->dev);
++	return rcu_dereference(dst->dev_rcu);
++}
++
++static inline struct net *dst_dev_net_rcu(const struct dst_entry *dst)
++{
++	return dev_net_rcu(dst_dev_rcu(dst));
+ }
+ 
+ static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
+@@ -598,7 +604,7 @@ static inline struct net *skb_dst_dev_ne
+ 
+ static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
+ {
+-	return dev_net_rcu(skb_dst_dev(skb));
++	return dev_net_rcu(skb_dst_dev_rcu(skb));
+ }
+ 
+ struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -153,7 +153,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 		dst->ops->ifdown(dst, dev);
+ 	WRITE_ONCE(dst->input, dst_discard);
+ 	WRITE_ONCE(dst->output, dst_discard_out);
+-	WRITE_ONCE(dst->dev, blackhole_netdev);
++	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+ 			   GFP_ATOMIC);
+ }
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1042,7 +1042,7 @@ static void __ip_rt_update_pmtu(struct r
+ 		return;
+ 
+ 	rcu_read_lock();
+-	net = dev_net_rcu(dst->dev);
++	net = dst_dev_net_rcu(dst);
+ 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+ 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+@@ -1340,7 +1340,7 @@ static unsigned int ipv4_default_advmss(
+ 	struct net *net;
+ 
+ 	rcu_read_lock();
+-	net = dev_net_rcu(dst->dev);
++	net = dst_dev_net_rcu(dst);
+ 	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
+ 				   net->ipv4.ip_rt_min_advmss);
+ 	rcu_read_unlock();
 
 
 
