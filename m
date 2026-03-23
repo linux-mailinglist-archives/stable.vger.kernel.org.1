@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILQRJL1LwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:37 +0100
+	id +LTuE3pXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4702F4252
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8602F5D87
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 359A0300862E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC50E3047CAC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF69E1A680D;
-	Mon, 23 Mar 2026 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39DB25CC40;
+	Mon, 23 Mar 2026 15:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA101lB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXKd0nAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93965823DD;
-	Mon, 23 Mar 2026 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7587D25B2F4;
+	Mon, 23 Mar 2026 15:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275500; cv=none; b=ZMOgGs/ZlS83YxvE3dbk6+pSy3VG6Qodrreiwni2O30OnxsAzHz5xUd7ouAxyfqD4onN6ZkpvsxymWBC0NGuQwUvZSbUJQBouDfMrR4wpZgaMTByLCadhvlTI51p3pwhABHV7lgFJZ7pb4nKbjLH+2PLIaBmqTDLm3fK1xnEvEg=
+	t=1774278094; cv=none; b=cs6U8tOiHQn5BNJDqM967J571L750tMqcWxoi1oyjT5PGzqGUCDBrY9L9AutgAWW0f5bZngw3ftryiCboP907/bc21nlKu2YPJbCunMaDVK6MxJ4Td1j+kgRKLGQWi/TsHdLw0atwzKvGrtvgCfIBgaeP4PcKWlbaA2ItfmNqk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275500; c=relaxed/simple;
-	bh=DsQ/gYTnYDiLc7pAIfDtQls7mgyOamb4XgEgqvSJBT4=;
+	s=arc-20240116; t=1774278094; c=relaxed/simple;
+	bh=pxxNd374d8sP7s9PG82LvmpH8AqiFl1Z9SUnPN95idQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUd5YEXQwPxooc5/aXLxsOnNrRixTKuIxy3H7DCGr+nHmxTb0NEDk66jNE29RzBqK6d20kYLvDty+yiqmKnROiHLoVqLVnN3EGXd3LFJkWtUNveqLB7E9VnldaGrr/JF602UILCJLCmNG588xl02kuKtgScr95zLTD655b8L0Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA101lB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A9CC4CEF7;
-	Mon, 23 Mar 2026 14:18:19 +0000 (UTC)
+	 MIME-Version; b=sTJ1HE2k8PmIMnlaaSkfP3cbBKlqEjaCV0/M9EGwzY2h75r2h+XapA03SCAuzgHJcsvUzGigFS9zmvmkqNdv3DiR24ENgOG9F9IY6yCkN4Xf6gOk+GOclJuTCltKSHh5o1MWgofC60eVpt1hAkPKIiZmKnCwr/QzGFjkWjV3y6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXKd0nAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6A7C4CEF7;
+	Mon, 23 Mar 2026 15:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275500;
-	bh=DsQ/gYTnYDiLc7pAIfDtQls7mgyOamb4XgEgqvSJBT4=;
+	s=korg; t=1774278094;
+	bh=pxxNd374d8sP7s9PG82LvmpH8AqiFl1Z9SUnPN95idQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iA101lB3TmPhG8g9GUx5AovLFaHEYflOuGTIwIBOh0JEpmTNlGm3emG+Vz5eU+ckZ
-	 HKBAEMvjpjhA9xhpIMEBeazAxboSJB8uDkFw2U3VEfwXUE8IJsB84VfVTWgyjLyjHN
-	 s1PpGGXl+Mu5iFvAWD454Kq09XIxYDLtb3TXSAXA=
+	b=FXKd0nAvmUXinUVoh/Lsv/lC0IufAGENlHDX5n6xOQkZcwzRTUP/E9kOODMuNCS0I
+	 1u6NGf9osthMPlsbcI2HXGhG6wIy+HFsb99TG5322fDi6mB76HHrMO0tTcyhI03Exp
+	 Y2KKrIWjh5e80sIhPh7AX+s9wQfGN20Cy419MvZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 124/460] kprobes: avoid crash when rmmod/insmod after ftrace killed
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 200/567] scsi: mpi3mr: Add NULL checks when resetting request and reply queues
 Date: Mon, 23 Mar 2026 14:42:00 +0100
-Message-ID: <20260323134529.666448793@linuxfoundation.org>
+Message-ID: <20260323134538.795087982@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228578-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229111-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,76 +90,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7A4702F4252
+X-Rspamd-Queue-Id: 1E8602F5D87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit e113f0b46d19626ec15388bcb91432c9a4fd6261 upstream.
+[ Upstream commit fa96392ebebc8fade2b878acb14cce0f71016503 ]
 
-After we hit ftrace is killed by some errors, the kernel crash if
-we remove modules in which kprobe probes.
+The driver encountered a crash during resource cleanup when the reply and
+request queues were NULL due to freed memory.  This issue occurred when the
+creation of reply or request queues failed, and the driver freed the memory
+first, but attempted to mem set the content of the freed memory, leading to
+a system crash.
 
-BUG: unable to handle page fault for address: fffffbfff805000d
-PGD 817fcc067 P4D 817fcc067 PUD 817fc8067 PMD 101555067 PTE 0
-Oops: Oops: 0000 [#1] SMP KASAN PTI
-CPU: 4 UID: 0 PID: 2012 Comm: rmmod Tainted: G        W  OE
-Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-RIP: 0010:kprobes_module_callback+0x89/0x790
-RSP: 0018:ffff88812e157d30 EFLAGS: 00010a02
-RAX: 1ffffffff805000d RBX: dffffc0000000000 RCX: ffffffff86a8de90
-RDX: ffffed1025c2af9b RSI: 0000000000000008 RDI: ffffffffc0280068
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed1025c2af9a
-R10: ffff88812e157cd7 R11: 205d323130325420 R12: 0000000000000002
-R13: ffffffffc0290488 R14: 0000000000000002 R15: ffffffffc0280040
-FS:  00007fbc450dd740(0000) GS:ffff888420331000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffffbfff805000d CR3: 000000010f624000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- notifier_call_chain+0xc6/0x280
- blocking_notifier_call_chain+0x60/0x90
- __do_sys_delete_module.constprop.0+0x32a/0x4e0
- do_syscall_64+0x5d/0xfa0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Add NULL pointer checks for reply and request queues before accessing the
+reply/request memory during cleanup
 
-This is because the kprobe on ftrace does not correctly handles
-the kprobe_ftrace_disabled flag set by ftrace_kill().
-
-To prevent this error, check kprobe_ftrace_disabled in
-__disarm_kprobe_ftrace() and skip all ftrace related operations.
-
-Link: https://lore.kernel.org/all/176473947565.1727781.13110060700668331950.stgit@mhiramat.tok.corp.google.com/
-
-Reported-by: Ye Bin <yebin10@huawei.com>
-Closes: https://lore.kernel.org/all/20251125020536.2484381-1-yebin@huaweicloud.com/
-Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://patch.msgid.link/20260212070026.30263-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kprobes.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 34 ++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1113,6 +1113,10 @@ static int __disarm_kprobe_ftrace(struct
- 	int ret;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index b6ae7ba6de523..b742ece3f0507 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -4262,21 +4262,25 @@ void mpi3mr_memset_buffers(struct mpi3mr_ioc *mrioc)
+ 	}
  
- 	lockdep_assert_held(&kprobe_mutex);
-+	if (unlikely(kprobe_ftrace_disabled)) {
-+		/* Now ftrace is disabled forever, disarm is already done. */
-+		return 0;
-+	}
+ 	for (i = 0; i < mrioc->num_queues; i++) {
+-		mrioc->op_reply_qinfo[i].qid = 0;
+-		mrioc->op_reply_qinfo[i].ci = 0;
+-		mrioc->op_reply_qinfo[i].num_replies = 0;
+-		mrioc->op_reply_qinfo[i].ephase = 0;
+-		atomic_set(&mrioc->op_reply_qinfo[i].pend_ios, 0);
+-		atomic_set(&mrioc->op_reply_qinfo[i].in_use, 0);
+-		mpi3mr_memset_op_reply_q_buffers(mrioc, i);
+-
+-		mrioc->req_qinfo[i].ci = 0;
+-		mrioc->req_qinfo[i].pi = 0;
+-		mrioc->req_qinfo[i].num_requests = 0;
+-		mrioc->req_qinfo[i].qid = 0;
+-		mrioc->req_qinfo[i].reply_qid = 0;
+-		spin_lock_init(&mrioc->req_qinfo[i].q_lock);
+-		mpi3mr_memset_op_req_q_buffers(mrioc, i);
++		if (mrioc->op_reply_qinfo) {
++			mrioc->op_reply_qinfo[i].qid = 0;
++			mrioc->op_reply_qinfo[i].ci = 0;
++			mrioc->op_reply_qinfo[i].num_replies = 0;
++			mrioc->op_reply_qinfo[i].ephase = 0;
++			atomic_set(&mrioc->op_reply_qinfo[i].pend_ios, 0);
++			atomic_set(&mrioc->op_reply_qinfo[i].in_use, 0);
++			mpi3mr_memset_op_reply_q_buffers(mrioc, i);
++		}
++
++		if (mrioc->req_qinfo) {
++			mrioc->req_qinfo[i].ci = 0;
++			mrioc->req_qinfo[i].pi = 0;
++			mrioc->req_qinfo[i].num_requests = 0;
++			mrioc->req_qinfo[i].qid = 0;
++			mrioc->req_qinfo[i].reply_qid = 0;
++			spin_lock_init(&mrioc->req_qinfo[i].q_lock);
++			mpi3mr_memset_op_req_q_buffers(mrioc, i);
++		}
+ 	}
  
- 	if (*cnt == 1) {
- 		ret = unregister_ftrace_function(ops);
+ 	atomic_set(&mrioc->pend_large_data_sz, 0);
+-- 
+2.51.0
+
 
 
 
