@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNtWLepvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:58 +0100
+	id uIGkEklQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588D22F8FD8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 010F12F4E44
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A3972312FE1D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08263317D993
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297EC3B38A5;
-	Mon, 23 Mar 2026 16:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634943AEF28;
+	Mon, 23 Mar 2026 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9IWzK/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZoA/ZX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6AA3AD539;
-	Mon, 23 Mar 2026 16:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C06397E84;
+	Mon, 23 Mar 2026 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282232; cv=none; b=Ll8t1n3I4cmcqEllw6ymn6OIqpQQ+6Xx+Ed+NXlmKKOtnDOixBv45e10zfFsN6k0x0plf6z+l13BS5i5u0KtPbBRf1JGz33mMncPveFwXTpUDeSeqMLWN1pGm6u/YyaXE4/drhsgY+Dg+UzqlXy78zkNZSzYjfD4SFX5vyG3VLc=
+	t=1774275344; cv=none; b=OaOC2G6MNEnmCfkrhI+BIewrXSOLX5dsxC5r+swKqL7PZtPfWxIx/fZ5k8hd9nbCueyXHbHxQ3Q4jaS5dw/i4kG6lFQqNcLJvcBTCRXYJLxefv/vMyqB1Kznr9d26RDENjs2BGGwdGUKr6WGnMMqd4K0GEl+5SY4Gg0m10SQn0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282232; c=relaxed/simple;
-	bh=4LsuLS/68Qzl1/47SgTvh7kYerdgq6S2zd1B20pQ6QY=;
+	s=arc-20240116; t=1774275344; c=relaxed/simple;
+	bh=u0Hpa0Ovr0wD/qwPUcpc1W0kKAbCSL34P5dRjMxjHG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNSr8AC9UyzUb9Ep4Ue8Q4WR+Dihd93I+8wraeRxIe34A1A/STkPEnFyvamoCbJ/FMYo6c5Wz/7Z5wqX6XFmaC2DwgIAYluqfc+cxNX1YQ7mxm5ITgj5t7dwNHb47zsuNV3xR8dZzPfuTaTBW79OjYWk6je+LMUt4wCPYFwzkqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9IWzK/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35816C4CEF7;
-	Mon, 23 Mar 2026 16:10:32 +0000 (UTC)
+	 MIME-Version; b=OxtbWCZBoKrgNj4ctya7tewPoZ6xUjIjDTMoG1qjFwXdcJbOf3jqEXXJtK2V1BS7wqpRoq9zTm85RFrmAxkRdPWuA/yNasrOYseVGx/1898bBdJHRbEQTV6DgzBm+z4t+RLu4qj6Rlh2sQ/f18QOvu3l2Nr6RsKIuBl6dty/m80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZoA/ZX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE56BC4CEF7;
+	Mon, 23 Mar 2026 14:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282232;
-	bh=4LsuLS/68Qzl1/47SgTvh7kYerdgq6S2zd1B20pQ6QY=;
+	s=korg; t=1774275344;
+	bh=u0Hpa0Ovr0wD/qwPUcpc1W0kKAbCSL34P5dRjMxjHG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9IWzK/pp+S1T4ZgKENq1rOC2Caa5H6EVyYxTfNVeotCXNYETHzC9ja75ED2FVIMm
-	 2bUvWB82RNNhu2Q/P67b9q2ib0+oDT0ltRVyKYs04C70PLlU8GmW30d4mMUXv/vXYH
-	 cO+cpPcJ5S1WCO4QS9m5oHPJnfHXL7Qony4kAezk=
+	b=eZoA/ZX6CN5kTbJnK9T/K9rVRaX2JhGKgyPe7tbfs2DjKJA3aEfL9brKjNn1nytY0
+	 6EZFYKSL/MVPx6zCzgPnxWA0QNTxaWLyBT/GFgnbNA9/Mg4Vpi5jUMuzI3AmRyQmT2
+	 3Yq6e6Z8oasnkr+QgzBiifKcOU93tAzTzj+vK1ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 079/481] x86/efi: defer freeing of boot services memory
+	David Dull <monderasdor@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/460] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
 Date: Mon, 23 Mar 2026 14:41:01 +0100
-Message-ID: <20260323134527.156656516@linuxfoundation.org>
+Message-ID: <20260323134528.303452383@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,219 +67,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229553-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228518-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 588D22F8FD8
+X-Rspamd-Queue-Id: 010F12F4E44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit a4b0bf6a40f3c107c67a24fbc614510ef5719980 upstream.
+[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
 
-efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
+entry from the queue data structures, taking ownership of the entry.
+For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
+attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
+present but NFQA_VLAN_TCI missing), the function returns immediately
+without freeing the dequeued entry or its sk_buff.
 
-There are two issue with that: memblock_free_late() should be used for
-memory allocated with memblock_alloc() while the memory reserved with
-memblock_reserve() should be freed with free_reserved_area().
+This leaks the nf_queue_entry, its associated sk_buff, and all held
+references (net_device refcounts, struct net refcount).  Repeated
+triggering exhausts kernel memory.
 
-More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-efi_free_boot_services() is called before deferred initialization of the
-memory map is complete.
+Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
+on the error path, consistent with other error handling in this file.
 
-Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-RAM on EC2 t3a.nano instances which only have 512MB or RAM.
-
-If the freed memory resides in the areas that memory map for them is
-still uninitialized, they won't be actually freed because
-memblock_free_late() calls memblock_free_pages() and the latter skips
-uninitialized pages.
-
-Using free_reserved_area() at this point is also problematic because
-__free_page() accesses the buddy of the freed page and that again might
-end up in uninitialized part of the memory map.
-
-Delaying the entire efi_free_boot_services() could be problematic
-because in addition to freeing boot services memory it updates
-efi.memmap without any synchronization and that's undesirable late in
-boot when there is concurrency.
-
-More robust approach is to only defer freeing of the EFI boot services
-memory.
-
-Split efi_free_boot_services() in two. First efi_unmap_boot_services()
-collects ranges that should be freed into an array then
-efi_free_boot_services() later frees them after deferred init is complete.
-
-Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
+Reviewed-by: David Dull <monderasdor@gmail.com>
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/efi.h          |    2 -
- arch/x86/platform/efi/efi.c         |    2 -
- arch/x86/platform/efi/quirks.c      |   55 ++++++++++++++++++++++++++++++++++--
- drivers/firmware/efi/mokvar-table.c |    2 -
- 4 files changed, 55 insertions(+), 6 deletions(-)
+ net/netfilter/nfnetlink_queue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -162,7 +162,7 @@ extern void __init efi_apply_memmap_quir
- extern int __init efi_reuse_config(u64 tables, int nr_tables);
- extern void efi_delete_dummy_variable(void);
- extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
--extern void efi_free_boot_services(void);
-+extern void efi_unmap_boot_services(void);
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index af35dbc19864a..df0232cf24ce2 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -1547,8 +1547,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
  
- void efi_enter_mm(void);
- void efi_leave_mm(void);
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -811,7 +811,7 @@ static void __init __efi_enter_virtual_m
+ 	if (entry->state.pf == PF_BRIDGE) {
+ 		err = nfqa_parse_bridge(entry, nfqa);
+-		if (err < 0)
++		if (err < 0) {
++			nfqnl_reinject(entry, NF_DROP);
+ 			return err;
++		}
  	}
  
- 	efi_check_for_embedded_firmwares();
--	efi_free_boot_services();
-+	efi_unmap_boot_services();
- 
- 	if (!efi_is_mixed())
- 		efi_native_runtime_setup();
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -333,7 +333,7 @@ void __init efi_reserve_boot_services(vo
- 
- 		/*
- 		 * Because the following memblock_reserve() is paired
--		 * with memblock_free_late() for this region in
-+		 * with free_reserved_area() for this region in
- 		 * efi_free_boot_services(), we must be extremely
- 		 * careful not to reserve, and subsequently free,
- 		 * critical regions of memory (like the kernel image) or
-@@ -396,17 +396,33 @@ static void __init efi_unmap_pages(efi_m
- 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
- }
- 
--void __init efi_free_boot_services(void)
-+struct efi_freeable_range {
-+	u64 start;
-+	u64 end;
-+};
-+
-+static struct efi_freeable_range *ranges_to_free;
-+
-+void __init efi_unmap_boot_services(void)
- {
- 	struct efi_memory_map_data data = { 0 };
- 	efi_memory_desc_t *md;
- 	int num_entries = 0;
-+	int idx = 0;
-+	size_t sz;
- 	void *new, *new_md;
- 
- 	/* Keep all regions for /sys/kernel/debug/efi */
- 	if (efi_enabled(EFI_DBG))
- 		return;
- 
-+	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-+	if (!ranges_to_free) {
-+		pr_err("Failed to allocate storage for freeable EFI regions\n");
-+		return;
-+	}
-+
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-@@ -463,7 +479,15 @@ void __init efi_free_boot_services(void)
- 			start = SZ_1M;
- 		}
- 
--		memblock_free_late(start, size);
-+		/*
-+		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-+		 * map are still not initialized and we can't reliably free
-+		 * memory here.
-+		 * Queue the ranges to free at a later point.
-+		 */
-+		ranges_to_free[idx].start = start;
-+		ranges_to_free[idx].end = start + size;
-+		idx++;
- 	}
- 
- 	if (!num_entries)
-@@ -504,6 +528,31 @@ void __init efi_free_boot_services(void)
- 	}
- }
- 
-+static int __init efi_free_boot_services(void)
-+{
-+	struct efi_freeable_range *range = ranges_to_free;
-+	unsigned long freed = 0;
-+
-+	if (!ranges_to_free)
-+		return 0;
-+
-+	while (range->start) {
-+		void *start = phys_to_virt(range->start);
-+		void *end = phys_to_virt(range->end);
-+
-+		free_reserved_area(start, end, -1, NULL);
-+		freed += (end - start);
-+		range++;
-+	}
-+	kfree(ranges_to_free);
-+
-+	if (freed)
-+		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-+
-+	return 0;
-+}
-+arch_initcall(efi_free_boot_services);
-+
- /*
-  * A number of config table entries get remapped to virtual addresses
-  * after entering EFI virtual mode. However, the kexec kernel requires
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
-  * as an alternative to ordinary EFI variables, due to platform-dependent
-  * limitations. The memory occupied by this table is marked as reserved.
-  *
-- * This routine must be called before efi_free_boot_services() in order
-+ * This routine must be called before efi_unmap_boot_services() in order
-  * to guarantee that it can mark the table as reserved.
-  *
-  * Implicit inputs:
+ 	if (nfqa[NFQA_PAYLOAD]) {
+-- 
+2.51.0
+
 
 
 
