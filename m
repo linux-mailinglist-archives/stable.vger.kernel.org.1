@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-228650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNjiJz1QwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:49 +0100
+	id UIqrLt1wwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D34C2F4E27
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500B32F92B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5A41305F1A8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B51830CE328
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267F73AC0C8;
-	Mon, 23 Mar 2026 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA066388377;
+	Mon, 23 Mar 2026 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wdko7SCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f45S1kCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5AF39A055;
-	Mon, 23 Mar 2026 14:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC152282F3A;
+	Mon, 23 Mar 2026 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275713; cv=none; b=U/VViOssx0/LVWMm2+BnW0ajjrth3V0m/EtvOfuiYs1o15EfBebMdMSuaqjOXqzK3DGeV1EIjxpL5Gf1+YTmq9/l3KPN9zweeVq+hrQY86suyrhJrvmPrmmUGw6YDzUPpphrKld3gu8D8WeimG7MOlsguE7go/hpSmMzha6qUVU=
+	t=1774282461; cv=none; b=gDqc/YUweN72t3GNsMASL4cRyDCv2bYp3VvB0jzrO+4sNGiHkt1cDXe7T4R2/x0vF8Bz6iJ8lj8DTeYj6nNT7D0qGBiAlvDzHQyED+r/EPgcs0Sg/4rcJagIVZOdgBS4CqdHNHu685C/txrx4ElOcuamyU6zkss6guz2DjtI3Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275713; c=relaxed/simple;
-	bh=nhqbnu3Tu4+VVirKM33P1zrlKposTo0360b1GJdLkpI=;
+	s=arc-20240116; t=1774282461; c=relaxed/simple;
+	bh=GvmIR1Y3zDzx4lKioTQUYLe7ycAbXux+5m81fr8Lu0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdMH+NHvE0+vjBnibQiFzJH/gyn5y04/cJElH2hTmPJtWn4NyaXrDYE88sFbMnzHooL/OErIssjQf3tTBuZjGr+kroJju0LX/0smGOrrk0geAekrc1/kMldeo3RM5MFlnUaib2pbiCQdj2uIbnAdjRf5sLBBNiilpHKV6Zddmzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wdko7SCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53544C2BCB3;
-	Mon, 23 Mar 2026 14:21:53 +0000 (UTC)
+	 MIME-Version; b=Ybv3Wl8cXlC2bqfZIdzlMHjsEbyGC3UcNIecw5z8yAsMHi/1lPmyE4iH2EgRPQhOM/3jwSIJIu3A4YQPaXnliN3+xjsQR7x2IxbF/6eQZKfG6LB7TPKGPuIvg8uoLtG9t79DmW2NsiCHTsmpGVPZ9eLTPo3x4wHJCW1yT1YBdFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f45S1kCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FD3C4CEF7;
+	Mon, 23 Mar 2026 16:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275713;
-	bh=nhqbnu3Tu4+VVirKM33P1zrlKposTo0360b1GJdLkpI=;
+	s=korg; t=1774282461;
+	bh=GvmIR1Y3zDzx4lKioTQUYLe7ycAbXux+5m81fr8Lu0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wdko7SCUKUalOVwW4BIwQ7d9TgMWH77Cgr/ot0zUHi29AFDD6t+FFV152Ee3gkpYL
-	 C1TaQD6IfkHyljrbikmL7AX0H10V4zrctT+1J8GeNhbUXPp0KYT37TNaNiTim01HLP
-	 1kjyctCTm6xHQplmUEqviom7rXlcNJpxzUbvcNWs=
+	b=f45S1kCqoRvEjWFDTBQ9PjwCGMIpq4I8IYjyOI7xzX2AP5ELku6v7qMxZ4jiMIAkE
+	 RLBu6fzBf3RzfPOLvRcQNM13flFs8PAA12h++YV2M8AYLDAl4fwq9xKCKziglQNTZI
+	 I/YIDIWgI0ZQMbzAv8ZhddpZYqqrm296SRjwyeO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 150/460] ice: reintroduce retry mechanism for indirect AQ
-Date: Mon, 23 Mar 2026 14:42:26 +0100
-Message-ID: <20260323134530.261249030@linuxfoundation.org>
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 165/481] net/mlx5: Fix deadlock between devlink lock and esw->wq
+Date: Mon, 23 Mar 2026 14:42:27 +0100
+Message-ID: <20260323134529.250211632@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,104 +73,182 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4D34C2F4E27
+X-Rspamd-Queue-Id: 500B32F92B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-commit 326256c0a72d4877cec1d4df85357da106233128 upstream.
+[ Upstream commit aed763abf0e905b4b8d747d1ba9e172961572f57 ]
 
-Add retry mechanism for indirect Admin Queue (AQ) commands. To do so we
-need to keep the command buffer.
+esw->work_queue executes esw_functions_changed_event_handler ->
+esw_vfs_changed_event_handler and acquires the devlink lock.
 
-This technically reverts commit 43a630e37e25
-("ice: remove unused buffer copy code in ice_sq_send_cmd_retry()"),
-but combines it with a fix in the logic by using a kmemdup() call,
-making it more robust and less likely to break in the future due to
-programmer error.
+.eswitch_mode_set (acquires devlink lock in devlink_nl_pre_doit) ->
+mlx5_devlink_eswitch_mode_set -> mlx5_eswitch_disable_locked ->
+mlx5_eswitch_event_handler_unregister -> flush_workqueue deadlocks
+when esw_vfs_changed_event_handler executes.
 
-Cc: Michal Schmidt <mschmidt@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: 3056df93f7a8 ("ice: Re-send some AQ commands, as result of EBUSY AQ error")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by no longer flushing the work to avoid the deadlock, and using
+a generation counter to keep track of work relevance. This avoids an old
+handler manipulating an esw that has undergone one or more mode changes:
+- the counter is incremented in mlx5_eswitch_event_handler_unregister.
+- the counter is read and passed to the ephemeral mlx5_host_work struct.
+- the work handler takes the devlink lock and bails out if the current
+  generation is different than the one it was scheduled to operate on.
+- mlx5_eswitch_cleanup does the final draining before destroying the wq.
+
+No longer flushing the workqueue has the side effect of maybe no longer
+cancelling pending vport_change_handler work items, but that's ok since
+those are disabled elsewhere:
+- mlx5_eswitch_disable_locked disables the vport eq notifier.
+- mlx5_esw_vport_disable disarms the HW EQ notification and marks
+  vport->enabled under state_lock to false to prevent pending vport
+  handler from doing anything.
+- mlx5_eswitch_cleanup destroys the workqueue and makes sure all events
+  are disabled/finished.
+
+Fixes: f1bc646c9a06 ("net/mlx5: Use devl_ API in mlx5_esw_offloads_devlink_port_register")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260305081019.1811100-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c  |  7 ++++---
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h  |  2 ++
+ .../mellanox/mlx5/core/eswitch_offloads.c      | 18 +++++++++++++-----
+ 3 files changed, 19 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1579,6 +1579,7 @@ ice_sq_send_cmd_retry(struct ice_hw *hw,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 3255af4313a29..8b2b78f05cbe7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -999,10 +999,11 @@ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
+ 
+ static void mlx5_eswitch_event_handler_unregister(struct mlx5_eswitch *esw)
  {
- 	struct ice_aq_desc desc_cpy;
- 	bool is_cmd_for_retry;
-+	u8 *buf_cpy = NULL;
- 	u8 idx = 0;
- 	u16 opcode;
- 	int status;
-@@ -1588,8 +1589,11 @@ ice_sq_send_cmd_retry(struct ice_hw *hw,
- 	memset(&desc_cpy, 0, sizeof(desc_cpy));
- 
- 	if (is_cmd_for_retry) {
--		/* All retryable cmds are direct, without buf. */
--		WARN_ON(buf);
-+		if (buf) {
-+			buf_cpy = kmemdup(buf, buf_size, GFP_KERNEL);
-+			if (!buf_cpy)
-+				return -ENOMEM;
-+		}
- 
- 		memcpy(&desc_cpy, desc, sizeof(desc_cpy));
- 	}
-@@ -1601,12 +1605,14 @@ ice_sq_send_cmd_retry(struct ice_hw *hw,
- 		    hw->adminq.sq_last_status != ICE_AQ_RC_EBUSY)
- 			break;
- 
-+		if (buf_cpy)
-+			memcpy(buf, buf_cpy, buf_size);
- 		memcpy(desc, &desc_cpy, sizeof(desc_cpy));
+-	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev))
++	if (esw->mode == MLX5_ESWITCH_OFFLOADS &&
++	    mlx5_eswitch_is_funcs_handler(esw->dev)) {
+ 		mlx5_eq_notifier_unregister(esw->dev, &esw->esw_funcs.nb);
 -
- 		msleep(ICE_SQ_SEND_DELAY_TIME_MS);
- 
- 	} while (++idx < ICE_SQ_SEND_MAX_EXECUTE);
- 
-+	kfree(buf_cpy);
- 	return status;
+-	flush_workqueue(esw->work_queue);
++		atomic_inc(&esw->esw_funcs.generation);
++	}
  }
  
+ static void mlx5_eswitch_clear_vf_vports_info(struct mlx5_eswitch *esw)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index ff20b43a551de..00d169a11a0a8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -275,10 +275,12 @@ struct esw_mc_addr { /* SRIOV only */
+ struct mlx5_host_work {
+ 	struct work_struct	work;
+ 	struct mlx5_eswitch	*esw;
++	int			work_gen;
+ };
+ 
+ struct mlx5_esw_functions {
+ 	struct mlx5_nb		nb;
++	atomic_t		generation;
+ 	bool			host_funcs_disabled;
+ 	u16			num_vfs;
+ };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index f7f1eae998b5e..2a64d0fd2fe52 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3207,22 +3207,28 @@ static void esw_offloads_steering_cleanup(struct mlx5_eswitch *esw)
+ }
+ 
+ static void
+-esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
++esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, int work_gen,
++			      const u32 *out)
+ {
+ 	struct devlink *devlink;
+ 	bool host_pf_disabled;
+ 	u16 new_num_vfs;
+ 
++	devlink = priv_to_devlink(esw->dev);
++	devl_lock(devlink);
++
++	/* Stale work from one or more mode changes ago. Bail out. */
++	if (work_gen != atomic_read(&esw->esw_funcs.generation))
++		goto unlock;
++
+ 	new_num_vfs = MLX5_GET(query_esw_functions_out, out,
+ 			       host_params_context.host_num_of_vfs);
+ 	host_pf_disabled = MLX5_GET(query_esw_functions_out, out,
+ 				    host_params_context.host_pf_disabled);
+ 
+ 	if (new_num_vfs == esw->esw_funcs.num_vfs || host_pf_disabled)
+-		return;
++		goto unlock;
+ 
+-	devlink = priv_to_devlink(esw->dev);
+-	devl_lock(devlink);
+ 	/* Number of VFs can only change from "0 to x" or "x to 0". */
+ 	if (esw->esw_funcs.num_vfs > 0) {
+ 		mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
+@@ -3237,6 +3243,7 @@ esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
+ 		}
+ 	}
+ 	esw->esw_funcs.num_vfs = new_num_vfs;
++unlock:
+ 	devl_unlock(devlink);
+ }
+ 
+@@ -3253,7 +3260,7 @@ static void esw_functions_changed_event_handler(struct work_struct *work)
+ 	if (IS_ERR(out))
+ 		goto out;
+ 
+-	esw_vfs_changed_event_handler(esw, out);
++	esw_vfs_changed_event_handler(esw, host_work->work_gen, out);
+ 	kvfree(out);
+ out:
+ 	kfree(host_work);
+@@ -3273,6 +3280,7 @@ int mlx5_esw_funcs_changed_handler(struct notifier_block *nb, unsigned long type
+ 	esw = container_of(esw_funcs, struct mlx5_eswitch, esw_funcs);
+ 
+ 	host_work->esw = esw;
++	host_work->work_gen = atomic_read(&esw_funcs->generation);
+ 
+ 	INIT_WORK(&host_work->work, esw_functions_changed_event_handler);
+ 	queue_work(esw->work_queue, &host_work->work);
+-- 
+2.51.0
+
 
 
 
