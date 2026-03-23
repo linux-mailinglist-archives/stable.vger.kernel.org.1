@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ss5XAHFUwWlXSQQAu9opvQ
-	(envelope-from <stable+bounces-228643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:45 +0100
+	id eHKJHWl8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0652F5736
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 016CF2FA606
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE99F31BA45E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2ABB33241913
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8B1399004;
-	Mon, 23 Mar 2026 14:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0E33B9D9D;
+	Mon, 23 Mar 2026 16:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq7imgeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6gkF0YC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2A63A0B0B;
-	Mon, 23 Mar 2026 14:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F163BC69A;
+	Mon, 23 Mar 2026 16:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275696; cv=none; b=JEIwojjD3fBTrHECyN+wwFwhgFuH18CmZb+Z5FGRsydR9yXEnGraTpTB+Fz7t14AcvCHs+vQ7iMvEUj7hifu8PMi5jxUPfeaXEkFinAJIftLApQt5Blk5wqYevpTeaErqz74sAdgfOfIm/8qYJ2TQA23geM072Sj7m2zQXnHARg=
+	t=1774282550; cv=none; b=aWKwyuJ7N6W1x9Bh8MtK1wpAuuw2FkrobYd/HEHVW8GnohjNJ7ve5hsYZRvK6DmDFqWfg1Oncz2UVMCaCIOFPsCtaPXqA1XMKJ5PXenjB4CHMmDujK//YIgoP1/3f/Vt5nmL0Qc1IIcjJMR84InqAJDvGJe1pKWxU1Y9gQM8f84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275696; c=relaxed/simple;
-	bh=RAXID0L/3OqCdyVH26A/rMPx0eft2eRjiWNFza+V46E=;
+	s=arc-20240116; t=1774282550; c=relaxed/simple;
+	bh=lcrAle0FifurQSLntd8Qz4ZkRUtDSUoukH/2pophNww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxRF05jhorP5ZthY7O/cIrNxcyQLEd/ZM9J+DFHswf/DNju/dnzwKxCMMEGmjl8MwOIPWCzwsvtFwosLWf9bufkcU4/B5Zcmd9sImsRqM5siqL3HnXrZaRwAyRM4Zv0xOnhOfdAWkkq5RgpaYgapZunC78gVQa27BLu2kaBC820=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq7imgeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B925FC4CEF7;
-	Mon, 23 Mar 2026 14:21:35 +0000 (UTC)
+	 MIME-Version; b=uSjvUvjODj5VvUT2ebFO/V2jXW3om3NKRsZf8gYlh4ds/J2Yj61J31Gg4RIvochBKBVTqkJkg8g78ijo7q70+4ZfZN2lOPw5H9emRJF8c/w5kG4M3vsqzDYGRDODZgRZWtqxTjp9vZHwWhcbRCHxbGg9g5TGyhUj3weigW0sruA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6gkF0YC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF68CC4CEF7;
+	Mon, 23 Mar 2026 16:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275696;
-	bh=RAXID0L/3OqCdyVH26A/rMPx0eft2eRjiWNFza+V46E=;
+	s=korg; t=1774282550;
+	bh=lcrAle0FifurQSLntd8Qz4ZkRUtDSUoukH/2pophNww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jq7imgeLlISe9PJ+HFBJZTNhiOrYsW2K3vNJcTRNpzobQzbEojkTTg83Nd9HtxuMi
-	 Os5fhkIJvKqHAdI451kOvAh/EvCcl5+QGVuE8hGMZ4NXhjzn9dtijezrZVi1HDORt7
-	 eow0/BRmxV+SSo+4xNuJvLdn9QlsyIBtV9ors/m4=
+	b=w6gkF0YC8ST5C22epc86ovxDlkYIdsxGPWo/d9/Z3IrdUP2OaonnAKMcV0s8li1sz
+	 cdNrUqUV70hr4MrBYcWqylkYL4p+2SWPL+SmyZtTk6tqt5bxLXZ6DTMB7f+P6YUIYD
+	 eupSItvGFjzGlz2lW3+M8PKmeqtjgxJxr7JAYjAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koen Vandeputte <koen.vandeputte@citymesh.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Laurent Vivier <lvivier@redhat.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 185/460] qmi_wwan: allow max_mtu above hard_mtu to control rx_urb_size
+Subject: [PATCH 6.1 199/481] net: usb: lan78xx: fix silent drop of packets with checksum errors
 Date: Mon, 23 Mar 2026 14:43:01 +0100
-Message-ID: <20260323134531.096455334@linuxfoundation.org>
+Message-ID: <20260323134530.031970356@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +67,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228643-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,citymesh.com,gmail.com,redhat.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229670-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5F0652F5736
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 016CF2FA606
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 55f854dd5bdd8e19b936a00ef1f8d776ac32c7b0 upstream.
+commit e4f774a0cc955ce762aec91c66915a6e15087ab7 upstream.
 
-Commit c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
-capped net->max_mtu to the device's hard_mtu in usbnet_probe(). While
-this correctly prevents oversized packets on standard USB network
-devices, it breaks the qmi_wwan driver.
+Do not drop packets with checksum errors at the USB driver level;
+pass them to the network stack.
 
-qmi_wwan relies on userspace (e.g. ModemManager) setting a large MTU on
-the wwan0 interface to configure rx_urb_size via usbnet_change_mtu().
-QMI modems negotiate USB transfer sizes of 16,383 or 32,767 bytes, and
-the USB receive buffers must be sized accordingly. With max_mtu capped
-to hard_mtu (~1500 bytes), userspace can no longer raise the MTU, the
-receive buffers remain small, and download speeds drop from >300 Mbps
-to ~0.8 Mbps.
+Previously, the driver dropped all packets where the 'Receive Error
+Detected' (RED) bit was set, regardless of the specific error type. This
+caused packets with only IP or TCP/UDP checksum errors to be dropped
+before reaching the kernel, preventing the network stack from accounting
+for them or performing software fallback.
 
-Introduce a FLAG_NOMAXMTU driver flag that allows individual usbnet
-drivers to opt out of the max_mtu cap. Set this flag in qmi_wwan's
-driver_info structures to restore the previous behavior for QMI devices,
-while keeping the safety fix in place for all other usbnet drivers.
+Add a mask for hard hardware errors to safely drop genuinely corrupt
+frames, while allowing checksum-errored frames to pass with their
+ip_summed field explicitly set to CHECKSUM_NONE.
 
-Fixes: c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
+Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/CAPh3n803k8JcBPV5qEzUB-oKzWkAs-D5CU7z=Vd_nLRCr5ZqQg@mail.gmail.com/
-Reported-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
-Tested-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Link: https://patch.msgid.link/20260304134338.1785002-1-lvivier@redhat.com
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260305143429.530909-2-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/qmi_wwan.c |    4 ++--
- drivers/net/usb/usbnet.c   |    7 ++++---
- include/linux/usb/usbnet.h |    1 +
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/usb/lan78xx.c |    4 +++-
+ drivers/net/usb/lan78xx.h |    3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -928,7 +928,7 @@ err:
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -3537,6 +3537,7 @@ static void lan78xx_rx_csum_offload(stru
+ 	 */
+ 	if (!(dev->net->features & NETIF_F_RXCSUM) ||
+ 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
++	    unlikely(rx_cmd_a & RX_CMD_A_CSE_MASK_) ||
+ 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
+ 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
+ 		skb->ip_summed = CHECKSUM_NONE;
+@@ -3609,7 +3610,8 @@ static int lan78xx_rx(struct lan78xx_net
+ 			return 0;
+ 		}
  
- static const struct driver_info	qmi_wwan_info = {
- 	.description	= "WWAN/QMI device",
--	.flags		= FLAG_WWAN | FLAG_SEND_ZLP,
-+	.flags		= FLAG_WWAN | FLAG_NOMAXMTU | FLAG_SEND_ZLP,
- 	.bind		= qmi_wwan_bind,
- 	.unbind		= qmi_wwan_unbind,
- 	.manage_power	= qmi_wwan_manage_power,
-@@ -937,7 +937,7 @@ static const struct driver_info	qmi_wwan
+-		if (unlikely(rx_cmd_a & RX_CMD_A_RED_)) {
++		if (unlikely(rx_cmd_a & RX_CMD_A_RED_) &&
++		    (rx_cmd_a & RX_CMD_A_RX_HARD_ERRS_MASK_)) {
+ 			netif_dbg(dev, rx_err, dev->net,
+ 				  "Error rx_cmd_a=0x%08x", rx_cmd_a);
+ 		} else {
+--- a/drivers/net/usb/lan78xx.h
++++ b/drivers/net/usb/lan78xx.h
+@@ -74,6 +74,9 @@
+ #define RX_CMD_A_ICSM_			(0x00004000)
+ #define RX_CMD_A_LEN_MASK_		(0x00003FFF)
  
- static const struct driver_info	qmi_wwan_info_quirk_dtr = {
- 	.description	= "WWAN/QMI device",
--	.flags		= FLAG_WWAN | FLAG_SEND_ZLP,
-+	.flags		= FLAG_WWAN | FLAG_NOMAXMTU | FLAG_SEND_ZLP,
- 	.bind		= qmi_wwan_bind,
- 	.unbind		= qmi_wwan_unbind,
- 	.manage_power	= qmi_wwan_manage_power,
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1797,11 +1797,12 @@ usbnet_probe (struct usb_interface *udev
- 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
- 			net->flags |= IFF_NOARP;
- 
--		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
-+		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
-+		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
- 			net->max_mtu = dev->hard_mtu - net->hard_header_len;
- 
--		if (net->mtu > net->max_mtu)
--			net->mtu = net->max_mtu;
-+		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
-+			net->mtu = dev->hard_mtu - net->hard_header_len;
- 
- 	} else if (!info->in || !info->out)
- 		status = usbnet_get_endpoints (dev, udev);
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -130,6 +130,7 @@ struct driver_info {
- #define FLAG_MULTI_PACKET	0x2000
- #define FLAG_RX_ASSEMBLE	0x4000	/* rx packets may span >1 frames */
- #define FLAG_NOARP		0x8000	/* device can't do ARP */
-+#define FLAG_NOMAXMTU		0x10000	/* allow max_mtu above hard_mtu */
- 
- 	/* init device ... can sleep, or cause probe() failure */
- 	int	(*bind)(struct usbnet *, struct usb_interface *);
++#define RX_CMD_A_RX_HARD_ERRS_MASK_ \
++	(RX_CMD_A_RX_ERRS_MASK_ & ~RX_CMD_A_CSE_MASK_)
++
+ /* Rx Command B */
+ #define RX_CMD_B_CSUM_SHIFT_		(16)
+ #define RX_CMD_B_CSUM_MASK_		(0xFFFF0000)
 
 
 
