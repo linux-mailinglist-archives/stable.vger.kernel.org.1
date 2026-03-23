@@ -1,54 +1,106 @@
-Return-Path: <stable+bounces-227972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHB0IW07wWn2RgQAu9opvQ
-	(envelope-from <stable+bounces-227972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:01 +0100
+	id GHdMJNs5wWm7RQQAu9opvQ
+	(envelope-from <stable+bounces-227973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F722F2899
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2F12F265C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 096B0307BF0D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:00:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EDEA30117C0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6625145948;
-	Mon, 23 Mar 2026 13:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43651ACED5;
+	Mon, 23 Mar 2026 13:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvJVoDvi"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="V3bBWxCA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="v462ggz/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAD7286A4
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79E21B983F;
+	Mon, 23 Mar 2026 13:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774270822; cv=none; b=fDiag/CZlLLHZFfvnWy+t8Nrxqvg6/Albo8R5Z78bRD9gYOf9hJdXTELCA4K5vwzGVKLgP/uxUaISwCe02mD+hxAUk6R6G7h1jOZtDX1XawLhb/9Sjn6STKLHoirNu+y49109xPT6xxb0a6K6m1L7n7kYHM/WwZWsT7cab8+kuY=
+	t=1774270931; cv=none; b=FFcpr271ArpeyAd16HWeU4Z+Uz3ltn2r/IjhtOjpmyVPT/BNCGF8vWY5gTSDxSWUO+jqzycHAXSloBLlB9raBvXPfcEliG43A5REh91YH95zpDZWDlum1z3kZD/zyX6u7RDribgbhD5XX0INiVnaJR6N+bpDe+u7xHvwjiO7mgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774270822; c=relaxed/simple;
-	bh=NiDhwM7+uj+ZCcIpQ1Vu0ykSSlBJ19E/FGMRyVej0rY=;
+	s=arc-20240116; t=1774270931; c=relaxed/simple;
+	bh=6/E9/MhBVS2AhC7OkD/9Lcjir86nfpvxA37exMYYIew=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bqJrwHZrKVDPnrWjov6Cq4U8b2SaOVBTFK/YckYKg9eiCh97/TciV8hYj3Ms/U7YrXF//TLseWqkhkh09LqC0cZUHJcYm/asC31O8BAAsa24AI9dxCN77BNHg2sJjb0E2djBhOT3Wy/6xl4sW4Hb8udigym9wyqioMpWnGZlqkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvJVoDvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA01C4CEF7;
-	Mon, 23 Mar 2026 13:00:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774270821;
-	bh=NiDhwM7+uj+ZCcIpQ1Vu0ykSSlBJ19E/FGMRyVej0rY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VvJVoDvidVotVU1K4aRMuVX1HRLAF9gN8IIyhafkmizBrnxIWkuIzBRL1LlAY3hXD
-	 vt6F2Za7zZrjtzTPKi5W8AYHvg66zrisfC8e3Acw9HfuM7VG7A2v46F5EdIhiYgDhl
-	 4F4n01YdLtuFfc//BSpyc5+wS71V7/0xrWjqv2ok=
-Date: Mon, 23 Mar 2026 13:59:59 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=X1pfFJqArO82CGW4oh3GQH9U9joH5djRFYlCccBlKve+ONlN9W7+FAgWUG3zRgF8VCwWBw21jBO2nm+ApQehsVBcKjYktojaWamUOKBEoIJHNfihCgj+fpemWFcxRMb9eVMjGLxzmIAPQ48bRl/OqJ8Zh1oH81POGrnWDG+YO3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=V3bBWxCA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=v462ggz/; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 79BC61D001BA;
+	Mon, 23 Mar 2026 09:02:08 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 23 Mar 2026 09:02:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1774270928; x=1774357328; bh=6/E9/MhBVS
+	2AhC7OkD/9Lcjir86nfpvxA37exMYYIew=; b=V3bBWxCA4f8iqYkbXExSk5r0A5
+	IZ38tWXdF7hMpIDyGoutCoBxqwuOQyD/js8Yf/tAytpX6mHBRQ3VFMK7wg5rv/+j
+	hIye/mDdaBWSESHqf6wiVoJW4FJNCo3Aax4NsqeAuCcuS70ESy2+uO5omDEE7AD9
+	RfZGj2XHpWI/F0Jda6hZMu7cvzz9B32mGLb132vNac77ihRh96eSmPNjX+nDVaSu
+	c7bEA6La4EXpUZTa8/0Fa+aY9SFNji3gOg7lrVwVV+iM+GZ8qkqgqR9SVasQOgtw
+	UG2MrTVdOT5gMBci/8syUC/74Zju3QIZVHMciwENMHXLoZJOmypfg8O9ZfIQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774270928; x=1774357328; bh=6/E9/MhBVS2AhC7OkD/9Lcjir86nfpvxA37
+	exMYYIew=; b=v462ggz/ALoURPRbW/ZvmeZfG7rkUuWP/u/9UExiZtfa4YCMXtY
+	13sOgvlzSSvE0JJlbHaISYnxAdpbMEMaty9c8ZMx3lTbLDiAJtwMwgRr8Q8hkihg
+	RHnwoR3LfnAOgBft0QXlvEUSjX2TfGPi2453Iy1QEVedlDRAV7P5aYjzEUivRSI5
+	xtKiNF3WHW/W/Q1vxQq+Ibq5x7i905/e3DvLW14bH7/esfXreXgPtDPAffrusL80
+	eIalpmm/Vozh6WUkviq97NdarNwb1x0O1aW/6ekqGuMumfaaNmRikI7Gjgk5eNga
+	Ld/SQJsAXvkJY8z83hWPRFOfPGVKLeWB2zA==
+X-ME-Sender: <xms:zznBaY8rrMuZ_AonA5cRGX2nhbtmwoMAS37QRZ7CaWcBxxU-5xgQnA>
+    <xme:zznBaXycoFGRXnJGGR0S8Jdg5X4b3ZtIiU85BnyeQ3wdflhrYJ4g3nf4SZnQ-XC0e
+    axDee5ZbiGZMHW1uh4_r-fU-dFWDbb8sbzv02xjsRa7DPowjw>
+X-ME-Received: <xmr:zznBaVsqFOJs-PqUi8bxqJv_ok1ZoxteQEQtgfeNDVTnPGC-XXIT78U5gdEh>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudekjeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepghhhrgguihdrrhgrhhhmvgestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhope
+    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsfhhrvghn
+    tghhsehsrghmsggrrdhorhhgpdhrtghpthhtohepphgtsegtjhhrrdhniidprhgtphhtth
+    hopehlshgrhhhlsggvrhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshhprhgrshgr
+    ugesmhhitghrohhsohhfthdrtghomhdprhgtphhtthhopehtohhmsehtrghlphgvhidrtg
+    homhdprhgtphhtthhopegrrghpthgvlhesshhushgvrdgtohhmpdhrtghpthhtoheplhhi
+    nhhugidqtghifhhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:zznBae1-liClJARwPuhICmD3-qFtJrDEEgVtR_vNv_hMXyqpndFWGQ>
+    <xmx:zznBaZ4GUx3bxv7O0yD_1Ra7V4hkM1rMEePWYvafeM3KSY3ZnDClGg>
+    <xmx:zznBaYN2xc9pUjCYc9IacA95d1HoxDRm7MmLEXVktmKWeBkLE-SKKw>
+    <xmx:zznBaVEsgFWJjmeSxM_ywu19F42OKailwfTGwrHFu2hLLv8yyro2Xg>
+    <xmx:0DnBabBQzA_jtcFRiElfEmw4d2uF1EsJaN0a0yE-vV_107ivUpxPV8O6>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Mar 2026 09:02:07 -0400 (EDT)
+Date: Mon, 23 Mar 2026 14:01:46 +0100
+From: Greg KH <greg@kroah.com>
 To: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on
+Cc: stable@vger.kernel.org, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@cjr.nz>, Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Aurelien Aptel <aaptel@suse.com>, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: Re: [PATCH v2 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on
  session connection failure
-Message-ID: <2026032355-portfolio-corral-c5de@gregkh>
-References: <20260303173139.517020-1-ghadi.rahme@canonical.com>
+Message-ID: <2026032339-irate-monsoon-76ce@gregkh>
+References: <20260319144929.455978-1-ghadi.rahme@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,61 +109,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303173139.517020-1-ghadi.rahme@canonical.com>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <20260319144929.455978-1-ghadi.rahme@canonical.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-227972-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227973-lists,stable=lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[messagingengine.com:server fail];
+	MISSING_XM_UA(0.00)[];
+	SEM_URIBL_UNKNOWN_FAIL(0.00)[messagingengine.com:query timed out,kroah.com:query timed out];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E0F722F2899
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[kroah.com:query timed out,messagingengine.com:query timed out];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 0A2F12F265C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 03, 2026 at 07:31:39PM +0200, Ghadi Elie Rahme wrote:
+On Thu, Mar 19, 2026 at 04:49:29PM +0200, Ghadi Elie Rahme wrote:
 > [ Upstream commit 6916881f443f67f6893b504fa2171468c8aed915 ]
 
-No, that is NOT what this commit id is.
+Again, wrong git id :(
 
-> It is possible for find_ipc_from_server_path to run while the tcon is NULL,
-> resulting in a NULL pointer dereference crash when calling strcasecmp().
-> This happens when the ipc connection fails freeing the tcon and setting it
-> to NULL while the dfs cache worker thread was already executing.
-> This issue was fixed upstream indirectly by a rewrite that removed this
-> function. Although with this fix the issue can still occur, the window of
-> the race is now much narrower.
-> A fix that would completely fix it using mutexes was tested and
-> worked fine. However the regression potential would be much higher and so
-> would be the deviation from upstream.
-> This is a good balance of safety while minimizing upstream deviation.
-
-No, please use the upstream commits instead.  Also, you did not cc: any
-of the maintainers or developers involved here, which would mean we
-couldn't take this anyway.
-
-sorry.
-
-greg k-h
 
