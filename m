@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGrLNy1rwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-228986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:32:45 +0100
+	id sEQxL1NTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8C82F848D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:32:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C5E2F54CB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1FE331106AE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:54:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 003F132D849D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886D637E30F;
-	Mon, 23 Mar 2026 14:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222043AF66E;
+	Mon, 23 Mar 2026 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfPXOBzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deKSggnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B20B2D9ECB;
-	Mon, 23 Mar 2026 14:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F8D39890A;
+	Mon, 23 Mar 2026 14:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277697; cv=none; b=AcCfHrfCMDNDwWFwyk75vciBc+l0ifK0JRFj3cQt0+CPBHSRzs3HLD9YXHh8Ce/KG8RDYq258zKLh7X9W4tU7K2jgL/XXHvTJmMabtOumyrS6nMW4YjSQGBExjfef2xEc+MG1AcRLf7KwkdNOk251sBNPpUldK+y4vZSOSfPF+c=
+	t=1774275175; cv=none; b=tmp0esZis5MAiVyE89BWtqbpy6Zi+7MkkkeafPbIx5nUHwiqWwUgA3IgVtPnzb4y/LCcsYAIl30ZKo9Ghh0BYYJzM5pKRTx9ZMKels9Sq2lTn6TWQraLoVwfAlE4h01a12VcrxlkueL1OSv5IuCrfJfXRa2M2QADPvMcU88BMlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277697; c=relaxed/simple;
-	bh=SFbVg+rxA/BVF4kX3itQ7wHB5SU9BaZSFYt78vTo5V0=;
+	s=arc-20240116; t=1774275175; c=relaxed/simple;
+	bh=+9rvgksqrulQA1lJK47xtIOEnGyI2al/ncIkay1FIOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7FNKYLWfgk4yKRLxSP0wyiToqmdZX45T3za7KNZ9TmHurSizilBzE0YZm7nVCULNDWzYace0cfcDT2UV9ImIxDILnh4kx9ehyJKBnnJzyHmXwDqXxufXrvc1FjTVDyPg3c5GYWBDUHlhdc+hdj6yaBnZGsc5MpBdXH4KG6Gp5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfPXOBzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C493FC4CEF7;
-	Mon, 23 Mar 2026 14:54:56 +0000 (UTC)
+	 MIME-Version; b=YgbWzWhxoady2LPrBl+YkDuqcIJrKkxQ/DSK6SVgLcQPKXZdzfHCi7L/c5yio7w200/4EUp/z1OmCEEdEi7wdxoRO3K6bp5KqaL/j47slXZgMvCx8UW5Qm51IesBMP9an3gtGHskSlXV5wDpwpINXyAPtQBVQijuCce8fcWbpl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deKSggnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B43C4CEF7;
+	Mon, 23 Mar 2026 14:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277697;
-	bh=SFbVg+rxA/BVF4kX3itQ7wHB5SU9BaZSFYt78vTo5V0=;
+	s=korg; t=1774275175;
+	bh=+9rvgksqrulQA1lJK47xtIOEnGyI2al/ncIkay1FIOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfPXOBzjWichBY9xr6Kb6kiyoKp/aHpuY+Mx0pd6mn4aKc7P25RmMuex57NFkGFSO
-	 jn5auGcqMJ9pASFij+fREoRHtp1M45f5F+E8XxRvTVa5QwxLC+MncLWk/Li7Ngk62d
-	 8uueccTvOcxd5afuftX99AZsmbMQF8q3PeZpVNus=
+	b=deKSggnF58a+wwXMH0Ddv6+B3FIXrFpiUM2claecbSx1eYCcbYNYu3BGRo9xOrilv
+	 sSVcydEEgy7RoV9RNG9iyG388XWVfQ5q5CgXb0A7xPA4kqTPaQWEcHpJks9437JU9Y
+	 vkHqW5nDzsLsnpkiu0IiUXdaU7u7W9vjlKmb6AmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Lee Jones <lee@kernel.org>,
+	Simond Hu <cmdhh1767@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/567] mfd: omap-usb-host: Fix OF populate on driver rebind
+Subject: [PATCH 6.1 012/481] perf: Fix __perf_event_overflow() vs perf_remove_from_context() race
 Date: Mon, 23 Mar 2026 14:39:54 +0100
-Message-ID: <20260323134535.660848541@linuxfoundation.org>
+Message-ID: <20260323134525.550958983@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +66,149 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228986-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228453-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,infradead.org,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,kemnade.info:email]
-X-Rspamd-Queue-Id: 4D8C82F848D
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 47C5E2F54CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 24804ba508a3e240501c521685a1c4eb9f574f8e ]
+[ Upstream commit c9bc1753b3cc41d0e01fbca7f035258b5f4db0ae ]
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+Make sure that __perf_event_overflow() runs with IRQs disabled for all
+possible callchains. Specifically the software events can end up running
+it with only preemption disabled.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+This opens up a race vs perf_event_exit_event() and friends that will go
+and free various things the overflow path expects to be present, like
+the BPF program.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://patch.msgid.link/20251219110714.23919-1-johan@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 592903cdcbf6 ("perf_counter: add an event_list")
+Reported-by: Simond Hu <cmdhh1767@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Simond Hu <cmdhh1767@gmail.com>
+Link: https://patch.msgid.link/20260224122909.GV1395416@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/omap-usb-host.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 42 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index ebc62033db169..e3aae10295a15 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -820,8 +820,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 4d7bf0536348f..146b37e97832a 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9507,6 +9507,13 @@ int perf_event_overflow(struct perf_event *event,
+ 			struct perf_sample_data *data,
+ 			struct pt_regs *regs)
  {
- 	pm_runtime_disable(&pdev->dev);
- 
--	/* remove children */
--	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-+	if (pdev->dev.of_node)
-+		of_platform_depopulate(&pdev->dev);
-+	else
-+		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
++	/*
++	 * Entry point from hardware PMI, interrupts should be disabled here.
++	 * This serializes us against perf_event_remove_from_context() in
++	 * things like perf_event_release_kernel().
++	 */
++	lockdep_assert_irqs_disabled();
++
+ 	return __perf_event_overflow(event, 1, data, regs);
  }
  
- static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
+@@ -9587,6 +9594,19 @@ static void perf_swevent_event(struct perf_event *event, u64 nr,
+ {
+ 	struct hw_perf_event *hwc = &event->hw;
+ 
++	/*
++	 * This is:
++	 *   - software		preempt
++	 *   - tracepoint	preempt
++	 *   -   tp_target_task	irq (ctx->lock)
++	 *   - uprobes		preempt/irq
++	 *   - kprobes		preempt/irq
++	 *   - hw_breakpoint	irq
++	 *
++	 * Any of these are sufficient to hold off RCU and thus ensure @event
++	 * exists.
++	 */
++	lockdep_assert_preemption_disabled();
+ 	local64_add(nr, &event->count);
+ 
+ 	if (!regs)
+@@ -9595,6 +9615,16 @@ static void perf_swevent_event(struct perf_event *event, u64 nr,
+ 	if (!is_sampling_event(event))
+ 		return;
+ 
++	/*
++	 * Serialize against event_function_call() IPIs like normal overflow
++	 * event handling. Specifically, must not allow
++	 * perf_event_release_kernel() -> perf_remove_from_context() to make
++	 * progress and 'release' the event from under us.
++	 */
++	guard(irqsave)();
++	if (event->state != PERF_EVENT_STATE_ACTIVE)
++		return;
++
+ 	if ((event->attr.sample_type & PERF_SAMPLE_PERIOD) && !event->attr.freq) {
+ 		data->period = nr;
+ 		return perf_swevent_overflow(event, 1, data, regs);
+@@ -10011,6 +10041,11 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
+ 	struct perf_sample_data data;
+ 	struct perf_event *event;
+ 
++	/*
++	 * Per being a tracepoint, this runs with preemption disabled.
++	 */
++	lockdep_assert_preemption_disabled();
++
+ 	struct perf_raw_record raw = {
+ 		.frag = {
+ 			.size = entry_size,
+@@ -10472,6 +10507,11 @@ void perf_bp_event(struct perf_event *bp, void *data)
+ 	struct perf_sample_data sample;
+ 	struct pt_regs *regs = data;
+ 
++	/*
++	 * Exception context, will have interrupts disabled.
++	 */
++	lockdep_assert_irqs_disabled();
++
+ 	perf_sample_data_init(&sample, bp->attr.bp_addr, 0);
+ 
+ 	if (!bp->hw.state && !perf_exclude_event(bp, regs))
+@@ -10924,7 +10964,7 @@ static enum hrtimer_restart perf_swevent_hrtimer(struct hrtimer *hrtimer)
+ 
+ 	if (regs && !perf_exclude_event(event, regs)) {
+ 		if (!(event->attr.exclude_idle && is_idle_task(current)))
+-			if (__perf_event_overflow(event, 1, &data, regs))
++			if (perf_event_overflow(event, &data, regs))
+ 				ret = HRTIMER_NORESTART;
+ 	}
+ 
 -- 
 2.51.0
 
