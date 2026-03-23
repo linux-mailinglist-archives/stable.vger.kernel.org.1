@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228516-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ON2QGAlswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:25 +0100
+	id YJ+YCENNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228516-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78202F8697
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9762F46BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48B8231FB0D9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ED4023072BA7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7A25782D;
-	Mon, 23 Mar 2026 15:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBF03AE706;
+	Mon, 23 Mar 2026 14:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sp1MFV6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0nx1VZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA77253B58;
-	Mon, 23 Mar 2026 15:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D002343D2;
+	Mon, 23 Mar 2026 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278069; cv=none; b=XZaioer1nqOLtwClQUOI+WXj2MbwjT0d6MX9gbbHh/FBgmqAkY2sLaoFWYyi1gjDPRNkJaPFsvFBq6HA503k0O0mDnuk30PIkyfuQN7XKpNVaYq0DoAJfDM/Kh587CtPZfRzglPKock9OH/Snasl6YdR1WSZU+U+4N3MtVh/ARk=
+	t=1774275338; cv=none; b=nn5UiapBVGShyaKtr+zaxmTID7vrC3htZYPJAYzXPtBpyZyBjDGpYZYXloPyTkkFCqT6EHZgUssduqRDfiZpap8Bo/mzLKwNZ03eGRxJHkrQZGGhisTSDaDtUFCz3uASMmVCjNwPdBOqN2GdmxqXDWZQB2PDKtHykfJv0x4Y+zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278069; c=relaxed/simple;
-	bh=RytHEQlg0oevIlbk+4VV6ujg1mfrRsadChm6GnHdKFk=;
+	s=arc-20240116; t=1774275338; c=relaxed/simple;
+	bh=jpB9boU9+H6bLF/DcfKpocWGmujB6tAg/xfjnAEIxhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5sfhfvRHH5pdqj2pF5CXzWDCYMvyK0Tny3aIGWpom4t8QHmgTE9RakNVScg5TEDxTV3w71CddJV+RcVyOHPerzSQjI190V5l5zGn4s4HRcyc5agdRbEgddfJfKkKm4vnXpI8Wds5gOv65kPlClFaN/1mozWZ9fdsS1HDoi/ia0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sp1MFV6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B7BC2BCB5;
-	Mon, 23 Mar 2026 15:01:08 +0000 (UTC)
+	 MIME-Version; b=cgH7PI/hyEaSUaJqxSq6ydBa0B4J8r3LqQhOR9lzH2RLK5xg6WW3W3ymnnVsr4CXsR9xG5MpT089P2nGBGeBHNVxbSIIZTSzHO5eCE/6s1pMoX4UUWPfroKbqEZGXdSQEJwe3T0/RJ4t5vIX1yJFlwHLKhCpUZq4uSCJFR7SPk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0nx1VZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58175C4CEF7;
+	Mon, 23 Mar 2026 14:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278069;
-	bh=RytHEQlg0oevIlbk+4VV6ujg1mfrRsadChm6GnHdKFk=;
+	s=korg; t=1774275338;
+	bh=jpB9boU9+H6bLF/DcfKpocWGmujB6tAg/xfjnAEIxhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sp1MFV6OwbDhTu7fiRa6erZCgs+rWLWRjKKRQyLfgFgJ6woC8iuA8nDXIIFFbEsv/
-	 edDfxSgxPBbUtOg9STeUKEMKwEv63/hpgEEIRhffkr7a/Q8rwNTiP9Kb+AojWs/e+r
-	 +Z4VAcR2WYinkOM+5CmK1ZQ5HP4JCpGlBXXzO798=
+	b=o0nx1VZsT9w6UZNPgXT99b/oNm1amnpis+U63Mjyy9yZ03AfaG18shUbCXSWte9wn
+	 vcHkJ8vphdGSiMWDBXv0K71cYrxLNIh2CxPyMYzIf0T8ChhOUsDezd9wX977BPTwo2
+	 qlHZ/7kqsOyl8+RlVquWoEKDy7G2T8NswjivSDIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/567] dpaa2-switch: do not clear any interrupts automatically
+Subject: [PATCH 6.12 063/460] netfilter: nft_set_pipapo: fix stack out-of-bounds read in pipapo_drop()
 Date: Mon, 23 Mar 2026 14:40:59 +0100
-Message-ID: <20260323134537.252757937@linuxfoundation.org>
+Message-ID: <20260323134528.258422772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +66,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229103-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-228516-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B78202F8697
+X-Rspamd-Queue-Id: DC9762F46BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit f6da276479c63ca29774bc331a537b92f0550c45 ]
+[ Upstream commit d6d8cd2db236a9dd13dbc2d05843b3445cc964b5 ]
 
-The DPSW object has multiple event sources multiplexed over the same
-IRQ. The driver has the capability to configure only some of these
-events to trigger the IRQ.
+pipapo_drop() passes rulemap[i + 1].n to pipapo_unmap() as the
+to_offset argument on every iteration, including the last one where
+i == m->field_count - 1. This reads one element past the end of the
+stack-allocated rulemap array (declared as rulemap[NFT_PIPAPO_MAX_FIELDS]
+with NFT_PIPAPO_MAX_FIELDS == 16).
 
-The dpsw_get_irq_status() can clear events automatically based on the
-value stored in the 'status' variable passed to it. We don't want that
-to happen because we could get into a situation when we are clearing
-more events than we actually handled.
+Although pipapo_unmap() returns early when is_last is true without
+using the to_offset value, the argument is evaluated at the call site
+before the function body executes, making this a genuine out-of-bounds
+stack read confirmed by KASAN:
 
-Just resort to manually clearing the events that we handled. Also, since
-status is not used on the out path we remove its initialization to zero.
+  BUG: KASAN: stack-out-of-bounds in pipapo_drop+0x50c/0x57c [nf_tables]
+  Read of size 4 at addr ffff8000810e71a4
 
-This change does not have a user-visible effect because the dpaa2-switch
-driver enables and handles all the DPSW events which exist at the
-moment.
+  This frame has 1 object:
+   [32, 160) 'rulemap'
 
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 74badb9c20b1 ("dpaa2-switch: Fix interrupt storm after receiving bad if_id in IRQ handler")
+  The buggy address is at offset 164 -- exactly 4 bytes past the end
+  of the rulemap array.
+
+Pass 0 instead of rulemap[i + 1].n on the last iteration to avoid
+the out-of-bounds read.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 2631732ab2164..e44ab53448500 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1518,9 +1518,9 @@ static irqreturn_t dpaa2_switch_irq0_handler_thread(int irq_num, void *arg)
- 	struct device *dev = (struct device *)arg;
- 	struct ethsw_core *ethsw = dev_get_drvdata(dev);
- 	struct ethsw_port_priv *port_priv;
--	u32 status = ~0;
- 	int err, if_id;
- 	bool had_mac;
-+	u32 status;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index ab5045bf3e599..a2dd1212e0f0d 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1627,6 +1627,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 	int i;
  
- 	err = dpsw_get_irq_status(ethsw->mc_io, 0, ethsw->dpsw_handle,
- 				  DPSW_IRQ_INDEX_IF, &status);
-@@ -1553,12 +1553,12 @@ static irqreturn_t dpaa2_switch_irq0_handler_thread(int irq_num, void *arg)
- 			dpaa2_switch_port_connect_mac(port_priv);
- 	}
+ 	nft_pipapo_for_each_field(f, i, m) {
++		bool last = i == m->field_count - 1;
+ 		int g;
  
--out:
- 	err = dpsw_clear_irq_status(ethsw->mc_io, 0, ethsw->dpsw_handle,
- 				    DPSW_IRQ_INDEX_IF, status);
- 	if (err)
- 		dev_err(dev, "Can't clear irq status (err %d)\n", err);
+ 		for (g = 0; g < f->groups; g++) {
+@@ -1646,7 +1647,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 		}
  
-+out:
- 	return IRQ_HANDLED;
- }
- 
+ 		pipapo_unmap(f->mt, f->rules, rulemap[i].to, rulemap[i].n,
+-			     rulemap[i + 1].n, i == m->field_count - 1);
++			     last ? 0 : rulemap[i + 1].n, last);
+ 		if (pipapo_resize(f, f->rules, f->rules - rulemap[i].n)) {
+ 			/* We can ignore this, a failure to shrink tables down
+ 			 * doesn't make tables invalid.
 -- 
 2.51.0
 
