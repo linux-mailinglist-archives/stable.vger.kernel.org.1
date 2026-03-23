@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-229189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLaEGklcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:13 +0100
+	id WEFjJihvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64052F6576
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFB92F8DEA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC866324FAC2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D668D3435179
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0DF3B777F;
-	Mon, 23 Mar 2026 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A033B0AE5;
+	Mon, 23 Mar 2026 15:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hrp0nUYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFwp9STj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B7E3B47FD;
-	Mon, 23 Mar 2026 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5F63B0AD1;
+	Mon, 23 Mar 2026 15:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278341; cv=none; b=GTtMqi9tb/qXu/msdzZDciVUre6yHgY8mdA2C6vHvihmS8NL8bMIYAg5T8SZTM1htCGka/ti5BNYNHJAPNWUJmnOC7upE+6LMbK/rvSDerJTuyn2rEf/ZZDRbygf5nS2BTlWnJP8nlvLxWuQMPDnIU492KCizxW4NvQD2YjaQFI=
+	t=1774278510; cv=none; b=LpUp6ATHXCFaxpItpuDY2vrML29nmEnNYB39Rm/WOMUcbgt2HJmjbo2vbCWPLn7n8q14vP1ZfUBJhFn3wwK7PJJrIcUR69gdYsyOvLt4nObtsAmKtVqmO5w104qGdb7WgQRQQcvqFDvaJuU7GP1SL/qr614uEjqUoRLK4SB+DoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278341; c=relaxed/simple;
-	bh=4Wa2ArHuaLpPhUyMhXoj5lCTFkinANR93ZxxpBf4vJA=;
+	s=arc-20240116; t=1774278510; c=relaxed/simple;
+	bh=YEKjh+tcJ8Qa70lCPEUDfxHpLXXqJCosg31cJjSUACE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jONFQ9GN16tR/UzGBCoZz7w8OoyiaZ25hLVwEIMg/JtCkGXEYpcEdmm7OmgoJjsP2etspCuFVlhNwth77RZh3Z6j/frqi7m+yFmitNe5qoQWyg35NUVvWHIuxEomRCkPw89WS2syWZsGfdp3D60T2Bi5VAmbDrULAQpnpe/W5LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hrp0nUYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B9BC4CEF7;
-	Mon, 23 Mar 2026 15:05:40 +0000 (UTC)
+	 MIME-Version; b=SP/zwlVFkcdubWVGxmB5lZ8oSUjKpqLxKYmqRNdkSJPy9+mMyCS4Y55JBzqIkmhtE8zZ1KW6AkHa0YmpBxt2qsyW+ih9jkCntEOSJbG9Zf8/ztozX6UZI/SZKXJBNHAGbqjTKeAR1dueW4Hxa/XDePeWdEt5NxKxuDxnhLeUfHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFwp9STj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C44C4CEF7;
+	Mon, 23 Mar 2026 15:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278341;
-	bh=4Wa2ArHuaLpPhUyMhXoj5lCTFkinANR93ZxxpBf4vJA=;
+	s=korg; t=1774278509;
+	bh=YEKjh+tcJ8Qa70lCPEUDfxHpLXXqJCosg31cJjSUACE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hrp0nUYHtoqD2/fhssxtJb0E/zi8y5rcuZ0Ba4azBAJTpfWF5tqII4FJoRmxf1eRs
-	 FWmuf7rgoGX7+X2UPkYJZhIl6wAxGszmF1i2Eeox0+YZ6aXXC6MaHaMMgU1zlrLApG
-	 ITboDDidn3wB2guqlNeQadWwJLRt5SK9Oc0CIQn4=
+	b=QFwp9STjws/dzeEuGQga2YtxsSbucHOor5kR2fywmbVB+PDD7RqZUWK6o+sMV7rR+
+	 4Pvs7Zm+rwI8Q7zseh9eS8FHvElcYTWHnDn+hzsMaBk580l8b0Gilb5H4AZWAFzjDO
+	 IRI8gEtBZFTmvsJXE7s77Nw+B4peeS+4It7AaGvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 275/567] usb: dwc3: pci: add support for the Intel Nova Lake -H
-Date: Mon, 23 Mar 2026 14:43:15 +0100
-Message-ID: <20260323134540.631168379@linuxfoundation.org>
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 276/567] usb: misc: uss720: properly clean up reference in uss720_probe()
+Date: Mon, 23 Mar 2026 14:43:16 +0100
+Message-ID: <20260323134540.656587325@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -68,20 +66,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229189-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229243-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,7 +88,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B64052F6576
+X-Rspamd-Queue-Id: 2CFB92F8DEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,40 +96,34 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 17ab4d4078e22be7fd8fd6fc710c15c085a4cb1b upstream.
+commit 45dba8011efac11a2f360383221b541f5ea53ce5 upstream.
 
-This patch adds the necessary PCI ID for Intel Nova Lake -H
-devices.
+If get_1284_register() fails, the usb device reference count is
+incorrect and needs to be properly dropped before returning.  That will
+happen when the kref is dropped in the call to destroy_priv(), so jump
+to that error path instead of returning directly.
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260309130204.208661-1-heikki.krogerus@linux.intel.com
+Assisted-by: gkh_clanker_2000
+Link: https://patch.msgid.link/2026022342-smokiness-stove-d792@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/misc/uss720.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -56,6 +56,7 @@
- #define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
- #define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
- #define PCI_DEVICE_ID_INTEL_RPL			0xa70e
-+#define PCI_DEVICE_ID_INTEL_NVLH		0xd37f
- #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
- #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
- #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
-@@ -448,6 +449,7 @@ static const struct pci_device_id dwc3_p
- 	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, NVLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -733,7 +733,7 @@ static int uss720_probe(struct usb_inter
+ 	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
+ 	if (ret < 0)
+-		return ret;
++		goto probe_abort;
+ 
+ 	ret = usb_find_last_int_in_endpoint(interface, &epd);
+ 	if (!ret) {
 
 
 
