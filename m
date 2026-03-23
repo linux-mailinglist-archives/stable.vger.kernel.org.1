@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCVwBgRgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:45:08 +0100
+	id iC40AQBQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D392F6D6B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:45:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC52F4D96
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01CB53107D1B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99C29304244E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EA8280309;
-	Mon, 23 Mar 2026 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93493B2FEC;
+	Mon, 23 Mar 2026 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHz42L9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Y37RcH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782C4282F35;
-	Mon, 23 Mar 2026 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0AC3AF643;
+	Mon, 23 Mar 2026 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279441; cv=none; b=KYx44J8EhkOgpD+HieOIyoAEMWg6nTUmdCNY9B35FGf9RJftx9pf1A9gyW/LVpYFV/KSXikKlMxeeLdGjdVdj0RQJPyb7XUKPhpCOSdOBKD1Ir7akWTlAgYhXz9TnajhYdRwk+tC9OY7C3n1CyxRZCv9LPuj/FDqzRrK5nzsBvk=
+	t=1774275240; cv=none; b=kvxLiGOgYv7QnWrb9AEcLKh/L5Fpp+pg8r8EPfxYL0hL2p7nwxmTcoK4QV7JgzGezpVUzyjre3CSUk8YpQ3hYqc1LnAiKg7rAvPjcAkXXrJHTiHzgBD0JY5mIBrjlYaJ88HIvzepBHd+0cSH1myMxc6PEGUCuFPfH7qZGh6s5VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279441; c=relaxed/simple;
-	bh=idCi6IcErsNwZxJmtewD7xWULV0vxi1eh7zU5qNo78U=;
+	s=arc-20240116; t=1774275240; c=relaxed/simple;
+	bh=B94d4e+yfRBE2tWtVQWkKt2XV3FYyvWIDp6pksrLQFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZS9xrePl3OrJ+yQJi6M3GMa3GijqAnIWXchwjLPQYlaXEAeW5ghqOkeGItX9xvvT4DzYraDcnaEPFkKT1HnRHl73mGddzQ6ohG4QvJRaNcVxhetApOWBFvAn4tbMyJqCwYiASb+T/AhY/I6hUZ0B8U/iGo9g/isYfzpFNMygeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHz42L9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007EEC4CEF7;
-	Mon, 23 Mar 2026 15:24:00 +0000 (UTC)
+	 MIME-Version; b=dcc3LnDdJvNuyv/nINEk59x0paeoZZV1DQfCNwQCjsRjeQfQtS/MlPLzvZzoAhLgOATP76fCKruel8WjQ1cSo3vVzjRJ/58zcU1/W/8QETEaQO64sKVZ/t3pqMB4tOeOYSXAwlHYUMoV6M6J2Nyt/jOPv2Jb5tUsVJT2oprvQAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Y37RcH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3F7C2BCB1;
+	Mon, 23 Mar 2026 14:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279441;
-	bh=idCi6IcErsNwZxJmtewD7xWULV0vxi1eh7zU5qNo78U=;
+	s=korg; t=1774275240;
+	bh=B94d4e+yfRBE2tWtVQWkKt2XV3FYyvWIDp6pksrLQFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHz42L9ilYdKQci+Z0fxeas02x1jfvZQhZHOAY8jzvGknpdiL4WwvQoTYTAd9zpLP
-	 sFaJECHvmpKmBKZajlOSzO6LjCnKc1/Aly/x3Xlz7HBke2mNRYcXpuIu8K/S3i6WmB
-	 DislA+bYD/UQraTEpCeio3a5cZrQLyTqPxapWBQk=
+	b=2Y37RcH/4MrHOVmuezE5KD2HDXw7u6PzTl3rdy3MpKFf+2/8g2eb8w2rsrUyMlRU2
+	 0hwqMwWufhDWM54xoiW3UKyzz/IEGSnoseSqHcGTVppnNQbr3T+T2OGqpDKeb5IOZM
+	 rAmxazRgIBa0l1JQ87pRT3cw70hUF5+l6O2MSyK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Roberto Bergantinos Corpas <rbergant@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/481] bus: omap-ocp2scp: fix OF populate on driver rebind
-Date: Mon, 23 Mar 2026 14:40:20 +0100
-Message-ID: <20260323134526.163550938@linuxfoundation.org>
+Subject: [PATCH 6.12 025/460] nfs: return EISDIR on nfs3_proc_create if d_alias is a dir
+Date: Mon, 23 Mar 2026 14:40:21 +0100
+Message-ID: <20260323134527.311151796@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +68,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229503-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228478-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 86D392F6D6B
+X-Rspamd-Queue-Id: 9CDC52F4D96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Roberto Bergantinos Corpas <rbergant@redhat.com>
 
-[ Upstream commit 5eb63e9bb65d88abde647ced50fe6ad40c11de1a ]
+[ Upstream commit 410666a298c34ebd57256fde6b24c96bd23059a2 ]
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+If we found an alias through nfs3_do_create/nfs_add_or_obtain
+/d_splice_alias which happens to be a dir dentry, we don't return
+any error, and simply forget about this alias, but the original
+dentry we were adding and passed as parameter remains negative.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+This later causes an oops on nfs_atomic_open_v23/finish_open since we
+supply a negative dentry to do_dentry_open.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org      # 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251219110119.23507-1-johan@kernel.org
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+This has been observed running lustre-racer, where dirs and files are
+created/removed concurrently with the same name and O_EXCL is not
+used to open files (frequent file redirection).
+
+While d_splice_alias typically returns a directory alias or NULL, we
+explicitly check d_is_dir() to ensure that we don't attempt to perform
+file operations (like finish_open) on a directory inode, which triggers
+the observed oops.
+
+Fixes: 7c6c5249f061 ("NFS: add atomic_open for NFSv3 to handle O_TRUNC correctly.")
+Reviewed-by: Olga Kornievskaia <okorniev@redhat.com>
+Reviewed-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Roberto Bergantinos Corpas <rbergant@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/omap-ocp2scp.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ fs/nfs/nfs3proc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
-index 7d7479ba0a759..87e290a3dc817 100644
---- a/drivers/bus/omap-ocp2scp.c
-+++ b/drivers/bus/omap-ocp2scp.c
-@@ -17,15 +17,6 @@
- #define OCP2SCP_TIMING 0x18
- #define SYNC2_MASK 0xf
+diff --git a/fs/nfs/nfs3proc.c b/fs/nfs/nfs3proc.c
+index 88b0fb343ae04..b02ea9fc812da 100644
+--- a/fs/nfs/nfs3proc.c
++++ b/fs/nfs/nfs3proc.c
+@@ -393,8 +393,13 @@ nfs3_proc_create(struct inode *dir, struct dentry *dentry, struct iattr *sattr,
+ 	if (status != 0)
+ 		goto out_release_acls;
  
--static int ocp2scp_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
--
--	return 0;
--}
--
- static int omap_ocp2scp_probe(struct platform_device *pdev)
- {
- 	int ret;
-@@ -79,7 +70,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
+-	if (d_alias)
++	if (d_alias) {
++		if (d_is_dir(d_alias)) {
++			status = -EISDIR;
++			goto out_dput;
++		}
+ 		dentry = d_alias;
++	}
  
- err0:
--	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
-+	of_platform_depopulate(&pdev->dev);
- 
- 	return ret;
- }
-@@ -87,7 +78,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
- static void omap_ocp2scp_remove(struct platform_device *pdev)
- {
- 	pm_runtime_disable(&pdev->dev);
--	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
-+	of_platform_depopulate(&pdev->dev);
- }
- 
- #ifdef CONFIG_OF
+ 	/* When we created the file with exclusive semantics, make
+ 	 * sure we set the attributes afterwards. */
 -- 
 2.51.0
 
