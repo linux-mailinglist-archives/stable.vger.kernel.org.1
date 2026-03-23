@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBRHH4pdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:34 +0100
+	id cMs1BwVPwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAE82F67E3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8761B2F4B27
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60A0B310A895
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3439431324E2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E68283FE5;
-	Mon, 23 Mar 2026 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631133B19D4;
+	Mon, 23 Mar 2026 14:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXEWKJkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNXVcVgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E3263F4A;
-	Mon, 23 Mar 2026 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F8F3AD537;
+	Mon, 23 Mar 2026 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278803; cv=none; b=BhxSPdKb1yA+9xhV3BpPdL0W77hzY74qDhOB0qWgLUqXcndLisIMvUIq5j8VFhLQ80YetnjECWWl6AFjZx97RcUyivYqVKNFANoh9hDHZtG1+seku/FYxMFnk9lYh+y4nGV+1tRoamw02SinZKzCKVte0qIBimMFtFJLyeWZ3aI=
+	t=1774274969; cv=none; b=q+iOfXrRTfCll4UHRdd6Sb+4fABVacrK0/KHavjPQBsh2wCmSEur8xqWHmLRYrIVVU2gm4i0RFVucBAwGmwzOsgxAgdWjLV67KZbUrFGbudMc/uaQa7gEVN+yHiwj67RlQNPGLGza5VVPj93aOBhP+T4fgmnIDcvpz5tPxXsX2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278803; c=relaxed/simple;
-	bh=4FjBjFDNFWwJzCAEwlO9n/TP/gfSV/1PKZV7ESQ6JXg=;
+	s=arc-20240116; t=1774274969; c=relaxed/simple;
+	bh=dWe2ZvDg/T3C7C6axrgRkRJrT3vmFToQGzPF+kji2fU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4kpsPVAJn6LYTNxsKqaHD5TG/rh/nKPcvKQa9wYRanKH/ebekskQHi9yy6VLd+zr4U5fWcw4P0cJlMhM9K/NSuzc+0irufvRXtVMb4ZEfL0DGZR/UgBNIz7fRdKhSDIX/eGqN43mCL10if3SD9J+pZdaYN4Sa8K7pL9Id/3fwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXEWKJkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81436C4CEF7;
-	Mon, 23 Mar 2026 15:13:22 +0000 (UTC)
+	 MIME-Version; b=BfULpAkJ6LuWis2Nr4tIYd5vfHyZIbV+Qo2tcgRpwE7zUTL4m9CUd+zEA1FdZP10JbYAOA6IS2+SkG4LetYhAQK5parMN8mcPxwa/nDmXvaUj4twvUg6YVjWuNPvneRHTYjKRy16LeR2fMEo6K4341agqTWKwegB/pXHjhgcsjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNXVcVgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DE0C2BC9E;
+	Mon, 23 Mar 2026 14:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278802;
-	bh=4FjBjFDNFWwJzCAEwlO9n/TP/gfSV/1PKZV7ESQ6JXg=;
+	s=korg; t=1774274968;
+	bh=dWe2ZvDg/T3C7C6axrgRkRJrT3vmFToQGzPF+kji2fU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXEWKJkEK8BNHcfxist5zyQqNHNu6aYYtWe0AZC/ZQWs091jBagqXiw2gceDE+3fO
-	 YdwNKXsWuMi43ENQCAN9fyj/O2nJ1z3GOQDfyZ+5Wqk3ILzA8y8gHH7T+R2DOnqXFf
-	 BQVkxNvhRpejcJZ/r4sc8vlMhs2cqpfVI3Yb1c5A=
+	b=DNXVcVgxRhIStz3bClzq/9DGEQWc2isZ8gTiQ6QGZvZkyJLTuRN8fA82cCa716XoK
+	 d/lTPCgmHrKMBSm+xEj7Jj5biuQYzRNQvzelAsNp4At5bZX/lDpZTkYSD9pP5dXsSU
+	 KuoMv1Tku89Tx2o8Iqz4ccoYTt+kZkXNJ2qKenuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 425/567] net: gso: fix tcp fraglist segmentation after pull from frag_list
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 124/212] Bluetooth: SMP: make SM/PER/KDU/BI-04-C happy
 Date: Mon, 23 Mar 2026 14:45:45 +0100
-Message-ID: <20260323134544.406996061@linuxfoundation.org>
+Message-ID: <20260323134507.685832162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229338-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,google.com,kernel.org,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228384-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EBAE82F67E3
+X-Rspamd-Queue-Id: 8761B2F4B27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 17bd3bd82f9f79f3feba15476c2b2c95a9b11ff8 ]
+[ Upstream commit 0e4d4dcc1a6e82cc6f9abf32193558efa7e1613d ]
 
-Detect tcp gso fraglist skbs with corrupted geometry (see below) and
-pass these to skb_segment instead of skb_segment_list, as the first
-can segment them correctly.
+The last test step ("Test with Invalid public key X and Y, all set to
+0") expects to get an "DHKEY check failed" instead of "unspecified".
 
-Valid SKB_GSO_FRAGLIST skbs
-- consist of two or more segments
-- the head_skb holds the protocol headers plus first gso_size
-- one or more frag_list skbs hold exactly one segment
-- all but the last must be gso_size
-
-Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
-modify these skbs, breaking these invariants.
-
-In extreme cases they pull all data into skb linear. For TCP, this
-causes a NULL ptr deref in __tcpv4_gso_segment_list_csum at
-tcp_hdr(seg->next).
-
-Detect invalid geometry due to pull, by checking head_skb size.
-Don't just drop, as this may blackhole a destination. Convert to be
-able to pass to regular skb_segment.
-
-Approach and description based on a patch by Willem de Bruijn.
-
-Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
-Link: https://lore.kernel.org/netdev/20240922150450.3873767-1-willemdebruijn.kernel@gmail.com/
-Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240926085315.51524-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d19628f539f ("Bluetooth: SMP: Fail if remote and local public keys are identical")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_offload.c   |   10 ++++++++--
- net/ipv6/tcpv6_offload.c |   10 ++++++++--
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ net/bluetooth/smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -104,8 +104,14 @@ static struct sk_buff *tcp4_gso_segment(
- 	if (!pskb_may_pull(skb, sizeof(struct tcphdr)))
- 		return ERR_PTR(-EINVAL);
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 3a1ce04a7a536..9d96040745897 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2743,7 +2743,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	if (!test_bit(SMP_FLAG_DEBUG_KEY, &smp->flags) &&
+ 	    !crypto_memneq(key, smp->local_pk, 64)) {
+ 		bt_dev_err(hdev, "Remote and local public keys are identical");
+-		return SMP_UNSPECIFIED;
++		return SMP_DHKEY_CHECK_FAILED;
+ 	}
  
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
--		return __tcp4_gso_segment_list(skb, features);
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
-+		struct tcphdr *th = tcp_hdr(skb);
-+
-+		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
-+			return __tcp4_gso_segment_list(skb, features);
-+
-+		skb->ip_summed = CHECKSUM_NONE;
-+	}
- 
- 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
- 		const struct iphdr *iph = ip_hdr(skb);
---- a/net/ipv6/tcpv6_offload.c
-+++ b/net/ipv6/tcpv6_offload.c
-@@ -106,8 +106,14 @@ static struct sk_buff *tcp6_gso_segment(
- 	if (!pskb_may_pull(skb, sizeof(*th)))
- 		return ERR_PTR(-EINVAL);
- 
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
--		return __tcp6_gso_segment_list(skb, features);
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
-+		struct tcphdr *th = tcp_hdr(skb);
-+
-+		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
-+			return __tcp6_gso_segment_list(skb, features);
-+
-+		skb->ip_summed = CHECKSUM_NONE;
-+	}
- 
- 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
- 		const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+ 	memcpy(smp->remote_pk, key, 64);
+-- 
+2.51.0
+
 
 
 
