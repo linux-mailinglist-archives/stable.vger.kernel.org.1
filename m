@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJDqFRNVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:27 +0100
+	id iB/TG7RKwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929872F58A1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBF42F4027
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 30F7A3038827
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4801F301F397
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6A63B19AC;
-	Mon, 23 Mar 2026 14:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0420B3B0AD1;
+	Mon, 23 Mar 2026 14:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqmPXT7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7EQysqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A07E3B0AD1;
-	Mon, 23 Mar 2026 14:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB56A3AEF5F;
+	Mon, 23 Mar 2026 14:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276986; cv=none; b=ZpHjDReZplTyqMTw7Ljpihj5xTElOvee6G9e5Ri+M6CcP/IBCq9mpQq2OB2RY38gFg572BwoIVZiam11NYL0/Iv6g8ldgQ5wdW4k1yPKTNOIqHjxuq4ivLIyzrXnzZSNTlGELKQPePJW6UmnK0CcH0SKLjBA7cGzhYTVuo1N7hc=
+	t=1774274498; cv=none; b=HCKA2i+lr84PDGWXoKiGgrXpPBdL9kXUx4ORtmlsaCiu0BMr1Vz+wS/7SU+wrnNDucnEGMS7KwWG4O8bXkJ28Vu7Z++76TFzNGJEtvO2B5xQ23QIiLbWucT+jI5m/wegOk2m+HzHGjtNSACsQcwQNew/8nSM/0cXsnk5odgbEcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276986; c=relaxed/simple;
-	bh=e3WgzwhPMGzQTspl9+K8ILsDLG/t+IhzPzHtJgAl/Tk=;
+	s=arc-20240116; t=1774274498; c=relaxed/simple;
+	bh=SkhGYT3ySAZmrkOyu5OfGMZQxVNJoxI+BXJyUGqlxrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Id78MzR98R7Ykv0P7uCgkeIqXPZn8PU3ZR4t+574+ExfUD7zrOEYuIajUTJ9dzsvtz8uJH1yQYHIJxrRx64gdVCYOdOeSHJbbcdgI/LrDESwn1UjIN/+WcQNfTZ+bDo4QoZ8yTQE+x+Agh3PUoR1C6YGgD41+h57l1naE09L9v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqmPXT7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A79C4CEF7;
-	Mon, 23 Mar 2026 14:43:05 +0000 (UTC)
+	 MIME-Version; b=mjI/YiBmc3hFFTV0DjC/Mr2b/aMT0EfreZs5O3Kv/6jddXTVPKVOh/cSruoSkY5dE0uwVaMFfpUV7W2R6KN/CN+8U8M+mf/XFOPvezdv/Z/ENB/ooHlPCrNhs75Q87eLLr6oGQVYTcqOveKv0FmS7rYoQq8Xt1FgHj8YXDF4NSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7EQysqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E127C4CEF7;
+	Mon, 23 Mar 2026 14:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276986;
-	bh=e3WgzwhPMGzQTspl9+K8ILsDLG/t+IhzPzHtJgAl/Tk=;
+	s=korg; t=1774274498;
+	bh=SkhGYT3ySAZmrkOyu5OfGMZQxVNJoxI+BXJyUGqlxrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqmPXT7oxsPkV5GlOP/RjRhcGx+h9sO/n4a3kLp6Z2b8PMluT9F8Zafx6elQgJQ9c
-	 bYyKV314gJKJ2Lfd8vFaa7OWgTkXRP9DHtTtJKU0yT9xOmohRwvlNT7gcOfOKF6Y7V
-	 qrVaQPzcEZCWgG2VErM09jTx+jeR1qrTgtEukHOQ=
+	b=e7EQysqmETvZx1IOz6Zz3ajvvj3xbGJMEP4k+G1JoO37Zo/7Klaz36gak1aBMq07h
+	 FLbPMfaOkARM41HRvrAzs2AITCcEDy+GaloCj3A/36wREs8luNPMRLakXDFpLjeg6R
+	 DJqqMDyhWHrma3A1zV3a0+aUF0/UwSaAY5nvx7qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 242/460] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
+	Felix Lechner <felix.lechner@lease-up.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.18 017/212] parisc: Flush correct cache in cacheflush() syscall
 Date: Mon, 23 Mar 2026 14:43:58 +0100
-Message-ID: <20260323134532.452502467@linuxfoundation.org>
+Message-ID: <20260323134504.305162284@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,240 +68,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228737-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228223-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lease-up.com,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 929872F58A1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lease-up.com:email,gmx.de:email]
+X-Rspamd-Queue-Id: 0FBF42F4027
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit ec35c1969650e7cb6c8a91020e568ed46e3551b0 ]
+commit 2c98a8fbd6aa647414c6248dacf254ebe91c79ad upstream.
 
-The network device outlived its parent gadget device during
-disconnection, resulting in dangling sysfs links and null pointer
-dereference problems.
+The assembly flush instructions were swapped for I- and D-cache flags:
 
-A prior attempt to solve this by removing SET_NETDEV_DEV entirely [1]
-was reverted due to power management ordering concerns and a NO-CARRIER
-regression.
+SYSCALL_DEFINE3(cacheflush, ...)
+{
+	if (cache & DCACHE) {
+			"fic ...\n"
+	}
+	if (cache & ICACHE && error == 0) {
+			"fdc ...\n"
+	}
 
-A subsequent attempt to defer net_device allocation to bind [2] broke
-1:1 mapping between function instance and network device, making it
-impossible for configfs to report the resolved interface name. This
-results in a regression where the DHCP server fails on pmOS.
+Fix it by using fdc for DCACHE, and fic for ICACHE flushing.
 
-Use device_move to reparent the net_device between the gadget device and
-/sys/devices/virtual/ across bind/unbind cycles. This preserves the
-network interface across USB reconnection, allowing the DHCP server to
-retain their binding.
-
-Introduce gether_attach_gadget()/gether_detach_gadget() helpers and use
-__free(detach_gadget) macro to undo attachment on bind failure. The
-bind_count ensures device_move executes only on the first bind.
-
-[1] https://lore.kernel.org/lkml/f2a4f9847617a0929d62025748384092e5f35cce.camel@crapouillou.net/
-[2] https://lore.kernel.org/linux-usb/795ea759-7eaf-4f78-81f4-01ffbf2d7961@ixit.cz/
-
-Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-7-ea2afbc7d9b2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Felix Lechner <felix.lechner@lease-up.com>
+Fixes: c6d96328fecd ("parisc: Add cacheflush() syscall")
+Cc: <stable@vger.kernel.org> # v6.5+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c   |   38 ++++++++++++++++++++++------------
- drivers/usb/gadget/function/u_ether.c |   22 +++++++++++++++++++
- drivers/usb/gadget/function/u_ether.h |   26 +++++++++++++++++++++++
- drivers/usb/gadget/function/u_ncm.h   |    2 -
- 4 files changed, 74 insertions(+), 14 deletions(-)
+ arch/parisc/kernel/cache.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1438,6 +1438,7 @@ static int ncm_bind(struct usb_configura
- 	struct f_ncm_opts	*ncm_opts;
- 
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
-@@ -1451,18 +1452,19 @@ static int ncm_bind(struct usb_configura
- 			return -ENOMEM;
- 	}
- 
--	mutex_lock(&ncm_opts->lock);
--	gether_set_gadget(ncm_opts->net, cdev->gadget);
--	if (!ncm_opts->bound) {
--		ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
--		status = gether_register_netdev(ncm_opts->net);
--	}
--	mutex_unlock(&ncm_opts->lock);
--
--	if (status)
--		return status;
--
--	ncm_opts->bound = true;
-+	scoped_guard(mutex, &ncm_opts->lock)
-+		if (ncm_opts->bind_count == 0) {
-+			if (!device_is_registered(&ncm_opts->net->dev)) {
-+				ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
-+				gether_set_gadget(ncm_opts->net, cdev->gadget);
-+				status = gether_register_netdev(ncm_opts->net);
-+			} else
-+				status = gether_attach_gadget(ncm_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = ncm_opts->net;
-+		}
- 
- 	ncm_string_defs[1].s = ncm->ethaddr;
- 
-@@ -1564,6 +1566,9 @@ static int ncm_bind(struct usb_configura
- 	}
- 	ncm->notify_req = no_free_ptr(request);
- 
-+	ncm_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
-@@ -1655,7 +1660,7 @@ static void ncm_free_inst(struct usb_fun
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -1718,9 +1723,12 @@ static void ncm_free(struct usb_function
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_ncm *ncm = func_to_ncm(f);
-+	struct f_ncm_opts *ncm_opts;
- 
- 	DBG(c->cdev, "ncm unbind\n");
- 
-+	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
- 	hrtimer_cancel(&ncm->task_timer);
- 
- 	kfree(f->os_desc_table);
-@@ -1736,6 +1744,10 @@ static void ncm_unbind(struct usb_config
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
-+
-+	ncm_opts->bind_count--;
-+	if (ncm_opts->bind_count == 0)
-+		gether_detach_gadget(ncm_opts->net);
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -896,6 +896,28 @@ void gether_set_gadget(struct net_device
- }
- EXPORT_SYMBOL_GPL(gether_set_gadget);
- 
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g)
-+{
-+	int ret;
-+
-+	ret = device_move(&net->dev, &g->dev, DPM_ORDER_DEV_AFTER_PARENT);
-+	if (ret)
-+		return ret;
-+
-+	gether_set_gadget(net, g);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gether_attach_gadget);
-+
-+void gether_detach_gadget(struct net_device *net)
-+{
-+	struct eth_dev *dev = netdev_priv(net);
-+
-+	device_move(&net->dev, NULL, DPM_ORDER_NONE);
-+	dev->gadget = NULL;
-+}
-+EXPORT_SYMBOL_GPL(gether_detach_gadget);
-+
- int gether_set_dev_addr(struct net_device *net, const char *dev_addr)
- {
- 	struct eth_dev *dev;
---- a/drivers/usb/gadget/function/u_ether.h
-+++ b/drivers/usb/gadget/function/u_ether.h
-@@ -151,6 +151,32 @@ static inline struct net_device *gether_
- void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
- 
- /**
-+ * gether_attach_gadget - Reparent net_device to the gadget device.
-+ * @net: The network device to reparent.
-+ * @g: The target USB gadget device to parent to.
-+ *
-+ * This function moves the network device to be a child of the USB gadget
-+ * device in the device hierarchy. This is typically done when the function
-+ * is bound to a configuration.
-+ *
-+ * Returns 0 on success, or a negative error code on failure.
-+ */
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g);
-+
-+/**
-+ * gether_detach_gadget - Detach net_device from its gadget parent.
-+ * @net: The network device to detach.
-+ *
-+ * This function moves the network device to be a child of the virtual
-+ * devices parent, effectively detaching it from the USB gadget device
-+ * hierarchy. This is typically done when the function is unbound
-+ * from a configuration but the instance is not yet freed.
-+ */
-+void gether_detach_gadget(struct net_device *net);
-+
-+DEFINE_FREE(detach_gadget, struct net_device *, if (_T) gether_detach_gadget(_T))
-+
-+/**
-  * gether_set_dev_addr - initialize an ethernet-over-usb link with eth address
-  * @net: device representing this link
-  * @dev_addr: eth address of this device
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -18,7 +18,7 @@
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -953,7 +953,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned lon
+ #else
+ 			"1: cmpb,<<,n	%0,%2,1b\n"
+ #endif
+-			"   fic,m	%3(%4,%0)\n"
++			"   fdc,m	%3(%4,%0)\n"
+ 			"2: sync\n"
+ 			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
+ 			: "+r" (start), "+r" (error)
+@@ -968,7 +968,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned lon
+ #else
+ 			"1: cmpb,<<,n	%0,%2,1b\n"
+ #endif
+-			"   fdc,m	%3(%4,%0)\n"
++			"   fic,m	%3(%4,%0)\n"
+ 			"2: sync\n"
+ 			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
+ 			: "+r" (start), "+r" (error)
 
 
 
