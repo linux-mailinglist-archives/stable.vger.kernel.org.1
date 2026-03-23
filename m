@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB9mJrBRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:00 +0100
+	id 4IuUBG9rwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328652F5130
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B90802F8534
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D743B3236830
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5681230BE428
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD903A9D9D;
-	Mon, 23 Mar 2026 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29043BC691;
+	Mon, 23 Mar 2026 16:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IERSkau8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2W+XgWEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC633C07A;
-	Mon, 23 Mar 2026 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1163AB277;
+	Mon, 23 Mar 2026 16:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275391; cv=none; b=rXXxINqe2ouVpAMFCrFb4k8yecjp0YXyJrAw/GF2NmElgYPRd+CaRGM7Rdh62hoDXe/yvMV2ttKS/WHlHmNkIo2hl+Xn+xjLMyKQOWpCGauYSiAWAHcUF9CMU1zCEB5atB319eSztLLQ9sTqL2da4anxxFcpysqgJC0RBY4nN5E=
+	t=1774282387; cv=none; b=RCj4E109/nrDVR8qnX3tGURQpOv7km/MTxcX2vBxPfnnyoORkQMnFOsSQWpiuUq8kkzu4sqQzrDbGyQGAR5dt0qrjshis2QGT7gaejG/UumECR+/qP8CiZEb1qTn/UclBvrbquZac7l7z1lrUrlIC/WlxUz9HA594u7V4MSH9U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275391; c=relaxed/simple;
-	bh=EfizATr3AodrNWYiGe/QQY5c1wPolgoyLdRcfDE/aoA=;
+	s=arc-20240116; t=1774282387; c=relaxed/simple;
+	bh=BzZl9UXnLdMV+IlRjl6zIYuV0xc87b49TWOi+jWJhYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VPwcOwBjwjwEFfjD1I+nZjORNqXoTBpQXdwfITztahhAKTT/aBRUhFjN4WYw1y9DidHKs/VWSR8Cr2NffEQoGyoj0KAnUfTfFR4t/E5CNbJiHGSWYHVphtVeAez0raE2lwZlepQwYCiE9nn3dTWCC22iwKHsePhp/YnDWWKpuKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IERSkau8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9532AC4CEF7;
-	Mon, 23 Mar 2026 14:16:30 +0000 (UTC)
+	 MIME-Version; b=LDf3+VKMXL4oEdcfZkg3YDCqegV6rvrXMBrsVEGcaM8jYgefZvsm2BsUG0DvSxOnKRxnWQccYMngPmbjFcWt6c/c5eY/zXDLwUP4a0L5nu9mKoe3niKntt28VnvH71Y+IXuY0BbozCV89wuyvWZwA7Zvf/EjZAr0K5SAu+0Mo6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2W+XgWEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83136C4CEF7;
+	Mon, 23 Mar 2026 16:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275390;
-	bh=EfizATr3AodrNWYiGe/QQY5c1wPolgoyLdRcfDE/aoA=;
+	s=korg; t=1774282386;
+	bh=BzZl9UXnLdMV+IlRjl6zIYuV0xc87b49TWOi+jWJhYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IERSkau8wFheY026UDt5DOH+1ccglgVfH9E8z64WjiVcbCJ3OU822b7cqhIB/r+0S
-	 6uvJy7JibScs4Kdpmipg45k/ddQ3/kq0jRuPwKbvDzT8XTeogmPH0s//9w3NAabn1h
-	 zPXCDZYELT3vAfx3ZxBg1OilQgN27M6CkUM4/ofI=
+	b=2W+XgWEqHtNjNYXOr6hxEUthpFA5hvDILg/JQe/8pPjeyVdGL5RshvSJ346ZrmsOp
+	 4KPEMGIPSS9LBhrBeyEUmBH5GCIu0dhFfbA+wu77IJ5tGZmf7CzBr9HWbpVxg4iUCB
+	 BpirnJOXY6rAVCGOP3jFq6VYU3gSz4CyW4cRnLIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/460] net: bonding: Fix nd_tbl NULL dereference when IPv6 is disabled
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 095/481] selftests: mptcp: join: check removing signal+subflow endp
 Date: Mon, 23 Mar 2026 14:41:17 +0100
-Message-ID: <20260323134528.670015209@linuxfoundation.org>
+Message-ID: <20260323134527.595315873@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,suse.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228536-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229611-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 328652F5130
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B90802F8534
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 30021e969d48e5819d5ae56936c2f34c0f7ce997 ]
+commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
 
-When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
-initialized because inet6_init() exits before ndisc_init() is called
-which initializes it. If bonding ARP/NS validation is enabled, an IPv6
-NS/NA packet received on a slave can reach bond_validate_na(), which
-calls bond_has_this_ip6(). That path calls ipv6_chk_addr() and can
-crash in __ipv6_chk_addr_and_flags().
+This validates the previous commit: endpoints with both the signal and
+subflow flags should always be marked as used even if it was not
+possible to create new subflows due to the MPTCP PM limits.
 
- BUG: kernel NULL pointer dereference, address: 00000000000005d8
- Oops: Oops: 0000 [#1] SMP NOPTI
- RIP: 0010:__ipv6_chk_addr_and_flags+0x69/0x170
- Call Trace:
-  <IRQ>
-  ipv6_chk_addr+0x1f/0x30
-  bond_validate_na+0x12e/0x1d0 [bonding]
-  ? __pfx_bond_handle_frame+0x10/0x10 [bonding]
-  bond_rcv_validate+0x1a0/0x450 [bonding]
-  bond_handle_frame+0x5e/0x290 [bonding]
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  __netif_receive_skb_core.constprop.0+0x3e8/0xe50
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? update_cfs_rq_load_avg+0x1a/0x240
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __enqueue_entity+0x5e/0x240
-  __netif_receive_skb_one_core+0x39/0xa0
-  process_backlog+0x9c/0x150
-  __napi_poll+0x30/0x200
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  net_rx_action+0x338/0x3b0
-  handle_softirqs+0xc9/0x2a0
-  do_softirq+0x42/0x60
-  </IRQ>
-  <TASK>
-  __local_bh_enable_ip+0x62/0x70
-  __dev_queue_xmit+0x2d3/0x1000
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? packet_parse_headers+0x10a/0x1a0
-  packet_sendmsg+0x10da/0x1700
-  ? kick_pool+0x5f/0x140
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __queue_work+0x12d/0x4f0
-  __sys_sendto+0x1f3/0x220
-  __x64_sys_sendto+0x24/0x30
-  do_syscall_64+0x101/0xf80
-  ? exc_page_fault+0x6e/0x170
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
+For this test, an extra endpoint is created with both the signal and the
+subflow flags, and limits are set not to create extra subflows. In this
+case, an ADD_ADDR is sent, but no subflows are created. Still, the local
+endpoint is marked as used, and no warning is fired when removing the
+endpoint, after having sent a RM_ADDR.
 
-Fix this by checking ipv6_mod_enabled() before dispatching IPv6 packets to
-bond_na_rcv(). If IPv6 is disabled, return early from bond_rcv_validate()
-and avoid the path to ipv6_chk_addr().
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20260307-net-nd_tbl_fixes-v4-2-e2677e85628c@suse.com
+Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 546c9004c9e30..d11ca46a5b1f7 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3487,7 +3487,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
- 	} else if (is_arp) {
- 		return bond_arp_rcv(skb, bond, slave);
- #if IS_ENABLED(CONFIG_IPV6)
--	} else if (is_ipv6) {
-+	} else if (is_ipv6 && likely(ipv6_mod_enabled())) {
- 		return bond_na_rcv(skb, bond, slave);
- #endif
- 	} else {
--- 
-2.51.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2389,6 +2389,19 @@ remove_tests()
+ 		chk_rst_nr 0 0
+ 	fi
+ 
++	# signal+subflow with limits, remove
++	if reset "remove signal+subflow with limits"; then
++		pm_nl_set_limits $ns1 0 0
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
++		pm_nl_set_limits $ns2 0 0
++		addr_nr_ns1=-1 speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
++		chk_join_nr 0 0 0
++		chk_add_nr 1 1
++		chk_rm_nr 1 0 invert
++		chk_rst_nr 0 0
++	fi
++
+ 	# addresses remove
+ 	if reset "remove addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
 
 
 
