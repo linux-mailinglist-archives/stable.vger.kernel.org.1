@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-228753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPukFpNWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:51 +0100
+	id CHskJttuwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80EA2F5B93
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113602F8D57
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 206CF31F0588
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD8F73151950
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC5A396D3D;
-	Mon, 23 Mar 2026 14:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD55D3BD240;
+	Mon, 23 Mar 2026 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZ8Vc1K3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmSHRUg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAE438C2CA;
-	Mon, 23 Mar 2026 14:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FED33B95FD;
+	Mon, 23 Mar 2026 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277030; cv=none; b=cWvbW+3/IMmobqI4IMP2QyUHTuJV84w/01Oqrh8PUO/HO9d5ji7iusIksV3cjrr4bmEiU8yRmDm7xGexiDlX3oiRUQlv8nLgL5niIg5DRHRHpriAWQtqEb012w98YuH7UypFnfXFtuWNg9I+26+9AfhGCEknbmedTlWCWg/kHpM=
+	t=1774282855; cv=none; b=ohGOR6+YY298BzhgOl7JJLrmYeT+6bMS5fiSpC8YK5R+KnM4sPa9aD67z6oAsYoL/+vqM23R4tZQIrk2kEBzmzgCmzNAm2QwlfdYbMT4XhPej1/XEfI7cuOFUR3zDGjWCFMMlgFzBTcA08nSsmnCyByar0P2nyIIuq8DsVcfNuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277030; c=relaxed/simple;
-	bh=xvhPYug+fHnpkMKd5UMVyXxPuwPWgReJQO9RfH28ukg=;
+	s=arc-20240116; t=1774282855; c=relaxed/simple;
+	bh=2aNo8iab0AZNjAX5zhJbWqrkeym7fid7QGNcTxdjagM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MA3RgAQDE+eyAkEsJQ/1ScwawqihI6LCrOV4yd2HKpSIbTAI2VTs3BaDzo8Op62DWbDtmuYWxkMSGaYcvAIbYVzq3WsVkox6l4RmwvD0rN6riOaUZOcquzagcKvSX4C8mMVVJP0VTXWuMzPNYRoSv60eQbI/WGM9EQjHNfariXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZ8Vc1K3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CF6C4CEF7;
-	Mon, 23 Mar 2026 14:43:50 +0000 (UTC)
+	 MIME-Version; b=PTFMrWosMTi3mOQR1IJ29K/ZpJXkmme0VLb35u1Qu+z23lqvOjzgy4uSlJ6wPY0sW3nDOqXRs9z0lb3nP7coPux+Bys+q7eAOV9h7X2UoGnXHXNxjdV9BvxYk8AA2lo1bjVAjcAAvtoFhR55xDwdP79ppKUfoOjyZ0C68Ycfr4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmSHRUg7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2178CC4CEF7;
+	Mon, 23 Mar 2026 16:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277030;
-	bh=xvhPYug+fHnpkMKd5UMVyXxPuwPWgReJQO9RfH28ukg=;
+	s=korg; t=1774282855;
+	bh=2aNo8iab0AZNjAX5zhJbWqrkeym7fid7QGNcTxdjagM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZ8Vc1K35rEyO2uK+1y/uYf5vNAanPyK7CuZhdMtBzdHXOHIjc+OnQaQNvTBbDABt
-	 /CeVWFAO/SfgHe69m9xlSGtf9o8CDGUVY4RYxwydbd4IAWMEaW8JHwy01QKMvMtNiE
-	 mC7uoqI3rgKQ+AdZwrklvdqLAazOuVYZ0/vymsg0=
+	b=UmSHRUg7sR/io572kcoics0SkHa4pzfu54olUsr9/Wdb5kMuClo8AYti9p+OUBTdV
+	 7Ze0nKCP9cxMPOo5Hs5wEU4z7jStPvTAgtNdTfoxnku4d8gG1D63DqU07DR+6j050k
+	 A8xS40wvbE1eFb9L1SKRIYFciJ5jrq4LqJ1X2MZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng-Yang Chou <yphbchou0911@gmail.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 296/460] sched_ext: Remove redundant css_put() in scx_cgroup_init()
+	Jane Chu <jane.chu@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 6.1 310/481] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
 Date: Mon, 23 Mar 2026 14:44:52 +0100
-Message-ID: <20260323134533.758864579@linuxfoundation.org>
+Message-ID: <20260323134532.660068952@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +75,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228753-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229784-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.907];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A80EA2F5B93
+X-Rspamd-Queue-Id: 113602F8D57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng-Yang Chou <yphbchou0911@gmail.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-commit 1336b579f6079fb8520be03624fcd9ba443c930b upstream.
+commit 14967a9c7d247841b0312c48dcf8cd29e55a4cc8 upstream.
 
-The iterator css_for_each_descendant_pre() walks the cgroup hierarchy
-under cgroup_lock(). It does not increment the reference counts on
-yielded css structs.
+commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
+count") introduced ->pt_share_count dedicated to hugetlb PMD share count
+tracking, but omitted fixing copy_hugetlb_page_range(), leaving the
+function relying on page_count() for tracking that no longer works.
 
-According to the cgroup documentation, css_put() should only be used
-to release a reference obtained via css_get() or css_tryget_online().
-Since the iterator does not use either of these to acquire a reference,
-calling css_put() in the error path of scx_cgroup_init() causes a
-refcount underflow.
+When lazy page table copy for hugetlb is disabled, that is, revert commit
+bcd51a3c679d ("hugetlb: lazy page table copies in fork()") fork()'ing with
+hugetlb PMD sharing quickly lockup -
 
-Remove the unbalanced css_put() to prevent a potential Use-After-Free
-(UAF) vulnerability.
+[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
+[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
+[  239.446631] Call Trace:
+[  239.446633]  <TASK>
+[  239.446636]  _raw_spin_lock+0x3f/0x60
+[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
+[  239.446645]  copy_page_range+0x22b/0x2c0
+[  239.446651]  dup_mmap+0x3e2/0x770
+[  239.446654]  dup_mm.constprop.0+0x5e/0x230
+[  239.446657]  copy_process+0xd17/0x1760
+[  239.446660]  kernel_clone+0xc0/0x3e0
+[  239.446661]  __do_sys_clone+0x65/0xa0
+[  239.446664]  do_syscall_64+0x82/0x930
+[  239.446668]  ? count_memcg_events+0xd2/0x190
+[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
+[  239.446676]  ? syscall_exit_work+0x118/0x150
+[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
+[  239.446681]  ? clear_bhb_loop+0x30/0x80
+[  239.446684]  ? clear_bhb_loop+0x30/0x80
+[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+There are two options to resolve the potential latent issue:
+  1. warn against PMD sharing in copy_hugetlb_page_range(),
+  2. fix it.
+This patch opts for the second option.
+While at it, simplify the comment, the details are not actually relevant
+anymore.
+
+Link: https://lkml.kernel.org/r/20250916004520.1604530-1-jane.chu@oracle.com
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ David: We don't have ptdesc and the wrappers, so work directly on the
+  page->pt_share_count. CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING is still
+  called CONFIG_ARCH_WANT_HUGE_PMD_SHARE. ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    1 -
- 1 file changed, 1 deletion(-)
+ mm/hugetlb.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4319,7 +4319,6 @@ static int scx_cgroup_init(void)
- 		ret = SCX_CALL_OP_RET(SCX_KF_UNLOCKED, cgroup_init,
- 				      css->cgroup, &args);
- 		if (ret) {
--			css_put(css);
- 			scx_ops_error("ops.cgroup_init() failed (%d)", ret);
- 			return ret;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5084,18 +5084,13 @@ int copy_hugetlb_page_range(struct mm_st
+ 			break;
  		}
+ 
+-		/*
+-		 * If the pagetables are shared don't copy or take references.
+-		 *
+-		 * dst_pte == src_pte is the common case of src/dest sharing.
+-		 * However, src could have 'unshared' and dst shares with
+-		 * another vma. So page_count of ptep page is checked instead
+-		 * to reliably determine whether pte is shared.
+-		 */
+-		if (page_count(virt_to_page(dst_pte)) > 1) {
++#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
++		/* If the pagetables are shared, there is nothing to do */
++		if (atomic_read(&virt_to_page(dst_pte)->pt_share_count)) {
+ 			addr |= last_addr_mask;
+ 			continue;
+ 		}
++#endif
+ 
+ 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
+ 		src_ptl = huge_pte_lockptr(h, src, src_pte);
 
 
 
