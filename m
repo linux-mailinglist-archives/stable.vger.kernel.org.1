@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MjLJOB8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:16 +0100
+	id CNzVLEVPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B2A2FA6CC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5350C2F4BC9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A1CA321CB17
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A96DE31A81D7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A1B3BC689;
-	Mon, 23 Mar 2026 16:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354C63AEF36;
+	Mon, 23 Mar 2026 14:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ragq2fBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ky87a+UA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8538D395DB5;
-	Mon, 23 Mar 2026 16:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED46D3AE6EE;
+	Mon, 23 Mar 2026 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283233; cv=none; b=CRxZMYN+YY+H6aYpftRYEZv0prVNXFyzT/QVpEDa6Vw7uM5rHto7h2A0N0bF65umPqotO8LNDVe28NWuswm85Ebc+VPlrWAbwSdpTThsFG2UeSt6g7BfdEzETH7S8U3bTmXjLIwmFJDzXa7oB756+sVnO1LQg59iMDZ2riBFiCw=
+	t=1774275077; cv=none; b=UAcz3iD8brMFZ/Z76TPsth7mU3FfNgJdWalJbFxKb558SvI1LqwGg/zWwrWvOkQwzIm33449CGS3HnMNXzgtYQwGdBTz965ZzO+GXMdOB1WAJC7F+MS2SKhpwTahJwb51F68zk0xl1jHAknV9aUX+1vBhqJis/DklpkWrbvePpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283233; c=relaxed/simple;
-	bh=ejoNf5smfYfZhqIM+oCul4245RRC/hAI06UrlvfAmfg=;
+	s=arc-20240116; t=1774275077; c=relaxed/simple;
+	bh=0dzu53iFUkaEb09cIxFDQqj+M5YOwxhFL+Q0oHOYN/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1ryjEXT1ZeNgCwp3+SY9PDyiAakhbhd9f1SzwjI1UmOrg3MGFvAK5uprNWxNbiu2W+xm9s60JnClmgvRKrTalOhmu5itWPI0uMwJQogjNGk+TuhvN9aNfCTAyxOw5jES7ZJzrqidT9GVDnnREzRregEClSo4UKY66GhM1HxCvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ragq2fBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A9CC4CEF7;
-	Mon, 23 Mar 2026 16:27:12 +0000 (UTC)
+	 MIME-Version; b=lbzXSItXOQAxU+WXjknOO2vfuVIbOgnv+TWtVQovb17Ug9xLxhdbNRcPy7hNrMBaD7ldM8E054cdNQUHsIcCSwBHCtJybh5j1C1MYWFOjXoUJg6Kx4AGcPEo0z8RG+f8Iy/F4khQN1DfKki1lxzqD3sZEX7ShwiNzO9LwUr31gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ky87a+UA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70732C4CEF7;
+	Mon, 23 Mar 2026 14:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283233;
-	bh=ejoNf5smfYfZhqIM+oCul4245RRC/hAI06UrlvfAmfg=;
+	s=korg; t=1774275076;
+	bh=0dzu53iFUkaEb09cIxFDQqj+M5YOwxhFL+Q0oHOYN/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ragq2fBxyh04xn+Ux+RMJ2kiEMduPyLZPk5cKypb7JJNfzpQCiN4pipYVp7nL7//J
-	 8fIJrvPaXENxydrCVeVNVIpWEgeyRb4BzaBoAsJlpfJTISpNNjVpe3nsaVh7Xnh9oM
-	 FNRLOKP7YwtFKl3a0aKrnWEYwDfmNIBwimZPUoUo=
+	b=Ky87a+UA5AQoksLJsmAuhrOuVKGusCPoe6afuOkHIGQPeLsVKY2vZBP7NBxaRDMfg
+	 jbZ8gZg8AkogMUnnxoqDRT4wuZp6b3y2436Ac3BhPKpx0n+Au3lNsA2AHpV4Y/izl+
+	 V405EHVXZTUgXOa4yIrEJXQj105r0Ux59bCeNjU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 450/481] ksmbd: fix use-after-free of share_conf in compound request
+Subject: [PATCH 6.18 211/212] arm64: realm: Fix PTE_NS_SHARED for 52bit PA support
 Date: Mon, 23 Mar 2026 14:47:12 +0100
-Message-ID: <20260323134536.180088887@linuxfoundation.org>
+Message-ID: <20260323134510.452735844@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,165 +70,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-229925-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228421-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 23B2A2FA6CC
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5350C2F4BC9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit c33615f995aee80657b9fdfbc4ee7f49c2bd733d ]
+[ Upstream commit 8c6e9b60f5c7985a9fe41320556a92d7a33451df ]
 
-smb2_get_ksmbd_tcon() reuses work->tcon in compound requests without
-validating tcon->t_state. ksmbd_tree_conn_lookup() checks t_state ==
-TREE_CONNECTED on the initial lookup path, but the compound reuse path
-bypasses this check entirely.
+With LPA/LPA2, the top bits of the PFN (Bits[51:48]) end up in the lower bits
+of the PTE. So, simply creating a mask of the "top IPA bit" doesn't work well
+for these configurations to set the "top" bit at the output of Stage1
+translation.
 
-If a prior command in the compound (SMB2_TREE_DISCONNECT) sets t_state
-to TREE_DISCONNECTED and frees share_conf via ksmbd_share_config_put(),
-subsequent commands dereference the freed share_conf through
-work->tcon->share_conf.
+Fix this by using the __phys_to_pte_val() to do the right thing for all
+configurations.
 
-KASAN report:
+Tested using, kvmtool, placing the memory at a higher address (-m <size>@<Addr>).
 
-[    4.144653] ==================================================================
-[    4.145059] BUG: KASAN: slab-use-after-free in smb2_write+0xc74/0xe70
-[    4.145415] Read of size 4 at addr ffff88810430c194 by task kworker/1:1/44
-[    4.145772]
-[    4.145867] CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted 7.0.0-rc3+ #60 PREEMPTLAZY
-[    4.145871] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    4.145875] Workqueue: ksmbd-io handle_ksmbd_work
-[    4.145888] Call Trace:
-[    4.145892]  <TASK>
-[    4.145894]  dump_stack_lvl+0x64/0x80
-[    4.145910]  print_report+0xce/0x660
-[    4.145919]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[    4.145928]  ? smb2_write+0xc74/0xe70
-[    4.145931]  kasan_report+0xce/0x100
-[    4.145934]  ? smb2_write+0xc74/0xe70
-[    4.145937]  smb2_write+0xc74/0xe70
-[    4.145939]  ? __pfx_smb2_write+0x10/0x10
-[    4.145942]  ? _raw_spin_unlock+0xe/0x30
-[    4.145945]  ? ksmbd_smb2_check_message+0xeb2/0x24c0
-[    4.145948]  ? smb2_tree_disconnect+0x31c/0x480
-[    4.145951]  handle_ksmbd_work+0x40f/0x1080
-[    4.145953]  process_one_work+0x5fa/0xef0
-[    4.145962]  ? assign_work+0x122/0x3e0
-[    4.145964]  worker_thread+0x54b/0xf70
-[    4.145967]  ? __pfx_worker_thread+0x10/0x10
-[    4.145970]  kthread+0x346/0x470
-[    4.145976]  ? recalc_sigpending+0x19b/0x230
-[    4.145980]  ? __pfx_kthread+0x10/0x10
-[    4.145984]  ret_from_fork+0x4fb/0x6c0
-[    4.145992]  ? __pfx_ret_from_fork+0x10/0x10
-[    4.145995]  ? __switch_to+0x36c/0xbe0
-[    4.145999]  ? __pfx_kthread+0x10/0x10
-[    4.146003]  ret_from_fork_asm+0x1a/0x30
-[    4.146013]  </TASK>
-[    4.146014]
-[    4.149858] Allocated by task 44:
-[    4.149953]  kasan_save_stack+0x33/0x60
-[    4.150061]  kasan_save_track+0x14/0x30
-[    4.150169]  __kasan_kmalloc+0x8f/0xa0
-[    4.150274]  ksmbd_share_config_get+0x1dd/0xdd0
-[    4.150401]  ksmbd_tree_conn_connect+0x7e/0x600
-[    4.150529]  smb2_tree_connect+0x2e6/0x1000
-[    4.150645]  handle_ksmbd_work+0x40f/0x1080
-[    4.150761]  process_one_work+0x5fa/0xef0
-[    4.150873]  worker_thread+0x54b/0xf70
-[    4.150978]  kthread+0x346/0x470
-[    4.151071]  ret_from_fork+0x4fb/0x6c0
-[    4.151176]  ret_from_fork_asm+0x1a/0x30
-[    4.151286]
-[    4.151332] Freed by task 44:
-[    4.151418]  kasan_save_stack+0x33/0x60
-[    4.151526]  kasan_save_track+0x14/0x30
-[    4.151634]  kasan_save_free_info+0x3b/0x60
-[    4.151751]  __kasan_slab_free+0x43/0x70
-[    4.151861]  kfree+0x1ca/0x430
-[    4.151952]  __ksmbd_tree_conn_disconnect+0xc8/0x190
-[    4.152088]  smb2_tree_disconnect+0x1cd/0x480
-[    4.152211]  handle_ksmbd_work+0x40f/0x1080
-[    4.152326]  process_one_work+0x5fa/0xef0
-[    4.152438]  worker_thread+0x54b/0xf70
-[    4.152545]  kthread+0x346/0x470
-[    4.152638]  ret_from_fork+0x4fb/0x6c0
-[    4.152743]  ret_from_fork_asm+0x1a/0x30
-[    4.152853]
-[    4.152900] The buggy address belongs to the object at ffff88810430c180
-[    4.152900]  which belongs to the cache kmalloc-96 of size 96
-[    4.153226] The buggy address is located 20 bytes inside of
-[    4.153226]  freed 96-byte region [ffff88810430c180, ffff88810430c1e0)
-[    4.153549]
-[    4.153596] The buggy address belongs to the physical page:
-[    4.153750] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88810430ce80 pfn:0x10430c
-[    4.154000] flags: 0x100000000000200(workingset|node=0|zone=2)
-[    4.154160] page_type: f5(slab)
-[    4.154251] raw: 0100000000000200 ffff888100041280 ffff888100040110 ffff888100040110
-[    4.154461] raw: ffff88810430ce80 0000000800200009 00000000f5000000 0000000000000000
-[    4.154668] page dumped because: kasan: bad access detected
-[    4.154820]
-[    4.154866] Memory state around the buggy address:
-[    4.155002]  ffff88810430c080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[    4.155196]  ffff88810430c100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[    4.155391] >ffff88810430c180: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[    4.155587]                          ^
-[    4.155693]  ffff88810430c200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[    4.155891]  ffff88810430c280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[    4.156087] ==================================================================
+ e.g:
+ # lkvm run --realm -c 4 -m 512M@@128T -k Image --console serial
 
-Add the same t_state validation to the compound reuse path, consistent
-with ksmbd_tree_conn_lookup().
+ sh-5.0# dmesg | grep "LPA2\|RSI"
+[    0.000000] RME: Using RSI version 1.0
+[    0.000000] CPU features: detected: 52-bit Virtual Addressing (LPA2)
+[    0.777354] CPU features: detected: 52-bit Virtual Addressing for KVM (LPA2)
 
-Fixes: 5005bcb42191 ("ksmbd: validate session id and tree id in the compound request")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 399306954996 ("arm64: realm: Query IPA size from the RMM")
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/rsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index fb756953fec3a..65b55e824aa8b 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -117,6 +117,8 @@ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
- 			pr_err("The first operation in the compound does not have tcon\n");
- 			return -EINVAL;
- 		}
-+		if (work->tcon->t_state != TREE_CONNECTED)
-+			return -ENOENT;
- 		if (tree_id != UINT_MAX && work->tcon->id != tree_id) {
- 			pr_err("tree id(%u) is different with id(%u) in first operation\n",
- 					tree_id, work->tcon->id);
+diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+index c64a06f58c0bc..9e846ce4ef9ca 100644
+--- a/arch/arm64/kernel/rsi.c
++++ b/arch/arm64/kernel/rsi.c
+@@ -12,6 +12,7 @@
+ 
+ #include <asm/io.h>
+ #include <asm/mem_encrypt.h>
++#include <asm/pgtable.h>
+ #include <asm/rsi.h>
+ 
+ static struct realm_config config;
+@@ -146,7 +147,7 @@ void __init arm64_rsi_init(void)
+ 		return;
+ 	if (WARN_ON(rsi_get_realm_config(&config)))
+ 		return;
+-	prot_ns_shared = BIT(config.ipa_bits - 1);
++	prot_ns_shared = __phys_to_pte_val(BIT(config.ipa_bits - 1));
+ 
+ 	if (arm64_ioremap_prot_hook_register(realm_ioremap_hook))
+ 		return;
 -- 
 2.51.0
 
