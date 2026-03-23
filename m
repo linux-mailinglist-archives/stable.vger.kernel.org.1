@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-229835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJvNBll1wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:16:09 +0100
+	id uGykHVtiwWnnSgQAu9opvQ
+	(envelope-from <stable+bounces-229380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264F32F9A87
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:16:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CCB2F71CB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB9BC3058FF9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BC9E830259AD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D0D3B2FDF;
-	Mon, 23 Mar 2026 16:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855683B5302;
+	Mon, 23 Mar 2026 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/3lELOy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHG4Xa6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B403AEF5C;
-	Mon, 23 Mar 2026 16:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436673B95EB;
+	Mon, 23 Mar 2026 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282994; cv=none; b=sSZGDT68QwaPlGXqy2oQuERSinCSRV9O2WgvKsQcOsHn3oL1TQ/8pBUFchcTh/HQw4xphPJBKILq6LOnYTO5mlKrvURNgXLvtSP+0I2YPLnay37qO8lbSPOMxlxWqf0AU1WUAtIUFg9aWWYckxrvOVE7vTMNqucD1y8urG0ZheM=
+	t=1774278933; cv=none; b=Hy7NHX3zhvyhPWQ1zboEXwl8Fphv0vInSp3WClwOhHOfL7zbw5kxe9H6O9eRmhlXMof/3XxE5ZS+1EndUA4UpMCBnNEiQclW/CJfY7h9Sq7hrfLXBxqlncUzPMWCyA4LG0w+SZdih4JWWnoFBbEUcpMmK7sdqS8UMY12E/uUQcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282994; c=relaxed/simple;
-	bh=XvJ94rgwDsAcimeQ/LZp4dB8ovQe4VCJCsYma8FZUbE=;
+	s=arc-20240116; t=1774278933; c=relaxed/simple;
+	bh=FR+xJpa0UruSvCkOHg7QvDfRkITs647WFokf7GpWgWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/uh2iYxJ+BjWi8kU94QbLb6BuHEJuxWSzXCFpE21C7yQ6GmZth3/exItyvq7Ubtjtcii3maeekUDXjjbKevxEskY9keRfxeplL+OwKNqZg9MZ1jWFxbuT/4E5rrh3lC2bgXd/wU2gAR7iCKKGElooQgfXF2dx/huRdGLdokkzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/3lELOy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7567DC4CEF7;
-	Mon, 23 Mar 2026 16:23:13 +0000 (UTC)
+	 MIME-Version; b=kk06hbmmAUq7dokxIexsrT5dZZ+5mml3j5XLKeIq60u0oqPexhxIjkABaCZxy74c3OeyGdUG6UdD+FwtAzh0gemmtVGXcTJ1uLXofShWYbaqFknck2dXWB+E/LwLLyefnJ00RFLLd/CS1vXMhU0vlk1V/IaSQpNVJA6d+z4xb8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHG4Xa6/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D412C2BC9E;
+	Mon, 23 Mar 2026 15:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282993;
-	bh=XvJ94rgwDsAcimeQ/LZp4dB8ovQe4VCJCsYma8FZUbE=;
+	s=korg; t=1774278933;
+	bh=FR+xJpa0UruSvCkOHg7QvDfRkITs647WFokf7GpWgWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/3lELOyCzblcGGosWJ/JOFkyc5/+iWTCfNDqNL4ixwsfrDKaV4cmG3ntFGXVC334
-	 pV6fTmTsO768y52ppkzfLSEoFRPfuEuniY5msmFP4eyKQXhf8nPzpBqswQVXG/7h2T
-	 GxjO1rc0vn/q0dcEeXJdKrGIKdOYn4obTM5fyNkg=
+	b=UHG4Xa6/KAL50S9zsbuJS5h04erE7tyjvtgjBq8uIgJLdOpxP5ZiZz7rwq2X0HdpH
+	 yKI5PKP0yh2J/RVTdkqcQ6tkOygAHNzju+CbZ9gXLqmaoclzqL1T/x4gBHJ6N6WudK
+	 SB7UobZe7O6ySEIxOOC75h3HRTV5ew76Xi9IRIgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini Katakam <harini.katakam@amd.com>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 361/481] net: macb: queue tie-off or disable during WOL suspend
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Yao Kai <yaokai34@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Leon Chen <leonchen.oss@139.com>
+Subject: [PATCH 6.6 423/567] tracing: Add recursion protection in kernel stack trace recording
 Date: Mon, 23 Mar 2026 14:45:43 +0100
-Message-ID: <20260323134533.905419184@linuxfoundation.org>
+Message-ID: <20260323134544.354050710@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,222 +69,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229835-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229380-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,joelfernandes.org,gmail.com,huawei.com,goodmis.org,139.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 264F32F9A87
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,efficios.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,139.com:email,joelfernandes.org:email,goodmis.org:email]
+X-Rspamd-Queue-Id: 29CCB2F71CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 759cc793ebfc2d1a02f357ae97e5dcdcd63f758f ]
+[ Upstream commit 5f1ef0dfcb5b7f4a91a9b0e0ba533efd9f7e2cdb ]
 
-When GEM is used as a wake device, it is not mandatory for the RX DMA
-to be active. The RX engine in IP only needs to receive and identify
-a wake packet through an interrupt. The wake packet is of no further
-significance; hence, it is not required to be copied into memory.
-By disabling RX DMA during suspend, we can avoid unnecessary DMA
-processing of any incoming traffic.
+A bug was reported about an infinite recursion caused by tracing the rcu
+events with the kernel stack trace trigger enabled. The stack trace code
+called back into RCU which then called the stack trace again.
 
-During suspend, perform either of the below operations:
+Expand the ftrace recursion protection to add a set of bits to protect
+events from recursion. Each bit represents the context that the event is
+in (normal, softirq, interrupt and NMI).
 
-- tie-off/dummy descriptor: Disable unused queues by connecting
-  them to a looped descriptor chain without free slots.
+Have the stack trace code use the interrupt context to protect against
+recursion.
 
-- queue disable: The newer IP version allows disabling individual queues.
+Note, the bug showed an issue in both the RCU code as well as the tracing
+stacktrace code. This only handles the tracing stack trace side of the
+bug. The RCU fix will be handled separately.
 
-Co-developed-by: Harini Katakam <harini.katakam@amd.com>
-Signed-off-by: Harini Katakam <harini.katakam@amd.com>
-Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Tested-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> # on SAMA7G5
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 718d0766ce4c ("net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/20260102122807.7025fc87@gandalf.local.home/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Link: https://patch.msgid.link/20260105203141.515cd49f@gandalf.local.home
+Reported-by: Yao Kai <yaokai34@huawei.com>
+Tested-by: Yao Kai <yaokai34@huawei.com>
+Fixes: 5f5fa7ea89dc ("rcu: Don't use negative nesting depth in __rcu_read_unlock()")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb.h      |    7 +++
- drivers/net/ethernet/cadence/macb_main.c |   60 +++++++++++++++++++++++++++++--
- 2 files changed, 64 insertions(+), 3 deletions(-)
+ include/linux/trace_recursion.h |    9 +++++++++
+ kernel/trace/trace.c            |    6 ++++++
+ 2 files changed, 15 insertions(+)
 
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -636,6 +636,10 @@
- #define GEM_T2OFST_OFFSET			0 /* offset value */
- #define GEM_T2OFST_SIZE				7
+--- a/include/linux/trace_recursion.h
++++ b/include/linux/trace_recursion.h
+@@ -34,6 +34,13 @@ enum {
+ 	TRACE_INTERNAL_SIRQ_BIT,
+ 	TRACE_INTERNAL_TRANSITION_BIT,
  
-+/* Bitfields in queue pointer registers */
-+#define MACB_QUEUE_DISABLE_OFFSET		0 /* disable queue */
-+#define MACB_QUEUE_DISABLE_SIZE			1
++	/* Internal event use recursion bits */
++	TRACE_INTERNAL_EVENT_BIT,
++	TRACE_INTERNAL_EVENT_NMI_BIT,
++	TRACE_INTERNAL_EVENT_IRQ_BIT,
++	TRACE_INTERNAL_EVENT_SIRQ_BIT,
++	TRACE_INTERNAL_EVENT_TRANSITION_BIT,
 +
- /* Offset for screener type 2 compare values (T2CMPOFST).
-  * Note the offset is applied after the specified point,
-  * e.g. GEM_T2COMPOFST_ETYPE denotes the EtherType field, so an offset
-@@ -722,6 +726,7 @@
- #define MACB_CAPS_NEEDS_RSTONUBR		0x00000100
- #define MACB_CAPS_MIIONRGMII			0x00000200
- #define MACB_CAPS_NEED_TSUCLK			0x00000400
-+#define MACB_CAPS_QUEUE_DISABLE			0x00000800
- #define MACB_CAPS_PCS				0x01000000
- #define MACB_CAPS_HIGH_SPEED			0x02000000
- #define MACB_CAPS_CLK_HW_CHG			0x04000000
-@@ -1254,6 +1259,8 @@ struct macb {
- 	u32	(*macb_reg_readl)(struct macb *bp, int offset);
- 	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
+ 	TRACE_BRANCH_BIT,
+ /*
+  * Abuse of the trace_recursion.
+@@ -97,6 +104,8 @@ enum {
  
-+	struct macb_dma_desc	*rx_ring_tieoff;
-+	dma_addr_t		rx_ring_tieoff_dma;
- 	size_t			rx_buffer_size;
+ #define TRACE_LIST_START	TRACE_INTERNAL_BIT
  
- 	unsigned int		rx_ring_size;
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2511,6 +2511,12 @@ static void macb_free_consistent(struct
- 	unsigned int q;
- 	int size;
- 
-+	if (bp->rx_ring_tieoff) {
-+		dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
-+				  bp->rx_ring_tieoff, bp->rx_ring_tieoff_dma);
-+		bp->rx_ring_tieoff = NULL;
-+	}
++#define TRACE_EVENT_START	TRACE_INTERNAL_EVENT_BIT
 +
- 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+ #define TRACE_CONTEXT_MASK	((1 << (TRACE_LIST_START + TRACE_CONTEXT_BITS)) - 1)
  
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-@@ -2602,6 +2608,16 @@ static int macb_alloc_consistent(struct
- 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
- 		goto out_err;
- 
-+	/* Required for tie off descriptor for PM cases */
-+	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
-+		bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
-+							macb_dma_desc_get_size(bp),
-+							&bp->rx_ring_tieoff_dma,
-+							GFP_KERNEL);
-+		if (!bp->rx_ring_tieoff)
-+			goto out_err;
-+	}
+ /*
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -3105,6 +3105,11 @@ static void __ftrace_trace_stack(struct
+ 	struct ftrace_stack *fstack;
+ 	struct stack_entry *entry;
+ 	int stackidx;
++	int bit;
 +
- 	return 0;
- 
- out_err:
-@@ -2609,6 +2625,19 @@ out_err:
- 	return -ENOMEM;
- }
- 
-+static void macb_init_tieoff(struct macb *bp)
-+{
-+	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
-+
-+	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
++	bit = trace_test_and_set_recursion(_THIS_IP_, _RET_IP_, TRACE_EVENT_START);
++	if (bit < 0)
 +		return;
-+	/* Setup a wrapping descriptor with no free slots
-+	 * (WRAP and USED) to tie off/disable unused RX queues.
-+	 */
-+	macb_set_addr(bp, desc, MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
-+	desc->ctrl = 0;
-+}
-+
- static void gem_init_rings(struct macb *bp)
- {
- 	struct macb_queue *queue;
-@@ -2632,6 +2661,7 @@ static void gem_init_rings(struct macb *
- 		gem_rx_refill(queue);
- 	}
  
-+	macb_init_tieoff(bp);
+ 	/*
+ 	 * Add one, for this function and the call to save_stack_trace()
+@@ -3162,6 +3167,7 @@ static void __ftrace_trace_stack(struct
+ 	__this_cpu_dec(ftrace_stack_reserve);
+ 	preempt_enable_notrace();
+ 
++	trace_clear_recursion(bit);
  }
  
- static void macb_init_rings(struct macb *bp)
-@@ -2649,6 +2679,8 @@ static void macb_init_rings(struct macb
- 	bp->queues[0].tx_head = 0;
- 	bp->queues[0].tx_tail = 0;
- 	desc->ctrl |= MACB_BIT(TX_WRAP);
-+
-+	macb_init_tieoff(bp);
- }
- 
- static void macb_reset_hw(struct macb *bp)
-@@ -5188,6 +5220,7 @@ static int __maybe_unused macb_suspend(s
- 	unsigned long flags;
- 	unsigned int q;
- 	int err;
-+	u32 tmp;
- 
- 	if (!device_may_wakeup(&bp->dev->dev))
- 		phy_exit(bp->sgmii_phy);
-@@ -5197,17 +5230,38 @@ static int __maybe_unused macb_suspend(s
- 
- 	if (bp->wol & MACB_WOL_ENABLED) {
- 		spin_lock_irqsave(&bp->lock, flags);
--		/* Flush all status bits */
--		macb_writel(bp, TSR, -1);
--		macb_writel(bp, RSR, -1);
-+
-+		/* Disable Tx and Rx engines before  disabling the queues,
-+		 * this is mandatory as per the IP spec sheet
-+		 */
-+		tmp = macb_readl(bp, NCR);
-+		macb_writel(bp, NCR, tmp & ~(MACB_BIT(TE) | MACB_BIT(RE)));
- 		for (q = 0, queue = bp->queues; q < bp->num_queues;
- 		     ++q, ++queue) {
-+			/* Disable RX queues */
-+			if (bp->caps & MACB_CAPS_QUEUE_DISABLE) {
-+				queue_writel(queue, RBQP, MACB_BIT(QUEUE_DISABLE));
-+			} else {
-+				/* Tie off RX queues */
-+				queue_writel(queue, RBQP,
-+					     lower_32_bits(bp->rx_ring_tieoff_dma));
-+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
-+				queue_writel(queue, RBQPH,
-+					     upper_32_bits(bp->rx_ring_tieoff_dma));
-+#endif
-+			}
- 			/* Disable all interrupts */
- 			queue_writel(queue, IDR, -1);
- 			queue_readl(queue, ISR);
- 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 				queue_writel(queue, ISR, -1);
- 		}
-+		/* Enable Receive engine */
-+		macb_writel(bp, NCR, tmp | MACB_BIT(RE));
-+		/* Flush all status bits */
-+		macb_writel(bp, TSR, -1);
-+		macb_writel(bp, RSR, -1);
-+
- 		/* Change interrupt handler and
- 		 * Enable WoL IRQ on queue 0
- 		 */
+ static inline void ftrace_trace_stack(struct trace_array *tr,
 
 
 
