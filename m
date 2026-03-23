@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-227992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLuJDNdGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-227992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:43 +0100
+	id QGoYLnVswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847BC2F37E9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6482F87DE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DAAD305E9FB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 77A7B304D597
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088413AE6EE;
-	Mon, 23 Mar 2026 13:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F013BED2B;
+	Mon, 23 Mar 2026 16:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eku0kHCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgFwaqYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDC33AE1BD;
-	Mon, 23 Mar 2026 13:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881053BC67C;
+	Mon, 23 Mar 2026 16:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273796; cv=none; b=ZKHXQYhX8KVR1Hpv4xgSrwl5wg/855BhInToZgxFhwHGHILTas1GvKOK1qsBS5IH++HK0jWZi87W1odIFm6SPwmdXBzNupzN0CL6aRO6Luth0g1tMB/23T6kK/ATF/cZu6l9Jv5MxU6u8YshQfQACQXBbykP1kNb/NdmVyX85qY=
+	t=1774282574; cv=none; b=GO8sQbyp0ATXuWQvHr4IbQlS4B+mjMYExHuVtNGf9jYfteoHRC0h5D41svfYYzof74I76HNHpTpoDCNuxmd79JvhrXAZAl5Rw09bKOVJJ1OuWuPBtBbt63jFj4cXqG5yfKUNHzNctVxyIU6pCWchMSbG+lMAT7ky9+I/YlIl+QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273796; c=relaxed/simple;
-	bh=j8BXj6I4jfR9mJW7zXVTMfxk87DPgCkBf19WzTpBo58=;
+	s=arc-20240116; t=1774282574; c=relaxed/simple;
+	bh=gBiDp7IrWOzblvltTh/67NqDhWeYYNAfUY6+VjiAfPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6qFmUTb0i1G5ySW96vA4/vsKlkvDlTLZseBXBTLPei05ETeVNOCKvURJaWsEQ7dNJw5nMQJlHKj3dqxis8KSWANYAG2CrjnMQeNA0R60PvOl5KR2OrGyJ3OSfyt6YvhyQQBiNmqHg64E2QxA4eWqnYB2KS2FvMdSOAe/7zOQNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eku0kHCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D02C4CEF7;
-	Mon, 23 Mar 2026 13:49:55 +0000 (UTC)
+	 MIME-Version; b=uBRZi6WPP3a18IjhTztN2+3llzSJrq3f46OUKt80pzbva5bl6fsE0ikmKA6M7xKYEZ/RX6qZMzJykcwMqY7O+d1Zij9/h5P3RPH7mV8e0jPFg/YnXzqD/pabGgZ8EzcnTp88kH/63byc/9uO0hi3TSq9FzcW2AWOB3Y9Lu2Eqeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgFwaqYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C748C2BCB0;
+	Mon, 23 Mar 2026 16:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273796;
-	bh=j8BXj6I4jfR9mJW7zXVTMfxk87DPgCkBf19WzTpBo58=;
+	s=korg; t=1774282574;
+	bh=gBiDp7IrWOzblvltTh/67NqDhWeYYNAfUY6+VjiAfPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eku0kHCEvDj9fi3tT7T8Qe9ZTF3TLaqpCwhmkZeS1bSbFVx1M9vII7ahUD43f29o9
-	 5HKc1FQTfNpVSyrNqBc5cWJjkL88/XiEp69fGBUxTVWM7rCgDd6SxN4bvIqbpDZf3H
-	 CQOfCXkP88P/vHcEV+UCEoyvKYUUKLM2ww8yfEqI=
+	b=AgFwaqYjiFWOkiyG7bAswKLQnkbD+aBLxW6GBcHCNxVxli2TXLYDoidwf2MFFXpi9
+	 RQj2yaaWkArsWil216ftLZvBNHUuwejtpwijq5WgvNvvXl0plVhGtTsmFqSfAKReRJ
+	 S3M4IYa9KmUG2g6v4fwUxGT45pH7+Q3iPC198WAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.19 012/220] LoongArch: Give more information if kmem access failed
+	Zilin Guan <zilin@seu.edu.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 207/481] usb: xhci: Fix memory leak in xhci_disable_slot()
 Date: Mon, 23 Mar 2026 14:43:09 +0100
-Message-ID: <20260323134504.967409577@linuxfoundation.org>
+Message-ID: <20260323134530.213642975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +65,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229679-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227992-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 847BC2F37E9
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8E6482F87DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit a47f0754bdd01f971c9715acdbdd3a07515c8f83 upstream.
+commit c1c8550e70401159184130a1afc6261db01fc0ce upstream.
 
-If memory access such as copy_{from, to}_kernel_nofault() failed, its
-users do not know what happened, so it is very useful to print the
-exception code for such cases. Furthermore, it is better to print the
-caller function to know where is the entry.
+xhci_alloc_command() allocates a command structure and, when the
+second argument is true, also allocates a completion structure.
+Currently, the error handling path in xhci_disable_slot() only frees
+the command structure using kfree(), causing the completion structure
+to leak.
 
-Here are the low level call chains:
+Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
+frees both the command structure and the associated completion structure.
+Since the command structure is allocated with zero-initialization,
+command->in_ctx is NULL and will not be erroneously freed by
+xhci_free_command().
 
-  copy_from_kernel_nofault()
-    copy_from_kernel_nofault_loop()
-      __get_kernel_nofault()
+This bug was found using an experimental static analysis tool we are
+developing. The tool is based on the LLVM framework and is specifically
+designed to detect memory management issues. It is currently under
+active development and not yet publicly available, but we plan to
+open-source it after our research is published.
 
-  copy_to_kernel_nofault()
-    copy_to_kernel_nofault_loop()
-      __put_kernel_nofault()
+The bug was originally detected on v6.13-rc1 using our static analysis
+tool, and we have verified that the issue persists in the latest mainline
+kernel.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
+Since triggering these error paths in xhci_disable_slot() requires specific
+hardware conditions or abnormal state, we were unable to construct a test
+case to reliably trigger these specific error paths at runtime.
+
+Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260304223639.3882398-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/uaccess.h |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/uaccess.h
-+++ b/arch/loongarch/include/asm/uaccess.h
-@@ -253,8 +253,13 @@ do {									\
- 									\
- 	__get_kernel_common(*((type *)(dst)), sizeof(type),		\
- 			    (__force type *)(src));			\
--	if (unlikely(__gu_err))						\
-+	if (unlikely(__gu_err))	{					\
-+		pr_info("%s: memory access failed, ecode 0x%x\n",	\
-+			__func__, read_csr_excode());			\
-+		pr_info("%s: the caller is %pS\n",			\
-+			__func__, __builtin_return_address(0));		\
- 		goto err_label;						\
-+	}								\
- } while (0)
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -4067,7 +4067,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
+ 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return -ENODEV;
+ 	}
  
- #define __put_kernel_nofault(dst, src, type, err_label)			\
-@@ -264,8 +269,13 @@ do {									\
- 									\
- 	__pu_val = *(__force type *)(src);				\
- 	__put_kernel_common(((type *)(dst)), sizeof(type));		\
--	if (unlikely(__pu_err))						\
-+	if (unlikely(__pu_err))	{					\
-+		pr_info("%s: memory access failed, ecode 0x%x\n",	\
-+			__func__, read_csr_excode());			\
-+		pr_info("%s: the caller is %pS\n",			\
-+			__func__, __builtin_return_address(0));		\
- 		goto err_label;						\
-+	}								\
- } while (0)
- 
- extern unsigned long __copy_user(void *to, const void *from, __kernel_size_t n);
+@@ -4075,7 +4075,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 				slot_id);
+ 	if (ret) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return ret;
+ 	}
+ 	xhci_ring_cmd_db(xhci);
 
 
 
