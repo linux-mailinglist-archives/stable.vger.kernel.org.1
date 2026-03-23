@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ONgJtZrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:34 +0100
+	id sA4jHuFjwWkZSwQAu9opvQ
+	(envelope-from <stable+bounces-229523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:01:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F992F8612
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3ED2F7461
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14B3531B3F49
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6E6635C962A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912B71DE4E0;
-	Mon, 23 Mar 2026 14:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800BA3B27ED;
+	Mon, 23 Mar 2026 15:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1hZuo0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laYRINop"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54661370D76;
-	Mon, 23 Mar 2026 14:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43380242D70;
+	Mon, 23 Mar 2026 15:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277838; cv=none; b=JSbs07c+L92FPXI6rs9kUu+HLnAAsKt9k110uhFqGzhoD4ULt6wxtFX8serIlTRTz2LATvA534RzKedP+6BCphBxp/PVaynXPQ7N4Saf2AmEkvvAJkBhaXEKjV3hPO9sAv2iHIiEEFuv+dfNN2EtQ3XxmF8daP6NkJtFlt0+v5s=
+	t=1774279721; cv=none; b=c9nG1RDxIDKBeOlR3GG1FBRFFLPuK4kuLvDI3IESRUTK+tMQyDMkTOqt6Pdj8otbsdekeeaV9/ufaNR3M3q53wv4WqNcsnFoW3y0rZf9mraf+koLpt3QVPAwCPLGdtqfIpXsURmVL59cPObIWZWZvzlzOz+pw2SDsss7gXhD+bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277838; c=relaxed/simple;
-	bh=DdHeYmo04e36Nxi1+rlSxj/1x4SFjs5gULAkiAn/y4s=;
+	s=arc-20240116; t=1774279721; c=relaxed/simple;
+	bh=Gt3/1E6/ucbcPbHCYkylBpcmrI5zXtjfQSj1FODnBGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3nWCVXzkv4beB9mfRsJqWcehRZ3BG86veKUrDMp+t0vVEPdx/tbdvkwtcHNFu5p0pPJTm/tIPv7qeQR0ZVFiddzuG4tfZcvmvDkI1e4dCEVm2qeEyWikknucBi468Xx0l19vs45qGWjohktIsOvSp2Yi48q/5dyNE0A4SioElo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1hZuo0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3D3C4CEF7;
-	Mon, 23 Mar 2026 14:57:17 +0000 (UTC)
+	 MIME-Version; b=l3PqqsNLRmOm+v3TNMp9qRQabHGaZTGsY6UESr7DtPl4Uoc2o8zbJmtZR2b/IXqn3hkYEs35OIrnOTPrABxRj7mT25D9pSH41yM5G0va8BMl6z29frb7l8q1Xol+udy2MF6hU5/lkAO4D/264e/ZjoMsd5Lu3w9fvtEm9RGBPWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laYRINop; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFD1C4CEF7;
+	Mon, 23 Mar 2026 15:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277838;
-	bh=DdHeYmo04e36Nxi1+rlSxj/1x4SFjs5gULAkiAn/y4s=;
+	s=korg; t=1774279720;
+	bh=Gt3/1E6/ucbcPbHCYkylBpcmrI5zXtjfQSj1FODnBGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1hZuo0Gqmiia0dUOBOarACh6KZZMyfu6iQAsDvaEISFHbmnNl1/NEMuchBkOK+4M
-	 rZRGfGKwFmzmIebfton8pmA566nR6QFLjOADikIPzQJ2IxXEqq8YEXzI8aBPKxjDO0
-	 12FICCviU6RUpCo0KCi0fBg6pOhr9Ol8gOoYUsew=
+	b=laYRINoplwTod12jG5VmUFT9Cl9idXLJY+s9jXdRpirO7UeTR5rIgIG5/Y9CERey5
+	 rOIBJWE76M1veYV/ZQ6+a+Kn/MD7k0f/nEzBcrycQYortEjeI32f2Pv0NvXITeX0dc
+	 ra4gJyT3WODil01vO+tMFwL6n2QlS0Pj1b65IJgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 119/567] selftests: mptcp: more stable simult_flows tests
+	Johan Hovold <johan@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/481] mfd: omap-usb-host: Fix OF populate on driver rebind
 Date: Mon, 23 Mar 2026 14:40:39 +0100
-Message-ID: <20260323134536.754932954@linuxfoundation.org>
+Message-ID: <20260323134526.611801319@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +67,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229031-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229523-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[msgid.link:query timed out];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[stable.vger.kernel.org:query timed out,sashal.kernel.org:query timed out,lee.kernel.org:query timed out,andreas.kemnade.info:query timed out,johan.kernel.org:query timed out];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 34F992F8612
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,kemnade.info:email]
+X-Rspamd-Queue-Id: 1A3ED2F7461
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 8c09412e584d9bcc0e71d758ec1008d1c8d1a326 upstream.
+[ Upstream commit 24804ba508a3e240501c521685a1c4eb9f574f8e ]
 
-By default, the netem qdisc can keep up to 1000 packets under its belly
-to deal with the configured rate and delay. The simult flows test-case
-simulates very low speed links, to avoid problems due to slow CPUs and
-the TCP stack tend to transmit at a slightly higher rate than the
-(virtual) link constraints.
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-All the above causes a relatively large amount of packets being enqueued
-in the netem qdiscs - the longer the transfer, the longer the queue -
-producing increasingly high TCP RTT samples and consequently increasingly
-larger receive buffer size due to DRS.
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
 
-When the receive buffer size becomes considerably larger than the needed
-size, the tests results can flake, i.e. because minimal inaccuracy in the
-pacing rate can lead to a single subflow usage towards the end of the
-connection for a considerable amount of data.
-
-Address the issue explicitly setting netem limits suitable for the
-configured link speeds and unflake all the affected tests.
-
-Fixes: 1a418cb8e888 ("mptcp: simult flow self-tests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-1-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+Link: https://patch.msgid.link/20251219110714.23919-1-johan@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/simult_flows.sh |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/mfd/omap-usb-host.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/simult_flows.sh
-+++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
-@@ -227,10 +227,13 @@ run_test()
- 	for dev in ns2eth1 ns2eth2; do
- 		tc -n $ns2 qdisc del dev $dev root >/dev/null 2>&1
- 	done
--	tc -n $ns1 qdisc add dev ns1eth1 root netem rate ${rate1}mbit $delay1
--	tc -n $ns1 qdisc add dev ns1eth2 root netem rate ${rate2}mbit $delay2
--	tc -n $ns2 qdisc add dev ns2eth1 root netem rate ${rate1}mbit $delay1
--	tc -n $ns2 qdisc add dev ns2eth2 root netem rate ${rate2}mbit $delay2
-+
-+	# keep the queued pkts number low, or the RTT estimator will see
-+	# increasing latency over time.
-+	tc -n $ns1 qdisc add dev ns1eth1 root netem rate ${rate1}mbit $delay1 limit 50
-+	tc -n $ns1 qdisc add dev ns1eth2 root netem rate ${rate2}mbit $delay2 limit 50
-+	tc -n $ns2 qdisc add dev ns2eth1 root netem rate ${rate1}mbit $delay1 limit 50
-+	tc -n $ns2 qdisc add dev ns2eth2 root netem rate ${rate2}mbit $delay2 limit 50
+diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+index b61fb9933aa85..936faa0c26e09 100644
+--- a/drivers/mfd/omap-usb-host.c
++++ b/drivers/mfd/omap-usb-host.c
+@@ -822,8 +822,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
+ {
+ 	pm_runtime_disable(&pdev->dev);
  
- 	# time is measured in ms, account for transfer size, aggregated link speed
- 	# and header overhead (10%)
+-	/* remove children */
+-	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
++	if (pdev->dev.of_node)
++		of_platform_depopulate(&pdev->dev);
++	else
++		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+ }
+ 
+ static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
+-- 
+2.51.0
+
 
 
 
