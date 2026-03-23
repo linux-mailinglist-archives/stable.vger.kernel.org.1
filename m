@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIzsHghLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:36 +0100
+	id eNm8IxtHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240192F40BE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0592F38BF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B0673095C78
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66093306C470
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734A33ACA5C;
-	Mon, 23 Mar 2026 14:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46A73ACA68;
+	Mon, 23 Mar 2026 13:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUAT3kvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlNFIcYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F253803EF;
-	Mon, 23 Mar 2026 14:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D983A961B;
+	Mon, 23 Mar 2026 13:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274543; cv=none; b=syA3Qyo4jPVg1joHBt2MllRs6+Y+L6PPTQMBG7/cDAjUEAJk2xcdIgE5fm5XYENuWDSqoYYe9g8mAlwbmDeLjP7X6j6Bh5iE1zXJW3t3Wsccv/kEd2MS0lfhXqyy0bogP9F1/Ui+F0TyKxQUGCgSOT3W8+XJn3/yE1agafn6x4U=
+	t=1774273909; cv=none; b=rW8VZ6IshYQEBiW4Es3XQwqf4kgI7d7IDDOIPnGigtkNKJ4rgGVel3KL8DnhrgHBsN90YPlEQkkWKTTHg92aR9N4WjVpLGL2HW8c2pHZ81ZuQh+QDxi/F5n7aZRbgmwQHQjtfrZ++ucPBAe7AZqJ8ITOrA3tsSAUSWYkdYkLhxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274543; c=relaxed/simple;
-	bh=dXQyW+Olf8L9+7Bb3P0TgRs6HTK+RhVGH04JNooXbd8=;
+	s=arc-20240116; t=1774273909; c=relaxed/simple;
+	bh=Jk63OrMps+XosBadNcDv6b8pTEqtrADP/qACJI4jvRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zu+SOqgYjuFPROG2G1h+iQ5xLKZnMPaUnEibEsezp8nbHONjIxiB0d5pW/dOMyz4itaAlBBK2dUZsgQAwibXiwv/BNB+Mh/7SzlJFY/zCzsQit+c0PC7si5QYcJkhHmTcmT1ibAOJ4fmRl2FIjsreESfBfj/R7y+eJHPVK38bes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUAT3kvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC41C4CEF7;
-	Mon, 23 Mar 2026 14:02:22 +0000 (UTC)
+	 MIME-Version; b=rp7L0Jv4AW9Rjcm9F6nxqKit1Ng8nW7GifbmX5nKH9Sl3F4qVPXa5LK4YoYJl8YJCDSyzPjh1wKwSEaj7lobflNlh59CTTSw2FHCiBfy7kVe+c3iwGjV9sg1ZtSPlDAsj1tVJevK0kfLmjcfB7qYuyX8+azwoE+ntA7pKpBJzkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlNFIcYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BCCC4CEF7;
+	Mon, 23 Mar 2026 13:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274543;
-	bh=dXQyW+Olf8L9+7Bb3P0TgRs6HTK+RhVGH04JNooXbd8=;
+	s=korg; t=1774273909;
+	bh=Jk63OrMps+XosBadNcDv6b8pTEqtrADP/qACJI4jvRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUAT3kvBniKlRScL5NZzQKtPweiJcUfjzP2OdTlQhkTiwgR+nSlGzSb8zM+Vz/uXZ
-	 ZXehRcCn+qQTJnFwYOxlPx1dduEVf4AXgTTO4mbjhqBlUSt8IAJQpxOT4pwL7meOu9
-	 ShP8+G67IQyNRUmVjJ8suNJ4HJmRvaBvmfVops7k=
+	b=JlNFIcYpF8Axy/VSIB+cA17w7Uc7mM6KyAElH2E3tyOJ6mjRIxrDPo1gmBbI0a5HT
+	 09XB4LMC3GrFxWplrWF9vvskdYVhR2vC2fPvrmCrslOa/B2YgAlwbvSNw8M7+BdGmG
+	 BVBmprcWR1TZUVqUKxuYcbBxlJw/hlePtZgQjCjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nicholas Carlini <npc@anthropic.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 003/212] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
+	David Jander <david@protonic.nl>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.19 047/220] spi: fix use-after-free on controller registration failure
 Date: Mon, 23 Mar 2026 14:43:44 +0100
-Message-ID: <20260323134503.878060124@linuxfoundation.org>
+Message-ID: <20260323134506.074275295@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +68,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228238-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228028-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,anthropic.com:email]
-X-Rspamd-Queue-Id: 240192F40BE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EF0592F38BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 5133b61aaf437e5f25b1b396b14242a6bb0508e2 upstream.
+commit 8634e05b08ead636e926022f4a98416e13440df9 upstream.
 
-The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
-(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
-This size was calculated based on OPEN responses and does not account
-for LOCK denied responses, which include the conflicting lock owner as
-a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
+Make sure to deregister from driver core also in the unlikely event that
+per-cpu statistics allocation fails during controller registration to
+avoid use-after-free (of driver resources) and unclocked register
+accesses.
 
-When a LOCK operation is denied due to a conflict with an existing lock
-that has a large owner, nfsd4_encode_operation() copies the full encoded
-response into the undersized replay buffer via read_bytes_from_xdr_buf()
-with no bounds check. This results in a slab-out-of-bounds write of up
-to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
-
-This can be triggered remotely by an unauthenticated attacker with two
-cooperating NFSv4.0 clients: one sets a lock with a large owner string,
-then the other requests a conflicting lock to provoke the denial.
-
-We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
-opaque, but that would increase the size of every stateowner, when most
-lockowners are not that large.
-
-Instead, fix this by checking the encoded response length against
-NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
-response is too large, set rp_buflen to 0 to skip caching the replay
-payload. The status is still cached, and the client already received the
-correct response on the original request.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Tested-by: Nicholas Carlini <npc@anthropic.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: David Jander <david@protonic.nl>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260312151817.32100-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    9 +++++++--
- fs/nfsd/state.h   |   17 ++++++++++++-----
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/spi/spi.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5934,9 +5934,14 @@ nfsd4_encode_operation(struct nfsd4_comp
- 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
- 
- 		so->so_replay.rp_status = op->status;
--		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, op_status_offset + XDR_UNIT,
-+		if (len <= NFSD4_REPLAY_ISIZE) {
-+			so->so_replay.rp_buflen = len;
-+			read_bytes_from_xdr_buf(xdr->buf,
-+						op_status_offset + XDR_UNIT,
- 						so->so_replay.rp_buf, len);
-+		} else {
-+			so->so_replay.rp_buflen = 0;
-+		}
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3344,10 +3344,8 @@ int spi_register_controller(struct spi_c
+ 		dev_info(dev, "controller is unqueued, this is deprecated\n");
+ 	} else if (ctlr->transfer_one || ctlr->transfer_one_message) {
+ 		status = spi_controller_initialize_queue(ctlr);
+-		if (status) {
+-			device_del(&ctlr->dev);
+-			goto free_bus_id;
+-		}
++		if (status)
++			goto del_ctrl;
  	}
- status:
- 	op->status = nfsd4_map_status(op->status,
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -541,11 +541,18 @@ struct nfs4_client_reclaim {
- 	struct xdr_netobj	cr_princhash;
- };
+ 	/* Add statistics */
+ 	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
+@@ -3370,6 +3368,8 @@ int spi_register_controller(struct spi_c
  
--/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
-- * The OPEN response, typically the largest, requires 
-- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
-- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
-- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
-+/*
-+ * REPLAY_ISIZE is sized for an OPEN response with delegation:
-+ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
-+ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
-+ *   4(deleg. recall flag) + 20(deleg. space limit) +
-+ *   ~32(deleg. ace) = 112 bytes
-+ *
-+ * Some responses can exceed this. A LOCK denial includes the conflicting
-+ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
-+ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
-+ * saved. Enlarging this constant increases the size of every
-+ * nfs4_stateowner.
-  */
- 
- #define NFSD4_REPLAY_ISIZE       112 
+ destroy_queue:
+ 	spi_destroy_queue(ctlr);
++del_ctrl:
++	device_del(&ctlr->dev);
+ free_bus_id:
+ 	mutex_lock(&board_lock);
+ 	idr_remove(&spi_controller_idr, ctlr->bus_num);
 
 
 
