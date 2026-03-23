@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNOhKKVQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:33 +0100
+	id yDPYF0lswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CFA2F4F24
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961A82F874D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F09DD3181DC1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 588E63125407
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC29D36F414;
-	Mon, 23 Mar 2026 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6C43BBA1C;
+	Mon, 23 Mar 2026 16:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW/sZ2WE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iKCyhYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4CE1D63F3;
-	Mon, 23 Mar 2026 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623F23B8D4F;
+	Mon, 23 Mar 2026 16:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275495; cv=none; b=DNdeAr9J3GDS2yDfSX3SLKfeyK97eFHqKdkV9vr5WmPpszRy0dvfNNqrC9CA5Tc0+6dFIkemz9gky+s1KhCZycJu5YbgYG93FjjlFVCHt8sXuYBRjv8gsBXV5G8OkNYpFinmd+aZ1bK/IIB/bn1V6a9OQAcxR8+t271W5eoKOAU=
+	t=1774282531; cv=none; b=lBAMRgSHfO28krZx1IfxGkIqvC1A7Z5QcTEO7KzBKrUW1jXSkfprC0YpnBaJzlY1CE0NlF5glOkKbd6vr7+KYcEtNs2mM89152QdH0DvKmf+wyQv6P2eyN5AwwPG1SJNwIewbsvrLEhYxlMToePlqOcEIEH4Hd3SVEJJYfmfJVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275495; c=relaxed/simple;
-	bh=eHO1DfHVZAtjXitXDfQdDsTFH1gR5S/aFG86QGEc/w8=;
+	s=arc-20240116; t=1774282531; c=relaxed/simple;
+	bh=0k2Hq2TsMGq6LwX5UEwG/5rddOrWoD6wRi08WmrArMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onKtmLeBtee3L8yF9DPtUUL+6BippEZZ3/V65obxK1DRb5sr+4DsrKY6ybPSknVqx52VOIQjcq62/bJwhp+3qVa9sj8LiYjxej/pcLZRA4+dGOZIieUeIJAF9Y2gXGplsdb4xUHgUkvW1bSYNhBhvSg5stotYipqKBdB6OeNpsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wW/sZ2WE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6442C4CEF7;
-	Mon, 23 Mar 2026 14:18:14 +0000 (UTC)
+	 MIME-Version; b=BcD166cTvmqDQ93tRGn+/sXgwozasJ4f8A0KaC3eZ3egLf8BgSdZYCQAAUtd36LAtk00uYiU2TJB5lMNDiVYSeYnHtgWeFqgtSbkg/5481lYBRsi6rkQJLpuYPrfxqhsik7Ae4nH9AmECB9XSETF3JgDn8BvTpXxdvR/71onnpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iKCyhYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D7BC4CEF7;
+	Mon, 23 Mar 2026 16:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275495;
-	bh=eHO1DfHVZAtjXitXDfQdDsTFH1gR5S/aFG86QGEc/w8=;
+	s=korg; t=1774282531;
+	bh=0k2Hq2TsMGq6LwX5UEwG/5rddOrWoD6wRi08WmrArMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wW/sZ2WEuCql9KXH66mc1j2fgQAWQCWQwOTyPmy8hD9OHspP8FrjQkjL03TEkPFsT
-	 NYQuVCI0JU7xT+LTEum3KMjNggxbY1/NlvSUoLjUHjzmKconhoBbp9TM2t1bllww08
-	 MF/qLAAE7yZPZsDI9406awe4Wyut6K7QZL1b6uMc=
+	b=2iKCyhYsz3uDNRLcwXn41v06Iw3WQ9hDH19CDgti8/wmzsM2ZCEqBCa1V3G34OBtm
+	 M7iiyWI84A7dGvEuf0AOiAlgwaGJ7Kild1Bb6nZA0/XmvW/3IGSGO+Z7V58kpfW8Bq
+	 4kCcpN1trVeOfbWk9+p4/DGYuaHhIfbd++LsmKs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Hothi <ravi.hothi@oss.qualcomm.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 122/460] ASoC: qcom: qdsp6: Fix q6apm remove ordering during ADSP stop and start
+	Paolo Valerio <pvalerio@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/481] net: ethernet: mtk_eth_soc: Reset prog ptr to old_prog in case of error in mtk_xdp_setup()
 Date: Mon, 23 Mar 2026 14:41:58 +0100
-Message-ID: <20260323134529.621780123@linuxfoundation.org>
+Message-ID: <20260323134528.577733359@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228576-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229663-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 47CFA2F4F24
+X-Rspamd-Queue-Id: 961A82F874D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Hothi <ravi.hothi@oss.qualcomm.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit d6db827b430bdcca3976cebca7bd69cca03cde2c upstream.
+[ Upstream commit 0abc73c8a40fd64ac1739c90bb4f42c418d27a5e ]
 
-During ADSP stop and start, the kernel crashes due to the order in which
-ASoC components are removed.
+Reset eBPF program pointer to old_prog and do not decrease its ref-count
+if mtk_open routine in mtk_xdp_setup() fails.
 
-On ADSP stop, the q6apm-audio .remove callback unloads topology and removes
-PCM runtimes during ASoC teardown. This deletes the RTDs that contain the
-q6apm DAI components before their removal pass runs, leaving those
-components still linked to the card and causing crashes on the next rebind.
-
-Fix this by ensuring that all dependent (child) components are removed
-first, and the q6apm component is removed last.
-
-[   48.105720] Unable to handle kernel NULL pointer dereference at virtual =
-address 00000000000000d0
-[   48.114763] Mem abort info:
-[   48.117650]   ESR =3D 0x0000000096000004
-[   48.121526]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-[   48.127010]   SET =3D 0, FnV =3D 0
-[   48.130172]   EA =3D 0, S1PTW =3D 0
-[   48.133415]   FSC =3D 0x04: level 0 translation fault
-[   48.138446] Data abort info:
-[   48.141422]   ISV =3D 0, ISS =3D 0x00000004, ISS2 =3D 0x00000000
-[   48.147079]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-[   48.152354]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-[   48.157859] user pgtable: 4k pages, 48-bit VAs, pgdp=3D00000001173cf000
-[   48.164517] [00000000000000d0] pgd=3D0000000000000000, p4d=3D00000000000=
-00000
-[   48.171530] Internal error: Oops: 0000000096000004 [#1]  SMP
-[   48.177348] Modules linked in: q6prm_clocks q6apm_lpass_dais q6apm_dai s=
-nd_q6dsp_common q6prm snd_q6apm 8021q garp mrp stp llc snd_soc_hdmi_codec a=
-pr pdr_interface phy_qcom_edp fastrpc qcom_pd_mapper rpmsg_ctrl qrtr_smd rp=
-msg_char qcom_pdr_msg qcom_iris v4l2_mem2mem videobuf2_dma_contig ath11k_pc=
-i msm ubwc_config at24 ath11k videobuf2_memops mac80211 ocmem videobuf2_v4l=
-2 libarc4 drm_gpuvm mhi qrtr videodev drm_exec snd_soc_sc8280xp gpu_sched v=
-ideobuf2_common nvmem_qcom_spmi_sdam snd_soc_qcom_sdw drm_dp_aux_bus qcom_q=
-6v5_pas qcom_spmi_temp_alarm snd_soc_qcom_common rtc_pm8xxx qcom_pon drm_di=
-splay_helper cec qcom_pil_info qcom_stats soundwire_bus drm_client_lib mc d=
-ispcc0_sa8775p videocc_sa8775p qcom_q6v5 camcc_sa8775p snd_soc_dmic phy_qco=
-m_sgmii_eth snd_soc_max98357a i2c_qcom_geni snd_soc_core dwmac_qcom_ethqos =
-llcc_qcom icc_bwmon qcom_sysmon snd_compress qcom_refgen_regulator coresigh=
-t_stm stmmac_platform snd_pcm_dmaengine qcom_common coresight_tmc stmmac co=
-resight_replicator qcom_glink_smem coresight_cti stm_core
-[   48.177444]  coresight_funnel snd_pcm ufs_qcom phy_qcom_qmp_usb gpi phy_=
-qcom_snps_femto_v2 coresight phy_qcom_qmp_ufs qcom_wdt gpucc_sa8775p pcs_xp=
-cs mdt_loader qcom_ice icc_osm_l3 qmi_helpers snd_timer snd soundcore displ=
-ay_connector qcom_rng nvmem_reboot_mode drm_kms_helper phy_qcom_qmp_pcie sh=
-a256 cfg80211 rfkill socinfo fuse drm backlight ipv6
-[   48.301059] CPU: 2 UID: 0 PID: 293 Comm: kworker/u32:2 Not tainted 6.19.=
-0-rc6-dirty #10 PREEMPT
-[   48.310081] Hardware name: Qualcomm Technologies, Inc. Lemans EVK (DT)
-[   48.316782] Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
-[   48.323672] pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=
-=3D--)
-[   48.330825] pc : mutex_lock+0xc/0x54
-[   48.334514] lr : soc_dapm_shutdown_dapm+0x44/0x174 [snd_soc_core]
-[   48.340794] sp : ffff800084ddb7b0
-[   48.344207] x29: ffff800084ddb7b0 x28: ffff00009cd9cf30 x27: ffff00009cd=
-9cc00
-[   48.351544] x26: ffff000099610190 x25: ffffa31d2f19c810 x24: ffffa31d2f1=
-85098
-[   48.358869] x23: ffff800084ddb7f8 x22: 0000000000000000 x21: 00000000000=
-000d0
-[   48.366198] x20: ffff00009ba6c338 x19: ffff00009ba6c338 x18: 00000000fff=
-fffff
-[   48.373528] x17: 000000040044ffff x16: ffffa31d4ae6dca8 x15: 07200774077=
-5076f
-[   48.380853] x14: 0765076d07690774 x13: 00313a323a656369 x12: 767265733a6=
-37673
-[   48.388182] x11: 00000000000003f9 x10: ffffa31d4c7dea98 x9 : 00000000000=
-00001
-[   48.395519] x8 : ffff00009a2aadc0 x7 : 0000000000000003 x6 : 00000000000=
-00000
-[   48.402854] x5 : 0000000000000000 x4 : 0000000000000028 x3 : ffff000ef39=
-7a698
-[   48.410180] x2 : ffff00009a2aadc0 x1 : 0000000000000000 x0 : 00000000000=
-000d0
-[   48.417506] Call trace:
-[   48.420025]  mutex_lock+0xc/0x54 (P)
-[   48.423712]  snd_soc_dapm_shutdown+0x44/0xbc [snd_soc_core]
-[   48.429447]  soc_cleanup_card_resources+0x30/0x2c0 [snd_soc_core]
-[   48.435719]  snd_soc_bind_card+0x4dc/0xcc0 [snd_soc_core]
-[   48.441278]  snd_soc_add_component+0x27c/0x2c8 [snd_soc_core]
-[   48.447192]  snd_soc_register_component+0x9c/0xf4 [snd_soc_core]
-[   48.453371]  devm_snd_soc_register_component+0x64/0xc4 [snd_soc_core]
-[   48.459994]  apm_probe+0xb4/0x110 [snd_q6apm]
-[   48.464479]  apr_device_probe+0x24/0x40 [apr]
-[   48.468964]  really_probe+0xbc/0x298
-[   48.472651]  __driver_probe_device+0x78/0x12c
-[   48.477132]  driver_probe_device+0x40/0x160
-[   48.481435]  __device_attach_driver+0xb8/0x134
-[   48.486011]  bus_for_each_drv+0x80/0xdc
-[   48.489964]  __device_attach+0xa8/0x1b0
-[   48.493916]  device_initial_probe+0x50/0x54
-[   48.498219]  bus_probe_device+0x38/0xa0
-[   48.502170]  device_add+0x590/0x760
-[   48.505761]  device_register+0x20/0x30
-[   48.509623]  of_register_apr_devices+0x1d8/0x318 [apr]
-[   48.514905]  apr_pd_status+0x2c/0x54 [apr]
-[   48.519114]  pdr_notifier_work+0x8c/0xe0 [pdr_interface]
-[   48.524570]  process_one_work+0x150/0x294
-[   48.528692]  worker_thread+0x2d8/0x3d8
-[   48.532551]  kthread+0x130/0x204
-[   48.535874]  ret_from_fork+0x10/0x20
-[   48.539559] Code: d65f03c0 d5384102 d503201f d2800001 (c8e17c02)
-[   48.545823] ---[ end trace 0000000000000000 ]---
-
-Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ravi Hothi <ravi.hothi@oss.qualcomm.com>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260227144534.278568-1-ravi.hothi@oss.qualc=
-omm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7c26c20da5d42 ("net: ethernet: mtk_eth_soc: add basic XDP support")
+Suggested-by: Paolo Valerio <pvalerio@redhat.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260303-mtk-xdp-prog-ptr-fix-v2-1-97b6dbbe240f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c        |    1 +
- sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    1 +
- sound/soc/qcom/qdsp6/q6apm.c            |    1 +
- 3 files changed, 3 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -844,6 +844,7 @@ static const struct snd_soc_component_dr
- 	.ack		=3D q6apm_dai_ack,
- 	.compress_ops	=3D &q6apm_dai_compress_ops,
- 	.use_dai_pcm_id =3D true,
-+	.remove_order   =3D SND_SOC_COMP_ORDER_EARLY,
- };
-=20
- static int q6apm_dai_probe(struct platform_device *pdev)
---- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-@@ -278,6 +278,7 @@ static const struct snd_soc_component_dr
- 	.of_xlate_dai_name =3D q6dsp_audio_ports_of_xlate_dai_name,
- 	.be_pcm_base =3D AUDIOREACH_BE_PCM_BASE,
- 	.use_dai_pcm_id =3D true,
-+	.remove_order   =3D SND_SOC_COMP_ORDER_FIRST,
- };
-=20
- static int q6apm_lpass_dai_dev_probe(struct platform_device *pdev)
---- a/sound/soc/qcom/qdsp6/q6apm.c
-+++ b/sound/soc/qcom/qdsp6/q6apm.c
-@@ -732,6 +732,7 @@ static const struct snd_soc_component_dr
- 	.name		=3D APM_AUDIO_DRV_NAME,
- 	.probe		=3D q6apm_audio_probe,
- 	.remove		=3D q6apm_audio_remove,
-+	.remove_order   =3D SND_SOC_COMP_ORDER_LAST,
- };
-=20
- static int apm_probe(gpr_device_t *gdev)
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 3f2f725ccceb3..20d14e3ae6efd 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3119,12 +3119,21 @@ static int mtk_xdp_setup(struct net_device *dev, struct bpf_prog *prog,
+ 		mtk_stop(dev);
+ 
+ 	old_prog = rcu_replace_pointer(eth->prog, prog, lockdep_rtnl_is_held());
++
++	if (netif_running(dev) && need_update) {
++		int err;
++
++		err = mtk_open(dev);
++		if (err) {
++			rcu_assign_pointer(eth->prog, old_prog);
++
++			return err;
++		}
++	}
++
+ 	if (old_prog)
+ 		bpf_prog_put(old_prog);
+ 
+-	if (netif_running(dev) && need_update)
+-		return mtk_open(dev);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
