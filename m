@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sExPDl5XwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:14 +0100
+	id kE5wKc1LwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E992F5D45
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4171B2F4276
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C0F9302233E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22FE0306C46C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B0D3AE1A6;
-	Mon, 23 Mar 2026 14:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD23E3B0AE5;
+	Mon, 23 Mar 2026 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0CGhBoN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGuGHz3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D33AA516;
-	Mon, 23 Mar 2026 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810063AE6E2;
+	Mon, 23 Mar 2026 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277311; cv=none; b=VaPQR5JrKYd1KiMx40jQJ3gegViVHKBpvaUxW6XqZy7jqlU+FMSM4ceezO6zc5hZ+Sp1EKjfjKHpvU3r25omUQOtqbh+Mjuqn1gZrFMpm7tl1FfRMYl4Xym7rdeIlIWN7SKNo2dzOOZ4haA91lGWmg+o94XfnsVHMM4o0IacHKo=
+	t=1774274953; cv=none; b=C444oHePJwIYTcgIdT7V6F3///QWoxxoXHydVWhJh6NsLD78afWorpRBvLsu+p19p6Kwyjedhdq37GgW2LiZy1CoUViLZqnWRJVYtdrGkkzlMiedl0jB3UBk74y/KljqV0TgImUqLvrLLR56dzjskFoas82kcvxwb4lvcFOCyQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277311; c=relaxed/simple;
-	bh=yRXem0Pt361mm+3gN1RuwjUDfWOKftEywolsyNM/y+s=;
+	s=arc-20240116; t=1774274953; c=relaxed/simple;
+	bh=ZEnUZj918DPpMNAxVIVbvXPgpXw/OZM3WQbmvUtccLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMltkim1LXEIhRE3dxY/2ViZAgrOrhqNHlEPvANdLGqtac5q/IeAL6EKP9tu8NnAXQigxG4KjXy2AnY1iJCruW87KhfjHetA56GIciHlSIvaTbICu9ZhzighVBnrfz+t+WEWjKEddl0rC//gISg5DYef5VHCLYKzeSKlqEMYFp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0CGhBoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBF9C4CEF7;
-	Mon, 23 Mar 2026 14:48:30 +0000 (UTC)
+	 MIME-Version; b=rGHb1mDXuhuuheNaZ1J0bN1Mi+U0tvVk5yTsS+VCDfW/G/8FaTz7UggJsnCGRwrR4+Kr3fL6NlICDcN9NkFReDS2uAcsUYSBdUe0Y8XSpfQUZMKBwIc94DBOhwWbqQLgou0pokeMvflAuGqW1SVsl8U0WwR+IBKvmPITdHnEmb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGuGHz3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6CCC4CEF7;
+	Mon, 23 Mar 2026 14:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277310;
-	bh=yRXem0Pt361mm+3gN1RuwjUDfWOKftEywolsyNM/y+s=;
+	s=korg; t=1774274953;
+	bh=ZEnUZj918DPpMNAxVIVbvXPgpXw/OZM3WQbmvUtccLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0CGhBoNLA03ciLry0HWsL2q2VfjfykI4UdlJtE38zNGXK+OLoBtHFx8CcyinXlX+
-	 MVig5wiVn3Ap0/t4ZwjOcMFVsvx3t2hpgPj/bTS1/2MPbcb4cFkx/FgvijlH5ef3ZI
-	 zOomp2NhGLyxjq3KRu/7nAN5B3nAR5J7h5jZBK6c=
+	b=wGuGHz3ZgHMmveZazrWlkAPFRZzQfUTgSvO+8v34qFBnKWWyWeegZDoXfisXsvjGM
+	 UVXe9Z8mgY2yGJiZb1sbssI+jhLofAHnWmm7o65AFmsZ7HAc0nKC4NqqxWNvwSGiFc
+	 tM50N1xS1Q/Cc821i5bOOoWWoA2HdT9ber6DxsR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 393/460] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
+Subject: [PATCH 6.18 168/212] net/mlx5e: Fix race condition during IPSec ESN update
 Date: Mon, 23 Mar 2026 14:46:29 +0100
-Message-ID: <20260323134536.224843043@linuxfoundation.org>
+Message-ID: <20260323134509.033312912@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,154 +68,158 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228853-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228378-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 55E992F5D45
+X-Rspamd-Queue-Id: 4171B2F4276
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
+[ Upstream commit beb6e2e5976a128b0cccf10d158124422210c5ef ]
 
-ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
-netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
-conntrack reference immediately after netlink_dump_start().  When the
-dump spans multiple rounds, the second recvmsg() triggers the dump
-callback which dereferences the now-freed conntrack via nfct_help(ct),
-leading to a use-after-free on ct->ext.
+In IPSec full offload mode, the device reports an ESN (Extended
+Sequence Number) wrap event to the driver. The driver validates this
+event by querying the IPSec ASO and checking that the esn_event_arm
+field is 0x0, which indicates an event has occurred. After handling
+the event, the driver must re-arm the context by setting esn_event_arm
+back to 0x1.
 
-The bug is that the netlink_dump_control has no .start or .done
-callbacks to manage the conntrack reference across dump rounds.  Other
-dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
-use .start/.done callbacks for this purpose.
+A race condition exists in this handling path. After validating the
+event, the driver calls mlx5_accel_esp_modify_xfrm() to update the
+kernel's xfrm state. This function temporarily releases and
+re-acquires the xfrm state lock.
 
-Fix this by adding .start and .done callbacks that hold and release the
-conntrack reference for the duration of the dump, and move the
-nfct_help() call after the cb->args[0] early-return check in the dump
-callback to avoid dereferencing ct->ext unnecessarily.
+So, need to acknowledge the event first by setting esn_event_arm to
+0x1. This prevents the driver from reprocessing the same ESN update if
+the hardware sends events for other reason. Since the next ESN update
+only occurs after nearly 2^31 packets are received, there's no risk of
+missing an update, as it will happen long after this handling has
+finished.
 
- BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
- Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
+Processing the event twice causes the ESN high-order bits (esn_msb) to
+be incremented incorrectly. The driver then programs the hardware with
+this invalid ESN state, which leads to anti-replay failures and a
+complete halt of IPSec traffic.
 
- CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
- Call Trace:
-  <TASK>
-  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  ? aa_sk_perm+0x184/0x450
-  sock_recvmsg+0xde/0xf0
+Fix this by re-arming the ESN event immediately after it is validated,
+before calling mlx5_accel_esp_modify_xfrm(). This ensures that any
+spurious, duplicate events are correctly ignored, closing the race
+window.
 
- Allocated by task 133:
-  kmem_cache_alloc_noprof+0x134/0x440
-  __nf_conntrack_alloc+0xa8/0x2b0
-  ctnetlink_create_conntrack+0xa1/0x900
-  ctnetlink_new_conntrack+0x3cf/0x7d0
-  nfnetlink_rcv_msg+0x48e/0x510
-  netlink_rcv_skb+0xc9/0x1f0
-  nfnetlink_rcv+0xdb/0x220
-  netlink_unicast+0x3ec/0x590
-  netlink_sendmsg+0x397/0x690
-  __sys_sendmsg+0xf4/0x180
-
- Freed by task 0:
-  slab_free_after_rcu_debug+0xad/0x1e0
-  rcu_core+0x5c3/0x9c0
-
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: fef06678931f ("net/mlx5e: Fix ESN update kernel panic")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ .../mlx5/core/en_accel/ipsec_offload.c        | 33 ++++++++-----------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 13836723223e0..627790fcb6bb0 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3206,7 +3206,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
--	struct nf_conn_help *help = nfct_help(ct);
-+	struct nf_conn_help *help;
- 	u_int8_t l3proto = nfmsg->nfgen_family;
- 	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_expect *exp;
-@@ -3214,6 +3214,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (cb->args[0])
- 		return 0;
- 
-+	help = nfct_help(ct);
-+	if (!help)
-+		return 0;
-+
- 	rcu_read_lock();
- 
- restart:
-@@ -3243,6 +3247,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index 2739ff490239d..e0611fa827971 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -310,10 +310,11 @@ static void mlx5e_ipsec_aso_update(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	mlx5e_ipsec_aso_query(sa_entry, data);
  }
  
-+static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (!refcount_inc_not_zero(&ct->ct_general.use))
-+		return -ENOENT;
-+	return 0;
-+}
-+
-+static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (ct)
-+		nf_ct_put(ct);
-+	return 0;
-+}
-+
- static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 				 struct sk_buff *skb,
- 				 const struct nlmsghdr *nlh,
-@@ -3258,6 +3280,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
-+		.start = ctnetlink_dump_exp_ct_start,
-+		.done = ctnetlink_dump_exp_ct_done,
- 	};
+-static void mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
+-					 u32 mode_param)
++static void
++mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
++			     u32 mode_param,
++			     struct mlx5_accel_esp_xfrm_attrs *attrs)
+ {
+-	struct mlx5_accel_esp_xfrm_attrs attrs = {};
+ 	struct mlx5_wqe_aso_ctrl_seg data = {};
  
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
+ 	if (mode_param < MLX5E_IPSEC_ESN_SCOPE_MID) {
+@@ -323,18 +324,7 @@ static void mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 		sa_entry->esn_state.overlap = 1;
+ 	}
+ 
+-	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, &attrs);
+-
+-	/* It is safe to execute the modify below unlocked since the only flows
+-	 * that could affect this HW object, are create, destroy and this work.
+-	 *
+-	 * Creation flow can't co-exist with this modify work, the destruction
+-	 * flow would cancel this work, and this work is a single entity that
+-	 * can't conflict with it self.
+-	 */
+-	spin_unlock_bh(&sa_entry->x->lock);
+-	mlx5_accel_esp_modify_xfrm(sa_entry, &attrs);
+-	spin_lock_bh(&sa_entry->x->lock);
++	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, attrs);
+ 
+ 	data.data_offset_condition_operand =
+ 		MLX5_IPSEC_ASO_REMOVE_FLOW_PKT_CNT_OFFSET;
+@@ -451,7 +441,9 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 	struct mlx5e_ipsec_work *work =
+ 		container_of(_work, struct mlx5e_ipsec_work, work);
+ 	struct mlx5e_ipsec_sa_entry *sa_entry = work->data;
++	struct mlx5_accel_esp_xfrm_attrs tmp = {};
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs;
++	bool need_modify = false;
+ 	int ret;
+ 
+ 	attrs = &sa_entry->attrs;
+@@ -461,19 +453,22 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 	if (ret)
+ 		goto unlock;
+ 
++	if (attrs->lft.soft_packet_limit != XFRM_INF)
++		mlx5e_ipsec_handle_limits(sa_entry);
++
+ 	if (attrs->replay_esn.trigger &&
+ 	    !MLX5_GET(ipsec_aso, sa_entry->ctx, esn_event_arm)) {
+ 		u32 mode_param = MLX5_GET(ipsec_aso, sa_entry->ctx,
+ 					  mode_parameter);
+ 
+-		mlx5e_ipsec_update_esn_state(sa_entry, mode_param);
++		mlx5e_ipsec_update_esn_state(sa_entry, mode_param, &tmp);
++		need_modify = true;
+ 	}
+ 
+-	if (attrs->lft.soft_packet_limit != XFRM_INF)
+-		mlx5e_ipsec_handle_limits(sa_entry);
+-
+ unlock:
+ 	spin_unlock_bh(&sa_entry->x->lock);
++	if (need_modify)
++		mlx5_accel_esp_modify_xfrm(sa_entry, &tmp);
+ 	kfree(work);
+ }
+ 
 -- 
 2.51.0
 
