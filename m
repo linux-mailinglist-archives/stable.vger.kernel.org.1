@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-228865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCtnEftpwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:39 +0100
+	id QCcgMgd2wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:19:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8FE2F8200
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47532F9B93
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F4D630A76D8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A466630C7FE9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA5730B50F;
-	Mon, 23 Mar 2026 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478553B0AF1;
+	Mon, 23 Mar 2026 16:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3aium+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6ozXgWG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B96B3AB295;
-	Mon, 23 Mar 2026 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A00E3AF662;
+	Mon, 23 Mar 2026 16:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277344; cv=none; b=nnTxDAGTlUimELmJKaGnYbHItEZfybd+MTGxX3VAp1vGc94xt7iAfo0FWV+Wgea9PXnkmnAy1SlEzjMgDhda2qdXrUARUxU2fbK0dK2Y4yDOeXvBZwC5+bqjqJwKF4640lYANziqNRhir523SZSXHxVAh95t/bz23ipuf0kDihE=
+	t=1774283165; cv=none; b=kS3Bz44v0+qT1TmJnBE/90wLcUMSCGEctKe55J6pEyI9f4cAzNeUmirA7fKXuDTnHT88kP+h5x/KOi1y7jFp2Pn9//0cqqt5EnLtQ0LZmyNHwGJJFQZJY+Suegrai/zMJNLuydhxfdwazzYyZSNdK82jourm6Eu87jLc3ldV2OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277344; c=relaxed/simple;
-	bh=HWF4f5mfGbKRVw/zIKeQXRRI43rbuY6Nq64YcJ6Uyos=;
+	s=arc-20240116; t=1774283165; c=relaxed/simple;
+	bh=WrQG/S62rpOUTYki/AdOzPsXPNZWR3IFRtE/cR1HO2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPd7WRW+2VtPUBWAAl0DIZfkTES8kQQyC33arK6XOOzRb//NF3OEvRgRvWamkjtfJmh4mbxmfPmGFM+hBUOSo6IY7T/3uvzezhQWnxbHrOgBoQDuNniZPL+pJDlEeQbUj4zDeJS93FIeqiB/NBd3RxggxYZLS4okN0gExMlMgsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3aium+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874C2C4CEF7;
-	Mon, 23 Mar 2026 14:49:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mPb/UmWFtw7TESxbLTzKi7b7NA9ZRfgwqacUdAQux2ZKh0UADkb8PNHw/EP54XnXSzjh2oJic48pK0BZLIiLoZ5vcu45XI+zQiknpf6Q/KOFIFzTeHsfUqXeWcjlB7ET8D41V5ziqLe+hp9z3bq74EVCoCbxSOKuNwDQUEXtkhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6ozXgWG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9770FC4CEF7;
+	Mon, 23 Mar 2026 16:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277343;
-	bh=HWF4f5mfGbKRVw/zIKeQXRRI43rbuY6Nq64YcJ6Uyos=;
+	s=korg; t=1774283164;
+	bh=WrQG/S62rpOUTYki/AdOzPsXPNZWR3IFRtE/cR1HO2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3aium+0glAQzO52df+ezOl9NcHSK1fbzJkFYlcsLdW0rG8DSJlHTxbpJ6WRRMwBE
-	 zRttSn6AW0GBJG5YvmJyfpKmYaYM6JZDbmR5G0ajOe537pKQrUIf8BOg7vquruNHiY
-	 HaMNFLqHCCWwqTIXKHquJYRdD2fhibvdr//l781k=
+	b=w6ozXgWGF0NAWYJ4pZekMCpFSzDmNpAvsJN8po8xByiogYsDVYVHJt8ZmHEI8N3Y4
+	 wtLduMEhyI5lzuEhdLJIlea5AffGB96MBDRntBzQvBiDX7NT3CJjM7BUgHlJamJqPB
+	 CoVlnWAw2g3QbB6/muHf68xVnZtHOOwpWsgfywzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 404/460] PM: runtime: Fix a race condition related to device removal
-Date: Mon, 23 Mar 2026 14:46:40 +0100
-Message-ID: <20260323134536.488097547@linuxfoundation.org>
+Subject: [PATCH 6.1 419/481] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
+Date: Mon, 23 Mar 2026 14:46:41 +0100
+Message-ID: <20260323134535.406458432@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,161 +65,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228865-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229900-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-0.981];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,acm.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: AE8FE2F8200
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: C47532F9B93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
+[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
 
-The following code in pm_runtime_work() may dereference the dev->parent
-pointer after the parent device has been freed:
+In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
+the packet, then decrements it by 1 to skip the protocol discriminator
+byte before passing it to DecodeH323_UserInformation(). If the encoded
+length is 0, the decrement wraps to -1, which is then passed as a
+large value to the decoder, leading to an out-of-bounds read.
 
-	/* Maybe the parent is now able to suspend. */
-	if (parent && !parent->power.ignore_children) {
-		spin_unlock(&dev->power.lock);
+Add a check to ensure len is positive after the decrement.
 
-		spin_lock(&parent->power.lock);
-		rpm_idle(parent, RPM_ASYNC);
-		spin_unlock(&parent->power.lock);
-
-		spin_lock(&dev->power.lock);
-	}
-
-Fix this by inserting a flush_work() call in pm_runtime_remove().
-
-Without this patch blktest block/001 triggers the following complaint
-sporadically:
-
-BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
-Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
-Workqueue: pm pm_runtime_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x61/0x80
- print_address_description.constprop.0+0x8b/0x310
- print_report+0xfd/0x1d7
- kasan_report+0xd8/0x1d0
- __kasan_check_byte+0x42/0x60
- lock_acquire.part.0+0x38/0x230
- lock_acquire+0x70/0x160
- _raw_spin_lock+0x36/0x50
- rpm_suspend+0xc6a/0xfe0
- rpm_idle+0x578/0x770
- pm_runtime_work+0xee/0x120
- process_one_work+0xde3/0x1410
- worker_thread+0x5eb/0xfe0
- kthread+0x37b/0x480
- ret_from_fork+0x6cb/0x920
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Allocated by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_alloc_info+0x3d/0x50
- __kasan_kmalloc+0xa0/0xb0
- __kmalloc_noprof+0x311/0x990
- scsi_alloc_target+0x122/0xb60 [scsi_mod]
- __scsi_scan_target+0x101/0x460 [scsi_mod]
- scsi_scan_channel+0x179/0x1c0 [scsi_mod]
- scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
- store_scan+0x2d2/0x390 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
- do_syscall_64+0xee/0xfc0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Freed by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_free_info+0x3f/0x50
- __kasan_slab_free+0x67/0x80
- kfree+0x225/0x6c0
- scsi_target_dev_release+0x3d/0x60 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_put+0x7f/0xc0 [scsi_mod]
- sdev_store_delete+0xa5/0x120 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
-
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
-Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
-Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 425c44f1e4d31..167ff6f7a3fec 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1856,6 +1856,7 @@ void pm_runtime_reinit(struct device *dev)
- void pm_runtime_remove(struct device *dev)
- {
- 	__pm_runtime_disable(dev, false);
-+	flush_work(&dev->power.work);
- 	pm_runtime_reinit(dev);
- }
- 
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index c972e9488e16f..7b1497ed97d26 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
+ 				break;
+ 			p++;
+ 			len--;
++			if (len <= 0)
++				break;
+ 			return DecodeH323_UserInformation(buf, p, len,
+ 							  &q931->UUIE);
+ 		}
 -- 
 2.51.0
 
