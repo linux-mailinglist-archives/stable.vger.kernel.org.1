@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-229729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PkRIPFxwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:37 +0100
+	id SM56MsFNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300072F94D0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3792F484B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D92883215033
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 328C3303E4B5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919B03BD638;
-	Mon, 23 Mar 2026 16:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B96D3AB29B;
+	Mon, 23 Mar 2026 14:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPwVGNoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTAAqtaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4448A3B9D9F;
-	Mon, 23 Mar 2026 16:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08AF3B0AD8;
+	Mon, 23 Mar 2026 14:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282710; cv=none; b=SyTkn8DTYCbalJsyBCSLyosz5YFahO1gw4GmD9CkxFV3iVgtHOqWCYB5oORCi2MOusMLeIvPpi7Y8fem2ia42mrBpE1HzgBgWH0AytagfLMX04gvmvylCl5uhjwE7YmvRG+TsfWBmwKIVgpVRQ5P5SedYB2AM7INCRi2WAsaLsk=
+	t=1774274501; cv=none; b=JM2ejbiyqWx+/YH06rLx21GVcQwsHVhgvKoqyGCx2RMSC+1SOB6gac9C9VouapFFBct6rSWE+ZZ4+09rl67vrdBCxn0eFZVFFLgOMkbj42w0FDaNBFGGcxK90nbWupiCBzTlJGNi5aBQxFWKqgaLv14ErL4TlCKujutTO4Dq9H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282710; c=relaxed/simple;
-	bh=Ds2pZcwb8fv8dKnZam8kNqQcBtZqDHb0oAjfmzu59x8=;
+	s=arc-20240116; t=1774274501; c=relaxed/simple;
+	bh=iS7oSVBGeDs5pmxoCfByhjIrt4iDtyby4015LJKCAl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bt39w3+xvGn7JssrRGqdM0dH0VBx4CZ0WSSnjcOkLk+3f67bITIr0feek8j7Yiehaeg/3pnouQgHQH4L6YLTIGDaOrjuUFMWIOfGhfm0/GSmLp9D5YMee4QOzrE5ZSeXJZNQ3fk23dDZta/AOAAG9vJTWLXpZwC9Xww5PKEQTT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPwVGNoM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79440C4CEF7;
-	Mon, 23 Mar 2026 16:18:29 +0000 (UTC)
+	 MIME-Version; b=Zy0uQtLAD/vkfEUkisQc5Jws9wHPWSdXVX9aD8Lk9U0lzkztB6sIaUYFDWm0KtkjOYf3YeGSWVGDFhEDGMi7VI+VguP7B677HAWYIeZBp87fpoZ7iLDDgAY8gRZXFOjjcB0Bn2fCL0NhBvXYXhlAh7I8Abxqppbrlh9D7cRUWZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTAAqtaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524DDC4CEF7;
+	Mon, 23 Mar 2026 14:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282709;
-	bh=Ds2pZcwb8fv8dKnZam8kNqQcBtZqDHb0oAjfmzu59x8=;
+	s=korg; t=1774274501;
+	bh=iS7oSVBGeDs5pmxoCfByhjIrt4iDtyby4015LJKCAl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPwVGNoMSQ2kNzZ9/52cGKh9Z4iikN8Av1uwO57N/jW6AISeF5zk66ZSfGmHgfvvj
-	 aB0AvT5BtENm0tuNEFJnT7Plq+d/Z5j6RWsa9mVsRssOWaR4VgkCG+OTXVW9iu27BR
-	 Ws4nLQaCub5qCCqSii1u/p1cdGRmswGhG5u4DvT0=
+	b=DTAAqtaWvymtZyCUUcI8R/OE51+XqBzV5aH26xmDnrMD0sO6AgapLFsSR4QRpE4Ap
+	 fUSUwEMXz1vCUnGK2CHo8jaebXuiFTxeQanOg9u78XjQ3p7bzsWlUbr0/JxaTOtpkC
+	 /GXl0H9rKj4F1jrpvg+tV5orDtkJ5tbQ9ePoixYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 257/481] scsi: core: Fix error handling for scsi_alloc_sdev()
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.18 018/212] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
 Date: Mon, 23 Mar 2026 14:43:59 +0100
-Message-ID: <20260323134531.416415375@linuxfoundation.org>
+Message-ID: <20260323134504.338004241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +72,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229729-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[acm.org:query timed out];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228224-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[junxiao.bi.oracle.com:query timed out,bvanassche.acm.org:query timed out,john.g.garry.oracle.com:query timed out];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 300072F94D0
+X-Rspamd-Queue-Id: 2D3792F484B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
+commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
 
-After scsi_sysfs_device_initialize() was called, error paths must call
-__scsi_remove_device().
+When OGM aggregation state is toggled at runtime, an existing forwarded
+packet may have been allocated with only packet_len bytes, while a later
+packet can still be selected for aggregation. Appending in this case can
+hit skb_put overflow conditions.
 
-Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
+Reject aggregation when the target skb tailroom cannot accommodate the new
+packet. The caller then falls back to creating a new forward packet
+instead of appending.
+
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_scan.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ net/batman-adv/bat_iv_ogm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -354,12 +354,8 @@ static struct scsi_device *scsi_alloc_sd
- 	 * default device queue depth to figure out sbitmap shift
- 	 * since we use this queue depth most of times.
- 	 */
--	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
--		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
--		put_device(&starget->dev);
--		kfree(sdev);
--		goto out;
--	}
-+	if (scsi_realloc_sdev_budget_map(sdev, depth))
-+		goto out_device_destroy;
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -473,6 +473,9 @@ batadv_iv_ogm_can_aggregate(const struct
+ 	if (aggregated_bytes > max_bytes)
+ 		return false;
  
- 	scsi_change_queue_depth(sdev, depth);
++	if (skb_tailroom(forw_packet->skb) < packet_len)
++		return false;
++
+ 	if (packet_num >= BATADV_MAX_AGGREGATION_PACKETS)
+ 		return false;
  
 
 
