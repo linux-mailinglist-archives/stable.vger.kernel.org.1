@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-228315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CP8mIidNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:39 +0100
+	id GBH3NN1dwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF732F4667
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71612F68A0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A7F320C147
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2F8D2308758F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7969B3B19AC;
-	Mon, 23 Mar 2026 14:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A705F3B6345;
+	Mon, 23 Mar 2026 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnpiAYuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+njhh+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5F23ACA5C;
-	Mon, 23 Mar 2026 14:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663FA27EFEE;
+	Mon, 23 Mar 2026 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274783; cv=none; b=PPOWQIiT/bJpWP1Bhquw2nH2cyio9+CSaNh7DCw69E6gcM9qcrFxzCYq2zmMs8rnV2uEyM1B8c/UJ5TpBMtqnELvINuYHc1gNKAFH2kEZfxSwhJcKc/UQl/5uiuhxeEQixUdCLO6g7lavBmn/wX6hvqi2GPksBRA9ugHHqNqtVE=
+	t=1774278756; cv=none; b=X9T4VB9QT641y5KUia8hnD59Eyk5pyVT8q8oVAG6LsPUJYILSgXm+xzXJz89Ap2apF1StPyZZbMKBzCDA9rzDCK2wLPlyeoMybW63rzCuMHz7X9IdLozoUzja+FjZf3q+GH42l5zOo7QuRXU7IyexqAXsgD+EiuACQqAzCGXZfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274783; c=relaxed/simple;
-	bh=8HaIQ+C+Yzl0fibUvLZWatnIPOdh9cWE0xRURsf3e1A=;
+	s=arc-20240116; t=1774278756; c=relaxed/simple;
+	bh=K4NYD5WlrM9PzLa9j6DEROVXmlWuE3/IvGUJ2mT/GE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9hqs/51qJIuBlQQ2oDOKnfoFsoaCZGpa9e2lP7o5llWe7EF9vIaIJNidfwPX591W9JBJ/1m7Ep7PQDs0G4uCpPDOEuu/p3dog9Kuff9D9NikPShWwweCA1kMMAeXQANj56E0F8OXnJI+aROAGS2tkOaOfbvRDxFLJN/MVcvH74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnpiAYuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790C7C4CEF7;
-	Mon, 23 Mar 2026 14:06:22 +0000 (UTC)
+	 MIME-Version; b=HvkHwOtRyYvaYrkbbEHyQfmA7UCIW3H4mzH+7nw1XCJ+OyqQ8JG82aW0wTF4zzdZYPU8yXKVXEDZ82wnwN96jh3NxypPYodC7kDYO+DpsTTdl5Oel6vh1QKrF+Udf/40uM4VzI0NXFDop1Vk1fGLRPye5ZvAQ45TYNCqraYvpgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+njhh+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4F5C4CEF7;
+	Mon, 23 Mar 2026 15:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274783;
-	bh=8HaIQ+C+Yzl0fibUvLZWatnIPOdh9cWE0xRURsf3e1A=;
+	s=korg; t=1774278756;
+	bh=K4NYD5WlrM9PzLa9j6DEROVXmlWuE3/IvGUJ2mT/GE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnpiAYuQilfBuGBjpmkMeii2W0JmE78WTk8s5pc2+7UgzYd6feLwKaaMcW5C32W3T
-	 I89JTACASd46t9qyUg6y1nwYAyL8bjZshxVxpFDHT+T95eJ5M5WeE9XxdVdxbXK/Ph
-	 I0b9LV1AIRY/g2iP6aLeGKPbVsYLlBDd98N8SI9I=
+	b=1+njhh+OLzn1URmUr6PI6y712dZVWKyctM7RWttUMAHR3sIZKl3ZOJFo1pjeAk+Fm
+	 WsItL/+D3ZVl6nCGugExhjAMhFRpeHdysmQrKGu8ZoNneSs1e3bEvR+e/bjlwWfmGl
+	 2xRTT3/j1jqjehN2QcnSayPseLZhgtUKGlwdD9Yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	=?UTF-8?q?Sven=20P=C3=BCschel?= <s.pueschel@pengutronix.de>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 107/212] tee: shm: Remove refcounting of kernel pages
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 408/567] NFS: Fix a deadlock involving nfs_release_folio()
 Date: Mon, 23 Mar 2026 14:45:28 +0100
-Message-ID: <20260323134507.163387288@linuxfoundation.org>
+Message-ID: <20260323134543.973692623@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +63,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228315-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229323-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huaweicloud.com,hammerspace.com,139.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DFF732F4667
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A71612F68A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox <willy@infradead.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 08d9a4580f71120be3c5b221af32dca00a48ceb0 ]
+[ Upstream commit cce0be6eb4971456b703aaeafd571650d314bcca ]
 
-Earlier TEE subsystem assumed to refcount all the memory pages to be
-shared with TEE implementation to be refcounted. However, the slab
-allocations within the kernel don't allow refcounting kernel pages.
+Wang Zhaolong reports a deadlock involving NFSv4.1 state recovery
+waiting on kthreadd, which is attempting to reclaim memory by calling
+nfs_release_folio(). The latter cannot make progress due to state
+recovery being needed.
 
-It is rather better to trust the kernel clients to not free pages while
-being shared with TEE implementation. Hence, remove refcounting of kernel
-pages from register_shm_helper() API.
+It seems that the only safe thing to do here is to kick off a writeback
+of the folio, without waiting for completion, or else kicking off an
+asynchronous commit.
 
-Fixes: b9c0e49abfca ("mm: decline to manipulate the refcount on a slab page")
-Reported-by: Marco Felsch <m.felsch@pengutronix.de>
-Reported-by: Sven Püschel <s.pueschel@pengutronix.de>
-Signed-off-by: Matthew Wilcox <willy@infradead.org>
-Co-developed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Tested-by: Sven Püschel <s.pueschel@pengutronix.de>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/tee_shm.c | 27 ---------------------------
- 1 file changed, 27 deletions(-)
+ fs/nfs/file.c          |    3 ++-
+ fs/nfs/nfstrace.h      |    3 +++
+ fs/nfs/write.c         |   33 +++++++++++++++++++++++++++++++++
+ include/linux/nfs_fs.h |    1 +
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-index 4a47de4bb2e5c..898707ca21a8e 100644
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -23,29 +23,11 @@ struct tee_shm_dma_mem {
- 	struct page *page;
- };
- 
--static void shm_put_kernel_pages(struct page **pages, size_t page_count)
--{
--	size_t n;
--
--	for (n = 0; n < page_count; n++)
--		put_page(pages[n]);
--}
--
--static void shm_get_kernel_pages(struct page **pages, size_t page_count)
--{
--	size_t n;
--
--	for (n = 0; n < page_count; n++)
--		get_page(pages[n]);
--}
--
- static void release_registered_pages(struct tee_shm *shm)
- {
- 	if (shm->pages) {
- 		if (shm->flags & TEE_SHM_USER_MAPPED)
- 			unpin_user_pages(shm->pages, shm->num_pages);
--		else
--			shm_put_kernel_pages(shm->pages, shm->num_pages);
- 
- 		kfree(shm->pages);
+--- a/fs/nfs/file.c
++++ b/fs/nfs/file.c
+@@ -459,7 +459,8 @@ static bool nfs_release_folio(struct fol
+ 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
+ 		    current_is_kswapd() || current_is_kcompactd())
+ 			return false;
+-		if (nfs_wb_folio(folio_file_mapping(folio)->host, folio) < 0)
++		if (nfs_wb_folio_reclaim(folio_file_mapping(folio)->host, folio) < 0 ||
++		    folio_test_private(folio))
+ 			return false;
  	}
-@@ -477,13 +459,6 @@ register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
- 		goto err_put_shm_pages;
- 	}
+ 	return nfs_fscache_release_folio(folio, gfp);
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -1033,6 +1033,9 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
+ DEFINE_NFS_FOLIO_EVENT(nfs_aop_readpage);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_aop_readpage_done);
  
--	/*
--	 * iov_iter_extract_kvec_pages does not get reference on the pages,
--	 * get a reference on them.
--	 */
--	if (iov_iter_is_kvec(iter))
--		shm_get_kernel_pages(shm->pages, num_pages);
--
- 	shm->offset = off;
- 	shm->size = len;
- 	shm->num_pages = num_pages;
-@@ -499,8 +474,6 @@ register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
- err_put_shm_pages:
- 	if (!iov_iter_is_kvec(iter))
- 		unpin_user_pages(shm->pages, shm->num_pages);
--	else
--		shm_put_kernel_pages(shm->pages, shm->num_pages);
- err_free_shm_pages:
- 	kfree(shm->pages);
- err_free_shm:
--- 
-2.51.0
-
++DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio_reclaim);
++DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_reclaim_done);
++
+ DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_done);
+ 
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -2122,6 +2122,39 @@ int nfs_wb_folio_cancel(struct inode *in
+ }
+ 
+ /**
++ * nfs_wb_folio_reclaim - Write back all requests on one page
++ * @inode: pointer to page
++ * @folio: pointer to folio
++ *
++ * Assumes that the folio has been locked by the caller
++ */
++int nfs_wb_folio_reclaim(struct inode *inode, struct folio *folio)
++{
++	loff_t range_start = folio_pos(folio);
++	size_t len = folio_size(folio);
++	struct writeback_control wbc = {
++		.sync_mode = WB_SYNC_ALL,
++		.nr_to_write = 0,
++		.range_start = range_start,
++		.range_end = range_start + len - 1,
++		.for_sync = 1,
++	};
++	int ret;
++
++	if (folio_test_writeback(folio))
++		return -EBUSY;
++	if (folio_clear_dirty_for_io(folio)) {
++		trace_nfs_writeback_folio_reclaim(inode, range_start, len);
++		ret = nfs_writepage_locked(folio, &wbc);
++		trace_nfs_writeback_folio_reclaim_done(inode, range_start, len,
++						       ret);
++		return ret;
++	}
++	nfs_commit_inode(inode, 0);
++	return 0;
++}
++
++/**
+  * nfs_wb_folio - Write back all requests on one page
+  * @inode: pointer to page
+  * @folio: pointer to folio
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -608,6 +608,7 @@ extern int  nfs_update_folio(struct file
+ extern int nfs_sync_inode(struct inode *inode);
+ extern int nfs_wb_all(struct inode *inode);
+ extern int nfs_wb_folio(struct inode *inode, struct folio *folio);
++extern int nfs_wb_folio_reclaim(struct inode *inode, struct folio *folio);
+ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(void);
 
 
 
