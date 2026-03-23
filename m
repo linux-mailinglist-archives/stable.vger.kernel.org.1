@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIhzNbtGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:15 +0100
+	id SFduH5xxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DD62F379E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2202F9445
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3AE6304FF96
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E61830F4F16
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEFB3AD52F;
-	Mon, 23 Mar 2026 13:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF7D3BED33;
+	Mon, 23 Mar 2026 16:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w00V+NCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lf2uVLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3E73AC0D2;
-	Mon, 23 Mar 2026 13:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3719D07A;
+	Mon, 23 Mar 2026 16:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273871; cv=none; b=ii3nXzw2viWTccFVlkpqvJuPuQ8iYAiorKjv3vTQbvOQ9JvWI9VhoCEX3jtmHTYtnCmBqUP1KyOyUEA/W11UXN/bROmd4tlXxqTFI3mdDTZY3LFktnpHYjAsRn3KIZuG462UwNRwJr4j1KvH50xH/tDE69fwsZsW20BK8U2V6/E=
+	t=1774282620; cv=none; b=EHMQJx2lwr1Z/hmxWwKtr/sHrAH71q+QjNJ9+5FdENK2EtFhDY9sVFQNb1XbRkjko+5FVf+6yfHA0eLiOiGngEb5vrWmLvikmqH0GGeZJ9EZiVyUqwNoJZK5AVb2ybaDqrhwFYNPpPM1NJkXz42AFIQ8bvux2+x391oMBPkNe7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273871; c=relaxed/simple;
-	bh=NjhYuGDG5ilikqW80UMNinCoJc5buKTUxKg1pLFVKqk=;
+	s=arc-20240116; t=1774282620; c=relaxed/simple;
+	bh=HEeE8p43+0V3Y9oA1UKurYf3DLivz8agfKdca3xGWvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNc5IndM0GMWxLmusforxvuNsvFiI7PktZs3bL42qS1ZfjPZVgokfP/F7i32sq2qj30KC/6Wm/VIJQlPqfFLmF6193YuJbctlz/f1qfxCVv5Nxq7/fYqe/BsNJq1QRE+xEQXD0jcs6/2YLznR/qfwKQhiRzHfVnUUkclryZ3+SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w00V+NCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E22C2BCB1;
-	Mon, 23 Mar 2026 13:51:10 +0000 (UTC)
+	 MIME-Version; b=lwVeonJDc6OOCAATJTqRgWR0cb1m/csuCk0cjw9pVAyyg+bp2cCQRLNRyWEvt2YupYs+lx1l2QWfyX30sbNKR2rAHQF9EeZAGX9AilVJzaNGw8QFs+wUewfHzY1dsawsfCVigqqXaSN5vXBe7O7HE6kWPmRcabNdGmmRjLkiRI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lf2uVLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF41C4CEF7;
+	Mon, 23 Mar 2026 16:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273871;
-	bh=NjhYuGDG5ilikqW80UMNinCoJc5buKTUxKg1pLFVKqk=;
+	s=korg; t=1774282620;
+	bh=HEeE8p43+0V3Y9oA1UKurYf3DLivz8agfKdca3xGWvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w00V+NCk3FIotCqmDWnDxbuwTcJxkbn3skvzVrNkBeu+6pX2CqnsYQ31hi14dsNfx
-	 N4y/WXRDfhogvMpFW2Zpk4mUoQ/jFIO63cvni1a5Eic7OrZid850M4REEqXXhYxadJ
-	 QAbS322N0USBi0CdWsCCOLZWS3yquEKfBupuJ1BU=
+	b=0lf2uVLLOr2EXYN+1uhk7nJjy+lxDIsEueyW3Wllsrfpk3ClvQM9RIieO/lOU3z6h
+	 7F0UW8179eZkQ/JrZ4mRCTsDJthoFjQolPMRrPewskcY70vqzjlnW4g4CINx8TML42
+	 RENY0ztaxw+ScBYOzrPT8v9JatDgbwNVfCTZ1nAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.19 028/220] drm/i915/dsc: Add helper for writing DSC Selective Update ET parameters
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 223/481] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
 Date: Mon, 23 Mar 2026 14:43:25 +0100
-Message-ID: <20260323134505.466343500@linuxfoundation.org>
+Message-ID: <20260323134530.585761186@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228016-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229696-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 48DD62F379E
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CA2202F9445
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit bb5f1cd10101c2567bff4d0e760b74aee7c42f44 upstream.
+commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
 
-There are slice row per frame and pic height configuration in DSC Selective
-Update Parameter Set 1 register. Add helper for configuring these.
+This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
+that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
+ceph_handle_auth_reply(), the value of the payload_len field of such a
+message is stored in a variable of type int. A value greater than
+INT_MAX leads to an integer overflow and is interpreted as a negative
+value. This leads to decrementing the pointer address by this value and
+subsequently accessing it because ceph_decode_need() only checks that
+the memory access does not exceed the end address of the allocation.
 
-v2:
-  - Add WARN_ON_ONCE if vdsc instances per pipe > 2
-  - instead of checking vdsc instances per pipe being > 1 check == 2
+This patch fixes the issue by changing the data type of payload_len to
+u32. Additionally, the data type of result_msg_len is changed to u32,
+as it is also a variable holding a non-negative length.
 
-Bspec: 71709
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patch.msgid.link/20260304113011.626542-4-jouni.hogander@intel.com
-(cherry picked from commit c8698d61aeb3f70fe33761ee9d3d0e131b5bc2eb)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-[tursulin: fixup forward declaration conflict]
+Also, an additional layer of sanity checks is introduced, ensuring that
+directly after reading it from the message, payload_len and
+result_msg_len are not greater than the overall segment length.
+
+BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
+
+CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: ceph-msgr ceph_con_workfn [libceph]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ print_report+0xd1/0x620
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? kasan_complete_mode_report_info+0x72/0x210
+ kasan_report+0xe7/0x130
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ __asan_report_load_n_noabort+0xf/0x20
+ ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ mon_dispatch+0x973/0x23d0 [libceph]
+ ? apparmor_socket_recvmsg+0x6b/0xa0
+ ? __pfx_mon_dispatch+0x10/0x10 [libceph]
+ ? __kasan_check_write+0x14/0x30i
+ ? mutex_unlock+0x7f/0xd0
+ ? __pfx_mutex_unlock+0x10/0x10
+ ? __pfx_do_recvmsg+0x10/0x10 [libceph]
+ ceph_con_process_message+0x1f1/0x650 [libceph]
+ process_message+0x1e/0x450 [libceph]
+ ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
+ ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
+ ? save_fpregs_to_fpstate+0xb0/0x230
+ ? raw_spin_rq_unlock+0x17/0xa0
+ ? finish_task_switch.isra.0+0x13b/0x760
+ ? __switch_to+0x385/0xda0
+ ? __kasan_check_write+0x14/0x30
+ ? mutex_lock+0x8d/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ ceph_con_workfn+0x248/0x10c0 [libceph]
+ process_one_work+0x629/0xf80
+ ? __kasan_check_write+0x14/0x30
+ worker_thread+0x87f/0x1570
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? __pfx_try_to_wake_up+0x10/0x10
+ ? kasan_print_address_stack_frame+0x1f7/0x280
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x396/0x830
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ? __kasan_check_write+0x14/0x30
+ ? recalc_sigpending+0x180/0x210
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x3f7/0x610
+ ? __pfx_ret_from_fork+0x10/0x10
+ ? __switch_to+0x385/0xda0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+[ idryomov: replace if statements with ceph_decode_need() for
+  payload_len and result_msg_len ]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_vdsc.c |   23 +++++++++++++++++++++++
- drivers/gpu/drm/i915/display/intel_vdsc.h |    3 +++
- 2 files changed, 26 insertions(+)
+ net/ceph/auth.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_vdsc.c
-+++ b/drivers/gpu/drm/i915/display/intel_vdsc.c
-@@ -767,6 +767,29 @@ void intel_dsc_dp_pps_write(struct intel
- 				  sizeof(dp_dsc_pps_sdp));
- }
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	s32 result;
+ 	u64 global_id;
+ 	void *payload, *payload_end;
+-	int payload_len;
++	u32 payload_len;
+ 	char *result_msg;
+-	int result_msg_len;
++	u32 result_msg_len;
+ 	int ret = -EINVAL;
  
-+void intel_dsc_su_et_parameters_configure(struct intel_dsb *dsb, struct intel_encoder *encoder,
-+					  const struct intel_crtc_state *crtc_state, int su_lines)
-+{
-+	struct intel_display *display = to_intel_display(crtc_state);
-+	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
-+	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
-+	enum pipe pipe = crtc->pipe;
-+	int vdsc_instances_per_pipe = intel_dsc_get_vdsc_per_pipe(crtc_state);
-+	int slice_row_per_frame = su_lines / vdsc_cfg->slice_height;
-+	u32 val;
-+
-+	drm_WARN_ON_ONCE(display->drm, su_lines % vdsc_cfg->slice_height);
-+	drm_WARN_ON_ONCE(display->drm, vdsc_instances_per_pipe > 2);
-+
-+	val = DSC_SUPS0_SU_SLICE_ROW_PER_FRAME(slice_row_per_frame);
-+	val |= DSC_SUPS0_SU_PIC_HEIGHT(su_lines);
-+
-+	intel_de_write_dsb(display, dsb, LNL_DSC0_SU_PARAMETER_SET_0(pipe), val);
-+
-+	if (vdsc_instances_per_pipe == 2)
-+		intel_de_write_dsb(display, dsb, LNL_DSC1_SU_PARAMETER_SET_0(pipe), val);
-+}
-+
- static i915_reg_t dss_ctl1_reg(struct intel_crtc *crtc, enum transcoder cpu_transcoder)
- {
- 	return is_pipe_dsc(crtc, cpu_transcoder) ?
---- a/drivers/gpu/drm/i915/display/intel_vdsc.h
-+++ b/drivers/gpu/drm/i915/display/intel_vdsc.h
-@@ -13,6 +13,7 @@ struct drm_printer;
- enum transcoder;
- struct intel_crtc;
- struct intel_crtc_state;
-+struct intel_dsb;
- struct intel_encoder;
- 
- bool intel_dsc_source_support(const struct intel_crtc_state *crtc_state);
-@@ -31,6 +32,8 @@ void intel_dsc_dsi_pps_write(struct inte
- 			     const struct intel_crtc_state *crtc_state);
- void intel_dsc_dp_pps_write(struct intel_encoder *encoder,
- 			    const struct intel_crtc_state *crtc_state);
-+void intel_dsc_su_et_parameters_configure(struct intel_dsb *dsb, struct intel_encoder *encoder,
-+					  const struct intel_crtc_state *crtc_state, int su_lines);
- void intel_vdsc_state_dump(struct drm_printer *p, int indent,
- 			   const struct intel_crtc_state *crtc_state);
- int intel_vdsc_min_cdclk(const struct intel_crtc_state *crtc_state);
+ 	mutex_lock(&ac->mutex);
+@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	result = ceph_decode_32(&p);
+ 	global_id = ceph_decode_64(&p);
+ 	payload_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, payload_len, bad);
+ 	payload = p;
+ 	p += payload_len;
+ 	ceph_decode_need(&p, end, sizeof(u32), bad);
+ 	result_msg_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, result_msg_len, bad);
+ 	result_msg = p;
+ 	p += result_msg_len;
+ 	if (p != end)
 
 
 
