@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-229565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOODOm57wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:06 +0100
+	id CEsbFApQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898B72FA3D8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9A92F4DC0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36BFB30AFA25
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D62430406AE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABC127B340;
-	Mon, 23 Mar 2026 16:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D5B3ACA68;
+	Mon, 23 Mar 2026 14:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXo63WE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kanAtf8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08A1282F3A;
-	Mon, 23 Mar 2026 16:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2DF3803EF;
+	Mon, 23 Mar 2026 14:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282264; cv=none; b=kFm/EUF+f9nTP5BP2dsVKP3bljqrJU0Ozv0zePOsPURriOeCkqm4GQrdRsMGrbmzY+sIzsLCCo4wHtrnGi1RkK7qwMovTHlG1qnejl4uGOKX/53aEwe36h4iAcNrEIkAEG1dekzpGJChH9OPAH84E96iEgMOoIy1esojJ7gzk9s=
+	t=1774275268; cv=none; b=G/QIibyHKvtb9tCZayOth2RM0QwB+lxDMWv6W+ItcMm2Jqu4t97KpB8JhqC8j512dgPhqeuwjiyWS3OOJswLa4xzMNwqTcRgVNVEQWg5TSk5REpIcYiEl+Tt544MVinecH7gXd2gxeXsBHjSu7uCyLv6uvxcRYf2Vrq6TL5vB2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282264; c=relaxed/simple;
-	bh=6qs4Pe/64LLyw6ThE57PoPyZB1Mk2ydAxXIRPOKKVck=;
+	s=arc-20240116; t=1774275268; c=relaxed/simple;
+	bh=r2HH5Y7TzJ7OSr0nkX7NldpDkVyRL4wUaY0TOeuUJ6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yd2TteJxjYidFdNvr36ZaN8wAY/xMtrJjSL9AXAW9ZgWBmci5X4tRfmO2ij6aHQQqM/EcqH92r2HVN8uq6rbBrmkRF5r2TV6pTPJ80MkMnggfDb6vCvPodRPfviG3RNez6NfU09X8DfCDClRECnxXQaElrCXKGSKmLSePlVSg+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXo63WE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6229BC4CEF7;
-	Mon, 23 Mar 2026 16:11:04 +0000 (UTC)
+	 MIME-Version; b=szXKQ31prJjA0gT9dRiAFoNy4lRV2V+qCzIZnRE3vFdIPK/6/k6t3xQJhgovql9hyue47+HhMpmM4nq1MmWWfT11JOoQZP8vrUesrqss6k5AUpscd7Ln/BKkoMttHonjiLK+Yp5yKqzS2MFe1wZ4+WmYYeRrw/gyS4Dew7Cc+u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kanAtf8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26E9C4CEF7;
+	Mon, 23 Mar 2026 14:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282264;
-	bh=6qs4Pe/64LLyw6ThE57PoPyZB1Mk2ydAxXIRPOKKVck=;
+	s=korg; t=1774275268;
+	bh=r2HH5Y7TzJ7OSr0nkX7NldpDkVyRL4wUaY0TOeuUJ6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXo63WE8Ym0dHwOuU8CXa3IwNR6d47VlbXuKPF9mBN9GHmbjQv9IeKnRkkvkKMl3c
-	 X2wfPA4rWQknm73kpeq17ykB6HFP/okIURCaiuj2ooUK0TrecHDT2SCM8pczkqQYue
-	 0LIn7KcrRRjZMavtOIaeJbREYiICZl6T6cfZlmqg=
+	b=kanAtf8SuAAvmgTpn0iqek5ESpaGGqEX2qTACAYkH1u6dMX3B0VyejZ3lzGOjXssg
+	 ICWSwQsW/W+p0m+6uoP7n0mWtJAj9ALp4LmhJFPVcQBty3sScRIIUpWj6+8aec1MDd
+	 ZDnF8uIMlTOjbGfIid7pI3Pva2C4V6tIMpGcf+30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Theodore Tso <tytso@mit.edu>,
+	Daniel Jurgens <danielj@nvidia.com>,
+	William Tu <witu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/481] ext4: convert some BUG_ONs in mballoc to use WARN_RATELIMITED instead
+Subject: [PATCH 6.12 035/460] net/mlx5: IFC updates for disabled host PF
 Date: Mon, 23 Mar 2026 14:40:31 +0100
-Message-ID: <20260323134526.425174090@linuxfoundation.org>
+Message-ID: <20260323134527.571772864@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +70,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228489-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229565-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 898B72FA3D8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EB9A92F4DC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Daniel Jurgens <danielj@nvidia.com>
 
-[ Upstream commit 19b8b035a776939ceb3de0f45aded4751d7849ef ]
+[ Upstream commit cd1746cb6555a2238c4aae9f9d60b637a61bf177 ]
 
-In cases where we have an obvious way of continuing, let's use
-WARN_RATELIMITED() instead of BUG_ON().
+The port 2 host PF can be disabled, this bit reflects that setting.
 
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
+Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+Reviewed-by: William Tu <witu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1752064867-16874-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: aed763abf0e9 ("net/mlx5: Fix deadlock between devlink lock and esw->wq")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ include/linux/mlx5/mlx5_ifc.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 7431ff97a68c8..2a385dc610704 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1531,7 +1531,13 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 			put_page(page);
- 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
- 		if (page) {
--			BUG_ON(page->mapping != inode->i_mapping);
-+			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
-+	"ext4: bitmap's paging->mapping != inode->i_mapping\n")) {
-+				/* should never happen */
-+				unlock_page(page);
-+				ret = -EINVAL;
-+				goto err;
-+			}
- 			if (!PageUptodate(page)) {
- 				ret = ext4_mb_init_cache(page, NULL, gfp);
- 				if (ret) {
-@@ -1567,7 +1573,13 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 			put_page(page);
- 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
- 		if (page) {
--			BUG_ON(page->mapping != inode->i_mapping);
-+			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
-+	"ext4: buddy bitmap's page->mapping != inode->i_mapping\n")) {
-+				/* should never happen */
-+				unlock_page(page);
-+				ret = -EINVAL;
-+				goto err;
-+			}
- 			if (!PageUptodate(page)) {
- 				ret = ext4_mb_init_cache(page, e4b->bd_bitmap,
- 							 gfp);
-@@ -2286,7 +2298,9 @@ void ext4_mb_simple_scan_group(struct ext4_allocation_context *ac,
- 			continue;
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 2b1a816e4d59c..6ea35c8ce00fb 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -12282,7 +12282,9 @@ struct mlx5_ifc_mtrc_ctrl_bits {
  
- 		buddy = mb_find_buddy(e4b, i, &max);
--		BUG_ON(buddy == NULL);
-+		if (WARN_RATELIMIT(buddy == NULL,
-+			 "ext4: mb_simple_scan_group: mb_find_buddy failed, (%d)\n", i))
-+			continue;
+ struct mlx5_ifc_host_params_context_bits {
+ 	u8         host_number[0x8];
+-	u8         reserved_at_8[0x7];
++	u8         reserved_at_8[0x5];
++	u8         host_pf_not_exist[0x1];
++	u8         reserved_at_14[0x1];
+ 	u8         host_pf_disabled[0x1];
+ 	u8         host_num_of_vfs[0x10];
  
- 		k = mb_find_next_zero_bit(buddy, max, 0);
- 		if (k >= max) {
-@@ -4312,15 +4326,14 @@ static void ext4_discard_allocated_blocks(struct ext4_allocation_context *ac)
- 		if (ac->ac_f_ex.fe_len == 0)
- 			return;
- 		err = ext4_mb_load_buddy(ac->ac_sb, ac->ac_f_ex.fe_group, &e4b);
--		if (err) {
-+		if (WARN_RATELIMIT(err,
-+				   "ext4: mb_load_buddy failed (%d)", err))
- 			/*
- 			 * This should never happen since we pin the
- 			 * pages in the ext4_allocation_context so
- 			 * ext4_mb_load_buddy() should never fail.
- 			 */
--			WARN(1, "mb_load_buddy failed (%d)", err);
- 			return;
--		}
- 		ext4_lock_group(ac->ac_sb, ac->ac_f_ex.fe_group);
- 		mb_free_blocks(ac->ac_inode, &e4b, ac->ac_f_ex.fe_start,
- 			       ac->ac_f_ex.fe_len);
 -- 
 2.51.0
 
