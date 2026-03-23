@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDpdAUFlwWkzSwQAu9opvQ
-	(envelope-from <stable+bounces-229472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:29 +0100
+	id 0FczGNh8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2462F7976
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE792FA6B5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F40730A421B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3710D321A986
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6F43B9D81;
-	Mon, 23 Mar 2026 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1B53BE170;
+	Mon, 23 Mar 2026 16:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGf0r6a0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BytGSI9Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE53B5820;
-	Mon, 23 Mar 2026 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF8E3BE17D;
+	Mon, 23 Mar 2026 16:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279342; cv=none; b=IWjc39KSU0qHmIIaju53LG0ats1VIYmrMUR5+9V7sMlhdDEJIbzwMEy2ONPpsPr4NyEqZZstRZL4o2hpJDnq9Y6gdlxr5DVnuAE7oKuDVnZAVD18GeRTgX5FI3T3D0NEPdPLxzSpznok5EMDf1VtDNAaBvnn+b6Hla0qdyHhQqs=
+	t=1774283229; cv=none; b=fHT9MqSsEJOX4fbWDLZilKMruBKYA55r0Q03puTk/8JzbX+GymInTgVdVl0nnjoLRStA/oZV66pQiNVErmfdhcVBhubxYb8+DICnH++lXFA7nVbsLzfKMH19df8bdcjDEhzbWVbhGj75PAnq/YJPMPTo7k+T1NnD5TI+x4QhpW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279342; c=relaxed/simple;
-	bh=wDsFXAWS4xoV0U9bhH42h2DoXNsolcVmqiWbMSbSa1k=;
+	s=arc-20240116; t=1774283229; c=relaxed/simple;
+	bh=Yn89+znhR9DoSRja4jSXiriumXDddx5rUe0rO5LC/DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNnQ9nsVbOE+G+oNS4m/WykyyWW9mdiduw6zX1MY7DcTEBxBOXoIQzzeLQDUtBe3q0AyxHVvpw19nMKriM6gsQ5gVBk969Ln4qb0N4HrXj2EdbFUGFev2Uie6oCbKZqVK5JjJ22IpbctFaE6qFJpAIcgMjqvFICAYeELket70c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGf0r6a0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ECFC2BC9E;
-	Mon, 23 Mar 2026 15:22:21 +0000 (UTC)
+	 MIME-Version; b=CiwWz1AoyVzE6CiEdLXG61GgfV+t5Fsd3RFABDTOAOn/oMFjVek1Q7X3q3Xk0yDgjrmkBRmutHmIFCK7X066IVJltEuECYHnEkU8DuUzg6Y41gu/6ypCE75NDOONfWHFc4ZjKfNTsqHZsR6SfjpF4qlilByhoHCo9UEmfj+uRps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BytGSI9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181A9C4CEF7;
+	Mon, 23 Mar 2026 16:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279342;
-	bh=wDsFXAWS4xoV0U9bhH42h2DoXNsolcVmqiWbMSbSa1k=;
+	s=korg; t=1774283229;
+	bh=Yn89+znhR9DoSRja4jSXiriumXDddx5rUe0rO5LC/DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGf0r6a0h8PU+kq0GN+bInNTmhoezCBlcBYyzi4dMKFDBaMMgx+ySutZy7trj8z44
-	 ao0caAcasg/LQqa/JsRkOphoqOhwZ1gdJ8pBDS5CScOmt5qFd6D1YKl6EIn98zX96h
-	 KptITbitfnwOy4NRr3RKnm3rD9RnQCge9VhmBjzY=
+	b=BytGSI9Zw283q1jJXfijAFk9SRcgkJoOHmuwgG1igZpf7F3zDye3U1qS/YRNdfvXW
+	 RMd/U4ssJJQyqgQxAxuULCdf4U0Jz+1mjrDUzmaRwb09E5h7wmgGYktIoHxUI/AYfu
+	 ts1Uc6MR3XeEevPJNnoSNhgAbrgHHSdT+8S9XIts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 511/567] net/rose: fix NULL pointer dereference in rose_transmit_link on reconnect
+Subject: [PATCH 6.1 449/481] mtd: rawnand: brcmnand: skip DMA during panic write
 Date: Mon, 23 Mar 2026 14:47:11 +0100
-Message-ID: <20260323134546.658741340@linuxfoundation.org>
+Message-ID: <20260323134536.156962621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +66,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229472-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229924-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d00f90e0af54102fb271];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,msgid.link:url,shopee.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 7C2462F7976
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: DEE792FA6B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit e1f0a18c9564cdb16523c802e2c6fe5874e3d944 ]
+[ Upstream commit da9ba4dcc01e7cf52b7676f0ee9607b8358c2171 ]
 
-syzkaller reported a bug [1], and the reproducer is available at [2].
+When oops_panic_write is set, the driver disables interrupts and
+switches to PIO polling mode but still falls through into the DMA
+path. DMA cannot be used reliably in panic context, so make the
+DMA path an else branch to ensure only PIO is used during panic
+writes.
 
-ROSE sockets use four sk->sk_state values: TCP_CLOSE, TCP_LISTEN,
-TCP_SYN_SENT, and TCP_ESTABLISHED. rose_connect() already rejects
-calls for TCP_ESTABLISHED (-EISCONN) and TCP_CLOSE with SS_CONNECTING
-(-ECONNREFUSED), but lacks a check for TCP_SYN_SENT.
-
-When rose_connect() is called a second time while the first connection
-attempt is still in progress (TCP_SYN_SENT), it overwrites
-rose->neighbour via rose_get_neigh(). If that returns NULL, the socket
-is left with rose->state == ROSE_STATE_1 but rose->neighbour == NULL.
-When the socket is subsequently closed, rose_release() sees
-ROSE_STATE_1 and calls rose_write_internal() ->
-rose_transmit_link(skb, NULL), causing a NULL pointer dereference.
-
-Per connect(2), a second connect() while a connection is already in
-progress should return -EALREADY. Add this missing check for
-TCP_SYN_SENT to complete the state validation in rose_connect().
-
-[1] https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
-[2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE@google.com/T/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260311070611.76913-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 1cc5eaeb1c608..e80bc7788bec5 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -810,6 +810,11 @@ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_le
- 		goto out_release;
- 	}
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 20c6aeef107c8..99e0d7aa2f4bd 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2410,14 +2410,12 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 	for (i = 0; i < ctrl->max_oob; i += 4)
+ 		oob_reg_write(ctrl, i, 0xffffffff);
  
-+	if (sk->sk_state == TCP_SYN_SENT) {
-+		err = -EALREADY;
-+		goto out_release;
-+	}
-+
- 	sk->sk_state   = TCP_CLOSE;
- 	sock->state = SS_UNCONNECTED;
+-	if (mtd->oops_panic_write)
++	if (mtd->oops_panic_write) {
+ 		/* switch to interrupt polling and PIO mode */
+ 		disable_ctrl_irqs(ctrl);
+-
+-	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
++	} else if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
+ 		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
+ 				    CMD_PROGRAM_PAGE))
+-
+ 			ret = -EIO;
  
+ 		goto out;
 -- 
 2.51.0
 
