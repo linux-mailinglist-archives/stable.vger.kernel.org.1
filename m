@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-228965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDrBIxBZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:28 +0100
+	id OAiAK51YwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFE32F60FE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0012F600A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC732335B15E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 55B673027EF2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F3C2741A0;
-	Mon, 23 Mar 2026 14:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14726D4F9;
+	Mon, 23 Mar 2026 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fX7eAMUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsCf9ruS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9521C23B612;
-	Mon, 23 Mar 2026 14:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F90E26A08F;
+	Mon, 23 Mar 2026 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277630; cv=none; b=Dd3k2qkHPwWbkrgHMsQfz90/kMLlymhtW/Og9GVmU1wzz3981aFWbtB12cXTKEvAcnv/MLkvI1urCcs9mVPAnWcYvzgnIkI1ZaiqhsqQOj/8wD5N/rLz5D5bW52L9g56Pl+sYpfgrhXEsDzPcxETdLcznhg9mbcM5Ld35C8PoXc=
+	t=1774277561; cv=none; b=eZkS1UDHjspXkF1JcXhPKH6uO994HzXbb4CgnFQelBFp/8YQw0fSRKZquQZPFUqr3H1BIhrf4r4oZU+5GOdDNtZbdbVRpj3yKLBl3GlrFNt0W+fdyu7rbzHgEuuC06Jvp4xrxag9XmKvGWNsqoYpvOzpw3BwGz+HXlUKdA9nItY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277630; c=relaxed/simple;
-	bh=9z7/2LVuR01Wyb87I0t77/usHu7yRkq/+G578Yumbww=;
+	s=arc-20240116; t=1774277561; c=relaxed/simple;
+	bh=osOFj+9u271XgP6x2W0i94p/mcEWaCu8pIgHaIaMpZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4miE6M1qj9WuwImImYfO75ZojsDaB3hkWlKUYMBhrbWE9mcNQlW/det6sbdiRCBoSP1Cs4zC5kJR9QAdNVZgH+hddky2EyGUCTbnYQs6njIX6LkZS9wZEcxQxscqeAARiBYyuXf2k/Fhpt6H530RTbMyaiAyjHdbKC+ll9sgBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fX7eAMUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE7CC2BC9E;
-	Mon, 23 Mar 2026 14:53:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=srZJcglAfTWJV6+cBVobrj71px2KRLHO8jFGWQbEFOlv26/D7zJnwqYjVOhfoP5c+DJZ7fPWC8bysZmXuOfABeQ9YymvIfeCLbZREc4QcEHX5xDQckWCtBcMFMnXASuWg7Wwc1dBCB8fLL/SZsWaIx4Zp2Q3xDSReyvctykzr3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsCf9ruS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976ABC4CEF7;
+	Mon, 23 Mar 2026 14:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277630;
-	bh=9z7/2LVuR01Wyb87I0t77/usHu7yRkq/+G578Yumbww=;
+	s=korg; t=1774277561;
+	bh=osOFj+9u271XgP6x2W0i94p/mcEWaCu8pIgHaIaMpZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fX7eAMUBZEZhqFaj3/IlwMYgKpDF1tikF8mUEgKYcN8zUB54HVePdawGuaowiDENP
-	 EqGD/5DBpluxtxWuUzR8SkVc41Vgg+GNVdfj721xAxLOl2Azwl383qp3jiN0z/2wGH
-	 li/HV7A06GLDCqJS+kUTp1VwDt3fatXJYicyW1A4=
+	b=gsCf9ruSDx6uUh0BHDT5hauzIHIMxGm6yhOqT1H5xl+61GlLcAVzgyjETT1Y7Ww+8
+	 fwaX5DaNnFFa0xW+l0lGmOexTI9zjdFOywEvw4VMnBXBBrNhF/1Xnl2nYAU14+qJKX
+	 uceZLi4pqo2qR8vJ68p0BazWyLRZs9dyzMOl5yLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay12@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/567] PCI: Use resource names in PCI log messages
-Date: Mon, 23 Mar 2026 14:39:11 +0100
-Message-ID: <20260323134534.552096200@linuxfoundation.org>
+Subject: [PATCH 6.6 032/567] resource: Add resource set range and size helpers
+Date: Mon, 23 Mar 2026 14:39:12 +0100
+Message-ID: <20260323134534.577225444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -63,35 +64,34 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228965-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-228943-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2AFE32F60FE
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: BA0012F600A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,659 +99,79 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Puranjay Mohan <puranjay12@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit dc4e6f21c3f844ebc1c52b6920b8ec5dfc73f4e8 ]
+[ Upstream commit 9fb6fef0fb49124291837af1da5028f79d53f98e ]
 
-Use the pci_resource_name() to get the name of the resource and use it
-while printing log messages.
+Setting the end address for a resource with a given size lacks a helper and
+is therefore coded manually unlike the getter side which has a helper for
+resource size calculation. Also, almost all callsites that calculate the
+end address for a resource also set the start address right before it like
+this:
 
-[bhelgaas: rename to match struct resource * names, also use names in other
-BAR messages]
-Link: https://lore.kernel.org/r/20211106112606.192563-3-puranjay12@gmail.com
-Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+  res->start = start_addr;
+  res->end = res->start + size - 1;
+
+Add resource_set_range(res, start_addr, size) that sets the start address
+and calculates the end address to simplify this often repeated fragment.
+
+Also add resource_set_size() for the cases where setting the start address
+of the resource is not necessary but mention in its kerneldoc that
+resource_set_range() is preferred when setting both addresses.
+
+Link: https://lore.kernel.org/r/20240614100606.15830-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Stable-dep-of: 11721c45a826 ("PCI: Use resource_set_range() that correctly sets ->end")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/iov.c       |  7 ++--
- drivers/pci/pci.c       | 25 +++++++-------
- drivers/pci/probe.c     | 26 +++++++--------
- drivers/pci/quirks.c    | 15 ++++++---
- drivers/pci/setup-bus.c | 30 +++++++++++------
- drivers/pci/setup-res.c | 72 +++++++++++++++++++++++------------------
- 6 files changed, 103 insertions(+), 72 deletions(-)
+ include/linux/ioport.h | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index b8bce45a59986..d595a345a7d47 100644
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -749,6 +749,7 @@ static int sriov_init(struct pci_dev *dev, int pos)
- 	u16 ctrl, total;
- 	struct pci_sriov *iov;
- 	struct resource *res;
-+	const char *res_name;
- 	struct pci_dev *pdev;
- 
- 	pci_read_config_word(dev, pos + PCI_SRIOV_CTRL, &ctrl);
-@@ -789,6 +790,8 @@ static int sriov_init(struct pci_dev *dev, int pos)
- 	nres = 0;
- 	for (i = 0; i < PCI_SRIOV_NUM_BARS; i++) {
- 		res = &dev->resource[i + PCI_IOV_RESOURCES];
-+		res_name = pci_resource_name(dev, i + PCI_IOV_RESOURCES);
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 25d768d489701..d10749797f18d 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -216,6 +216,38 @@ struct resource *lookup_resource(struct resource *root, resource_size_t start);
+ int adjust_resource(struct resource *res, resource_size_t start,
+ 		    resource_size_t size);
+ resource_size_t resource_alignment(struct resource *res);
 +
- 		/*
- 		 * If it is already FIXED, don't change it, something
- 		 * (perhaps EA or header fixups) wants it this way.
-@@ -806,8 +809,8 @@ static int sriov_init(struct pci_dev *dev, int pos)
- 		}
- 		iov->barsz[i] = resource_size(res);
- 		res->end = res->start + resource_size(res) * total - 1;
--		pci_info(dev, "VF(n) BAR%d space: %pR (contains BAR%d for %d VFs)\n",
--			 i, res, i, total);
-+		pci_info(dev, "%s %pR: contains BAR %d for %d VFs\n",
-+			 res_name, res, i, total);
- 		i += bar64;
- 		nres++;
- 	}
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e3612e0e35639..d015df77ddff5 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3419,6 +3419,7 @@ static struct resource *pci_ea_get_resource(struct pci_dev *dev, u8 bei,
- static int pci_ea_read(struct pci_dev *dev, int offset)
- {
- 	struct resource *res;
-+	const char *res_name;
- 	int ent_size, ent_offset = offset;
- 	resource_size_t start, end;
- 	unsigned long flags;
-@@ -3448,6 +3449,7 @@ static int pci_ea_read(struct pci_dev *dev, int offset)
- 		goto out;
- 
- 	res = pci_ea_get_resource(dev, bei, prop);
-+	res_name = pci_resource_name(dev, bei);
- 	if (!res) {
- 		pci_err(dev, "Unsupported EA entry BEI: %u\n", bei);
- 		goto out;
-@@ -3521,16 +3523,16 @@ static int pci_ea_read(struct pci_dev *dev, int offset)
- 	res->flags = flags;
- 
- 	if (bei <= PCI_EA_BEI_BAR5)
--		pci_info(dev, "BAR %d: %pR (from Enhanced Allocation, properties %#02x)\n",
--			   bei, res, prop);
-+		pci_info(dev, "%s %pR: from Enhanced Allocation, properties %#02x\n",
-+			 res_name, res, prop);
- 	else if (bei == PCI_EA_BEI_ROM)
--		pci_info(dev, "ROM: %pR (from Enhanced Allocation, properties %#02x)\n",
--			   res, prop);
-+		pci_info(dev, "%s %pR: from Enhanced Allocation, properties %#02x\n",
-+			 res_name, res, prop);
- 	else if (bei >= PCI_EA_BEI_VF_BAR0 && bei <= PCI_EA_BEI_VF_BAR5)
--		pci_info(dev, "VF BAR %d: %pR (from Enhanced Allocation, properties %#02x)\n",
--			   bei - PCI_EA_BEI_VF_BAR0, res, prop);
-+		pci_info(dev, "%s %pR: from Enhanced Allocation, properties %#02x\n",
-+			 res_name, res, prop);
- 	else
--		pci_info(dev, "BEI %d res: %pR (from Enhanced Allocation, properties %#02x)\n",
-+		pci_info(dev, "BEI %d %pR: from Enhanced Allocation, properties %#02x\n",
- 			   bei, res, prop);
- 
- out:
-@@ -6840,14 +6842,15 @@ static void pci_request_resource_alignment(struct pci_dev *dev, int bar,
- 					   resource_size_t align, bool resize)
- {
- 	struct resource *r = &dev->resource[bar];
-+	const char *r_name = pci_resource_name(dev, bar);
- 	resource_size_t size;
- 
- 	if (!(r->flags & IORESOURCE_MEM))
- 		return;
- 
- 	if (r->flags & IORESOURCE_PCI_FIXED) {
--		pci_info(dev, "BAR%d %pR: ignoring requested alignment %#llx\n",
--			 bar, r, (unsigned long long)align);
-+		pci_info(dev, "%s %pR: ignoring requested alignment %#llx\n",
-+			 r_name, r, (unsigned long long)align);
- 		return;
- 	}
- 
-@@ -6883,8 +6886,8 @@ static void pci_request_resource_alignment(struct pci_dev *dev, int bar,
- 	 * devices and we use the second.
- 	 */
- 
--	pci_info(dev, "BAR%d %pR: requesting alignment to %#llx\n",
--		 bar, r, (unsigned long long)align);
-+	pci_info(dev, "%s %pR: requesting alignment to %#llx\n",
-+		 r_name, r, (unsigned long long)align);
- 
- 	if (resize) {
- 		r->start = 0;
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index cc56bf47c4a3f..92f1902afa3b7 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -180,6 +180,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
- 	u64 l64, sz64, mask64;
- 	u16 orig_cmd;
- 	struct pci_bus_region region, inverted_region;
-+	const char *res_name = pci_resource_name(dev, res - dev->resource);
- 
- 	mask = type ? PCI_ROM_ADDRESS_MASK : ~0;
- 
-@@ -254,8 +255,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
- 
- 	sz64 = pci_size(l64, sz64, mask64);
- 	if (!sz64) {
--		pci_info(dev, FW_BUG "reg 0x%x: invalid BAR (can't size)\n",
--			 pos);
-+		pci_info(dev, FW_BUG "%s: invalid; can't size\n", res_name);
- 		goto fail;
- 	}
- 
-@@ -265,8 +265,8 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
- 			res->flags |= IORESOURCE_UNSET | IORESOURCE_DISABLED;
- 			res->start = 0;
- 			res->end = 0;
--			pci_err(dev, "reg 0x%x: can't handle BAR larger than 4GB (size %#010llx)\n",
--				pos, (unsigned long long)sz64);
-+			pci_err(dev, "%s: can't handle BAR larger than 4GB (size %#010llx)\n",
-+				res_name, (unsigned long long)sz64);
- 			goto out;
- 		}
- 
-@@ -275,8 +275,8 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
- 			res->flags |= IORESOURCE_UNSET;
- 			res->start = 0;
- 			res->end = sz64 - 1;
--			pci_info(dev, "reg 0x%x: can't handle BAR above 4GB (bus address %#010llx)\n",
--				 pos, (unsigned long long)l64);
-+			pci_info(dev, "%s: can't handle BAR above 4GB (bus address %#010llx)\n",
-+				 res_name, (unsigned long long)l64);
- 			goto out;
- 		}
- 	}
-@@ -302,8 +302,8 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
- 		res->flags |= IORESOURCE_UNSET;
- 		res->start = 0;
- 		res->end = region.end - region.start;
--		pci_info(dev, "reg 0x%x: initial BAR value %#010llx invalid\n",
--			 pos, (unsigned long long)region.start);
-+		pci_info(dev, "%s: initial BAR value %#010llx invalid\n",
-+			 res_name, (unsigned long long)region.start);
- 	}
- 
- 	goto out;
-@@ -313,7 +313,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
- 	res->flags = 0;
- out:
- 	if (res->flags)
--		pci_info(dev, "reg 0x%x: %pR\n", pos, res);
-+		pci_info(dev, "%s %pR\n", res_name, res);
- 
- 	return (res->flags & IORESOURCE_MEM_64) ? 1 : 0;
- }
-@@ -1968,14 +1968,14 @@ int pci_setup_device(struct pci_dev *dev)
- 				res = &dev->resource[0];
- 				res->flags = LEGACY_IO_RESOURCE;
- 				pcibios_bus_to_resource(dev->bus, res, &region);
--				pci_info(dev, "legacy IDE quirk: reg 0x10: %pR\n",
-+				pci_info(dev, "BAR 0 %pR: legacy IDE quirk\n",
- 					 res);
- 				region.start = 0x3F6;
- 				region.end = 0x3F6;
- 				res = &dev->resource[1];
- 				res->flags = LEGACY_IO_RESOURCE;
- 				pcibios_bus_to_resource(dev->bus, res, &region);
--				pci_info(dev, "legacy IDE quirk: reg 0x14: %pR\n",
-+				pci_info(dev, "BAR 1 %pR: legacy IDE quirk\n",
- 					 res);
- 			}
- 			if ((progif & 4) == 0) {
-@@ -1984,14 +1984,14 @@ int pci_setup_device(struct pci_dev *dev)
- 				res = &dev->resource[2];
- 				res->flags = LEGACY_IO_RESOURCE;
- 				pcibios_bus_to_resource(dev->bus, res, &region);
--				pci_info(dev, "legacy IDE quirk: reg 0x18: %pR\n",
-+				pci_info(dev, "BAR 2 %pR: legacy IDE quirk\n",
- 					 res);
- 				region.start = 0x376;
- 				region.end = 0x376;
- 				res = &dev->resource[3];
- 				res->flags = LEGACY_IO_RESOURCE;
- 				pcibios_bus_to_resource(dev->bus, res, &region);
--				pci_info(dev, "legacy IDE quirk: reg 0x1c: %pR\n",
-+				pci_info(dev, "BAR 3 %pR: legacy IDE quirk\n",
- 					 res);
- 			}
- 		}
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index cab4cdbb31387..5df3a6ea66018 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -583,13 +583,14 @@ static void quirk_extend_bar_to_page(struct pci_dev *dev)
- 
- 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
- 		struct resource *r = &dev->resource[i];
-+		const char *r_name = pci_resource_name(dev, i);
- 
- 		if (r->flags & IORESOURCE_MEM && resource_size(r) < PAGE_SIZE) {
- 			r->end = PAGE_SIZE - 1;
- 			r->start = 0;
- 			r->flags |= IORESOURCE_UNSET;
--			pci_info(dev, "expanded BAR %d to page size: %pR\n",
--				 i, r);
-+			pci_info(dev, "%s %pR: expanded to page size\n",
-+				 r_name, r);
- 		}
- 	}
- }
-@@ -618,6 +619,7 @@ static void quirk_io(struct pci_dev *dev, int pos, unsigned int size,
- 	u32 region;
- 	struct pci_bus_region bus_region;
- 	struct resource *res = dev->resource + pos;
-+	const char *res_name = pci_resource_name(dev, pos);
- 
- 	pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + (pos << 2), &region);
- 
-@@ -635,8 +637,7 @@ static void quirk_io(struct pci_dev *dev, int pos, unsigned int size,
- 	bus_region.end = region + size - 1;
- 	pcibios_bus_to_resource(dev->bus, res, &bus_region);
- 
--	pci_info(dev, FW_BUG "%s quirk: reg 0x%x: %pR\n",
--		 name, PCI_BASE_ADDRESS_0 + (pos << 2), res);
-+	pci_info(dev, FW_BUG "%s %pR: %s quirk\n", res_name, res, name);
- }
- 
- /*
-@@ -683,6 +684,12 @@ static void quirk_io_region(struct pci_dev *dev, int port,
- 	bus_region.end = region + size - 1;
- 	pcibios_bus_to_resource(dev->bus, res, &bus_region);
- 
-+	/*
-+	 * "res" is typically a bridge window resource that's not being
-+	 * used for a bridge window, so it's just a place to stash this
-+	 * non-standard resource.  Printing "nr" or pci_resource_name() of
-+	 * it doesn't really make sense.
-+	 */
- 	if (!pci_claim_resource(dev, nr))
- 		pci_info(dev, "quirk: %pR claimed by %s\n", res, name);
- }
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 3f40be417856e..d07c1d9ed0620 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -213,6 +213,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 				      struct list_head *head)
- {
- 	struct resource *res;
-+	const char *res_name;
- 	struct pci_dev_resource *add_res, *tmp;
- 	struct pci_dev_resource *dev_res;
- 	resource_size_t add_size, align;
-@@ -222,6 +223,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 		bool found_match = false;
- 
- 		res = add_res->res;
++/**
++ * resource_set_size - Calculate resource end address from size and start
++ * @res: Resource descriptor
++ * @size: Size of the resource
++ *
++ * Calculate the end address for @res based on @size.
++ *
++ * Note: The start address of @res must be set when calling this function.
++ * Prefer resource_set_range() if setting both the start address and @size.
++ */
++static inline void resource_set_size(struct resource *res, resource_size_t size)
++{
++	res->end = res->start + size - 1;
++}
 +
- 		/* Skip resource that has been reset */
- 		if (!res->flags)
- 			goto out;
-@@ -237,6 +239,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 			continue;
- 
- 		idx = res - &add_res->dev->resource[0];
-+		res_name = pci_resource_name(add_res->dev, idx);
- 		add_size = add_res->add_size;
- 		align = add_res->min_align;
- 		if (!resource_size(res)) {
-@@ -249,9 +252,9 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 				 (IORESOURCE_STARTALIGN|IORESOURCE_SIZEALIGN);
- 			if (pci_reassign_resource(add_res->dev, idx,
- 						  add_size, align))
--				pci_info(add_res->dev, "failed to add %llx res[%d]=%pR\n",
--					 (unsigned long long) add_size, idx,
--					 res);
-+				pci_info(add_res->dev, "%s %pR: failed to add %llx\n",
-+					 res_name, res,
-+					 (unsigned long long) add_size);
- 		}
- out:
- 		list_del(&add_res->list);
-@@ -571,6 +574,7 @@ EXPORT_SYMBOL(pci_setup_cardbus);
- static void pci_setup_bridge_io(struct pci_dev *bridge)
- {
- 	struct resource *res;
-+	const char *res_name;
- 	struct pci_bus_region region;
- 	unsigned long io_mask;
- 	u8 io_base_lo, io_limit_lo;
-@@ -583,6 +587,7 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
- 
- 	/* Set up the top and bottom of the PCI I/O segment for this bus */
- 	res = &bridge->resource[PCI_BRIDGE_IO_WINDOW];
-+	res_name = pci_resource_name(bridge, PCI_BRIDGE_IO_WINDOW);
- 	pcibios_resource_to_bus(bridge->bus, &region, res);
- 	if (res->flags & IORESOURCE_IO) {
- 		pci_read_config_word(bridge, PCI_IO_BASE, &l);
-@@ -591,7 +596,7 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
- 		l = ((u16) io_limit_lo << 8) | io_base_lo;
- 		/* Set up upper 16 bits of I/O base/limit */
- 		io_upper16 = (region.end & 0xffff0000) | (region.start >> 16);
--		pci_info(bridge, "  bridge window %pR\n", res);
-+		pci_info(bridge, "  %s %pR\n", res_name, res);
- 	} else {
- 		/* Clear upper 16 bits of I/O base/limit */
- 		io_upper16 = 0;
-@@ -608,16 +613,18 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
- static void pci_setup_bridge_mmio(struct pci_dev *bridge)
- {
- 	struct resource *res;
-+	const char *res_name;
- 	struct pci_bus_region region;
- 	u32 l;
- 
- 	/* Set up the top and bottom of the PCI Memory segment for this bus */
- 	res = &bridge->resource[PCI_BRIDGE_MEM_WINDOW];
-+	res_name = pci_resource_name(bridge, PCI_BRIDGE_MEM_WINDOW);
- 	pcibios_resource_to_bus(bridge->bus, &region, res);
- 	if (res->flags & IORESOURCE_MEM) {
- 		l = (region.start >> 16) & 0xfff0;
- 		l |= region.end & 0xfff00000;
--		pci_info(bridge, "  bridge window %pR\n", res);
-+		pci_info(bridge, "  %s %pR\n", res_name, res);
- 	} else {
- 		l = 0x0000fff0;
- 	}
-@@ -627,6 +634,7 @@ static void pci_setup_bridge_mmio(struct pci_dev *bridge)
- static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
- {
- 	struct resource *res;
-+	const char *res_name;
- 	struct pci_bus_region region;
- 	u32 l, bu, lu;
- 
-@@ -640,6 +648,7 @@ static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
- 	/* Set up PREF base/limit */
- 	bu = lu = 0;
- 	res = &bridge->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
-+	res_name = pci_resource_name(bridge, PCI_BRIDGE_PREF_MEM_WINDOW);
- 	pcibios_resource_to_bus(bridge->bus, &region, res);
- 	if (res->flags & IORESOURCE_PREFETCH) {
- 		l = (region.start >> 16) & 0xfff0;
-@@ -648,7 +657,7 @@ static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
- 			bu = upper_32_bits(region.start);
- 			lu = upper_32_bits(region.end);
- 		}
--		pci_info(bridge, "  bridge window %pR\n", res);
-+		pci_info(bridge, "  %s %pR\n", res_name, res);
- 	} else {
- 		l = 0x0000fff0;
- 	}
-@@ -1009,6 +1018,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
- 		int i;
- 
- 		pci_dev_for_each_resource(dev, r, i) {
-+			const char *r_name = pci_resource_name(dev, i);
- 			resource_size_t r_size;
- 
- 			if (r->parent || (r->flags & IORESOURCE_PCI_FIXED) ||
-@@ -1039,8 +1049,8 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
- 			if (order < 0)
- 				order = 0;
- 			if (order >= ARRAY_SIZE(aligns)) {
--				pci_warn(dev, "disabling BAR %d: %pR (bad alignment %#llx)\n",
--					 i, r, (unsigned long long) align);
-+				pci_warn(dev, "%s %pR: disabling; bad alignment %#llx\n",
-+					 r_name, r, (unsigned long long) align);
- 				r->flags = 0;
- 				continue;
- 			}
-@@ -2230,6 +2240,7 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
- 		for (i = PCI_BRIDGE_RESOURCES; i < PCI_BRIDGE_RESOURCE_END;
- 		     i++) {
- 			struct resource *res = &bridge->resource[i];
-+			const char *res_name = pci_resource_name(bridge, i);
- 
- 			if ((res->flags ^ type) & PCI_RES_TYPE_MASK)
- 				continue;
-@@ -2242,8 +2253,7 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
- 			if (ret)
- 				goto cleanup;
- 
--			pci_info(bridge, "BAR %d: releasing %pR\n",
--				 i, res);
-+			pci_info(bridge, "%s %pR: releasing\n", res_name, res);
- 
- 			if (res->parent)
- 				release_resource(res);
-diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
-index ceaa69491f5ef..c6d933ddfd464 100644
---- a/drivers/pci/setup-res.c
-+++ b/drivers/pci/setup-res.c
-@@ -30,6 +30,7 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
- 	u32 new, check, mask;
- 	int reg;
- 	struct resource *res = dev->resource + resno;
-+	const char *res_name = pci_resource_name(dev, resno);
- 
- 	/* Per SR-IOV spec 3.4.1.11, VF BARs are RO zero */
- 	if (dev->is_virtfn)
-@@ -104,8 +105,8 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
- 	pci_read_config_dword(dev, reg, &check);
- 
- 	if ((new ^ check) & mask) {
--		pci_err(dev, "BAR %d: error updating (%#010x != %#010x)\n",
--			resno, new, check);
-+		pci_err(dev, "%s: error updating (%#010x != %#010x)\n",
-+			res_name, new, check);
- 	}
- 
- 	if (res->flags & IORESOURCE_MEM_64) {
-@@ -113,8 +114,8 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
- 		pci_write_config_dword(dev, reg + 4, new);
- 		pci_read_config_dword(dev, reg + 4, &check);
- 		if (check != new) {
--			pci_err(dev, "BAR %d: error updating (high %#010x != %#010x)\n",
--				resno, new, check);
-+			pci_err(dev, "%s: error updating (high %#010x != %#010x)\n",
-+				res_name, new, check);
- 		}
- 	}
- 
-@@ -135,11 +136,12 @@ void pci_update_resource(struct pci_dev *dev, int resno)
- int pci_claim_resource(struct pci_dev *dev, int resource)
- {
- 	struct resource *res = &dev->resource[resource];
-+	const char *res_name = pci_resource_name(dev, resource);
- 	struct resource *root, *conflict;
- 
- 	if (res->flags & IORESOURCE_UNSET) {
--		pci_info(dev, "can't claim BAR %d %pR: no address assigned\n",
--			 resource, res);
-+		pci_info(dev, "%s %pR: can't claim; no address assigned\n",
-+			 res_name, res);
- 		return -EINVAL;
- 	}
- 
-@@ -153,16 +155,16 @@ int pci_claim_resource(struct pci_dev *dev, int resource)
- 
- 	root = pci_find_parent_resource(dev, res);
- 	if (!root) {
--		pci_info(dev, "can't claim BAR %d %pR: no compatible bridge window\n",
--			 resource, res);
-+		pci_info(dev, "%s %pR: can't claim; no compatible bridge window\n",
-+			 res_name, res);
- 		res->flags |= IORESOURCE_UNSET;
- 		return -EINVAL;
- 	}
- 
- 	conflict = request_resource_conflict(root, res);
- 	if (conflict) {
--		pci_info(dev, "can't claim BAR %d %pR: address conflict with %s %pR\n",
--			 resource, res, conflict->name, conflict);
-+		pci_info(dev, "%s %pR: can't claim; address conflict with %s %pR\n",
-+			 res_name, res, conflict->name, conflict);
- 		res->flags |= IORESOURCE_UNSET;
- 		return -EBUSY;
- 	}
-@@ -201,6 +203,7 @@ static int pci_revert_fw_address(struct resource *res, struct pci_dev *dev,
- {
- 	struct resource *root, *conflict;
- 	resource_size_t fw_addr, start, end;
-+	const char *res_name = pci_resource_name(dev, resno);
- 
- 	fw_addr = pcibios_retrieve_fw_addr(dev, resno);
- 	if (!fw_addr)
-@@ -231,12 +234,11 @@ static int pci_revert_fw_address(struct resource *res, struct pci_dev *dev,
- 			root = &iomem_resource;
- 	}
- 
--	pci_info(dev, "BAR %d: trying firmware assignment %pR\n",
--		 resno, res);
-+	pci_info(dev, "%s: trying firmware assignment %pR\n", res_name, res);
- 	conflict = request_resource_conflict(root, res);
- 	if (conflict) {
--		pci_info(dev, "BAR %d: %pR conflicts with %s %pR\n",
--			 resno, res, conflict->name, conflict);
-+		pci_info(dev, "%s %pR: conflicts with %s %pR\n", res_name, res,
-+			 conflict->name, conflict);
- 		res->start = start;
- 		res->end = end;
- 		res->flags |= IORESOURCE_UNSET;
-@@ -325,6 +327,7 @@ static int _pci_assign_resource(struct pci_dev *dev, int resno,
- int pci_assign_resource(struct pci_dev *dev, int resno)
- {
- 	struct resource *res = dev->resource + resno;
-+	const char *res_name = pci_resource_name(dev, resno);
- 	resource_size_t align, size;
- 	int ret;
- 
-@@ -334,8 +337,8 @@ int pci_assign_resource(struct pci_dev *dev, int resno)
- 	res->flags |= IORESOURCE_UNSET;
- 	align = pci_resource_alignment(dev, res);
- 	if (!align) {
--		pci_info(dev, "BAR %d: can't assign %pR (bogus alignment)\n",
--			 resno, res);
-+		pci_info(dev, "%s %pR: can't assign; bogus alignment\n",
-+			 res_name, res);
- 		return -EINVAL;
- 	}
- 
-@@ -348,18 +351,18 @@ int pci_assign_resource(struct pci_dev *dev, int resno)
- 	 * working, which is better than just leaving it disabled.
- 	 */
- 	if (ret < 0) {
--		pci_info(dev, "BAR %d: no space for %pR\n", resno, res);
-+		pci_info(dev, "%s %pR: can't assign; no space\n", res_name, res);
- 		ret = pci_revert_fw_address(res, dev, resno, size);
- 	}
- 
- 	if (ret < 0) {
--		pci_info(dev, "BAR %d: failed to assign %pR\n", resno, res);
-+		pci_info(dev, "%s %pR: failed to assign\n", res_name, res);
- 		return ret;
- 	}
- 
- 	res->flags &= ~IORESOURCE_UNSET;
- 	res->flags &= ~IORESOURCE_STARTALIGN;
--	pci_info(dev, "BAR %d: assigned %pR\n", resno, res);
-+	pci_info(dev, "%s %pR: assigned\n", res_name, res);
- 	if (resno < PCI_BRIDGE_RESOURCES)
- 		pci_update_resource(dev, resno);
- 
-@@ -367,10 +370,11 @@ int pci_assign_resource(struct pci_dev *dev, int resno)
- }
- EXPORT_SYMBOL(pci_assign_resource);
- 
--int pci_reassign_resource(struct pci_dev *dev, int resno, resource_size_t addsize,
--			resource_size_t min_align)
-+int pci_reassign_resource(struct pci_dev *dev, int resno,
-+			  resource_size_t addsize, resource_size_t min_align)
- {
- 	struct resource *res = dev->resource + resno;
-+	const char *res_name = pci_resource_name(dev, resno);
- 	unsigned long flags;
- 	resource_size_t new_size;
- 	int ret;
-@@ -381,8 +385,8 @@ int pci_reassign_resource(struct pci_dev *dev, int resno, resource_size_t addsiz
- 	flags = res->flags;
- 	res->flags |= IORESOURCE_UNSET;
- 	if (!res->parent) {
--		pci_info(dev, "BAR %d: can't reassign an unassigned resource %pR\n",
--			 resno, res);
-+		pci_info(dev, "%s %pR: can't reassign; unassigned resource\n",
-+			 res_name, res);
- 		return -EINVAL;
- 	}
- 
-@@ -391,15 +395,15 @@ int pci_reassign_resource(struct pci_dev *dev, int resno, resource_size_t addsiz
- 	ret = _pci_assign_resource(dev, resno, new_size, min_align);
- 	if (ret) {
- 		res->flags = flags;
--		pci_info(dev, "BAR %d: %pR (failed to expand by %#llx)\n",
--			 resno, res, (unsigned long long) addsize);
-+		pci_info(dev, "%s %pR: failed to expand by %#llx\n",
-+			 res_name, res, (unsigned long long) addsize);
- 		return ret;
- 	}
- 
- 	res->flags &= ~IORESOURCE_UNSET;
- 	res->flags &= ~IORESOURCE_STARTALIGN;
--	pci_info(dev, "BAR %d: reassigned %pR (expanded by %#llx)\n",
--		 resno, res, (unsigned long long) addsize);
-+	pci_info(dev, "%s %pR: reassigned; expanded by %#llx\n",
-+		 res_name, res, (unsigned long long) addsize);
- 	if (resno < PCI_BRIDGE_RESOURCES)
- 		pci_update_resource(dev, resno);
- 
-@@ -409,8 +413,9 @@ int pci_reassign_resource(struct pci_dev *dev, int resno, resource_size_t addsiz
- void pci_release_resource(struct pci_dev *dev, int resno)
- {
- 	struct resource *res = dev->resource + resno;
-+	const char *res_name = pci_resource_name(dev, resno);
- 
--	pci_info(dev, "BAR %d: releasing %pR\n", resno, res);
-+	pci_info(dev, "%s %pR: releasing\n", res_name, res);
- 
- 	if (!res->parent)
- 		return;
-@@ -480,6 +485,7 @@ int pci_enable_resources(struct pci_dev *dev, int mask)
- 	u16 cmd, old_cmd;
- 	int i;
- 	struct resource *r;
-+	const char *r_name;
- 
- 	pci_read_config_word(dev, PCI_COMMAND, &cmd);
- 	old_cmd = cmd;
-@@ -488,6 +494,8 @@ int pci_enable_resources(struct pci_dev *dev, int mask)
- 		if (!(mask & (1 << i)))
- 			continue;
- 
-+		r_name = pci_resource_name(dev, i);
++/**
++ * resource_set_range - Set resource start and end addresses
++ * @res: Resource descriptor
++ * @start: Start address for the resource
++ * @size: Size of the resource
++ *
++ * Set @res start address and calculate the end address based on @size.
++ */
++static inline void resource_set_range(struct resource *res,
++				      resource_size_t start,
++				      resource_size_t size)
++{
++	res->start = start;
++	resource_set_size(res, size);
++}
 +
- 		if (!(r->flags & (IORESOURCE_IO | IORESOURCE_MEM)))
- 			continue;
- 		if ((i == PCI_ROM_RESOURCE) &&
-@@ -495,14 +503,14 @@ int pci_enable_resources(struct pci_dev *dev, int mask)
- 			continue;
- 
- 		if (r->flags & IORESOURCE_UNSET) {
--			pci_err(dev, "can't enable device: BAR %d %pR not assigned\n",
--				i, r);
-+			pci_err(dev, "%s %pR: not assigned; can't enable device\n",
-+				r_name, r);
- 			return -EINVAL;
- 		}
- 
- 		if (!r->parent) {
--			pci_err(dev, "can't enable device: BAR %d %pR not claimed\n",
--				i, r);
-+			pci_err(dev, "%s %pR: not claimed; can't enable device\n",
-+				r_name, r);
- 			return -EINVAL;
- 		}
- 
+ static inline resource_size_t resource_size(const struct resource *res)
+ {
+ 	return res->end - res->start + 1;
 -- 
 2.51.0
 
