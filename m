@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-229322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGarJgBcwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:00 +0100
+	id yLs9NCBpwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BD32F652F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C9D2F802F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8E460301DDDB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DB7031BB37B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E85627FB35;
-	Mon, 23 Mar 2026 15:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0233239E60;
+	Mon, 23 Mar 2026 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgINRqHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgqk5NZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5193E242D70;
-	Mon, 23 Mar 2026 15:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAF4238C1B;
+	Mon, 23 Mar 2026 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278753; cv=none; b=TZeK71CK73bGwsayGu3FEhrIkFaxUAaGe6VWOjbPBvhuKl8sEOgW4aoBsDpNSC3QvdZ1g3gKxIR3IeWFJwh62I1CQkPMheh8D3vCGJO3xChVYPWKmquokh3CtyQvydQjDy7P6xZrSY+n50sPHXcNUJijCSe+CHi3T7u288JEfiQ=
+	t=1774277138; cv=none; b=axQJkztfbAYl1tvdocLkyTwe5l6wh/rt/7O3oqI/7MdYtNlWhBGeo6EHeIzmVJWzJeb3rq15tOYN82Ne0lLYzfmc+m8+UaZpBxpwyrEqIUrXF2st6wbStnBqbD8B5puPjvw82CO7KaUZA+GcJrAqo+A+d8nApYmywiO833K3rJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278753; c=relaxed/simple;
-	bh=Y9B+dvlLesEZ5Et/m9ns622rVVr1P585n+kKitBa6ic=;
+	s=arc-20240116; t=1774277138; c=relaxed/simple;
+	bh=qaqlNXyd6Gddc+oQ+3Ju4tu2ac8AqsIer93luaawRAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RBsdOBHyOVfZCgLKwZvn4uE116mC4BPpaya+WLR3prIMlEHSycj15mUN6VZZqPWIazVhz432PtgJp1OvyH3lK5FMzuOI0UmPkl0qJfH7iKLHxkEeydp7ZwafJCv1Vwcke/nKYSBjkPT/pYqJ6ZoZi2EcCXqifEaV3c2/jHIiDFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgINRqHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62D1C4CEF7;
-	Mon, 23 Mar 2026 15:12:32 +0000 (UTC)
+	 MIME-Version; b=UXdTcNxUgC6I2NfaxnurraJWU8TgjgFAr5EAz/fUwoEgpay91lPT7CKLgW+0V3g7t9rIaFGj4qKhBYaU0WA9gGqKhCmS8hyQRVHkOwjFdiUs8p5ivyZlbSaDoxVWNXx66/61wP7USAQWTkzGewio15jdR26m1W1jiBZ9reg5eX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgqk5NZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7316C4CEF7;
+	Mon, 23 Mar 2026 14:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278753;
-	bh=Y9B+dvlLesEZ5Et/m9ns622rVVr1P585n+kKitBa6ic=;
+	s=korg; t=1774277138;
+	bh=qaqlNXyd6Gddc+oQ+3Ju4tu2ac8AqsIer93luaawRAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgINRqHC6mBVMZAnvWd19jria4myONCbNh1mIKR4NHRxva8teVx1jNrJOoCV57gV1
-	 0YqtHSa4S+Ame8mRqTUMIHT0zL1X3aNSoCUK52QWl8bZRaXuy6tDjNeFkw6UIW3vVY
-	 OhdCQP5MNMe2Cgw294QkL9uJBLEXpVd6L3cqrLhs=
+	b=dgqk5NZ1AAOF9hI5xxMwCXxdohLo6jZOVypH9E0zxd9DQ4GWm6/qkZPl7twxKgOCv
+	 /4Imx97fpoaAi24zlGWN9L5WgvHiLl58ySBdTBmnasgSzwFxIDQfepavP8G0dBEw9O
+	 PkyyaCGaS9FfhFJT6oY+am8+z9FdjIBri5kjpvbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 407/567] nfs: pass explicit offset/count to trace events
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.12 331/460] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
 Date: Mon, 23 Mar 2026 14:45:27 +0100
-Message-ID: <20260323134543.948170383@linuxfoundation.org>
+Message-ID: <20260323134534.659499526@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,259 +67,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
+	TAGGED_FROM(0.00)[bounces-228791-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,lst.de,Netapp.com,139.com];
-	TAGGED_FROM(0.00)[bounces-229322-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 37BD32F652F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,outlook.com:email,simonwunderlich.de:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 30C9D2F802F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit fada32ed6dbc748f447c8d050a961b75d946055a ]
+commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
 
-nfs_folio_length is unsafe to use without having the folio locked and a
-check for a NULL ->f_mapping that protects against truncations and can
-lead to kernel crashes.  E.g. when running xfstests generic/065 with
-all nfs trace points enabled.
+When OGM aggregation state is toggled at runtime, an existing forwarded
+packet may have been allocated with only packet_len bytes, while a later
+packet can still be selected for aggregation. Appending in this case can
+hit skb_put overflow conditions.
 
-Follow the model of the XFS trace points and pass in an explіcit offset
-and length.  This has the additional benefit that these values can
-be more accurate as some of the users touch partial folio ranges.
+Reject aggregation when the target skb tailroom cannot accommodate the new
+packet. The caller then falls back to creating a new forward packet
+instead of appending.
 
-Fixes: eb5654b3b89d ("NFS: Enable tracing of nfs_invalidate_folio() and nfs_launder_folio()")
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+[ Adjust context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/file.c     |    5 +++--
- fs/nfs/nfstrace.h |   36 ++++++++++++++++++++----------------
- fs/nfs/read.c     |    8 +++++---
- fs/nfs/write.c    |   10 +++++-----
- 4 files changed, 33 insertions(+), 26 deletions(-)
+ net/batman-adv/bat_iv_ogm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -441,7 +441,7 @@ static void nfs_invalidate_folio(struct
- 	/* Cancel any unstarted writes on this page */
- 	nfs_wb_folio_cancel(inode, folio);
- 	folio_wait_fscache(folio);
--	trace_nfs_invalidate_folio(inode, folio);
-+	trace_nfs_invalidate_folio(inode, folio_pos(folio) + offset, length);
- }
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -464,6 +464,9 @@ batadv_iv_ogm_can_aggregate(const struct
+ 	    !time_after_eq(aggregation_end_time, forw_packet->send_time))
+ 		return false;
  
- /*
-@@ -509,7 +509,8 @@ static int nfs_launder_folio(struct foli
- 
- 	folio_wait_fscache(folio);
- 	ret = nfs_wb_folio(inode, folio);
--	trace_nfs_launder_folio_done(inode, folio, ret);
-+	trace_nfs_launder_folio_done(inode, folio_pos(folio),
-+			folio_size(folio), ret);
- 	return ret;
- }
- 
---- a/fs/nfs/nfstrace.h
-+++ b/fs/nfs/nfstrace.h
-@@ -933,10 +933,11 @@ TRACE_EVENT(nfs_sillyrename_unlink,
- DECLARE_EVENT_CLASS(nfs_folio_event,
- 		TP_PROTO(
- 			const struct inode *inode,
--			struct folio *folio
-+			loff_t offset,
-+			size_t count
- 		),
- 
--		TP_ARGS(inode, folio),
-+		TP_ARGS(inode, offset, count),
- 
- 		TP_STRUCT__entry(
- 			__field(dev_t, dev)
-@@ -944,7 +945,7 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
- 			__field(u64, fileid)
- 			__field(u64, version)
- 			__field(loff_t, offset)
--			__field(u32, count)
-+			__field(size_t, count)
- 		),
- 
- 		TP_fast_assign(
-@@ -954,13 +955,13 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
- 			__entry->fileid = nfsi->fileid;
- 			__entry->fhandle = nfs_fhandle_hash(&nfsi->fh);
- 			__entry->version = inode_peek_iversion_raw(inode);
--			__entry->offset = folio_file_pos(folio);
--			__entry->count = nfs_folio_length(folio);
-+			__entry->offset = offset,
-+			__entry->count = count;
- 		),
- 
- 		TP_printk(
- 			"fileid=%02x:%02x:%llu fhandle=0x%08x version=%llu "
--			"offset=%lld count=%u",
-+			"offset=%lld count=%zu",
- 			MAJOR(__entry->dev), MINOR(__entry->dev),
- 			(unsigned long long)__entry->fileid,
- 			__entry->fhandle, __entry->version,
-@@ -972,18 +973,20 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
- 	DEFINE_EVENT(nfs_folio_event, name, \
- 			TP_PROTO( \
- 				const struct inode *inode, \
--				struct folio *folio \
-+				loff_t offset, \
-+				size_t count \
- 			), \
--			TP_ARGS(inode, folio))
-+			TP_ARGS(inode, offset, count))
- 
- DECLARE_EVENT_CLASS(nfs_folio_event_done,
- 		TP_PROTO(
- 			const struct inode *inode,
--			struct folio *folio,
-+			loff_t offset,
-+			size_t count,
- 			int ret
- 		),
- 
--		TP_ARGS(inode, folio, ret),
-+		TP_ARGS(inode, offset, count, ret),
- 
- 		TP_STRUCT__entry(
- 			__field(dev_t, dev)
-@@ -992,7 +995,7 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
- 			__field(u64, fileid)
- 			__field(u64, version)
- 			__field(loff_t, offset)
--			__field(u32, count)
-+			__field(size_t, count)
- 		),
- 
- 		TP_fast_assign(
-@@ -1002,14 +1005,14 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
- 			__entry->fileid = nfsi->fileid;
- 			__entry->fhandle = nfs_fhandle_hash(&nfsi->fh);
- 			__entry->version = inode_peek_iversion_raw(inode);
--			__entry->offset = folio_file_pos(folio);
--			__entry->count = nfs_folio_length(folio);
-+			__entry->offset = offset,
-+			__entry->count = count,
- 			__entry->ret = ret;
- 		),
- 
- 		TP_printk(
- 			"fileid=%02x:%02x:%llu fhandle=0x%08x version=%llu "
--			"offset=%lld count=%u ret=%d",
-+			"offset=%lld count=%zu ret=%d",
- 			MAJOR(__entry->dev), MINOR(__entry->dev),
- 			(unsigned long long)__entry->fileid,
- 			__entry->fhandle, __entry->version,
-@@ -1021,10 +1024,11 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
- 	DEFINE_EVENT(nfs_folio_event_done, name, \
- 			TP_PROTO( \
- 				const struct inode *inode, \
--				struct folio *folio, \
-+				loff_t offset, \
-+				size_t count, \
- 				int ret \
- 			), \
--			TP_ARGS(inode, folio, ret))
-+			TP_ARGS(inode, offset, count, ret))
- 
- DEFINE_NFS_FOLIO_EVENT(nfs_aop_readpage);
- DEFINE_NFS_FOLIO_EVENT_DONE(nfs_aop_readpage_done);
---- a/fs/nfs/read.c
-+++ b/fs/nfs/read.c
-@@ -333,13 +333,15 @@ out:
- int nfs_read_folio(struct file *file, struct folio *folio)
- {
- 	struct inode *inode = file_inode(file);
-+	loff_t pos = folio_pos(folio);
-+	size_t len = folio_size(folio);
- 	struct nfs_pageio_descriptor pgio;
- 	struct nfs_open_context *ctx;
- 	int ret;
- 
--	trace_nfs_aop_readpage(inode, folio);
-+	trace_nfs_aop_readpage(inode, pos, len);
- 	nfs_inc_stats(inode, NFSIOS_VFSREADPAGE);
--	task_io_account_read(folio_size(folio));
-+	task_io_account_read(len);
- 
- 	/*
- 	 * Try to flush any pending writes to the file..
-@@ -382,7 +384,7 @@ int nfs_read_folio(struct file *file, st
- out_put:
- 	put_nfs_open_context(ctx);
- out:
--	trace_nfs_aop_readpage_done(inode, folio, ret);
-+	trace_nfs_aop_readpage_done(inode, pos, len, ret);
- 	return ret;
- out_unlock:
- 	folio_unlock(folio);
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -2131,17 +2131,17 @@ int nfs_wb_folio_cancel(struct inode *in
-  */
- int nfs_wb_folio(struct inode *inode, struct folio *folio)
- {
--	loff_t range_start = folio_file_pos(folio);
--	loff_t range_end = range_start + (loff_t)folio_size(folio) - 1;
-+	loff_t range_start = folio_pos(folio);
-+	size_t len = folio_size(folio);
- 	struct writeback_control wbc = {
- 		.sync_mode = WB_SYNC_ALL,
- 		.nr_to_write = 0,
- 		.range_start = range_start,
--		.range_end = range_end,
-+		.range_end = range_start + len - 1,
- 	};
- 	int ret;
- 
--	trace_nfs_writeback_folio(inode, folio);
-+	trace_nfs_writeback_folio(inode, range_start, len);
- 
- 	for (;;) {
- 		folio_wait_writeback(folio);
-@@ -2159,7 +2159,7 @@ int nfs_wb_folio(struct inode *inode, st
- 			goto out_error;
- 	}
- out_error:
--	trace_nfs_writeback_folio_done(inode, folio, ret);
-+	trace_nfs_writeback_folio_done(inode, range_start, len, ret);
- 	return ret;
- }
++	if (skb_tailroom(forw_packet->skb) < packet_len)
++		return false;
++
+ 	if (aggregated_bytes > BATADV_MAX_AGGREGATION_BYTES)
+ 		return false;
  
 
 
