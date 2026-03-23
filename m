@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIwoI8tzwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:31 +0100
+	id WKLUDSlQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E682F9859
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38A62F4E01
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D7327318B0D4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 64BFF314B8D7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD043BD638;
-	Mon, 23 Mar 2026 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930FF369204;
+	Mon, 23 Mar 2026 14:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjMG5Pgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8sTDMre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA0E27B50F;
-	Mon, 23 Mar 2026 16:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5596F1A6828;
+	Mon, 23 Mar 2026 14:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282537; cv=none; b=mxQtSSC1ygfcxswC5R10VDRf3Wd5uAG/tJY0d7RIffCGMNUFBeFxRSOr1RRSBT1afFwpVzlBQVtC1/aXtXUQ321yeY/fVgOZ1qkRAA07zgbPtSDBJi7qh7d8HV/DwNlfY+iVuELiMOBahfJxa8vvo6kQVLtIoTAVVvs8xhOTqOU=
+	t=1774275681; cv=none; b=tjYSIrFLO6v+uPX74eNq9aRwrdBz8LXzzd8xbRrViz4Avf0XqwWI53tMyp1X+RWkjm9bmvlSi+7mWXq5/b/W+DVE+koyKeOuZPAbTDnDsio2GcTXkEsAXyTjU/+4sgqXP0qd5btDKYmwRnnyFoMpJoF6E+syurxBvfIQIMTbhQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282537; c=relaxed/simple;
-	bh=MFC369R8LGp6Pd5EPedRdHJCCrAb5HfFyOe9evrQDCc=;
+	s=arc-20240116; t=1774275681; c=relaxed/simple;
+	bh=kabUdi63cCsqc4aUg4I6ucgji0JLQWKEpGeK7yrTZpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=guDwVR9AZQr7zPCVWntArt4D2qbJ1oEn36L2qzzbbvLxf3Ab5JC3LfsMOXT0wGO6i/VA2pIJqwjLtb5IAyUj5R23YclyYFdac6s/yjK6045RwAKo2fb19aC/OyKlrJRvBxBtIadTlUmIXd+Ivy3QDBgktJvP1lQBz2soYF+CBK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjMG5Pgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65764C4CEF7;
-	Mon, 23 Mar 2026 16:15:36 +0000 (UTC)
+	 MIME-Version; b=Gi1JZADJK+xEirxYY7I1El47X0CmT+VXZpCn4nm0r17bYBT6A3bZBFSWQFgjQx0TBkxYLX5aURj51lgIXSUwAjiByKbMg79ONVF1PaP2AAC4NQvcmlnLBl6MT4WR7Lcc+E/3uUSmp8ehyzfAs4YZAKPa20TXioJTNkPgNc/f20c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8sTDMre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9820C4CEF7;
+	Mon, 23 Mar 2026 14:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282536;
-	bh=MFC369R8LGp6Pd5EPedRdHJCCrAb5HfFyOe9evrQDCc=;
+	s=korg; t=1774275681;
+	bh=kabUdi63cCsqc4aUg4I6ucgji0JLQWKEpGeK7yrTZpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjMG5Pgk7MN5FxHFfC8iQgZXM5dgr/Lp6x/RiZ1F7+KSpN/RyURCjosQQkqpKb6YQ
-	 08umat1DpCzckyKFqlkKUY8N1+ElPmyL+hfuNI3m1hczl3tsu/8IL97i6K6Hq5JV/E
-	 di6rEPm7TpDnHchRSnDYWjmYqG0pjIyh2V+pN7u8=
+	b=r8sTDMreuu5eEHDnF5Bajl5y3rgAxyghJPZ84ehG32OR3vYFyxf5mAG38juKFWN2t
+	 FToj4GJ3vQK5LvQh+NxiyEwmXtCV85fELKFar/S5XgFUeWvmBx08SYUR+Da05YbxXx
+	 M/shVRT0Ck4SDNRwQuwTjl/pQVrXjOLYov0yK8hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 194/481] octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status
-Date: Mon, 23 Mar 2026 14:42:56 +0100
-Message-ID: <20260323134529.917922889@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.12 181/460] drm/i915: Fix potential overflow of shmem scatterlist length
+Date: Mon, 23 Mar 2026 14:42:57 +0100
+Message-ID: <20260323134530.987741226@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +68,124 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229665-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228638-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 88E682F9859
+X-Rspamd-Queue-Id: C38A62F4E01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 87f7dff3ec75b91def0024ebaaf732457f47a63b ]
+commit 029ae067431ab9d0fca479bdabe780fa436706ea upstream.
 
-The NIX RAS health report path uses nix_af_rvu_err when handling the
-NIX_AF_RVU_RAS case, so the report prints the ERR interrupt status rather
-than the RAS interrupt status.
+When a scatterlists table of a GEM shmem object of size 4 GB or more is
+populated with pages allocated from a folio, unsigned int .length
+attribute of a scatterlist may get overflowed if total byte length of
+pages allocated to that single scatterlist happens to reach or cross the
+4GB limit.  As a consequence, users of the object may suffer from hitting
+unexpected, premature end of the object's backing pages.
 
-Use nix_af_rvu_ras for the NIX_AF_RVU_RAS report.
+[278.780187] ------------[ cut here ]------------
+[278.780377] WARNING: CPU: 1 PID: 2326 at drivers/gpu/drm/i915/i915_mm.c:55 remap_sg+0x199/0x1d0 [i915]
+...
+[278.780654] CPU: 1 UID: 0 PID: 2326 Comm: gem_mmap_offset Tainted: G S   U              6.17.0-rc1-CI_DRM_16981-ged823aaa0607+ #1 PREEMPT(voluntary)
+[278.780656] Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+[278.780658] Hardware name: Intel Corporation Meteor Lake Client Platform/MTL-P LP5x T3 RVP, BIOS MTLPFWI1.R00.3471.D91.2401310918 01/31/2024
+[278.780659] RIP: 0010:remap_sg+0x199/0x1d0 [i915]
+...
+[278.780786] Call Trace:
+[278.780787]  <TASK>
+[278.780788]  ? __apply_to_page_range+0x3e6/0x910
+[278.780795]  ? __pfx_remap_sg+0x10/0x10 [i915]
+[278.780906]  apply_to_page_range+0x14/0x30
+[278.780908]  remap_io_sg+0x14d/0x260 [i915]
+[278.781013]  vm_fault_cpu+0xd2/0x330 [i915]
+[278.781137]  __do_fault+0x3a/0x1b0
+[278.781140]  do_fault+0x322/0x640
+[278.781143]  __handle_mm_fault+0x938/0xfd0
+[278.781150]  handle_mm_fault+0x12c/0x300
+[278.781152]  ? lock_mm_and_find_vma+0x4b/0x760
+[278.781155]  do_user_addr_fault+0x2d6/0x8e0
+[278.781160]  exc_page_fault+0x96/0x2c0
+[278.781165]  asm_exc_page_fault+0x27/0x30
+...
 
-Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20260310184824.1183651-2-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That issue was apprehended by the author of a change that introduced it,
+and potential risk even annotated with a comment, but then never addressed.
+
+When adding folio pages to a scatterlist table, take care of byte length
+of any single scatterlist not exceeding max_segment.
+
+Fixes: 0b62af28f249b ("i915: convert shmem_sg_free_table() to use a folio_batch")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14809
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # v6.5+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20260224094944.2447913-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 06249b4e691a75694c014a61708c007fb5755f60)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index ae06742670dc8..d3aed339c69c3 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -327,10 +327,10 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
- 		rvu_report_pair_end(fmsg);
- 		break;
- 	case NIX_AF_RVU_RAS:
--		intr_val = nix_event_context->nix_af_rvu_err;
-+		intr_val = nix_event_context->nix_af_rvu_ras;
- 		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
- 		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
--					  nix_event_context->nix_af_rvu_err);
-+					  nix_event_context->nix_af_rvu_ras);
- 		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
- 		if (intr_val & BIT_ULL(34))
- 			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -151,8 +151,12 @@ int shmem_sg_alloc_table(struct drm_i915
+ 			}
+ 		} while (1);
+ 
+-		nr_pages = min_t(unsigned long,
+-				folio_nr_pages(folio), page_count - i);
++		nr_pages = min_array(((unsigned long[]) {
++					folio_nr_pages(folio),
++					page_count - i,
++					max_segment / PAGE_SIZE,
++				      }), 3);
++
+ 		if (!i ||
+ 		    sg->length >= max_segment ||
+ 		    folio_pfn(folio) != next_pfn) {
+@@ -162,7 +166,9 @@ int shmem_sg_alloc_table(struct drm_i915
+ 			st->nents++;
+ 			sg_set_folio(sg, folio, nr_pages * PAGE_SIZE, 0);
+ 		} else {
+-			/* XXX: could overflow? */
++			nr_pages = min_t(unsigned long, nr_pages,
++					 (max_segment - sg->length) / PAGE_SIZE);
++
+ 			sg->length += nr_pages * PAGE_SIZE;
+ 		}
+ 		next_pfn = folio_pfn(folio) + nr_pages;
 
 
 
