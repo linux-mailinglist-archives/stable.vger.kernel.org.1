@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-228952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGFYEvNqwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-228952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:47 +0100
+	id oB+iKpdXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D722F840F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C242F5DD3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9E003355623
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0B6E31412B5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DC726ED46;
-	Mon, 23 Mar 2026 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3623AF65F;
+	Mon, 23 Mar 2026 14:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUaz5wCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wc+8h6t3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B6F33DEF9;
-	Mon, 23 Mar 2026 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45133AA4FD;
+	Mon, 23 Mar 2026 14:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277589; cv=none; b=n7TOfMMkdpBweDjpmi4PXOSU/+SRsuWiLFKozd6vj582uH/Kfv7hRw6WPLU2K4uF8NwuNwScsG9GIvIAmM7w3bGzHWf70ddpz4hy7jA185VOZjGT4bnOk5pio+cEqj5ZG9EO6mBi+b13uQRBVqUor+dXHjxtCP6iSsKOdQ0gvlw=
+	t=1774277595; cv=none; b=lKaPlcZQn8jLVPmWTa8Ccchw16uFGis7k16D4ErlrjUql1tbAAxk4eXDkTNbgLZsHRxJ6T6Fk2UWvUg6TK6nf7D9YtbkDmvRembuItdS5pdsbASc7MqLazunRZ9YYTNYqfEci0qm1sSynfoAfIhsGF0rArX8jSp5I/Q569+Ei5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277589; c=relaxed/simple;
-	bh=1w1GVoGZJfG5mmtvtP7t8Onwahcw/vdcwaSPJNUPkxw=;
+	s=arc-20240116; t=1774277595; c=relaxed/simple;
+	bh=g3ncOEICZsCbbH2w2sre19uswG354Ttaqf5+NY1UDSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUc+zUz1HUjQrxMiVZOxtGt21tNr2lqW2kflmPD+meQacJmW6B61lLAOdyaIWGFM/INny/ql26DdBwhIKsN6/vgXGUuoZvzoj0nfkhkBFiyVSK00kznGW2PvEWrKEFNGhTEJ3O7KXGP5ojoYTLBUpOkn8bXizzJnsNPHHy9nv1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUaz5wCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A31C4CEF7;
-	Mon, 23 Mar 2026 14:53:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nPSlsMqsnPthcvn/xGM3X/vDJGkk3CtV78g5veT8hU80pe+NvOC/vuYNYCJOOvmy/kIUG1CeP7Zu4ChGmyK+WEUCb+UModCTyq8WMR2QF4/cVDGHf+mcTjtZ5ZvnmphZVBAoplnscR584RykLUt0Wiugf9FBIfa64NNQtFcXzgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wc+8h6t3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AF3C4CEF7;
+	Mon, 23 Mar 2026 14:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277589;
-	bh=1w1GVoGZJfG5mmtvtP7t8Onwahcw/vdcwaSPJNUPkxw=;
+	s=korg; t=1774277595;
+	bh=g3ncOEICZsCbbH2w2sre19uswG354Ttaqf5+NY1UDSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUaz5wCSx7dM3memhmhndDEFN/1yHKOwrR66Tj2FECtpsj5y67gQ6OBzSSbTWLtEU
-	 kfoPWmY6uN8r2POxA0J4FOawf+3BdQ7wn4ptkAWVB4ZULWe1iaP5VsAVbjpuvJ6xiR
-	 sbhvgupC3KqC8gHJ6wDxOGIh5j1KV7j/gSmiqfyg=
+	b=wc+8h6t3c3n0oVZPw4E5bad8M8wZQL9gxG/0IVpcLCEDpLIti9ZO+xYQAUnNYEYvv
+	 5PT+x/AiSmo1uV0j56rXckz+APY4fIF/hPPwWWBS6luStpY5sho9+x47jbl+VOKQJP
+	 RCiU0eDm34K9PRfj5Cavv0Bwy2qMIr2vYeJ+v8qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/567] drm/tegra: dsi: fix device leak on probe
-Date: Mon, 23 Mar 2026 14:39:21 +0100
-Message-ID: <20260323134534.811906342@linuxfoundation.org>
+Subject: [PATCH 6.6 042/567] bus: omap-ocp2scp: Convert to platform remove callback returning void
+Date: Mon, 23 Mar 2026 14:39:22 +0100
+Message-ID: <20260323134534.835986011@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -63,35 +62,34 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228954-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228952-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A2D722F840F
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 55C242F5DD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,46 +97,58 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit bfef062695570842cf96358f2f46f4c6642c6689 ]
+[ Upstream commit 854f89a5b56354ba4135e0e1f0e57ab2caee59ee ]
 
-Make sure to drop the reference taken when looking up the companion
-(ganged) device and its driver data during probe().
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Fixes: e94236cde4d5 ("drm/tegra: dsi: Add ganged mode support")
-Fixes: 221e3638feb8 ("drm/tegra: Fix reference leak in tegra_dsi_ganged_probe")
-Cc: stable@vger.kernel.org	# 3.19: 221e3638feb8
-Cc: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20251121164201.13188-1-johan@kernel.org
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Link: https://lore.kernel.org/r/20231109202830.4124591-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: 5eb63e9bb65d ("bus: omap-ocp2scp: fix OF populate on driver rebind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dsi.c | 6 ++----
+ drivers/bus/omap-ocp2scp.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
-index 49fc4690c63af..e98eb8d0c4d77 100644
---- a/drivers/gpu/drm/tegra/dsi.c
-+++ b/drivers/gpu/drm/tegra/dsi.c
-@@ -1539,11 +1539,9 @@ static int tegra_dsi_ganged_probe(struct tegra_dsi *dsi)
- 			return -EPROBE_DEFER;
+diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
+index e02d0656242b8..7d7479ba0a759 100644
+--- a/drivers/bus/omap-ocp2scp.c
++++ b/drivers/bus/omap-ocp2scp.c
+@@ -84,12 +84,10 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 		dsi->slave = platform_get_drvdata(gangster);
+-static int omap_ocp2scp_remove(struct platform_device *pdev)
++static void omap_ocp2scp_remove(struct platform_device *pdev)
+ {
+ 	pm_runtime_disable(&pdev->dev);
+ 	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
 -
--		if (!dsi->slave) {
--			put_device(&gangster->dev);
-+		put_device(&gangster->dev);
-+		if (!dsi->slave)
- 			return -EPROBE_DEFER;
--		}
+-	return 0;
+ }
  
- 		dsi->slave->master = dsi;
- 	}
+ #ifdef CONFIG_OF
+@@ -103,7 +101,7 @@ MODULE_DEVICE_TABLE(of, omap_ocp2scp_id_table);
+ 
+ static struct platform_driver omap_ocp2scp_driver = {
+ 	.probe		= omap_ocp2scp_probe,
+-	.remove		= omap_ocp2scp_remove,
++	.remove_new	= omap_ocp2scp_remove,
+ 	.driver		= {
+ 		.name	= "omap-ocp2scp",
+ 		.of_match_table = of_match_ptr(omap_ocp2scp_id_table),
 -- 
 2.51.0
 
