@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJfMEqBywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:32 +0100
+	id gHo9CT9VwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:59:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8CE2F9620
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5616D2F5910
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60A193227C16
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C8F28301C8ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89B935958;
-	Mon, 23 Mar 2026 16:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503FF399352;
+	Mon, 23 Mar 2026 14:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxKZsehj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jdOx03U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB271DA0E1;
-	Mon, 23 Mar 2026 16:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131FC387593;
+	Mon, 23 Mar 2026 14:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282879; cv=none; b=ZF85FBsbHoQhvTASLebcGsXu5OWditES3Te0FXXNvXgUQJoa2ybfUyAczb65avcphDNBOhy5fOZo0LZI3H/a2iIcdziOYIdRS5KAMdR3HwdSgQFXhERUH9lo1TWrH4mBqRDROFYRg0/waVxjmiPN+Z3s24g1h5NtpujI/Gno1ys=
+	t=1774277053; cv=none; b=H4Kr3NiN6Z9V5R3cYnuXTR3tsnDzPfnJYqmvYvHfNOR5ajCEyuL38vqdeqrlDLVHtduUfhNsxN1tCwMXYvY12zVzY0ph/J5fBiEN6RSI1GZPI0Z1Vj6JH4e360EPUnxsA7qHJdPZpqlXCSy0F50uYoO/4LOqLs3yqu35fE0sYGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282879; c=relaxed/simple;
-	bh=Pl+O3Gw2Mnle4RlwgednxSQqGN/+l7KmYvKIULLgUc4=;
+	s=arc-20240116; t=1774277053; c=relaxed/simple;
+	bh=xIqaGjd67agApr+UvCvaECTQuxLARU0qb+JzvcsrQ04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFs/PTsNWHe9kk4R5sKojZhdDEm9D1C81L1Ory91maY7I2evjKsSN85qQcKXOzCRtvRI1caBmK2oMp1YUv+e5O4PSo98qO2aComdjCnwgCOMv4EtaAuJf/npUr2nLIbW1MwRO3sVCIjasKjEBcP1zxuE9rWTPi6cvY0zkMkVsDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxKZsehj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429D9C2BCB3;
-	Mon, 23 Mar 2026 16:21:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UXeLrPuli8Goyand8IWjzVGO3ICsPWb1I3XH+gjiyysNQ1VtVKnt7M0EySjSI9qNlpUVyMtlKy2KafM8tuHkJFNUT339HcmWnZpzF3mJUwH6PWd+zTI8aw8lFyKUft2yTW2XXyrNNZHYz2xOMMwcBdSWARVP4fHMv4StQaAXjTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jdOx03U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6983AC4CEF7;
+	Mon, 23 Mar 2026 14:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282879;
-	bh=Pl+O3Gw2Mnle4RlwgednxSQqGN/+l7KmYvKIULLgUc4=;
+	s=korg; t=1774277052;
+	bh=xIqaGjd67agApr+UvCvaECTQuxLARU0qb+JzvcsrQ04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxKZsehj8vB8KXGoUx9lSwRl1eSj6jhOHoE6gbrPPeVgktDFOOgsS1C0ncvpV90VL
-	 zVn0m7oSv21+byKfBcaXL8ZAGs2I/KAilCsAElpQGA7TfTPAKpue7IosQprU792GBj
-	 LViUQrnFzFxbM45lvHMlXvN4L0lJocJgqXVGyC7Q=
+	b=1jdOx03UX8xWFfbq5a8hlNtLaqwWv4Acm5FnQIOLpQo7NiTUz8utK40UqR7JwwWeS
+	 2EQP0bms8UAfVu6bfnU6j5QN2SAjZARdtpWV0drgyfzkajhryiI2/wBaQI0FB19vOD
+	 sZvLGxJzb7UmDmq9ztjNOn/RcRRrKrPFWYGOnx40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 318/481] wifi: cfg80211: move scan done work to wiphy work
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rosen Penev <rosenp@gmail.com>
+Subject: [PATCH 6.12 304/460] drm/amd/pm: Use pm_display_cfg in legacy DPM (v2)
 Date: Mon, 23 Mar 2026 14:45:00 +0100
-Message-ID: <20260323134532.849347427@linuxfoundation.org>
+Message-ID: <20260323134533.957681837@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +63,386 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229793-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228761-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BF8CE2F9620
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 5616D2F5910
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit fe0af9fe54d0ff53aa49eef390c8962355b274e2 ]
+commit 9d73b107a61b73e7101d4b728ddac3d2c77db111 upstream.
 
-Move the scan done work to the new wiphy work to
-simplify the code a bit.
+This commit is necessary for DC to function well with chips
+that use the legacy power management code, ie. SI and KV.
+Communicate display information from DC to the legacy PM code.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 767d23ade706 ("wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently DC uses pm_display_cfg to communicate power management
+requirements from the display code to the DPM code.
+However, the legacy (non-DC) code path used different fields
+and therefore could not take into account anything from DC.
+
+Change the legacy display code to fill the same pm_display_cfg
+struct as DC and use the same in the legacy DPM code.
+
+To ease review and reduce churn, this commit does not yet
+delete the now unneeded code, that is done in the next commit.
+
+v2:
+Rebase.
+Fix single_display in amdgpu_dpm_pick_power_state.
+
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c |    3 +--
- net/wireless/core.h |    4 ++--
- net/wireless/scan.c |   14 ++++----------
- 3 files changed, 7 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c     |   67 +++++++++++++++++++++++
+ drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h |    2 
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c       |    4 -
+ drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c   |    6 +-
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c       |   65 +++++++---------------
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c |   11 ---
+ 6 files changed, 97 insertions(+), 58 deletions(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -525,7 +525,7 @@ use_default_name:
- 	spin_lock_init(&rdev->bss_lock);
- 	INIT_LIST_HEAD(&rdev->bss_list);
- 	INIT_LIST_HEAD(&rdev->sched_scan_req_list);
--	INIT_WORK(&rdev->scan_done_wk, __cfg80211_scan_done);
-+	wiphy_work_init(&rdev->scan_done_wk, __cfg80211_scan_done);
- 	INIT_DELAYED_WORK(&rdev->dfs_update_channels_wk,
- 			  cfg80211_dfs_channels_update_work);
- #ifdef CONFIG_CFG80211_WEXT
-@@ -1125,7 +1125,6 @@ void wiphy_unregister(struct wiphy *wiph
- 	/* this has nothing to do now but make sure it's gone */
- 	cancel_work_sync(&rdev->wiphy_work);
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+@@ -100,3 +100,70 @@ u32 amdgpu_dpm_get_vrefresh(struct amdgp
  
--	flush_work(&rdev->scan_done_wk);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
- 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -75,7 +75,7 @@ struct cfg80211_registered_device {
- 	struct sk_buff *scan_msg;
- 	struct list_head sched_scan_req_list;
- 	time64_t suspend_at;
--	struct work_struct scan_done_wk;
-+	struct wiphy_work scan_done_wk;
- 
- 	struct genl_info *cur_cmd_info;
- 
-@@ -447,7 +447,7 @@ bool cfg80211_valid_key_idx(struct cfg80
- int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
- 				   struct key_params *params, int key_idx,
- 				   bool pairwise, const u8 *mac_addr);
--void __cfg80211_scan_done(struct work_struct *wk);
-+void __cfg80211_scan_done(struct wiphy *wiphy, struct wiphy_work *wk);
- void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
- 			   bool send_message);
- void cfg80211_add_sched_scan_req(struct cfg80211_registered_device *rdev,
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1096,16 +1096,9 @@ void ___cfg80211_scan_done(struct cfg802
- 		nl80211_send_scan_msg(rdev, msg);
+ 	return vrefresh;
  }
++
++void amdgpu_dpm_get_display_cfg(struct amdgpu_device *adev)
++{
++	struct drm_device *ddev = adev_to_drm(adev);
++	struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
++	struct single_display_configuration *display_cfg;
++	struct drm_crtc *crtc;
++	struct amdgpu_crtc *amdgpu_crtc;
++	struct amdgpu_connector *conn;
++	int num_crtcs = 0;
++	int vrefresh;
++	u32 vblank_in_pixels, vblank_time_us;
++
++	cfg->min_vblank_time = 0xffffffff; /* if the displays are off, vblank time is max */
++
++	if (adev->mode_info.num_crtc && adev->mode_info.mode_config_initialized) {
++		list_for_each_entry(crtc, &ddev->mode_config.crtc_list, head) {
++			amdgpu_crtc = to_amdgpu_crtc(crtc);
++
++			/* The array should only contain active displays. */
++			if (!amdgpu_crtc->enabled)
++				continue;
++
++			conn = to_amdgpu_connector(amdgpu_crtc->connector);
++			display_cfg = &adev->pm.pm_display_cfg.displays[num_crtcs++];
++
++			if (amdgpu_crtc->hw_mode.clock) {
++				vrefresh = drm_mode_vrefresh(&amdgpu_crtc->hw_mode);
++
++				vblank_in_pixels =
++					amdgpu_crtc->hw_mode.crtc_htotal *
++					(amdgpu_crtc->hw_mode.crtc_vblank_end -
++					amdgpu_crtc->hw_mode.crtc_vdisplay +
++					(amdgpu_crtc->v_border * 2));
++
++				vblank_time_us =
++					vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
++
++				/* The legacy (non-DC) code has issues with mclk switching
++				 * with refresh rates over 120 Hz. Disable mclk switching.
++				 */
++				if (vrefresh > 120)
++					vblank_time_us = 0;
++
++				/* Find minimum vblank time. */
++				if (vblank_time_us < cfg->min_vblank_time)
++					cfg->min_vblank_time = vblank_time_us;
++
++				/* Find vertical refresh rate of first active display. */
++				if (!cfg->vrefresh)
++					cfg->vrefresh = vrefresh;
++			}
++
++			if (amdgpu_crtc->crtc_id < cfg->crtc_index) {
++				/* Find first active CRTC and its line time. */
++				cfg->crtc_index = amdgpu_crtc->crtc_id;
++				cfg->line_time_in_us = amdgpu_crtc->line_time;
++			}
++
++			display_cfg->controller_id = amdgpu_crtc->crtc_id;
++			display_cfg->pixel_clock = conn->pixelclock_for_modeset;
++		}
++	}
++
++	cfg->display_clk = adev->clock.default_dispclk;
++	cfg->num_display = num_crtcs;
++}
+--- a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
++++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
+@@ -29,4 +29,6 @@ u32 amdgpu_dpm_get_vblank_time(struct am
  
--void __cfg80211_scan_done(struct work_struct *wk)
-+void __cfg80211_scan_done(struct wiphy *wiphy, struct wiphy_work *wk)
+ u32 amdgpu_dpm_get_vrefresh(struct amdgpu_device *adev);
+ 
++void amdgpu_dpm_get_display_cfg(struct amdgpu_device *adev);
++
+ #endif
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -2299,7 +2299,7 @@ static void kv_apply_state_adjust_rules(
+ 
+ 		if (pi->sys_info.nb_dpm_enable) {
+ 			force_high = (mclk >= pi->sys_info.nbp_memory_clock[3]) ||
+-				pi->video_start || (adev->pm.dpm.new_active_crtc_count >= 3) ||
++				pi->video_start || (adev->pm.pm_display_cfg.num_display >= 3) ||
+ 				pi->disable_nb_ps3_in_battery;
+ 			ps->dpm0_pg_nb_ps_lo = force_high ? 0x2 : 0x3;
+ 			ps->dpm0_pg_nb_ps_hi = 0x2;
+@@ -2358,7 +2358,7 @@ static int kv_calculate_nbps_level_setti
+ 			return 0;
+ 
+ 		force_high = ((mclk >= pi->sys_info.nbp_memory_clock[3]) ||
+-			      (adev->pm.dpm.new_active_crtc_count >= 3) || pi->video_start);
++			      (adev->pm.pm_display_cfg.num_display >= 3) || pi->video_start);
+ 
+ 		if (force_high) {
+ 			for (i = pi->lowest_valid; i <= pi->highest_valid; i++)
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+@@ -797,8 +797,7 @@ static struct amdgpu_ps *amdgpu_dpm_pick
+ 	int i;
+ 	struct amdgpu_ps *ps;
+ 	u32 ui_class;
+-	bool single_display = (adev->pm.dpm.new_active_crtc_count < 2) ?
+-		true : false;
++	bool single_display = adev->pm.pm_display_cfg.num_display < 2;
+ 
+ 	/* check if the vblank period is too short to adjust the mclk */
+ 	if (single_display && adev->powerplay.pp_funcs->vblank_too_short) {
+@@ -994,7 +993,8 @@ void amdgpu_legacy_dpm_compute_clocks(vo
  {
--	struct cfg80211_registered_device *rdev;
--
--	rdev = container_of(wk, struct cfg80211_registered_device,
--			    scan_done_wk);
--
--	wiphy_lock(&rdev->wiphy);
--	___cfg80211_scan_done(rdev, true);
--	wiphy_unlock(&rdev->wiphy);
-+	___cfg80211_scan_done(wiphy_to_rdev(wiphy), true);
- }
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
- void cfg80211_scan_done(struct cfg80211_scan_request *request,
-@@ -1131,7 +1124,8 @@ void cfg80211_scan_done(struct cfg80211_
+-	amdgpu_dpm_get_active_displays(adev);
++	if (!adev->dc_enabled)
++		amdgpu_dpm_get_display_cfg(adev);
+ 
+ 	amdgpu_dpm_change_power_state_locked(adev);
+ }
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -3058,7 +3058,7 @@ static int si_get_vce_clock_voltage(stru
+ static bool si_dpm_vblank_too_short(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+-	u32 vblank_time = amdgpu_dpm_get_vblank_time(adev);
++	u32 vblank_time = adev->pm.pm_display_cfg.min_vblank_time;
+ 	/* we never hit the non-gddr5 limit so disable it */
+ 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
+ 
+@@ -3424,9 +3424,10 @@ static void rv770_get_engine_memory_ss(s
+ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 					struct amdgpu_ps *rps)
+ {
++	const struct amd_pp_display_configuration *display_cfg =
++		&adev->pm.pm_display_cfg;
+ 	struct  si_ps *ps = si_get_ps(rps);
+ 	struct amdgpu_clock_and_voltage_limits *max_limits;
+-	struct amdgpu_connector *conn;
+ 	bool disable_mclk_switching = false;
+ 	bool disable_sclk_switching = false;
+ 	u32 mclk, sclk;
+@@ -3475,14 +3476,9 @@ static void si_apply_state_adjust_rules(
+ 	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
+ 	 * Find number of such displays connected.
+ 	 */
+-	for (i = 0; i < adev->mode_info.num_crtc; i++) {
+-		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
+-			!adev->mode_info.crtcs[i]->enabled)
+-			continue;
+-
+-		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
+-
+-		if (conn->pixelclock_for_modeset > 297000)
++	for (i = 0; i < display_cfg->num_display; i++) {
++		/* The array only contains active displays. */
++		if (display_cfg->displays[i].pixel_clock > 297000)
+ 			high_pixelclock_count++;
  	}
  
- 	request->notified = true;
--	queue_work(cfg80211_wq, &wiphy_to_rdev(request->wiphy)->scan_done_wk);
-+	wiphy_work_queue(request->wiphy,
-+			 &wiphy_to_rdev(request->wiphy)->scan_done_wk);
- }
- EXPORT_SYMBOL(cfg80211_scan_done);
+@@ -3515,7 +3511,7 @@ static void si_apply_state_adjust_rules(
+ 		rps->ecclk = 0;
+ 	}
  
+-	if ((adev->pm.dpm.new_active_crtc_count > 1) ||
++	if ((adev->pm.pm_display_cfg.num_display > 1) ||
+ 	    si_dpm_vblank_too_short(adev))
+ 		disable_mclk_switching = true;
+ 
+@@ -3663,7 +3659,7 @@ static void si_apply_state_adjust_rules(
+ 						   ps->performance_levels[i].mclk,
+ 						   max_limits->vddc,  &ps->performance_levels[i].vddc);
+ 		btc_apply_voltage_dependency_rules(&adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk,
+-						   adev->clock.current_dispclk,
++						   display_cfg->display_clk,
+ 						   max_limits->vddc,  &ps->performance_levels[i].vddc);
+ 	}
+ 
+@@ -4188,16 +4184,16 @@ static void si_program_ds_registers(stru
+ 
+ static void si_program_display_gap(struct amdgpu_device *adev)
+ {
++	const struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
+ 	u32 tmp, pipe;
+-	int i;
+ 
+ 	tmp = RREG32(CG_DISPLAY_GAP_CNTL) & ~(DISP1_GAP_MASK | DISP2_GAP_MASK);
+-	if (adev->pm.dpm.new_active_crtc_count > 0)
++	if (cfg->num_display > 0)
+ 		tmp |= DISP1_GAP(R600_PM_DISPLAY_GAP_VBLANK_OR_WM);
+ 	else
+ 		tmp |= DISP1_GAP(R600_PM_DISPLAY_GAP_IGNORE);
+ 
+-	if (adev->pm.dpm.new_active_crtc_count > 1)
++	if (cfg->num_display > 1)
+ 		tmp |= DISP2_GAP(R600_PM_DISPLAY_GAP_VBLANK_OR_WM);
+ 	else
+ 		tmp |= DISP2_GAP(R600_PM_DISPLAY_GAP_IGNORE);
+@@ -4207,17 +4203,8 @@ static void si_program_display_gap(struc
+ 	tmp = RREG32(DCCG_DISP_SLOW_SELECT_REG);
+ 	pipe = (tmp & DCCG_DISP1_SLOW_SELECT_MASK) >> DCCG_DISP1_SLOW_SELECT_SHIFT;
+ 
+-	if ((adev->pm.dpm.new_active_crtc_count > 0) &&
+-	    (!(adev->pm.dpm.new_active_crtcs & (1 << pipe)))) {
+-		/* find the first active crtc */
+-		for (i = 0; i < adev->mode_info.num_crtc; i++) {
+-			if (adev->pm.dpm.new_active_crtcs & (1 << i))
+-				break;
+-		}
+-		if (i == adev->mode_info.num_crtc)
+-			pipe = 0;
+-		else
+-			pipe = i;
++	if (cfg->num_display > 0 && pipe != cfg->crtc_index) {
++		pipe = cfg->crtc_index;
+ 
+ 		tmp &= ~DCCG_DISP1_SLOW_SELECT_MASK;
+ 		tmp |= DCCG_DISP1_SLOW_SELECT(pipe);
+@@ -4228,7 +4215,7 @@ static void si_program_display_gap(struc
+ 	 * This can be a problem on PowerXpress systems or if you want to use the card
+ 	 * for offscreen rendering or compute if there are no crtcs enabled.
+ 	 */
+-	si_notify_smc_display_change(adev, adev->pm.dpm.new_active_crtc_count > 0);
++	si_notify_smc_display_change(adev, cfg->num_display > 0);
+ }
+ 
+ static void si_enable_spread_spectrum(struct amdgpu_device *adev, bool enable)
+@@ -5532,7 +5519,7 @@ static int si_convert_power_level_to_smc
+ 	    (pl->mclk <= pi->mclk_stutter_mode_threshold) &&
+ 	    !eg_pi->uvd_enabled &&
+ 	    (RREG32(DPG_PIPE_STUTTER_CONTROL) & STUTTER_ENABLE) &&
+-	    (adev->pm.dpm.new_active_crtc_count <= 2)) {
++	    (adev->pm.pm_display_cfg.num_display <= 2)) {
+ 		level->mcFlags |= SISLANDS_SMC_MC_STUTTER_EN;
+ 	}
+ 
+@@ -5681,7 +5668,7 @@ static bool si_is_state_ulv_compatible(s
+ 	/* XXX validate against display requirements! */
+ 
+ 	for (i = 0; i < adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count; i++) {
+-		if (adev->clock.current_dispclk <=
++		if (adev->pm.pm_display_cfg.display_clk <=
+ 		    adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[i].clk) {
+ 			if (ulv->pl.vddc <
+ 			    adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[i].v)
+@@ -5835,30 +5822,22 @@ static int si_upload_ulv_state(struct am
+ 
+ static int si_upload_smc_data(struct amdgpu_device *adev)
+ {
+-	struct amdgpu_crtc *amdgpu_crtc = NULL;
+-	int i;
++	const struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
+ 	u32 crtc_index = 0;
+ 	u32 mclk_change_block_cp_min = 0;
+ 	u32 mclk_change_block_cp_max = 0;
+ 
+-	for (i = 0; i < adev->mode_info.num_crtc; i++) {
+-		if (adev->pm.dpm.new_active_crtcs & (1 << i)) {
+-			amdgpu_crtc = adev->mode_info.crtcs[i];
+-			break;
+-		}
+-	}
+-
+ 	/* When a display is plugged in, program these so that the SMC
+ 	 * performs MCLK switching when it doesn't cause flickering.
+ 	 * When no display is plugged in, there is no need to restrict
+ 	 * MCLK switching, so program them to zero.
+ 	 */
+-	if (adev->pm.dpm.new_active_crtc_count && amdgpu_crtc) {
+-		crtc_index = amdgpu_crtc->crtc_id;
++	if (cfg->num_display) {
++		crtc_index = cfg->crtc_index;
+ 
+-		if (amdgpu_crtc->line_time) {
+-			mclk_change_block_cp_min = 200 / amdgpu_crtc->line_time;
+-			mclk_change_block_cp_max = 100 / amdgpu_crtc->line_time;
++		if (cfg->line_time_in_us) {
++			mclk_change_block_cp_min = 200 / cfg->line_time_in_us;
++			mclk_change_block_cp_max = 100 / cfg->line_time_in_us;
+ 		}
+ 	}
+ 
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -1569,16 +1569,7 @@ static void pp_pm_compute_clocks(void *h
+ 	struct amdgpu_device *adev = hwmgr->adev;
+ 
+ 	if (!adev->dc_enabled) {
+-		amdgpu_dpm_get_active_displays(adev);
+-		adev->pm.pm_display_cfg.num_display = adev->pm.dpm.new_active_crtc_count;
+-		adev->pm.pm_display_cfg.vrefresh = amdgpu_dpm_get_vrefresh(adev);
+-		adev->pm.pm_display_cfg.min_vblank_time = amdgpu_dpm_get_vblank_time(adev);
+-		/* we have issues with mclk switching with
+-		 * refresh rates over 120 hz on the non-DC code.
+-		 */
+-		if (adev->pm.pm_display_cfg.vrefresh > 120)
+-			adev->pm.pm_display_cfg.min_vblank_time = 0;
+-
++		amdgpu_dpm_get_display_cfg(adev);
+ 		pp_display_configuration_change(handle,
+ 						&adev->pm.pm_display_cfg);
+ 	}
 
 
 
