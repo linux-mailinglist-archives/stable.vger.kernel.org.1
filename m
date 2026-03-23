@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-228105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAzJHK1IwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:33 +0100
+	id sKg+MSpLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066482F3C9C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8872F40E9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85B9430DC5D9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA1E03179141
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB5C3AE18C;
-	Mon, 23 Mar 2026 13:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE703B38B2;
+	Mon, 23 Mar 2026 14:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjr8GgK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLrGDxe2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612D61A680D;
-	Mon, 23 Mar 2026 13:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E9637F8A0;
+	Mon, 23 Mar 2026 14:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274140; cv=none; b=l3k2HPg2u1UG6oEteQVHY0997vf1ZMvQXp7NpAKU8HMymIg9y4ifJiU7JqCEjsh7Lz0ndOVQiCEMYQ8wR6ev1xUfHZa1U/tFGFWqxF+4EUWs1xyYFyjNGuPQ+DKuecP2SUrJcaL6ebxb6W8ihLW3KxEgN0xyP2N9avpKOnHaxuc=
+	t=1774274676; cv=none; b=C80gj4nGdzUtPnnxgUgGb/k1MQkOivMvLNgVzudS25sOdcEvjFSOX0P4/bhi/rmRWryI8lQWQp2wiEpYcnvlDr+cLeO5Akfw7udV1NjkDazOWcRBG0MX8FNttN3kckfDkTEgqhrg6FBRfH+V04YkNJXvINmelUYL978LOKsDxh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274140; c=relaxed/simple;
-	bh=tW5rJjv3sFUiw7fw4wcAZxBXNvyYiQzxmPpe3LWSE/A=;
+	s=arc-20240116; t=1774274676; c=relaxed/simple;
+	bh=B7UirBJq3BfATV5AiNlggcfEtNcVZUgxfCU0tpdebxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTTh3kGmJzKYUOBhClQ0Mk45tCQqbZYgHLkj1HjudpZQsTrQpfTms1agL1A1N0yR8XvF2xmlbvXam7sDpblDQs9Aj/P8vIdiOdwYBGx0mTtYJpTWE7o/+zn0D8R0dtxj8RPoMTt/PWbrncUKKr06Vmd3nVaTtjeU/OXKG28/O9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjr8GgK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58BFC4CEF7;
-	Mon, 23 Mar 2026 13:55:39 +0000 (UTC)
+	 MIME-Version; b=bvjS5kb4mcgy0sTLlKMh4VEWWWWDDVXepAQiyXCFqfTmu+YorNWBCcKqwXySO9KyjuDdSBNFPStHJzB819RPu/mBIeWIYo6OtCLpo/pGxGQrZRbCdqFWWla83FgsJwSRs37Vo6DpWeH7ubsAbG6yhJTe37QAPL2fuVJPI92o0R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLrGDxe2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35822C4CEF7;
+	Mon, 23 Mar 2026 14:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274140;
-	bh=tW5rJjv3sFUiw7fw4wcAZxBXNvyYiQzxmPpe3LWSE/A=;
+	s=korg; t=1774274676;
+	bh=B7UirBJq3BfATV5AiNlggcfEtNcVZUgxfCU0tpdebxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjr8GgK+qnQJTxgJtKdlOrfxh6ruSrX5Dbmc84tLIFV2diwCh+oO6TgiDBAdpvnBR
-	 CkBHWtp9ZXrBoeYsuNmpQ+arOVzcfOEbbdVCe+/xpCMKVSWNwb4sOuxNWq2DY6HtkH
-	 CjkusmM6WQYA13UqlJvyQQvx+QGXcZajFDFc3DgM=
+	b=FLrGDxe2dMunPXmFVqZ+bWwDlUfBlbwaZf7wywN/AkBOltVpBBLWtNHlV1iKPtTrW
+	 LUW9Zkh78XlRCa6w9xJ4TsMEOLVurIb5Lq9iKIVVs93mWl8LAPZSoPWGrhg8SgEc6E
+	 ANBvYtWKKIzcvSSh87QofRKylL6JvdmflwjlDICI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>
-Subject: [PATCH 6.19 080/220] drm/imagination: Fix deadlock in soft reset sequence
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Varun Gupta <varun.gupta@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 036/212] drm/xe: Fix memory leak in xe_vm_madvise_ioctl
 Date: Mon, 23 Mar 2026 14:44:17 +0100
-Message-ID: <20260323134507.126627235@linuxfoundation.org>
+Message-ID: <20260323134504.901317232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,73 +76,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228281-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228105-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,imgtec.com:email]
-X-Rspamd-Queue-Id: 066482F3C9C
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 4E8872F40E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Varun Gupta <varun.gupta@intel.com>
 
-commit a55c2a5c8d680156495b7b1e2a9f5a3e313ba524 upstream.
+[ Upstream commit 0cfe9c4838f1147713f6b5c02094cd4dc0c598fa ]
 
-The soft reset sequence is currently executed from the threaded IRQ
-handler, hence it cannot call disable_irq() which internally waits
-for IRQ handlers, i.e. itself, to complete.
+When check_bo_args_are_sane() validation fails, jump to the new
+free_vmas cleanup label to properly free the allocated resources.
+This ensures proper cleanup in this error path.
 
-Use disable_irq_nosync() during a soft reset instead.
-
-Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://patch.msgid.link/20260309-fix-soft-reset-v1-1-121113be554f@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Fixes: 293032eec4ba ("drm/xe/bo: Update atomic_access attribute on madvise")
+Cc: stable@vger.kernel.org # v6.18+
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260223175145.1532801-1-varun.gupta@intel.com
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+(cherry picked from commit 29bd06faf727a4b76663e4be0f7d770e2d2a7965)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[ changed old goto target from `madv_fini` to `unlock_vm` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_vm_madvise.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -510,7 +510,16 @@ pvr_power_reset(struct pvr_device *pvr_d
- 	}
+--- a/drivers/gpu/drm/xe/xe_vm_madvise.c
++++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+@@ -390,7 +390,7 @@ int xe_vm_madvise_ioctl(struct drm_devic
+ 						    madvise_range.num_vmas,
+ 						    args->atomic.val)) {
+ 				err = -EINVAL;
+-				goto unlock_vm;
++				goto free_vmas;
+ 			}
+ 		}
  
- 	/* Disable IRQs for the duration of the reset. */
--	disable_irq(pvr_dev->irq);
-+	if (hard_reset) {
-+		disable_irq(pvr_dev->irq);
-+	} else {
-+		/*
-+		 * Soft reset is triggered as a response to a FW command to the Host and is
-+		 * processed from the threaded IRQ handler. This code cannot (nor needs to)
-+		 * wait for any IRQ processing to complete.
-+		 */
-+		disable_irq_nosync(pvr_dev->irq);
-+	}
- 
- 	do {
- 		if (hard_reset) {
+@@ -426,6 +426,7 @@ int xe_vm_madvise_ioctl(struct drm_devic
+ err_fini:
+ 	if (madvise_range.has_bo_vmas)
+ 		drm_exec_fini(&exec);
++free_vmas:
+ 	kfree(madvise_range.vmas);
+ 	madvise_range.vmas = NULL;
+ unlock_vm:
 
 
 
