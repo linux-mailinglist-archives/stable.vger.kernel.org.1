@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-229009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OguO25cwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:50 +0100
+	id GAWtF8dYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106582F65D6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F722F6073
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 30D9830FE895
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2584303F66F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9D73B0AD8;
-	Mon, 23 Mar 2026 14:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D32A3B0AE5;
+	Mon, 23 Mar 2026 14:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBDNauuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rL7wlmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4092F3AA1BB;
-	Mon, 23 Mar 2026 14:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F53B39A805;
+	Mon, 23 Mar 2026 14:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277769; cv=none; b=dr8gC+lRCPj0mb3YsEYX0EOQ1GWSH8pddA3thh0MDJ79Sh8xgs90ccEdaR7vTWe1V8S2QXTI69xEAb8K7ABNFiIukVxbETHUYRk4fO3gMNFFLCnbJCkE1U2+jMAdm1k7jKgtM4aJ0l4QGsV88WSKxK6gbILuSn8vt2d0gwJrmdA=
+	t=1774277772; cv=none; b=JQ5dfrk8Zrz4TqZTLpME6KRF13taM22y+pFBMcmXuEBK0m8/u/ZgjBwPIiRBcZIqWWcC+9v0RgDkAbGOp4iA/DML+TccVh99H0JoxtE4RzOEu95Jdw7TiAtPolQ8jLTD63lDvbRhJqIK6TAYg63KgUUzt4kJlHDq1wxB9o4JjLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277769; c=relaxed/simple;
-	bh=suldFhZgWhF+ot4Wmo8b1JjFriU9avbO1KMcEmPCD/c=;
+	s=arc-20240116; t=1774277772; c=relaxed/simple;
+	bh=rE5S71Y+5szBkq74TlQPKE+oAWiEhX9Rxd836k3KEi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUxT9qqn/JJEv/bwnSKNpGc847+AELM06B6bTwagOiD3ESAPog/j9JRG1aqZlxb9cSNn7gIRuucXL7fP5PYDjczZFfwMq/l8PUsmO4Qgdh6kFaQ/DGbb+IOAiMfuTBST6MWN4nvFqsi/8H9i+/tSkLzAygNUpUYfJem9tNd6kU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBDNauuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45A3C2BCB8;
-	Mon, 23 Mar 2026 14:56:08 +0000 (UTC)
+	 MIME-Version; b=sGWW/jl4oRrBp8IZZCSef9HsQv/bqFE3SbUfDoyHrKzavNfPBLH+Qu7S8jF20IOORM/aTNbYCCt267ROBX+Qj+U4PyPBOz/AKMvsNmMapEnPUvAd7+nwuHS9tcFBLQqf1G12j40LsJ5NZ0ma3URrykHUycarQJSiWQy+vlUHkEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rL7wlmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8840C4CEF7;
+	Mon, 23 Mar 2026 14:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277769;
-	bh=suldFhZgWhF+ot4Wmo8b1JjFriU9avbO1KMcEmPCD/c=;
+	s=korg; t=1774277772;
+	bh=rE5S71Y+5szBkq74TlQPKE+oAWiEhX9Rxd836k3KEi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBDNauuzgMKo6Myl4A78+ZziV8iNAQePsgfy6VWJLrZ5gfWw7fh+qji0HO6DOdi1G
-	 SPnFdFH4bwaENK0pLjc4U8JyFVWZRVFTGjm/r7Jrx2Y8toMTSZnoVQHfzLK5dPY830
-	 7jvkmiv4nNWB8xLHvKgRlw7nbukVasIvU6dDnO7I=
+	b=0rL7wlmxXamjcNBvsNwNmmu2h3KxdcEd4GzYIpNsGSukUGo91QcnOR3fkPVdVxJ7H
+	 Hs8TfXLtUbCOX9JIQoNFwCyc262hvwSV6+G1nEbiblM9WcDiB6deRynPSPqVnT8pww
+	 BQcZaRMOTfYPNG1UvDQDzSlGHKmSFM92zH7OVdzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Yang Erkun <yangerkun@huawei.com>,
 	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/567] ext4: get rid of ppath in ext4_ext_handle_unwritten_extents()
-Date: Mon, 23 Mar 2026 14:39:34 +0100
-Message-ID: <20260323134535.148733193@linuxfoundation.org>
+Subject: [PATCH 6.6 055/567] ext4: correct the comments place for EXT4_EXT_MAY_ZEROOUT
+Date: Mon, 23 Mar 2026 14:39:35 +0100
+Message-ID: <20260323134535.175743123@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -68,31 +66,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229009-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229010-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 106582F65D6
+X-Rspamd-Queue-Id: 68F722F6073
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,193 +98,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 2ec2e1043473b3d4a3afbe6ad7c5a5b7a6fdf480 ]
+[ Upstream commit cc742fd1d184bb2a11bacf50587d2c85290622e4 ]
 
-The use of path and ppath is now very confusing, so to make the code more
-readable, pass path between functions uniformly, and get rid of ppath.
+Move the comments just before we set EXT4_EXT_MAY_ZEROOUT in
+ext4_split_convert_extents.
 
-To get rid of the ppath in ext4_ext_handle_unwritten_extents(), the
-following is done here:
-
- * Free the extents path when an error is encountered.
- * The 'allocated' is changed from passing a value to passing an address.
-
-No functional changes.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-22-libaokun@huaweicloud.com
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Message-ID: <20251112084538.1658232-4-yangerkun@huawei.com>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Stable-dep-of: feaf2a80e78f ("ext4: don't set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 82 +++++++++++++++++++++--------------------------
- 1 file changed, 37 insertions(+), 45 deletions(-)
+ fs/ext4/extents.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index fe39d86d3a7e6..86c814bede1c5 100644
+index 86c814bede1c5..4507e42869854 100644
 --- a/fs/ext4/extents.c
 +++ b/fs/ext4/extents.c
-@@ -3895,18 +3895,18 @@ convert_initialized_extent(handle_t *handle, struct inode *inode,
- 	return 0;
- }
- 
--static int
-+static struct ext4_ext_path *
- ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 			struct ext4_map_blocks *map,
--			struct ext4_ext_path **ppath, int flags,
--			unsigned int allocated, ext4_fsblk_t newblock)
-+			struct ext4_ext_path *path, int flags,
-+			unsigned int *allocated, ext4_fsblk_t newblock)
- {
- 	int err = 0;
- 
- 	ext_debug(inode, "logical block %llu, max_blocks %u, flags 0x%x, allocated %u\n",
- 		  (unsigned long long)map->m_lblk, map->m_len, flags,
--		  allocated);
--	ext4_ext_show_leaf(inode, *ppath);
-+		  *allocated);
-+	ext4_ext_show_leaf(inode, path);
- 
- 	/*
- 	 * When writing into unwritten space, we should not fail to
-@@ -3915,40 +3915,34 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	flags |= EXT4_GET_BLOCKS_METADATA_NOFAIL;
- 
- 	trace_ext4_ext_handle_unwritten_extents(inode, map, flags,
--						    allocated, newblock);
-+						*allocated, newblock);
- 
- 	/* get_block() before submitting IO, split the extent */
- 	if (flags & EXT4_GET_BLOCKS_PRE_IO) {
--		*ppath = ext4_split_convert_extents(handle, inode, map, *ppath,
--				flags | EXT4_GET_BLOCKS_CONVERT, &allocated);
--		if (IS_ERR(*ppath)) {
--			err = PTR_ERR(*ppath);
--			*ppath = NULL;
--			goto out2;
--		}
-+		path = ext4_split_convert_extents(handle, inode, map, path,
-+				flags | EXT4_GET_BLOCKS_CONVERT, allocated);
-+		if (IS_ERR(path))
-+			return path;
- 		/*
- 		 * shouldn't get a 0 allocated when splitting an extent unless
- 		 * m_len is 0 (bug) or extent has been corrupted
- 		 */
--		if (unlikely(allocated == 0)) {
-+		if (unlikely(*allocated == 0)) {
- 			EXT4_ERROR_INODE(inode,
- 					 "unexpected allocated == 0, m_len = %u",
- 					 map->m_len);
- 			err = -EFSCORRUPTED;
--			goto out2;
-+			goto errout;
- 		}
- 		map->m_flags |= EXT4_MAP_UNWRITTEN;
- 		goto out;
- 	}
- 	/* IO end_io complete, convert the filled extent to written */
- 	if (flags & EXT4_GET_BLOCKS_CONVERT) {
--		*ppath = ext4_convert_unwritten_extents_endio(handle, inode,
--							      map, *ppath);
--		if (IS_ERR(*ppath)) {
--			err = PTR_ERR(*ppath);
--			*ppath = NULL;
--			goto out2;
--		}
-+		path = ext4_convert_unwritten_extents_endio(handle, inode,
-+							    map, path);
-+		if (IS_ERR(path))
-+			return path;
- 		ext4_update_inode_fsync_trans(handle, inode, 1);
- 		goto map_out;
- 	}
-@@ -3980,23 +3974,20 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	 * For buffered writes, at writepage time, etc.  Convert a
- 	 * discovered unwritten extent to written.
- 	 */
--	*ppath = ext4_ext_convert_to_initialized(handle, inode, map, *ppath,
--						 flags, &allocated);
--	if (IS_ERR(*ppath)) {
--		err = PTR_ERR(*ppath);
--		*ppath = NULL;
--		goto out2;
--	}
-+	path = ext4_ext_convert_to_initialized(handle, inode, map, path,
-+					       flags, allocated);
-+	if (IS_ERR(path))
-+		return path;
- 	ext4_update_inode_fsync_trans(handle, inode, 1);
- 	/*
- 	 * shouldn't get a 0 allocated when converting an unwritten extent
- 	 * unless m_len is 0 (bug) or extent has been corrupted
- 	 */
--	if (unlikely(allocated == 0)) {
-+	if (unlikely(*allocated == 0)) {
- 		EXT4_ERROR_INODE(inode, "unexpected allocated == 0, m_len = %u",
- 				 map->m_len);
- 		err = -EFSCORRUPTED;
--		goto out2;
-+		goto errout;
- 	}
- 
- out:
-@@ -4005,12 +3996,15 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	map->m_flags |= EXT4_MAP_MAPPED;
- out1:
- 	map->m_pblk = newblock;
--	if (allocated > map->m_len)
--		allocated = map->m_len;
--	map->m_len = allocated;
--	ext4_ext_show_leaf(inode, *ppath);
--out2:
--	return err ? err : allocated;
-+	if (*allocated > map->m_len)
-+		*allocated = map->m_len;
-+	map->m_len = *allocated;
-+	ext4_ext_show_leaf(inode, path);
-+	return path;
-+
-+errout:
-+	ext4_free_ext_path(path);
-+	return ERR_PTR(err);
- }
- 
- /*
-@@ -4204,7 +4198,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	struct ext4_extent newex, *ex, ex2;
- 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	ext4_fsblk_t newblock = 0, pblk;
--	int err = 0, depth, ret;
-+	int err = 0, depth;
- 	unsigned int allocated = 0, offset = 0;
- 	unsigned int allocated_clusters = 0;
- 	struct ext4_allocation_request ar;
-@@ -4279,13 +4273,11 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 				goto out;
- 			}
- 
--			ret = ext4_ext_handle_unwritten_extents(
--				handle, inode, map, &path, flags,
--				allocated, newblock);
--			if (ret < 0)
--				err = ret;
--			else
--				allocated = ret;
-+			path = ext4_ext_handle_unwritten_extents(
-+				handle, inode, map, path, flags,
-+				&allocated, newblock);
-+			if (IS_ERR(path))
-+				err = PTR_ERR(path);
- 			goto out;
- 		}
- 	}
+@@ -3727,10 +3727,6 @@ static struct ext4_ext_path *ext4_split_convert_extents(handle_t *handle,
+ 			>> inode->i_sb->s_blocksize_bits;
+ 	if (eof_block < map->m_lblk + map->m_len)
+ 		eof_block = map->m_lblk + map->m_len;
+-	/*
+-	 * It is safe to convert extent to initialized via explicit
+-	 * zeroout only if extent is fully inside i_size or new_size.
+-	 */
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
+ 	ee_block = le32_to_cpu(ex->ee_block);
+@@ -3741,6 +3737,10 @@ static struct ext4_ext_path *ext4_split_convert_extents(handle_t *handle,
+ 		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
+ 	/* Convert to initialized */
+ 	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
++		/*
++		 * It is safe to convert extent to initialized via explicit
++		 * zeroout only if extent is fully inside i_size or new_size.
++		 */
+ 		split_flag |= ee_block + ee_len <= eof_block ?
+ 			      EXT4_EXT_MAY_ZEROOUT : 0;
+ 		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
 -- 
 2.51.0
 
