@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAU0H2ZpwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:10 +0100
+	id YImmKXhMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9DB2F80CB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BF72F448E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF27532215D5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B55D304C401
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F0923E33D;
-	Mon, 23 Mar 2026 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40313ACA62;
+	Mon, 23 Mar 2026 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFlCdEb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyKwjM+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2902B23D288;
-	Mon, 23 Mar 2026 14:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B653ACEFE;
+	Mon, 23 Mar 2026 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277209; cv=none; b=ZJMf4IKHEY8DEJPfFHCZ+d1q11ZBC2ktFC6nMSgAzt8VJsgc342jxMVPV10yNLbYwIxCzBYNb/O/zsKS1kHZRi/tPwTQ+0fN9QAKzTSudp7OeqcHwkYAc9xFskcGmRxp6tENJa2zTs7ThFOWsDhbMXSyi5odgS7OQZ8gM1dIbgY=
+	t=1774274958; cv=none; b=QR6jGvzfT29VyG0QrFXeth0M9ks9Vy1p9D/MHgw7xRqToO9gKDy8Y8GmTBrcf8bwJWns4Iq/PHcR7FtUrJxX9jmqrCxvAj2uREQ71sXAXbzJf1Dkk8voWXGANRIRe+Ro4RL70gSEbDyHuLUXOtuRqB5sA+CNPQMpNOhMpIxCuLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277209; c=relaxed/simple;
-	bh=/d129W0YlM63cNUKFbGXrJXuqHs1Vu+o0xXj8x6N0XA=;
+	s=arc-20240116; t=1774274958; c=relaxed/simple;
+	bh=kkyGQyF7ihaWwPVKsXkz7NqsWRXlrYNlGy2QpvuQD+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzuKL2JmrSmVOXygeCe9bWdF68jV6UEj4gmgce4XPSQPIpzXCI4O6JN0Ep+bWNeZMcDrornwLUfdlHkW9NphPT7x+MlqHNSGJsUcUqar94ujfuU4ZKbZp+VABWveCg3Q47OsBXWjFLG82jPRrh43l28ZpLdIBrEPn+b4TwXkPWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFlCdEb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7657EC4CEF7;
-	Mon, 23 Mar 2026 14:46:48 +0000 (UTC)
+	 MIME-Version; b=skCFdW79jPAvpL+3MKEsiMNOVqjMiVZLsULLansn4gcrCwecpjPqy/cTU6789bGVbv58v55O2f14DluhFaH3/rbKxFf3zaHBV2TS3td7QpY9r0wFq6t1vZ/G2QpAtD6c+WYVwnbAkYaggIDTuV+rICU1O7BXTypKAjc7Zry/P4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyKwjM+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139BDC2BC9E;
+	Mon, 23 Mar 2026 14:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277208;
-	bh=/d129W0YlM63cNUKFbGXrJXuqHs1Vu+o0xXj8x6N0XA=;
+	s=korg; t=1774274958;
+	bh=kkyGQyF7ihaWwPVKsXkz7NqsWRXlrYNlGy2QpvuQD+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFlCdEb9o1pwSllzjpjbsP23l14Mu9y0jgq0CblJDJsboAxaOZj9c5DeDpzfRCXDO
-	 m5q0BzSWOwjqAOHmESrPraajygULJRuqH/kPzN7EpKOHT/HFiupfH6q/A/iaAqVbHt
-	 nTUPwV6fMhs5hkqasjKdp7y+D6KRFcC/dW8pKAK0=
+	b=KyKwjM+OvonOlBCfgrUcvx5zBwTXeJhuXGNJwuwvyxJgQl+jmoIO7LGe2L4cTKvCN
+	 htFXFetVKRsmfJosF38g0usoBg3CyiILLaOVhuNRfCXdOKhcCRQvDncO3oR8be9DJm
+	 cHJjutIuTRLH6JbAUz93+dRzvyis9p0yw1LYi/rU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 355/460] drm/amdgpu/mmhub3.0.2: add bounds checking for cid
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 130/212] Bluetooth: qca: fix ROM version reading on WCN3998 chips
 Date: Mon, 23 Mar 2026 14:45:51 +0100
-Message-ID: <20260323134535.275869475@linuxfoundation.org>
+Message-ID: <20260323134507.881549375@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +69,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228380-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228814-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1E9DB2F80CB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 73BF72F448E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit e5e6d67b1ce9764e67aef2d0eef9911af53ad99a upstream.
+[ Upstream commit 99b2c531e0e797119ae1b9195a8764ee98b00e65 ]
 
-The value should never exceed the array size as those
-are the only values the hardware is expected to return,
-but add checks anyway.
+WCN3998 uses a bit different format for rom version:
 
-Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1441f52c7f6ae6553664aa9e3e4562f6fc2fe8ea)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    5.479978] Bluetooth: hci0: setting up wcn399x
+[    5.633763] Bluetooth: hci0: QCA Product ID   :0x0000000a
+[    5.645350] Bluetooth: hci0: QCA SOC Version  :0x40010224
+[    5.650906] Bluetooth: hci0: QCA ROM Version  :0x00001001
+[    5.665173] Bluetooth: hci0: QCA Patch Version:0x00006699
+[    5.679356] Bluetooth: hci0: QCA controller version 0x02241001
+[    5.691109] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[    6.680102] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[    6.842948] Bluetooth: hci0: QCA setup on UART is completed
+
+Fixes: 523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998")
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btqca.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
-@@ -108,7 +108,8 @@ mmhub_v3_0_2_print_l2_protection_fault_s
- 		"MMVM_L2_PROTECTION_FAULT_STATUS:0x%08X\n",
- 		status);
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 7c958d6065bec..86a48d009d1ba 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -804,6 +804,8 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 	 */
+ 	if (soc_type == QCA_WCN3988)
+ 		rom_ver = ((soc_ver & 0x00000f00) >> 0x05) | (soc_ver & 0x0000000f);
++	else if (soc_type == QCA_WCN3998)
++		rom_ver = ((soc_ver & 0x0000f000) >> 0x07) | (soc_ver & 0x0000000f);
+ 	else
+ 		rom_ver = ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver & 0x0000000f);
  
--	mmhub_cid = mmhub_client_ids_v3_0_2[cid][rw];
-+	mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_2) ?
-+		mmhub_client_ids_v3_0_2[cid][rw] : NULL;
- 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
- 		mmhub_cid ? mmhub_cid : "unknown", cid);
- 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
+-- 
+2.51.0
+
 
 
 
