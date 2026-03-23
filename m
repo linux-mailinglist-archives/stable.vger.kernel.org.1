@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Cv9CoBLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:36 +0100
+	id QNRCK/VPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB41B2F41A9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A63C2F4D7A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F1473146122
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D404305DB95
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053843B27F5;
-	Mon, 23 Mar 2026 14:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016BD3AC0E3;
+	Mon, 23 Mar 2026 13:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZHtrqFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA7mNqaw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2B53AC0D2;
-	Mon, 23 Mar 2026 14:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82143A9D9D;
+	Mon, 23 Mar 2026 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274827; cv=none; b=eZPrsaU6WICqhHopYpKzDiw0h6e8zZiA8yqIwZPUw3mvyVrMZFotZfzavrhZdGEHf4GKE7/C9OlpqkFa1+Oyf2qJzshsgGplmpw4R+oSe+ksmRN1uVpbgcLgOun0Is8yFPGmVJfhNLGSyjzRZlbmkhPD0DMNxl3j/x/xa9Ci5Nw=
+	t=1774274273; cv=none; b=GEN81IyI3HRD0+9kypvB6uxDk9ktrsFtmhcI/l9vZGspoxWhJCtk20FYiK370eTN9IXiboJgqi8vAKvxp33dz7CSDZiiokzGO29osW+ybkgOEiYdUXF/GZ5uZiycnLkaP3NVgMl6Fmw2wTVKz5DcPrjM5Tz0PO+jJb4wJrDNKh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274827; c=relaxed/simple;
-	bh=88Tdd2ntgLslEsWu0tY7IymLFVQ+yEqkgGp+KYdPhhc=;
+	s=arc-20240116; t=1774274273; c=relaxed/simple;
+	bh=rpa3nbdM+S1c5PFS54kpGERYfUQYSYT4ODzRQFh9mSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XDXZqDxGPw+pdUGOgmVEbzKWXw/lYe4WIAi6+OKwXXbhvvwwLFxz1zcXGb/m2/9WNOGxrkJ2L57rS+wU9DWdm917pw3qt41stFpmDujn7N+E0+T3+V2PXWRBKVHt503N8GpxSusUtctvGmr2wcFCYk8Y5WqJrLI3QL4rfPI3JIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZHtrqFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ACFC4CEF7;
-	Mon, 23 Mar 2026 14:07:07 +0000 (UTC)
+	 MIME-Version; b=Y/NO+711TPqVI2fR6wLuKTcOZJOPh8k3TTCTGpQXi0E9D7lWZ9aWILraI1JSbyxMgrJMEkh5HsbhINeiozF7vNRthOHbDk1MYz1bWHtTkbZ4PqNbfVHLAS2V5x6b5CRPVQvCKJjKP8bRDr4+ZmPU7yJ5GHmx7rCo2UcyLDQrj4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA7mNqaw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF80C4CEF7;
+	Mon, 23 Mar 2026 13:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274827;
-	bh=88Tdd2ntgLslEsWu0tY7IymLFVQ+yEqkgGp+KYdPhhc=;
+	s=korg; t=1774274273;
+	bh=rpa3nbdM+S1c5PFS54kpGERYfUQYSYT4ODzRQFh9mSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZHtrqFP5goHwZEMU+eNEf6NVBGHk0qCtXklFnPZri1lVflP7TZnvfUuvKSdSABoV
-	 ENQcYNCmNvC6S7Pyu4PyC7u1dWyoI3hpGjPa3GRe9ZJNanV7J7iW8DvD9pXn+6lsYw
-	 ADW0VqqVMB3YMivcYo70z8/PhQd0Dv4rZkfnwfXE=
+	b=YA7mNqawhBCaqXDTYKARs1p0mK/Pt/ECWZZyHP2DB/BuP5tmiVY8cfoBAlEzltuVd
+	 JdXC55oiIgx3oUDLHHAHZwsln1QP6s6nEQsdgaNNXAPuxSdcIyOp/BJcErcEIKD0WD
+	 2T5uH/ZCY8tcLxjQyIwPHki/EtononzVXoxsJoXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 119/212] firmware: arm_ffa: Remove vm_id argument in ffa_rxtx_unmap()
+Subject: [PATCH 6.19 163/220] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
 Date: Mon, 23 Mar 2026 14:45:40 +0100
-Message-ID: <20260323134507.530951010@linuxfoundation.org>
+Message-ID: <20260323134509.712213301@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228329-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228149-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: AB41B2F41A9
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1A63C2F4D7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit a4e8473b775160f3ce978f621cf8dea2c7250433 ]
+[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
 
-According to the FF-A specification (DEN0077, v1.1, §13.7), when
-FFA_RXTX_UNMAP is invoked from any instance other than non-secure
-physical, the w1 register must be zero (MBZ). If a non-zero value is
-supplied in this context, the SPMC must return FFA_INVALID_PARAMETER.
+ieee80211_tx_prepare_skb() has three error paths, but only two of them
+free the skb. The first error path (ieee80211_tx_prepare() returning
+TX_DROP) does not free it, while invoke_tx_handlers() failure and the
+fragmentation check both do.
 
-The Arm FF-A driver operates exclusively as a guest or non-secure
-physical instance where the partition ID is always zero and is not
-invoked from a hypervisor context where w1 carries a VM ID. In this
-execution model, the partition ID observed by the driver is always zero,
-and passing a VM ID is unnecessary and potentially invalid.
+Add kfree_skb() to the first error path so all three are consistent,
+and remove the now-redundant frees in callers (ath9k, mt76,
+mac80211_hwsim) to avoid double-free.
 
-Remove the vm_id parameter from ffa_rxtx_unmap() and ensure that the
-SMC call is issued with w1 implicitly zeroed, as required by the
-specification. This prevents invalid parameter errors and aligns the
-implementation with the defined FF-A ABI behavior.
+Document the skb ownership guarantee in the function's kdoc.
 
-Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Message-Id: <20260304120953.847671-1-yeoreum.yun@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
+Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath9k/channel.c      | 6 ++----
+ drivers/net/wireless/mediatek/mt76/scan.c     | 4 +---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 1 -
+ include/net/mac80211.h                        | 4 +++-
+ net/mac80211/tx.c                             | 4 +++-
+ 5 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 11a702e7f641c..f6ceae987acbc 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -205,12 +205,12 @@ static int ffa_rxtx_map(phys_addr_t tx_buf, phys_addr_t rx_buf, u32 pg_cnt)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 121e51ce1bc0e..8b27d8cc086ab 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -1006,7 +1006,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
+ 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
  
--static int ffa_rxtx_unmap(u16 vm_id)
-+static int ffa_rxtx_unmap(void)
- {
- 	ffa_value_t ret;
+ 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
+-		goto error;
++		return;
  
- 	invoke_ffa_fn((ffa_value_t){
--		      .a0 = FFA_RXTX_UNMAP, .a1 = PACK_TARGET_INFO(vm_id, 0),
-+		      .a0 = FFA_RXTX_UNMAP,
- 		      }, &ret);
+ 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
+ 	if (ath_tx_start(sc->hw, skb, &txctl))
+@@ -1119,10 +1119,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
  
- 	if (ret.a0 == FFA_ERROR)
-@@ -2093,7 +2093,7 @@ static int __init ffa_init(void)
+ 		skb->priority = 7;
+ 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+-		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
+-			dev_kfree_skb_any(skb);
++		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
+ 			return false;
+-		}
+ 		break;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/wireless/mediatek/mt76/scan.c b/drivers/net/wireless/mediatek/mt76/scan.c
+index ff9176cdee3de..63b0447e55c15 100644
+--- a/drivers/net/wireless/mediatek/mt76/scan.c
++++ b/drivers/net/wireless/mediatek/mt76/scan.c
+@@ -63,10 +63,8 @@ mt76_scan_send_probe(struct mt76_dev *dev, struct cfg80211_ssid *ssid)
  
- 	pr_err("failed to setup partitions\n");
- 	ffa_notifications_cleanup();
--	ffa_rxtx_unmap(drv_info->vm_id);
-+	ffa_rxtx_unmap();
- free_pages:
- 	if (drv_info->tx_buffer)
- 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
-@@ -2108,7 +2108,7 @@ static void __exit ffa_exit(void)
- {
- 	ffa_notifications_cleanup();
- 	ffa_partitions_cleanup();
--	ffa_rxtx_unmap(drv_info->vm_id);
-+	ffa_rxtx_unmap();
- 	free_pages_exact(drv_info->tx_buffer, drv_info->rxtx_bufsz);
- 	free_pages_exact(drv_info->rx_buffer, drv_info->rxtx_bufsz);
- 	kfree(drv_info);
+ 	rcu_read_lock();
+ 
+-	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL)) {
+-		ieee80211_free_txskb(phy->hw, skb);
++	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL))
+ 		goto out;
+-	}
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+ 	if (req->no_cck)
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 79cc63272134d..cfbd0c50be1c9 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -3021,7 +3021,6 @@ static void hw_scan_work(struct work_struct *work)
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
+ 				rcu_read_unlock();
+-				kfree_skb(probe);
+ 				continue;
+ 			}
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index c2e49542626c8..706f87c6d905a 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -7291,7 +7291,9 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
+  * @band: the band to transmit on
+  * @sta: optional pointer to get the station to send the frame to
+  *
+- * Return: %true if the skb was prepared, %false otherwise
++ * Return: %true if the skb was prepared, %false otherwise.
++ * On failure, the skb is freed by this function; callers must not
++ * free it again.
+  *
+  * Note: must be called under RCU lock
+  */
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 1b55e83404135..0692fbb6c489e 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1898,8 +1898,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_data tx;
+ 	struct sk_buff *skb2;
+ 
+-	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
++	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
++		kfree_skb(skb);
+ 		return false;
++	}
+ 
+ 	info->band = band;
+ 	info->control.vif = vif;
 -- 
 2.51.0
 
