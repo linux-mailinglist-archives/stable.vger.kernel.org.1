@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FGKHPtXwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:51 +0100
+	id +HNhFIZ+wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E136C2F5EAE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E002FA9FA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE1E532253B6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6838D313313D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB88F3AC0D2;
-	Mon, 23 Mar 2026 14:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E358B3B19A2;
+	Mon, 23 Mar 2026 16:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jC/p7M6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itTWSfnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FB43A963B;
-	Mon, 23 Mar 2026 14:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A553D3AE6F8;
+	Mon, 23 Mar 2026 16:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277373; cv=none; b=RY8VUvDNqu35El5n3ND3ugEoPR+mV9F3aGHHARq10mYKkLgyVSlUDWAGXv4NJtj8dXTpZJzw9/XAiScDbUIDzlPEtkIW1KXhKocPEmoFCrpPGiOB3ldXjrOI0ajRGkOImhEnduAoMFu9844YyyARcNFO1t4B8MQDZXu0KfcvMIo=
+	t=1774283167; cv=none; b=XeL2kALClQxOCKUQj3OuithI5l60ZRzek0Wu7VApqo3YcEO5b+KQSdWoWYyXqtR3iXi2dGz5/DzbzKVPwPteT300/SJ4EtblEDXy60EI7K50AGcw9SQ2y3l8jHqQhrRcmJxixygkROMwg9igbGTa+r6WEvv1GGWV7XetXwBssnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277373; c=relaxed/simple;
-	bh=jn20MgFsR4ncDyscMXL3uuuQBT5eGLPchil/BWep51c=;
+	s=arc-20240116; t=1774283167; c=relaxed/simple;
+	bh=BmAnpSekfieo57XQBkJNMZeevncd//jqXlXNdiTivTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyV2NXr4O7epC/qaTwZcc2dJb+zrGnVE8+6SBMXDheOy0ECsf8Vcmcgc4LNTd3SJC1llD60diC4Wco3gdMoq5qX6LKJASUxkUTR3C42xcJEZE2S89AG3TMwPwb7HpgpQ5+Cxt+q1T8h0T2SFDPS3OO5PoXPrEqmhCfF+wJSCRWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jC/p7M6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1377C4CEF7;
-	Mon, 23 Mar 2026 14:49:32 +0000 (UTC)
+	 MIME-Version; b=jQkPG1swEIEzstzhDvEWKCyBkcgDmWB6CRCCU3KeTEYVtO2vFfoH/J8b1JTiSEegNcWS+G2BAXTz3/ndFWkLQG7zn5pmBYj1SF0LWuu1lHLsW8IHXKPeV1Co5TvC5STXoczSq8Sg8jIr0dLtDh01JYsek2bJBN/l2RXpa8RUNBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itTWSfnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDEFC4CEF7;
+	Mon, 23 Mar 2026 16:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277373;
-	bh=jn20MgFsR4ncDyscMXL3uuuQBT5eGLPchil/BWep51c=;
+	s=korg; t=1774283167;
+	bh=BmAnpSekfieo57XQBkJNMZeevncd//jqXlXNdiTivTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jC/p7M6QaZi9X81JUmHc0cV+xwLnxFJUPXik85sxS+rxI0eCiEJPFvW4NE5egzATb
-	 8bJO8KjxctA2RqK1jAlNknyCYtV3ObMeEcv2a6l8cZmxBVI2KLXWk9oR5Pkk+Dc3wP
-	 0ebEdST6kDpBwlmI6Vqco+DxKmrjLxVCxDzLBB6M=
+	b=itTWSfnIx362P/JVL8GoRaAGcqWLxJhFzSkWUXNVxB+0UYatf4+xcKNjHDPnv7n9A
+	 zYBCwr1t+OuqGJFXL0jHFdaLIgkgPMcWPyclH5+F/+ZkLChYcifntxGGBp+GArHWNl
+	 cSfZ+mVUB4Z9LyWD72BXnIIeXfxhcJ5GAVcdRrCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 414/460] clsact: Fix use-after-free in init/destroy rollback asymmetry
+Subject: [PATCH 6.1 428/481] iavf: fix VLAN filter lost on add/delete race
 Date: Mon, 23 Mar 2026 14:46:50 +0100
-Message-ID: <20260323134536.720972559@linuxfoundation.org>
+Message-ID: <20260323134535.632392477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,145 +69,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228876-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,iogearbox.net,kernel.org,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229901-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E136C2F5EAE
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C7E002FA9FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit a0671125d4f55e1e98d9bde8a0b671941987e208 ]
+[ Upstream commit fc9c69be594756b81b54c6bc40803fa6052f35ae ]
 
-Fix a use-after-free in the clsact qdisc upon init/destroy rollback asymmetry.
-The latter is achieved by first fully initializing a clsact instance, and
-then in a second step having a replacement failure for the new clsact qdisc
-instance. clsact_init() initializes ingress first and then takes care of the
-egress part. This can fail midway, for example, via tcf_block_get_ext(). Upon
-failure, the kernel will trigger the clsact_destroy() callback.
+When iavf_add_vlan() finds an existing filter in IAVF_VLAN_REMOVE
+state, it transitions the filter to IAVF_VLAN_ACTIVE assuming the
+pending delete can simply be cancelled. However, there is no guarantee
+that iavf_del_vlans() has not already processed the delete AQ request
+and removed the filter from the PF. In that case the filter remains in
+the driver's list as IAVF_VLAN_ACTIVE but is no longer programmed on
+the NIC. Since iavf_add_vlans() only picks up filters in
+IAVF_VLAN_ADD state, the filter is never re-added, and spoof checking
+drops all traffic for that VLAN.
 
-Commit 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry") details the
-way how the transition is happening. If tcf_block_get_ext on the q->ingress_block
-ends up failing, we took the tcx_miniq_inc reference count on the ingress
-side, but not yet on the egress side. clsact_destroy() tests whether the
-{ingress,egress}_entry was non-NULL. However, even in midway failure on the
-replacement, both are in fact non-NULL with a valid egress_entry from the
-previous clsact instance.
+  CPU0                       CPU1                     Workqueue
+  ----                       ----                     ---------
+  iavf_del_vlan(vlan 100)
+    f->state = REMOVE
+    schedule AQ_DEL_VLAN
+                             iavf_add_vlan(vlan 100)
+                               f->state = ACTIVE
+                                                      iavf_del_vlans()
+                                                        f is ACTIVE, skip
+                                                      iavf_add_vlans()
+                                                        f is ACTIVE, skip
 
-What we really need to test for is whether the qdisc instance-specific ingress
-or egress side previously got initialized. This adds a small helper for checking
-the miniq initialization called mini_qdisc_pair_inited, and utilizes that upon
-clsact_destroy() in order to fix the use-after-free scenario. Convert the
-ingress_destroy() side as well so both are consistent to each other.
+  Filter is ACTIVE in driver but absent from NIC.
 
-Fixes: 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260313065531.98639-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Transition to IAVF_VLAN_ADD instead and schedule
+IAVF_FLAG_AQ_ADD_VLAN_FILTER so iavf_add_vlans() re-programs the
+filter.  A duplicate add is idempotent on the PF.
+
+Fixes: 0c0da0e95105 ("iavf: refactor VLAN filter states")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h |  5 +++++
- net/sched/sch_ingress.c   | 14 ++++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 28a7aaa4c0cdf..d3e1f91f81cde 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1406,6 +1406,11 @@ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- void mini_qdisc_pair_block_init(struct mini_Qdisc_pair *miniqp,
- 				struct tcf_block *block);
- 
-+static inline bool mini_qdisc_pair_inited(struct mini_Qdisc_pair *miniqp)
-+{
-+	return !!miniqp->p_miniq;
-+}
-+
- void mq_change_real_num_tx(struct Qdisc *sch, unsigned int new_real_tx);
- 
- int sch_frag_xmit_hook(struct sk_buff *skb, int (*xmit)(struct sk_buff *skb));
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index cc6051d4f2ef8..c3e18bae8fbfc 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -113,14 +113,15 @@ static void ingress_destroy(struct Qdisc *sch)
- {
- 	struct ingress_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *entry = rtnl_dereference(dev->tcx_ingress);
-+	struct bpf_mprog_entry *entry;
- 
- 	if (sch->parent != TC_H_INGRESS)
- 		return;
- 
- 	tcf_block_put_ext(q->block, sch, &q->block_info);
- 
--	if (entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp)) {
-+		entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(entry);
- 		if (!tcx_entry_is_active(entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -290,10 +291,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
- 
- static void clsact_destroy(struct Qdisc *sch)
- {
-+	struct bpf_mprog_entry *ingress_entry, *egress_entry;
- 	struct clsact_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *ingress_entry = rtnl_dereference(dev->tcx_ingress);
--	struct bpf_mprog_entry *egress_entry = rtnl_dereference(dev->tcx_egress);
- 
- 	if (sch->parent != TC_H_CLSACT)
- 		return;
-@@ -301,7 +301,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
- 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
- 
--	if (ingress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_ingress)) {
-+		ingress_entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(ingress_entry);
- 		if (!tcx_entry_is_active(ingress_entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -309,7 +310,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 		}
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 467ad433a47b9..667949e8833bf 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -831,10 +831,13 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
+ 		adapter->num_vlan_filters++;
+ 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
+ 	} else if (f->state == IAVF_VLAN_REMOVE) {
+-		/* IAVF_VLAN_REMOVE means that VLAN wasn't yet removed.
+-		 * We can safely only change the state here.
++		/* Re-add the filter since we cannot tell whether the
++		 * pending delete has already been processed by the PF.
++		 * A duplicate add is harmless.
+ 		 */
+-		f->state = IAVF_VLAN_ACTIVE;
++		f->state = IAVF_VLAN_ADD;
++		iavf_schedule_aq_request(adapter,
++					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
  	}
  
--	if (egress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_egress)) {
-+		egress_entry = rtnl_dereference(dev->tcx_egress);
- 		tcx_miniq_dec(egress_entry);
- 		if (!tcx_entry_is_active(egress_entry)) {
- 			tcx_entry_update(dev, NULL, false);
+ clearout:
 -- 
 2.51.0
 
