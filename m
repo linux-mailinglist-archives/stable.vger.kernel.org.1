@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMlKG6dJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:43 +0100
+	id sISTD/tLwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8F32F3E96
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BCE2F4324
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B03083033D3C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 707F2304E7BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72EB21D00A;
-	Mon, 23 Mar 2026 13:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E275F3B0AEF;
+	Mon, 23 Mar 2026 14:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX3Nu9bT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt/4D+uH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B348286A4;
-	Mon, 23 Mar 2026 13:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BA03ACEFE;
+	Mon, 23 Mar 2026 14:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274218; cv=none; b=PGdU4AaRHkjuM/6mkQFLgudbEJJkCH3SRBODOOPLQbR1kmyvbpxw8wurRvmBB9GSb7Gpv/pMEL97hxaYjdzbE5Jo3WEqwx4jSnO2Y4rswKD5ogmFPBqQeCySPhp68DckjIIw9HDNXq2sz/pH/5JZ/jEP4Lb4xsJyh1uKGX3UNv8=
+	t=1774274770; cv=none; b=N9SKjhCL1t1D4DIoHCKfsIBqoFpMhIgOLhVlLga0k9mUZDY5Hgag6FKblCyUWyDLqK4E1pZZCVbDayBZ3xL/MVo2QKBaX6mRibtI0TKgITy1GeKGHdlzDcmTdxwyQ3wjD2fKAKWNYDw7zKgq1nvahUy4P/2+CPK3kGcZ6BZjlLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274218; c=relaxed/simple;
-	bh=2efKX7Rj+MkxEknm2fPVXZ81O0NyVbc1cpTzPmLE36I=;
+	s=arc-20240116; t=1774274770; c=relaxed/simple;
+	bh=8YIBspWmxh/uF8V/a0BmR7osRhRoEFP58kD4q+YITos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGmvemZVRB/7H8DKGA5vVQTDeApy/EMykADlJRa0fy8BWdg1AGGArJdMevh6bqOkQ+ubf5YETczPjdHO+di7TSo3lxGFa/v89VT73xpm3U/noG0X+VurwjMkYS7duww9d0mqC2g9RAxzfMnbvHRIgLLuTh9xfH4la5Vi7ompFXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX3Nu9bT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC898C2BCB1;
-	Mon, 23 Mar 2026 13:56:57 +0000 (UTC)
+	 MIME-Version; b=k0x02973a00xLrxeo3w6WQxp4Sr5Ph14Sm5PJPB01WZlfYz5UGl51P1/eXlg1/PAq3GlvgoqfX7lYkqbB5/C9JeGJW3MXTrXSjGfsiPzkLRqUPM6HKlDeRksVE0hcslXHQBP/teLWUU6T20qT5DosNzbPiUXkcBjrsgkTdv6CKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt/4D+uH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27357C4CEF7;
+	Mon, 23 Mar 2026 14:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274218;
-	bh=2efKX7Rj+MkxEknm2fPVXZ81O0NyVbc1cpTzPmLE36I=;
+	s=korg; t=1774274770;
+	bh=8YIBspWmxh/uF8V/a0BmR7osRhRoEFP58kD4q+YITos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PX3Nu9bTq9o8mRqX/lLou1hkd9ykI1iWWbOXI6EFkO+9802ct5N5eF71nLPWhjXyX
-	 uIcJ7gwnytJ3ri2AC/5yeNYkZY/mlcDj1VefQF6Xt/FnRqGco3Fo/53ksHDu4FCf2f
-	 XBZbdZuCeEKLXf5jf0X03QQqTIgRUgk+Rfp/xXDo=
+	b=Pt/4D+uHPNimO7beJy7pPqMaC6XfYLBHkeLzy8SOzF/zWupavEg8ti9f5ce7vWMMA
+	 evvCBQ8glFcTKamdZ65vQo2docezzzzkQmhClKsEiQtOpWtxyRLirKcgfRIeEu1YTL
+	 Oreg0uzfddyIkANI07KBXRpPS7+d1LJmYW/Te+GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 147/220] PM: runtime: Fix a race condition related to device removal
+Subject: [PATCH 6.18 103/212] cache: ax45mp: Fix device node reference leak in ax45mp_cache_init()
 Date: Mon, 23 Mar 2026 14:45:24 +0100
-Message-ID: <20260323134509.233692659@linuxfoundation.org>
+Message-ID: <20260323134507.035142065@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,155 +67,76 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228131-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228311-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microchip.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF8F32F3E96
+X-Rspamd-Queue-Id: D7BCE2F4324
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
+[ Upstream commit 0528a348b04b327a4611e29589beb4c9ae81304a ]
 
-The following code in pm_runtime_work() may dereference the dev->parent
-pointer after the parent device has been freed:
+In ax45mp_cache_init(), of_find_matching_node() returns a device node
+with an incremented reference count that must be released with
+of_node_put(). The current code fails to call of_node_put() which
+causes a reference leak.
 
-	/* Maybe the parent is now able to suspend. */
-	if (parent && !parent->power.ignore_children) {
-		spin_unlock(&dev->power.lock);
+Use the __free(device_node) attribute to ensure automatic cleanup when
+the variable goes out of scope.
 
-		spin_lock(&parent->power.lock);
-		rpm_idle(parent, RPM_ASYNC);
-		spin_unlock(&parent->power.lock);
-
-		spin_lock(&dev->power.lock);
-	}
-
-Fix this by inserting a flush_work() call in pm_runtime_remove().
-
-Without this patch blktest block/001 triggers the following complaint
-sporadically:
-
-BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
-Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
-Workqueue: pm pm_runtime_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x61/0x80
- print_address_description.constprop.0+0x8b/0x310
- print_report+0xfd/0x1d7
- kasan_report+0xd8/0x1d0
- __kasan_check_byte+0x42/0x60
- lock_acquire.part.0+0x38/0x230
- lock_acquire+0x70/0x160
- _raw_spin_lock+0x36/0x50
- rpm_suspend+0xc6a/0xfe0
- rpm_idle+0x578/0x770
- pm_runtime_work+0xee/0x120
- process_one_work+0xde3/0x1410
- worker_thread+0x5eb/0xfe0
- kthread+0x37b/0x480
- ret_from_fork+0x6cb/0x920
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Allocated by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_alloc_info+0x3d/0x50
- __kasan_kmalloc+0xa0/0xb0
- __kmalloc_noprof+0x311/0x990
- scsi_alloc_target+0x122/0xb60 [scsi_mod]
- __scsi_scan_target+0x101/0x460 [scsi_mod]
- scsi_scan_channel+0x179/0x1c0 [scsi_mod]
- scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
- store_scan+0x2d2/0x390 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
- do_syscall_64+0xee/0xfc0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Freed by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_free_info+0x3f/0x50
- __kasan_slab_free+0x67/0x80
- kfree+0x225/0x6c0
- scsi_target_dev_release+0x3d/0x60 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_put+0x7f/0xc0 [scsi_mod]
- sdev_store_delete+0xa5/0x120 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
-
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
-Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
-Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cache/ax45mp_cache.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 0ee8ea971aa46..335288e8b5b31 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1895,6 +1895,7 @@ void pm_runtime_reinit(struct device *dev)
- void pm_runtime_remove(struct device *dev)
+diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
+index 1d7dd3d2c101c..934c5087ec2bd 100644
+--- a/drivers/cache/ax45mp_cache.c
++++ b/drivers/cache/ax45mp_cache.c
+@@ -178,11 +178,11 @@ static const struct of_device_id ax45mp_cache_ids[] = {
+ 
+ static int __init ax45mp_cache_init(void)
  {
- 	__pm_runtime_disable(dev, false);
-+	flush_work(&dev->power.work);
- 	pm_runtime_reinit(dev);
- }
+-	struct device_node *np;
+ 	struct resource res;
+ 	int ret;
+ 
+-	np = of_find_matching_node(NULL, ax45mp_cache_ids);
++	struct device_node *np __free(device_node) =
++		of_find_matching_node(NULL, ax45mp_cache_ids);
+ 	if (!of_device_is_available(np))
+ 		return -ENODEV;
  
 -- 
 2.51.0
