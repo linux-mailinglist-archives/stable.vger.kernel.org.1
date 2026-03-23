@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAiDMadRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:43:51 +0100
+	id yGJXBcBYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559342F5119
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:43:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FA72F6063
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 408F3323342F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D23A305F321
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394D33AD523;
-	Mon, 23 Mar 2026 14:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E213235C01;
+	Mon, 23 Mar 2026 14:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhJRclxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7fXRB/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11FF38C41E;
-	Mon, 23 Mar 2026 14:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ADE3AA518;
+	Mon, 23 Mar 2026 14:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275378; cv=none; b=ktVdn65K1U8JgvQk1hWey6Bfj8CZENgI8jVrV3nist+gPFezs4qtCS7x5HtC25ut6Zhlm5urVF5A+DTaFVx2+3AyrWMm3D2U2aNwRQ1APiICXFJcBxg6kFvEjChbVo0urxo3BYlKeV2q6BeGMQhXBG6i6faluFgb+5Fz1jsi2iU=
+	t=1774277946; cv=none; b=UiTQW7FERG5KvzWQIPPMwdL7LQcxlpyk6n5qHmdDEJBMKcbiG86U2YitFkg46mpcIgi60gemRZlWyha/yTpELayOAPaR4lBRNEg2vzWC6+yNkUShA4dCUc3EnZHU2/jX0rC6gBehSwU9nFmczS8nr1xI5ixJSknEP/it8eAKqu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275378; c=relaxed/simple;
-	bh=n2Ne/uY/LveVWCdf4h6rSEQH1WEAzcvjUD30tx2kWMo=;
+	s=arc-20240116; t=1774277946; c=relaxed/simple;
+	bh=2y0tK+EJ8QAc82RhX0hcE+Qoc7e3tUbB/tPEtHtnMzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4odC+LsG3sv+FXFiAMuezD+Oy6xATuKyx6qhp+H928H8a6IgyLTC//dfBnvsAgKc7VqT/P9I42np3U7RYmRrPyuq7gEFCRf+tPNHlVFRZMOPjnekODhBYN2U685EFBtStjS+Y51xKWpWQNcOVc/7CAbqJhYiX09ftEV9AxAwEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhJRclxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE12C4CEF7;
-	Mon, 23 Mar 2026 14:16:17 +0000 (UTC)
+	 MIME-Version; b=E30Mb+v/X7BWDdkKCASZ1CcGXo1VYpRkNJgsacmP5HGLupbtva2/yQnxoidyCLT4rDGz7rLSnYYgFNmqak39Xt5Ay488eanTyXbudyTGcQ/0DZED32nQF4z1ZIYD+xLHnl3xwPOU5COp7b8NOg3CeQdvqTaFc3Nd1a+x0OLP4Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7fXRB/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627A5C4CEF7;
+	Mon, 23 Mar 2026 14:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275377;
-	bh=n2Ne/uY/LveVWCdf4h6rSEQH1WEAzcvjUD30tx2kWMo=;
+	s=korg; t=1774277945;
+	bh=2y0tK+EJ8QAc82RhX0hcE+Qoc7e3tUbB/tPEtHtnMzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhJRclxB/BC5M81YQ8tLx2lqN9estUP/uiajQ5hfAFRmPAR40bzUBxIwSl++Xc23v
-	 AkKjh5R3qwz1i1+E1Nnpe09NvhJtaLuJApN7BeewFaedJ1AxmN2msJ0GMEs4LOXlME
-	 kRQS6KZEeU6kh86jIQcYD/NBQCnB/PCco92BuYaA=
+	b=b7fXRB/IFevfJX8iNCUyF6t+1u8JvyzAthzcU3MMt0D5NUXq+bmgdacJuNe+BAdQN
+	 xdHcXHd3dJ2XjUqqNTyGKRmdOo/Pwefimb5OsqBcAue1YZsboVRBNYlqPXJwyGwjPm
+	 Zt0ThL8bT+bPSznGi18VM7R7AROIT7UOJTxuHOck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/460] ACPI: OSL: fix __iomem type on return from acpi_os_map_generic_address()
+Subject: [PATCH 6.6 153/567] wifi: mt76: mt7996: Fix possible oob access in mt7996_mac_write_txwi_80211()
 Date: Mon, 23 Mar 2026 14:41:13 +0100
-Message-ID: <20260323134528.577726235@linuxfoundation.org>
+Message-ID: <20260323134537.617615797@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228531-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229064-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,51 +90,42 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 559342F5119
+X-Rspamd-Queue-Id: B1FA72F6063
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 393815f57651101f1590632092986d1d5a3a41bd ]
+[ Upstream commit 60862846308627e9e15546bb647a00de44deb27b ]
 
-The pointer returned from acpi_os_map_generic_address() is
-tagged with __iomem, so make the rv it is returned to also
-of void __iomem * type.
+Check frame length before accessing the mgmt fields in
+mt7996_mac_write_txwi_80211 in order to avoid a possible oob access.
 
-Fixes the following sparse warning:
-
-drivers/acpi/osl.c:1686:20: warning: incorrect type in assignment (different address spaces)
-drivers/acpi/osl.c:1686:20:    expected void *rv
-drivers/acpi/osl.c:1686:20:    got void [noderef] __iomem *
-
-Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of acpi_os_map_generic_address() return value")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-[ rjw: Subject tweak, added Fixes tag ]
-Link: https://patch.msgid.link/20260311105835.463030-1-ben.dooks@codethink.co.uk
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 98686cd21624c ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260226-mt76-addba-req-oob-access-v1-1-b0f6d1ad4850@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/osl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 70af3fbbebe54..6537644faf381 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -1649,7 +1649,7 @@ acpi_status __init acpi_os_initialize(void)
- 		 * Use acpi_os_map_generic_address to pre-map the reset
- 		 * register if it's in system memory.
- 		 */
--		void *rv;
-+		void __iomem *rv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 8fa16f95e6a7b..3dd503b363ce0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -784,6 +784,7 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ 	u32 val;
  
- 		rv = acpi_os_map_generic_address(&acpi_gbl_FADT.reset_register);
- 		pr_debug("%s: Reset register mapping %s\n", __func__,
+ 	if (ieee80211_is_action(fc) &&
++	    skb->len >= IEEE80211_MIN_ACTION_SIZE + 1 &&
+ 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+ 	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ)
+ 		tid = MT_TX_ADDBA;
 -- 
 2.51.0
 
