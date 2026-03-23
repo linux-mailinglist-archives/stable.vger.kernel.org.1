@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK9CDaRLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:12 +0100
+	id UAyQNvpawWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B5D2F41FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427892F634C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ADE7F3007A61
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 443403344C57
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A0C369204;
-	Mon, 23 Mar 2026 14:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBA63B6C13;
+	Mon, 23 Mar 2026 15:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhhFlznU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn7N1Prf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BD51E5B88;
-	Mon, 23 Mar 2026 14:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB63B6C0A;
+	Mon, 23 Mar 2026 15:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275482; cv=none; b=md2MtHclDEsVEUrJ3PABKsSqfK3uj8f+N3vCIOzI/uS6eVRf1klRDS+iU5CN5KtLnivL3a+uPjjffA7AjGYaXUdDDLcLdsZP1NTX8gyKxtHa3SlAGODJD37p1sfdkFnt54rKDk18p7s8I/P3qM+gGO8H32JLXTcDqGqdT7DgZKc=
+	t=1774278213; cv=none; b=e9Cbro46aHTuBsKYxHTr45P059CsaaGD1AAuI0xj+rnJ6Fm1JyVS3VbdWDb0gwcmA8OKH8OJ8Eg+YhEYTAmgu0Bd9H0MRGbF0xdcy8kKMDOa/CE4Y90jHN+aJR6hoB0qJ1qYSNMQ7JqUuu/9LSPdDJDQiTcMBeJDlfxwXuZht1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275482; c=relaxed/simple;
-	bh=YRObyxn26eEK5uO2Pwz4pbQITFXHKNmLA2BBtm36bJQ=;
+	s=arc-20240116; t=1774278213; c=relaxed/simple;
+	bh=VKLwxMKue+jlLlndP93Oq4dJOvL3ItPCo8yVHyuzmgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GD71WEJLgrDnViCZghwNBMyy8Mt2J3QCv5Wv1EY/WFZlpmY7aPEk2a1LYaMXEHbTjAyWxUo4dp8VIUOpyEmTlSrP6xFeCdMnbRuhTPlPl4K9yCqWRiBmTwkikwWrnyOkZLkIJZz09CVdrBOOQ5829y+f4OA9RPO+bSToIKtX860=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhhFlznU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B1BC2BC9E;
-	Mon, 23 Mar 2026 14:18:01 +0000 (UTC)
+	 MIME-Version; b=l0Bi1DqD7V5SO90jI+6OiICmVv/l1UAW5HRmjbdM5OpyQDGPWIq6JJEU2okMA7FJ6GfmaElUcpiF1JjqmNdW3nvlJJkUrGM7nh6Kq7pwO/2CoaVFgkg/8w9YsMzvHcGboDZs6EsdKkoqZCDX2eqtgkx+sGQVXAMPWKTsprSQ05I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn7N1Prf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBAAC4CEF7;
+	Mon, 23 Mar 2026 15:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275482;
-	bh=YRObyxn26eEK5uO2Pwz4pbQITFXHKNmLA2BBtm36bJQ=;
+	s=korg; t=1774278212;
+	bh=VKLwxMKue+jlLlndP93Oq4dJOvL3ItPCo8yVHyuzmgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhhFlznUTNxY04laNhCtWBeRlzvavGVSou6CNYJ+L4gNISAne9xMmQid7C/ZdzaNc
-	 bQnshOD4EmoFklRO88qTKSaPGvKRlKf+K9es69Jveu8VvaB/nwiXneWqTPK9peAga+
-	 N8v2u/Hwe/5xMe5JwgwWd37hAPdJFhRVeQCoc5Zs=
+	b=vn7N1Prf1K/GpM6Z77auGyXWaCyNuu7pXojGFQP1qpwmNPRMONj1Px5p/J/TsIfga
+	 +OObCFhIYdlInzFq0MrmtJEcMavuMnPWZIG1bdV11BfEvbJeZhrpEJGovfsM0QQmG5
+	 ra811rfPS5VHZ/3/h5fMb82sYRzR85hcEwLz9ziY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 117/460] rust: kbuild: allow `unused_features`
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.6 193/567] apparmor: Fix double free of ns_name in aa_replace_profiles()
 Date: Mon, 23 Mar 2026 14:41:53 +0100
-Message-ID: <20260323134529.507718408@linuxfoundation.org>
+Message-ID: <20260323134538.626504179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +68,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228571-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229148-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 54B5D2F41FC
+X-Rspamd-Queue-Id: 427892F634C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: John Johansen <john.johansen@canonical.com>
 
-commit 592c61f3bfceaa29f8275696bd67c3dfad7ef72e upstream.
+commit 5df0c44e8f5f619d3beb871207aded7c78414502 upstream.
 
-Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
-`rustc` introduces the new lint `unused_features` [1], which warns [2]:
+if ns_name is NULL after
+1071         error = aa_unpack(udata, &lh, &ns_name);
 
-    warning: feature `used_with_arg` is declared but not used
-     --> <crate attribute>:1:93
-      |
-    1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg)]
-      |                                                                                             ^^^^^^^^^^^^^
-      |
-      = note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on by default
+and if ent->ns_name contains an ns_name in
+1089                 } else if (ent->ns_name) {
 
-The original goal of using `-Zcrate-attr` automatically was that there
-is a consistent set of features enabled and managed globally for all
-Rust kernel code (modulo exceptions like the `rust/` crated).
+then ns_name is assigned the ent->ns_name
+1095                         ns_name = ent->ns_name;
 
-While we could require crates to enable features manually (even if we
-still keep the `-Zallow-features=` list, i.e. removing the `-Zcrate-attr`
-list), it is not really worth making all developers worry about it just
-for a new lint.
+however ent->ns_name is freed at
+1262                 aa_load_ent_free(ent);
 
-The features are expected to eventually become stable anyway (most already
-did), and thus having to remove features in every file that may use them
-is not worth it either.
+and then again when freeing ns_name at
+1270         kfree(ns_name);
 
-Thus just allow the new lint globally.
+Fix this by NULLing out ent->ns_name after it is transferred to ns_name
 
-The lint actually existed for a long time, which is why `rustc` does
-not complain about an unknown lint in the stable versions we support,
-but it was "disabled" years ago [3], and now it was made to work again.
-
-For extra context, the new implementation of the lint has already been
-improved to avoid linting about features that became stable thanks to
-Benno's report and the ensuing discussion [4] [5], but while that helps,
-it is still the case that we may have features enabled that are not used
-for one reason or another in a particular crate.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/152164 [1]
-Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
-Link: https://github.com/rust-lang/rust/issues/44232 [3]
-Link: https://github.com/rust-lang/rust/issues/153523 [4]
-Link: https://github.com/rust-lang/rust/pull/153610 [5]
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260312111014.74198-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 145a0ef21c8e9 ("apparmor: fix blob compression when ns is forced on a policy load")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    1 +
+ security/apparmor/policy.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/Makefile
-+++ b/Makefile
-@@ -446,6 +446,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
- export rust_common_flags := --edition=2021 \
- 			    -Zbinary_dep_depinfo=y \
- 			    -Astable_features \
-+			    -Aunused_features \
- 			    -Dnon_ascii_idents \
- 			    -Dunsafe_op_in_unsafe_fn \
- 			    -Wmissing_docs \
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -1115,6 +1115,7 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 				goto fail;
+ 			}
+ 			ns_name = ent->ns_name;
++			ent->ns_name = NULL;
+ 		} else
+ 			count++;
+ 	}
 
 
 
