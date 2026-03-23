@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO/ZAodewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:47 +0100
+	id gGcIAQ1JwWlmSAQAu9opvQ
+	(envelope-from <stable+bounces-228174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2802F69F0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2272F3D9B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2FA08304D8AF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2636C3037779
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84F53BC680;
-	Mon, 23 Mar 2026 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193243B0AF0;
+	Mon, 23 Mar 2026 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkErQR2q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YotUsV8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0FB3BC693;
-	Mon, 23 Mar 2026 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB593B776A;
+	Mon, 23 Mar 2026 13:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278879; cv=none; b=SGHAPR9t2s+iMU2j5/nknCIHMqTH2R71T8mA50YQQ1PsRMcKnAY+MxdsZMPgcPzT7dRrRFYFMD51d9umLGEN3hxiH0gk8PttdVxgt9ds3kLs6ymZ1DE299rkLKmbiwwqdkNEQauJ/dUtOiIOZxN71kv6XYPw+l1yAyYnXloDJbk=
+	t=1774274351; cv=none; b=GRqcyLuxWk0vSLlvzAIRaBNeTe9lRmH9AnMQJeZpXueLe0Z1Dt9XnWkSB17Ag81JD6Avhn4HIdQFORM7OG2Giq52Y4x687GpKTRdQ/AwKwaSuSyy5lLQsfoKUdqmO0Rxr0CekKV1gONCFtEuvOScuBbPFXFDqYab5aYha4zyYNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278879; c=relaxed/simple;
-	bh=UfneRwN8TikomASAENpG1HkB6Fnhsf6+aRza4DY9hIg=;
+	s=arc-20240116; t=1774274351; c=relaxed/simple;
+	bh=XB6eRPE/SDA6AhLgIBP2swOCa7Dg2TNGpjGpk3pxIvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvPjrctATjrd5pEVeXdheJCSjRJ/45imgEEmZ7+YZY8OYZ1seImD7fSGL4E9j9L/A688pi3FZbtlJJ+LLiAuTbDpUskZAVljbzH8eehKYeYygyo+aysp7RZtT6eXUsIzH7ewbnTiIehjeusWKn9OphDP5PlHkz5zCqGmOwUBXjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkErQR2q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A406CC2BD01;
-	Mon, 23 Mar 2026 15:14:38 +0000 (UTC)
+	 MIME-Version; b=B8E+NC0ovqKnutu1kvLMahzYbRGKp7jnM94+UM0joA/oIzmqsJO0BjoDvvjJnQJ4f1FpQi+iAtFpV0MAqbZRAT7UtDItpuc+sf4lE1hTfrMEd/NiDr+BueNCjkQ3BGfzutM2Zbpjs/R26Bh5ebuSkwNA7Sq9jhcsMaL5PYRIujA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YotUsV8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480ABC2BCB1;
+	Mon, 23 Mar 2026 13:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278879;
-	bh=UfneRwN8TikomASAENpG1HkB6Fnhsf6+aRza4DY9hIg=;
+	s=korg; t=1774274351;
+	bh=XB6eRPE/SDA6AhLgIBP2swOCa7Dg2TNGpjGpk3pxIvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkErQR2qftlxiMIDPKwDKQQmTDkCyzfx1cB6ILFbHYcxGeHiH4q/lA+or5ZEd1XCn
-	 88HgRbVct24fFaTuW58veNzDAly3Cnaz5NInLTHOB9SPHZfqNnPhA8jWEuQUFCNJp/
-	 L4l+l5rxuaZoeowcq7yYrxfuctpupUtUDw4ZslHk=
+	b=YotUsV8aBgzRjotPbie0jRFfUXsuoXtRZnQSocMVL+fu4oex1P0fuSMtQaJ/0WnGH
+	 t1ksFGNICEGvMzDiMdKOZjGXre+mmoCAK43FeGE4VUhKsy8RQfkdMtIM8lZ0nycsod
+	 P52W47X60lo4X0rSwZRSap9PEYBtIlCjCgxFvdqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.6 447/567] s390/xor: Fix xor_xc_2() inline assembly constraints
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.19 190/220] perf/x86/intel: Add missing branch counters constraint apply
 Date: Mon, 23 Mar 2026 14:46:07 +0100
-Message-ID: <20260323134545.037826160@linuxfoundation.org>
+Message-ID: <20260323134510.601494081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +66,139 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228174-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9A2802F69F0
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 8A2272F3D9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-commit f775276edc0c505dc0f782773796c189f31a1123 upstream.
+commit 1d07bbd7ea36ea0b8dfa8068dbe67eb3a32d9590 upstream.
 
-The inline assembly constraints for xor_xc_2() are incorrect. "bytes",
-"p1", and "p2" are input operands, while all three of them are modified
-within the inline assembly. Given that the function consists only of this
-inline assembly it seems unlikely that this may cause any problems, however
-fix this in any case.
+When running the command:
+'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
+a "shift-out-of-bounds" warning is reported on CWF.
 
-Fixes: 2cfc5f9ce7f5 ("s390/xor: optimized xor routing using the XC instruction")
+  UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+  shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+  ......
+  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+  setup_arch_pebs_sample_data+0x114b/0x2400
+
+The warning occurs because the second "instructions:p" event, which
+involves branch counters sampling, is incorrectly programmed to fixed
+counter 0 instead of the general-purpose (GP) counters 0-3 that support
+branch counters sampling. Currently only GP counters 0-3 support branch
+counters sampling on CWF, any event involving branch counters sampling
+should be programed on GP counters 0-3. Since the counter index of fixed
+counter 0 is 32, it leads to the "src" value in below code is right
+shifted 64 bits and trigger the "shift-out-of-bounds" warning.
+
+cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
+
+The root cause is the loss of the branch counters constraint for the
+new event in the branch counters sampling event group. Since it isn't
+yet part of the sibling list. This results in the second
+"instructions:p" event being programmed on fixed counter 0 incorrectly
+instead of the appropriate GP counters 0-3.
+
+To address this, we apply the missing branch counters constraint for
+the last event in the group. Additionally, we introduce a new function,
+`intel_set_branch_counter_constr()`, to apply the branch counters
+constraint and avoid code duplication.
+
+Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260228053320.140406-2-dapeng1.mi@linux.intel.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20260302133500.1560531-2-hca@linux.ibm.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/lib/xor.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/core.c |   31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
---- a/arch/s390/lib/xor.c
-+++ b/arch/s390/lib/xor.c
-@@ -29,8 +29,8 @@ static void xor_xc_2(unsigned long bytes
- 		"	j	3f\n"
- 		"2:	xc	0(1,%1),0(%2)\n"
- 		"3:\n"
--		: : "d" (bytes), "a" (p1), "a" (p2)
--		: "0", "1", "cc", "memory");
-+		: "+d" (bytes), "+a" (p1), "+a" (p2)
-+		: : "0", "1", "cc", "memory");
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4367,6 +4367,19 @@ static inline void intel_pmu_set_acr_cau
+ 		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
  }
  
- static void xor_xc_3(unsigned long bytes, unsigned long * __restrict p1,
++static inline int intel_set_branch_counter_constr(struct perf_event *event,
++						  int *num)
++{
++	if (branch_sample_call_stack(event))
++		return -EINVAL;
++	if (branch_sample_counters(event)) {
++		(*num)++;
++		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
++	}
++
++	return 0;
++}
++
+ static int intel_pmu_hw_config(struct perf_event *event)
+ {
+ 	int ret = x86_pmu_hw_config(event);
+@@ -4437,21 +4450,19 @@ static int intel_pmu_hw_config(struct pe
+ 		 * group, which requires the extra space to store the counters.
+ 		 */
+ 		leader = event->group_leader;
+-		if (branch_sample_call_stack(leader))
++		if (intel_set_branch_counter_constr(leader, &num))
+ 			return -EINVAL;
+-		if (branch_sample_counters(leader)) {
+-			num++;
+-			leader->hw.dyn_constraint &= x86_pmu.lbr_counters;
+-		}
+ 		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
+ 
+ 		for_each_sibling_event(sibling, leader) {
+-			if (branch_sample_call_stack(sibling))
++			if (intel_set_branch_counter_constr(sibling, &num))
++				return -EINVAL;
++		}
++
++		/* event isn't installed as a sibling yet. */
++		if (event != leader) {
++			if (intel_set_branch_counter_constr(event, &num))
+ 				return -EINVAL;
+-			if (branch_sample_counters(sibling)) {
+-				num++;
+-				sibling->hw.dyn_constraint &= x86_pmu.lbr_counters;
+-			}
+ 		}
+ 
+ 		if (num > fls(x86_pmu.lbr_counters))
 
 
 
