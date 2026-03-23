@@ -1,162 +1,182 @@
-Return-Path: <stable+bounces-230004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMPqDG2awWlNUAQAu9opvQ
-	(envelope-from <stable+bounces-230004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:54:21 +0100
+	id UHxKB4yVwWkTUAQAu9opvQ
+	(envelope-from <stable+bounces-230005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:33:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED552FCAC3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:54:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA132FC55F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE73D30417B8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:30:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F0C23012CC0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE693845BA;
-	Mon, 23 Mar 2026 19:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EAC3DA7CF;
+	Mon, 23 Mar 2026 19:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iAEYA/RX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XdOPfo/u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBCB3446A6
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 19:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1E33D9DD7;
+	Mon, 23 Mar 2026 19:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774294200; cv=none; b=P7C7WrkgQmUjaPTsRMIs9thP2Sz2M6TgUSEDssIgaU+NcYiMyQhLpXOqCOSWqZSYpHyaig0W+iDp7MRs5nB84EWYSfZ6KhQn3D1o3HTtOz15hSHkQAOhIUgeiwy+/t9T+wdLNGh5OeF0aFqZMLxWnS4FOdQlQ2zzxXN0Ven7Io8=
+	t=1774294408; cv=none; b=l+7Ruq5vf48RZlEIKNYLXL5JWliX2zANTdnaI0vHX7HSjE9OULyp9ItGnBsWQZWih9TdTm4DICq9EJFmOMqkGkh3htpybIhIfKnNX9TmHrhklPzK1uJyFjdzfbVLQAVVsW9dUCbj4eJs0XiYOpPsZ/5tPYpe5vfPOSSzKMgUWyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774294200; c=relaxed/simple;
-	bh=bh6nVtKx5UAPlvUFk8STPbZr2xUBTzQCe+ZYTkyL85c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LKSb4rMmLVgKfAb4qW8VT+G5yuEOh9yfVhzYu6yt+sqSsQEFB+uVaiwXtN1OnWzZQbK9l/YXdemiJm6aEbzMSl8X/sa37r/oYyWx0Gxh0faJ919HpncepLmkx/samS/V7vk6Z4E+JuiWkYuICdyfEzbl8HRaLL/VFcddfMWdwRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iAEYA/RX; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-506362ac5f7so29554041cf.1
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 12:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774294198; x=1774898998; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=C49F6R+pPz/MfSx3LZ66CVd5NvbFdip2CBdIxmcwAXo=;
-        b=iAEYA/RXfLc6UdDaCVvgRKQkAr0v2fSdbWywTMfhqN70bqlhNbWTXuILIpaSgyI4I6
-         m6x0axKSnfDhKtSkdr9YXdXNfcNGYs5L8G/YrjN2NmClCZ25FNT2xP8zEr49Ra+rB737
-         NqwplMW0svLQdqS+4flqhw05KI/X6/ddYPMcK9osaARV0k2Ny4/1m1n76KFTzI2vfZkg
-         WN1A9WrUbz/uHkfsXzbLhns4wN9OKlICll+6uBsQKxZFA6hxuSUH6lWxVUhYEh07Fpzg
-         NTYJfzcIT95i3I6Z9IEM2MSzBiNa43VXVC3nIWXNbw+H0dd/ibvvFkn2gIEw5efRAt9Y
-         9odQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774294198; x=1774898998;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C49F6R+pPz/MfSx3LZ66CVd5NvbFdip2CBdIxmcwAXo=;
-        b=JeBT1jVvKoejOMaaZsBTd3IkWgNl5oVN76+Ih64hHqb9kZHZ2y0SerMq9M01YkyvEm
-         nGIP4bAzyOPXvgS/WilzKAjgcavU5Hg9McSAOkJfom13h49LHtiw2+e6thMNebr+o4Mz
-         k3PIwMvR3rAKciNezQxnizQthFwzORInSPtluetv8rp7r6q4xJcGqsQPKo7OT6DyjUME
-         BWyri1RAqDQG8UDnog+AfB4NeEEUg+eE9FufmqdxapK9ZZAAeXoEYrGZNPcZsrdf5pMC
-         bnNra2QElAW4dTXsqJ4H43Nlp5BcqcRufrTxqi17baA+CAeOXDtjJyfx94eDqL2kgCVs
-         slhg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3VfRWuhZ8bvxCl3h3tm+P8qO5bbvsfeeqkVujXc+jZha04wrLpox9BV2ZHHV38lFf5roJC2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB4NZen3iM11SKElDgNjNymrhwVWDmMp66ZITvRgPsQLssMBV3
-	WuDvDBXvJeNVZEkI6YsA4XRxKhT+nNqadMXMnU+qt9XomCQzZ+jYsZz7
-X-Gm-Gg: ATEYQzzUN6ojfi40NpSICBoh8WFPfpytbKr+30/Sl1lr6cORGgwpznmSnADvMZft/0C
-	dHVMIad8M8kXMmp8qM+2icVgCQkIV8p1YKWHE9HzFutqJiBVOFrLCCNq+6qzxA/BF64AC6tIM+J
-	vLz0yCeRe5BlWgQnSgZjCmZMwZDOhRCYzl9kAiEFg++AJ9kKBLTqvVYep9F6m3qgcLCA5p8Ckdf
-	8fOtFisplVlPOEJWuRlKI7+fNRWp0Ive19HPSIIA1zl44gk/EZtAIPwUG1B7DxvZ4LaXKUIOALH
-	NebvDyPW3lgcqtdcbut8caqioF6iGJvcHKxX0TPy7F4O7Y+RluMmfbiJdj8WOIkaIaiSDpwNCVr
-	M/rRmWA8ELwJnrIp61tcYisR7h+9uU5OzoR8q7dbq3CeRwXE3ZyoiAR932dYMxQKwkk02pAkND8
-	uzIrTHqDv0G/V6R92BVI94VnfwbmC+plQnN7ujGFNTa9kBePGRPxuXWzxLbZ6P
-X-Received: by 2002:a05:622a:248d:b0:50b:4f5a:b0fd with SMTP id d75a77b69052e-50b4f5abba4mr116611701cf.70.1774294198067;
-        Mon, 23 Mar 2026 12:29:58 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b36e9ea39sm88890421cf.28.2026.03.23.12.29.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 12:29:56 -0700 (PDT)
-Message-ID: <be4b8ac7-68b8-4fdb-90bb-daa9e5f2cff8@gmail.com>
-Date: Mon, 23 Mar 2026 12:29:53 -0700
+	s=arc-20240116; t=1774294408; c=relaxed/simple;
+	bh=zow9YRq0acOQfoT/XfESlELBk3oR8YQBr/E7jvEyFwI=;
+	h=Date:To:From:Subject:Message-Id; b=frlIxJCv4jMQa3IK7ty9iwZVzj9USFxTTww3hxDJeNalsBVtY9kG20Dey0FZz0gO7aMX/iM97tX4KHgztyza3JKfVVYgjfU47HomiTeRjyR/zOhITtYBLOZCOEqodN6M4YW0fKLiR0ghw/4vskhZ88z+tlnv9rLLSBh42JI2/Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XdOPfo/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C301C4CEF7;
+	Mon, 23 Mar 2026 19:33:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774294407;
+	bh=zow9YRq0acOQfoT/XfESlELBk3oR8YQBr/E7jvEyFwI=;
+	h=Date:To:From:Subject:From;
+	b=XdOPfo/u7nmLWXkJSW2LF8dqOpVx5Cc2jPU5DjWKv0eKu86mIZqPF4x/uV9iL4ylw
+	 60Cw3w98zS3ii2D1WmOZHVlrYOlTX8Q2YnCYaB9Lw/4Uzmwd/4NsU43tT9J3Rjehi1
+	 Zq0tsxrNixnuww8jYsv345FRYurykgfphPseQQkc=
+Date: Mon, 23 Mar 2026 12:33:26 -0700
+To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,vbabka@kernel.org,surenb@google.com,sunnanyong@huawei.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam.howlett@oracle.com,david@kernel.org,baohua@kernel.org,tujinjiang@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260323193327.3C301C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/567] 6.6.130-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260323134533.749096647@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230004-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230005-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: 8ED552FCAC3
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,oracle.com:email,huawei.com:email,suse.com:email,arm.com:email]
+X-Rspamd-Queue-Id: 8AA132FC55F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 06:38, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.130 release.
-> There are 567 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.130-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The patch titled
+     Subject: mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4.patch
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4
+Date: Sat, 21 Mar 2026 15:52:14 +0800
+
+update function name and comments
+
+Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
+Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: <stable@vger.kernel.org>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/leafops.h |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+--- a/include/linux/leafops.h~mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4
++++ a/include/linux/leafops.h
+@@ -363,10 +363,14 @@ static inline unsigned long softleaf_to_
+ 	return swp_offset(entry) & SWP_PFN_MASK;
+ }
+ 
+-static inline void softleaf_migration_entry_check(softleaf_t entry,
+-			struct folio *folio)
++static inline void softleaf_migration_sync(softleaf_t entry,
++		struct folio *folio)
+ {
+-	/* See __split_folio_to_order() comment */
++	/*
++	 * Ensure we do not race with split, which might alter tail pages into new
++	 * folios and thus result in observing an unlocked folio.
++	 * This matches the write barrier in __split_folio_to_order().
++	 */
+ 	smp_rmb();
+ 
+ 	/*
+@@ -388,7 +392,7 @@ static inline struct page *softleaf_to_p
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+ 	if (softleaf_is_migration(entry))
+-		softleaf_migration_entry_check(entry, page_folio(page));
++		softleaf_migration_sync(entry, page_folio(page));
+ 
+ 	return page;
+ }
+@@ -405,7 +409,7 @@ static inline struct folio *softleaf_to_
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+ 	if (softleaf_is_migration(entry))
+-		softleaf_migration_entry_check(entry, folio);
++		softleaf_migration_sync(entry, folio);
+ 
+ 	return folio;
+ }
+_
+
+Patches currently in -mm which might be from tujinjiang@huawei.com are
+
+mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio.patch
+mm-huge_memory-fix-folio-isnt-locked-in-softleaf_to_folio-v4.patch
+mm-hugetlb-fix-memory-offline-failure-due-to-hwpoisoned-file-hugetlb.patch
+
 
