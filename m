@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGdwAm5KwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:02 +0100
+	id CCbPOcdewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705A32F3FC6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740652F6AB0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10B4F3038D1D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D951F333667E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9E51A6815;
-	Mon, 23 Mar 2026 14:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8457D263F4A;
+	Mon, 23 Mar 2026 15:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvKJgI++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlAz/K9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1859C3B47EB;
-	Mon, 23 Mar 2026 14:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487792848BA;
+	Mon, 23 Mar 2026 15:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274443; cv=none; b=mrFtqd8slostQhSrbZuKVtnU3Ul9msU9OKpIRjlp/I3dDvb1zVNCDNfTfKZ4MqSiB9eVcjsLeBUqLl7SKBzEdu8PwAc4reS0yOqHim44z8PxSb+/gV0Ol/qSZBtkb+DyokvE0cXMHSu64sEfb8haV00KVcI0fZabPPBrgIxtRcQ=
+	t=1774278825; cv=none; b=iRkGbWdYbjoFD8KALFTvx988sgaMtxQ/x3FnJBwAmXsSCopyIMZVFBV8Fv1wpvDn9p6xU2h4/NflqgwcAnrcDBcfGTYVzbBITknggJAzAKVDeRWGmO+SgdL6+pRYW9UKuoYvtSVat/cBF8PdJGWAdHV7VClDrEu+ExRRkCERVqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274443; c=relaxed/simple;
-	bh=X36AgmuPdaGYTI8tBwAPrJXihaZiE0No5XPPI0htbPg=;
+	s=arc-20240116; t=1774278825; c=relaxed/simple;
+	bh=HP7lbw++zTOvjOIJXtNewzK1Lduss2z9DIbCMeFS4eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCIDAv5Bx2Kl3magBdx9lmmnuu9SgxMfJk9a/L0l3NbcySpSZFxFKp4V+eKvJa4AIE9OHMQbrKD3Db/7qNBo1tINu1gVtt8/zpUGGhEthP3V+4YQaON/rwLvfreU3rqBlSndP2AGpFjP5okTYL2m48OC4U1zEB7PGaR5i8p7QAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvKJgI++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917CBC4CEF7;
-	Mon, 23 Mar 2026 14:00:42 +0000 (UTC)
+	 MIME-Version; b=mNnnlOUe/a1ICt1Oh9Xj67p2rl0Z6sz0Zxhk64BcaLbCqaDCNblIWKOrfZ8bOWqn90Ttvsr5o1q+7gN8xJ7xkjf3pWjkhEttBFgcJSSmLvq+4yN9NexF6r3G4tmBhHExyi/ibPdU7DQZtmFrEGI5KaNjXniIjCidILo76LHsYZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlAz/K9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B4CC4CEF7;
+	Mon, 23 Mar 2026 15:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274443;
-	bh=X36AgmuPdaGYTI8tBwAPrJXihaZiE0No5XPPI0htbPg=;
+	s=korg; t=1774278825;
+	bh=HP7lbw++zTOvjOIJXtNewzK1Lduss2z9DIbCMeFS4eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvKJgI+++oLBNRMj6torV5dwDWMKqsLMA4JQnd/lHIiDoEfPSuSd0AZbN8W75whWF
-	 DxoQqZEnKbrdI81XHXdP6GQ6cXr3jPuLKlGUgaXJbbSPMx61nhw2ZBYpF16dl4xUt9
-	 L2UlRO6ScNlJHtureXG2WkpLHrjay0vF2oqg8h80=
+	b=NlAz/K9IHVcsu8l5p8EMDfidMUbJy7kzYVBG4nwsRiiNs3pb7iBpzxFlH15PCma2I
+	 UuAWt5bY6mW8AmBWxEH84UyAekryN+TpR3eUYSahKBDc6XukjGCLkKqtm3+nBHojji
+	 DSEZUkFHknh3uj6PwtBfbu+fuROYYrhfWevr1iSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 175/220] nfnetlink_osf: validate individual option lengths in fingerprints
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6 432/567] drm/amdgpu: Add basic validation for RAS header
 Date: Mon, 23 Mar 2026 14:45:52 +0100
-Message-ID: <20260323134510.108743626@linuxfoundation.org>
+Message-ID: <20260323134544.618277614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,116 +69,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228205-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229345-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,foxmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email]
-X-Rspamd-Queue-Id: 705A32F3FC6
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 740652F6AB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit dbdfaae9609629a9569362e3b8f33d0a20fd783c ]
+commit 5df0d6addb7e9b6f71f7162d1253762a5be9138e upstream.
 
-nfnl_osf_add_callback() validates opt_num bounds and string
-NUL-termination but does not check individual option length fields.
-A zero-length option causes nf_osf_match_one() to enter the option
-matching loop even when foptsize sums to zero, which matches packets
-with no TCP options where ctx->optp is NULL:
+If RAS header read from EEPROM is corrupted, it could result in trying
+to allocate huge memory for reading the records. Add some validation to
+header fields.
 
- Oops: general protection fault
- KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
- Call Trace:
-  nf_osf_match (net/netfilter/nfnetlink_osf.c:227)
-  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
-  ipt_do_table (net/ipv4/netfilter/ip_tables.c:293)
-  nf_hook_slow (net/netfilter/core.c:623)
-  ip_local_deliver (net/ipv4/ip_input.c:262)
-  ip_rcv (net/ipv4/ip_input.c:573)
-
-Additionally, an MSS option (kind=2) with length < 4 causes
-out-of-bounds reads when nf_osf_match_one() unconditionally accesses
-optp[2] and optp[3] for MSS value extraction.  While RFC 9293
-section 3.2 specifies that the MSS option is always exactly 4
-bytes (Kind=2, Length=4), the check uses "< 4" rather than
-"!= 4" because lengths greater than 4 do not cause memory
-safety issues -- the buffer is guaranteed to be at least
-foptsize bytes by the ctx->optsize == foptsize check.
-
-Reject fingerprints where any option has zero length, or where an MSS
-option has length less than 4, at add time rather than trusting these
-values in the packet matching hot path.
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ RAS_TABLE_VER_V3 is not supported in v6.6.y. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_osf.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index c0fc431991e88..9fc9544d4bc53 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -302,7 +302,9 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
- {
- 	struct nf_osf_user_finger *f;
- 	struct nf_osf_finger *kf = NULL, *sf;
-+	unsigned int tot_opt_len = 0;
- 	int err = 0;
-+	int i;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -1338,15 +1338,31 @@ int amdgpu_ras_eeprom_init(struct amdgpu
  
- 	if (!capable(CAP_NET_ADMIN))
- 		return -EPERM;
-@@ -318,6 +320,17 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
- 	if (f->opt_num > ARRAY_SIZE(f->opt))
- 		return -EINVAL;
+ 	__decode_table_header_from_buf(hdr, buf);
  
-+	for (i = 0; i < f->opt_num; i++) {
-+		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
-+			return -EINVAL;
-+		if (f->opt[i].kind == OSFOPT_MSS && f->opt[i].length < 4)
-+			return -EINVAL;
+-	if (hdr->version == RAS_TABLE_VER_V2_1) {
++	switch (hdr->version) {
++	case RAS_TABLE_VER_V2_1:
+ 		control->ras_num_recs = RAS_NUM_RECS_V2_1(hdr);
+ 		control->ras_record_offset = RAS_RECORD_START_V2_1;
+ 		control->ras_max_record_count = RAS_MAX_RECORD_COUNT_V2_1;
+-	} else {
++		break;
++	case RAS_TABLE_VER_V1:
+ 		control->ras_num_recs = RAS_NUM_RECS(hdr);
+ 		control->ras_record_offset = RAS_RECORD_START;
+ 		control->ras_max_record_count = RAS_MAX_RECORD_COUNT;
++		break;
++	default:
++		dev_err(adev->dev,
++			"RAS header invalid, unsupported version: %u",
++			hdr->version);
++		return -EINVAL;
+ 	}
 +
-+		tot_opt_len += f->opt[i].length;
-+		if (tot_opt_len > MAX_IPOPTLEN)
-+			return -EINVAL;
++	if (control->ras_num_recs > control->ras_max_record_count) {
++		dev_err(adev->dev,
++			"RAS header invalid, records in header: %u max allowed :%u",
++			control->ras_num_recs, control->ras_max_record_count);
++		return -EINVAL;
 +	}
 +
- 	if (!memchr(f->genre, 0, MAXGENRELEN) ||
- 	    !memchr(f->subtype, 0, MAXGENRELEN) ||
- 	    !memchr(f->version, 0, MAXGENRELEN))
--- 
-2.51.0
-
+ 	control->ras_fri = RAS_OFFSET_TO_INDEX(control, hdr->first_rec_offset);
+ 
+ 	if (hdr->header == RAS_TABLE_HDR_VAL) {
 
 
 
