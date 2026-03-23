@@ -1,242 +1,196 @@
-Return-Path: <stable+bounces-228470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJNUCvBPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:32 +0100
+	id SFoeDcRLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD22F4D6B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3063B2F4260
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68EE530F0179
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1F284300BC42
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B6F3AC0F8;
-	Mon, 23 Mar 2026 14:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E861E5B88;
+	Mon, 23 Mar 2026 14:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="kPYQXIYH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUJR4kaK"
 X-Original-To: stable@vger.kernel.org
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010003.outbound.protection.outlook.com [52.101.229.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B179396D3D
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 14:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275221; cv=fail; b=sQuJvc1muCD4yH8yIQHRh08CF4KmIWLsDv8KPg/5Z+cG54+zHR27eJi7iI91GiSw9pwvX6qQvKl6GOhyrL4GkoBnuEKThYJPYs6yG3Yce37BtN2QfSm3KmSSIGNLCALDn0eQ6pA33CIoAbthlN2fHg2Ij41YO0YU3DAH7dT10Xw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275221; c=relaxed/simple;
-	bh=hgQMvIlqffU02/0EDtXcrvEPOYOWXzb+8NyDbe6xpNo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZeBphF4MrFFl7mtx7shgRDFrJFplDLHz6sws2+OiqKe8QTXNtMoBpdIVRRVmDGJFxeGJA/79jogqLH9HvxDsgRxF3YHVNEJxIrLjaxJxvtUNR0eUoBES/aqrGxu5QkMUVmNSlBv5v6eGX7nfwYRrA910uxXs8easAikztir8aEk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=kPYQXIYH; arc=fail smtp.client-ip=52.101.229.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IFRR2yyhe2DzVPG+oeN9i+hbzsGMWqGMbmB+4G63RDONott/NfdcWAaT9EiWeZUWkvW4iGIlnxPWMUPTyOgZXJFzrJBfUyAxFYkx9KSg2RkEtF1Lp6W108FM+dz5lUTQGyQeuB0ufmWBkVQ7OTg6BuCGuaTJECy4R7Q+FPkSshaCWu1VbtkoqWQcmHc1nz3LQldqgCwU4ySULSGElvDUdZ0QpcR15Np057gocn13VdStCJuptg2SdQm152qnZh30hvTGgNuvYebVO70/uHCUl6O91S/tWyiOt17FlmrS1BL73hqL6kpuxe/2GgXtxKMz06FGkLwl0e65QkwLt5vVUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4jleKLoTWxLIMsXO/Ftc3Bts4Y7oOa36RoWeL9obfgQ=;
- b=Ub+g3urJpVIgCEUpxgIrHfTI660KtjfQSEfYbQpz4seLONN7KACrLHcZqwWCA00V9hxv4Jyec2BLRpCmoE/49oDilRJIkvBWRBSTymTdRavegQJHGknITU3U6S0s+Ze07oMlDxKwdyCq6YNHEEixJ4DRUUWks6pcbMDlEd8dHe9t3BxQDLpggo18QdJ8WipaC9n5RBw1WoDyEuhwUnXzyTSnocTkQoze35VoN4OHAPbV5+2HJRAGgR8TGmp0B3Lpk499fEk07qb1JLMJvW4chUjfCngeZcFwNUrtYW8kPPYMsodK+jciqfgW1Pt65VMufmZUmTKwMAJkRenr64kiQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4jleKLoTWxLIMsXO/Ftc3Bts4Y7oOa36RoWeL9obfgQ=;
- b=kPYQXIYHATXUBEWy2TkhcOuk3rKr7g2/yFF0XZ0NJfvuyF9PvWyA9Xz4q+0S5a1uRQtz7F5uNLHnE/gxM2gIGh5BZ7+zF+m8bblHmVqOxPD2KS4LPkqbT0xeeXmS7Hdb9vt7XNOgVzCrR6Lak7wbn+uWpWqvFPzFvkBBeK4Ody4=
-Received: from TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM (2603:1096:405:38d::6)
- by TYYP301MB1389.JPNP301.PROD.OUTLOOK.COM (2603:1096:405:30a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
- 2026 14:13:35 +0000
-Received: from TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM
- ([fe80::5b4b:dd0c:b302:7911]) by TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM
- ([fe80::5b4b:dd0c:b302:7911%5]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
- 14:13:32 +0000
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, Sasha Levin <sashal@kernel.org>
-Subject: RE: [PATCH 6.18 114/212] arm64: dts: renesas: r9a09g057: Add RTC node
-Thread-Topic: [PATCH 6.18 114/212] arm64: dts: renesas: r9a09g057: Add RTC
- node
-Thread-Index: AQHcus5MumOzht+1YEWtvXgjHd8uQ7W8KCJw
-Date: Mon, 23 Mar 2026 14:13:32 +0000
-Message-ID:
- <TY7P301MB1984B713A54BEE0BF4F248A5D34BA@TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM>
-References: <20260323134503.770111826@linuxfoundation.org>
- <20260323134507.379115286@linuxfoundation.org>
-In-Reply-To: <20260323134507.379115286@linuxfoundation.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY7P301MB1984:EE_|TYYP301MB1389:EE_
-x-ms-office365-filtering-correlation-id: 3b9cd0cf-cac8-4638-8aef-08de88e65d8f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003|38070700021;
-x-microsoft-antispam-message-info:
- RSH/uLR7EDIkk/jwZox6E2LaJJhpNbiqBOTV51gJzQNOTQC3CFFD06hSigbfFZ3GjsBObtgMWaZ9MRuWZrVHDb4mORzC9C9uRCj7VXDtBtTFck1uj1XDR1hpuqIr4lMmDea4rGEvQqkrtLjLpOwXQ1oejDgz20Gin+LgoWP6qNzJ36x5UYa89B5asNeurRxJ6EHdUfIkZr9Qd0MsgkLB2rHyySjaeGv9QFyLEUFeLbS+PxfWaYwdjd17GfRyc6vNbmQSJxU0qEUSK1wHETuM+D8LbNgOdBLMJ91X+JjNcq+F9vQmGl9SSSYzNiiiesnzuRwCbBohkKWlIem8vsD+TZci4ZQBkPTLmJHh3sO/QiRpCH+JIAUIc/AVYOAVQvJyBjkkSgVQpD+4clc0lJk6qHFnoufwaEZ4G70AYYAw8gMbgSN6Y5toPVoLFunTU4IonvTXce2bkM8P9H8t30HOna0q9zEtndUX8uxQIb9ueV87nF1OsefXjG4odxWZ1b6ucvTTgfSiFZ/c74Vo8LU3I8AzxRMWkbG7p1wv1FAPw/4AObhg+fV6VTGfe3s6lXMpUu9WOt/mXyb6T6JwdNNH/KHyz8XZREjfAImA8RDZBbMlytgdXrgGZIBWB4sZaHwyS25MbQ2h24XFEi7mwuD5Feard77DOVzKzDCkK4cmiIEE2epnFVNCU3t6WF9+VCKPsLHmJ3h50GahFJyMWpmMXosG6D5NRPWLMWuBahBVxdk2R8caNO3sCY4hXOrxLIiK
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?GcOcVLT/98nQef4yfSnw9Wu5+Uy2zb4WrFasN4cfOERCitlE35Aoc0HS+8dp?=
- =?us-ascii?Q?GXTyChRqLy66xMAuYpf5PKIT4qiEU2CuKvsWyO8YM0pfdBTnB/07zB4lRbNV?=
- =?us-ascii?Q?zX9bIlspJlasTH+/9jZYRm/omotp/5sQjjVIsfzLAjXJB7up93LZ7Ga58PpM?=
- =?us-ascii?Q?nwGgBvypqjnn5Ybvq3NS9FtAF0nAIR3BOFlnPbF9Q0lDAfwXTCgrtdohhr8m?=
- =?us-ascii?Q?p5fnPYPz5+wJXlMzFbZdH7MlfCaegS1UigUSnWQbh0F/it+9vBQKPRfTVij+?=
- =?us-ascii?Q?qX0/fUlU1H2Egs8NCvq4OGgyfYlI7/3IeNazW57aFtq20HwTqE1xFMQNR80Y?=
- =?us-ascii?Q?PVi4gaQJWXQRb0y/iXZGu2hAR4GLGTBfwy0CzZNBKTHASvzo3K4lwJiBNnlA?=
- =?us-ascii?Q?C+PQHkouxgYweDzVGhQGZUKzxW+05zAATwipHiJTchNWyYBtB8LoTlGquHkK?=
- =?us-ascii?Q?cPyXPgJSpsMe4omYexKae4bUBpKhROjGmmr8N3F3dq5FSyM45dfLxnOSH2iu?=
- =?us-ascii?Q?FfXRrzci/6H9iocBgUpgcgKs/tRaocoY7lGWX7AzT+iiXlafax9jWsMQ/2Rz?=
- =?us-ascii?Q?5J94nDHks7H94vRDAZH0CGHS+6PcmYH/+hAq13k64/kAqiSioZ/3fs4rvgS5?=
- =?us-ascii?Q?yvXg0WBpjVu0M2odWiUceY5AqOeZI8FReouaqQ/GCE2BS5OrYosfzQ7mIVVw?=
- =?us-ascii?Q?nPXUzUgytk5AfyIEDhCXNujl9nxW63zfLoWIDNDA5O28f8U0PxmibgmAsrWS?=
- =?us-ascii?Q?57x+dSXbAX6QaMdbe8xRWsbOcBPvIvT27RDyRZtuSlixAFSXkNi1cdpHSOqG?=
- =?us-ascii?Q?+GfWUrhTPNHIQkuMofZ8cXKFp1mlziWwexB10JOVCfNlHPSPHQREawee7BUW?=
- =?us-ascii?Q?jQat4f2H6cknOyksHDZ8f1dcm4rt/2qNINwQNVXpL9CLA2c/Q5OwBeIc595/?=
- =?us-ascii?Q?Ds+0m18VGVcrsgKa2jU74b5AFZMgV/g3QJRAw2MKJayXAdgr667vCoA2c5e6?=
- =?us-ascii?Q?GBtvWBvALxzvF4VwvEO60hD9QXNpm8niUP86UZb4F48nF5Br1PjqFC778YGI?=
- =?us-ascii?Q?5epHAfwy+rdoPpd7QRbwd2OXCaRCY4Dj7XmAMWYKEdBsWQtkAYjAI6VMyZdk?=
- =?us-ascii?Q?2Cswd2WV6SAsr1XChS/q89wZhS0FMBrmbcXN6yraGwptOvHLsiaOIFkfO0JW?=
- =?us-ascii?Q?fIAzuStclB3DU2j3/4BWfGVN3V3MEUehFODCtD92WFux9psB0aCjwo2sbZTc?=
- =?us-ascii?Q?7iqJm8B79JAdUiZ5ChjsBbj1SEZCf5OkWne9NGHEbXSAKzfZMLmb9Zj/cX6A?=
- =?us-ascii?Q?kP6cWcEPVy0vnmeaJ4jvlx298Lpq8/FvbqfhIRMuDlBF4y6A/B1NeB4isHHO?=
- =?us-ascii?Q?QgCwLEdgIFjigpRv5qP1SfC8bv2CN71Twg3cZ+yCKQ/RM9hq0eEJFEXq+GhM?=
- =?us-ascii?Q?iV3l+yGuKtM8XC7KPdKsTtKILGzc0q+wcDkl54XOwoJLRhWNc7NjuuPU+apT?=
- =?us-ascii?Q?AVHS9LFVZCpOlUeqzbE0mht9PXh1pFAPOxo4t6ZXdllmqEb5VEWhakDqRtQY?=
- =?us-ascii?Q?JNRfEJvnpSGFcpIJ8jZKYwPec0a2XP/7ormbGfuIGcbvPnVkpmfT3UF9Nl3x?=
- =?us-ascii?Q?UaU5NXUdGHXfBJGCDO8akb+1cQoFh7K/Ls5y2JMUGlDmNasR9Gd6u+3+v+FH?=
- =?us-ascii?Q?SLYMuxbp13EJ456H6C7ApBrI0WFBuxIKz1BVMt2ZtcbnEvU9fdYSR9E5Ko2W?=
- =?us-ascii?Q?aK0D7mqOK/uOmNTnxlzIs7V45orHj5A=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CE01A680B;
+	Mon, 23 Mar 2026 14:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774275508; cv=none; b=WiREeCYtbC1u1IK8jW8UcZc4zNiR0pvUovkr3WUGSSZVNkD2A11QZMSAYOc+u46b7M3ElaSJp3kp5mWoZH0P3U++4bVqA0yKNusE/TxMoIyl700SlnD2wpU0xIKAigIUqNhAayuZBiHX8B6WMNeL5Q4Thl7J3tksQ5XpSX8e3Qs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774275508; c=relaxed/simple;
+	bh=z54twYpyCZdACUNzqjxk1EsOaAdi6eIq8x2Ouf6QPEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qDIVJjhMofguXloiFglQTxFXhoj0JENPi5MQJr5XY0B2q8SjGNZ8mzqDWuWQH2PDhagnNnrOl8a1QqqnV+ApAiRVVEtaku8+J0wm6bdnwSUTC20kAdHO0TRBu365PAD+AnxyCNapZHNZJk869IkTbMUkbf5Ebg1hnywV/5b/UnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUJR4kaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6DAC4CEF7;
+	Mon, 23 Mar 2026 14:18:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774275507;
+	bh=z54twYpyCZdACUNzqjxk1EsOaAdi6eIq8x2Ouf6QPEE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sUJR4kaKSSNml4lXO24XDgpcpsUVDZ89WfVtlnOkfYjjbYN/qPwEFOKAbdSG0leuh
+	 oBUr2mzq4fgHrfXcIK5qg3DA9fuH7SsvzysWZAj3FqbGSrmicJHh9cA/rFFD3mL0sT
+	 aYCMpwSS3YPSNJs0v1jwBl4HV2aE2+4STvYEf1nHcr+c8kLiUopbzFN+8x4vAEgtCO
+	 YkztR6BtltmQDqz0IA1Z8elfNI5mNXZmnJejlRRt3lpFby2jjFDS4PLlk0gh7LZzmD
+	 MzJ+oQ33lXZtEmTZ4SNV3fQgg5Z4T8QZUHTTvaSgYcn03N0yRqvo7gzEURjB21HJXV
+	 Kow9CyF0fM5ew==
+Date: Mon, 23 Mar 2026 14:18:22 +0000
+From: Simon Horman <horms@kernel.org>
+To: Tyllis Xu <livelycarpet87@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, rmk+kernel@armlinux.org.uk,
+	maxime.chevallier@bootlin.com, peppe.cavallaro@st.com,
+	rayagond@vayavyalabs.com, stable@vger.kernel.org,
+	danisjiang@gmail.com, ychen@northwestern.edu
+Subject: Re: [PATCH] net: stmmac: fix integer underflow in chain mode
+ jumbo_frm
+Message-ID: <20260323141822.GB69756@horms.kernel.org>
+References: <20260321041058.901149-1-LivelyCarpet87@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b9cd0cf-cac8-4638-8aef-08de88e65d8f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 14:13:32.6715
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Zt/e1JOeAMRcMWiO6JRRULRayOv7T7IG+qSy5Q/VwO+ERk0owCoHakhR9reqISeTksHy02gT3u+r+2g3Liju3BgOeK4VnKji/cRAodXsWoc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP301MB1389
-X-Spamd-Result: default: False [1.34 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260321041058.901149-1-LivelyCarpet87@gmail.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[renesas.com,none];
-	R_DKIM_ALLOW(-0.20)[renesas.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228470-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228581-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,armlinux.org.uk,bootlin.com,st.com,vayavyalabs.com,gmail.com,northwestern.edu];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ovidiu.panait.rb@renesas.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[renesas.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 4EAD22F4D6B
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev,kernel];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 3063B2F4260
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On Fri, Mar 20, 2026 at 11:10:58PM -0500, Tyllis Xu wrote:
+> The jumbo_frm() chain-mode implementation unconditionally computes
+> 
+>     len = nopaged_len - bmax;
+> 
+> where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
+> BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
+> decides to invoke jumbo_frm() based on skb->len (total length including
+> page fragments):
+> 
+>     is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
+> 
+> When a packet has a small linear portion (nopaged_len <= bmax) but a
+> large total length due to page fragments (skb->len > bmax), the
+> subtraction wraps as an unsigned integer, producing a huge len value
+> (~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
+> hundreds of thousands of iterations, passing skb->data + bmax * i
+> pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
+> SoCs (the typical deployment for stmmac), this maps arbitrary kernel
+> memory to the DMA engine, constituting a kernel memory disclosure and
+> potential memory corruption from hardware.
+> 
+> The ring-mode counterpart already guards against this with:
+> 
+>     if (nopaged_len > BUF_SIZE_8KiB) { ... use len ... }
+>     else { ... map nopaged_len directly ... }
+> 
+> Apply the same pattern to chain mode: guard the chunked-DMA path with
+> if (nopaged_len > bmax), and add an else branch that maps the entire
+> linear portion as a single descriptor when it fits within bmax.  The
+> fragment loop in stmmac_xmit() handles page fragments afterward.
+> 
+> Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
 
-> 6.18-stable review patch.  If anyone has any objections, please let me
-> know.
->=20
-> ------------------
->=20
-> From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
->=20
-> [ Upstream commit cfc733da4e79018f88d8ac5f3a5306abbba8ef89 ]
->=20
-> Add RTC node to Renesas RZ/V2H ("R9A09G057") SoC DTSI.
->=20
-> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Link: https://patch.msgid.link/20251107210706.45044-4-
-> ovidiu.panait.rb@renesas.com
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Stable-dep-of: a3f34651de42 ("arm64: dts: renesas: r9a09g057: Remove
-> wdt{0,2,3} nodes")
+As a fix for code present in net this patch should be targeted at the net
+tree like this:
 
-I think this patch needs to be dropped from the stable queues, it adds
-the dts node for RTC but there is no support in the driver for this
-platform in older kernels.
+Subject: [PATCH net] net: stmmac: fix integer underflow in chain mode
 
-It looks like it was pulled in as a dependency of an unrelated watchdog
-fix.
-=20
-Ovidiu
+As is, our CI tries to apply this patch to the default tree, net-next.
+Which fails due to a conflict with commit 6b4286e05508 ("net: stmmac:
+rename STMMAC_GET_ENTRY() -> STMMAC_NEXT_ENTRY()"). So no CI tests were
+run.
 
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-> b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-> index 630f7a98df386..f59c3040f536a 100644
-> --- a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-> +++ b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-> @@ -586,6 +586,21 @@ wdt3: watchdog@13000400 {
->  			status =3D "disabled";
->  		};
->=20
-> +		rtc: rtc@11c00800 {
-> +			compatible =3D "renesas,r9a09g057-rtca3", "renesas,rz-
-> rtca3";
-> +			reg =3D <0 0x11c00800 0 0x400>;
-> +			interrupts =3D <GIC_SPI 524 IRQ_TYPE_EDGE_RISING>,
-> +				     <GIC_SPI 525 IRQ_TYPE_EDGE_RISING>,
-> +				     <GIC_SPI 526 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names =3D "alarm", "period", "carry";
-> +			clocks =3D <&cpg CPG_MOD 0x53>, <&rtxin_clk>;
-> +			clock-names =3D "bus", "counter";
-> +			power-domains =3D <&cpg>;
-> +			resets =3D <&cpg 0x79>, <&cpg 0x7a>;
-> +			reset-names =3D "rtc", "rtest";
-> +			status =3D "disabled";
-> +		};
-> +
->  		scif: serial@11c01400 {
->  			compatible =3D "renesas,scif-r9a09g057";
->  			reg =3D <0 0x11c01400 0 0x400>;
-> --
-> 2.51.0
->=20
->=20
+>  drivers/net/ethernet/stmicro/stmmac/chain_mode.c | 71 ++++++++++++++---------
+>  1 file changed, 44 insertions(+), 27 deletions(-)
 
+The bulk of this patch is whitespace change (indentation).
+So seems useful to examine this patch with whitespace changes ignored.
+
+git diff -w yeilds;
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+index 120a009c9992..c8980482dea2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+@@ -31,6 +31,7 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
+ 	else
+ 		bmax = BUF_SIZE_2KiB;
+ 
++	if (nopaged_len > bmax) {
+ 		len = nopaged_len - bmax;
+ 
+ 		des2 = dma_map_single(priv->device, skb->data,
+@@ -77,6 +78,18 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
+ 				len = 0;
+ 			}
+ 		}
++	} else {
++		des2 = dma_map_single(priv->device, skb->data,
++				      nopaged_len, DMA_TO_DEVICE);
++		desc->des2 = cpu_to_le32(des2);
++		if (dma_mapping_error(priv->device, des2))
++			return -1;
++		tx_q->tx_skbuff_dma[entry].buf = des2;
++		tx_q->tx_skbuff_dma[entry].len = nopaged_len;
++		stmmac_prepare_tx_desc(priv, desc, 1, nopaged_len, csum,
++				STMMAC_CHAIN_MODE, 0, !skb_is_nonlinear(skb),
++				skb->len);
++	}
+ 
+ 	tx_q->cur_tx = entry;
+
+The code in the else arm of the new condition is quite similar to
+the (not visible in the diff above) code at the top of the non-else
+arm of the condition.
+
+I do see this is consistent with the ring-mode code.  So perhaps it is
+appropriate as a fix. But I do wonder if this could be consolidated - e.g.
+by setting up some local variables rather than moving the mapping logic
+into a condition.
 
