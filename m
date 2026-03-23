@@ -1,190 +1,176 @@
-Return-Path: <stable+bounces-227949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG0mEbcXwWmbQgQAu9opvQ
-	(envelope-from <stable+bounces-227949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:36:39 +0100
+	id EGNJB30WwWn5QQQAu9opvQ
+	(envelope-from <stable+bounces-227946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:31:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31072F038A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:36:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B623D2F01B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CC87306FCEA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:32:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 78905300B1B6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D378E38C416;
-	Mon, 23 Mar 2026 10:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD222D9ECB;
+	Mon, 23 Mar 2026 10:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="ev/FqtzZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Lp61ufra"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90913890F8
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B752339705;
+	Mon, 23 Mar 2026 10:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261965; cv=none; b=Ibr4M9p06AKRIKIRxzuFecZTj8ZsXRtBkbG94AGRVrIyEsBFqcjfgvWqhqmYaNxST1pFyTAIYAYgXp6u1bHSFEwW9S3xZqqGcHemBNyV33KFgGSmr2sTHoqhENUFVIi/0O6u5aeTAcp+Y4TQY0kwVnHAOvGcwRX3nVPLFrBhUuA=
+	t=1774261866; cv=none; b=e2PzuxWrc+I6PYI87oE/1APXe0knSJu3ChipeJwp6YbIWsiiMZhqe8LPvm3kJmIZNjQrw4ARY3J3E3e3JBriIFp6neAPe1qYiMMqb9EbIzRQAHtTCi3lEOIm9AdcOmNowoww8kxoTw/wJwuZSEFK5gbr6Ss4xCB8L1VjGQA8KX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261965; c=relaxed/simple;
-	bh=fDHrWXDpkRPsmJEbJNpTDh7CHwdncGu6UJRNbda6ZGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXbhRHvkf/zdfK5/WI62Qr9BmnsLijTDqMQVJ+XNBpT6xQvzSn5s95lybWBPIzi3XoOwAV7XnMR+gbNAxLkdZMrgF94H1b0k2lWuFRQ00j5FbBdjnmMcUwX9u0hdn6RYw2ejgZ+yKR+c5S5KgTzNvbdnaNtFNMFoYEK71C/vTWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caC-0008FU-6m; Mon, 23 Mar 2026 11:32:28 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-001i5m-1P;
-	Mon, 23 Mar 2026 11:32:27 +0100
-Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 203BB50A7C1;
-	Mon, 23 Mar 2026 10:32:27 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	stable@vger.kernel.org,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 5/5] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
-Date: Mon, 23 Mar 2026 11:28:01 +0100
-Message-ID: <20260323103224.218099-6-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
-References: <20260323103224.218099-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1774261866; c=relaxed/simple;
+	bh=o57WsCNbwvjHNhkGhTYhATscjWow/OtPXTYDgOeZ5dE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C7ITpeNn7CBeGO1kAh5k3eUnkA6o4xj95UrFutXmHYequJ/6H2n7a3VYQEEhYVey4cdrM6qno2TRUVswr+XHrdyU0ROSdtkGaBSr8ADg6nrJWtkAxyr+woBVr0BIhDH0f9lRRxGwm4+/4HClnsoXcF5knnU1NjBzp1nr5TqV2oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=ev/FqtzZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Lp61ufra; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id AE1A77A027E;
+	Mon, 23 Mar 2026 06:31:03 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 23 Mar 2026 06:31:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774261863;
+	 x=1774348263; bh=jfFSOp7ZZS5jsqZDnTSDsz+9Ejh+//+6Fmu2pNUaBIM=; b=
+	ev/FqtzZk9yXaNbU5C4NSyF3mD1aQmnt8k5TE9K+XmT5KdF1Kx9RFC6W79uyCReL
+	swMcNJ0fOu4dV2pv5yuxCpMFkFBo0lN+d7ngOQJGPFokosv9lrnn1SP46oeQqI7v
+	eA+SrN2dPR0J27e61q+LW/iMB2Jwa5z2disOVIntYJ96aUzVkQAR5OrQ3Qn04MKz
+	2weIfeReiMkOQaL7vGswLxLCnQuoq5J/fQV0FmgXONZIDpnGcC9z77XMDtRQXVhr
+	qyEm+CyKsdZUol9UYYHKZ2dqEyQaK/2WbLd1AL6bVpHlmn/ULvCdko+EkeqV67jX
+	W2hgecXXUDaHXHHQEnph4g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774261863; x=
+	1774348263; bh=jfFSOp7ZZS5jsqZDnTSDsz+9Ejh+//+6Fmu2pNUaBIM=; b=L
+	p61ufrayoeAxPZVzkHyPmq/mwtlR1ycFb1qm4zuDcVZU81gzExnY2qwKUzJRWL7Q
+	7RhoTKnAQNTJCNUN7ignZgqLer/vRDSXy8+t0+qtJJPBZvzJTL0d79dIbmDUc2KD
+	PpVhVwV8zwD2M7nb4qLcw2Xq1fJCOnefEjTdZnuNbBGxSd5UFhJlRoUwsYUgEHzt
+	/UDTNmPYMPwTVhDWIiRjSRMR0dVYyC5+kjnhfihlF/4q5sZmWn/X1Ln+idP79ieX
+	YMokuwtL9Hn3+JXMww9UweZ0EAJbA2PW6FWnKr4b2FfdUBk0NFOjL8ph98mC4m4s
+	Ni8f91YK/S50LZs/1+NAA==
+X-ME-Sender: <xms:ZxbBaaWUmbeJOOlSRuT8ESxht47qThp5kGb5_k7hzjfUrjnLMkSipA>
+    <xme:ZxbBaajPNhSd5ICbKNxXcN9SwXmzbolsL3DmekPL-nL4cRILVUz_0-eYpJ9-yHouu
+    Rdxae_U2HW3u8fCO6ry9XQKYU_mSyGwEvUGlpsVEfjVN8H3Ecs>
+X-ME-Received: <xmr:ZxbBaW6ahEF5WNjkwUnvQY1DL3XzoyqV4q5sokmX2_T5NWx6FZelcEyYEsAa>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudekgeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgkeffie
+    efieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomhdpnhgspghrtghpthhtohepvdegpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehmihhguhgvlhdrohhjvggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhmpd
+    hrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslh
+    gvqdgtohhmmhhithhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhj
+    vggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhunheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohep
+    sghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhosh
+    hsihhnsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:ZxbBaa6leDsw0vBXavBvHmTqjl0uiNn6ruvM_xZ0zKvCDB7VpP0I_A>
+    <xmx:ZxbBacExaSafb1sqQE4AdHsE-Z_sqaRltVz5hGTboFpFlUH_Jdf3Vg>
+    <xmx:ZxbBaQynshhOTSYtqW8zDjuwaVkqD46Vg4zJQZl1MM3Y9CxuHVXI9A>
+    <xmx:ZxbBaU0OJ71M4eGFBSOfM0GwDLmKZzQHq6siExUp4aMsTNEY8KsOSg>
+    <xmx:ZxbBadNj3PrMiBmGTtLihCDLk3kdZIeNwOlEjDk4SRfLBbHEVc3evyte>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Mar 2026 06:31:02 -0400 (EDT)
+Date: Mon, 23 Mar 2026 11:30:42 +0100
+From: Greg KH <greg@kroah.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org,
+	stable-commits@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: Patch "rust: task: restrict Task::group_leader() to current" has
+ been added to the 6.18-stable tree
+Message-ID: <2026032349-unlawful-undercook-400f@gregkh>
+References: <20260221161726.4075998-1-sashal@kernel.org>
+ <CAH5fLggmuHNXpfHo2mPS0TYu8mwr8G6EKH0YPuCLX77u_dxF5Q@mail.gmail.com>
+ <CANiq72k6=OSk-vLbmKjqcAUza700v-OtToEXiVbqWPkNpPbVVw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spamd-Result: default: False [0.04 / 15.00];
+In-Reply-To: <CANiq72k6=OSk-vLbmKjqcAUza700v-OtToEXiVbqWPkNpPbVVw@mail.gmail.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_FROM(0.00)[bounces-227949-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
+	TAGGED_FROM(0.00)[bounces-227946-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_CC(0.00)[google.com,vger.kernel.org,kernel.org,garyguo.net,protonmail.com,umich.edu];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[keysight.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid,hartkopp.net:email,msgid.link:url]
-X-Rspamd-Queue-Id: B31072F038A
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kroah.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: B623D2F01B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+On Mon, Mar 23, 2026 at 11:18:50AM +0100, Miguel Ojeda wrote:
+> On Mon, Mar 23, 2026 at 11:11 AM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > I noticed that this was backported to 6.18, but not to 6.12. Is that
+> > because the first user of this function was merged in 6.18, or is
+> > there some other reason?
+> 
+> If it was meant to be backported, then the commit should have Cc:
+> stable@vger.kernel.org.
+> 
+> Perhaps it was picked for 6.18 (and 6.19) because it applied cleanly.
 
-isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
-to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
-wait_event_interruptible() and then calls kfree(so->tx.buf).
+That is correct, we take "Fixes:" only commits as a "best effort" type
+of thing.  This doesn't apply cleanly to 6.12.y so it was not applied
+there, nor was there a FAILED email sent as it wasn't asked directly to
+be applied by the developer/maintainer.
 
-If a signal interrupts the wait_event_interruptible() inside close()
-while tx.state is ISOTP_SENDING, the loop exits early and release
-proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
-while sendmsg may still be reading so->tx.buf for the final CAN frame
-in isotp_fill_dataframe().
+hope this helps explain,
 
-The so->tx.buf can be allocated once when the standard tx.buf length needs
-to be extended. Move the kfree() of this potentially extended tx.buf to
-sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
-
-Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- net/can/isotp.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index da3b72e7afcc..2770f43f4951 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1248,12 +1248,6 @@ static int isotp_release(struct socket *sock)
- 	so->ifindex = 0;
- 	so->bound = 0;
- 
--	if (so->rx.buf != so->rx.sbuf)
--		kfree(so->rx.buf);
--
--	if (so->tx.buf != so->tx.sbuf)
--		kfree(so->tx.buf);
--
- 	sock_orphan(sk);
- 	sock->sk = NULL;
- 
-@@ -1622,6 +1616,21 @@ static int isotp_notifier(struct notifier_block *nb, unsigned long msg,
- 	return NOTIFY_DONE;
- }
- 
-+static void isotp_sock_destruct(struct sock *sk)
-+{
-+	struct isotp_sock *so = isotp_sk(sk);
-+
-+	/* do the standard CAN sock destruct work */
-+	can_sock_destruct(sk);
-+
-+	/* free potential extended PDU buffers */
-+	if (so->rx.buf != so->rx.sbuf)
-+		kfree(so->rx.buf);
-+
-+	if (so->tx.buf != so->tx.sbuf)
-+		kfree(so->tx.buf);
-+}
-+
- static int isotp_init(struct sock *sk)
- {
- 	struct isotp_sock *so = isotp_sk(sk);
-@@ -1666,6 +1675,9 @@ static int isotp_init(struct sock *sk)
- 	list_add_tail(&so->notifier, &isotp_notifier_list);
- 	spin_unlock(&isotp_notifier_lock);
- 
-+	/* re-assign default can_sock_destruct() reference */
-+	sk->sk_destruct = isotp_sock_destruct;
-+
- 	return 0;
- }
- 
--- 
-2.53.0
-
+greg k-h
 
