@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJwxMt1WwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:05 +0100
+	id AFoqNbZywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417DC2F5C5A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540D42F964C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 26B6730BD018
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0EDB3416D4E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEF623EA97;
-	Mon, 23 Mar 2026 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4573BD63E;
+	Mon, 23 Mar 2026 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TveudPeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjgHRCk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEB836C59E;
-	Mon, 23 Mar 2026 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306593B7772;
+	Mon, 23 Mar 2026 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277501; cv=none; b=R/KBwk8mZQtHodksC411d9B3GgpSaZJJ1Kn4o487JVcVDIbGuSgKaHngI2JaHxJxFJh+6L0mGBPWQXhQkbUhZoGjsgscI7hENKBTGGuWuVJgeQeCsvDTvSAOLZmI7o2jwOdvdFlJjXMyKpXLH1kE4zkYp/TEsP4RDtctAcA2a24=
+	t=1774279218; cv=none; b=KkD4zswMyuzVYQJh4oEEMYO5GUs1MDTsTY64YCepW1R3UPWteaqeRRPCd1GY5B55CqZQ+pucMV6JbhINJ2dYUJU8jAjujBZJK4vCBxOtTICoFKIUPT29mZS5gDV5i/IoX4xUYjhpxMjo7zCrySHU02NBX9AZw9FUembfx44xZio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277501; c=relaxed/simple;
-	bh=F7aJ+7cZptlrttFsjA6AiS6KG8K1/oS/XNIHLXguA3M=;
+	s=arc-20240116; t=1774279218; c=relaxed/simple;
+	bh=8ZxQAS0K9bg2dWRCT4bot1uowLBfXPaop5idZHHUb4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcQmytnoooWV6WEDSFilC5tb/SFRm4NFnc7jEK19nT2T9O5FaI92/CFipFqIsY8nH31Rt+b5f3qfnB607RQSvY4wg/O6UOPOIMKI89A/4hUNxEYUau9BKUmX73k1KVrxf4/+oAHENzheLVcj13k4jkUADPm5ks2Hhp+BjI6SnQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TveudPeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AB2C4CEF7;
-	Mon, 23 Mar 2026 14:51:40 +0000 (UTC)
+	 MIME-Version; b=jYGHnMwVsgBg7LBhQfYNNwcDv4GzxZFyClD43rW5HTy6YuCLLA5nghx0C3NR5M6Dbc3P00D2WKkkNAjHB6EMDOI7pLVS2iSXT7sCyUWSPOf0H7SMs4MGLtpRQ5P1c07g9tpTugY6weF1MxvGrpmQfdaVmz8GBT/Ju6mza/7cyrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjgHRCk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D39C4CEF7;
+	Mon, 23 Mar 2026 15:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277501;
-	bh=F7aJ+7cZptlrttFsjA6AiS6KG8K1/oS/XNIHLXguA3M=;
+	s=korg; t=1774279218;
+	bh=8ZxQAS0K9bg2dWRCT4bot1uowLBfXPaop5idZHHUb4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TveudPeQoyUf7y7daMaziBvm9pY2zwMgxbprlt/Zl7LoVaZ/CRnSWTsqFr8kS2Eb3
-	 HiAgthqnIL4OwdsRzdaAkAMNq1TC9eg16BLO2EIvjv/Ll3WDDB6lUFOqrjVafnY/Bn
-	 vIfJxpdHhZnSz4pcAx4xYKSd6nKDAj9oy/QTJcWo=
+	b=EjgHRCk3ivTYH0DoVX7pKZTwX3eNPTJ+f5YbGU06E0UTgiDo+aoHS1HVrAxYIXb5W
+	 zrTqAe2Ltc09FsaJAAarNRF5yI+jBk5laLjVV+W9iJLlzGBKkrQt83uyYRx5chTXZB
+	 2iOjr9kYovk/EXLy3eYsAlvpXM2eA267Jf+oeM54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 431/460] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
+Subject: [PATCH 6.6 507/567] Bluetooth: hci_sync: Fix hci_le_create_conn_sync
 Date: Mon, 23 Mar 2026 14:47:07 +0100
-Message-ID: <20260323134537.143865734@linuxfoundation.org>
+Message-ID: <20260323134546.562615008@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +66,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228924-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229429-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 417DC2F5C5A
+X-Rspamd-Queue-Id: 540D42F964C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
+[ Upstream commit 2cabe7ff1001b7a197009cf50ba71701f9cbd354 ]
 
-mvpp2_bm_switch_buffers() unconditionally calls
-mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
-shared buffer pool modes. This function programs CM3 flow control
-registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
-priv->cm3_base without any NULL check.
+While introducing hci_le_create_conn_sync the functionality
+of hci_connect_le was ported to hci_le_create_conn_sync including
+the disable of the scan before starting the connection.
 
-When the CM3 SRAM resource is not present in the device tree (the
-third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
-SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
-NULL and priv->global_tx_fc is false. Any operation that triggers
-mvpp2_bm_switch_buffers(), for example an MTU change that crosses
-the jumbo frame threshold, will crash:
+When this code was run non synchronously the immediate call that was
+setting the flag HCI_LE_SCAN_INTERRUPTED had an impact. Since the
+completion handler for the LE_SCAN_DISABLE was not immediately called.
+In the completion handler of the LE_SCAN_DISABLE event, this flag is
+checked to set the state of the hdev to DISCOVERY_STOPPED.
 
-  Unable to handle kernel NULL pointer dereference at
-  virtual address 0000000000000000
-  Mem abort info:
-    ESR = 0x0000000096000006
-    EC = 0x25: DABT (current EL), IL = 32 bits
-  pc : readl+0x0/0x18
-  lr : mvpp2_cm3_read.isra.0+0x14/0x20
-  Call trace:
-   readl+0x0/0x18
-   mvpp2_bm_pool_update_fc+0x40/0x12c
-   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
-   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
-   mvpp2_change_mtu+0x140/0x380
-   __dev_set_mtu+0x1c/0x38
-   dev_set_mtu_ext+0x78/0x118
-   dev_set_mtu+0x48/0xa8
-   dev_ifsioc+0x21c/0x43c
-   dev_ioctl+0x2d8/0x42c
-   sock_ioctl+0x314/0x378
+With the synchronised approach the later setting of the
+HCI_LE_SCAN_INTERRUPTED flag has not the same effect. The completion
+handler would immediately fire in the LE_SCAN_DISABLE call, check for
+the flag, which is then not yet set and do nothing.
 
-Every other flow control call site in the driver already guards
-hardware access with either priv->global_tx_fc or port->tx_fc.
-mvpp2_bm_switch_buffers() is the only place that omits this check.
+To fix this issue and make the function call work as before, we move the
+setting of the flag HCI_LE_SCAN_INTERRUPTED before disabling the scan.
 
-Add the missing priv->global_tx_fc guard to both the disable and
-re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
-rest of the driver.
-
-Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
-Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
-Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8e8b92ee60de ("Bluetooth: hci_sync: Add hci_le_create_conn_sync")
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 66b5a80c9c28a..51e35c4d9ea97 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5025,7 +5025,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 	if (priv->percpu_pools)
- 		numbufs = port->nrxqs * 2;
- 
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, false);
- 
- 	for (i = 0; i < numbufs; i++)
-@@ -5050,7 +5050,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 			mvpp2_open(port->dev);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 6a14f76071077..6192f70e4d393 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6555,8 +6555,8 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 	 * state.
+ 	 */
+ 	if (hci_dev_test_flag(hdev, HCI_LE_SCAN)) {
+-		hci_scan_disable_sync(hdev);
+ 		hci_dev_set_flag(hdev, HCI_LE_SCAN_INTERRUPTED);
++		hci_scan_disable_sync(hdev);
  	}
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, true);
- 
- 	return 0;
+ 	/* Update random address, but set require_privacy to false so
 -- 
 2.51.0
 
