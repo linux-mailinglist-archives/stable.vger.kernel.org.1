@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EL1eAW9VwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:59:59 +0100
+	id QH26D7ddwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282BB2F59A4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:59:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F390D2F684F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CDD0130AEE77
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E70E3083D11
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D166E3A9D9D;
-	Mon, 23 Mar 2026 14:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309623B961A;
+	Mon, 23 Mar 2026 15:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn3K7Yf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuXXQQ30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF87394476;
-	Mon, 23 Mar 2026 14:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85E026A1CF;
+	Mon, 23 Mar 2026 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277079; cv=none; b=f/MAosw8b46phkuW3+s+/v15gv/C+Uidir5vY13OBerALvdTYxCtDc9WVvIPwB3DLWamVgvB11ugnmk/HabZimkigZOmTfR3LXepyF/pkhqDwF437UxtUEJKu5/LFrT+HI0ZDjhlfG4NK0nwimMugedDFSqA5rgCZeleOBs7xyY=
+	t=1774278694; cv=none; b=jidbXymmpsoEfIiKY4ZcR5Jvx18qi0aTVMXrb2Gb8z7NJOGS6fuN9CxAHBkpBWttxBD7WSPFNVWSnpZKcikbvN3QnS0VFWoZ+dwKbuBym1hcX4Y3m8tiTSiYLKakVN8LCGaUAmgihlstkgDLaxBReopxQherjDhZvdq2qWHnTu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277079; c=relaxed/simple;
-	bh=3VT75q+d7nVL9zKUODLC774Orox/1hCet5mAD1w44gs=;
+	s=arc-20240116; t=1774278694; c=relaxed/simple;
+	bh=1yR+w5CWdRC3NOwOLeIoFC2ielGcAdjhM52IZdNYLjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCvp1rX8y4s2Eg9PpCticxECQsckQnf4AziYIjjo85aSuR3bXfJBIyv+DoCuJLyUrJWs32pZkDNmzaCuKYfEfeSXN4xy6zRuslXU0jlv2q1twJVUUo/pl8mBj6rK0TujKzjk/pV+b1WGiOd/lMbHrdyTPllsQoT88SVIeIApI5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn3K7Yf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260AFC4CEF7;
-	Mon, 23 Mar 2026 14:44:38 +0000 (UTC)
+	 MIME-Version; b=dFsFOAArbxOTEAanwWdtbXkCov+draHl+eJ3s/s+EqUV4Ld6XsESO9FuDh2skEK+jAD4RlScyqkg98e64T3Mpwsm8WLGUbPbJj4dpYMcqrwgHrDSLD69HWEWnp4vXBB058lkGScekZGz0R8Z4GUzIuXzm3Gn4gt2TGMMK//oIu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuXXQQ30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C1CC4CEF7;
+	Mon, 23 Mar 2026 15:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277079;
-	bh=3VT75q+d7nVL9zKUODLC774Orox/1hCet5mAD1w44gs=;
+	s=korg; t=1774278693;
+	bh=1yR+w5CWdRC3NOwOLeIoFC2ielGcAdjhM52IZdNYLjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kn3K7Yf+mx9V7C4wINTRj6pNHTCK2zfxQcM5MouW+hbkysAx++cEsOpQ/1lKD+sNi
-	 DVer/dUwE+2LrpeUziNjcXOrP2I/MDs+juVvpBW4JEEnhrpyHpf3IDd5GXKAdsf0tG
-	 fB9sVJckKdDroUGVs6XKraowhNdqMMwRbbJxX22o=
+	b=CuXXQQ30yGpSVrqZUePaeSp5MGk94w6s1GySBA+6KxJKRWEQ3nByS7rv6ixeZs5iA
+	 o8RIUbdmEB4pf97MCPd1+mGSrKX33HfmndwAllacx5CFKxK27ibO5pZAeblyVkTxEX
+	 ffI4kzUw8WRzgpE+nOoefcUmq7Ywi/fnDV8Mcuyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 313/460] NFC: nxp-nci: allow GPIOs to sleep
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 389/567] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
 Date: Mon, 23 Mar 2026 14:45:09 +0100
-Message-ID: <20260323134534.192338988@linuxfoundation.org>
+Message-ID: <20260323134543.481147572@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228771-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,50 +90,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 282BB2F59A4
+X-Rspamd-Queue-Id: F390D2F684F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
+[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
 
-Allow the firmware and enable GPIOs to sleep.
+Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
+and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
+used for single LVDS output.
 
-This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
-connected to I2C GPIO expanders.
+While not clearly stated in the datasheet, this is needed according to the
+DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
+output two pixels at a time are output and so the output clock is half of
+the pixel clock.
 
--- >8 --
-kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
--- >8 --
+Some dual-LVDS panels refuse to show any picture without this fix.
 
-Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
+Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
+only for test pattern generation which is not currently implemented by this
+driver.
+
+[0] https://www.ti.com/tool/DSI-TUNER
+
+Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
+Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+[ adapted variable declaration placement ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/nxp-nci/i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+@@ -325,6 +325,7 @@ static void sn65dsi83_atomic_pre_enable(
+ 					struct drm_bridge_state *old_bridge_state)
  {
- 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
- 
--	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
--	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
- 	usleep_range(10000, 15000);
- 
- 	if (mode == NXP_NCI_MODE_COLD)
+ 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
++	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
+ 	struct drm_atomic_state *state = old_bridge_state->base.state;
+ 	const struct drm_bridge_state *bridge_state;
+ 	const struct drm_crtc_state *crtc_state;
+@@ -452,18 +453,18 @@ static void sn65dsi83_atomic_pre_enable(
+ 	/* 32 + 1 pixel clock to ensure proper operation */
+ 	le16val = cpu_to_le16(32 + 1);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
+-	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
++	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
+-		     mode->htotal - mode->hsync_end);
++		     (mode->htotal - mode->hsync_end) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
+ 		     mode->vtotal - mode->vsync_end);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
+-		     mode->hsync_start - mode->hdisplay);
++		     (mode->hsync_start - mode->hdisplay) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
+ 		     mode->vsync_start - mode->vdisplay);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
 
 
 
