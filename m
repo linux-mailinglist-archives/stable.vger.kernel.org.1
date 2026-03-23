@@ -1,216 +1,161 @@
-Return-Path: <stable+bounces-230018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOlcAAG6wWm/UwQAu9opvQ
-	(envelope-from <stable+bounces-230018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:09:05 +0100
+	id MEZLG8q6wWm/UwQAu9opvQ
+	(envelope-from <stable+bounces-230019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:12:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E032FE15F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:09:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29852FE1DC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DA24D30219D3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:09:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DACCC3056660
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747D23806BE;
-	Mon, 23 Mar 2026 22:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7494382294;
+	Mon, 23 Mar 2026 22:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6c6b7WN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIO2NDmD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359CF330650;
-	Mon, 23 Mar 2026 22:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8105C37FF64
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 22:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303740; cv=none; b=rWbTslhY+uHWo5Ewv+bmdBxnys7wMjOHWMkX082Reg1EVXkKnR9DpJLIbcftDoPFRJTmJWBHxSgsTtig58GfZFqt3zrjKheu0Vx1L2JHsK0R1r5cEto9xt8jd9is5m/IW/AhnxL7Umyp3UCt1bsKBZRZDGzvUVIO2Z3VDGInkqk=
+	t=1774303793; cv=none; b=YWxO9qDu4AZkcGcW5oUsuoxlRbvXluu7HGG1Lw2KVREVUoxE84fYqAkaTF7SKUpCFiJmTDGfNb5aA682yJb0JHHz8GQkC+ra9COz3Zbntqb0zmJtw0Nrp8MyRn/QT3WWtclHc69+qtJiTRg71LEUA69mN/5ndYEDaRSgutg0Cxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303740; c=relaxed/simple;
-	bh=7+YNRg0192JPCv78lvVe/YYOAr1sQyE0YYeqhV3a2LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=r0AYMm+GIPbFt0aPGFlqwTowenCm59JmigX5a8J/0D/GUL0ib7pBi73muCA/owdZyJma1bJxSPfFOrKASIFoRSBUTB7P4l2/NWqRlMBjtVkLnTwsp82PsMh2/4w4GSxomwM4ftwNMEX45OiNQgSDAK3oa7c+ajWe4YnQqIa7HvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6c6b7WN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CD6C4CEF7;
-	Mon, 23 Mar 2026 22:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774303739;
-	bh=7+YNRg0192JPCv78lvVe/YYOAr1sQyE0YYeqhV3a2LE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=p6c6b7WNpOd2eeBbpZ+9+2Gsn8oNjJpqEk2RkYgUgq1lw+rXj7lyV3xUSS/Fs1CIS
-	 EUqx124nJBcjkR3Uu8YXUq3V3WcG29Bxtwo484LJIaQFr9GjafiBnbsFCRaG9LxULg
-	 wu5+MF1aIyKWHUL+pOXMNuWfo0nzegfaEcyt/Fj4LeK90B1W7TAs2lzxA28ZLPkKs7
-	 U7dkrBFu4aukb5MEnrk3StnwOweJG23d38+yVBRo++3W7W/CyiQjuEGv0tSez4uV4t
-	 CON5b+WUJSNCIFl6UfWTmP9KZVHCJc64626ftkv5JWT8AVGPaZ/J45MWlOVXTnBtTG
-	 bIOiaGwk4qPzg==
-Date: Mon, 23 Mar 2026 17:08:58 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
- suspend skip
-Message-ID: <20260323220858.GA1084506@bhelgaas>
+	s=arc-20240116; t=1774303793; c=relaxed/simple;
+	bh=xtdd+vLrZJR3aJKGHFCK11d8tfWyTb9aPILZwHJZiuA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=olmNdOMxbhId/5p2KovOr0PVADWCtXACveVx2aX5Zb6gzmGTVMb1tH/u3zbngBQVko5l/faqRCSJ7WWkohkujo8ebcyCXnK89NHH/43Mj7cxdEHBkkzudWBgvaHU2rAEqbt2xr6MoIdsATw6EVAr2Wd1otiqYhpumljZyOjgITU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIO2NDmD; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7d4c383f2fcso3881041a34.0
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 15:09:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1774303790; x=1774908590; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FPeRLxGrOuIO8TRxpkoeoYAWzJCSPoOx0rDLujnGo4U=;
+        b=QIO2NDmDB7gzMA47r7E+0vfPSBkhNrJxLTfOwqxCRDCBYRr0Zb8ZqYnd4DQOGo8KOF
+         oQfAPVJIELvL/zYefcBC7HNlEYIRLwes6vtA1Gr2D9ELzj8QOeFf0eM6MfUHi14XU0c3
+         QsVu1dQJPZ38tK2OOn+u4hNKFPFMNTPClSr0g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774303790; x=1774908590;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FPeRLxGrOuIO8TRxpkoeoYAWzJCSPoOx0rDLujnGo4U=;
+        b=gTczBosH/TDPT01mcCfcnqbOpR/xvlsLJ+jJt4vQVvdpZnbaCXELd1jlUO+wg2AmBL
+         h8R4Ae/QGlkv1ri0CoU/Zy/X9BcFZUFiJop82KGztnzAMDIyEUaHlpI5hSyLSPjg67sE
+         YfCCzWrby5bMlf0UabU6rD/SYv0YeRBh/pTV7ZfOU7V8ZKJNeP/ccysg8/SNLVz/O0Gh
+         5RMBAKRzjrfTxJcf+SdFdg19as75e0wu0viIwDuvYXl/L9dxevVbbxZTF6JPX2WzP621
+         OD2KnolxKzZVwg5wsI5zHivxPsaZln/5E2QTlvex/449X3aPgiSUDS+XjuJf929cGLpl
+         wbjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjanaY57MDJm7lA6W4DOrPn3lYnWD3EmOjcmsA3mgK0pM7ZFSRUOj6Cqs+KHKYgkM2L2GXF7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6jzAF/X8ji28CbxF3ch23EaEtlOLnfoiDxZB4ivm/56VRFgBQ
+	wQXGGqR8TSzBAlutjhbeKeurV+v+nPaP4yr7xkZAfu42gZ95oqyIm5VgQQrAonfy4rA=
+X-Gm-Gg: ATEYQzyLF47Pw33/d8U/Yp8KqgdXyAmk8pJ1Aegc+BRx4bDEk1ybNNAq5RGqYln6lMb
+	mJRYIZRWctJLzJ6y1AtI3DKIT7SfsaH2dswny/FOmpc8Stqbc6Pqa/OZoFNC/yFS/G/YvkvOFmz
+	JmiHhWM/GIHxdkduhBPR9I4gEoIw3VTnPXnBaZpVo9YMD8usgNax3aIRHIyVN7tS5KSlNQN8HHM
+	jduHpVRVte5ZZwZymAVp8MAGN+7BkQXhSwc6+LMz5TUI6MYren9K7/enkxrVvldJkaMGu3XKkgt
+	2bAVy1GdJ9OeJzLmouE5zu2tfmRLt2Iil2REDB7aQ6gv2pR2Ox1vDmJqYIp4Hjdnue1Q79baoJc
+	tNMapD0IkFjgsxmml4MfttrBip+d36VdhOZRbHWSd+gWCLovPnhzVpchEZw46EAPDURmz37xxw0
+	dPPg/oOtm9pnOy1KAfntmgMDn8ZquBhy+jaoo=
+X-Received: by 2002:a05:6830:368c:b0:7d7:e57a:bcd with SMTP id 46e09a7af769-7d7eaf765bfmr9193488a34.20.1774303790439;
+        Mon, 23 Mar 2026 15:09:50 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d7fbee2c6dsm7953910a34.1.2026.03.23.15.09.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 15:09:49 -0700 (PDT)
+Message-ID: <8e78c25f-6125-4574-84db-ce054b36c01a@linuxfoundation.org>
+Date: Mon, 23 Mar 2026 16:09:47 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AS8PR04MB8833061F34B9BEFC9D19764A8C4EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/460] 6.12.78-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230018-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,gmail.com,pengutronix.de,kernel.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,linuxfoundation.org];
+	TAGGED_FROM(0.00)[bounces-230019-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 92E032FE15F
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E29852FE1DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 02:55:45AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> ... [messed up quoting]
+On 3/23/26 07:39, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.78 release.
+> There are 460 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.78-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-> > On Tue, Mar 17, 2026 at 02:12:56PM +0800, Richard Zhu wrote:
-> > > Add a force_suspend flag to allow platform drivers to force the PCIe
-> > > link into L2 state during suspend, even when L1SS (ASPM L1 Sub-States)
-> > > is enabled.
-> > >
-> > > By default, the DesignWare PCIe host controller skips L2 suspend when
-> > > L1SS is supported to meet low resume latency requirements for devices
-> > > like NVMe. However, some platforms like i.MX PCIe need to enter L2
-> > > state for proper power management regardless of L1SS support.
-> > >
-> > > Enable force_suspend for i.MX PCIe to ensure the link enters L2 during
-> > > system suspend.
-> > 
-> > I'm a little bit skeptical about this.
-> > 
-> > What exactly does a "low resume latency requirement" mean?  Is
-> > this an actual functional requirement that's special to NVMe, or
-> > is it just the desire for low resume latency that everybody has
-> > for all devices?
->
-> From my understanding, L1SS mode is characterized by lower latency
-> when compared to L2 or L3 modes.
->
-> It can be used on all devices, avoiding frequent power on/off
-> cycles. NVMe can also extend the service life of the equipment.
+Compiled and booted on my test system. No dmesg regressions.
 
-All the above applies to all platforms, so it's not an argument for
-i.MX-specific code here.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-> > Is there something special about i.MX here?  Why do we want i.MX
-> > to be different from other host controllers?
->
-> i.MX PCIe loses power supply during Deep Sleep Mode (DSM), requiring
-> full reinitialization after system wake-up.
+thanks,
+-- Shuah
 
-I don't know what DSM means in PCIe or how it would help justify this
-change.
-
-> Removing the L1SS check allows the suspend process to complete
-> successfully and ensures the pci->suspended flag is set to true,
-> which triggers the proper resume sequence during system wake-up for
-> i.MX PCIes.
-
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume
-> > > functionality")
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c             | 1 +
-> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 4 +++-
-> > >  drivers/pci/controller/dwc/pcie-designware.h      | 1 +
-> > >  3 files changed, 5 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 81a7093494c8..7902d39185a5 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -1831,6 +1831,7 @@ static int imx_pcie_probe(struct platform_device
-> > *pdev)
-> > >  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
-> > >  			pci->pp.skip_l23_ready = true;
-> > >  		pci->pp.use_atu_msg = true;
-> > > +		pci->pp.force_l2_suspend = true;
-> > >  		ret = dw_pcie_host_init(&pci->pp);
-> > >  		if (ret < 0)
-> > >  			return ret;
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > index a74339982c24..720154fd4ff0 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -1229,7 +1229,9 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >  	 * If L1SS is supported, then do not put the link into L2 as some
-> > >  	 * devices such as NVMe expect low resume latency.
-> > >  	 */
-> > > -	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
-> > PCI_EXP_LNKCTL_ASPM_L1)
-> > > +	if (!pci->pp.force_l2_suspend &&
-> > > +	    (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
-> > > +	     PCI_EXP_LNKCTL_ASPM_L1))
-> > >  		return 0;
-> > >
-> > >  	if (pci->pp.ops->pme_turn_off) {
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h
-> > > b/drivers/pci/controller/dwc/pcie-designware.h
-> > > index ae6389dd9caa..5261036bbe6e 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > @@ -447,6 +447,7 @@ struct dw_pcie_rp {
-> > >  	bool			ecam_enabled;
-> > >  	bool			native_ecam;
-> > >  	bool                    skip_l23_ready;
-> > > +	bool                    force_l2_suspend;
-> > >  };
-> > >
-> > >  struct dw_pcie_ep_ops {
-> > > --
-> > > 2.37.1
-> > >
 
