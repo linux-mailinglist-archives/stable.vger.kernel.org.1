@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HpnFIhuwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:47:04 +0100
+	id 0IMTKoRTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EDE2F8CC2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:47:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0252F550F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C910E315D4A4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 86D6530607E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBE03BC689;
-	Mon, 23 Mar 2026 16:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377613B19D1;
+	Mon, 23 Mar 2026 14:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+M7R1Gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdpfY5O+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DEF3BA238;
-	Mon, 23 Mar 2026 16:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB973AF66E;
+	Mon, 23 Mar 2026 14:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282762; cv=none; b=GlxU7aSfXEnjO7UtDZIKKU4rsWlGPg9+J7JhW+uGwSaS7HSHgJCXSCZIcdGlxSwfV3MOkcSqf5qmJOfiGN4HVLB/7Z5G9WasrKJd0s9DGVQECSTVL+LmzOL8uTiVx89bfFHvcZPtcY0kkCaisGh9DviQp6U/cZv2x/q823UjgdQ=
+	t=1774276935; cv=none; b=lXoUOAJniZmZ8Nbn/LaxH8YkY0xY0ixJfproXzNBfUk/iOU6KbUw/amR/8/bILw3I7aUnkRsyU87JtDpFb0GA6uOMoJOoT/hJL51RB6AVk09crWBmeFuSbPRT7/1meTd8Rl2y91KDg+uZUk3tKFx91dxAPEfiYyB3UuS8n2UN2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282762; c=relaxed/simple;
-	bh=i3hAGPkLWTILLoNYlTW7Hl3hLY5ysr3zD0zde6VAZMI=;
+	s=arc-20240116; t=1774276935; c=relaxed/simple;
+	bh=hvSe/m4dgFKFUAHRPnyXoDgDdY981ekarFdfde10g0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+jlveCc4huxIahwvNeqUi3tMvSm6OcvfAkwD4eeMI+V8Izt9wtFadoegiUHIeRsUBLPTfaO+52q/gPYlXuC03KStowhRkwNsmMp3gDznYxE3bOVxd9mviZdANcx7GLxf6Cyw8rl0/XXCgsF9NxPGpsjub5KkpluBhLabEDBguI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+M7R1Gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C490DC4CEF7;
-	Mon, 23 Mar 2026 16:19:21 +0000 (UTC)
+	 MIME-Version; b=CyGnqZdd05HoF2RBVxNC2UyY7eAbzOvCt7KtQWB2s9jFamFYvXZBrd5rY2i/+NYZIx4kVGGqj6b7wFySY69yNUhNwUJEcNVuykIQZtNqhP1wpoIJ2OLzA7M39aCZcrMkPNPXLuYVlkDnkKYfLRrdMbXwjzqyiVqT4NDttms6dQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdpfY5O+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C55C4CEF7;
+	Mon, 23 Mar 2026 14:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282762;
-	bh=i3hAGPkLWTILLoNYlTW7Hl3hLY5ysr3zD0zde6VAZMI=;
+	s=korg; t=1774276934;
+	bh=hvSe/m4dgFKFUAHRPnyXoDgDdY981ekarFdfde10g0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+M7R1GcJhSlqtHCtVtN15yhpnwCNn3xJEYm5Ep08woN30vqA9yIb6UpXb3XV2ixI
-	 qLMCEIV7jwpLObpbdLzJdbQ3nd4sdhLCQ4zl/glRfGktdlFwE3OvYDMqoDFQ3nVk55
-	 YRBm3/fSzKz2MU+RdxvoX/2UDyFIfRG7+Dj2K9Is=
+	b=GdpfY5O+N50EFQoEKb5M/h1cbVJ762T83qiyq+1/fXQ8m6kMWEaV+OuHvuHAOCtse
+	 LeFvZkf/raTPpihIGtbehuSIaSMGFdO2GvZ2h1jpIDEh/I25eSbh6I5pn77BtZdZuj
+	 8UiZm6JWsS9a4NNE11I6WC9ZIfJ+AKMfc0e01Nyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 274/481] i3c: mipi-i3c-hci: Restart DMA ring correctly after dequeue abort
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 260/460] KVM: x86: Quirk initialization of feature MSRs to KVMs max configuration
 Date: Mon, 23 Mar 2026 14:44:16 +0100
-Message-ID: <20260323134531.805332720@linuxfoundation.org>
+Message-ID: <20260323134532.875161744@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229748-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228718-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,50 +89,155 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E4EDE2F8CC2
+X-Rspamd-Queue-Id: 4F0252F550F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit b6d586431ae20d5157ee468d0ef62ad26798ef13 upstream.
+[ Upstream commit dcb988cdac85bad177de86fbf409524eda4f9467 ]
 
-The DMA dequeue path attempts to restart the ring after aborting an
-in-flight transfer, but the current sequence is incomplete. The controller
-must be brought out of the aborted state and the ring control registers
-must be programmed in the correct order: first clearing ABORT, then
-re-enabling the ring and asserting RUN_STOP to resume operation.
+Add a quirk to control KVM's misguided initialization of select feature
+MSRs to KVM's max configuration, as enabling features by default violates
+KVM's approach of letting userspace own the vCPU model, and is actively
+problematic for MSRs that are conditionally supported, as the vCPU will
+end up with an MSR value that userspace can't restore.  E.g. if the vCPU
+is configured with PDCM=0, userspace will save and attempt to restore a
+non-zero PERF_CAPABILITIES, thanks to KVM's meddling.
 
-Add the missing controller resume step and update the ring control writes
-so that the ring is restarted using the proper sequence.
-
-Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-11-adrian.hunter@intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20240802185511.305849-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c |    2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/virt/kvm/api.rst  |   22 ++++++++++++++++++++++
+ arch/x86/include/asm/kvm_host.h |    3 ++-
+ arch/x86/include/uapi/asm/kvm.h |    1 +
+ arch/x86/kvm/svm/svm.c          |    4 +++-
+ arch/x86/kvm/vmx/vmx.c          |    9 ++++++---
+ arch/x86/kvm/x86.c              |    8 +++++---
+ 6 files changed, 39 insertions(+), 8 deletions(-)
 
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -491,7 +491,9 @@ static bool hci_dma_dequeue_xfer(struct
- 	}
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -8107,6 +8107,28 @@ KVM_X86_QUIRK_SLOT_ZAP_ALL          By d
+                                     or moved memslot isn't reachable, i.e KVM
+                                     _may_ invalidate only SPTEs related to the
+                                     memslot.
++
++KVM_X86_QUIRK_STUFF_FEATURE_MSRS    By default, at vCPU creation, KVM sets the
++                                    vCPU's MSR_IA32_PERF_CAPABILITIES (0x345),
++                                    MSR_IA32_ARCH_CAPABILITIES (0x10a),
++                                    MSR_PLATFORM_INFO (0xce), and all VMX MSRs
++                                    (0x480..0x492) to the maximal capabilities
++                                    supported by KVM.  KVM also sets
++                                    MSR_IA32_UCODE_REV (0x8b) to an arbitrary
++                                    value (which is different for Intel vs.
++                                    AMD).  Lastly, when guest CPUID is set (by
++                                    userspace), KVM modifies select VMX MSR
++                                    fields to force consistency between guest
++                                    CPUID and L2's effective ISA.  When this
++                                    quirk is disabled, KVM zeroes the vCPU's MSR
++                                    values (with two exceptions, see below),
++                                    i.e. treats the feature MSRs like CPUID
++                                    leaves and gives userspace full control of
++                                    the vCPU model definition.  This quirk does
++                                    not affect VMX MSRs CR0/CR4_FIXED1 (0x487
++                                    and 0x489), as KVM does now allow them to
++                                    be set by userspace (KVM sets them based on
++                                    guest CPUID, for safety purposes).
+ =================================== ============================================
  
- 	/* restart the ring */
-+	mipi_i3c_hci_resume(hci);
- 	rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
-+	rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE | RING_CTRL_RUN_STOP);
+ 7.32 KVM_CAP_MAX_VCPU_ID
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2385,7 +2385,8 @@ int memslot_rmap_alloc(struct kvm_memory
+ 	 KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT |	\
+ 	 KVM_X86_QUIRK_FIX_HYPERCALL_INSN |	\
+ 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
+-	 KVM_X86_QUIRK_SLOT_ZAP_ALL)
++	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
++	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS)
  
- 	return did_unqueue;
- }
+ /*
+  * KVM previously used a u32 field in kvm_run to indicate the hypercall was
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -440,6 +440,7 @@ struct kvm_sync_regs {
+ #define KVM_X86_QUIRK_FIX_HYPERCALL_INSN	(1 << 5)
+ #define KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS	(1 << 6)
+ #define KVM_X86_QUIRK_SLOT_ZAP_ALL		(1 << 7)
++#define KVM_X86_QUIRK_STUFF_FEATURE_MSRS	(1 << 8)
+ 
+ #define KVM_STATE_NESTED_FORMAT_VMX	0
+ #define KVM_STATE_NESTED_FORMAT_SVM	1
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1389,7 +1389,9 @@ static void __svm_vcpu_reset(struct kvm_
+ 	svm_vcpu_init_msrpm(vcpu, svm->msrpm);
+ 
+ 	svm_init_osvw(vcpu);
+-	vcpu->arch.microcode_version = 0x01000065;
++
++	if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS))
++		vcpu->arch.microcode_version = 0x01000065;
+ 	svm->tsc_ratio_msr = kvm_caps.default_tsc_scaling_ratio;
+ 
+ 	svm->nmi_masked = false;
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4562,7 +4562,8 @@ vmx_adjust_secondary_exec_control(struct
+ 	 * Update the nested MSR settings so that a nested VMM can/can't set
+ 	 * controls for features that are/aren't exposed to the guest.
+ 	 */
+-	if (nested) {
++	if (nested &&
++	    kvm_check_has_quirk(vmx->vcpu.kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS)) {
+ 		/*
+ 		 * All features that can be added or removed to VMX MSRs must
+ 		 * be supported in the first place for nested virtualization.
+@@ -4853,7 +4854,8 @@ static void __vmx_vcpu_reset(struct kvm_
+ 
+ 	init_vmcs(vmx);
+ 
+-	if (nested)
++	if (nested &&
++	    kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS))
+ 		memcpy(&vmx->nested.msrs, &vmcs_config.nested, sizeof(vmx->nested.msrs));
+ 
+ 	vcpu_setup_sgx_lepubkeyhash(vcpu);
+@@ -4866,7 +4868,8 @@ static void __vmx_vcpu_reset(struct kvm_
+ 	vmx->nested.hv_evmcs_vmptr = EVMPTR_INVALID;
+ #endif
+ 
+-	vcpu->arch.microcode_version = 0x100000000ULL;
++	if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS))
++		vcpu->arch.microcode_version = 0x100000000ULL;
+ 	vmx->msr_ia32_feature_control_valid_bits = FEAT_CTL_LOCKED;
+ 
+ 	/*
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12383,9 +12383,11 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
+ 
+ 	kvm_async_pf_hash_reset(vcpu);
+ 
+-	vcpu->arch.arch_capabilities = kvm_get_arch_capabilities();
+-	vcpu->arch.msr_platform_info = MSR_PLATFORM_INFO_CPUID_FAULT;
+-	vcpu->arch.perf_capabilities = kvm_caps.supported_perf_cap;
++	if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS)) {
++		vcpu->arch.arch_capabilities = kvm_get_arch_capabilities();
++		vcpu->arch.msr_platform_info = MSR_PLATFORM_INFO_CPUID_FAULT;
++		vcpu->arch.perf_capabilities = kvm_caps.supported_perf_cap;
++	}
+ 	kvm_pmu_init(vcpu);
+ 
+ 	vcpu->arch.pending_external_vector = -1;
 
 
 
