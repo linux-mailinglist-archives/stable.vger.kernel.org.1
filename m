@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Au9NgN8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229615-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:35 +0100
+	id iKthOLhYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470072FA523
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4782F6054
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E5F63222875
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02A5130FC05D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE303BD251;
-	Mon, 23 Mar 2026 16:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E6938B7C4;
+	Mon, 23 Mar 2026 14:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iERs+qsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="godGO54P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08426388377;
-	Mon, 23 Mar 2026 16:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D137E32D45C;
+	Mon, 23 Mar 2026 14:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282402; cv=none; b=a107FkX0lyC9dKguVQCHSWt3G2/0tpnnAibEBrF208nkq/p8DVJEv8cS2cpzfA99Z5/P42Dy5B+7DNnodLHf6lVETDB7z0qmMVhTzhTA1zPXJQ2Otik2PsLuQIwWExXDTVsWsY38z59z6UT99QACasgNhSr0jNfSO/VjCoPBQGk=
+	t=1774277942; cv=none; b=Dv6JeJDdztNAVbKhAbODXkcejZbMs6SMImW1dnbUtjoph0d5M54VwvBxiXUcV85/WB9OmAzVZ8z544/5tNRyZTH3DyopiYS9lVWcm3LpsJ1DbZNnlYqFM4k+BM0G6bKdiBNjtRtUk0zuJ2vV+c0cs/KTPX33SihBW7cqdKBOLN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282402; c=relaxed/simple;
-	bh=ehKGzTLjqnWYMLrzfn+ZGEJS3r6OAZUGyGUi9PkyNLc=;
+	s=arc-20240116; t=1774277942; c=relaxed/simple;
+	bh=YSNAzUJ4AJGV0MqnummLbSPDWmxyvbAYpa8gf674rQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D9LJXTac3Gm+0r7B78iCAZJNmX4kRheLCAUXtXwtraiYozI0AeiHJF+9ZzW7fqU+UVcNBn6Z23uNB/eLqfqqvxFU/vDlBiauTLYyQlwhCNWZUtLjkv8zWNqTsN24JkOzyPPrdCw71IB+y9F3VilwILMlr0m3C7gOy+QJCi9goQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iERs+qsz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CABC4CEF7;
-	Mon, 23 Mar 2026 16:13:21 +0000 (UTC)
+	 MIME-Version; b=Q64S1znqj55B5Uo3PgNeysIaqtJXDoHxlhMkBo+qVxhIueDYNge+oIqCMMBrMmXbJM06v6OQ05w4byd8KnHB9U2IppgdVWdhSB15YdKrBjGMOa8m7y1rGyV4cZDOZZ4BsHm9C+kMXnc8IrxVwfuN10UYWu/ivqgnwdDVcryOVhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=godGO54P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AD6C4CEF7;
+	Mon, 23 Mar 2026 14:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282401;
-	bh=ehKGzTLjqnWYMLrzfn+ZGEJS3r6OAZUGyGUi9PkyNLc=;
+	s=korg; t=1774277942;
+	bh=YSNAzUJ4AJGV0MqnummLbSPDWmxyvbAYpa8gf674rQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iERs+qszJihVdjTL8ZNHa1v+dB5XvEYSr9SEK1q/heeBGGR1UOS6dLhofYD9+rbAd
-	 8s9LVEFGWtCRFWo/UpCGb/nZSoTnO6VZf0GSY5j6jngsLsdIBo1yBpbsi/1Ypt5pO2
-	 0KIw8j4XfINGiUfC9BBIZYD3wk0SK7OHHcs34ck8=
+	b=godGO54PyJd4nePQpQOZd+MsLrMTqahr6ssV2U0xQvvQo9v2JcYujqlBJi+n0j+iU
+	 nFvhN7tFUej6cEqrjZwi7bxz7fzBdykhJ38p/ho4AFQ7ImGHvzv3yPt6xgzlMzQvyz
+	 kZjVPs0c+YHqaLXujtYHoM/vWsVnCMiBK2U6aocY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars Ellenberg <lars.ellenberg@linbit.com>,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 090/481] drbd: fix "LOGIC BUG" in drbd_al_begin_io_nonblock()
+	Bart Van Assche <bvanassche@acm.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 152/567] wifi: wlcore: Fix a locking bug
 Date: Mon, 23 Mar 2026 14:41:12 +0100
-Message-ID: <20260323134527.464820713@linuxfoundation.org>
+Message-ID: <20260323134537.593783087@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,25 +63,24 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229615-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229063-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,168 +89,56 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linbit.com:email]
-X-Rspamd-Queue-Id: 470072FA523
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7E4782F6054
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lars Ellenberg <lars.ellenberg@linbit.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit ab140365fb62c0bdab22b2f516aff563b2559e3b upstream.
+[ Upstream commit 72c6df8f284b3a49812ce2ac136727ace70acc7c ]
 
-Even though we check that we "should" be able to do lc_get_cumulative()
-while holding the device->al_lock spinlock, it may still fail,
-if some other code path decided to do lc_try_lock() with bad timing.
+Make sure that wl->mutex is locked before it is unlocked. This has been
+detected by the Clang thread-safety analyzer.
 
-If that happened, we logged "LOGIC BUG for enr=...",
-but still did not return an error.
-
-The rest of the code now assumed that this request has references
-for the relevant activity log extents.
-
-The implcations are that during an active resync, mutual exclusivity of
-resync versus application IO is not guaranteed. And a potential crash
-at this point may not realizs that these extents could have been target
-of in-flight IO and would need to be resynced just in case.
-
-Also, once the request completes, it will give up activity log references it
-does not even hold, which will trigger a BUG_ON(refcnt == 0) in lc_put().
-
-Fix:
-
-Do not crash the kernel for a condition that is harmless during normal
-operation: also catch "e->refcnt == 0", not only "e == NULL"
-when being noisy about "al_complete_io() called on inactive extent %u\n".
-
-And do not try to be smart and "guess" whether something will work, then
-be surprised when it does not.
-Deal with the fact that it may or may not work.  If it does not, remember a
-possible "partially in activity log" state (only possible for requests that
-cross extent boundaries), and return an error code from
-drbd_al_begin_io_nonblock().
-
-A latter call for the same request will then resume from where we left off.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Lars Ellenberg <lars.ellenberg@linbit.com>
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45aa7f071b06 ("wlcore: Use generic runtime pm calls for wowlan elp configuration")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223220102.2158611-26-bart.vanassche@linux.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/drbd/drbd_actlog.c   |   53 ++++++++++++++++---------------------
- drivers/block/drbd/drbd_interval.h |    5 ++-
- 2 files changed, 27 insertions(+), 31 deletions(-)
+ drivers/net/wireless/ti/wlcore/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/block/drbd/drbd_actlog.c
-+++ b/drivers/block/drbd/drbd_actlog.c
-@@ -483,38 +483,20 @@ void drbd_al_begin_io(struct drbd_device
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index 9706240ddd416..d818485d7e6af 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -1800,6 +1800,8 @@ static int __maybe_unused wl1271_op_resume(struct ieee80211_hw *hw)
+ 		     wl->wow_enabled);
+ 	WARN_ON(!wl->wow_enabled);
  
- int drbd_al_begin_io_nonblock(struct drbd_device *device, struct drbd_interval *i)
- {
--	struct lru_cache *al = device->act_log;
- 	/* for bios crossing activity log extent boundaries,
- 	 * we may need to activate two extents in one go */
- 	unsigned first = i->sector >> (AL_EXTENT_SHIFT-9);
- 	unsigned last = i->size == 0 ? first : (i->sector + (i->size >> 9) - 1) >> (AL_EXTENT_SHIFT-9);
--	unsigned nr_al_extents;
--	unsigned available_update_slots;
- 	unsigned enr;
++	mutex_lock(&wl->mutex);
++
+ 	ret = pm_runtime_force_resume(wl->dev);
+ 	if (ret < 0) {
+ 		wl1271_error("ELP wakeup failure!");
+@@ -1816,8 +1818,6 @@ static int __maybe_unused wl1271_op_resume(struct ieee80211_hw *hw)
+ 		run_irq_work = true;
+ 	spin_unlock_irqrestore(&wl->wl_lock, flags);
  
--	D_ASSERT(device, first <= last);
+-	mutex_lock(&wl->mutex);
 -
--	nr_al_extents = 1 + last - first; /* worst case: all touched extends are cold. */
--	available_update_slots = min(al->nr_elements - al->used,
--				al->max_pending_changes - al->pending_changes);
--
--	/* We want all necessary updates for a given request within the same transaction
--	 * We could first check how many updates are *actually* needed,
--	 * and use that instead of the worst-case nr_al_extents */
--	if (available_update_slots < nr_al_extents) {
--		/* Too many activity log extents are currently "hot".
--		 *
--		 * If we have accumulated pending changes already,
--		 * we made progress.
--		 *
--		 * If we cannot get even a single pending change through,
--		 * stop the fast path until we made some progress,
--		 * or requests to "cold" extents could be starved. */
--		if (!al->pending_changes)
--			__set_bit(__LC_STARVING, &device->act_log->flags);
--		return -ENOBUFS;
-+	if (i->partially_in_al_next_enr) {
-+		D_ASSERT(device, first < i->partially_in_al_next_enr);
-+		D_ASSERT(device, last >= i->partially_in_al_next_enr);
-+		first = i->partially_in_al_next_enr;
- 	}
- 
-+	D_ASSERT(device, first <= last);
-+
- 	/* Is resync active in this area? */
- 	for (enr = first; enr <= last; enr++) {
- 		struct lc_element *tmp;
-@@ -529,14 +511,21 @@ int drbd_al_begin_io_nonblock(struct drb
- 		}
- 	}
- 
--	/* Checkout the refcounts.
--	 * Given that we checked for available elements and update slots above,
--	 * this has to be successful. */
-+	/* Try to checkout the refcounts. */
- 	for (enr = first; enr <= last; enr++) {
- 		struct lc_element *al_ext;
- 		al_ext = lc_get_cumulative(device->act_log, enr);
--		if (!al_ext)
--			drbd_info(device, "LOGIC BUG for enr=%u\n", enr);
-+
-+		if (!al_ext) {
-+			/* Did not work. We may have exhausted the possible
-+			 * changes per transaction. Or raced with someone
-+			 * "locking" it against changes.
-+			 * Remember where to continue from.
-+			 */
-+			if (enr > first)
-+				i->partially_in_al_next_enr = enr;
-+			return -ENOBUFS;
-+		}
- 	}
- 	return 0;
- }
-@@ -556,7 +545,11 @@ void drbd_al_complete_io(struct drbd_dev
- 
- 	for (enr = first; enr <= last; enr++) {
- 		extent = lc_find(device->act_log, enr);
--		if (!extent) {
-+		/* Yes, this masks a bug elsewhere.  However, during normal
-+		 * operation this is harmless, so no need to crash the kernel
-+		 * by the BUG_ON(refcount == 0) in lc_put().
-+		 */
-+		if (!extent || extent->refcnt == 0) {
- 			drbd_err(device, "al_complete_io() called on inactive extent %u\n", enr);
- 			continue;
- 		}
---- a/drivers/block/drbd/drbd_interval.h
-+++ b/drivers/block/drbd/drbd_interval.h
-@@ -8,12 +8,15 @@
- struct drbd_interval {
- 	struct rb_node rb;
- 	sector_t sector;		/* start sector of the interval */
--	unsigned int size;		/* size in bytes */
- 	sector_t end;			/* highest interval end in subtree */
-+	unsigned int size;		/* size in bytes */
- 	unsigned int local:1		/* local or remote request? */;
- 	unsigned int waiting:1;		/* someone is waiting for completion */
- 	unsigned int completed:1;	/* this has been completed already;
- 					 * ignore for conflict detection */
-+
-+	/* to resume a partially successful drbd_al_begin_io_nonblock(); */
-+	unsigned int partially_in_al_next_enr;
- };
- 
- static inline void drbd_clear_interval(struct drbd_interval *i)
+ 	/* test the recovery flag before calling any SDIO functions */
+ 	pending_recovery = test_bit(WL1271_FLAG_RECOVERY_IN_PROGRESS,
+ 				    &wl->flags);
+-- 
+2.51.0
+
 
 
 
