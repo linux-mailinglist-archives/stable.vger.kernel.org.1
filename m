@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IkVEDFqwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:28:33 +0100
+	id KCVeEyVywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967722F8249
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:28:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E782F9551
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 718403272074
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FCE633FF5D8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445633B0AD1;
-	Mon, 23 Mar 2026 14:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E73D3B7747;
+	Mon, 23 Mar 2026 15:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yxEUyEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyAaOPss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C433E3AF672;
-	Mon, 23 Mar 2026 14:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0124F3B27ED;
+	Mon, 23 Mar 2026 15:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277370; cv=none; b=lTzb6EVbMNiFjBb1pJQ/PVpinS9WptiTprpTFjHcpql8da4Cs14n22cHAavCGsSbK+M/G5pIi/rr2BDD1COYREtOLBG9V31ew9J4wq0n9+kbeBgGjsV8ep2AB/ihpSLMW/hIWoY8wV9H6qM4bDP0AIbjWnZ4vO6GJXpOWRDon7I=
+	t=1774279107; cv=none; b=uRgrRfrenTnU1LGGG1dgr/p630p7p1bDX8xP7Z/P1tfocft57HQeCCMJFxw1pmhzjohdGtNT+fgYdHqQvHdPQ3cGaoQ8tcCNwDZfnu0L0EPS2ODvh1fKrng0uT8kMQqWzeOjLn8mwl1q0qnPblV3D+/hIxLqe0VNCFROp8R1D8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277370; c=relaxed/simple;
-	bh=6+ttoRRmly0kXpRS4+B6XrAX95X1b7OQjdUbUkBAQ5Y=;
+	s=arc-20240116; t=1774279107; c=relaxed/simple;
+	bh=xVaqKeaqHKxGoz86W9ccg7AaqcLB1eyRaLdQ8jNDokw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIqtvUZ20OKUzUdcbWwu5G97QYf2FHo085Dp8N8wlr4vDvwUaeXqYjAsktY5Ut8852YuH8i92+OF88g3GoHi74PUIdtlgHhtWjQCroXWK9wyoU+p6jYwWmpcn9BDo53RuO4sE8gIlSeS9pq5hn1bz9fglOZQPpL7EVR1EdPjef0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yxEUyEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E060C2BC9E;
-	Mon, 23 Mar 2026 14:49:29 +0000 (UTC)
+	 MIME-Version; b=O2LWcxIe73Pk5R8eaidH4DY124s0ZxcyxSsViYEN8E83GzGYp0i2EuuwRRIU3pIukiSVAo1c//rbiYdtnyo5v+lxkopGVWRAaN+Otj7tdKUrVECQ48yIPQ8UuRp7bEGOO+1HmhqlDIVyk2Lj11nE4SugW3YR9W/mravzI/c+wa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyAaOPss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300DAC2BC9E;
+	Mon, 23 Mar 2026 15:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277370;
-	bh=6+ttoRRmly0kXpRS4+B6XrAX95X1b7OQjdUbUkBAQ5Y=;
+	s=korg; t=1774279106;
+	bh=xVaqKeaqHKxGoz86W9ccg7AaqcLB1eyRaLdQ8jNDokw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yxEUyEf0PyOY2KGV1MUe6I5cJpHi2DjxuOpBvzdRuJY+vCcc1K0RD4/LLDKqLROx
-	 v/dIDPzKGMEfBgu2paN0hZ/PwY1FrQEKVD1Vbk5vIX8oOzwUo4QnCpAS47P9+hEtZl
-	 nEG2L9mX926lKOmSSRh9GdXdpeLa5UhwtqGNPPaI=
+	b=iyAaOPssQOuOXoFdkXZjCluKeMX4witkkS+12iY4MFCzopPmB4S77fz9aXosSAxx2
+	 ON6Z/4lwXhpQ42zUU/jOZ+qKra5Pzrj0+tB6xhSsiY2sDaPnDsLb1htmWQPfr/YlUk
+	 4knjqDI7zuVUlbQOItYZI1j3lJqDvCxDDH3YssOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobi Gaertner <tob.gaertner@me.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 413/460] net: usb: cdc_ncm: add ndpoffset to NDP32 nframes bounds check
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 489/567] drm/amdgpu/mmhub2.3: add bounds checking for cid
 Date: Mon, 23 Mar 2026 14:46:49 +0100
-Message-ID: <20260323134536.698195360@linuxfoundation.org>
+Message-ID: <20260323134546.081723324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +68,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228875-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229405-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,me.com:email]
-X-Rspamd-Queue-Id: 967722F8249
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C0E782F9551
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobi Gaertner <tob.gaertner@me.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 77914255155e68a20aa41175edeecf8121dac391 ]
+commit a54403a534972af5d9ba5aaa3bb6ead612500ec6 upstream.
 
-The same bounds-check bug fixed for NDP16 in the previous patch also
-exists in cdc_ncm_rx_verify_ndp32(). The DPE array size is validated
-against the total skb length without accounting for ndpoffset, allowing
-out-of-bounds reads when the NDP32 is placed near the end of the NTB.
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
-Add ndpoffset to the nframes bounds check and use struct_size_t() to
-express the NDP-plus-DPE-array size more clearly.
-
-Compile-tested only.
-
-Fixes: 0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
-Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
-Link: https://patch.msgid.link/20260314054640.2895026-3-tob.gaertner@me.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 89cd90375c19fb45138990b70e9f4ba4806f05c4)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/cdc_ncm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index a006583e8e085..c00699cd3e350 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1694,6 +1694,7 @@ int cdc_ncm_rx_verify_ndp32(struct sk_buff *skb_in, int ndpoffset)
- 	struct usbnet *dev = netdev_priv(skb_in->dev);
- 	struct usb_cdc_ncm_ndp32 *ndp32;
- 	int ret = -EINVAL;
-+	size_t ndp_len;
- 
- 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp32)) > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
-@@ -1713,8 +1714,8 @@ int cdc_ncm_rx_verify_ndp32(struct sk_buff *skb_in, int ndpoffset)
- 					sizeof(struct usb_cdc_ncm_dpe32));
- 	ret--; /* we process NDP entries except for the last one */
- 
--	if ((sizeof(struct usb_cdc_ncm_ndp32) +
--	     ret * (sizeof(struct usb_cdc_ncm_dpe32))) > skb_in->len) {
-+	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp32, dpe32, ret);
-+	if (ndpoffset + ndp_len > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
- 		ret = -EINVAL;
- 	}
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c
+@@ -94,7 +94,8 @@ mmhub_v2_3_print_l2_protection_fault_sta
+ 	case IP_VERSION(2, 3, 0):
+ 	case IP_VERSION(2, 4, 0):
+ 	case IP_VERSION(2, 4, 1):
+-		mmhub_cid = mmhub_client_ids_vangogh[cid][rw];
++		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_vangogh) ?
++			mmhub_client_ids_vangogh[cid][rw] : NULL;
+ 		break;
+ 	default:
+ 		mmhub_cid = NULL;
 
 
 
