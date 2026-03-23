@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDQ5HKlywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:41 +0100
+	id uGH3DM9IwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79F22F962E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 929172F3D06
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 318C432E9C82
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ECB3303DD1C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1486029ACC5;
-	Mon, 23 Mar 2026 16:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E86D3ACA62;
+	Mon, 23 Mar 2026 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uPBsnq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmpdyir6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8141DA0E1;
-	Mon, 23 Mar 2026 16:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426743AC0D2;
+	Mon, 23 Mar 2026 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282895; cv=none; b=D4T6D/ZTrN/yHtIjJvRFGv3Ym4Hipl9nD0LWrJxN4Y6wtV4FPRX/f1X8vpWueN4pYMorT3ePe4jmtIBBBenmWFoZXytbx33GcFHcIaGVBcLl6uR818RSjPfJywokhxgMIgCYEuUvZWB3VfEobK9YU2L48FmYXwceO6Bjif/5HWI=
+	t=1774274029; cv=none; b=iwj3RU7TW0WRK8hOKk4n0KNMHtmRoA42pAUjd3sslc6/kiMWPMwLC8tw43KjJUKNyAEtqLl9C9EbZgbknDN0a24tJ03nzpFmcBo5OoDPawZ3qkpf+AnEBW5lMiS/g+DZoqprQ043e8O22P+7dBtMHQjiv5+AfQPE0WdBDZ8Yik0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282895; c=relaxed/simple;
-	bh=KXZMKzZ5lbwNETOam0VigdyONNf/s3nl+PC2RoUHqUA=;
+	s=arc-20240116; t=1774274029; c=relaxed/simple;
+	bh=gpJx6Xj4MV94iZjSW6H6nlzSsMuBW5vMZZhTgpkBqTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMCtASR12y97/JELV32vwwfR3wCyWF1qr/kcSwoK+OkxaeR9kH7Gc/woyBIN8rX94TZ1Q2z44c0i5CENJ3g6t5cRpTn3SEmQSkh8NmKWD3GvXTHl7x18VYi7SpcPgW5Xeqh9q0NI9L3bDaIc8Q8Y29rMVSUbK1YpORehJKj4wjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uPBsnq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D484C4CEF7;
-	Mon, 23 Mar 2026 16:21:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a9f+MnMNwtd9F7bVJwuiuupl8P1eKPFbvKo+h5/H9tOGqXlTo7Fi8/mjzuhmXwTZEElefmIbPfPJmSiW+lpn6afCM3z04G6jM4kXy3erldla9Rjr/KnJDSwPLjKp/0NT3yAzVxLyD7M3B4+6/gWda/+58zTBuHIDLOFrIbIK70U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmpdyir6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B741AC2BC9E;
+	Mon, 23 Mar 2026 13:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282895;
-	bh=KXZMKzZ5lbwNETOam0VigdyONNf/s3nl+PC2RoUHqUA=;
+	s=korg; t=1774274029;
+	bh=gpJx6Xj4MV94iZjSW6H6nlzSsMuBW5vMZZhTgpkBqTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uPBsnq3jKABJ2l3KnFHsQgzHCXuYycByJNPaQAmb2hmTuZsPoiKKhjyLqdNJi7kE
-	 Zj2Cysg5yb7SIYv4eDJK9m8JZ3M5533eBhBE3uGmVGMI1puMlQhqLdxGomC3dWJWY/
-	 hJCiMQYkA2xf4uRSJ6vT/j+kkftE69cB59ae7mLo=
+	b=tmpdyir6epKjNzgOjE/jn5Ma0u7OhVcnLH5mSL/E3jk3682X8KyWgcY3lwBAPJwdq
+	 Q6eu7FcbtRz3S8ps6ZtP91OogahB5UMQdcmhDtgEXVZHwzv9ENWFDxJGnrOiIbYJRq
+	 x8lgJoShQZEOXy2ThUspNc2k+4RkdT2+ALQDwHPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@ownmail.net>,
-	stable@kernel.org,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 282/481] sunrpc: fix cache_request leak in cache_release
+	Mika Kahola <mika.kahola@intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.19 087/220] drm/i915/psr: Compute PSR entry_setup_frames into intel_crtc_state
 Date: Mon, 23 Mar 2026 14:44:24 +0100
-Message-ID: <20260323134531.987913625@linuxfoundation.org>
+Message-ID: <20260323134507.344271539@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +64,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229799-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ownmail.net,kernel.org,oracle.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228067-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D79F22F962E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 929172F3D06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit 17ad31b3a43b72aec3a3d83605891e1397d0d065 upstream.
+commit 7caac659a837af9fd4cad85be851982b88859484 upstream.
 
-When a reader's file descriptor is closed while in the middle of reading
-a cache_request (rp->offset != 0), cache_release() decrements the
-request's readers count but never checks whether it should free the
-request.
+PSR entry_setup_frames is currently computed directly into struct
+intel_dp:intel_psr:entry_setup_frames. This causes a problem if mode change
+gets rejected after PSR compute config: Psr_entry_setup_frames computed for
+this rejected state is in intel_dp:intel_psr:entry_setup_frame. Fix this by
+computing it into intel_crtc_state and copy the value into
+intel_dp:intel_psr:entry_setup_frames on PSR enable.
 
-In cache_read(), when readers drops to 0 and CACHE_PENDING is clear, the
-cache_request is removed from the queue and freed along with its buffer
-and cache_head reference. cache_release() lacks this cleanup.
-
-The only other path that frees requests with readers == 0 is
-cache_dequeue(), but it runs only when CACHE_PENDING transitions from
-set to clear. If that transition already happened while readers was
-still non-zero, cache_dequeue() will have skipped the request, and no
-subsequent call will clean it up.
-
-Add the same cleanup logic from cache_read() to cache_release(): after
-decrementing readers, check if it reached 0 with CACHE_PENDING clear,
-and if so, dequeue and free the cache_request.
-
-Reported-by: NeilBrown <neilb@ownmail.net>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 2b981d57e480 ("drm/i915/display: Support PSR entry VSC packet to be transmitted one frame earlier")
+Cc: Mika Kahola <mika.kahola@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260312083710.1593781-3-jouni.hogander@intel.com
+(cherry picked from commit 8c229b4aa00262c13787982e998c61c0783285e0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/cache.c |   26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_types.h |    1 +
+ drivers/gpu/drm/i915/display/intel_psr.c           |    5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1052,14 +1052,25 @@ static int cache_release(struct inode *i
- 	struct cache_reader *rp = filp->private_data;
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1160,6 +1160,7 @@ struct intel_crtc_state {
+ 	u32 dc3co_exitline;
+ 	u16 su_y_granularity;
+ 	u8 active_non_psr_pipes;
++	u8 entry_setup_frames;
+ 	const char *no_psr_reason;
  
- 	if (rp) {
-+		struct cache_request *rq = NULL;
-+
- 		spin_lock(&queue_lock);
- 		if (rp->offset) {
- 			struct cache_queue *cq;
--			for (cq= &rp->q; &cq->list != &cd->queue;
--			     cq = list_entry(cq->list.next, struct cache_queue, list))
-+			for (cq = &rp->q; &cq->list != &cd->queue;
-+			     cq = list_entry(cq->list.next,
-+					     struct cache_queue, list))
- 				if (!cq->reader) {
--					container_of(cq, struct cache_request, q)
--						->readers--;
-+					struct cache_request *cr =
-+						container_of(cq,
-+						struct cache_request, q);
-+					cr->readers--;
-+					if (cr->readers == 0 &&
-+					    !test_bit(CACHE_PENDING,
-+						      &cr->item->flags)) {
-+						list_del(&cr->q.list);
-+						rq = cr;
-+					}
- 					break;
- 				}
- 			rp->offset = 0;
-@@ -1067,9 +1078,14 @@ static int cache_release(struct inode *i
- 		list_del(&rp->q.list);
- 		spin_unlock(&queue_lock);
+ 	/*
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1711,7 +1711,7 @@ static bool _psr_compute_config(struct i
+ 	entry_setup_frames = intel_psr_entry_setup_frames(intel_dp, adjusted_mode);
  
-+		if (rq) {
-+			cache_put(rq->item, cd);
-+			kfree(rq->buf);
-+			kfree(rq);
-+		}
-+
- 		filp->private_data = NULL;
- 		kfree(rp);
--
- 	}
- 	if (filp->f_mode & FMODE_WRITE) {
- 		atomic_dec(&cd->writers);
+ 	if (entry_setup_frames >= 0) {
+-		intel_dp->psr.entry_setup_frames = entry_setup_frames;
++		crtc_state->entry_setup_frames = entry_setup_frames;
+ 	} else {
+ 		crtc_state->no_psr_reason = "PSR setup timing not met";
+ 		drm_dbg_kms(display->drm,
+@@ -1792,7 +1792,7 @@ static bool intel_psr_needs_wa_180378188
+ {
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 
+-	return (DISPLAY_VER(display) == 20 && intel_dp->psr.entry_setup_frames > 0 &&
++	return (DISPLAY_VER(display) == 20 && crtc_state->entry_setup_frames > 0 &&
+ 		!crtc_state->has_sel_update);
+ }
+ 
+@@ -2167,6 +2167,7 @@ static void intel_psr_enable_locked(stru
+ 	intel_dp->psr.pkg_c_latency_used = crtc_state->pkg_c_latency_used;
+ 	intel_dp->psr.io_wake_lines = crtc_state->alpm_state.io_wake_lines;
+ 	intel_dp->psr.fast_wake_lines = crtc_state->alpm_state.fast_wake_lines;
++	intel_dp->psr.entry_setup_frames = crtc_state->entry_setup_frames;
+ 
+ 	if (!psr_interrupt_error_check(intel_dp))
+ 		return;
 
 
 
