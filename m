@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +O1RNsxWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:48 +0100
+	id qG1KHbJiwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D66E2F5C36
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8592F724D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F95331267D3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190EF3585C70
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8013ACEFE;
-	Mon, 23 Mar 2026 14:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB23D3ACF0E;
+	Mon, 23 Mar 2026 15:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDEAkHns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyNNK6+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E7426ED46;
-	Mon, 23 Mar 2026 14:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2B53B895A;
+	Mon, 23 Mar 2026 15:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277480; cv=none; b=AcYyW4C/MC20Ea9b4t7xvT6BqC0YeP0+jsVtqva8V5n1tQGIp6X/LpqFkZFjK5xXMdBgZ360cvBpwP0HyCYECPPmScch8P3goVjZrlO2/MRrpGfNsIEpY/m3Mhv5tWLFwn5PDDsXYN/BBsSSE1YHsgSYONmW6GtTWaueT04XFNg=
+	t=1774279272; cv=none; b=E1pkp22xQxv+9Kv3/NbvJAOUPv/vuyxuq3yQMqOaqk7zvPoDNjTe+s6LY7we8L3+Ytq9wpXTl45/XqVqdWclezsh39MSehQB6QwDpQq9XH3O4Vo279pin9F1+yh3wSFIZet/b1y+EhBcbPIiyqXu32MR7eJXg4CvRYdHh7RitEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277480; c=relaxed/simple;
-	bh=SmD2UZB8Ds4nNjz73y5NYYai4kImMHLg4LZ/IcXjeDo=;
+	s=arc-20240116; t=1774279272; c=relaxed/simple;
+	bh=shH1kPPcRxgmwoY1OTKgfS4QwP7UcCPRH60reQOo6ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tauG0+nCYQE+8m2r0GdAW1lcEvABrxhgHGeTu5xyS84Y8V1kAJMgsDwEOHNNRygYW7a9WGfzLlexHZDTzED55/W0JMo+fVMb11cjpa4uqnRqjuukNPkuEgBx9f2NRlCy8FEjurJh3AaIvLqE0tO2f9MlpTv6WxT+tek8fQcikI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDEAkHns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA1AC4CEF7;
-	Mon, 23 Mar 2026 14:51:19 +0000 (UTC)
+	 MIME-Version; b=SHHA4t6BwoDZ7ECP+zQrOW+AW90z7OAeUstTIxvm2VeHHlPyMIO1i+SH2HHu5zo/sFcbG1y9XjDgK0O3gxBf30IaAxuwg5JNJV7+aHKKRc05WF0CChGZstwG70kkPVr3PeaqavZF9KfOcroEhyEatS8hXqfHOmaowEXE7L570lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyNNK6+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06828C4CEF7;
+	Mon, 23 Mar 2026 15:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277479;
-	bh=SmD2UZB8Ds4nNjz73y5NYYai4kImMHLg4LZ/IcXjeDo=;
+	s=korg; t=1774279272;
+	bh=shH1kPPcRxgmwoY1OTKgfS4QwP7UcCPRH60reQOo6ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDEAkHns5UHugPy8/n4saQMFGaXGyL533R8BP9zum0Muzr646+GvLd7+/JwLsZ7M3
-	 Iu+oFjNSb/9+y/ArBAFgwxQOn2HWmsgO1Unhn1LvrsMd5daKGrw5mN6wboAAxAG5BG
-	 CulpowcpKnKhzg+nwUpS44S0MuKk39EwhYMRrJ4E=
+	b=UyNNK6+LJc7ewkPWltDOlOgX2o9KxlkHxq2fl5ja1MxAJ6cxfWegskpKZ2SnsZ7U9
+	 VAeRjlXYs+4znB/pzdKiq6aUDjeBXXAllE+CreKmKr3b/6J9ftzx68HY7ePzAqWavO
+	 b5zgxZeowfZSTzaizzcrOvqrtBnOiPvOKvifowaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Bukte <rahul.bukte@sony.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 455/460] drm/i915/gt: Check set_default_submission() before deferencing
+Subject: [PATCH 6.6 531/567] net: usb: aqc111: Do not perform PM inside suspend callback
 Date: Mon, 23 Mar 2026 14:47:31 +0100
-Message-ID: <20260323134537.756739080@linuxfoundation.org>
+Message-ID: <20260323134547.130937225@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,137 +65,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228916-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229450-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4D66E2F5C36
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CB8592F724D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Bukte <rahul.bukte@sony.com>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 0162ab3220bac870e43e229e6e3024d1a21c3f26 ]
+[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
 
-When the i915 driver firmware binaries are not present, the
-set_default_submission pointer is not set. This pointer is
-dereferenced during suspend anyways.
+syzbot reports "task hung in rpm_resume"
 
-Add a check to make sure it is set before dereferencing.
+This is caused by aqc111_suspend calling
+the PM variant of its write_cmd routine.
 
-[   23.289926] PM: suspend entry (deep)
-[   23.293558] Filesystems sync: 0.000 seconds
-[   23.298010] Freezing user space processes
-[   23.302771] Freezing user space processes completed (elapsed 0.000 seconds)
-[   23.309766] OOM killer disabled.
-[   23.313027] Freezing remaining freezable tasks
-[   23.318540] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[   23.342038] serial 00:05: disabled
-[   23.345719] serial 00:02: disabled
-[   23.349342] serial 00:01: disabled
-[   23.353782] sd 0:0:0:0: [sda] Synchronizing SCSI cache
-[   23.358993] sd 1:0:0:0: [sdb] Synchronizing SCSI cache
-[   23.361635] ata1.00: Entering standby power mode
-[   23.368863] ata2.00: Entering standby power mode
-[   23.445187] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[   23.452194] #PF: supervisor instruction fetch in kernel mode
-[   23.457896] #PF: error_code(0x0010) - not-present page
-[   23.463065] PGD 0 P4D 0
-[   23.465640] Oops: Oops: 0010 [#1] SMP NOPTI
-[   23.469869] CPU: 8 UID: 0 PID: 211 Comm: kworker/u48:18 Tainted: G S      W           6.19.0-rc4-00020-gf0b9d8eb98df #10 PREEMPT(voluntary)
-[   23.482512] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
-[   23.496511] Workqueue: async async_run_entry_fn
-[   23.501087] RIP: 0010:0x0
-[   23.503755] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-[   23.510324] RSP: 0018:ffffb4a60065fca8 EFLAGS: 00010246
-[   23.515592] RAX: 0000000000000000 RBX: ffff9f428290e000 RCX: 000000000000000f
-[   23.522765] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff9f428290e000
-[   23.529937] RBP: ffff9f4282907070 R08: ffff9f4281130428 R09: 00000000ffffffff
-[   23.537111] R10: 0000000000000000 R11: 0000000000000001 R12: ffff9f42829070f8
-[   23.544284] R13: ffff9f4282906028 R14: ffff9f4282900000 R15: ffff9f4282906b68
-[   23.551457] FS:  0000000000000000(0000) GS:ffff9f466b2cf000(0000) knlGS:0000000000000000
-[   23.559588] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   23.565365] CR2: ffffffffffffffd6 CR3: 000000031c230001 CR4: 0000000000f70ef0
-[   23.572539] PKRU: 55555554
-[   23.575281] Call Trace:
-[   23.577770]  <TASK>
-[   23.579905]  intel_engines_reset_default_submission+0x42/0x60
-[   23.585695]  __intel_gt_unset_wedged+0x191/0x200
-[   23.590360]  intel_gt_unset_wedged+0x20/0x40
-[   23.594675]  gt_sanitize+0x15e/0x170
-[   23.598290]  i915_gem_suspend_late+0x6b/0x180
-[   23.602692]  i915_drm_suspend_late+0x35/0xf0
-[   23.607008]  ? __pfx_pci_pm_suspend_late+0x10/0x10
-[   23.611843]  dpm_run_callback+0x78/0x1c0
-[   23.615817]  device_suspend_late+0xde/0x2e0
-[   23.620037]  async_suspend_late+0x18/0x30
-[   23.624082]  async_run_entry_fn+0x25/0xa0
-[   23.628129]  process_one_work+0x15b/0x380
-[   23.632182]  worker_thread+0x2a5/0x3c0
-[   23.635973]  ? __pfx_worker_thread+0x10/0x10
-[   23.640279]  kthread+0xf6/0x1f0
-[   23.643464]  ? __pfx_kthread+0x10/0x10
-[   23.647263]  ? __pfx_kthread+0x10/0x10
-[   23.651045]  ret_from_fork+0x131/0x190
-[   23.654837]  ? __pfx_kthread+0x10/0x10
-[   23.658634]  ret_from_fork_asm+0x1a/0x30
-[   23.662597]  </TASK>
-[   23.664826] Modules linked in:
-[   23.667914] CR2: 0000000000000000
-[   23.671271] ------------[ cut here ]------------
+The simplified call trace looks like this:
 
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260203044839.1555147-1-suraj.kandpal@intel.com
-(cherry picked from commit daa199abc3d3d1740c9e3a2c3e9216ae5b447cad)
-Fixes: ff44ad51ebf8 ("drm/i915: Move engine->submit_request selection to a vfunc")
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+rpm_suspend()
+  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
+    aqc111_suspend() - called for the usb device interface
+      aqc111_write32_cmd()
+        usb_autopm_get_interface()
+          pm_runtime_resume_and_get()
+            rpm_resume() - here we call rpm_resume() on our parent
+              rpm_resume() - Here we wait for a status change that will never happen.
+
+At this point we block another task which holds
+rtnl_lock and locks up the whole networking stack.
+
+Fix this by replacing the write_cmd calls with their _nopm variants
+
+Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
+Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_cs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/usb/aqc111.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-index 4d30a86016f24..d84b6c2af8607 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-@@ -1970,7 +1970,8 @@ void intel_engines_reset_default_submission(struct intel_gt *gt)
- 		if (engine->sanitize)
- 			engine->sanitize(engine);
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 3ebb1f84d3025..f1820c0d4830f 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
+ 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
+ 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
  
--		engine->set_default_submission(engine);
-+		if (engine->set_default_submission)
-+			engine->set_default_submission(engine);
- 	}
- }
+-		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
+-				 WOL_CFG_SIZE, &wol_cfg);
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
++				      WOL_CFG_SIZE, &wol_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
+ 	} else {
+ 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
  
+ 		/* Disable RX path */
+ 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
 -- 
 2.51.0
 
