@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOc/HIxNwWmxSAQAu9opvQ
-	(envelope-from <stable+bounces-228639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:20 +0100
+	id qIhDE51ZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1402F4788
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D072F61A7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 29A66303A96E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5680305BC81
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7661A6828;
-	Mon, 23 Mar 2026 14:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA8B3AEF50;
+	Mon, 23 Mar 2026 15:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqVew1GP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2k1cxoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45502C181;
-	Mon, 23 Mar 2026 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D56B258EE0;
+	Mon, 23 Mar 2026 15:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275685; cv=none; b=lt9wmvO/dVf7KOgM5P4P9YJCTUSaSH8s5J/S8z0+DN/Mqu8BZsx6wdXayAp2/fSoGcdtW1O1M55HDt3vZ6NhVEH3h1IiQtTElsk0Yc0Lc+4Gm6uE5PbIGKd7DLbMkGBCkKWV37SdNzU1uHQFlECh/mo7Ve3d7/FoktRr0WMfMdY=
+	t=1774278282; cv=none; b=ZNOxR4VCgtCG/dMPIMu/CRH9LDOQEQTXdIjh32nUcf9WoRKljT3N3zHFkU9BxgNFVUxpWMoL+sR0ZEthP+sJhM5FzsOL4ABzDL4WAeZO42RuwZe3Y64sTG8fRXhisLQxiLoc3DZoCxcynlpd1GNNVLyE3DQ7vMoh+oe/qNouTWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275685; c=relaxed/simple;
-	bh=lTfUry8QNHCfJJakiPFiu4dgzDs5U41CA5JTHMnVqZ0=;
+	s=arc-20240116; t=1774278282; c=relaxed/simple;
+	bh=GwsFVN5WLfRX/VL/I1WO+k60eZMvkH2vz7mvpTQvJbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STi+GTHwvR8HxGOk/M420r3tupzCrrdHXaNLKfNO7/NPjmQFymubiH5cpl7Yr8+EV1sL5Xnyoh+iuyoOSr6W2mSVY4IeUJo4tM7WreLv980f/QrEazvAl6eCqh2BX9PALrxnbyGLwuQXzy23WTINeISKrA9PS5I0PIDUSv+yqvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqVew1GP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F7BC4CEF7;
-	Mon, 23 Mar 2026 14:21:25 +0000 (UTC)
+	 MIME-Version; b=T3rDlsQdlm6bDxJutboLdUU3tJ9+wUwC+wneplt6AdR6IShdIHsEVSB9ts9JiVSnwkcY2+vZHN/KXOhwN/VU41BLMiJRTgPty4yGwFYnj/5f9xj7VVkpsZw08bcDYSVlbY753rkhFPbK75ce3yVtW9lxfRsIvhR/GpFSdBHWTS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2k1cxoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5797EC4CEF7;
+	Mon, 23 Mar 2026 15:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275685;
-	bh=lTfUry8QNHCfJJakiPFiu4dgzDs5U41CA5JTHMnVqZ0=;
+	s=korg; t=1774278281;
+	bh=GwsFVN5WLfRX/VL/I1WO+k60eZMvkH2vz7mvpTQvJbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqVew1GPrInlgqbTR6MhIJg4sPDdD/AvXLPjn78EkQ5S3LwrTatuAW8l3IyOW2n46
-	 R6rduUx5gSc1zJ4ZTcT2quDaQPk+30sOZlfOj6OsYAVNMaz0oE5lhQEyeYSKQ+u5gA
-	 p/q21OWaY9D2Yx3HRx4Qhut4pNdFSrz1L2VW8hKc=
+	b=r2k1cxoGbkhY3cUrkTYDVsnY0OHNaOE9hHehOgKxFCbQpubkogtcNC20ivI84E4mN
+	 OUtNE6BTvZM/mKd7Xc/UKkX7mA441OWq18wNK9QwsPs7oj8IriHak8g7Du/V6vfNnj
+	 CWy4AF1S848sen1tnWZVtSQsTSRb+NjIXzfAl4Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>
-Subject: [PATCH 6.12 182/460] drm/msm: Fix dma_free_attrs() buffer size
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 258/567] octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status
 Date: Mon, 23 Mar 2026 14:42:58 +0100
-Message-ID: <20260323134531.014257239@linuxfoundation.org>
+Message-ID: <20260323134540.216251498@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228639-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-229170-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6F1402F4788
+X-Rspamd-Queue-Id: 93D072F61A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit e4eb6e4dd6348dd00e19c2275e3fbaed304ca3bd upstream.
+[ Upstream commit 87f7dff3ec75b91def0024ebaaf732457f47a63b ]
 
-The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
-a2xx_gpummu_new() but freed with size TABLE_SIZE in
-a2xx_gpummu_destroy().
+The NIX RAS health report path uses nix_af_rvu_err when handling the
+NIX_AF_RVU_RAS case, so the report prints the ERR interrupt status rather
+than the RAS interrupt status.
 
-Change the free size to match the allocation.
+Use nix_af_rvu_ras for the NIX_AF_RVU_RAS report.
 
-Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/707340/
-Message-ID: <20260226095714.12126-2-fourier.thomas@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20260310184824.1183651-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a2xx_gpummu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/a2xx_gpummu.c
-+++ b/drivers/gpu/drm/msm/adreno/a2xx_gpummu.c
-@@ -79,7 +79,7 @@ static void a2xx_gpummu_destroy(struct m
- {
- 	struct a2xx_gpummu *gpummu = to_a2xx_gpummu(mmu);
- 
--	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
-+	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
- 		DMA_ATTR_FORCE_CONTIGUOUS);
- 
- 	kfree(gpummu);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index e8c920c7b8d18..f524ecb4645a9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -327,10 +327,10 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
+ 		rvu_report_pair_end(fmsg);
+ 		break;
+ 	case NIX_AF_RVU_RAS:
+-		intr_val = nix_event_context->nix_af_rvu_err;
++		intr_val = nix_event_context->nix_af_rvu_ras;
+ 		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
+ 		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
+-					  nix_event_context->nix_af_rvu_err);
++					  nix_event_context->nix_af_rvu_ras);
+ 		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
+ 		if (intr_val & BIT_ULL(34))
+ 			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
+-- 
+2.51.0
+
 
 
 
