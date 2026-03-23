@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB+ZIE9twWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:51 +0100
+	id ABTpJXFYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551412F89F6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D902F5FA3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC38E3029880
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B8E5305117C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE5B396D30;
-	Mon, 23 Mar 2026 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7B03B3888;
+	Mon, 23 Mar 2026 15:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBkzf8MD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GalVTuN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8243BBA04;
-	Mon, 23 Mar 2026 16:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C2F3B2FFC;
+	Mon, 23 Mar 2026 15:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282453; cv=none; b=bbNDUPKR+4xuCQPjgORUXVEuI2iMd3OygdpD6UeLcEs4j/IpNtjtlRB1UF0Dw76xhmx0RHsOk9WomPkiiR3gZe6Xia/az4aEEY260ICwvc1vnVT0UPXVNyhAOT8C08hFNMmtaLNWg3TRQ7wtVRrFGEjOT9qLwTD67Nf0Wy/G1Uc=
+	t=1774278184; cv=none; b=qqGtmbOqNbL6RXYAQDOX5NgjokwTXB2vdfYvkztHpAnfyXQyJ0NgtbAZED2293+SSzrQfPkelWT5pg+9I9LLaw+BUGoaQnc1gkZhJzWzdG674Xscq1xQYDhqYmCNVeik2Usb5F4uCm/90Ws+sGk+bfwr8+M+Ivqg3iV+xilUtXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282453; c=relaxed/simple;
-	bh=LTKGobxeC8/8bYFUn9sQ5yychc3qL6MvdqZiA+J3J5M=;
+	s=arc-20240116; t=1774278184; c=relaxed/simple;
+	bh=pr2V+91wun+aSwstlBjgdq9CzP3++ecuKNZeA1Ra1/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1zh5yLXtJbeUsPmobpFBOKAZrvmToocpbORl3SIneqR3ZXqCqNesI7FcVK6JecL6tI6iwQUrLz3MmGKL/akm20BvplrxNHdpEXWhfQAcSCGec4k0TB17DA367riXFFxXNA/2eQwS4R3wgC+X6mzjRc7mFFuFpsIzyoOJ/zXy2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBkzf8MD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA40C2BC9E;
-	Mon, 23 Mar 2026 16:14:12 +0000 (UTC)
+	 MIME-Version; b=qc/ZQcyDuNpUM863MfINhtMYqrf3ZTRGzQCDJnupKX4IeVZHlUx+Zq3xCqhF6eyP5r3eDI2O2EqVl55eZZK8QsFo6FthGGIIARn/FMUznyEUp5sVsADmHC9nHjBcrrR3ahAFcx1Ow012AzkBe9Mm1ay/CuQNaNKWrMUSAIHL11Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GalVTuN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6520C2BCB6;
+	Mon, 23 Mar 2026 15:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282453;
-	bh=LTKGobxeC8/8bYFUn9sQ5yychc3qL6MvdqZiA+J3J5M=;
+	s=korg; t=1774278184;
+	bh=pr2V+91wun+aSwstlBjgdq9CzP3++ecuKNZeA1Ra1/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBkzf8MDMxL+sQ7dSl5YzPL3kmx94pSG6QRBqkQ9bftDZGxHbZnxhCAT4MPBST1Ow
-	 5AaWmSaDcIcfCpy0QtYyFuFZyZ/G2feq+s1oZpR2fsWoNfXKwi7fC/AAqBRyQ1+kfg
-	 pz8JOeCLBLSs2cyhdteHboG1cnmzWE5Uvz0MJoUE=
+	b=GalVTuN1qE9IoZOy6W5f9KO1620fchpFJNMVcD9/smVKsogbaZyiamfSkEFpT5xxT
+	 S9hfyMJeFGlfLveXSlidj++/FnTNDG+ejvPVWGjtNyKcN2IZZfQhF57flS4TOdOYhb
+	 BNk4GgtmlIJdtt1XvBiu6aR7f5+wWp72wiH1B2u0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/481] bonding: handle BOND_LINK_FAIL, BOND_LINK_BACK as valid link states
-Date: Mon, 23 Mar 2026 14:42:24 +0100
-Message-ID: <20260323134529.181693629@linuxfoundation.org>
+Subject: [PATCH 6.6 225/567] net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit
+Date: Mon, 23 Mar 2026 14:42:25 +0100
+Message-ID: <20260323134539.402314520@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +67,110 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229634-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229139-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 551412F89F6
+X-Rspamd-Queue-Id: 46D902F5FA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 3348be7978f450ede0c308a4e8416ac716cf1015 ]
+[ Upstream commit 0cc0c2e661af418bbf7074179ea5cfffc0a5c466 ]
 
-Before the fixed commit, we check slave->new_link during commit
-state, which values are only BOND_LINK_{NOCHANGE, UP, DOWN}. After
-the commit, we start using slave->link_new_state, which state also could
-be BOND_LINK_{FAIL, BACK}.
+teql_master_xmit() calls netdev_start_xmit(skb, slave) to transmit
+through slave devices, but does not update skb->dev to the slave device
+beforehand.
 
-For example, when we set updelay/downdelay, after a failover,
-the slave->link_new_state could be set to BOND_LINK_{FAIL, BACK} in
-bond_miimon_inspect(). And later in bond_miimon_commit(), it will treat
-it as invalid and print an error, which would cause confusion for users.
+When a gretap tunnel is a TEQL slave, the transmit path reaches
+iptunnel_xmit() which saves dev = skb->dev (still pointing to teql0
+master) and later calls iptunnel_xmit_stats(dev, pkt_len). This
+function does:
 
-[  106.440254] bond0: (slave veth2): link status down for interface, disabling it in 200 ms
-[  106.440265] bond0: (slave veth2): invalid new link 1 on slave
-[  106.648276] bond0: (slave veth2): link status definitely down, disabling slave
-[  107.480271] bond0: (slave veth2): link status up, enabling it in 200 ms
-[  107.480288] bond0: (slave veth2): invalid new link 3 on slave
-[  107.688302] bond0: (slave veth2): link status definitely up, 10000 Mbps full duplex
+    get_cpu_ptr(dev->tstats)
 
-Let's handle BOND_LINK_{FAIL, BACK} as valid link states.
+Since teql_master_setup() does not set dev->pcpu_stat_type to
+NETDEV_PCPU_STAT_TSTATS, the core network stack never allocates tstats
+for teql0, so dev->tstats is NULL. get_cpu_ptr(NULL) computes
+NULL + __per_cpu_offset[cpu], resulting in a page fault.
 
-Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20260304-b4-bond_updelay-v1-2-f72eb2e454d0@gmail.com
+ BUG: unable to handle page fault for address: ffff8880e6659018
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ PGD 68bc067 P4D 68bc067 PUD 0
+ Oops: Oops: 0002 [#1] SMP KASAN PTI
+ RIP: 0010:iptunnel_xmit (./include/net/ip_tunnels.h:664 net/ipv4/ip_tunnel_core.c:89)
+ Call Trace:
+  <TASK>
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  __gre_xmit (net/ipv4/ip_gre.c:478)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  teql_master_xmit (net/sched/sch_teql.c:319)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  neigh_direct_output (net/core/neighbour.c:1660)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  __ip_finish_output.part.0 (net/ipv4/ip_output.c:315)
+  ip_mc_output (net/ipv4/ip_output.c:369)
+  ip_send_skb (net/ipv4/ip_output.c:1508)
+  udp_send_skb (net/ipv4/udp.c:1195)
+  udp_sendmsg (net/ipv4/udp.c:1485)
+  inet_sendmsg (net/ipv4/af_inet.c:859)
+  __sys_sendto (net/socket.c:2206)
+
+Fix this by setting skb->dev = slave before calling
+netdev_start_xmit(), so that tunnel xmit functions see the correct
+slave device with properly allocated tstats.
+
+Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260304044216.3517851-3-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/sched/sch_teql.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 8ff1c34b4db63..2296ca9003016 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2801,8 +2801,14 @@ static void bond_miimon_commit(struct bonding *bond)
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 0a7856e14a975..c89cb6eba27da 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -315,6 +315,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			if (__netif_tx_trylock(slave_txq)) {
+ 				unsigned int length = qdisc_pkt_len(skb);
  
- 			continue;
- 
-+		case BOND_LINK_FAIL:
-+		case BOND_LINK_BACK:
-+			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
-+				  slave->link_new_state);
-+			continue;
-+
- 		default:
--			slave_err(bond->dev, slave->dev, "invalid new link %d on slave\n",
-+			slave_err(bond->dev, slave->dev, "invalid link_new_state %d on slave\n",
- 				  slave->link_new_state);
- 			bond_propose_link_state(slave, BOND_LINK_NOCHANGE);
- 
++				skb->dev = slave;
+ 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+ 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+ 				    NETDEV_TX_OK) {
 -- 
 2.51.0
 
