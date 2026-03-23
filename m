@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-229221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC5LAJtdwWl0SgQAu9opvQ
-	(envelope-from <stable+bounces-229221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:51 +0100
+	id EOo0JkxuwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523372F6824
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C80B2F8C50
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E1DF3421B34
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 225A73112B5B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603E13B6C1E;
-	Mon, 23 Mar 2026 15:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2293BED27;
+	Mon, 23 Mar 2026 16:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxPqAANQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7pH2iUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DB12459EA;
-	Mon, 23 Mar 2026 15:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662583BE168;
+	Mon, 23 Mar 2026 16:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278440; cv=none; b=MLlFTu4Jxeu6aJtVD6v4yDYMmu1kwpYhkSVG3IA0i/iSGCS57VWqPORRPCemLFKSJgcjMpVN82fnq1/Do9ylw3iipL2jOdXjoWXYmDzXHqhftvvuZEI4ykZ4uPubHW67pN7ovIJk0JtLj2M6ttsMClMcEyMFodik1xOS3wvvL8I=
+	t=1774282674; cv=none; b=CUCbYr62OBG/X/B7CKhpT1pNL4rPBhnUx/F/Rf0uTD+QA8f7YKLztn6O3eeTru4X7T7Gf9hDy6U/fo3bFAY4SENHSQG26j30MLLrxR7O0g6ByIuDIX+13wMT4TPzmYGHdWIyZYx6HWGn/mQAwYrGkAN/XY/fJt5lw/GqcnjNsYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278440; c=relaxed/simple;
-	bh=tClEwvImE5i0TD4rngf7oQrn5ftYQpinurxipSOVttE=;
+	s=arc-20240116; t=1774282674; c=relaxed/simple;
+	bh=uZ2H+zgBoIOZX3mXFE1scyQzCjX0u5IYVym+f4+8s2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RO+PhMbbJs4Uz7wV4tQxqySzhM+9XQTuVIsNQrdDw+K2guy//6wNF+NeUz4NORTKQ/5wQG5f0lsD+utB9nvRzgSA4FYYCJTQm5Wb2Rva+As0J6s9BYXz8Du2e8Y8RYaPV+AoFkzF+YdaXtuh3SPOm4Y6OEm0XHXURw4pw96rra4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxPqAANQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BF6C4CEF7;
-	Mon, 23 Mar 2026 15:07:19 +0000 (UTC)
+	 MIME-Version; b=eWQuoMWe/xyaHUwVj4sNMFlVTeQL+7rzpshX1sqWSTOTcD0VYoddZk9BB5I7PUvyfL5VxvydnTo0nMBAVdGAarkaFpoDAGz9+zBNFxfTbNVSotAYvjGy6ABMcLr5QPi46P931ODX9wu9p8EYI5Rh0KTpdzr7DnOJAR7Az6AoINM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7pH2iUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1148C2BC9E;
+	Mon, 23 Mar 2026 16:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278440;
-	bh=tClEwvImE5i0TD4rngf7oQrn5ftYQpinurxipSOVttE=;
+	s=korg; t=1774282674;
+	bh=uZ2H+zgBoIOZX3mXFE1scyQzCjX0u5IYVym+f4+8s2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxPqAANQ3IUUFnc5NEYfQFiK1PwbrqkWcwdyh2HH/FY8a/b2fCFZwTe9eMb3Y/bKd
-	 +HIUM5eeG9x7ROSHBUEcOGNDvnDFWXQb7Azg7GR+PH3WJ0h9tcZ3X4/HeeI4iy18RA
-	 ZXSBIjnYppT9sSR0R36xRGr8pmv8m5RfaIgvlfDg=
+	b=A7pH2iUezCHtvBSkxnG8vGsir/pyNKqRVSLsvkWc3eFwIfm2D2cPwkimbVeMnTY0S
+	 f6jhWQx6Y1LgqgXjJ9OUPrtrUPui/UD6Jcy/JgArylV6TdrHnLg+EQQ/N+5Hx4XXke
+	 sqPx1c0sie6HCxcEppG6xZiS152elgziYpYvjEow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Arnaud Ferraris <arnaud.ferraris@collabora.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 307/567] Revert "tcpm: allow looking for role_sw device in the main node"
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 245/481] parisc: Check kernel mapping earlier at bootup
 Date: Mon, 23 Mar 2026 14:43:47 +0100
-Message-ID: <20260323134541.418699764@linuxfoundation.org>
+Message-ID: <20260323134531.124128965@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +64,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229221-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229716-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 523372F6824
+X-Rspamd-Queue-Id: 5C80B2F8C50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 6b275bfaa16be3fb1689fa6794e445ecd127a1b4 upstream.
+commit 17c144f1104bfc29a3ce3f7d0931a1bfb7a3558c upstream.
 
-This reverts commit 1366cd228b0c67b60a2c0c26ef37fe9f7cfedb7f.
+The check if the initial mapping is sufficient needs to happen much
+earlier during bootup. Move this test directly to the start_parisc()
+function and use native PDC iodc functions to print the warning, because
+panic() and printk() are not functional yet.
 
-The fwnode_usb_role_switch_get() returns NULL only if no connection is
-found, returns ERR_PTR(-EPROBE_DEFER) if connection is found but deferred
-probe is needed, or a valid pointer of usb_role_switch.
+This fixes boot when enabling various KALLSYSMS options which need
+much more space.
 
-When switching from a NULL check to IS_ERR_OR_NULL(), usb_role_switch_get()
-returns NULL and overwrites the ERR_PTR(-EPROBE_DEFER) returned by
-fwnode_usb_role_switch_get(). This causes the deferred probe indication to
-be lost, preventing the USB role switch from ever being retrieved.
-
-Fixes: 1366cd228b0c ("tcpm: allow looking for role_sw device in the main node")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260309074313.2809867-2-xu.yang_2@nxp.com
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/kernel/setup.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6637,7 +6637,7 @@ struct tcpm_port *tcpm_register_port(str
- 	port->port_type = port->typec_caps.type;
+--- a/arch/parisc/kernel/setup.c
++++ b/arch/parisc/kernel/setup.c
+@@ -135,14 +135,6 @@ void __init setup_arch(char **cmdline_p)
+ #endif
+ 	printk(KERN_CONT ".\n");
  
- 	port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
--	if (IS_ERR_OR_NULL(port->role_sw))
-+	if (!port->role_sw)
- 		port->role_sw = usb_role_switch_get(port->dev);
- 	if (IS_ERR(port->role_sw)) {
- 		err = PTR_ERR(port->role_sw);
+-	/*
+-	 * Check if initial kernel page mappings are sufficient.
+-	 * panic early if not, else we may access kernel functions
+-	 * and variables which can't be reached.
+-	 */
+-	if (__pa((unsigned long) &_end) >= KERNEL_INITIAL_SIZE)
+-		panic("KERNEL_INITIAL_ORDER too small!");
+-
+ #ifdef CONFIG_64BIT
+ 	if(parisc_narrow_firmware) {
+ 		printk(KERN_INFO "Kernel is using PDC in 32-bit mode.\n");
+@@ -398,6 +390,18 @@ void __init start_parisc(void)
+ 	int ret, cpunum;
+ 	struct pdc_coproc_cfg coproc_cfg;
+ 
++	/*
++	 * Check if initial kernel page mapping is sufficient.
++	 * Print warning if not, because we may access kernel functions and
++	 * variables which can't be reached yet through the initial mappings.
++	 * Note that the panic() and printk() functions are not functional
++	 * yet, so we need to use direct iodc() firmware calls instead.
++	 */
++	const char warn1[] = "CRITICAL: Kernel may crash because "
++			     "KERNEL_INITIAL_ORDER is too small.\n";
++	if (__pa((unsigned long) &_end) >= KERNEL_INITIAL_SIZE)
++		pdc_iodc_print(warn1, sizeof(warn1) - 1);
++
+ 	/* check QEMU/SeaBIOS marker in PAGE0 */
+ 	running_on_qemu = (memcmp(&PAGE0->pad0, "SeaBIOS", 8) == 0);
+ 
 
 
 
