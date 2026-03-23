@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-228044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EONdDhVIwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:01 +0100
+	id GBrVL/lswWmqTAQAu9opvQ
+	(envelope-from <stable+bounces-229730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1002F3B6B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980D12F894A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 13E133064EC6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 779443159EC8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766E43AC0D2;
-	Mon, 23 Mar 2026 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151553BD25D;
+	Mon, 23 Mar 2026 16:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS7k/3rD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoBo0BlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D7F3AE1A5;
-	Mon, 23 Mar 2026 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67A83B0ACC;
+	Mon, 23 Mar 2026 16:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273958; cv=none; b=Sie+KHIH65j9cVq8nciZEz71kj/zhENS/dmvsOdqVPMeFRirUbeDZyWfKSMlXtNL6PSWMN8aj6m4G/FZBRPnPk2at7f9ZNPeu2/eSofpOcuC0pVQVdDVSwKad2NwtCHuI72Y7X/sbmX2WY8uCvfJOZ1WuKPKgM35A3Z/TN5l4Ow=
+	t=1774282712; cv=none; b=AGT5mSAwt4paWyMgrEzuvkwDVGzFeqsA/iMNf7GQGQUPS5qqTPQgvaVOgUaGQ7/kW8wkJYpeOZKQM/7UxYeKz7k6/XZJQPfNyYDw0i+QdhjgPRJ428nTFg37UyvyFNwvVanixoqxsgzQ0E3xphsjmcmg7o8G80ndtcn2cG7CcD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273958; c=relaxed/simple;
-	bh=OPZTMsduaj7NNw8RBoxXxHx9iM2S6xqR6BGPzPJ1xUg=;
+	s=arc-20240116; t=1774282712; c=relaxed/simple;
+	bh=8cdX4srIcJpFwR9ZkoUTfkcV1UIENY9H7pqtkQfvLoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ODYcbDFKq86duO0Hxe/ReLTKM+iSzMacmxO4FzzrRVTKzg1hCrhZ+IBsHt363JZVvl6PiQfeeqoSD7BzHvrS2JxdPAw1mrBr9ZYPI8nL60yQTh1CNvWFwqWBlWa98AOAeOO1zhhqgJ9YlJzJ6ab3E1Ar9izIj/jsu+5D0h43HCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS7k/3rD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9904C4CEF7;
-	Mon, 23 Mar 2026 13:52:37 +0000 (UTC)
+	 MIME-Version; b=qXhuEc5bqLqSrq97VrlwicAd0c1Y83FuV9M+6z1400P1D7J2ZFsB73FO8VgAFj13gtoWrKcvdpH44jtkrJpY3tr/GBorVb/1Z9UHz8zQ0RMTZtaz20KOwFiN2DS3LQTZjfH7d/1MvJIj2UliTiwx2OYOEQOpDtpGOv32BxrcqKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoBo0BlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E211C4CEF7;
+	Mon, 23 Mar 2026 16:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273958;
-	bh=OPZTMsduaj7NNw8RBoxXxHx9iM2S6xqR6BGPzPJ1xUg=;
+	s=korg; t=1774282712;
+	bh=8cdX4srIcJpFwR9ZkoUTfkcV1UIENY9H7pqtkQfvLoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZS7k/3rDzIQVxdeFo2CVNx5Mv8qn7mIMV5AXaEBCS0yaY/qRuIGFqmfc2z1XiYjtQ
-	 euBvjLfLYi0mTtYHnOvvUx6/+rD1B8MfCoR1nqEKiMJvH7Ccp+oyHJ3Kic5C3MO9GN
-	 ZpB5IggtG3EWjVmnbDfnlTMYQoAVV7kmsz3mY9Po=
+	b=qoBo0BlZ0am9zxXuEsLwiz8Bn97toJr5Y4l4oIiUkIrLjjMMeMQSHwznP0zrsmFtN
+	 FAQyM72yM9p2pvnm66zoPEJlpNFDq1j27cuZa9MX6vkDILt80mmJYG2B4sn7Y7zxeY
+	 uIdq1fvgEkILNFMxAeuP8CZH2dAUWDHMTgFjrbqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.19 062/220] serial: 8250: Protect LCR write in shutdown
-Date: Mon, 23 Mar 2026 14:43:59 +0100
-Message-ID: <20260323134506.550997175@linuxfoundation.org>
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.1 258/481] x86/apic: Disable x2apic on resume if the kernel expects so
+Date: Mon, 23 Mar 2026 14:44:00 +0100
+Message-ID: <20260323134531.440422618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +65,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228044-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229730-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 3C1002F3B6B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 980D12F894A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
 
-commit 59a33d83bbe6d73d2071d7ae21590b29faed0503 upstream.
+commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
 
-The 8250_dw driver needs to potentially perform very complex operations
-during LCR writes because its BUSY handling prevents updates to LCR
-while UART is BUSY (which is not fully under our control without those
-complex operations). Thus, LCR writes should occur under port's lock.
+When resuming from s2ram, firmware may re-enable x2apic mode, which may have
+been disabled by the kernel during boot either because it doesn't support IRQ
+remapping or for other reasons. This causes the kernel to continue using the
+xapic interface, while the hardware is in x2apic mode, which causes hangs.
+This happens on defconfig + bare metal + s2ram.
 
-Move LCR write under port's lock in serial8250_do_shutdown(). Also
-split the LCR RMW so that the logic is on a separate line for clarity.
+Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
+disabled, i.e. when x2apic_mode = 0.
 
-Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-2-ilpo.jarvinen@linux.intel.com
+The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
+pre-sleep configuration or initial boot configuration for each CPU, including
+MSR state:
+
+  When executing from the power-on reset vector as a result of waking from an
+  S2 or S3 sleep state, the platform firmware performs only the hardware
+  initialization required to restore the system to either the state the
+  platform was in prior to the initial operating system boot, or to the
+  pre-sleep configuration state. In multiprocessor systems, non-boot
+  processors should be placed in the same state as prior to the initial
+  operating system boot.
+
+  (further ahead)
+
+  If this is an S2 or S3 wake, then the platform runtime firmware restores
+  minimum context of the system before jumping to the waking vector. This
+  includes:
+
+	CPU configuration. Platform runtime firmware restores the pre-sleep
+	configuration or initial boot configuration of each CPU (MSR, MTRR,
+	firmware update, SMBase, and so on). Interrupts must be disabled (for
+	IA-32 processors, disabled by CLI instruction).
+
+	(and other things)
+
+So at least as per the spec, re-enablement of x2apic by the firmware is
+allowed if "x2apic on" is a part of the initial boot configuration.
+
+  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+
+  [ bp: Massage. ]
+
+Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/kernel/apic/apic.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2348,6 +2348,7 @@ static int serial8250_startup(struct uar
- void serial8250_do_shutdown(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
-+	u32 lcr;
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1958,6 +1958,7 @@ void __init check_x2apic(void)
  
- 	serial8250_rpm_get(up);
- 	/*
-@@ -2374,13 +2375,13 @@ void serial8250_do_shutdown(struct uart_
- 			port->mctrl &= ~TIOCM_OUT2;
+ static inline void try_to_enable_x2apic(int remap_mode) { }
+ static inline void __x2apic_enable(void) { }
++static inline void __x2apic_disable(void) { }
+ #endif /* !CONFIG_X86_X2APIC */
  
- 		serial8250_set_mctrl(port, port->mctrl);
+ void __init enable_IR_x2apic(void)
+@@ -2778,6 +2779,11 @@ static void lapic_resume(void)
+ 	if (x2apic_mode) {
+ 		__x2apic_enable();
+ 	} else {
++		if (x2apic_enabled()) {
++			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
++			__x2apic_disable();
++		}
 +
-+		/* Disable break condition */
-+		lcr = serial_port_in(port, UART_LCR);
-+		lcr &= ~UART_LCR_SBC;
-+		serial_port_out(port, UART_LCR, lcr);
- 	}
- 
--	/*
--	 * Disable break condition and FIFOs
--	 */
--	serial_port_out(port, UART_LCR,
--			serial_port_in(port, UART_LCR) & ~UART_LCR_SBC);
- 	serial8250_clear_fifos(up);
- 
- 	rsa_disable(up);
+ 		/*
+ 		 * Make sure the APICBASE points to the right address
+ 		 *
 
 
 
