@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPA4LJJswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:42 +0100
+	id wFQhGhBMwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30242F8826
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4472F436E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 366D2321FD11
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1A2730A76C1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CAE3AF647;
-	Mon, 23 Mar 2026 16:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F053B637A;
+	Mon, 23 Mar 2026 14:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoaIynIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqtfuiCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474E937B03B;
-	Mon, 23 Mar 2026 16:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A14A3B0AF7;
+	Mon, 23 Mar 2026 14:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282726; cv=none; b=eS6N3OhSRl38i9XRS8He90cayBTL31bUrYo8yIpar3udqcmj5WGsZmWMH3nfDutt7I2/tt9ocX8ncSPbVdUGoIhkLV2uxsM01PFP04P1v6hYVrQqu3CFR+89FtbMCB0242b3YCM79SZd5SAUL5zG1GOa1sDNTMWpPX0W8YyHozI=
+	t=1774274521; cv=none; b=m5vDLL6OMk8JMs0/YcTSG5qb1TRUxRt+6FECrO6++BvalHN0/UhIE+i3+T9bcdbQv1TWL0ynYF0OYmDb5AVLSJNGM9hMi7Th8LLTztlNhGzE9nCWqJIB+1glgz1KtJftZ5JtWnjcWbIVaXCARXuFTU5xWFScq/UCfHGqqHNCGIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282726; c=relaxed/simple;
-	bh=WpI0OAZq1vq/c8hj2e6l32Nabud2AOgUYdLpXwEN7Ns=;
+	s=arc-20240116; t=1774274521; c=relaxed/simple;
+	bh=4M4HPMVtqsCt4FMcp2oJ7Pv7Y0hE6P/KXHBqECp74SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpvXpbcGMPxQEh+4HcDDcK6IApWC98FXf1LW5/bzC0HbLgLc0XyjOE4pozI4mtz3BjkL3N9/26boJ6CXYciVUD1FOTCjPSpKvjGkfNM4C6tLHG5JyT/K5PzlJMxdNcpiectEOrvIudbafolMqBKh5Xrp8YlYZhuIZCGgt15AC44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoaIynIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE2EC4CEF7;
-	Mon, 23 Mar 2026 16:18:45 +0000 (UTC)
+	 MIME-Version; b=l7Amo3Yr40d6vVZLcTl7SIegq0AXQkp8pwtoIL4Mgb71CY/bu6mwM0Sg5z9tyPBuFNa6mn9omlhJN6/83n6fbek8M34aH0qTdtBTc3/BU7GxFjkZfTnXsjcj1R/H1zda2dxuTuK2DETRv8Apsm97B+U6Sn1dPN1gwXjtstz5rv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqtfuiCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C21C4CEF7;
+	Mon, 23 Mar 2026 14:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282726;
-	bh=WpI0OAZq1vq/c8hj2e6l32Nabud2AOgUYdLpXwEN7Ns=;
+	s=korg; t=1774274521;
+	bh=4M4HPMVtqsCt4FMcp2oJ7Pv7Y0hE6P/KXHBqECp74SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoaIynIcNA3UolaeobDT3FD5tqvn3lc0wVIJVqs7A9Cp/Vph4TZv3AwQVOloHCZJX
-	 8MH5dYOFN8tJDwISqqPXM1gcOpBNleIDvOLXU8qAEy7rfvKnKYWoxs8GZ8NuIHBaPn
-	 tnetxY65MHdbFDIAZS3GR+E2MGkHf3SMhFJi2i0E=
+	b=nqtfuiCgbPTL+unztELtelzg+xnjrpeoh6UEscVOmK1GCwFGrp8ajJQb/xO/WLLqU
+	 AwgTCaobSgxgTup4M56sY1zpZrEW0bluwjBGt0lpgdZyLYwbDIYREQ9xWVaVCnxzzb
+	 ezXgnFxUrrHa5+w0ReBrkQ4/BUK+w+fwQIa3TzRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Oscar Santos <ossantos@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 262/481] smb: client: fix iface port assignment in parse_server_interfaces
+Subject: [PATCH 6.18 023/212] smb: client: fix krb5 mount with username option
 Date: Mon, 23 Mar 2026 14:44:04 +0100
-Message-ID: <20260323134531.531352131@linuxfoundation.org>
+Message-ID: <20260323134504.488442510@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +70,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229735-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228230-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F30242F8826
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email]
+X-Rspamd-Queue-Id: BE4472F436E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-commit d4c7210d2f3ea481a6481f03040a64d9077a6172 upstream.
+commit 12b4c5d98cd7ca46d5035a57bcd995df614c14e1 upstream.
 
-parse_server_interfaces() initializes interface socket addresses with
-CIFS_PORT. When the mount uses a non-default port this overwrites the
-configured destination port.
+Customer reported that some of their krb5 mounts were failing against
+a single server as the client was trying to mount the shares with
+wrong credentials.  It turned out the client was reusing SMB session
+from first mount to try mounting the other shares, even though a
+different username= option had been specified to the other mounts.
 
-Later, cifs_chan_update_iface() copies this sockaddr into server->dstaddr,
-causing reconnect attempts to use the wrong port after server interface
-updates.
+By using username mount option along with sec=krb5 to search for
+principals from keytab is supported by cifs.upcall(8) since
+cifs-utils-4.8.  So fix this by matching username mount option in
+match_session() even with Kerberos.
 
-Use the existing port from server->dstaddr instead.
+For example, the second mount below should fail with -ENOKEY as there
+is no 'foobar' principal in keytab (/etc/krb5.keytab).  The client
+ends up reusing SMB session from first mount to perform the second
+one, which is wrong.
 
+```
+$ ktutil
+ktutil:  add_entry -password -p testuser -k 1 -e aes256-cts
+Password for testuser@ZELDA.TEST:
+ktutil:  write_kt /etc/krb5.keytab
+ktutil:  quit
+$ klist -ke
+Keytab name: FILE:/etc/krb5.keytab
+KVNO Principal
+ ---- ----------------------------------------------------------------
+   1 testuser@ZELDA.TEST (aes256-cts-hmac-sha1-96)
+$ mount.cifs //w22-root2/scratch /mnt/1 -o sec=krb5,username=testuser
+$ mount.cifs //w22-root2/scratch /mnt/2 -o sec=krb5,username=foobar
+$ mount -t cifs | grep -Po 'username=\K\w+'
+testuser
+testuser
+```
+
+Reported-by: Oscar Santos <ossantos@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
 Cc: stable@vger.kernel.org
-Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
-Tested-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -569,6 +569,7 @@ parse_server_interfaces(struct network_i
- 	struct iface_info_ipv6 *p6;
- 	struct cifs_server_iface *info = NULL, *iface = NULL, *niface = NULL;
- 	struct cifs_server_iface tmp_iface;
-+	__be16 port;
- 	ssize_t bytes_left;
- 	size_t next = 0;
- 	int nb_iface = 0;
-@@ -610,6 +611,15 @@ parse_server_interfaces(struct network_i
- 		goto out;
- 	}
- 
-+	spin_lock(&ses->server->srv_lock);
-+	if (ses->server->dstaddr.ss_family == AF_INET)
-+		port = ((struct sockaddr_in *)&ses->server->dstaddr)->sin_port;
-+	else if (ses->server->dstaddr.ss_family == AF_INET6)
-+		port = ((struct sockaddr_in6 *)&ses->server->dstaddr)->sin6_port;
-+	else
-+		port = cpu_to_be16(CIFS_PORT);
-+	spin_unlock(&ses->server->srv_lock);
-+
- 	while (bytes_left >= (ssize_t)sizeof(*p)) {
- 		memset(&tmp_iface, 0, sizeof(tmp_iface));
- 		/* default to 1Gbps when link speed is unset */
-@@ -630,7 +640,7 @@ parse_server_interfaces(struct network_i
- 			memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
- 
- 			/* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these */
--			addr4->sin_port = cpu_to_be16(CIFS_PORT);
-+			addr4->sin_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
- 				 &addr4->sin_addr);
-@@ -644,7 +654,7 @@ parse_server_interfaces(struct network_i
- 			/* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore these */
- 			addr6->sin6_flowinfo = 0;
- 			addr6->sin6_scope_id = 0;
--			addr6->sin6_port = cpu_to_be16(CIFS_PORT);
-+			addr6->sin6_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
- 				 &addr6->sin6_addr);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1954,6 +1954,10 @@ static int match_session(struct cifs_ses
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
++		if (strncmp(ses->user_name ?: "",
++			    ctx->username ?: "",
++			    CIFS_MAX_USERNAME_LEN))
++			return 0;
+ 		break;
+ 	case NTLMv2:
+ 	case RawNTLMSSP:
 
 
 
