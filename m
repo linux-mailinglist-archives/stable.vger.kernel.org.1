@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJAOI5xHwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:00 +0100
+	id +JQzOu9qwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419B42F3A0E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC75F2F8407
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEFE9307A383
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B14A312C3EF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6693AE189;
-	Mon, 23 Mar 2026 13:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E83F3C061F;
+	Mon, 23 Mar 2026 16:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZBOV5Il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6umZrAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967C23AC0C9;
-	Mon, 23 Mar 2026 13:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A3B3BED2B;
+	Mon, 23 Mar 2026 16:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273973; cv=none; b=Wd1u7+hm+f8p1gE7DTz2ramHyB6v1ejRs+8TnFrmGCUUjQQXt48rEUqWPKlkUfuqWWQhqT5UvU0F0ooHRxb0d+0Zzn4ePtenO3gaIz01G1+xB690DHlZpoqm3YW4yLfPhP/nAAxB5AHNY+FvnI+KTNnCorueSwmeJZSIhGT6zWA=
+	t=1774282631; cv=none; b=gYFpLvH/lz5CZbNcdXuALKenQ+6+rJzUwImxNO8OWoUfh7LSKerS8z/6Um+ahMWclBPVE7GrhBZi5pWQWE9p2J7z5owP1X+jjN1U31swpqbKKvCefZjRRV23tf1acZDdyau8jfcliy+Hs+XXMl/fB1Jda5qdN3Vw8a8B6VqIblo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273973; c=relaxed/simple;
-	bh=Ez77OZSqaNQjpnE3jK6yygOz64nwcYPNKjf9FhKf9SY=;
+	s=arc-20240116; t=1774282631; c=relaxed/simple;
+	bh=i+04p+XYLioikiXiyOxR/CdfvWPwH64IasiCC6HN/es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8WAe+4sz5NKco84UpX8gEJWYL0YxJW9bEnNl0r39KSuNn3SN3Os/PYP/yHOaP8zOXPFdMf1/WbLPOP68eEtHqPCMyp7aYm6v2qbmq3O+OciK8rYl0SjgVzb8/CBtryEwlY5vxlbb5F488NU55hs0M5DTI/yWAQ0xSMu9zFoL24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZBOV5Il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A998C2BC9E;
-	Mon, 23 Mar 2026 13:52:52 +0000 (UTC)
+	 MIME-Version; b=fv4n61UeV73LcuUv2Bc+5/63qsR+TUkQm8bY9/PJP+QcmpWKv9ugxwt9tnGQciOAmaUl39AwljQvzNPlETkE6VQ/PfEoQDnmFzw2v5P/D3qTpjgcdDhkwTO9ra8uBR1nFzoEUDWSXSwHw6YtGH7LTRqu5hbYFNnufZp+wz198BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6umZrAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E467CC4CEF7;
+	Mon, 23 Mar 2026 16:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273973;
-	bh=Ez77OZSqaNQjpnE3jK6yygOz64nwcYPNKjf9FhKf9SY=;
+	s=korg; t=1774282631;
+	bh=i+04p+XYLioikiXiyOxR/CdfvWPwH64IasiCC6HN/es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZBOV5Ilvn1kNY0rDF24SdTQux8KzL5MRkh/zgYTZSaYBn4yE2FNit0/UnR0OZuVu
-	 HxJmxTxIDFpnNLXjzIoIYZX7+p8ejWLwdD7EyZVV5EPeZlBHxMb6iifL9uB53IlgHS
-	 sWL8P9tz3qeUzOg3+YqxofxDqjNtmJCuA9J9CUXI=
+	b=W6umZrAq7OZjR9c8DYp6LQhFzzTamGhYh3F3r2ap0wKi2hXfaTPUVt2YRZnR3Y5hC
+	 kHZcR138nJdCWcU69CDYXKLwokqyICsldy4VX7xg/X4T4FJxnDYYC1XXHlw+f7oFAM
+	 JA5YZaU9fFNqYnAC0v2Scf2ZFBy+lG4HEQZvI/q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 031/220] net: macb: Introduce gem_init_rx_ring()
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 226/481] libceph: Use u32 for non-negative values in ceph_monmap_decode()
 Date: Mon, 23 Mar 2026 14:43:28 +0100
-Message-ID: <20260323134505.560066734@linuxfoundation.org>
+Message-ID: <20260323134530.651094845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,89 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228049-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229700-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[haokexin.gmail.com:query timed out,horms.kernel.org:query timed out];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 419B42F3A0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AC75F2F8407
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 1a7124ecd655bcaf1845197fe416aa25cff4c3ea ]
+commit 770444611f047dbfd4517ec0bc1b179d40c2f346 upstream.
 
-Extract the initialization code for the GEM RX ring into a new function.
-This change will be utilized in a subsequent patch. No functional changes
-are introduced.
+This patch fixes unnecessary implicit conversions that change signedness
+of blob_len and num_mon in ceph_monmap_decode().
+Currently blob_len and num_mon are (signed) int variables. They are used
+to hold values that are always non-negative and get assigned in
+ceph_decode_32_safe(), which is meant to assign u32 values. Both
+variables are subsequently used as unsigned values, and the value of
+num_mon is further assigned to monmap->num_mon, which is of type u32.
+Therefore, both variables should be of type u32. This is especially
+relevant for num_mon. If the value read from the incoming message is
+very large, it is interpreted as a negative value, and the check for
+num_mon > CEPH_MAX_MON does not catch it. This leads to the attempt to
+allocate a very large chunk of memory for monmap, which will most likely
+fail. In this case, an unnecessary attempt to allocate memory is
+performed, and -ENOMEM is returned instead of -EINVAL.
 
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260312-macb-versal-v1-1-467647173fa4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 718d0766ce4c ("net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/ceph/mon_client.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2669,6 +2669,14 @@ static void macb_init_tieoff(struct macb
- 	desc->ctrl = 0;
- }
- 
-+static void gem_init_rx_ring(struct macb_queue *queue)
-+{
-+	queue->rx_tail = 0;
-+	queue->rx_prepared_head = 0;
-+
-+	gem_rx_refill(queue);
-+}
-+
- static void gem_init_rings(struct macb *bp)
- {
- 	struct macb_queue *queue;
-@@ -2686,10 +2694,7 @@ static void gem_init_rings(struct macb *
- 		queue->tx_head = 0;
- 		queue->tx_tail = 0;
- 
--		queue->rx_tail = 0;
--		queue->rx_prepared_head = 0;
--
--		gem_rx_refill(queue);
-+		gem_init_rx_ring(queue);
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -72,8 +72,8 @@ static struct ceph_monmap *ceph_monmap_d
+ 	struct ceph_monmap *monmap = NULL;
+ 	struct ceph_fsid fsid;
+ 	u32 struct_len;
+-	int blob_len;
+-	int num_mon;
++	u32 blob_len;
++	u32 num_mon;
+ 	u8 struct_v;
+ 	u32 epoch;
+ 	int ret;
+@@ -112,7 +112,7 @@ static struct ceph_monmap *ceph_monmap_d
  	}
+ 	ceph_decode_32_safe(p, end, num_mon, e_inval);
  
- 	macb_init_tieoff(bp);
+-	dout("%s fsid %pU epoch %u num_mon %d\n", __func__, &fsid, epoch,
++	dout("%s fsid %pU epoch %u num_mon %u\n", __func__, &fsid, epoch,
+ 	     num_mon);
+ 	if (num_mon > CEPH_MAX_MON)
+ 		goto e_inval;
 
 
 
