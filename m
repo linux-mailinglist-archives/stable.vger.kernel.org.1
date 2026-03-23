@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAnxEIVTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:49 +0100
+	id YKzeN4RYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981AF2F5510
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7612F5FC0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 949483100A95
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B22B530BE408
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29513AEF21;
-	Mon, 23 Mar 2026 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E50387599;
+	Mon, 23 Mar 2026 14:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Wpi+Hpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ejm1juGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A0538C41E;
-	Mon, 23 Mar 2026 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAFA2737EB;
+	Mon, 23 Mar 2026 14:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275230; cv=none; b=ToJoFiWdGZCrGd6lS0dzd+8eZ6YvI10QJsFXTEAvHjX4sU0JvaazOfuN39aWwY9Oqjm0qc9idsWneluhCnSl87LOII8R1jzyNHEEgBFYgs/cYNAlTB0z8mhF8XUD8NqNdrOs1mWIex1vRC8s/ZN9xrmrGZGyDnroZMN+kiUF5qg=
+	t=1774277887; cv=none; b=jhAqqnnwgbo26p1v9fvqXz/gflaqh4ZremwdlhMvIkLbZ9GdhOfQZhW3pXwEtN/050tWPfD85JlHo5+cT8G1ljK29KkzdfuooGXoEin1x3QHFdPCoH18E83PCxSPmNkdKWjl6mj4cZ6NgTBCpVnMue7tt/bT+gNk5JBUmqJEbVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275230; c=relaxed/simple;
-	bh=hwIQSdPdckF5tmUHUKHNieGqkCB06SyI/HzU+kc4dUg=;
+	s=arc-20240116; t=1774277887; c=relaxed/simple;
+	bh=9mWObq2gcZiFQK3EyBzlQRSBypqv0wXMkXOwiCeEQp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHnlpWOksBX3cdp7tPBq8kecrS20U08d/9waR9rH3pdUullncRkiSx2oopa2uvNg7mJmSRFTc9cp3pKSmnWTDaFwsaOlFLU7OT6SGrPSKtuhYwgZ6syx8ye8OxdaJgH1KrIvCQSNMCSKfv+BJ9Fmp9TtpYKayXHHMRH1P+Ykz/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Wpi+Hpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A8CC4CEF7;
-	Mon, 23 Mar 2026 14:13:50 +0000 (UTC)
+	 MIME-Version; b=EYzh96EHg61KQvYGNvGWLuGpxVW3GpMsloK+0HMp76GfJe2XCJfkPtdkP34mRDoJ+9oWNEi3thMovl7M1VX8fRUdr04kqM1jAOoivGaRAbsdATqWu1c4ltGQEX4bI5+nhzoGiDyOilvsHlTySCwy7UFiveGrsIseLJN/BPRVkiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ejm1juGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527E0C4CEF7;
+	Mon, 23 Mar 2026 14:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275230;
-	bh=hwIQSdPdckF5tmUHUKHNieGqkCB06SyI/HzU+kc4dUg=;
+	s=korg; t=1774277887;
+	bh=9mWObq2gcZiFQK3EyBzlQRSBypqv0wXMkXOwiCeEQp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Wpi+HpeqN7AM+N9RB7xZnez1ULnYQfqqe+mzAf+4xMmTZmWcpqwEl4JTuMatuidn
-	 8jElfJSsA00D1fEPD8F627IwJoQF0NxsoTjkE79XVJLGj8YSECbsTVElFLgi8od4OZ
-	 tHUgWn+sabvX+1H9q5Ql7uZESzMGnWn33hDRQJko=
+	b=Ejm1juGo1VCnsdGayyNpntCy1M7CFhDWyf+bojZ8xt6TVtgqXi84jT847L8d2KCf2
+	 lnm71dpZjFUBU91oCaS1cbQkSk9wZa2HDZQw5j307Tvt7WAxlhGEb/jp6eGkBXXZ1u
+	 o6vG2xL4/MSyMr92uiCu7hKb23vXMa9/S8e3Z5WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Chris Lew <christopher.lew@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/460] remoteproc: sysmon: Correct subsys_name_len type in QMI request
+	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 097/567] can: usb: f81604: handle short interrupt urb messages properly
 Date: Mon, 23 Mar 2026 14:40:17 +0100
-Message-ID: <20260323134527.209047398@linuxfoundation.org>
+Message-ID: <20260323134536.229183819@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228474-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229046-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 981AF2F5510
+X-Rspamd-Queue-Id: 5B7612F5FC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit da994db94e60f9a9411108ddf4d1836147ad4c9c ]
+commit 7299b1b39a255f6092ce4ec0b65f66e9d6a357af upstream.
 
-The QMI message encoder has up until recently read a single byte (as
-elem_size == 1), but with the introduction of big endian support it's
-become apparent that this field is expected to be a full u32 -
-regardless of the size of the length in the encoded message (which is
-what elem_size specifies).
+If an interrupt urb is received that is not the correct length, properly
+detect it and don't attempt to treat the data as valid.
 
-The result is that the encoder now reads past the length byte and
-rejects the unreasonably large length formed when including the
-following 3 bytes from the subsys_name array.
-
-Fix this by changing to the expected type.
-
-Fixes: 1fb82ee806d1 ("remoteproc: qcom: Introduce sysmon")
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Chris Lew <christopher.lew@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260220-qmi-encode-invalid-length-v2-1-5674be35ab29@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022331-opal-evaluator-a928@gregkh
+Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_sysmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/f81604.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
-index c24e4a8828738..db33a41051a3e 100644
---- a/drivers/remoteproc/qcom_sysmon.c
-+++ b/drivers/remoteproc/qcom_sysmon.c
-@@ -203,7 +203,7 @@ static const struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
- };
+--- a/drivers/net/can/usb/f81604.c
++++ b/drivers/net/can/usb/f81604.c
+@@ -626,6 +626,12 @@ static void f81604_read_int_callback(str
+ 		netdev_info(netdev, "%s: Int URB aborted: %pe\n", __func__,
+ 			    ERR_PTR(urb->status));
  
- struct ssctl_subsys_event_req {
--	u8 subsys_name_len;
-+	u32 subsys_name_len;
- 	char subsys_name[SSCTL_SUBSYS_NAME_LENGTH];
- 	u32 event;
- 	u8 evt_driven_valid;
--- 
-2.51.0
-
++	if (urb->actual_length < sizeof(*data)) {
++		netdev_warn(netdev, "%s: short int URB: %u < %zu\n",
++			    __func__, urb->actual_length, sizeof(*data));
++		goto resubmit_urb;
++	}
++
+ 	switch (urb->status) {
+ 	case 0: /* success */
+ 		break;
 
 
 
