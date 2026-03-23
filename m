@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EyvOntdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:19 +0100
+	id EPdrGUxIwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7E22F67C5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB44B2F3BC6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A2CC430BEF90
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C60030CA17B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F613B4E96;
-	Mon, 23 Mar 2026 15:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581A43AEF58;
+	Mon, 23 Mar 2026 13:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGX3df4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQvS8u/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255742773C3;
-	Mon, 23 Mar 2026 15:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190F23AEF4F;
+	Mon, 23 Mar 2026 13:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278613; cv=none; b=N0I7mFWM5Pj3lgwQqEHoV1ydPqga7yx1O3pWcgm2nHXlAbAMAhkdOzrUMB9mTOGWGu4HyXlceTAYBQz1SZVv767XlJjXZessfu/szgXWMCEzCfXEO+hTZx4bE27CWt2etnt/mwS/dZt17POfbds5+eE+QJKgAR6RQD1yRUy7d98=
+	t=1774274091; cv=none; b=tEbiBEloGyOYoU16jzI/BWUJ2V27CBoJ7NVJTIiTU+7prtrIcKjuey1XSDKk4bH0o79IqDeRoqdqv0TaxDBJU7b418PwySwSquvuQjhKlD6zh9T7xXTFxFHqNV0cbZcM3Q+0jlNwyEWoYdteGF5s9xIO1cTFZVR45wY9ObDECwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278613; c=relaxed/simple;
-	bh=hFgyHpM/UTsuGDwffV9CYA0qnKIZhdjgk5EL6FfEJdo=;
+	s=arc-20240116; t=1774274091; c=relaxed/simple;
+	bh=owaAb4U69Z8d2j/xfeTH2KBWKY0OVYGFueT0UFzKXwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WC98v+56eK4GgVHctp0lgyHoy/J7w2Y0BH/IjzyR7E7L4ZtJESncyLt+rL4jv9YCxgyfUPNOZY3kZe3NQvSQBDbnBzjmMXsSXNXSa4bDiT2Z4xIY/p5M3N+vaNGeQLgAYo6JMJ99UL98YfKplKru8luYwmA8OUE1gy67fVLfqDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGX3df4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D69EC4CEF7;
-	Mon, 23 Mar 2026 15:10:12 +0000 (UTC)
+	 MIME-Version; b=iqIWpRMBTjde1jAx2zdMThrV8jQfTK3laWDjR1LJiVgOnR2v48+iTptO7pxQyKuExmuPZSa+zbOHBg2plSlsEVIf3OQkM/+OdR5oIjShEnpm07mBaWsRODTVpFr9ixwGbG8mHldMHNPfPOYkGid+quafgOWtpFsaJ9lp5ye+jTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQvS8u/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920F3C4CEF7;
+	Mon, 23 Mar 2026 13:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278612;
-	bh=hFgyHpM/UTsuGDwffV9CYA0qnKIZhdjgk5EL6FfEJdo=;
+	s=korg; t=1774274091;
+	bh=owaAb4U69Z8d2j/xfeTH2KBWKY0OVYGFueT0UFzKXwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGX3df4NIa8VDnd2RNS2sxvAVzfpzBtdwOJ6n5e7e2SVGU9WV+g1P9EQbFcTs8jNF
-	 vkDUTmdygH52a+Vjw1uuX1X/2pCCRb9xukMo4RJcFeZDbSD+oPOOAm9fYUotn182fe
-	 gJIjayjfkK/EXtrIzMnIYIxjPgrg+LKgHRj9TcTg=
+	b=PQvS8u/y0tEpc3Nfe4EkJx5yDUKYDVxAiViuSAE3Jcl/ou3pnF0U82LjLToVJJTwU
+	 +bxn6CE55Euc5Sp5dnBS1qWsSfV7Fad1pyv3UtS9nssbhNBq3wzcZCWRDe8kGo/8cx
+	 mP1CJvb5LwN2O1dKOR1yrZPUG2W4sTfFuMgBUYRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 362/567] i3c: mipi-i3c-hci: Use ETIMEDOUT instead of ETIME for timeout errors
+	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 105/220] wifi: mac80211: use jiffies_delta_to_msecs() for sta_info inactive times
 Date: Mon, 23 Mar 2026 14:44:42 +0100
-Message-ID: <20260323134542.781163077@linuxfoundation.org>
+Message-ID: <20260323134507.924694737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +66,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229277-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228089-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CF7E22F67C5
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: DB44B2F3BC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
 
-commit 4167b8914463132654e01e16259847d097f8a7f7 upstream.
+[ Upstream commit ac6f24cc9c0a9aefa55ec9696dcafa971d4d760b ]
 
-The MIPI I3C HCI driver currently returns -ETIME for various timeout
-conditions, while other I3C master drivers consistently use -ETIMEDOUT
-for the same class of errors.  Align the HCI driver with the rest of the
-subsystem by replacing all uses of -ETIME with -ETIMEDOUT.
+Inactive times of around 0xffffffff milliseconds have been observed on
+an ath9k device on ARM.  This is likely due to a memory ordering race in
+the jiffies_to_msecs(jiffies - last_active()) calculation causing an
+overflow when the observed jiffies is below ieee80211_sta_last_active().
 
-Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-2-adrian.hunter@intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use jiffies_delta_to_msecs() instead to avoid this problem.
+
+Fixes: 7bbdd2d98797 ("mac80211: implement station stats retrieval")
+Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Link: https://patch.msgid.link/20260303161701.31808-1-nicolas.cavallari@green-communications.fr
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/cmd_v1.c |    2 +-
- drivers/i3c/master/mipi-i3c-hci/cmd_v2.c |    2 +-
- drivers/i3c/master/mipi-i3c-hci/core.c   |    6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ net/mac80211/sta_info.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-@@ -335,7 +335,7 @@ static int hci_cmd_v1_daa(struct i3c_hci
- 		hci->io->queue_xfer(hci, xfer, 1);
- 		if (!wait_for_completion_timeout(&done, HZ) &&
- 		    hci->io->dequeue_xfer(hci, xfer, 1)) {
--			ret = -ETIME;
-+			ret = -ETIMEDOUT;
- 			break;
- 		}
- 		if (RESP_STATUS(xfer[0].response) == RESP_ERR_NACK &&
---- a/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
-@@ -277,7 +277,7 @@ static int hci_cmd_v2_daa(struct i3c_hci
- 		hci->io->queue_xfer(hci, xfer, 2);
- 		if (!wait_for_completion_timeout(&done, HZ) &&
- 		    hci->io->dequeue_xfer(hci, xfer, 2)) {
--			ret = -ETIME;
-+			ret = -ETIMEDOUT;
- 			break;
- 		}
- 		if (RESP_STATUS(xfer[0].response) != RESP_SUCCESS) {
---- a/drivers/i3c/master/mipi-i3c-hci/core.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/core.c
-@@ -237,7 +237,7 @@ static int i3c_hci_send_ccc_cmd(struct i
- 		goto out;
- 	if (!wait_for_completion_timeout(&done, HZ) &&
- 	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
--		ret = -ETIME;
-+		ret = -ETIMEDOUT;
- 		goto out;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 1a995bc301b19..b0d9bb830f293 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2759,7 +2759,9 @@ static void sta_set_link_sinfo(struct sta_info *sta,
  	}
- 	for (i = prefixed; i < nxfers; i++) {
-@@ -311,7 +311,7 @@ static int i3c_hci_priv_xfers(struct i3c
- 		goto out;
- 	if (!wait_for_completion_timeout(&done, HZ) &&
- 	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
--		ret = -ETIME;
-+		ret = -ETIMEDOUT;
- 		goto out;
- 	}
- 	for (i = 0; i < nxfers; i++) {
-@@ -359,7 +359,7 @@ static int i3c_hci_i2c_xfers(struct i2c_
- 		goto out;
- 	if (!wait_for_completion_timeout(&done, HZ) &&
- 	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
--		ret = -ETIME;
-+		ret = -ETIMEDOUT;
- 		goto out;
- 	}
- 	for (i = 0; i < nxfers; i++) {
+ 
+ 	link_sinfo->inactive_time =
+-		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, link_id));
++		jiffies_delta_to_msecs(jiffies -
++				       ieee80211_sta_last_active(sta,
++								 link_id));
+ 
+ 	if (!(link_sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
+ 				    BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
+@@ -2992,7 +2994,8 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 	sinfo->connected_time = ktime_get_seconds() - sta->last_connected;
+ 	sinfo->assoc_at = sta->assoc_at;
+ 	sinfo->inactive_time =
+-		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, -1));
++		jiffies_delta_to_msecs(jiffies -
++				       ieee80211_sta_last_active(sta, -1));
+ 
+ 	if (!(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
+ 			       BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
+-- 
+2.51.0
+
 
 
 
