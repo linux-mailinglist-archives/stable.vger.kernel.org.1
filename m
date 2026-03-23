@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJbiJyhRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:44 +0100
+	id eJVMAAR2wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:19:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A852F4FFD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BA32F9B8C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8F0D307B215
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB3DE30C6788
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AE33B47D7;
-	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4BC39A7EF;
+	Mon, 23 Mar 2026 16:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzQqyWWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMnK0kxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AD43AF65B;
-	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F90B283FC8;
+	Mon, 23 Mar 2026 16:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274446; cv=none; b=DcSbz55P4EwvnAa2qtYg903imv5nD3SOdvr0tZOQh/1F1i/Nubfr4v2b9IlwYynH3SWFv2lIvKMP8JtYrH6hithap2nUslqTBIRNHPwet72tiwagfgg/a8CnpmmhEa07oVNOYObZY7TTnMW9Nhorh1oVxkotQxEe1TzSVHTFkN8=
+	t=1774283162; cv=none; b=HPuWiAj8fw8p3nd2QdMM8JMyAiuM7l9VzMZryWPRZk/Hu6kHIXws/r5XiTsqcUF+hmEmm70SiXU8jlOxK99uvVXhbXub5u6ixqn5dae+q8dvtEYtBhB83eddnB/79G3fO8uXVL8ZPV56iwXY331L3SiZf2yqvJ3dzcfmA89tFVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274446; c=relaxed/simple;
-	bh=IpRCQiFcE0XWGfCUFsmfvd2hOsgVsHNCD2aBoGLZJ7U=;
+	s=arc-20240116; t=1774283162; c=relaxed/simple;
+	bh=C7ZrJCkPoWLBqGlQ588qIlV4+RBOUgml78Ah9J7ckJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwEFAcW99DU28NBZotU2JSDbSyxT5N3rNWMcvGpbDF1p5ajV0KKGo9d5kHm0fDQ2dnn6VX4TE7C5sKqLhoPbLK3zO/2OybGO7JfooczKyReKYmLiAv4KfGLLpYPkyLd4pb3e3GYJg3Dqqx0CHWwLuCPYo4uv8JUelNvk2ZHYmc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzQqyWWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A19C4CEF7;
-	Mon, 23 Mar 2026 14:00:45 +0000 (UTC)
+	 MIME-Version; b=eLMAtMQ6hIyDj1DnsBeQk1dW72/pORks4DFyiXfMXwdLXB3wHN89Ukhdh75WMAWd5o8W8nI3doQSWZ5j1tUQraXm3IIqFzd/GcE+KqV+wBBBhP2P56ux7bGXV0uW8NQ+faICK2vDkD1fl5L02Rh8jf7M36oxhmERgjiqkV9xtSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMnK0kxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B37C4CEF7;
+	Mon, 23 Mar 2026 16:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274446;
-	bh=IpRCQiFcE0XWGfCUFsmfvd2hOsgVsHNCD2aBoGLZJ7U=;
+	s=korg; t=1774283162;
+	bh=C7ZrJCkPoWLBqGlQ588qIlV4+RBOUgml78Ah9J7ckJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzQqyWWw+FkdPAwc5N4qmNmk98k1nTXWwLbI95YTygFN4SkU9AuqvNuM64yZXCDom
-	 QZ3fnX1aJPNcqHrr2E/5Hkeq+FNVTeVW8ApWbozyalFzY5uw1BEZagV1pXXPjGXkKd
-	 ZMmWZRNlcB1Nvs5vMmFbdnkEdrUOsTBb1LCRPikE=
+	b=TMnK0kxuXPgoFcQKNuEiQLvqBdL+hq5ZkQDEiLPr3alJCbn7V86zFZqXqJ8dc3SuS
+	 SQgdsfpBTk0ZWAqQsPSoBwRd9n5PUvnrbVBjSRVCD7uhaAIjDn3I3bgnyJ2T8e94kk
+	 9zTNdmGOrqo7+Y16uOUD0V373Tk9GlU/6cRFc2A8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 176/220] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.1 371/481] net: dsa: improve shutdown sequence
 Date: Mon, 23 Mar 2026 14:45:53 +0100
-Message-ID: <20260323134510.139208604@linuxfoundation.org>
+Message-ID: <20260323134534.172666584@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,115 +70,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228206-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229899-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,siemens.com,nxp.com,redhat.com,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.939];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 09A852F4FFD
+X-Rspamd-Queue-Id: F2BA32F9B8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
+[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
 
-mvpp2_bm_switch_buffers() unconditionally calls
-mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
-shared buffer pool modes. This function programs CM3 flow control
-registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
-priv->cm3_base without any NULL check.
+Alexander Sverdlin presents 2 problems during shutdown with the
+lan9303 driver. One is specific to lan9303 and the other just happens
+to reproduce there.
 
-When the CM3 SRAM resource is not present in the device tree (the
-third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
-SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
-NULL and priv->global_tx_fc is false. Any operation that triggers
-mvpp2_bm_switch_buffers(), for example an MTU change that crosses
-the jumbo frame threshold, will crash:
+The first problem is that lan9303 is unique among DSA drivers in that it
+calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
+not remove):
 
-  Unable to handle kernel NULL pointer dereference at
-  virtual address 0000000000000000
-  Mem abort info:
-    ESR = 0x0000000096000006
-    EC = 0x25: DABT (current EL), IL = 32 bits
-  pc : readl+0x0/0x18
-  lr : mvpp2_cm3_read.isra.0+0x14/0x20
-  Call trace:
-   readl+0x0/0x18
-   mvpp2_bm_pool_update_fc+0x40/0x12c
-   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
-   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
-   mvpp2_change_mtu+0x140/0x380
-   __dev_set_mtu+0x1c/0x38
-   dev_set_mtu_ext+0x78/0x118
-   dev_set_mtu+0x48/0xa8
-   dev_ifsioc+0x21c/0x43c
-   dev_ioctl+0x2d8/0x42c
-   sock_ioctl+0x314/0x378
+phy_state_machine()
+-> ...
+   -> dsa_user_phy_read()
+      -> ds->ops->phy_read()
+         -> lan9303_phy_read()
+            -> chip->ops->phy_read()
+               -> lan9303_mdio_phy_read()
+                  -> dev_get_drvdata()
 
-Every other flow control call site in the driver already guards
-hardware access with either priv->global_tx_fc or port->tx_fc.
-mvpp2_bm_switch_buffers() is the only place that omits this check.
+But we never stop the phy_state_machine(), so it may continue to run
+after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
+to set drvdata to NULL to suppress the remove() method that may come
+afterwards. But in this case it will result in an NPD.
 
-Add the missing priv->global_tx_fc guard to both the disable and
-re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
-rest of the driver.
+The second problem is that the way in which we set
+dp->master->dsa_ptr = NULL; is concurrent with receive packet
+processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
+but afterwards, rather than continuing to use that non-NULL value,
+dev->dsa_ptr is dereferenced again and again without NULL checks:
+dsa_master_find_slave() and many other places. In between dereferences,
+there is no locking to ensure that what was valid once continues to be
+valid.
 
-Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
-Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
-Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
+Both problems have the common aspect that closing the master interface
+solves them.
+
+In the first case, dev_close(master) triggers the NETDEV_GOING_DOWN
+event in dsa_slave_netdevice_event() which closes slave ports as well.
+dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
+the phylink state machine, and ds->ops->phy_read() will thus no longer
+call into the driver after this point.
+
+In the second case, dev_close(master) should do this, as per
+Documentation/networking/driver.rst:
+
+| Quiescence
+| ----------
+|
+| After the ndo_stop routine has been called, the hardware must
+| not receive or transmit any data.  All in flight packets must
+| be aborted. If necessary, poll or wait for completion of
+| any reset commands.
+
+So it should be sufficient to ensure that later, when we zeroize
+master->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
+on this master.
+
+The addition of the netif_device_detach() function is to ensure that
+ioctls, rtnetlinks and ethtool requests on the slave ports no longer
+propagate down to the driver - we're no longer prepared to handle them.
+
+The race condition actually did not exist when commit 0650bf52b31f
+("net: dsa: be compatible with masters which unregister on shutdown")
+first introduced dsa_switch_shutdown(). It was created later, when we
+stopped unregistering the slave interfaces from a bad spot, and we just
+replaced that sequence with a racy zeroization of master->dsa_ptr
+(one which doesn't ensure that the interfaces aren't up).
+
+Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
+Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
+Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Modification: dsa.c -> dsa2.c to line up the source path in kernel 6.1
+Using dp->master and dp->slave instead of dp->conduit and dp->user ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/dsa/dsa2.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 33426fded919a..789e14bb1377a 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5018,7 +5018,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 	if (priv->percpu_pools)
- 		numbufs = port->nrxqs * 2;
+--- a/net/dsa/dsa2.c
++++ b/net/dsa/dsa2.c
+@@ -1829,6 +1829,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch)
+ void dsa_switch_shutdown(struct dsa_switch *ds)
+ {
+ 	struct net_device *master, *slave_dev;
++	LIST_HEAD(close_list);
+ 	struct dsa_port *dp;
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, false);
+ 	mutex_lock(&dsa2_mutex);
+@@ -1838,10 +1839,16 @@ void dsa_switch_shutdown(struct dsa_swit
  
- 	for (i = 0; i < numbufs; i++)
-@@ -5043,7 +5043,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 			mvpp2_open(port->dev);
+ 	rtnl_lock();
+ 
++	dsa_switch_for_each_cpu_port(dp, ds)
++		list_add(&dp->master->close_list, &close_list);
++
++	dev_close_many(&close_list, true);
++
+ 	dsa_switch_for_each_user_port(dp, ds) {
+ 		master = dsa_port_to_master(dp);
+ 		slave_dev = dp->slave;
+ 
++		netif_device_detach(slave_dev);
+ 		netdev_upper_dev_unlink(master, slave_dev);
  	}
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, true);
- 
- 	return 0;
--- 
-2.51.0
-
 
 
 
