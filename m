@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMm5BoNbwWlKSgQAu9opvQ
-	(envelope-from <stable+bounces-229174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:55 +0100
+	id aAHcLY1GwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8A82F6459
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35ACC2F3749
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E58453215AD3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7125D3033A85
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEBE3B0AE5;
-	Mon, 23 Mar 2026 15:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B3B3AC0DB;
+	Mon, 23 Mar 2026 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWn4n/Yy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CO36aXTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4DA3B0ADD;
-	Mon, 23 Mar 2026 15:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7115366570;
+	Mon, 23 Mar 2026 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278294; cv=none; b=GRh9hYxhikaaceZGVFyB9kMm62Qr8Pkhdvc4KmKCefqSZ8tqFGQZ+mV30WjEG/vXvT1UDIdAp4ogoXUd0iX7xscP0gPqhuIw53f8bQztYbYznPU09nMG6W9bkFJS1hRvVkxG6ylcoOq2Hsx4crI4e8IlDo6JGAVPbesEGR/1Hx8=
+	t=1774273849; cv=none; b=lCuELYCkH7ERRmVi/OM3CwV1BvTtSi1KipIV8OXbWE7E+ZEoQIAzyNXfTnWK0y297+Wgbqge2tp3Y39vKGJYyRcyMWOLa1QuVnwvuIW7BkE+K8B9PkXkbyRvxovL+f40NYVAH5guh9+WkJ2VLC9+QT4oV4p787eOh7/yV50yzoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278294; c=relaxed/simple;
-	bh=NPPfXCUaEsEfRQkXwAeI1Hr4be7scM2jtvNcnk0dXf8=;
+	s=arc-20240116; t=1774273849; c=relaxed/simple;
+	bh=9vPXp6zOfXoHyCNL/8lOlBOCv4IDf4Mc8FwKxpzNSGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=My4DCOu83pdC9SOJFpbJY2SreJhOcK7ev39L5I5JoJTVa1wRhRZQTMG9mmbSv4PdlvVYltAo+m9zgS+Lgrd8ZH2k98nJMbOroeaX3MCNUIMelRjCDCGT8YJY3lfDhtyMTI9dBqbwn2MI2fkP7b6VdOUNAWT7d8Dr+ghF78o01xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWn4n/Yy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7639C4CEF7;
-	Mon, 23 Mar 2026 15:04:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eXWegsPJSHYxMk+yEEDroYhFP0Yc0s6Q0696i1T099ak5D1tdXi6k1IW1V7RXsapWxX7sD3sVKujtZo8yWAA6KoUxhi2Y3c5A/m6OjmOwHSZ4TOi01exT2uDOOtoKxbaJ2ka0xGU3lRroqjT36pBrQmvhysaC5pTrC/29GKXidM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CO36aXTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A422C4CEF7;
+	Mon, 23 Mar 2026 13:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278294;
-	bh=NPPfXCUaEsEfRQkXwAeI1Hr4be7scM2jtvNcnk0dXf8=;
+	s=korg; t=1774273849;
+	bh=9vPXp6zOfXoHyCNL/8lOlBOCv4IDf4Mc8FwKxpzNSGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWn4n/YyHP8faju4baMuKF1SV/OWTUhUhE0mMUDKg+iKnGMHvD+fYoBXQ86YTaWlQ
-	 oFUhEjao5inBC/Ji/8gA8uSdXPc67zo1BdBznpbx5vpzyh8utCOZ8T5/e6Vw1nHtrz
-	 NiuUDk+/WYn8JHT2vwb7K28RJmQl1EfQr6qhrqTw=
+	b=CO36aXTvnUcp5119JEbQ0zNx/ToofUFhpOFDyBBKS0QSmXlhP2bFSoSup6nKqCyS7
+	 9Ih5vvffpBAufUmf3fnAqbIzFHGd6Qw2fWLGLlqm+d+iJTtdTpKVYKAesJa7ebBuON
+	 OcfvcVun5Rb87ivayBRWS+49PpAlsX+qMABOK0/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingye Zhao <zhaoqingye@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.6 261/567] cgroup: fix race between task migration and iteration
+	kernel test robot <lkp@intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.19 004/220] selftests/hid: fix compilation when bpf_wq and hid_device are not exported
 Date: Mon, 23 Mar 2026 14:43:01 +0100
-Message-ID: <20260323134540.286964822@linuxfoundation.org>
+Message-ID: <20260323134504.719796588@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +74,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229174-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228009-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -82,98 +83,84 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 9B8A82F6459
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,intel.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: 35ACC2F3749
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingye Zhao <zhaoqingye@honor.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
+commit 5d4c6c132ea9a967d48890dd03e6a786c060e968 upstream.
 
-When a task is migrated out of a css_set, cgroup_migrate_add_task()
-first moves it from cset->tasks to cset->mg_tasks via:
+This can happen in situations when CONFIG_HID_SUPPORT is set to no, or
+some complex situations where struct bpf_wq is not exported.
 
-    list_move_tail(&task->cg_list, &cset->mg_tasks);
+So do the usual dance of hiding them before including vmlinux.h, and
+then redefining them and make use of CO-RE to have the correct offsets.
 
-If a css_task_iter currently has it->task_pos pointing to this task,
-css_set_move_task() calls css_task_iter_skip() to keep the iterator
-valid. However, since the task has already been moved to ->mg_tasks,
-the iterator is advanced relative to the mg_tasks list instead of the
-original tasks list. As a result, remaining tasks on cset->tasks, as
-well as tasks queued on cset->mg_tasks, can be skipped by iteration.
-
-Fix this by calling css_set_skip_task_iters() before unlinking
-task->cg_list from cset->tasks. This advances all active iterators to
-the next task on cset->tasks, so iteration continues correctly even
-when a task is concurrently being migrated.
-
-This race is hard to hit in practice without instrumentation, but it
-can be reproduced by artificially slowing down cgroup_procs_show().
-For example, on an Android device a temporary
-/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
-into cgroup_procs_show(), and then:
-
-  1) Spawn three long-running tasks (PIDs 101, 102, 103).
-  2) Create a test cgroup and move the tasks into it.
-  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
-  4) In one shell, read cgroup.procs from the test cgroup.
-  5) Within the delay window, in another shell migrate PID 102 by
-     writing it to a different cgroup.procs file.
-
-Under this setup, cgroup.procs can intermittently show only PID 101
-while skipping PID 103. Once the migration completes, reading the
-file again shows all tasks as expected.
-
-Note that this change does not allow removing the existing
-css_set_skip_task_iters() call in css_set_move_task(). The new call
-in cgroup_migrate_add_task() only handles iterators that are racing
-with migration while the task is still on cset->tasks. Iterators may
-also start after the task has been moved to cset->mg_tasks. If we
-dropped css_set_skip_task_iters() from css_set_move_task(), such
-iterators could keep task_pos pointing to a migrating task, causing
-css_task_iter_advance() to malfunction on the destination css_set,
-up to and including crashes or infinite loops.
-
-The race window between migration and iteration is very small, and
-css_task_iter is not on a hot path. In the worst case, when an
-iterator is positioned on the first thread of the migrating process,
-cgroup_migrate_add_task() may have to skip multiple tasks via
-css_set_skip_task_iters(). However, this only happens when migration
-and iteration actually race, so the performance impact is negligible
-compared to the correctness fix provided here.
-
-Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603111558.KLCIxsZB-lkp@intel.com/
+Fixes: fe8d561db3e8 ("selftests/hid: add wq test for hid_bpf_input_report()")
+Cc: stable@vger.kernel.org
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/hid/progs/hid_bpf_helpers.h |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2457,6 +2457,7 @@ static void cgroup_migrate_add_task(stru
+--- a/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
++++ b/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
+@@ -6,8 +6,10 @@
+ #define __HID_BPF_HELPERS_H
  
- 	mgctx->tset.nr_tasks++;
+ /* "undefine" structs and enums in vmlinux.h, because we "override" them below */
++#define bpf_wq bpf_wq___not_used
+ #define hid_bpf_ctx hid_bpf_ctx___not_used
+ #define hid_bpf_ops hid_bpf_ops___not_used
++#define hid_device hid_device___not_used
+ #define hid_report_type hid_report_type___not_used
+ #define hid_class_request hid_class_request___not_used
+ #define hid_bpf_attach_flags hid_bpf_attach_flags___not_used
+@@ -27,8 +29,10 @@
  
-+	css_set_skip_task_iters(cset, task);
- 	list_move_tail(&task->cg_list, &cset->mg_tasks);
- 	if (list_empty(&cset->mg_node))
- 		list_add_tail(&cset->mg_node,
+ #include "vmlinux.h"
+ 
++#undef bpf_wq
+ #undef hid_bpf_ctx
+ #undef hid_bpf_ops
++#undef hid_device
+ #undef hid_report_type
+ #undef hid_class_request
+ #undef hid_bpf_attach_flags
+@@ -55,6 +59,14 @@ enum hid_report_type {
+ 	HID_REPORT_TYPES,
+ };
+ 
++struct hid_device {
++	unsigned int id;
++} __attribute__((preserve_access_index));
++
++struct bpf_wq {
++	__u64 __opaque[2];
++};
++
+ struct hid_bpf_ctx {
+ 	struct hid_device *hid;
+ 	__u32 allocated_size;
 
 
 
