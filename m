@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-227948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDS7J5EXwWn5QQQAu9opvQ
-	(envelope-from <stable+bounces-227948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:36:01 +0100
+	id OG0mEbcXwWmbQgQAu9opvQ
+	(envelope-from <stable+bounces-227949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:36:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175272F0345
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:36:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31072F038A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF8083062214
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:32:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CC87306FCEA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C8D38C42E;
-	Mon, 23 Mar 2026 10:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D378E38C416;
+	Mon, 23 Mar 2026 10:32:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0142638CFEF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90913890F8
 	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261960; cv=none; b=bPNQ65QpGdDss4mDTPWQ9/+dnGzJM4ceDMCj6L8VMJ7atZMf4JkN8MXL4YRtkOTYInxfCKYvKhU9bKTcA09rH9ojFrTokLTPMuAYUPaStNpnTy6UjLzR7Ylb1tZm/xTTZqtRWCu//GeY3KIJwM21SG4xtDQmBE/3Kpj13lUJU00=
+	t=1774261965; cv=none; b=Ibr4M9p06AKRIKIRxzuFecZTj8ZsXRtBkbG94AGRVrIyEsBFqcjfgvWqhqmYaNxST1pFyTAIYAYgXp6u1bHSFEwW9S3xZqqGcHemBNyV33KFgGSmr2sTHoqhENUFVIi/0O6u5aeTAcp+Y4TQY0kwVnHAOvGcwRX3nVPLFrBhUuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261960; c=relaxed/simple;
-	bh=j/10nP+8tgQLub4J36KDWeaI4QNXgGTg3m4z0ETE4Kc=;
+	s=arc-20240116; t=1774261965; c=relaxed/simple;
+	bh=fDHrWXDpkRPsmJEbJNpTDh7CHwdncGu6UJRNbda6ZGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZpiof/umPL0X5vpuIeE9CSCgfkkfN7/cqFE8rJVQrc98+US96Q79cWsdo+lLRZHldo6cSS5NK+u3ZDPOju6ZYiSu519g3gfBZmzBhpV3tKqyUKZGupv1gDsCHtjbk7AAzzcoNbJLOhsKGMcV6dBUfwPeCHSR079DMDPAiKnkIs=
+	 MIME-Version; b=aXbhRHvkf/zdfK5/WI62Qr9BmnsLijTDqMQVJ+XNBpT6xQvzSn5s95lybWBPIzi3XoOwAV7XnMR+gbNAxLkdZMrgF94H1b0k2lWuFRQ00j5FbBdjnmMcUwX9u0hdn6RYw2ejgZ+yKR+c5S5KgTzNvbdnaNtFNMFoYEK71C/vTWQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -36,19 +36,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caC-0008FT-6m; Mon, 23 Mar 2026 11:32:28 +0100
+	id 1w4caC-0008FU-6m; Mon, 23 Mar 2026 11:32:28 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-001i5j-19;
+	id 1w4caB-001i5m-1P;
 	Mon, 23 Mar 2026 11:32:27 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 0FB5B50A7C0;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 203BB50A7C1;
 	Mon, 23 Mar 2026 10:32:27 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -56,13 +56,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	stable@vger.kernel.org,
 	Oliver Hartkopp <socketcan@hartkopp.net>,
+	stable@vger.kernel.org,
+	Ali Norouzi <ali.norouzi@keysight.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/5] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
-Date: Mon, 23 Mar 2026 11:28:00 +0100
-Message-ID: <20260323103224.218099-5-mkl@pengutronix.de>
+Subject: [PATCH net 5/5] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
+Date: Mon, 23 Mar 2026 11:28:01 +0100
+Message-ID: <20260323103224.218099-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
 References: <20260323103224.218099-1-mkl@pengutronix.de>
@@ -81,19 +81,19 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_FROM(0.00)[bounces-227948-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227949-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	R_DKIM_NA(0.00)[];
@@ -102,82 +102,88 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,pengutronix.de:mid,keysight.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,hartkopp.net:email]
-X-Rspamd-Queue-Id: 175272F0345
+	DBL_BLOCKED_OPENRESOLVER(0.00)[keysight.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid,hartkopp.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: B31072F038A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ali Norouzi <ali.norouzi@keysight.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
+isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
+to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
+wait_event_interruptible() and then calls kfree(so->tx.buf).
 
-    int from = calc_idx(crc8->from_idx, cf->len);
-    int to   = calc_idx(crc8->to_idx,   cf->len);
-    int res  = calc_idx(crc8->result_idx, cf->len);
+If a signal interrupts the wait_event_interruptible() inside close()
+while tx.state is ISOTP_SENDING, the loop exits early and release
+proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
+while sendmsg may still be reading so->tx.buf for the final CAN frame
+in isotp_fill_dataframe().
 
-    if (from < 0 || to < 0 || res < 0)
-        return;
+The so->tx.buf can be allocated once when the standard tx.buf length needs
+to be extended. Move the kfree() of this potentially extended tx.buf to
+sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
 
-However, the loop and the result write then use the raw s8 fields directly
-instead of the computed variables:
-
-    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
-    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
-
-With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
-calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
-i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
-This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
-start of the canfd_frame on the heap.
-
-The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
-correctly throughout; fix cgw_csum_crc8_rel() to match.
-
-Confirmed with KASAN on linux-7.0-rc2:
-  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
-  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
-
-To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
-
-Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
+Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
 Cc: stable@vger.kernel.org
 Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
 Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
 Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/gw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/can/isotp.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/can/gw.c b/net/can/gw.c
-index 8ee4d67a07d3..0ec99f68aa45 100644
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -375,10 +375,10 @@ static void cgw_csum_crc8_rel(struct canfd_frame *cf,
- 		return;
+diff --git a/net/can/isotp.c b/net/can/isotp.c
+index da3b72e7afcc..2770f43f4951 100644
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1248,12 +1248,6 @@ static int isotp_release(struct socket *sock)
+ 	so->ifindex = 0;
+ 	so->bound = 0;
  
- 	if (from <= to) {
--		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
-+		for (i = from; i <= to; i++)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	} else {
--		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
-+		for (i = from; i >= to; i--)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	}
+-	if (so->rx.buf != so->rx.sbuf)
+-		kfree(so->rx.buf);
+-
+-	if (so->tx.buf != so->tx.sbuf)
+-		kfree(so->tx.buf);
+-
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
  
-@@ -397,7 +397,7 @@ static void cgw_csum_crc8_rel(struct canfd_frame *cf,
- 		break;
- 	}
- 
--	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
-+	cf->data[res] = crc ^ crc8->final_xor_val;
+@@ -1622,6 +1616,21 @@ static int isotp_notifier(struct notifier_block *nb, unsigned long msg,
+ 	return NOTIFY_DONE;
  }
  
- static void cgw_csum_crc8_pos(struct canfd_frame *cf,
++static void isotp_sock_destruct(struct sock *sk)
++{
++	struct isotp_sock *so = isotp_sk(sk);
++
++	/* do the standard CAN sock destruct work */
++	can_sock_destruct(sk);
++
++	/* free potential extended PDU buffers */
++	if (so->rx.buf != so->rx.sbuf)
++		kfree(so->rx.buf);
++
++	if (so->tx.buf != so->tx.sbuf)
++		kfree(so->tx.buf);
++}
++
+ static int isotp_init(struct sock *sk)
+ {
+ 	struct isotp_sock *so = isotp_sk(sk);
+@@ -1666,6 +1675,9 @@ static int isotp_init(struct sock *sk)
+ 	list_add_tail(&so->notifier, &isotp_notifier_list);
+ 	spin_unlock(&isotp_notifier_lock);
+ 
++	/* re-assign default can_sock_destruct() reference */
++	sk->sk_destruct = isotp_sock_destruct;
++
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
