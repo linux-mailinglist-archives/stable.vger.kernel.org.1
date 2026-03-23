@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFF4LmpjwWkDSwQAu9opvQ
-	(envelope-from <stable+bounces-229509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:38 +0100
+	id wGIrEX9rwWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A822F73AC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B6C2F854A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 439A5342D3D5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CF2131C396D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22C23BFE31;
-	Mon, 23 Mar 2026 15:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CB72D9ECB;
+	Mon, 23 Mar 2026 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMFTr3oc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q27VxEwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652152550D5;
-	Mon, 23 Mar 2026 15:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37638837F;
+	Mon, 23 Mar 2026 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279460; cv=none; b=MdCklcYvamMWQvGvRwd48YzKZDLYHDUyZRjd8cuExH+G+BXjkCSHRNCV6AzVd/Mc/LmS6Q/Qt+Hm+UoWyu8G4ME8lxNaDn7HTC5JdPMmhxfi8FCGCIP+QT6QGaSOPaHQo9Dp2wMASo4W2FbJA54Ni9pT54zdWse0kCmwfjfFQGU=
+	t=1774277791; cv=none; b=KaMrzRV/Hkgm3sMHaCKyYy1tRJnmMRsWgnPz76LGAqu35Kr18nime4fi99SQa38eYdyHS99nu3L1ZjZRt7VDo9iNqg00AFD4Mw2Q0MYS/5SQaiEVW8FxAFviHPKWDqFq54uCTiEFjTeSVi0ZJvVn5xk5Sz0lC+WXmLUbPcc8WoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279460; c=relaxed/simple;
-	bh=0FoUH2TB+5SD97NTieD5ujtj7VYseu7wAsO282G0M3E=;
+	s=arc-20240116; t=1774277791; c=relaxed/simple;
+	bh=G/9bWT+R8CedDAR8qbV2shhDy3q93s9nMUmRtdQIjno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8h9OrnHUbuW7LpaShoXOfcpFW+K4jtsYrc+Wg2iBoTdEEEQYwv02IxQj5/T7JLC5vETJQvUFV7LBThac+NsS6gxv5ulpX8dPVYxUK7Q80npEncFheINodwfz7DH73QeKGh3I8Aceo7H3G0QTLgy9dKd70l4FOf1Uu5ar+98Dhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMFTr3oc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEF2C4CEF7;
-	Mon, 23 Mar 2026 15:24:19 +0000 (UTC)
+	 MIME-Version; b=tuQQOysBpkhPd6Bqi5Q5Qh7mctSRgpR8f2UlMg2mBBpOxA9h6N4yujhmvx1U0MlOzMu9hqiT4+/PHOlsFOjfZUeV2MtBTCnX7wPVYGmaXz0FFtILznMbVinIHhOF9H+mES1N41UHzTT5w0/p1kqURmRPnEL+IXHZZWcVXXeqgk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q27VxEwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820E7C4CEF7;
+	Mon, 23 Mar 2026 14:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279460;
-	bh=0FoUH2TB+5SD97NTieD5ujtj7VYseu7wAsO282G0M3E=;
+	s=korg; t=1774277790;
+	bh=G/9bWT+R8CedDAR8qbV2shhDy3q93s9nMUmRtdQIjno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMFTr3ocbnRCQ6S7Xw1JRxPx3m7X3aKVbTxAJBYFzYNIJLma+QRSf1Dt8wsqCcmK0
-	 cGx6KGouI+PliilZMBRa5OiiMEqwQLlRJyVPlehHpoVVL3hJe0UKhRMvil2bOnLhZf
-	 Tt9T61sI/R8W9CZb8JfLtC5MLC4/euLPCVNObGs0=
+	b=Q27VxEwmkSre+32SpUCzgxfVNpd/FeEIyP77Gm9KG/uG/GHqjoOEXWGWRysXNoNe9
+	 UxJ2XY+56ZLccxFOdfjfdsYRK5pY5KLq+GDs+LbcaHsrWKpdjoMgqRqPxXZYoCoPf5
+	 91Wp9fA/A8QuXwOwkPP4gnt726MzFRRtqLNw9NOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/481] ext4: get rid of ppath in ext4_split_extent_at()
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 105/567] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
 Date: Mon, 23 Mar 2026 14:40:25 +0100
-Message-ID: <20260323134526.283062369@linuxfoundation.org>
+Message-ID: <20260323134536.423228123@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,268 +65,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229509-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229016-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 29A822F73AC
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A7B6C2F854A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 1de82b1b60d4613753254bf3cbf622a4c02c945c ]
+commit 767d23ade706d5fa51c36168e92a9c5533c351a1 upstream.
 
-The use of path and ppath is now very confusing, so to make the code more
-readable, pass path between functions uniformly, and get rid of ppath.
+There is a use-after-free error in cfg80211_shutdown_all_interfaces found
+by syzkaller:
 
-To get rid of the ppath in ext4_split_extent_at(), the following is done
-here:
+BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
+Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
+CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: events cfg80211_rfkill_block_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x116/0x1f0
+ print_report+0xcd/0x630
+ kasan_report+0xe0/0x110
+ cfg80211_shutdown_all_interfaces+0x213/0x220
+ cfg80211_rfkill_block_work+0x1e/0x30
+ process_one_work+0x9cf/0x1b70
+ worker_thread+0x6c8/0xf10
+ kthread+0x3c5/0x780
+ ret_from_fork+0x56d/0x700
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
- * Free the extents path when an error is encountered.
- * Its caller needs to update ppath if it uses ppath.
- * Teach ext4_ext_show_leaf() to skip error pointer.
+The problem arises due to the rfkill_block work is not cancelled when wiphy
+is being unregistered. In order to fix the issue cancel the corresponding
+work in wiphy_unregister().
 
-No functional changes.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-16-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 22784ca541c0 ("ext4: subdivide EXT4_EXT_DATA_VALID1")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 85 ++++++++++++++++++++++++++---------------------
- 1 file changed, 47 insertions(+), 38 deletions(-)
+ net/wireless/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 59c0bffc691d1..6da0bf3cf406d 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -84,12 +84,11 @@ static void ext4_extent_block_csum_set(struct inode *inode,
- 	et->et_checksum = ext4_extent_block_csum(inode, eh);
- }
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1132,6 +1132,7 @@ void wiphy_unregister(struct wiphy *wiph
+ 	/* this has nothing to do now but make sure it's gone */
+ 	cancel_work_sync(&rdev->wiphy_work);
  
--static int ext4_split_extent_at(handle_t *handle,
--			     struct inode *inode,
--			     struct ext4_ext_path **ppath,
--			     ext4_lblk_t split,
--			     int split_flag,
--			     int flags);
-+static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
-+						  struct inode *inode,
-+						  struct ext4_ext_path *path,
-+						  ext4_lblk_t split,
-+						  int split_flag, int flags);
- 
- static int ext4_ext_trunc_restart_fn(struct inode *inode, int *dropped)
- {
-@@ -335,9 +334,15 @@ ext4_force_split_extent_at(handle_t *handle, struct inode *inode,
- 	if (nofail)
- 		flags |= EXT4_GET_BLOCKS_METADATA_NOFAIL | EXT4_EX_NOFAIL;
- 
--	return ext4_split_extent_at(handle, inode, ppath, lblk, unwritten ?
-+	path = ext4_split_extent_at(handle, inode, path, lblk, unwritten ?
- 			EXT4_EXT_MARK_UNWRIT1|EXT4_EXT_MARK_UNWRIT2 : 0,
- 			flags);
-+	if (IS_ERR(path)) {
-+		*ppath = NULL;
-+		return PTR_ERR(path);
-+	}
-+	*ppath = path;
-+	return 0;
- }
- 
- static int
-@@ -689,7 +694,7 @@ static void ext4_ext_show_leaf(struct inode *inode, struct ext4_ext_path *path)
- 	struct ext4_extent *ex;
- 	int i;
- 
--	if (!path)
-+	if (IS_ERR_OR_NULL(path))
- 		return;
- 
- 	eh = path[depth].p_hdr;
-@@ -3155,16 +3160,14 @@ static int ext4_ext_zeroout(struct inode *inode, struct ext4_extent *ex)
-  *  a> the extent are splitted into two extent.
-  *  b> split is not needed, and just mark the extent.
-  *
-- * return 0 on success.
-+ * Return an extent path pointer on success, or an error pointer on failure.
-  */
--static int ext4_split_extent_at(handle_t *handle,
--			     struct inode *inode,
--			     struct ext4_ext_path **ppath,
--			     ext4_lblk_t split,
--			     int split_flag,
--			     int flags)
-+static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
-+						  struct inode *inode,
-+						  struct ext4_ext_path *path,
-+						  ext4_lblk_t split,
-+						  int split_flag, int flags)
- {
--	struct ext4_ext_path *path = *ppath;
- 	ext4_fsblk_t newblock;
- 	ext4_lblk_t ee_block;
- 	struct ext4_extent *ex, newex, orig_ex, zero_ex;
-@@ -3238,14 +3241,12 @@ static int ext4_split_extent_at(handle_t *handle,
- 		ext4_ext_mark_unwritten(ex2);
- 
- 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
--	if (!IS_ERR(path)) {
--		*ppath = path;
-+	if (!IS_ERR(path))
- 		goto out;
--	}
--	*ppath = NULL;
-+
- 	err = PTR_ERR(path);
- 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
--		return err;
-+		return path;
- 
- 	/*
- 	 * Get a new path to try to zeroout or fix the extent length.
-@@ -3255,16 +3256,14 @@ static int ext4_split_extent_at(handle_t *handle,
- 	 * in ext4_da_update_reserve_space() due to an incorrect
- 	 * ee_len causing the i_reserved_data_blocks exception.
- 	 */
--	path = ext4_find_extent(inode, ee_block, NULL,
--				flags | EXT4_EX_NOFAIL);
-+	path = ext4_find_extent(inode, ee_block, NULL, flags | EXT4_EX_NOFAIL);
- 	if (IS_ERR(path)) {
- 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
- 				 split, PTR_ERR(path));
--		return PTR_ERR(path);
-+		return path;
- 	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
--	*ppath = path;
- 
- 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
- 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
-@@ -3316,10 +3315,13 @@ static int ext4_split_extent_at(handle_t *handle,
- 	 * and err is a non-zero error code.
- 	 */
- 	ext4_ext_dirty(handle, inode, path + path->p_depth);
--	return err;
- out:
-+	if (err) {
-+		ext4_free_ext_path(path);
-+		path = ERR_PTR(err);
-+	}
- 	ext4_ext_show_leaf(inode, path);
--	return err;
-+	return path;
- }
- 
- /*
-@@ -3366,10 +3368,14 @@ static int ext4_split_extent(handle_t *handle,
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
- 			split_flag1 |= EXT4_EXT_DATA_VALID1;
--		err = ext4_split_extent_at(handle, inode, ppath,
-+		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
--		if (err)
-+		if (IS_ERR(path)) {
-+			err = PTR_ERR(path);
-+			*ppath = NULL;
- 			goto out;
-+		}
-+		*ppath = path;
- 	} else {
- 		allocated = ee_len - (map->m_lblk - ee_block);
- 	}
-@@ -3377,7 +3383,7 @@ static int ext4_split_extent(handle_t *handle,
- 	 * Update path is required because previous ext4_split_extent_at() may
- 	 * result in split of original leaf or extent zeroout.
- 	 */
--	path = ext4_find_extent(inode, map->m_lblk, *ppath, flags);
-+	path = ext4_find_extent(inode, map->m_lblk, path, flags);
- 	if (IS_ERR(path)) {
- 		*ppath = NULL;
- 		return PTR_ERR(path);
-@@ -3399,13 +3405,17 @@ static int ext4_split_extent(handle_t *handle,
- 			split_flag1 |= split_flag & (EXT4_EXT_MAY_ZEROOUT |
- 						     EXT4_EXT_MARK_UNWRIT2);
- 		}
--		err = ext4_split_extent_at(handle, inode, ppath,
-+		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk, split_flag1, flags);
--		if (err)
-+		if (IS_ERR(path)) {
-+			err = PTR_ERR(path);
-+			*ppath = NULL;
- 			goto out;
-+		}
-+		*ppath = path;
- 	}
- 
--	ext4_ext_show_leaf(inode, *ppath);
-+	ext4_ext_show_leaf(inode, path);
- out:
- 	return err ? err : allocated;
- }
-@@ -5601,22 +5611,21 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
- 			if (ext4_ext_is_unwritten(extent))
- 				split_flag = EXT4_EXT_MARK_UNWRIT1 |
- 					EXT4_EXT_MARK_UNWRIT2;
--			ret = ext4_split_extent_at(handle, inode, &path,
-+			path = ext4_split_extent_at(handle, inode, path,
- 					offset_lblk, split_flag,
- 					EXT4_EX_NOCACHE |
- 					EXT4_GET_BLOCKS_PRE_IO |
- 					EXT4_GET_BLOCKS_METADATA_NOFAIL);
- 		}
- 
--		ext4_free_ext_path(path);
--		if (ret < 0) {
-+		if (IS_ERR(path)) {
- 			up_write(&EXT4_I(inode)->i_data_sem);
-+			ret = PTR_ERR(path);
- 			goto out_stop;
- 		}
--	} else {
--		ext4_free_ext_path(path);
- 	}
- 
-+	ext4_free_ext_path(path);
- 	ext4_es_remove_extent(inode, offset_lblk, EXT_MAX_BLOCKS - offset_lblk);
- 
- 	/*
--- 
-2.51.0
-
++	cancel_work_sync(&rdev->rfkill_block);
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+ 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
 
 
 
