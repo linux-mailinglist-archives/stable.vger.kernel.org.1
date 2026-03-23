@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMoLBuppwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:22 +0100
+	id aH8sMh5fwWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F0A2F81DA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849712F6B5A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAD04310529B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7989830B2494
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A03826A08F;
-	Mon, 23 Mar 2026 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BFD3B9DAA;
+	Mon, 23 Mar 2026 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIFZ7x84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3wcU/o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA27A340282;
-	Mon, 23 Mar 2026 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAF13B9DA6;
+	Mon, 23 Mar 2026 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277329; cv=none; b=P+Voc3EJwC0IP64xyuAtYHWhQcBm9dcuRvqUpWmwJXyh9Th9xiyeXJ0e++aI0ZgeK1GO7YAx4r9j/oZXaPCDDYpHDFz9gL506F6ZUPH9htaEBw1co+prr/hN3am/Ww/kfHaYkhjGtey4jZYBElyZ9mb8bTIWfitXHfBhMdgVct8=
+	t=1774278961; cv=none; b=anJNDLccVm1jCk8Qh8co9eayHAH22YEP6RMgb+AI2D8t8o7UQ5Q6mt+ZBMJi+rwtXCuN0ljy+J1PSHv9JnGPkkotpFq0m56yaO564mYU9tMWc/aZa4AMf7tF6i8RemjkSRSZY/kJa/xoa3MCeCBNvuQpPoJq9jCLEFzofrvg2qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277329; c=relaxed/simple;
-	bh=zQ8AFTGP1PBFWEa1554gDR56EfNvjncj6i/iARBfV2E=;
+	s=arc-20240116; t=1774278961; c=relaxed/simple;
+	bh=vAqDgDR801n0mcDihkNWQdH3hazGCya3SgoUvRWeypE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufNQMplY4i0oLHMgk8jMHnmWVae4BGxV1R4EJXR9r18NtaPy6AHwOSj2nhwJI9We5XW7hDbK4Rfc8XNtbTSnoy6BVZNb+OPNY9NYybwP3Sm0NWX/W9qqlf0NE1eS7UMthveWGpgubSLHRqONCzzwT9idixM7uSh66eO/WDl9XZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIFZ7x84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054C2C4CEF7;
-	Mon, 23 Mar 2026 14:48:48 +0000 (UTC)
+	 MIME-Version; b=MqnT4lNe7GES/gSPTGnRu+cd5qveb7984xxIOflrGJKMf17LmUAi62CR6lvx2kQCCRBQEhxmbGwatN7JCzs0+8So3RWGSDiz1Bodp4mdmG4BH+Eu7ZkE8z3/hB0aqDsTGMd7lcRjeS575Uukw4H1c+U/dyhU0Jx/X1h7gu//u/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3wcU/o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E737BC4CEF7;
+	Mon, 23 Mar 2026 15:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277329;
-	bh=zQ8AFTGP1PBFWEa1554gDR56EfNvjncj6i/iARBfV2E=;
+	s=korg; t=1774278961;
+	bh=vAqDgDR801n0mcDihkNWQdH3hazGCya3SgoUvRWeypE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIFZ7x84Ved7b+auA4gAeM6WdNG+lw+jVe4qsxtH6ofP0tinkdgcYOpqyJSAoaMiV
-	 HRHWf+Ucp8t3+tGS8uZ000CVRih4croFPzLoi/ftagOKgflJqzZUcw+wdmsoQBW7CM
-	 8jy2scd4fqSaYtJ58IGysgnqqKoRDZ6FKQSc7/HQ=
+	b=L3wcU/o92nWQF0SFno35Pmd5tY8iDR0sNmRx7Etu5uA6AEtxCZ4A30MEGCfqA766c
+	 MyP3mHI/3d5hOiZHV6uCLMUwXk9QIVotQx1J7kgaANgwn3b1VdhJRYUupfWFMscExC
+	 gyHe3DE7rKaDWO8/73fXwykXpdgoGJOmllam8tYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 399/460] netfilter: xt_time: use unsigned int for monthday bit shift
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 475/567] mmc: sdhci: fix timing selection for 1-bit bus width
 Date: Mon, 23 Mar 2026 14:46:35 +0100
-Message-ID: <20260323134536.369046790@linuxfoundation.org>
+Message-ID: <20260323134545.738292700@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228860-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229389-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,vidocsecurity.com:email]
-X-Rspamd-Queue-Id: 80F0A2F81DA
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 849712F6B5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-[ Upstream commit 00050ec08cecfda447e1209b388086d76addda3a ]
+commit 5e3486e64094c28a526543f1e8aa0d5964b7f02d upstream.
 
-The monthday field can be up to 31, and shifting a signed integer 1
-by 31 positions (1 << 31) is undefined behavior in C, as the result
-overflows a 32-bit signed int. Use 1U to ensure well-defined behavior
-for all valid monthday values.
+When 1-bit bus width is used with HS200/HS400 capabilities set,
+mmc_select_hs200() returns 0 without actually switching. This
+causes mmc_select_timing() to skip mmc_select_hs(), leaving eMMC
+in legacy mode (26MHz) instead of High Speed SDR (52MHz).
 
-Change the weekday shift to 1U as well for consistency.
+Per JEDEC eMMC spec section 5.3.2, 1-bit mode supports High Speed
+SDR. Drop incompatible HS200/HS400/UHS/DDR caps early so timing
+selection falls through to mmc_select_hs() correctly.
 
-Fixes: ee4411a1b1e0 ("[NETFILTER]: x_tables: add xt_time match")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f2119df6b764 ("mmc: sd: add support for signal voltage switch procedure")
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_time.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_time.c b/net/netfilter/xt_time.c
-index 6aa12d0f54e23..61de85e02a40f 100644
---- a/net/netfilter/xt_time.c
-+++ b/net/netfilter/xt_time.c
-@@ -227,13 +227,13 @@ time_mt(const struct sk_buff *skb, struct xt_action_param *par)
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -4497,8 +4497,15 @@ int sdhci_setup_host(struct sdhci_host *
+ 	 * their platform code before calling sdhci_add_host(), and we
+ 	 * won't assume 8-bit width for hosts without that CAP.
+ 	 */
+-	if (!(host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA))
++	if (host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA) {
++		host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_DDR50);
++		if (host->quirks2 & SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400)
++			host->caps1 &= ~SDHCI_SUPPORT_HS400;
++		mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
++		mmc->caps &= ~(MMC_CAP_DDR | MMC_CAP_UHS);
++	} else {
+ 		mmc->caps |= MMC_CAP_4_BIT_DATA;
++	}
  
- 	localtime_2(&current_time, stamp);
- 
--	if (!(info->weekdays_match & (1 << current_time.weekday)))
-+	if (!(info->weekdays_match & (1U << current_time.weekday)))
- 		return false;
- 
- 	/* Do not spend time computing monthday if all days match anyway */
- 	if (info->monthdays_match != XT_TIME_ALL_MONTHDAYS) {
- 		localtime_3(&current_time, stamp);
--		if (!(info->monthdays_match & (1 << current_time.monthday)))
-+		if (!(info->monthdays_match & (1U << current_time.monthday)))
- 			return false;
- 	}
- 
--- 
-2.51.0
-
+ 	if (host->quirks2 & SDHCI_QUIRK2_HOST_NO_CMD23)
+ 		mmc->caps &= ~MMC_CAP_CMD23;
 
 
 
