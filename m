@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-229772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLU1ONpswWmqTAQAu9opvQ
-	(envelope-from <stable+bounces-229772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:54 +0100
+	id MCkLIyJVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F442F8914
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFCE22F58C6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 526633195B2D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E031303A22D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AB23B9D9F;
-	Mon, 23 Mar 2026 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDA23AB269;
+	Mon, 23 Mar 2026 14:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDqcJIOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ON3CfLW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783FE3AE19E;
-	Mon, 23 Mar 2026 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42435387593;
+	Mon, 23 Mar 2026 14:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282826; cv=none; b=Zt/icAqPH3BzaXBuiWNC/sCVAhN2xfZ67lpbiiX7JlEXRY08ohkyNnxkK+9FFh/+b+1s0NZBVxws0733BIa2EsLqw17WFRREDvwDMUq0A4U475ypSH1EsIxCpyOzh6+ynxJnIxNRn7qurLkCMQgEVbbrn7E2C9dFRaa78pO0hDg=
+	t=1774277025; cv=none; b=X69lzCwow9mH01jul1wzkby1xDkXZ1MtAleFeudK3/zNivj2bz9Koeoy75od/1X5fCDpaajWQzkBU+43c3cGFVCEQdQzVH11rCWHjGU5Xmz4qc0KU3NQ8AZzyAXwVj+dHoLQ19tvNCuiOyMtP4oTB7SyBz0iY7slfr6svyjMeyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282826; c=relaxed/simple;
-	bh=+wZkQuNPCz9BmeXvZ4lqfwrY0OEl7Jjqi2eIviyQHh8=;
+	s=arc-20240116; t=1774277025; c=relaxed/simple;
+	bh=blbJAkK1Djn66CQhVcu1Fo5r4Y8D70iHNwG/fZm2adY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FomQATNG3rKyyrSSa0XDYazYBgKmDAU2qNGamiVl7c36rCmVrNc+QEEuOwYa/l/FAzHzHkW6mxjXHdbchfXWbgwgITE+pLf57N+u5gm3aLO0LADyNfS5rjzDqrQ1mKxe448f36y3bXK17+A/xK0Xbx6e5Q+Zw/LlkKVMuz6CYt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDqcJIOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A63BC4CEF7;
-	Mon, 23 Mar 2026 16:20:25 +0000 (UTC)
+	 MIME-Version; b=TkHgBbhIAjiq69YwXTr1II2CIIloMKoBr5hzN3nM4ykPCDO6s5BHj5xhYBlwZq/+VOG6tC4J8q7Zl/5J3KW3wbZnvwJ7i2gWdVsft8JyWk4fgyT42//lBr3rOJO3dDZWUXRPV+fGkiloecMpaOqUgQaJLXkdKSatclYbz3eMkuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ON3CfLW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC6DC4CEF7;
+	Mon, 23 Mar 2026 14:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282826;
-	bh=+wZkQuNPCz9BmeXvZ4lqfwrY0OEl7Jjqi2eIviyQHh8=;
+	s=korg; t=1774277025;
+	bh=blbJAkK1Djn66CQhVcu1Fo5r4Y8D70iHNwG/fZm2adY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDqcJIOZfSA/4g6amtThZX3iIEoVtTNqhIx1Q8GpxBnZEAI4q3QR0AfC0a4cboJip
-	 tR4HMpfiDTtGgnncCbpeJD5Nm/OKGNEzeQtxT1wjzQg52/+1KPiWaiucmJ+6GGK9KM
-	 4/03R3BZoMtbYQr5/hnFOGumFdmzQjIvaIXyziQQ=
+	b=ON3CfLW/+kuL3I1dJKCrLiOzTwN7qMa/0HP+Jnn3BM2vkCkW/AolBqlI5EvAcYoGq
+	 XZVvMVWD86mC3EJtlkHOEBOiVBDzMEJrC2HL0W5ABdHsLVS3OnukGjDeNz6UORgZTs
+	 OtpGED6+GNjXIO/HxZh87j+O3Uj3Ej4ywNUtrjb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Raul E Rangel <rrangel@google.com>
-Subject: [PATCH 6.1 300/481] serial: 8250: Fix TX deadlock when using DMA
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Baocong Liu <baocong.liu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 6.12 286/460] f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
 Date: Mon, 23 Mar 2026 14:44:42 +0100
-Message-ID: <20260323134532.426226289@linuxfoundation.org>
+Message-ID: <20260323134533.510150961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +68,224 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229772-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228751-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,unisoc.com,kernel.org,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 61F442F8914
+X-Rspamd-Queue-Id: AFCE22F58C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raul E Rangel <rrangel@chromium.org>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
+[ Upstream commit 8e2a9b656474d67c55010f2c003ea2cf889a19ff ]
 
-`dmaengine_terminate_async` does not guarantee that the
-`__dma_tx_complete` callback will run. The callback is currently the
-only place where `dma->tx_running` gets cleared. If the transaction is
-canceled and the callback never runs, then `dma->tx_running` will never
-get cleared and we will never schedule new TX DMA transactions again.
+No logic changes, just cleanup and prepare for fixing the UAF issue
+in f2fs_free_dic.
 
-This change makes it so we clear `dma->tx_running` after we terminate
-the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
-is holding the UART port lock. The first thing the callback does is also
-grab the UART port lock, so access to `dma->tx_running` is serialized.
-
-Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Raul E Rangel <rrangel@google.com>
-Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/f2fs/compress.c |   40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -146,7 +146,22 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -23,20 +23,18 @@
+ static struct kmem_cache *cic_entry_slab;
+ static struct kmem_cache *dic_entry_slab;
  
-+	/*
-+	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
-+	 * holding the uart port spinlock.
-+	 */
- 	dmaengine_terminate_async(dma->txchan);
-+
-+	/*
-+	 * The callback might or might not run. If it doesn't run, we need to ensure
-+	 * that `tx_running` is cleared so that we can schedule new transactions.
-+	 * If it does run, then the zombie callback will clear `tx_running` again
-+	 * and perform a no-op since `tx_size` was cleared above.
-+	 *
-+	 * In either case, we ASSUME the DMA transaction will terminate before we
-+	 * issue a new `serial8250_tx_dma`.
-+	 */
-+	dma->tx_running = 0;
+-static void *page_array_alloc(struct inode *inode, int nr)
++static void *page_array_alloc(struct f2fs_sb_info *sbi, int nr)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	unsigned int size = sizeof(struct page *) * nr;
+ 
+ 	if (likely(size <= sbi->page_array_slab_size))
+ 		return f2fs_kmem_cache_alloc(sbi->page_array_slab,
+-					GFP_F2FS_ZERO, false, F2FS_I_SB(inode));
++					GFP_F2FS_ZERO, false, sbi);
+ 	return f2fs_kzalloc(sbi, size, GFP_NOFS);
  }
  
- int serial8250_rx_dma(struct uart_8250_port *p)
+-static void page_array_free(struct inode *inode, void *pages, int nr)
++static void page_array_free(struct f2fs_sb_info *sbi, void *pages, int nr)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	unsigned int size = sizeof(struct page *) * nr;
+ 
+ 	if (!pages)
+@@ -147,13 +145,13 @@ int f2fs_init_compress_ctx(struct compre
+ 	if (cc->rpages)
+ 		return 0;
+ 
+-	cc->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	cc->rpages = page_array_alloc(F2FS_I_SB(cc->inode), cc->cluster_size);
+ 	return cc->rpages ? 0 : -ENOMEM;
+ }
+ 
+ void f2fs_destroy_compress_ctx(struct compress_ctx *cc, bool reuse)
+ {
+-	page_array_free(cc->inode, cc->rpages, cc->cluster_size);
++	page_array_free(F2FS_I_SB(cc->inode), cc->rpages, cc->cluster_size);
+ 	cc->rpages = NULL;
+ 	cc->nr_rpages = 0;
+ 	cc->nr_cpages = 0;
+@@ -616,6 +614,7 @@ static void *f2fs_vmap(struct page **pag
+ 
+ static int f2fs_compress_pages(struct compress_ctx *cc)
+ {
++	struct f2fs_sb_info *sbi = F2FS_I_SB(cc->inode);
+ 	struct f2fs_inode_info *fi = F2FS_I(cc->inode);
+ 	const struct f2fs_compress_ops *cops =
+ 				f2fs_cops[fi->i_compress_algorithm];
+@@ -636,7 +635,7 @@ static int f2fs_compress_pages(struct co
+ 	cc->nr_cpages = DIV_ROUND_UP(max_len, PAGE_SIZE);
+ 	cc->valid_nr_cpages = cc->nr_cpages;
+ 
+-	cc->cpages = page_array_alloc(cc->inode, cc->nr_cpages);
++	cc->cpages = page_array_alloc(sbi, cc->nr_cpages);
+ 	if (!cc->cpages) {
+ 		ret = -ENOMEM;
+ 		goto destroy_compress_ctx;
+@@ -711,7 +710,7 @@ out_free_cpages:
+ 		if (cc->cpages[i])
+ 			f2fs_compress_free_page(cc->cpages[i]);
+ 	}
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ destroy_compress_ctx:
+ 	if (cops->destroy_compress_ctx)
+@@ -1325,7 +1324,7 @@ static int f2fs_write_compressed_pages(s
+ 	cic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
+ 	cic->inode = inode;
+ 	atomic_set(&cic->pending_pages, cc->valid_nr_cpages);
+-	cic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	cic->rpages = page_array_alloc(sbi, cc->cluster_size);
+ 	if (!cic->rpages)
+ 		goto out_put_cic;
+ 
+@@ -1427,13 +1426,13 @@ unlock_continue:
+ 	spin_unlock(&fi->i_size_lock);
+ 
+ 	f2fs_put_rpages(cc);
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ 	f2fs_destroy_compress_ctx(cc, false);
+ 	return 0;
+ 
+ out_destroy_crypt:
+-	page_array_free(cc->inode, cic->rpages, cc->cluster_size);
++	page_array_free(sbi, cic->rpages, cc->cluster_size);
+ 
+ 	for (--i; i >= 0; i--) {
+ 		if (!cc->cpages[i])
+@@ -1454,7 +1453,7 @@ out_free:
+ 		f2fs_compress_free_page(cc->cpages[i]);
+ 		cc->cpages[i] = NULL;
+ 	}
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ 	return -EAGAIN;
+ }
+@@ -1484,7 +1483,7 @@ void f2fs_compress_write_end_io(struct b
+ 		end_page_writeback(cic->rpages[i]);
+ 	}
+ 
+-	page_array_free(cic->inode, cic->rpages, cic->nr_rpages);
++	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+ 	kmem_cache_free(cic_entry_slab, cic);
+ }
+ 
+@@ -1623,7 +1622,7 @@ static int f2fs_prepare_decomp_mem(struc
+ 	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
+ 		return 0;
+ 
+-	dic->tpages = page_array_alloc(dic->inode, dic->cluster_size);
++	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
+ 	if (!dic->tpages)
+ 		return -ENOMEM;
+ 
+@@ -1683,7 +1682,7 @@ struct decompress_io_ctx *f2fs_alloc_dic
+ 	if (!dic)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	dic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	dic->rpages = page_array_alloc(sbi, cc->cluster_size);
+ 	if (!dic->rpages) {
+ 		kmem_cache_free(dic_entry_slab, dic);
+ 		return ERR_PTR(-ENOMEM);
+@@ -1704,7 +1703,7 @@ struct decompress_io_ctx *f2fs_alloc_dic
+ 		dic->rpages[i] = cc->rpages[i];
+ 	dic->nr_rpages = cc->cluster_size;
+ 
+-	dic->cpages = page_array_alloc(dic->inode, dic->nr_cpages);
++	dic->cpages = page_array_alloc(sbi, dic->nr_cpages);
+ 	if (!dic->cpages) {
+ 		ret = -ENOMEM;
+ 		goto out_free;
+@@ -1734,6 +1733,7 @@ static void f2fs_free_dic(struct decompr
+ 		bool bypass_destroy_callback)
+ {
+ 	int i;
++	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
+ 
+ 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
+ 
+@@ -1745,7 +1745,7 @@ static void f2fs_free_dic(struct decompr
+ 				continue;
+ 			f2fs_compress_free_page(dic->tpages[i]);
+ 		}
+-		page_array_free(dic->inode, dic->tpages, dic->cluster_size);
++		page_array_free(sbi, dic->tpages, dic->cluster_size);
+ 	}
+ 
+ 	if (dic->cpages) {
+@@ -1754,10 +1754,10 @@ static void f2fs_free_dic(struct decompr
+ 				continue;
+ 			f2fs_compress_free_page(dic->cpages[i]);
+ 		}
+-		page_array_free(dic->inode, dic->cpages, dic->nr_cpages);
++		page_array_free(sbi, dic->cpages, dic->nr_cpages);
+ 	}
+ 
+-	page_array_free(dic->inode, dic->rpages, dic->nr_rpages);
++	page_array_free(sbi, dic->rpages, dic->nr_rpages);
+ 	kmem_cache_free(dic_entry_slab, dic);
+ }
+ 
 
 
 
