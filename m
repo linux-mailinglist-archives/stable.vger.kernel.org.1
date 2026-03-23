@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-228504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qORdGiFPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:05 +0100
+	id QGROOkhswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BD72F4B5A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898112F874C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC96130BA786
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 12D513035EE6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7313B19CA;
-	Mon, 23 Mar 2026 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EE12737EB;
+	Mon, 23 Mar 2026 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRWN1UDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y23k+bjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EDF3AC0C2;
-	Mon, 23 Mar 2026 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7517A23ABAA;
+	Mon, 23 Mar 2026 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275307; cv=none; b=GXr3zXN6jWKoz8vt9Z59K0fpfsZDLH7D/A9rqYrWoObcONzEQXOBg4n8aQKkhMZL9WaGqgsvWh71oCyVt7AWw2/a60SdSbH1keVZWUNUEby3VzpXp3W4wv1p/B/ctATabSfZ96izuK4jodpjH7m2WAeXT3qklMvR8uKSlIeDa+k=
+	t=1774282183; cv=none; b=ro3o6SsGLuCOukmNVrA40smyxov/mnBmoCp9bxyzg1TRN3bRSmMJpVe8/qHLDgpy1FjCTwRM5GanJsSoBhiXAvCbVHPGCuoCWcDjWyH/POTH5pv570GniJVZAtSgYJ6eKb60GnZJsNMyvRgkf7NByR95ZDoapi4Jy8XIoJhajCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275307; c=relaxed/simple;
-	bh=blvQ16c+QKeOWG9X0pMrmwCh4V+KLrl0ZtTJjSmPGPQ=;
+	s=arc-20240116; t=1774282183; c=relaxed/simple;
+	bh=6KcsMdxu/l8cmwI/loD/vFtr3N6tks9RosHjciLN2fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Uplywkl4tH+bf+pzo6Tcaauxmo6k3McsAbbz1iRVHxz2se8wd6gvpAyNeOezOt0KN/Xr0aw6nKA5USPxiDl3Dj2tUd207wOueyJTzyrUbOcqpNQD+RmCWPKOe5o2fla72V1bBVRl9x9RwdKGDyOs4meNl19gSX45cvpw7yRAlMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRWN1UDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317FAC4CEF7;
-	Mon, 23 Mar 2026 14:15:07 +0000 (UTC)
+	 MIME-Version; b=NRtHE4WI1x0SFJWKpwvx/xl0lBvWuL5VMVcqMloWWj+lUFDTkpGInlXAqABT/91lKih/cCweWvklxwOMLKWEbSqr2mx2EkJE2hrKG9qt8fJ10dR2H74DttN++QhT7skPwViZZT0BxlhQ7H3bWqPdOIZRh3AUV381zhUj8mXlf1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y23k+bjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7877C4CEF7;
+	Mon, 23 Mar 2026 16:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275307;
-	bh=blvQ16c+QKeOWG9X0pMrmwCh4V+KLrl0ZtTJjSmPGPQ=;
+	s=korg; t=1774282183;
+	bh=6KcsMdxu/l8cmwI/loD/vFtr3N6tks9RosHjciLN2fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRWN1UDuNG6/n2hXKwB9YmoAmKZ+iYHqOBPeczZviZY3q+Tdy7CBphdtLQMfwIFZl
-	 BkK2/FUUdCUZ5TSezvkZ1Efs6Oj01IRjQZld2jzb+gEq8r9D8qI2qKbng1EVuQCZbc
-	 H6Sg4H8FMakiY0H5RLotHrBCdYxc1a5Cjv+Jmbp0=
+	b=y23k+bjGBIub9GcXfWgjoF247d63KMJ5xW6qdPxplTc/scjFXtFOgoUqnOVe3pfx1
+	 uwU+SsYkvIyZyEFO444dvy1+sLbBaPCyJlEF8kjH7vwDljdkFyFHImFBXP86lNqeu/
+	 4R/P83krcwV3lkFTYTiQ62Hs8Ta0B/eE2Tnc4Eno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/460] bnxt_en: Fix RSS table size check when changing ethtool channels
-Date: Mon, 23 Mar 2026 14:40:44 +0100
-Message-ID: <20260323134527.892382359@linuxfoundation.org>
+Subject: [PATCH 6.1 063/481] ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
+Date: Mon, 23 Mar 2026 14:40:45 +0100
+Message-ID: <20260323134526.759766439@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228504-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229535-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 95BD72F4B5A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 898112F874C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 0d9a60a0618d255530ca56072c5f39eb58e1ed4a ]
+[ Upstream commit 1585cf83e98db32463e5d54161b06a5f01fe9976 ]
 
-When changing channels, the current check in bnxt_set_channels()
-is not checking for non-default RSS contexts when the RSS table size
-changes. The current check for IFF_RXFH_CONFIGURED is only sufficient
-for the default RSS context. Expand the check to include the presence
-of any non-default RSS contexts.
+It was reported that we need the same quirk for HP ZBook Studio G4
+(SSID 103c:826b) as other HP models to make the mute-LED working.
 
-Allowing such change will result in incorrect configuration of the
-context's RSS table when the table size changes.
-
-Fixes: b3d0083caf9a ("bnxt_en: Support RSS contexts in ethtool .{get|set}_rxfh()")
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Link: https://lore.kernel.org/netdev/20260303181535.2671734-1-bjorn@kernel.org/
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20260306225854.3575672-1-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/64d78753-b9ff-4c64-8920-64d8d31cd20c@gmail.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221002
+Link: https://patch.msgid.link/20260207131324.2428030-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_conexant.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 0a8f3dc3c2f01..0be9c64ae2fad 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -958,8 +958,8 @@ static int bnxt_set_channels(struct net_device *dev,
- 
- 	if (bnxt_get_nr_rss_ctxs(bp, req_rx_rings) !=
- 	    bnxt_get_nr_rss_ctxs(bp, bp->rx_nr_rings) &&
--	    netif_is_rxfh_configured(dev)) {
--		netdev_warn(dev, "RSS table size change required, RSS table entries must be default to proceed\n");
-+	    (netif_is_rxfh_configured(dev) || bp->num_rss_ctx)) {
-+		netdev_warn(dev, "RSS table size change required, RSS table entries must be default (with no additional RSS contexts present) to proceed\n");
- 		return -EINVAL;
- 	}
- 
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index a3d68b83ebd5f..643d1f7ba5ad3 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1099,6 +1099,7 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
+ 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
++	SND_PCI_QUIRK(0x103c, 0x826b, "HP ZBook Studio G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
 -- 
 2.51.0
 
