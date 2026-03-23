@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INhGLxFswWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:33 +0100
+	id oNyHCuxswWmqTAQAu9opvQ
+	(envelope-from <stable+bounces-229590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DB52F86A6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BB82F892B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB7133191AA7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF17630ADDF8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9731A6822;
-	Mon, 23 Mar 2026 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2533BBA14;
+	Mon, 23 Mar 2026 16:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btZEx8pG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmbMHCH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAA5DDC5;
-	Mon, 23 Mar 2026 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688783BC685;
+	Mon, 23 Mar 2026 16:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278038; cv=none; b=Meqm+worQVB/XrmCo1Lng/JADqgI98uqesTfsTOfEvevwYKjQwmKg95BHqhKtezyEfiVrplBuszkLq24+i6FkUObIgxF6ICKX1hYe4tbfodf/EvE0J2Bn8msEk0YLu8kcP125nbt51lTSPa7pD4zswj7tdWQ44auytkWS9Im8k4=
+	t=1774282331; cv=none; b=an88iptnj2eYIDOy5nqSZ8423dQY2TSj/kWEzECol6DRj/BqFWV7b8A/uX4z1ANqxaKCTGux9M6U38FeOWTKDDwBOkBtUXQtfIMvYSJjUvPvsANZYiHK6fgC6XdFQompVBa0WBXR505cLrCFIdU3WZdt7UtPMxurYC+A7ApmkUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278038; c=relaxed/simple;
-	bh=6KL2A92kyu6E97S2bTd6HbpwO0KpHIeQ1DUB82xpPNU=;
+	s=arc-20240116; t=1774282331; c=relaxed/simple;
+	bh=2rM3QNxpPIcYmP4FtSSlhwyPOa7Lmh3Wi9B1n5VKnSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiIGx8035K1ti4PB39nWZ4RLZ9HtWxNUSEsiSocB9XEfWSTSBPUo9rCbmkkhiBPcinom1yGX58Orygk1HvKaYuZBhgytrZdxvJb2OfFllI/uLU3lamsjgAygbcQZAhBas+v1i6H1nJUKx0QcEcCf5bM68OtvGn6Qm08+RqoFIlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btZEx8pG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EECC4CEF7;
-	Mon, 23 Mar 2026 15:00:37 +0000 (UTC)
+	 MIME-Version; b=jCumXPJ75GmGQeW66X6gOz+LiyXKHZuhb52MKFVm+QGxGjSya+Fc5hG/PrRxUFOD+fAFY0ehSHokOxx+mR1mCz/GPVrEPTgP08YEstJP6M8ROHNKq1YQ3Q+mD+SPLarKoH1yYjIYnM6KZB3pjD0e5D8lmN+9o2OBN/QIIrX/Af0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmbMHCH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC49EC4CEF7;
+	Mon, 23 Mar 2026 16:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278038;
-	bh=6KL2A92kyu6E97S2bTd6HbpwO0KpHIeQ1DUB82xpPNU=;
+	s=korg; t=1774282331;
+	bh=2rM3QNxpPIcYmP4FtSSlhwyPOa7Lmh3Wi9B1n5VKnSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btZEx8pGW2ANzgH5czb3flz5eW42n5OYRamzhgJojwnOk6er2Oq1KSNlNz1cM709q
-	 CZ/Npp5JUCn/qjFXLgVo6OoUXoEnZ8XQwyZamLQjKwJPV5nJ+79dZ80nibhxa9G+eW
-	 dW13rjoCkaq9rMDYD/PrEqPJlzXJmukrdFdZpLq0=
+	b=RmbMHCH4mntT+bOM0xpjUbi4GbQtoa5MJJoat01ASomHMR1lhleBJJXBnNRfiRwWS
+	 COpPEVxPicmPg8VZSJhsaFVN7D5um6mS6+ZiDKnXrJTCTUGPTh1f7AKhejEcFv4L4o
+	 iXknSCbtyvVJrX/Aet61pfnuGWe1pan3boSBIf9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shuvam Pandey <shuvampandey1@gmail.com>,
+	David Gow <david@davidgow.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/567] xsk: introduce helper to determine rxq->frag_size
+Subject: [PATCH 6.1 117/481] kunit: tool: copy caller args in run_kernel to prevent mutation
 Date: Mon, 23 Mar 2026 14:41:39 +0100
-Message-ID: <20260323134538.273178581@linuxfoundation.org>
+Message-ID: <20260323134528.134107519@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +70,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229093-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229590-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,davidgow.net,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 52DB52F86A6
+X-Rspamd-Queue-Id: D7BB82F892B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Shuvam Pandey <shuvampandey1@gmail.com>
 
-[ Upstream commit 16394d80539937d348dd3b9ea32415c54e67a81b ]
+[ Upstream commit 40804c4974b8df2adab72f6475d343eaff72b7f6 ]
 
-rxq->frag_size is basically a step between consecutive strictly aligned
-frames. In ZC mode, chunk size fits exactly, but if chunks are unaligned,
-there is no safe way to determine accessible space to grow tailroom.
+run_kernel() appended KUnit flags directly to the caller-provided args
+list. When exec_tests() calls run_kernel() repeatedly (e.g. with
+--run_isolated), each call mutated the same list, causing later runs
+to inherit stale filter_glob values and duplicate kunit.enable flags.
 
-Report frag_size to be zero, if chunks are unaligned, chunk_size otherwise.
+Fix this by copying args at the start of run_kernel(). Add a regression
+test that calls run_kernel() twice with the same list and verifies the
+original remains unchanged.
 
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Link: https://patch.msgid.link/20260305111253.2317394-3-larysa.zaremba@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ff9e09a3762f ("kunit: tool: support running each suite/test separately")
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Reviewed-by: David Gow <david@davidgow.net>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xdp_sock_drv.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tools/testing/kunit/kunit_kernel.py    |  6 ++++--
+ tools/testing/kunit/kunit_tool_test.py | 26 ++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 91339ffd2f2a8..7dc08a4646242 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -41,6 +41,11 @@ static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
- 	return xsk_pool_get_chunk_size(pool) - xsk_pool_get_headroom(pool);
- }
+diff --git a/tools/testing/kunit/kunit_kernel.py b/tools/testing/kunit/kunit_kernel.py
+index 86accd53644c1..2343f9a77a65a 100644
+--- a/tools/testing/kunit/kunit_kernel.py
++++ b/tools/testing/kunit/kunit_kernel.py
+@@ -330,8 +330,10 @@ class LinuxSourceTree:
+ 		return self.validate_config(build_dir)
  
-+static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
-+{
-+	return pool->unaligned ? 0 : xsk_pool_get_chunk_size(pool);
-+}
-+
- static inline void xsk_pool_set_rxq_info(struct xsk_buff_pool *pool,
- 					 struct xdp_rxq_info *rxq)
- {
-@@ -263,6 +268,11 @@ static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
- 	return 0;
- }
+ 	def run_kernel(self, args: Optional[List[str]]=None, build_dir: str='', filter_glob: str='', filter: str='', filter_action: Optional[str]=None, timeout: Optional[int]=None) -> Iterator[str]:
+-		if not args:
+-			args = []
++		# Copy to avoid mutating the caller-supplied list. exec_tests() reuses
++		# the same args across repeated run_kernel() calls (e.g. --run_isolated),
++		# so appending to the original would accumulate stale flags on each call.
++		args = list(args) if args else []
+ 		if filter_glob:
+ 			args.append('kunit.filter_glob=' + filter_glob)
+ 		if filter:
+diff --git a/tools/testing/kunit/kunit_tool_test.py b/tools/testing/kunit/kunit_tool_test.py
+index 04714f59fced6..29063d9ae2851 100755
+--- a/tools/testing/kunit/kunit_tool_test.py
++++ b/tools/testing/kunit/kunit_tool_test.py
+@@ -479,6 +479,32 @@ class LinuxSourceTreeTest(unittest.TestCase):
+ 			with open(kunit_kernel.get_outfile_path(build_dir), 'rt') as outfile:
+ 				self.assertEqual(outfile.read(), 'hi\nbye\n', msg='Missing some output')
  
-+static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
-+{
-+	return 0;
-+}
++	def test_run_kernel_args_not_mutated(self):
++		"""Verify run_kernel() copies args so callers can reuse them."""
++		start_calls = []
 +
- static inline void xsk_pool_set_rxq_info(struct xsk_buff_pool *pool,
- 					 struct xdp_rxq_info *rxq)
- {
++		def fake_start(start_args, unused_build_dir):
++			start_calls.append(list(start_args))
++			return subprocess.Popen(['printf', 'KTAP version 1\n'],
++						text=True, stdout=subprocess.PIPE)
++
++		with tempfile.TemporaryDirectory('') as build_dir:
++			tree = kunit_kernel.LinuxSourceTree(build_dir,
++					kunitconfig_paths=[os.devnull])
++			with mock.patch.object(tree._ops, 'start', side_effect=fake_start), \
++			     mock.patch.object(kunit_kernel.subprocess, 'call'):
++				kernel_args = ['mem=1G']
++				for _ in tree.run_kernel(args=kernel_args, build_dir=build_dir,
++							 filter_glob='suite.test1'):
++					pass
++				for _ in tree.run_kernel(args=kernel_args, build_dir=build_dir,
++							 filter_glob='suite.test2'):
++					pass
++				self.assertEqual(kernel_args, ['mem=1G'],
++					'run_kernel() should not modify caller args')
++				self.assertIn('kunit.filter_glob=suite.test1', start_calls[0])
++				self.assertIn('kunit.filter_glob=suite.test2', start_calls[1])
++
+ 	def test_build_reconfig_no_config(self):
+ 		with tempfile.TemporaryDirectory('') as build_dir:
+ 			with open(kunit_kernel.get_kunitconfig_path(build_dir), 'w') as f:
 -- 
 2.51.0
 
