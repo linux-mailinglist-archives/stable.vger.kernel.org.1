@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFT3CdZpwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:02 +0100
+	id SHiPI3NMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8673D2F81AF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F5E2F4470
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2D80323992B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34A8430BF81C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1741A1A5B84;
-	Mon, 23 Mar 2026 14:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503B53B0ADA;
+	Mon, 23 Mar 2026 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQ8ymCeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swR5yWb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1EE267B07;
-	Mon, 23 Mar 2026 14:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136753947A6;
+	Mon, 23 Mar 2026 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277308; cv=none; b=cxX8LpNBJEsN/4NsqEXO7MMim6X7DYken/dVkOF6Ht1X0mzr8YoBs/6aYELcTd+wM8vZsbik547OFPTtltPPaRGAIIY9VcnoJ89aW/Q9kpPBE7Z832jCT3fPKGn/p38K2XtqsHMRnDAIUXTTcUUTv7cAgIxIW5DwwyTKkXiXZTw=
+	t=1774274951; cv=none; b=fUyecDgXyGxZ52mio/72gNX8T66Uy5ZT9U2M8g5HJmmFxC2UVrPtJbrQNLB5LhZeUaQqx+QAPOWv6siwXRfYH2soLk4kHq5W86Spq9il3cTav8dBpMXQDajERUnSUEIuCwoVKX7Msv5JyVHczglfC8QY1sVNyFyY3uv7hJdvzX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277308; c=relaxed/simple;
-	bh=NXVNsShYt0ryBRXWtNZi9LOUQI1NFMrzhHvTPc8cT8Q=;
+	s=arc-20240116; t=1774274951; c=relaxed/simple;
+	bh=n9mEJi1VuRxytVjosdALcm+rDHblzF9bBFym3Ni5DJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfqXCOTFCuAkFVzfBXfolEY7za6UrSHr3XTM31ovirT0oEWuhAyn+yu0FvaCYJLhPDXpq9YNpiNMjLRorrzRYNqoJo5Pe6S0HUSHK6pZB6yVJ3ozbOfiD+ULIVpyRUMsjmjkePqfmSHFkTlpDOVUfEtIKlk8Yuyr5k8bgMCt3g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQ8ymCeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D909C2BC9E;
-	Mon, 23 Mar 2026 14:48:27 +0000 (UTC)
+	 MIME-Version; b=QTSa5uTtlEGe392ITTmZPMJoYl/jcnCEXfyosLTWqBMZvxTHCa28vgJWKHWi8PMk7Nw7qIkSwgoq0brlF0Ggieu7qYparSBEQU5FTZTV9gzjgZ/PPKKJ3wQtumfolEaZky52RvbAFXnrhnhtdsOdBnk58Qd30zmVk84q5NkLsLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swR5yWb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6A5C4CEF7;
+	Mon, 23 Mar 2026 14:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277307;
-	bh=NXVNsShYt0ryBRXWtNZi9LOUQI1NFMrzhHvTPc8cT8Q=;
+	s=korg; t=1774274951;
+	bh=n9mEJi1VuRxytVjosdALcm+rDHblzF9bBFym3Ni5DJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQ8ymCeF81UJkGaXFo+xfsHF6VKsm1JdRVCrMjrZHb3t8HQw09Yf35391h4UAzm3W
-	 584xf6RZHgjQ5OQw9scQ3Tu7tUW8mkc78vxdV85EJGaG2MWTNGoffz0fbKfBUXUkTD
-	 TiL/2mvNlVvcNOHfPdalx+7yFNZg0SO+yKsYIosM=
+	b=swR5yWb8xGnnuBn84Jeer/iGwon8wQNSmYpjERdR3iXo5gnuoippW+rT8rC7Xu3DT
+	 Hs2Qesaqk3fETKwpTNd6/67F+HktaEMzOM/zexm+d1WCKW1ki2yC1Ipvjlkcs4YJLB
+	 z5AlqymoUiVMlihIrSg5UqFVOjwQKXJAEmi1CL14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 392/460] netfilter: ctnetlink: remove refcounting in expectation dumpers
+Subject: [PATCH 6.18 167/212] net/mlx5e: Prevent concurrent access to IPSec ASO context
 Date: Mon, 23 Mar 2026 14:46:28 +0100
-Message-ID: <20260323134536.201240670@linuxfoundation.org>
+Message-ID: <20260323134509.006064335@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,194 +70,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,msgid.link:server fail];
+	TAGGED_FROM(0.00)[bounces-228377-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228852-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,strlen.de:email]
-X-Rspamd-Queue-Id: 8673D2F81AF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 34F5E2F4470
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 1492e3dcb2be3aa46d1963da96aa9593e4e4db5a ]
+[ Upstream commit 99b36850d881e2d65912b2520a1c80d0fcc9429a ]
 
-Same pattern as previous patch: do not keep the expectation object
-alive via refcount, only store a cookie value and then use that
-as the skip hint for dump resumption.
+The query or updating IPSec offload object is through Access ASO WQE.
+The driver uses a single mlx5e_ipsec_aso struct for each PF, which
+contains a shared DMA-mapped context for all ASO operations.
 
-AFAICS this has the same issue as the one resolved in the conntrack
-dumper, when we do
-  if (!refcount_inc_not_zero(&exp->use))
+A race condition exists because the ASO spinlock is released before
+the hardware has finished processing WQE. If a second operation is
+initiated immediately after, it overwrites the shared context in the
+DMA area.
 
-to increment the refcount, there is a chance that exp == last, which
-causes a double-increment of the refcount and subsequent memory leak.
+When the first operation's completion is processed later, it reads
+this corrupted context, leading to unexpected behavior and incorrect
+results.
 
-Fixes: cf6994c2b981 ("[NETFILTER]: nf_conntrack_netlink: sync expectation dumping with conntrack table dumping")
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 5cb81eeda909 ("netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()")
+This commit fixes the race by introducing a private context within
+each IPSec offload object. The shared ASO context is now copied to
+this private context while the ASO spinlock is held. Subsequent
+processing uses this saved, per-object context, ensuring its integrity
+is maintained.
+
+Fixes: 1ed78fc03307 ("net/mlx5e: Update IPsec soft and hard limits")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 41 ++++++++++++----------------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec.h         |  1 +
+ .../mellanox/mlx5/core/en_accel/ipsec_offload.c | 17 ++++++++---------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 18a91c031554c..13836723223e0 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3146,23 +3146,27 @@ ctnetlink_expect_event(unsigned int events, const struct nf_exp_event *item)
- 	return 0;
- }
- #endif
--static int ctnetlink_exp_done(struct netlink_callback *cb)
-+
-+static unsigned long ctnetlink_exp_id(const struct nf_conntrack_expect *exp)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+index f8eaaf37963b1..abcbd38db9dbb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+@@ -287,6 +287,7 @@ struct mlx5e_ipsec_sa_entry {
+ 	struct mlx5e_ipsec_dwork *dwork;
+ 	struct mlx5e_ipsec_limits limits;
+ 	u32 rx_mapped_id;
++	u8 ctx[MLX5_ST_SZ_BYTES(ipsec_aso)];
+ };
+ 
+ struct mlx5_accel_pol_xfrm_attrs {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index ef7322d381af6..2739ff490239d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -370,20 +370,18 @@ static void mlx5e_ipsec_aso_update_soft(struct mlx5e_ipsec_sa_entry *sa_entry,
+ static void mlx5e_ipsec_handle_limits(struct mlx5e_ipsec_sa_entry *sa_entry)
  {
--	if (cb->args[1])
--		nf_ct_expect_put((struct nf_conntrack_expect *)cb->args[1]);
--	return 0;
-+	unsigned long id = (unsigned long)exp;
-+
-+	id += nf_ct_get_id(exp->master);
-+	id += exp->class;
-+
-+	return id ? id : 1;
- }
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs = &sa_entry->attrs;
+-	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
+-	struct mlx5e_ipsec_aso *aso = ipsec->aso;
+ 	bool soft_arm, hard_arm;
+ 	u64 hard_cnt;
  
- static int
- ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct net *net = sock_net(skb->sk);
--	struct nf_conntrack_expect *exp, *last;
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	u_int8_t l3proto = nfmsg->nfgen_family;
-+	unsigned long last_id = cb->args[1];
-+	struct nf_conntrack_expect *exp;
+ 	lockdep_assert_held(&sa_entry->x->lock);
  
- 	rcu_read_lock();
--	last = (struct nf_conntrack_expect *)cb->args[1];
- 	for (; cb->args[0] < nf_ct_expect_hsize; cb->args[0]++) {
- restart:
- 		hlist_for_each_entry_rcu(exp, &nf_ct_expect_hash[cb->args[0]],
-@@ -3174,7 +3178,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				continue;
+-	soft_arm = !MLX5_GET(ipsec_aso, aso->ctx, soft_lft_arm);
+-	hard_arm = !MLX5_GET(ipsec_aso, aso->ctx, hard_lft_arm);
++	soft_arm = !MLX5_GET(ipsec_aso, sa_entry->ctx, soft_lft_arm);
++	hard_arm = !MLX5_GET(ipsec_aso, sa_entry->ctx, hard_lft_arm);
+ 	if (!soft_arm && !hard_arm)
+ 		/* It is not lifetime event */
+ 		return;
  
- 			if (cb->args[1]) {
--				if (exp != last)
-+				if (ctnetlink_exp_id(exp) != last_id)
- 					continue;
- 				cb->args[1] = 0;
- 			}
-@@ -3183,9 +3187,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 						    cb->nlh->nlmsg_seq,
- 						    IPCTNL_MSG_EXP_NEW,
- 						    exp) < 0) {
--				if (!refcount_inc_not_zero(&exp->use))
--					continue;
--				cb->args[1] = (unsigned long)exp;
-+				cb->args[1] = ctnetlink_exp_id(exp);
- 				goto out;
- 			}
- 		}
-@@ -3196,32 +3198,30 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+-	hard_cnt = MLX5_GET(ipsec_aso, aso->ctx, remove_flow_pkt_cnt);
++	hard_cnt = MLX5_GET(ipsec_aso, sa_entry->ctx, remove_flow_pkt_cnt);
+ 	if (!hard_cnt || hard_arm) {
+ 		/* It is possible to see packet counter equal to zero without
+ 		 * hard limit event armed. Such situation can be if packet
+@@ -454,10 +452,8 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 		container_of(_work, struct mlx5e_ipsec_work, work);
+ 	struct mlx5e_ipsec_sa_entry *sa_entry = work->data;
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs;
+-	struct mlx5e_ipsec_aso *aso;
+ 	int ret;
+ 
+-	aso = sa_entry->ipsec->aso;
+ 	attrs = &sa_entry->attrs;
+ 
+ 	spin_lock_bh(&sa_entry->x->lock);
+@@ -466,8 +462,9 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 		goto unlock;
+ 
+ 	if (attrs->replay_esn.trigger &&
+-	    !MLX5_GET(ipsec_aso, aso->ctx, esn_event_arm)) {
+-		u32 mode_param = MLX5_GET(ipsec_aso, aso->ctx, mode_parameter);
++	    !MLX5_GET(ipsec_aso, sa_entry->ctx, esn_event_arm)) {
++		u32 mode_param = MLX5_GET(ipsec_aso, sa_entry->ctx,
++					  mode_parameter);
+ 
+ 		mlx5e_ipsec_update_esn_state(sa_entry, mode_param);
  	}
- out:
- 	rcu_read_unlock();
--	if (last)
--		nf_ct_expect_put(last);
--
- 	return skb->len;
+@@ -629,6 +626,8 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 			/* We are in atomic context */
+ 			udelay(10);
+ 	} while (ret && time_is_after_jiffies(expires));
++	if (!ret)
++		memcpy(sa_entry->ctx, aso->ctx, MLX5_ST_SZ_BYTES(ipsec_aso));
+ 	spin_unlock_bh(&aso->lock);
+ 	return ret;
  }
- 
- static int
- ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
--	struct nf_conntrack_expect *exp, *last;
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
- 	struct nf_conn_help *help = nfct_help(ct);
- 	u_int8_t l3proto = nfmsg->nfgen_family;
-+	unsigned long last_id = cb->args[1];
-+	struct nf_conntrack_expect *exp;
- 
- 	if (cb->args[0])
- 		return 0;
- 
- 	rcu_read_lock();
--	last = (struct nf_conntrack_expect *)cb->args[1];
-+
- restart:
- 	hlist_for_each_entry_rcu(exp, &help->expectations, lnode) {
- 		if (l3proto && exp->tuple.src.l3num != l3proto)
- 			continue;
- 		if (cb->args[1]) {
--			if (exp != last)
-+			if (ctnetlink_exp_id(exp) != last_id)
- 				continue;
- 			cb->args[1] = 0;
- 		}
-@@ -3229,9 +3229,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 					    cb->nlh->nlmsg_seq,
- 					    IPCTNL_MSG_EXP_NEW,
- 					    exp) < 0) {
--			if (!refcount_inc_not_zero(&exp->use))
--				continue;
--			cb->args[1] = (unsigned long)exp;
-+			cb->args[1] = ctnetlink_exp_id(exp);
- 			goto out;
- 		}
- 	}
-@@ -3242,9 +3240,6 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	cb->args[0] = 1;
- out:
- 	rcu_read_unlock();
--	if (last)
--		nf_ct_expect_put(last);
--
- 	return skb->len;
- }
- 
-@@ -3263,7 +3258,6 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
--		.done = ctnetlink_exp_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
-@@ -3313,7 +3307,6 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
- 		else {
- 			struct netlink_dump_control c = {
- 				.dump = ctnetlink_exp_dump_table,
--				.done = ctnetlink_exp_done,
- 			};
- 			return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 		}
 -- 
 2.51.0
 
