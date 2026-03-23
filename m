@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-228565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIigOU5UwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:10 +0100
+	id UDu3CAdYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0852F56D7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73EE2F5ECA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2815931AB080
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 20E18302DD6B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EA5199FAB;
-	Mon, 23 Mar 2026 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA578285061;
+	Mon, 23 Mar 2026 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAczvVQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBsik0jH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE85A1A6808;
-	Mon, 23 Mar 2026 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5FC28488F;
+	Mon, 23 Mar 2026 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275466; cv=none; b=AhSGsOpihQNMHZ7R7/kFQ6J8Oacyq3mP/9GAE9D+eE0LogWyadX6MUbAeAB6dMsoEp5XiTc5Imu/mFXxuLRTDh1y1XSENe7KfnmxrnyqyHi/Vc3k4UGn8CW6PK95chmYaFgHIYeYeBpAsVU6wFv4kZBSb2jRW+qruJDloaXxA7I=
+	t=1774278177; cv=none; b=n7WE5J67et6pq6PupUVWjed5F2dj80vD3aVaOFQ5bZlAX9jmEcXOe5MOXn1awQ4oVXRevW3LlOzhjNjdKAjoaAcRijzeA9/5nq6pUKMMXBUXi0i2+0v0EIa0uZwcHR6ZY+ESvaVH6ONLEmMvnkQ/8Kf1Zeez1KILXVjTd5BoiVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275466; c=relaxed/simple;
-	bh=E3QaHD1L8CTpe40t9DbphkmgqFwIdQPzOE9LSuIKt4M=;
+	s=arc-20240116; t=1774278177; c=relaxed/simple;
+	bh=evQ9ivZM7xQes2EtbpfuCKSxWrQ1Sd/MoyBse4lGdBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qU5A9edG/mH+cyFa1Zg+sR7rz2BCNp//RR+NsPf4ShJFXq+t7q96vrukFjUYX1QHraU8Z9W4/DD5EXcsssZ0Tlgzi5laSfMM0vSJwpaSYjIMjQySDlGYvWF7sgpeaYZaDjOLEDUvecerMgyQflpI7v8aWwdv3lV/2edIzidqW4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAczvVQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523D4C4CEF7;
-	Mon, 23 Mar 2026 14:17:46 +0000 (UTC)
+	 MIME-Version; b=GqAbIP3/idgR2yBO+ep6n13jErn3yvac+fVVGTSxt1fGZMDGZNy1IW3VQRazNtlTib3ZWyVSUClY8JyThz7iu7guRtcVR4DIuM9+4u4sXoAVZQ1eZzJi53IH7uo1c6AGXjazBGjz+RGKwHyl59aOx52ypvOCZPvIqYuWDQt8pEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBsik0jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0197C4CEF7;
+	Mon, 23 Mar 2026 15:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275466;
-	bh=E3QaHD1L8CTpe40t9DbphkmgqFwIdQPzOE9LSuIKt4M=;
+	s=korg; t=1774278177;
+	bh=evQ9ivZM7xQes2EtbpfuCKSxWrQ1Sd/MoyBse4lGdBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAczvVQM6CX+FmMDCk1S9V74GRcvgQTeDgO+WrqBcZ+yusAR+FeMn6MigyVuw5Omf
-	 YBRIimeOh0qXiy2DFAMCg77YzEdmHkpCMhf70kRDf8Qjpq/N08+4HUZ2j7LNW1a35A
-	 xsGnU1Ubm9Mak814IT0xJ75bFGC7moOoG5Wzd38E=
+	b=DBsik0jHqpvzKKbYIWLFkJt0itIzEyBm/pi56PksSZwy0V40k/laO6HhfbIPD3+u6
+	 KvL9/ctqp08thcn1FxSzcIs3QUIEoGDdtPt+Dttgv0FGLz5tCgAkEj7cfTcklarlTZ
+	 Nw4/hFlSurE9zqzXQt1Vv8BypkfRLsFe6tT/exm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.12 112/460] USB: core: Limit the length of unkillable synchronous timeouts
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.6 188/567] apparmor: fix memory leak in verify_header
 Date: Mon, 23 Mar 2026 14:41:48 +0100
-Message-ID: <20260323134529.388030070@linuxfoundation.org>
+Message-ID: <20260323134538.505442132@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,167 +69,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229137-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228565-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6D0852F56D7
+X-Rspamd-Queue-Id: C73EE2F5ECA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
 
-commit 1015c27a5e1a63efae2b18a9901494474b4d1dc3 upstream.
+commit e38c55d9f834e5b848bfed0f5c586aaf45acb825 upstream.
 
-The usb_control_msg(), usb_bulk_msg(), and usb_interrupt_msg() APIs in
-usbcore allow unlimited timeout durations.  And since they use
-uninterruptible waits, this leaves open the possibility of hanging a
-task for an indefinitely long time, with no way to kill it short of
-unplugging the target device.
+The function sets `*ns = NULL` on every call, leaking the namespace
+string allocated in previous iterations when multiple profiles are
+unpacked. This also breaks namespace consistency checking since *ns
+is always NULL when the comparison is made.
 
-To prevent this sort of problem, enforce a maximum limit on the length
-of these unkillable timeouts.  The limit chosen here, somewhat
-arbitrarily, is 60 seconds.  On many systems (although not all) this
-is short enough to avoid triggering the kernel's hung-task detector.
+Remove the incorrect assignment.
+The caller (aa_unpack) initializes *ns to NULL once before the loop,
+which is sufficient.
 
-In addition, clear up the ambiguity of negative timeout values by
-treating them the same as 0, i.e., using the maximum allowed timeout.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/15fc9773-a007-47b0-a703-df89a8cf83dd@rowland.harvard.edu
+Fixes: dd51c8485763 ("apparmor: provide base for multiple profiles to be replaced at once")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/message.c |   27 +++++++++++++--------------
- include/linux/usb.h        |    3 +++
- 2 files changed, 16 insertions(+), 14 deletions(-)
+ security/apparmor/policy_unpack.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -45,6 +45,8 @@ static void usb_api_blocking_completion(
-  * Starts urb and waits for completion or timeout.
-  * Whether or not the wait is killable depends on the flag passed in.
-  * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
-+ *
-+ * For non-killable waits, we enforce a maximum limit on the timeout value.
-  */
- static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
- 		bool killable)
-@@ -61,7 +63,9 @@ static int usb_start_wait_urb(struct urb
- 	if (unlikely(retval))
- 		goto out;
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -1132,7 +1132,6 @@ static int verify_header(struct aa_ext *
+ {
+ 	int error = -EPROTONOSUPPORT;
+ 	const char *name = NULL;
+-	*ns = NULL;
  
--	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
-+	if (!killable && (timeout <= 0 || timeout > USB_MAX_SYNCHRONOUS_TIMEOUT))
-+		timeout = USB_MAX_SYNCHRONOUS_TIMEOUT;
-+	expire = (timeout > 0) ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
- 	if (killable)
- 		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
- 	else
-@@ -127,8 +131,7 @@ static int usb_internal_control_msg(stru
-  * @index: USB message index value
-  * @data: pointer to the data to send
-  * @size: length in bytes of the data to send
-- * @timeout: time in msecs to wait for the message to complete before timing
-- *	out (if 0 the wait is forever)
-+ * @timeout: time in msecs to wait for the message to complete before timing out
-  *
-  * Context: task context, might sleep.
-  *
-@@ -183,8 +186,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg);
-  * @index: USB message index value
-  * @driver_data: pointer to the data to send
-  * @size: length in bytes of the data to send
-- * @timeout: time in msecs to wait for the message to complete before timing
-- *	out (if 0 the wait is forever)
-+ * @timeout: time in msecs to wait for the message to complete before timing out
-  * @memflags: the flags for memory allocation for buffers
-  *
-  * Context: !in_interrupt ()
-@@ -242,8 +244,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_send);
-  * @index: USB message index value
-  * @driver_data: pointer to the data to be filled in by the message
-  * @size: length in bytes of the data to be received
-- * @timeout: time in msecs to wait for the message to complete before timing
-- *	out (if 0 the wait is forever)
-+ * @timeout: time in msecs to wait for the message to complete before timing out
-  * @memflags: the flags for memory allocation for buffers
-  *
-  * Context: !in_interrupt ()
-@@ -314,8 +315,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_recv);
-  * @len: length in bytes of the data to send
-  * @actual_length: pointer to a location to put the actual length transferred
-  *	in bytes
-- * @timeout: time in msecs to wait for the message to complete before
-- *	timing out (if 0 the wait is forever)
-+ * @timeout: time in msecs to wait for the message to complete before timing out
-  *
-  * Context: task context, might sleep.
-  *
-@@ -347,8 +347,7 @@ EXPORT_SYMBOL_GPL(usb_interrupt_msg);
-  * @len: length in bytes of the data to send
-  * @actual_length: pointer to a location to put the actual length transferred
-  *	in bytes
-- * @timeout: time in msecs to wait for the message to complete before
-- *	timing out (if 0 the wait is forever)
-+ * @timeout: time in msecs to wait for the message to complete before timing out
-  *
-  * Context: task context, might sleep.
-  *
-@@ -408,12 +407,12 @@ EXPORT_SYMBOL_GPL(usb_bulk_msg);
-  * @actual_length: pointer to a location to put the actual length transferred
-  *	in bytes
-  * @timeout: time in msecs to wait for the message to complete before
-- *	timing out (if 0 the wait is forever)
-+ *	timing out (if <= 0, the wait is as long as possible)
-  *
-  * Context: task context, might sleep.
-  *
-- * This function is just like usb_blk_msg() except that it waits in a
-- * killable state.
-+ * This function is just like usb_blk_msg(), except that it waits in a
-+ * killable state and there is no limit on the timeout length.
-  *
-  * Return:
-  * If successful, 0. Otherwise a negative error number. The number of actual
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -1830,6 +1830,9 @@ void usb_free_coherent(struct usb_device
-  *                         SYNCHRONOUS CALL SUPPORT                  *
-  *-------------------------------------------------------------------*/
- 
-+/* Maximum value allowed for timeout in synchronous routines below */
-+#define USB_MAX_SYNCHRONOUS_TIMEOUT		60000	/* ms */
-+
- extern int usb_control_msg(struct usb_device *dev, unsigned int pipe,
- 	__u8 request, __u8 requesttype, __u16 value, __u16 index,
- 	void *data, __u16 size, int timeout);
+ 	/* get the interface version */
+ 	if (!aa_unpack_u32(e, &e->version, "version")) {
 
 
 
