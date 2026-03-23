@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKyPOTh+wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:54:00 +0100
+	id yCqQBLlfwWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:43:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A91A2FA940
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:54:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759722F6C9B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FC4630E8516
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3838313AF48
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239C63B8D4F;
-	Mon, 23 Mar 2026 16:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6A03B2FF6;
+	Mon, 23 Mar 2026 15:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhbjZT9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIsTqpqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D858E3B9D85;
-	Mon, 23 Mar 2026 16:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A178B3B27C5;
+	Mon, 23 Mar 2026 15:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283041; cv=none; b=uUQZhnRiWa//9r4VzYeSIFdeUkK6RhM7riMHZDRjLiOmE0z3gnDCeCBIulsVrjp4uGlarYXtt9zsJ6n3sgBvdJ2mdKqAx0odaIIIToRyw7P0E2pxw93q1QRYbA5l0LQg4SOn3r+F0oNcnzwsvoAQtPYz7AzfxjgOsOxpob0uQuo=
+	t=1774278863; cv=none; b=sXV+bwas+1sVrfmAtH0I1xZVoirB2X6sIoAagxo0RvMxl0hfOAiSWTCR7OMF9xjp4Vphr0kt4Q0Oq4XwYHTLX5Ejpxir3OaPEGu+36sl8QUTZ+k9UkN2InrKIIq0zLjzadmDMDgSv31Se2PpaS+7LPu0HFVYQ0bpkWG5IRclgiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283041; c=relaxed/simple;
-	bh=jmKf0lqshLQLL3DN/8KBmWPbNkET/qy9QxuS46krRWE=;
+	s=arc-20240116; t=1774278863; c=relaxed/simple;
+	bh=XxvRHXrVlHjJG7faanO8Y3L71JP+FWw6UxB/AEptdCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svH4bEQqZpmPJeWatZyE4buqbDrpRlLPI1NCh6L+jir6awPu0VPDmgZHdU5nr7f3ttFulNucol1mvPV5PS4oAedBj9T3s/UyJgA4dP1BO9bQS6yxVbkOXBRH8UqD86gKUkD8X/IiVllYhfChLBq20KgkSbkLRHcPiK2kWGeR4FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhbjZT9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723D7C4CEF7;
-	Mon, 23 Mar 2026 16:24:01 +0000 (UTC)
+	 MIME-Version; b=GxCo0s6YzyMnRAHuCiNReoB8behSs5Jd1F9TXciL8RtoNWkgO1GdSaHiHMDzfyp0Z7iRoKj4yo/nPb85uaC8kjmouaQXQDwx7kQeWMehC8YzDeF8JWeHFiqJwfylw3y4FbOj2+Wgp4HighKalEc65x9IwuB500pu7laoCB8rYWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIsTqpqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA117C4CEF7;
+	Mon, 23 Mar 2026 15:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283041;
-	bh=jmKf0lqshLQLL3DN/8KBmWPbNkET/qy9QxuS46krRWE=;
+	s=korg; t=1774278863;
+	bh=XxvRHXrVlHjJG7faanO8Y3L71JP+FWw6UxB/AEptdCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhbjZT9DcK+N+fd5Gme4fP48eezlvmcv6w00hI+JBKz17waGvcS6eW2bKXP6dpamR
-	 TIz2+CtuFVohrJB5jZ5Eqco74ISYPrmxx7B/Bz6sHXSZ5FYKZv+8KRCza19eXQg4Bi
-	 lj2Tb5i8soMN1fZZ/9UL3L1gsEQSsCW2lauu3oBs=
+	b=QIsTqpquptEIvdwjuNuZzaujlf7YPt6qm+at67c503+49DJR4+7iRdHXdqBTtP97m
+	 PBARP/VKfttr9fDtTTzajCSmac76o4982FqfkZ1CGR8TZ+gNtX21IE7uVp+EiwHUWw
+	 BjvFP0OmGkFnBKZcaBuSU1LWIYUo1hNA71XqvzVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.1 381/481] net: add skb_header_pointer_careful() helper
+	Samuel Wu <wusamuel@google.com>,
+	Alex Hoh <Alex.Hoh@mediatek.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 443/567] sched/fair: Fix pelt clock sync when entering idle
 Date: Mon, 23 Mar 2026 14:46:03 +0100
-Message-ID: <20260323134534.419114830@linuxfoundation.org>
+Message-ID: <20260323134544.917989409@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +67,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229854-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229358-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4A91A2FA940
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 759722F6C9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit 13e00fdc9236bd4d0bff4109d2983171fbcb74c4 ]
+[ Upstream commit 98c88dc8a1ace642d9021b103b28cba7b51e3abc ]
 
-This variant of skb_header_pointer() should be used in contexts
-where @offset argument is user-controlled and could be negative.
+Samuel and Alex reported regressions of the util_avg of RT rq with
+commit 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection").
+It happens that fair is updating and syncing the pelt clock with task one
+when pick_next_task_fair() fails to pick a task but before the prev
+scheduling class got a chance to update its pelt signals.
 
-Negative offsets are supported, as long as the zone starts
-between skb->head and skb->data.
+Move update_idle_rq_clock_pelt() in set_next_task_idle() which is called
+after prev class has been called.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Fixes: 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection")
+Reported-by: Samuel Wu <wusamuel@google.com>
+Closes: https://lore.kernel.org/all/CAG2KctpO6VKS6GN4QWDji0t92_gNBJ7HjjXrE+6H+RwRXt=iLg@mail.gmail.com/
+Reported-by: Alex Hoh <Alex.Hoh@mediatek.com>
+Closes: https://lore.kernel.org/all/8cf19bf0e0054dcfed70e9935029201694f1bb5a.camel@mediatek.com/
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Samuel Wu <wusamuel@google.com>
+Tested-by: Alex Hoh <Alex.Hoh@mediatek.com>
+Link: https://patch.msgid.link/20260121163317.505635-1-vincent.guittot@linaro.org
+(cherry picked from commit 98c88dc8a1ace642d9021b103b28cba7b51e3abc)
+[ wusamuel: Did not include line 'exec_start = rq_clock_task()', which
+is not present in 6.6.y but found in mainline ]
+Signed-off-by: Samuel Wu <wusamuel@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skbuff.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/sched/fair.c |    6 ------
+ kernel/sched/idle.c |    6 ++++++
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -4113,6 +4113,18 @@ skb_header_pointer(const struct sk_buff
- 				    skb_headlen(skb), buffer);
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8557,12 +8557,6 @@ idle:
+ 			goto again;
+ 	}
+ 
+-	/*
+-	 * rq is about to be idle, check if we need to update the
+-	 * lost_idle_time of clock_pelt
+-	 */
+-	update_idle_rq_clock_pelt(rq);
+-
+ 	return NULL;
  }
  
-+/* Variant of skb_header_pointer() where @offset is user-controlled
-+ * and potentially negative.
-+ */
-+static inline void * __must_check
-+skb_header_pointer_careful(const struct sk_buff *skb, int offset,
-+			   int len, void *buffer)
-+{
-+	if (unlikely(offset < 0 && -offset > skb_headroom(skb)))
-+		return NULL;
-+	return skb_header_pointer(skb, offset, len, buffer);
-+}
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -423,6 +423,12 @@ static void set_next_task_idle(struct rq
+ {
+ 	update_idle_core(rq);
+ 	schedstat_inc(rq->sched_goidle);
 +
- /**
-  *	skb_needs_linearize - check if we need to linearize a given skb
-  *			      depending on the given device features.
++	/*
++	 * rq is about to be idle, check if we need to update the
++	 * lost_idle_time of clock_pelt
++	 */
++	update_idle_rq_clock_pelt(rq);
+ }
+ 
+ #ifdef CONFIG_SMP
 
 
 
