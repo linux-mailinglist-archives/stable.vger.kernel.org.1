@@ -1,102 +1,108 @@
-Return-Path: <stable+bounces-229984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCPSAmp7wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:02 +0100
+	id sI7ZCjWFwWnqTgQAu9opvQ
+	(envelope-from <stable+bounces-229985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:23:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EA42FA3C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8226F2FB398
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91CDE303918C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25B3630E5644
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB653C8731;
-	Mon, 23 Mar 2026 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954B83C873B;
+	Mon, 23 Mar 2026 17:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="jXjZaRId"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GEFy+JW+";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MXxblVdI";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MUbPI0ms";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9TMTKZ8N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF4F3C7DF4
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 17:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D873BF698
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 17:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774287104; cv=none; b=C2lm3GqPj5hrMWoRXh412krIjtxWSZGbRzp4T9wR6bboNcjmBG6X0uOHOak2TXd/G3kR7eM3lNwzYTdV8ipb8MrLOq30zwcvsnquYo1IkPBAmL8wSpYDiC0+oNzrNUSZKLkJiS++MJKcDUMoilw6WEtoaIbuuxNE1EL8H56GsbI=
+	t=1774287641; cv=none; b=oBIR9drpGn+x0t+TCD12bv5+AMyMEVgrDxZ33vRhSJ5TnB7bCor0z2qOndiMcYf6VzfmneV8gXNpW+O3vOTIGXPuc8eADIxsxDV6Saym1gVi1Xp8BkjiCM3ZlW+JopriNpfoHmzVK0+utKOgzU1mhhidZExccgzUEexDAbM5SoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774287104; c=relaxed/simple;
-	bh=mBhx/iGMR6MnTH62/x8K0OvjgYxObT0PTNXZZqCOHkA=;
+	s=arc-20240116; t=1774287641; c=relaxed/simple;
+	bh=V+5gMMib+vwH70Ky/BQ6Vzjf9BOimZGyZaqH9Yr25i8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q/pH2uY2nOVgpZm2ze/uRNGV72TOpktaz6QTOpopfvJGORvn9UoxbWHEusuCwNN6eX4ONspElSoLVtNV/0F1gzoc5qHv1CYzfvwIDlMY8Aco+ty0wBlF4bdQwubMxUa5clumKZf+N/Ty6fr6AYy/7/iYJ4q7Xbn7aEPvOFmuJH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=jXjZaRId; arc=none smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64acd19e1dfso3699545d50.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:31:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1774287102; x=1774891902; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L7FawmBPSYeihgLrf84TswLXrZodyF3L+TdguCBeUDA=;
-        b=jXjZaRIdu22bGrftrd+cAzDRaHm3ZYhEcNyTmCeQbkAFpqxBn89Tc2Mvh5TScyrQnx
-         g/wOwYTP3gy2UMR09ci8EtsdwNPK8qVtQ73Er/IGi/UVkCQzCavdEhiTnIzKuYo6ARyx
-         88WI6ftq5ZlrljHVPXdJ3PTUWAqlBqxAR51/QCFFjBGs99KUKxzV+tt/tnp2xDMrMcd+
-         EFn9tGStZztHiMAiqbzabwAJb+uignTqRxmuFRq3tPX4pbpjjAftuKeo3x1Jd4mb6mea
-         /IhcTsD7oKmE/tkpN6mkRTtW7yMkdbjhbgFtkRzpT76hKFLvjPdJ1cguLtyVzQThccoG
-         WRLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774287102; x=1774891902;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L7FawmBPSYeihgLrf84TswLXrZodyF3L+TdguCBeUDA=;
-        b=qJjdA/gMGqpw8+9oxjrXGKFqCvYAhXQhqacA54fU9Q/2cFmb8OITrsWqNxjC78WUXe
-         vkeqteH6m7S3WrRTj9fGu04zZPd6CMhSvdY6QFlaKssw32gm9wVzMyk0kpnOSby9LEwV
-         Xu3cGxAazDcsWowNdjR8Uw/XGVFY3lAVokzxF9zsXf8GORvqQSFU2pmYSKrn2lcIsNgC
-         B1Nm6AMn2aXjMdESezyDeI5hn9iUbl1y8+MvnmM0boSAt6HPDY6tt38jdayWySGwlM6O
-         ofzmq+DeUMgxe+YB6FJ9WAn9ubzZd9ljViMddaIUG76wDByKa7xhguq0ADhpmhT2VFUE
-         QwZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXsO7rxyUYsO3Tc4V+qm6vwJmCUoFQP3Q11NtvR1W/3v99CPKcNTO9AoatoqErZZr3vEMPB2r8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8cSSoYM3ZjBKFDgCemMHx0DVyESRg1wHrLgbRe9ag9G7sTZnP
-	3oEpZijvpLZGD4idC08TPIZFj5gjF9zqNPGEVfHPC9UBCn3Elnz2yXFk/wtofb/A1AQ=
-X-Gm-Gg: ATEYQzwHbCEDi4BZ2oBgVDrLeTQk5MwYZfZz2OthiefAZWEtZI7U9TyuUrqjQxFg1vS
-	bnNFJLl9ekSvp2bv0cuH4KKLh46iY2FQxBv5uewEMwdFGniucqGInmGIiAizLNskIam1K8cWiU0
-	yD8wnxLC3tH+1PIpbNFqBXa9DdXpqTXiwUuD9OaLxGxleN4/wmMKmZ3oISvPJSD2iLHBYypYrtP
-	HDwnwWr/CKOqVsc0z+1VCwsroYz7JtpDM4Y+5GzGtZuBFoKuUEGM66rz9S6ZstY/J/aIugS+wnJ
-	ZQiLoZGm97X0Q5mbhS7pgP8jat1I8ZrF4M1ZWbA+3WLBBwJaQyvZE0AMqjm+wi5+oRZpNoSqmXW
-	O+/XKrzLNHz3YcfVWA6+7rvrJqcIB01KbO1hpgEbRMBwM3oxYcS7y15amEWcjUTH+waHBpTI0Ba
-	XFBwVsWzs3fEF5l4+Z/THtRdvJIeIw7fjZ9bIjOYwdb7du0O6FAQUxJXAfHLOtD9Zkbx4a2Q==
-X-Received: by 2002:a53:eccf:0:b0:64c:9a6d:66bd with SMTP id 956f58d0204a3-64eaa6a2105mr10583694d50.8.1774287100249;
-        Mon, 23 Mar 2026 10:31:40 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b36d071aasm88833571cf.11.2026.03.23.10.31.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 10:31:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w4j7q-000000006of-48OA;
-	Mon, 23 Mar 2026 14:31:38 -0300
-Date: Mon, 23 Mar 2026 14:31:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Joerg Roedel <jroedel@suse.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	peter.griffin@linaro.org, andre.draszik@linaro.org,
-	willmcvicker@google.com, jyescas@google.com,
-	kernel-team@android.com, stable@vger.kernel.org
-Subject: Re: [PATCH] iommu: Fix bypass of IOMMU readiness check for
- multi-IOMMU devices
-Message-ID: <20260323173138.GB8437@ziepe.ca>
-References: <20260323-iommu-ready-check-v1-1-5f6fef8f9f59@linaro.org>
- <20260323135414.GA8437@ziepe.ca>
- <1062b66d-e4d0-4eee-8fc2-dbb65491a01b@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/m9G2MphCIjMFPatrkkGeBz0umtftZWS9U/tLjDLQoh7qlLzJG5stVPSno13wmISK+EKEXFzymXIktrK/8KJfa5vwLALnLYfzLTg4YvMTQFx938PQ8np6njaSLsCH9cdIovwQ6q1Yx0KI8h3fwpTE+XrdwMyQNpxCjeon+GwAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GEFy+JW+; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MXxblVdI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MUbPI0ms; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9TMTKZ8N; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DA0564D364;
+	Mon, 23 Mar 2026 17:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774287638;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f2cOdjshFbEO3RlVXhiyX6r1OcbTLof5SPUthprWVjM=;
+	b=GEFy+JW+yDUppL3H/z20mLEkqkqfP3OfFlcLoXYeS2k12dzMXhW+Rehw7gCOiW+ySrnhqF
+	Uu6EzSesTOy030uA50FiAOEi9685/OToWKHRO83ZHGPAXR2odhrpdN9rgfGLhicSaxoUsH
+	TBq5iHGTzG+FadlPFAXseDwPZFidn6g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774287638;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f2cOdjshFbEO3RlVXhiyX6r1OcbTLof5SPUthprWVjM=;
+	b=MXxblVdIF88ehsDaa/zu3CDI5fvz1kjO9B7o5j+lf6/HVk6Q9mg7ObLi4KlKuyqEWbj6E9
+	x/J90Epeqxc6eNAA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MUbPI0ms;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9TMTKZ8N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774287636;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f2cOdjshFbEO3RlVXhiyX6r1OcbTLof5SPUthprWVjM=;
+	b=MUbPI0msHXjpSeoAmLVt++run2fTPSp4kze78uFwXCBVDVZlqYVTE2Qyiv8UyFMWdr3b+k
+	6BV2UIeX5RYcar4S8KlJCRrNM1F0/g4sDe3iO9vUoYtMam3pB/tlmC/c5BZrpxOoR6Eozc
+	pO22k+VZy+n/EuhnMhE0LU03DKZaTbU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774287636;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f2cOdjshFbEO3RlVXhiyX6r1OcbTLof5SPUthprWVjM=;
+	b=9TMTKZ8NR8YNYkgAdBlk2NKZoYrjq6/QqIlNafNJQi4Svy6FxdJSSufii9XVeKtt2wDs6q
+	ByRnojG7Iebo3KCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A6DD2439C8;
+	Mon, 23 Mar 2026 17:40:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7VKWKBR7wWmTaQAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Mon, 23 Mar 2026 17:40:36 +0000
+Date: Mon, 23 Mar 2026 18:40:27 +0100
+From: David Sterba <dsterba@suse.cz>
+To: ZhengYuan Huang <gality369@gmail.com>
+Cc: dsterba@suse.com, clm@fb.com, idryomov@gmail.com,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com, r33s3n6@gmail.com, zzzccc427@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] btrfs: balance: fix null-ptr-deref in
+ chunk_usage_filter
+Message-ID: <20260323174027.GN5735@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20260314123741.1439792-1-gality369@gmail.com>
+ <20260314123741.1439792-2-gality369@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,77 +111,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1062b66d-e4d0-4eee-8fc2-dbb65491a01b@linaro.org>
+In-Reply-To: <20260314123741.1439792-2-gality369@gmail.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Flag: NO
+X-Spam-Score: -4.21
+X-Spam-Level: 
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-229985-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229984-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	DMARC_NA(0.00)[ziepe.ca];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,fb.com,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	HAS_REPLYTO(0.00)[dsterba@suse.cz];
 	RCVD_COUNT_FIVE(0.00)[6];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dsterba@suse.cz,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ziepe.ca:dkim,ziepe.ca:mid]
-X-Rspamd-Queue-Id: A1EA42FA3C9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,twin.jikos.cz:mid]
+X-Rspamd-Queue-Id: 8226F2FB398
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 23, 2026 at 06:46:39PM +0200, Tudor Ambarus wrote:
-
-> Downstream we have a display controller that's using:
-> 	iommus = <&sysmmu_19840000>, <&sysmmu_19c40000>;
+On Sat, Mar 14, 2026 at 08:37:39PM +0800, ZhengYuan Huang wrote:
+> [BUG]
+> Running btrfs balance with a usage filter (-dusage=N) can trigger a
+> null-ptr-deref when metadata corruption causes a chunk to have no
+> corresponding block group in the in-memory cache:
 > 
-> These are 2 distinct platform devices, they probe independently, they
-> each call iommu_device_register() independently.
+>   KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+>   RIP: 0010:chunk_usage_filter fs/btrfs/volumes.c:3874 [inline]
+>   RIP: 0010:should_balance_chunk fs/btrfs/volumes.c:4018 [inline]
+>   RIP: 0010:__btrfs_balance fs/btrfs/volumes.c:4172 [inline]
+>   RIP: 0010:btrfs_balance+0x2024/0x42b0 fs/btrfs/volumes.c:4604
+>   ...
+>   Call Trace:
+>     btrfs_ioctl_balance fs/btrfs/ioctl.c:3577 [inline]
+>     btrfs_ioctl+0x25cf/0x5b90 fs/btrfs/ioctl.c:5313
+>     vfs_ioctl fs/ioctl.c:51 [inline]
+>     ...
+> 
+> The bug is reproducible on next-20260312 with our dynamic metadata
+> fuzzing tool, which corrupts btrfs metadata at runtime.
 
-Sure, I guessed that is what you ment..
+So, for example you let a filesystem create some structures, let it
+continue, damage/destroy the structures and then let it access again?
 
-Do you have an example of this in an upstream DTS file?
- 
-> If I understood you correctly, the downstream driver shall model its
-> architecture and call iommu_device_register() only once after both
-> devices are configured.
+If this is supposed to emulate a corruption, either on media or in the
+IO path then OK.
 
-No.. I'm not being so perscriptive, I'm just saying that once
-iommu->ops->probe_device() returns then the device is fully setup and
-dev->iommu will operate all of the iommus described in iommus=<..>
+> [CAUSE]
+> Two separate data structures are involved:
+> 
+> 1. The on-disk chunk tree, which records every chunk (logical address
+>    space region) and is iterated by __btrfs_balance().
+> 2. The in-memory block group cache (fs_info->block_group_cache_tree),
+>    which is built at mount time by btrfs_read_block_groups() and holds
+>    a struct btrfs_block_group for each chunk. This cache is what the
+>    usage filter queries.
+> 
+> On a well-formed filesystem, these two are kept in 1:1 correspondence.
+> However, btrfs_read_block_groups() builds the cache from block group
+> items in the extent tree, not directly from the chunk tree. A corrupted
+> image can therefore contain a chunk item in the chunk tree whose
+> corresponding block group item is absent from the extent tree; that
+> chunk's block group is then never inserted into the in-memory cache.
+> 
+> When balance iterates the chunk tree and reaches such an orphaned chunk,
+> should_balance_chunk() calls chunk_usage_filter(), which queries the block
+> group cache:
+> 
+>   cache = btrfs_lookup_block_group(fs_info, chunk_offset);
+>   chunk_used = cache->used;   /* cache may be NULL */
+> 
+> btrfs_lookup_block_group() returns NULL silently when no cached entry
+> covers chunk_offset. chunk_usage_filter() does not check the return value,
+> so the immediately following dereference of cache->used triggers the crash.
+> 
+> [FIX]
+> Add a NULL check after btrfs_lookup_block_group() in chunk_usage_filter().
+> When the lookup fails, emit a btrfs_err() message identifying the
+> affected bytenr and return -EUCLEAN to indicate filesystem corruption.
+> 
+> Since the filter function now has an error return path, change its
+> return type from bool to int (negative = error, 0 = do not balance,
+> positive = balance). Update should_balance_chunk() accordingly (bool ->
+> int, with the same convention) and add error propagation for the usage
+> filter path. Finally, handle the new negative return in __btrfs_balance()
+> by jumping to the existing error path, which aborts the balance
+> operation and reports the error to userspace.
+> 
+> After the fix, the same corruption is correctly detected and reported
+> by the filter, and the null-ptr-deref is no longer triggered.
+> 
+> Fixes: 5ce5b3c0916b ("Btrfs: usage filter")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+> ---
+>  fs/btrfs/volumes.c | 28 +++++++++++++++++++++-------
+>  1 file changed, 21 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+> index 2bec544d8ba3..7c21ac249383 100644
+> --- a/fs/btrfs/volumes.c
+> +++ b/fs/btrfs/volumes.c
+> @@ -3863,14 +3863,20 @@ static bool chunk_usage_range_filter(struct btrfs_fs_info *fs_info, u64 chunk_of
+>  	return ret;
+>  }
+>  
+> -static bool chunk_usage_filter(struct btrfs_fs_info *fs_info, u64 chunk_offset,
+> -			       struct btrfs_balance_args *bargs)
+> +static int chunk_usage_filter(struct btrfs_fs_info *fs_info, u64 chunk_offset,
+> +			      struct btrfs_balance_args *bargs)
+>  {
+>  	struct btrfs_block_group *cache;
+>  	u64 chunk_used, user_thresh;
+>  	bool ret = true;
 
-probe_device() cannot return some half setup device with only some of
-the iommu instances working.
+As this is bool it does not match the changed return type anymore
 
-We don't have any core idea of a half setup result from
-probe_device() today.
+>  
+>  	cache = btrfs_lookup_block_group(fs_info, chunk_offset);
+> +	if (!cache) {
+> +		btrfs_err(fs_info,
+> +			  "balance: chunk at bytenr %llu has no corresponding block group",
+> +			  chunk_offset);
+> +		return -EUCLEAN;
+> +	}
+>  	chunk_used = cache->used;
+>  
+>  	if (bargs->usage_min == 0)
+> @@ -3986,8 +3992,8 @@ static bool chunk_soft_convert_filter(u64 chunk_type, struct btrfs_balance_args
+>  	return false;
+>  }
+>  
+> -static bool should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk *chunk,
+> -				 u64 chunk_offset)
+> +static int should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk *chunk,
+> +				u64 chunk_offset)
+>  {
+>  	struct btrfs_fs_info *fs_info = leaf->fs_info;
+>  	struct btrfs_balance_control *bctl = fs_info->balance_ctl;
+> @@ -4014,9 +4020,13 @@ static bool should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk
+>  	}
+>  
+>  	/* usage filter */
+> -	if ((bargs->flags & BTRFS_BALANCE_ARGS_USAGE) &&
+> -	    chunk_usage_filter(fs_info, chunk_offset, bargs)) {
+> -		return false;
+> +	if (bargs->flags & BTRFS_BALANCE_ARGS_USAGE) {
+> +		int filter_ret = chunk_usage_filter(fs_info, chunk_offset, bargs);
 
-> If the core's intent is to strictly enforce a single IOMMU instance,
-> shouldn't iommu_fwspec_init() be checking
-> 	fwspec->iommu_fwnode == iommu_fwnode
-> instead of matching the ops? Because the core currently matches on
-> ops, it permits aggregating multiple physical instances with the
-> same ops into one fwspec.
+Same problem here. Also please use ret2 for nested return values.
 
-The driver is responsible to handle this, not the core. It has to hide
-this mess under its covers, not rely on multiple calls to of_xlate or
-however it has been hacked up.
-
-Probably it means something like of_xlate/probe_device has to
-EPROBE_DEFER if all the instances listed in iommus don't exist.
-
-Jason
+> +
+> +		if (filter_ret < 0)
+> +			return filter_ret;
+> +		if (filter_ret)
+> +			return false;
+>  	} else if ((bargs->flags & BTRFS_BALANCE_ARGS_USAGE_RANGE) &&
+>  	    chunk_usage_range_filter(fs_info, chunk_offset, bargs)) {
+>  		return false;
 
