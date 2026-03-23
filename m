@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOKKJWtjwWkDSwQAu9opvQ
-	(envelope-from <stable+bounces-229510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:39 +0100
+	id cG9cCnhOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385162F73BA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F202F4A0A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6563935B2832
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 17044309DB22
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B818A3BFE47;
-	Mon, 23 Mar 2026 15:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6043B19CC;
+	Mon, 23 Mar 2026 14:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiRuZspi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WP2fzAVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7013BFE3A;
-	Mon, 23 Mar 2026 15:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0571A680B;
+	Mon, 23 Mar 2026 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279463; cv=none; b=gEgyUCDk7YPBJF+Pdgu+JAAMYlhmOPtgyJW36lDdgKAh2wk0Hkei/KiMX7gJH/UTRKSsrQXdNfX9Yo0flNh8ne49uYI9cg14sxb6U4oLHMVzFpUzVt1LizufI5LuyYphCqF5Zp6a9IxhQ8Q5Q1y2sn92Xz3N4eKCMQkRyoo6Q2I=
+	t=1774275316; cv=none; b=tICrjzkaE6zGGYGATr6M+AT5q+HqCj6AHHmFMOG9AazSQwZS1sz3oyRvT/i5NrU4H0EqMlxyTDt3EhLb8LsEE/ODaJOYLNFIsX2CJCJngTEEYuU5GYdiIcuW7sV7k4ztOnwW3XMHV2Y4RamVZwvbDxFfNDGhrJDRtX2Ng7OE3GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279463; c=relaxed/simple;
-	bh=yWiyBmh18NHD3f6ZJGgzVoVKhpRlJoqAy6GM8V0wWoE=;
+	s=arc-20240116; t=1774275316; c=relaxed/simple;
+	bh=C6oqWtEhdP61w1yOPeXYk1htCLE6FHsXrRSsd6C0xSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJNYJXAxuzYBwRh6rJKasjb2sx519QrWR/Gv/GsooTq77EOGpf7+A/3Tu4DD7+aJZUFbs7+hN1CZ4g/cKCmh2xrfsBjE9n7po34RPf4/ZWT47P7IXcq7XST8hb6UYJCqduspbpNIsEhQhOBzNhE18tIBnGadksALaBuTukj5agM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiRuZspi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0401FC4CEF7;
-	Mon, 23 Mar 2026 15:24:22 +0000 (UTC)
+	 MIME-Version; b=BlVEMdmvS88Rgkg/5XXCZ5gcTKFg903J3hazJkuKfV35a2F33eFrTFYOmjf//Ny3carWES6qOvK9rhaFj77rDxA3Uas0v1CPqwUMf7MHchHezZhMm1QvoDZbAEfdNPjyk8vBtjDoRBivbPpJiF0PU2wi0IN0MWTJuu23pEIvqgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WP2fzAVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33554C4CEF7;
+	Mon, 23 Mar 2026 14:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279463;
-	bh=yWiyBmh18NHD3f6ZJGgzVoVKhpRlJoqAy6GM8V0wWoE=;
+	s=korg; t=1774275315;
+	bh=C6oqWtEhdP61w1yOPeXYk1htCLE6FHsXrRSsd6C0xSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fiRuZspiqx0HMf/TBeFGSQd8GyjgBq+QKmz62uptvYawHvUipMHA+7OuwZ2XaN0/5
-	 TmKEZMGOQAC55Y3h6pk+9/GUXououvhu88wVuLnbhvzWrXJ431bGR9nUiUhfVokthh
-	 c5Vofnq3D8qRciC/lXYJf42mC8WYuiWfgp9va6kQ=
+	b=WP2fzAVL5dSfpEvd7g5nJN0FX2eaSfUHv70X+qjTVEeMRnTK3Onpjc2J5J5JK0KoD
+	 NhRtm34zzTIEnWw+e1vYMUbkh5cRgTkTw7eGr+urDm/XpaDkYveD9miIUQNJqeiVvR
+	 Wyj9dp6ednzaVjU2/IUFD4V1a7ydCET0V5mlUn98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	wangshuaiwei <wangshuaiwei1@xiaomi.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/481] KVM: x86/pmu: Provide "error" semantics for unsupported-but-known PMU MSRs
+Subject: [PATCH 6.12 012/460] scsi: ufs: core: Fix shift out of bounds when MAXQ=32
 Date: Mon, 23 Mar 2026 14:40:08 +0100
-Message-ID: <20260323134525.879310874@linuxfoundation.org>
+Message-ID: <20260323134526.964326676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,151 +69,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228507-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229510-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 385162F73BA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B7F202F4A0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: wangshuaiwei <wangshuaiwei1@xiaomi.com>
 
-[ Upstream commit 2de154f541fc5b9f2aed3fe06e218130718ce320 ]
+[ Upstream commit 2f38fd99c0004676d835ae96ac4f3b54edc02c82 ]
 
-Provide "error" semantics (read zeros, drop writes) for userspace accesses
-to MSRs that are ultimately unsupported for whatever reason, but for which
-KVM told userspace to save and restore the MSR, i.e. for MSRs that KVM
-included in KVM_GET_MSR_INDEX_LIST.
+According to JESD223F, the maximum number of queues (MAXQ) is 32. When MCQ
+is enabled and ESI is disabled, nr_hw_queues=32 causes a shift overflow
+problem.
 
-Previously, KVM special cased a few PMU MSRs that were problematic at one
-point or another.  Extend the treatment to all PMU MSRs, e.g. to avoid
-spurious unsupported accesses.
+Fix this by using 64-bit intermediate values to handle the nr_hw_queues=32
+case safely.
 
-Note, the logic can also be used for non-PMU MSRs, but as of today only
-PMU MSRs can end up being unsupported after KVM told userspace to save and
-restore them.
-
-Link: https://lore.kernel.org/r/20230124234905.3774678-7-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 5bb9ac186512 ("KVM: x86: Return "unsupported" instead of "invalid" on access to unsupported PV MSR")
+Signed-off-by: wangshuaiwei <wangshuaiwei1@xiaomi.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260224063228.50112-1-wangshuaiwei1@xiaomi.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c | 51 ++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ drivers/ufs/core/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 2253c51e33e36..0b8ec5886d44f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3576,6 +3576,18 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
- }
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 726bf4247f1fe..ea6e7c18e35cd 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6974,7 +6974,7 @@ static irqreturn_t ufshcd_handle_mcq_cq_events(struct ufs_hba *hba)
  
-+static bool kvm_is_msr_to_save(u32 msr_index)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < num_msrs_to_save; i++) {
-+		if (msrs_to_save[i] == msr_index)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- {
- 	u32 msr = msr_info->index;
-@@ -3896,20 +3908,18 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		vcpu->arch.guest_fpu.xfd_err = data;
- 		break;
- #endif
--	case MSR_IA32_PEBS_ENABLE:
--	case MSR_IA32_DS_AREA:
--	case MSR_PEBS_DATA_CFG:
--	case MSR_F15H_PERF_CTL0 ... MSR_F15H_PERF_CTR5:
-+	default:
- 		if (kvm_pmu_is_valid_msr(vcpu, msr))
- 			return kvm_pmu_set_msr(vcpu, msr_info);
-+
- 		/*
- 		 * Userspace is allowed to write '0' to MSRs that KVM reports
- 		 * as to-be-saved, even if an MSRs isn't fully supported.
- 		 */
--		return !msr_info->host_initiated || data;
--	default:
--		if (kvm_pmu_is_valid_msr(vcpu, msr))
--			return kvm_pmu_set_msr(vcpu, msr_info);
-+		if (msr_info->host_initiated && !data &&
-+		    kvm_is_msr_to_save(msr))
-+			break;
-+
- 		return KVM_MSR_RET_INVALID;
- 	}
- 	return 0;
-@@ -4000,20 +4010,6 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_DRAM_ENERGY_STATUS:	/* DRAM controller */
- 		msr_info->data = 0;
- 		break;
--	case MSR_IA32_PEBS_ENABLE:
--	case MSR_IA32_DS_AREA:
--	case MSR_PEBS_DATA_CFG:
--	case MSR_F15H_PERF_CTL0 ... MSR_F15H_PERF_CTR5:
--		if (kvm_pmu_is_valid_msr(vcpu, msr_info->index))
--			return kvm_pmu_get_msr(vcpu, msr_info);
--		/*
--		 * Userspace is allowed to read MSRs that KVM reports as
--		 * to-be-saved, even if an MSR isn't fully supported.
--		 */
--		if (!msr_info->host_initiated)
--			return 1;
--		msr_info->data = 0;
--		break;
- 	case MSR_K7_EVNTSEL0 ... MSR_K7_EVNTSEL3:
- 	case MSR_K7_PERFCTR0 ... MSR_K7_PERFCTR3:
- 	case MSR_P6_PERFCTR0 ... MSR_P6_PERFCTR1:
-@@ -4268,6 +4264,17 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	default:
- 		if (kvm_pmu_is_valid_msr(vcpu, msr_info->index))
- 			return kvm_pmu_get_msr(vcpu, msr_info);
-+
-+		/*
-+		 * Userspace is allowed to read MSRs that KVM reports as
-+		 * to-be-saved, even if an MSR isn't fully supported.
-+		 */
-+		if (msr_info->host_initiated &&
-+		    kvm_is_msr_to_save(msr_info->index)) {
-+			msr_info->data = 0;
-+			break;
-+		}
-+
- 		return KVM_MSR_RET_INVALID;
- 	}
- 	return 0;
+ 	ret = ufshcd_vops_get_outstanding_cqs(hba, &outstanding_cqs);
+ 	if (ret)
+-		outstanding_cqs = (1U << hba->nr_hw_queues) - 1;
++		outstanding_cqs = (1ULL << hba->nr_hw_queues) - 1;
+ 
+ 	/* Exclude the poll queues */
+ 	nr_queues = hba->nr_hw_queues - hba->nr_queues[HCTX_TYPE_POLL];
 -- 
 2.51.0
 
