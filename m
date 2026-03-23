@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GLXJ6NpwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:26:11 +0100
+	id 2EZjMvlKwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215392F8140
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:26:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8042F40A2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB4B53168684
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52A7730EA886
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD6123EA85;
-	Mon, 23 Mar 2026 14:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237FC3B19A2;
+	Mon, 23 Mar 2026 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAoDTjPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkegOeUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1917623AB9D;
-	Mon, 23 Mar 2026 14:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA22D3ACA5C;
+	Mon, 23 Mar 2026 13:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277260; cv=none; b=HmoPrt2e3ie9PnESg/mc5CRx1HGx2e1xREhzDWvxikrLV29W3C1gwrtJXcNfwjpuep/pdgyA7z76gRkpAOat3D2KMOwq9z9XGclRj3qKmR5YEf3GNKI1NePlXUb5IkpDgtsl8szI8Aau7uk/5T8h/ffIIzPoXhRoaT3l9BbaU0A=
+	t=1774274354; cv=none; b=LCaG3FYnUb9hs18P4iGL/EWW0/wSRpghY/ZzP5YpFtxA2giwk1rXfNsTLACof+YKRg4NI8arrSqjwAZ/DaCSydeINDH0NwYGaxVoJZubJGzXhumWu42pf4p/2ClwyFYJscnhtvpGlhQdRkgrHtgydBGV1VAKCZIad0KRR1oIr7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277260; c=relaxed/simple;
-	bh=2vFtXkIC5Llr92Zl+A2r4noxcYTkghs47+QsZjsHFm0=;
+	s=arc-20240116; t=1774274354; c=relaxed/simple;
+	bh=Xe3mm8Njr3gatif5mFRTL9u3rrY7smcPIDjXUK1NexE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFuCnF8BaaR/A/1C/jKJdS41X/VI3IAzIKu7DYbBrE8/APqZVWfXkpFavo0HwQHln0Zd4jhPnqkukOzcocFMTCjM/T3IGaE1l8Ov2XFEBZZUZQO/uqMbys5Z/UZ63Lze1vTCF5BCPsb91dref7tv2MFe1VF0y4w/dvOGIzcle7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAoDTjPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E41C4CEF7;
-	Mon, 23 Mar 2026 14:47:39 +0000 (UTC)
+	 MIME-Version; b=TXO/jNpKSAvGAXQNlRtzDwwRdgTYjr7XPZgVBWxBw6d7nK0RewI2JDTjcZSlO+hsz8vsFG7WuZ83siXiIGxZyeT2eKvDnyNPXf2M/ncqjXutn6yNtqjkjJwa5zEYciU5hVOcRv9UkTM8WLpdK0JENrOOCYr1fuSEntO8VAxNH2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkegOeUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE1EC4CEF7;
+	Mon, 23 Mar 2026 13:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277259;
-	bh=2vFtXkIC5Llr92Zl+A2r4noxcYTkghs47+QsZjsHFm0=;
+	s=korg; t=1774274354;
+	bh=Xe3mm8Njr3gatif5mFRTL9u3rrY7smcPIDjXUK1NexE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAoDTjPmZDGBcpnv0m4xhhyo3LxPmjiMz8NDwbpEIAL+FWeoETqG2mGGuKdJY8QnN
-	 r7AQ5oyoWAQRbsYBO7GzB63gzVjdW4kvhv4CsB1CgvUGNVFMuHod7qn8hE1Mys6kNC
-	 gl+5lellhVY1b7y30sAmPbAj/1DisVSs8dJKwc90=
+	b=GkegOeUK4tQCRj7OHvNcxKzfMzT65tmmJ258nctQFKPBRsaUeZTw98/bTZDr/Ee0r
+	 xbONZ3hGcrv+kQ8lDkMu+BNs0Qlgi3a5R7FYrx6c4wuP6jSQfudHkc0hjtCrgVz81/
+	 25N/UvTcNxg0bdXqaE7aF4CCqikmUEc0U2c5v72w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 372/460] soc: fsl: qbman: fix race condition in qman_destroy_fq
+	Breno Leitao <leitao@debian.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.19 191/220] perf/x86: Move event pointer setup earlier in x86_pmu_enable()
 Date: Mon, 23 Mar 2026 14:46:08 +0100
-Message-ID: <20260323134535.705320119@linuxfoundation.org>
+Message-ID: <20260323134510.630680335@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +67,142 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228833-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228175-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 215392F8140
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 2A8042F40A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 014077044e874e270ec480515edbc1cadb976cf2 ]
+commit 8d5fae6011260de209aaf231120e8146b14bc8e0 upstream.
 
-When QMAN_FQ_FLAG_DYNAMIC_FQID is set, there's a race condition between
-fq_table[fq->idx] state and freeing/allocating from the pool and
-WARN_ON(fq_table[fq->idx]) in qman_create_fq() gets triggered.
+A production AMD EPYC system crashed with a NULL pointer dereference
+in the PMU NMI handler:
 
-Indeed, we can have:
-         Thread A                             Thread B
-    qman_destroy_fq()                    qman_create_fq()
-      qman_release_fqid()
-        qman_shutdown_fq()
-        gen_pool_free()
-           -- At this point, the fqid is available again --
-                                           qman_alloc_fqid()
-           -- so, we can get the just-freed fqid in thread B --
-                                           fq->fqid = fqid;
-                                           fq->idx = fqid * 2;
-                                           WARN_ON(fq_table[fq->idx]);
-                                           fq_table[fq->idx] = fq;
-     fq_table[fq->idx] = NULL;
+  BUG: kernel NULL pointer dereference, address: 0000000000000198
+  RIP: x86_perf_event_update+0xc/0xa0
+  Call Trace:
+   <NMI>
+   amd_pmu_v2_handle_irq+0x1a6/0x390
+   perf_event_nmi_handler+0x24/0x40
 
-And adding some logs between qman_release_fqid() and
-fq_table[fq->idx] = NULL makes the WARN_ON() trigger a lot more.
+The faulting instruction is `cmpq $0x0, 0x198(%rdi)` with RDI=0,
+corresponding to the `if (unlikely(!hwc->event_base))` check in
+x86_perf_event_update() where hwc = &event->hw and event is NULL.
 
-To prevent that, ensure that fq_table[fq->idx] is set to NULL before
-gen_pool_free() is called by using smp_wmb().
+drgn inspection of the vmcore on CPU 106 showed a mismatch between
+cpuc->active_mask and cpuc->events[]:
 
-Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Tested-by: CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>
-Link: https://lore.kernel.org/r/20251223072549.397625-1-richard.genoud@bootlin.com
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  active_mask: 0x1e (bits 1, 2, 3, 4)
+  events[1]:   0xff1100136cbd4f38  (valid)
+  events[2]:   0x0                 (NULL, but active_mask bit 2 set)
+  events[3]:   0xff1100076fd2cf38  (valid)
+  events[4]:   0xff1100079e990a90  (valid)
+
+The event that should occupy events[2] was found in event_list[2]
+with hw.idx=2 and hw.state=0x0, confirming x86_pmu_start() had run
+(which clears hw.state and sets active_mask) but events[2] was
+never populated.
+
+Another event (event_list[0]) had hw.state=0x7 (STOPPED|UPTODATE|ARCH),
+showing it was stopped when the PMU rescheduled events, confirming the
+throttle-then-reschedule sequence occurred.
+
+The root cause is commit 7e772a93eb61 ("perf/x86: Fix NULL event access
+and potential PEBS record loss") which moved the cpuc->events[idx]
+assignment out of x86_pmu_start() and into step 2 of x86_pmu_enable(),
+after the PERF_HES_ARCH check. This broke any path that calls
+pmu->start() without going through x86_pmu_enable() -- specifically
+the unthrottle path:
+
+  perf_adjust_freq_unthr_events()
+    -> perf_event_unthrottle_group()
+      -> perf_event_unthrottle()
+        -> event->pmu->start(event, 0)
+          -> x86_pmu_start()     // sets active_mask but not events[]
+
+The race sequence is:
+
+  1. A group of perf events overflows, triggering group throttle via
+     perf_event_throttle_group(). All events are stopped: active_mask
+     bits cleared, events[] preserved (x86_pmu_stop no longer clears
+     events[] after commit 7e772a93eb61).
+
+  2. While still throttled (PERF_HES_STOPPED), x86_pmu_enable() runs
+     due to other scheduling activity. Stopped events that need to
+     move counters get PERF_HES_ARCH set and events[old_idx] cleared.
+     In step 2 of x86_pmu_enable(), PERF_HES_ARCH causes these events
+     to be skipped -- events[new_idx] is never set.
+
+  3. The timer tick unthrottles the group via pmu->start(). Since
+     commit 7e772a93eb61 removed the events[] assignment from
+     x86_pmu_start(), active_mask[new_idx] is set but events[new_idx]
+     remains NULL.
+
+  4. A PMC overflow NMI fires. The handler iterates active counters,
+     finds active_mask[2] set, reads events[2] which is NULL, and
+     crashes dereferencing it.
+
+Move the cpuc->events[hwc->idx] assignment in x86_pmu_enable() to
+before the PERF_HES_ARCH check, so that events[] is populated even
+for events that are not immediately started. This ensures the
+unthrottle path via pmu->start() always finds a valid event pointer.
+
+Fixes: 7e772a93eb61 ("perf/x86: Fix NULL event access and potential PEBS record loss")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260310-perf-v2-1-4a3156fce43c@debian.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ arch/x86/events/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 4dc8aba33d9b7..0791b41913383 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -1827,6 +1827,8 @@ EXPORT_SYMBOL(qman_create_fq);
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1369,6 +1369,8 @@ static void x86_pmu_enable(struct pmu *p
+ 			else if (i < n_running)
+ 				continue;
  
- void qman_destroy_fq(struct qman_fq *fq)
- {
-+	int leaked;
++			cpuc->events[hwc->idx] = event;
 +
- 	/*
- 	 * We don't need to lock the FQ as it is a pre-condition that the FQ be
- 	 * quiesced. Instead, run some checks.
-@@ -1834,11 +1836,29 @@ void qman_destroy_fq(struct qman_fq *fq)
- 	switch (fq->state) {
- 	case qman_fq_state_parked:
- 	case qman_fq_state_oos:
--		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID))
--			qman_release_fqid(fq->fqid);
-+		/*
-+		 * There's a race condition here on releasing the fqid,
-+		 * setting the fq_table to NULL, and freeing the fqid.
-+		 * To prevent it, this order should be respected:
-+		 */
-+		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID)) {
-+			leaked = qman_shutdown_fq(fq->fqid);
-+			if (leaked)
-+				pr_debug("FQID %d leaked\n", fq->fqid);
-+		}
+ 			if (hwc->state & PERF_HES_ARCH)
+ 				continue;
  
- 		DPAA_ASSERT(fq_table[fq->idx]);
- 		fq_table[fq->idx] = NULL;
-+
-+		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID) && !leaked) {
-+			/*
-+			 * fq_table[fq->idx] should be set to null before
-+			 * freeing fq->fqid otherwise it could by allocated by
-+			 * qman_alloc_fqid() while still being !NULL
-+			 */
-+			smp_wmb();
-+			gen_pool_free(qm_fqalloc, fq->fqid | DPAA_GENALLOC_OFF, 1);
-+		}
- 		return;
- 	default:
- 		break;
--- 
-2.51.0
-
+@@ -1376,7 +1378,6 @@ static void x86_pmu_enable(struct pmu *p
+ 			 * if cpuc->enabled = 0, then no wrmsr as
+ 			 * per x86_pmu_enable_event()
+ 			 */
+-			cpuc->events[hwc->idx] = event;
+ 			x86_pmu_start(event, PERF_EF_RELOAD);
+ 		}
+ 		cpuc->n_added = 0;
 
 
 
