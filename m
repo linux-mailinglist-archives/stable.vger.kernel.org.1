@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHKJHWl8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:17 +0100
+	id WMm5BoNbwWlKSgQAu9opvQ
+	(envelope-from <stable+bounces-229174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016CF2FA606
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8A82F6459
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2ABB33241913
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E58453215AD3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0E33B9D9D;
-	Mon, 23 Mar 2026 16:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEBE3B0AE5;
+	Mon, 23 Mar 2026 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6gkF0YC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWn4n/Yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F163BC69A;
-	Mon, 23 Mar 2026 16:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4DA3B0ADD;
+	Mon, 23 Mar 2026 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282550; cv=none; b=aWKwyuJ7N6W1x9Bh8MtK1wpAuuw2FkrobYd/HEHVW8GnohjNJ7ve5hsYZRvK6DmDFqWfg1Oncz2UVMCaCIOFPsCtaPXqA1XMKJ5PXenjB4CHMmDujK//YIgoP1/3f/Vt5nmL0Qc1IIcjJMR84InqAJDvGJe1pKWxU1Y9gQM8f84=
+	t=1774278294; cv=none; b=GRh9hYxhikaaceZGVFyB9kMm62Qr8Pkhdvc4KmKCefqSZ8tqFGQZ+mV30WjEG/vXvT1UDIdAp4ogoXUd0iX7xscP0gPqhuIw53f8bQztYbYznPU09nMG6W9bkFJS1hRvVkxG6ylcoOq2Hsx4crI4e8IlDo6JGAVPbesEGR/1Hx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282550; c=relaxed/simple;
-	bh=lcrAle0FifurQSLntd8Qz4ZkRUtDSUoukH/2pophNww=;
+	s=arc-20240116; t=1774278294; c=relaxed/simple;
+	bh=NPPfXCUaEsEfRQkXwAeI1Hr4be7scM2jtvNcnk0dXf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSjvUvjODj5VvUT2ebFO/V2jXW3om3NKRsZf8gYlh4ds/J2Yj61J31Gg4RIvochBKBVTqkJkg8g78ijo7q70+4ZfZN2lOPw5H9emRJF8c/w5kG4M3vsqzDYGRDODZgRZWtqxTjp9vZHwWhcbRCHxbGg9g5TGyhUj3weigW0sruA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6gkF0YC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF68CC4CEF7;
-	Mon, 23 Mar 2026 16:15:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=My4DCOu83pdC9SOJFpbJY2SreJhOcK7ev39L5I5JoJTVa1wRhRZQTMG9mmbSv4PdlvVYltAo+m9zgS+Lgrd8ZH2k98nJMbOroeaX3MCNUIMelRjCDCGT8YJY3lfDhtyMTI9dBqbwn2MI2fkP7b6VdOUNAWT7d8Dr+ghF78o01xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWn4n/Yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7639C4CEF7;
+	Mon, 23 Mar 2026 15:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282550;
-	bh=lcrAle0FifurQSLntd8Qz4ZkRUtDSUoukH/2pophNww=;
+	s=korg; t=1774278294;
+	bh=NPPfXCUaEsEfRQkXwAeI1Hr4be7scM2jtvNcnk0dXf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6gkF0YC8ST5C22epc86ovxDlkYIdsxGPWo/d9/Z3IrdUP2OaonnAKMcV0s8li1sz
-	 cdNrUqUV70hr4MrBYcWqylkYL4p+2SWPL+SmyZtTk6tqt5bxLXZ6DTMB7f+P6YUIYD
-	 eupSItvGFjzGlz2lW3+M8PKmeqtjgxJxr7JAYjAU=
+	b=JWn4n/YyHP8faju4baMuKF1SV/OWTUhUhE0mMUDKg+iKnGMHvD+fYoBXQ86YTaWlQ
+	 oFUhEjao5inBC/Ji/8gA8uSdXPc67zo1BdBznpbx5vpzyh8utCOZ8T5/e6Vw1nHtrz
+	 NiuUDk+/WYn8JHT2vwb7K28RJmQl1EfQr6qhrqTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 199/481] net: usb: lan78xx: fix silent drop of packets with checksum errors
+	Qingye Zhao <zhaoqingye@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 261/567] cgroup: fix race between task migration and iteration
 Date: Mon, 23 Mar 2026 14:43:01 +0100
-Message-ID: <20260323134530.031970356@linuxfoundation.org>
+Message-ID: <20260323134540.286964822@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229174-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229670-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 016CF2FA606
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 9B8A82F6459
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Qingye Zhao <zhaoqingye@honor.com>
 
-commit e4f774a0cc955ce762aec91c66915a6e15087ab7 upstream.
+commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
 
-Do not drop packets with checksum errors at the USB driver level;
-pass them to the network stack.
+When a task is migrated out of a css_set, cgroup_migrate_add_task()
+first moves it from cset->tasks to cset->mg_tasks via:
 
-Previously, the driver dropped all packets where the 'Receive Error
-Detected' (RED) bit was set, regardless of the specific error type. This
-caused packets with only IP or TCP/UDP checksum errors to be dropped
-before reaching the kernel, preventing the network stack from accounting
-for them or performing software fallback.
+    list_move_tail(&task->cg_list, &cset->mg_tasks);
 
-Add a mask for hard hardware errors to safely drop genuinely corrupt
-frames, while allowing checksum-errored frames to pass with their
-ip_summed field explicitly set to CHECKSUM_NONE.
+If a css_task_iter currently has it->task_pos pointing to this task,
+css_set_move_task() calls css_task_iter_skip() to keep the iterator
+valid. However, since the task has already been moved to ->mg_tasks,
+the iterator is advanced relative to the mg_tasks list instead of the
+original tasks list. As a result, remaining tasks on cset->tasks, as
+well as tasks queued on cset->mg_tasks, can be skipped by iteration.
 
-Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260305143429.530909-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by calling css_set_skip_task_iters() before unlinking
+task->cg_list from cset->tasks. This advances all active iterators to
+the next task on cset->tasks, so iteration continues correctly even
+when a task is concurrently being migrated.
+
+This race is hard to hit in practice without instrumentation, but it
+can be reproduced by artificially slowing down cgroup_procs_show().
+For example, on an Android device a temporary
+/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
+into cgroup_procs_show(), and then:
+
+  1) Spawn three long-running tasks (PIDs 101, 102, 103).
+  2) Create a test cgroup and move the tasks into it.
+  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
+  4) In one shell, read cgroup.procs from the test cgroup.
+  5) Within the delay window, in another shell migrate PID 102 by
+     writing it to a different cgroup.procs file.
+
+Under this setup, cgroup.procs can intermittently show only PID 101
+while skipping PID 103. Once the migration completes, reading the
+file again shows all tasks as expected.
+
+Note that this change does not allow removing the existing
+css_set_skip_task_iters() call in css_set_move_task(). The new call
+in cgroup_migrate_add_task() only handles iterators that are racing
+with migration while the task is still on cset->tasks. Iterators may
+also start after the task has been moved to cset->mg_tasks. If we
+dropped css_set_skip_task_iters() from css_set_move_task(), such
+iterators could keep task_pos pointing to a migrating task, causing
+css_task_iter_advance() to malfunction on the destination css_set,
+up to and including crashes or infinite loops.
+
+The race window between migration and iteration is very small, and
+css_task_iter is not on a hot path. In the worst case, when an
+iterator is positioned on the first thread of the migrating process,
+cgroup_migrate_add_task() may have to skip multiple tasks via
+css_set_skip_task_iters(). However, this only happens when migration
+and iteration actually race, so the performance impact is negligible
+compared to the correctness fix provided here.
+
+Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c |    4 +++-
- drivers/net/usb/lan78xx.h |    3 +++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ kernel/cgroup/cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -3537,6 +3537,7 @@ static void lan78xx_rx_csum_offload(stru
- 	 */
- 	if (!(dev->net->features & NETIF_F_RXCSUM) ||
- 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
-+	    unlikely(rx_cmd_a & RX_CMD_A_CSE_MASK_) ||
- 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
- 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
- 		skb->ip_summed = CHECKSUM_NONE;
-@@ -3609,7 +3610,8 @@ static int lan78xx_rx(struct lan78xx_net
- 			return 0;
- 		}
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2457,6 +2457,7 @@ static void cgroup_migrate_add_task(stru
  
--		if (unlikely(rx_cmd_a & RX_CMD_A_RED_)) {
-+		if (unlikely(rx_cmd_a & RX_CMD_A_RED_) &&
-+		    (rx_cmd_a & RX_CMD_A_RX_HARD_ERRS_MASK_)) {
- 			netif_dbg(dev, rx_err, dev->net,
- 				  "Error rx_cmd_a=0x%08x", rx_cmd_a);
- 		} else {
---- a/drivers/net/usb/lan78xx.h
-+++ b/drivers/net/usb/lan78xx.h
-@@ -74,6 +74,9 @@
- #define RX_CMD_A_ICSM_			(0x00004000)
- #define RX_CMD_A_LEN_MASK_		(0x00003FFF)
+ 	mgctx->tset.nr_tasks++;
  
-+#define RX_CMD_A_RX_HARD_ERRS_MASK_ \
-+	(RX_CMD_A_RX_ERRS_MASK_ & ~RX_CMD_A_CSE_MASK_)
-+
- /* Rx Command B */
- #define RX_CMD_B_CSUM_SHIFT_		(16)
- #define RX_CMD_B_CSUM_MASK_		(0xFFFF0000)
++	css_set_skip_task_iters(cset, task);
+ 	list_move_tail(&task->cg_list, &cset->mg_tasks);
+ 	if (list_empty(&cset->mg_node))
+ 		list_add_tail(&cset->mg_node,
 
 
 
