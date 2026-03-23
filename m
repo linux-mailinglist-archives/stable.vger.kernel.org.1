@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEWNA7BVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:04 +0100
+	id yGqEIOtvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FC42F5A12
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015912F8FE3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9AE2B30D7FB9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEC0B3325DAB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CF124E4D4;
-	Mon, 23 Mar 2026 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546193B6364;
+	Mon, 23 Mar 2026 15:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VosB/RHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPFL7FnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56346241695;
-	Mon, 23 Mar 2026 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AD73B6BE6;
+	Mon, 23 Mar 2026 15:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277284; cv=none; b=BOHtAdhzfuElQ9c2u1FbTxvIGxBJoywtG7q+sa720qVF5Jj7WIuFfYZRYiOF9ouDAhzFE0TZg7PLzCvS7EX9N5tb2bM6PxagmW6LdDtRwS6KtThoMxpforVAQXegTZv0higpPTkZJti1uxTg8XMjo8QOrCE8/5PjeG6T2L+FuXA=
+	t=1774278797; cv=none; b=pb8vlrDHM14GhFI2P/a8xhPrM5y28W+3+bAUQwSAGG2v+z2Hp7/IBxDkBnHPUZaeYg84pAdCue/JH9YRttTM9ZmIWFoeVlrgHIxc8TwRv+RlFuiQn9uPMtU/NPXrcn2E0lJjGcSkyMGILxewU8N4lKWAzzKhs9NDaPbRsK9qfJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277284; c=relaxed/simple;
-	bh=OZ9j9OK6HyY5GHUbmMQ54Rb+ikvZFut84S8Q6zcPqIw=;
+	s=arc-20240116; t=1774278797; c=relaxed/simple;
+	bh=uJ/4TKIzj5Kpd0VQcHABls/HHktr1YZn4VKH3nh7pV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPJd5+pCt9NCA4Y1zFuDB9MyskckoXRxbEDcHKnHyHMYHuHaBaTo0NhfmjoqRIVEjSQc04BlcMX9ijPi+Dlnc/E9z8U19SjaGfHrMCIx9/OBtKEGxE6QoYyYvqqC26O/9n51m8MOBUreNPS2WDVsbJR+/RD2hxlDOxf+jzhloLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VosB/RHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1DEC4CEF7;
-	Mon, 23 Mar 2026 14:48:03 +0000 (UTC)
+	 MIME-Version; b=TBFmQ0AmbSERrP3QdofaXRIViH8iY0SViEwaukYCHtrEaOs5vIOvQ7r3+whWZhybvpCffuhX5O1vFLLL82YZ0Gn8cODER2ZIj/0rwngVS9hZ8XN7v6Xz08rxlSU3ksyKPiz02vgjvoSDA2B+eP2zynPHyUAhTKMM5m81VVgVj6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPFL7FnW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4DFC2BCB4;
+	Mon, 23 Mar 2026 15:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277284;
-	bh=OZ9j9OK6HyY5GHUbmMQ54Rb+ikvZFut84S8Q6zcPqIw=;
+	s=korg; t=1774278796;
+	bh=uJ/4TKIzj5Kpd0VQcHABls/HHktr1YZn4VKH3nh7pV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VosB/RHCPyA2jX1izh9eBN/59zoj26KfVXFHphbnbR+WEhG/DL+3XJ7AnPMY9/PPp
-	 vuYI3f8hAlhOvtZkOXo3W41oXmaN5VVoOAnR9gV7a0y/p0MWEcdfSOBHlMmjviEgCY
-	 8NWwVDZSSeLUqaQxQ61+E6DNuGzPy15fhUvP21ps=
+	b=xPFL7FnWDQGxcrsMpHk154Wl/AFC6ukzQHyr+6HmwWuBMLmpRflOLjWTcLIPK3fxS
+	 CyX6kxf5CBLkSFVAlOUqziHUfY5uv/m7YpQsqlHlkPGYGkEMxvH8c2Y4lkRO/X1VyX
+	 pdL//BCwDppcH9zIRZlidmh78l0NMAliv38Bw9Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jander <david@protonic.nl>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 339/460] spi: fix statistics allocation
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 415/567] ipv6: use RCU in ip6_xmit()
 Date: Mon, 23 Mar 2026 14:45:35 +0100
-Message-ID: <20260323134534.859974257@linuxfoundation.org>
+Message-ID: <20260323134544.156505052@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +68,142 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228844-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229336-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[johan.kernel.org:query timed out,broonie.kernel.org:query timed out];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C5FC42F5A12
+X-Rspamd-Queue-Id: 015912F8FE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit dee0774bbb2abb172e9069ce5ffef579b12b3ae9 upstream.
+commit 9085e56501d93af9f2d7bd16f7fcfacdde47b99c upstream.
 
-The controller per-cpu statistics is not allocated until after the
-controller has been registered with driver core, which leaves a window
-where accessing the sysfs attributes can trigger a NULL-pointer
-dereference.
+Use RCU in ip6_xmit() in order to use dst_dev_rcu() to prevent
+possible UAF.
 
-Fix this by moving the statistics allocation to controller allocation
-while tying its lifetime to that of the controller (rather than using
-implicit devres).
-
-Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: David Jander <david@protonic.nl>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260312151817.32100-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- drivers/spi/spi.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/ipv6/ip6_output.c |   35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2940,6 +2940,8 @@ static void spi_controller_release(struc
- 	struct spi_controller *ctlr;
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -261,35 +261,36 @@ bool ip6_autoflowlabel(struct net *net,
+ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+ 	     __u32 mark, struct ipv6_txoptions *opt, int tclass, u32 priority)
+ {
+-	struct net *net = sock_net(sk);
+ 	const struct ipv6_pinfo *np = inet6_sk(sk);
+ 	struct in6_addr *first_hop = &fl6->daddr;
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net_device *dev = dst->dev;
+ 	struct inet6_dev *idev = ip6_dst_idev(dst);
+ 	struct hop_jumbo_hdr *hop_jumbo;
+ 	int hoplen = sizeof(*hop_jumbo);
++	struct net *net = sock_net(sk);
+ 	unsigned int head_room;
++	struct net_device *dev;
+ 	struct ipv6hdr *hdr;
+ 	u8  proto = fl6->flowi6_proto;
+ 	int seg_len = skb->len;
+-	int hlimit = -1;
++	int ret, hlimit = -1;
+ 	u32 mtu;
  
- 	ctlr = container_of(dev, struct spi_controller, dev);
++	rcu_read_lock();
 +
-+	free_percpu(ctlr->pcpu_statistics);
- 	kfree(ctlr);
- }
++	dev = dst_dev_rcu(dst);
+ 	head_room = sizeof(struct ipv6hdr) + hoplen + LL_RESERVED_SPACE(dev);
+ 	if (opt)
+ 		head_room += opt->opt_nflen + opt->opt_flen;
  
-@@ -3080,6 +3082,12 @@ struct spi_controller *__spi_alloc_contr
- 	if (!ctlr)
- 		return NULL;
- 
-+	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(NULL);
-+	if (!ctlr->pcpu_statistics) {
-+		kfree(ctlr);
-+		return NULL;
-+	}
-+
- 	device_initialize(&ctlr->dev);
- 	INIT_LIST_HEAD(&ctlr->queue);
- 	spin_lock_init(&ctlr->queue_lock);
-@@ -3370,13 +3378,6 @@ int spi_register_controller(struct spi_c
- 		if (status)
- 			goto del_ctrl;
+ 	if (unlikely(head_room > skb_headroom(skb))) {
+-		/* Make sure idev stays alive */
+-		rcu_read_lock();
++		/* idev stays alive while we hold rcu_read_lock(). */
+ 		skb = skb_expand_head(skb, head_room);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+-			rcu_read_unlock();
+-			return -ENOBUFS;
++			ret = -ENOBUFS;
++			goto unlock;
+ 		}
+-		rcu_read_unlock();
  	}
--	/* Add statistics */
--	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
--	if (!ctlr->pcpu_statistics) {
--		dev_err(dev, "Error allocating per-cpu statistics\n");
--		status = -ENOMEM;
--		goto destroy_queue;
--	}
  
- 	mutex_lock(&board_lock);
- 	list_add_tail(&ctlr->list, &spi_controller_list);
-@@ -3389,8 +3390,6 @@ int spi_register_controller(struct spi_c
- 	acpi_register_spi_devices(ctlr);
- 	return status;
+ 	if (opt) {
+@@ -351,17 +352,21 @@ int ip6_xmit(const struct sock *sk, stru
+ 		 * skb to its handler for processing
+ 		 */
+ 		skb = l3mdev_ip6_out((struct sock *)sk, skb);
+-		if (unlikely(!skb))
+-			return 0;
++		if (unlikely(!skb)) {
++			ret = 0;
++			goto unlock;
++		}
  
--destroy_queue:
--	spi_destroy_queue(ctlr);
- del_ctrl:
- 	device_del(&ctlr->dev);
- free_bus_id:
+ 		/* hooks should never assume socket lock is held.
+ 		 * we promote our socket to non const
+ 		 */
+-		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
+-			       net, (struct sock *)sk, skb, NULL, dev,
+-			       dst_output);
++		ret = NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
++			      net, (struct sock *)sk, skb, NULL, dev,
++			      dst_output);
++		goto unlock;
+ 	}
+ 
++	ret = -EMSGSIZE;
+ 	skb->dev = dev;
+ 	/* ipv6_local_error() does not require socket lock,
+ 	 * we promote our socket to non const
+@@ -370,7 +375,9 @@ int ip6_xmit(const struct sock *sk, stru
+ 
+ 	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
+ 	kfree_skb(skb);
+-	return -EMSGSIZE;
++unlock:
++	rcu_read_unlock();
++	return ret;
+ }
+ EXPORT_SYMBOL(ip6_xmit);
+ 
 
 
 
