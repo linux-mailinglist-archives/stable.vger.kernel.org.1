@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MjMJixQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:32 +0100
+	id SMpSHSR7wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F8A2F4E11
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D379C2FA2D8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E9D803218C48
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A00F7312E370
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6113AB276;
-	Mon, 23 Mar 2026 14:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D29C257851;
+	Mon, 23 Mar 2026 16:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bgf2NbLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ8iIDJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002CF286417;
-	Mon, 23 Mar 2026 14:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C33271A6D;
+	Mon, 23 Mar 2026 16:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275313; cv=none; b=Dvmtj082NA+KxwbmKNv3Z/aUI325/R+OWyzJbJlSAUMEIRZ0hkVoQuqhrJJvpy9zXOl67h1wLY/rUe7WLvATT73lznSUCMb+n8L24exChOPl4jgdsjHMr5KHpXyDgOnvBk4pzUjyjvtKXhaofXAO5rnxwi810rKql2buISvJLIQ=
+	t=1774282188; cv=none; b=i62zokCbVeUWeBdgZE/6Vsf27ceXt2D5+VnWvmY3xun4BfCnLpIONRaM9AmJhdWdJqtTcWvJL7uu846NZNrUZ9n//2epvV59I91Bj4wY4+ZMy50juKJjtUwooH2pDx/ci+jj8EGhLIRtDIeJ0un7VDoH4zNdltvNxHQ+rONtIDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275313; c=relaxed/simple;
-	bh=xDclFiW0tqejs61CGTxKdMFQzKu2DYVgm9Eie9Df7Vs=;
+	s=arc-20240116; t=1774282188; c=relaxed/simple;
+	bh=MFs2qtMdC1vF+vXisyuhtiF8s9Dun9htdXuwB0rAuUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frLYYaAXO2DAtyM4OcFXxa8o4DRZi9Umhn0Ji4WR2v4ATXxNDTlpX5GLW7nUiSa1LE6gppHnvdwKeZPoqQGj0Wna2h5lEQ+0PZVCjb4k5Lla9YCLT0mWamnvRiyYWR1qN6CRjpTUT9IYa6R/GHIZ13AviR+g/w2WW9LV6ZuFygQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bgf2NbLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88650C4CEF7;
-	Mon, 23 Mar 2026 14:15:12 +0000 (UTC)
+	 MIME-Version; b=NMo4KdrXTcWKF7+ZPMxsZPBinC/L7jYD4i+1NHkI5thJkh5ZlRplAU9Tn81FyOhm9OhuilTh2B+cQo64ggiqfX+0/Tx6DBYgvZ0NK50qSHcSIxKtBsk5ztHt7O1O0AJdbx3RFU/Eio45Ng0ZgsjC9LIg+F8x1rIL9saRScI4BQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQ8iIDJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A8DC2BC9E;
+	Mon, 23 Mar 2026 16:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275312;
-	bh=xDclFiW0tqejs61CGTxKdMFQzKu2DYVgm9Eie9Df7Vs=;
+	s=korg; t=1774282188;
+	bh=MFs2qtMdC1vF+vXisyuhtiF8s9Dun9htdXuwB0rAuUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bgf2NbLqIdcYGTmdAGcybQqYi0I1c8rypA1jgpzrhuSS5OKml8Bx7s3Ol6qYHcjz1
-	 hdIrua8JVxMBXohLlT8n7Lj7SDEJdJP8d0nGWPkTyAao2pa9Eado+oPoWdwij3hwVl
-	 787557mlz50GH6Bos5SHhCW8Ec+vQEPJqZ8DAjDY=
+	b=eQ8iIDJFn58+rN/UxM7OhSCPJ0e1Di3oZMdYzdaoPJgkbaunbmDxEmAjGmX9GXFpW
+	 u5Pe3xFr4kH/X+Oyz5Ta8nuJ+jOicHCTnYMfmbPVFQEwL+ETYnkr+ZhAnPYMrB/icu
+	 smR+EVk+PWR/v++oXnGy2kMpMcnMO7xYsqPVNse8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyuan Li <2063309626@qq.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/460] can: hi311x: hi3110_open(): add check for hi3110_power_enable() return value
+Subject: [PATCH 6.1 064/481] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race
 Date: Mon, 23 Mar 2026 14:40:46 +0100
-Message-ID: <20260323134527.939179862@linuxfoundation.org>
+Message-ID: <20260323134526.789126039@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +67,137 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228506-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,pengutronix.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,decadent.org.uk,gmail.com,roeck-us.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229537-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.944];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 20F8A2F4E11
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D379C2FA2D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenyuan Li <2063309626@qq.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 47bba09b14fa21712398febf36cb14fd4fc3bded ]
+[ Upstream commit 007be4327e443d79c9dd9e56dc16c36f6395d208 ]
 
-In hi3110_open(), the return value of hi3110_power_enable() is not checked.
-If power enable fails, the device may not function correctly, while the
-driver still returns success.
+Simply copying shared data to a local variable cannot prevent data
+races. The compiler is allowed to optimize away the local copy and
+re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
+issue if the data changes between the check and the usage.
 
-Add a check for the return value and propagate the error accordingly.
+To enforce the use of the local variable, use READ_ONCE() when reading
+the shared data and WRITE_ONCE() when updating it. Apply these macros to
+the three identified locations (curr_sense, adc, and fault) where local
+variables are used for error validation, ensuring the value remains
+consistent.
 
-Signed-off-by: Wenyuan Li <2063309626@qq.com>
-Link: https://patch.msgid.link/tencent_B5E2E7528BB28AA8A2A56E16C49BD58B8B07@qq.com
-Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
-[mkl: adjust subject, commit message and jump label]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20260203121443.5482-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/hi311x.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index c9eba1d37b0eb..10470e7436158 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -756,7 +756,9 @@ static int hi3110_open(struct net_device *net)
- 		return ret;
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index 648eb7e867d10..b61bba4166f78 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
+ 		int i;
  
- 	mutex_lock(&priv->hi3110_lock);
--	hi3110_power_enable(priv->transceiver, 1);
-+	ret = hi3110_power_enable(priv->transceiver, 1);
-+	if (ret)
-+		goto out_close_candev;
+ 		for (i = 0; i < data->num_adc; i++)
+-			data->adc[i]
+-			  = max16065_read_adc(client, MAX16065_ADC(i));
++			WRITE_ONCE(data->adc[i],
++				   max16065_read_adc(client, MAX16065_ADC(i)));
  
- 	priv->force_quit = 0;
- 	priv->tx_skb = NULL;
-@@ -791,6 +793,7 @@ static int hi3110_open(struct net_device *net)
- 	hi3110_hw_sleep(spi);
-  out_close:
- 	hi3110_power_enable(priv->transceiver, 0);
-+ out_close_candev:
- 	close_candev(net);
- 	mutex_unlock(&priv->hi3110_lock);
- 	return ret;
+ 		if (data->have_current) {
+-			data->adc[MAX16065_NUM_ADC]
+-			  = max16065_read_adc(client, MAX16065_CSP_ADC);
+-			data->curr_sense
+-			  = i2c_smbus_read_byte_data(client,
+-						     MAX16065_CURR_SENSE);
++			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
++				   max16065_read_adc(client, MAX16065_CSP_ADC));
++			WRITE_ONCE(data->curr_sense,
++				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
+ 		}
+ 
+ 		for (i = 0; i < 2; i++)
+-			data->fault[i]
+-			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
++			WRITE_ONCE(data->fault[i],
++				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
+ 
+ 		/*
+ 		 * MAX16067 and MAX16068 have separate undervoltage and
+ 		 * overvoltage alarm bits. Squash them together.
+ 		 */
+ 		if (data->chip == max16067 || data->chip == max16068)
+-			data->fault[0] |= data->fault[1];
++			WRITE_ONCE(data->fault[0],
++				   data->fault[0] | data->fault[1]);
+ 
+ 		data->last_updated = jiffies;
+ 		data->valid = true;
+@@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int val = data->fault[attr2->nr];
++	int val = READ_ONCE(data->fault[attr2->nr]);
+ 
+ 	if (val < 0)
+ 		return val;
+@@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int adc = data->adc[attr->index];
++	int adc = READ_ONCE(data->adc[attr->index]);
+ 
+ 	if (unlikely(adc < 0))
+ 		return adc;
+@@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
+ 				     struct device_attribute *da, char *buf)
+ {
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int curr_sense = data->curr_sense;
++	int curr_sense = READ_ONCE(data->curr_sense);
+ 
+ 	if (unlikely(curr_sense < 0))
+ 		return curr_sense;
 -- 
 2.51.0
 
