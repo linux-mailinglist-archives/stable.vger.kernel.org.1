@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-228190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2B16F/ZQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:54 +0100
+	id oFhOLGNMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B659C2F4F9D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C862F4442
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E34031091D9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3004B3030852
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB8C3BA220;
-	Mon, 23 Mar 2026 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA8A199FAB;
+	Mon, 23 Mar 2026 14:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN1RhCWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PR0Bak98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587D33B9DBE;
-	Mon, 23 Mar 2026 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53343AE1B9;
+	Mon, 23 Mar 2026 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274395; cv=none; b=DFUOrc0PQHMrxkY5UEYE/VyJgdU4vkbiOCwqYgzf8clxmSpJ+WRIxtlQyHEfW3oqnvfSNcfQbdULHHkUgtphELlTjpXYL3IwlboLC29tDBFf6v+zlR6EJx1ptGPNuyb/w9o9+gA+vwecxqNlViaj2EYh5T0o2or2srmWRauxNkg=
+	t=1774274928; cv=none; b=YSxXGqfPMqHUVNqKMgQ3jCg9e/hu0kZus+IJeeJicvJMcj/WtOeLzTxMAz7mrNphTzlREo3CCyTuK1Bo6WnifSq3KdKznH2ByLRZBCjfpiOUIpZiRXCnR5AEaSY1+ipS95cH1tjOgQ7BL0SE6FgK6yebONgKISeWm1ELdUlFfCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274395; c=relaxed/simple;
-	bh=nppihnrzhvY+HKjBhkzHv30Q24csl7+hhp0LfQ41bdw=;
+	s=arc-20240116; t=1774274928; c=relaxed/simple;
+	bh=nznFkB9wzQs9LWBP8BC1cVfOxtTVGlRUSS8dXWbutSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0c3pnFRbfOgQCAFnUUXILjxPCnaBRZdjBhe7Hs+2A3lbC3qWYJ6iNTkfBcDBXqUdgZShIZ2yhmeSNYUcstOLSbjM3i1VDJZfEWXNQh97PaDJpgJfcoj1IFoUbPhCnRVUbnuD4+2w6OGH7oX3TBOk6UBz3Gq6Zsp8O7TCDwWrgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN1RhCWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00EEC4CEF7;
-	Mon, 23 Mar 2026 13:59:54 +0000 (UTC)
+	 MIME-Version; b=q6ovnSxvLiOKSZhUucGipqnpG5BRJbd/yZHtBNEtj+d/aEr9+F+VL8lN8mt/3wmXeccGV7IJNbqOoVlhg6il8ufDpH+jk0952OhXjKFSjwgj+qpZJ4m70bTPOAUIj7108AdcE6cXWRFjWjJ/vaNuiHwO/0FRINs4hpuUyHzXXXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PR0Bak98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7882DC4CEF7;
+	Mon, 23 Mar 2026 14:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274395;
-	bh=nppihnrzhvY+HKjBhkzHv30Q24csl7+hhp0LfQ41bdw=;
+	s=korg; t=1774274927;
+	bh=nznFkB9wzQs9LWBP8BC1cVfOxtTVGlRUSS8dXWbutSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jN1RhCWo4mzJnlRVnAZWjtBB+LmLZR7RuAxFGQuLjVJhpCo2w+hD5+t/GGFHHY032
-	 b21c68swpocWNHf7GOsrCSAdnuQVQK7wKkmRJ52FqvluJZnNBiai9CNNKMhs6A8put
-	 N9f3FdR4lvg64TKf48biJLKTmbcUcBee9mwu7+MY=
+	b=PR0Bak98JJfTt3zKv2SKTDbesJvhX+bWAdOSZXCTpetfmyVetH4NP+1hEjwbU+HGJ
+	 Sce2gOk1bxQEB0umZOcWSkLnXSSlEHpf/RckLX6QmyCM3YONcoCQ+ySpGyvf27Q0IE
+	 HSxSYiBi3XjpwgLeimsvNbqnVBjtlLFOxcQUh4yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 203/220] spi: amlogic: spifc-a4: Remove redundant clock cleanup
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 159/212] libie: prevent memleak in fwlog code
 Date: Mon, 23 Mar 2026 14:46:20 +0100
-Message-ID: <20260323134510.990018429@linuxfoundation.org>
+Message-ID: <20260323134508.774354066@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +67,186 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228190-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	URIBL_MULTI_FAIL(0.00)[intel.com:server fail,sto.lore.kernel.org:server fail,linuxfoundation.org:server fail];
+	TAGGED_FROM(0.00)[bounces-228368-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B659C2F4F9D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 52C862F4442
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit a00da54d06f435dbbeacb84f9121dbbe6d6eda74 ]
+[ Upstream commit 6850deb61118345996f03b87817b4ae0f2f25c38 ]
 
-The driver uses devm_clk_get_enabled() which enables the clock and
-registers a callback to automatically disable it when the device
-is unbound.
+All cmd_buf buffers are allocated and need to be freed after usage.
+Add an error unwinding path that properly frees these buffers.
 
-Remove the redundant aml_sfc_disable_clk() call in the error paths
-and remove callback.
+The memory leak happens whenever fwlog configuration is changed. For
+example:
 
-Fixes: 4670db6f32e9 ("spi: amlogic: add driver for Amlogic SPI Flash Controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260308-spifc-a4-1-v1-1-77e286c26832@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+$echo 256K > /sys/kernel/debug/ixgbe/0000\:32\:00.0/fwlog/log_size
+
+Fixes: 96a9a9341cda ("ice: configure FW logging")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-amlogic-spifc-a4.c | 46 +++++-------------------------
- 1 file changed, 7 insertions(+), 39 deletions(-)
+ drivers/net/ethernet/intel/libie/fwlog.c | 49 +++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a4.c b/drivers/spi/spi-amlogic-spifc-a4.c
-index f324aa39a8976..b2589fe2425cc 100644
---- a/drivers/spi/spi-amlogic-spifc-a4.c
-+++ b/drivers/spi/spi-amlogic-spifc-a4.c
-@@ -1083,14 +1083,6 @@ static int aml_sfc_clk_init(struct aml_sfc *sfc)
- 	return clk_set_rate(sfc->core_clk, SFC_BUS_DEFAULT_CLK);
+diff --git a/drivers/net/ethernet/intel/libie/fwlog.c b/drivers/net/ethernet/intel/libie/fwlog.c
+index 5d890d9d3c4d5..3b32986c2978a 100644
+--- a/drivers/net/ethernet/intel/libie/fwlog.c
++++ b/drivers/net/ethernet/intel/libie/fwlog.c
+@@ -433,17 +433,21 @@ libie_debugfs_module_write(struct file *filp, const char __user *buf,
+ 	module = libie_find_module_by_dentry(fwlog->debugfs_modules, dentry);
+ 	if (module < 0) {
+ 		dev_info(dev, "unknown module\n");
+-		return -EINVAL;
++		count = -EINVAL;
++		goto free_cmd_buf;
+ 	}
+ 
+ 	cnt = sscanf(cmd_buf, "%s", user_val);
+-	if (cnt != 1)
+-		return -EINVAL;
++	if (cnt != 1) {
++		count = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	log_level = sysfs_match_string(libie_fwlog_level_string, user_val);
+ 	if (log_level < 0) {
+ 		dev_info(dev, "unknown log level '%s'\n", user_val);
+-		return -EINVAL;
++		count = -EINVAL;
++		goto free_cmd_buf;
+ 	}
+ 
+ 	if (module != LIBIE_AQC_FW_LOG_ID_MAX) {
+@@ -458,6 +462,9 @@ libie_debugfs_module_write(struct file *filp, const char __user *buf,
+ 			fwlog->cfg.module_entries[i].log_level = log_level;
+ 	}
+ 
++free_cmd_buf:
++	kfree(cmd_buf);
++
+ 	return count;
  }
  
--static int aml_sfc_disable_clk(struct aml_sfc *sfc)
--{
--	clk_disable_unprepare(sfc->core_clk);
--	clk_disable_unprepare(sfc->gate_clk);
--
--	return 0;
--}
--
- static int aml_sfc_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -1141,16 +1133,12 @@ static int aml_sfc_probe(struct platform_device *pdev)
+@@ -515,23 +522,31 @@ libie_debugfs_nr_messages_write(struct file *filp, const char __user *buf,
+ 		return PTR_ERR(cmd_buf);
  
- 	/* Enable Amlogic flash controller spi mode */
- 	ret = regmap_write(sfc->regmap_base, SFC_SPI_CFG, SPI_MODE_EN);
--	if (ret) {
--		dev_err(dev, "failed to enable SPI mode\n");
--		goto err_out;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to enable SPI mode\n");
+ 	ret = sscanf(cmd_buf, "%s", user_val);
+-	if (ret != 1)
+-		return -EINVAL;
++	if (ret != 1) {
++		count = -EINVAL;
++		goto free_cmd_buf;
++	}
  
- 	ret = dma_set_mask(sfc->dev, DMA_BIT_MASK(32));
--	if (ret) {
--		dev_err(sfc->dev, "failed to set dma mask\n");
--		goto err_out;
--	}
-+	if (ret)
-+		return dev_err_probe(sfc->dev, ret, "failed to set dma mask\n");
- 
- 	sfc->ecc_eng.dev = &pdev->dev;
- 	sfc->ecc_eng.integration = NAND_ECC_ENGINE_INTEGRATION_PIPELINED;
-@@ -1158,10 +1146,8 @@ static int aml_sfc_probe(struct platform_device *pdev)
- 	sfc->ecc_eng.priv = sfc;
- 
- 	ret = nand_ecc_register_on_host_hw_engine(&sfc->ecc_eng);
--	if (ret) {
--		dev_err(&pdev->dev, "failed to register Aml host ecc engine.\n");
--		goto err_out;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret, "failed to register Aml host ecc engine.\n");
- 
- 	ret = of_property_read_u32(np, "amlogic,rx-adj", &val);
- 	if (!ret)
-@@ -1177,24 +1163,7 @@ static int aml_sfc_probe(struct platform_device *pdev)
- 	ctrl->min_speed_hz = SFC_MIN_FREQUENCY;
- 	ctrl->num_chipselect = SFC_MAX_CS_NUM;
- 
--	ret = devm_spi_register_controller(dev, ctrl);
+ 	ret = kstrtos16(user_val, 0, &nr_messages);
 -	if (ret)
--		goto err_out;
--
--	return 0;
--
--err_out:
--	aml_sfc_disable_clk(sfc);
--
--	return ret;
--}
--
--static void aml_sfc_remove(struct platform_device *pdev)
--{
--	struct spi_controller *ctlr = platform_get_drvdata(pdev);
--	struct aml_sfc *sfc = spi_controller_get_devdata(ctlr);
--
--	aml_sfc_disable_clk(sfc);
-+	return devm_spi_register_controller(dev, ctrl);
+-		return ret;
++	if (ret) {
++		count = ret;
++		goto free_cmd_buf;
++	}
+ 
+ 	if (nr_messages < LIBIE_AQC_FW_LOG_MIN_RESOLUTION ||
+ 	    nr_messages > LIBIE_AQC_FW_LOG_MAX_RESOLUTION) {
+ 		dev_err(dev, "Invalid FW log number of messages %d, value must be between %d - %d\n",
+ 			nr_messages, LIBIE_AQC_FW_LOG_MIN_RESOLUTION,
+ 			LIBIE_AQC_FW_LOG_MAX_RESOLUTION);
+-		return -EINVAL;
++		count = -EINVAL;
++		goto free_cmd_buf;
+ 	}
+ 
+ 	fwlog->cfg.log_resolution = nr_messages;
+ 
++free_cmd_buf:
++	kfree(cmd_buf);
++
+ 	return count;
  }
  
- static const struct of_device_id aml_sfc_of_match[] = {
-@@ -1212,7 +1181,6 @@ static struct platform_driver aml_sfc_driver = {
- 		.of_match_table = aml_sfc_of_match,
- 	},
- 	.probe = aml_sfc_probe,
--	.remove = aml_sfc_remove,
- };
- module_platform_driver(aml_sfc_driver);
+@@ -588,8 +603,10 @@ libie_debugfs_enable_write(struct file *filp, const char __user *buf,
+ 		return PTR_ERR(cmd_buf);
  
+ 	ret = sscanf(cmd_buf, "%s", user_val);
+-	if (ret != 1)
+-		return -EINVAL;
++	if (ret != 1) {
++		ret = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	ret = kstrtobool(user_val, &enable);
+ 	if (ret)
+@@ -624,6 +641,8 @@ libie_debugfs_enable_write(struct file *filp, const char __user *buf,
+ 	 */
+ 	if (WARN_ON(ret != (ssize_t)count && ret >= 0))
+ 		ret = -EIO;
++free_cmd_buf:
++	kfree(cmd_buf);
+ 
+ 	return ret;
+ }
+@@ -682,8 +701,10 @@ libie_debugfs_log_size_write(struct file *filp, const char __user *buf,
+ 		return PTR_ERR(cmd_buf);
+ 
+ 	ret = sscanf(cmd_buf, "%s", user_val);
+-	if (ret != 1)
+-		return -EINVAL;
++	if (ret != 1) {
++		ret = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	index = sysfs_match_string(libie_fwlog_log_size, user_val);
+ 	if (index < 0) {
+@@ -712,6 +733,8 @@ libie_debugfs_log_size_write(struct file *filp, const char __user *buf,
+ 	 */
+ 	if (WARN_ON(ret != (ssize_t)count && ret >= 0))
+ 		ret = -EIO;
++free_cmd_buf:
++	kfree(cmd_buf);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
