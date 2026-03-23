@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-229629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QL1gOG9zwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:07:59 +0100
+	id MO5fE/lrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D742B2F97A1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C69D2F866A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 89F3930E7E94
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA4F43170EA7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7E43BC66C;
-	Mon, 23 Mar 2026 16:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A563BB9E1;
+	Mon, 23 Mar 2026 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpf+QBlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQIDagsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122E3396B85;
-	Mon, 23 Mar 2026 16:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2116A396D30;
+	Mon, 23 Mar 2026 16:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282440; cv=none; b=KmPUHDw8YdnhNIt+jwUzany3W0IQc9SZLdGx1/9O4fsJS+j1expzubxTYCig20T5OAdr+OSrglg4+QE5Cgk9NNTEOn2WHkWhsulwQ8B3abMbyHWacXEYQT4WvjkDfJNZlbi76xdwxemhXpPAOjQla7TZeCNdif3+NMURLJbZxzg=
+	t=1774282443; cv=none; b=dYpNAWhfFzsSlnsCzstsngSokD03VP9+ZTRFgOSiAOL9Y3gnJqlFE4EuJTaNq9nMsfNWUrWPUPw0JMLT2jZXrAQfuSU9drBskBW2VvdC5rnJm3TxaDaNu05xdCEWeprAtcABepipWTcry8rEnysYYCFHxA2U1bkFUErY3Ki4urM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282440; c=relaxed/simple;
-	bh=BSPpF51XCKwF23XPHFS7T9ncIVFgWgeoMsvH5BiBQPI=;
+	s=arc-20240116; t=1774282443; c=relaxed/simple;
+	bh=3A39ZxtdjgYykbast1qyui7WUNVft4UVOcutTZVoT6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHgEDjpbfptbPzrtQBjGuOfHY4UDxzuc4xdIJrTFlQVJ6AZCiym/5UNFjTocg9pOoCXkWVetJE0KazNAu6QqiXqqxqlWmoxwj+JgyT1/X4vC4GAM4E3d/ZL4IL3qv8ezv5wNK/mnNIsf0OyTtMVkjffXqKiuN/oD5wl0axAQWBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpf+QBlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E54C2BC9E;
-	Mon, 23 Mar 2026 16:13:59 +0000 (UTC)
+	 MIME-Version; b=Xh/93JpNE4bbQiR2YfVt+zj2/s/oL1p2Wik1JOtkh3p7gDRkOegT4XQVPwUEEXNDN7C8efUV5LRsD5v1Z2mRIPxcli0e05UE4ozLTCpCT+7H0bmhc5VudiX3c9CXZ9eDhCK7FQXGWDrDWSHyAG0fU7k1kWSVM2O4NlPnsRSjTGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQIDagsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5B2C4CEF7;
+	Mon, 23 Mar 2026 16:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282439;
-	bh=BSPpF51XCKwF23XPHFS7T9ncIVFgWgeoMsvH5BiBQPI=;
+	s=korg; t=1774282442;
+	bh=3A39ZxtdjgYykbast1qyui7WUNVft4UVOcutTZVoT6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vpf+QBlbpPhE6S6ILU5smBCecyPuwGBi1C2Ah5uGZtVjXIBInzybi4pQqeEu0gkdn
-	 ptgiKy5PfYgqTio6ML1wb4mY+DN9yHOS6MV6Kt3HP2x3YWTaFHPfPclybwW9rvGPrO
-	 xj03YhgoOhsr8KXkP/jxBu0DEXPxS5n++C5oSG0c=
+	b=xQIDagsuXqEL9C/izgPOJ6ehzNvTPbaOBe1uRZwoNFegLDCD3pLxmIicsedbzR0DJ
+	 L+kCmRmHx5yP84kob0G/mRPVcCMJ1v5UIsFTC9EDNLHhORsjWCq8hZpUoxFFiAD8zW
+	 BJ55K4pEGQgz0+WcjwBZ8V4EzmVjBUzTemURTZOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Chris Lew <christopher.lew@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/481] remoteproc: sysmon: Correct subsys_name_len type in QMI request
-Date: Mon, 23 Mar 2026 14:42:19 +0100
-Message-ID: <20260323134529.064183990@linuxfoundation.org>
+Subject: [PATCH 6.1 158/481] remoteproc: mediatek: Unprepare SCP clock during system suspend
+Date: Mon, 23 Mar 2026 14:42:20 +0100
+Message-ID: <20260323134529.086886389@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
 References: <20260323134525.256603107@linuxfoundation.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229629-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229630-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D742B2F97A1
+X-Rspamd-Queue-Id: 6C69D2F866A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,45 +99,97 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit da994db94e60f9a9411108ddf4d1836147ad4c9c ]
+[ Upstream commit 35c3f72a2d55dbf52f28f4ecae51c76be1acf545 ]
 
-The QMI message encoder has up until recently read a single byte (as
-elem_size == 1), but with the introduction of big endian support it's
-become apparent that this field is expected to be a full u32 -
-regardless of the size of the length in the encoded message (which is
-what elem_size specifies).
+Prior to commit d935187cfb27 ("remoteproc: mediatek: Break lock
+dependency to prepare_lock"), `scp->clk` was prepared and enabled only
+when it needs to communicate with the SCP.  The commit d935187cfb27
+moved the prepare operation to remoteproc's prepare(), keeping the clock
+prepared as long as the SCP is running.
 
-The result is that the encoder now reads past the length byte and
-rejects the unreasonably large length formed when including the
-following 3 bytes from the subsys_name array.
+The power consumption due to the prolonged clock preparation can be
+negligible when the system is running, as SCP is designed to be a very
+power efficient processor.
 
-Fix this by changing to the expected type.
+However, the clock remains prepared even when the system enters system
+suspend.  This prevents the underlying clock controller (and potentially
+the parent PLLs) from shutting down, which increases power consumption
+and may block the system from entering deep sleep states.
 
-Fixes: 1fb82ee806d1 ("remoteproc: qcom: Introduce sysmon")
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Chris Lew <christopher.lew@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260220-qmi-encode-invalid-length-v2-1-5674be35ab29@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add suspend and resume callbacks.  Unprepare the clock in suspend() if
+it was active and re-prepare it in resume() to ensure the clock is
+properly disabled during system suspend, while maintaining the "always
+prepared" semantics while the system is active.  The driver doesn't
+implement .attach() callback, hence it only checks for RPROC_RUNNING.
+
+Fixes: d935187cfb27 ("remoteproc: mediatek: Break lock dependency to prepare_lock")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20260206033034.3031781-1-tzungbi@kernel.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_sysmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/mtk_scp.c | 39 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
-index 15af52f8499eb..78786e08f4f56 100644
---- a/drivers/remoteproc/qcom_sysmon.c
-+++ b/drivers/remoteproc/qcom_sysmon.c
-@@ -204,7 +204,7 @@ static struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
+diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
+index 8f513e66ef6bb..476066c9590cb 100644
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -1025,12 +1025,51 @@ static const struct of_device_id mtk_scp_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mtk_scp_of_match);
+ 
++static int __maybe_unused scp_suspend(struct device *dev)
++{
++	struct mtk_scp *scp = dev_get_drvdata(dev);
++	struct rproc *rproc = scp->rproc;
++
++	/*
++	 * Only unprepare if the SCP is running and holding the clock.
++	 *
++	 * Note: `scp_ops` doesn't implement .attach() callback, hence
++	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
++	 * should also be checked here.
++	 */
++	if (rproc->state == RPROC_RUNNING)
++		clk_unprepare(scp->clk);
++	return 0;
++}
++
++static int __maybe_unused scp_resume(struct device *dev)
++{
++	struct mtk_scp *scp = dev_get_drvdata(dev);
++	struct rproc *rproc = scp->rproc;
++
++	/*
++	 * Only prepare if the SCP was running and holding the clock.
++	 *
++	 * Note: `scp_ops` doesn't implement .attach() callback, hence
++	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
++	 * should also be checked here.
++	 */
++	if (rproc->state == RPROC_RUNNING)
++		return clk_prepare(scp->clk);
++	return 0;
++}
++
++static const struct dev_pm_ops scp_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(scp_suspend, scp_resume)
++};
++
+ static struct platform_driver mtk_scp_driver = {
+ 	.probe = scp_probe,
+ 	.remove = scp_remove,
+ 	.driver = {
+ 		.name = "mtk-scp",
+ 		.of_match_table = mtk_scp_of_match,
++		.pm = &scp_pm_ops,
+ 	},
  };
  
- struct ssctl_subsys_event_req {
--	u8 subsys_name_len;
-+	u32 subsys_name_len;
- 	char subsys_name[SSCTL_SUBSYS_NAME_LENGTH];
- 	u32 event;
- 	u8 evt_driven_valid;
 -- 
 2.51.0
 
