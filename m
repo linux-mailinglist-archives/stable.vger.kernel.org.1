@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIQ2NKlswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:05 +0100
+	id IJI0LQFnwWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244A92F8878
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF612F7CC9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D210306ECBE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6241322E3D1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630C93AF662;
-	Mon, 23 Mar 2026 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD393AF665;
+	Mon, 23 Mar 2026 14:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+gqvZGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl48hgx5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A193AF678;
-	Mon, 23 Mar 2026 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203AF3AF663;
+	Mon, 23 Mar 2026 14:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282746; cv=none; b=G/GZP8+HLJatx26Ajws1cA86oSeAXn1KrLZe/WhQtjouNVi5dBGqkBtZ7zuN9yOP+KtZPxPQvWrX4mH7bjgsHdgNXxosJxCPazWfD4EMr8YsHB/gtf3Vb05EYydYcbdsZzdTEM+pe5OuO/D5VtYUZRkBtfFaV+XCrrpB7NwpbRQ=
+	t=1774276922; cv=none; b=tbncVeypo2U3T1V4kmASBZBySoFKsGTpa8jBFQOjn6KlkGuwwnUMmpLJMyjjchh353NVsUQLhVDOvTJ/n2B419zVEPGUWaHGrs8OMUZYmphp6elCKTHOJXq9WUePesrDG9mK+qtj6+edq9Y49ZZjwEqHvHI/2K/QvEHfQTZhqlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282746; c=relaxed/simple;
-	bh=1INsn5podMUDHfRrNbSUEJfocvVfcjg4rgq+Mho9o0k=;
+	s=arc-20240116; t=1774276922; c=relaxed/simple;
+	bh=oDZaVU/0tPFimNYgiZbL83GhW5WELR77ywn/FxFoklU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hirN7ApHlOYw6Z3EdPU5C1XsAIenUrCqKLQL+kOJmCzpI+E3ayUluMRr3xqJUbckxxw55L9orQkT2/nbZJdYwT4u6JXZSwbY99sLX+Gr3FMMcbBdSZBxzf9OeItMeTDZ69JhZAsb+C4WQ+9EIz+14e3b7bJtKKPIBmzm762zVjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+gqvZGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62C7C4CEF7;
-	Mon, 23 Mar 2026 16:19:05 +0000 (UTC)
+	 MIME-Version; b=fHml1ZW/adUWsdB04xD+3K/lC6TjDm1jmNKBTar5f9av88ODX0n6oxXz4dLbIoCWNo+Z0Jxuw4c63pA7ATa/NYJqTqccIYq7IWYc3E3yML1wRxkha06ZT08xar4SuVY15qKH8FFrVyJ1aJb/uz+JZ/y2Leu93r3g5jc31qtXRU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl48hgx5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE37C4CEF7;
+	Mon, 23 Mar 2026 14:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282746;
-	bh=1INsn5podMUDHfRrNbSUEJfocvVfcjg4rgq+Mho9o0k=;
+	s=korg; t=1774276922;
+	bh=oDZaVU/0tPFimNYgiZbL83GhW5WELR77ywn/FxFoklU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+gqvZGNhb3x6Q4+aqxXnDiBoUrmWN5FnxVIo0WazZisBGi9r7u4Q77S6zb1aB3Q0
-	 +Jyc5v4hbCrq7qN6qTU0+3hd6EA/b/PJ4YYPDc3wNAN6SRVn+zBV9ozsThfF+Rqyq6
-	 HaGdqfZfchjPOgEcLErzwI4Y0DJqmB9ZP3RuyhcE=
+	b=Kl48hgx5PmLTtqM8tVMHxe8HgqCtdT2uG84TUyDKM2b0PX4fYp3PhlOtITO53GNEN
+	 byIqKwM94cXyvE+2ZK+lArpRAx1iDRqm96Dw5eB6qr9jR+GYb7ttZqwioPyNN36IBK
+	 6ymK4GOOmt6zr03vOdFQKHrLaoGn6v6ioyG8oeJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Spencer <spencercw@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 269/481] iio: chemical: bme680: Fix measurement wait duration calculation
-Date: Mon, 23 Mar 2026 14:44:11 +0100
-Message-ID: <20260323134531.690005341@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 256/460] sched_ext: Fix starvation of scx_enable() under fair-class saturation
+Date: Mon, 23 Mar 2026 14:44:12 +0100
+Message-ID: <20260323134532.781223608@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +65,173 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229742-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228713-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 244A92F8878
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3FF612F7CC9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Spencer <spencercw@gmail.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
+[ Upstream commit b06ccbabe2506fd70b9167a644978b049150224a ]
 
-This function refers to the Bosch BME680 API as the source of the
-calculation, but one of the constants does not match the Bosch
-implementation. This appears to be a simple transposition of two digits,
-resulting in a wait time that is too short. This can cause the following
-'device measurement cycle incomplete' check to occasionally fail, returning
-EBUSY to user space.
+During scx_enable(), the READY -> ENABLED task switching loop changes the
+calling thread's sched_class from fair to ext. Since fair has higher
+priority than ext, saturating fair-class workloads can indefinitely starve
+the enable thread, hanging the system. This was introduced when the enable
+path switched from preempt_disable() to scx_bypass() which doesn't protect
+against fair-class starvation. Note that the original preempt_disable()
+protection wasn't complete either - in partial switch modes, the calling
+thread could still be starved after preempt_enable() as it may have been
+switched to ext class.
 
-Adjust the constant to match the Bosch implementation and resolve the EBUSY
-errors.
+Fix it by offloading the enable body to a dedicated system-wide RT
+(SCHED_FIFO) kthread which cannot be starved by either fair or ext class
+tasks. scx_enable() lazily creates the kthread on first use and passes the
+ops pointer through a struct scx_enable_cmd containing the kthread_work,
+then synchronously waits for completion.
 
-Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
-Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
-Signed-off-by: Chris Spencer <spencercw@gmail.com>
-Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The workfn runs on a different kthread from sch->helper (which runs
+disable_work), so it can safely flush disable_work on the error path
+without deadlock.
+
+Fixes: 8c2090c504e9 ("sched_ext: Initialize in bypass mode")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+[ adapted per-scheduler scx_sched struct references to globals ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/ext.c |   64 ++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 54 insertions(+), 10 deletions(-)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -550,7 +550,7 @@ static int bme680_wait_for_eoc(struct bm
- 	 * + heater duration
- 	 */
- 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
--			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   data->oversampling_humid) * 1963) + (477 * 4) +
- 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5166,19 +5166,29 @@ static int validate_ops(const struct sch
+ 	return 0;
+ }
  
- 	usleep_range(wait_eoc_us, wait_eoc_us + 100);
+-static int scx_ops_enable(struct sched_ext_ops *ops, struct bpf_link *link)
++/*
++ * scx_ops_enable() is offloaded to a dedicated system-wide RT kthread to avoid
++ * starvation. During the READY -> ENABLED task switching loop, the calling
++ * thread's sched_class gets switched from fair to ext. As fair has higher
++ * priority than ext, the calling thread can be indefinitely starved under
++ * fair-class saturation, leading to a system hang.
++ */
++struct scx_enable_cmd {
++	struct kthread_work	work;
++	struct sched_ext_ops	*ops;
++	int			ret;
++};
++
++static void scx_ops_enable_workfn(struct kthread_work *work)
+ {
++	struct scx_enable_cmd *cmd =
++		container_of(work, struct scx_enable_cmd, work);
++	struct sched_ext_ops *ops = cmd->ops;
+ 	struct scx_task_iter sti;
+ 	struct task_struct *p;
+ 	unsigned long timeout;
+ 	int i, cpu, node, ret;
+ 
+-	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
+-			   cpu_possible_mask)) {
+-		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
+-		return -EINVAL;
+-	}
+-
+ 	mutex_lock(&scx_ops_enable_mutex);
+ 
+ 	if (!scx_ops_helper) {
+@@ -5445,7 +5455,8 @@ static int scx_ops_enable(struct sched_e
+ 
+ 	atomic_long_inc(&scx_enable_seq);
+ 
+-	return 0;
++	cmd->ret = 0;
++	return;
+ 
+ err_del:
+ 	kobject_del(scx_root_kobj);
+@@ -5458,7 +5469,8 @@ err:
+ 	}
+ err_unlock:
+ 	mutex_unlock(&scx_ops_enable_mutex);
+-	return ret;
++	cmd->ret = ret;
++	return;
+ 
+ err_disable_unlock_all:
+ 	scx_cgroup_unlock();
+@@ -5477,7 +5489,39 @@ err_disable:
+ 	 */
+ 	scx_ops_error("scx_ops_enable() failed (%d)", ret);
+ 	kthread_flush_work(&scx_ops_disable_work);
+-	return 0;
++	cmd->ret = 0;
++}
++
++static int scx_ops_enable(struct sched_ext_ops *ops, struct bpf_link *link)
++{
++	static struct kthread_worker *helper;
++	static DEFINE_MUTEX(helper_mutex);
++	struct scx_enable_cmd cmd;
++
++	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
++			   cpu_possible_mask)) {
++		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
++		return -EINVAL;
++	}
++
++	if (!READ_ONCE(helper)) {
++		mutex_lock(&helper_mutex);
++		if (!helper) {
++			helper = scx_create_rt_helper("scx_ops_enable_helper");
++			if (!helper) {
++				mutex_unlock(&helper_mutex);
++				return -ENOMEM;
++			}
++		}
++		mutex_unlock(&helper_mutex);
++	}
++
++	kthread_init_work(&cmd.work, scx_ops_enable_workfn);
++	cmd.ops = ops;
++
++	kthread_queue_work(READ_ONCE(helper), &cmd.work);
++	kthread_flush_work(&cmd.work);
++	return cmd.ret;
+ }
+ 
+ 
 
 
 
