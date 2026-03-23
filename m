@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cP5TC0RGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:16 +0100
+	id gLg3K7tTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72E22F3696
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA822F55A4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89EC2301C052
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5AE0C303E829
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEE83AE189;
-	Mon, 23 Mar 2026 13:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DC43AEF58;
+	Mon, 23 Mar 2026 14:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFo5P/HW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvFZe5Fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DBA3ACA62;
-	Mon, 23 Mar 2026 13:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793BE387593;
+	Mon, 23 Mar 2026 14:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274078; cv=none; b=S+SxkusuRyaKwm7GRCY3T1fQjXkhwtvBBkUiElh/OIfa55vx0UlCtuxSLvwTOqaJ67jYhWNU8geyfZ4Q6Dr2kUbACjywIL3x3VgZU5TmOJFHW4NTmh8+HNBFGakjCjYpANaAwwkntG2R1M57ixGeMeXR8SOwZhmBZ9eYGtZAKd8=
+	t=1774277003; cv=none; b=sEav317OxS4jiZJvIHrP9455XMXfpmtU5f0vm0n/9yjmiLTf8e76crsS2FE5C6uRD3mzJTGKaQgC14Ckg0hOU7qekeMWknomKweIHfFvPGEW8lDF2K2zF35iq3Jy4tlo6vcD70l+y0yT/QYKI2tM7K9dk8zhJrJNZ0oKeKzWM90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274078; c=relaxed/simple;
-	bh=m3YVXj3x7sbV1a93NHzxgV46VUtsjy8k4pScNr9BMZM=;
+	s=arc-20240116; t=1774277003; c=relaxed/simple;
+	bh=kqRPCrZ4nE6KG8qmahWuSNm1epCY76tDrPZmox8U0dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LM71P3iKrdGRIsfpK/LVhOLKOW/tE8KCUwYN1KzMYuuQvfx6crKgIvzTZFmFgmQhGCURo2pN6V479W3ahpAfGwuOSDyzgIoSwSemFJo43EB853veiUT35DFMxg+lHqDLEAJEgzZZgjVZnu9lub5FG+QT+hoCKVfq/CJY8CQ3EGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFo5P/HW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A22C4CEF7;
-	Mon, 23 Mar 2026 13:54:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TUVLdjQ5dOmx5IFZa68ez3SQel7qVvFprAHIGnZ9cupM0zi9vtena4ITWU6tp4dnnf+SBPCsglnW3E2QY3lxVINp4RuRbWcZtHiAl9L6NYyfT6+qZxHRYs+X6aTSy5CbAb9ppLFHexmOsjKmKfiXCjIuHrSxec5s6jwAuIo8VGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvFZe5Fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13946C4CEF7;
+	Mon, 23 Mar 2026 14:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274078;
-	bh=m3YVXj3x7sbV1a93NHzxgV46VUtsjy8k4pScNr9BMZM=;
+	s=korg; t=1774277003;
+	bh=kqRPCrZ4nE6KG8qmahWuSNm1epCY76tDrPZmox8U0dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFo5P/HWmEu1yi21CA58j8QA/FzXwYLiMTLqR4GMhqiNItdFGal2v0kATa8pTbmgB
-	 eR7YSQk5gu7oPqVI1605GFgFR/hBIvnnxmaG0hLD6/U+9DxVtT3AZZZcB5324YRh3M
-	 nrbnaBHJI+5HIQigX/QI+agPAcDp06xOeoULN+wY=
+	b=kvFZe5FiMiiRQHFbj3LfcKhJbXW5DP319mlOR18s4nGU81CKyl/1ftKJ5TBxZs5sw
+	 9mR/FsavY/gjtL/1B1t0OYt2Hdti6bj8LOzfufnMqW/roQMl0+2roRH8kK2HtM0jSm
+	 fatJeLsKtndLlJZIv4D4kXV/r2eCrdd9NO/WK7Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Herve Codina <herve.codina@bootlin.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 102/220] soc: fsl: cpm1: qmc: Fix error check for devm_ioremap_resource() in qmc_qe_init_resources()
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.12 283/460] platform/x86/amd/pmc: Add support for Van Gogh SoC
 Date: Mon, 23 Mar 2026 14:44:39 +0100
-Message-ID: <20260323134507.825806740@linuxfoundation.org>
+Message-ID: <20260323134533.434177889@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +65,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228085-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,antheas.dev,kernel.org,amd.com,linux.intel.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-228743-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A72E22F3696
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 5FA822F55A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 3f4e403304186d79fddace860360540fc3af97f9 ]
+[ Upstream commit db4a3f0fbedb0398f77b9047e8b8bb2b49f355bb ]
 
-Fix wrong variable used for error checking after devm_ioremap_resource()
-call. The function checks qmc->scc_pram instead of qmc->dpram, which
-could lead to incorrect error handling.
+The ROG Xbox Ally (non-X) SoC features a similar architecture to the
+Steam Deck. While the Steam Deck supports S3 (s2idle causes a crash),
+this support was dropped by the Xbox Ally which only S0ix suspend.
 
-Fixes: eb680d563089 ("soc: fsl: cpm1: qmc: Add support for QUICC Engine (QE) implementation")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20260209015904.871269-1-nichen@iscas.ac.cn
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since the handler is missing here, this causes the device to not suspend
+and the AMD GPU driver to crash while trying to resume afterwards due to
+a power hang.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://patch.msgid.link/20251024152152.3981721-2-lkml@antheas.dev
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[ Adjust context ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/fsl/qe/qmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc.c |    3 +++
+ drivers/platform/x86/amd/pmc/pmc.h |    1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index da5ea6d356184..6db5ab05c2c1c 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1799,8 +1799,8 @@ static int qmc_qe_init_resources(struct qmc *qmc, struct platform_device *pdev)
- 		return -EINVAL;
- 	qmc->dpram_offset = res->start - qe_muram_dma(qe_muram_addr(0));
- 	qmc->dpram = devm_ioremap_resource(qmc->dev, res);
--	if (IS_ERR(qmc->scc_pram))
--		return PTR_ERR(qmc->scc_pram);
-+	if (IS_ERR(qmc->dpram))
-+		return PTR_ERR(qmc->dpram);
- 
- 	return 0;
- }
--- 
-2.51.0
-
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -347,6 +347,7 @@ static void amd_pmc_get_ip_info(struct a
+ 	switch (dev->cpu_id) {
+ 	case AMD_CPU_ID_PCO:
+ 	case AMD_CPU_ID_RN:
++	case AMD_CPU_ID_VG:
+ 	case AMD_CPU_ID_YC:
+ 	case AMD_CPU_ID_CB:
+ 		dev->num_ips = 12;
+@@ -765,6 +766,7 @@ static int amd_pmc_get_os_hint(struct am
+ 	case AMD_CPU_ID_PCO:
+ 		return MSG_OS_HINT_PCO;
+ 	case AMD_CPU_ID_RN:
++	case AMD_CPU_ID_VG:
+ 	case AMD_CPU_ID_YC:
+ 	case AMD_CPU_ID_CB:
+ 	case AMD_CPU_ID_PS:
+@@ -977,6 +979,7 @@ static const struct pci_device_id pmc_pc
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_PCO) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_RV) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_SP) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_VG) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_ROOT) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M60H_ROOT) },
+ 	{ }
+--- a/drivers/platform/x86/amd/pmc/pmc.h
++++ b/drivers/platform/x86/amd/pmc/pmc.h
+@@ -62,6 +62,7 @@ void amd_mp2_stb_deinit(struct amd_pmc_d
+ #define AMD_CPU_ID_RN			0x1630
+ #define AMD_CPU_ID_PCO			AMD_CPU_ID_RV
+ #define AMD_CPU_ID_CZN			AMD_CPU_ID_RN
++#define AMD_CPU_ID_VG			0x1645
+ #define AMD_CPU_ID_YC			0x14B5
+ #define AMD_CPU_ID_CB			0x14D8
+ #define AMD_CPU_ID_PS			0x14E8
 
 
 
