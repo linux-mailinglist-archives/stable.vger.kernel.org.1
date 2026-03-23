@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOA1Cs5LwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:54 +0100
+	id mAU0H2ZpwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1272F4277
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9DB2F80CB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2706630BE432
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF27532215D5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467121A6818;
-	Mon, 23 Mar 2026 14:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F0923E33D;
+	Mon, 23 Mar 2026 14:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJWqLxX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFlCdEb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D6721D00A;
-	Mon, 23 Mar 2026 14:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2902B23D288;
+	Mon, 23 Mar 2026 14:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274956; cv=none; b=EkeUS1G9bWsTASHm/PyMDjDomLE9vYCrSfsuuityCnpxbHgovsAGW/eT7nDxaMHKQuy9XqgpS1K1DvFWab+dn73NgR7zNKimSrJPEoJYGjFSb0eHf/UPtMGsClaAektRq59dbmKSTP1hc6BP6EkwuzT6v1CwE6R0pfEQXOC42W8=
+	t=1774277209; cv=none; b=ZJMf4IKHEY8DEJPfFHCZ+d1q11ZBC2ktFC6nMSgAzt8VJsgc342jxMVPV10yNLbYwIxCzBYNb/O/zsKS1kHZRi/tPwTQ+0fN9QAKzTSudp7OeqcHwkYAc9xFskcGmRxp6tENJa2zTs7ThFOWsDhbMXSyi5odgS7OQZ8gM1dIbgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274956; c=relaxed/simple;
-	bh=QZmiPlYcKQOCP4J8kRXxWg1O9enlnKGTMmQ1WklChBU=;
+	s=arc-20240116; t=1774277209; c=relaxed/simple;
+	bh=/d129W0YlM63cNUKFbGXrJXuqHs1Vu+o0xXj8x6N0XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iw2Qr3GxIfdHnazYAuSzUVyDJro4PYi1M2fG3dvNkYrIPin/mZhK5bcQS6GYlUncVam9xCxAJMUalOPSpgpYKbjj0p9sflQNnk45BhKPTYPVI1fNSss1aejfvoX517IxQfIMJPjmb4q12IQjRSxXmzr2F+zk6am+bYFi9fWjq2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJWqLxX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926AAC4CEF7;
-	Mon, 23 Mar 2026 14:09:15 +0000 (UTC)
+	 MIME-Version; b=LzuKL2JmrSmVOXygeCe9bWdF68jV6UEj4gmgce4XPSQPIpzXCI4O6JN0Ep+bWNeZMcDrornwLUfdlHkW9NphPT7x+MlqHNSGJsUcUqar94ujfuU4ZKbZp+VABWveCg3Q47OsBXWjFLG82jPRrh43l28ZpLdIBrEPn+b4TwXkPWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFlCdEb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7657EC4CEF7;
+	Mon, 23 Mar 2026 14:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274955;
-	bh=QZmiPlYcKQOCP4J8kRXxWg1O9enlnKGTMmQ1WklChBU=;
+	s=korg; t=1774277208;
+	bh=/d129W0YlM63cNUKFbGXrJXuqHs1Vu+o0xXj8x6N0XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJWqLxX7aNN6RaQBpIkTzebB1hCm3WOJkgkrP2CFRnX5ZqChoxAJo+8HCK87is4TY
-	 wXXANOfxJz11vAa33Ws88WOawGhiIiMoJRO85aZhvCsRyNdk3aI7FIr4e8K64zfZsb
-	 MQGjEvsJJW+u/kVSZM5J5kAWGrorHFEUYedjiTkk=
+	b=CFlCdEb9o1pwSllzjpjbsP23l14Mu9y0jgq0CblJDJsboAxaOZj9c5DeDpzfRCXDO
+	 m5q0BzSWOwjqAOHmESrPraajygULJRuqH/kPzN7EpKOHT/HFiupfH6q/A/iaAqVbHt
+	 nTUPwV6fMhs5hkqasjKdp7y+D6KRFcC/dW8pKAK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+14b6d57fb728e27ce23c@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 129/212] Bluetooth: L2CAP: Fix use-after-free in l2cap_unregister_user
-Date: Mon, 23 Mar 2026 14:45:50 +0100
-Message-ID: <20260323134507.846374370@linuxfoundation.org>
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 355/460] drm/amdgpu/mmhub3.0.2: add bounds checking for cid
+Date: Mon, 23 Mar 2026 14:45:51 +0100
+Message-ID: <20260323134535.275869475@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228379-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,14b6d57fb728e27ce23c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228814-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9F1272F4277
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1E9DB2F80CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 752a6c9596dd25efd6978a73ff21f3b592668f4a ]
+commit e5e6d67b1ce9764e67aef2d0eef9911af53ad99a upstream.
 
-After commit ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in
-hci_chan_del"), l2cap_conn_del() uses conn->lock to protect access to
-conn->users. However, l2cap_register_user() and l2cap_unregister_user()
-don't use conn->lock, creating a race condition where these functions can
-access conn->users and conn->hchan concurrently with l2cap_conn_del().
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
-This can lead to use-after-free and list corruption bugs, as reported
-by syzbot.
-
-Fix this by changing l2cap_register_user() and l2cap_unregister_user()
-to use conn->lock instead of hci_dev_lock(), ensuring consistent locking
-for the l2cap_conn structure.
-
-Reported-by: syzbot+14b6d57fb728e27ce23c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=14b6d57fb728e27ce23c
-Fixes: ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in hci_chan_del")
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1441f52c7f6ae6553664aa9e3e4562f6fc2fe8ea)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 05acc2e98f58f..9ea030fc9a9cc 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -1686,17 +1686,15 @@ static void l2cap_info_timeout(struct work_struct *work)
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
+@@ -108,7 +108,8 @@ mmhub_v3_0_2_print_l2_protection_fault_s
+ 		"MMVM_L2_PROTECTION_FAULT_STATUS:0x%08X\n",
+ 		status);
  
- int l2cap_register_user(struct l2cap_conn *conn, struct l2cap_user *user)
- {
--	struct hci_dev *hdev = conn->hcon->hdev;
- 	int ret;
- 
- 	/* We need to check whether l2cap_conn is registered. If it is not, we
--	 * must not register the l2cap_user. l2cap_conn_del() is unregisters
--	 * l2cap_conn objects, but doesn't provide its own locking. Instead, it
--	 * relies on the parent hci_conn object to be locked. This itself relies
--	 * on the hci_dev object to be locked. So we must lock the hci device
--	 * here, too. */
-+	 * must not register the l2cap_user. l2cap_conn_del() unregisters
-+	 * l2cap_conn objects under conn->lock, and we use the same lock here
-+	 * to protect access to conn->users and conn->hchan.
-+	 */
- 
--	hci_dev_lock(hdev);
-+	mutex_lock(&conn->lock);
- 
- 	if (!list_empty(&user->list)) {
- 		ret = -EINVAL;
-@@ -1717,16 +1715,14 @@ int l2cap_register_user(struct l2cap_conn *conn, struct l2cap_user *user)
- 	ret = 0;
- 
- out_unlock:
--	hci_dev_unlock(hdev);
-+	mutex_unlock(&conn->lock);
- 	return ret;
- }
- EXPORT_SYMBOL(l2cap_register_user);
- 
- void l2cap_unregister_user(struct l2cap_conn *conn, struct l2cap_user *user)
- {
--	struct hci_dev *hdev = conn->hcon->hdev;
--
--	hci_dev_lock(hdev);
-+	mutex_lock(&conn->lock);
- 
- 	if (list_empty(&user->list))
- 		goto out_unlock;
-@@ -1735,7 +1731,7 @@ void l2cap_unregister_user(struct l2cap_conn *conn, struct l2cap_user *user)
- 	user->remove(conn, user);
- 
- out_unlock:
--	hci_dev_unlock(hdev);
-+	mutex_unlock(&conn->lock);
- }
- EXPORT_SYMBOL(l2cap_unregister_user);
- 
--- 
-2.51.0
-
+-	mmhub_cid = mmhub_client_ids_v3_0_2[cid][rw];
++	mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_2) ?
++		mmhub_client_ids_v3_0_2[cid][rw] : NULL;
+ 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
+ 		mmhub_cid ? mmhub_cid : "unknown", cid);
+ 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
 
 
 
