@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LLhDFRYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:20 +0100
+	id EKtHL6BJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48DE2F5F50
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A39C2F3E8F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FED330AD4A6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72AD7306114F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336E53AE6E1;
-	Mon, 23 Mar 2026 14:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9B13B8D75;
+	Mon, 23 Mar 2026 13:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m13NMrBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVUj8JSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB43926D4F9;
-	Mon, 23 Mar 2026 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE7B3B27F3;
+	Mon, 23 Mar 2026 13:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277422; cv=none; b=UpVEE57aEYQryvSUPT3CaDc+mz8PLUUMFbqZXp4oomCy5sunbjtVO97N2zN3vPc+hMa6WN7HRB2VRpQyC026XLuB55Um8VFEaP8+OlPq5YVmhQlLI0ysihTucLp8i1ttgc9o7G6tS8gvECCQ5scsMMOy8AFA7VRm9+CheIXxOCc=
+	t=1774274380; cv=none; b=b+gagN6zQe2vhkzAhoXC2dqpCZpjGwn6ntdVyAKVNeRq9lMpH9kK2PWKYj4E+6Sl8nrvgK2b0b6YWggv+Kl2/sMsQhpu6vJpBzhqnHzXVlNrJnDdq6fPVxsuMesGS6gVu/V/d8MWUf7/IyU9bVE/400M7N8nhgZIZJzwQnCc5D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277422; c=relaxed/simple;
-	bh=aT3d9HVxZFT2k1POyW5s2zlY9smWBYNQk6OlUxdeimU=;
+	s=arc-20240116; t=1774274380; c=relaxed/simple;
+	bh=oXa3S/dT7fjmkXwBD9syIFAIjCSbcKB13H83+p6bHT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ym/udwNjNCOsyWH8NELQzwwR20xpc/IjCOL5gdbyEHdq3WWBFFQA7e5wzltCqRoI4qnS8EwUbCT2cyIUdtEyqwcjuRebfblHz1mcc0UHTt2ckxBeJZpD1lDNkrpZmcHqvc04ohYp7/peWvHMZeI63PLqs3MQHpeLgP0Ybv4ixRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m13NMrBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBBFC4CEF7;
-	Mon, 23 Mar 2026 14:50:21 +0000 (UTC)
+	 MIME-Version; b=j/v4TxVh22KsFat3vKbotuUK3/JVDqHq5X4l9YVtTK6gug9mAwQ6Q2JiQvBlAS+SaggGhmgmrOnff8dRBPWz3mamEA4Her9R2u2R03ttkM17jXZlCaRsY6a6BjbsZp12l6aHcgRqYGbvRKs8t8/04WCJKgN9IckZS9bAnqr874A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVUj8JSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CAFC2BCB1;
+	Mon, 23 Mar 2026 13:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277421;
-	bh=aT3d9HVxZFT2k1POyW5s2zlY9smWBYNQk6OlUxdeimU=;
+	s=korg; t=1774274380;
+	bh=oXa3S/dT7fjmkXwBD9syIFAIjCSbcKB13H83+p6bHT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m13NMrBq1/T73skTfpz6gBUlfmZANbwUmocoXNGDfb/sJCMD2J5G3yVo8wpsXdWA3
-	 nHLpjwrZnrM8JzFEAHN5pvg13cM0bXDxJLBtj8wtmAwXHFpmhLTqm3rxrQ3zovxWA/
-	 EsRo4fmoOTgvCJhMok9Rq0UjJ9PjKNPeRjg3GHNk=
+	b=rVUj8JSDOU1xtiUmnEXs9RLTzd2RJThk++9NLYrGIfvNsdMo8eZLS1bEj8DpWHO03
+	 jElGeUtqQ8qDjzcIS/HC4FJZPD9KyASrp7TpX8VsWefQkGfpkIT3v6WCmaqLk4x4ki
+	 asTHh7SLZHbf+lGcrMi3ufsrqs7QvzsbnerSsH9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 379/460] firmware: arm_scpi: Fix device_node reference leak in probe path
+Subject: [PATCH 6.19 198/220] mtd: rawnand: serialize lock/unlock against other NAND operations
 Date: Mon, 23 Mar 2026 14:46:15 +0100
-Message-ID: <20260323134535.882101054@linuxfoundation.org>
+Message-ID: <20260323134510.841251881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +65,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228894-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228183-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B48DE2F5F50
+X-Rspamd-Queue-Id: 4A39C2F3E8F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 879c001afbac3df94160334fe5117c0c83b2cf48 ]
+[ Upstream commit bab2bc6e850a697a23b9e5f0e21bb8c187615e95 ]
 
-A device_node reference obtained from the device tree is not released
-on all error paths in the arm_scpi probe path. Specifically, a node
-returned by of_parse_phandle() could be leaked when the probe failed
-after the node was acquired. The probe function returns early and
-the shmem reference is not released.
+nand_lock() and nand_unlock() call into chip->ops.lock_area/unlock_area
+without holding the NAND device lock. On controllers that implement
+SET_FEATURES via multiple low-level PIO commands, these can race with
+concurrent UBI/UBIFS background erase/write operations that hold the
+device lock, resulting in cmd_pending conflicts on the NAND controller.
 
-Use __free(device_node) scope-based cleanup to automatically release
-the reference when the variable goes out of scope.
+Add nand_get_device()/nand_release_device() around the lock/unlock
+operations to serialize them against all other NAND controller access.
 
-Fixes: ed7ecb883901 ("firmware: arm_scpi: Add compatibility checks for shmem node")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Message-Id: <20260121-arm_scpi_2-v2-1-702d7fa84acb@gmail.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Fixes: 92270086b7e5 ("mtd: rawnand: Add support for manufacturer specific lock/unlock operation")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
-index f4d47577f83ee..2d33771917bb4 100644
---- a/drivers/firmware/arm_scpi.c
-+++ b/drivers/firmware/arm_scpi.c
-@@ -18,6 +18,7 @@
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index f2322de93ab41..19e3bbf42931d 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -4737,11 +4737,16 @@ static void nand_shutdown(struct mtd_info *mtd)
+ static int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
+ {
+ 	struct nand_chip *chip = mtd_to_nand(mtd);
++	int ret;
  
- #include <linux/bitmap.h>
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/export.h>
-@@ -940,13 +941,13 @@ static int scpi_probe(struct platform_device *pdev)
- 		int idx = scpi_drvinfo->num_chans;
- 		struct scpi_chan *pchan = scpi_drvinfo->channels + idx;
- 		struct mbox_client *cl = &pchan->cl;
--		struct device_node *shmem = of_parse_phandle(np, "shmem", idx);
-+		struct device_node *shmem __free(device_node) =
-+			of_parse_phandle(np, "shmem", idx);
+ 	if (!chip->ops.lock_area)
+ 		return -ENOTSUPP;
  
- 		if (!of_match_node(shmem_of_match, shmem))
- 			return -ENXIO;
+-	return chip->ops.lock_area(chip, ofs, len);
++	nand_get_device(chip);
++	ret = chip->ops.lock_area(chip, ofs, len);
++	nand_release_device(chip);
++
++	return ret;
+ }
  
- 		ret = of_address_to_resource(shmem, 0, &res);
--		of_node_put(shmem);
- 		if (ret) {
- 			dev_err(dev, "failed to get SCPI payload mem resource\n");
- 			return ret;
+ /**
+@@ -4753,11 +4758,16 @@ static int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
+ static int nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
+ {
+ 	struct nand_chip *chip = mtd_to_nand(mtd);
++	int ret;
+ 
+ 	if (!chip->ops.unlock_area)
+ 		return -ENOTSUPP;
+ 
+-	return chip->ops.unlock_area(chip, ofs, len);
++	nand_get_device(chip);
++	ret = chip->ops.unlock_area(chip, ofs, len);
++	nand_release_device(chip);
++
++	return ret;
+ }
+ 
+ /* Set default functions */
 -- 
 2.51.0
 
