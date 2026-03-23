@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UD16IHttwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:35 +0100
+	id 6BCbDOJLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFD72F8A5D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2D82F42B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B88773024850
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A6F283079D83
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5151C286413;
-	Mon, 23 Mar 2026 16:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAAD3B47C1;
+	Mon, 23 Mar 2026 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIxlSmAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JROF9Sld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149EB258CD9;
-	Mon, 23 Mar 2026 16:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D833B3C06;
+	Mon, 23 Mar 2026 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282845; cv=none; b=Kt05wYDjCF+7NX+KgR6W47Rlpncgxyxa1G5f45HyAcs2n4EysdSPMdaZo+bxmD28DQ/zwy0gvHxLr6Q0TWPNxMSxl5SCIEtuvHKkCvRYj2LcV9DmRhFVzJwV7qo+GhPQOl/17FiVyiSjZExwGJBcs3HLWqrTeYJOUkep+NFu5hU=
+	t=1774274712; cv=none; b=jPhtRzEjvOFht1VYhgneP/6yJN4Eqaxvta8kwIjGSYXhVv7WovSL8vSdXpApf8HKLSotD1qS3v1jfb/OcP8OvJv3h7VQcqZlbRG957bL1ESrvyqCnffKn7+GetaxupFkcR3C2VKM1VSsFUHaIVhowQpkG5fGL5B5k6AkK6siiB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282845; c=relaxed/simple;
-	bh=FOya4OSGW6J4Tp787hRkRx9pttLT3zFizXa7lUpdaHs=;
+	s=arc-20240116; t=1774274712; c=relaxed/simple;
+	bh=Pj+S0bMuu985ZoYKLJu4cP7lhg6SBEtRvIyqx6O5XJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIRV74gL9xGdR+OKFx2k+S7pX3Z5xrkrCHP4tzjefAqEukJxpZ9LHe9L3Mwb/UiRViFghcCUbmjiv5PW1wR1+tRlXTAMaQK08dSZaMhZQloRlbV740p3FeoodyJgZC1UiENoBB20Qfq4cLBkCSBjDnjbCJEuVEXtiCdPhbwpVeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIxlSmAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B304C4CEF7;
-	Mon, 23 Mar 2026 16:20:44 +0000 (UTC)
+	 MIME-Version; b=kU6ipU0HZYwRDtaE8mYMzww3YXlYh5TZKLmms9+TaMdujcgsCCyLgGtmAI0mJ5h4sWk96zbu2oLFA1xNOXZURAj/qq5hHXgKWlryS1ujSGXDGK5Nzq9hPvujp72XhKxaymROaKLXDKo/xZ7gyP+b2ix5kun+Pfe/6ZR8LwQfD4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JROF9Sld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601D7C2BCB1;
+	Mon, 23 Mar 2026 14:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282845;
-	bh=FOya4OSGW6J4Tp787hRkRx9pttLT3zFizXa7lUpdaHs=;
+	s=korg; t=1774274711;
+	bh=Pj+S0bMuu985ZoYKLJu4cP7lhg6SBEtRvIyqx6O5XJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIxlSmAD/5s9vG4hadn3L4Y97ChRtRHGm6LLXLb8flq9/ugstd/pjKrPverkO/nyv
-	 s2Tiy7QjXAcSzJwrybJaf+zb6TyqpjPaj5pCzBfDYZT83tughLUdb7TSJCAllwplVX
-	 pjrLFGEC2G6UJA0CVjZD9ExLmOpUfRIMrN5XMsgQ=
+	b=JROF9SldJP/OmQxf4WxCpIB108xFzMBfGSliCtoi4uwb4i4jE730xujTE6jY5LzIP
+	 KY2d+rsD3MeDEjwWhAGSrPXfM2QA5qW1PZldJd60vkZImivcI91bE8aCITq7eadRQO
+	 eBN6RArZMWNnhEENfTMcReRMQlCAdtekA1xmFLjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: [PATCH 6.1 280/481] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 041/212] ksmbd: Dont log keys in SMB3 signing and encryption key generation
 Date: Mon, 23 Mar 2026 14:44:22 +0100
-Message-ID: <20260323134531.941303716@linuxfoundation.org>
+Message-ID: <20260323134505.067417200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229780-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.dk,sina.cn];
+	TAGGED_FROM(0.00)[bounces-228292-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,4eb282331cab6d5b6588];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6BFD72F8A5D
+X-Rspamd-Queue-Id: CD2D82F42B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 10dc959398175736e495f71c771f8641e1ca1907 upstream.
+[ Upstream commit 441336115df26b966575de56daf7107ed474faed ]
 
-Currently this is checked before running the pending work. Normally this
-is quite fine, as work items either end up blocking (which will create a
-new worker for other items), or they complete fairly quickly. But syzbot
-reports an issue where io-wq takes seemingly forever to exit, and with a
-bit of debugging, this turns out to be because it queues a bunch of big
-(2GB - 4096b) reads with a /dev/msr* file. Since this file type doesn't
-support ->read_iter(), loop_rw_iter() ends up handling them. Each read
-returns 16MB of data read, which takes 20 (!!) seconds. With a bunch of
-these pending, processing the whole chain can take a long time. Easily
-longer than the syzbot uninterruptible sleep timeout of 140 seconds.
-This then triggers a complaint off the io-wq exit path:
+When KSMBD_DEBUG_AUTH logging is enabled, generate_smb3signingkey() and
+generate_smb3encryptionkey() log the session, signing, encryption, and
+decryption key bytes. Remove the logs to avoid exposing credentials.
 
-INFO: task syz.4.135:6326 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-      Blocked by coredump.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.4.135       state:D stack:26824 pid:6326  tgid:6324  ppid:5957   task_flags:0x400548 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x1139/0x6150 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:6960
- schedule_timeout+0x257/0x290 kernel/time/sleep_timeout.c:75
- do_wait_for_common kernel/sched/completion.c:100 [inline]
- __wait_for_common+0x2fc/0x4e0 kernel/sched/completion.c:121
- io_wq_exit_workers io_uring/io-wq.c:1328 [inline]
- io_wq_put_and_exit+0x271/0x8a0 io_uring/io-wq.c:1356
- io_uring_clean_tctx+0x10d/0x190 io_uring/tctx.c:203
- io_uring_cancel_generic+0x69c/0x9a0 io_uring/cancel.c:651
- io_uring_files_cancel include/linux/io_uring.h:19 [inline]
- do_exit+0x2ce/0x2bd0 kernel/exit.c:911
- do_group_exit+0xd3/0x2a0 kernel/exit.c:1112
- get_signal+0x2671/0x26d0 kernel/signal.c:3034
- arch_do_signal_or_restart+0x8f/0x7e0 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
- exit_to_user_mode_loop+0x8c/0x540 kernel/entry/common.c:75
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
- do_syscall_64+0x4ee/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa02738f749
-RSP: 002b:00007fa0281ae0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-RAX: fffffffffffffe00 RBX: 00007fa0275e6098 RCX: 00007fa02738f749
-RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007fa0275e6098
-RBP: 00007fa0275e6090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa0275e6128 R14: 00007fff14e4fcb0 R15: 00007fff14e4fd98
-
-There's really nothing wrong here, outside of processing these reads
-will take a LONG time. However, we can speed up the exit by checking the
-IO_WQ_BIT_EXIT inside the io_worker_handle_work() loop, as syzbot will
-exit the ring after queueing up all of these reads. Then once the first
-item is processed, io-wq will simply cancel the rest. That should avoid
-syzbot running into this complaint again.
-
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/68a2decc.050a0220.e29e5.0099.GAE@google.com/
-Reported-by: syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io-wq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/auth.c |   22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -554,9 +554,9 @@ static void io_worker_handle_work(struct
- 	struct io_wqe_acct *acct = io_wqe_get_acct(worker);
- 	struct io_wqe *wqe = worker->wqe;
- 	struct io_wq *wq = wqe->wq;
--	bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -802,12 +802,8 @@ static int generate_smb3signingkey(struc
+ 	if (!(conn->dialect >= SMB30_PROT_ID && signing->binding))
+ 		memcpy(chann->smb3signingkey, key, SMB3_SIGN_KEY_SIZE);
  
- 	do {
-+		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 		struct io_wq_work *work;
+-	ksmbd_debug(AUTH, "dumping generated AES signing keys\n");
++	ksmbd_debug(AUTH, "generated SMB3 signing key\n");
+ 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
+-	ksmbd_debug(AUTH, "Session Key   %*ph\n",
+-		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
+-	ksmbd_debug(AUTH, "Signing Key   %*ph\n",
+-		    SMB3_SIGN_KEY_SIZE, key);
+ 	return 0;
+ }
  
- 		/*
+@@ -871,23 +867,9 @@ static int generate_smb3encryptionkey(st
+ 	if (rc)
+ 		return rc;
+ 
+-	ksmbd_debug(AUTH, "dumping generated AES encryption keys\n");
++	ksmbd_debug(AUTH, "generated SMB3 encryption/decryption keys\n");
+ 	ksmbd_debug(AUTH, "Cipher type   %d\n", conn->cipher_type);
+ 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
+-	ksmbd_debug(AUTH, "Session Key   %*ph\n",
+-		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
+-	if (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
+-	    conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM) {
+-		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
+-			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3encryptionkey);
+-		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
+-			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3decryptionkey);
+-	} else {
+-		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
+-			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3encryptionkey);
+-		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
+-			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3decryptionkey);
+-	}
+ 	return 0;
+ }
+ 
 
 
 
