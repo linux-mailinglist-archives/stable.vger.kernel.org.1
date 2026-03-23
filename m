@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EGlEXhswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:16 +0100
+	id YKBfDvNTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063A22F87EC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE502F55FD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3B54303BAC0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D90E932FCBC7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6F93BA226;
-	Mon, 23 Mar 2026 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A573ACA68;
+	Mon, 23 Mar 2026 14:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVZ9+tHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAcUo5FM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22663B9D97;
-	Mon, 23 Mar 2026 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC93803EF;
+	Mon, 23 Mar 2026 14:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282222; cv=none; b=B9YpjGTZ9RkUfGCnj7pDGq/78oPPbbPB4adV3wLmMWblH77hmzXGUG3FAX4jsceCLerJ6BYBDPbV5jhHGcb1eLvfRW6eTwAL8+z/FMFAcbf92M9im7zvqz8dMSWSpHU5wMvAH9wD79a/aSu6SXFD04ha7sTl+e5Owvg4awvaC0Y=
+	t=1774275333; cv=none; b=A9+ri8knUTg0FtF5t2zEuxA6YP+h3hNQthzF1v7y5ug2QF/2EyljzPk6pypbXkyLfJ6+CkGKNj4oRFVvDqetHzN/Axs3YKSPf3b7US1s33c+xC6E9QfZQ7gpIAj4jOAN8foupLvE+z+T4TciurYqmdOLKtEtuAkso5lMy6jS58o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282222; c=relaxed/simple;
-	bh=mj8gUYt5wYomzfC4jqZbuczVkdlJcWDtZbVIIADy2bQ=;
+	s=arc-20240116; t=1774275333; c=relaxed/simple;
+	bh=xE8DdALOSzmekuJeUDg4s46FkLe6DuIBjUjqbyWxf/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjcUVUPJAfaxZFG0t1IE8ftxGiE4F1uN2+Xt1rw30YOM5Oc+je/84n1cPE63RRCFW8Z8zRWa+RmFFCa7k5EjqMhulBxAPGU4hduht9RVtAs9BYtR/f5BHGqECrbYT8hmcrVXsu25dU+diBa3Ks+X98323JOUzNUI9BmpGKteK+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVZ9+tHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B77C4CEF7;
-	Mon, 23 Mar 2026 16:10:21 +0000 (UTC)
+	 MIME-Version; b=S93BLZwveoDCTx6KPuUKBZNWiUIqinzZbAzYbCWG0Qr7n3pSJJByu/esKyVU3VXdjc4sIynvZF77/xhOkpLePHeG6q0NZ1ClTP9lNE914Y86awZtOaFDmyFVX+GJefcveNyUKzzxoG8MkiBo3Jde0ShmlG0ggFu9qdIF6e/wqhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAcUo5FM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BECBC4CEF7;
+	Mon, 23 Mar 2026 14:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282221;
-	bh=mj8gUYt5wYomzfC4jqZbuczVkdlJcWDtZbVIIADy2bQ=;
+	s=korg; t=1774275333;
+	bh=xE8DdALOSzmekuJeUDg4s46FkLe6DuIBjUjqbyWxf/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVZ9+tHGTDTtcGUFqvPRQp/jN+hUFvsA4N4GwtJ2KTXEEOEGLKo8AiE6m8Wt3ixWC
-	 SRJ9CwYwFhgadqjW6s6GbNi4UanmSAiDsxX8zl+G+l4OOJock+XdVedBeLAVjaW1st
-	 wmnnDIoDni4PYraacZR+8tZT4SCKUy0yPyDHfqRM=
+	b=DAcUo5FM+mamk2o7ml0QZDnU2W6j8Ea3UQuTNRGOnvlx+Dsh4Z+ieD0+34ut1FYbX
+	 Vwq1Lpzvxo7ttBd/pkTwzihi/Wi0ia2Wc9Qjbc8VaceDblonoVrAn4k05r7MYEOedV
+	 WPohDGzNtvxK4n+YIHt84ATqa3kH4nz09FD/a3+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@kernel.org
-Subject: [PATCH 6.1 075/481] can: ems_usb: ems_usb_read_bulk_callback(): check the proper length of a message
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 061/460] net: add xmit recursion limit to tunnel xmit functions
 Date: Mon, 23 Mar 2026 14:40:57 +0100
-Message-ID: <20260323134527.062150850@linuxfoundation.org>
+Message-ID: <20260323134528.208624958@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +67,307 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229549-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228514-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,redhat.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 063A22F87EC
+X-Rspamd-Queue-Id: 9AE502F55FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 38a01c9700b0dcafe97dfa9dc7531bf4a245deff upstream.
+[ Upstream commit 6f1a9140ecda3baba3d945b9a6155af4268aafc4 ]
 
-When looking at the data in a USB urb, the actual_length is the size of
-the buffer passed to the driver, not the transfer_buffer_length which is
-set by the driver as the max size of the buffer.
+Tunnel xmit functions (iptunnel_xmit, ip6tunnel_xmit) lack their own
+recursion limit. When a bond device in broadcast mode has GRE tap
+interfaces as slaves, and those GRE tunnels route back through the
+bond, multicast/broadcast traffic triggers infinite recursion between
+bond_xmit_broadcast() and ip_tunnel_xmit()/ip6_tnl_xmit(), causing
+kernel stack overflow.
 
-When parsing the messages in ems_usb_read_bulk_callback() properly check
-the size both at the beginning of parsing the message to make sure it is
-big enough for the expected structure, and at the end of the message to
-make sure we don't overflow past the end of the buffer for the next
-message.
+The existing XMIT_RECURSION_LIMIT (8) in the no-qdisc path is not
+sufficient because tunnel recursion involves route lookups and full IP
+output, consuming much more stack per level. Use a lower limit of 4
+(IP_TUNNEL_RECURSION_LIMIT) to prevent overflow.
 
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: stable@kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022316-answering-strainer-a5db@gregkh
-Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add recursion detection using dev_xmit_recursion helpers directly in
+iptunnel_xmit() and ip6tunnel_xmit() to cover all IPv4/IPv6 tunnel
+paths including UDP encapsulated tunnels (VXLAN, Geneve, etc.).
+
+Move dev_xmit_recursion helpers from net/core/dev.h to public header
+include/linux/netdevice.h so they can be used by tunnel code.
+
+ BUG: KASAN: stack-out-of-bounds in blake2s.constprop.0+0xe7/0x160
+ Write of size 32 at addr ffff88810033fed0 by task kworker/0:1/11
+ Workqueue: mld mld_ifc_work
+ Call Trace:
+  <TASK>
+  __build_flow_key.constprop.0 (net/ipv4/route.c:515)
+  ip_rt_update_pmtu (net/ipv4/route.c:1073)
+  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:84)
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
+  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
+  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  __dev_queue_xmit (net/core/dev.c:4841)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  ip_output (net/ipv4/ip_output.c:438)
+  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:86)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
+  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
+  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  __dev_queue_xmit (net/core/dev.c:4841)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  ip_output (net/ipv4/ip_output.c:438)
+  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:86)
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
+  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
+  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  __dev_queue_xmit (net/core/dev.c:4841)
+  mld_sendpack
+  mld_ifc_work
+  process_one_work
+  worker_thread
+  </TASK>
+
+Fixes: 745e20f1b626 ("net: add a recursion limit in xmit path")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260306160133.3852900-2-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/ems_usb.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/netdevice.h | 32 ++++++++++++++++++++++++++++++++
+ include/net/ip6_tunnel.h  | 12 ++++++++++++
+ include/net/ip_tunnels.h  |  7 +++++++
+ net/core/dev.h            | 35 -----------------------------------
+ net/ipv4/ip_tunnel_core.c | 13 +++++++++++++
+ 5 files changed, 64 insertions(+), 35 deletions(-)
 
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -445,6 +445,11 @@ static void ems_usb_read_bulk_callback(s
- 		start = CPC_HEADER_SIZE;
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index d5215f23f2b99..12edeeb172c4e 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3258,17 +3258,49 @@ struct softnet_data {
+ DECLARE_PER_CPU_ALIGNED(struct softnet_data, softnet_data);
+ DECLARE_PER_CPU(struct page_pool *, system_page_pool);
  
- 		while (msg_count) {
-+			if (start + CPC_MSG_HEADER_LEN > urb->actual_length) {
-+				netdev_err(netdev, "format error\n");
-+				break;
-+			}
++#define XMIT_RECURSION_LIMIT	8
 +
- 			msg = (struct ems_cpc_msg *)&ibuf[start];
+ #ifndef CONFIG_PREEMPT_RT
+ static inline int dev_recursion_level(void)
+ {
+ 	return this_cpu_read(softnet_data.xmit.recursion);
+ }
++
++static inline bool dev_xmit_recursion(void)
++{
++	return unlikely(__this_cpu_read(softnet_data.xmit.recursion) >
++			XMIT_RECURSION_LIMIT);
++}
++
++static inline void dev_xmit_recursion_inc(void)
++{
++	__this_cpu_inc(softnet_data.xmit.recursion);
++}
++
++static inline void dev_xmit_recursion_dec(void)
++{
++	__this_cpu_dec(softnet_data.xmit.recursion);
++}
+ #else
+ static inline int dev_recursion_level(void)
+ {
+ 	return current->net_xmit.recursion;
+ }
  
- 			switch (msg->type) {
-@@ -474,7 +479,7 @@ static void ems_usb_read_bulk_callback(s
- 			start += CPC_MSG_HEADER_LEN + msg->length;
- 			msg_count--;
++static inline bool dev_xmit_recursion(void)
++{
++	return unlikely(current->net_xmit.recursion > XMIT_RECURSION_LIMIT);
++}
++
++static inline void dev_xmit_recursion_inc(void)
++{
++	current->net_xmit.recursion++;
++}
++
++static inline void dev_xmit_recursion_dec(void)
++{
++	current->net_xmit.recursion--;
++}
+ #endif
  
--			if (start > urb->transfer_buffer_length) {
-+			if (start > urb->actual_length) {
- 				netdev_err(netdev, "format error\n");
- 				break;
- 			}
+ void __netif_schedule(struct Qdisc *q);
+diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
+index 399592405c72a..dfdb4dba5be8f 100644
+--- a/include/net/ip6_tunnel.h
++++ b/include/net/ip6_tunnel.h
+@@ -156,6 +156,16 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
+ {
+ 	int pkt_len, err;
+ 
++	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
++		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
++				     dev->name);
++		DEV_STATS_INC(dev, tx_errors);
++		kfree_skb(skb);
++		return;
++	}
++
++	dev_xmit_recursion_inc();
++
+ 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
+ 	pkt_len = skb->len - skb_inner_network_offset(skb);
+ 	err = ip6_local_out(dev_net(skb_dst(skb)->dev), sk, skb);
+@@ -165,6 +175,8 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
+ 			pkt_len = -1;
+ 		iptunnel_xmit_stats(dev, pkt_len);
+ 	}
++
++	dev_xmit_recursion_dec();
+ }
+ #endif
+ #endif
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 1f92cc7fdbd21..0a5556ef16729 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -24,6 +24,13 @@
+ #include <net/ip6_route.h>
+ #endif
+ 
++/* Recursion limit for tunnel xmit to detect routing loops.
++ * Unlike XMIT_RECURSION_LIMIT (8) used in the no-qdisc path, tunnel
++ * recursion involves route lookups and full IP output, consuming much
++ * more stack per level, so a lower limit is needed.
++ */
++#define IP_TUNNEL_RECURSION_LIMIT	4
++
+ /* Keep error state on tunnel for 30 sec */
+ #define IPTUNNEL_ERR_TIMEO	(30*HZ)
+ 
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 764e0097ccf22..e0603dcb6aa12 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -162,41 +162,6 @@ static inline void napi_assert_will_not_race(const struct napi_struct *napi)
+ 
+ void kick_defer_list_purge(struct softnet_data *sd, unsigned int cpu);
+ 
+-#define XMIT_RECURSION_LIMIT	8
+-
+-#ifndef CONFIG_PREEMPT_RT
+-static inline bool dev_xmit_recursion(void)
+-{
+-	return unlikely(__this_cpu_read(softnet_data.xmit.recursion) >
+-			XMIT_RECURSION_LIMIT);
+-}
+-
+-static inline void dev_xmit_recursion_inc(void)
+-{
+-	__this_cpu_inc(softnet_data.xmit.recursion);
+-}
+-
+-static inline void dev_xmit_recursion_dec(void)
+-{
+-	__this_cpu_dec(softnet_data.xmit.recursion);
+-}
+-#else
+-static inline bool dev_xmit_recursion(void)
+-{
+-	return unlikely(current->net_xmit.recursion > XMIT_RECURSION_LIMIT);
+-}
+-
+-static inline void dev_xmit_recursion_inc(void)
+-{
+-	current->net_xmit.recursion++;
+-}
+-
+-static inline void dev_xmit_recursion_dec(void)
+-{
+-	current->net_xmit.recursion--;
+-}
+-#endif
+-
+ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 			    struct kernel_hwtstamp_config *cfg,
+ 			    struct netlink_ext_ack *extack);
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index 8392d304a72eb..53d02602c17a3 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -57,6 +57,17 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
+ 	struct iphdr *iph;
+ 	int err;
+ 
++	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
++		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
++				     dev->name);
++		DEV_STATS_INC(dev, tx_errors);
++		ip_rt_put(rt);
++		kfree_skb(skb);
++		return;
++	}
++
++	dev_xmit_recursion_inc();
++
+ 	skb_scrub_packet(skb, xnet);
+ 
+ 	skb_clear_hash_if_not_l4(skb);
+@@ -86,6 +97,8 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
+ 			pkt_len = 0;
+ 		iptunnel_xmit_stats(dev, pkt_len);
+ 	}
++
++	dev_xmit_recursion_dec();
+ }
+ EXPORT_SYMBOL_GPL(iptunnel_xmit);
+ 
+-- 
+2.51.0
+
 
 
 
