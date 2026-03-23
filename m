@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IXkOixHwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:08 +0100
+	id YAVRJoFqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-229722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5331C2F3901
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DAB2F82DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E3503083351
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 804DC31403A0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9DE3ACA68;
-	Mon, 23 Mar 2026 13:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B563BC669;
+	Mon, 23 Mar 2026 16:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkXjJuMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtrbiNkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DE93A6B88;
-	Mon, 23 Mar 2026 13:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202423BE170;
+	Mon, 23 Mar 2026 16:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273934; cv=none; b=s31V9PPmkf7FUuMnzfZgrdEqxZA4c99pwWkXiSboatdeOSmh0YqFChwD5XqoQnZBKLHDiMIW55aLKVvCwuaWP4d2g6QCp5BzGkXlUtxM+vixZBpzo/L9k9vulwz4d7bEJHqR3nC5W8Ec9bBLnTAN9s3DYxace9oC1KWPP7xfNyM=
+	t=1774282691; cv=none; b=bj5Wc82RWSLhJOmUDqEHHejWj2lFymeGlTqXh533VbT3h8DWuER7tQHfYt9G8WB7XUxHHVwagxa1PSl7QIkdlZ4M4KmHpri6FgwFnV7ZuJBEh//Hv+jAm3KQ/lijpSABXcABgnU0BJ6LsP2ZjTYvcRdg16HSF4eFqjvAn9gBcFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273934; c=relaxed/simple;
-	bh=IqNnerE6aYWui+rmuojlBpnGPdqWIyiv92jUOTeI/+k=;
+	s=arc-20240116; t=1774282691; c=relaxed/simple;
+	bh=PNaaFkieZRlpP9RdlBbTh8OwqK+TF/34u6MHfZpkhu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlfg2E288+EXyCIhIkB6BQysOB98LeOy9NUYhD41KKnNlQOnyz3+Ig48eu6R6PHpBnWUN0rQGqc48amCbER0tpWCJMdGA1t/UkRksaGXfY8K3ZqeymE7II/oWR15uBEoeYaOUEIVhSgE4oVSVi1/pu2Z1EjqNwGXTzgNGLbsK0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkXjJuMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4876DC4CEF7;
-	Mon, 23 Mar 2026 13:52:13 +0000 (UTC)
+	 MIME-Version; b=UlSN68KhyLRGHwVTSWxMTQ3PC/aarQoPKGkWR3jhyjA1RbTiYx5Lsk+kk7k2rWGAOHne8Qz9p31sgd4xKAujiB29ScKBQQ6kX+s3znKuyowr1zL4gFrytUFmPQupD+SwjAzqFCn9fSsJZNfH2IVeiBMzRER1Go1ayDk37qLi/AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtrbiNkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6C0C4CEF7;
+	Mon, 23 Mar 2026 16:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273933;
-	bh=IqNnerE6aYWui+rmuojlBpnGPdqWIyiv92jUOTeI/+k=;
+	s=korg; t=1774282690;
+	bh=PNaaFkieZRlpP9RdlBbTh8OwqK+TF/34u6MHfZpkhu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gkXjJuMeUWyzpEWPbh1Lgbo4PnLOkOseZjulsfQ7p690kbo82l6angAAUYJ9zZ00D
-	 CWbHC2f/pNV6r1PF7tce407KgW3n9enph5cQ6iianWvdYIa/9RN3JiwPCFxwteeq8h
-	 i8g69N2G7UqHGM1zgfqtMUhQnnuK0Yv2lju2aCbs=
+	b=RtrbiNknDBE6E1V2+6M2jwi7teyTL5CTX8X6xbvDFyvs+fMDwNcpfeGSCjh/1Iz1b
+	 jcrhb4J+ju0M1BiZFAOQn39KwBwvTCmU9Naw3GI0LDPLw1VBajihj+wehsn5kcFF41
+	 shzneQL2x4gfBADLi4vGlCMjSWh3ONoI61hoh2tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francis Brosseau <francis@malagauche.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.19 055/220] io_uring/poll: fix multishot recv missing EOF on wakeup race
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 250/481] drm/amd: Set num IP blocks to 0 if discovery fails
 Date: Mon, 23 Mar 2026 14:43:52 +0100
-Message-ID: <20260323134506.324310380@linuxfoundation.org>
+Message-ID: <20260323134531.245802472@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228036-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229722-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,79 +87,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kernel.dk:email]
-X-Rspamd-Queue-Id: 5331C2F3901
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 78DAB2F82DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit a68ed2df72131447d131531a08fe4dfcf4fa4653 upstream.
+commit 3646ff28780b4c52c5b5081443199e7a430110e5 upstream.
 
-When a socket send and shutdown() happen back-to-back, both fire
-wake-ups before the receiver's task_work has a chance to run. The first
-wake gets poll ownership (poll_refs=1), and the second bumps it to 2.
-When io_poll_check_events() runs, it calls io_poll_issue() which does a
-recv that reads the data and returns IOU_RETRY. The loop then drains all
-accumulated refs (atomic_sub_return(2) -> 0) and exits, even though only
-the first event was consumed. Since the shutdown is a persistent state
-change, no further wakeups will happen, and the multishot recv can hang
-forever.
+If discovery has failed for any reason (such as no support for a block)
+then there is no need to unwind all the IP blocks in fini. In this
+condition there can actually be failures during the unwind too.
 
-Check specifically for HUP in the poll loop, and ensure that another
-loop is done to check for status if more than a single poll activation
-is pending. This ensures we don't lose the shutdown event.
+Reset num_ip_blocks to zero during failure path and skip the unnecessary
+cleanup path.
 
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fae5984296b981c8cc3acca35b701c1f332a6cd8)
 Cc: stable@vger.kernel.org
-Fixes: dbc2564cfe0f ("io_uring: let fast poll support multishot")
-Reported-by: Francis Brosseau <francis@malagauche.com>
-Link: https://github.com/axboe/liburing/issues/1549
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/poll.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    4 +++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c    |    2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -272,6 +272,7 @@ static int io_poll_check_events(struct i
- 				atomic_andnot(IO_POLL_RETRY_FLAG, &req->poll_refs);
- 				v &= ~IO_POLL_RETRY_FLAG;
- 			}
-+			v &= IO_POLL_REF_MASK;
- 		}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2182,8 +2182,10 @@ static int amdgpu_device_ip_early_init(s
+ 		break;
+ 	default:
+ 		r = amdgpu_discovery_set_ip_blocks(adev);
+-		if (r)
++		if (r) {
++			adev->num_ip_blocks = 0;
+ 			return r;
++		}
+ 		break;
+ 	}
  
- 		/* the mask was stashed in __io_poll_execute */
-@@ -304,8 +305,13 @@ static int io_poll_check_events(struct i
- 				return IOU_POLL_REMOVE_POLL_USE_RES;
- 			}
- 		} else {
--			int ret = io_poll_issue(req, tw);
-+			int ret;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -79,7 +79,7 @@ void amdgpu_driver_unload_kms(struct drm
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
  
-+			/* multiple refs and HUP, ensure we loop once more */
-+			if ((req->cqe.res & (POLLHUP | POLLRDHUP)) && v != 1)
-+				v--;
-+
-+			ret = io_poll_issue(req, tw);
- 			if (ret == IOU_COMPLETE)
- 				return IOU_POLL_REMOVE_POLL_USE_RES;
- 			else if (ret == IOU_REQUEUE)
-@@ -321,7 +327,6 @@ static int io_poll_check_events(struct i
- 		 * Release all references, retry if someone tried to restart
- 		 * task_work while we were executing it.
- 		 */
--		v &= IO_POLL_REF_MASK;
- 	} while (atomic_sub_return(v, &req->poll_refs) & IO_POLL_REF_MASK);
+-	if (adev == NULL)
++	if (adev == NULL || !adev->num_ip_blocks)
+ 		return;
  
- 	io_napi_add(req);
+ 	amdgpu_unregister_gpu_instance(adev);
 
 
 
