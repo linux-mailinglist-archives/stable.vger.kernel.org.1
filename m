@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGMeC19GwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:43 +0100
+	id MCHjGzBswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D1A2F36BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97612F8726
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FD82300952F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95FBA31A740B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C8D3AD517;
-	Mon, 23 Mar 2026 13:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7A53BF687;
+	Mon, 23 Mar 2026 16:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBYmIkto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uH3M+Dch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB94B3AB295;
-	Mon, 23 Mar 2026 13:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DCE3BF67A;
+	Mon, 23 Mar 2026 16:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273824; cv=none; b=GQiKDIwI0OgYi+2IImhfbwE2MKYxbrmI2O3p9WKEvLeZ68FPkUvpLs1Eg87vKIKM2zMprmpliRNvsXORG+BTURWd/VBTI8DNdegaQKj+S0BQhqak8iD4AtNVzDJrd/z8ekCVYiqrPVFyPMdr+ZV2Qw0tQpMUUSh4Z4KDp4IJKwg=
+	t=1774282599; cv=none; b=MFGyn3Hu8EiHIRGfuslyP+Y0S5apdHuTvqywIRqrKEtx08zDe8Fb1nNKLCkR6Peov88eED9+eapxO4NKE4MceLcaYvFbYtBPC5m55/fGtmWxZxbA4sSUgIiBRlMm58rT6QMeY1GmWGdQcmwMjh1klEQ/gOGTdkutKKqMVuyW5sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273824; c=relaxed/simple;
-	bh=J+MvKV9XnyfK9+SoBvG005iXbjfl4FPb2pRTZs7V+BY=;
+	s=arc-20240116; t=1774282599; c=relaxed/simple;
+	bh=CPoChzPPZwHz5rpdkfFoRYLLfFk/BF529BFnXzY7kuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShWlyv6/7+Ht4l8YiVhtO0tpvqtr9Fssj+h9Edq2gNF72pELN4thVatXOyvNutgzfjD/QYLWA9Pj534gKOAN3t+/9tOsc6thei9nRDGSOjSBMQpHOFAC1tliMY6TOtoDPF78klNjQiYUGtiiGE4yf3ueo24yMFhqnMceCNxrNlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBYmIkto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29796C4CEF7;
-	Mon, 23 Mar 2026 13:50:23 +0000 (UTC)
+	 MIME-Version; b=iu7K1DPSYZIpMnABFmk2gVnyCSViZfmAmKWGTYHZ9A4bDP0lMXGk+akhBVpr1rfSTgmtgcq7rewoCmBVDml2feKiNx/n3glTueIHcHh8EhGjGoEiIGUGFyPnG6egeBSCu+haz8Ae8pYQoT2jPw+xLU45+1vrY0UpnTCxp2/5wLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uH3M+Dch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35056C2BCB0;
+	Mon, 23 Mar 2026 16:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273824;
-	bh=J+MvKV9XnyfK9+SoBvG005iXbjfl4FPb2pRTZs7V+BY=;
+	s=korg; t=1774282598;
+	bh=CPoChzPPZwHz5rpdkfFoRYLLfFk/BF529BFnXzY7kuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vBYmIktoKi3wPWxFYFR7hQq29FnbmnMb7pJgwcQ8Q356xG68QaGN8mIhIPLWls5/B
-	 wgVMR5tFUL1UFWszHGFUhJ2XWW8KsPBlvSd+DlR5A4/AuGZLJZspv/ancEIbU42Cn+
-	 ZFBrA+1h8rRJC/PZH6R6XYqLRwAGWN5aXA+gucwE=
+	b=uH3M+DchLQU+m4/mTfgh6dR/tj3rxV13Oxz0slwEg1No/UAdWeqy139M9MMJ5pq6F
+	 lqGIhapfCNnte3UTmeaKlmK8y16NzauZeS9OzAQODczH98WlzeRM8CLo5toAeG87oB
+	 1mPHkNMDqfctiyN1QVvl57JCnQ3hRMGCrhAFvOt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AlanSong-oc <AlanSong-oc@zhaoxin.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.19 020/220] crypto: padlock-sha - Disable for Zhaoxin processor
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Subject: [PATCH 6.1 215/481] usb: class: cdc-wdm: fix reordering issue in read code path
 Date: Mon, 23 Mar 2026 14:43:17 +0100
-Message-ID: <20260323134505.217018421@linuxfoundation.org>
+Message-ID: <20260323134530.397039556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229688-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.com,gmail.com];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,zhaoxin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-hardware.org:url]
-X-Rspamd-Queue-Id: 14D1A2F36BB
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D97612F8726
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit ebba09f198078b7a2565004104ef762d1148e7f0 upstream.
+commit 8df672bfe3ec2268c2636584202755898e547173 upstream.
 
-For Zhaoxin processors, the XSHA1 instruction requires the total memory
-allocated at %rdi register must be 32 bytes, while the XSHA1 and
-XSHA256 instruction doesn't perform any operation when %ecx is zero.
+Quoting the bug report:
 
-Due to these requirements, the current padlock-sha driver does not work
-correctly with Zhaoxin processors. It cannot pass the self-tests and
-therefore does not activate the driver on Zhaoxin processors. This issue
-has been reported in Debian [1]. The self-tests fail with the
-following messages [2]:
+Due to compiler optimization or CPU out-of-order execution, the
+desc->length update can be reordered before the memmove. If this
+happens, wdm_read() can see the new length and call copy_to_user() on
+uninitialized memory. This also violates LKMM data race rules [1].
 
-alg: shash: sha1-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
-alg: self-tests for sha1 using sha1-padlock-nano failed (rc=-22)
+Fix it by using WRITE_ONCE and memory barriers.
 
-alg: shash: sha256-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
-alg: self-tests for sha256 using sha256-padlock-nano failed (rc=-22)
-
-Disable the padlock-sha driver on Zhaoxin processors with the CPU family
-0x07 and newer. Following the suggestion in [3], support for PHE will be
-added to lib/crypto/ instead.
-
-[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1113996
-[2] https://linux-hardware.org/?probe=271fabb7a4&log=dmesg
-[3] https://lore.kernel.org/linux-crypto/aUI4CGp6kK7mxgEr@gondor.apana.org.au/
-
-Fixes: 63dc06cd12f9 ("crypto: padlock-sha - Use API partial block handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-Link: https://lore.kernel.org/r/20260313080150.9393-2-AlanSong-oc@zhaoxin.com
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Closes: https://lore.kernel.org/linux-usb/CALbr=LbrUZn_cfp7CfR-7Z5wDTHF96qeuM=3fO2m-q4cDrnC4A@mail.gmail.com/
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260304130116.1721682-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/padlock-sha.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/class/cdc-wdm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/padlock-sha.c
-+++ b/drivers/crypto/padlock-sha.c
-@@ -332,6 +332,13 @@ static int __init padlock_init(void)
- 	if (!x86_match_cpu(padlock_sha_ids) || !boot_cpu_has(X86_FEATURE_PHE_EN))
- 		return -ENODEV;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -225,7 +225,8 @@ static void wdm_in_callback(struct urb *
+ 		/* we may already be in overflow */
+ 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
+ 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
+-			desc->length += length;
++			smp_wmb(); /* against wdm_read() */
++			WRITE_ONCE(desc->length, desc->length + length);
+ 		}
+ 	}
+ skip_error:
+@@ -533,6 +534,7 @@ static ssize_t wdm_read
+ 		return -ERESTARTSYS;
  
-+	/*
-+	 * Skip family 0x07 and newer used by Zhaoxin processors,
-+	 * as the driver's self-tests fail on these CPUs.
-+	 */
-+	if (c->x86 >= 0x07)
-+		return -ENODEV;
-+
- 	/* Register the newly added algorithm module if on *
- 	* VIA Nano processor, or else just do as before */
- 	if (c->x86_model < 0x0f) {
+ 	cntr = READ_ONCE(desc->length);
++	smp_rmb(); /* against wdm_in_callback() */
+ 	if (cntr == 0) {
+ 		desc->read = 0;
+ retry:
 
 
 
