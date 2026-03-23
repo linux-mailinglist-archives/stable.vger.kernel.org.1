@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EXxINlhwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:52:57 +0100
+	id IA0dOHJqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090C82F70CE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BE42F829B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4438D355325D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AE5D331A5BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E034C3B47D1;
-	Mon, 23 Mar 2026 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605F726A08F;
+	Mon, 23 Mar 2026 14:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2sO09ms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwWvwd6a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B0D3B27C5;
-	Mon, 23 Mar 2026 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B911E2614;
+	Mon, 23 Mar 2026 14:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279174; cv=none; b=tUgaYy/bX61/3jDNfc38M8/D0Acht4ZmMBfDSnq4dHClqGlXcRm5faYzcVFAM1R504rFHE9kDxquzzR4lrJ7Se4qWDUnGE6JZYbDxmcQfoqah23ItUjThcTtQya54i/WEAMQtgArkt6aj/GaBrPqDzgNZS8FLiqGnMVP7k7z7o4=
+	t=1774277416; cv=none; b=FrG7XCpeY/ex1g/xKnIs5IFcqCCXwpCnDgKSbhSS38AG5EUkrHdg6SQdjTdy2WYyVHtyj0baa2qtEABFDO12jm/6U9xoxTinFe1V28V0aoPH8H4uMzUJ6feAdy3gXjkzDZ2yq6EiVFz2FjJjSK/41xNkSulRPhkfsqbsbkTLq/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279174; c=relaxed/simple;
-	bh=UaYeXRkqJatb68Xfwt6fbOADLyTf8nCUKpOzrsS0vjI=;
+	s=arc-20240116; t=1774277416; c=relaxed/simple;
+	bh=jRMPO2a56K6eWq288iJRj5jYu2lXQln3aB7M9Y/lwSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOsS4SgVQ5qmVYaMdziGHAAzUbl6SDtKpOFhzOMHYrawRFnQz7HJpzLg8tb7PF9ObFSdOf+QeGoEw9r9+W9VD8VevEPb8ctYOjHgRUrlW8591KRUTwaySNvipOzttQeTNwf9Sk7sFsAIh9Ye32uImD95nrVpefYfEp78gynUL6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2sO09ms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBEEC4CEF7;
-	Mon, 23 Mar 2026 15:19:33 +0000 (UTC)
+	 MIME-Version; b=H288Wkdp+kcdgqhSaRouKe23oMXqxMt1HR0sBiJRrvNYS6t0V/UbF/RHl7EJIWPRZ7ehm0Z41BbYKu91M2KlCIsiHPXRgBhTS8LkxjklDRriMuUdQyg3u3Okp0k7uwa4s0ifaNS3OJzEEf0f3oTPh7kK+UTgxYAqKwGmnCNZKZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwWvwd6a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B7BC4CEF7;
+	Mon, 23 Mar 2026 14:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279174;
-	bh=UaYeXRkqJatb68Xfwt6fbOADLyTf8nCUKpOzrsS0vjI=;
+	s=korg; t=1774277415;
+	bh=jRMPO2a56K6eWq288iJRj5jYu2lXQln3aB7M9Y/lwSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2sO09msYfvRlgyXUztV0mtuvJ+Kws4T13D8HagdcMEQVc0FvHsNds0EqT091a7DB
-	 OKfKeAhwo47icQCNTCEBX8mOapmTOAJgXl2w/vDEYJwk9d9y92X9TLTI/cjOsiD3lF
-	 37cAbbnOLg9kux8E9krMHXsT7X+DRxW1hTSULtE8=
+	b=EwWvwd6aKA0/dAYU7kSpPs0Cm6mJMYA2vgGODQYbjVyI/7vk0GU9cqP9rJ3tbrei+
+	 j0nHXOx3JURYlVKnZDwrZS+NcGa6sLqIiU0++QYHJMzHb0Z9n9RYpi0pNyCz9bU5xP
+	 QPBpsrNU/C8SWwl/PL1VMeOX9zLft0hsBu3x5KK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	syzbot+14b6d57fb728e27ce23c@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 463/567] kprobes: Remove unneeded goto
+Subject: [PATCH 6.12 387/460] Bluetooth: L2CAP: Fix use-after-free in l2cap_unregister_user
 Date: Mon, 23 Mar 2026 14:46:23 +0100
-Message-ID: <20260323134545.439032080@linuxfoundation.org>
+Message-ID: <20260323134536.079898420@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +65,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229415-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228892-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 090C82F70CE
+	TAGGED_RCPT(0.00)[stable,14b6d57fb728e27ce23c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 48BE42F829B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-[ Upstream commit 5e5b8b49335971b68b54afeb0e7ded004945af07 ]
+[ Upstream commit 752a6c9596dd25efd6978a73ff21f3b592668f4a ]
 
-Remove unneeded gotos. Since the labels referred by these gotos have
-only one reference for each, we can replace those gotos with the
-referred code.
+After commit ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in
+hci_chan_del"), l2cap_conn_del() uses conn->lock to protect access to
+conn->users. However, l2cap_register_user() and l2cap_unregister_user()
+don't use conn->lock, creating a race condition where these functions can
+access conn->users and conn->hchan concurrently with l2cap_conn_del().
 
-Link: https://lore.kernel.org/all/173371211203.480397.13988907319659165160.stgit@devnote2/
+This can lead to use-after-free and list corruption bugs, as reported
+by syzbot.
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: 5ef268cb7a0a ("kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()")
+Fix this by changing l2cap_register_user() and l2cap_unregister_user()
+to use conn->lock instead of hci_dev_lock(), ensuring consistent locking
+for the l2cap_conn structure.
+
+Reported-by: syzbot+14b6d57fb728e27ce23c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=14b6d57fb728e27ce23c
+Fixes: ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in hci_chan_del")
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c |   45 +++++++++++++++++++++------------------------
- 1 file changed, 21 insertions(+), 24 deletions(-)
+ net/bluetooth/l2cap_core.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1083,20 +1083,18 @@ static int __arm_kprobe_ftrace(struct kp
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 560a17d36f7fa..7c131e4640b75 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -1686,17 +1686,15 @@ static void l2cap_info_timeout(struct work_struct *work)
  
- 	if (*cnt == 0) {
- 		ret = register_ftrace_function(ops);
--		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret))
--			goto err_ftrace;
-+		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
-+			/*
-+			 * At this point, sinec ops is not registered, we should be sefe from
-+			 * registering empty filter.
-+			 */
-+			ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
-+			return ret;
-+		}
- 	}
- 
- 	(*cnt)++;
- 	return ret;
--
--err_ftrace:
--	/*
--	 * At this point, sinec ops is not registered, we should be sefe from
--	 * registering empty filter.
--	 */
--	ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
--	return ret;
- }
- 
- static int arm_kprobe_ftrace(struct kprobe *p)
-@@ -1457,7 +1455,7 @@ _kprobe_addr(kprobe_opcode_t *addr, cons
- 	     unsigned long offset, bool *on_func_entry)
+ int l2cap_register_user(struct l2cap_conn *conn, struct l2cap_user *user)
  {
- 	if ((symbol_name && addr) || (!symbol_name && !addr))
--		goto invalid;
-+		return ERR_PTR(-EINVAL);
+-	struct hci_dev *hdev = conn->hcon->hdev;
+ 	int ret;
  
- 	if (symbol_name) {
- 		/*
-@@ -1487,11 +1485,10 @@ _kprobe_addr(kprobe_opcode_t *addr, cons
- 	 * at the start of the function.
- 	 */
- 	addr = arch_adjust_kprobe_addr((unsigned long)addr, offset, on_func_entry);
--	if (addr)
--		return addr;
-+	if (!addr)
-+		return ERR_PTR(-EINVAL);
+ 	/* We need to check whether l2cap_conn is registered. If it is not, we
+-	 * must not register the l2cap_user. l2cap_conn_del() is unregisters
+-	 * l2cap_conn objects, but doesn't provide its own locking. Instead, it
+-	 * relies on the parent hci_conn object to be locked. This itself relies
+-	 * on the hci_dev object to be locked. So we must lock the hci device
+-	 * here, too. */
++	 * must not register the l2cap_user. l2cap_conn_del() unregisters
++	 * l2cap_conn objects under conn->lock, and we use the same lock here
++	 * to protect access to conn->users and conn->hchan.
++	 */
  
--invalid:
--	return ERR_PTR(-EINVAL);
-+	return addr;
+-	hci_dev_lock(hdev);
++	mutex_lock(&conn->lock);
+ 
+ 	if (!list_empty(&user->list)) {
+ 		ret = -EINVAL;
+@@ -1717,16 +1715,14 @@ int l2cap_register_user(struct l2cap_conn *conn, struct l2cap_user *user)
+ 	ret = 0;
+ 
+ out_unlock:
+-	hci_dev_unlock(hdev);
++	mutex_unlock(&conn->lock);
+ 	return ret;
  }
+ EXPORT_SYMBOL(l2cap_register_user);
  
- static kprobe_opcode_t *kprobe_addr(struct kprobe *p)
-@@ -1514,15 +1511,15 @@ static struct kprobe *__get_valid_kprobe
- 	if (unlikely(!ap))
- 		return NULL;
+ void l2cap_unregister_user(struct l2cap_conn *conn, struct l2cap_user *user)
+ {
+-	struct hci_dev *hdev = conn->hcon->hdev;
+-
+-	hci_dev_lock(hdev);
++	mutex_lock(&conn->lock);
  
--	if (p != ap) {
--		list_for_each_entry(list_p, &ap->list, list)
--			if (list_p == p)
--			/* kprobe p is a valid probe */
--				goto valid;
--		return NULL;
--	}
--valid:
--	return ap;
-+	if (p == ap)
-+		return ap;
-+
-+	list_for_each_entry(list_p, &ap->list, list)
-+		if (list_p == p)
-+		/* kprobe p is a valid probe */
-+			return ap;
-+
-+	return NULL;
+ 	if (list_empty(&user->list))
+ 		goto out_unlock;
+@@ -1735,7 +1731,7 @@ void l2cap_unregister_user(struct l2cap_conn *conn, struct l2cap_user *user)
+ 	user->remove(conn, user);
+ 
+ out_unlock:
+-	hci_dev_unlock(hdev);
++	mutex_unlock(&conn->lock);
  }
+ EXPORT_SYMBOL(l2cap_unregister_user);
  
- /*
+-- 
+2.51.0
+
 
 
 
