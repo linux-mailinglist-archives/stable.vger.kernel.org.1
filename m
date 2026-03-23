@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPgcC+ZUwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:42 +0100
+	id EBI7FoliwWnnSgQAu9opvQ
+	(envelope-from <stable+bounces-229387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937842F5846
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E2B2F71FF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08FB23102651
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 131A93053260
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A856241695;
-	Mon, 23 Mar 2026 14:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E3C3B9D8A;
+	Mon, 23 Mar 2026 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReekarNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcjbkqiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C793F23EAB2;
-	Mon, 23 Mar 2026 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8656D3B5846;
+	Mon, 23 Mar 2026 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277318; cv=none; b=Rv4vJXfmCj9XfJ1C7oq3qnUy0Ch6OP+/HIZdG05U3BW47kfaGDfja+uBn9anSlNlyzfgXiAwfPm6ZOgBiAuNigm8hjb7PZuaC8xJDZ0sbkRS0RR1cPuHVg2q2/G7w7ye5AIFthlOXIeqtEURnMwOmbMFcQiBZsvaUq0nfzOAx0o=
+	t=1774278955; cv=none; b=CjVK9OCOK3CkvsLXGG/OtMMcC/Dri0/LSk2ITdjoTFBsY5Dg4nmmFitpLXXABAiAVa3J4LTdVTmw9IIoSkrZ5c6nS1sPrwPqTBludJapQ5Hy1N4TwkWaZtRDyPO+xtmylJ5OlbKb5BjZTEB0e5ZZgzCJwQEvkvWXHBmIHDCYFiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277318; c=relaxed/simple;
-	bh=uOstY6/NXepb3Wi+We2dwtEYGu0UI2xxRuha0LiGDLU=;
+	s=arc-20240116; t=1774278955; c=relaxed/simple;
+	bh=VOPcoPHDYYU+PRsisjVTIKgkoh4zbiTeRwJE6KS1ooU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FBNwbBcOrbm5ZfyjVOWFprIR/bXTq8Rli1cgIsIyeXCRtinT3REHJXXud7B8tekdMNQuQIlbMa5mdj1R7ICpyCu2jWEyc4dZQV+mPDsmx40LUD+55+Po80MGReySkX58SMe9w22NNm83/OxNhL5rK9f5WRlbOW3nBWodLuoZO4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReekarNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5688DC4CEF7;
-	Mon, 23 Mar 2026 14:48:38 +0000 (UTC)
+	 MIME-Version; b=jZkRO29Qh/zjT+3kP4ZIYTqVud7VwhPc+lP5i/j0B61wRvVQUEyqRyUlxsPQpNp9y2c0Zkc7+YtWpJZV4QfAD1ssYqpiF+NDJ637rEVkTr52ndz/B35gYKecpG4ZSYb6M/LvMRGl4IC4r0snsCihb9rRBzproYgGbCCEoLFzQh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcjbkqiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC88CC4CEF7;
+	Mon, 23 Mar 2026 15:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277318;
-	bh=uOstY6/NXepb3Wi+We2dwtEYGu0UI2xxRuha0LiGDLU=;
+	s=korg; t=1774278955;
+	bh=VOPcoPHDYYU+PRsisjVTIKgkoh4zbiTeRwJE6KS1ooU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReekarNBwDO4VbpCyjxw2asIH22xE74PsAV/5XhfkL5XQkhFsQ+fxLry2vzgmVcn8
-	 /JFzsqEmG4iI8pBn5oybBd1MVUca6veADbMcwaZVD4stviKpgV+iUkWd4tVOTMZ2MQ
-	 HqQy+0ZWFabiiJtp4qsikBVt6jeHcjK5EVlwEHOw=
+	b=hcjbkqiYBvOrcoP9dKiigAyFTODdQmBzBdczCrLsmnS3YY4DknbnXJdj2MVpYUSaw
+	 eZOwNJ0yCbYzeDetQlXpa+txZm+EOfXutA5PZ+LXun978/aFHt489vQl/Xr84CHrrh
+	 Z8oQmyH6v6SjmvDizX0oLnL2Y6/BcUfPNpVJXNkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gurpreet Shergill <giki.shergill@proton.me>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 396/460] nf_tables: nft_dynset: fix possible stateful expression memleak in error path
-Date: Mon, 23 Mar 2026 14:46:32 +0100
-Message-ID: <20260323134536.298471193@linuxfoundation.org>
+Subject: [PATCH 6.6 473/567] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
+Date: Mon, 23 Mar 2026 14:46:33 +0100
+Message-ID: <20260323134545.693156233@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +65,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228856-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229387-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 937842F5846
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,windriver.com:email]
+X-Rspamd-Queue-Id: 76E2B2F71FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit 0548a13b5a145b16e4da0628b5936baf35f51b43 ]
+[ Upstream commit 718d0766ce4c7634ce62fa78b526ea7263487edd ]
 
-If cloning the second stateful expression in the element via GFP_ATOMIC
-fails, then the first stateful expression remains in place without being
-released.
+On certain platforms, such as AMD Versal boards, the tx/rx queue pointer
+registers are cleared after suspend, and the rx queue pointer register
+is also disabled during suspend if WOL is enabled. Previously, we assumed
+that these registers would be restored by macb_mac_link_up(). However,
+in commit bf9cf80cab81, macb_init_buffers() was moved from
+macb_mac_link_up() to macb_open(). Therefore, we should call
+macb_init_buffers() to reinitialize the tx/rx queue pointer registers
+during resume.
 
-   unreferenced object (percpu) 0x607b97e9cab8 (size 16):
-     comm "softirq", pid 0, jiffies 4294931867
-     hex dump (first 16 bytes on cpu 3):
-       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-     backtrace (crc 0):
-       pcpu_alloc_noprof+0x453/0xd80
-       nft_counter_clone+0x9c/0x190 [nf_tables]
-       nft_expr_clone+0x8f/0x1b0 [nf_tables]
-       nft_dynset_new+0x2cb/0x5f0 [nf_tables]
-       nft_rhash_update+0x236/0x11c0 [nf_tables]
-       nft_dynset_eval+0x11f/0x670 [nf_tables]
-       nft_do_chain+0x253/0x1700 [nf_tables]
-       nft_do_chain_ipv4+0x18d/0x270 [nf_tables]
-       nf_hook_slow+0xaa/0x1e0
-       ip_local_deliver+0x209/0x330
+Due to the reset of these two registers, we also need to adjust the
+tx/rx rings accordingly. The tx ring will be handled by
+gem_shuffle_tx_rings() in macb_mac_link_up(), so we only need to
+initialize the rx ring here.
 
-Fixes: 563125a73ac3 ("netfilter: nftables: generalize set extension to support for several expressions")
-Reported-by: Gurpreet Shergill <giki.shergill@proton.me>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
+Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Tested-by: Quanyang Wang <quanyang.wang@windriver.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260312-macb-versal-v1-2-467647173fa4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  2 ++
- net/netfilter/nf_tables_api.c     |  4 ++--
- net/netfilter/nft_dynset.c        | 10 +++++++++-
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 79296ed87b9b3..36964b86d336d 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -873,6 +873,8 @@ struct nft_elem_priv *nft_set_elem_init(const struct nft_set *set,
- 					u64 timeout, u64 expiration, gfp_t gfp);
- int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
- 			    struct nft_expr *expr_array[]);
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr);
- void nft_set_elem_destroy(const struct nft_set *set,
- 			  const struct nft_elem_priv *elem_priv,
- 			  bool destroy_expr);
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 268d00ffee0cb..0c12560e94f3b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6637,8 +6637,8 @@ static void __nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
- 	}
- }
- 
--static void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
--				      struct nft_set_elem_expr *elem_expr)
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr)
- {
- 	struct nft_expr *expr;
- 	u32 size;
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index e24493d9e7761..0b3c4f6a8decd 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -30,18 +30,26 @@ static int nft_dynset_expr_setup(const struct nft_dynset *priv,
- 				 const struct nft_set_ext *ext)
- {
- 	struct nft_set_elem_expr *elem_expr = nft_set_ext_expr(ext);
-+	struct nft_ctx ctx = {
-+		.net	= read_pnet(&priv->set->net),
-+		.family	= priv->set->table->family,
-+	};
- 	struct nft_expr *expr;
- 	int i;
- 
- 	for (i = 0; i < priv->num_exprs; i++) {
- 		expr = nft_setelem_expr_at(elem_expr, elem_expr->size);
- 		if (nft_expr_clone(expr, priv->expr_array[i], GFP_ATOMIC) < 0)
--			return -1;
-+			goto err_out;
- 
- 		elem_expr->size += priv->expr_array[i]->ops->size;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5500,8 +5500,18 @@ static int __maybe_unused macb_resume(st
+ 		rtnl_unlock();
  	}
  
- 	return 0;
-+err_out:
-+	nft_set_elem_expr_destroy(&ctx, elem_expr);
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++		macb_init_buffers(bp);
 +
-+	return -1;
- }
- 
- static struct nft_elem_priv *nft_dynset_new(struct nft_set *set,
--- 
-2.51.0
-
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues;
+ 	     ++q, ++queue) {
++		if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
++			if (macb_is_gem(bp))
++				gem_init_rx_ring(queue);
++			else
++				macb_init_rx_ring(queue);
++		}
++
+ 		napi_enable(&queue->napi_rx);
+ 		napi_enable(&queue->napi_tx);
+ 	}
 
 
 
