@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEN0KI5PwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:54 +0100
+	id QHGSFotWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147002F4C79
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5E82F5B7F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3498319FF33
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EBB873035098
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5FF3A0B0B;
-	Mon, 23 Mar 2026 14:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46092367DF;
+	Mon, 23 Mar 2026 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wefSUGaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOkxiBtY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F93B175A80;
-	Mon, 23 Mar 2026 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DFC23BD1D;
+	Mon, 23 Mar 2026 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275423; cv=none; b=FiwOkyNg9L0ov0azUlvsQXe5BIskFAFMP3MnqmxkkJV7Folx1h8XugfwR9L7W4sdj6it4UlueEdo2/3MLiPKsfrWqEK9E2avDBY7KuELIQhS461tacnrtTjbe+k7pvNsrwArmBwM+Qq6ltFKcAtr6ecgF8ykKy1gCA2jmDoVPM0=
+	t=1774278003; cv=none; b=ehIqs/EzAOS0j0U6fO/zYfvlQHn0U1wXNS+lcM3GN2qk3hEsD7UzN/ZBTNF/wvzF0g6LA5nxiiEceJSN8OJoOMAWpYJmYXRZ5Othv3MfvdAzw7yxG3IHV/SowT9a7PNxuuhjYPC53x2TDkHEKgO3xY+a9OyOKmXHUQ8qVkUruWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275423; c=relaxed/simple;
-	bh=4q8GA5TR+eOvhqcXLHyR3KUD47yBkYRKcoJSCpDsVu0=;
+	s=arc-20240116; t=1774278003; c=relaxed/simple;
+	bh=NL8VYG7z3+OB7OvTH7qRHq5VnaISNiTXLO/L17EIFkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEpjEFYBNqCFkzO7UwRi9Qv9OKODjSS2O7QiwbiApdeaxf69Sg70yjkk4UGw/LKnkV67eez4Y8siFYwRJFlqhBM+FfCFQiLsX1nQvzJQeMQ6lQfRzt/MReA03DCGppFgS1wgHZ6uQfVS9YWKZMdaBrM3cYgY4Cjys336FgyoFA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wefSUGaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723FBC4CEF7;
-	Mon, 23 Mar 2026 14:17:02 +0000 (UTC)
+	 MIME-Version; b=OkEk9QaChTgRui7+i8VtRHCItdhIcBxAYPj8aesUZhMql7HwvuJBBu1uKvGxNiCgyGJqm10WZg8brCAJZR/2xXMNLB+LH9BeRojY2wXETLOoodlOaMDvNc2hKfhjUMuRcfCWbK9s4oo95EJolrNlNAvkbJ7lZe3faoMsF746rg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOkxiBtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBA2C4CEF7;
+	Mon, 23 Mar 2026 15:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275422;
-	bh=4q8GA5TR+eOvhqcXLHyR3KUD47yBkYRKcoJSCpDsVu0=;
+	s=korg; t=1774278003;
+	bh=NL8VYG7z3+OB7OvTH7qRHq5VnaISNiTXLO/L17EIFkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wefSUGaFHzobctUKlbZtZ+Qtfe27v+duJAQ0ifa+3iSCO5cSigxKwpUxaCoVdAlsy
-	 r/c6/UwIxmn6LTYfhivpSSv7scL5fZZd4vTVrlA5eZNrpkLrXQlCNJ8Qqlx+3Xhn5b
-	 yblUy4+bt23Ui6VGacsVTHFrqHAjPIObNzSGMWi8=
+	b=mOkxiBtYeGzEyZSBciLwI3kw7piu4QIAFIPPVCKp51S0YccHxhR5y1qEchRIzmsjJ
+	 4fFvri+uqvQ+zLbm3kh/AD2XJqSMrk7DqBOPcom+Q7+JDj8R6QtFtrXj+TpRE/EXGp
+	 uHUneAbP0CQjwH8+IpJiXmy1OmYTIQ5FHxxpOMKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 092/460] net: usb: lan78xx: fix silent drop of packets with checksum errors
-Date: Mon, 23 Mar 2026 14:41:28 +0100
-Message-ID: <20260323134528.926485470@linuxfoundation.org>
+	Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 169/567] nfc: nci: free skb on nci_transceive early error paths
+Date: Mon, 23 Mar 2026 14:41:29 +0100
+Message-ID: <20260323134538.013744814@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228548-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229082-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,74 +90,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 147002F4C79
+X-Rspamd-Queue-Id: EE5E82F5B7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit e4f774a0cc955ce762aec91c66915a6e15087ab7 upstream.
+[ Upstream commit 7bd4b0c4779f978a6528c9b7937d2ca18e936e2c ]
 
-Do not drop packets with checksum errors at the USB driver level;
-pass them to the network stack.
+nci_transceive() takes ownership of the skb passed by the caller,
+but the -EPROTO, -EINVAL, and -EBUSY error paths return without
+freeing it.
 
-Previously, the driver dropped all packets where the 'Receive Error
-Detected' (RED) bit was set, regardless of the specific error type. This
-caused packets with only IP or TCP/UDP checksum errors to be dropped
-before reaching the kernel, preventing the network stack from accounting
-for them or performing software fallback.
+Due to issues clearing NCI_DATA_EXCHANGE fixed by subsequent changes
+the nci/nci_dev selftest hits the error path occasionally in NIPA,
+and kmemleak detects leaks:
 
-Add a mask for hard hardware errors to safely drop genuinely corrupt
-frames, while allowing checksum-errored frames to pass with their
-ip_summed field explicitly set to CHECKSUM_NONE.
+unreferenced object 0xff11000015ce6a40 (size 640):
+  comm "nci_dev", pid 3954, jiffies 4295441246
+  hex dump (first 32 bytes):
+    6b 6b 6b 6b 00 a4 00 0c 02 e1 03 6b 6b 6b 6b 6b  kkkk.......kkkkk
+    6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+  backtrace (crc 7c40cc2a):
+    kmem_cache_alloc_node_noprof+0x492/0x630
+    __alloc_skb+0x11e/0x5f0
+    alloc_skb_with_frags+0xc6/0x8f0
+    sock_alloc_send_pskb+0x326/0x3f0
+    nfc_alloc_send_skb+0x94/0x1d0
+    rawsock_sendmsg+0x162/0x4c0
+    do_syscall_64+0x117/0xfc0
 
-Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260305143429.530909-2-o.rempel@pengutronix.de
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260303162346.2071888-2-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c |    4 +++-
- drivers/net/usb/lan78xx.h |    3 +++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/nfc/nci/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -3537,6 +3537,7 @@ static void lan78xx_rx_csum_offload(stru
- 	 */
- 	if (!(dev->net->features & NETIF_F_RXCSUM) ||
- 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
-+	    unlikely(rx_cmd_a & RX_CMD_A_CSE_MASK_) ||
- 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
- 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
- 		skb->ip_summed = CHECKSUM_NONE;
-@@ -3609,7 +3610,8 @@ static int lan78xx_rx(struct lan78xx_net
- 			return 0;
- 		}
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 7a4742a092626..1f33da345bea6 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1024,18 +1024,23 @@ static int nci_transceive(struct nfc_dev *nfc_dev, struct nfc_target *target,
+ 	struct nci_conn_info *conn_info;
  
--		if (unlikely(rx_cmd_a & RX_CMD_A_RED_)) {
-+		if (unlikely(rx_cmd_a & RX_CMD_A_RED_) &&
-+		    (rx_cmd_a & RX_CMD_A_RX_HARD_ERRS_MASK_)) {
- 			netif_dbg(dev, rx_err, dev->net,
- 				  "Error rx_cmd_a=0x%08x", rx_cmd_a);
- 		} else {
---- a/drivers/net/usb/lan78xx.h
-+++ b/drivers/net/usb/lan78xx.h
-@@ -74,6 +74,9 @@
- #define RX_CMD_A_ICSM_			(0x00004000)
- #define RX_CMD_A_LEN_MASK_		(0x00003FFF)
+ 	conn_info = ndev->rf_conn_info;
+-	if (!conn_info)
++	if (!conn_info) {
++		kfree_skb(skb);
+ 		return -EPROTO;
++	}
  
-+#define RX_CMD_A_RX_HARD_ERRS_MASK_ \
-+	(RX_CMD_A_RX_ERRS_MASK_ & ~RX_CMD_A_CSE_MASK_)
-+
- /* Rx Command B */
- #define RX_CMD_B_CSUM_SHIFT_		(16)
- #define RX_CMD_B_CSUM_MASK_		(0xFFFF0000)
+ 	pr_debug("target_idx %d, len %d\n", target->idx, skb->len);
+ 
+ 	if (!ndev->target_active_prot) {
+ 		pr_err("unable to exchange data, no active target\n");
++		kfree_skb(skb);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags))
++	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags)) {
++		kfree_skb(skb);
+ 		return -EBUSY;
++	}
+ 
+ 	/* store cb and context to be used on receiving data */
+ 	conn_info->data_exchange_cb = cb;
+-- 
+2.51.0
+
 
 
 
