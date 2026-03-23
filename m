@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229933-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHyzOeVpwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:17 +0100
+	id 8GlCLOJ+wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229933-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:56:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645182F81C5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216902FAAC5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E057313C23E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 279883234AA8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0110023E33D;
-	Mon, 23 Mar 2026 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F44284881;
+	Mon, 23 Mar 2026 16:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQCWA1f7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXV8OQYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6BE242D9D;
-	Mon, 23 Mar 2026 14:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EF03B95F8;
+	Mon, 23 Mar 2026 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277355; cv=none; b=Wbr19kaaYo0CfuYkcN9SdRXxJH0ZdjAiz4jOvui2ld18jRCtWYTaaBFtDT5PtnHgSmxJNmZS1j0Oz7p61pGfzngIPwhnJUM1lnhCx4Dl77bb1jq3P3hT4pN+rNwOo9xUqNvxoVJ40zeNBarXg6tjiVH857yqUJ9dy0QBfvQe3gk=
+	t=1774283255; cv=none; b=IR+MbQJsedEfM7FQymq1OY1URqLTDpvOC4tpNsSPiqRQNMPTNki7+q/uLLPwa+RrTd+8Nf9WGp+pqVlerubGIuxqaZO/H0twze5oGKspDT/63q3T+uOrdXdX51/0pj1Ams7cWUJb3R/U2/hSIN8AzJ09zXmCfECureO/Zh4qleo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277355; c=relaxed/simple;
-	bh=Z/HE2h61CNGjyY4687FSitJ9MS37AhaoVQM0skkZLXs=;
+	s=arc-20240116; t=1774283255; c=relaxed/simple;
+	bh=+8NZUHmvnAb13urH2XJpTw7zK0MtWFxFD+6l6MoP2TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEFP4oVG/x/OU1efFkq0hJe9X9JsjYB5MZY8CDr5DbZlq78mq8OrYFWUrI9+kCM7BGfz1I4WOrO0BH+meCb14o5ZXqN8KBRFVHLI0UWqG7yghBZTSLN700LpJOOzxXHMqHHKuWs6pR7rf7lH+2IHz6yT1kKFsnuMyzBm3zwQkfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQCWA1f7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B75C4CEF7;
-	Mon, 23 Mar 2026 14:49:13 +0000 (UTC)
+	 MIME-Version; b=tyc+hR70MQtgvzyP+rfeAOzLBar7l4ncBFzWHh9mRgmv9s1rvlHkCi9imMtqy7JrzLpDn1WYg/i1YsjMJw5yydKBe3HRUfjWkA93/3czwY+rdVj9IiMFuorx9Ah5+ezFRR/y5sXKjXsloINTP7OYRELTGbHydfUsG6omZFvoWMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXV8OQYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D468C2BC9E;
+	Mon, 23 Mar 2026 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277354;
-	bh=Z/HE2h61CNGjyY4687FSitJ9MS37AhaoVQM0skkZLXs=;
+	s=korg; t=1774283254;
+	bh=+8NZUHmvnAb13urH2XJpTw7zK0MtWFxFD+6l6MoP2TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQCWA1f7CTjYgbRW2+gDgCNJeistIW9v0kNjJBVhoOakFWjogfi5K4QoGfmxNH5sq
-	 8niBysSMub6SPs+0xyNdAmx4MLtK+8LIb9pBmQgEOuzpSKb+BkDrTvnypwG86QX2HJ
-	 EsNMrxykmOImzBC73aUa4b8BVGK6CNIKp4+Rf+Q0=
+	b=FXV8OQYJ2uZZI8LvnjUJr1bb1NMLeZH4KjILiBqQlHBc0v73PliOnOwElyugGsI+r
+	 QQbwyd93Nboeq+ClY2q1lpgWHaKTieyJ8snQ+BiHNjDSJ4fcATvJ0pIFLDVnjbUXdb
+	 xFS01TfrzMkt+qkysnc2MZeSy9nqi/12hAaOM3VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 408/460] net: airoha: read default PSE reserved pages value before updating
+Subject: [PATCH 6.1 422/481] sched: idle: Consolidate the handling of two special cases
 Date: Mon, 23 Mar 2026 14:46:44 +0100
-Message-ID: <20260323134536.582249397@linuxfoundation.org>
+Message-ID: <20260323134535.476112683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228869-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229933-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,72 +90,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 645182F81C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,layalina.io:email]
+X-Rspamd-Queue-Id: 216902FAAC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 1f3e7ff4f296af1f4350f457d5bd82bc825e645a ]
+[ Upstream commit f4c31b07b136839e0fb3026f8a5b6543e3b14d2f ]
 
-Store the default value for the number of PSE reserved pages in orig_val
-at the beginning of airoha_fe_set_pse_oq_rsv routine, before updating it
-with airoha_fe_set_pse_queue_rsv_pages().
-Introduce airoha_fe_get_pse_all_rsv utility routine.
+There are two special cases in the idle loop that are handled
+inconsistently even though they are analogous.
 
-Introduced by commit 23020f049327 ("net: airoha: Introduce ethernet support
-for EN7581 SoC")
+The first one is when a cpuidle driver is absent and the default CPU
+idle time power management implemented by the architecture code is used.
+In that case, the scheduler tick is stopped every time before invoking
+default_idle_call().
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241001-airoha-eth-pse-fix-v2-1-9a56cdffd074@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d4a533ad249e ("net: airoha: Remove airoha_dev_stop() in airoha_remove()")
+The second one is when a cpuidle driver is present, but there is only
+one idle state in its table.  In that case, the scheduler tick is never
+stopped at all.
+
+Since each of these approaches has its drawbacks, reconcile them with
+the help of one simple heuristic.  Namely, stop the tick if the CPU has
+been woken up by it in the previous iteration of the idle loop, or let
+it tick otherwise.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Fixes: ed98c3491998 ("sched: idle: Do not stop the tick before cpuidle_idle_call()")
+[ rjw: Added Fixes tag, changelog edits ]
+Link: https://patch.msgid.link/4741364.LvFx2qVVIh@rafael.j.wysocki
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/airoha_eth.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ kernel/sched/idle.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
-index 20cf7ba9d7508..6aa764b542eb5 100644
---- a/drivers/net/ethernet/mediatek/airoha_eth.c
-+++ b/drivers/net/ethernet/mediatek/airoha_eth.c
-@@ -1116,17 +1116,23 @@ static void airoha_fe_set_pse_queue_rsv_pages(struct airoha_eth *eth,
- 		      PSE_CFG_WR_EN_MASK | PSE_CFG_OQRSV_SEL_MASK);
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 6ff593a8eeb17..c5c09e0fbbe12 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -155,6 +155,14 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	return cpuidle_enter(drv, dev, next_state);
  }
  
-+static u32 airoha_fe_get_pse_all_rsv(struct airoha_eth *eth)
++static void idle_call_stop_or_retain_tick(bool stop_tick)
 +{
-+	u32 val = airoha_fe_rr(eth, REG_FE_PSE_BUF_SET);
-+
-+	return FIELD_GET(PSE_ALLRSV_MASK, val);
++	if (stop_tick || tick_nohz_tick_stopped())
++		tick_nohz_idle_stop_tick();
++	else
++		tick_nohz_idle_retain_tick();
 +}
 +
- static int airoha_fe_set_pse_oq_rsv(struct airoha_eth *eth,
- 				    u32 port, u32 queue, u32 val)
+ /**
+  * cpuidle_idle_call - the main idle function
+  *
+@@ -164,7 +172,7 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+  * set, and it returns with polling set.  If it ever stops polling, it
+  * must clear the polling bit.
+  */
+-static void cpuidle_idle_call(void)
++static void cpuidle_idle_call(bool stop_tick)
  {
--	u32 orig_val, tmp, all_rsv, fq_limit;
-+	u32 orig_val = airoha_fe_get_pse_queue_rsv_pages(eth, port, queue);
-+	u32 tmp, all_rsv, fq_limit;
+ 	struct cpuidle_device *dev = cpuidle_get_device();
+ 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
+@@ -186,7 +194,7 @@ static void cpuidle_idle_call(void)
+ 	 */
  
- 	airoha_fe_set_pse_queue_rsv_pages(eth, port, queue, val);
+ 	if (cpuidle_not_available(drv, dev)) {
+-		tick_nohz_idle_stop_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
  
- 	/* modify all rsv */
--	orig_val = airoha_fe_get_pse_queue_rsv_pages(eth, port, queue);
--	tmp = airoha_fe_rr(eth, REG_FE_PSE_BUF_SET);
--	all_rsv = FIELD_GET(PSE_ALLRSV_MASK, tmp);
-+	all_rsv = airoha_fe_get_pse_all_rsv(eth);
- 	all_rsv += (val - orig_val);
- 	airoha_fe_rmw(eth, REG_FE_PSE_BUF_SET, PSE_ALLRSV_MASK,
- 		      FIELD_PREP(PSE_ALLRSV_MASK, all_rsv));
+ 		default_idle_call();
+ 		goto exit_idle;
+@@ -221,17 +229,19 @@ static void cpuidle_idle_call(void)
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+ 	} else if (drv->state_count > 1) {
+-		bool stop_tick = true;
++		/*
++		 * stop_tick is expected to be true by default by cpuidle
++		 * governors, which allows them to select idle states with
++		 * target residency above the tick period length.
++		 */
++		stop_tick = true;
+ 
+ 		/*
+ 		 * Ask the cpuidle framework to choose a convenient idle state.
+ 		 */
+ 		next_state = cpuidle_select(drv, dev, &stop_tick);
+ 
+-		if (stop_tick || tick_nohz_tick_stopped())
+-			tick_nohz_idle_stop_tick();
+-		else
+-			tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		entered_state = call_cpuidle(drv, dev, next_state);
+ 		/*
+@@ -239,7 +249,7 @@ static void cpuidle_idle_call(void)
+ 		 */
+ 		cpuidle_reflect(dev, entered_state);
+ 	} else {
+-		tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		/*
+ 		 * If there is only a single idle state (or none), there is
+@@ -267,6 +277,7 @@ static void cpuidle_idle_call(void)
+ static void do_idle(void)
+ {
+ 	int cpu = smp_processor_id();
++	bool got_tick = false;
+ 
+ 	/*
+ 	 * Check if we need to update blocked load
+@@ -309,8 +320,9 @@ static void do_idle(void)
+ 			tick_nohz_idle_restart_tick();
+ 			cpu_idle_poll();
+ 		} else {
+-			cpuidle_idle_call();
++			cpuidle_idle_call(got_tick);
+ 		}
++		got_tick = tick_nohz_idle_got_tick();
+ 		arch_cpu_idle_exit();
+ 	}
+ 
 -- 
 2.51.0
 
