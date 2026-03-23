@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLSJHrpLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:34 +0100
+	id 39m+CP9vwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081DC2F4244
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B280F2F9013
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 426A13192708
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02D463189A28
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060CA3B38B1;
-	Mon, 23 Mar 2026 14:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144953BA238;
+	Mon, 23 Mar 2026 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnBJQ4je"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMwq6sLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCB03AE18A;
-	Mon, 23 Mar 2026 14:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB773283C82;
+	Mon, 23 Mar 2026 16:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274904; cv=none; b=mUjhvWfGVeLP0HRGGfmNhoQ8qxnCsBGKD0LC4sAxvkYMhi6B3igjvfNG+Q0OTZtJ49bsjNh1jdrgDgxG39/1LkM9E0xU+IzUKsJzOi+pDn10kGuBtV9zEWalHT5I5NRScWt4PyWm2wQfJ8KIjCV7tPND9Lp0BAJAiqPqEqR0+e4=
+	t=1774283065; cv=none; b=gqRadjzcoptIwXTWga7Y2beyuJ+tHX6RNfpWUpz4l2ycgUNYcFwjepo9oHtHmObY9d+39I6p7zmFtVnQbycBK77bK0weUxuy7b/+Bf1kh5i5MqCzV28bicwuuzPYhzFV8GfnTaCpPU3zb21FqB/MiFegpwUEKZmwsly9mbnZ95c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274904; c=relaxed/simple;
-	bh=Ou0t4COv/njE3AYSPyZj07rSWUtSeVgf2TgG5aIDsyU=;
+	s=arc-20240116; t=1774283065; c=relaxed/simple;
+	bh=vDkYvyprakjtWZSdZV6aqeQsdSk6Sn0HoSlWZKKhgjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyKshDrE/Zz1DtAueEZPSfptwMa3M2UuUD7Ol/AKnUcFUC8euySmhpkdG8APtXB8wjp+C2xdAbwrYXMEHxb3jLCVDvWrXvpKAi/PtRvVVBBGbGTY5jYX21rin+tQiXOWCmyecsTndCjr1ukz9SivlSgvvDDhuJ1H91z1oc7A9wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnBJQ4je; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A19C4CEF7;
-	Mon, 23 Mar 2026 14:08:24 +0000 (UTC)
+	 MIME-Version; b=gOvq7QPVl0SUqF+YFJU/BESBVeYrPX8UrvIpUhChNtL8ORxyd7oOZUpBViHiGymK4/qb3nTYKKBbWEX5bc/nSctmK+sA6J2Nj0xVGNZZakIHksegBBDaZeUXtMSqElFL4MVZTTXSDILEGHqaItkYYS1jdM1GTKEatnc6dSQ+gSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMwq6sLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E093C4CEF7;
+	Mon, 23 Mar 2026 16:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274904;
-	bh=Ou0t4COv/njE3AYSPyZj07rSWUtSeVgf2TgG5aIDsyU=;
+	s=korg; t=1774283065;
+	bh=vDkYvyprakjtWZSdZV6aqeQsdSk6Sn0HoSlWZKKhgjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnBJQ4jehAOBgIKqA3mgdoQNQcDJBqt8fqC1sj7UlMlcFq9q4NqmlsCG1yTk8K+eA
-	 NIbp+5/Ake17t4sFE7KC/JI+yaZrsCpECILzs9hhPofFw1CViz7QbnZ3gxqVP3IcP0
-	 nKI/kUWiEMu3yHZxnKDDn8iVlLDwhhZ+f7MAlFDQ=
+	b=JMwq6sLnxCSQ1mmLYTxSrDho4CAKUXlmqXl4Ks4WZsDpQJ5X5u3CzqSly70WYPr1t
+	 M+dRd+OqxXTDieljEV5UV8brHaD2zfuXJZaJ1qlMurLO03UjeLMvuzWOeEWLSr5YYk
+	 ibmu0QpMMUNLUijZV44kl1W5nWp0GojQZogtJlqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobi Gaertner <tob.gaertner@me.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 151/212] net: usb: cdc_ncm: add ndpoffset to NDP16 nframes bounds check
+	Paulo Andrade <pandrade@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.1 390/481] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
 Date: Mon, 23 Mar 2026 14:46:12 +0100
-Message-ID: <20260323134508.534513155@linuxfoundation.org>
+Message-ID: <20260323134534.658546123@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +67,159 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228359-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229863-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 081DC2F4244
+X-Rspamd-Queue-Id: B280F2F9013
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobi Gaertner <tob.gaertner@me.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 2aa8a4fa8d5b7d0e1ebcec100e1a4d80a1f4b21a ]
+[ Upstream commit d55c571e4333fac71826e8db3b9753fadfbead6a ]
 
-cdc_ncm_rx_verify_ndp16() validates that the NDP header and its DPE
-entries fit within the skb. The first check correctly accounts for
-ndpoffset:
+This script
 
-  if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len)
+	#!/usr/bin/bash
 
-but the second check omits it:
+	echo 0 > /proc/sys/kernel/randomize_va_space
 
-  if ((sizeof(struct usb_cdc_ncm_ndp16) +
-       ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len)
+	echo 'void main(void) {}' > TEST.c
 
-This validates the DPE array size against the total skb length as if
-the NDP were at offset 0, rather than at ndpoffset. When the NDP is
-placed near the end of the NTB (large wNdpIndex), the DPE entries can
-extend past the skb data buffer even though the check passes.
-cdc_ncm_rx_fixup() then reads out-of-bounds memory when iterating
-the DPE array.
+	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+	gcc -m32 -fcf-protection=branch TEST.c -o test
 
-Add ndpoffset to the nframes bounds check and use struct_size_t() to
-express the NDP-plus-DPE-array size more clearly.
+	bpftrace -e 'uprobe:./test:main {}' -c ./test
 
-Fixes: ff06ab13a4cc ("net: cdc_ncm: splitting rx_fixup for code reuse")
-Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
-Link: https://patch.msgid.link/20260314054640.2895026-2-tob.gaertner@me.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"hangs", the probed ./test task enters an endless loop.
+
+The problem is that with randomize_va_space == 0
+get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
+by the stack vma.
+
+arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+check.
+
+handle_swbp() doesn't report this failure (probably it should) and silently
+restarts the probed insn. Endless loop.
+
+I think that the right fix should change the x86 get_unmapped_area() paths
+to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
+because ->orig_ax = -1.
+
+But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+the probed task is 32-bit to make in_ia32_syscall() true.
+
+Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Reported-by: Paulo Andrade <pandrade@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/cdc_ncm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kernel/uprobes.c |   24 ++++++++++++++++++++++++
+ include/linux/uprobes.h   |    1 +
+ kernel/events/uprobes.c   |   10 +++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 5d123df0a866b..a9d0162b5ee01 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1656,6 +1656,7 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
- 	struct usbnet *dev = netdev_priv(skb_in->dev);
- 	struct usb_cdc_ncm_ndp16 *ndp16;
- 	int ret = -EINVAL;
-+	size_t ndp_len;
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1097,3 +1097,27 @@ bool arch_uretprobe_is_alive(struct retu
+ 	else
+ 		return regs->sp <= ret->stack;
+ }
++
++#ifdef CONFIG_IA32_EMULATION
++unsigned long arch_uprobe_get_xol_area(void)
++{
++	struct thread_info *ti = current_thread_info();
++	unsigned long vaddr;
++
++	/*
++	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
++	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
++	 * vm_unmapped_area_info.high_limit.
++	 *
++	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
++	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
++	 * (falsely) returns true because ->orig_ax == -1.
++	 */
++	if (test_thread_flag(TIF_ADDR32))
++		ti->status |= TS_COMPAT;
++	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	ti->status &= ~TS_COMPAT;
++
++	return vaddr;
++}
++#endif
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -140,6 +140,7 @@ extern bool arch_uretprobe_is_alive(stru
+ extern bool arch_uprobe_ignore(struct arch_uprobe *aup, struct pt_regs *regs);
+ extern void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 					 void *src, unsigned long len);
++extern unsigned long arch_uprobe_get_xol_area(void);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {
+ };
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1441,6 +1441,12 @@ void uprobe_munmap(struct vm_area_struct
+ 		set_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags);
+ }
  
- 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
-@@ -1675,8 +1676,8 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
- 					sizeof(struct usb_cdc_ncm_dpe16));
- 	ret--; /* we process NDP entries except for the last one */
- 
--	if ((sizeof(struct usb_cdc_ncm_ndp16) +
--	     ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len) {
-+	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp16, dpe16, ret);
-+	if (ndpoffset + ndp_len > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
- 		ret = -EINVAL;
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	/* Try to map as high as possible, this is only a hint. */
++	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++}
++
+ /* Slot allocation for XOL */
+ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ {
+@@ -1456,9 +1462,7 @@ static int xol_add_vma(struct mm_struct
  	}
--- 
-2.51.0
-
+ 
+ 	if (!area->vaddr) {
+-		/* Try to map as high as possible, this is only a hint. */
+-		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+-						PAGE_SIZE, 0, 0);
++		area->vaddr = arch_uprobe_get_xol_area();
+ 		if (IS_ERR_VALUE(area->vaddr)) {
+ 			ret = area->vaddr;
+ 			goto fail;
 
 
 
