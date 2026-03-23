@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGv1Id5QwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:30 +0100
+	id mNP0HMBewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BA52F4F56
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130302F6AA2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 806B130FA5C8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A087630C612E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8402F3B95E7;
-	Mon, 23 Mar 2026 13:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815963AE1BB;
+	Mon, 23 Mar 2026 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ff0yVegD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1+p/wFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AE63B8D6B;
-	Mon, 23 Mar 2026 13:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448DE363096;
+	Mon, 23 Mar 2026 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274383; cv=none; b=aq/w2cElqi1nk44Z62vCyh/KypwGCfBqjENQhZ1IbxpD/E3cW7g0jAT5w2uZd1rCHCb9dOR6HdyAsukj2QQBzOinypEPAT9PGfe4AEv6L4HKviOOiwMDUouNmRKe87NliHOjwnTQpMbg2rpH3rZzn50thbF93X9s5OWLB7s6rZk=
+	t=1774278911; cv=none; b=AjX8bGfxvHw3im8SjQNzWhFK/yjQuycbdIvZ0A58TVqu7YC57HzFlUDWtz5n1+TFxV3WA126CblYW7TRgAXlNI7+C5gnlLNAY6QJhfzQHN5C8YrLtRb/gXZyz0SxVoDUSA3RdbJyGXiNxn3VocYrTKcQQqA186r1N3FQwAM8qG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274383; c=relaxed/simple;
-	bh=37ONiUJe11gT6DRrPL4MgqeQ3u6RPWmUHpos/DIK0Fo=;
+	s=arc-20240116; t=1774278911; c=relaxed/simple;
+	bh=+9axxG1xQadVa7mxYz7TQafnGsLP8KW+0/qRdV1O3J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPUJc0C+cJIygwbePcNU0kJXzetHtiRxEPojAVSrlxJ0Q+OUf1vFrtBJkOEgmoJBSQbpV0IG9S1Y07mObIxu6oY8xiLQ+2HeFoSSvnOYtbrYn8dB+CtVej9ztnf1pqsImBVzzzfU0ayaCfLQoW0dnYFpW7tab1hT9Veu7bmhgQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ff0yVegD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A06C4CEF7;
-	Mon, 23 Mar 2026 13:59:42 +0000 (UTC)
+	 MIME-Version; b=CtvKnrgIHAWMi+WRbwyVWeUZLJNJhpgjCWnO+yeqybyuebNGJSRWPzos9x7Q8hF4PD1hHb0Cb3H27gArvxZVjgrWg3zSLESHXFL8esHPXypLeCEREmLxBPvEUz2EE7plSJRWbgTP0lIHTqJjb7gLutJgcSzJMG3oIcwD5gOMR3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1+p/wFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD82C4CEF7;
+	Mon, 23 Mar 2026 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274383;
-	bh=37ONiUJe11gT6DRrPL4MgqeQ3u6RPWmUHpos/DIK0Fo=;
+	s=korg; t=1774278911;
+	bh=+9axxG1xQadVa7mxYz7TQafnGsLP8KW+0/qRdV1O3J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ff0yVegDohqmL7aY5tEFLEOZ0Gli0HPk9ek55Ps1fPlpCj5dch1T/yzrjVxijutdG
-	 +tRvfvUFcOQlxwa2pQ2P3lfuSWTdFGyPL3bNIhucmevJjH8waVyWeuUJQf1yx1nHT1
-	 MYe45xpsmHYkV8gTadjqAJdlpmumDY/0nhBTthHk=
+	b=I1+p/wFLZT7yyC5ToCPPxyCsM8bBiFeGAmzcvblYcjk/TUppPenApwM2H1b1gZ3Wv
+	 GXWR+z1xZ/53kW0qHppWhpXiBJCaJayMUvvfuH3wYEEyYk/WxNi1TXDBHz694fAGOm
+	 lJTEoMUWqfbE0mg5t5K1rROFnNS8TuEyb20VVIeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 199/220] mtd: rawnand: brcmnand: skip DMA during panic write
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 456/567] NFC: nxp-nci: allow GPIOs to sleep
 Date: Mon, 23 Mar 2026 14:46:16 +0100
-Message-ID: <20260323134510.868733170@linuxfoundation.org>
+Message-ID: <20260323134545.267240187@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +65,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228184-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229373-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D6BA52F4F56
+X-Rspamd-Queue-Id: 130302F6AA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit da9ba4dcc01e7cf52b7676f0ee9607b8358c2171 ]
+commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
 
-When oops_panic_write is set, the driver disables interrupts and
-switches to PIO polling mode but still falls through into the DMA
-path. DMA cannot be used reliably in panic context, so make the
-DMA path an else branch to ensure only PIO is used during panic
-writes.
+Allow the firmware and enable GPIOs to sleep.
 
-Fixes: c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
+connected to I2C GPIO expanders.
+
+-- >8 --
+kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
+-- >8 --
+
+Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/nfc/nxp-nci/i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 835653bdd5abc..8f4d001377a1c 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2350,14 +2350,12 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
- 	for (i = 0; i < ctrl->max_oob; i += 4)
- 		oob_reg_write(ctrl, i, 0xffffffff);
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
+ {
+ 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
  
--	if (mtd->oops_panic_write)
-+	if (mtd->oops_panic_write) {
- 		/* switch to interrupt polling and PIO mode */
- 		disable_ctrl_irqs(ctrl);
--
--	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
-+	} else if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
- 		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
- 				    CMD_PROGRAM_PAGE))
--
- 			ret = -EIO;
+-	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
+-	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
+ 	usleep_range(10000, 15000);
  
- 		goto out;
--- 
-2.51.0
-
+ 	if (mode == NXP_NCI_MODE_COLD)
 
 
 
