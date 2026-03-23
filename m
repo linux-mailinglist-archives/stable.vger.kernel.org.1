@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0F6lK0NUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:59 +0100
+	id 6O1rOwdwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2132F56BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEBC2F902B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86B0631A7509
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1CD5310D446
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920E437F8A0;
-	Mon, 23 Mar 2026 14:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A8F396D28;
+	Mon, 23 Mar 2026 16:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6vmJPK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K103Rsgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E5B1FC101;
-	Mon, 23 Mar 2026 14:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F0F271A6D;
+	Mon, 23 Mar 2026 16:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275443; cv=none; b=sT1uZ2pEkcGWfOvVKVKEjGTp64eLgjUsUckwI6J+VIoVcVVvZf+HqmXHTfqJx+P8uPzc7OpReUok2LnX8mjNY0c+Wyratw002KRLFdKmE2HHJ+z9Fal/OyO7v5606FgAm7MuuBONxUFaWw90qIehRkbTA505kwayuJKvFw1HbTc=
+	t=1774282219; cv=none; b=TXlQatTCmJ+FE+7SMmDQrHk6caV21ekHreLKneSnQ2Y7YUiJJocBp6ZrgDhnd0EUH4poNETQ1QxvDcn7sG5tgB8eJnVxPouNiCOzCjLFnq6zgilebjF5lotNtArXPefRAa0MyfAXcOGbCGXmW1ZsXYxX6RurrpMj3mFmxGsGSSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275443; c=relaxed/simple;
-	bh=p9qyvMMMB6a5OXUbuVJLh2HOqB9x6rfR9citvsgrMLg=;
+	s=arc-20240116; t=1774282219; c=relaxed/simple;
+	bh=+po8PmzL0vU8W93CIk3fCM2Io1Q2n3R3C1/DIYVV7CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qzttQ55kBf2FgsDGFJ7iQuvRIv78H+VZ/vFwJKi9f7NQlUuF1S27jA5RHtP5UtFCLZfhmtK0Dg6e7sTTpBVlHEZyx+GgjxNeCdbKfOs1vMvtctkli46laSe71OvYzDpwg8ngtGd7ks/zLrHMhPUfbb0wFScVlL/cBVGJB362/qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6vmJPK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFB1C4CEF7;
-	Mon, 23 Mar 2026 14:17:22 +0000 (UTC)
+	 MIME-Version; b=Bl3hZZDA8eogaBEW6teU5gf18RZdAjRILU4rF/7DjDK9/l65PRnL7cg7lSxtQwPxoxVa6U7VqStzCvpkiKpvMCiFqlaFfdqFzFTbGWr6VS6uT3exE0NbS+Gz1IOojpCZU6WOQo9xi4Z0mOKv7fZaPasFezuYCRhZMR/HeEWhTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K103Rsgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4352C2BCB0;
+	Mon, 23 Mar 2026 16:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275443;
-	bh=p9qyvMMMB6a5OXUbuVJLh2HOqB9x6rfR9citvsgrMLg=;
+	s=korg; t=1774282219;
+	bh=+po8PmzL0vU8W93CIk3fCM2Io1Q2n3R3C1/DIYVV7CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6vmJPK3duFCDyech11yqAUpSw+fAsOzro92/DCE/QGoq249iuLidUl6cxvNbg4Hg
-	 emIvh1RaCg6YKS00ONBHcGDfeXS+JGAZ+gt4Zi53CD7rOcfMdpWvZbrFGf6wzvsgPZ
-	 T3a/FPTDWN+1Rx3oOiPICcOypmOmJTTJZ1o3/110=
+	b=K103RsgjgdcVuEiOwyr6BEIPQdV+o8pFlJmDLcP9hcXf5nHUHigEN98y/JWOZq3UY
+	 vdm4mQw9anOCbkiFhPWbA5geRUpLzoA/gPtsK6WibgKKrdHjXn7bujnhKN7+A/pScb
+	 L1JX8AvNWnak0H+3A26WwFh+xVWODmUZuH+F+FtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/460] xdp: allow attaching already registered memory model to xdp_rxq_info
-Date: Mon, 23 Mar 2026 14:40:55 +0100
-Message-ID: <20260323134528.160716141@linuxfoundation.org>
+	Petko Manolov <petkan@nucleusys.com>,
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 074/481] net: usb: pegasus: validate USB endpoints
+Date: Mon, 23 Mar 2026 14:40:56 +0100
+Message-ID: <20260323134527.038265899@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,178 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228556-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229548-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1A2132F56BB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6AEBC2F902B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit f65966fe0178c06065d354c22fb456fc4370b527 ]
+commit 11de1d3ae5565ed22ef1f89d73d8f2d00322c699 upstream.
 
-One may need to register memory model separately from xdp_rxq_info. One
-simple example may be XDP test run code, but in general, it might be
-useful when memory model registering is managed by one layer and then
-XDP RxQ info by a different one.
-Allow such scenarios by adding a simple helper which "attaches"
-already registered memory model to the desired xdp_rxq_info. As this
-is mostly needed for Page Pool, add a special function to do that for
-a &page_pool pointer.
+The pegasus driver should validate that the device it is probing has the
+proper number and types of USB endpoints it is expecting before it binds
+to it.  If a malicious device were to not have the same urbs the driver
+will crash later on when it blindly accesses these endpoints.
 
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20241203173733.3181246-5-aleksander.lobakin@intel.com
+Cc: Petko Manolov <petkan@nucleusys.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022347-legibly-attest-cc5c@gregkh
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xdp.h | 32 +++++++++++++++++++++++++++
- net/core/xdp.c    | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 88 insertions(+)
+ drivers/net/usb/pegasus.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index b80953f0affb0..05be2de2fd472 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -356,6 +356,38 @@ void xdp_rxq_info_unreg_mem_model(struct xdp_rxq_info *xdp_rxq);
- int xdp_reg_mem_model(struct xdp_mem_info *mem,
- 		      enum xdp_mem_type type, void *allocator);
- void xdp_unreg_mem_model(struct xdp_mem_info *mem);
-+int xdp_reg_page_pool(struct page_pool *pool);
-+void xdp_unreg_page_pool(const struct page_pool *pool);
-+void xdp_rxq_info_attach_page_pool(struct xdp_rxq_info *xdp_rxq,
-+				   const struct page_pool *pool);
-+
-+/**
-+ * xdp_rxq_info_attach_mem_model - attach registered mem info to RxQ info
-+ * @xdp_rxq: XDP RxQ info to attach the memory info to
-+ * @mem: already registered memory info
-+ *
-+ * If the driver registers its memory providers manually, it must use this
-+ * function instead of xdp_rxq_info_reg_mem_model().
-+ */
-+static inline void
-+xdp_rxq_info_attach_mem_model(struct xdp_rxq_info *xdp_rxq,
-+			      const struct xdp_mem_info *mem)
-+{
-+	xdp_rxq->mem = *mem;
-+}
-+
-+/**
-+ * xdp_rxq_info_detach_mem_model - detach registered mem info from RxQ info
-+ * @xdp_rxq: XDP RxQ info to detach the memory info from
-+ *
-+ * If the driver registers its memory providers manually and then attaches it
-+ * via xdp_rxq_info_attach_mem_model(), it must call this function before
-+ * xdp_rxq_info_unreg().
-+ */
-+static inline void xdp_rxq_info_detach_mem_model(struct xdp_rxq_info *xdp_rxq)
-+{
-+	xdp_rxq->mem = (struct xdp_mem_info){ };
-+}
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -815,8 +815,19 @@ static void unlink_all_urbs(pegasus_t *p
  
- /* Drivers not supporting XDP metadata can use this helper, which
-  * rejects any room expansion for metadata as a result.
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 23e7d736718b0..8a3ea90e8cf97 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -365,6 +365,62 @@ int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
+ static int alloc_urbs(pegasus_t *pegasus)
+ {
++	static const u8 bulk_ep_addr[] = {
++		1 | USB_DIR_IN,
++		2 | USB_DIR_OUT,
++		0};
++	static const u8 int_ep_addr[] = {
++		3 | USB_DIR_IN,
++		0};
+ 	int res = -ENOMEM;
  
- EXPORT_SYMBOL_GPL(xdp_rxq_info_reg_mem_model);
++	if (!usb_check_bulk_endpoints(pegasus->intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(pegasus->intf, int_ep_addr))
++		return -ENODEV;
++
+ 	pegasus->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (!pegasus->rx_urb) {
+ 		return res;
+@@ -1171,6 +1182,7 @@ static int pegasus_probe(struct usb_inte
  
-+/**
-+ * xdp_reg_page_pool - register &page_pool as a memory provider for XDP
-+ * @pool: &page_pool to register
-+ *
-+ * Can be used to register pools manually without connecting to any XDP RxQ
-+ * info, so that the XDP layer will be aware of them. Then, they can be
-+ * attached to an RxQ info manually via xdp_rxq_info_attach_page_pool().
-+ *
-+ * Return: %0 on success, -errno on error.
-+ */
-+int xdp_reg_page_pool(struct page_pool *pool)
-+{
-+	struct xdp_mem_info mem;
-+
-+	return xdp_reg_mem_model(&mem, MEM_TYPE_PAGE_POOL, pool);
-+}
-+EXPORT_SYMBOL_GPL(xdp_reg_page_pool);
-+
-+/**
-+ * xdp_unreg_page_pool - unregister &page_pool from the memory providers list
-+ * @pool: &page_pool to unregister
-+ *
-+ * A shorthand for manual unregistering page pools. If the pool was previously
-+ * attached to an RxQ info, it must be detached first.
-+ */
-+void xdp_unreg_page_pool(const struct page_pool *pool)
-+{
-+	struct xdp_mem_info mem = {
-+		.type	= MEM_TYPE_PAGE_POOL,
-+		.id	= pool->xdp_mem_id,
-+	};
-+
-+	xdp_unreg_mem_model(&mem);
-+}
-+EXPORT_SYMBOL_GPL(xdp_unreg_page_pool);
-+
-+/**
-+ * xdp_rxq_info_attach_page_pool - attach registered pool to RxQ info
-+ * @xdp_rxq: XDP RxQ info to attach the pool to
-+ * @pool: pool to attach
-+ *
-+ * If the pool was registered manually, this function must be called instead
-+ * of xdp_rxq_info_reg_mem_model() to connect it to the RxQ info.
-+ */
-+void xdp_rxq_info_attach_page_pool(struct xdp_rxq_info *xdp_rxq,
-+				   const struct page_pool *pool)
-+{
-+	struct xdp_mem_info mem = {
-+		.type	= MEM_TYPE_PAGE_POOL,
-+		.id	= pool->xdp_mem_id,
-+	};
-+
-+	xdp_rxq_info_attach_mem_model(xdp_rxq, &mem);
-+}
-+EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
-+
- /* XDP RX runs under NAPI protection, and in different delivery error
-  * scenarios (e.g. queue full), it is possible to return the xdp_frame
-  * while still leveraging this protection.  The @napi_direct boolean
--- 
-2.51.0
-
+ 	pegasus = netdev_priv(net);
+ 	pegasus->dev_index = dev_index;
++	pegasus->intf = intf;
+ 
+ 	res = alloc_urbs(pegasus);
+ 	if (res < 0) {
+@@ -1182,7 +1194,6 @@ static int pegasus_probe(struct usb_inte
+ 
+ 	INIT_DELAYED_WORK(&pegasus->carrier_check, check_carrier);
+ 
+-	pegasus->intf = intf;
+ 	pegasus->usb = dev;
+ 	pegasus->net = net;
+ 
 
 
 
