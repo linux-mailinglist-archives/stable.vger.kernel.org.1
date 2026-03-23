@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iN1DC4NNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:11 +0100
+	id sDMBNEppwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4892F4762
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF072F8088
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DF1130D7609
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 709BD3220977
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551393AE70F;
-	Mon, 23 Mar 2026 14:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E917623C4FF;
+	Mon, 23 Mar 2026 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4LjAS4S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHVSiEGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BC33B38B2;
-	Mon, 23 Mar 2026 14:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF1A23AB9D;
+	Mon, 23 Mar 2026 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274434; cv=none; b=t5ENJtlocG6QZOYAgZKpmLk8GD47HWLvHxr84hCNk9xgO/UJ8+1y3sX80FL2da01GsZqJ7OVE0ugPqK+t92dG1zmj1AbNIQ7gGlIHqyF9tQQfSeEhWX2nNHN703Ga2/r+lf4imkxHW3fg3PHPwYCHx4uNSWmS2IGll4wOU8KC/U=
+	t=1774277200; cv=none; b=sRbZXVOCbAyJrILT7Ku0225GeVQQNcx08k4u7dqylvyg7rX/7gVRJ6TbqMioU7BZ0Zx1f1GZTFlWZsmvqc7o2CfkhM6o5yYAYaQTH0gQI7ZNEE0VztRWLfh1Yz47trmUHpHyAyV0uI82Lv2vUb7rArTCwJP16UEZiHoWHYd+TP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274434; c=relaxed/simple;
-	bh=9TCACvc3VVCPDnRoG1jgXwHhj/apDfK/hYvhUP0bk7o=;
+	s=arc-20240116; t=1774277200; c=relaxed/simple;
+	bh=JISaupgXFro9sBYE4CPfSDReOACjxwDJOxupkGpjDn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvtZ5zYl91BoqXa56E4ytoWIzbb5P9VdMyzsqndOuIlOmGFp+5yR8qLSfzmNzS5irPjjndJ4OQOyADNmv0mKW+lMqrSNMWDQlwmL20t2c0dFHwUDeMkaMLWou87da68WJ//IyEFf5ZqXL5XERarrOm8L+de7w/mP4hS7Q3d9fy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4LjAS4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532B6C2BC9E;
-	Mon, 23 Mar 2026 14:00:33 +0000 (UTC)
+	 MIME-Version; b=p022ZD4jb3HEu0x7NvWWIGZqpjGhcWxwnMZA9H3jZsgKk7m2UsXfGJL9Rr0Wk0UDM65UNYBZpMynmM96aE1yNJ2ZjjiS+DjZ0R3Jxw0CN+PnnzdPmCN5L6mxhnXuIy47m4zOsUvccD1TXJbj/9Vth4cxA9AKBE3iGNbgR0BsJpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHVSiEGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188C0C4CEF7;
+	Mon, 23 Mar 2026 14:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274433;
-	bh=9TCACvc3VVCPDnRoG1jgXwHhj/apDfK/hYvhUP0bk7o=;
+	s=korg; t=1774277200;
+	bh=JISaupgXFro9sBYE4CPfSDReOACjxwDJOxupkGpjDn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4LjAS4Sf0iKQwnKmLMESxZXe/0eu3wJxJei5h4P6kQiQUUgxaA42xxQVInifm6E+
-	 wDFjA5sa8X/Rzjs/zP7fN/tTek/5pBmoo5Oi9ZqWz6JVOUW3vpcfra+vDZt1Tuoe+6
-	 EJX74TH+0XBXVVc6oM87R+0lj5tF/2srJ42+u5lM=
+	b=vHVSiEGGFXDxUFSjUA7xpoyhW+cduB0xCAFUF33G3cOE+sMT7Hh3vlUOzp4C2vxOf
+	 3MO0+lFr3evEezMHvMOwTU3JBTAQOjkkhG+TEZgWR9OLv7iOidczcWqi9CP+8g9Sx/
+	 +GiFkgBEiMyxKx1ZFwTDEnwFtr+Fajm3CvGg1QeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 172/220] net: bonding: fix NULL deref in bond_debug_rlb_hash_show
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 353/460] drm/amdgpu/mmhub2.3: add bounds checking for cid
 Date: Mon, 23 Mar 2026 14:45:49 +0100
-Message-ID: <20260323134510.019724482@linuxfoundation.org>
+Message-ID: <20260323134535.226639191@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +67,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228202-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-228812-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2D4892F4762
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 5DF072F8088
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 605b52497bf89b3b154674deb135da98f916e390 ]
+commit a54403a534972af5d9ba5aaa3bb6ead612500ec6 upstream.
 
-rlb_clear_slave intentionally keeps RLB hash-table entries on
-the rx_hashtbl_used_head list with slave set to NULL when no
-replacement slave is available. However, bond_debug_rlb_hash_show
-visites client_info->slave without checking if it's NULL.
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
-Other used-list iterators in bond_alb.c already handle this NULL-slave
-state safely:
-
-- rlb_update_client returns early on !client_info->slave
-- rlb_req_update_slave_clients, rlb_clear_slave, and rlb_rebalance
-compare slave values before visiting
-- lb_req_update_subnet_clients continues if slave is NULL
-
-The following NULL deref crash can be trigger in
-bond_debug_rlb_hash_show:
-
-[    1.289791] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[    1.292058] RIP: 0010:bond_debug_rlb_hash_show (drivers/net/bonding/bond_debugfs.c:41)
-[    1.293101] RSP: 0018:ffffc900004a7d00 EFLAGS: 00010286
-[    1.293333] RAX: 0000000000000000 RBX: ffff888102b48200 RCX: ffff888102b48204
-[    1.293631] RDX: ffff888102b48200 RSI: ffffffff839daad5 RDI: ffff888102815078
-[    1.293924] RBP: ffff888102815078 R08: ffff888102b4820e R09: 0000000000000000
-[    1.294267] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888100f929c0
-[    1.294564] R13: ffff888100f92a00 R14: 0000000000000001 R15: ffffc900004a7ed8
-[    1.294864] FS:  0000000001395380(0000) GS:ffff888196e75000(0000) knlGS:0000000000000000
-[    1.295239] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.295480] CR2: 0000000000000000 CR3: 0000000102adc004 CR4: 0000000000772ef0
-[    1.295897] Call Trace:
-[    1.296134]  seq_read_iter (fs/seq_file.c:231)
-[    1.296341]  seq_read (fs/seq_file.c:164)
-[    1.296493]  full_proxy_read (fs/debugfs/file.c:378 (discriminator 1))
-[    1.296658]  vfs_read (fs/read_write.c:572)
-[    1.296981]  ksys_read (fs/read_write.c:717)
-[    1.297132]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-[    1.297325]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Add a NULL check and print "(none)" for entries with no assigned slave.
-
-Fixes: caafa84251b88 ("bonding: add the debugfs interface to see RLB hash table")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260317005034.1888794-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 89cd90375c19fb45138990b70e9f4ba4806f05c4)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_debugfs.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_debugfs.c b/drivers/net/bonding/bond_debugfs.c
-index 8adbec7c5084a..8967b65f6d840 100644
---- a/drivers/net/bonding/bond_debugfs.c
-+++ b/drivers/net/bonding/bond_debugfs.c
-@@ -34,11 +34,17 @@ static int bond_debug_rlb_hash_show(struct seq_file *m, void *v)
- 	for (; hash_index != RLB_NULL_INDEX;
- 	     hash_index = client_info->used_next) {
- 		client_info = &(bond_info->rx_hashtbl[hash_index]);
--		seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
--			&client_info->ip_src,
--			&client_info->ip_dst,
--			&client_info->mac_dst,
--			client_info->slave->dev->name);
-+		if (client_info->slave)
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst,
-+				   client_info->slave->dev->name);
-+		else
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM (none)\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst);
- 	}
- 
- 	spin_unlock_bh(&bond->mode_lock);
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c
+@@ -94,7 +94,8 @@ mmhub_v2_3_print_l2_protection_fault_sta
+ 	case IP_VERSION(2, 3, 0):
+ 	case IP_VERSION(2, 4, 0):
+ 	case IP_VERSION(2, 4, 1):
+-		mmhub_cid = mmhub_client_ids_vangogh[cid][rw];
++		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_vangogh) ?
++			mmhub_client_ids_vangogh[cid][rw] : NULL;
+ 		break;
+ 	default:
+ 		mmhub_cid = NULL;
 
 
 
