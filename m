@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEcxC/pOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:26 +0100
+	id yEFwIZldwWl0SgQAu9opvQ
+	(envelope-from <stable+bounces-229346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCC52F4B20
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E712F681D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F809319ACF7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30C5F310E16A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D514F3B27F7;
-	Mon, 23 Mar 2026 14:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4FB2C0298;
+	Mon, 23 Mar 2026 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sreo155g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHxu4ZC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C293B0AF0;
-	Mon, 23 Mar 2026 14:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95850285CA8;
+	Mon, 23 Mar 2026 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274963; cv=none; b=XUQUSnLMY9NvSDd525qcCydYUn+m77kMlfy5EXiM+63Qx6gWlfxNrUJuho4ssoaNIgklIujom/qzjQYeYTxiDTp+bIsUuocGOKJ4UU0JshS6Zxt+NACNW4fDTChx/0HswjkSmTOdBhxwQoxVWTsvFTG5Ey3BPsWxLHkAOT4og9k=
+	t=1774278828; cv=none; b=TyYfs4xbLtFhFmVPMewXd07iffYbq7QKtlpGtuZmWaKA2dk1daCRl9qaoguYfcxgj3Poh5eY1YWqT9p8ETk5Kt2LX/MeljCt0vQYAWqJakAxocahQO10YwKAcQCo06H2Q0Xg+Y4mKPuQFlyoKXPii/XYkDX8S8FOeAHb0UbUCNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274963; c=relaxed/simple;
-	bh=G9wQW66QBPuDFvHQxMCYBZZNrm7+4c+IFr4n1yJ9XHk=;
+	s=arc-20240116; t=1774278828; c=relaxed/simple;
+	bh=WN/2e3q1WzFjr1xTIeHSYvSXentqFfV388F6JYn+NIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOurW+KMJTeCkT37BQ6ppjHPL8GUN2RxG28xDaxkNZ9f03JMemN/DHJNe02ghT2xzeBMYvVGMz74Q4loCGv9mnWkyhRLK8DYQew3kHuL3GnzTSrVuRLPwMXRaYhMcZUoqlkSe9WKmzlA/rMOaxmWwmufrwV0b3KcY0OvnaIxuK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sreo155g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBBBC2BCB1;
-	Mon, 23 Mar 2026 14:09:23 +0000 (UTC)
+	 MIME-Version; b=Kfmo2NNHgF6UoLNDHrxuf4wvGfL2uXJXIbNMgYrXKgMG6BfHpNjEzw0qM5ZY4GhrRkjo9AjTx0bEZIxi0IyDNt1zsW41qBAiR6jtlTdEXQi5JQ0bXD2pyAsNkGogjLLwkLrnfWe5PkjH5Hojv4PNeWvn1nlMdTAA6ttPHiNwz9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHxu4ZC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F829C4CEF7;
+	Mon, 23 Mar 2026 15:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274963;
-	bh=G9wQW66QBPuDFvHQxMCYBZZNrm7+4c+IFr4n1yJ9XHk=;
+	s=korg; t=1774278828;
+	bh=WN/2e3q1WzFjr1xTIeHSYvSXentqFfV388F6JYn+NIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sreo155gAePXnqgcuHEy9RwxIJ12zvfsELL8+X+grlRLymz4E2atyESHQxmDouTdG
-	 gppr0qrGF/7k+yceFAHVMiUtaNUl1f/IOp7VhivQR220DGCB/r8HVbGjmW1pTkvVBe
-	 MLs0+VVkGg1EWeGMCTux3w9P5SKQFl/bcr3lCMlY=
+	b=NHxu4ZC0hpevWa+yqI/VmCZMn9+qDz6zThNUZbNZkKzEPh7HZxR130M4k7pbLS/gt
+	 WsARcySpo8qwZAVXhCMWKBKAVFcujs370KlFullp1Gh0EhAuO2tEhbAuoxMat5XB/A
+	 WGHFVMN3/J47WudtCUrjHxPZDSFO2PN8rBDrm4X0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 132/212] net/rose: fix NULL pointer dereference in rose_transmit_link on reconnect
+	Jeongjun Park <aha310510@gmail.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.6 433/567] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
 Date: Mon, 23 Mar 2026 14:45:53 +0100
-Message-ID: <20260323134507.944509618@linuxfoundation.org>
+Message-ID: <20260323134544.647761881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +63,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228382-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d00f90e0af54102fb271];
+	TAGGED_FROM(0.00)[bounces-229346-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9CCC52F4B20
+X-Rspamd-Queue-Id: 21E712F681D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit e1f0a18c9564cdb16523c802e2c6fe5874e3d944 ]
+[ Upstream commit d3968a0d85b211e197f2f4f06268a7031079e0d0 ]
 
-syzkaller reported a bug [1], and the reproducer is available at [2].
+vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
+obtain a struct vidi_context pointer. However, drm_dev->dev is the
+exynos-drm master device, and the driver_data contained therein is not
+the vidi component device, but a completely different device.
 
-ROSE sockets use four sk->sk_state values: TCP_CLOSE, TCP_LISTEN,
-TCP_SYN_SENT, and TCP_ESTABLISHED. rose_connect() already rejects
-calls for TCP_ESTABLISHED (-EISCONN) and TCP_CLOSE with SS_CONNECTING
-(-ECONNREFUSED), but lacks a check for TCP_SYN_SENT.
+This can lead to various bugs, ranging from null pointer dereferences and
+garbage value accesses to, in unlucky cases, out-of-bounds errors,
+use-after-free errors, and more.
 
-When rose_connect() is called a second time while the first connection
-attempt is still in progress (TCP_SYN_SENT), it overwrites
-rose->neighbour via rose_get_neigh(). If that returns NULL, the socket
-is left with rose->state == ROSE_STATE_1 but rose->neighbour == NULL.
-When the socket is subsequently closed, rose_release() sees
-ROSE_STATE_1 and calls rose_write_internal() ->
-rose_transmit_link(skb, NULL), causing a NULL pointer dereference.
+To resolve this issue, we need to store/delete the vidi device pointer in
+exynos_drm_private->vidi_dev during bind/unbind, and then read this
+exynos_drm_private->vidi_dev within ioctl() to obtain the correct
+struct vidi_context pointer.
 
-Per connect(2), a second connect() while a connection is already in
-progress should return -EALREADY. Add this missing check for
-TCP_SYN_SENT to complete the state validation in rose_connect().
-
-[1] https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
-[2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE@google.com/T/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260311070611.76913-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/exynos/exynos_drm_drv.h  |    1 +
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |   14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index fad6518e6e39b..53c9bc71f813d 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -810,6 +810,11 @@ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_le
- 		goto out_release;
- 	}
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
+ struct exynos_drm_private {
+ 	struct device *g2d_dev;
+ 	struct device *dma_dev;
++	struct device *vidi_dev;
+ 	void *mapping;
  
-+	if (sk->sk_state == TCP_SYN_SENT) {
-+		err = -EALREADY;
-+		goto out_release;
-+	}
+ 	/* for atomic commit */
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -224,9 +224,14 @@ ATTRIBUTE_GROUPS(vidi);
+ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 				struct drm_file *file_priv)
+ {
+-	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
++	struct exynos_drm_private *priv = drm_dev->dev_private;
++	struct device *dev = priv ? priv->vidi_dev : NULL;
++	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
+ 	struct drm_exynos_vidi_connection *vidi = data;
+ 
++	if (!ctx)
++		return -ENODEV;
 +
- 	sk->sk_state   = TCP_CLOSE;
- 	sock->state = SS_UNCONNECTED;
+ 	if (!vidi) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "user data for vidi is null.\n");
+@@ -386,6 +391,7 @@ static int vidi_bind(struct device *dev,
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+ 	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 	struct drm_encoder *encoder = &ctx->encoder;
+ 	struct exynos_drm_plane *exynos_plane;
+ 	struct exynos_drm_plane_config plane_config = { 0 };
+@@ -393,6 +399,8 @@ static int vidi_bind(struct device *dev,
+ 	int ret;
  
--- 
-2.51.0
-
+ 	ctx->drm_dev = drm_dev;
++	if (priv)
++		priv->vidi_dev = dev;
+ 
+ 	plane_config.pixel_formats = formats;
+ 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
+@@ -438,8 +446,12 @@ static int vidi_bind(struct device *dev,
+ static void vidi_unbind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
++	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 
+ 	del_timer_sync(&ctx->timer);
++	if (priv)
++		priv->vidi_dev = NULL;
+ }
+ 
+ static const struct component_ops vidi_component_ops = {
 
 
 
