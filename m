@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qG1KHbJiwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:34 +0100
+	id OG2MABxwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8592F724D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B582F9096
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 190EF3585C70
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DD5A31617C0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB23D3ACF0E;
-	Mon, 23 Mar 2026 15:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA91F3C140D;
+	Mon, 23 Mar 2026 16:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyNNK6+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2UPPJVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2B53B895A;
-	Mon, 23 Mar 2026 15:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3043B8BDB;
+	Mon, 23 Mar 2026 16:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279272; cv=none; b=E1pkp22xQxv+9Kv3/NbvJAOUPv/vuyxuq3yQMqOaqk7zvPoDNjTe+s6LY7we8L3+Ytq9wpXTl45/XqVqdWclezsh39MSehQB6QwDpQq9XH3O4Vo279pin9F1+yh3wSFIZet/b1y+EhBcbPIiyqXu32MR7eJXg4CvRYdHh7RitEM=
+	t=1774283364; cv=none; b=lwu1nWFjtkBzebsM9t/Ond+FdPw6PNLfZN1aJYgz0I29jN6Zoemoiu7ALr1ZqwUHw/FR909QlNDKio2NyRt1cvezygCQVJF1D1VzWvoMEKmcqo+S5CXmW2m4PRy0prIHqXpuLDDO68oh9bNpSFeizWgpGwZJoGSYY8lLAe0Lx0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279272; c=relaxed/simple;
-	bh=shH1kPPcRxgmwoY1OTKgfS4QwP7UcCPRH60reQOo6ww=;
+	s=arc-20240116; t=1774283364; c=relaxed/simple;
+	bh=QV1VzUubAT43jrPpkG6mle9g0+b3wQdRQqWPiiQNZCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHHA4t6BwoDZ7ECP+zQrOW+AW90z7OAeUstTIxvm2VeHHlPyMIO1i+SH2HHu5zo/sFcbG1y9XjDgK0O3gxBf30IaAxuwg5JNJV7+aHKKRc05WF0CChGZstwG70kkPVr3PeaqavZF9KfOcroEhyEatS8hXqfHOmaowEXE7L570lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyNNK6+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06828C4CEF7;
-	Mon, 23 Mar 2026 15:21:11 +0000 (UTC)
+	 MIME-Version; b=Bv82yCOMa5tyxvvMvpLgEHBS/W0sn0+PEVwCZ64T1ISVUO3iGOe8ldeZyK+y53r4+TA4onsEN24jmDxrdYTq3Vnbc6Ux1Sxhwt+VsMs/pIlzsnCwQwjrBIF9aqhClFsCjycVrDldjmXuN1yObjq1AaJM8YOzMZNR5p+O0yV/3F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2UPPJVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E851CC2BC9E;
+	Mon, 23 Mar 2026 16:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279272;
-	bh=shH1kPPcRxgmwoY1OTKgfS4QwP7UcCPRH60reQOo6ww=;
+	s=korg; t=1774283364;
+	bh=QV1VzUubAT43jrPpkG6mle9g0+b3wQdRQqWPiiQNZCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UyNNK6+LJc7ewkPWltDOlOgX2o9KxlkHxq2fl5ja1MxAJ6cxfWegskpKZ2SnsZ7U9
-	 VAeRjlXYs+4znB/pzdKiq6aUDjeBXXAllE+CreKmKr3b/6J9ftzx68HY7ePzAqWavO
-	 b5zgxZeowfZSTzaizzcrOvqrtBnOiPvOKvifowaE=
+	b=C2UPPJVQLDO7cGqwsLMuc3Bd+ux1iFFLbULksvHylu92/ddvqitcFFs/JAwQUjbs2
+	 nbmdlS4f4MlkcruV9nLKaId+bAWoT5R9K1CF2utOM75RhQFffSph3Y27+XQd7fWcxL
+	 Cj6TT8wR9BM7WCK77wFA4wU/rDNz1nvCY4SIYoSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 531/567] net: usb: aqc111: Do not perform PM inside suspend callback
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 469/481] f2fs: fix to trigger foreground gc during f2fs_map_blocks() in lfs mode
 Date: Mon, 23 Mar 2026 14:47:31 +0100
-Message-ID: <20260323134547.130937225@linuxfoundation.org>
+Message-ID: <20260323134536.648404669@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229450-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229957-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB8592F724D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C5B582F9096
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
+[ Upstream commit 1005a3ca28e90c7a64fa43023f866b960a60f791 ]
 
-syzbot reports "task hung in rpm_resume"
+w/ "mode=lfs" mount option, generic/299 will cause system panic as below:
 
-This is caused by aqc111_suspend calling
-the PM variant of its write_cmd routine.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2835!
+Call Trace:
+ <TASK>
+ f2fs_allocate_data_block+0x6f4/0xc50
+ f2fs_map_blocks+0x970/0x1550
+ f2fs_iomap_begin+0xb2/0x1e0
+ iomap_iter+0x1d6/0x430
+ __iomap_dio_rw+0x208/0x9a0
+ f2fs_file_write_iter+0x6b3/0xfa0
+ aio_write+0x15d/0x2e0
+ io_submit_one+0x55e/0xab0
+ __x64_sys_io_submit+0xa5/0x230
+ do_syscall_64+0x84/0x2f0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0010:new_curseg+0x70f/0x720
 
-The simplified call trace looks like this:
+The root cause of we run out-of-space is: in f2fs_map_blocks(), f2fs may
+trigger foreground gc only if it allocates any physical block, it will be
+a little bit later when there is multiple threads writing data w/
+aio/dio/bufio method in parallel, since we always use OPU in lfs mode, so
+f2fs_map_blocks() does block allocations aggressively.
 
-rpm_suspend()
-  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
-    aqc111_suspend() - called for the usb device interface
-      aqc111_write32_cmd()
-        usb_autopm_get_interface()
-          pm_runtime_resume_and_get()
-            rpm_resume() - here we call rpm_resume() on our parent
-              rpm_resume() - Here we wait for a status change that will never happen.
+In order to fix this issue, let's give a chance to trigger foreground
+gc in prior to block allocation in f2fs_map_blocks().
 
-At this point we block another task which holds
-rtnl_lock and locks up the whole networking stack.
-
-Fix this by replacing the write_cmd calls with their _nopm variants
-
-Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
-Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ The context change is due to the commit 2f51ade9524c
+("f2fs: f2fs_do_map_lock") in v6.3 which is irrelevant to 
+the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/aqc111.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/f2fs/data.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 3ebb1f84d3025..f1820c0d4830f 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
- 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
- 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1537,8 +1537,11 @@ int f2fs_map_blocks(struct inode *inode,
+ 	end = pgofs + maxblocks;
  
--		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
--				 WOL_CFG_SIZE, &wol_cfg);
--		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
--				   &aqc111_data->phy_cfg);
-+		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
-+				      WOL_CFG_SIZE, &wol_cfg);
-+		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
-+					&aqc111_data->phy_cfg);
- 	} else {
- 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
--		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
--				   &aqc111_data->phy_cfg);
-+		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
-+					&aqc111_data->phy_cfg);
+ next_dnode:
+-	if (map->m_may_create)
++	if (map->m_may_create) {
++		if (f2fs_lfs_mode(sbi))
++			f2fs_balance_fs(sbi, true);
+ 		f2fs_do_map_lock(sbi, flag, true);
++	}
  
- 		/* Disable RX path */
- 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
--- 
-2.51.0
-
+ 	/* When reading holes, we need its node page */
+ 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 
 
 
