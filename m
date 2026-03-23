@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNOlAo9NwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:23 +0100
+	id aPnoMlpkwWkjSwQAu9opvQ
+	(envelope-from <stable+bounces-229417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:03:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6402F4796
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9BD2F7583
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:03:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 586B33062D8A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A6963045467
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985D239A055;
-	Mon, 23 Mar 2026 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FEE3BB9E3;
+	Mon, 23 Mar 2026 15:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3OFLDbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVhjet64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC2B37F8A0;
-	Mon, 23 Mar 2026 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FD33B2FF0;
+	Mon, 23 Mar 2026 15:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275035; cv=none; b=Gxtx4kC4Hbpw+sXmKdqurONNNJVmZGiDVpbtfh1TV6vzN58O+xB0S5iSuLVwvWB9/b9xeYa9Vc1Pz+9fgGIj+Z7rTHef0h/mhgDLJO4F8m3Sxmr77QzcntIx3sCy9rGGNmh4DS1eZH/FJFZuDbLiCQyHPk6m+JIH1pjZlW2c5rw=
+	t=1774279180; cv=none; b=SEWjJbIS55QI2F0uRWPv+qWlxkUF2bAyrQHgeAsTyIWDD7tgwkQZ60aC6DKZp6+8O22dloTl0DbWGIb3VUGufRSbfZ12LXTNo4XBkA28i8CSi7+sIAVwk7oIDF64EiNMOWfay5H3jHu0x5v0Ujc+c8EDLxn8tHcw5Y2+qIlScu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275035; c=relaxed/simple;
-	bh=y6NnalIZrokRanI19mudz7gNGNX21B5a8Droz8lX/9c=;
+	s=arc-20240116; t=1774279180; c=relaxed/simple;
+	bh=aifukaDpDMkc/+iIEv9Af1Tw7OqRHsQdaZ5S8m5fUys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2yMk6eSuc033pbXPHg59C2nrG3oUZRR8dDXH5n7Qt1Q62yIpXVj+6+HIEDrmKKITFrz0IYkEm+f1ur0w/5DxyYUkj7fWjPy3kO/Z9MStJVm+iV+3NHZwPV1hF3Fs4C6N8ECxaL8gObe1xW+3wTH/w5sEkjIgc47PQuViqDBeUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3OFLDbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E75C4CEF7;
-	Mon, 23 Mar 2026 14:10:34 +0000 (UTC)
+	 MIME-Version; b=tbxhGKhqPRnCRm0wlY7RswK3M4it8MS/wBJdTwB8atLTNNRA6UszjxIbzNuqSJCSs6GnSg2yayqMnhmVnDACRq59j9m5Exl7gwMOGwVltTnayspMKs73W/GB8C2SNWz5pFKhL/tpJn3mjAM7Bl6Z0mZ1xj/BS8QygbF//BH9UvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVhjet64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E05DC4CEF7;
+	Mon, 23 Mar 2026 15:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275035;
-	bh=y6NnalIZrokRanI19mudz7gNGNX21B5a8Droz8lX/9c=;
+	s=korg; t=1774279180;
+	bh=aifukaDpDMkc/+iIEv9Af1Tw7OqRHsQdaZ5S8m5fUys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3OFLDbnq7+pUbMfHEBkkkKhJiYtIAyb8J4OZvoATzAm58MZhAft44LZ8gtV62kIX
-	 nzHU/w7gkNfDINias/jcf3yBlWnoxrwJKFCpujT/dIzhuY5AKrZ4HrJe8nxDVOMynv
-	 gJfRPfbUXUZcqvdSwRv18XD+pfm7MJbvgau2iH9w=
+	b=gVhjet64NoO6yjI+cVEcbzCgS6x1pAUZa617+xoUQinH39ngpes+/H6DCysLkhA7q
+	 wzV+PGdXT8w4LXSOJGRlQwRlh3BGBBOGIbACZxzex0JIqkFnRy+64VL3tN8AyNoVFb
+	 UKVCHtvKkIFi0vSM8iSAdt/Ej0uAwn+la0P+loKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 199/212] spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
+Subject: [PATCH 6.6 500/567] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
 Date: Mon, 23 Mar 2026 14:47:00 +0100
-Message-ID: <20260323134510.079182185@linuxfoundation.org>
+Message-ID: <20260323134546.394567865@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +68,142 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228408-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229417-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AA6402F4796
+	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9A9BD2F7583
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit b8db9552997924b750e727a625a30eaa4603bbb9 ]
+[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
 
-In aml_spisg_probe(), ctlr is allocated by
-spi_alloc_target()/spi_alloc_host(), but fails to call
-spi_controller_put() in several error paths. This leads
-to a memory leak whenever the driver fails to probe after
-the initial allocation.
+syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
 
-Convert to use devm_spi_alloc_host()/devm_spi_alloc_target()
-to fix the memory leak.
+The problem is that aql_enable_write() does not serialise concurrent
+write()s to the debugfs.
 
-Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260308-spisg-v1-1-2cace5cafc24@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+aql_enable_write() checks static_key_false(&aql_disable.key) and
+later calls static_branch_inc() or static_branch_dec(), but the
+state may change between the two calls.
+
+aql_disable does not need to track inc/dec.
+
+Let's use static_branch_enable() and static_branch_disable().
+
+[0]:
+val == 0
+WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
+Modules linked in:
+CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
+Tainted: [U]=USER, [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
+Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
+RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
+RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
+R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
+FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
+ __static_key_slow_dec kernel/jump_label.c:321 [inline]
+ static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
+ aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
+ short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
+ vfs_write+0x2aa/0x1070 fs/read_write.c:684
+ ksys_pwrite64 fs/read_write.c:793 [inline]
+ __do_sys_pwrite64 fs/read_write.c:801 [inline]
+ __se_sys_pwrite64 fs/read_write.c:798 [inline]
+ __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f530cf9aeb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
+RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
+RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
+RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
+ </TASK>
+
+Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
+Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-amlogic-spisg.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/mac80211/debugfs.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index bcd7ec291ad07..6045c89c37c83 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -729,9 +729,9 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 	};
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 207f772bd8ce2..bd7c5dfeaa8c5 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -326,7 +326,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
+ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
+ 				size_t count, loff_t *ppos)
+ {
+-	bool aql_disabled = static_key_false(&aql_disable.key);
+ 	char buf[3];
+ 	size_t len;
  
- 	if (of_property_read_bool(dev->of_node, "spi-slave"))
--		ctlr = spi_alloc_target(dev, sizeof(*spisg));
-+		ctlr = devm_spi_alloc_target(dev, sizeof(*spisg));
- 	else
--		ctlr = spi_alloc_host(dev, sizeof(*spisg));
-+		ctlr = devm_spi_alloc_host(dev, sizeof(*spisg));
- 	if (!ctlr)
- 		return -ENOMEM;
+@@ -341,15 +340,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
+ 	if (len > 0 && buf[len - 1] == '\n')
+ 		buf[len - 1] = 0;
  
-@@ -750,10 +750,8 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(spisg->map), "regmap init failed\n");
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto out_controller;
+-	if (buf[0] == '0' && buf[1] == '\0') {
+-		if (!aql_disabled)
+-			static_branch_inc(&aql_disable);
+-	} else if (buf[0] == '1' && buf[1] == '\0') {
+-		if (aql_disabled)
+-			static_branch_dec(&aql_disable);
+-	} else {
++	if (buf[0] == '0' && buf[1] == '\0')
++		static_branch_enable(&aql_disable);
++	else if (buf[0] == '1' && buf[1] == '\0')
++		static_branch_disable(&aql_disable);
++	else
+ 		return -EINVAL;
 -	}
-+	if (irq < 0)
-+		return irq;
  
- 	ret = device_reset_optional(dev);
- 	if (ret)
-@@ -818,8 +816,6 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 	if (spisg->core)
- 		clk_disable_unprepare(spisg->core);
- 	clk_disable_unprepare(spisg->pclk);
--out_controller:
--	spi_controller_put(ctlr);
- 
- 	return ret;
+ 	return count;
  }
 -- 
 2.51.0
