@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +P9yMAVnwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-228714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:15:01 +0100
+	id oP9IF+lewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476EA2F7CD1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:15:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CDC2F6B19
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F3D05322FC68
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B48AE30A894D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261AE3B0ACA;
-	Mon, 23 Mar 2026 14:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DDA3B0ACB;
+	Mon, 23 Mar 2026 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1h+hFi16"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGjy6zf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8313AF669;
-	Mon, 23 Mar 2026 14:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DBB26B742;
+	Mon, 23 Mar 2026 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276924; cv=none; b=XznElEIKNE58Q1EE8ZVfEdrvjxveWTHHASACkIl+nG2MV7xrVo1gX4M6cKaPXuB53tbZqWkgCuhmbyE73DG8ZZjIsosveLRew9oSTgg7ydVA95piL2nSffm1TQ5ztdJHxDv9dcU36Q/1xgoOhthmOByOwCH4So2BinufTRvG5GU=
+	t=1774278519; cv=none; b=Gtew6KJnb2wlng0KW0puZTIkrHsiiItGvj6/Q8ynB1D3TRRN0S7ZBKWj3vrIDL6Q5VprZ9aO7UUGZX5M+x4nE9ATSmQFMCCwlQ+RzohZFuF3fBQM8SD5Rg9kjWcDE25Y7OYvNWTAWI03/dSua6k6eMcw6bKy3MH98G/4Odgk+oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276924; c=relaxed/simple;
-	bh=DgSd8fykyxybU8xfOPo94ZLbCkg6cYOEUX74jmMu7Y4=;
+	s=arc-20240116; t=1774278519; c=relaxed/simple;
+	bh=/ZC7g5KJ08ibVLlLmP2Ro8wnlt84oYV3M1pMMyTYoGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlfXGvGxiqgbriejohuOTpkwQOrMj4MXd4wzBFNrGNml6a9Hj9IhLjFwHX3yhVHjLKM+Fh8H1QJVfvsbLFn+Cxxf4hXXANAwmQsHdQnzjEJO4bEppNGX8n3/IEw2ZvdTZ36pwGdpxqmrmUKVop/xnYtgYA07GuTX0Hu2d5L51c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1h+hFi16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303F0C4CEF7;
-	Mon, 23 Mar 2026 14:42:04 +0000 (UTC)
+	 MIME-Version; b=P+bpIQg7pyHpdWb6BcCMJF1wBdMxowx1hPjyBPAV5bpwcjx30LdsHkgc4KbdN0DiwNVqa5AE9B3ygSShIbd/w2WoClhDPF6KVx59hmpk3AvrHYu4KfcZGTp/z54FBFYi4sZION1ADCnahODqm4fYjI9FhibIAdC9a9t9cdaPdu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGjy6zf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78606C4CEF7;
+	Mon, 23 Mar 2026 15:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276924;
-	bh=DgSd8fykyxybU8xfOPo94ZLbCkg6cYOEUX74jmMu7Y4=;
+	s=korg; t=1774278518;
+	bh=/ZC7g5KJ08ibVLlLmP2Ro8wnlt84oYV3M1pMMyTYoGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1h+hFi16Iyu8JuUtJkyRaRUuzIzd/Bq5/sjo6Vn+ZuE0XDrZ717rvCVosB9T4rnz/
-	 JFpbC1rdQYjLhXVv36Tg+j5cUBOqPzaZ6J57qlq8K2oPS5qLoTUR+Di4atXq6Wz1KK
-	 5KXXe9/H9XqRMWkMKRrsy8Al56g39z70AMITqL1c=
+	b=hGjy6zf/OpWfxMk14kP/SGVYDntuvH4kA9XpIM/d7qFevYdKq6cM3G7hLwfUeF/z6
+	 U1WxODayXAByEadVrpq/G1o7a5TdT3Hr7r0YTvGCOxUM3g14uS6d7oOQUNVTYtm+ft
+	 2Ipih93Att+duHRyrVH7G2G5M/hlTHHG6sFJgk5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 257/460] iomap: reject delalloc mappings during writeback
-Date: Mon, 23 Mar 2026 14:44:13 +0100
-Message-ID: <20260323134532.802687651@linuxfoundation.org>
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alysa Liu <Alysa.Liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 334/567] drm/amdgpu: Fix use-after-free race in VM acquire
+Date: Mon, 23 Mar 2026 14:44:14 +0100
+Message-ID: <20260323134542.094939410@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +66,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228714-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229246-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 476EA2F7CD1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C6CDC2F6B19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Alysa Liu <Alysa.Liu@amd.com>
 
-[ Upstream commit d320f160aa5ff36cdf83c645cca52b615e866e32 ]
+commit 2c1030f2e84885cc58bffef6af67d5b9d2e7098f upstream.
 
-Filesystems should never provide a delayed allocation mapping to
-writeback; they're supposed to allocate the space before replying.
-This can lead to weird IO errors and crashes in the block layer if the
-filesystem is being malicious, or if it hadn't set iomap->dev because
-it's a delalloc mapping.
+Replace non-atomic vm->process_info assignment with cmpxchg()
+to prevent race when parent/child processes sharing a drm_file
+both try to acquire the same VM after fork().
 
-Fix this by failing writeback on delalloc mappings.  Currently no
-filesystems actually misbehave in this manner, but we ought to be
-stricter about things like that.
-
-Cc: stable@vger.kernel.org # v5.5
-Fixes: 598ecfbaa742ac ("iomap: lift the xfs writeback code to iomap")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/20260302173002.GL13829@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ iomap_add_to_ioend() => iomap_writepage_map_blocks() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c7c573275ec20db05be769288a3e3bb2250ec618)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1879,18 +1879,19 @@ static int iomap_writepage_map_blocks(st
- 		WARN_ON_ONCE(!folio->private && map_len < dirty_len);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1351,7 +1351,10 @@ static int init_kfd_vm(struct amdgpu_vm
+ 		*ef = dma_fence_get(&info->eviction_fence->base);
+ 	}
  
- 		switch (wpc->iomap.type) {
--		case IOMAP_INLINE:
--			WARN_ON_ONCE(1);
--			error = -EIO;
--			break;
--		case IOMAP_HOLE:
--			break;
--		default:
-+		case IOMAP_UNWRITTEN:
-+		case IOMAP_MAPPED:
- 			error = iomap_add_to_ioend(wpc, wbc, folio, inode, pos,
- 					end_pos, map_len);
- 			if (!error)
- 				(*count)++;
- 			break;
-+		case IOMAP_HOLE:
-+			break;
-+		default:
-+			WARN_ON_ONCE(1);
-+			error = -EIO;
-+			break;
- 		}
- 		dirty_len -= map_len;
- 		pos += map_len;
+-	vm->process_info = *process_info;
++	if (cmpxchg(&vm->process_info, NULL, *process_info) != NULL) {
++		ret = -EINVAL;
++		goto already_acquired;
++	}
+ 
+ 	/* Validate page directory and attach eviction fence */
+ 	ret = amdgpu_bo_reserve(vm->root.bo, true);
+@@ -1389,6 +1392,7 @@ validate_pd_fail:
+ 	amdgpu_bo_unreserve(vm->root.bo);
+ reserve_pd_fail:
+ 	vm->process_info = NULL;
++already_acquired:
+ 	if (info) {
+ 		/* Two fence references: one in info and one in *ef */
+ 		dma_fence_put(&info->eviction_fence->base);
 
 
 
