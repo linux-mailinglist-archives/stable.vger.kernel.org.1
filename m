@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oTE8D61bwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:37 +0100
+	id UQ+7I+lRwWn+SAQAu9opvQ
+	(envelope-from <stable+bounces-228289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C395F2F64BC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1709B2F519E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 99F643039D18
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 052CB3125B56
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12053B27ED;
-	Mon, 23 Mar 2026 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6843AF645;
+	Mon, 23 Mar 2026 14:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoH2DlRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqnTQf6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04B3B27C6;
-	Mon, 23 Mar 2026 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44C3ACF0E;
+	Mon, 23 Mar 2026 14:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278534; cv=none; b=K9/GAlwQ0eHfxSPQoQ6ooat+ZCSa+S5LLRmWPPTEVrrl1jG1vPIaTPEvTR/VAXRvbQgAHjJuHB+PTT485qQoijN7gBEfr6Fj5T3pBR+h7mTjkaoZtJzCKIinPL5s4GT7SvjOtoRKQKDyCAK7uLngsSQNiUruKa7Tu6sfFuvhex8=
+	t=1774274702; cv=none; b=EQpozcJaYRJK/jzhdTkBrV7tVXy07a1To4xZOmoBgWeamafu9Fn9wg/LCISxThr6CYU3aeQPiek55hzD9vPMpcNtJnS+ISKeGdHAUUcLTjR51XSnFgXo10rDIbs+NXu8OCVZzNrOwZR7VkJM5EB7irwOHUj9OLysCE9NkTAlDh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278534; c=relaxed/simple;
-	bh=1d0PGvj2csvT2KI0ZmqJmt9YZq2bu7I7GYLvyK+B71w=;
+	s=arc-20240116; t=1774274702; c=relaxed/simple;
+	bh=YD7OX+o3VPT/yV2fAoFcfY/9SeDckuWUZIiTFNC0jRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOaKa88QIIwQdiWpJlgkLLcQXHao3gRX483cTSk52PELqMTCmiI371eSDzORDpb1E+Fj5owNhmK9XLQLFcP008SR3YrJ/JMdbOPpUtDqwmLguP5NL+BzhpmGXNLdSQphE+BQ+83ZAm6CAgmZ/I4EgO0rEfCx7ymSX1WJO7ReGRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoH2DlRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AD8C4CEF7;
-	Mon, 23 Mar 2026 15:08:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b2kyN1XGJ2kZUPm/wPxJco8v6X8FH3Wgz2s0/zPl02d0YTUpO9efxV3bcbv6TGd60fRkx6/aKy9x5nEFHfmjxS+d8WCFTH0G7O7ZlwoMxP9u+SXGDuPxvduuaXNZRxeH+d+Q883htuc+0FhCYea3gXmr5w1/25KtrEmZaPvas6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqnTQf6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9404C2BC9E;
+	Mon, 23 Mar 2026 14:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278534;
-	bh=1d0PGvj2csvT2KI0ZmqJmt9YZq2bu7I7GYLvyK+B71w=;
+	s=korg; t=1774274702;
+	bh=YD7OX+o3VPT/yV2fAoFcfY/9SeDckuWUZIiTFNC0jRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KoH2DlRARKjBv6r5LfKEBbfiKMu1kmywqqHCet+FQnzM6b4UyDw00sj2wO2cldoDP
-	 R/3LTtaGDm0GOJRiYnZdJ/OkvsChuBy9Dzue7NfnOD/T0Kxx52j3gzDNhiWOr3Qa+5
-	 jl5THhpfTQtheLlCUijeBrLC48H6yOaOPQVL/J4Q=
+	b=xqnTQf6R2siO63jZZKg5VKfJbQzLyYyPkpDy31gMbsDdUWKntZT/rT0ONgI0EKarT
+	 iSSLiQ1E6S6aEl41QIO8kkXO+4nIf1/PnmvlSBEyp7NxTs1i+roixr4mzHVhW+poLt
+	 bEDBD4eEvfQaFP0FEL869YfR+ChNMBnDi2FXQwsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 339/567] cifs: make default value of retrans as zero
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 038/212] drm/i915/vrr: Configure VRR timings after enabling TRANS_DDI_FUNC_CTL
 Date: Mon, 23 Mar 2026 14:44:19 +0100
-Message-ID: <20260323134542.223544385@linuxfoundation.org>
+Message-ID: <20260323134504.966058428@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229251-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-228289-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C395F2F64BC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 1709B2F519E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit e3beefd3af09f8e460ddaf39063d3d7664d7ab59 upstream.
+[ Upstream commit 237aab549676288d9255bb8dcc284738e56eaa31 ]
 
-When retrans mount option was introduced, the default value was set
-as 1. However, in the light of some bugs that this has exposed recently
-we should change it to 0 and retain the old behaviour before this option
-was introduced.
+Apparently ICL may hang with an MCE if we write TRANS_VRR_VMAX/FLIPLINE
+before enabling TRANS_DDI_FUNC_CTL.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Personally I was only able to reproduce a hang (on an Dell XPS 7390
+2-in-1) with an external display connected via a dock using a dodgy
+type-C cable that made the link training fail. After the failed
+link training the machine would hang. TGL seemed immune to the
+problem for whatever reason.
+
+BSpec does tell us to configure VRR after enabling TRANS_DDI_FUNC_CTL
+as well. The DMC firmware also does the VRR restore in two stages:
+- first stage seems to be unconditional and includes TRANS_VRR_CTL
+  and a few other VRR registers, among other things
+- second stage is conditional on the DDI being enabled,
+  and includes TRANS_DDI_FUNC_CTL and TRANS_VRR_VMAX/VMIN/FLIPLINE,
+  among other things
+
+So let's reorder the steps to match to avoid the hang, and
+toss in an extra WARN to make sure we don't screw this up later.
+
+BSpec: 22243
+Cc: stable@vger.kernel.org
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reported-by: Benjamin Tissoires <bentiss@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15777
+Tested-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: dda7dcd9da73 ("drm/i915/vrr: Use fixed timings for platforms that support VRR")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260303095414.4331-1-ville.syrjala@linux.intel.com
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+(cherry picked from commit 93f3a267c3dd4d811b224bb9e179a10d81456a74)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/fs_context.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_display.c |    1 -
+ drivers/gpu/drm/i915/display/intel_vrr.c     |   14 ++++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1809,7 +1809,7 @@ int smb3_init_fs_context(struct fs_conte
- 	ctx->backupuid_specified = false; /* no backup intent for a user */
- 	ctx->backupgid_specified = false; /* no backup intent for a group */
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -1642,7 +1642,6 @@ static void hsw_configure_cpu_transcoder
+ 	}
  
--	ctx->retrans = 1;
-+	ctx->retrans = 0;
- 	ctx->reparse_type = CIFS_REPARSE_TYPE_DEFAULT;
+ 	intel_set_transcoder_timings(crtc_state);
+-	intel_vrr_set_transcoder_timings(crtc_state);
  
- /*
+ 	if (cpu_transcoder != TRANSCODER_EDP)
+ 		intel_de_write(display, TRANS_MULT(display, cpu_transcoder),
+--- a/drivers/gpu/drm/i915/display/intel_vrr.c
++++ b/drivers/gpu/drm/i915/display/intel_vrr.c
+@@ -465,6 +465,18 @@ void intel_vrr_set_transcoder_timings(co
+ 		return;
+ 
+ 	/*
++	 * Bspec says:
++	 * "(note: VRR needs to be programmed after
++	 *  TRANS_DDI_FUNC_CTL and before TRANS_CONF)."
++	 *
++	 * In practice it turns out that ICL can hang if
++	 * TRANS_VRR_VMAX/FLIPLINE are written before
++	 * enabling TRANS_DDI_FUNC_CTL.
++	 */
++	drm_WARN_ON(display->drm,
++		    !(intel_de_read(display, TRANS_DDI_FUNC_CTL(display, cpu_transcoder)) & TRANS_DDI_FUNC_ENABLE));
++
++	/*
+ 	 * This bit seems to have two meanings depending on the platform:
+ 	 * TGL: generate VRR "safe window" for DSB vblank waits
+ 	 * ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
+@@ -658,6 +670,8 @@ void intel_vrr_transcoder_enable(const s
+ 	if (!HAS_VRR(display))
+ 		return;
+ 
++	intel_vrr_set_transcoder_timings(crtc_state);
++
+ 	if (!intel_vrr_possible(crtc_state))
+ 		return;
+ 
 
 
 
