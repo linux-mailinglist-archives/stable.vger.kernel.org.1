@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCJkKIZswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:30 +0100
+	id 4MtxD15wwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F371B2F87FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88BD2F9160
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C52F230CCC5E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7C3C31A8D5D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E3622FE0A;
-	Mon, 23 Mar 2026 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA733BAD9C;
+	Mon, 23 Mar 2026 16:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/zf0Ik7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWZNAp4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35F13AA4FD;
-	Mon, 23 Mar 2026 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D13C2580D7;
+	Mon, 23 Mar 2026 16:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278006; cv=none; b=RIu+Dfd4/PGpBCL6kTuWRJu4Kxpayo3zYghUTV+jksfcklyDnNd4vEb7j8Dt7khq3hY7iOUrO4W71DybYx8koS9Ia9t8RC735+pg5sHRYuSYe5hnH4e9yaELium5CRYofNhaDjsNay1Oa7fEp1pGr8OaHW+i5SxgN0nCACxSsk0=
+	t=1774282304; cv=none; b=pA9rrS8/l/C4aN15AzTtPyrd91u51UzzVrVBJHw0Y6AawhGed7PJU16z+KB+iARzYSzimLT/N1hMYO9Pi1eeK3T9cVAkPB0wYVnyTplpI2Sao3bFwnoesDWQbSJcasbYPDQZqcqZOWV2K/4kcbVfdVd04ctvUajcTGv4A08crV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278006; c=relaxed/simple;
-	bh=mZEQ0Ye4b3E71FSwd5QtTB2O93ThNh6f3DKlbrhaLpg=;
+	s=arc-20240116; t=1774282304; c=relaxed/simple;
+	bh=+nrVYSUHmsyXqMovfnF/PfGNCjCdSPOqck0y/QGz98s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkGWzDC7Ye4TLVycNmcf9hMM8Zae9Wz0d4Q+o0Ff/qBzIzbEfU4ea5MXDFYb8k4HcvUhRif5II4m6kZMTMyVkoHtnKppu9tLqq3GcRQE4XzUVzJrU6V4rKdn2/RVYG5HKnFpLjGdPZxjlHCwW62pkxHgHj6mMBRgWb3wpJB77Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/zf0Ik7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEF0C4CEF7;
-	Mon, 23 Mar 2026 15:00:05 +0000 (UTC)
+	 MIME-Version; b=QI0VmStoRIsr7e9KGdiRJh6MisRF2AAAqraihvPV2haKG3lnlT/sjxpo7jsxLZjbqtudcBhW2s4fNYj19CuSFJ8h+fiYOY2aERY6A/OCmubpcKW1NHGfdcdNoeB0fpfupcTFRpxgsg7S4ahVviAiptnq39xYWj2nSVfoG9gzZ8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWZNAp4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31689C4CEF7;
+	Mon, 23 Mar 2026 16:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278006;
-	bh=mZEQ0Ye4b3E71FSwd5QtTB2O93ThNh6f3DKlbrhaLpg=;
+	s=korg; t=1774282304;
+	bh=+nrVYSUHmsyXqMovfnF/PfGNCjCdSPOqck0y/QGz98s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/zf0Ik7Kqt63TNf9W/psWjYGON+As8WFMwp87M+jQl+BKlvTV/Chuo89FacZzjo+
-	 QJCYru/7GWOYrQquGOVISulaAByiY5jk1eQ+nYnnFtAGysVjrjCL4dKYWbqXgQQffS
-	 tz2N3i5cwLD2BOc1zTNCeczeLhlygk/U76SSDrp0=
+	b=DWZNAp4MXzJPW6ymtVvQ51JUVKbkwLcH4+huhtufCP2Ki/VBkZsu8HrLkHL2KtAmO
+	 bRhI3CAlpwhVhIpKzCWkcemx8JMawnIhN8LKGU695MNlbBHybam56Tq9X47zzsd+hl
+	 3au2SLQwoksVDeZhOlSk5794ODFWRglD9ySYFTtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <joe@dama.to>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Latypov <dlatypov@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/567] nfc: nci: clear NCI_DATA_EXCHANGE before calling completion callback
+Subject: [PATCH 6.1 108/481] kunit: tool: print summary of failed tests if a few failed out of a lot
 Date: Mon, 23 Mar 2026 14:41:30 +0100
-Message-ID: <20260323134538.039410718@linuxfoundation.org>
+Message-ID: <20260323134527.916016790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +67,184 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229083-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229580-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F371B2F87FC
+X-Rspamd-Queue-Id: A88BD2F9160
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Daniel Latypov <dlatypov@google.com>
 
-[ Upstream commit 0efdc02f4f6d52f8ca5d5889560f325a836ce0a8 ]
+[ Upstream commit f19dd011d8de6f0c1d20abea5158aa4f5d9cea44 ]
 
-Move clear_bit(NCI_DATA_EXCHANGE) before invoking the data exchange
-callback in nci_data_exchange_complete().
+E.g. all the hw_breakpoint tests are failing right now.
+So if I run `kunit.py run --altests --arch=x86_64`, then I see
+> Testing complete. Ran 408 tests: passed: 392, failed: 9, skipped: 7
 
-The callback (e.g. rawsock_data_exchange_complete) may immediately
-schedule another data exchange via schedule_work(tx_work).  On a
-multi-CPU system, tx_work can run and reach nci_transceive() before
-the current nci_data_exchange_complete() clears the flag, causing
-test_and_set_bit(NCI_DATA_EXCHANGE) to return -EBUSY and the new
-transfer to fail.
+Seeing which 9 tests failed out of the hundreds is annoying.
+If my terminal doesn't have scrollback support, I have to resort to
+looking at `.kunit/test.log` for the `not ok` lines.
 
-This causes intermittent flakes in nci/nci_dev in NIPA:
+Teach kunit.py to print a summarized list of failures if the # of tests
+reachs an arbitrary threshold (>=100 tests).
 
-  # #  RUN           NCI.NCI1_0.t4t_tag_read ...
-  # # t4t_tag_read: Test terminated by timeout
-  # #          FAIL  NCI.NCI1_0.t4t_tag_read
-  # not ok 3 NCI.NCI1_0.t4t_tag_read
+To try and keep the output from being too long/noisy, this new logic
+a) just reports "parent_test failed" if every child test failed
+b) won't print anything if there are >10 failures (also arbitrary).
 
-Fixes: 38f04c6b1b68 ("NFC: protect nci_data_exchange transactions")
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-5-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+With this patch, we get an extra line of output showing:
+> Testing complete. Ran 408 tests: passed: 392, failed: 9, skipped: 7
+> Failures: hw_breakpoint
+
+This also works with parameterized tests, e.g. if I add a fake failure
+> Failures: kcsan.test_atomic_builtins_missing_barrier.threads=6
+
+Note: we didn't have enough tests for this to be a problem before.
+But with commit 980ac3ad0512 ("kunit: tool: rename all_test_uml.config,
+use it for --alltests"), --alltests works and thus running >100 tests
+will probably become more common.
+
+Signed-off-by: Daniel Latypov <dlatypov@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/data.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tools/testing/kunit/kunit_parser.py    | 47 ++++++++++++++++++++++++++
+ tools/testing/kunit/kunit_tool_test.py | 22 ++++++++++++
+ 2 files changed, 69 insertions(+)
 
-diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
-index 3d36ea5701f02..7a3fb2a397a1e 100644
---- a/net/nfc/nci/data.c
-+++ b/net/nfc/nci/data.c
-@@ -33,7 +33,8 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
- 	conn_info = nci_get_conn_info_by_conn_id(ndev, conn_id);
- 	if (!conn_info) {
- 		kfree_skb(skb);
--		goto exit;
-+		clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
-+		return;
- 	}
+diff --git a/tools/testing/kunit/kunit_parser.py b/tools/testing/kunit/kunit_parser.py
+index 1ae873e3e3415..94dba66feec50 100644
+--- a/tools/testing/kunit/kunit_parser.py
++++ b/tools/testing/kunit/kunit_parser.py
+@@ -58,6 +58,10 @@ class Test:
+ 		self.counts.errors += 1
+ 		stdout.print_with_timestamp(stdout.red('[ERROR]') + f' Test: {self.name}: {error_message}')
  
- 	cb = conn_info->data_exchange_cb;
-@@ -45,6 +46,12 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
- 	del_timer_sync(&ndev->data_timer);
- 	clear_bit(NCI_DATA_EXCHANGE_TO, &ndev->flags);
- 
-+	/* Mark the exchange as done before calling the callback.
-+	 * The callback (e.g. rawsock_data_exchange_complete) may
-+	 * want to immediately queue another data exchange.
-+	 */
-+	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
++	def ok_status(self) -> bool:
++		"""Returns true if the status was ok, i.e. passed or skipped."""
++		return self.status in (TestStatus.SUCCESS, TestStatus.SKIPPED)
 +
- 	if (cb) {
- 		/* forward skb to nfc core */
- 		cb(cb_context, skb, err);
-@@ -54,9 +61,6 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
- 		/* no waiting callback, free skb */
- 		kfree_skb(skb);
- 	}
--
--exit:
--	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
- }
+ class TestStatus(Enum):
+ 	"""An enumeration class to represent the status of a test."""
+ 	SUCCESS = auto()
+@@ -565,6 +569,40 @@ def print_test_footer(test: Test) -> None:
+ 	stdout.print_with_timestamp(format_test_divider(message,
+ 		len(message) - stdout.color_len()))
  
- /* ----------------- NCI TX Data ----------------- */
++
++
++def _summarize_failed_tests(test: Test) -> str:
++	"""Tries to summarize all the failing subtests in `test`."""
++
++	def failed_names(test: Test, parent_name: str) -> List[str]:
++		# Note: we use 'main' internally for the top-level test.
++		if not parent_name or parent_name == 'main':
++			full_name = test.name
++		else:
++			full_name = parent_name + '.' + test.name
++
++		if not test.subtests:  # this is a leaf node
++			return [full_name]
++
++		# If all the children failed, just say this subtest failed.
++		# Don't summarize it down "the top-level test failed", though.
++		failed_subtests = [sub for sub in test.subtests if not sub.ok_status()]
++		if parent_name and len(failed_subtests) ==  len(test.subtests):
++			return [full_name]
++
++		all_failures = []  # type: List[str]
++		for t in failed_subtests:
++			all_failures.extend(failed_names(t, full_name))
++		return all_failures
++
++	failures = failed_names(test, '')
++	# If there are too many failures, printing them out will just be noisy.
++	if len(failures) > 10:  # this is an arbitrary limit
++		return ''
++
++	return 'Failures: ' + ', '.join(failures)
++
++
+ def print_summary_line(test: Test) -> None:
+ 	"""
+ 	Prints summary line of test object. Color of line is dependent on
+@@ -587,6 +625,15 @@ def print_summary_line(test: Test) -> None:
+ 		color = stdout.red
+ 	stdout.print_with_timestamp(color(f'Testing complete. {test.counts}'))
+ 
++	# Summarize failures that might have gone off-screen since we had a lot
++	# of tests (arbitrarily defined as >=100 for now).
++	if test.ok_status() or test.counts.total() < 100:
++		return
++	summarized = _summarize_failed_tests(test)
++	if not summarized:
++		return
++	stdout.print_with_timestamp(color(summarized))
++
+ # Other methods:
+ 
+ def bubble_up_test_results(test: Test) -> None:
+diff --git a/tools/testing/kunit/kunit_tool_test.py b/tools/testing/kunit/kunit_tool_test.py
+index e2cd2cc2e98f6..42cbf28bfa6c6 100755
+--- a/tools/testing/kunit/kunit_tool_test.py
++++ b/tools/testing/kunit/kunit_tool_test.py
+@@ -309,6 +309,28 @@ class KUnitParserTest(unittest.TestCase):
+ 				result.status)
+ 			self.assertEqual('kunit-resource-test', result.subtests[0].name)
+ 
++	def test_summarize_failures(self):
++		output = """
++		KTAP version 1
++		1..2
++			# Subtest: all_failed_suite
++			1..2
++			not ok 1 - test1
++			not ok 2 - test2
++		not ok 1 - all_failed_suite
++			# Subtest: some_failed_suite
++			1..2
++			ok 1 - test1
++			not ok 2 - test2
++		not ok 1 - some_failed_suite
++		"""
++		result = kunit_parser.parse_run_tests(output.splitlines())
++		self.assertEqual(kunit_parser.TestStatus.FAILURE, result.status)
++
++		self.assertEqual(kunit_parser._summarize_failed_tests(result),
++			'Failures: all_failed_suite, some_failed_suite.test2')
++
++
+ def line_stream_from_strs(strs: Iterable[str]) -> kunit_parser.LineStream:
+ 	return kunit_parser.LineStream(enumerate(strs, start=1))
+ 
 -- 
 2.51.0
 
