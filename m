@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGFJBCFOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:49 +0100
+	id WNKzJrFTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F6C2F4923
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4649E2F557E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A21D630BFE93
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1824D30443ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7993B2FE6;
-	Mon, 23 Mar 2026 14:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2773B19A2;
+	Mon, 23 Mar 2026 14:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDrl3/zC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvGoRFbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204043AEF4E;
-	Mon, 23 Mar 2026 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71446394476;
+	Mon, 23 Mar 2026 14:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274615; cv=none; b=jkLh06z0kD2Xlv6jJ3Jsrd8ZTuxjgmV9jCIpDIi0dYQCDNsSfHd+I512odNjnndyBHLR3PRhu/AXO76UAMo7qCGNESEgkp9QOvg1tU6KjwIWlK7xoqZMhhQfUtY12M10/uY6EIY7+L/2VAnAwSWju9m4oZx+JVszOpUs7lgn2bc=
+	t=1774276989; cv=none; b=KNBGgraJyiK5xCsrBAPHWzM+YKvcCm5UynpZBPnesCG8RXppTF/sjBqXcLnkWbRUTsLrrJGJzYqQqBjCYVQMnmVjSYsurqXz/vt3o8BJygvuBUTcfUZ705jWNQq2z2tRUkUposhUllsuOdxJOCmWbDv+j73mMPuP03g9ovEgxKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274615; c=relaxed/simple;
-	bh=KyrSSWQSwv1WDq79ghrko66jAACPShmKJLiehdOPXrM=;
+	s=arc-20240116; t=1774276989; c=relaxed/simple;
+	bh=shvIH7kSACZGSJzDbS83aZnlXdHNGgY/mVnyeKGQDaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3nV2FtPgSbfWAPvOjn/KaVu/RBzA7vi6qf4ysb9mLQkMSkIuFw+nCWrr3l5K0E7wixrWoSpMg3j827/YzWSKUupqbOHA2JZMo/OFYzGTmOI7P8GrUGGliZrljSx1Ly8rZPQQ6VnBCO5Ve7JFGhjl4gKM+t7/3aijRXhOrg5ta0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDrl3/zC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A042C4CEF7;
-	Mon, 23 Mar 2026 14:03:34 +0000 (UTC)
+	 MIME-Version; b=sxr6zok8cdqgPI/fnLawpyypC6jWfIQHZF64FKs7eEYZZt8q1ISQXMn4P3W5P3NszuN5n7TCWTod0+vfF+FSv/wvHAFaU3suX2V0A+8HWljsxzlD0/oeAAz36tiLKMx5iIN3RzfW1lWEj5mrbRkMsgH+qaDVXbfP02+MNzvt6Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvGoRFbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D07C4CEF7;
+	Mon, 23 Mar 2026 14:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274614;
-	bh=KyrSSWQSwv1WDq79ghrko66jAACPShmKJLiehdOPXrM=;
+	s=korg; t=1774276989;
+	bh=shvIH7kSACZGSJzDbS83aZnlXdHNGgY/mVnyeKGQDaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDrl3/zCwnDhz8LppFN8x6trRhcwwGRHAjisQcyEzclzIEAMuQ7qMmkVoyLH9LCVa
-	 FoNepkasjNovlPoldqQqG+I5T45C6czECUjqzGWgs1EjZhDqddvhYefEjjaRp23+ab
-	 QAooYgvQwzopSp5XW+cYK1rR84GfMo7X5YZB2f2U=
+	b=HvGoRFbGiAAya5cDyqQoYx/I0kkWNNX4MAkqm1x/d8wPIJx2H+eLJyLwPeDuIY8MN
+	 RIlcp7VH5zDyJF3CByhIo4lvp1XZDyHb2coust1Y7UjmpdB5h9Y4aVtSWVsdUyT9zD
+	 uBuZjyJ0P0nmgUQglnddBOwNOrX6fxCFAjd9DF0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.18 053/212] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Wenshan Lan <jetlan9@163.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 278/460] ice: fix devlink reload call trace
 Date: Mon, 23 Mar 2026 14:44:34 +0100
-Message-ID: <20260323134505.445290263@linuxfoundation.org>
+Message-ID: <20260323134533.307974826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +72,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228261-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228738-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,molgen.mpg.de,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 53F6C2F4923
+X-Rspamd-Queue-Id: 4649E2F557E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-commit 2b76e0cc7803e5ab561c875edaba7f6bbd87fbb0 upstream.
+[ Upstream commit d3f867e7a04678640ebcbfb81893c59f4af48586 ]
 
-The GL9750 SD host controller has intermittent data corruption during
-DMA write operations. The GM_BURST register's R_OSRC_Lmt field
-(bits 17:16), which limits outstanding DMA read requests from system
-memory, is not being cleared during initialization. The Windows driver
-sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
+Commit 4da71a77fc3b ("ice: read internal temperature sensor") introduced
+internal temperature sensor reading via HWMON. ice_hwmon_init() was added
+to ice_init_feature() and ice_hwmon_exit() was added to ice_remove(). As a
+result if devlink reload is used to reinit the device and then the driver
+is removed, a call trace can occur.
 
-Clear R_OSRC_Lmt to match the Windows driver behavior. This eliminates
-write corruption verified with f3write/f3read tests while maintaining
-DMA performance.
+BUG: unable to handle page fault for address: ffffffffc0fd4b5d
+Call Trace:
+ string+0x48/0xe0
+ vsnprintf+0x1f9/0x650
+ sprintf+0x62/0x80
+ name_show+0x1f/0x30
+ dev_attr_show+0x19/0x60
 
-Cc: stable@vger.kernel.org
-Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic GL975x support")
-Closes: https://lore.kernel.org/linux-mmc/33d12807-5c72-41ce-8679-57aa11831fad@linux.dev/
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Reviewed-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+The call trace repeats approximately every 10 minutes when system
+monitoring tools (e.g., sadc) attempt to read the orphaned hwmon sysfs
+attributes that reference freed module memory.
+
+The sequence is:
+1. Driver load, ice_hwmon_init() gets called from ice_init_feature()
+2. Devlink reload down, flow does not call ice_remove()
+3. Devlink reload up, ice_hwmon_init() gets called from
+   ice_init_feature() resulting in a second instance
+4. Driver unload, ice_hwmon_exit() called from ice_remove() leaving the
+   first hwmon instance orphaned with dangling pointer
+
+Fix this by moving ice_hwmon_exit() from ice_remove() to
+ice_deinit_features() to ensure proper cleanup symmetry with
+ice_hwmon_init().
+
+Fixes: 4da71a77fc3b ("ice: read internal temperature sensor")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Adjust context. The context change is irrelevant to the current patch
+logic. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_main.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -68,6 +68,9 @@
- #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
- #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4920,6 +4920,7 @@ static void ice_deinit_features(struct i
+ 		ice_dpll_deinit(pf);
+ 	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_SWITCHDEV)
+ 		xa_destroy(&pf->eswitch.reprs);
++	ice_hwmon_exit(pf);
+ }
  
-+#define SDHCI_GLI_9750_GM_BURST_SIZE		  0x510
-+#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT  GENMASK(17, 16)
-+
- #define SDHCI_GLI_9750_TUNING_CONTROL	          0x540
- #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
- #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
-@@ -345,10 +348,16 @@ static void gli_set_9750(struct sdhci_ho
- 	u32 misc_value;
- 	u32 parameter_value;
- 	u32 control_value;
-+	u32 burst_value;
- 	u16 ctrl2;
+ static void ice_init_wakeup(struct ice_pf *pf)
+@@ -5451,8 +5452,6 @@ static void ice_remove(struct pci_dev *p
+ 		ice_free_vfs(pf);
+ 	}
  
- 	gl9750_wt_on(host);
- 
-+	/* clear R_OSRC_Lmt to avoid DMA write corruption */
-+	burst_value = sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
-+	burst_value &= ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
-+	sdhci_writel(host, burst_value, SDHCI_GLI_9750_GM_BURST_SIZE);
-+
- 	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
- 	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
- 	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
+-	ice_hwmon_exit(pf);
+-
+ 	ice_service_task_stop(pf);
+ 	ice_aq_cancel_waiting_tasks(pf);
+ 	set_bit(ICE_DOWN, pf->state);
 
 
 
