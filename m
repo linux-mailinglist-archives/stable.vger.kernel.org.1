@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-228697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCj5D8FUwWlXSQQAu9opvQ
-	(envelope-from <stable+bounces-228697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:05 +0100
+	id WHbWADFHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1C62F57E5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573172F3918
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4555A305D4A4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C45AE30879CB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7913B38B0;
-	Mon, 23 Mar 2026 14:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0843AC0D2;
+	Mon, 23 Mar 2026 13:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoJAcrcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzu41ByE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D923B2FFC;
-	Mon, 23 Mar 2026 14:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1321D00A;
+	Mon, 23 Mar 2026 13:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276880; cv=none; b=rhO8nIEgFQ0tx//YtzISLngbb5nVmT9gzrb5w6tH5MHpsSJBcLJIF2B4ZcxrbUoVve1JsWHDuRnMm7tPv/Qj4Atbo1nEVGfCOojYjzHiW8JendRl0XuqVagWXpE6b33oX5vNzETd0qjxoLmU/9j4bh3mwCPMfc5k4UkyMjwgyYQ=
+	t=1774273936; cv=none; b=DMkq17oS+zkQ0S9CnZvTj7ZhGSBwpi1s+5T9Y+AGj5tOSNOcXDDFia7Y+PuzXth9EYQy5AHzhvDYt1hhco6iubYzcziSczNzGmCrsViSKzau8SI4HUY27buRMhYL+FlM/NpMCdxLfEK2lYprMYQFvY0VNnv7yw4e8AZPxi/KMe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276880; c=relaxed/simple;
-	bh=E97Jwtv8B9QIG4ywpP9s5or7pti2J2DdiZtw6B0qYEE=;
+	s=arc-20240116; t=1774273936; c=relaxed/simple;
+	bh=PxiVlIaRW2KicaxEN33twZvgwUDOQ4OwYP36vxwc75s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSH56ohkfmnu0wc/OqjUIHU/JkrD/PHo2z+9V4MdRmTzubDcnD1QYcIoZMrLYVU/mzpcKX5zNBb1lO8gbh2M0RozCEhm28NystuT/JDNmQ4WcMTjj5HLe8tgaaIbJZQGA/0j8KGx1J/n23DQm6hq4JgR28yGToUVz2JtcRcwJUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoJAcrcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BCBC2BCB3;
-	Mon, 23 Mar 2026 14:41:20 +0000 (UTC)
+	 MIME-Version; b=KDWdkBBNUqa1d+qBFcuUo9xr0tuc5rQ3x7Qk2RBUyZyJ5wnbdX0wX/A0Xn5q2bPm+YSXV1+1S9nADPzFRPUHixYU8LP54HXZvfRW41+cJjUv9HvZxsdGyxbwBTyusBPL+jz00jJcTI1+p+2WphAicbATJNdGQTkB/6mIWRbeBBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzu41ByE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56164C4CEF7;
+	Mon, 23 Mar 2026 13:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276880;
-	bh=E97Jwtv8B9QIG4ywpP9s5or7pti2J2DdiZtw6B0qYEE=;
+	s=korg; t=1774273936;
+	bh=PxiVlIaRW2KicaxEN33twZvgwUDOQ4OwYP36vxwc75s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FoJAcrccLevW6E8VLJJg0tTSQRzhv3cVVkF/MhdBTFvANXAOxByCEVeK8gdR/jUs1
-	 8KaKc15o4l5t1Sc4RHkNlSaPSqa0BWq8TNGPIQDm0Bp5ayk5CMCDBPdiZ+aBtCJdBO
-	 ztJ5k9FYnpdGzpSQr5Ap2sKTuLR5f/KE6NhOdlCE=
+	b=Lzu41ByEdSHjVst7MsFPNSYLEP/0X5AEunjgKa0HoK+Mi3ryPF5DL/wUM05zx9FVY
+	 yhfKJjxaGWSGQ++iZpmG6AKqGn6xakhdhfGTej/6owHXrG5ihG2L2ftEKbgEz7aplv
+	 WySwzlLeq/64fwnylagUU375vFbQXoydzJ2wvLCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Rainer Fiebig <jrf@mailbox.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/460] kbuild: Leave objtool binary around with make clean
+	Martin Michaelis <code@mgjm.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.19 056/220] io_uring/kbuf: fix missing BUF_MORE for incremental buffers at EOF
 Date: Mon, 23 Mar 2026 14:43:53 +0100
-Message-ID: <20260323134532.328196712@linuxfoundation.org>
+Message-ID: <20260323134506.355298959@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,133 +67,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228697-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228037-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5F1C62F57E5
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,mgjm.de:email]
+X-Rspamd-Queue-Id: 573172F3918
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 ]
+commit 3ecd3e03144b38a21a3b70254f1b9d2e16629b09 upstream.
 
-The difference between 'make clean' and 'make mrproper' is documented in
-'make help' as:
+For a zero length transfer, io_kbuf_inc_commit() is called with !len.
+Since we never enter the while loop to consume the buffers,
+io_kbuf_inc_commit() ends up returning true, consuming the buffer. But
+if no data was consumed, by definition it cannot have consumed the
+buffer. Return false for that case.
 
-  clean     - Remove most generated files but keep the config and
-              enough build support to build external modules
-  mrproper  - Remove all generated files + config + various backup files
-
-After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
-target"), running 'make clean' then attempting to build an external
-module with the resulting build directory fails with
-
-  $ make ARCH=x86_64 O=build clean
-
-  $ make -C build M=... MO=...
-  ...
-  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
-
-as 'make clean' removes the objtool binary.
-
-Split the objtool clean target into mrproper and clean like Kbuild does
-and remove all generated artifacts with 'make clean' except for the
-objtool binary, which is removed with 'make mrproper'. To avoid a small
-race when running the objtool clean target through both objtool_mrproper
-and objtool_clean when running 'make mrproper', modify objtool's clean
-up find command to avoid using find's '-delete' command by piping the
-files into 'xargs rm -f' like the rest of Kbuild does.
-
+Reported-by: Martin Michaelis <code@mgjm.de>
 Cc: stable@vger.kernel.org
-Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
-Reported-by: Michal Suchanek <msuchanek@suse.de>
-Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
-Reported-by: Rainer Fiebig <jrf@mailbox.org>
-Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Tested-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1553
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile               |    8 ++++----
- tools/objtool/Makefile |    8 +++++---
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ io_uring/kbuf.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1371,13 +1371,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -34,6 +34,10 @@ struct io_provide_buf {
  
--PHONY += objtool_clean
-+PHONY += objtool_clean objtool_mrproper
- 
- objtool_O = $(abspath $(objtree))/tools/objtool
- 
--objtool_clean:
-+objtool_clean objtool_mrproper:
- ifneq ($(wildcard $(objtool_O)),)
--	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
-+	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
- endif
- 
- tools/: FORCE
-@@ -1548,7 +1548,7 @@ PHONY += $(mrproper-dirs) mrproper
- $(mrproper-dirs):
- 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
- 
--mrproper: clean $(mrproper-dirs)
-+mrproper: clean objtool_mrproper $(mrproper-dirs)
- 	$(call cmd,rmfiles)
- 	@find . $(RCS_FIND_IGNORE) \
- 		\( -name '*.rmeta' \) \
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -91,10 +91,12 @@ $(LIBSUBCMD)-clean:
- 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
- 
- clean: $(LIBSUBCMD)-clean
--	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
--	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
-+	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
- 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
- 
-+mrproper: clean
-+	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
+ {
++	/* No data consumed, return false early to avoid consuming the buffer */
++	if (!len)
++		return false;
 +
- FORCE:
- 
--.PHONY: clean FORCE
-+.PHONY: clean mrproper FORCE
+ 	while (len) {
+ 		struct io_uring_buf *buf;
+ 		u32 buf_len, this_len;
 
 
 
