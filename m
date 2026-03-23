@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG0+LWRbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:24 +0100
+	id UI7yKWdtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64702F6412
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4976E2F8A29
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5827F3056794
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 496833091CCE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8393B95F0;
-	Mon, 23 Mar 2026 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07003A960E;
+	Mon, 23 Mar 2026 16:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbgK4qVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epOtG6Dt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6473B47DE;
-	Mon, 23 Mar 2026 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A0E344D99;
+	Mon, 23 Mar 2026 16:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278355; cv=none; b=EqFCv4NQoIQGFTsEjXSG3T3JRkcjHJID267Oe14w4TKIpxTapiP+/Gd8EZLL6R8nAv+UrvZkGXVmTm/lz0z7K02/0Ore+UZA9X/xRRYMBiCgfyl5yeSHFmOSlHKO7qnOTWIPoSHpOc6JgwZ27dgettVQrk4fnCFol6Fomq/tkI0=
+	t=1774282496; cv=none; b=fsVP6yRnG7QZPH3XDCOiFibeD1kuoEtCoaypbzD7vX80LbuWSgLdwES75nTI3s3fuUPeMRHTe8qNSp47I62M7qrvJTAV7I3zfsJRNtKiDFFiFiW2Rcjas29cGufKkNCBn3SEJnNc4zTtaeMR0v7XTZA71QbzrDaVLwQyhq45pEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278355; c=relaxed/simple;
-	bh=5pnITQGUsfobNk0zUidOgVlvPP9uaYBFehhMJyCdbcM=;
+	s=arc-20240116; t=1774282496; c=relaxed/simple;
+	bh=plqNyhSxwjZz3NRwU4nZiQDYu2TtCtfm5JXuCiWB5f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9Pq9+4yr7a0ZCqrvoAhdJY+uFIGap/F8bA0WfWEV1BVh/jwMOaLwN30jihmSJdUQw9l5CVRFWb3CxWnGhGstTuT3wSuOBYlbHbMLDcTUtqpxTGUEXpzEhOmEWSur9dTKMrIsMlOKuaMtKHy2IZ+KNWkdt2UQSYS5NQx7rE1Ue0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbgK4qVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DBEC2BC9E;
-	Mon, 23 Mar 2026 15:05:54 +0000 (UTC)
+	 MIME-Version; b=Y18AkzjZpZfFp7mKJbglOU8e/1y97Jnkx2WRf8b3fqvGREv2VSvXai3gNNUhKT1+tyXXRFf4ZT7moM+uITet2ojHo7vg0eY15HlKBvG9LB/+APcmIRhub497YxWEBaTQWF7To7t5H3xMXT3u6qMBfSSmWa5+/MefTk5wrUXMb2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epOtG6Dt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5AFC4CEF7;
+	Mon, 23 Mar 2026 16:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278355;
-	bh=5pnITQGUsfobNk0zUidOgVlvPP9uaYBFehhMJyCdbcM=;
+	s=korg; t=1774282496;
+	bh=plqNyhSxwjZz3NRwU4nZiQDYu2TtCtfm5JXuCiWB5f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PbgK4qVFPOxF0QN1N0tGBx1xM2w7Q0qxwGD7gHJNlOGCGqEy2mt9Fd0Nrcr90zqYM
-	 OSH38jFqfNp8KOdy8RdLWH0eQxnitnTVHyS6sbq7hum7Mo0XEF4gGlpIlS/p9LGWKf
-	 R+AdDnB+gJNqs7y5HRnEooX09ihRQQcU57F5oUdE=
+	b=epOtG6DtKco2ULxWwdpmdqHiOswPSrxJizQO9ayQNsBia89rKxM6XB+plNefv1Hxy
+	 CAYz8pJjrjtd1YZWTBxvGGyqJz6lnAp1S7H25EdwBsSV6L3XR8AhukDF9k2iY5sW/+
+	 wLG816QP2AUDSDSUomgB+ogsKVFtyfYKtAWyxbjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/567] amd-xgbe: fix link status handling in xgbe_rx_adaptation
+Subject: [PATCH 6.1 176/481] netfilter: nft_set_pipapo: fix stack out-of-bounds read in pipapo_drop()
 Date: Mon, 23 Mar 2026 14:42:38 +0100
-Message-ID: <20260323134539.722728110@linuxfoundation.org>
+Message-ID: <20260323134529.504588680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229193-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229650-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B64702F6412
+X-Rspamd-Queue-Id: 4976E2F8A29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 6485cb96be5cd0f4bf39554737ba11322cc9b053 ]
+[ Upstream commit d6d8cd2db236a9dd13dbc2d05843b3445cc964b5 ]
 
-The link status bit is latched low to allow detection of momentary
-link drops. If the status indicates that the link is already down,
-read it again to obtain the current state.
+pipapo_drop() passes rulemap[i + 1].n to pipapo_unmap() as the
+to_offset argument on every iteration, including the last one where
+i == m->field_count - 1. This reads one element past the end of the
+stack-allocated rulemap array (declared as rulemap[NFT_PIPAPO_MAX_FIELDS]
+with NFT_PIPAPO_MAX_FIELDS == 16).
 
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260306111629.1515676-2-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Although pipapo_unmap() returns early when is_last is true without
+using the to_offset value, the argument is evaluated at the call site
+before the function body executes, making this a genuine out-of-bounds
+stack read confirmed by KASAN:
+
+  BUG: KASAN: stack-out-of-bounds in pipapo_drop+0x50c/0x57c [nf_tables]
+  Read of size 4 at addr ffff8000810e71a4
+
+  This frame has 1 object:
+   [32, 160) 'rulemap'
+
+  The buggy address is at offset 164 -- exactly 4 bytes past the end
+  of the rulemap array.
+
+Pass 0 instead of rulemap[i + 1].n on the last iteration to avoid
+the out-of-bounds read.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 6d2c401bb246e..469b28c159e7d 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2050,7 +2050,7 @@ static void xgbe_set_rx_adap_mode(struct xgbe_prv_data *pdata,
- static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
- {
- 	struct xgbe_phy_data *phy_data = pdata->phy_data;
--	unsigned int reg;
-+	int reg;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 863162c823306..c8a5618742381 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1541,6 +1541,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 	int i;
  
- 	/* step 2: force PCS to send RX_ADAPT Req to PHY */
- 	XMDIO_WRITE_BITS(pdata, MDIO_MMD_PMAPMD, MDIO_PMA_RX_EQ_CTRL4,
-@@ -2072,11 +2072,20 @@ static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
+ 	nft_pipapo_for_each_field(f, i, m) {
++		bool last = i == m->field_count - 1;
+ 		int g;
  
- 	/* Step 4: Check for Block lock */
+ 		for (g = 0; g < f->groups; g++) {
+@@ -1560,7 +1561,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 		}
  
--	/* Link status is latched low, so read once to clear
--	 * and then read again to get current state
--	 */
--	reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
- 	reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
-+	if (reg < 0)
-+		goto set_mode;
-+
-+	/* Link status is latched low so that momentary link drops
-+	 * can be detected. If link was already down read again
-+	 * to get the latest state.
-+	 */
-+	if (!pdata->phy.link && !(reg & MDIO_STAT1_LSTATUS)) {
-+		reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
-+		if (reg < 0)
-+			goto set_mode;
-+	}
-+
- 	if (reg & MDIO_STAT1_LSTATUS) {
- 		/* If the block lock is found, update the helpers
- 		 * and declare the link up
+ 		pipapo_unmap(f->mt, f->rules, rulemap[i].to, rulemap[i].n,
+-			     rulemap[i + 1].n, i == m->field_count - 1);
++			     last ? 0 : rulemap[i + 1].n, last);
+ 		if (pipapo_resize(f, f->rules, f->rules - rulemap[i].n)) {
+ 			/* We can ignore this, a failure to shrink tables down
+ 			 * doesn't make tables invalid.
 -- 
 2.51.0
 
