@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qF3EF6NNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:43 +0100
+	id mMN6FVdswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6520F2F47D7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9A02F8776
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 62656303C4C4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3EDF7318B6E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C163AD536;
-	Mon, 23 Mar 2026 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE73AF663;
+	Mon, 23 Mar 2026 16:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfPETkr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgvDEyCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A923ACF03;
-	Mon, 23 Mar 2026 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBF027B50F;
+	Mon, 23 Mar 2026 16:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275688; cv=none; b=Z0m7J/RzX+p/p3sjb2HnIBKYmP16Pjtr6eSrMZhltdnWcEJCdmMR1wZceQdvXD4auScD2a/1kRjyKhbK0mJXNuNa2DbMJThNMYBGtRy4eNLpmZ5CwT+UCDWTzrv34Bdh27XgnQ0ylYAZiamCuHJMZezfV988ZeqwWX0BE0eQPNM=
+	t=1774282544; cv=none; b=VLEOC+jYMZYrQla0uUvF97qeNRj7s6G7DOZ+eYW6xqwTPaLDgtC4CQQlBwqeyE5lz4lyvBje62TFknFLGzT0/dL+WIO+/AGS//xZo9udui4j3voSeFmppAPuIAyKWF9D3zrPw8gcSHNyXG2qzZNf+LuGJpsFX3XBBSKRnoNYfjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275688; c=relaxed/simple;
-	bh=GD0ww/ZP5oY3AlUI1XuA2g8zxu47eaTpyGd4H+LFO8E=;
+	s=arc-20240116; t=1774282544; c=relaxed/simple;
+	bh=EQwRAkM//kaHfZI7kvhEanygZk1LQrRsVI0gQTjFKaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gT5WIDeldLdYWaeoJ6pUjf3/Nb5AP7cIb3954pFR3ywZI28cT7yRYl8qCAueVNTIXBLAdyBoUlexYlvZKH/TF3KMd1Sxpg0rYKx18/wH94XEiDPPuCm4sc9K6vtPSOQFOmNMhFNhsXM5djknxh84FOv2MZTOhSLr+CxBVokbw98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfPETkr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0078DC2BCB3;
-	Mon, 23 Mar 2026 14:21:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SXDPPOSCCfeRbGKnXtxTxFFJPWudeFit4BQuTdfbF+Wnd/eQ4+s9LNgjGOVfEa2W6Dc5DbzEdKszHVggsNe2rEV3QYbq/gJ8bRhXlq5rwMNpxvdT83HJoeTxbtdOEzvWhG/AE6boa0FEB85R2rVqAi9KGDrLSVpjkWVwd154LW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgvDEyCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5512FC4CEF7;
+	Mon, 23 Mar 2026 16:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275688;
-	bh=GD0ww/ZP5oY3AlUI1XuA2g8zxu47eaTpyGd4H+LFO8E=;
+	s=korg; t=1774282544;
+	bh=EQwRAkM//kaHfZI7kvhEanygZk1LQrRsVI0gQTjFKaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfPETkr5l2Q5dSm4LoZuWCFRpOh42SHCzCvH8dC4NfV4JRAbiW670tTiKdIQfiBq9
-	 0PpZ9AVLfznPizYt0Rji79MUpK9tC45c+bKBOqjQ69yGvMUbSGnkvkXVf+XoI5jN/u
-	 82XsR2+jPWrfsyvKYrGNksLgWFWnyXXj1eqIuaOs=
+	b=EgvDEyCwo0341SoAxvUIuOXif3MhJGK24Or7d422pi0Uj9/fMuqTLoICSvzOfXOhX
+	 Ii7CRvPQBHMTbLcJ3kk+wtyw3hiDO6PyiH8erGkbyjHAI51alC7YrULeN6zxNbpmCc
+	 Qo1lt4MW/o1GKxQl1iOFdTvlGOraKlPJxTjD0/U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 183/460] tracing: Fix enabling multiple events on the kernel command line and bootconfig
+	Qingye Zhao <zhaoqingye@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.1 197/481] cgroup: fix race between task migration and iteration
 Date: Mon, 23 Mar 2026 14:42:59 +0100
-Message-ID: <20260323134531.039235695@linuxfoundation.org>
+Message-ID: <20260323134529.986082326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +63,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-229668-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228640-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6520F2F47D7
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 3C9A02F8776
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
+From: Qingye Zhao <zhaoqingye@honor.com>
 
-commit 3b1679e086bb869ca02722f6bd29b3573a6a0e7e upstream.
+commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
 
-Multiple events can be enabled on the kernel command line via a comma
-separator. But if the are specified one at a time, then only the last
-event is enabled. This is because the event names are saved in a temporary
-buffer, and each call by the init cmdline code will reset that buffer.
+When a task is migrated out of a css_set, cgroup_migrate_add_task()
+first moves it from cset->tasks to cset->mg_tasks via:
 
-This also affects names in the boot config file, as it may call the
-callback multiple times with an example of:
+    list_move_tail(&task->cg_list, &cset->mg_tasks);
 
-  kernel.trace_event = ":mod:rproc_qcom_common", ":mod:qrtr", ":mod:qcom_aoss"
+If a css_task_iter currently has it->task_pos pointing to this task,
+css_set_move_task() calls css_task_iter_skip() to keep the iterator
+valid. However, since the task has already been moved to ->mg_tasks,
+the iterator is advanced relative to the mg_tasks list instead of the
+original tasks list. As a result, remaining tasks on cset->tasks, as
+well as tasks queued on cset->mg_tasks, can be skipped by iteration.
 
-Change the cmdline callback function to append a comma and the next value
-if the temporary buffer already has content.
+Fix this by calling css_set_skip_task_iters() before unlinking
+task->cg_list from cset->tasks. This advances all active iterators to
+the next task on cset->tasks, so iteration continues correctly even
+when a task is concurrently being migrated.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260302-trace-events-allow-multiple-modules-v1-1-ce4436e37fb8@oss.qualcomm.com
-Signed-off-by: Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+This race is hard to hit in practice without instrumentation, but it
+can be reproduced by artificially slowing down cgroup_procs_show().
+For example, on an Android device a temporary
+/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
+into cgroup_procs_show(), and then:
+
+  1) Spawn three long-running tasks (PIDs 101, 102, 103).
+  2) Create a test cgroup and move the tasks into it.
+  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
+  4) In one shell, read cgroup.procs from the test cgroup.
+  5) Within the delay window, in another shell migrate PID 102 by
+     writing it to a different cgroup.procs file.
+
+Under this setup, cgroup.procs can intermittently show only PID 101
+while skipping PID 103. Once the migration completes, reading the
+file again shows all tasks as expected.
+
+Note that this change does not allow removing the existing
+css_set_skip_task_iters() call in css_set_move_task(). The new call
+in cgroup_migrate_add_task() only handles iterators that are racing
+with migration while the task is still on cset->tasks. Iterators may
+also start after the task has been moved to cset->mg_tasks. If we
+dropped css_set_skip_task_iters() from css_set_move_task(), such
+iterators could keep task_pos pointing to a migrating task, causing
+css_task_iter_advance() to malfunction on the destination css_set,
+up to and including crashes or infinite loops.
+
+The race window between migration and iteration is very small, and
+css_task_iter is not on a hot path. In the worst case, when an
+iterator is positioned on the first thread of the migrating process,
+cgroup_migrate_add_task() may have to skip multiple tasks via
+css_set_skip_task_iters(). However, this only happens when migration
+and iteration actually race, so the performance impact is negligible
+compared to the correctness fix provided here.
+
+Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/cgroup/cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -3999,7 +3999,11 @@ static char bootup_event_buf[COMMAND_LIN
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2519,6 +2519,7 @@ static void cgroup_migrate_add_task(stru
  
- static __init int setup_trace_event(char *str)
- {
--	strscpy(bootup_event_buf, str, COMMAND_LINE_SIZE);
-+	if (bootup_event_buf[0] != '\0')
-+		strlcat(bootup_event_buf, ",", COMMAND_LINE_SIZE);
-+
-+	strlcat(bootup_event_buf, str, COMMAND_LINE_SIZE);
-+
- 	trace_set_ring_buffer_expanded(NULL);
- 	disable_tracing_selftest("running event tracing");
+ 	mgctx->tset.nr_tasks++;
  
++	css_set_skip_task_iters(cset, task);
+ 	list_move_tail(&task->cg_list, &cset->mg_tasks);
+ 	if (list_empty(&cset->mg_node))
+ 		list_add_tail(&cset->mg_node,
 
 
 
