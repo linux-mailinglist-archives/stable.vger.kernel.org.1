@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PBUFJ1bwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:21 +0100
+	id sLREBolowWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:21:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B062F6468
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84ED42F7F1D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:21:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7277A3029B4A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B29231C34C5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530333B0AF1;
-	Mon, 23 Mar 2026 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCAB3B19AF;
+	Mon, 23 Mar 2026 14:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYQpQF+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxTjjEpv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170F826B2DA;
-	Mon, 23 Mar 2026 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAE4399352;
+	Mon, 23 Mar 2026 14:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278522; cv=none; b=cliUvVzkrXRm447oAI2mOgFjvlUc4m2EqTKL1hJ4Jmf9I1E7y5+85oTYBOYYN59SxKNNbyb+PHXKH2QjITZwXDjoUnt80qGA1CRTjvLF4WVmYfpzfv/P538MrTEapQ9V1ve8Qw/eAyUiESZl18NybGKxhhMyulewHsz0pq4GVu0=
+	t=1774276932; cv=none; b=Q+YSpnpkvfJmru1ZYMHMm1bhA/QUCfq5Ezi3b9s7uBGRhxiGOSpcM1luw6qcFiB2+FmHPVy63TwEz+rnNOOpGFd3+5c6cXkF6XZepxQtd5rpXwUPwzi+CaTWLSZs/eXnrxQh6bSFODLVT9zkH13eTvsUrPl27kGL6O8JI1LWQZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278522; c=relaxed/simple;
-	bh=02x4H+wsAEBwvY19ZC35QDU6QepqtuZWbxRruIu71fc=;
+	s=arc-20240116; t=1774276932; c=relaxed/simple;
+	bh=Ia2pqSN+108z8geIkSUtjYI2X1Y2l50XNcMxw8qlWJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig0XN9yEC6WiVPkdkBtvNdVgulhhldv8XeDgL5PFVmx5AOWWLNoQtlF64hAlXVlVIxEdXP3e9quKQa0PmbKMS56Rs62ZqmR3pynfDUZ8fZ0ze4Bm9U9P5XEGTpisB3x+FNS/mXCw3zM+eUKKVGqfGIjHGP8z+DELfHUrGJY78TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYQpQF+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A74C4CEF7;
-	Mon, 23 Mar 2026 15:08:41 +0000 (UTC)
+	 MIME-Version; b=RDCw4WkMbhduZiuVPweVztSBMfFdEIB/rTvKQIAldfCr/1l1CD0YwRaX1c7ocn1wGTvWXJxOEGrHEM0AvVf5UGunG3I33yKfXd2cn0tUbdG+Ip9FBxri2MhZnK3KaoXGRJcrR3mMAINkoA1MYdkLGdCKZ3YJ+Szp7aGbDGfKds0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxTjjEpv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F701C4CEF7;
+	Mon, 23 Mar 2026 14:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278522;
-	bh=02x4H+wsAEBwvY19ZC35QDU6QepqtuZWbxRruIu71fc=;
+	s=korg; t=1774276931;
+	bh=Ia2pqSN+108z8geIkSUtjYI2X1Y2l50XNcMxw8qlWJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYQpQF+XgqNDZUpSm+6oq/cz9f1e0vkBRhKys4J81zfTfZ0oRmq3stioPSMfMI+e2
-	 /nXw+OQCldqxgd0Sr10q0JrBdQo1k7qGmuqZeI1kFlXO51jOK0Ec19Ek4BOBCtKqJ3
-	 xcCOcn2ntLzFvbjwvpK/827lfl8RqV7p/Yd0eEkY=
+	b=wxTjjEpv05vKi4PUNSVp6EoQd+eGnD3yL1eGyrEtnxpaiQYZKutLouBt6aKdvEZei
+	 CLO/IxdZd3mvqWSPGyNXMygmVdHCgkXFxn6Hruo0R0kN/cVOFA7oTjpc7AgQLIf1FT
+	 4zZEBdR70xBrsVkZpZdOH/a8GT93nrE7hG/HefVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 335/567] drm/amd: Set num IP blocks to 0 if discovery fails
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 259/460] KVM: x86: Co-locate initialization of feature MSRs in kvm_arch_vcpu_create()
 Date: Mon, 23 Mar 2026 14:44:15 +0100
-Message-ID: <20260323134542.120567320@linuxfoundation.org>
+Message-ID: <20260323134532.850198722@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229247-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228717-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 12B062F6468
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84ED42F7F1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3646ff28780b4c52c5b5081443199e7a430110e5 upstream.
+[ Upstream commit 2142ac663a6a72ac868d0768681b1355e3a703eb ]
 
-If discovery has failed for any reason (such as no support for a block)
-then there is no need to unwind all the IP blocks in fini. In this
-condition there can actually be failures during the unwind too.
+Bunch all of the feature MSR initialization in kvm_arch_vcpu_create() so
+that it can be easily quirked in a future patch.
 
-Reset num_ip_blocks to zero during failure path and skip the unnecessary
-cleanup path.
+No functional change intended.
 
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fae5984296b981c8cc3acca35b701c1f332a6cd8)
-Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240802185511.305849-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    4 +++-
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c    |    2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kvm/x86.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2096,8 +2096,10 @@ static int amdgpu_device_ip_early_init(s
- 		break;
- 	default:
- 		r = amdgpu_discovery_set_ip_blocks(adev);
--		if (r)
-+		if (r) {
-+			adev->num_ip_blocks = 0;
- 			return r;
-+		}
- 		break;
- 	}
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12383,6 +12383,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
  
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -82,7 +82,7 @@ void amdgpu_driver_unload_kms(struct drm
- {
- 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	kvm_async_pf_hash_reset(vcpu);
  
--	if (adev == NULL)
-+	if (adev == NULL || !adev->num_ip_blocks)
- 		return;
++	vcpu->arch.arch_capabilities = kvm_get_arch_capabilities();
++	vcpu->arch.msr_platform_info = MSR_PLATFORM_INFO_CPUID_FAULT;
+ 	vcpu->arch.perf_capabilities = kvm_caps.supported_perf_cap;
+ 	kvm_pmu_init(vcpu);
  
- 	amdgpu_unregister_gpu_instance(adev);
+@@ -12397,8 +12399,6 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
+ 	if (r)
+ 		goto free_guest_fpu;
+ 
+-	vcpu->arch.arch_capabilities = kvm_get_arch_capabilities();
+-	vcpu->arch.msr_platform_info = MSR_PLATFORM_INFO_CPUID_FAULT;
+ 	kvm_xen_init_vcpu(vcpu);
+ 	vcpu_load(vcpu);
+ 	kvm_set_tsc_khz(vcpu, vcpu->kvm->arch.default_tsc_khz);
 
 
 
