@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mE5tEJlcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:33 +0100
+	id AO5VBzxwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B092F6628
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959902F90D8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A8886303C2EA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B51E7319272B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F477387599;
-	Mon, 23 Mar 2026 14:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6023B9DAC;
+	Mon, 23 Mar 2026 16:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVpkLwXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ixypm6Vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D6B2737EB;
-	Mon, 23 Mar 2026 14:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F023B2FF5;
+	Mon, 23 Mar 2026 16:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277822; cv=none; b=OKdmso90zmOrMYLRWhXPRSnWl+Jg/VTqFjrD3APHYeqr04NXM3qecbzR2Dfx2JaPxrem5pkiWgAbCeB+Ffg+tfhypJpMVAbORrycRc9UbUNts2QAVKdgcDtGIa5F7qyLX+5TwrfJWP8jt8bR5d7A5sLwkobPZKEYuBgMvn3/v78=
+	t=1774282273; cv=none; b=bMIrDsjtU0D4InHxOBw76vKEs0/mieI4JqzZx5jrk+2Ckt3Hlqf7KNdbknVaQ1JWYp9If0OX1lhUZ5PsE42RCyDQLR07CGYm7Z5UBOwC8ueWa7GXo7mUJ6a2LfrdkHybVQBebDCuk/riWI7gJsngPQn/4+7jsZMUpUloPnOcdlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277822; c=relaxed/simple;
-	bh=Ye33hfUDuVZmNddd8+YaKyzyl4/NbuuvGiALuqke80E=;
+	s=arc-20240116; t=1774282273; c=relaxed/simple;
+	bh=wl18seA7KJkLgAqQqEuMJYbSAHhiP8xzCRcpOn/Yg1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DQhXjzgRFos3nVt+z7LRaWjIOO+UQoYlyueNY4kvNbEQMLt2iKfuU1ijB+4rKYA/Kvz7+o1zPqhMzU2DWVZdvpaqZliguzO1y7WCBVh9qhFVFZcTNXY8iVvpuEog0/aNry4+QzwUxYp0pq9IQKLrofq0z2HAAcxwwGvtA4vIass=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVpkLwXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF9C4CEF7;
-	Mon, 23 Mar 2026 14:57:02 +0000 (UTC)
+	 MIME-Version; b=jfeNGuYq0wo3XOCDWfj7KLW7ljNiaHScylwegN0ybPcga8nDgisxImcQZZdeRBFfCHbkrUgjMhbtYW4Ho8PIMETNIG2r5f+kb2kHIW6PQ+a8OUEjbpDYiJDRHbfqD0umyEewrlKCcTl3pDGYF2T2Lcp2gldHkCRSJwfs/BVbRrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ixypm6Vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69695C4CEF7;
+	Mon, 23 Mar 2026 16:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277822;
-	bh=Ye33hfUDuVZmNddd8+YaKyzyl4/NbuuvGiALuqke80E=;
+	s=korg; t=1774282272;
+	bh=wl18seA7KJkLgAqQqEuMJYbSAHhiP8xzCRcpOn/Yg1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVpkLwXe/JBq9Lfra2wU16AJQgZtWFypptsfmbwb3Mp2LBC8JSrQ4kNLqXQio9OeK
-	 FNrHRdVDGxQCuCwClhp/cYyzE3hTYS4wmfMdX0kGL64Sb1vG8noKRNqHncxKsU2jQJ
-	 Wk8La3t+s74x4uAuAOxUQXbZnCrXA2A6GVOUKFF8=
+	b=Ixypm6VmZNsVmiSyy272dWtWT96WugeCpvsBWeST1YP19wa3PNRExzTrJ/mCRIaWB
+	 JZ7fk48fI57s/lntrThutIbhBatoE8hMt+ypAMqxXjhLbBY2SR+bNF9H7VUvvz+CBG
+	 /7tynffIdAvLr6NZNl8GHAL4aYAuD/k5NnJEgxY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 114/567] drbd: fix null-pointer dereference on local read error
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/481] ext4: convert bd_buddy_page to bd_buddy_folio
 Date: Mon, 23 Mar 2026 14:40:34 +0100
-Message-ID: <20260323134536.633574082@linuxfoundation.org>
+Message-ID: <20260323134526.494697737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,26 +63,25 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229026-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linbit.com,kernel.dk];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229568-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,53 +89,282 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 22B092F6628
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 959902F90D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 0d195d3b205ca90db30d70d09d7bb6909aac178f upstream.
+[ Upstream commit 5eea586b47f05b5f5518cf8f9dd9283a01a8066d ]
 
-In drbd_request_endio(), READ_COMPLETED_WITH_ERROR is passed to
-__req_mod() with a NULL peer_device:
+There is no need to make this a multi-page folio, so leave all the
+infrastructure around it in pages.  But since we're locking it, playing
+with its refcount and checking whether it's uptodate, it needs to move
+to the folio API.
 
-  __req_mod(req, what, NULL, &m);
-
-The READ_COMPLETED_WITH_ERROR handler then unconditionally passes this
-NULL peer_device to drbd_set_out_of_sync(), which dereferences it,
-causing a null-pointer dereference.
-
-Fix this by obtaining the peer_device via first_peer_device(device),
-matching how drbd_req_destroy() handles the same situation.
-
-Cc: stable@vger.kernel.org
-Reported-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/linux-block/20260104165355.151864-1-islituo@gmail.com
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240416172900.244637-3-willy@infradead.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/drbd/drbd_req.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 91 +++++++++++++++++++++++------------------------
+ fs/ext4/mballoc.h |  2 +-
+ 2 files changed, 46 insertions(+), 47 deletions(-)
 
---- a/drivers/block/drbd/drbd_req.c
-+++ b/drivers/block/drbd/drbd_req.c
-@@ -621,7 +621,8 @@ int __req_mod(struct drbd_request *req,
- 		break;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 083e4904ed679..19e5b57387d60 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1336,7 +1336,7 @@ static int ext4_mb_init_cache(struct page *page, char *incore, gfp_t gfp)
+  * Lock the buddy and bitmap pages. This make sure other parallel init_group
+  * on the same buddy page doesn't happen whild holding the buddy page lock.
+  * Return locked buddy and bitmap pages on e4b struct. If buddy and bitmap
+- * are on the same page e4b->bd_buddy_page is NULL and return value is 0.
++ * are on the same page e4b->bd_buddy_folio is NULL and return value is 0.
+  */
+ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 		ext4_group_t group, struct ext4_buddy *e4b, gfp_t gfp)
+@@ -1344,10 +1344,9 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 	struct inode *inode = EXT4_SB(sb)->s_buddy_cache;
+ 	int block, pnum, poff;
+ 	int blocks_per_page;
+-	struct page *page;
+ 	struct folio *folio;
  
- 	case READ_COMPLETED_WITH_ERROR:
--		drbd_set_out_of_sync(peer_device, req->i.sector, req->i.size);
-+		drbd_set_out_of_sync(first_peer_device(device),
-+				req->i.sector, req->i.size);
- 		drbd_report_io_error(device, req);
- 		__drbd_chk_io_error(device, DRBD_READ_ERROR);
- 		fallthrough;
+-	e4b->bd_buddy_page = NULL;
++	e4b->bd_buddy_folio = NULL;
+ 	e4b->bd_bitmap_folio = NULL;
+ 
+ 	blocks_per_page = PAGE_SIZE / sb->s_blocksize;
+@@ -1373,11 +1372,12 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 	}
+ 
+ 	/* blocks_per_page == 1, hence we need another page for the buddy */
+-	page = find_or_create_page(inode->i_mapping, block + 1, gfp);
+-	if (!page)
+-		return -ENOMEM;
+-	BUG_ON(page->mapping != inode->i_mapping);
+-	e4b->bd_buddy_page = page;
++	folio = __filemap_get_folio(inode->i_mapping, block + 1,
++			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
++	if (IS_ERR(folio))
++		return PTR_ERR(folio);
++	BUG_ON(folio->mapping != inode->i_mapping);
++	e4b->bd_buddy_folio = folio;
+ 	return 0;
+ }
+ 
+@@ -1387,9 +1387,9 @@ static void ext4_mb_put_buddy_page_lock(struct ext4_buddy *e4b)
+ 		folio_unlock(e4b->bd_bitmap_folio);
+ 		folio_put(e4b->bd_bitmap_folio);
+ 	}
+-	if (e4b->bd_buddy_page) {
+-		unlock_page(e4b->bd_buddy_page);
+-		put_page(e4b->bd_buddy_page);
++	if (e4b->bd_buddy_folio) {
++		folio_unlock(e4b->bd_buddy_folio);
++		folio_put(e4b->bd_buddy_folio);
+ 	}
+ }
+ 
+@@ -1404,7 +1404,6 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
+ 
+ 	struct ext4_group_info *this_grp;
+ 	struct ext4_buddy e4b;
+-	struct page *page;
+ 	struct folio *folio;
+ 	int ret = 0;
+ 
+@@ -1441,7 +1440,7 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
+ 		goto err;
+ 	}
+ 
+-	if (e4b.bd_buddy_page == NULL) {
++	if (e4b.bd_buddy_folio == NULL) {
+ 		/*
+ 		 * If both the bitmap and buddy are in
+ 		 * the same page we don't need to force
+@@ -1451,11 +1450,11 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
+ 		goto err;
+ 	}
+ 	/* init buddy cache */
+-	page = e4b.bd_buddy_page;
+-	ret = ext4_mb_init_cache(page, e4b.bd_bitmap, gfp);
++	folio = e4b.bd_buddy_folio;
++	ret = ext4_mb_init_cache(&folio->page, e4b.bd_bitmap, gfp);
+ 	if (ret)
+ 		goto err;
+-	if (!PageUptodate(page)) {
++	if (!folio_test_uptodate(folio)) {
+ 		ret = -EIO;
+ 		goto err;
+ 	}
+@@ -1477,7 +1476,6 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	int block;
+ 	int pnum;
+ 	int poff;
+-	struct page *page;
+ 	struct folio *folio;
+ 	int ret;
+ 	struct ext4_group_info *grp;
+@@ -1496,7 +1494,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	e4b->bd_info = grp;
+ 	e4b->bd_sb = sb;
+ 	e4b->bd_group = group;
+-	e4b->bd_buddy_page = NULL;
++	e4b->bd_buddy_folio = NULL;
+ 	e4b->bd_bitmap_folio = NULL;
+ 
+ 	if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
+@@ -1562,7 +1560,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 		goto err;
+ 	}
+ 
+-	/* Pages marked accessed already */
++	/* Folios marked accessed already */
+ 	e4b->bd_bitmap_folio = folio;
+ 	e4b->bd_bitmap = folio_address(folio) + (poff * sb->s_blocksize);
+ 
+@@ -1570,48 +1568,49 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	pnum = block / blocks_per_page;
+ 	poff = block % blocks_per_page;
+ 
+-	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
+-	if (page == NULL || !PageUptodate(page)) {
+-		if (page)
+-			put_page(page);
+-		page = find_or_create_page(inode->i_mapping, pnum, gfp);
+-		if (page) {
+-			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
+-	"ext4: buddy bitmap's page->mapping != inode->i_mapping\n")) {
++	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
++	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
++		if (!IS_ERR(folio))
++			folio_put(folio);
++		folio = __filemap_get_folio(inode->i_mapping, pnum,
++				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
++		if (!IS_ERR(folio)) {
++			if (WARN_RATELIMIT(folio->mapping != inode->i_mapping,
++	"ext4: buddy bitmap's mapping != inode->i_mapping\n")) {
+ 				/* should never happen */
+-				unlock_page(page);
++				folio_unlock(folio);
+ 				ret = -EINVAL;
+ 				goto err;
+ 			}
+-			if (!PageUptodate(page)) {
+-				ret = ext4_mb_init_cache(page, e4b->bd_bitmap,
++			if (!folio_test_uptodate(folio)) {
++				ret = ext4_mb_init_cache(&folio->page, e4b->bd_bitmap,
+ 							 gfp);
+ 				if (ret) {
+-					unlock_page(page);
++					folio_unlock(folio);
+ 					goto err;
+ 				}
+ 			}
+-			unlock_page(page);
++			folio_unlock(folio);
+ 		}
+ 	}
+-	if (page == NULL) {
+-		ret = -ENOMEM;
++	if (IS_ERR(folio)) {
++		ret = PTR_ERR(folio);
+ 		goto err;
+ 	}
+-	if (!PageUptodate(page)) {
++	if (!folio_test_uptodate(folio)) {
+ 		ret = -EIO;
+ 		goto err;
+ 	}
+ 
+-	/* Pages marked accessed already */
+-	e4b->bd_buddy_page = page;
+-	e4b->bd_buddy = page_address(page) + (poff * sb->s_blocksize);
++	/* Folios marked accessed already */
++	e4b->bd_buddy_folio = folio;
++	e4b->bd_buddy = folio_address(folio) + (poff * sb->s_blocksize);
+ 
+ 	return 0;
+ 
+ err:
+-	if (page)
+-		put_page(page);
++	if (folio)
++		folio_put(folio);
+ 	if (e4b->bd_bitmap_folio)
+ 		folio_put(e4b->bd_bitmap_folio);
+ 
+@@ -1630,8 +1629,8 @@ static void ext4_mb_unload_buddy(struct ext4_buddy *e4b)
+ {
+ 	if (e4b->bd_bitmap_folio)
+ 		folio_put(e4b->bd_bitmap_folio);
+-	if (e4b->bd_buddy_page)
+-		put_page(e4b->bd_buddy_page);
++	if (e4b->bd_buddy_folio)
++		folio_put(e4b->bd_buddy_folio);
+ }
+ 
+ 
+@@ -2056,7 +2055,7 @@ static void ext4_mb_use_best_found(struct ext4_allocation_context *ac,
+ 	 */
+ 	ac->ac_bitmap_page = &e4b->bd_bitmap_folio->page;
+ 	get_page(ac->ac_bitmap_page);
+-	ac->ac_buddy_page = e4b->bd_buddy_page;
++	ac->ac_buddy_page = &e4b->bd_buddy_folio->page;
+ 	get_page(ac->ac_buddy_page);
+ 	/* store last allocated for subsequent stream allocation */
+ 	if (ac->ac_flags & EXT4_MB_STREAM_ALLOC) {
+@@ -3718,7 +3717,7 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
+ 		/* No more items in the per group rb tree
+ 		 * balance refcounts from ext4_mb_free_metadata()
+ 		 */
+-		put_page(e4b.bd_buddy_page);
++		folio_put(e4b.bd_buddy_folio);
+ 		folio_put(e4b.bd_bitmap_folio);
+ 	}
+ 	ext4_unlock_group(sb, entry->efd_group);
+@@ -5893,7 +5892,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
+ 
+ 	BUG_ON(!ext4_handle_valid(handle));
+ 	BUG_ON(e4b->bd_bitmap_folio == NULL);
+-	BUG_ON(e4b->bd_buddy_page == NULL);
++	BUG_ON(e4b->bd_buddy_folio == NULL);
+ 
+ 	new_node = &new_entry->efd_node;
+ 	cluster = new_entry->efd_start_cluster;
+@@ -5904,7 +5903,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
+ 		 * otherwise we'll refresh it from
+ 		 * on-disk bitmap and lose not-yet-available
+ 		 * blocks */
+-		get_page(e4b->bd_buddy_page);
++		folio_get(e4b->bd_buddy_folio);
+ 		folio_get(e4b->bd_bitmap_folio);
+ 	}
+ 	while (*n) {
+diff --git a/fs/ext4/mballoc.h b/fs/ext4/mballoc.h
+index 24e7c7a04f674..fe4dbbbbe8725 100644
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -201,7 +201,7 @@ struct ext4_allocation_context {
+ #define AC_STATUS_BREAK		3
+ 
+ struct ext4_buddy {
+-	struct page *bd_buddy_page;
++	struct folio *bd_buddy_folio;
+ 	void *bd_buddy;
+ 	struct folio *bd_bitmap_folio;
+ 	void *bd_bitmap;
+-- 
+2.51.0
+
 
 
 
