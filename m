@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLyPHMlMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:05 +0100
+	id mE5VFClfwWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D6A2F4554
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C672F6B71
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB22031FDDA0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC60930CCBDD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817303AE70F;
-	Mon, 23 Mar 2026 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0105A3B7B7F;
+	Mon, 23 Mar 2026 15:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rb1eek0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCeLUF0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F4823BCFD;
-	Mon, 23 Mar 2026 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75EC2773F0;
+	Mon, 23 Mar 2026 15:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274658; cv=none; b=DJwtWokH7rYnkB/btHx3PcQbyyr6qFcf2ryvTA2RLnEXflDi8baYqVttw2j/lgsGkwpalYb0nF8Kn79XLK50dDp6jMvrCTOHBaNW4ioidVDfNKjWk4x34quNYQdypOHTbSuSGoxyO2BSGoiUSMrFCyAiQq5s1tSQkgM62g2Fao0=
+	t=1774278634; cv=none; b=QiDFsbi8ngQW4Gis+6LnDFMjZofgHUCgTlKNfafHDp9HHfA1Rx+yD3XCzmHRY22JMCjc8NAETFJpPapRQubc3rMMcZFG+2m/8t8dRNpdbMQpZJXjGKk3+C6NUBMf3Jd6Y8Ely33jZ17hZxY+/BsxfetQ2BZjYfyR6W48K277eG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274658; c=relaxed/simple;
-	bh=ZGSkvr59zLDic5ydJw1JuwxnaLq6kQaTfaobWBgvMmc=;
+	s=arc-20240116; t=1774278634; c=relaxed/simple;
+	bh=cUoBACioXoWfDG6t82y8lKtp7mFtVunPZ91RpRA+jag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mt/bcjHCpUQh93xt4iss/Uv90kK5CL+pVUYE0Eru9E2CGdaDeV1koPpQAVjMdVccEBetunnBpHxuHLF4f637sk4e8t6BCO76A4bBo5TqRuYKUO4q4sKROfbMIjbEqlCD6Q82YkzOgbNgv8Iz+6rg6EZzSyKC9KJJGI/rV7awqEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rb1eek0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C4CC4CEF7;
-	Mon, 23 Mar 2026 14:04:17 +0000 (UTC)
+	 MIME-Version; b=Bds6kMZU3OKFJxCCGYkzmU19Nqdb7NTcibt0vsYol8FxwyBkm8BUkdgSnWuo6anvcAdnzNk6YtXOnMxN8w05eqw6eRzbQ3OLZCu6NeHVl1Bs7i81YHe8T1VjZMOwz2gJG5dKqROA0HWwUmwd7UkPDmh7FI/S1YT0/RPrUsjE+vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCeLUF0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C460C2BC9E;
+	Mon, 23 Mar 2026 15:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274657;
-	bh=ZGSkvr59zLDic5ydJw1JuwxnaLq6kQaTfaobWBgvMmc=;
+	s=korg; t=1774278634;
+	bh=cUoBACioXoWfDG6t82y8lKtp7mFtVunPZ91RpRA+jag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rb1eek0qG0JLSLNIgJplOJzYyxHQd6yAHXAkCn+pLEtDrQDOAuoV+6+lWu4vcgLiO
-	 QQqOsfQdIriaSHzbVKnoJjA5tSCxdbVL6d6p4V0R1CBxVb6vZXEfWtNbmm0hhr6ofS
-	 bbZbTa8hAkfyU7/xmAAmDj+kEY+c7avvmhy1po/E=
+	b=wCeLUF0Hyf4+Xib/M9FGsVyu71DAaiLh/FCqwdIX/xlBu5g6aEDA9A4yfsY16P9yu
+	 +MaKbDdjWy/fBP16cI36wKVXKoqWiuBqsAZFu2Un9yXpSp1dBwNZFtbfc/lVgmtXUL
+	 pKA0riXe8Uo/jG3dMNojDNmXRMXD/aSfHSdQGZyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Nicolas Pitre <npitre@baylibre.com>
-Subject: [PATCH 6.18 066/212] vt: save/restore unicode screen buffer for alternate screen
-Date: Mon, 23 Mar 2026 14:44:47 +0100
-Message-ID: <20260323134505.856686795@linuxfoundation.org>
+	Daniel Hodges <git@danielhodges.dev>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 368/567] wifi: libertas: fix use-after-free in lbs_free_adapter()
+Date: Mon, 23 Mar 2026 14:44:48 +0100
+Message-ID: <20260323134542.925312208@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +66,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229284-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228275-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email]
-X-Rspamd-Queue-Id: D3D6A2F4554
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B8C672F6B71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Pitre <npitre@baylibre.com>
+From: Daniel Hodges <git@danielhodges.dev>
 
-commit 5eb608319bb56464674a71b4a66ea65c6c435d64 upstream.
+[ Upstream commit 03cc8f90d0537fcd4985c3319b4fafbf2e3fb1f0 ]
 
-The alternate screen support added by commit 23743ba64709 ("vt: add
-support for smput/rmput escape codes") only saves and restores the
-regular screen buffer (vc_origin), but completely ignores the corresponding
-unicode screen buffer (vc_uni_lines) creating a messed-up display.
+The lbs_free_adapter() function uses timer_delete() (non-synchronous)
+for both command_timer and tx_lockup_timer before the structure is
+freed. This is incorrect because timer_delete() does not wait for
+any running timer callback to complete.
 
-Add vc_saved_uni_lines to save the unicode screen buffer when entering
-the alternate screen, and restore it when leaving. Also ensure proper
-cleanup in reset_terminal() and vc_deallocate().
+If a timer callback is executing when lbs_free_adapter() is called,
+the callback will access freed memory since lbs_cfg_free() frees the
+containing structure immediately after lbs_free_adapter() returns.
 
-Fixes: 23743ba64709 ("vt: add support for smput/rmput escape codes")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
-Link: https://patch.msgid.link/5o2p6qp3-91pq-0p17-or02-1oors4417ns7@onlyvoer.pbz
+Both timer callbacks (lbs_cmd_timeout_handler and lbs_tx_lockup_handler)
+access priv->driver_lock, priv->cur_cmd, priv->dev, and other fields,
+which would all be use-after-free violations.
+
+Use timer_delete_sync() instead to ensure any running timer callback
+has completed before returning.
+
+This bug was introduced in commit 8f641d93c38a ("libertas: detect TX
+lockups and reset hardware") where del_timer() was used instead of
+del_timer_sync() in the cleanup path. The command_timer has had the
+same issue since the driver was first written.
+
+Fixes: 8f641d93c38a ("libertas: detect TX lockups and reset hardware")
+Fixes: 954ee164f4f4 ("[PATCH] libertas: reorganize and simplify init sequence")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Link: https://patch.msgid.link/20260206195356.15647-1-git@danielhodges.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ del_timer() => timer_delete_sync() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vt.c            |    8 ++++++++
- include/linux/console_struct.h |    1 +
- 2 files changed, 9 insertions(+)
+ drivers/net/wireless/marvell/libertas/main.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1345,6 +1345,8 @@ struct vc_data *vc_deallocate(unsigned i
- 			kfree(vc->vc_saved_screen);
- 			vc->vc_saved_screen = NULL;
- 		}
-+		vc_uniscr_free(vc->vc_saved_uni_lines);
-+		vc->vc_saved_uni_lines = NULL;
- 	}
- 	return vc;
+--- a/drivers/net/wireless/marvell/libertas/main.c
++++ b/drivers/net/wireless/marvell/libertas/main.c
+@@ -881,8 +881,8 @@ static void lbs_free_adapter(struct lbs_
+ {
+ 	lbs_free_cmd_buffer(priv);
+ 	kfifo_free(&priv->event_fifo);
+-	del_timer(&priv->command_timer);
+-	del_timer(&priv->tx_lockup_timer);
++	timer_delete_sync(&priv->command_timer);
++	timer_delete_sync(&priv->tx_lockup_timer);
+ 	del_timer(&priv->auto_deepsleep_timer);
  }
-@@ -1890,6 +1892,8 @@ static void enter_alt_screen(struct vc_d
- 	vc->vc_saved_screen = kmemdup((u16 *)vc->vc_origin, size, GFP_KERNEL);
- 	if (vc->vc_saved_screen == NULL)
- 		return;
-+	vc->vc_saved_uni_lines = vc->vc_uni_lines;
-+	vc->vc_uni_lines = NULL;
- 	vc->vc_saved_rows = vc->vc_rows;
- 	vc->vc_saved_cols = vc->vc_cols;
- 	save_cur(vc);
-@@ -1911,6 +1915,8 @@ static void leave_alt_screen(struct vc_d
- 		dest = ((u16 *)vc->vc_origin) + r * vc->vc_cols;
- 		memcpy(dest, src, 2 * cols);
- 	}
-+	vc_uniscr_set(vc, vc->vc_saved_uni_lines);
-+	vc->vc_saved_uni_lines = NULL;
- 	restore_cur(vc);
- 	/* Update the entire screen */
- 	if (con_should_update(vc))
-@@ -2233,6 +2239,8 @@ static void reset_terminal(struct vc_dat
- 	if (vc->vc_saved_screen != NULL) {
- 		kfree(vc->vc_saved_screen);
- 		vc->vc_saved_screen = NULL;
-+		vc_uniscr_free(vc->vc_saved_uni_lines);
-+		vc->vc_saved_uni_lines = NULL;
- 		vc->vc_saved_rows = 0;
- 		vc->vc_saved_cols = 0;
- 	}
---- a/include/linux/console_struct.h
-+++ b/include/linux/console_struct.h
-@@ -160,6 +160,7 @@ struct vc_data {
- 	struct uni_pagedict **uni_pagedict_loc; /* [!] Location of uni_pagedict variable for this console */
- 	u32 **vc_uni_lines;			/* unicode screen content */
- 	u16		*vc_saved_screen;
-+	u32		**vc_saved_uni_lines;
- 	unsigned int	vc_saved_cols;
- 	unsigned int	vc_saved_rows;
- 	/* additional information is in vt_kern.h */
+ 
 
 
 
