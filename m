@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-228463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBGgBOlPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:25 +0100
+	id oHkKLClRwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3952F4D4A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F422F5004
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64979312D448
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47E1830DEE25
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41A73B19D4;
-	Mon, 23 Mar 2026 14:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E3A3B19AC;
+	Mon, 23 Mar 2026 14:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFZhAKru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+C6y+Yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867143B27DC;
-	Mon, 23 Mar 2026 14:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBCF3AE6EE;
+	Mon, 23 Mar 2026 14:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275205; cv=none; b=RChKT4brakMZuILNRHlpMdq/NMKnkcTm0y8VcEfBmMPlnXBgXia9Pz57n0eDDUSLGlr2z2Uu6+ioyIl/nK2UJWYlT7I4X6IK5E9geRBwIjs3IhWaJVUaza/zBL83UXZHUAyiXXdw9wEQKa5yJRqHsXeX8eKIKqguRCjiryN41XM=
+	t=1774275191; cv=none; b=Oh0BFf/6Qeq93rnc97gg4aGPnQUUh0CS4Zsc7CrCLjaOa8L2SLAZVk5U5rYl0P5dGm7zFzXInurTBdCScjxEEI0EqHv9YRFthBypari1Yi31xEyEXvuZJRHVPjJwlzoys3twIwqtA585yFVLPlOb7IWSav9xrPAisAcCQSDqlGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275205; c=relaxed/simple;
-	bh=RF555vhuTEWBTxjDxuDAVvT7f3qY+X1em8pIVP6mEX0=;
+	s=arc-20240116; t=1774275191; c=relaxed/simple;
+	bh=xFvPqxqm+9gta4rKtBJTKmybR9o4YkHYVe2f7RxiBJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbyyRy8HXUgH/EVGAWZ3lUCHYRGHHTSgIjaWpdhbdM7POFxlMhtPpE9K6u6E7RS47szyL1WUUE1vdOncn5aLhXZs6AhduGL0GahNUZRzk892wV8acXNmAAxngpiQFNlnz6ldyd++oLTmZCfxJOgeFfYtiNqgXAyFC5wzjRaOqfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFZhAKru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC672C2BCB4;
-	Mon, 23 Mar 2026 14:13:24 +0000 (UTC)
+	 MIME-Version; b=ao1XFpdHxn/N1fDPtJUYYVbRTuek2UwRbO9WR5RVez72dQrP+q3yTWw/hHY4xv7GF6alpO6qB3ZKwdluOsgHSfpBUKRdPlwkBY3+qu3/4Fwo4Biv8TC7weSu6piuIQUF8TiFOS6XyqhkE50I77NGs0v/h1QXZnZh1ps3nooKm+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+C6y+Yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4EEC4CEF7;
+	Mon, 23 Mar 2026 14:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275205;
-	bh=RF555vhuTEWBTxjDxuDAVvT7f3qY+X1em8pIVP6mEX0=;
+	s=korg; t=1774275191;
+	bh=xFvPqxqm+9gta4rKtBJTKmybR9o4YkHYVe2f7RxiBJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFZhAKruCbO3RqFlZPrCH2ZeVzSgFpXoRPXzU67vNg0y8xUy5zdWooaSeuwgcucEW
-	 sBTOy0YwDX+I/apTsrZc/Q3OXKCIm/5lz3OpQt/n7IdUqDfAjHStOWhCCFqyJUazpG
-	 bdS7hpJzRHCc5Kvl5EqBAz7aFUpeZqRYSLiNG9+c=
+	b=m+C6y+YxWEtjLK8rhiGYP9mSDUTJ/EL2N6fm1kH4K8kCCj2IdfigXeALNI0TI8sWi
+	 MSZL4peef5yQnJAeBYNp9tUyB5mAwpFe4GLRJ5hznFNylJSGucD+JxdKM9CH1pCMS6
+	 96Im+lS/K38ZgGTem8W46wgg2mZ7vM4yfAfKjB7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/567] ALSA: usb-audio: Remove VALIDATE_RATES quirk for Focusrite devices
-Date: Mon, 23 Mar 2026 14:38:47 +0100
-Message-ID: <20260323134533.933869311@linuxfoundation.org>
+Subject: [PATCH 6.6 008/567] rseq: Clarify rseq registration rseq_size bound check comment
+Date: Mon, 23 Mar 2026 14:38:48 +0100
+Message-ID: <20260323134533.958431024@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228463-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228458-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8A3952F4D4A
+X-Rspamd-Queue-Id: 34F422F5004
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,42 +98,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-[ Upstream commit a8cc55bf81a45772cad44c83ea7bb0e98431094a ]
+[ Upstream commit 26d43a90be81fc90e26688a51d3ec83188602731 ]
 
-Remove QUIRK_FLAG_VALIDATE_RATES for Focusrite. With the previous
-commit, focusrite_valid_sample_rate() produces correct rate tables
-without USB probing.
+The rseq registration validates that the rseq_size argument is greater
+or equal to 32 (the original rseq size), but the comment associated with
+this check does not clearly state this.
 
-QUIRK_FLAG_VALIDATE_RATES sends SET_CUR requests for each rate (~25ms
-each) and leaves the device at 192kHz. This is a problem because that
-rate: 1) disables the internal mixer, so outputs are silent until an
-application opens the PCM and sets a lower rate, and 2) the Air and
-Safe modes get disabled.
+Clarify the comment to that effect.
 
-Fixes: 5963e5262180 ("ALSA: usb-audio: Enable rate validation for Scarlett devices")
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/09b9c012024c998c4ca14bd876ef0dce0d0b6101.1771594828.git.g@b4.vu
+Fixes: ee3e3ac05c26 ("rseq: Introduce extensible rseq ABI")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260220200642.1317826-2-mathieu.desnoyers@efficios.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rseq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index ff2bbe761ee3a..15e72c419dbc2 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2308,7 +2308,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 	VENDOR_FLG(0x07fd, /* MOTU */
- 		   QUIRK_FLAG_VALIDATE_RATES),
- 	VENDOR_FLG(0x1235, /* Focusrite Novation */
--		   QUIRK_FLAG_VALIDATE_RATES),
-+		   0),
- 	VENDOR_FLG(0x1511, /* AURALiC */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x152a, /* Thesycon devices */
+diff --git a/kernel/rseq.c b/kernel/rseq.c
+index 810005f927d7c..e6ee81dd1e457 100644
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -432,8 +432,9 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
+ 	 * auxiliary vector AT_RSEQ_ALIGN. If rseq_len is the original rseq
+ 	 * size, the required alignment is the original struct rseq alignment.
+ 	 *
+-	 * In order to be valid, rseq_len is either the original rseq size, or
+-	 * large enough to contain all supported fields, as communicated to
++	 * The rseq_len is required to be greater or equal to the original rseq
++	 * size. In order to be valid, rseq_len is either the original rseq size,
++	 * or large enough to contain all supported fields, as communicated to
+ 	 * user-space through the ELF auxiliary vector AT_RSEQ_FEATURE_SIZE.
+ 	 */
+ 	if (rseq_len < ORIG_RSEQ_SIZE ||
 -- 
 2.51.0
 
