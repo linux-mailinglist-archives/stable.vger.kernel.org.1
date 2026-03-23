@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMnOKqBrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:40 +0100
+	id SKdQBs5NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517CA2F8582
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153012F487A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0934E30D7778
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9D17E30185FA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE833A758D;
-	Mon, 23 Mar 2026 16:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEFE1A6828;
+	Mon, 23 Mar 2026 14:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTELN97c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsnlT76x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128AB282F3A;
-	Mon, 23 Mar 2026 16:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734B2A59;
+	Mon, 23 Mar 2026 14:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282456; cv=none; b=OkPnXec7SHkeu+QfF4IYeyt+c1xn7/AA52GpijihUaRohb++cd0L4BO3FzOJQ2JAd2dsN7GiMWSpRz5zgYIUgWW54VLdQ5HnfxRJslo24gi8BQRVmxgAMsLshGnKyJpBgbwCTRoonDrZMaXZT84x0XRM3JWoqMG+PJKfAqLP13s=
+	t=1774275711; cv=none; b=HYj8lT4MdP+z0ICATW0IYQD7BaeWIgE8Kud61U1+dB1gYM/Gg4RyPORlbsvIsK1oLNR1zfLva6kmeMSv+8eg+VIL2/emOWMHPQyScY+enkxkAwK7gSZePpi6Jjj/lcvcj/LmAthcIx3jQEU8t6nEV+j4zwjBeFX03lHgkrfvBmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282456; c=relaxed/simple;
-	bh=NshCl6RgegHC4W1UTrm97hWXRRUwV7IyB3canFvhb3g=;
+	s=arc-20240116; t=1774275711; c=relaxed/simple;
+	bh=5j0QSoNQmDKd43upchVV46hKDaiZNTWwQyM8uSVOp4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4yKjwZDIcwLaljvwdHg9SHPA8JfDINSXsF6b51oJudAkFYhEYYWx8YSqpAnlF0MDTankiKYmpcYVvjLRqBa0JfW3Y6A3pjJR/inqzFMm7aesuLZlqIPtZaO6SqcpArhudcqXxxoYTgHXEu9RY82Hr9qdPHSUxzptNznu+Z2Scw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTELN97c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ACAC4CEF7;
-	Mon, 23 Mar 2026 16:14:15 +0000 (UTC)
+	 MIME-Version; b=V9LRekpsUToC7sYjmRj4W4z3xs20/u3k+/hORcUoRe8gDCRFAmykhrZ4gheWu/eobl5r2CKdPOd7D+9wTE38fGcoDtjkA+xc5HDVAeIerL4asX96GNCJinO6KxpFzDXqJ1SQn4NWBgaXWTTmB3MhDwNzsIu8JW7LapCsz1jypec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsnlT76x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025C5C4CEF7;
+	Mon, 23 Mar 2026 14:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282456;
-	bh=NshCl6RgegHC4W1UTrm97hWXRRUwV7IyB3canFvhb3g=;
+	s=korg; t=1774275711;
+	bh=5j0QSoNQmDKd43upchVV46hKDaiZNTWwQyM8uSVOp4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTELN97cYCbOCld2VR1ozTR+3XePgEpxEVxuCMVZI+Rij5SSG399eg1kBsNV5Fpfd
-	 8sX5+V5eFP+1lKrvDUGlZz3LwioURQC8xyPP9iDe+voD/+TefDLrDgnsaOp2HwftGs
-	 jCr3Z1TdIwy0qetylT0rjgtcGVbUBqbIY/K8NzzM=
+	b=hsnlT76xNugc/6tdcQotz2Qg+wwPJvs6gtl8kH1eIgpjO1/XqwdFGOWmV9domELND
+	 bU+TWa6hhv9Yvw8kvbgWVI5qZ52LvGb46NtFsJeSOkER/H/46BT0VCtjluEIf87pJ8
+	 zv6uOFCSLuJQvRcUBZFgi2BTgd/iQNbEw9228E4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jurgens <danielj@nvidia.com>,
-	William Tu <witu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/481] net/mlx5: IFC updates for disabled host PF
+	Filipe Manana <fdmanana@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 149/460] btrfs: fix chunk map leak in btrfs_map_block() after btrfs_chunk_map_num_copies()
 Date: Mon, 23 Mar 2026 14:42:25 +0100
-Message-ID: <20260323134529.204987305@linuxfoundation.org>
+Message-ID: <20260323134530.237909050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +66,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229635-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228649-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 517CA2F8582
+X-Rspamd-Queue-Id: 153012F487A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Jurgens <danielj@nvidia.com>
+From: Mark Harmstone <mark@harmstone.com>
 
-[ Upstream commit cd1746cb6555a2238c4aae9f9d60b637a61bf177 ]
+commit f15fb3d41543244d1179f423da4a4832a55bc050 upstream.
 
-The port 2 host PF can be disabled, this bit reflects that setting.
+Fix a chunk map leak in btrfs_map_block(): if we return early with -EINVAL,
+we're not freeing the chunk map that we've just looked up.
 
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: William Tu <witu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1752064867-16874-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: aed763abf0e9 ("net/mlx5: Fix deadlock between devlink lock and esw->wq")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ae653fbec2b ("btrfs: reduce chunk_map lookups in btrfs_map_block()")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 4df7b3d358607..9610b325f2b61 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -11496,7 +11496,9 @@ struct mlx5_ifc_mtrc_ctrl_bits {
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -6522,8 +6522,10 @@ int btrfs_map_block(struct btrfs_fs_info
+ 		return PTR_ERR(map);
  
- struct mlx5_ifc_host_params_context_bits {
- 	u8         host_number[0x8];
--	u8         reserved_at_8[0x7];
-+	u8         reserved_at_8[0x5];
-+	u8         host_pf_not_exist[0x1];
-+	u8         reserved_at_14[0x1];
- 	u8         host_pf_disabled[0x1];
- 	u8         host_num_of_vfs[0x10];
+ 	num_copies = btrfs_chunk_map_num_copies(map);
+-	if (io_geom.mirror_num > num_copies)
+-		return -EINVAL;
++	if (io_geom.mirror_num > num_copies) {
++		ret = -EINVAL;
++		goto out;
++	}
  
--- 
-2.51.0
-
+ 	map_offset = logical - map->start;
+ 	io_geom.raid56_full_stripe_start = (u64)-1;
 
 
 
