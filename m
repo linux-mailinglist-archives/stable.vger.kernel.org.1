@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAynIn1VwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:13 +0100
+	id YIhzNbtGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:15 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB862F59DC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DD62F379E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91EFC31F2764
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3AE6304FF96
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291A61FFC48;
-	Mon, 23 Mar 2026 14:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEFB3AD52F;
+	Mon, 23 Mar 2026 13:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewTqoA/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w00V+NCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E139E1F91F6;
-	Mon, 23 Mar 2026 14:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3E73AC0D2;
+	Mon, 23 Mar 2026 13:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275756; cv=none; b=REWXn1aIVFJ0HW3DR5+evPeEJTNECBM+30ybTjpf1A1PgAGEdUXy+tvHIyU31I9xk7CmHe+Ynymtyp+cnJzAPXq54LTNDTjGa8Y/YAUaRV+jz2KhAh1XGK9+zBSXKJww/26KSvAGf/AnCon1ZG3BzlfjAEKsfIkQlcTnEKNr2Yg=
+	t=1774273871; cv=none; b=ii3nXzw2viWTccFVlkpqvJuPuQ8iYAiorKjv3vTQbvOQ9JvWI9VhoCEX3jtmHTYtnCmBqUP1KyOyUEA/W11UXN/bROmd4tlXxqTFI3mdDTZY3LFktnpHYjAsRn3KIZuG462UwNRwJr4j1KvH50xH/tDE69fwsZsW20BK8U2V6/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275756; c=relaxed/simple;
-	bh=tedPrA1sfzn6+B7JZFUuTYlwc21ixOjM7WgXsq+9LkM=;
+	s=arc-20240116; t=1774273871; c=relaxed/simple;
+	bh=NjhYuGDG5ilikqW80UMNinCoJc5buKTUxKg1pLFVKqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjznTWgHRfa2GfY0mzPEvJLEOXWiZGrYuoG5K74K9WBE1fN+dYkrGcoJEmh5dGyWHGGkmiMm91+8qEDUbwhe3ON/SioGhOzkHhN5JhGS+iC/MPuQANhGPlQdnTHbB+CEDyGl64vMA+LWhXeax+qQ9MLTshQJKGyzMJxYtKBPJp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewTqoA/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5342BC4CEF7;
-	Mon, 23 Mar 2026 14:22:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FNc5IndM0GMWxLmusforxvuNsvFiI7PktZs3bL42qS1ZfjPZVgokfP/F7i32sq2qj30KC/6Wm/VIJQlPqfFLmF6193YuJbctlz/f1qfxCVv5Nxq7/fYqe/BsNJq1QRE+xEQXD0jcs6/2YLznR/qfwKQhiRzHfVnUUkclryZ3+SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w00V+NCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E22C2BCB1;
+	Mon, 23 Mar 2026 13:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275755;
-	bh=tedPrA1sfzn6+B7JZFUuTYlwc21ixOjM7WgXsq+9LkM=;
+	s=korg; t=1774273871;
+	bh=NjhYuGDG5ilikqW80UMNinCoJc5buKTUxKg1pLFVKqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewTqoA/Q5cxJfL+lbJiIFs+TyMawFYNa5r3sum/Awy8KKwvlo09pSrwvbQKNcUaT2
-	 7QM+BV5p0f8xlR/m5wd56HWyf+zNWP8Y6vAmI9EphJzTIYfOySYBmJk9TyVtc1+UBE
-	 8LcSfYy6VYXqRQcaMchq7qnp/VKse25Qv8drWO5w=
+	b=w00V+NCk3FIotCqmDWnDxbuwTcJxkbn3skvzVrNkBeu+6pX2CqnsYQ31hi14dsNfx
+	 N4y/WXRDfhogvMpFW2Zpk4mUoQ/jFIO63cvni1a5Eic7OrZid850M4REEqXXhYxadJ
+	 QAbS322N0USBi0CdWsCCOLZWS3yquEKfBupuJ1BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Spencer <spencercw@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 208/460] iio: chemical: bme680: Fix measurement wait duration calculation
-Date: Mon, 23 Mar 2026 14:43:24 +0100
-Message-ID: <20260323134531.634438427@linuxfoundation.org>
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.19 028/220] drm/i915/dsc: Add helper for writing DSC Selective Update ET parameters
+Date: Mon, 23 Mar 2026 14:43:25 +0100
+Message-ID: <20260323134505.466343500@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228663-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228016-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ECB862F59DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 48DD62F379E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Spencer <spencercw@gmail.com>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
+commit bb5f1cd10101c2567bff4d0e760b74aee7c42f44 upstream.
 
-This function refers to the Bosch BME680 API as the source of the
-calculation, but one of the constants does not match the Bosch
-implementation. This appears to be a simple transposition of two digits,
-resulting in a wait time that is too short. This can cause the following
-'device measurement cycle incomplete' check to occasionally fail, returning
-EBUSY to user space.
+There are slice row per frame and pic height configuration in DSC Selective
+Update Parameter Set 1 register. Add helper for configuring these.
 
-Adjust the constant to match the Bosch implementation and resolve the EBUSY
-errors.
+v2:
+  - Add WARN_ON_ONCE if vdsc instances per pipe > 2
+  - instead of checking vdsc instances per pipe being > 1 check == 2
 
-Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
-Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
-Signed-off-by: Chris Spencer <spencercw@gmail.com>
-Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Bspec: 71709
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patch.msgid.link/20260304113011.626542-4-jouni.hogander@intel.com
+(cherry picked from commit c8698d61aeb3f70fe33761ee9d3d0e131b5bc2eb)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+[tursulin: fixup forward declaration conflict]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_vdsc.c |   23 +++++++++++++++++++++++
+ drivers/gpu/drm/i915/display/intel_vdsc.h |    3 +++
+ 2 files changed, 26 insertions(+)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -543,7 +543,7 @@ static int bme680_wait_for_eoc(struct bm
- 	 * + heater duration
- 	 */
- 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
--			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   data->oversampling_humid) * 1963) + (477 * 4) +
- 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
+--- a/drivers/gpu/drm/i915/display/intel_vdsc.c
++++ b/drivers/gpu/drm/i915/display/intel_vdsc.c
+@@ -767,6 +767,29 @@ void intel_dsc_dp_pps_write(struct intel
+ 				  sizeof(dp_dsc_pps_sdp));
+ }
  
- 	usleep_range(wait_eoc_us, wait_eoc_us + 100);
++void intel_dsc_su_et_parameters_configure(struct intel_dsb *dsb, struct intel_encoder *encoder,
++					  const struct intel_crtc_state *crtc_state, int su_lines)
++{
++	struct intel_display *display = to_intel_display(crtc_state);
++	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
++	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
++	enum pipe pipe = crtc->pipe;
++	int vdsc_instances_per_pipe = intel_dsc_get_vdsc_per_pipe(crtc_state);
++	int slice_row_per_frame = su_lines / vdsc_cfg->slice_height;
++	u32 val;
++
++	drm_WARN_ON_ONCE(display->drm, su_lines % vdsc_cfg->slice_height);
++	drm_WARN_ON_ONCE(display->drm, vdsc_instances_per_pipe > 2);
++
++	val = DSC_SUPS0_SU_SLICE_ROW_PER_FRAME(slice_row_per_frame);
++	val |= DSC_SUPS0_SU_PIC_HEIGHT(su_lines);
++
++	intel_de_write_dsb(display, dsb, LNL_DSC0_SU_PARAMETER_SET_0(pipe), val);
++
++	if (vdsc_instances_per_pipe == 2)
++		intel_de_write_dsb(display, dsb, LNL_DSC1_SU_PARAMETER_SET_0(pipe), val);
++}
++
+ static i915_reg_t dss_ctl1_reg(struct intel_crtc *crtc, enum transcoder cpu_transcoder)
+ {
+ 	return is_pipe_dsc(crtc, cpu_transcoder) ?
+--- a/drivers/gpu/drm/i915/display/intel_vdsc.h
++++ b/drivers/gpu/drm/i915/display/intel_vdsc.h
+@@ -13,6 +13,7 @@ struct drm_printer;
+ enum transcoder;
+ struct intel_crtc;
+ struct intel_crtc_state;
++struct intel_dsb;
+ struct intel_encoder;
+ 
+ bool intel_dsc_source_support(const struct intel_crtc_state *crtc_state);
+@@ -31,6 +32,8 @@ void intel_dsc_dsi_pps_write(struct inte
+ 			     const struct intel_crtc_state *crtc_state);
+ void intel_dsc_dp_pps_write(struct intel_encoder *encoder,
+ 			    const struct intel_crtc_state *crtc_state);
++void intel_dsc_su_et_parameters_configure(struct intel_dsb *dsb, struct intel_encoder *encoder,
++					  const struct intel_crtc_state *crtc_state, int su_lines);
+ void intel_vdsc_state_dump(struct drm_printer *p, int indent,
+ 			   const struct intel_crtc_state *crtc_state);
+ int intel_vdsc_min_cdclk(const struct intel_crtc_state *crtc_state);
 
 
 
