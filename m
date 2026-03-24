@@ -1,223 +1,147 @@
-Return-Path: <stable+bounces-230067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ17MshAwmmCagQAu9opvQ
-	(envelope-from <stable+bounces-230067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:44:08 +0100
+	id EPmDDj9BwmmCagQAu9opvQ
+	(envelope-from <stable+bounces-230068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:46:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9EF3041E5
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:44:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42F930420C
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAC1531F115E
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 07:35:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC03C3169137
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 07:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE9F331202;
-	Tue, 24 Mar 2026 07:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721CF33BBD1;
+	Tue, 24 Mar 2026 07:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="vFWlRqRQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EpxtbVP5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7876322C78;
-	Tue, 24 Mar 2026 07:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33C34253B
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 07:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774337714; cv=none; b=nfjvACk7FDLzstsLvfDXCtBfUDNtiOZEbGn7QCpep+jdJAV+z9d6qAQWGEM9F/4k7u7+ho0A4+8eSdJyMAoBE/NrkltfmPuUu50NHMxd+yAoSJ9Jo52Ma7nHSxcUeLw02nJeOdUq1D7jp3CNA1Hj2Z2aQnG3NpgASgRDDDrqXeE=
+	t=1774338044; cv=none; b=WVPS7hDkdMhk4HZc9y7EDHZcFH6RT35XijiGgd+2sHGqzzjQyroqoR3FuCas46RAn5JpdNSzKDyJ/ATp9LtioKxw4BGXgkaiPXuQQUSG9E8h96pAAO+Ge0Pdo3VjlRvQqqrSaxbTDQg98Djqs4CBpm1e5zuhjvZaRQQqM/1ziWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774337714; c=relaxed/simple;
-	bh=6IlMeXk1WZycISmMe+soaKl+sSsLCkHt660QnGLCx4E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wd7fZOPSYegIlAmvT797qeHbwMJYw/25VttUVYXHAlxCWKnj4TRvCX6cLrY8o+7NoYeY48DVrlRG0NUfpPTj8b8O9bxVyq04QyogHwPUXSTAZE7ufOXERVTdPRwdBLUQkTiI7+mhdPkmYyJD9cjz53hhlOZHsgls3lYxD7W6098=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=vFWlRqRQ; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id D6DF31FA0B;
-	Tue, 24 Mar 2026 08:34:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1774337692;
-	bh=o9lLWZpgsou6EOIpHU68Hao9eV/gXb6G0+VKkT/SGGM=; h=From:To:Subject;
-	b=vFWlRqRQoyb6lcNylW6jriGHG2Gdb7azhox6JqvEW6bq8jamfDPd+GDGnWdYIKSq1
-	 za9C5V++WiAbzbQc+tKujZ9ENn6kTxQTfiTuOQCwaeJvFu1DxkhBl61Mg8tkDzjyLe
-	 /oO9oAK+S7WueC2T5wEAFprovrhdH9E17b5Sc4tycF5jFAFxOIszW6kuRNDcDBCDeE
-	 tX11YquOEthemv/XNzUPiywDZSMVEKbfVNj5lOWH8JdZoNJ/a3rvPd+Xb/6K4Y3+xz
-	 DCVYd3+YQxXmaekWwY1I+TBMFGKHopof412H9oNhst53c2cx96DuH1E/L5H9eOM0Er
-	 xbmwrJMyzniDw==
-Date: Tue, 24 Mar 2026 08:34:47 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jan Kara <jack@suse.cz>, Brian Foster <bfoster@redhat.com>,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Gou Hao <gouhao@uniontech.com>, Theodore Ts'o <tytso@mit.edu>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Zhang Yi <yi.zhang@huawei.com>, Baokun Li <libaokun1@huawei.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
-Message-ID: <20260324073447.GA5062@francesco-nb>
-References: <20260323134525.256603107@linuxfoundation.org>
+	s=arc-20240116; t=1774338044; c=relaxed/simple;
+	bh=oBveFmmeZZxamkKRq58M/AAuts9N2ND7yvuogM5BzPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hIWIN0E/sgS7TdydjbrEQPeNkp+cpEyCzWad5Qg1y5SczOwbuKq6vsNk4PWKAyAOKXQBRA57oVW17IBG4RLJofuYCG1Gfb0GaOuFJf40NGEgg1G+1B2G0kZGNmBo3TaQAgUxeesMNovTpJ/GVQ3jeLbAEnvhe3sJLqg8DEpc0/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EpxtbVP5; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso32121425e9.3
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 00:40:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774338036; x=1774942836; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oBveFmmeZZxamkKRq58M/AAuts9N2ND7yvuogM5BzPo=;
+        b=EpxtbVP57ZHlbKngRbI9CWkpDC5ONMME+DBtTbhuqNv0YMM6o/q0gF6Kjg4cq/OoD4
+         aAXQ8zSzaFgwFG/lPJD0qLGhieEifKi19MkGAh0cHxXuGkfyQxG7FIhcxd6+vfP4GFtN
+         zIE4xmca3pz0XvG9LAzulBPDkI6c0GMH+BTOUXYlVVc+h5i1aJGq6lVs8YdFtZRKuHag
+         bv94oUNkvCBuPOo/IjRAcCAm1YT2+2BjvMeaS8sZCULkYpbvzt/iURWZPPQN1A/g1ADd
+         rnrAUk/m4ONDNYjH3apszTZD87hZPVDlAVRZjimot6RVIhJKTttvfru5dRR7dxHdRBnH
+         SxsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774338036; x=1774942836;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oBveFmmeZZxamkKRq58M/AAuts9N2ND7yvuogM5BzPo=;
+        b=rGgkTMBWm//+kgWzqJFqoV8OQnPnmDLqWDpjj7ZXQiLkPb7azT35F44sjmOJls8Wne
+         76Ol9er5r5N+DWrMOIJeRIi55sspggHYS2HBN8gCu1Lp2Nz+AaSoiu+Zv6ZjjF4lwX3f
+         Rcxv1RfkQgB1GlJW/6j0P0fekQJ+CtfRpNCD2Oz8ufBwM/gG+LFnLAUV80Jr5hWEztgh
+         U/l9tegQB3LDD9qKTRY+/zzYxZE58017oECF1gypzml7CZ8MI/UkmPwsZ3dIiQExfO6O
+         N6pZZNgCmHjjS/Uz1daPHljDo5Dc0tUE23cytcD9onXJWLkktRLsgLzw5XvcVVI8QzBv
+         ZPag==
+X-Forwarded-Encrypted: i=1; AJvYcCXla8yYuEAt8j8xKI8waC7CxFgxP5XC/4tHw0UcVq5PFeAvVND/zCNjo8fXXtIKTkBkp6mWNjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcQj0CDbQYtaWbMVsJGbf/dJNXWQsowk2a1+RIkBOp+QaVtLkS
+	m7CoSAUU71HM5o102ZUMH/TTIxaHB62oA7j7CScE54Y+E7Liqm4U/Wxy
+X-Gm-Gg: ATEYQzwP81vm2e1Go1IaD9u78b3dn/GIbO+XA8rFFfe7siFh3DMSXogAsJJPuDvu2P6
+	dmBiuXUjXpgBjDxMCBORNY/6HtKdjnb2pwHqgu+fD6/RfswpNj3UOh6/2e5eFzmKKv8Ck3hALZd
+	Z+366G3JJXonUaMBZQVsb4s37zw5pHnIDL+xTmj+mLDE1KmI/00VA3+K06J7bBaJzvAhy5adlfS
+	GGMApdg94wlHSCoCCr/IpMuDf97vWaVbsG+Pluvcsbni3PdnWOOWcIi+v/9Jd+MZ7JAqhp/aC2J
+	r0mEPLGBEQzrS5/pynozLbK63yF3HBScolr0GsHxQ10veJBIhr6MwCUT1CwzAr0MnAo9fkZP5la
+	KLchmPgaTyg8CMQktIhxGDVCk8vrk7SA6JSjtR+JFRj6BA3FoH562KAkukWxnQpa8GjiZbp+XiA
+	6awy93gr7XBp4fQKDUip+Jr8Yccw1Xm9S3+JYQ3q0L7oXd6hNBa0IXSA69fBs=
+X-Received: by 2002:a05:600c:8b0a:b0:485:4136:99a8 with SMTP id 5b1f17b1804b1-486fee0fb9emr205573295e9.22.1774338035348;
+        Tue, 24 Mar 2026 00:40:35 -0700 (PDT)
+Received: from ionutnechita-arz2022.localdomain ([2a02:2f0e:ca0b:2300:58bf:ac04:dcbd:3ca0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4870f864722sm13590115e9.12.2026.03.24.00.40.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 00:40:34 -0700 (PDT)
+From: "Ionut Nechita (Sunlight Linux)" <sunlightlinux@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: frederic@kernel.org,
+	ionut.nechita@windriver.com,
+	linux-kernel@vger.kernel.org,
+	oliver.sang@intel.com,
+	ptesarik@suse.com,
+	rdunlap@infradead.org,
+	stable@vger.kernel.org,
+	tglx@linutronix.de
+Subject: Re: [PATCH v2 6.12.y 2/7] timers/migration: Annotate accesses to ignore flag
+Date: Tue, 24 Mar 2026 09:40:32 +0200
+Message-ID: <20260324074032.9026-1-sunlightlinux@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026032135-statute-factor-34cc@gregkh>
+References: <2026032135-statute-factor-34cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230067-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[29];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dolcini.it:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-230068-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dolcini.it:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2C9EF3041E5
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sunlightlinux@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A42F930420C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi Greg,
 
-On Mon, Mar 23, 2026 at 02:39:42PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.167 release.
-> There are 481 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
+Thank you for the feedback. I understand the issues you pointed out -
+the incorrect From: header and the improper backport process.
 
-Not ok
+I will take the time to learn the correct steps for submitting stable
+backports and will work with kernel team on this. I'll send a
+properly formatted new series once I have the process right.
 
-I have an ext4 Oops on arm
+Sorry for the noise.
 
-[   27.908560] 8<--- cut here ---
-[   27.911697] Unable to handle kernel NULL pointer dereference at virtual address 00000000
-[   27.919880] [00000000] *pgd=00000000
-[   27.923482] Internal error: Oops: 5 [#1] SMP ARM
-[   27.928117] Modules linked in: 8021q cfg80211 imx_sdma coda_vpu v4l2_jpeg imx_vdoa dw_hdmi_ahb_audio fuse
-[   27.937784] CPU: 1 PID: 736 Comm: tar Not tainted 6.1.167-rc1-6.8.6-devel+git.67c872a868ac #1
-[   27.946342] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[   27.952889] PC is at ext4_mb_load_buddy_gfp+0xac/0x438
-[   27.958083] LR is at 0xe0f39b18
-[   27.961248] pc : [<c035bc54>]    lr : [<e0f39b18>]    psr: 000f0013
-[   27.967536] sp : e0f39b60  ip : 00000000  fp : c43046f8
-[   27.972781] r10: 00000001  r9 : 00000c40  r8 : 00000016
-[   27.978025] r7 : 00000016  r6 : c2b24000  r5 : e0f39bcc  r4 : 00000000
-[   27.984574] r3 : d21b9611  r2 : d21b9611  r1 : c4277e40  r0 : 00000000
-[   27.991123] Flags: nzcv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-[   27.998287] Control: 10c5387d  Table: 131c804a  DAC: 00000051
-[   28.004050] Register r0 information: NULL pointer
-[   28.008787] Register r1 information: slab radix_tree_node start c4277e40 pointer offset 0
-[   28.017024] Register r2 information: 0-page vmalloc region starting at 0xd0000000 allocated at iotable_init+0x0/0xf4
-[   28.027619] Register r3 information: 0-page vmalloc region starting at 0xd0000000 allocated at iotable_init+0x0/0xf4
-[   28.038199] Register r4 information: NULL pointer
-[   28.042930] Register r5 information: 2-page vmalloc region starting at 0xe0f38000 allocated at kernel_clone+0x88/0x338
-[   28.053693] Register r6 information: slab kmalloc-1k start c2b24000 pointer offset 0 size 1024
-[   28.062369] Register r7 information: non-paged memory
-[   28.067449] Register r8 information: non-paged memory
-[   28.072527] Register r9 information: non-paged memory
-[   28.077605] Register r10 information: non-paged memory
-[   28.082771] Register r11 information: slab ext4_inode_cache start c4304620 pointer offset 216 size 60
-[   28.092056] Register r12 information: NULL pointer
-[   28.096875] Process tar (pid: 736, stack limit = 0x116a0825)
-[   28.102562] Stack: (0xe0f39b60 to 0xe0f3a000)
-[   28.106955] 9b60: e0f39b5c 00000000 c0c1b414 c2916000 c2b24000 c42e55d8 c2b24000 c29162a8
-[   28.115162] 9b80: 00000048 c4589000 0000000b c035f804 00000001 00000001 00000001 c2b24000
-[   28.123368] 9ba0: c2916000 0000001d 00000010 00000000 00000009 00000024 00000000 00000000
-[   28.131573] 9bc0: c2b92300 00000001 00000000 00000000 e0f39d30 00000000 c2b92300 c42e55d8
-[   28.139778] 9be0: c2b24000 0000000c 0000000b d21b9611 00000000 c4589000 c2b24000 e0f39d30
-[   28.147983] 9c00: 00000001 c2916000 00000000 c42fbf60 00000001 c03628c0 00000001 00000000
-[   28.156188] 9c20: e0f39d14 c2b92300 00000001 00000000 00000029 00000000 00000000 c03328b4
-[   28.164393] 9c40: 00000000 00000000 c4886a60 c033be7c 00000000 c0294008 00000000 00000000
-[   28.172597] 9c60: c48867d0 d21b9611 c2b92300 00000001 00000001 c2916000 00000000 00000000
-[   28.180802] 9c80: 00000000 c48868a8 e0f39e10 c0336970 e0f39d24 47ffffff c2b24000 00000000
-[   28.189007] 9ca0: c48868a8 00000000 e0f39d88 c0330844 00000000 00000001 c2b92300 c42fbf60
-[   28.197212] 9cc0: e0f39d88 ffffffff 00000000 ffffffff c308da80 00000000 00000001 c308da98
-[   28.205416] 9ce0: 00000000 c03362f4 ffffffff ffffffff 00000008 00000010 00000000 cf358340
-[   28.213620] 9d00: c42fbf60 00000000 c0c1b2c8 00000000 c308da80 00000000 00000000 c4540001
-[   28.221825] 9d20: 00000000 c0395154 c2b92300 000009dd c48868a8 00000001 00000000 00000000
-[   28.230029] 9d40: 00000000 c034c0c0 00000000 00000000 00000000 00000000 00000000 00000000
-[   28.238234] 9d60: 00000000 00000000 c4886a60 d21b9611 00000020 e0f39e10 c48868a8 00000000
-[   28.246438] 9d80: 00000001 c42fbf60 c2b92300 00001000 00000000 c034ccdc 00000000 00000000
-[   28.254642] 9da0: 00000000 00000000 c42fbf60 c4886890 00000000 00000000 c48868a8 00000000
-[   28.262847] 9dc0: c4886a60 00000000 ffffffff e0f39e70 ffffffff 47ffffff 00000000 d21b9611
-[   28.271052] 9de0: c2b92300 c48868a8 c48868a8 c42fbf60 c2b92300 00000000 00000001 00001000
-[   28.279256] 9e00: 00000000 c034dc98 c48868a8 c038d7f4 00000000 00000000 00000000 00000001
-[   28.287461] 9e20: 00000000 cf358300 00000000 d21b9611 c48868f0 c48868a8 00000000 c42fbf60
-[   28.295666] 9e40: c2b92300 e0f39ec0 00000001 c034ded0 c48868a8 00000000 c42fbf60 c0367fec
-[   28.303871] 9e60: 0000001d 000041ed 00000000 c42ffcd8 00000000 00000000 00000000 00000001
-[   28.312076] 9e80: 00000000 c48868a8 69c15bf6 d21b9611 119d9a05 c48868a8 c2b24000 00000000
-[   28.320281] 9ea0: 00000000 c42fbf60 c2b92300 c036e134 00000000 c036b544 00000000 c43043e8
-[   28.328486] 9ec0: 00000000 d21b9611 0000000c c48868a8 c48868a8 c42fbf60 c43043e8 c0c1bc80
-[   28.336690] 9ee0: 000041ed c2b92300 c120d3e8 c036e410 c42ffcd8 00000000 00000000 00000000
-[   28.344895] 9f00: 00000004 00000bfa 00000027 c02a9b20 00000000 00000027 c42ffcd8 c42ffcc0
-[   28.353100] 9f20: 00000000 d21b9611 00000002 c43043e8 c036e298 c120d3e8 c42ffcc0 00000000
-[   28.361305] 9f40: 00000002 c2b92300 be83b824 c02ab1a0 c34dc010 d21b9611 01db0478 c34dc000
-[   28.369510] 9f60: c42ffcc0 c34dc000 ffffff9c 000041ed 00000000 c02b0268 be83b824 c20c6910
-[   28.377715] 9f80: c42e2a18 d21b9611 01db0478 01db01f8 00000000 00000027 c01002e8 c2b92300
-[   28.385920] 9fa0: 00000027 c0100080 01db0478 01db01f8 01db0478 000041ed 00000020 00004000
-[   28.394124] 9fc0: 01db0478 01db01f8 00000000 00000027 00000000 00000007 01db01f8 be83b824
-[   28.402330] 9fe0: 00545dbc be83b754 004f9b0b b6e5ff98 600f0030 01db0478 00000000 00000000
-[   28.410535]  ext4_mb_load_buddy_gfp from ext4_mb_regular_allocator+0x318/0xee0
-[   28.417826]  ext4_mb_regular_allocator from ext4_mb_new_blocks+0x724/0x1000
-[   28.424847]  ext4_mb_new_blocks from ext4_ext_map_blocks+0x7d8/0x1600
-[   28.431351]  ext4_ext_map_blocks from ext4_map_blocks+0x21c/0x604
-[   28.437492]  ext4_map_blocks from ext4_getblk+0x68/0x298
-[   28.442844]  ext4_getblk from ext4_bread+0x8/0xa0
-[   28.447587]  ext4_bread from ext4_append+0x98/0x1b4
-[   28.452514]  ext4_append from ext4_init_new_dir+0x7c/0x1e0
-[   28.458061]  ext4_init_new_dir from ext4_mkdir+0x178/0x384
-[   28.463608]  ext4_mkdir from vfs_mkdir+0xcc/0x168
-[   28.468364]  vfs_mkdir from do_mkdirat+0x80/0x104
-[   28.473107]  do_mkdirat from ret_fast_syscall+0x0/0x54
-[   28.478285] Exception stack(0xe0f39fa8 to 0xe0f39ff0)
-[   28.483367] 9fa0:                   01db0478 01db01f8 01db0478 000041ed 00000020 00004000
-[   28.491573] 9fc0: 01db0478 01db01f8 00000000 00000027 00000000 00000007 01db01f8 be83b824
-[   28.499775] 9fe0: 00545dbc be83b754 004f9b0b b6e5ff98
-[   28.504856] Code: ebfbad72 e3700a01 e1a04000 8a00005d (e5903000)
-[   28.511102] ---[ end trace 0000000000000000 ]---
-
-
-The bug is not systematic, and I do not see myself having the time to
-bisect it in the next couple of days (it was reproduced by our CI / Lava
-infrastructure).
-
-I have added some of the ext4 folks to this thread, in case they know
-how to help.
-
-Francesco
-
+Best regards,
+Ionut
 
