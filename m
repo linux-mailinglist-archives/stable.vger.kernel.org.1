@@ -1,84 +1,85 @@
-Return-Path: <stable+bounces-230038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGSCHxPewWnxXQQAu9opvQ
-	(envelope-from <stable+bounces-230038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 01:42:59 +0100
+	id MKchBzrewWnxXQQAu9opvQ
+	(envelope-from <stable+bounces-230039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 01:43:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D58D2FFE21
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 01:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB612FFE89
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 01:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78B8730A04CA
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 00:40:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AD98830AE53D
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 00:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE2834D4E4;
-	Tue, 24 Mar 2026 00:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1644F35B137;
+	Tue, 24 Mar 2026 00:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AXtQElxL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JJKdgaCm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E188D346AF1
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 00:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5B234CFDC
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 00:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774312800; cv=none; b=FCoPqW5GVKuJx8iKBbhhmG2ppfkBhYsYaisPK3KpIJc9kS+c2oG5bEdQr9+3az/3GcQcMDRP+CfUtZWPVox8dzwwbINMupvGt5v+ew2KjGjRbkbvLLYQ9zkkPNL8GmFoe5Ih2taR5s6t+gVJ6suUdcolQwALBWFmbeHpmzxoonA=
+	t=1774312801; cv=none; b=MEMsWVAX9gv8C9V3tSOdb5OrDgfPuTUTANh86DB1deskjZ4KHz3Fy0+dQKJj1EbW8EPSFmaBqIRRg0Dp29rig54O0bm+1BGQNEX0i8JjTC7jvdm9n9cUxwvHn51rzqR25apcK/wMDgjOxDS5SnTcBNxvDXEcY7olKC/SuCkVStg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774312800; c=relaxed/simple;
-	bh=k7sHMW4gg0o0qIJMt9ltjJ4WtnO4WFu/L7mwYOnZn+s=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sRCSwD3FNHh1O6T79p4Fx248x657chAje75fpLWgiAB/33De56unQExIRgxYm9RHkQKNLCDYohB2ghaIviXGCcrAtRL70GN8zflZZ8zskKF4vZh92NJ3ga3cpii4htTfDk6L92P9Ze6Pv4Z36SjW11++it5nXsJtfQMtgebEEC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AXtQElxL; arc=none smtp.client-ip=74.125.82.174
+	s=arc-20240116; t=1774312801; c=relaxed/simple;
+	bh=QDf16Y7vyxJr6CaPRWRkq0hvjTb2t+Mwk/4kS11e5G8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TxX1h1opAHR2xcGAwNNJg21G/rYz6O5DzZk8y+HukUlaTxBAktsVEx7F/jzHwSnZko7jVoBlHelT9Y/WsC+d2YeHW2E+1mG7PMKvu3MVndOvC728aHEegk2t6e7I2PY0qXVSIwWm9d7HDqu9FFkmdTkxrfSUvBpVlmPkrClgiW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JJKdgaCm; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2c0d36f3888so3358150eec.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 17:39:58 -0700 (PDT)
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso3166527eec.1
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 17:40:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774312798; x=1774917598; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Pn7J7KNNIQST5/lUfvga5BnMqTjXD5cWPJOt1fdVH4=;
-        b=AXtQElxLBdSwJWN/DaChIeOlwTxP0dUA3RGebxKdmShEVLhUkGwzWfpY5YP6GY7yK6
-         UE0qfeI/jOiR6ounBCQF9Zd8mSM7Y8l1KjB+5d9PpvMBa7kJ3Y8Ruy4wTrPI7K58UYID
-         Ji0+RQtSiQrcDu1DgaeFMaAdzav6BW/SpNNDuo8T7lRt0HcqouQF4ClwkxXQoSE18kzT
-         VHJKVvhcJDpMcLItadWSZtqrrhTnnhQ0ZUazwIcgTvuPCHIofB9NmbExUQLaXFZ1cb0c
-         PlK3Ngl8K10mJ6SmivEpkj1JtHE4esurjWpjhre1A8tmcTfuzzd0qJaF1H3SOx3o7TK6
-         M1jg==
+        d=gmail.com; s=20251104; t=1774312800; x=1774917600; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gq4MIC18tzOF8Y9yYjqLKcBworY2R0LEwLR/J/vdJqc=;
+        b=JJKdgaCmh2s260EVCN00MexkNid7OCeyZXQxq7BUR77qFHvKBlnHtmvKuEk87TWoB1
+         J9sEoOeUeaa2EOh87mP4J+ku40nB8oZ3EN3MIbk4org8u9BjfWw4bDoTj8OpKAiIXKi2
+         o1Tcby68VQNSm7DTJTJ6AbGQMPh3j1MXnppHY996biQXlVzlLnhTD+NMQHBBBIKv7lfS
+         k6j+FlwwS2pHAQePYdGOG551ykEEFLfZ6g0Y0gagRjDaBwgsQVzQR8zo6KGP5XA+Yvho
+         v/Oq5dc9KRxdKEjnuuwGBCtuc7ImDSn90l6bz7VVufzWpvfpUQNOCTD8zJlV+ij1bivQ
+         yUxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774312798; x=1774917598;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Pn7J7KNNIQST5/lUfvga5BnMqTjXD5cWPJOt1fdVH4=;
-        b=AInpknu+3T3BZTkEcMJ0c3jhrb4b2cIEeyhCnWBLpsPD85uI1ywjX+T6LSXLAPrGMi
-         Vy3YOeNnrJ9luGd6PNicGatzt58trFZTw6zWfb3aXGpjXzSKt6sqJR+OBlH/pjG8KPCP
-         1E5OmSKhrgjmq89LnrflCIk6rcgXnkorIkGreVanqQfZurk94ztxWq35XaKtcYDh7l4m
-         Sd9uLZwNMvhAM11fEE3kdmjujEJ6cxwyxhbJ4VNdNppKWdprGrTgJlZyBPvb53/+ez9/
-         2Wmy2pNVwPND8rvu9NaO2Bmh78Nbq4FCBxJ42ORtqjF84QpOCelU9iY1ONn0pLmTO0pd
-         CbkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqUlq+EyH9bF0JStCajO5tzO706xRgP26J2EHgIyu+gvgMnkclK+JTgu8c13XiGRxhd0H7hRU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyJbXMHtnI5h+PFC5NGtDizeJ0AhxHEGOYWsm5QnDnHBm4/jDv
-	XmbQp7ddrgVQ6FltM62I81N9lYHVciBEk+TY1rEH9U/hKb2HsTKGdRXA
-X-Gm-Gg: ATEYQzyxCJ4E45t0bxbh3GWqpYEZtemAvauUhj/5ePvvIj2en1m+plvJF+CT9l+K7OV
-	RL4hBJNoG2Jnh9AxbGZb/JgK4k7rQ6w/EQUijiQQidMLNyzeF8VordDYhlv1x+6Ya2vdj0OXJa9
-	ArLAKKfQ1T5s7RK8CJNSi3XhmGemK5wzHBym3B+TG5td9oZBcFhOqBe+O5+xJKh4TDp+4xa+ZI9
-	jQtSt7VgiJS2UBNDk/2kR+SEz7yEsXWAE1ST2FaEnANTH0S8KTmp2PVLV3dO42PU80zbbRNJ3Wz
-	p1kfKiOrZPK4Wvl73CqHJTZm/3QFLHVCihn1m9l+QZwKH5GigZQJb2/dGPW8rA0W6uMltn7ZsR6
-	TqfeI7aPhAfyjtVyVuaKTZW0IaFWL8skEPJI0KCKHOt2txccZ1bTw+ZY4O5bPt+BkbYEsX23+Ju
-	xWC76XqIKthDlaJx5w5mjVfcj+Ejchix+0Gkc458Xpr41rnKjGPBJG0t5bZ2FcZ7AP3X36i8xDf
-	tvMF4wCqpxYWlw=
-X-Received: by 2002:a05:7300:a2cd:b0:2c1:27c:75c3 with SMTP id 5a478bee46e88-2c10961a7e5mr6039314eec.10.1774312797948;
-        Mon, 23 Mar 2026 17:39:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774312800; x=1774917600;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Gq4MIC18tzOF8Y9yYjqLKcBworY2R0LEwLR/J/vdJqc=;
+        b=FoJSHr0psOXgI2PrdJ/a7F8jtSdHkK7+Zmd5NQfu1r8ESEceFbDa/2DtvZ9cdlxLCf
+         S3eyn2lLw3sgMPoWCXzEsDIo/w7hZ7K3YK54qTvUBHJjFYOmTwskBPCJEzqDGexhTbnS
+         OBplJTw8zNRq3ir5oNAAMdkQWdbxKe09gMeYmjcyaPFbf89aXd0ORUt39cMC6+FmkFV8
+         HyMnPr7LfQVJ+w7aN6PINpxLirOEGH2a8H1yZBPP2kBAChsP4+ma3ijaSlOG/patEpzj
+         xVkuWAuDPirGIaekpt2jQnYhmcWuIxLesfIJW4O4YGtqt0DqWCm65iGRi7IHHNZSxM8q
+         M46A==
+X-Forwarded-Encrypted: i=1; AJvYcCUpvMnbf1vIMkhV48l1zZtjTX/AksydjtrNTYoBRmWWbGbMYNruZlq6WlQ6AmK2HU8jMNMeST4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfY69+l3KsQf1oOiltIZxSDm9L9T/b5AwJ2xXmw0AKet7Xqpm7
+	kbE/T3Ufjc5BlH402YkrCTbllBvkE1gD/8Dev7b1RZFlhY9H0Q2odVZO
+X-Gm-Gg: ATEYQzwiDpbaErGEZK9S6KIqgWMgPsqCnJXezUBQsIbD3wgcTSTNegcXBPlp9leMpcW
+	VhGLBhD9xtULJkWPhiaO23QSp7Tq3K8u8XEszx5PlS/XoQqt957Y9xXC7UCV+Xq5bAguLwu/StI
+	bJXkv0vWyz0H3TmTsRBD7ReDSG4yUgMqaa8GLInUeGFi9neruGwPZr5nXVF/IzlVYIKHvjBs732
+	L9vWls4Ddq1WpCK0QF5m3ZJuvOtOfKujZCtSwuvx3V7QEtQ3DJJcrcZBVadx6L4iqFySCyVPiyY
+	C5w58rVbFeq9SBTrjyApWS3VpbUkGb5d6X6wESWJmVM41NAkOnlZPwa4FbA31CAAuiU4YmefMuO
+	jrb3/orG/l6RDR000e4N9LFbgsxDPuMwzWPNN4/R0l4ZIJm4bQz5Z10AC3a07g5DghaMYdE1rYe
+	phe3zsoNecDUPUiz33LuAMSXVYYGnTKxyZhQiJoA3CYpzcBKR5KfJUxdXY7mBWX2n27x5p+ZWGy
+	MBKrG0gvThWXsk=
+X-Received: by 2002:a05:7300:dc94:b0:2c0:dc7e:ed0f with SMTP id 5a478bee46e88-2c1095a4f1cmr6259533eec.3.1774312799561;
+        Mon, 23 Mar 2026 17:39:59 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:a296:1211:5ab0:bc95])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b17b90dsm17543148eec.10.2026.03.23.17.39.56
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b17b90dsm17543148eec.10.2026.03.23.17.39.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 17:39:57 -0700 (PDT)
+        Mon, 23 Mar 2026 17:39:58 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 0/4] Fix handling of GPIO keys and LEDs on geode
-Date: Mon, 23 Mar 2026 17:39:36 -0700
-Message-Id: <20260323-property-gpio-fix-v1-0-9cb46e5fe7df@gmail.com>
+Date: Mon, 23 Mar 2026 17:39:37 -0700
+Subject: [PATCH 1/4] x86/geode: fix on-stack property data usage
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,10 +88,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEjdwWkC/x2MQQqAIBAAvxJ7bkELI/pKdAhdbS8pa0Qh/j3pO
- AMzBTIJU4alKyB0c+Z4NtB9B/bYz0DIrjEMapjUqA0miYnkejEkjuj5QaPNPFnvrTMOWpeEmv6
- f61brBxS7d/pjAAAA
-X-Change-ID: 20260315-property-gpio-fix-51586cffcd5d
+Message-Id: <20260323-property-gpio-fix-v1-1-9cb46e5fe7df@gmail.com>
+References: <20260323-property-gpio-fix-v1-0-9cb46e5fe7df@gmail.com>
+In-Reply-To: <20260323-property-gpio-fix-v1-0-9cb46e5fe7df@gmail.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
  x86@kernel.org, Hans de Goede <hansg@kernel.org>, 
@@ -111,7 +111,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230038-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230039-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -131,39 +131,99 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D58D2FFE21
+X-Rspamd-Queue-Id: 8EB612FFE89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This series deal with breakage on geode caused by a recent conversion of
-the board to use static device properties for configuring GPIO-connected
-keys and LEDs. The issue was that PROPERTY_ENTRY_GPIO() would create a
-temporary structure on stack for GPIO properties which would later be
-discarded.
+The PROPERTY_ENTRY_GPIO macro (and by extension PROPERTY_ENTRY_REF)
+creates a temporary software_node_ref_args structure on the stack
+when used in a runtime assignment. This results in the property
+pointing to data that is invalid once the function returns.
 
-The first change patches the behavior using existing in kernel APIs so
-that the bug can easily be fixed in stable kernels, and the other 3
-improve the API and add safety checks.
+Fix this by ensuring the GPIO reference data is not stored on stack and
+using PROPERTY_ENTRY_REF_ARRAY_LEN() to point directly to the persistent
+reference data.
 
+Fixes: 298c9babadb8 ("x86/platform/geode: switch GPIO buttons and LEDs to software properties")
+Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
-Dmitry Torokhov (4):
-      x86/geode: fix on-stack property data usage
-      software node: allow passing reference args to PROPERTY_ENTRY_REF
-      software node: verify that property data is not on stack
-      x86/geode: use PROPERTY_ENTRY_REF for GPIO properties
-
  arch/x86/platform/geode/geode-common.c | 24 ++++++++++++++++++------
- drivers/base/swnode.c                  |  9 +++++++++
- include/linux/property.h               |  9 ++++++++-
- 3 files changed, 35 insertions(+), 7 deletions(-)
----
-base-commit: b84a0ebe421ca56995ff78b66307667b62b3a900
-change-id: 20260315-property-gpio-fix-51586cffcd5d
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-Thanks.
+diff --git a/arch/x86/platform/geode/geode-common.c b/arch/x86/platform/geode/geode-common.c
+index 05189c5f7d2a..1843ae385e2d 100644
+--- a/arch/x86/platform/geode/geode-common.c
++++ b/arch/x86/platform/geode/geode-common.c
+@@ -28,8 +28,10 @@ static const struct software_node geode_gpio_keys_node = {
+ 	.properties = geode_gpio_keys_props,
+ };
+ 
+-static struct property_entry geode_restart_key_props[] = {
+-	{ /* Placeholder for GPIO property */ },
++static struct software_node_ref_args geode_restart_gpio_ref;
++
++static const struct property_entry geode_restart_key_props[] = {
++	PROPERTY_ENTRY_REF_ARRAY_LEN("gpios", &geode_restart_gpio_ref, 1),
+ 	PROPERTY_ENTRY_U32("linux,code", KEY_RESTART),
+ 	PROPERTY_ENTRY_STRING("label", "Reset button"),
+ 	PROPERTY_ENTRY_U32("debounce-interval", 100),
+@@ -64,8 +66,7 @@ int __init geode_create_restart_key(unsigned int pin)
+ 	struct platform_device *pd;
+ 	int err;
+ 
+-	geode_restart_key_props[0] = PROPERTY_ENTRY_GPIO("gpios",
+-							 &geode_gpiochip_node,
++	geode_restart_gpio_ref = SOFTWARE_NODE_REFERENCE(&geode_gpiochip_node,
+ 							 pin, GPIO_ACTIVE_LOW);
+ 
+ 	err = software_node_register_node_group(geode_gpio_keys_swnodes);
+@@ -99,6 +100,7 @@ int __init geode_create_leds(const char *label, const struct geode_led *leds,
+ 	const struct software_node *group[MAX_LEDS + 2] = { 0 };
+ 	struct software_node *swnodes;
+ 	struct property_entry *props;
++	struct software_node_ref_args *gpio_refs;
+ 	struct platform_device_info led_info = {
+ 		.name	= "leds-gpio",
+ 		.id	= PLATFORM_DEVID_NONE,
+@@ -127,6 +129,12 @@ int __init geode_create_leds(const char *label, const struct geode_led *leds,
+ 		goto err_free_swnodes;
+ 	}
+ 
++	gpio_refs = kzalloc_objs(*gpio_refs, n_leds);
++	if (!gpio_refs) {
++		err = -ENOMEM;
++		goto err_free_props;
++	}
++
+ 	group[0] = &geode_gpio_leds_node;
+ 	for (i = 0; i < n_leds; i++) {
+ 		node_name = kasprintf(GFP_KERNEL, "%s:%d", label, i);
+@@ -135,9 +143,11 @@ int __init geode_create_leds(const char *label, const struct geode_led *leds,
+ 			goto err_free_names;
+ 		}
+ 
++		gpio_refs[i] = SOFTWARE_NODE_REFERENCE(&geode_gpiochip_node,
++						       leds[i].pin,
++						       GPIO_ACTIVE_LOW);
+ 		props[i * 3 + 0] =
+-			PROPERTY_ENTRY_GPIO("gpios", &geode_gpiochip_node,
+-					    leds[i].pin, GPIO_ACTIVE_LOW);
++			PROPERTY_ENTRY_REF_ARRAY_LEN("gpios", &gpio_refs[i], 1);
+ 		props[i * 3 + 1] =
+ 			PROPERTY_ENTRY_STRING("linux,default-trigger",
+ 					      leds[i].default_on ?
+@@ -171,6 +181,8 @@ int __init geode_create_leds(const char *label, const struct geode_led *leds,
+ err_free_names:
+ 	while (--i >= 0)
+ 		kfree(swnodes[i].name);
++	kfree(gpio_refs);
++err_free_props:
+ 	kfree(props);
+ err_free_swnodes:
+ 	kfree(swnodes);
 
 -- 
-Dmitry
+2.53.0.1018.g2bb0e51243-goog
 
 
