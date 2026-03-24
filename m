@@ -1,183 +1,174 @@
-Return-Path: <stable+bounces-230234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFxyIoIFw2lKnwQAu9opvQ
-	(envelope-from <stable+bounces-230234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:43:30 +0100
+	id 8ETiAZ4Fw2lKnwQAu9opvQ
+	(envelope-from <stable+bounces-230235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:43:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CAC31CF68
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:43:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8135E31CF84
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38ED63136FAC
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:40:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C18E930C8150
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBB535FF6C;
-	Tue, 24 Mar 2026 21:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9548235F8B7;
+	Tue, 24 Mar 2026 21:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anDeqvEr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="X7Y43cO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6B920E702;
-	Tue, 24 Mar 2026 21:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E6335AC0C;
+	Tue, 24 Mar 2026 21:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774388452; cv=none; b=iBnvxTQuQKNVeeqIACGEsTF7md6v0B/mcdCCp9TOCFOtOlCye6M8b7ph0UHyH6nJksc4zDaTy3wCCfDYIAMrDT1QEUWzLy9Hk/T8r6iqC/cdszans8Uw5sAJc2MNTuZ+aQyQ/E/8wXvaacwKuT8tyT6KB8tBv+HrUv5hLgzMXTs=
+	t=1774388473; cv=none; b=NGNSfNgTc+Zr8RVFBoutrriDsQv71LSctlWfuTYLw0c94lejy4sQ9AzgE0vC3qnQk3vmv993GKI/eL1dg0CBHwpvca2wEkbCdkfDg8ukkSFfQh/gtjmxAVoKtxh3dZKVs1DUnIRMaXXHX8AGFw/XFqU8tVpbmU4nZzUqv2O8p5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774388452; c=relaxed/simple;
-	bh=BE5Ka5em6EIlNmLMSknEhfQ/6K4e1oYW9hJDpjKrhbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Nupudw98f+wfyf7Hzr2r5Dr/QzfA2WCny3Vo+HSXPuRyEi5utHqOUiSLJ2xpPGywDREZRoHREjA82+SmOaMeWlhBw77z4uj4vNIGzH1OLqfAsMthZeVBXJHE/NtvxzPFx8XxT/NJgfkMUAIbXxHFBaZEV6QnHKd5lwJwWPVr4D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anDeqvEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A347C19424;
-	Tue, 24 Mar 2026 21:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774388452;
-	bh=BE5Ka5em6EIlNmLMSknEhfQ/6K4e1oYW9hJDpjKrhbc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=anDeqvEr6fHcykAnibRONIDcReQH7ozd1lDFtwLX0qkAvI7UPbvRYqIvor/5YgNWl
-	 oylQ4ELnjDuzkBVRI4Dc9i4O4mqrV0qkxu17fjumfoTtsU50sMb5TANftjPmiZ1QOk
-	 FBPxV7Gqu8qJp2IdYNpx6+G3Y6IkL/Txq177yWlGhdjfOfA9AeYp5F8llMhoIiebv6
-	 iW4c5/hwbg77ro3Sbh29U58C5cM2blVDmChZ5uLnWHUyQpqm7y0nMxaeqhExJjNcot
-	 Q/TjrB6QDdskRoFJtbVo/oEhnoH3NGhT5zxsfp1MAhuLMZ+gauaFGQVJccHhoq0GaA
-	 v3R1kmSzROcSA==
-Date: Tue, 24 Mar 2026 16:40:51 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, lukas@wunner.de, alex@shazbot.org,
-	kbusch@kernel.org, clg@redhat.com, stable@vger.kernel.org,
-	schnelle@linux.ibm.com, mjrosato@linux.ibm.com
-Subject: Re: [PATCH v11 3/9] PCI: Avoid saving config space state if
- inaccessible
-Message-ID: <20260324214051.GA1156527@bhelgaas>
+	s=arc-20240116; t=1774388473; c=relaxed/simple;
+	bh=bweIcAyabg5TG1diVnVNaGrd6gYn+9SwZSe6VcLlZDA=;
+	h=Date:To:From:Subject:Message-Id; b=lxnU/Km6dGKc4/vzN7+iMBVCFL+G3osC4yAs84/2IB4MxBBTTHPDdSL4C77jhVd319Rn55qC9XG+bXqrR3AQR4G4nPJAJUXnFYLdO+hTgm28R7Lcz75t+bdVC+2osclU1PJJTMTFC1v8LROObf+SirDaQUyLosfjt909sJgckoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=X7Y43cO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21B1C19424;
+	Tue, 24 Mar 2026 21:41:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774388473;
+	bh=bweIcAyabg5TG1diVnVNaGrd6gYn+9SwZSe6VcLlZDA=;
+	h=Date:To:From:Subject:From;
+	b=X7Y43cO1TAmvMW+Vt0w0ZxUOk/fE0/y92O37cEUWA1aBotZhBg3L09ivcm9hSFurC
+	 jhTPJjy0nVURpxwIQdxDK+Dr/BWNnJv+23nf+0UR7LGZBM2SSBA/rtpuicY1dvWdSs
+	 M0WNAOwt9XukyTxxSlEHXl+LqqUPx9pINn5GFgQE=
+Date: Tue, 24 Mar 2026 14:41:12 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,mail@carstengrohmann.de,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-swap-speed-up-hibernation-allocation-and-writeout.patch removed from -mm tree
+Message-Id: <20260324214112.E21B1C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260316191544.2279-4-alifm@linux.ibm.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230235-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230234-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huaweicloud.com,gmail.com,carstengrohmann.de,kernel.org,redhat.com,tencent.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 36CAC31CF68
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,tencent.com:email,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: 8135E31CF84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 16, 2026 at 12:15:38PM -0700, Farhan Ali wrote:
-> The current reset process saves the device's config space state before
-> reset and restores it afterward. However errors may occur unexpectedly and
-> it may then be impossible to save config space because the device may be
-> inaccessible (e.g. DPC) or config space may be corrupted. This results in
-> saving corrupted values that get written back to the device during state
-> restoration.
 
-This patch only addresses the "inaccessible" part, so I'd drop the
-"config space may be corrupted" because we aren't checking for that.
+The quilt patch titled
+     Subject: mm, swap: speed up hibernation allocation and writeout
+has been removed from the -mm tree.  Its filename was
+     mm-swap-speed-up-hibernation-allocation-and-writeout.patch
 
-> With a reset we want to recover/restore the device into a functional state.
-> So avoid saving the state of the config space when the device config space
-> is inaccessible.
-> 
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: mm, swap: speed up hibernation allocation and writeout
+Date: Mon, 16 Feb 2026 22:58:02 +0800
 
-> ---
->  drivers/pci/pci.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index a93084053537..373421f4b9d8 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5014,6 +5014,7 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
->  {
->  	const struct pci_error_handlers *err_handler =
->  			dev->driver ? dev->driver->err_handler : NULL;
-> +	u32 val;
->  
->  	/*
->  	 * dev->driver->err_handler->reset_prepare() is protected against
-> @@ -5033,6 +5034,19 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
->  	 */
->  	pci_set_power_state(dev, PCI_D0);
->  
-> +	/*
-> +	 * If device's config space is inaccessible it can return ~0 for
-> +	 * any reads. Since VFs can also return ~0 for Device and Vendor ID
-> +	 * check Command and Status registers. At the very least we should
-> +	 * avoid restoring config space for device with error bits set in
-> +	 * Status register.
-> +	 */
-> +	pci_read_config_dword(dev, PCI_COMMAND, &val);
-> +	if (PCI_POSSIBLE_ERROR(val)) {
+Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+hibernation has been using the swap slot slow allocation path for
+simplification, which turns out might cause regression for some devices
+because the allocator now rotates clusters too often, leading to slower
+allocation and more random distribution of data.
 
-Obviously this is still racy because the device may become
-inaccessible partway through saving the state, and it might be worth
-acknowledging that in the comment.  But I think this is an improvement
-over what we do now.
+Fast allocation is not complex, so implement hibernation support as well.
 
-Sashiko complains about this, but I think it's mainly because of that
-last sentence of the comment that says "error bits set in Status
-register".  This patch has to do with *saving*, not restoring, so I'd
-just drop that last sentence.  FWIW, Sashiko said:
+Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+performance is several times better [1]:
+6.19:               324 seconds
+After this series:  35 seconds
 
-  The comment indicates that we should avoid restoring config space
-  for a device with error bits set in the Status register, but the
-  code only uses PCI_POSSIBLE_ERROR(val).
+Link: https://lkml.kernel.org/r/20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com
+Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
+Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
+Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org/
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-  Since PCI_POSSIBLE_ERROR() only evaluates whether the entire 32-bit
-  value is exactly 0xFFFFFFFF (indicating complete device
-  inaccessibility), does this actually check for individual error
-  flags in the Status register?
+ mm/swapfile.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-  If a device logs an error but is still accessible, val will reflect
-  those bits but will not equal 0xFFFFFFFF, causing the check to
-  evaluate to false. Should this code also check specific bits in the
-  upper 16 bits of val (such as PCI_STATUS_SIG_SYSTEM_ERROR or
-  PCI_STATUS_DETECTED_PARITY) to match the stated intention in the
-  comment?
+--- a/mm/swapfile.c~mm-swap-speed-up-hibernation-allocation-and-writeout
++++ a/mm/swapfile.c
+@@ -1926,8 +1926,9 @@ out:
+ /* Allocate a slot for hibernation */
+ swp_entry_t swap_alloc_hibernation_slot(int type)
+ {
+-	struct swap_info_struct *si = swap_type_to_info(type);
+-	unsigned long offset;
++	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
++	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
++	struct swap_cluster_info *ci;
+ 	swp_entry_t entry = {0};
+ 
+ 	if (!si)
+@@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(
+ 	if (get_swap_device_info(si)) {
+ 		if (si->flags & SWP_WRITEOK) {
+ 			/*
+-			 * Grab the local lock to be compliant
+-			 * with swap table allocation.
++			 * Try the local cluster first if it matches the device. If
++			 * not, try grab a new cluster and override local cluster.
+ 			 */
+ 			local_lock(&percpu_swap_cluster.lock);
+-			offset = cluster_alloc_swap_entry(si, NULL);
++			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
++			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
++			if (pcp_si == si && pcp_offset) {
++				ci = swap_cluster_lock(si, pcp_offset);
++				if (cluster_is_usable(ci, 0))
++					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
++				else
++					swap_cluster_unlock(ci);
++			}
++			if (!offset)
++				offset = cluster_alloc_swap_entry(si, NULL);
+ 			local_unlock(&percpu_swap_cluster.lock);
+ 			if (offset)
+ 				entry = swp_entry(si->type, offset);
+_
 
-> +		pci_warn(dev, "Device config space inaccessible\n");
-> +		return;
-> +	}
-> +
->  	pci_save_state(dev);
->  	/*
->  	 * Disable the device by clearing the Command register, except for
-> -- 
-> 2.43.0
-> 
+Patches currently in -mm which might be from kasong@tencent.com are
+
+
 
