@@ -1,185 +1,243 @@
-Return-Path: <stable+bounces-230225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAQUEzntwmkdnQQAu9opvQ
-	(envelope-from <stable+bounces-230225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 20:59:53 +0100
+	id AG1hE4ztwmkdnQQAu9opvQ
+	(envelope-from <stable+bounces-230226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:01:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96DB31BFCB
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 20:59:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB6A31C03D
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:01:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57554303198F
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:59:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0AA1E3074A13
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 20:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3B431F986;
-	Tue, 24 Mar 2026 19:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B48F2C15B5;
+	Tue, 24 Mar 2026 20:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ou+slTsg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F7mtgBtR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295BC30F540
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 19:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774382388; cv=none; b=SbOixF9MJS5C1NAy7RqOLlUa9Tg1LYcmeICkhhAp6IBwEjGGfzTPmJjfjo+kHtDITamAcma2LCoIhC2tRyBEojMWyqIiPMEKfsiTsBhveP5B8OhkhtdwhgdWxlEt5leuO+2CmyG/hSIuRza2m3YorSpz2j3+LmBaapM+YFQOv2Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774382388; c=relaxed/simple;
-	bh=z7ibkGNm1QW6sR22dPWU1jnwc+ukldoM5ju3j0FWFVU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AuMeeCtjXGLXtMCKmFBlt+3I2JVLJRospoXVOoHpyv8SImNKhWi1pb7lzpb5O9LjPjI8Kb4Y8E5HtxsUWa5q9H2s0Q2C0Geq6Pj8YD+8uyJhxO1z1FlaHgUBUGlgMbJzAUdbxzFgYfhDEucayDvPAhb3H7NRBlfqmuMlzJeIZrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ou+slTsg; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3E24676D
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 20:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774382434; cv=pass; b=Va1+cjS0uVM2jRemJmT8wFO0ov347hiTanEq2t5prm0js45NIidl+r3bUNGDY4YDLA6F+2DseMqJiN/Ex/ovwQ2fRPRBQLtQ4xtP3ADiMqH59BU/SJqzC3cZ6bYHbJtRmBbeGZsWYmtpQG6zOBSQl3xonx/2diFRgHJY1mLqgwQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774382434; c=relaxed/simple;
+	bh=H/3/HljBKkNQvfAF2nYLo4pPn7IMLelTewsSEwuiXqA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dlb+UbXLUilXIi3ZvzqDSI77pC63O1RoeTDOYjH2IKBosO5mJp9G8ybLUBwaSr1skFa3RkEwshUn351g2PK3xK6/WBfSTGCLue4K92uwy7Gmc+5oV0P4+tBl3G0YpThhBixb1dT35TdHy/fZt1uLjP3SuZ2Z4TZj2zFFB6JWc18=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F7mtgBtR; arc=pass smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2c0c482e069so3579439eec.0
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 12:59:47 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6618bc129acso2414741a12.2
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 13:00:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774382431; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q1ADb7opo8eEE+gLHTq4vlBs9a+XOeb8kzkhX/IN6n7XzkgSYq65QZOUzJRbnWnSEE
+         n23Q8hKWiDiXEx/2425oqauKey82+OuBcA1PB6nM5+5gfWCZ7maoJ2HcrvzmvePH9iaU
+         tCqwrtkR5nx2lr2MSn+DORoHaM+hk69LG3K3Y+Jf5Se14g7AvYKmXCL1xaLpyVzIBRBf
+         g3VOanl0rzYHOMU4pPX4WTMQ0hMaxkP37QpjmfXsa9AkfwtRXdv9ZrVauwdzCYk7TXJd
+         +vilHrQ9+9iVEUhWgRhc5s0nWa1QDa0lEXneBycK2s/ZNEk5kyp/ARPdlQaJv5mpZrzL
+         mkww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1nuigy5i6MlCzZ5OS0a7Db3vipXMg/2DN1anL0e9s4w=;
+        fh=UBchOitgO9+W3yw9Ai4fCqIFZA6WG9OC05HCBIL/S84=;
+        b=Vg9mbY7qfte3L1YY8qRjxDC+4nwwDm7PA/PSUwiBOYw4E7DRYK84XO/vfMzW0hP71t
+         Blt7d8bHj+s24Rdc817YxHmedWDz1pqZqJuceun13EPMryMz7Qo29kvav4i+dprA+lFM
+         FxYIzQPrSyNdEnft3FV/nCLzdArhepKAEhmn3w4DO0pdr8qFY4ddJUtNZBrvMi4ktC07
+         gqXagEr1m3O2CNziBsB+5ar40Roho77Z1DlDtUmCWjvcMcsbdPnC55FbrdgIgbq5WNcO
+         WXw92LwlivsIYdBFR42ascDjxEdz+T24oxNVW+pDym+jIaaCt2Ghy+ZdAad/+jiR8xeW
+         UYLg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774382386; x=1774987186; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ua2NTGKaorenmmg2d49ovrLt+QpXF9duRF0O4CKNrgs=;
-        b=Ou+slTsgTm6gWd0IHjiE/6N3Yi2JMFWFJWgp3hbMiajsh9RSXNCnMHS6m+5abfp0+r
-         C27pRUJw8dMF/PrjKDK9ZUiuLoyQaH6Eq6D6mWqpWcDquPT0h+J5IYhn6fpkWldY7ydh
-         47KM2/uuoCZMmiLWW1lPRfh3N3nwNm739wpgzDJQLzVz+BqXhly0+fDlblGFHPyWOHEQ
-         pV2l54rSRRgkisMPNV1Yu69QuTwLd18N/FtXkH8TcVPhlolOeRUR5A5iiNjimORYE76O
-         K998E+Mt25CoYA902mIThodoqnd2Rtsw2yOKcmQ7tIgzHQqrW5W491tpMybImiOzxpkL
-         scWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774382386; x=1774987186;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774382431; x=1774987231; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ua2NTGKaorenmmg2d49ovrLt+QpXF9duRF0O4CKNrgs=;
-        b=kL4UssCj35FwJ9V8nEWe2e0HWKMtNlKtebm76gOtcSumKq3GPuFk6AMxOxlNF4J9yv
-         Vovd3I0dATH6S6Dlbj7C/4UOYETe4ujxTiGcS/hpk5yu2DR31iTeq7yOJr9iV4MHp3oL
-         1cGYB2h4RpMDfR9Y5ZXMsDHnqecCtg+3MANGt5iTKAYznhLhfxc7OhkT16X53v2VpCvn
-         jfQ55VYNEsv3I5lkpZ8v5Mcb91wR83Xq1G2YKtcFLViSMYKA447MRT0AP4OSTS3K6aho
-         1otc3Zt0xeCZWPnXzBQ7Ll7mMOgQSbWSnNwFJcWwZTfsWhKFrrrZ8p8GcIWeo+psozsh
-         wr9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUpBnuuAuvE/MrV1RYQHEt8ZRFtSuD70xYS8A0Cn9Wc0s9zQgO7GT6kD2hCatA1m6AUx8tk/yM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7TreU6Vo3MzVZom5bpo7zG/k9WZgA01bD3P/IJyCst//pr2Kj
-	wOUVn813TR+BqW3rQrpX1d68ceYHocLb1hzVjMsv9wsMm8jyh9zXrfWg
-X-Gm-Gg: ATEYQzywdzB+9n0DBDGmPIIflVsz8J3RCv7dzxTWQonwfJKzAHY5JSBuoFJ5vk7kuP5
-	g8wOS08BHX2CVWZPT/9xfIfSy7oMu4MDJAQP5lsukE8heLezsfJoprqwDIVjW58KDMmH+JV7efW
-	CamfQwKUHJSsF38B0ZdRb8DbpsI9aR7cFoOOpVJIK9urUqXmEFpuwRN6GdWdUKCmU99Pq/j0S0J
-	Py4cYilBY7RzASBnmAKsujpxCYpgjo5X6CgwiDLazVc3VX8lozTnv90xW43wuSbzgvMDi/926h2
-	z2/RiBfvdsVHDk2KKX49DMy2X9DdDvFU6cBdQunBpbkLAHkIPjrrzBq/NT9ZmK0TmnR9f5zfrHp
-	qaLNjSH1+AEZcoyq49MR2cT2X9cJA+Ubu/5igqdx/1DUvbrpFY7QVuPlrXTCT790tKo/yqUU1bO
-	nrM8iIEVSHoiAd9TNOQAWMrw3lfbfxDIYOxdpE0XWVONkbswd77pSgEWaoc65PsuPPESw2f5sva
-	GY=
-X-Received: by 2002:a05:7300:f191:b0:2bd:b102:a022 with SMTP id 5a478bee46e88-2c15d3c0932mr350819eec.27.1774382385936;
-        Tue, 24 Mar 2026 12:59:45 -0700 (PDT)
-Received: from [192.168.1.8] (177-4-160-195.user3p.v-tal.net.br. [177.4.160.195])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b17b1b8sm16718375eec.8.2026.03.24.12.59.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 12:59:45 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Tue, 24 Mar 2026 16:59:41 -0300
-Subject: [PATCH] ALSA: seq_oss: return full count for successful
- SEQ_FULLSIZE writes
+        bh=1nuigy5i6MlCzZ5OS0a7Db3vipXMg/2DN1anL0e9s4w=;
+        b=F7mtgBtRyRp+eUyW0oozsSHJAmc87CmiVVOlDMGik0btrZGo5RYmJmYgRT96t2z4Z0
+         nsrFs9OpzCJIGsa781SDRlkGBbsYJqmGG97BglLgX61JkLrPRiD3SfBwjtB0YVa7iG+9
+         6BYQAdAtt5l1GPtIhdFwwhxzq0/HecEKOW02Wqa7Ri8HmEvzRj/ScQAhuUAagwjHmXmc
+         /RJYmPkOxHygfmmfKQxW83CzScLwt2/udvyzth7Sh5HsjFF8k0KmUSD9CO2SC+u2BvA9
+         B0VEhihjRnX36imrSDFJLI8UV4rEG+PCUgEvq8z/skQhTZi3D2fphLhf/K83K6MJ8/Kz
+         Ffcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774382431; x=1774987231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1nuigy5i6MlCzZ5OS0a7Db3vipXMg/2DN1anL0e9s4w=;
+        b=HmyVYYHM8rcJPD6M/Jcnf7sGVkZWD77q3hDC2yeuG4o1ORGCDYHfjxb8TodJvTMiF9
+         75yiD/Nk8fJXrPCrK6cQyoV+ACC4nh44JJVGNIjgs271nmqx2Ufy5S1XvVc5CK2E0ofI
+         l+PXFv8RfC1m518mG2GxfhF4uLYNL3gvajbHb0dtr1kBLS0uwig2HazNuZWr516VEPir
+         tPugCFDTwNj1awN32+jUL77dIjP+DP2Yab0dtdPuIbsDB8IVSRtAV3GwXkOpaNiwQbe4
+         QKlWIYripZ8YpGpQ/tklgKbCdbpsVVXhxqZiFBtRwi5t8GTHdJoV4BWB+0rMVXwfiWxP
+         XjIw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1Qh1tsfa3Hs0I7nO6eCtNPWaSxWezLFj5nP5aSV26delgeSrt4eb+wjUJyKvEiSHL0wZ2e/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP+LC5CnwwGwwJvj56jS0HqFXczwZIqE/0lSuNajtuKYEwI8JU
+	AcZMSXk89S2JEEzcZBwsTh7PjFk3TsHMN46VkKl190Dgo+QZvBoJddthTb9t5o992iOwH0V8u7J
+	kUbD0Iay67iTu48hFNC1mdevie704Hyc=
+X-Gm-Gg: ATEYQzx6+AoK0hsnuI3sCWFnOOjA52bFZVv9jOncaWiJhHARNMaI1w6YoZO+aEBMosB
+	EgytC6QTXlCfFJqzOWRrU3R/8Y/qHmAYG+aw56VOTYV3Cqv4b8aY9lEqPLMbdfIgdjChxaLQm6y
+	wNFBBnjEog/CPDdv1Hj8LIdPydBSoHMiB0YKAmaiTXSkL2qIOEvFUpYF2Gh4NmzUL5gD0B+2QLd
+	6iK+km0WX5ABGcWgFWAtZhKblPadWo8mEn8zYzd/zYq72c2Ap6QFYRDQh+ZXL+FS6Kwbr7nlYhD
+	dodNOLk=
+X-Received: by 2002:a17:907:1999:b0:b97:89b5:d7a0 with SMTP id
+ a640c23a62f3a-b9a54288647mr44602266b.48.1774382431128; Tue, 24 Mar 2026
+ 13:00:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260324-alsa-seq-oss-fullsize-write-return-v1-1-66d448510538@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3NQQ6CMBBG4auQWTtJKeiCqxgXVf7qJE3BGRAi4
- e40LL/NexsZVGDUVRspfmIy5IL6UtHrE/IbLH0xeedvrvEth2SBDV8ezDjOKZn8wYvKBFZMs2Z
- 2fe1d84wR7ZVKaFREWc/J/bHvB2y6dDl0AAAA
-X-Change-ID: 20260324-alsa-seq-oss-fullsize-write-return-0d1203bffe45
-To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1666;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=z7ibkGNm1QW6sR22dPWU1jnwc+ukldoM5ju3j0FWFVU=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJmH3uq3tWaktFdtXyD+wFk/3zqq50Sz4obAzOxTdiK/V
- cy43V50lLIwiHExyIopsqxOWmS5p+vB1fq4FR4wc1iZQIYwcHEKwESEdRj+yqckb6zPeGHj4xGQ
- sjr1R3CBXLt1scfCC/a1j/2Xav/6wchwTKti8z3Wlay8brXZzDeO5nV9VGqXqD/64JdJpeAHk7m
- MAA==
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+References: <20260324173527.11321-1-sebasjosue84@gmail.com>
+In-Reply-To: <20260324173527.11321-1-sebasjosue84@gmail.com>
+From: Michael Zaidman <michael.zaidman@gmail.com>
+Date: Tue, 24 Mar 2026 22:00:20 +0200
+X-Gm-Features: AQROBzD7DJFoR-w2ZbaKS2onxXaNipjwmPIQropG4PSX5rpIV2agbqhUt5sEkcM
+Message-ID: <CAPnwWgOY6UO2JKMNWw_fZK3Vvg_v9zQWX6Ugz=X+b4esPTn7Rg@mail.gmail.com>
+Subject: Re: [PATCH] HID: ft260: validate report size in raw_event handler
+To: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
+Cc: jikos@kernel.org, bentiss@kernel.org, linux-i2c@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230225-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230226-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelzaidman@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: E96DB31BFCB
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: BDB6A31C03D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-snd_seq_oss_write() currently returns the raw load_patch() callback
-result for SEQ_FULLSIZE events.
+Hi Sebastian,
 
-That callback is documented as returning 0 on success and -errno on
-failure, but snd_seq_oss_write() is the file write path and should
-report the number of user bytes consumed on success. Some in-tree
-backends also return backend-specific positive values, which can still
-be shorter than the original write size.
+Thanks for the patch. The report size validation gap in ft260_raw_event()
+is a valid concern - the raw_event callback is indeed invoked before
+hid_report_raw_event() validates the report size, so a truncated report
+from a malicious or buggy device could cause OOB reads.
 
-Return the full byte count for successful SEQ_FULLSIZE writes.
-Preserve negative errors and convert any nonnegative completion to the
-original count.
+However, I have a couple of comments on the proposed fix:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/core/seq/oss/seq_oss_rw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Please use the existing FT260_REPORT_MAX_LENGTH macro instead of the
+hardcoded 64.
 
-diff --git a/sound/core/seq/oss/seq_oss_rw.c b/sound/core/seq/oss/seq_oss_rw.c
-index 8a142fd54a19..307ef98c44c7 100644
---- a/sound/core/seq/oss/seq_oss_rw.c
-+++ b/sound/core/seq/oss/seq_oss_rw.c
-@@ -101,9 +101,9 @@ snd_seq_oss_write(struct seq_oss_devinfo *dp, const char __user *buf, int count,
- 				break;
- 			}
- 			fmt = (*(unsigned short *)rec.c) & 0xffff;
--			/* FIXME the return value isn't correct */
--			return snd_seq_oss_synth_load_patch(dp, rec.s.dev,
--							    fmt, buf, 0, count);
-+			err = snd_seq_oss_synth_load_patch(dp, rec.s.dev,
-+							   fmt, buf, 0, count);
-+			return err < 0 ? err : count;
- 		}
- 		if (ev_is_long(&rec)) {
- 			/* extended code */
+More importantly, the size < 64 check alone is insufficient. It prevents
+accessing struct fields in a truncated buffer, but does not guard against
+a corrupted xfer->length field in an otherwise full-sized report.
 
----
-base-commit: b3c48fa1fb397b490101785ddd87caf2e5513a66
-change-id: 20260324-alsa-seq-oss-fullsize-write-return-0d1203bffe45
+Consider: a device sends a valid 64-byte report (passes the size check),
+but with xfer->length set to, say, 100. The data payload starts at offset 2=
+,
+so only 62 bytes are available in the buffer. The existing check at line 10=
+77
+validates against the destination buffer (dev->read_len - dev->read_idx),
+not the source. If read_len is large enough (e.g., 180), the check passes,
+and the memcpy reads 100 bytes from a 62-byte region - a 38-byte OOB heap
+read from the source side.
 
-Best regards,
--- 
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
+A more complete fix would validate xfer->length against the actual report s=
+ize:
 
+    struct ft260_i2c_input_report *xfer =3D (void *)data;
+    if (size < FT260_REPORT_MAX_LENGTH) {
+        hid_warn(hdev, "short report: %d\n", size);
+        return 0;
+    }
+    if (xfer->length > size -
+        offsetof(struct ft260_i2c_input_report, data)) {
+        hid_warn(hdev, "payload %d exceeds report size %d\n",
+             xfer->length, size);
+        return 0;
+    }
+This catches both truncated reports and corrupted length fields.
+
+Would you like to send a v2 addressing the above?
+
+Thanks, Michael
+
+On Tue, Mar 24, 2026 at 7:35=E2=80=AFPM Sebastian Josue Alba Vives
+<sebasjosue84@gmail.com> wrote:
+>
+> ft260_raw_event() casts the raw data buffer to a
+> ft260_i2c_input_report struct and accesses its fields without
+> validating the size parameter. Since __hid_input_report() invokes
+> the driver's raw_event callback before hid_report_raw_event()
+> performs its own report-size validation, a device sending a
+> truncated HID report can cause out-of-bounds heap reads in the
+> kernel.
+>
+> In the I2C response path, xfer->length (data[1]) is used as the
+> length for a memcpy into dev->read_buf. While xfer->length is
+> checked against dev->read_len, there is no check that size is large
+> enough to actually contain xfer->length bytes of data starting at
+> offset 2. A malicious USB device could therefore cause an OOB read
+> from the kernel heap, with the result accessible from userspace via
+> the I2C read interface.
+>
+> FT260 devices use 64-byte HID reports. Add a check at the top of
+> the handler to reject any report shorter than expected, and log a
+> warning to aid debugging.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
+> ---
+>  drivers/hid/hid-ft260.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/hid/hid-ft260.c b/drivers/hid/hid-ft260.c
+> index 333341e80..7ca323992 100644
+> --- a/drivers/hid/hid-ft260.c
+> +++ b/drivers/hid/hid-ft260.c
+> @@ -1068,6 +1068,12 @@ static int ft260_raw_event(struct hid_device *hdev=
+, struct hid_report *report,
+>         struct ft260_device *dev =3D hid_get_drvdata(hdev);
+>         struct ft260_i2c_input_report *xfer =3D (void *)data;
+>
+> +       /* FT260 always sends 64-byte reports */
+> +       if (size < 64) {
+> +               hid_warn(hdev, "report too short: %d < 64\n", size);
+> +               return 0;
+> +       }
+> +
+>         if (xfer->report >=3D FT260_I2C_REPORT_MIN &&
+>             xfer->report <=3D FT260_I2C_REPORT_MAX) {
+>                 ft260_dbg("i2c resp: rep %#02x len %d\n", xfer->report,
+> --
+> 2.43.0
+>
 
