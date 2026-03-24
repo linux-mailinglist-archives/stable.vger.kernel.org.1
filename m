@@ -1,133 +1,118 @@
-Return-Path: <stable+bounces-230176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEL/OQyfwmm3fQQAu9opvQ
-	(envelope-from <stable+bounces-230176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:26:20 +0100
+	id ILmFFLChwmm3fQQAu9opvQ
+	(envelope-from <stable+bounces-230177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:37:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DEC30A1B9
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:26:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A133630A44A
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC58830B20D9
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:23:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C6B330ED397
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322143FE658;
-	Tue, 24 Mar 2026 14:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cM4XY3+V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C88537C105;
+	Tue, 24 Mar 2026 14:30:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91083264EF;
-	Tue, 24 Mar 2026 14:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8FC3624BC
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774362218; cv=none; b=myuZth0qsAetFUhQeWAK5URykY2/YFxMLjxBMS6eNs2DgcHg3EZGPAoVKZN34szPFMC5hQtH+Uh+GwfWLZE2CLvY6OGtWaRaWc1pn5ISfzYYuGX2WEbjWnULefJk2nI43m7VMv6h8SKO9hPwZaXS+qqNEPnQRxLhooxedd67zv4=
+	t=1774362606; cv=none; b=WWD9N3qmZgOCJdSpZ7ZcGb63TQ8uNyBBL0JnNFWOaDX2x9LR+05KRSYe9wmFGqJn256u7mnZ7WyYee7AN+YtYEV6TH8A0RttFVlWXs9p0emYh2EAkYDZWn7syattYTmR3wiOKS2Fuhn5DgNBMrWk2U4Hf4aoNfySM4kPkiUOa08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774362218; c=relaxed/simple;
-	bh=9Z7GaYs4fyCj9d0eSk8XQ6gvnDwH88gapww8q0oEjMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uqCutYeiinj86OL9pooPUq8DX19QLl9VcTHP/hmUkHzx3KJW+Wy1ynGRZISL4U6oG5aVgGNMWvdq+HQ40c4imTM9P0lT/vEsGoOn7ejGr4GUkMiDZ/yNxx6AcinIkRscuBsD6M94ixUHi1dnGVtGCVV6Ieh3LUuZim6/2SN1YcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cM4XY3+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51744C19424;
-	Tue, 24 Mar 2026 14:23:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774362217;
-	bh=9Z7GaYs4fyCj9d0eSk8XQ6gvnDwH88gapww8q0oEjMs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cM4XY3+VRCOB6GnN+juDD+RK1p0RSFlTP78a7gWpOf/uPC9Bo3g4XkwnQegUFaTf8
-	 +lkDb7TaMRhq6DDWA9flOWzmtDkty1nV/0lJYVdK22eO6d5hLqsUdMweuD/Y3rUP4x
-	 1gtv2BTi2nonsJpR9juY1La+wS57IAC8XdwqRsp06dGrEtAG/8SPiU1jBORXAaKxOQ
-	 S08Hq8mNSoblxEAlU2z56Zri5X37JzFQ57vL6qWBP4SEzqQgx7/g26I7SuiNWeuF7W
-	 /32fKpXbTPI2xrNaHLgiS2gwpsQsbXM7ATv9uAhS0omGii4R8/BUkzVbur5nt5+GdE
-	 59soqPQcBt8Ug==
-Date: Tue, 24 Mar 2026 14:23:31 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 000/220] 6.19.10-rc1 review
-Message-ID: <8c15779d-e694-445e-aa95-bb1fa5f634d7@sirena.org.uk>
-References: <20260323134504.575022936@linuxfoundation.org>
+	s=arc-20240116; t=1774362606; c=relaxed/simple;
+	bh=rQQVQ1wS9wK9ZUUlTkDgQmhQqeCu/P+o9Uf5Egje+5E=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=Fs7I4uSnNw9h5aEWpyCbzQxjuWvyRcN+ey62fVrZOdznUKOffj2TQhV2ytBVVCl54ot1ooUqSi56MYx9V0N8F5QKRxwyKf7dUbnLzmazTcnR2KnLWmzWRcHFVBRwWUQeI+JGa6uaXYWrDHXBi8qV2jEx3h8upWMrv5sRyJzj5Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7d4c7afa9e0so52485658a34.0
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 07:30:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774362604; x=1774967404;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o5aihaodhccHD3lizpz1Dg+lR4PKzRYdB0a8QMR/Unw=;
+        b=RW2th6VcI8NZhbX5CDnuVU978HfbRA2qf7/Env6TdcectlR7dKHuxvQSTfZcHmRGdy
+         gmFMtgJHSS6wAwzlUSsBQIIa7VOYI5NxOHXJ2H8t5Ki234i6gYj51DElF3otA6CvKMR/
+         5htk0sdpRiWBZAbhaKwENHrZYaVuA1EzkTY2/Ghdt55dc4D8pP5HxfKWQ7sPIZ2aTbru
+         4SLcrwuDsyei1A7yEWBAJwcOCjnCaFCjgxx2fuAmkXPIyM680kXN0VhT8JigIxr+uX9M
+         qEKAQAOBZK2NHWzlr3W4Gspcql02VIldR9Vo6cYGNzucqpEegw7wZ8GRaXA53h7Th0bl
+         w9DA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDJ6657OCgadmfUnP+wpbcAd22kQqeib/bKGspXIio9Z0Ol8VgCdlvio8RfzpkeF09RXswDU8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyxrx0ULs4xMubU+WAGhZ907PubLQ5u55UnEvrRS+WMJBxyufXX
+	SmDoLUgG3Brno/4mFW1jOzO2iHvzEpSv64taImeYNpX5A8d6R/XNe4/PqyWaQOD2JBDMqTwg8OG
+	EeMtSRpDTbvpiEv/LjUT3R8LH3u6omr7ricFI8U49InVQGSXoB+5DQ5gZYVo=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4kWViM3Svr/eY1P/"
-Content-Disposition: inline
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-X-Cookie: Forest fires cause Smokey Bears.
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Received: by 2002:a05:6820:c83:b0:67c:2c29:216b with SMTP id
+ 006d021491bc7-67c2c2924f0mr10301130eaf.48.1774362604135; Tue, 24 Mar 2026
+ 07:30:04 -0700 (PDT)
+Date: Tue, 24 Mar 2026 07:30:04 -0700
+In-Reply-To: <tencent_44CDECE854579C9391141AA91D89BF4D2309@qq.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69c29fec.a70a0220.59f55.0008.GAE@google.com>
+Subject: Re: [v6.1] WARNING in iomap_iter
+From: syzbot <syzbot+016d861797fd718491a8@syzkaller.appspotmail.com>
+To: driz2t@qq.com, stable@vger.kernel.org, syzkaller-lts-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=2b89c38cfc7d08c1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230177-lists,stable=lfdr.de,016d861797fd718491a8];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230176-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[qq.com,vger.kernel.org,googlegroups.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 44DEC30A1B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: A133630A44A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello,
 
---4kWViM3Svr/eY1P/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-On Mon, Mar 23, 2026 at 02:42:57PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.10 release.
-> There are 220 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Reported-by: syzbot+016d861797fd718491a8@syzkaller.appspotmail.com
+Tested-by: syzbot+016d861797fd718491a8@syzkaller.appspotmail.com
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Tested on:
 
---4kWViM3Svr/eY1P/
-Content-Type: application/pgp-signature; name="signature.asc"
+commit:         f2ddafa9 Linux 6.1.166
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=16c916da580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=2b89c38cfc7d08c1
+dashboard link: https://syzkaller.appspot.com/bug?extid=016d861797fd718491a8
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=168c506a580000
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCnmIACgkQJNaLcl1U
-h9Dw+wf/WWHObsFpH47lFL0ZXakvPwI92D19zu/DDuAsgbnnHM5+tu/7LJx912Oo
-ixMTsyz+IJQhJLKdpjb1i4UKfjhfJN68WPHNLEXDBI/C7FnH9pP2q0a4NywoNLIm
-4A3kB19WK9Ihcb+MBvWousUKH5uxpeQ83dP/IZb4jg8o1RiiYNaOQo/XME3ZEfvd
-1m0kYOcKCypguVdAMvN5TiEZGAFVn2tPqB0ONm4EcfoB8F9TjGApz2mh/S/rfQ1M
-MrwF1QeG8KiKdewBYXsQerhrgoELx1G2qq3Y6Xx9SQyHKGRY6+swEImLbkts6yrW
-R/Dyl06iRGWwtEv6Rezz4kxBHAPV2g==
-=Bqem
------END PGP SIGNATURE-----
-
---4kWViM3Svr/eY1P/--
+Note: testing is done by a robot and is best-effort only.
 
