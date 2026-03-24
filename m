@@ -1,243 +1,136 @@
-Return-Path: <stable+bounces-230226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AG1hE4ztwmkdnQQAu9opvQ
-	(envelope-from <stable+bounces-230226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:01:16 +0100
+	id MLgfNC/xwmkdnQQAu9opvQ
+	(envelope-from <stable+bounces-230227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:16:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB6A31C03D
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:01:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AF831C350
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AA1E3074A13
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 20:00:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 421BF303CEA9
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 20:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B48F2C15B5;
-	Tue, 24 Mar 2026 20:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619CF3358C2;
+	Tue, 24 Mar 2026 20:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F7mtgBtR"
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="SUHZL4aY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3E24676D
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 20:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774382434; cv=pass; b=Va1+cjS0uVM2jRemJmT8wFO0ov347hiTanEq2t5prm0js45NIidl+r3bUNGDY4YDLA6F+2DseMqJiN/Ex/ovwQ2fRPRBQLtQ4xtP3ADiMqH59BU/SJqzC3cZ6bYHbJtRmBbeGZsWYmtpQG6zOBSQl3xonx/2diFRgHJY1mLqgwQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774382434; c=relaxed/simple;
-	bh=H/3/HljBKkNQvfAF2nYLo4pPn7IMLelTewsSEwuiXqA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dlb+UbXLUilXIi3ZvzqDSI77pC63O1RoeTDOYjH2IKBosO5mJp9G8ybLUBwaSr1skFa3RkEwshUn351g2PK3xK6/WBfSTGCLue4K92uwy7Gmc+5oV0P4+tBl3G0YpThhBixb1dT35TdHy/fZt1uLjP3SuZ2Z4TZj2zFFB6JWc18=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F7mtgBtR; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6618bc129acso2414741a12.2
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 13:00:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774382431; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Q1ADb7opo8eEE+gLHTq4vlBs9a+XOeb8kzkhX/IN6n7XzkgSYq65QZOUzJRbnWnSEE
-         n23Q8hKWiDiXEx/2425oqauKey82+OuBcA1PB6nM5+5gfWCZ7maoJ2HcrvzmvePH9iaU
-         tCqwrtkR5nx2lr2MSn+DORoHaM+hk69LG3K3Y+Jf5Se14g7AvYKmXCL1xaLpyVzIBRBf
-         g3VOanl0rzYHOMU4pPX4WTMQ0hMaxkP37QpjmfXsa9AkfwtRXdv9ZrVauwdzCYk7TXJd
-         +vilHrQ9+9iVEUhWgRhc5s0nWa1QDa0lEXneBycK2s/ZNEk5kyp/ARPdlQaJv5mpZrzL
-         mkww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1nuigy5i6MlCzZ5OS0a7Db3vipXMg/2DN1anL0e9s4w=;
-        fh=UBchOitgO9+W3yw9Ai4fCqIFZA6WG9OC05HCBIL/S84=;
-        b=Vg9mbY7qfte3L1YY8qRjxDC+4nwwDm7PA/PSUwiBOYw4E7DRYK84XO/vfMzW0hP71t
-         Blt7d8bHj+s24Rdc817YxHmedWDz1pqZqJuceun13EPMryMz7Qo29kvav4i+dprA+lFM
-         FxYIzQPrSyNdEnft3FV/nCLzdArhepKAEhmn3w4DO0pdr8qFY4ddJUtNZBrvMi4ktC07
-         gqXagEr1m3O2CNziBsB+5ar40Roho77Z1DlDtUmCWjvcMcsbdPnC55FbrdgIgbq5WNcO
-         WXw92LwlivsIYdBFR42ascDjxEdz+T24oxNVW+pDym+jIaaCt2Ghy+ZdAad/+jiR8xeW
-         UYLg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB19233509B
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 20:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774383272; cv=none; b=C6ezWfavCwWUZCfBXSQV9uu91AiJ5s5ZZa8i2dxcphVUOKKk0csCCzaw20H7nouu/kQc8y+oY1jDh3hWzL144+GgxuGE+z5jcqJHAeFjdBHhP4Rf+1g9y+ZzG2Eed5khvjWm2Hjs36nUc0pHU35i5kzLMosWRJFjKzaUVLcUvQc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774383272; c=relaxed/simple;
+	bh=ejJ8WBiiXzLknFE5MeSm9cbu5Y9/2HuvAnkw91kSo4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M4m5kCVr2UcrM637eLb9Y1JDx8IucKEqQ71mq/qZ4fpeVMAoXRqFZJpbKXVyQ85GtlB89iijh0rO7Uqosl4Bp6vAh+mgLspSNUgjEwoBpIjNLoJBelY6fgSs8GoRiKP/OYnp0gkvie4awk46bFq5JYf8tKcMfIpauTE2+bCcjiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=SUHZL4aY; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-79853c0f5b9so38154947b3.0
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 13:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774382431; x=1774987231; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1nuigy5i6MlCzZ5OS0a7Db3vipXMg/2DN1anL0e9s4w=;
-        b=F7mtgBtRyRp+eUyW0oozsSHJAmc87CmiVVOlDMGik0btrZGo5RYmJmYgRT96t2z4Z0
-         nsrFs9OpzCJIGsa781SDRlkGBbsYJqmGG97BglLgX61JkLrPRiD3SfBwjtB0YVa7iG+9
-         6BYQAdAtt5l1GPtIhdFwwhxzq0/HecEKOW02Wqa7Ri8HmEvzRj/ScQAhuUAagwjHmXmc
-         /RJYmPkOxHygfmmfKQxW83CzScLwt2/udvyzth7Sh5HsjFF8k0KmUSD9CO2SC+u2BvA9
-         B0VEhihjRnX36imrSDFJLI8UV4rEG+PCUgEvq8z/skQhTZi3D2fphLhf/K83K6MJ8/Kz
-         Ffcw==
+        d=toxicpanda.com; s=google; t=1774383270; x=1774988070; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pj8+8/JJ7h3b7BpKS3uF06MRnM+qUNB5Mr/NDCOtqmY=;
+        b=SUHZL4aYJFiBUJUj7K6RCNTlv+WZw8POOK8dcPVDU1Kooy9aPzUgdActFg/2EmGEv5
+         88ZuUG4/wN34VJ9uAGBPO/JB3ZRnrAM4qIAnDZLMRkQkCuH9JiwAzTeAAIwLCzrrn01O
+         gUtDgRqXRqAsDpOTgZ5EV13HCJdrFShFJ63pV3DvFi2rmo37UF08LAn7YkOvDJWtC/PS
+         kzjYv2HNtRRH6NaiCEZGsejHgw1s9aWr4IOV1NeUcbf3KE8jLhkvlXJRMH9D9uJ1wGJ/
+         2rIgmmT55NJS6eHDrvBuepPo60DgaOZ1ZOGYtL/gkYXJY6zxw918CIHsuD64LwPvrutO
+         s+eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774382431; x=1774987231;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1nuigy5i6MlCzZ5OS0a7Db3vipXMg/2DN1anL0e9s4w=;
-        b=HmyVYYHM8rcJPD6M/Jcnf7sGVkZWD77q3hDC2yeuG4o1ORGCDYHfjxb8TodJvTMiF9
-         75yiD/Nk8fJXrPCrK6cQyoV+ACC4nh44JJVGNIjgs271nmqx2Ufy5S1XvVc5CK2E0ofI
-         l+PXFv8RfC1m518mG2GxfhF4uLYNL3gvajbHb0dtr1kBLS0uwig2HazNuZWr516VEPir
-         tPugCFDTwNj1awN32+jUL77dIjP+DP2Yab0dtdPuIbsDB8IVSRtAV3GwXkOpaNiwQbe4
-         QKlWIYripZ8YpGpQ/tklgKbCdbpsVVXhxqZiFBtRwi5t8GTHdJoV4BWB+0rMVXwfiWxP
-         XjIw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1Qh1tsfa3Hs0I7nO6eCtNPWaSxWezLFj5nP5aSV26delgeSrt4eb+wjUJyKvEiSHL0wZ2e/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP+LC5CnwwGwwJvj56jS0HqFXczwZIqE/0lSuNajtuKYEwI8JU
-	AcZMSXk89S2JEEzcZBwsTh7PjFk3TsHMN46VkKl190Dgo+QZvBoJddthTb9t5o992iOwH0V8u7J
-	kUbD0Iay67iTu48hFNC1mdevie704Hyc=
-X-Gm-Gg: ATEYQzx6+AoK0hsnuI3sCWFnOOjA52bFZVv9jOncaWiJhHARNMaI1w6YoZO+aEBMosB
-	EgytC6QTXlCfFJqzOWRrU3R/8Y/qHmAYG+aw56VOTYV3Cqv4b8aY9lEqPLMbdfIgdjChxaLQm6y
-	wNFBBnjEog/CPDdv1Hj8LIdPydBSoHMiB0YKAmaiTXSkL2qIOEvFUpYF2Gh4NmzUL5gD0B+2QLd
-	6iK+km0WX5ABGcWgFWAtZhKblPadWo8mEn8zYzd/zYq72c2Ap6QFYRDQh+ZXL+FS6Kwbr7nlYhD
-	dodNOLk=
-X-Received: by 2002:a17:907:1999:b0:b97:89b5:d7a0 with SMTP id
- a640c23a62f3a-b9a54288647mr44602266b.48.1774382431128; Tue, 24 Mar 2026
- 13:00:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774383270; x=1774988070;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pj8+8/JJ7h3b7BpKS3uF06MRnM+qUNB5Mr/NDCOtqmY=;
+        b=lZeYiGOYjKB2eLFFaAqhtjuQXJ+KNKoC8rPSziVz0SdDpMiARCKn2zBHJp4R4n6nAz
+         e0fo4SjzeumxMh9hsbmuSy12lFTfsGyM2h7lDD/+veCg+QR6vxRObc4gauPFOLuuzFiY
+         sELhT08Ere5JAgn9DK2yN3ZLiW/BFKezfvUlha52H4k7b2tVYSN0haawR6pFLnnxu7U/
+         deNApnG/lPvHQ3aau9Ir3FKxOXKRwgmcm46i9DMCnSdI02boFtt/ZkMggCv28K4X87mS
+         ql2T1jHXMzv7lUSGK0j18agGEUF26mj1sfkV+Pcw1dLHLck4AnNygf7tRKiY3i8NQtT2
+         b/1A==
+X-Gm-Message-State: AOJu0YyxrzjhVEzFrKJErRU+9qx0gciaanPAoI14gsrLhdIjEZO6MpYx
+	0tMHerKnht9YdIzsR593nAO+mcFDwoALSuPo6+7+/iRM1PccK/6S+JXptpDGo3GEANw=
+X-Gm-Gg: ATEYQzxiZJALmnihX6cUnXpgoFyWTiYS3v0zTNDR8hmCNzcqjvrryiMms+Zrkq3W2FL
+	GHeZ5hb8HiQlhs4wxcvalyKnhsCKjGh5+9ilfUHPvliGhV32tbLOKvxrOD2i9Q9wQYOPZh9Ey/y
+	sKkCZpDW/h60NwB2E3AgrvqRzx/G6uePQCqdJh6cBPLO5DumbxJCbD+Yei00hTJB2zoiJorI5ha
+	gKF3kmIyLissBymWqabiOKE7ls5rzmnixb9TuoZdB1sFOugLPuEXQmD72o6OKr98tlY0gSf8c43
+	IbPSkMZewKZnoOB7w4/7vZR9qv5pgcnjVRbprR0TcegGHRn7DMnhsY4Eak5mlji+86Np9fW4Smk
+	kx2dJgLVpVABfHP6hmwrQgVtULG8qIS37P2baz8GXrWpTTXr5blnC7WAliH9xMSTgP7CvKFBIFi
+	tosRnfrQTGaKpvlHdFLsGEpsse
+X-Received: by 2002:a05:690c:d89:b0:798:6042:12b9 with SMTP id 00721157ae682-79acf397948mr12408687b3.19.1774383269665;
+        Tue, 24 Mar 2026 13:14:29 -0700 (PDT)
+Received: from localhost ([2603:6080:7702:ce00:dabb:c1ff:fe4f:43a2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79aca5fef49sm9513597b3.30.2026.03.24.13.14.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 13:14:28 -0700 (PDT)
+Date: Tue, 24 Mar 2026 16:14:28 -0400
+From: Josef Bacik <josef@toxicpanda.com>
+To: joro@8bytes.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	suravee.suthikulpanit@amd.com
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] amd/iommu: do not split domain flushes when flushing the
+ entire range
+Message-ID: <20260324201428.GA3698093@perftesting>
+References: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324173527.11321-1-sebasjosue84@gmail.com>
-In-Reply-To: <20260324173527.11321-1-sebasjosue84@gmail.com>
-From: Michael Zaidman <michael.zaidman@gmail.com>
-Date: Tue, 24 Mar 2026 22:00:20 +0200
-X-Gm-Features: AQROBzD7DJFoR-w2ZbaKS2onxXaNipjwmPIQropG4PSX5rpIV2agbqhUt5sEkcM
-Message-ID: <CAPnwWgOY6UO2JKMNWw_fZK3Vvg_v9zQWX6Ugz=X+b4esPTn7Rg@mail.gmail.com>
-Subject: Re: [PATCH] HID: ft260: validate report size in raw_event handler
-To: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-Cc: jikos@kernel.org, bentiss@kernel.org, linux-i2c@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[toxicpanda.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230226-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-230227-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[toxicpanda.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelzaidman@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[toxicpanda.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[josef@toxicpanda.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: BDB6A31C03D
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 62AF831C350
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sebastian,
+On Wed, Mar 04, 2026 at 04:30:03PM -0500, Josef Bacik wrote:
+> We are hitting the following soft lockup in production on v6.6 and
+> v6.12, but the bug exists in all versions
+> 
 
-Thanks for the patch. The report size validation gap in ft260_raw_event()
-is a valid concern - the raw_event callback is indeed invoked before
-hid_report_raw_event() validates the report size, so a truncated report
-from a malicious or buggy device could cause OOB reads.
+Can I get this reviewed/merged? I'm hitting this softlockup hundreds of times a
+day in production and I need it in stable so I can have it backported to our
+kernels. Thanks,
 
-However, I have a couple of comments on the proposed fix:
-
-Please use the existing FT260_REPORT_MAX_LENGTH macro instead of the
-hardcoded 64.
-
-More importantly, the size < 64 check alone is insufficient. It prevents
-accessing struct fields in a truncated buffer, but does not guard against
-a corrupted xfer->length field in an otherwise full-sized report.
-
-Consider: a device sends a valid 64-byte report (passes the size check),
-but with xfer->length set to, say, 100. The data payload starts at offset 2=
-,
-so only 62 bytes are available in the buffer. The existing check at line 10=
-77
-validates against the destination buffer (dev->read_len - dev->read_idx),
-not the source. If read_len is large enough (e.g., 180), the check passes,
-and the memcpy reads 100 bytes from a 62-byte region - a 38-byte OOB heap
-read from the source side.
-
-A more complete fix would validate xfer->length against the actual report s=
-ize:
-
-    struct ft260_i2c_input_report *xfer =3D (void *)data;
-    if (size < FT260_REPORT_MAX_LENGTH) {
-        hid_warn(hdev, "short report: %d\n", size);
-        return 0;
-    }
-    if (xfer->length > size -
-        offsetof(struct ft260_i2c_input_report, data)) {
-        hid_warn(hdev, "payload %d exceeds report size %d\n",
-             xfer->length, size);
-        return 0;
-    }
-This catches both truncated reports and corrupted length fields.
-
-Would you like to send a v2 addressing the above?
-
-Thanks, Michael
-
-On Tue, Mar 24, 2026 at 7:35=E2=80=AFPM Sebastian Josue Alba Vives
-<sebasjosue84@gmail.com> wrote:
->
-> ft260_raw_event() casts the raw data buffer to a
-> ft260_i2c_input_report struct and accesses its fields without
-> validating the size parameter. Since __hid_input_report() invokes
-> the driver's raw_event callback before hid_report_raw_event()
-> performs its own report-size validation, a device sending a
-> truncated HID report can cause out-of-bounds heap reads in the
-> kernel.
->
-> In the I2C response path, xfer->length (data[1]) is used as the
-> length for a memcpy into dev->read_buf. While xfer->length is
-> checked against dev->read_len, there is no check that size is large
-> enough to actually contain xfer->length bytes of data starting at
-> offset 2. A malicious USB device could therefore cause an OOB read
-> from the kernel heap, with the result accessible from userspace via
-> the I2C read interface.
->
-> FT260 devices use 64-byte HID reports. Add a check at the top of
-> the handler to reject any report shorter than expected, and log a
-> warning to aid debugging.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-> ---
->  drivers/hid/hid-ft260.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/hid/hid-ft260.c b/drivers/hid/hid-ft260.c
-> index 333341e80..7ca323992 100644
-> --- a/drivers/hid/hid-ft260.c
-> +++ b/drivers/hid/hid-ft260.c
-> @@ -1068,6 +1068,12 @@ static int ft260_raw_event(struct hid_device *hdev=
-, struct hid_report *report,
->         struct ft260_device *dev =3D hid_get_drvdata(hdev);
->         struct ft260_i2c_input_report *xfer =3D (void *)data;
->
-> +       /* FT260 always sends 64-byte reports */
-> +       if (size < 64) {
-> +               hid_warn(hdev, "report too short: %d < 64\n", size);
-> +               return 0;
-> +       }
-> +
->         if (xfer->report >=3D FT260_I2C_REPORT_MIN &&
->             xfer->report <=3D FT260_I2C_REPORT_MAX) {
->                 ft260_dbg("i2c resp: rep %#02x len %d\n", xfer->report,
-> --
-> 2.43.0
->
+Josef
 
