@@ -1,191 +1,163 @@
-Return-Path: <stable+bounces-230116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOkXCc1ywmmncwQAu9opvQ
-	(envelope-from <stable+bounces-230116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:17:33 +0100
+	id ePI3NYJywmmncwQAu9opvQ
+	(envelope-from <stable+bounces-230117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:16:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDEF307252
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:17:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F17030720E
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:16:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7B583305FDAB
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:05:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFF0E3042994
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3863EAC9E;
-	Tue, 24 Mar 2026 11:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622E53E8C62;
+	Tue, 24 Mar 2026 11:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="DMjlCU1q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mkuk0eIH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09133EAC90
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 11:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774350305; cv=pass; b=P57341B2acPO6AlsRfBsqtILGsePoB+EqgvWpZJ7odCdNFDWdWeye3g6kcsrsuMKVU20cTIDVpYdpQ74V+/g6xRDDpo7ZPaANENrnKgOrRbW+N5TI5Qa6a4+nqRtML28/IwqSxd3nnUiHzfTWhHGUhUtcSJluX/6JD2626MK5JU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774350305; c=relaxed/simple;
-	bh=DmlJkHAT3FaEHvQNFxzSJKU8eAly0RnenTEM62bTSVo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L0mtJ/ruyCmKMZmJ6kJvtwo/rJ0QZWe5vwkFCRlqcfTL3hQLSkdvJBo0iqpKVHGR9DeBdTPAOObgXxY8M5x0T5kmOBayEdMjuwR4WY3strcuCQ267cO89qM0Mi4INP/QM2oQW8hi4r/HI/xwyAwBW1CWNYyUdMDaWWtciHhc2lA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=DMjlCU1q; arc=pass smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2c0c955a481so5164421eec.1
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 04:05:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774350303; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QRydUw8Yj0t7aaW87U6ElUnQGrQQ11chX/y4OpQOS5S4dmgaE7kH5N0SF/Nd0EIo6o
-         9vIbnPb+tkV56zf3yGN3beTdqjYxwDblVplyBkA1BwCthCTrSu/N4x2q0W/KYXxMUcJD
-         Sjg4xh1GJ81dR8GNANmhuJzV2OgqkVwbgzrS4O9pV8lNjM6/GMCRBiIOt0m0V4z7gVyC
-         e76U0Lx1lnAHCEtFBNinOOkF+BuJo0iy5/u6XglIXyQDAW+VAfbdvJevcTZnRAEy4ysp
-         NlZlO1fzuX/0o8pbGCmt6R13IE5UlV1L9FUS+a1QNrFwrmkZdBSVZDc+XuqqxhhuzmsS
-         hruQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Jxq/aet/8lEOzabqR4jPUvMy9ol0c4adzGEzqsQ7nhE=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=K1UmNFpLEFb7mRwTpg+/6pQYxmpKbzpHL3r+X0R8orAS8biGbR4uliOWWCqDN20anG
-         la3tP9+KjkQwFpldJVYKBK28o9ACU2C3wqVyFN/8vUCR4YQcg7cKxKHhbxQ5LAqaYXmt
-         I4tUS9QzCCvKIBFfYx0HYnBaelUjxI+T4BrE8IFNGXiPmygpKnXP1hiu2y7WogBPfnqx
-         FuvUqEMyrdM/PCzC7fv5rYKevXq2XOx6EfVYZmR3q9zdQU76Z/NBeNWJPVOvlopAfBpJ
-         J6pmbcOeZF11Svzap/PLcCrXyl9UZ/ZhUxiUF+HUOFKa3SGXBRHulQzqSyFzPZZk5OLe
-         dwog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1774350303; x=1774955103; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jxq/aet/8lEOzabqR4jPUvMy9ol0c4adzGEzqsQ7nhE=;
-        b=DMjlCU1qKs04X3W4OHx9GJZtnCQirAk41eE0rBYhdwG8+UVPjJt7KYSjJhTKZs4Kje
-         QIs/4C56bACeBFHoAPx8AQIYhqIZp5+Wi9HLUaFFMbkSEbLG6qlJPPDYF5QjKI/jcusV
-         jrOQ1E928O7IBwk5aMD7gCAGoC73hxDO2AG9MimXm1w84p2Mc00/YdLaVB692X09I+Ds
-         tA9NjwUBRgonE2yTbU6LOzLSBrvrVsHFCl16QW738/LhRB0cFhxgYuOMnUTMjcwzytAW
-         xXuHyA6ubw4+bPDEDv4E0BBmZgZnG7XjL6QhsWSRgJ0NPJ5RCK1wdR8ikg+DGLlQ/NBs
-         jCOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774350303; x=1774955103;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Jxq/aet/8lEOzabqR4jPUvMy9ol0c4adzGEzqsQ7nhE=;
-        b=orFuI7S98CauKx/CgOve0f7Ef0cL1rU8QEKpAl+Zp72RHOzaHTEEZGcA53r/9l32g/
-         hdb9Vo2DDWb9OqGC1N0vsXY0ZuJTET0M3RnkZjuyeN1H98DXRob1ADdroX+Gmkvu2R/A
-         wUuBW7rzRJd2Ql2NiMdgs52Ay1oqNgCgCHXYm6AF3fnJM4eWBgYUjcogoobR1iEN7v4V
-         ChoI+N2+097/r65Q8VnO78WOyO0OHOzUiBOAm1Hcz8PELIMkoDUQu6iRPBHKbZXPZGyf
-         zQmdlayCxnEzLcB3r4NDwa0DSPCkchveWFKAzzAvhNoLppy7kdg8ZczoqZOT1AY65OKH
-         UY+A==
-X-Gm-Message-State: AOJu0YyZsNujtSy8w7GV1ZTkZepO2pr7ceuQTyX89ZW499z5/Xp99jO2
-	tpP+Yc2rvcr6OBE8R7rvTPfLnf9SrDwOj4TEkfUXx9I+WlRrclYEmWSXfe7zHIqj44sB0XclO0b
-	GncOw4vUxnY7kH8CtrUqYmKW81Nb4B6q8lFpjMAez7g==
-X-Gm-Gg: ATEYQzwjlMqDgNGIjqr6fxHn7Hj4ZL695z3JpLfoS+rSPKWj+8XrvhMpcyfE+GGRJ5P
-	bv/cLyi4BjBEEyJEBm/8rZDy4QAd7aEfo1RU6B085xBpgC4j43jWjEL8NIGHF7w4lRV9OwlUBJF
-	KweZwayyj3l9gIrZayO2fyWEdH2uHBzFxNjRYh2WbJFzDJbbtFUG2VW/UNSso6nBs2DO3nI9hOD
-	HX2qUAL4gJp1ohhdYqkxxtTAK8At4KZDECDcsXpWyWEvhto7NAb7cfmVy+k+ntwISNj6f1aIXyf
-	bnyokF/b
-X-Received: by 2002:a05:7022:31a:b0:127:33e0:ea44 with SMTP id
- a92af1059eb24-12a726cfa13mr7698243c88.29.1774350302261; Tue, 24 Mar 2026
- 04:05:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E623DFC9D;
+	Tue, 24 Mar 2026 11:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774350574; cv=none; b=KHUpgbflioj7X6VUVaZdN+EafbQLaKloU19BiFsYzVga3i2PucmMRkZf1f7l66j1qO/Vp1ECkh4aAHMiILtvmHwBvaqZAACjDWj+FGJ29lsLd4o8uEkI8ZMA40nXwb+jos8MCqOeSgPA+sh3HSFRsb8c5N84mmXQR1M1ze09Ik8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774350574; c=relaxed/simple;
+	bh=iOR1h4fcZWeV6zkcSAkDK7aDf13M07RsodIPR4ByCSk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qwJAuMYkWvoV2JDrGucOFCsZ1gyXJyWAfXS+bAeWaHiG9or2Nn00bMm3x7qzM25uRMHtYQtvpe02sA72AmfgWGOlsiyczBJ8JT6ZaYyiFs8YDuczqokfAzlq/Tle0la3tI/LGE/JurAUUiq1SFU7bj76G7G3wuFoQW1ksSuyzfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mkuk0eIH; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774350572; x=1805886572;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iOR1h4fcZWeV6zkcSAkDK7aDf13M07RsodIPR4ByCSk=;
+  b=mkuk0eIHNa0kKA8v8awlwucrXRELaXAirzUOh3hn33ybDilXlBlDsCcI
+   do3akbtpmJEO52aknNGBx1MuPHwVH2Bnlv7Fy3RwUqvuLBeIsdxSwdowm
+   B5RII6ZVP39wcymiqB3Xv48519zx59rKo4aTBVNRqDsUUyGAhfaWmxX3I
+   9qQjopxrdFL1UZeHgSQFQ9MU3KNo/jSV8le/ZKXgY2QrmZ7dlf5b/3Ae1
+   52yEGZe54ELBWEowICgp4+MmC/kEamCBbH/GnWS1kpWERZakZLyGV0gjS
+   m+kG0dboP7jholPynEt1vxeN28AogcrmJGx9jvIEu1tm3NMaMSU5YQ9p0
+   w==;
+X-CSE-ConnectionGUID: Jh0nCzw9RZOPc5gUfxtA9A==
+X-CSE-MsgGUID: UwIGDrwXQjSKBTHwjA4MeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="100807671"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="100807671"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 04:09:32 -0700
+X-CSE-ConnectionGUID: usaXSFn1TdG0jwqW0DAUuA==
+X-CSE-MsgGUID: ejoi2VIOS7iZOgXip8Ubjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="254805065"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa002.jf.intel.com with ESMTP; 24 Mar 2026 04:09:30 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 0B03A95; Tue, 24 Mar 2026 12:09:29 +0100 (CET)
+Date: Tue, 24 Mar 2026 13:08:43 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Andrei Kuchynski <akuchynski@chromium.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org,
+	Madhu M <madhu.m@intel.corp-partner.google.com>
+Subject: Re: [PATCH v2] usb: typec: Remove alt->adev.dev.class assignment
+Message-ID: <acJwu-kjdGsrf4Pr@kuha>
+References: <20260324102903.1416210-1-akuchynski@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323134504.575022936@linuxfoundation.org>
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 24 Mar 2026 20:04:46 +0900
-X-Gm-Features: AaiRm53QC1bDu7jJYOzMw-m1ql3o8Nj7l5BNcjGmDunSCA26e1BRNDCkTqFzcQY
-Message-ID: <CAKL4bV42XtCM+xj+wWQhEPNirVPQ-GPfA_TsVfjhqrZqP9-hTg@mail.gmail.com>
-Subject: Re: [PATCH 6.19 000/220] 6.19.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[futuring-girl.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
-	R_DKIM_ALLOW(-0.20)[futuring-girl.com:s=google];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324102903.1416210-1-akuchynski@chromium.org>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230116-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230117-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[takeshi.ogasawara@futuring-girl.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[futuring-girl.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,thinkpadx1gen10j0764:email]
-X-Rspamd-Queue-Id: 1EDEF307252
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7F17030720E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg
+On Tue, Mar 24, 2026 at 10:29:03AM +0000, Andrei Kuchynski wrote:
+> The typec plug alternate mode is already registered as part of the bus.
+> When both class and bus are set for a device, device_add() attempts to
+> create the "subsystem" symlink in the device's sysfs directory twice, once
+> for the bus and once for the class.
+> This results in a duplicate filename error during registration,
+> causing the alternate mode registration to fail with warnings:
+> 
+> cannot create duplicate filename '/devices/pci0000:00/0000:00:1f.0/
+>   PNP0C09:00/GOOG0004:00/cros-ec-dev.1.auto/cros_ec_ucsi.3.auto/typec/
+>   port1/port1-cable/port1-plug0/port1-plug0.0/subsystem'
+> typec port0-plug0: failed to register alternate mode (-17)
+> cros_ec_ucsi.3.auto: failed to registers svid 0x8087 mode 1
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 67ab45426215 ("usb: typec: Set the bus also for the port and plug altmodes")
+> Tested-by: Madhu M <madhu.m@intel.corp-partner.google.com>
+> Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
 
-On Mon, Mar 23, 2026 at 10:59=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.19.10 release.
-> There are 220 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.19.10-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-6.19.10-rc1 tested.
+> ---
+> Changes in V2:
+> - Marked as a Fix
+> 
+>  drivers/usb/typec/class.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 8314309094719..0977581ad1b6e 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -686,10 +686,6 @@ typec_register_altmode(struct device *parent,
+>  
+>  	alt->adev.dev.bus = &typec_bus;
+>  
+> -	/* Plug alt modes need a class to generate udev events. */
+> -	if (is_typec_plug(parent))
+> -		alt->adev.dev.class = &typec_class;
+> -
+>  	ret = device_register(&alt->adev.dev);
+>  	if (ret) {
+>  		dev_err(parent, "failed to register alternate mode (%d)\n",
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+thanks,
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.19.10-rc1rv-g5cf3b8242cca
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20260209, GNU ld (GNU
-Binutils) 2.46) #1 SMP PREEMPT_DYNAMIC Tue Mar 24 19:05:43 JST 2026
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+-- 
+heikki
 
