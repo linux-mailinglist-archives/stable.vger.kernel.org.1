@@ -1,186 +1,220 @@
-Return-Path: <stable+bounces-230189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAMpKoWtwmkyggQAu9opvQ
-	(envelope-from <stable+bounces-230189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:28:05 +0100
+	id GPCsIoiywmmRkwQAu9opvQ
+	(envelope-from <stable+bounces-230190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:49:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A30F31802F
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:28:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3AA3185E3
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F05030338AE
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:24:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A93D330EB0FC
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFB9405ACF;
-	Tue, 24 Mar 2026 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D279391510;
+	Tue, 24 Mar 2026 15:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b="KolOZT9B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6XY+wzj"
 X-Original-To: stable@vger.kernel.org
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4E940245E;
-	Tue, 24 Mar 2026 15:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774365847; cv=pass; b=GDt6cnRwdOesFiecnneu1QWHReN0casu2clVAL3pXtVMDD5ZIycmamStvCqIaeK3583b5JZ5Q3rLBaHDYQ9UWz4T4jTN821lBJ32GSHGXH8lxZ2Ul3z7qTteCGGweFMtyLYMdgHRDgBqUoN0sSY4dOcsgqE80ntvGGq15bN255Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774365847; c=relaxed/simple;
-	bh=VlKJv8dWJlaHJHXMlIE4BSaindyrxVSs1O+vhEZ+g8c=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=YFYKnBFa5TfDkeNJUZvFj5K4LYKeV8A8ucl7fKAlJLX9c4k6bMObXitp5RWrp2r5rMstJphCXETcIL758slzvHNa+nh5jrkMVh9IOJs8jnuvdH8MPliykc/XiVEz/6mfu1crWW+47UVFX88x17gUbEMBG3hy0/k+yc9jaYLztQs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org; spf=pass smtp.mailfrom=objecting.org; dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b=KolOZT9B; arc=pass smtp.client-ip=136.143.169.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774365816; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=LXnBElSlmUVOrfZCAPwDY2tQIouurVoPwZUIhJLFLvx2B3n/wAomA5p66z4W5YhRuPPZVlHz1b2xm8/BylsHNnbizEmjsXmqTJQZ77bZhjqQVxk1McAwqWbcmcbQOKhZKVw7V1Qynpczh5krRlc2nHn6CTwSn2cMy7BFusVznAI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774365816; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=rQNo5gRq0ttu6AMLBxnpSMS80bStRyQxiFciq1sROUE=; 
-	b=TfZLL0eSC2/ECusdMMCaLHdOD4bcdbxvqD6XIXLloSN3zp9hBkOKTMHLbqRoP4eiOXzk6rTNnIbp8Fe5pvZx2zVZopGgDzXfVHw4c8Z4rQFKKJ5/kJ3nbvMd+JNYQHhNZ/pUbcgh4zICHdG38UszPTyT2bnBFOVYu6TuhJRFaug=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774365816;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=rQNo5gRq0ttu6AMLBxnpSMS80bStRyQxiFciq1sROUE=;
-	b=KolOZT9BTJENIDtAt4aXF1Erxgz3JzZtMBddJDw2jJpN1qq+rA0c4ZZOb8pDyW03
-	H5pUyxGV/5kEJHj0/pqe/E3bASlrrql7JRLOLl5J+3UPGNoel2NchA5WH9yUKPdNffU
-	Jvtex75qYDkDYeqmV78FOhvrIGNnBQRrZRjh0yfc=
-Received: by mx.zoho.eu with SMTPS id 1774365814980617.8320820549221;
-	Tue, 24 Mar 2026 16:23:34 +0100 (CET)
-Date: Tue, 24 Mar 2026 15:23:32 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: Markus Elfring <Markus.Elfring@web.de>, damon@lists.linux.dev,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bv3_1/3=5D_mm/damon/sysfs=3A_fix_param=5Fctx?=
- =?US-ASCII?Q?_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260324141537.91434-1-sj@kernel.org>
-References:  <20260324141537.91434-1-sj@kernel.org>
-Message-ID: <7C2341EE-3CBE-42E4-8D2F-341137CC6234@objecting.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21093397E97;
+	Tue, 24 Mar 2026 15:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774366590; cv=none; b=V1KXi0XSlvwes1Wg/Wlh2y4vTrk1s+P+KCLqEHvQw4VWvkLrNhiFKmjJXa7BiFVVOGr6PjibTXS0m4fxQJ2udzO0s3xr94FcZBqmTP5PQeHYHgBEHBC10hdCXjQpin6FsIKL2HLxBew8TBMR26RamJgXnKX0HsMNz4ljvVu5c0g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774366590; c=relaxed/simple;
+	bh=KCHxUzmWbLNKy1drrRsHk3TR1rCpYa9StaBFImw7sk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DawIh/S3rW8pyCmxqpMIL81xo7i/siuZWdcGU7tHpWPS/h1qAfoLMYTB179n1te4mINT2n+4aaRjGs4d1A8BMCRgyl0ACacBpSz9IO7VV8zGTnIHlCEjGV8Nj2oLhgamHgnz0XlTiS99m7ogPWUyd7rb2SOtzIlcF8jFJSWp5Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6XY+wzj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF8CC19424;
+	Tue, 24 Mar 2026 15:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774366589;
+	bh=KCHxUzmWbLNKy1drrRsHk3TR1rCpYa9StaBFImw7sk8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n6XY+wzj3/Vr+KXSySB5qX+3cAB97WxhVm2HfVo8PS7TGswwP7BPt3fMG/0WCLYN+
+	 sPWRqpkH+IxkxWkWo0QfU7bY7WMrFkXyDSkJC9gt9BnYrxZuwZfmKvu50LvBbaK/54
+	 0Dp7fSxSdyVPhkBhl9lqO1gIerxt6S/f+hZz0DbZhTpzUmQe4NiKiyDupy1P6eqO6e
+	 ihY9qkKB7LC/e7Ixkbf+5hFVlcB1Vf7O88q5VxAH6yN9EhmnZUeUUbuG5iaUbaYNVE
+	 +oF4RnsvHnPhMPOufmPLARHcacOmt+BDAVjUkj2jWfY8H5T78yCxdHRQIJw3OP5jfM
+	 Blj/OkxnbeC0w==
+Date: Tue, 24 Mar 2026 15:36:21 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Gou Hao <gouhao@uniontech.com>, Theodore Ts'o <tytso@mit.edu>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Zhang Yi <yi.zhang@huawei.com>, Baokun Li <libaokun1@huawei.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
+Message-ID: <d8080343-20cd-4a4a-b726-b9e3c6a5c5eb@sirena.org.uk>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260324073447.GA5062@francesco-nb>
+ <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-0.95 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[objecting.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[objecting.org:s=zmail];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WZ2Eyfqnzhln8diZ"
+Content-Disposition: inline
+In-Reply-To: <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
+X-Cookie: Forest fires cause Smokey Bears.
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-230189-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[web.de,lists.linux.dev,kvack.org,linux-foundation.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[objecting.org:+];
+	TAGGED_FROM(0.00)[bounces-230190-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[dolcini.it,linuxfoundation.org,redhat.com,huawei.com,infradead.org,uniontech.com,mit.edu,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[objecting@objecting.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2A30F31802F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid,sirena.org.uk:url]
+X-Rspamd-Queue-Id: EC3AA3185E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
+--WZ2Eyfqnzhln8diZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 24 March 2026 14:15:37 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Tue, 24 Mar 2026 07:06:25 +0000 Josh Law <objecting@objecting=2Eorg> w=
-rote:
->
->>=20
->>=20
->> On 24 March 2026 00:14:59 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->> >On Mon, 23 Mar 2026 16:48:19 +0000 Josh Law <objecting@objecting=2Eorg=
-> wrote:
->> >[=2E=2E=2E]
->> >> Also, unconnected to our topic!
->> >>=20
->> >>=20
->> >> I've tried to backport Damon to 4=2E19 (for a personal android thing=
-, and failed! Of course)
->> >>=20
->> >> Can I have a bit of help if that's fine with you? The tree is based =
-on GitHub a bit
->> >
->> >Sure, I will be happy to help as much as I can without burning myself =
-;)
->> >
->> >Seems [1] Alma Linux has backported DAMON on their 4=2E18 kernel=2E  M=
-aybe you can
->> >try their port first?
->> >
->> >Also, what is the oldest kernel that you have to use?  As newer it is,=
- the
->> >backporting will be easier=2E  When I was in AWS, I backported DAMON o=
-f v6=2E7 on
->> >the v5=2E10 based Amazon Linux kernel, and the source is available on =
-GitHub=2E  So
->> >if you can use 5=2E10 based kernel, using that could also be a good op=
-tion=2E
->> >
->> >[1] https://oracle=2Egithub=2Eio/kconfigs/?config=3DUTS_RELEASE&config=
-=3DDAMON
->> >
->> >
->> >Thanks,
->> >SJ
->> >
->> >[=2E=2E=2E]
->>=20
->>=20
->>=20
->> well android likes using old kernels for some reasons, especially LTS, =
-so 4=2E19=2E=2E
->
->Well, but the long term support of 4=2E19 has dead a few years ago=2E  Th=
-e oldest
->LTS kernel of today is 5=2E10 [1]=2E  I understand some vendors might sti=
-ll use
->4=2E19 kernel, though=2E  Anyway, let me know if there is anything that I=
- can help=2E
->I will try to help=2E
->
->[1] https://www=2Ekernel=2Eorg/category/releases=2Ehtml
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
+On Tue, Mar 24, 2026 at 02:40:31PM +0100, Jan Kara wrote:
+> On Tue 24-03-26 08:34:47, Francesco Dolcini wrote:
+
+> > I have an ext4 Oops on arm
+
+> > [   27.908560] 8<--- cut here ---
+> > [   27.911697] Unable to handle kernel NULL pointer dereference at virtual address 00000000
+> > [   27.919880] [00000000] *pgd=00000000
+> > [   27.923482] Internal error: Oops: 5 [#1] SMP ARM
+> > [   27.928117] Modules linked in: 8021q cfg80211 imx_sdma coda_vpu v4l2_jpeg imx_vdoa dw_hdmi_ahb_audio fuse
+> > [   27.937784] CPU: 1 PID: 736 Comm: tar Not tainted 6.1.167-rc1-6.8.6-devel+git.67c872a868ac #1
+> > [   27.946342] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+> > [   27.952889] PC is at ext4_mb_load_buddy_gfp+0xac/0x438
+
+> Can you run this through "addr2line -i" to get exact position in that big
+> function? Because from a quick look it doesn't ring a bell...
+
+I have a bisect for an ext4 issue in v6.1 which comes out at:
+
+# first bad commit: [29897d75d6491ffe23cdc9d96caba9282a20dfc3] ext4: convert bd_bitmap_page to bd_bitmap_folio
+
+For an oops which looks very similar (but on arm64):
+
+[  217.347067] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+
+...
+
+[  217.567412] Call trace:
+[  217.569884] ext4_mb_load_buddy_gfp (include/asm-generic/bitops/generic-non-atomic.h:128 include/linux/page-flags.h:719 fs/ext4/mballoc.c:1536)
+[  217.574388] ext4_discard_preallocations (fs/ext4/mballoc.c:5137)
+[  217.579421] ext4_release_file (fs/ext4/file.c:167 (discriminator 1))
+[  217.583396] __fput (fs/file_table.c:321 (discriminator 1))
+[  217.586490] ____fput (fs/file_table.c:349)
+[  217.589671] task_work_run (kernel/task_work.c:206 (discriminator 1))
+[  217.593294] do_notify_resume (include/linux/resume_user_mode.h:49 arch/arm64/kernel/signal.c:1151)
+[  217.597358] el0_svc (arch/arm64/kernel/entry-common.c:639)
+[  217.600452] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:656)
+[  217.604866] el0t_64_sync (arch/arm64/kernel/entry.S:585)
+
+Full log:
+
+   https://lava.sirena.org.uk/scheduler/job/2595460#L3223
+
+vmlinux:
+
+   https://builds.sirena.org.uk/67c872a868ac98d7af3b5598c399eec173c1eb03/arm64/defconfig/vmlinux.xz
+
+Full bisect log:
+
+# bad: [67c872a868ac98d7af3b5598c399eec173c1eb03] Linux 6.1.167-rc1
+# good: [f2ddafa93a259310ca47507153b7811ec54ab7fd] Linux 6.1.166
+git bisect start '67c872a868ac98d7af3b5598c399eec173c1eb03' 'f2ddafa93a259310ca47507153b7811ec54ab7fd'
+# test job: [67c872a868ac98d7af3b5598c399eec173c1eb03] https://lava.sirena.org.uk/scheduler/job/2595460
+# bad: [67c872a868ac98d7af3b5598c399eec173c1eb03] Linux 6.1.167-rc1
+git bisect bad 67c872a868ac98d7af3b5598c399eec173c1eb03
+# test job: [19577ea2af78e1668d2dd7dd8ff49329363c8de6] https://lava.sirena.org.uk/scheduler/job/2596565
+# bad: [19577ea2af78e1668d2dd7dd8ff49329363c8de6] parisc: Increase initial mapping to 64 MB with KALLSYMS
+git bisect bad 19577ea2af78e1668d2dd7dd8ff49329363c8de6
+# test job: [525e916e0f088809ef9111088480f7271d0c63cb] https://lava.sirena.org.uk/scheduler/job/2596655
+# bad: [525e916e0f088809ef9111088480f7271d0c63cb] octeon_ep: avoid compiler and IQ/OQ reordering
+git bisect bad 525e916e0f088809ef9111088480f7271d0c63cb
+# test job: [be91f915a7a7e3c089fe5edaaae047dfed585492] https://lava.sirena.org.uk/scheduler/job/2596752
+# bad: [be91f915a7a7e3c089fe5edaaae047dfed585492] usb: cdns3: remove redundant if branch
+git bisect bad be91f915a7a7e3c089fe5edaaae047dfed585492
+# test job: [7aaacb29d6420a3d9b09386545ee2d3afb5df5f3] https://lava.sirena.org.uk/scheduler/job/2596861
+# good: [7aaacb29d6420a3d9b09386545ee2d3afb5df5f3] media: tegra-video: Use accessors for pad config 'try_*' fields
+git bisect good 7aaacb29d6420a3d9b09386545ee2d3afb5df5f3
+# test job: [d21133e5855b8a332718992df631a151276b3a93] https://lava.sirena.org.uk/scheduler/job/2596893
+# good: [d21133e5855b8a332718992df631a151276b3a93] ext4: don't zero the entire extent if EXT4_EXT_DATA_PARTIAL_VALID1
+git bisect good d21133e5855b8a332718992df631a151276b3a93
+# test job: [fe80bba8f76f9f0995cdc64fc89b65173e1ae828] https://lava.sirena.org.uk/scheduler/job/2596923
+# bad: [fe80bba8f76f9f0995cdc64fc89b65173e1ae828] ext4: convert bd_buddy_page to bd_buddy_folio
+git bisect bad fe80bba8f76f9f0995cdc64fc89b65173e1ae828
+# test job: [b41ad91ef08bd65607929c01da58a745c52f099a] https://lava.sirena.org.uk/scheduler/job/2596982
+# good: [b41ad91ef08bd65607929c01da58a745c52f099a] ext4: remove unnecessary e4b->bd_buddy_page check in ext4_mb_load_buddy_gfp
+git bisect good b41ad91ef08bd65607929c01da58a745c52f099a
+# test job: [500bdda4b7db98fc1f979670924696d7ce449124] https://lava.sirena.org.uk/scheduler/job/2597035
+# good: [500bdda4b7db98fc1f979670924696d7ce449124] ext4: delete redundant calculations in ext4_mb_get_buddy_page_lock()
+git bisect good 500bdda4b7db98fc1f979670924696d7ce449124
+# test job: [29897d75d6491ffe23cdc9d96caba9282a20dfc3] https://lava.sirena.org.uk/scheduler/job/2597064
+# bad: [29897d75d6491ffe23cdc9d96caba9282a20dfc3] ext4: convert bd_bitmap_page to bd_bitmap_folio
+git bisect bad 29897d75d6491ffe23cdc9d96caba9282a20dfc3
+# first bad commit: [29897d75d6491ffe23cdc9d96caba9282a20dfc3] ext4: convert bd_bitmap_page to bd_bitmap_folio
 
 
-The device itself is unsupported (Galaxy S20 FE)
+--WZ2Eyfqnzhln8diZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I've been working on a kernel for this device for quite a long time=20
+-----BEGIN PGP SIGNATURE-----
 
-V/R
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCr3UACgkQJNaLcl1U
+h9AhPwf+LnCAWljh+Jg2oZwMn++V5J5sjjTB3AZdnIZ2nm1G7xpwUZu6SJ+SOtXJ
+K0ICuKlUgVEUzTosryWfZJXQrd3qKVcW/ENhqZSRQ2P6u8Yo/4k22z0u5Ndl03Dz
+ToG6diitF0/hl8Z3lbJfuWJWjKeKorYIoeW4ipOHDNYus1qJi1w4OOadAYQezI28
+pQJsJUiQvEz3Or3Hf4R5Aj3taFS5kWNlhRz0ZDpkwvaYy6avBPTxsZyV0mrlkVOI
+uXXXZWtT3fh3u3asVa9n4KypMZ5XxMrmk4bBupeIM2nqNO+i8cYOERhJa3ONnAlr
+qvLQqt6JiwXoFhNvmXRhKk7jqbtg9A==
+=SM+X
+-----END PGP SIGNATURE-----
 
-Josh Law
+--WZ2Eyfqnzhln8diZ--
 
