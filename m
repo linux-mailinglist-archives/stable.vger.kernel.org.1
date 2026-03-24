@@ -1,133 +1,120 @@
-Return-Path: <stable+bounces-230183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IK4NEMupwmkyggQAu9opvQ
-	(envelope-from <stable+bounces-230183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:12:11 +0100
+	id cBNvOvWswmkyggQAu9opvQ
+	(envelope-from <stable+bounces-230184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:25:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96253317C10
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:12:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABCE317F83
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5C053016C83
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:03:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E8063081018
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05AB402BA9;
-	Tue, 24 Mar 2026 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDB84070F0;
+	Tue, 24 Mar 2026 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewmkPnRl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElhEJc24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC95402B9C;
-	Tue, 24 Mar 2026 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D34035CA;
+	Tue, 24 Mar 2026 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774364587; cv=none; b=bwjG7buoVou0VzNPYduVL5G0H2WtTfBRg73384ahFVa8w0LtaX1HiPmUArqRY9+uq7Fqfh1LjP7e29bGQr0vNPFBDqwPuhZ9kMqAobT3arBq6jZXRJtGNT6YSlJd8EUwI1b33K1RxhiJTeZ7d4h1sjjxYxAJTmmUN3UVd0wVOwI=
+	t=1774364749; cv=none; b=HzZf80qb6IBRQ4SJXUzuRBqOEzomy7mKFWHS08xftwiHBm6ZZmtT38tSlS6KYrftI0kDadufm9tf52K4kVYIiAQHPQGaGsMYC9a5RwGsASryHOnFgDmw5G0eNb+c1NAM6NVAoPU+dmQBc6cw1TpU31WTy/g+XqspdE76h/WTRCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774364587; c=relaxed/simple;
-	bh=NQX133cNkUeBX2KYRN4dsN5boPR9kt+1twGrTejzxfs=;
+	s=arc-20240116; t=1774364749; c=relaxed/simple;
+	bh=5hFAGOIzp/eMo2BkSnj3ruVd7WQWbN7gZFXvH2KCv+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I1GQ3qW5BGV+szlyS3p03t2+ft11vTAm+dVBtzZ2lL8j44TQWvLAy/ErfblS/BT+U39FCa+ML2G86U2IuMM6LV8d7T/7AWHrNIGa4YlnedptrY/YrSYfY3GwgXf1dKGiHvzw5VcGsLt/q/2eSire8YWzeTQLPv500bWU/HUdHhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewmkPnRl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E16C2BC87;
-	Tue, 24 Mar 2026 15:03:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=nodc0yXbdoyOQ/VFG1GW5I/B2c3ScdocPwjGg5Y8RX/YHRaUVzoFCNpJ9B+dluHYIWIsI/5/Rl+POgdV1ATq8knGVHzNY1Bv96pJZ8WrEniIuZBZN0KwChEyG/TYpxXrwU780/RaGBw4QzlUyhbBco9JFwR39aJ8ZHNRS1Jm1c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElhEJc24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D306C19424;
+	Tue, 24 Mar 2026 15:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774364586;
-	bh=NQX133cNkUeBX2KYRN4dsN5boPR9kt+1twGrTejzxfs=;
+	s=k20201202; t=1774364749;
+	bh=5hFAGOIzp/eMo2BkSnj3ruVd7WQWbN7gZFXvH2KCv+Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ewmkPnRlZMDtD8FGtnjvYBXugu8z4Gdj6J3b04+2OpvJa1czkGfnmNQYjd2W0G81+
-	 mMJ1TdlGohRPt5Ot+9iYBJPbzPi9g7JCWkMFJo9xju5WQ0XHtAhrNpKeipnWIpvstl
-	 EQfxTCc7DdAlCkzMu9xzPjtWFeJvXEXNvinQZOiZzWViUJspkfqab4s9Yn0MZD+/2x
-	 8v0obXWKkd1fn3YF32KBz5Qgz74+NeD+UQU5YpF885rliOznO+QnkNOEpNK0qXZtUe
-	 YvpJRa8ZV2mJgIPRCxBvjdWBfiG/DdO7M3D/UQqRsNC1BgKDDlzjZhpXI2cf9OjG49
-	 Ihx95yz3umFDw==
-Date: Tue, 24 Mar 2026 15:03:00 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 000/460] 6.12.78-rc1 review
-Message-ID: <cc8c766e-a1ec-46cc-86c8-c64ec61b4500@sirena.org.uk>
-References: <20260323134526.647552166@linuxfoundation.org>
+	b=ElhEJc243dMRGNhh5WR3M6+3lYx8CnlrfHG+ghChZamKkWoPDQTO8mDTNXbRSn+Fi
+	 Jyr7agja58P1NlLahPI91zRrfVd9dxvRY+tiNS1QtfmW7ruOF1uw+UuBo3FJMRDM1T
+	 M+nLih80AFFJ2fN9TferKAiM/QvyaKNdEkIdWIxtJQkt91chTTAE9FVcqlJkMJ5/WR
+	 UkiQMy0r5A2y1HOxMnXifQG34eVN3HN4wCEYj1QFqXmt6uMHHH1vAkbXAzNClTHxbH
+	 ZAoxmXMXwrWyAImGq3OH0zZxusWTaq6eYoDSW9cQ+M8HxTXwkUmLZ57v281NAEl13u
+	 Or+9f1wZ2RE0Q==
+Date: Tue, 24 Mar 2026 09:05:46 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Bob Beckett <bob.beckett@collabora.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>, kernel@collabora.com,
+	stable@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when
+ wzsl is set
+Message-ID: <acKoSnQ4p8rhBe4P@kbusch-mbp>
+References: <20260320192217.365936-1-bob.beckett@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gY4wDyy8yqrUzcp1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-X-Cookie: Forest fires cause Smokey Bears.
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260320192217.365936-1-bob.beckett@collabora.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230183-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TAGGED_FROM(0.00)[bounces-230184-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 96253317C10
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EABCE317F83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, Mar 20, 2026 at 07:22:08PM +0000, Bob Beckett wrote:
+> ---
+>  drivers/nvme/host/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+> index 766e9cc4ffca..ce25c8a4e84b 100644
+> --- a/drivers/nvme/host/core.c
+> +++ b/drivers/nvme/host/core.c
+> @@ -3388,7 +3388,7 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
+>  
+>  	ctrl->dmrl = id->dmrl;
+>  	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
+> -	if (id->wzsl)
+> +	if (id->wzsl && !(ctrl->quirks & NVME_QUIRK_DISABLE_WRITE_ZEROES))
+>  		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
 
---gY4wDyy8yqrUzcp1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Interesting. This is from a more recent identification that I would have
+hoped devices going through the trouble of implementing it would have
+figured out by now how to report write zeroes support correctly.
 
-On Mon, Mar 23, 2026 at 02:39:56PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.78 release.
-> There are 460 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Tested-by: Mark Brown <broonie@kernel.org>
-
---gY4wDyy8yqrUzcp1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCp6MACgkQJNaLcl1U
-h9D04Qf8DIyJQyv+8+9aQH6S2AlygHVJuBCc7O4J1McM3XmFF19Lg67O/7chti1/
-PsJUFGsWGEH26ipitNlvKzVs9mb6UdHkmgV/a09DYq6LYW37pqHxJE5ADFJmT/wx
-1vy/SKBJua+FcwfEW4UJCAfYUR3+5WyH+39Wf+G7vuYsU0jGmtO0iBlk9BkTdqFr
-JVf5D7Trc6LcX3W1Jd2lh7MbWIJw+CVo2euBCHKUEMz3r4USYvgt2oF+CrW+ZFIe
-7c8LEmrQ9aDZkjQ+YQey8Lp6CXKxrQX9BEAfkljviULprovul1ywbZ53JjTWyKkr
-aCIzuK01paKF1lZ4kKRAmqAeanwi3w==
-=H8v+
------END PGP SIGNATURE-----
-
---gY4wDyy8yqrUzcp1--
+Patches applied to nvme-7.1, thanks.
 
