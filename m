@@ -1,162 +1,160 @@
-Return-Path: <stable+bounces-230101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBUnDOpgwmmecAQAu9opvQ
-	(envelope-from <stable+bounces-230101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:01:14 +0100
+	id yKf0HbpiwmltcQQAu9opvQ
+	(envelope-from <stable+bounces-230102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:08:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6CB6306171
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:01:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FB830639E
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1B9D3235B0F
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 09:51:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 034A63079CF0
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 09:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0843DEFE1;
-	Tue, 24 Mar 2026 09:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627BE38C2C6;
+	Tue, 24 Mar 2026 09:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ej/su665"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="okQXqjQ7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F3A3E0225;
-	Tue, 24 Mar 2026 09:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744BF3DEAF1;
+	Tue, 24 Mar 2026 09:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774345856; cv=none; b=rouHLuk7qn3P9BWJe7EgDk0r/kZj+Rf2BPyPdzz/vnHmCl5ReeMsVzOyDFbDjZNTgWhLqTjO75cHdb6re3PBo0YBwL0G5V57Kj1VXFpjFoJlGN8y97B3l84rdYCR85AVi9++c6ihM3S7nVZKBzJAdA93A86Tw/afm/SHdHQAfiA=
+	t=1774346168; cv=none; b=hZ43wa9LRKfr9uS7nDrZpJ3AlLlOHBytqS/VFBvEyGtXsJxgcaaayaMoM7x53okO7zskN8P4EHcw1s94bc+Cz7hUTix8YHT4gPxxCkViSvWARZhCO2ZON1N7a1GYukuOdXF97OYZ6HgD2M6ZMLKgz7RcIEsPht6jBFKq8E2VIZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774345856; c=relaxed/simple;
-	bh=qr05f7GL58ruAJ4cL/ZakCzrxQR0FA5VbILQ6QQ/W/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIM6X+nQal3jFJAmPqUzawyV3gXPLcJ3ZYvWyDbEUWc0qjBRHa6LBGe46nIH/EFAYJUuc7X2nsWmD5qRmsK9bwlWJblIA1OmjPx7ztwrggmk8n/oJcdec1auSoYKO+IcEyFLHKbS+7EsDaWQyiQNXBXHHSiRs5TIr8aUe+Y3vyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ej/su665; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043DEC19424;
-	Tue, 24 Mar 2026 09:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774345856;
-	bh=qr05f7GL58ruAJ4cL/ZakCzrxQR0FA5VbILQ6QQ/W/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ej/su665NkLZwqizRq3QilZlDqSDcRhFJNNeqJnVK7F+4IQgJtErBGmjTfDE2Xb/R
-	 agtwXq3Fi/wNVukwmpHGTKo/z4iHsYMTBHLIZGK44cGBO1elid0EpewjL7rKFwwv+U
-	 LEklmiwIkZXlSLPRxTJsQcBBaYObur6T8fF3Ro8HYrz3G/UDKr0jf34ZbSEiq0TV21
-	 xg0b29wX9l/GHJD1s3ByeQwrNh9Y2q3mHYy0sr9pviJWYG7AcY3IPCq1vlpY+laNX7
-	 bNgECbr4QE/827YgWwqw48SmA9PJ1g2yGUoc80/0N59gaBftb1W6M+vy+IQyfd4dPt
-	 9eNrvSUXqFGzw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
+	s=arc-20240116; t=1774346168; c=relaxed/simple;
+	bh=LHZ0YYG/lxTn5zqYyd73AUc1BmmDqhxQw03YicpffUE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=SItfYmLG4B0Ak5qn1Nw+lbB8uYbALelelpBsYQpYVYgHDsXGrDWaxPo9b/aGLfjW2Z7H4Z+Hr32XIU0SNsXx6pgJUH1C5vavIrxw1yQQiWkrWb3NI3tYfLtkfNFPEn5GBi6pN5A/skpijxqt6o4NjHuUUkN13lJ1qO60g//SaWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=okQXqjQ7; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1774346086;
+	bh=UIoch42Y6pGyIidacBJRSmhpuNOWZOSUEtIFTmwuRM8=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=okQXqjQ7wqCFNigV0a5RAm0zCAYXIK5wS4aXzRVVLoSt62ItVkB4aoCBxxMkoeT0l
+	 gyDdJpJrTWVlF2kFxFq6zxv6jXyGjmj0Ef+d+wkv6e9P4VQAs5ZX/wl+ebaZOVP7R3
+	 uA8zWqpxUDGKKQzABuTspy7Jaywv96oq6oyRPtSM=
+X-QQ-mid: zesmtpip4t1774346080t0d1a2ff5
+X-QQ-Originating-IP: 9t2R4NY0v4jle8e+c/cpfuzUqd30oXgmgWCzR8W5eOo=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 24 Mar 2026 17:54:38 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 13148438825957856425
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
 	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	sashal@kernel.org,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y 2/2] selftests: mptcp: join: check removing signal+subflow endp
-Date: Tue, 24 Mar 2026 10:49:39 +0100
-Message-ID: <20260324094936.1826804-6-matttbe@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260324094936.1826804-4-matttbe@kernel.org>
-References: <20260324094936.1826804-4-matttbe@kernel.org>
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.18 000/212] 6.18.20-rc1 review
+Date: Tue, 24 Mar 2026 17:53:44 +0800
+Message-Id: <20260324095344.565151-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2479; i=matttbe@kernel.org; h=from:subject; bh=qr05f7GL58ruAJ4cL/ZakCzrxQR0FA5VbILQ6QQ/W/0=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDIPxRmfL026+WFDwpWH+bpP5pTdcnv/5ZNdye7AlYH5f A03L3516ihlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZiIsxYjwyGPBsXK5OVFHuzr mDlmvNuTeVLM0uWhzpmLups+Fa/UXszIsD3s7ec7t7cYveaX+aBpOzf02nXOoHtXTs7u3qa09d/ eMg4A
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OdYC5Mx+c6F+hvigkUQvjMiTNhUaBO0e+8uOEam+Uv/aKfBySu0frlPk
+	kgw567wz6jKNIS+Ne2iGvIce81A+K3t2joKA0MLm+Xtpw3p60ZK5mF9aMQgMYW58+vESbbJ
+	uHXrcIbXyJCbCR/BmCImYSMsMDuBBJFjThKBGfScjkRN2rrvkxzDGY2XxpcUROPzWMZAvMV
+	I/WFG9pPSwFMKX2GKicleAHHAsdtuio7aFX3Nm4WABJoj9urT5Sr3eO1GDfBLX4C3Rq+UvZ
+	5EEiVc2Ldln2VLqi22RnJCLA6lloGGuLTRLN4j7xmcBH+QchQ4lOLEp3nMThcbo/yuRgDe8
+	ONxfFw+LPwXR/3vMEJFaOlKn21DUo6MVClDJHZAqEzU6iQVWIdGIq+FYYSfgWAmsJitmzXr
+	YqXyrifdYBXyAt0KF+9yffD5MXn5agrZACs1K5TsvYHjklVpPjt9Ap67fOOQK/rN0M9uKwE
+	XLwWdeFI2yyacqh/zCJMr0PlHyzj6RPHKQ1P7CakmIJLc+v0KF4CsQ0cZj611ewaBcE/CN4
+	2NcTLCllIlgRflj4Teq+AbOvUulnlnixdYhPhhpMzBwmko0cZ2fuyUNinVfPFxdz/ZHngl5
+	+zL5XJYmxlubI0EdWGjlvxnB2+1i9ftNEXLtUTOmRk5Ujiv6dBbg+OGKrvOStcZOgjBv4Jn
+	1ejbd5qRxifgjNBSU5Oy8V1HVZeELyamIDUMabVa6UTbnc1OyjuscRFuKmUoDboV3sBSspA
+	fVxt8wK488xt5UjzDCBF4y9n2/NCPHAmOzRHW0sbX/oRUUBW9eDqbOUg/KBRac8B1znoWWX
+	zhNew+NZydpX7mCfm6JkEgRscqBbuh7DAx+ScfTDFhiMn5q+t+HqGW4bQq4noXtLEwjmED8
+	yPh6GBMN80jrk0M5pvyVRF84BQEs4AWrPlHjccP6UWpFZ6BDyA8i7yws8adKvTeV1B3thmA
+	x3IVflrOso4E03JRCxAQ0k6Jvlp27Fv1x7Pj3QkP1Gsp7u58UFzYR9gD5jLUdBa+GuNpXuH
+	88oPRa0vQ/TRZcB0Soo3+HWXF9ZD+aLXYaxwMOZm60Ar/EMKr+S3tigWnikpYjrw9th0N4C
+	Q==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230101-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[msgid.link:query timed out];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[matttbe.kernel.org:query timed out,stable.vger.kernel.org:query timed out,martineau.kernel.org:query timed out,kuba.kernel.org:query timed out];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230102-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C6CB6306171
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uos-pc:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid]
+X-Rspamd-Queue-Id: 77FB830639E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
+Build tested in our x86,arm64,loongarch config without error.
 
-This validates the previous commit: endpoints with both the signal and
-subflow flags should always be marked as used even if it was not
-possible to create new subflows due to the MPTCP PM limits.
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
-For this test, an extra endpoint is created with both the signal and the
-subflow flags, and limits are set not to create extra subflows. In this
-case, an ADD_ADDR is sent, but no subflows are created. Still, the local
-endpoint is marked as used, and no warning is fired when removing the
-endpoint, after having sent a RM_ADDR.
+BRs
+Wentao Guan
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+defconfigs:
+https://gist.github.com/opsiff/1768e5fc7f76e59c7c97a4b0f56f4adc
 
-Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ No conflicts, but in this kernel version 'run_tests' doesn't support
-  parameters set via env vars: positional parameters need to be used.
-  See commit 595ef566a2ef ("selftests: mptcp: drop addr_nr_ns1/2
-  parameters") and commit e571fb09c893 ("selftests: mptcp: add speed env
-  var") which are not in this kernel version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 044ba9c4e169..973f76557f23 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2407,6 +2407,18 @@ remove_tests()
- 		chk_rst_nr 0 0
- 	fi
- 
-+	# signal+subflow with limits, remove
-+	if reset "remove signal+subflow with limits"; then
-+		pm_nl_set_limits $ns1 0 0
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
-+		pm_nl_set_limits $ns2 0 0
-+		run_tests $ns1 $ns2 10.0.1.1 0 -1 0 slow
-+		chk_join_nr 0 0 0
-+		chk_add_nr 1 1
-+		chk_rm_nr 1 0 invert
-+		chk_rst_nr 0 0
-+	fi
-+
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--- 
-2.53.0
+Log:
+strings vmlinux-* | grep "Linux version 6.18.20-rc1"
+Linux version 6.18.20-rc1-g81b464548274 (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC 
+Linux version 6.18.20-rc1-g81b464548274 (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #1 SMP PREEMPT_DYNAMIC Tue Mar 24 16:11:27 CST 2026
+Linux version 6.18.20-rc1-loong64-desktop-hwe-g81b464548274 (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC 
+Linux version 6.18.20-rc1-loong64-desktop-hwe-g81b464548274 (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #2 SMP PREEMPT_DYNAMIC Tue Mar 24 16:36:27 CST 2026
+Linux version 6.18.20-rc1-g81b464548274-dirty (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin14) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC 
+Linux version 6.18.20-rc1-g81b464548274-dirty (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin14) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC Tue Mar 24 11:42:37 CST 2026
 
 
