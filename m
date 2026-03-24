@@ -1,235 +1,142 @@
-Return-Path: <stable+bounces-230236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEfqK9cGw2lKnwQAu9opvQ
-	(envelope-from <stable+bounces-230236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:49:11 +0100
+	id cLHANk0Iw2lKnwQAu9opvQ
+	(envelope-from <stable+bounces-230237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:55:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D975331D016
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:49:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E841631D09D
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 22:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F49E31CC049
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:44:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1849D30197F8
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 21:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE37D3803FA;
-	Tue, 24 Mar 2026 21:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C7F3AC0E5;
+	Tue, 24 Mar 2026 21:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sYETECGD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzizuCls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711683612FB;
-	Tue, 24 Mar 2026 21:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D2A3B0AF8;
+	Tue, 24 Mar 2026 21:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774388663; cv=none; b=u9hREI3zPNe092Df+00o0Y1YZeZ27cLfoc2qCq4wSZO6EPixj+A2QtB8N1nxVhYMIu061KPAk8A7pJRE/QOKus/Cnp8BdxxtoIXHE7C3B+NPYVfVlsquThrfFjR74z1Bo+pR4m9SJLNijU/UaWBXz3sxnI/Qc2yfsZ3Xv9/K+Q4=
+	t=1774389315; cv=none; b=DK2wLxugqMwqfLYaaPggE1lURjREwG3VON7PHxOTSRTcMqYJwzb5OLl7dsaPAA1mrnJSMIuJtIUGu+6Yqe1Yxe4EIPMKtvdle6r8krfv6Rrz1hYwRlJ0T3vqTez5ZZv/kAIcucEcCSSs5v823/LbMHCz9m9Ax/TuSlagylQxEkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774388663; c=relaxed/simple;
-	bh=yNTvDX5kYkgO4L5zJrlm8IZqihJMaBU8Nq5wH0jULgs=;
-	h=Date:To:From:Subject:Message-Id; b=tWN3k1UopexV9ScxyFEVnZp03Fceasb7RD4xKa3+qUdmMtfYzBDyAulNzD8XOZG4ITaePQbSDv74JtklNCplrAD4W9ovvS93m5if5M22QpoRixjkA7E8tJD83he2rOpOssmrMkxiVAqCNEOsZUlIHXpwenFmN96aPnEMkyy6Tpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sYETECGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BCAC19424;
-	Tue, 24 Mar 2026 21:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774388663;
-	bh=yNTvDX5kYkgO4L5zJrlm8IZqihJMaBU8Nq5wH0jULgs=;
-	h=Date:To:From:Subject:From;
-	b=sYETECGD8+BEDGSKrbQhBnkz/+RYmwGWpMy0mCWvvrDt9do/xP4Pktleeq/XXrQjt
-	 sHN7ncK18CUV8xYnpa2+8q495nTS1Dk11Hpvuo73RZaC8TDxXH4VSBNuVZ7TrnNs/L
-	 oStiE16sHpXTd+yjop5uy5g4Cgdk7LdZhbCp9MLE=
-Date: Tue, 24 Mar 2026 14:44:22 -0700
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,venkat88@linux.ibm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,dvyukov@google.com,andreyknvl@gmail.com,ritesh.list@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-kasan-fix-double-free-for-kasan-pxds.patch removed from -mm tree
-Message-Id: <20260324214423.40BCAC19424@smtp.kernel.org>
+	s=arc-20240116; t=1774389315; c=relaxed/simple;
+	bh=NbPn1QcoeKA4LFa742s2OhhVtglnQi4bzx0DOF5KVhc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=YfDwQET11kyVFY5ioMKnlXJosts2fVlvSTHhXQrNq0vUHlx9TvELqblSRtCyq9MdjOoHHo+sEdsF2XSDLK2tOQNAI7QM5kKmUXjjeE0SDSORk2FzeSk2WQfIB3AKpq+/PKnS+KgAitbJEddgKGDVhwTeMBWlq0ACPVuSg8Vd8JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzizuCls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B2BC2BC9E;
+	Tue, 24 Mar 2026 21:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774389315;
+	bh=NbPn1QcoeKA4LFa742s2OhhVtglnQi4bzx0DOF5KVhc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=rzizuClsrPhu6brc3CzCIEZAnY9HbIYDN7IycjfkJcLjrtnjnwgm9k8yuD48Zio5T
+	 BMiudm/jb4Z5sEDx3p26QtTFklnUxOP3KCbCRWw+9UKe5+QdbGQS2GKfoWg+9pw652
+	 QFxY2IQ+Zu8RRyIQjrKl8ndsmeIbU2HIW+sP+gCIypDLnt8RFXVOQsBMmE1OqE9f3Q
+	 KAmR8vTeVloLaL5cTsxXsf8xTTXYYcTSEkbxN2WyJsK+tBkYLyWipdPrxsJlrqeZQt
+	 kcU81K7hCaLJr9G3ByZ02NCXOuUYehlGzNwlYpo9X6RqFOIpukl2Zq57NJ4B8tuJXA
+	 7wxwQNeqvYXXA==
+Date: Tue, 24 Mar 2026 16:55:13 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lukas@wunner.de, alex@shazbot.org,
+	kbusch@kernel.org, clg@redhat.com, stable@vger.kernel.org,
+	schnelle@linux.ibm.com, mjrosato@linux.ibm.com
+Subject: Re: [PATCH v11 1/9] PCI: Allow per function PCI slots
+Message-ID: <20260324215513.GA1157029@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316191544.2279-2-alifm@linux.ibm.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230236-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-230237-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,arm.com,linux.ibm.com,gmail.com,google.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: D975331D016
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E841631D09D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, Mar 16, 2026 at 12:15:36PM -0700, Farhan Ali wrote:
+> On s390 systems, which use a machine level hypervisor, PCI devices are
+> always accessed through a form of PCI pass-through which fundamentally
+> operates on a per PCI function granularity. This is also reflected in the
+> s390 PCI hotplug driver which creates hotplug slots for individual PCI
+> functions. Its reset_slot() function, which is a wrapper for
+> zpci_hot_reset_device(), thus also resets individual functions.
 
-The quilt patch titled
-     Subject: mm/kasan: fix double free for kasan pXds
-has been removed from the -mm tree.  Its filename was
-     mm-kasan-fix-double-free-for-kasan-pxds.patch
+I think this "pass-through" is from the hypervisor to Linux, i.e.,
+what we think of as the host kernel, right?
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
+> to multifunction devices. This approach worked fine on s390 systems that
+> only exposed virtual functions as individual PCI domains to the operating
+> system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+> s390 supports exposing the topology of multifunction PCI devices by
+> grouping them in a shared PCI domain. When attempting to reset a function
+> through the hotplug driver, the shared slot assignment causes the wrong
+> function to be reset instead of the intended one. It also leaks memory as
+> we do create a pci_slot object for the function, but don't correctly free
+> it in pci_slot_release().
 
-------------------------------------------------------
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: mm/kasan: fix double free for kasan pXds
-Date: Tue, 24 Feb 2026 18:53:16 +0530
+This alludes to the patch fixing a reset issue, but I think it should
+be more prominent, e.g., the reset and leak fixes could be a separate
+paragraph.  The subject line should also mention at least the reset
+fix.
 
-kasan_free_pxd() assumes the page table is always struct page aligned. 
-But that's not always the case for all architectures.  E.g.  In case of
-powerpc with 64K pagesize, PUD table (of size 4096) comes from slab cache
-named pgtable-2^9.  Hence instead of page_to_virt(pxd_page()) let's just
-directly pass the start of the pxd table which is passed as the 1st
-argument.
+> Add a flag for struct pci_slot to allow per function PCI slots for
+> functions managed through a hypervisor, which exposes individual PCI
+> functions while retaining the topology. Since we can use all 8 bits
+> for slot 'number' (for ARI devices), change slot 'number' u16 to
+> account for special values -1 and PCI_SLOT_ALL_DEVICES.
+> ...
 
-This fixes the below double free kasan issue seen with PMEM:
+>  static ssize_t address_read_file(struct pci_slot *slot, char *buf)
+>  {
+> -	if (slot->number == 0xff)
+> +	if (slot->number == (u16)-1)
 
-radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
-==================================================================
-BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
-Free of addr c0000003c38e0000 by task ndctl/2164
+This "-1" is mentioned in the commit log, but I don't know where it
+came from.  I guess we must assign -1 as a default somewhere?  Could
+this be a #define to connect that assignment with this test?
 
-CPU: 34 UID: 0 PID: 2164 Comm: ndctl Not tainted 6.19.0-rc1-00048-gea1013c15392 #157 VOLUNTARY
-Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_012) hv:phyp pSeries
-Call Trace:
- dump_stack_lvl+0x88/0xc4 (unreliable)
- print_report+0x214/0x63c
- kasan_report_invalid_free+0xe4/0x110
- check_slab_allocation+0x100/0x150
- kmem_cache_free+0x128/0x6e0
- kasan_remove_zero_shadow+0x9c4/0xa20
- memunmap_pages+0x2b8/0x5c0
- devm_action_release+0x54/0x70
- release_nodes+0xc8/0x1a0
- devres_release_all+0xe0/0x140
- device_unbind_cleanup+0x30/0x120
- device_release_driver_internal+0x3e4/0x450
- unbind_store+0xfc/0x110
- drv_attr_store+0x78/0xb0
- sysfs_kf_write+0x114/0x140
- kernfs_fop_write_iter+0x264/0x3f0
- vfs_write+0x3bc/0x7d0
- ksys_write+0xa4/0x190
- system_call_exception+0x190/0x480
- system_call_vectored_common+0x15c/0x2ec
----- interrupt: 3000 at 0x7fff93b3d3f4
-NIP:  00007fff93b3d3f4 LR: 00007fff93b3d3f4 CTR: 0000000000000000
-REGS: c0000003f1b07e80 TRAP: 3000   Not tainted  (6.19.0-rc1-00048-gea1013c15392)
-MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48888208  XER: 00000000
-<...>
-NIP [00007fff93b3d3f4] 0x7fff93b3d3f4
-LR [00007fff93b3d3f4] 0x7fff93b3d3f4
----- interrupt: 3000
-
- The buggy address belongs to the object at c0000003c38e0000
-  which belongs to the cache pgtable-2^9 of size 4096
- The buggy address is located 0 bytes inside of
-  4096-byte region [c0000003c38e0000, c0000003c38e1000)
-
- The buggy address belongs to the physical page:
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c38c
- head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
- memcg:c0000003bfd63e01
- flags: 0x63ffff800000040(head|node=6|zone=0|lastcpupid=0x7ffff)
- page_type: f5(slab)
- raw: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- raw: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- head: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000002 c00c000000f0e301 00000000ffffffff 00000000ffffffff
- head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
- page dumped because: kasan: bad access detected
-
-[  138.953636] [   T2164] Memory state around the buggy address:
-[  138.953643] [   T2164]  c0000003c38dff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953652] [   T2164]  c0000003c38dff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953661] [   T2164] >c0000003c38e0000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953669] [   T2164]                    ^
-[  138.953675] [   T2164]  c0000003c38e0080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953684] [   T2164]  c0000003c38e0100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953692] [   T2164] ==================================================================
-[  138.953701] [   T2164] Disabling lock debugging due to kernel taint
-
-Link: https://lkml.kernel.org/r/2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com
-Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/init.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/mm/kasan/init.c~mm-kasan-fix-double-free-for-kasan-pxds
-+++ a/mm/kasan/init.c
-@@ -292,7 +292,7 @@ static void kasan_free_pte(pte_t *pte_st
- 			return;
- 	}
- 
--	pte_free_kernel(&init_mm, (pte_t *)page_to_virt(pmd_page(*pmd)));
-+	pte_free_kernel(&init_mm, pte_start);
- 	pmd_clear(pmd);
- }
- 
-@@ -307,7 +307,7 @@ static void kasan_free_pmd(pmd_t *pmd_st
- 			return;
- 	}
- 
--	pmd_free(&init_mm, (pmd_t *)page_to_virt(pud_page(*pud)));
-+	pmd_free(&init_mm, pmd_start);
- 	pud_clear(pud);
- }
- 
-@@ -322,7 +322,7 @@ static void kasan_free_pud(pud_t *pud_st
- 			return;
- 	}
- 
--	pud_free(&init_mm, (pud_t *)page_to_virt(p4d_page(*p4d)));
-+	pud_free(&init_mm, pud_start);
- 	p4d_clear(p4d);
- }
- 
-@@ -337,7 +337,7 @@ static void kasan_free_p4d(p4d_t *p4d_st
- 			return;
- 	}
- 
--	p4d_free(&init_mm, (p4d_t *)page_to_virt(pgd_page(*pgd)));
-+	p4d_free(&init_mm, p4d_start);
- 	pgd_clear(pgd);
- }
- 
-_
-
-Patches currently in -mm which might be from ritesh.list@gmail.com are
-
-
+>  		return sysfs_emit(buf, "%04x:%02x\n",
+>  				  pci_domain_nr(slot->bus),
+>  				  slot->bus->number);
 
