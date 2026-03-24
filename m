@@ -1,164 +1,377 @@
-Return-Path: <stable+bounces-230104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GonOxVjwmmecAQAu9opvQ
-	(envelope-from <stable+bounces-230104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:10:29 +0100
+	id aF2wFgNnwmmecAQAu9opvQ
+	(envelope-from <stable+bounces-230105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:27:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B2A306436
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:10:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21553066EA
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8FD2E3055FE4
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:06:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C3F83050EE3
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03A03DEAEC;
-	Tue, 24 Mar 2026 10:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865C93E122F;
+	Tue, 24 Mar 2026 10:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pjNFJVzc"
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="RrIwDEX/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Gg6gI4Zy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6B13DF007
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 10:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9489634DCC8;
+	Tue, 24 Mar 2026 10:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774346792; cv=none; b=sfldBLPr7rK/W65kohrtZdgoy/1i02oeN1KaPbkEUAPwj1C1pG+wxsNX9fh2z+KXPAqXfjZh/bKZ0Jd5U+yDvyzIF/boFlJ576w2dnLWnvX8JaWsa4J8MJ/X+qiQIICsXRG65o0y/1HCXh1yyU6fpxgooAZ6RAgTHMfIOT/TBsw=
+	t=1774347229; cv=none; b=gRRmGpgYoIHcEdcCNZE2cCkghbdOGdGWQ4tn9V1ego00YXZHP+TRre4XSVuyHDC4NZ26ws6IiaFcWh8IuaVcQe8LY0G697kWoz1Q9o0io6tana8T8lpb9PJbdTpRdrZXLk7ELWBw9FLMxvK9vXRKn/obpSJt6pzlYUVqZICrYDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774346792; c=relaxed/simple;
-	bh=VVONFl2fl2ZpU8zDmrnDP6QZw5tqSdxiSkPLZt966XY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eTPckYGUFhi5aDz97RG5OUPtCNlvEBL6TQcSQSaa6VsstMxDSfPNOfd1SCj5yH+A15JNJ5ppPEAuYIehmHcm13OMOd8ivQ179JqKGeGQln4nJd2d54hXUPMqt25l2/KMyhYW6ifItkCQ77MIoHh6tJRDl6rdOd/WY4Or1Br0Hk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pjNFJVzc; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35bb7afdc38so579860a91.1
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 03:06:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774346788; x=1774951588; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WkF8ye71NZGMVLnGHI2bABTT6abAVxL653SKoXtm5Ug=;
-        b=pjNFJVzcCiFybx3a7uQKzPxE83p6d34TDgSpS98wxvd8iiLBl4j+D/zG0Of0jo0BEc
-         KeMBtv8H2ww68Ua85hx2vWoeL5xB/bDI3OLDsR7flahDEHHmIhVUPG9G5lEFL82Ait6U
-         6EqFHz1NmoRC3pWGQ6MNWGXfxODQbNHlBRVeE9159Qp7esfjZfb8sZk0VpVsOJO9/0mo
-         49Y4RcnsctlxuRUCV4OU/KInlf/BUyg1wmgz/Wd0cVvSjiCqTp/q4ptCMe42Csg8mb67
-         hg6lE7+HzrXhuAIZFWGrzFOdW4HAokHMIa3374O56Ko16fqB1KG5L3A7OcUOr0s4LFDE
-         uEBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774346788; x=1774951588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WkF8ye71NZGMVLnGHI2bABTT6abAVxL653SKoXtm5Ug=;
-        b=mCo6RJa7w/EZQ6VkipptH/ee5yhXpBjpYAZTscQdF3p9rnBbE2pr8y0UtnbJNuhEph
-         vMTFZNoBPvGp/2Zs8yY5o6OaZQkdWzdx5RMFlgAfGqQa7jWhVdOarC4SAuNNqdrryBET
-         k/JLrrBze0vS3CX8i/5vPqUOwtFEiJb8QxbETSA8iCGqnrFvCBriWCDwq5scf7X5a01X
-         RozNQFqOLbEvxFTaRqF6HIfGhHQs6qMaBwrRZeccaqWZf4160A6q5BsLnaHQOaVSTvLc
-         gwPuwlPJaxy8CPJaWiI0QfbNTI+mWkb6ZUV90qrreaUYu7tcJ2XZ99qu/B8LYvf6fio9
-         UG5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXVEEMd5SimjFtlgqgQTIShpC/LeyG+g+WspEb5GxgxtsXd/mrqw+++T4XO1+4nilCKt1IP+vc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yziq7cTcINmVmsuAclb789/HdZYA93wGq/fJ8lcs9U1LDRL6YZe
-	oir1pxJZsDHWnOBueT8vb/6UzNjPeXizkZEGTAMxiSgazPOGXtLLnCWAx1tvg7WMeEA=
-X-Gm-Gg: ATEYQzyHfrWPVd17I8xOGZ/FNH9Sb6so0BsnctR4mFHD0SnKkDEOpGMsbnQlgWBg+PG
-	SIjqrKOvAb9Yjo+a9IRRYSAmi0mSDlXYD14R8wtzfdmE63W0Lp2XRGsSV16C6qF/DdK/mxSD5Uz
-	xR/RudZZAj7U8eDuQTzQcu4tpRcFFdVTiXRu4z57t3yl4bp8zhrdqUDKuokJNJEwQzibi+rBddK
-	xoUFt272JZoKeY7XRA6cGIOHd2IUvqd+EkSlFRjNp6k+whH9e66OIA9EQj7xet3rpzhHSG9J/9R
-	bvxmPZKLpb7ad1MhMH3KRSbJUSIWMQ+rWzW+q6SZjurO5nxe/QeND5wn976Aqph9oQPQI4SOCjb
-	9Zhw0bUMxbgkZli+Osy/15nL48Jy9Jfuoq+WuTmxJONxOMtXx1tFEcI/Zvonw0eRBpV7zeBKr1A
-	vKLgtYDq/mRkOSj/PYmK1xOcc=
-X-Received: by 2002:a17:90b:3fcc:b0:35b:95f7:7182 with SMTP id 98e67ed59e1d1-35bd2d40a61mr11871791a91.32.1774346788249;
-        Tue, 24 Mar 2026 03:06:28 -0700 (PDT)
-Received: from nixos ([240b:10:ff26:df00:5eb5:51a7:1801:3c5b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c03134bd2sm1919731a91.5.2026.03.24.03.06.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 03:06:27 -0700 (PDT)
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Subject: [PATCH] wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
-Date: Tue, 24 Mar 2026 19:06:24 +0900
-Message-ID: <20260324100624.983458-1-yasuakitorimaru@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1774347229; c=relaxed/simple;
+	bh=f/+LP/1Ylqhn8EutUCWVhLD7VZPDeYIZwlFtSKPJiEY=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=OKO8/plkhTXn91dtMtNXa56MkEPwDAD9UsuzJ7FwvRRFbE6EjyDTmbaZm5ZHldY24P57vv7Q5HXMPKUJ/DautkQD6lT6jSZkNa5pwhw3DVvn7EsejnuFa4WyrMHSrwe+cNok9YxEDPyFOdiGu7xKNWLK4Iy18U65mPptbceLQ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=RrIwDEX/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Gg6gI4Zy; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id 876F3EC0104;
+	Tue, 24 Mar 2026 06:13:42 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Tue, 24 Mar 2026 06:13:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1774347222; x=1774433622; bh=eAbtl4Ts8cvSUZwYOKJ+AcokZW+5W30fBqg
+	rR628Wl4=; b=RrIwDEX/hcYNz8qRtX6mEndf4hU/kf/XI8sOMFIA4LKcjxYygES
+	RbJeGrxOjpn6+x0g3HuOFJjjLcT3QFXvWm3dgoTBUEq5sAUoDyMx8+3Sy93Lr72n
+	XvA6lVFEnx1ywV0bEsEsP9wbuKQv5CHjHAS8bgH9BJ85GAp8cVsiXQGflAV8gu2L
+	FRzGG3343wO/m9xRvtyieF0Br2IusbY1wk+esrgQArDR2LxD1laVDQ706m0gqlyY
+	JfWV9eu7vSQMIr8KZzVcqs1LnmzOUq+AD0UuCHGRW1Bl+l2yiELvZulaxwkyn6gn
+	dXqT6KV9+vpiLp84fvo08cHI/H3Uyx+8jLg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774347222; x=
+	1774433622; bh=eAbtl4Ts8cvSUZwYOKJ+AcokZW+5W30fBqgrR628Wl4=; b=G
+	g6gI4ZyQPGivbKROp4uS2tJYcizKMGXzFYW58hQQu/IjGLHlDIOLPs+VwH42ey6f
+	wDFzNhOVV4sQpWaL6GIhpG0IgMdrfI77B2TwAYJmDZQPnu8qP051PbI/Lte1aR36
+	YZrcx68/ES0GUcriX2lsjy0rO2KBVM1FXtWloSLQd3FJUUvGqAzN08Dff3Vgvdfv
+	hzO175UjreVpwIlnUQbuiFXCvNscwmKzmLR+DzUPny1fZJrddnpXgW0raKhaNMvD
+	f1s4Gg/CFQyR6+qR7cSYs4ChdAlWCOuvnr6IRBB97+190zZQxM5VG9yJpK0X6tc6
+	Wkcq+0NnfNuzNoXflYh8g==
+X-ME-Sender: <xms:1mPCaXLVNY9wfzkyu_fy6SPGy8O9GbVVDPMbT7BePSsvifKy6CtNsQ>
+    <xme:1mPCaVOtFUt1iR2gykHw0gK1at0vCD1xksjx_G3nHbPtCAJP-mBW__eOHk991oZsW
+    3pfd_oC8lo_ye8bk4XZZJ8zkhpoepW0LaIi7RnjLp3pPOTcQA>
+X-ME-Received: <xmr:1mPCafm5Uaipi1rX0UO1TWRExb5Vkd2iS23-vKoIJGdj2BfA1wkX2Iw7beC8Upo4sXk0w16PlReI44uVp5Qe1LEBnoHkGHRHn_UsSCGpLoyj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvddufeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epudefueefheejhfeuhfehvdfhgeeulefgfeehffekffduvdettdelheeftdethfdvnecu
+    ffhomhgrihhnpeguvggsihgrnhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhkohhrnhhivghvsehrvgguhh
+    grthdrtghomhdprhgtphhtthhopehtjhdrihgrmhdrthhjsehprhhothhonhdrmhgvpdhr
+    tghpthhtoheprhgvghhrvghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtph
+    htthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeduuddvkeek
+    iedusegsuhhgshdruggvsghirghnrdhorhhg
+X-ME-Proxy: <xmx:1mPCaR7g1gVL1w5WNDt24CAEMu8Dky-5PxU3NCkegeGM_8MOSaSdIQ>
+    <xmx:1mPCab0eDb38YMyjeDFHsOa3LjhNDWFVFKtDARpPMAy99gPYJZv3IQ>
+    <xmx:1mPCaUECWfkqFnqMv1vjtS0fSddvGexUvt1t6Z6R6sC05waJakrGBg>
+    <xmx:1mPCaSjqFr3y2TXRCa0fed6MWfCpqB78l9MCDgS3NoZMMuloQqlgcg>
+    <xmx:1mPCaXPC-hqmaaewxrk4hVY2J_RSa56wpYvE82yDOg_aFVQNcl64Gf66>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 24 Mar 2026 06:13:39 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Thorsten Leemhuis" <regressions@leemhuis.info>, 1128861@bugs.debian.org,
+ "Tj" <tj.iam.tj@proton.me>, linux-nfs@vger.kernel.org,
+ "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
+Subject:
+ [PATCH] lockd: fix TEST handling when not all permissions are available.
+In-reply-to: <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>,
+ <177266540127.7472.3460090956713656639@noble.neil.brown.name>,
+ <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>,
+ <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>
+Date: Tue, 24 Mar 2026 21:13:35 +1100
+Message-id: <177434721528.7102.13514118512738778346@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[ownmail.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ownmail.net:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230105-lists,stable=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[microchip.com,tuxon.dev,kernel.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-230104-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[ownmail.net];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yasuakitorimaru@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ownmail.net:+,messagingengine.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[neilb@ownmail.net,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 92B2A306436
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[neil@brown.name];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ownmail.net:dkim,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: C21553066EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The variable valuesize is declared as u8 but accumulates the total
-length of all SSIDs to scan. Each SSID contributes up to 33 bytes
-(IEEE80211_MAX_SSID_LEN + 1), and with WILC_MAX_NUM_PROBED_SSID (10)
-SSIDs the total can reach 330, which wraps around to 74 when stored
-in a u8.
 
-This causes kmalloc to allocate only 75 bytes while the subsequent
-memcpy writes up to 331 bytes into the buffer, resulting in a 256-byte
-heap buffer overflow.
+From: NeilBrown <neil@brown.name>
 
-Widen valuesize from u8 to u32 to accommodate the full range.
+The F_GETLK fcntl can work with either read access or write access or
+both.  It can query F_RDLCK and F_WRLCK locks in either case.
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+However lockd currently treats F_GETLK similar to F_SETLK in that read
+access is required to query an F_RDLCK lock and write access is required
+to query a F_WRLCK lock.
+
+This is wrong and can cause problem - e.g.  when qemu accesses a
+read-only (e.g. iso) filesystem image over NFS (though why it queries
+if it can get a write lock - I don't know.  But it does, and this works
+with local filesystems).
+
+So we need TEST requests to be handled differently.  To do this:
+
+- change nlm_do_fopen() to accept O_RDWR as a mode and in that case
+  succeed if either a O_RDONLY or O_WRONLY file can be opened.
+- change nlm_lookup_file() to accept a mode argument from caller,
+  instead of deducing base on lock time, and pass that on to nlm_do_fopen()
+- change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
+  TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
+  the same mode as before for other requests.  Also set
+   lock->fl.c.flc_file to whichever file is available for TEST requests.
+- change nlmsvc_testlock() to also not calculate the mode, but to use
+  whenever was stored in lock->fl.c.flc_file.
+
+Reported-by: Tj <tj.iam.tj@proton.me>
+Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1128861
+Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
+Signed-off-by: NeilBrown <neil@brown.name>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/lockd/svc4proc.c         | 13 ++++++++++---
+ fs/lockd/svclock.c          |  4 +---
+ fs/lockd/svcproc.c          | 15 ++++++++++++---
+ fs/lockd/svcsubs.c          | 26 +++++++++++++++++---------
+ include/linux/lockd/lockd.h |  2 +-
+ 5 files changed, 41 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index f354b11cb919..944b2a812b63 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -163,7 +163,7 @@ int wilc_scan(struct wilc_vif *vif, u8 scan_source,
- 	u32 index = 0;
- 	u32 i, scan_timeout;
- 	u8 *buffer;
--	u8 valuesize = 0;
-+	u32 valuesize = 0;
- 	u8 *search_ssid_vals = NULL;
- 	const u8 ch_list_len = request->n_channels;
- 	struct host_if_drv *hif_drv = vif->hif_drv;
--- 
-2.50.1
+diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+index 4b6f18d97734..75e020a8bfd0 100644
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -26,6 +26,8 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_ar=
+gs *argp,
+ 	struct nlm_host		*host =3D NULL;
+ 	struct nlm_file		*file =3D NULL;
+ 	struct nlm_lock		*lock =3D &argp->lock;
++	bool			is_test =3D (rqstp->rq_proc =3D=3D NLMPROC_TEST ||
++					   rqstp->rq_proc =3D=3D NLMPROC_TEST_MSG);
+ 	__be32			error =3D 0;
+=20
+ 	/* nfsd callbacks must have been installed for this procedure */
+@@ -46,15 +48,20 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_=
+args *argp,
+ 	if (filp !=3D NULL) {
+ 		int mode =3D lock_to_openmode(&lock->fl);
+=20
++		if (is_test)
++			mode =3D O_RDWR;
++
+ 		lock->fl.c.flc_flags =3D FL_POSIX;
+=20
+-		error =3D nlm_lookup_file(rqstp, &file, lock);
++		error =3D nlm_lookup_file(rqstp, &file, lock, mode);
+ 		if (error)
+ 			goto no_locks;
+ 		*filp =3D file;
+-
+ 		/* Set up the missing parts of the file_lock structure */
+-		lock->fl.c.flc_file =3D file->f_file[mode];
++		if (is_test)
++			lock->fl.c.flc_file =3D nlmsvc_file_file(file);
++		else
++			lock->fl.c.flc_file =3D file->f_file[mode];
+ 		lock->fl.c.flc_pid =3D current->tgid;
+ 		lock->fl.fl_start =3D (loff_t)lock->lock_start;
+ 		lock->fl.fl_end =3D lock->lock_len ?
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 255a847ca0b6..adfd8c072898 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -614,7 +614,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *=
+file,
+ 		struct nlm_lock *conflock)
+ {
+ 	int			error;
+-	int			mode;
+ 	__be32			ret;
+=20
+ 	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=3D%d, %Ld-%Ld)\n",
+@@ -632,14 +631,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file=
+ *file,
+ 		goto out;
+ 	}
+=20
+-	mode =3D lock_to_openmode(&lock->fl);
+ 	locks_init_lock(&conflock->fl);
+ 	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
+ 	conflock->fl.c.flc_file =3D lock->fl.c.flc_file;
+ 	conflock->fl.fl_start =3D lock->fl.fl_start;
+ 	conflock->fl.fl_end =3D lock->fl.fl_end;
+ 	conflock->fl.c.flc_owner =3D lock->fl.c.flc_owner;
+-	error =3D vfs_test_lock(file->f_file[mode], &conflock->fl);
++	error =3D vfs_test_lock(lock->fl.c.flc_file, &conflock->fl);
+ 	if (error) {
+ 		ret =3D nlm_lck_denied_nolocks;
+ 		goto out;
+diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
+index 5817ef272332..d98e8d684376 100644
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -55,6 +55,8 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_arg=
+s *argp,
+ 	struct nlm_host		*host =3D NULL;
+ 	struct nlm_file		*file =3D NULL;
+ 	struct nlm_lock		*lock =3D &argp->lock;
++	bool			is_test =3D (rqstp->rq_proc =3D=3D NLMPROC_TEST ||
++					   rqstp->rq_proc =3D=3D NLMPROC_TEST_MSG);
+ 	int			mode;
+ 	__be32			error =3D 0;
+=20
+@@ -70,15 +72,22 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_a=
+rgs *argp,
+=20
+ 	/* Obtain file pointer. Not used by FREE_ALL call. */
+ 	if (filp !=3D NULL) {
+-		error =3D cast_status(nlm_lookup_file(rqstp, &file, lock));
++		mode =3D lock_to_openmode(&lock->fl);
++
++		if (is_test)
++			mode =3D O_RDWR;
++
++		error =3D cast_status(nlm_lookup_file(rqstp, &file, lock, mode));
+ 		if (error !=3D 0)
+ 			goto no_locks;
+ 		*filp =3D file;
+=20
+ 		/* Set up the missing parts of the file_lock structure */
+-		mode =3D lock_to_openmode(&lock->fl);
+ 		lock->fl.c.flc_flags =3D FL_POSIX;
+-		lock->fl.c.flc_file  =3D file->f_file[mode];
++		if (is_test)
++			lock->fl.c.flc_file =3D nlmsvc_file_file(file);
++		else
++			lock->fl.c.flc_file =3D file->f_file[mode];
+ 		lock->fl.c.flc_pid =3D current->tgid;
+ 		lock->fl.fl_lmops =3D &nlmsvc_lock_operations;
+ 		nlmsvc_locks_init_private(&lock->fl, host, (pid_t)lock->svid);
+diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+index dd0214dcb695..b92eb032849f 100644
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -82,18 +82,28 @@ int lock_to_openmode(struct file_lock *lock)
+  *
+  * We have to make sure we have the right credential to open
+  * the file.
++ *
++ * mode can be O_RDONLY(0), O_WRONLY(1) or O_RDWR(2) meaning either
+  */
+ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+ 			   struct nlm_file *file, int mode)
+ {
+-	struct file **fp =3D &file->f_file[mode];
++	struct file **fp;
+ 	__be32	nfserr;
++	int m;
+=20
+-	if (*fp)
+-		return 0;
+-	nfserr =3D nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, mode);
+-	if (nfserr)
+-		dprintk("lockd: open failed (error %d)\n", nfserr);
++	for (m =3D O_RDONLY ; m <=3D O_WRONLY ; m++) {
++		if (mode !=3D O_RDWR && mode !=3D m)
++			continue;
++
++		fp =3D &file->f_file[m];
++		if (*fp)
++			return 0;
++		nfserr =3D nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, m);
++		if (!nfserr)
++			return 0;
++	}
++	dprintk("lockd: open failed (error %d)\n", nfserr);
+ 	return nfserr;
+ }
+=20
+@@ -103,17 +113,15 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+  */
+ __be32
+ nlm_lookup_file(struct svc_rqst *rqstp, struct nlm_file **result,
+-					struct nlm_lock *lock)
++		struct nlm_lock *lock, int mode)
+ {
+ 	struct nlm_file	*file;
+ 	unsigned int	hash;
+ 	__be32		nfserr;
+-	int		mode;
+=20
+ 	nlm_debug_print_fh("nlm_lookup_file", &lock->fh);
+=20
+ 	hash =3D file_hash(&lock->fh);
+-	mode =3D lock_to_openmode(&lock->fl);
+=20
+ 	/* Lock file table */
+ 	mutex_lock(&nlm_file_mutex);
+diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
+index 330e38776bb2..fe5cdd4d66f4 100644
+--- a/include/linux/lockd/lockd.h
++++ b/include/linux/lockd/lockd.h
+@@ -294,7 +294,7 @@ void		  nlmsvc_locks_init_private(struct file_lock *, str=
+uct nlm_host *, pid_t);
+  * File handling for the server personality
+  */
+ __be32		  nlm_lookup_file(struct svc_rqst *, struct nlm_file **,
+-					struct nlm_lock *);
++				  struct nlm_lock *, int);
+ void		  nlm_release_file(struct nlm_file *);
+ void		  nlmsvc_put_lockowner(struct nlm_lockowner *);
+ void		  nlmsvc_release_lockowner(struct nlm_lock *);
+--=20
+2.50.0.107.gf914562f5916.dirty
 
 
