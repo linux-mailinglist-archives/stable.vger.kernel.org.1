@@ -1,217 +1,163 @@
-Return-Path: <stable+bounces-230151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEzPEB2CwmlneQQAu9opvQ
-	(envelope-from <stable+bounces-230151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 13:22:53 +0100
+	id sJWTEpqEwmkAegQAu9opvQ
+	(envelope-from <stable+bounces-230152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 13:33:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76EB3081FF
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 13:22:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DADBA3084DF
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 13:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C6C731603E7
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:17:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4888F31231B0
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373F23ECBE1;
-	Tue, 24 Mar 2026 12:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE283F7AB4;
+	Tue, 24 Mar 2026 12:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cF8pe+nS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlJAFM9n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A2A1E515;
-	Tue, 24 Mar 2026 12:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5553F54BD;
+	Tue, 24 Mar 2026 12:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774354636; cv=none; b=ko74GN7OUIOPtAqD8vRXqioehOtCM9ultHKmHW31j1FSs/A+JX/hf3MsC06qDOE4WZzGrFnT3Z6l+/PF9MZPraQPFuaAbVN7NxV+8SX06hTWu7XDzW5khBsLUHZhh7F7RJrKXFrXxpZWxDKkik8kuBXen6cWwFvWiArDLT5/Wps=
+	t=1774355417; cv=none; b=TKYehYvWfmS6NQ+454QulzRXoQIk2267mA4Fbqth0yEQXGYbz45Nz1N6XtBEYhzR3Ybx/dBbJH6yw6+hjX734myy6DOxnb+1Z///YIZz7kRDk5Z/aLYyfeUYDsPMREyTccD2mvxmqmzMu7f6/FCWBIDy07hFeH6MZnOBb1luadg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774354636; c=relaxed/simple;
-	bh=4M3oxfdAtS7h61TDbbWg2JNnqbSWA0PCWoJ0L7gkFZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ev7PxGiUND7tq0Zm7j0sdfW+W01kSmZxdT5WJw5zPUUXL3vKCVDGgyYZPGT3t0yBq5nEyX3vG5dCZ9AeVAQBDLVcclZmRQOuKUgTZpfgrkfZYzwjhNeaVSuV5MrtRuLSYOpEW0LTBforp5Y6AHlO+W/oqWtsUs5keQ+KAgj3BJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cF8pe+nS; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4C91A40E01B5;
-	Tue, 24 Mar 2026 12:17:12 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id dnFVETy27CCn; Tue, 24 Mar 2026 12:17:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774354629; bh=KYK9YHZVuVlAzOOhH+MTz621Hkr2RYOMLkdngylRUAs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cF8pe+nSTbYOwxaFJul2bqxHO3uvgIgItLoiUX8wIYsEqhN6tdF3fFY8JyD9QlFPi
-	 cPkLYZSC6hmwgA5cTbDn56AVHXKZj3qYJiHzY6c3YWo+d9mDuGv8+CaSymsQP5YI6d
-	 lxkovFIQr85rZER8zPYQ73rWloZiN8CP35Tl6L9QKY8fpfe+mtIljuIu1GGr0kY4ru
-	 vahO3urod84G6ztAkBOUsNDV4wQ9C7cfvFvFPmIimmEbGCjhgBbAUdt9rSHtAoo9NJ
-	 M+X+g7dPq8SUJKK7XHzsXMEkJF5HRxQ426ejsCvI7tHaVGRVy6SPBgxbfzVzvgi2su
-	 CIYAY1ipCpXshcNevFwq7Suvy6gjA5EFdFPcpWy5dm0ACr4BI6G/EZAV3hbDxY6NoW
-	 1U0fAxdFq34wRGJjfdbuKTj0yJW3qEtNRQiBwnI1QIMPQLfdY3Ti+os4d3YUr78c+7
-	 wg9RjDFYmdBgtdZvoE6+R+Ert+RNV3N8BKYvxWkCPGDTNddin9THhsVI6g6OMcDoHt
-	 n/ycVMoB1XmUv65hHWfX0zxX0ADEIsECXjauTxCfuRL8q9FhkhL4WWIBfdzEY68LIw
-	 RoHkRAtXlve5hnjTEr9qbJQgMROPF/oGqz4bL7Ihlj9W0E39DXoUV8BZD8tcuyEu7V
-	 C5rk4M1CaVQmiMlXTUY0ZVt0=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id CBFEF40E0194;
-	Tue, 24 Mar 2026 12:17:02 +0000 (UTC)
-Date: Tue, 24 Mar 2026 13:16:56 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-Cc: shubhrajyoti.datta@amd.com, tony.luck@intel.com,
-	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/5] EDAC/versalnet: Fix device_register() error handling
- in init_one_mc()
-Message-ID: <20260324121656.GAacKAuPpPt9bjj15q@fat_crate.local>
-References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
- <20260322131145.1684744-1-ptsm@linux.microsoft.com>
- <20260322161052.GAacAUjFGWFwPle6c9@fat_crate.local>
- <84ae7198-b755-4dde-b97c-978958d27b4b@linux.microsoft.com>
- <20260324112312.GKacJ0IEL2iD7JZnSk@fat_crate.local>
+	s=arc-20240116; t=1774355417; c=relaxed/simple;
+	bh=wJMzw7NgQ7d909biU6hPqGwcQ0xKglJLaKqrUAt3glI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=SVmQAxQRyQe3f9ztwvDp0BBOzjXW0CdOL0kjkpBLWvZJd6aJNf3dJ/+/GSlnLaISyQcwmx42Hj8MQYTj/8ISGQXkUXi6D63ccefGvd9s5siQDUbVzoqA6Jk3T1XPix6zEbd1LLLAEOwXX34kLQMeJr966PZkrLpgj8eycVmXjao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlJAFM9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF419C19424;
+	Tue, 24 Mar 2026 12:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774355416;
+	bh=wJMzw7NgQ7d909biU6hPqGwcQ0xKglJLaKqrUAt3glI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=UlJAFM9nKl9lolIe376yx7IeB2OEUNFolkxhPxNf/6PMMHlr2rx4ChTcTSLmMym4t
+	 WZSewer2WMw+7Hm0AELYRNTTc/6TJ41y8NXYe8eMuPFl5SvvFq0sawUMZKPn2pF7Sm
+	 WLi/v4HEgOoK7arllqy2+qRNax6k5dC6mKDIT9N1yF534JhwQWOxukxZplHF1wwCtg
+	 DFvwUolL4sSQmLtJl2R5lypk/e/bHee3JpemoYRtHjO1RyPS9HMlFcbdh1ml1gh1cN
+	 WuDCOG0yhnQZFrl/vpkEXpNY08QnTio001F/F4XpmqUm6RQtrrH/X8SKlCyCvBQIf4
+	 9o2baClIqzZkA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D8A8D3808200;
+	Tue, 24 Mar 2026 12:30:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260324112312.GKacJ0IEL2iD7JZnSk@fat_crate.local>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: macb: Use dev_consume_skb_any() to free TX SKBs
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177435540464.657925.5877144884946970494.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Mar 2026 12:30:04 +0000
+References: <20260321-macb-tx-v1-1-b383a58dd4e6@gmail.com>
+In-Reply-To: <20260321-macb-tx-v1-1-b383a58dd4e6@gmail.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, sean.anderson@linux.dev,
+ netdev@vger.kernel.org, stable@vger.kernel.org
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230151-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230152-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:dkim]
-X-Rspamd-Queue-Id: D76EB3081FF
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DADBA3084DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 24, 2026 at 12:23:12PM +0100, Borislav Petkov wrote:
-> So let's do it another way (totally untested ofc):
+Hello:
 
-AI found a couple of issues, here's v2:
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
----
-diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
-index b87fe57aa842..953f96c8fd6f 100644
---- a/drivers/edac/versalnet_edac.c
-+++ b/drivers/edac/versalnet_edac.c
-@@ -772,12 +772,11 @@ static void remove_one_mc(struct mc_priv *priv, int i)
- 	edac_mc_free(mci);
- }
- 
--static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i)
-+static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, struct device *dev, int i)
- {
- 	u32 num_chans, rank, dwidth, config;
- 	struct edac_mc_layer layers[2];
- 	struct mem_ctl_info *mci;
--	struct device *dev;
- 	enum dev_type dt;
- 	char *name;
- 	int rc;
-@@ -802,7 +801,7 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 	}
- 
- 	if (dt == DEV_UNKNOWN)
--		return 0;
-+		return -EINVAL;
- 
- 	/* Find the first enabled device and register that one. */
- 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
-@@ -817,14 +816,10 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 	if (!name)
- 		return rc;
- 
--	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (!dev)
--		goto err_name_free;
--
- 	mci = edac_mc_alloc(i, ARRAY_SIZE(layers), layers, sizeof(struct mc_priv));
- 	if (!mci) {
- 		edac_printk(KERN_ERR, EDAC_MC, "Failed memory allocation for MC%d\n", i);
--		goto err_dev_free;
-+		goto err_name_free;
- 	}
- 
- 	sprintf(name, "versal-net-ddrmc5-edac-%d", i);
-@@ -856,8 +851,6 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 	device_unregister(mci->pdev);
- err_mc_free:
- 	edac_mc_free(mci);
--err_dev_free:
--	kfree(dev);
- err_name_free:
- 	kfree(name);
- 
-@@ -866,18 +859,26 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 
- static int init_versalnet(struct mc_priv *priv, struct platform_device *pdev)
- {
--	int rc, i;
-+	int rc = -ENOMEM, i;
- 
- 	for (i = 0; i < NUM_CONTROLLERS; i++) {
--		rc = init_one_mc(priv, pdev, i);
--		if (rc) {
--			while (i--)
--				remove_one_mc(priv, i);
-+		struct device *dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+		if (!dev)
-+			goto free;
- 
--			return rc;
-+		rc = init_one_mc(priv, pdev, dev, i);
-+		if (rc) {
-+			kfree(dev);
-+			goto free;
- 		}
- 	}
- 	return 0;
-+
-+free:
-+	while (i--)
-+		remove_one_mc(priv, i);
-+
-+	return rc;
- }
- 
- static void remove_versalnet(struct mc_priv *priv)
+On Sat, 21 Mar 2026 22:04:41 +0800 you wrote:
+> The napi_consume_skb() function is not intended to be called in an IRQ
+> disabled context. However, after commit 6bc8a5098bf4 ("net: macb: Fix
+> tx_ptr_lock locking"), the freeing of TX SKBs is performed with IRQs
+> disabled. To resolve the following call trace, use dev_consume_skb_any()
+> for freeing TX SKBs:
+>    WARNING: kernel/softirq.c:430 at __local_bh_enable_ip+0x174/0x188, CPU#0: ksoftirqd/0/15
+>    Modules linked in:
+>    CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted 7.0.0-rc4-next-20260319-yocto-standard-dirty #37 PREEMPT
+>    Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+>    pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>    pc : __local_bh_enable_ip+0x174/0x188
+>    lr : local_bh_enable+0x24/0x38
+>    sp : ffff800082b3bb10
+>    x29: ffff800082b3bb10 x28: ffff0008031f3c00 x27: 000000000011ede0
+>    x26: ffff000800a7ff00 x25: ffff800083937ce8 x24: 0000000000017a80
+>    x23: ffff000803243a78 x22: 0000000000000040 x21: 0000000000000000
+>    x20: ffff000800394c80 x19: 0000000000000200 x18: 0000000000000001
+>    x17: 0000000000000001 x16: ffff000803240000 x15: 0000000000000000
+>    x14: ffffffffffffffff x13: 0000000000000028 x12: ffff000800395650
+>    x11: ffff8000821d1528 x10: ffff800081c2bc08 x9 : ffff800081c1e258
+>    x8 : 0000000100000301 x7 : ffff8000810426ec x6 : 0000000000000000
+>    x5 : 0000000000000001 x4 : 0000000000000001 x3 : 0000000000000000
+>    x2 : 0000000000000008 x1 : 0000000000000200 x0 : ffff8000810428dc
+>    Call trace:
+>     __local_bh_enable_ip+0x174/0x188 (P)
+>     local_bh_enable+0x24/0x38
+>     skb_attempt_defer_free+0x190/0x1d8
+>     napi_consume_skb+0x58/0x108
+>     macb_tx_poll+0x1a4/0x558
+>     __napi_poll+0x50/0x198
+>     net_rx_action+0x1f4/0x3d8
+>     handle_softirqs+0x16c/0x560
+>     run_ksoftirqd+0x44/0x80
+>     smpboot_thread_fn+0x1d8/0x338
+>     kthread+0x120/0x150
+>     ret_from_fork+0x10/0x20
+>    irq event stamp: 29751
+>    hardirqs last  enabled at (29750): [<ffff8000813be184>] _raw_spin_unlock_irqrestore+0x44/0x88
+>    hardirqs last disabled at (29751): [<ffff8000813bdf60>] _raw_spin_lock_irqsave+0x38/0x98
+>    softirqs last  enabled at (29150): [<ffff8000800f1aec>] handle_softirqs+0x504/0x560
+>    softirqs last disabled at (29153): [<ffff8000800f2fec>] run_ksoftirqd+0x44/0x80
+> 
+> [...]
 
+Here is the summary with links:
+  - [net] net: macb: Use dev_consume_skb_any() to free TX SKBs
+    https://git.kernel.org/netdev/net/c/647b8a2fe474
 
+You are awesome, thank you!
 -- 
-Regards/Gruss,
-    Boris.
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
 
