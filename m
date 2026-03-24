@@ -1,299 +1,453 @@
-Return-Path: <stable+bounces-230208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HD4CrHWwmllmgQAu9opvQ
-	(envelope-from <stable+bounces-230208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:23:45 +0100
+	id SOrRAJfWwmllmgQAu9opvQ
+	(envelope-from <stable+bounces-230209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:23:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3764431AC13
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:23:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B41F31ABF3
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:23:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 761F3305E0BB
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 18:19:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87737305148E
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 18:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE737DEA0;
-	Tue, 24 Mar 2026 18:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F18538D69B;
+	Tue, 24 Mar 2026 18:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cQIPQIpS"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="Hai0ijOf"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11023084.outbound.protection.outlook.com [40.93.196.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E64D3909B2
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774376359; cv=none; b=XVRs9bDe/iKpa3jQX3h4WlfW/XxD/PzxncavmKZdq1FmApdr8HbF70J6bRj/YHmqLxlgl8TOetnSsvp3qRbt4bHCeEOKmtl+ZawAG3I/Jfb2YBjV+C5fR9L6D3IBI4nRYkyLxADU7pHJW/h5e7R78prIZiuPeWh1DcTpm9IG9cs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774376359; c=relaxed/simple;
-	bh=jCcFKzA5KhYflnf2lcjxCWRtWLb52QLrD4Wiaksr/As=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c4FUeJikcq2gmL0Ez2eV6syrTM9lte3nzgvftdjKHPXadeF97YeimaoJkOIOSZ0S13SejanhEr0Oc+hD8a2JmLcIqq+VJZRV5ysHbNYzkzCFCDls+Dm02YJsH/Qv4RjECff39wYa8fXcFZ/IDcx3SNHJVmtgXqC6afbh9Yikrjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cQIPQIpS; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OEmge13384262;
-	Tue, 24 Mar 2026 18:19:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=MZLHYo
-	tk/L8BhRefJoOq0cq8m08QcngpPIBIEMkEF3c=; b=cQIPQIpSgetLbVSmT569ac
-	aFoZ/vLxXs1jNgw+AmnmUdp4ccub8zBhnwINrPsHRt1UfX9MheueId8HfHk3PiMI
-	upcul4x3NJSCPGXoyFKh1RDvmXGKo5YrihXWsuqNHIagpDsyKqfSkxeIocdA4xXm
-	n3YY83IzgM5oDYU1CDzMiuQ1vLezjPvDAPPc8Ju/qcCwgJXJlUMfmGUWPY8nhAhX
-	lR/j7XfWqbE3dxvXKHP2iYSQJjSnTOavqeyQ+KTst9643G1cYCfIN19REpkBpnhJ
-	XML1HdZLltOua33XtUgvWk3aRGfD5UaKFAEW/+WPHAnxmns2PkKsUVwemVwdRKnA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ky04cp0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Mar 2026 18:19:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62OFcid8005991;
-	Tue, 24 Mar 2026 18:19:12 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d261ykbsx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Mar 2026 18:19:12 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62OIJB7s60948774
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Mar 2026 18:19:11 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 266CD58064;
-	Tue, 24 Mar 2026 18:19:11 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 403F058056;
-	Tue, 24 Mar 2026 18:19:07 +0000 (GMT)
-Received: from [9.39.25.178] (unknown [9.39.25.178])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Mar 2026 18:19:06 +0000 (GMT)
-Message-ID: <6171f849-4164-4fd5-b31e-79c08df936c2@linux.ibm.com>
-Date: Tue, 24 Mar 2026 23:49:05 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7531E5B88;
+	Tue, 24 Mar 2026 18:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774376416; cv=fail; b=a7qlnr5P6OJzWFCo4v3Uok9+F6v2pCLXrQC66NZRlThvGAG4VUzLvvFFzxFqqUfKt3vUK7roYsPoEf2aEJ40fydfZFKOmisXbA5dNzd6IyBOknTIXx4i45UyJzjBTjmZJyz5wG7MwcYDLUqZkdd3tUrUDYE1u4x2yBuhFnTdIcw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774376416; c=relaxed/simple;
+	bh=o29fHlvOgeAadAiWQzYTNwnhBFfdX/HYUX7y2SEuZbQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WPQtKBEiiuY9pSCsmqPHlc3SolT8qcompy4aT5HpC7u+2QqQdk+YmpO6NjGtFV25IOPLEwLR8imME/QInSt6RfJKGTYnmqiNwD6T23oq8ZLZ8vokhEAnt4k+CCOtFg5/QG6UVzn7VMNdUmUPxwq8B/Xp/wQmNTobK/cBHswJ0Hw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=Hai0ijOf; arc=fail smtp.client-ip=40.93.196.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EK1DG2SLJ15OtxEbeQU/+FpZanwuZD8psMAEHuqaFvTFKwsYshB/wiemzwFsCNepccpFW562z7CxCOcitU/+uK1Q6V5twtxB/0JdKaK3wZHMLYEISab+Q3ErrBni3xwd5MVHDuNWFU7YXfvsFu6P2K09wL6/ikU+Z+AV7aAM3efCVP8qEYM8hFbdV4QHsnApr3zTd8EZ2zHWc5cwoIlLY+ldMgVxmEtJNgOkL0wBWVvDKQ5vW+g7lR9dyLrw6esICab17uSrw6nY/55wWfJ8ssGeDLly/HkkGXYY3mgSQ/o4CnAvN+C0r+0VkuL84CPHeQxLv8l4XQkXaUCyBgj/RA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JSJjppG7G15PEbCmP+x/HkZ/Vz0jXnKQx+vBTUnOVDU=;
+ b=laD7qK+G5T8ogmoPH3Qd0e96GtGyGo+Ixo1Ll9hvb+cG506ann6/06+RescXefLyPEUFrhO5lM/h200wzaK38zMjv8+tJt81wHx9rKpNadkLi3zvCpX+eVGQZK2GvybhEsoCS2/2kqHpKbDBStlsdNpZaPi1UYi9hYq1OrMwj3+NNYjj4hcZ9UBD7kJxw0l5m9a5EbWOcbt6U/FJMYS7uOmine6/jRWN9XRelXBd5xzuxMqx/96VQA8E9f5fCY1Utd0fx9p47t2qXGDzC3t/xBmevnLQKX1izmsaQlgm+3ll+c3OxG3NqZ86GP3PtfnYRyr8fTcmmkWM+y2v5b9qrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JSJjppG7G15PEbCmP+x/HkZ/Vz0jXnKQx+vBTUnOVDU=;
+ b=Hai0ijOfwnTjtwgmcN/4s3IOKc96IrGZ5LqqUm6mkksY6g5LmyQqYGx96GTgk4Rn6nBXrXfDvR9UBWW/RxQM33xO99RpM5uVCBZHGeYVVFR8nZG19UfTeS5nsfNAKfqQbhuvkPZS0OlUNR7P1HXdComB9xmih/IYgZ3h5FVpnzs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
+ LV9PR01MB9398.prod.exchangelabs.com (2603:10b6:408:2ed::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.20; Tue, 24 Mar 2026 18:20:10 +0000
+Received: from CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::46eb:64a3:667c:c1a0]) by CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::46eb:64a3:667c:c1a0%4]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
+ 18:19:42 +0000
+Message-ID: <401073fd-3438-419d-8287-35eea61919b0@os.amperecomputing.com>
+Date: Tue, 24 Mar 2026 11:20:07 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/3] arm64: mm: Handle invalid large leaf mappings
+ correctly
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Jinjiang Tu <tujinjiang@huawei.com>, Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260323130317.1737522-1-ryan.roberts@arm.com>
+ <20260323130317.1737522-3-ryan.roberts@arm.com>
+Content-Language: en-US
+From: Yang Shi <yang@os.amperecomputing.com>
+In-Reply-To: <20260323130317.1737522-3-ryan.roberts@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR06CA0062.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::39) To CH0PR01MB6873.prod.exchangelabs.com
+ (2603:10b6:610:112::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND RFC PATCH v3 1/6] drm/amdgpu: Change
- AMDGPU_VA_RESERVED_TRAP_SIZE to 2 PAGE_SIZE pages
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        amd-gfx@lists.freedesktop.org, Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alex Deucher <alexdeucher@gmail.com>, Philip Yang <yangp@amd.com>
-Cc: David.YatSin@amd.com, Kent.Russell@amd.com,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, stable@vger.kernel.org,
-        Donet Tom <donettom@linux.ibm.com>
-References: <cover.1774239489.git.donettom@linux.ibm.com>
- <d3a5bd9b4bcff28c1c43c4c46479cd95d4dcf7f0.1774239489.git.donettom@linux.ibm.com>
- <65a96159-1266-4b42-91ce-359fcd1a76ea@amd.com>
- <7beedf3b-99f7-4096-9a49-88f98b9b4eb5@linux.ibm.com>
- <bf255b34-0def-4a0b-a07d-30b9271b0166@amd.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <bf255b34-0def-4a0b-a07d-30b9271b0166@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDE0MiBTYWx0ZWRfX3kqCMKEoMZi3
- aAIDKDRXDAZlgjwEsSoOTVH2onrlrbOq4i5lv46Ot5kMY7OjnF8BTvcJsQQA0wrWK0sqKE07kAu
- xpUfTc2ChPHJ78G2v/2fBDl4SvOOj0Jo/rgqvMX5gATuGw91tgg9Co62DQODfQLt6pIzLc+Il5N
- bAehN3Ljd6isZLHYwerH4PdS5hLCwJh+qsn32lQA5McyFgzKLkD6RzksHzx+Iyowou0wUzB/mdM
- 56w1hbKOE1G2fvzGamdoC8rYftwPE5AogM0JQ8hDa0NuUVsWgE1nJ5Ffj25BQPXsNGgSpLbbj3X
- oZHrR0iSLFHkAvT4BvkUCuugZyj8fn4fdQBA+ox/hTl/moWZkF1icddCcL7pRbSF3Pdkfv8cQAY
- MB5sl+tMOSK706Nb4ZZm7ohrjlelmvTX3g3Ig/himTj7vlGVSfLqd3IhxlEue9zDWefahg7K6De
- 48LI+x7t3FpnZdb0n8g==
-X-Authority-Analysis: v=2.4 cv=JK42csKb c=1 sm=1 tr=0 ts=69c2d5a1 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=e-Egg3XyqFc5x-52FVUA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 4guCohB-uKdOcQOx0EfMdSrx6drUDMsm
-X-Proofpoint-GUID: gp2kRtPN592T84C_F4Dh2UjtxSBxX9Bt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-24_03,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 adultscore=0
- spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240142
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|LV9PR01MB9398:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38ba8d33-0956-4cc3-52f8-08de89d1eb19
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|55112099003|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	KW0RVmHyLdqYY1lWWNl153NmwhWi6SfluXEmemagpg6JZ8xty+KWVfgoejMFRpE8S+fRkdNFbcikIGJO9F2NQpCvnC+tmCo/n+KB+ixM6JeSZa7urLHettzwqTiT8I4EN8Ka4s9ZxCATm9RKzUieU0M8pmj3Hb2LX0HR7NYKys6eDGwXFlG/TQoE+o+5NMQ3jpwmAK9bQ0H2enZLfArcv4VObBuS4Ei3+gdLRMT4PP8WtwKP//ijjw3p0C6gyn4oxGir6w5d1lHjNJRZQUqZe4CyZrQAaWgE5Bu47xUZJ/aDt6efQL3RvKpVre/e6T3RuOGYYt6iS5bcmAg3CaErdPZPPkED7R7BwmCbz/4zah9ysEbHAAJu/6ayeHVOwTzbKNNOi0eGujvrRxQnE0qF878subaNyAnbkMp3UGsSKPmaLArvJGL/ExMAdwHrk7b944GwVeM6tbMrVVB6q8zy6oIKMv6/3idLmLYt3y3o61VSBq6S1/IRUgkwX+q+rTCX87KrmvtFHSbMewegj2SlKGCwd+6C33G6GMe1ZOR5ze7tUmpt3AX/Vqsx9lrnJs7N+oFhfH2Uv5MEHLP3GUUl4jdantFsHdQ980nKK32Ja9DWj3mSf7ZaYL/H3kQqpOl9+bQrD+wcKQhBX6Dkdn+qF3Euk9xuxCrZahZImmKB25IYRWgzIoHrgECbIl3fdBqKo/PpPZzrHNXcDb+YRID4lr/rOiQgj60+Az6Z3IKy2/o=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(55112099003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MVhIRzB0UjFTZ24yUTJPYVZlWWN5MlhITStWWm5EZE9sWCtRM2ZnN0ZER3dL?=
+ =?utf-8?B?YmswWmhZVlRzcWEyanA4bEVWQkd0WEJIS1lKbTBsV1ZaQSttZnZMbmJJS2h0?=
+ =?utf-8?B?WDVERHBzVDRBTWE2REZMbEVZaFFHVkNYVEthV3ZtdmZoUGQ5ak1yK20xS2ht?=
+ =?utf-8?B?YXFVbmdhOWJGR0xDQTVmWmtVc0hkZkFGY054N2ZSd3EzeEtzaWhJbE5aYTNa?=
+ =?utf-8?B?UTZSTmlNR3o4NmlBWTZOaHZ6Umh3Sml2VFFPUTg5YWVpRGtOOWhtQWRTNGpN?=
+ =?utf-8?B?djByYWdDZW9HSzBnL2ZwdU9GNytuajJyaFZPZ3VubGpkdm1lcHRnS2xlSHc1?=
+ =?utf-8?B?MHNSY2RhdytBVW0vWm04cDd6ZkNwS0NTc3huL3lwRjNodFFncEMxMkZxanFT?=
+ =?utf-8?B?bWE0WStrYmJmU0NoNVZBY040cnhsUVZGRGpaU00welZuMUpzcjV0cFNOd3VD?=
+ =?utf-8?B?K0RvSDhvSmtaTlRrd2M3WWpCRk53Wkc3WnZqNnpzbHduL0xSVERtd2NqbjBm?=
+ =?utf-8?B?bmJsYTl4Wk43ZnZwZWtVaGJuTlBKVnV2WXVVVzZxM0tQcDBweEx2eUVUWkxG?=
+ =?utf-8?B?TkpFLzlES2xOQ25DNmhCbGl5TFNxZDQ2UTB3TGl0NWEyWEYxMjFvZVVyNEFL?=
+ =?utf-8?B?dEl6dWRvbStrVG1oNmNINW8vdGZIOHoya3JYY3ZoNUdBTzJudDc4cCtYVHVq?=
+ =?utf-8?B?WVF1d1N6QkRDTVhidGsySjFQbjRKRVk3Vm9PS2ErR3Eybk9Gd0taWHptMUMz?=
+ =?utf-8?B?eVhFWXNBTzJMLzAzNXp1b21CTVZzcUZ0OStxUUFYK2JGVk8rVm1SbkhjNDdG?=
+ =?utf-8?B?WmZ3c1J6d01IOGN0YURqSk9iSXlpOHpzN3A3T1YxSGp3QXVWb3hOQzdhQUFJ?=
+ =?utf-8?B?Y2pRLzlRWnBqMmNOcVRKRHVQbmRMeGtGN3NMUE9wNFpYcGsrNkNoZEhtVVo2?=
+ =?utf-8?B?RVJ5ZVJEaEMrTXhQK0VpWTgyYzlLeXJRdzZVTlZsTVU2eVZKRFBUeTNzd3J3?=
+ =?utf-8?B?ek5ERHdKbG5SQnpCeVdkV3ZETWdCcCtBSXNTZmdGS3QzWFNwQTlvaFVJTXBR?=
+ =?utf-8?B?cWFKaDFJck9JUXZFQjlkdzVUc3BJMVFCLzhQSzViM1VZMXNYbnF1blNRNzRZ?=
+ =?utf-8?B?QVE1WjF4cGQ5NkovUldGSjVUZ1kydmJvc3hodW9zalZVeHg2Qk5obnlxMjhp?=
+ =?utf-8?B?VDZ6d0JFaE5WMC81SmVySXZreThYMVZWUERPT1YxL1hwblBPeENDcGtmRktK?=
+ =?utf-8?B?U20zQ2VpRUxYcnh3R1VLYnF3MXJUR1o0R3ZtQ29TOUhXTGdiNFJhcW1jbkJZ?=
+ =?utf-8?B?blpYbTg1dDlnT01nc1Zqd1h4aFVEYVRoK2R3NE81N0FKVXRnM3RlUkttZnQr?=
+ =?utf-8?B?TENOemdBN0VUMVlESURXcldYUUNzaWx5cVBQTHBWNllaUXhjVWJFY1NqQXJv?=
+ =?utf-8?B?MEZESC9uTVkxZ1JnUmJId0hUMXRJcEQwVE95QlYvZTYxNys3RFlBbVhRSUJK?=
+ =?utf-8?B?TXN6WENUeFFtY042YlZLOVNOOUVqakFtQjNvQnpOWjVLekVkRGV2MlhVL1Bq?=
+ =?utf-8?B?U1hZdVNOMjBSUFp0UVh5SmpMZHZ3WDVWcGpHOTd5Z2tlSCtHWlkvamRjN0hN?=
+ =?utf-8?B?eVIzL3VwbFdLSmhkb2Q3YktWMDh0eGlzMHQzTlNwS1B6QXo5Zkx3b3FHV2Y1?=
+ =?utf-8?B?aG9MdXBiRWRQREhPOWUxWDRNa3YwUktZT3ViQUxWUmV4eisyN1dOTjF5SnJ6?=
+ =?utf-8?B?UlFuemRVc3R0V3p1V1JpalVSaUtkcDJpMHhRam1sN2lzL1BsTElScldCeTZp?=
+ =?utf-8?B?L3NCNkFMRWFMSEROcVFhcmZLVi95VThRUURyVks1NW1xekoxdjFoUWh0dlN0?=
+ =?utf-8?B?WlRldGVlQmpzeW1xbmlGZktEWDNoMkdwWk4zZGhnYVBaL1QzL3ozSlMrcUI2?=
+ =?utf-8?B?KzZXYkJudlJXbEdTbitQVWtOTjNVTHpTUjl4RXBTdGg5TWh5c0tOUzYxR2U1?=
+ =?utf-8?B?QW8wdTFUWmNZYUNycDJ4d0RjVU5PV2FjY1RFSjRmUjM4RVlKeEFnQ1lrazJ0?=
+ =?utf-8?B?YW96c0hWOHk4OHFyMDJzUXRSVlF1by81YzR4Q1B4SGM1ZG1LSGk0cE9KcUFo?=
+ =?utf-8?B?S3dMV3BiVGs1ZkxZUHd6aFVXNXNtcWdzNWtvb3drVXVzSTZiZHFrcUwyYWp0?=
+ =?utf-8?B?MWR2emNaWmFSSzUvRWdrZVVKdHMrb3REb3hBb3JkeWJwY3J3ekNaSXMyNkxy?=
+ =?utf-8?B?dVRkb1JKOVY1dUdrbmY4K1lac0dyYVFHeTJvalAxalZvSE5UY3FlZFArbCsz?=
+ =?utf-8?B?bFo4TmFQYlpZVTFWcVRhOVYrU2lEVGEvYnY1TzhLT1RsTWo2MkNtRDBaU1lq?=
+ =?utf-8?Q?G9I2Qh5v5xQZQL3Q=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38ba8d33-0956-4cc3-52f8-08de89d1eb19
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 18:19:42.2297
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 30T/DSrt4T0KLRfbBIi0fmN/gyvB3tvs0MiTnTZDz9xt91/JHxn463XnrGnyzbPR+cWytBMZP8VS7S9hTHy2NXXnHEGe/LZYYxE+evRgL5E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR01MB9398
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amperecomputing.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[os.amperecomputing.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230208-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[amd.com,lists.freedesktop.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,linux.ibm.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.ibm.com:mid];
+	TAGGED_FROM(0.00)[bounces-230209-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[os.amperecomputing.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[donettom@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yang@os.amperecomputing.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 3764431AC13
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,os.amperecomputing.com:dkim,os.amperecomputing.com:mid]
+X-Rspamd-Queue-Id: 5B41F31ABF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-On 3/23/26 6:42 PM, Christian König wrote:
-> On 3/23/26 12:50, Donet Tom wrote:
->> On 3/23/26 3:41 PM, Christian König wrote:
->>
->> Hi Christian
->>
->>> On 3/23/26 05:28, Donet Tom wrote:
->>>> Currently, AMDGPU_VA_RESERVED_TRAP_SIZE is hardcoded to 8KB, while
->>>> KFD_CWSR_TBA_TMA_SIZE is defined as 2 * PAGE_SIZE. On systems with
->>>> 4K pages, both values match (8KB), so allocation and reserved space
->>>> are consistent.
->>>>
->>>> However, on 64K page-size systems, KFD_CWSR_TBA_TMA_SIZE becomes 128KB,
->>>> while the reserved trap area remains 8KB. This mismatch causes the
->>>> kernel to crash when running rocminfo or rccl unit tests.
->>>>
->>>> Kernel attempted to read user page (2) - exploit attempt? (uid: 1001)
->>>> BUG: Kernel NULL pointer dereference on read at 0x00000002
->>>> Faulting instruction address: 0xc0000000002c8a64
->>>> Oops: Kernel access of bad area, sig: 11 [#1]
->>>> LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
->>>> CPU: 34 UID: 1001 PID: 9379 Comm: rocminfo Tainted: G E
->>>> 6.19.0-rc4-amdgpu-00320-gf23176405700 #56 VOLUNTARY
->>>> Tainted: [E]=UNSIGNED_MODULE
->>>> Hardware name: IBM,9105-42A POWER10 (architected) 0x800200 0xf000006
->>>> of:IBM,FW1060.30 (ML1060_896) hv:phyp pSeries
->>>> NIP:  c0000000002c8a64 LR: c00000000125dbc8 CTR: c00000000125e730
->>>> REGS: c0000001e0957580 TRAP: 0300 Tainted: G E
->>>> MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24008268
->>>> XER: 00000036
->>>> CFAR: c00000000125dbc4 DAR: 0000000000000002 DSISR: 40000000
->>>> IRQMASK: 1
->>>> GPR00: c00000000125d908 c0000001e0957820 c0000000016e8100
->>>> c00000013d814540
->>>> GPR04: 0000000000000002 c00000013d814550 0000000000000045
->>>> 0000000000000000
->>>> GPR08: c00000013444d000 c00000013d814538 c00000013d814538
->>>> 0000000084002268
->>>> GPR12: c00000000125e730 c000007e2ffd5f00 ffffffffffffffff
->>>> 0000000000020000
->>>> GPR16: 0000000000000000 0000000000000002 c00000015f653000
->>>> 0000000000000000
->>>> GPR20: c000000138662400 c00000013d814540 0000000000000000
->>>> c00000013d814500
->>>> GPR24: 0000000000000000 0000000000000002 c0000001e0957888
->>>> c0000001e0957878
->>>> GPR28: c00000013d814548 0000000000000000 c00000013d814540
->>>> c0000001e0957888
->>>> NIP [c0000000002c8a64] __mutex_add_waiter+0x24/0xc0
->>>> LR [c00000000125dbc8] __mutex_lock.constprop.0+0x318/0xd00
->>>> Call Trace:
->>>> 0xc0000001e0957890 (unreliable)
->>>> __mutex_lock.constprop.0+0x58/0xd00
->>>> amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x6fc/0xb60 [amdgpu]
->>>> kfd_process_alloc_gpuvm+0x54/0x1f0 [amdgpu]
->>>> kfd_process_device_init_cwsr_dgpu+0xa4/0x1a0 [amdgpu]
->>>> kfd_process_device_init_vm+0xd8/0x2e0 [amdgpu]
->>>> kfd_ioctl_acquire_vm+0xd0/0x130 [amdgpu]
->>>> kfd_ioctl+0x514/0x670 [amdgpu]
->>>> sys_ioctl+0x134/0x180
->>>> system_call_exception+0x114/0x300
->>>> system_call_vectored_common+0x15c/0x2ec
->>>>
->>>> This patch changes AMDGPU_VA_RESERVED_TRAP_SIZE to 2 * PAGE_SIZE,
->>>> ensuring that the reserved trap area matches the allocation size
->>>> across all page sizes.
->>>>
->>>> cc: stable@vger.kernel.org
->>>> Fixes: 34a1de0f7935 ("drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole")
->>>> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>>> ---
->>>>   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
->>>> index 139642eacdd0..a5eae49f9471 100644
->>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
->>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
->>>> @@ -173,7 +173,7 @@ struct amdgpu_bo_vm;
->>>>   #define AMDGPU_VA_RESERVED_SEQ64_SIZE		(2ULL << 20)
->>>>   #define AMDGPU_VA_RESERVED_SEQ64_START(adev)	(AMDGPU_VA_RESERVED_CSA_START(adev) \
->>>>   						 - AMDGPU_VA_RESERVED_SEQ64_SIZE)
->>>> -#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << 12)
->>>> +#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << PAGE_SHIFT)
->>> Well using PAGE_SHIFT in amdgpu_vm.h looks quite broken to me.
->>>
->>> That makes the GPU VA reservation depend on the CPU page size and that is clearly not something we want to have.
->>>
->>> Where is KFD_CWSR_TBA_TMA_SIZE defined?
->>>
->> Thanks Christian for reviewing this patch.
->>
->> It is defined in kfd_priv.h.
->>
->> /*
->>   * Size of the per-process TBA+TMA buffer: 2 pages
->>   *
->>   * The first chunk is the TBA used for the CWSR ISA code. The second
->>   * chunk is used as TMA for user-mode trap handler setup in daisy-chain mode.
->>   */
->> #define KFD_CWSR_TBA_TMA_SIZE (PAGE_SIZE * 2)
->>
->>
->>
->> Could you please suggest the correct way to fix this issue?
-> I'm only looking from the POV of the VM code on this, but my educated guess is that KFD_CWSR_TBA_TMA_SIZE should be 8k independent of the CPU page size.
+
+On 3/23/26 6:03 AM, Ryan Roberts wrote:
+> It has been possible for a long time to mark ptes in the linear map as
+> invalid. This is done for secretmem, kfence, realm dma memory un/share,
+> and others, by simply clearing the PTE_VALID bit. But until commit
+> a166563e7ec37 ("arm64: mm: support large block mapping when
+> rodata=full") large leaf mappings were never made invalid in this way.
 >
-> Background is that this is written by the shader trap handler and that byte code doesn't care what CPU architecture you have.
+> It turns out various parts of the code base are not equipped to handle
+> invalid large leaf mappings (in the way they are currently encoded) and
+> I've observed a kernel panic while booting a realm guest on a
+> BBML2_NOABORT system as a result:
 >
-> But I think only the engineers working on that trap handler can really answer this. @Felix / @Philip?
+> [   15.432706] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
+> [   15.476896] Unable to handle kernel paging request at virtual address ffff000019600000
+> [   15.513762] Mem abort info:
+> [   15.527245]   ESR = 0x0000000096000046
+> [   15.548553]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [   15.572146]   SET = 0, FnV = 0
+> [   15.592141]   EA = 0, S1PTW = 0
+> [   15.612694]   FSC = 0x06: level 2 translation fault
+> [   15.640644] Data abort info:
+> [   15.661983]   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
+> [   15.694875]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+> [   15.723740]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [   15.755776] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000081f3f000
+> [   15.800410] [ffff000019600000] pgd=0000000000000000, p4d=180000009ffff403, pud=180000009fffe403, pmd=00e8000199600704
+> [   15.855046] Internal error: Oops: 0000000096000046 [#1]  SMP
+> [   15.886394] Modules linked in:
+> [   15.900029] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.0.0-rc4-dirty #4 PREEMPT
+> [   15.935258] Hardware name: linux,dummy-virt (DT)
+> [   15.955612] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> [   15.986009] pc : __pi_memcpy_generic+0x128/0x22c
+> [   16.006163] lr : swiotlb_bounce+0xf4/0x158
+> [   16.024145] sp : ffff80008000b8f0
+> [   16.038896] x29: ffff80008000b8f0 x28: 0000000000000000 x27: 0000000000000000
+> [   16.069953] x26: ffffb3976d261ba8 x25: 0000000000000000 x24: ffff000019600000
+> [   16.100876] x23: 0000000000000001 x22: ffff0000043430d0 x21: 0000000000007ff0
+> [   16.131946] x20: 0000000084570010 x19: 0000000000000000 x18: ffff00001ffe3fcc
+> [   16.163073] x17: 0000000000000000 x16: 00000000003fffff x15: 646e612065766974
+> [   16.194131] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+> [   16.225059] x11: 0000000000000000 x10: 0000000000000010 x9 : 0000000000000018
+> [   16.256113] x8 : 0000000000000018 x7 : 0000000000000000 x6 : 0000000000000000
+> [   16.287203] x5 : ffff000019607ff0 x4 : ffff000004578000 x3 : ffff000019600000
+> [   16.318145] x2 : 0000000000007ff0 x1 : ffff000004570010 x0 : ffff000019600000
+> [   16.349071] Call trace:
+> [   16.360143]  __pi_memcpy_generic+0x128/0x22c (P)
+> [   16.380310]  swiotlb_tbl_map_single+0x154/0x2b4
+> [   16.400282]  swiotlb_map+0x5c/0x228
+> [   16.415984]  dma_map_phys+0x244/0x2b8
+> [   16.432199]  dma_map_page_attrs+0x44/0x58
+> [   16.449782]  virtqueue_map_page_attrs+0x38/0x44
+> [   16.469596]  virtqueue_map_single_attrs+0xc0/0x130
+> [   16.490509]  virtnet_rq_alloc.isra.0+0xa4/0x1fc
+> [   16.510355]  try_fill_recv+0x2a4/0x584
+> [   16.526989]  virtnet_open+0xd4/0x238
+> [   16.542775]  __dev_open+0x110/0x24c
+> [   16.558280]  __dev_change_flags+0x194/0x20c
+> [   16.576879]  netif_change_flags+0x24/0x6c
+> [   16.594489]  dev_change_flags+0x48/0x7c
+> [   16.611462]  ip_auto_config+0x258/0x1114
+> [   16.628727]  do_one_initcall+0x80/0x1c8
+> [   16.645590]  kernel_init_freeable+0x208/0x2f0
+> [   16.664917]  kernel_init+0x24/0x1e0
+> [   16.680295]  ret_from_fork+0x10/0x20
+> [   16.696369] Code: 927cec03 cb0e0021 8b0e0042 a9411c26 (a900340c)
+> [   16.723106] ---[ end trace 0000000000000000 ]---
+> [   16.752866] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+> [   16.792556] Kernel Offset: 0x3396ea200000 from 0xffff800080000000
+> [   16.818966] PHYS_OFFSET: 0xfff1000080000000
+> [   16.837237] CPU features: 0x0000000,00060005,13e38581,957e772f
+> [   16.862904] Memory Limit: none
+> [   16.876526] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+>
+> This panic occurs because the swiotlb memory was previously shared to
+> the host (__set_memory_enc_dec()), which involves transitioning the
+> (large) leaf mappings to invalid, sharing to the host, then marking the
+> mappings valid again. But pageattr_p[mu]d_entry() would only update the
+> entry if it is a section mapping, since otherwise it concluded it must
+> be a table entry so shouldn't be modified. But p[mu]d_sect() only
+> returns true if the entry is valid. So the result was that the large
+> leaf entry was made invalid in the first pass then ignored in the second
+> pass. It remains invalid until the above code tries to access it and
+> blows up.
 
-
-Hi @christian @Felix @Philip
-
-To remove the dependency on CPU page size, can we use
-
-+#define AMDGPU_VA_RESERVED_TRAP_SIZE    (2ULL << 16)
-
-During reservation, we reserve 128 bytes, but during
-allocation, we use 2 * PAGE_SIZE.
-
-
--Donet
+Good catch. I recall I met this problem when I worked on a very early 
+PoC of large block mapping patch. It took a total different approach 
+than BBML2_NOABORT. I didn't run into that problem when I implemented 
+BBML2_NOABORT because nobody actually changed valid/invalid attribute on 
+large block mapping granule so I forgot it. But I definitely missed 
+realm usecase.
 
 >
-> Regards,
-> Christian.
+> The simple fix would be to update pageattr_pmd_entry() to use
+> !pmd_table() instead of pmd_sect(). That would solve this problem.
+
+Yes, I agree.
+
 >
->> -Donet
->>
->>> Regards,
->>> Christian.
->>>
->>>>   #define AMDGPU_VA_RESERVED_TRAP_START(adev)	(AMDGPU_VA_RESERVED_SEQ64_START(adev) \
->>>>   						 - AMDGPU_VA_RESERVED_TRAP_SIZE)
->>>>   #define AMDGPU_VA_RESERVED_BOTTOM		(1ULL << 16)
+> But the ptdump code also suffers from a similar issue. It checks
+> pmd_leaf() and doesn't call into the arch-specific note_page() machinery
+> if it returns false. As a result of this, ptdump wasn't even able to
+> show the invalid large leaf mappings; it looked like they were valid
+> which made this super fun to debug. the ptdump code is core-mm and
+> pmd_table() is arm64-specific so we can't use the same trick to solve
+> that.
+
+I don't quite get why we need to show invalid mappings in ptdump? IIUC 
+ptdump is not supposed to show invalid mappings even though they are 
+transient.
+
+Thanks,
+Yang
+
+
+>
+> But we already support the concept of "present-invalid" for user space
+> entries. And even better, pmd_leaf() will return true for a leaf mapping
+> that is marked present-invalid. So let's just use that encoding for
+> present-invalid kernel mappings too. Then we can use pmd_leaf() where we
+> previously used pmd_sect() and everything is magically fixed.
+>
+> Additionally, from inspection kernel_page_present() was broken in a
+> similar way, so I'm also updating that to use pmd_leaf().
+>
+> I haven't spotted any other issues of this shape but plan to do a follow
+> up patch to remove pmd_sect() and pud_sect() in favour of the more
+> sophisticated pmd_leaf()/pud_leaf() which are core-mm APIs and will
+> simplify arm64 code a bit.
+>
+> Fixes: a166563e7ec37 ("arm64: mm: support large block mapping when rodata=full")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+>   arch/arm64/mm/pageattr.c | 50 ++++++++++++++++++++++------------------
+>   1 file changed, 28 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> index 358d1dc9a576f..87dfe4c82fa92 100644
+> --- a/arch/arm64/mm/pageattr.c
+> +++ b/arch/arm64/mm/pageattr.c
+> @@ -25,6 +25,11 @@ static ptdesc_t set_pageattr_masks(ptdesc_t val, struct mm_walk *walk)
+>   {
+>   	struct page_change_data *masks = walk->private;
+>   
+> +	/*
+> +	 * Some users clear and set bits which alias eachother (e.g. PTE_NG and
+> +	 * PTE_PRESENT_INVALID). It is therefore important that we always clear
+> +	 * first then set.
+> +	 */
+>   	val &= ~(pgprot_val(masks->clear_mask));
+>   	val |= (pgprot_val(masks->set_mask));
+>   
+> @@ -36,7 +41,7 @@ static int pageattr_pud_entry(pud_t *pud, unsigned long addr,
+>   {
+>   	pud_t val = pudp_get(pud);
+>   
+> -	if (pud_sect(val)) {
+> +	if (pud_leaf(val)) {
+>   		if (WARN_ON_ONCE((next - addr) != PUD_SIZE))
+>   			return -EINVAL;
+>   		val = __pud(set_pageattr_masks(pud_val(val), walk));
+> @@ -52,7 +57,7 @@ static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
+>   {
+>   	pmd_t val = pmdp_get(pmd);
+>   
+> -	if (pmd_sect(val)) {
+> +	if (pmd_leaf(val)) {
+>   		if (WARN_ON_ONCE((next - addr) != PMD_SIZE))
+>   			return -EINVAL;
+>   		val = __pmd(set_pageattr_masks(pmd_val(val), walk));
+> @@ -132,11 +137,12 @@ static int __change_memory_common(unsigned long start, unsigned long size,
+>   	ret = update_range_prot(start, size, set_mask, clear_mask);
+>   
+>   	/*
+> -	 * If the memory is being made valid without changing any other bits
+> -	 * then a TLBI isn't required as a non-valid entry cannot be cached in
+> -	 * the TLB.
+> +	 * If the memory is being switched from present-invalid to valid without
+> +	 * changing any other bits then a TLBI isn't required as a non-valid
+> +	 * entry cannot be cached in the TLB.
+>   	 */
+> -	if (pgprot_val(set_mask) != PTE_VALID || pgprot_val(clear_mask))
+> +	if (pgprot_val(set_mask) != (PTE_MAYBE_NG | PTE_VALID) ||
+> +	    pgprot_val(clear_mask) != PTE_PRESENT_INVALID)
+>   		flush_tlb_kernel_range(start, start + size);
+>   	return ret;
+>   }
+> @@ -237,18 +243,18 @@ int set_memory_valid(unsigned long addr, int numpages, int enable)
+>   {
+>   	if (enable)
+>   		return __change_memory_common(addr, PAGE_SIZE * numpages,
+> -					__pgprot(PTE_VALID),
+> -					__pgprot(0));
+> +					__pgprot(PTE_MAYBE_NG | PTE_VALID),
+> +					__pgprot(PTE_PRESENT_INVALID));
+>   	else
+>   		return __change_memory_common(addr, PAGE_SIZE * numpages,
+> -					__pgprot(0),
+> -					__pgprot(PTE_VALID));
+> +					__pgprot(PTE_PRESENT_INVALID),
+> +					__pgprot(PTE_MAYBE_NG | PTE_VALID));
+>   }
+>   
+>   int set_direct_map_invalid_noflush(struct page *page)
+>   {
+> -	pgprot_t clear_mask = __pgprot(PTE_VALID);
+> -	pgprot_t set_mask = __pgprot(0);
+> +	pgprot_t clear_mask = __pgprot(PTE_MAYBE_NG | PTE_VALID);
+> +	pgprot_t set_mask = __pgprot(PTE_PRESENT_INVALID);
+>   
+>   	if (!can_set_direct_map())
+>   		return 0;
+> @@ -259,8 +265,8 @@ int set_direct_map_invalid_noflush(struct page *page)
+>   
+>   int set_direct_map_default_noflush(struct page *page)
+>   {
+> -	pgprot_t set_mask = __pgprot(PTE_VALID | PTE_WRITE);
+> -	pgprot_t clear_mask = __pgprot(PTE_RDONLY);
+> +	pgprot_t set_mask = __pgprot(PTE_MAYBE_NG | PTE_VALID | PTE_WRITE);
+> +	pgprot_t clear_mask = __pgprot(PTE_PRESENT_INVALID | PTE_RDONLY);
+>   
+>   	if (!can_set_direct_map())
+>   		return 0;
+> @@ -296,8 +302,8 @@ static int __set_memory_enc_dec(unsigned long addr,
+>   	 * entries or Synchronous External Aborts caused by RIPAS_EMPTY
+>   	 */
+>   	ret = __change_memory_common(addr, PAGE_SIZE * numpages,
+> -				     __pgprot(set_prot),
+> -				     __pgprot(clear_prot | PTE_VALID));
+> +				     __pgprot(set_prot | PTE_PRESENT_INVALID),
+> +				     __pgprot(clear_prot | PTE_MAYBE_NG | PTE_VALID));
+>   
+>   	if (ret)
+>   		return ret;
+> @@ -311,8 +317,8 @@ static int __set_memory_enc_dec(unsigned long addr,
+>   		return ret;
+>   
+>   	return __change_memory_common(addr, PAGE_SIZE * numpages,
+> -				      __pgprot(PTE_VALID),
+> -				      __pgprot(0));
+> +				      __pgprot(PTE_MAYBE_NG | PTE_VALID),
+> +				      __pgprot(PTE_PRESENT_INVALID));
+>   }
+>   
+>   static int realm_set_memory_encrypted(unsigned long addr, int numpages)
+> @@ -404,15 +410,15 @@ bool kernel_page_present(struct page *page)
+>   	pud = READ_ONCE(*pudp);
+>   	if (pud_none(pud))
+>   		return false;
+> -	if (pud_sect(pud))
+> -		return true;
+> +	if (pud_leaf(pud))
+> +		return pud_valid(pud);
+>   
+>   	pmdp = pmd_offset(pudp, addr);
+>   	pmd = READ_ONCE(*pmdp);
+>   	if (pmd_none(pmd))
+>   		return false;
+> -	if (pmd_sect(pmd))
+> -		return true;
+> +	if (pmd_leaf(pmd))
+> +		return pmd_valid(pmd);
+>   
+>   	ptep = pte_offset_kernel(pmdp, addr);
+>   	return pte_valid(__ptep_get(ptep));
+
 
