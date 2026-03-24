@@ -1,198 +1,209 @@
-Return-Path: <stable+bounces-230096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECRhJI1XwmmGbwQAu9opvQ
-	(envelope-from <stable+bounces-230096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:21:17 +0100
+	id SEbsB0BbwmnQbwQAu9opvQ
+	(envelope-from <stable+bounces-230097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:37:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C1E3057C4
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBC6305B08
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DDB5310B9DD
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 09:11:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0DE5316CA06
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 09:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1513DBD52;
-	Tue, 24 Mar 2026 09:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BA33DBD4E;
+	Tue, 24 Mar 2026 09:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qwwxKL3u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBlmG1a8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9543DB63A
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 09:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E473D9DC2;
+	Tue, 24 Mar 2026 09:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774343463; cv=none; b=FQeQ5b83XWKoIFGgjBxuI2ix0d2V96Hlg+4JQd6dtoozFMx5unNxF+hak3zZemf7PaI1QAXHXlNBojLcNnB2wbn2uiRaQq1Vhu5CHvnlfvYt3/neuaUFXang0mQEKsw3qt4uM44jAWujiGZbYdY2/g1A+ZC3P84813EnTmesBjE=
+	t=1774344402; cv=none; b=dwTSfsLoEUDNb3BHTg5Ck0uEKOJySaCX24dOY/ijw5SlDZBdYhSYWKvlyDCLMbYBWCKl/whK4hPaC4kgYSSI5lYfTmCfsLc7atj12jT4giYFYlEKpwrj3litAWZFPPYhcl4ICGqd40OtnPxxrpUf3PRy1652eWRFHmixDE+EcWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774343463; c=relaxed/simple;
-	bh=kdMOtPk2CJNdzK5TAPoFyAepYVoHlWSZWSQYeczlyIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=eyuFD2bfc4rSbZMkWb2uNVZ8V67utrUu791IKk7SQ7RPFyOvhKyEKQSPQWRi1wxwy1WQ4ALrmoqab1L7TWF1Haje757FtEa4kwgf5DFQzO2FMnlg+1fe4SHisrZ0WoHYu7zQH+wXebLVNypELDSiKnC9hFgO21Kt8TF/9NyaXh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qwwxKL3u; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486fe36cfabso19977145e9.1
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 02:10:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774343454; x=1774948254; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
-        b=qwwxKL3ueOVVtil1WSpF3OnWEb3KwGAtG6JzyrqAVBtIwPN631O6+N+F7/l2r+Rl+5
-         N63Avp+BMuZo/iw9s+FVhZDrQbJm0P4JFaLPBlJqFtf/rgD3Jk60aYZNFpbcG/G/sLvY
-         XGw1PpgfIvY3J8q7KfL1iZBJp6oR5W7UdhvJaqoNa0Tufnaus0PMann4fyOwd8HYYmh6
-         nNc1jIMYUpt7NT63XSDIoiH3654N9BjNChyfIfMm7wi/BXJ1ho2TGyzKD/7FfU6X5Gs7
-         IgWzQauqgk+rPdD6du9jLYc9KRmsRQB4Bdl1KB/syKq/gGHH6OrcX81pjhk5EXsWhleV
-         H8qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774343454; x=1774948254;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
-        b=dzP2xVwzb99H8euS2XsspCZmscB+YoUTcSifaW6zchIjOIrYFhOgEIAAqAym+Saa2Y
-         oHKmB1Gk4v7jqDn63daz6GdNX7Ad+p2VT6wVd1eOVPG1cmYZNgjbcIrrEOkGe/AmyihA
-         1We6Uu3q6SLcGPK7gRXR+QnX03Ir3wr3JkVJGBl/7SLU+B+jBpTdxL49PLokjsRYmVSq
-         8lowZpzUHbeFmv4513dIPbxoHZnbd8MnwbaUb+4ZhH8+Cc7QdaHOE6MIBkvZdeD+w607
-         GDCZaHmxovAPlQ+jB1izL6e70ELF15NJuniUNzQD8nZ10xS8B3LbYWuBbTVq6aotuHHP
-         Clsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUcAg+sE0+G5BMfkFVIHr4VGLhdIVSpSz3ooYIbJaW4w3xOrsWtWMYNZcm5v6dpUhQdJYyEFCg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoBeqHV0iSrtWcT+T/R1M3qxKedDlYkM7cB5RcqIH1RHIDLIea
-	4MhVqfVFYXpbxT2Pqg4iAnyAF3KlmNPgK4SoRMmvim3s4YeT7A1Cn54LaF6Dtn0BVvo=
-X-Gm-Gg: ATEYQzyDOAkaNLEXpRnRrRAJH95jiKV3wB/AuX5syGyIOQOCX3ixm8OFDVj8mZVzmOH
-	c8q1lqgiNvaQ5I+qb0MkQwY/eK/5UwbJmzdCosUqe23JCmmY676Y11XV9vKPWp894+i8EQ0g+oc
-	83g/8/EGUYdL7M/Yv8a17zayou737a2z9lo/bqWCrIQt0V53lK59iUL9QX/cMKo+h/ELPn5hFIt
-	UTUMoQQmucKpRHweUINQQ59A24t/VPN0ApxmIDKDwysT8B7yMF0uoXtPcYY930uuh9hmjkc9Rqf
-	b/dNpO4Hk/w+X3I7a4WXqhkgH/lH/Rf4WDxqFOXAxQec/W3+kmEnn2Xs7NYZ/C/NBts2t++26Gp
-	qgP9EVPxBBh4JbHuZv8AdAxgIZxEyoC/MJsNTwYasxM7R23QZTMSFnZoAjlSyzNze+7idf0XeFV
-	QjQgKDHHyNmbl+5objL4Z/JFrxi44BD2jEJRh622M=
-X-Received: by 2002:a05:600c:154b:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-4870f212c1emr37488815e9.13.1774343454041;
-        Tue, 24 Mar 2026 02:10:54 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871174f2desm44785325e9.9.2026.03.24.02.10.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 02:10:53 -0700 (PDT)
-Date: Tue, 24 Mar 2026 12:10:49 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, David Carlier <devnexen@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Carlier <devnexen@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
- mem_cgroup_css_online() error path
-Message-ID: <202603241635.qNXDPwjs-lkp@intel.com>
+	s=arc-20240116; t=1774344402; c=relaxed/simple;
+	bh=DOqrhUf81JiXlPtqB8dysDG8XysCjmUPjKpWHFPKIBk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pn/5EenO5byYGfqPpVJ2D34I7vlMlKC1+9TghgjJkli49QZQuxSmxaLJ5V/2tubINu9jdm+ACz/kXZc/zYqG7+nj/LchxVw+KMq8F54Ou1HLwY51LRZ6oAjVk4SO7Eqc7z9GOtX92tCxxhdx7srYPXxnsSgx2L3PYli4ArKgSrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBlmG1a8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED76C19424;
+	Tue, 24 Mar 2026 09:26:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774344401;
+	bh=DOqrhUf81JiXlPtqB8dysDG8XysCjmUPjKpWHFPKIBk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OBlmG1a8VRhWR2loCfleHxm+HvmvQ3agIHq/CaJdjDiEVgtG0xHTrBYavqKNw07qK
+	 KT9g9D7Wv+VEAOcJRKMODZEMlLi8CoHVNzqKsZxClOEvSJ7+6g7db3s/U0h9/ZdmPy
+	 BhgM4w6G5b0qmKEPqVbo3SRKOpcEuL2Ra/z0Jul+YVXTJXCfTiRFwDbDIsaoIRL7Gl
+	 pVkL5sRM/0lXapMVlKKdo+Jv0h672+xa/I2bBY5L/cgV9DIJ56elYSl4XH3gIJG1WN
+	 Ad5x3+6VmZfiQP5ZzW/0N5l5viTDsS3dp2HeYEDHo3FbDvKK8UBLBhVN9G66+vCdGW
+	 BRzXr/+NxTe9g==
+Message-ID: <ec886c5e-b44b-469e-8d62-0e41caffd77e@kernel.org>
+Date: Tue, 24 Mar 2026 10:26:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260322164943.37460-1-devnexen@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+ Alex Williamson <alex@shazbot.org>, Max Boone <mboone@akamai.com>,
+ stable@vger.kernel.org
+References: <20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org>
+ <acJNvA97csyxd0Ml@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <acJNvA97csyxd0Ml@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230096-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[lists.linux.dev,gmail.com,cmpxchg.org,kernel.org,linux.dev,linux-foundation.org,bytedance.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,lists.linux.dev,kvack.org,gmail.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-230097-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.carpenter@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,linaro.org:email,intel.com:email,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,01.org:url]
-X-Rspamd-Queue-Id: 04C1E3057C4
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9BBC6305B08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi David,
+On 3/24/26 09:39, Mike Rapoport wrote:
+> On Mon, Mar 23, 2026 at 09:20:18PM +0100, David Hildenbrand (Arm) wrote:
+>> follow_pfnmap_start() suffers from two problems:
+>>
+>> (1) We are not re-fetching the pmd/pud after taking the PTL
+>>
+>> Therefore, we are not properly stabilizing what the lock lock actually
+> 
+>                                                     ^ lock lock
 
-kernel test robot noticed the following build warnings:
+Thanks, Andrew can you fix that up? Thanks!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Carlier/mm-memcontrol-fix-obj_cgroup-leak-in-mem_cgroup_css_online-error-path/20260324-010357
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260322164943.37460-1-devnexen%40gmail.com
-patch subject: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online() error path
-config: arm64-randconfig-r072-20260324 (https://download.01.org/0day-ci/archive/20260324/202603241635.qNXDPwjs-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 14.3.0
-smatch: v0.5.0-9004-gb810ac53
+> 
+>> protects. If there is concurrent zapping, we would indicate to the
+>> caller that we found an entry, however, that entry might already have
+>> been invalidated, or contain a different PFN after taking the lock.
+>>
+>> Properly use pmdp_get() / pudp_get() after taking the lock.
+>>
+>> (2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
+>>
+>> pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
+>>
+>> There is no real guarantee that pmd_leaf()/pud_leaf() returns something
+>> reasonable on non-present entries. Most architectures indeed either
+>> perform a present check or make it work by smart use of flags.
+>>
+>> However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
+>> and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd(). Whereby
+>> pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not
+>> do that.
+>>
+>> Let's check pmd_present()/pud_present() before assuming "the is a
+>> present PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page
+>> table handling code that traverses user page tables does.
+>>
+>> Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP,
+>> (1) is likely more relevant than (2). It is questionable how often (1)
+>> would actually trigger, but let's CC stable to be sure.
+>>
+>> This was found by code inspection.
+>>
+>> Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+>> ---
+>> Gave it a quick test in a VM with MM selftests etc, but I am not sure if
+>> I actually trigger the follow_pfnmap machinery.
+> 
+> Most probably not :)
+> KVM selftests might, didn't really dig into that. But I doubt any selftest
+> would trigger potential races there.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202603241635.qNXDPwjs-lkp@intel.com/
-
-smatch warnings:
-mm/memcontrol.c:4180 mem_cgroup_css_online() warn: variable dereferenced before check 'pn' (see line 4176)
-
-vim +/pn +4180 mm/memcontrol.c
-
-6f0df8e16eb543 Johannes Weiner  2023-08-23  4168  	 * regular ID destruction during offlining.
-6f0df8e16eb543 Johannes Weiner  2023-08-23  4169  	 */
-e77786b4682e69 Shakeel Butt     2025-12-25  4170  	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
-6f0df8e16eb543 Johannes Weiner  2023-08-23  4171  
-2f7dd7a4100ad4 Johannes Weiner  2014-10-02  4172  	return 0;
-098fad3e1621cb Qi Zheng         2026-03-05  4173  free_objcg:
-098fad3e1621cb Qi Zheng         2026-03-05  4174  	for_each_node(nid) {
-098fad3e1621cb Qi Zheng         2026-03-05  4175  		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
-59f75a1877fbf7 David Carlier    2026-03-22 @4176  		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
-                                                                                            ^^^^^^^^^
-Dereference
-
-59f75a1877fbf7 David Carlier    2026-03-22  4177  		if (objcg)
-59f75a1877fbf7 David Carlier    2026-03-22  4178  			percpu_ref_kill(&objcg->refcnt);
-098fad3e1621cb Qi Zheng         2026-03-05  4179  
-4a2f95f5c79e02 Qi Zheng         2026-03-09 @4180  		if (pn && pn->orig_objcg) {
-                                                                    ^^
-Checked too late.
-
-098fad3e1621cb Qi Zheng         2026-03-05  4181  			obj_cgroup_put(pn->orig_objcg);
-4a2f95f5c79e02 Qi Zheng         2026-03-09  4182  			/*
-02b5fc7885d9f8 Andrew Morton    2026-03-09  4183  			 * Reset pn->orig_objcg to NULL to prevent
-02b5fc7885d9f8 Andrew Morton    2026-03-09  4184  			 * obj_cgroup_put() from being called again in
-02b5fc7885d9f8 Andrew Morton    2026-03-09  4185  			 * __mem_cgroup_free().
-4a2f95f5c79e02 Qi Zheng         2026-03-09  4186  			 */
-4a2f95f5c79e02 Qi Zheng         2026-03-09  4187  			pn->orig_objcg = NULL;
-4a2f95f5c79e02 Qi Zheng         2026-03-09  4188  		}
-098fad3e1621cb Qi Zheng         2026-03-05  4189  	}
-a0dd8b1942f5bf Muchun Song      2026-03-05  4190  	free_shrinker_info(memcg);
-da0efe30944476 Muchun Song      2022-03-22  4191  offline_kmem:
-da0efe30944476 Muchun Song      2022-03-22  4192  	memcg_offline_kmem(memcg);
-e77786b4682e69 Shakeel Butt     2025-12-25  4193  	mem_cgroup_private_id_remove(memcg);
-da0efe30944476 Muchun Song      2022-03-22  4194  	return -ENOMEM;
-8cdea7c0545426 Balbir Singh     2008-02-07  4195  }
+I was wondering whether generic_access_phys() would somehow trigger on
+an ordinary system when doing some more involved activities in user space :)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
 
+David
 
