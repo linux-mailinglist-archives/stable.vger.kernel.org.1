@@ -1,194 +1,212 @@
-Return-Path: <stable+bounces-230138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOQcEGR1wmnqdAQAu9opvQ
-	(envelope-from <stable+bounces-230138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:28:36 +0100
+	id +GB4KVB2wmnqdAQAu9opvQ
+	(envelope-from <stable+bounces-230142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:32:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D47307505
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:28:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF2730757B
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2BAB73085471
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:22:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D31D03075EF3
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439C13E3D83;
-	Tue, 24 Mar 2026 11:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B083E867B;
+	Tue, 24 Mar 2026 11:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="i06DupKj"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DTa2OxNK"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE042D5922;
-	Tue, 24 Mar 2026 11:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66EC3630A4;
+	Tue, 24 Mar 2026 11:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774351352; cv=none; b=q9SWfp/4AgVQRwaUzDq02wPljMj4ScQiPRGT+hd/5pgVNb0m3yYYNGYJySKxWl5F5UlDq3B/89Xm58tjqVHRRxWcEI9zzBbvjVl/Lkjh6JrDTbrNOTHeZOUilWAEiaxXt7frJ8dZKXrWqBD9ia0XcuG0J4pFCVszCqeMCMle1H4=
+	t=1774351868; cv=none; b=F/nV2ijRhqOWlvVacGEfJMApIQYCEGf9/RnzaQFBQoAWwS80EDY4TxvwnG+zTXtxR1Rjcs0S7sHox0Np5eit629oW38cYnPGjCUPW3dKdHySpUCdLNa1ghx0XeUiWW875VNNJkxyfwr3kLfFLuLLh3yXV+00lIwom8u4+NKtq1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774351352; c=relaxed/simple;
-	bh=0JcRo3UHHrIr/KGaixyboJ6ouTqPUVV8YCykw/D2f8E=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=gCMUDw36fc8oRkJ2KF6sDovKnua7B4lV8xuMD9z4q6IvA5a8Gojx+tIEUdUB3lR8VLXZ9J4s9Wb8Fdm1hCSCprXrnlBBMo2ThbPnedQXslIRP06DOoJKn9t/11qCjmjiycdBhw2UdUZSPYfA45eJgWGKzWXyT1mZ0N2wK1Xrh90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=i06DupKj; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774351339; h=Message-ID:Subject:Date:From:To;
-	bh=OVb3zYyT8YTObrbTL1yZntWexibFBnvRHX4plD2H4LA=;
-	b=i06DupKjAVGbAuzwrql0YHgrJBcXjRPAK5lrYpgI0ok2OLVTrkXkDQSSK4faI8N6Tt/j0/TnZOcNHnTP06snLmbrh3PfPt/k3pwucFZxkC0yNFkH3v8e9jAoU4QxWj41okPIC5keoMql90w2I/5TfuBO5an2Yh9zRbZI1beFBhg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.eHXz9_1774351338;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.eHXz9_1774351338 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Mar 2026 19:22:18 +0800
-Message-ID: <1774351331.0326343-2-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net v2] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
-Date: Tue, 24 Mar 2026 19:22:11 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: xietangxin <xietangxin@yeah.net>
-Cc: netdev@vger.kernel.org,
- virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- xietangxin <xietangxin@yeah.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-References: <20260312025406.15641-1-xietangxin@yeah.net>
-In-Reply-To: <20260312025406.15641-1-xietangxin@yeah.net>
+	s=arc-20240116; t=1774351868; c=relaxed/simple;
+	bh=rblMCGvd2iPAz2pvlqhOFvMSb8AD5H70RhuU57IZUhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hu11Bihp4qokd2ZPWZGeyMRgILDlaKt6oiztdwbAN5fjngLpRpn6jeTV18zm0HmJbHIYNCXcaIo08jQjjA3/mgyYTHHh3WCM7AzGp8ChA4cHud5hJcVZ+sh6syb5TxbWNT34CRob+9LcpUo0fHJSUD0jFEOaH88X7xn1ZLBm0Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DTa2OxNK; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 77DBC40E01B5;
+	Tue, 24 Mar 2026 11:23:28 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 8U81itRaMNaU; Tue, 24 Mar 2026 11:23:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1774351405; bh=FFYpmmv34rxKLc4i7HhqfOYLG9MsqetPZcO17O0bV2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DTa2OxNKVeHVoLONO52eUQALwiIXFc9zL7pEAZYXj1cypuVSotomy1k02jCAa1tnl
+	 GIKmSHE+k64zVhx+ZHqRAiBYg/60FGLdBcB3bGrRnHa0F+X7Kxwvqnfub2hjI2xIa8
+	 YOycbzZxIoKx+yGRtzzAi+bLsb1WnALT6hs9y2Bz6zr35sU7GRtgGFu1WivsXm6Xnk
+	 H4sdf7dpPPql7lp0hwGQBd0r6ZJT2N6lFXiCf56rHY77fHTg0rXENsFL2l8nUHztNM
+	 d5YhVV86MuB2eKz4PTex6SgnNFYC9KsLYYdBuXohc4l4J0CBFLqXFLz610Gj1YVEIk
+	 7wQ3zVxO33BPJd1IYm3wrJeZorJiIGyWAt/74KkyEuC2ZIeTgDku9gZFvOoawWs6oR
+	 3IGOGt+uUIXDUonDpGM+GZcCce81wyYwdiFbe1ne6vlI3K2im6HRKI9qOaobpXVcjj
+	 8SLiMe/d275nOmTidZAYDoUhVUMn1DNCcqepbg8Qu2Jp2/8uo/xhdn89H3ghjpNKTO
+	 eIa0AgKJWQxQIF1NtoCc2i98aArr62P0CalSoGd1I0p7Up7qtrfFC3jvB6f1GofxpX
+	 dQwbMH60qDFRVPHC7k/VO95HQObDQAXmVjMZrb6lwRqbtsl/0C2VH0pCc1e/+yLSGM
+	 ArQlu2WO8e/ztmxB3/7UdcVg=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 304CA40E019D;
+	Tue, 24 Mar 2026 11:23:19 +0000 (UTC)
+Date: Tue, 24 Mar 2026 12:23:12 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+Cc: shubhrajyoti.datta@amd.com, tony.luck@intel.com,
+	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] EDAC/versalnet: Fix device_register() error handling
+ in init_one_mc()
+Message-ID: <20260324112312.GKacJ0IEL2iD7JZnSk@fat_crate.local>
+References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
+ <20260322131145.1684744-1-ptsm@linux.microsoft.com>
+ <20260322161052.GAacAUjFGWFwPle6c9@fat_crate.local>
+ <84ae7198-b755-4dde-b97c-978958d27b4b@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-6.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <84ae7198-b755-4dde-b97c-978958d27b4b@linux.microsoft.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-230138-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230142-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[yeah.net];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,yeah.net,redhat.com,davemloft.net,google.com,kernel.org,lunn.ch];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xuanzhuo@linux.alibaba.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[alien8.de:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yeah.net:email,alibaba.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.alibaba.com:dkim,linux.alibaba.com:mid]
-X-Rspamd-Queue-Id: B3D47307505
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:dkim]
+X-Rspamd-Queue-Id: 0DF2730757B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 12 Mar 2026 10:54:06 +0800, xietangxin <xietangxin@yeah.net> wrote:
-> A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
-> and the device's IFF_XMIT_DST_RELEASE flag is cleared
-> (e.g., during the configuration of tc route filter rules).
->
-> When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
-> expects the driver to hold the reference to skb->dst until the packet
-> is fully transmitted and freed. In virtio_net with napi_tx=N,
-> skbs may remain in the virtio transmit ring for an extended period.
->
-> If the network namespace is destroyed while these skbs are still pending,
-> the corresponding dst_ops structure has freed. When a subsequent packet
-> is transmitted, free_old_xmit() is triggered to clean up old skbs.
-> It then calls dst_release() on the skb associated with the stale dst_entry.
-> Since the dst_ops (referenced by the dst_entry) has already been freed,
-> a UAF kernel paging request occurs.
->
-> fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
-> the dst reference before the skb is queued in virtio_net.
->
-> Call Trace:
->  Unable to handle kernel paging request at virtual address ffff80007e150000
->  CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
->   ...
->   percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
->   dst_release+0xe0/0x110  net/core/dst.c:177
->   skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
->   sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
->   dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
->   napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
->   __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
->   free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
->   start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
->   ...
->
-> Reproduction Steps:
-> NETDEV="enp3s0"
->
-> config_qdisc_route_filter() {
->     tc qdisc del dev $NETDEV root
->     tc qdisc add dev $NETDEV root handle 1: prio
->     tc filter add dev $NETDEV parent 1:0 \
-> 	protocol ip prio 100 route to 100 flowid 1:1
->     ip route add 192.168.1.100/32 dev $NETDEV realm 100
-> }
->
-> test_ns() {
->     ip netns add testns
->     ip link set $NETDEV netns testns
->     ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
->     ip netns exec testns ping -c 1 10.0.32.1
->     ip netns del testns
-> }
->
-> config_qdisc_route_filter
->
-> test_ns
-> sleep 2
-> test_ns
->
-> Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: xietangxin <xietangxin@yeah.net>
+On Mon, Mar 23, 2026 at 12:38:57PM +0530, Prasanna Kumar T S M wrote:
+> If kzalloc(dev) is done after edac_mc_alloc(), there is no need to decide
+> between kfree(dev) or put_device(dev). This simplifies the error handling
+> path. This is the reason behind re-ordering and keeping put_device(dev)
+> under 'if (rc) { ... }'.
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+I don't think you're listening to me so lemme repeat:
 
-> ---
-> change in v2: add cc stable and fix tag
->
-> v1: https://lore.kernel.org/all/20260307035110.7121-1-xietangxin@yeah.net/
-> ---
->  drivers/net/virtio_net.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 72d6a9c6a..5b13a61b3 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -3351,6 +3351,7 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
->  	/* Don't wait up for transmitted skbs to be freed. */
->  	if (!use_napi) {
->  		skb_orphan(skb);
-> +		skb_dst_drop(skb);
->  		nf_reset_ct(skb);
->  	}
->
-> --
-> 2.43.0
->
+edac_mc_alloc() is a lot more heavy-weight than a simple k*alloc(). Pls keep
+the ordering as it is.
+
+I don't care how much it simplifies the error handling path if you have to do
+all the allocations and setup edac_mc_alloc() does for *nothing*!
+
+So let's do it another way (totally untested ofc):
+
+---
+diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
+index b87fe57aa842..bf17b3ff59d5 100644
+--- a/drivers/edac/versalnet_edac.c
++++ b/drivers/edac/versalnet_edac.c
+@@ -772,12 +772,11 @@ static void remove_one_mc(struct mc_priv *priv, int i)
+ 	edac_mc_free(mci);
+ }
+ 
+-static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i)
++static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, struct device *dev, int i)
+ {
+ 	u32 num_chans, rank, dwidth, config;
+ 	struct edac_mc_layer layers[2];
+ 	struct mem_ctl_info *mci;
+-	struct device *dev;
+ 	enum dev_type dt;
+ 	char *name;
+ 	int rc;
+@@ -817,14 +816,10 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
+ 	if (!name)
+ 		return rc;
+ 
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (!dev)
+-		goto err_name_free;
+-
+ 	mci = edac_mc_alloc(i, ARRAY_SIZE(layers), layers, sizeof(struct mc_priv));
+ 	if (!mci) {
+ 		edac_printk(KERN_ERR, EDAC_MC, "Failed memory allocation for MC%d\n", i);
+-		goto err_dev_free;
++		goto err_name_free;
+ 	}
+ 
+ 	sprintf(name, "versal-net-ddrmc5-edac-%d", i);
+@@ -856,8 +851,6 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
+ 	device_unregister(mci->pdev);
+ err_mc_free:
+ 	edac_mc_free(mci);
+-err_dev_free:
+-	kfree(dev);
+ err_name_free:
+ 	kfree(name);
+ 
+@@ -869,15 +862,21 @@ static int init_versalnet(struct mc_priv *priv, struct platform_device *pdev)
+ 	int rc, i;
+ 
+ 	for (i = 0; i < NUM_CONTROLLERS; i++) {
+-		rc = init_one_mc(priv, pdev, i);
+-		if (rc) {
+-			while (i--)
+-				remove_one_mc(priv, i);
++		struct device *dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++		if (!dev)
++			goto free;
+ 
+-			return rc;
+-		}
++		rc = init_one_mc(priv, pdev, dev, i);
++		if (rc)
++			goto free;
+ 	}
+ 	return 0;
++
++free:
++	while (i--)
++		remove_one_mc(priv, i);
++
++	return rc;
+ }
+ 
+ static void remove_versalnet(struct mc_priv *priv)
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
