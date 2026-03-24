@@ -1,169 +1,379 @@
-Return-Path: <stable+bounces-230060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJrKD0Y3wml+aQQAu9opvQ
-	(envelope-from <stable+bounces-230060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:03:34 +0100
+	id +FEyAWQ8wmmCagQAu9opvQ
+	(envelope-from <stable+bounces-230061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:25:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D6D303A5D
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:03:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536F2303EDF
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 08:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0556431DC7D9
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 06:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7240D30E4997
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 07:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90713DDDDE;
-	Tue, 24 Mar 2026 06:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EF33932D4;
+	Tue, 24 Mar 2026 07:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4wrkf8/"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="DO7gsYWU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6075B3EAC88
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 06:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7318131E837;
+	Tue, 24 Mar 2026 07:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774334628; cv=none; b=av7QlJjRRfECvCGJ8vTRxAQDNanUCCsfdbLFl8TxmHvbkotqasi98gNfNxM5ttaGS997JFy32b5m9tTuo8Zfohzk8qAG9R4lI/5IyZ/SS53A/zHZtLI/eQvg4vaSQXO6xdcoL+E6Q6N04U4KelJy4ldV4ImrLih5fwKd4aBSgiE=
+	t=1774335919; cv=none; b=ugNbvkGAdfgMp62LAMkDXoGzIXEw5QghL+arCIxKRG6HAdKX4Q/X1CkUUNnUlxQ2GkxUCdjdnLH64q6auokcWlZb0aaACqsTlUA3VKeXJzJKr6cpCY3UBU+QS+jhgqTDZN3xBfn+SaoM8IA0+rTMErFKy8DaefRfU9s7JFAxEGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774334628; c=relaxed/simple;
-	bh=ujc5RmR13pOdQaqezJhZ/7IcIxTg4usJF9uIGCuu/OY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jK38vl4b+7FECGF6FZS7J7Bw3sgT/iQkifydwUhqImYzyyeTk3kybwGlIMoFr4pQzJjbly4EBpdnYBXc2cKcNyyU00UedkWg4VaPztwe3Lsg6vvV+eI21AdyXRynqlf/r1Ui++pPGyQ8xgYFBcIWUB3iJ/S7Biu11hR27A5NtzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4wrkf8/; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-56cf45deb45so628356e0c.2
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 23:43:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774334618; x=1774939418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Wc3JY3RaoRqNFTG0M5AcX3LAUTNd7UfUccIs7JuU8E=;
-        b=P4wrkf8/GMPc/sIiJAR43w3csjLzLpssQdVM3uod5glvmhlGv+BVsXmPZ1bmEEO+Nf
-         x8Xv70+6Qgji9PQfTrbJC0fEgsaQw+ZuMP6ph/wjw/gGxbuPchhvpJ58c+6M9zSFOkcV
-         JoO4Ll1D0QHVaKp5kmsWqDck/TFD2yyqTT1sZzUFDkw024VC0AgvNwP3Jqarje5oJv5I
-         GDNR1BgishAz1m+e1XNYrTQWA3lVF8cmWILEHnuN0d7g6WWUzK78GpAZe/j/eAkND0mI
-         tnn1YQUmZ9kruIejTECmhl7hojSUkbtooZuoTraJDBclajOrmufmZLupBuk8CMitfCd1
-         GVdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774334618; x=1774939418;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7Wc3JY3RaoRqNFTG0M5AcX3LAUTNd7UfUccIs7JuU8E=;
-        b=mMDGNvdG79K9GADYauA+ToyfXvgOQfMevTXDBLiHoyV7pvgFCPiSxG5LvrXpMWPRyC
-         BM4kGJCxBbyCqP5dX6ebZiO/G6RGDq4n8w1/jiJFR0LS+IP5OZVoTyqTeq01CGfhg/jA
-         3f4x24fo+zTNhdERA8mYHgc4TmGFvPtuu/iRVYBYxEYchF6i9xVtS4KzET3Ce6ZP+Qif
-         IDY74OXkxW3ehbgJS8G0nuWnKM8t0CtzjhkgUGhFZBhD4jguPW0HXAQs2ClPZbKTU/1j
-         Ukx/759lQT0aFMkSLwr7jdk8kZXp5YI8Mx4h5tvzo/4aL1/WFDz4bNEnDdKLDTI7vxE1
-         m1iA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+xhZou45CMVzDKXC+l+sdimw3PARIvzy2feOVIYW9QC6L/3W+Mc1UZKIHo38CO98WVOPgpYk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWfkTHZ9gk71gtxm6OZc/FdyMDLl338BX6edN4A9UDp95gMDV6
-	87WOlxK9EITmuE58y83UR0p4Lhlq5nUtv/DsBboq4ZTJnhzRgaQ+NOpy
-X-Gm-Gg: ATEYQzzgQWeRHOhM531FkcqHhDaEqmohNwvW2976nNG8TM2AItWR7j3V/wZsXP5EVGP
-	vE6Upb1JY+IXQvXz6bTGQ3FNR+yXAtr1xX6Cc8r7hfCzZTdm47ePD7sZbeWEfNyytRa3K9AQpKe
-	6tyo1a8CYeqR1GIiEvvlMpi5d7pokjQseA4IONsroTbV8Zus4f09LZ8PNXK2rrAaYoGTPQv1wPf
-	o24JcV3so+46jRtNHvXMcl0D5jNbB6+MBzXgPRw9OyblzzxWozjzQzAKD+04leGZwzqfXczSrIK
-	c1Ag/SO7wNsfd7YE2BdWUKzrNuNvkVd+k93vPchi5XuRMA98zPxydahAAuVUm2GJGNF2ZfFQUFm
-	Cve9NBzPjL+Cqy6BnIcHXHaBeaM3eSBMLqTvcBtkJJo9FbkBBYtrXZj2w7VbgnU58/2JSfO4QZB
-	fHLfFG+qM/1V5SrjpKvhGJQ3NaYDs=
-X-Received: by 2002:a05:6122:e251:b0:56b:982f:1267 with SMTP id 71dfb90a1353d-56cde43cc1cmr7995444e0c.13.1774334617713;
-        Mon, 23 Mar 2026 23:43:37 -0700 (PDT)
-Received: from localhost.localdomain ([2a09:bac1:76e0:1048::11:161])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56cddb6d041sm14625744e0c.1.2026.03.23.23.43.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 23:43:37 -0700 (PDT)
-From: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-Subject: [PATCH] HID: cp2112: validate report size in raw_event handler
-Date: Tue, 24 Mar 2026 00:43:32 -0600
-Message-ID: <20260324064332.346342-1-sebasjosue84@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1774335919; c=relaxed/simple;
+	bh=JI3JltRFrcihdGxp5GS1YcK5LsRsOHDQYKuQqoIHi9s=;
+	h=Message-ID:From:To:CC:Subject:Date:Content-Type:MIME-Version; b=ITlCVwbs/iNSPskMVtbTKGE9pythGBWQtWVM6vc8ks6pVczlmlyQeo3m+fywcgVSd5qVDraGZrmUgGXZD5lk5iosQrrorVj3h+l9blnQETe9pAeHlJ0LbUzpHTgK/sxJTabNsPttofjDRjM/T1adGtW28zv7UWFhvDQkCbel48w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=DO7gsYWU; arc=none smtp.client-ip=203.205.221.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774335902; bh=Gk/Mvx2jlD3ud65KPY3E6fLle2Sp1xLjy3zV1APF9xk=;
+	h=From:To:CC:Subject:Date;
+	b=DO7gsYWUfJDUjv5wdTwuMSL9qPZDjWgHGPXeBa5McnL6WJ28WNYgGPi+gEeAAw6OH
+	 7tWKcmspD9kB7/GbAvmBsuasn2yjw7voMYCG9ih/wtfTkAT404ldF0YauLL0WxyORA
+	 gbE/OxCzQ3+uz3/tALdMUy9m9gM7mSk/Enf3EcG8=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-XMAILINFO: NGZp1yYNf7Y+l+vwv16KzMGan/OedZs8+PJ/T8XoSLCX0Y9jkI8QXPZ0JmIE3g
+	 Os3ZksM3NjkjHeQ/G8SzguhxTO+z3byUM6TCna1Uh706TppTXx3ypJYPsLS5eGf9uR9+tnx4SySns
+	 gRwYN03RiopxJPZXdfzwmOfzkhtZDzcKXlOU1Rc9HSkU+6pxyxWjZTJs7KvATeA2gyr1XLXrYQUew
+	 lNfAlg19ZNuNbhhyY82qW3Ep6053Y0I3r2dyhW52YKcnoEEQGhZhX5pffY1DIrY3cryktsRZkCyRP
+	 5gnP680eJRbgfp5jY3bqYLUYEOQ56l1NzJY6hLH7+HOZPGiwU50BNv0eQ8xX67sXjuGXysnjRhKBL
+	 JMFAPTAb3VJHiq/dAzBvkn/5GPHqi0u2x8NPKTIsyCvQi0fBtBm9NDamH8qnYZhJ6CpjYtCYxt3kO
+	 GMWubcX6UhHro/f2MRjo+cyTyIF5yAtHz7TTbhfmqubqX4/FS5tAV/RusDwLXrguSNGxajwdXopRq
+	 Hkb36m+kURSmHCgtWYYcxNUPX2ULME0FeEdpxvFcQkEBcCzuRwOQzwMRW6FygCv7VcZCIIFbDUoYG
+	 UEWL7fYtuRn24IaDmSOmoGtvuGNG1lpf5P9iNdkxLzx+3igpcn8zu5aKCRT3JQx5hnQcyTfw3V2lx
+	 NBFV5xp7dKVqyA5hepWYxPsxRnNqML3lgJvC2V60nWcNLOPfLv5Q8mauLoQCBAeRZhFPml7j7gyEO
+	 0GEcYhisIO1GPIur/hRwjJ36sHS+jXBiz6PVMMQazVAwaYAIySpePhbwA6YrCODpmaRG6awmhGcwc
+	 xpChK1UtABy7jodyMXfBmVXGmehhGmfQngYComxmczMo+voao2ki9pbbFlGwryoQIQzQOQC1bIvoN
+	 QyHu5CIC7EYaoZo0nWOxOsqvIVtyGpAq+tXhc8xzcFxVbeaqR5jNmEzyd7prWO4c5wjBo6l2DjNIW
+	 /zEU2n93rWa69wSZbTKtagpkZn1NK3fCEBAMBjwSAYKIQTaOrbgRP+7Oz+ZnhExm1eTcVTSiRzRWY
+	 PTATqcprhsCXTRZJbIHvoqAyrt1n2RD71qlOQSV8GofCDMlebPFgJUA42kHomUh6/zD3VJdjwQl14
+	 8n6IHWuhcvvkeBIP9dKzUTPm8T2w7CBQ2PjXHBRX2BsD5A==
+Received: from SE3PR03MB9514.apcprd03.prod.outlook.com ([2603:1046:c07:1021::5])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 13B1AC69; Tue, 24 Mar 2026 15:04:59 +0800
+X-QQ-mid: xmsmtpt1774335899tumiwbf27
+Message-ID: <tencent_BA29A271C331E1BB2072C04E5D55C1B90405@qq.com>
+From: "1016331059@qq.com" <1016331059@qq.com>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "mark@fasheh.com" <mark@fasheh.com>, "jlbec@evilplan.org"
+	<jlbec@evilplan.org>, "joseph.qi@linux.alibaba.com"
+	<joseph.qi@linux.alibaba.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "syzkaller-bugs@googlegroups.com"
+	<syzkaller-bugs@googlegroups.com>,
+	"syzbot+c6104ecfe56e0fd6b616@syzkaller.appspotmail.com"
+	<syzbot+c6104ecfe56e0fd6b616@syzkaller.appspotmail.com>
+Subject: [PATCH 5.15.y] ocfs2: fix shift-out-of-bounds UBSAN bug in
+ ocfs2_verify_volume
+Thread-Topic: [PATCH 5.15.y] ocfs2: fix shift-out-of-bounds UBSAN bug in
+ ocfs2_verify_volume
+Thread-Index: AQHcu1vM1OLBR0gTR0KiT87tk3Xreg==
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date: Tue, 24 Mar 2026 07:04:58 +0000
+X-OQ-MSGID:
+	<SE3PR03MB9514009D6136760BB9CF9040A948A@SE3PR03MB9514.apcprd03.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator:
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+msip_labels:
+Content-Type: multipart/mixed;
+	boundary="_004_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	FROM_DN_EQ_ADDR(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-230060-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230061-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[qq.com];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[1016331059@qq.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	HAS_ATTACHMENT(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C9D6D303A5D
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[qq.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,c6104ecfe56e0fd6b616];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:dkim,qq.com:email,qq.com:mid,alibaba.com:email]
+X-Rspamd-Queue-Id: 536F2303EDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-cp2112_raw_event() casts the raw data buffer to a
-cp2112_xfer_status_report struct and accesses data at offsets up to
-data[3+61] without validating the size parameter. Since
-__hid_input_report() invokes the driver's raw_event callback before
-hid_report_raw_event() performs its own report-size validation, a
-device sending a truncated HID report can cause out-of-bounds heap
-reads in the kernel.
+--_004_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_
+Content-Type: multipart/alternative;
+	boundary="_000_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_"
 
-Specifically, in the CP2112_DATA_READ_RESPONSE case, data[2] is used
-as a length (capped at 61 bytes) for a memcpy from data[3] into
-dev->read_data. This data is subsequently accessible from userspace
-through the I2C read interface. A malicious USB device could
-therefore leak up to 61 bytes of kernel heap memory.
+--_000_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-CP2112 devices use 64-byte HID reports. Add a check at the top of
-the handler to reject any report shorter than expected.
+This patch is a backport to stable 5.15.y of upstream commit
+7f86b2942791012ac7b4c481d1f84a58fd2fbcfc
+("ocfs2: fix shift-out-of-bounds UBSAN bug in ocfs2_verify_volume()").
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
----
- drivers/hid/hid-cp2112.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch addresses a shift-out-of-bounds error in the
+ocfs2_verify_volume() function. The bug can be triggered by an invalid
+s_clustersize_bits value, which causes the expression
 
-diff --git a/drivers/hid/hid-cp2112.c b/drivers/hid/hid-cp2112.c
-index 803b883ae..b86631163 100644
---- a/drivers/hid/hid-cp2112.c
-+++ b/drivers/hid/hid-cp2112.c
-@@ -1387,6 +1387,10 @@ static int cp2112_raw_event(struct hid_device *hdev, struct hid_report *report,
- 	struct cp2112_device *dev = hid_get_drvdata(hdev);
- 	struct cp2112_xfer_status_report *xfer = (void *)data;
- 
-+	/* CP2112 always sends 64-byte reports */
-+	if (size < 64)
-+		return 0;
-+
- 	switch (data[0]) {
- 	case CP2112_TRANSFER_STATUS_RESPONSE:
- 		hid_dbg(hdev, "xfer status: %02x %02x %04x %04x\n",
--- 
-2.43.0
+  1 << le32_to_cpu(di->id2.i_super.s_clustersize_bits)
+
+to exceed the valid shift range of a 32-bit integer, leading to an
+out-of-bounds shift reported by UBSAN.
+
+Instead of performing the invalid shift while printing the error message,
+log the raw s_clustersize_bits value directly.
+
+This backport was also tested by syzbot on Linux 5.15.201
+(commit 3330a8d33e086f76608bb4e80a3dc569d04a8814 in the stable 5.15.y
+tree), and the reproducer did not trigger any issue.
+
+[ Upstream commit 7f86b2942791012ac7b4c481d1f84a58fd2fbcfc ]
+
+Link: https://lkml.kernel.org/r/ZsPvwQAXd5R/jNY+@hostname
+Reported-by: syzbot <syzbot+f3fff775402751ebb471@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=3Df3fff775402751ebb471
+Tested-by: syzbot <syzbot+f3fff775402751ebb471@syzkaller.appspotmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Link: https://syzkaller.appspot.com/bug?extid=3Dc6104ecfe56e0fd6b616
+Tested-by: syzbot <syzbot+c6104ecfe56e0fd6b616@syzkaller.appspotmail.com>
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Changjian Liu <driz2t@qq.com>
+
+--_000_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+This patch is a backport to stable 5.15.y of upstream commit</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+7f86b2942791012ac7b4c481d1f84a58fd2fbcfc</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+(&quot;ocfs2: fix shift-out-of-bounds UBSAN bug in ocfs2_verify_volume()&qu=
+ot;).</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+This patch addresses a shift-out-of-bounds error in the</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+ocfs2_verify_volume() function. The bug can be triggered by an invalid</div=
+>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+s_clustersize_bits value, which causes the expression</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+&nbsp; 1 &lt;&lt; le32_to_cpu(di-&gt;id2.i_super.s_clustersize_bits)</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+to exceed the valid shift range of a 32-bit integer, leading to an</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+out-of-bounds shift reported by UBSAN.</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Instead of performing the invalid shift while printing the error message,</=
+div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+log the raw s_clustersize_bits value directly.</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+This backport was also tested by syzbot on Linux 5.15.201</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+(commit 3330a8d33e086f76608bb4e80a3dc569d04a8814 in the stable 5.15.y</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+tree), and the reproducer did not trigger any issue.</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+[ Upstream commit 7f86b2942791012ac7b4c481d1f84a58fd2fbcfc ]</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Link: https://lkml.kernel.org/r/ZsPvwQAXd5R/jNY+@hostname</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Reported-by: syzbot &lt;syzbot+f3fff775402751ebb471@syzkaller.appspotmail.c=
+om&gt;</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Closes: https://syzkaller.appspot.com/bug?extid=3Df3fff775402751ebb471</div=
+>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Tested-by: syzbot &lt;syzbot+f3fff775402751ebb471@syzkaller.appspotmail.com=
+&gt;</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Reviewed-by: Joseph Qi &lt;joseph.qi@linux.alibaba.com&gt;</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Link: https://syzkaller.appspot.com/bug?extid=3Dc6104ecfe56e0fd6b616</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Tested-by: syzbot &lt;syzbot+c6104ecfe56e0fd6b616@syzkaller.appspotmail.com=
+&gt;</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Signed-off-by: Qasim Ijaz &lt;qasdev00@gmail.com&gt;</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+Signed-off-by: Changjian Liu &lt;driz2t@qq.com&gt;</div>
+</body>
+</html>
+
+--_000_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_--
+
+--_004_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_
+Content-Type: application/octet-stream; name="c6104ecfe56e0fd6b616.patch"
+Content-Description: c6104ecfe56e0fd6b616.patch
+Content-Disposition: attachment; filename="c6104ecfe56e0fd6b616.patch";
+	size=2790; creation-date="Tue, 24 Mar 2026 06:59:46 GMT";
+	modification-date="Tue, 24 Mar 2026 07:00:10 GMT"
+Content-Transfer-Encoding: base64
+
+RnJvbSBhZTMxMDAwNmZjNmUwNmMyMzNiOGQ2NzgwYjJhMmM2YTE2ZDZkNzA4IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBDaGFuZ2ppYW4gTGl1IDxkcml6MnRAcXEuY29tPgpEYXRlOiBN
+b24sIDIzIE1hciAyMDI2IDExOjM5OjE5ICswODAwClN1YmplY3Q6IFtQQVRDSCA1LjE1LnldIG9j
+ZnMyOiBmaXggc2hpZnQtb3V0LW9mLWJvdW5kcyBVQlNBTiBidWcgaW4KIG9jZnMyX3ZlcmlmeV92
+b2x1bWUoKQoKVGhpcyBwYXRjaCBpcyBhIGJhY2twb3J0IHRvIHN0YWJsZSA1LjE1Lnkgb2YgdXBz
+dHJlYW0gY29tbWl0CjdmODZiMjk0Mjc5MTAxMmFjN2I0YzQ4MWQxZjg0YTU4ZmQyZmJjZmMKKCJv
+Y2ZzMjogZml4IHNoaWZ0LW91dC1vZi1ib3VuZHMgVUJTQU4gYnVnIGluIG9jZnMyX3ZlcmlmeV92
+b2x1bWUoKSIpLgoKVGhpcyBwYXRjaCBhZGRyZXNzZXMgYSBzaGlmdC1vdXQtb2YtYm91bmRzIGVy
+cm9yIGluIHRoZQpvY2ZzMl92ZXJpZnlfdm9sdW1lKCkgZnVuY3Rpb24uIFRoZSBidWcgY2FuIGJl
+IHRyaWdnZXJlZCBieSBhbiBpbnZhbGlkCnNfY2x1c3RlcnNpemVfYml0cyB2YWx1ZSwgd2hpY2gg
+Y2F1c2VzIHRoZSBleHByZXNzaW9uCgogIDEgPDwgbGUzMl90b19jcHUoZGktPmlkMi5pX3N1cGVy
+LnNfY2x1c3RlcnNpemVfYml0cykKCnRvIGV4Y2VlZCB0aGUgdmFsaWQgc2hpZnQgcmFuZ2Ugb2Yg
+YSAzMi1iaXQgaW50ZWdlciwgbGVhZGluZyB0byBhbgpvdXQtb2YtYm91bmRzIHNoaWZ0IHJlcG9y
+dGVkIGJ5IFVCU0FOLgoKSW5zdGVhZCBvZiBwZXJmb3JtaW5nIHRoZSBpbnZhbGlkIHNoaWZ0IHdo
+aWxlIHByaW50aW5nIHRoZSBlcnJvciBtZXNzYWdlLApsb2cgdGhlIHJhdyBzX2NsdXN0ZXJzaXpl
+X2JpdHMgdmFsdWUgZGlyZWN0bHkuCgpUaGlzIGJhY2twb3J0IHdhcyBhbHNvIHRlc3RlZCBieSBz
+eXpib3Qgb24gTGludXggNS4xNS4yMDEKKGNvbW1pdCAzMzMwYThkMzNlMDg2Zjc2NjA4YmI0ZTgw
+YTNkYzU2OWQwNGE4ODE0IGluIHRoZSBzdGFibGUgNS4xNS55CnRyZWUpLCBhbmQgdGhlIHJlcHJv
+ZHVjZXIgZGlkIG5vdCB0cmlnZ2VyIGFueSBpc3N1ZS4KClsgVXBzdHJlYW0gY29tbWl0IDdmODZi
+Mjk0Mjc5MTAxMmFjN2I0YzQ4MWQxZjg0YTU4ZmQyZmJjZmMgXQoKTGluazogaHR0cHM6Ly9sa21s
+Lmtlcm5lbC5vcmcvci9ac1B2d1FBWGQ1Ui9qTlkrQGhvc3RuYW1lClJlcG9ydGVkLWJ5OiBzeXpi
+b3QgPHN5emJvdCtmM2ZmZjc3NTQwMjc1MWViYjQ3MUBzeXprYWxsZXIuYXBwc3BvdG1haWwuY29t
+PgpDbG9zZXM6IGh0dHBzOi8vc3l6a2FsbGVyLmFwcHNwb3QuY29tL2J1Zz9leHRpZD1mM2ZmZjc3
+NTQwMjc1MWViYjQ3MQpUZXN0ZWQtYnk6IHN5emJvdCA8c3l6Ym90K2YzZmZmNzc1NDAyNzUxZWJi
+NDcxQHN5emthbGxlci5hcHBzcG90bWFpbC5jb20+ClJldmlld2VkLWJ5OiBKb3NlcGggUWkgPGpv
+c2VwaC5xaUBsaW51eC5hbGliYWJhLmNvbT4KTGluazogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3Bv
+dC5jb20vYnVnP2V4dGlkPWM2MTA0ZWNmZTU2ZTBmZDZiNjE2ClRlc3RlZC1ieTogc3l6Ym90IDxz
+eXpib3QrYzYxMDRlY2ZlNTZlMGZkNmI2MTZAc3l6a2FsbGVyLmFwcHNwb3RtYWlsLmNvbT4KU2ln
+bmVkLW9mZi1ieTogUWFzaW0gSWpheiA8cWFzZGV2MDBAZ21haWwuY29tPgpTaWduZWQtb2ZmLWJ5
+OiBDaGFuZ2ppYW4gTGl1IDxkcml6MnRAcXEuY29tPgotLS0KIGZzL29jZnMyL3N1cGVyLmMgfCA0
+ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvZnMvb2NmczIvc3VwZXIuYyBiL2ZzL29jZnMyL3N1cGVyLmMKaW5kZXggYmIx
+NzQwMDkyMDZlLi5hZTJiYTYxNjc1NmQgMTAwNjQ0Ci0tLSBhL2ZzL29jZnMyL3N1cGVyLmMKKysr
+IGIvZnMvb2NmczIvc3VwZXIuYwpAQCAtMjM2OSw4ICsyMzY5LDggQEAgc3RhdGljIGludCBvY2Zz
+Ml92ZXJpZnlfdm9sdW1lKHN0cnVjdCBvY2ZzMl9kaW5vZGUgKmRpLAogCQkJICAgICAodW5zaWdu
+ZWQgbG9uZyBsb25nKWJoLT5iX2Jsb2NrbnIpOwogCQl9IGVsc2UgaWYgKGxlMzJfdG9fY3B1KGRp
+LT5pZDIuaV9zdXBlci5zX2NsdXN0ZXJzaXplX2JpdHMpIDwgMTIgfHwKIAkJCSAgICBsZTMyX3Rv
+X2NwdShkaS0+aWQyLmlfc3VwZXIuc19jbHVzdGVyc2l6ZV9iaXRzKSA+IDIwKSB7Ci0JCQltbG9n
+KE1MX0VSUk9SLCAiYmFkIGNsdXN0ZXIgc2l6ZSBmb3VuZDogJXVcbiIsCi0JCQkgICAgIDEgPDwg
+bGUzMl90b19jcHUoZGktPmlkMi5pX3N1cGVyLnNfY2x1c3RlcnNpemVfYml0cykpOworCQkJbWxv
+ZyhNTF9FUlJPUiwgImJhZCBjbHVzdGVyIHNpemUgYml0IGZvdW5kOiAldVxuIiwKKwkJCSAgICAg
+bGUzMl90b19jcHUoZGktPmlkMi5pX3N1cGVyLnNfY2x1c3RlcnNpemVfYml0cykpOwogCQl9IGVs
+c2UgaWYgKCFsZTY0X3RvX2NwdShkaS0+aWQyLmlfc3VwZXIuc19yb290X2Jsa25vKSkgewogCQkJ
+bWxvZyhNTF9FUlJPUiwgImJhZCByb290X2Jsa25vOiAwXG4iKTsKIAkJfSBlbHNlIGlmICghbGU2
+NF90b19jcHUoZGktPmlkMi5pX3N1cGVyLnNfc3lzdGVtX2Rpcl9ibGtubykpIHsKLS0gCjIuNDMu
+MAoK
+
+--_004_SE3PR03MB9514009D6136760BB9CF9040A948ASE3PR03MB9514apcp_--
 
 
