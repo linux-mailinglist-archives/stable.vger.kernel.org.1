@@ -1,141 +1,160 @@
-Return-Path: <stable+bounces-230210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMgLG1HXwmllmgQAu9opvQ
-	(envelope-from <stable+bounces-230210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:26:25 +0100
+	id mHg8FwTYwmllmgQAu9opvQ
+	(envelope-from <stable+bounces-230211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:29:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0693931AC9C
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:26:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8A131AD76
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85E083026D3F
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 18:25:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE0DC30EAEB6
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 18:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7F63A1E7E;
-	Tue, 24 Mar 2026 18:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3723A3E6C;
+	Tue, 24 Mar 2026 18:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qh0GRLkc"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cfg+JLpx"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677EF3A0B20;
-	Tue, 24 Mar 2026 18:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED9A391E46
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774376742; cv=none; b=NGpXV6HwqC0r7II7uLZlu3575TkHGiDebE776pjY6JytOAkMBslqK9ZEUW+tZH34n3JC2LcCioCKh6VSY5D6ZCX/wvJ4Nyq9pKzH14zvm8ny8zUIXFjmH0cdsbSqRKQ2HLGkQ/vFSoBXh2Okbd2JoD/vkROOexG2yCqun5e6ip4=
+	t=1774376801; cv=none; b=E4LwFmSy+/26cnW6mgHgAPtNsTTHULKR0couIEHps4smFEkuHsnYmYKzrRNjgM4FRtNdDvwBFIVvvWixhs7QwXUeGEV6IssQq7Ag8lSuOv4OPUjEIlTeBEU2DS+/60vQwPe8wxXSnFPjPoBW+V0Oe+5BljZXyPf4nVIMceGKUJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774376742; c=relaxed/simple;
-	bh=2EqXEYRv3JrQt20k0oE7Vkvk1xPApU+5GmVMlQH8KMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q/4ZD41NT5BSex3asFb0QUiTkthxMZKLrLbRiDR2AoZwn8RuaBNrRCWEaCA6arD3Uoi2jkBfXKG9L8LZJw5vlN70fjEEuN9BOhVtrEQ/e5g41KO9SfyaZjtsk9/y2hnmZx5r3dh6FXyQIiHxKOAEqYypLKcSpTqjowuROHxCVRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qh0GRLkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0ABAC19424;
-	Tue, 24 Mar 2026 18:25:37 +0000 (UTC)
+	s=arc-20240116; t=1774376801; c=relaxed/simple;
+	bh=GGfOKD68lU4mO+i2u+k2K6Xe8E5Qh/5WTgVtHzuV028=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AuE/axwIax9ZBwQvlGnbEPqNNomXu6oA7+5lT1dJQmZPDBsJPMlkSMaXkZGJSTr2cwjgp3lZFCqmEpRh8SPnOMN3um1xtAZN+aWxZ0iek2ERJ15nfj2CV7BiTb1v/Kknt1LW8wHrLHLqrKskfNX/apljVOJ5HHeeESrUj0tJ22A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cfg+JLpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECBCC19424
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774376742;
-	bh=2EqXEYRv3JrQt20k0oE7Vkvk1xPApU+5GmVMlQH8KMU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qh0GRLkc9rHuCXbpL5uXX/35u12V+DfV3hlGRbywBl3lOd/TW8GrMFW7pwpanOfcy
-	 xg50VWkauxU5SXLU1wYN5aLU/sqJ5Yjbgpr7f1ms175S+RbX1/n3LBfYsoBpRuV2j4
-	 JVJw5ZDyFNwco8MhXL64KJPwVrrXdDCL/qfTZrkVjAeEsy9MYJl98c4yXA/jPExzzv
-	 JFAywfRD0dpf0wtaLZKeUaX9J5CN4KonjNztE1iWOUhPxqaQ2vbNQTpsyoVYr1QVsy
-	 rbyuwVhj7cv+DAWNUQwGY+FPPdjIdZVFU395m05SZ/O2UbuhpQUWggdMuQ3wW5vMPx
-	 IP+p0xw4D3AZQ==
-Date: Tue, 24 Mar 2026 18:25:35 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	mohammad.rafi.shaik@oss.qualcomm.com, linux-sound@vger.kernel.org,
-	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-	johan@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
-	konrad.dybcio@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	srini@kernel.org, val@packett.cool, mailingradian@gmail.com,
-	Stable@vger.kernel.org
-Subject: Re: [PATCH v7 04/13] ASoC: qcom: q6apm-lpass-dai: Fix multiple graph
- opens
-Message-ID: <61596b66-4fef-4bdc-93f2-a8639da79d32@sirena.org.uk>
-References: <20260323223845.2126142-1-srinivas.kandagatla@oss.qualcomm.com>
- <20260323223845.2126142-5-srinivas.kandagatla@oss.qualcomm.com>
+	s=k20201202; t=1774376801;
+	bh=GGfOKD68lU4mO+i2u+k2K6Xe8E5Qh/5WTgVtHzuV028=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Cfg+JLpxEk+H5ramG9hxsn7Th0tre4XE69ltgh+19ghxUgDdIZmwGjYxmQYG2PBw0
+	 +uEnpme9thyY+NIart74eLizikE9pbj0uDlJWd42xEcQQ2Ev+1xuC40Fnb7JekiaDV
+	 /3XFrA/5t8yFZ9120TifIZJ3WdiJ9lfz1ngZc4RNX0XSDqYV5aXyAT2s54ZalGsl5B
+	 gRwY1m1ubG3UID+70z+zKsLINJcB4s+jkJe3Oo9DfiVbQKp6iNHMYluejnu3HEn0Vs
+	 s6LP5H0atFBrASMWgKZQeBe52iqTRdabzodbipyk0yENYVqYR/hpimTqalqyI8JlSi
+	 wMJLVzarG8lew==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-67ba5921b84so2401772eaf.3
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 11:26:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVM0JBYu0osDmz9BzZa1CqUurV52NkyFwKyRdWY+E8Y3jJ5IdNKxf5Hs4tR1idys8HS2qxD4aA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxq1kwNIReG9FFX3qgdy/aYwBB8xFrHaTA0/6YjvKDvf4Qx+BwS
+	SMY6sQcl8Acd50UTxN+txy8f+fKPoQli8S6+n6qkIXudoj4C2j5kWU6wfAv6H2zdKBEIN9Z23od
+	FI8Vd2sPjEeLxN5Sy8+r9AD7BHY7Bi70=
+X-Received: by 2002:a05:6820:4dc2:b0:67d:eeb3:a2dc with SMTP id
+ 006d021491bc7-67dff46c33cmr473357eaf.30.1774376800859; Tue, 24 Mar 2026
+ 11:26:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NkWWMnqpGUZIItID"
-Content-Disposition: inline
-In-Reply-To: <20260323223845.2126142-5-srinivas.kandagatla@oss.qualcomm.com>
-X-Cookie: Forest fires cause Smokey Bears.
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260324172346.3317145-1-srinivas.pandruvada@linux.intel.com>
+In-Reply-To: <20260324172346.3317145-1-srinivas.pandruvada@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 24 Mar 2026 19:26:29 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h7HJqyQeahBv2eyMnhgbKk2X4zvwjpkrGdUhGBwVPueQ@mail.gmail.com>
+X-Gm-Features: AaiRm51AofyFCtfcyMJYXZx_-MoCwlvouvVBHdEPvFPgfbuTn6HsAYLZFEFBHdM
+Message-ID: <CAJZ5v0h7HJqyQeahBv2eyMnhgbKk2X4zvwjpkrGdUhGBwVPueQ@mail.gmail.com>
+Subject: Re: [PATCH] thermal: intel: int340x: Power Slider: Set offset only
+ for balanced mode
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: rafael@kernel.org, daniel.lezcano@linaro.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Erin Park <erin.park@intel.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230210-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,vger.kernel.org,gmail.com,perex.cz,suse.com,packett.cool];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230211-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0693931AC9C
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: CC8A131AD76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, Mar 24, 2026 at 6:23=E2=80=AFPM Srinivas Pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> The slider offset can be set via debugfs for balanced mode. The offset
+> should be only applicable in balanced mode. For other modes, it should
+> be set 0 when writing to MMIO offset,
+>
+> Fixes: 8306bcaba06d ("thermal: intel: int340x: Add module parameter to ch=
+ange slider offset")
+> Tested-by: Erin Park <erin.park@intel.com>
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: stable@vger.kernel.org # v6.18+
+> ---
+>  .../intel/int340x_thermal/processor_thermal_soc_slider.c  | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_=
+slider.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slid=
+er.c
+> index 49ff3bae7271..91f291627132 100644
+> --- a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.=
+c
+> +++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.=
+c
+> @@ -176,15 +176,21 @@ static inline void write_soc_slider(struct proc_the=
+rmal_device *proc_priv, u64 v
+>
+>  static void set_soc_power_profile(struct proc_thermal_device *proc_priv,=
+ int slider)
+>  {
+> +       u8 offset;
+>         u64 val;
+>
+>         val =3D read_soc_slider(proc_priv);
+>         val &=3D ~SLIDER_MASK;
+>         val |=3D FIELD_PREP(SLIDER_MASK, slider) | BIT(SLIDER_ENABLE_BIT)=
+;
+>
+> +       if (slider =3D=3D SOC_SLIDER_VALUE_MINIMUM || slider =3D=3D SOC_S=
+LIDER_VALUE_MAXIMUM)
+> +               offset =3D 0;
+> +       else
+> +               offset =3D slider_offset;
+> +
+>         /* Set the slider offset from module params */
+>         val &=3D ~SLIDER_OFFSET_MASK;
+> -       val |=3D FIELD_PREP(SLIDER_OFFSET_MASK, slider_offset);
+> +       val |=3D FIELD_PREP(SLIDER_OFFSET_MASK, offset);
+>
+>         write_soc_slider(proc_priv, val);
+>  }
+> --
 
---NkWWMnqpGUZIItID
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Mar 23, 2026 at 10:38:36PM +0000, Srinivas Kandagatla wrote:
-> As prepare can be called mulitple times, this can result in multiple
-> graph opens for playback path.
-
->  	 */
-> -	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-> +	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK && dai_data->graph[dai->id] == NULL) {
-
-This is an array of APM_PORT_MAX elements but we have DAI IDs in the DT
-bindings over that and now we're using the DAI ID to index into the
-array (I didn't check for existing instances...).  This might be
-impossible due to system design though.
-
---NkWWMnqpGUZIItID
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnC1x4ACgkQJNaLcl1U
-h9DYtQf/ZUJdPb1Fy8ubmiDoH29GzkbRv/yMMqXdcnuhTdMMCE6Os8laILqGbhYz
-D9Fbas99uV9sArONUIq2ktrsJ3NPasHC2bH6peRNvtLxox5/D8elZLCMMhlWzlmF
-7chBE9lw8XlQl0lkzR2zIE7g4yx0dwTbscd0s6bXyuJ1+OZjHhAi4IBxqc7WQi4y
-P1pkxC0A3oH0unkhqr2R4kf6geEWS9ewxfbsilII7+vJzVePDrEL/0hTS9YmpMaD
-CLyIbsbXytt/pF4HITnQlScHwfNcXYStO3MJxmIHCDTsGDHemsLFa4SFykQ6PwT9
-EQh05p6FKPPJ/qY4BC8QwNbjDsai5Q==
-=qn5J
------END PGP SIGNATURE-----
-
---NkWWMnqpGUZIItID--
+Applied as 7.0-rc material, thanks!
 
