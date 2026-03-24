@@ -1,74 +1,80 @@
-Return-Path: <stable+bounces-230164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH6tG2Obwmm3fQQAu9opvQ
-	(envelope-from <stable+bounces-230164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:10:43 +0100
+	id qAbPIm2bwmm3fQQAu9opvQ
+	(envelope-from <stable+bounces-230165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:10:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E43309F50
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC69309F5E
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21D5C3021EB4
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:05:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2CD030363B7
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3573DEFF7;
-	Tue, 24 Mar 2026 14:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C963D566E;
+	Tue, 24 Mar 2026 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="J2mmHOWP"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FRy0AHFL"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FDE3F99C0
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCF33D6496
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774361104; cv=none; b=QCtWaqFoaxLj6sweDpLZPfM8+/6a5XC7JbmTTzUH+8u0fmCHYbTQIihuilbFWnWOYcMaSrcwkX3cQSwfkddZtIT6/hEnNXhHkQvZ5flZXKJAnJEs+OMCRnZ4OCTnYWKSYPKFNsIDN+usf6FSNij03og847WYiarzVcgqN11IiJU=
+	t=1774361113; cv=none; b=JnjzGhUYsGcqAJbQQSW5c92cDop0TLAB/j75ZDU93qXN8nNctCPjNp1YcegVxWCKLz1Bp/cTkUurIRSGivbqqQrrliewCuWZhYx3zyzT/EVaefSXzxUd/xh9ZaSAyGj5Zyn5QnESMkQGdScOLZNw1ePqvvK3qOxxusJ2rnMc6Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774361104; c=relaxed/simple;
-	bh=piTBGg+yrB4rFj7HA5yxCC89N8CWkq/9Iq5Tic1sVvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CFICk43gd1DEeYLVvlvFRifWHm/k8rZVpdlP/D3B1nxq9KYopMlk0PYreQJx+Shw3rV5YL8e4tQPzIf7otFtEE39LiIaKcLaX9FUqWU/RGdR0QXx9qgp0Zbj93eU5KvkDietQ/7zSNVp7uOK61qGC+PhoilKC1p1Zy1+RIUn+DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=J2mmHOWP; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1774361113; c=relaxed/simple;
+	bh=PmnRgfL8sxatxvRS3LOoq14oq6DTSxWoukxsxRHsozs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SLbdBbga45SM0cmmLJIxtAVsYYnoT5Vujfi+dq+mKDI8YAnwo7jNnbjA3QmStVLfkO5NtqROMMfjOEIyJQuymH3HatM5YNYL45ySmDSJGt8jKhEAgosBbXGCG6focU5M79qVnMOAVsiaFIgMTvb7lgKFxft8G9UbqVPlZ4zw+Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FRy0AHFL; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OCCbmw1540303
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:02 GMT
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OCC1BB1021874;
+	Tue, 24 Mar 2026 14:05:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=PbaBevuJU0nZFuxR
-	rJCC0ybPToOcYxX3csCVcksbL50=; b=J2mmHOWPg7y8Cou8wOYt6d2MccYmLPW0
-	UlqWUl9wjJWa31z3Za1+CNyBCuoX66WRQ11weML7t9T54feNDIA9LJuU7B0V9rCC
-	jiheanrvsYpPUYDQmvZLw/lfkxUW7ptqL2qfnJtEtvSjskKQkAarvE6Af/YCGMQv
-	Bgu3lm6MMtObC3WaQTIaZiPTmy3CFIGblZki7n/n5BKlIfTHeo7fQJPSzj2sSg8B
-	wcCkdtT31mXo1xWbXWeWrseFY8r/4c1171AvFGac52DC7qfVSVATyYA5VSft6i8f
-	LnaWF6bHUbWJZWQZipj5oecfumKxgo2kpBIyG+rDLcsny+DNO5gUzg==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=TeXH9jR/KayURSeIASCAANvS1ZYSzTxMb+zeQcNz6bI=; b=
+	FRy0AHFLdJjZcyif0jpmrMeztx724GBpPqgAY4ie/XLmLMfAnlVSDl6dnoR3FGdF
+	K4Yni5dao9FZP5SL33ewhD36kRQHikjc6fDyqWrp+x9M39AHdnTL9HRL7jUVxMzn
+	rRHmwtm1oPXcZubRU/rzG57UKyV3GhOkL4yeQb20BIcPg1vhWuiZ+VBkUqdk1hS0
+	+cfeIC+BUebSNQZ0m+gLZGoDRun+OBiUVkgbXUBU9RcCJq7gkHXuRqdU8uA9MFtE
+	rUGykjIp/ZV++IN2zUH5SNXy/PLZr07y12hOIzA60jXxYkU7ifLpdjcAXatePeNH
+	twJrHQEojGV9VJGGakTUMQ==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4d1kja4a87-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:02 +0000 (GMT)
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4d1kfpm9hc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 14:05:04 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62ODbZRe039928
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:01 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62ODq5Ir039887;
+	Tue, 24 Mar 2026 14:05:03 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4d1hs9pd7y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:01 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4d1hs9pdbn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 14:05:03 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62OE50EW023161
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 14:05:00 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62OE50EY023161;
+	Tue, 24 Mar 2026 14:05:02 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4d1hs9pd7j-1;
-	Tue, 24 Mar 2026 14:05:00 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4d1hs9pd7j-2;
+	Tue, 24 Mar 2026 14:05:02 +0000
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 To: stable@vger.kernel.org
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12.y 0/9] Few stable backports for CVE fixes
-Date: Tue, 24 Mar 2026 07:04:47 -0700
-Message-ID: <20260324140456.832964-1-harshit.m.mogalapalli@oracle.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12.y 1/9] landlock: Optimize file path walks and prepare for audit support
+Date: Tue, 24 Mar 2026 07:04:48 -0700
+Message-ID: <20260324140456.832964-2-harshit.m.mogalapalli@oracle.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260324140456.832964-1-harshit.m.mogalapalli@oracle.com>
+References: <20260324140456.832964-1-harshit.m.mogalapalli@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,122 +86,159 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 bulkscore=83
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 bulkscore=0
  malwarescore=0 mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
  definitions=main-2603240111
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDExMSBTYWx0ZWRfX3oNTmFJ7X7fb
- 7is8IADM5TT73tb3iYy2ffrJVX+bL5qDwxHu6VWRmSlLUeXkfFDju59RO2HJhhY0uCt9yImrvE2
- JpFNpALIrXURnWo2oLHOgEZJxThsNVcheojlJOn868iJpAXvjP1aEBuqtUAl5WUtx65ArLj0Qre
- OuTDMhRQnZNNMNEZZaJzdtx7KcFlGQXShY6lWzSv4nIVJsnCxw46i4RFZ9Wrxf44KvaOKUoXAi+
- 3fN/hf35pvyyAjbHhXHVMKZFS4xcvEFIYpqC7ChoL1nk8rZin/kLajXZtFTf1OWWelsEiNQcq90
- gaG+8iPLOqzlr22LwKKurdqMGj/gP4Z4py2ecAFIrpNx93OF+tsVttloVE8N4Mpjd2vZ4YGgE+u
- FK8Cj/jcaml2dBI4ZXb7bYZ0bJE0Exc/vVmijNyYiSM1W+Nhbo7SLQZa8sxzd/rWEqfYRYs7NPb
- Q/fBBG0t4zVfJR1plTw==
-X-Proofpoint-GUID: ruUnTDGc7gSwEMzDye4sWBlu3kTKK28M
-X-Authority-Analysis: v=2.4 cv=TPdIilla c=1 sm=1 tr=0 ts=69c29a0e cx=c_pps
+X-Proofpoint-GUID: unTjJynVyikU8ZHwosFI0lOXJM9RzenY
+X-Authority-Analysis: v=2.4 cv=VKnQXtPX c=1 sm=1 tr=0 ts=69c29a10 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=o5oIOnhZENCTenyL_yNV:22 a=_a_3DXWFroSYYbvNOTMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: ruUnTDGc7gSwEMzDye4sWBlu3kTKK28M
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22 a=VwQbUJbxAAAA:8
+ a=edGIuiaXAAAA:8 a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=UWeds6VcmML97xFuvbcA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=4kyDAASA-Eebq_PzFVE6:22
+X-Proofpoint-ORIG-GUID: unTjJynVyikU8ZHwosFI0lOXJM9RzenY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDExMSBTYWx0ZWRfX/9BSLpjB+d8n
+ SVcL/zkOb5FxI7bYQ9Y9XEqBjyf3Z64bm0CZvV0+Snex5RTLdp0PH+ESMx7V5gyzjwdQKdcAmb1
+ NlxZ0g19RAUE96Icf4AGL7MeSkJA+qgH4fgESbQ+bC8J4x1gIFPcwl5haGIZ38gp9fQ1mBluq/w
+ +Ld1U2NJvrer7IObLNZo+Oab+JIKiw0tlcCSWpSaWfI6N9BFvalIwGX4PlQQlzmx/QqdttgSSU3
+ 0harszu2QmZF5AL0AmocEoY7uqzPsyIGnoK6vFWwITpVld65Z6YI39OkBzJ1jOOkhlNWemTD5hV
+ LNMei8bsEpzMton/rge/YiXKuUrzpEiNxuH7YZ9Uh9dmEf3ZMFwS49W54KlYtI2wpYbdoccUHcq
+ E7HR8otIg50ZjcrSCh3Fhk74Iks9SGigMr5VhQSFPBGpXR7qnuuj2em7SyWJGIV4gfDr37SwuyH
+ NVC+oq21Zx+nycwWiYg==
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230164-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230165-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:dkim,oracle.com:email,oracle.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:dkim,oracle.com:mid];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[oracle.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: C1E43309F50
+X-Rspamd-Queue-Id: DFC69309F5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi stable maintainers,
+From: Mickaël Salaün <mic@digikod.net>
 
-I have tried backporting some fixes to stable kernel 6.12.y which also
-have CVE numbers and are fixing commits in 6.12.y.
+[ Upstream commit d617f0d72d8041c7099fd04a62db0f0fa5331c1a ]
 
-I am not a subsystem expert and have only done overall testing that we
-do for stable release candidate testing and not any patch specific testing.
+Always synchronize access_masked_parent* with access_request_parent*
+according to allowed_parent*.  This is required for audit support to be
+able to get back to the reason of denial.
 
-Note: All these patches are present backports from upstream.
+In a rename/link action, instead of always checking a rule two times for
+the same parent directory of the source and the destination files, only
+check it when an action on a child was not already allowed.  This also
+enables us to keep consistent allowed_parent* status, which is required
+to get back to the reason of denial.
 
-Quick summary:
+For internal mount points, only upgrade allowed_parent* to true but do
+not wrongfully set both of them to false otherwise.  This is also
+required to get back to the reason of denial.
 
-Patch 1 is pulled in as a prerequisite for patch2 which is a fix for
-CVE-2025-68736, both of them are clean cherry picks.
+This does not impact the current behavior but slightly optimize code and
+prepare for audit support that needs to know the exact reason why an
+access was denied.
 
-Patch 3 fixes CVE-2025-22117, clean cherrypick
-Patch 4 fixes CVE-2026-23104, needed a minor conflict resolution.
-Patch 5 fixes CVE-2026-23210, needed conflicts resolution due to a
-missing API around conflicts region.
+Cc: Günther Noack <gnoack@google.com>
+Link: https://lore.kernel.org/r/20250108154338.1129069-14-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+(cherry picked from commit d617f0d72d8041c7099fd04a62db0f0fa5331c1a)
+Stable-dep-of: 49c9e09d9610 ("landlock: Fix handling of disconnected directories")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+---
+ security/landlock/fs.c | 44 ++++++++++++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
-Patch 6 fixes CVE-2025-22116, clean cherry-pick
-Patch 7 fixes CVE-2026-22981, needed quite a few resolutions due to 4
-large commits around the vulnerable code.
-Patch 8 fixes CVE-2026-22981, is a clean cherry-pick but the backport
-needs a slight modification for 6.12.y due to missing commit.
-Patch 9 fixes CVE-2026-22993, had to resolve a conflict due to two
-missing commits in 6.12.y(which are not candidates for backporting.
-
-Please let me know if there are any comments.
-
-Thanks,
-Harshit
-
-Aaron Ma (1):
-  ice: Fix PTP NULL pointer dereference during VSI rebuild
-
-Emil Tantilov (2):
-  idpf: check error for register_netdev() on init
-  idpf: detach and close netdevs while handling a reset
-
-Mateusz Polchlopek (1):
-  ice: fix using untrusted value of pkt_len in ice_vc_fdir_parse_raw()
-
-Mickaël Salaün (2):
-  landlock: Optimize file path walks and prepare for audit support
-  landlock: Fix handling of disconnected directories
-
-Paul Greenwalt (1):
-  ice: fix devlink reload call trace
-
-Sreedevi Joshi (2):
-  idpf: Fix RSS LUT NULL pointer crash on early ethtool operations
-  idpf: Fix RSS LUT NULL ptr issue after soft reset
-
- drivers/net/ethernet/intel/ice/ice_main.c     |   6 +-
- drivers/net/ethernet/intel/ice/ice_ptp.c      |  17 +-
- drivers/net/ethernet/intel/ice/ice_ptp.h      |   5 +
- .../ethernet/intel/ice/ice_virtchnl_fdir.c    |  24 +-
- drivers/net/ethernet/intel/idpf/idpf.h        |   2 -
- drivers/net/ethernet/intel/idpf/idpf_lib.c    | 232 ++++++++++--------
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  38 ++-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   5 +-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   |   9 +-
- security/landlock/errata/abi-1.h              |  16 ++
- security/landlock/fs.c                        |  78 ++++--
- 11 files changed, 256 insertions(+), 176 deletions(-)
- create mode 100644 security/landlock/errata/abi-1.h
-
+diff --git a/security/landlock/fs.c b/security/landlock/fs.c
+index 511e6ae8b79c..f0e94cb74fca 100644
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -849,15 +849,6 @@ static bool is_access_to_paths_allowed(
+ 				     child1_is_directory, layer_masks_parent2,
+ 				     layer_masks_child2,
+ 				     child2_is_directory))) {
+-			allowed_parent1 = scope_to_request(
+-				access_request_parent1, layer_masks_parent1);
+-			allowed_parent2 = scope_to_request(
+-				access_request_parent2, layer_masks_parent2);
+-
+-			/* Stops when all accesses are granted. */
+-			if (allowed_parent1 && allowed_parent2)
+-				break;
+-
+ 			/*
+ 			 * Now, downgrades the remaining checks from domain
+ 			 * handled accesses to requested accesses.
+@@ -865,15 +856,32 @@ static bool is_access_to_paths_allowed(
+ 			is_dom_check = false;
+ 			access_masked_parent1 = access_request_parent1;
+ 			access_masked_parent2 = access_request_parent2;
++
++			allowed_parent1 =
++				allowed_parent1 ||
++				scope_to_request(access_masked_parent1,
++						 layer_masks_parent1);
++			allowed_parent2 =
++				allowed_parent2 ||
++				scope_to_request(access_masked_parent2,
++						 layer_masks_parent2);
++
++			/* Stops when all accesses are granted. */
++			if (allowed_parent1 && allowed_parent2)
++				break;
+ 		}
+ 
+ 		rule = find_rule(domain, walker_path.dentry);
+-		allowed_parent1 = landlock_unmask_layers(
+-			rule, access_masked_parent1, layer_masks_parent1,
+-			ARRAY_SIZE(*layer_masks_parent1));
+-		allowed_parent2 = landlock_unmask_layers(
+-			rule, access_masked_parent2, layer_masks_parent2,
+-			ARRAY_SIZE(*layer_masks_parent2));
++		allowed_parent1 = allowed_parent1 ||
++				  landlock_unmask_layers(
++					  rule, access_masked_parent1,
++					  layer_masks_parent1,
++					  ARRAY_SIZE(*layer_masks_parent1));
++		allowed_parent2 = allowed_parent2 ||
++				  landlock_unmask_layers(
++					  rule, access_masked_parent2,
++					  layer_masks_parent2,
++					  ARRAY_SIZE(*layer_masks_parent2));
+ 
+ 		/* Stops when a rule from each layer grants access. */
+ 		if (allowed_parent1 && allowed_parent2)
+@@ -897,8 +905,10 @@ static bool is_access_to_paths_allowed(
+ 			 * access to internal filesystems (e.g. nsfs, which is
+ 			 * reachable through /proc/<pid>/ns/<namespace>).
+ 			 */
+-			allowed_parent1 = allowed_parent2 =
+-				!!(walker_path.mnt->mnt_flags & MNT_INTERNAL);
++			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
++				allowed_parent1 = true;
++				allowed_parent2 = true;
++			}
+ 			break;
+ 		}
+ 		parent_dentry = dget_parent(walker_path.dentry);
 -- 
 2.50.1
 
