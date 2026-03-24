@@ -1,160 +1,151 @@
-Return-Path: <stable+bounces-230052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DfDGEcdwmlvZgQAu9opvQ
-	(envelope-from <stable+bounces-230052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 06:12:39 +0100
+	id eA6mFCUrwml5ZwQAu9opvQ
+	(envelope-from <stable+bounces-230053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 07:11:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70183022AF
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 06:12:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A88A6302A3C
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 07:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81FDC30B47A0
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 05:09:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A7803118678
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 06:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD1C242D70;
-	Tue, 24 Mar 2026 05:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33B43B2FEC;
+	Tue, 24 Mar 2026 06:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="HZQAAmQQ"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V1uJJN4w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8EF1DF261
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 05:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774328990; cv=pass; b=sanDFxyud5eALF2e8pHHaxHoPF0ofVSbrAyS6XjKPmZt+9sLHECLq95rOzlJOWCFpSqH2SsBWZMCj3OjWQWwjbyOMT9DHRPL8fWWm5pBvf/LfgjP3ij7aVmnvmyetktmDXR1hZ/DMo6gJMZckZ9k8JPMepXyN2rzrMQSUbnDk68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774328990; c=relaxed/simple;
-	bh=IfqcTmHDAWE8rS1BtGDDkbjcR8fgsXNjMuHL1a4N0zA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hez8IKZPuRTaXkQChBUOw+vfK2vY78Dy3s8yYUt7nMbl4JZLzj11xrquez8Z6e0dfpErik+o6sAfMxjDioKQrWIcSbcBeKi6B5BiYOHY16e+dzmp6n0Vik2rTMOXrmXvAsRkdkbdC12KWhDTNhgED46/SeYugYEl8TpH73Bd9oE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=HZQAAmQQ; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b9358bc9c50so137038666b.1
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 22:09:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774328987; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cCTZIwr4bko5eF4soAsG6ZnoItqco7+D+B4ktEoJBJMc/4s7e7dYjqtaYSHd6+ngQd
-         lJQFCq37vumzZy50Gs2bN4sCc0MiO/VOJh41fg1eBOPbUKeq5IJ61gRoCoWJnKQ/Pwy+
-         NOZkJLjQMexyUe1dovj1kre9F4o6v7han1rivoTFfFlMY7MQg686xkU/9H5k5gXvu0HC
-         kKwq0fOKu8jW1XE9SnZtB2sD6lgwMsyyFYR35xy8D47PjL6UpS916auaSvxqEjicncFW
-         ppyrpltiuPVnCJmc4IJyvbwKR/LxwK8oiLkRK7n6Jn2R82zQLv8puXnL/VDLkHhmZ59i
-         jCyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=MI3TsyI/afRVwYVxFYP2teMBdppIdDJRMOYMsQlLkN0=;
-        fh=ltapmLRMzyKZTRFlV4NGQgGz2bEART/PBuc1EPz6pE8=;
-        b=dj+A68XoAGi+hT6FfICx0QzvhI+sS4JF9cfyE8Abzljc5HIRmu8OkOzTiTefU0tvcn
-         MDr7JE/PVxp5JMUxexbTjSZA5JcacbrJPcazVuc6X4lPEd0n10ZZ7i2qgiCkrd7fWMIL
-         NLIcytsB/koERDDQVerifbBiKFg0hdYQepgHGff1etRpgPLmQc995yrbo30l4jp8j4Yw
-         ly+3N3J2Hbpk7Ch7syu/7MBOsvWZ5+aB7GrxEau3Wj/0iMJdiS+saaV3v/+2Jmguf+6a
-         GYaS3yv4ri5elRlGNTBsY7+skUOyvm7gJqiaMY4RHDfygviSx6BKNo78k1wpat7k11Rc
-         WozA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1774328987; x=1774933787; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MI3TsyI/afRVwYVxFYP2teMBdppIdDJRMOYMsQlLkN0=;
-        b=HZQAAmQQNrgwWqwAHACBQBIYyk1SByUANqeIMOk8xP0Eg6c5sRewwxzQNQzhFIs1zm
-         WWiFVGc24lloBP/OV4e3ur1BQiDcImlcsdGkvC7K0XVSsXgM+alxyC4fWexBOaRlA5W3
-         wYB81RC2FZNKITYrA3+0qOMausGwz1k2a6m47l7p4OcIrRdCVNdFSlnRBHHnjISIayoo
-         K8FUOUT+7DJu7gqwAdlozG7Mx9vnxTXCXarqNl2irgPghxPwlrnotZ42EoqBxEjgKNW1
-         FwlPwq7ukvmQV9kuNWiQfzbYCdqpfT1vAPSm3XuRBE59EEHhC+dgKrRDqEAJQoXkARi7
-         sgDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774328987; x=1774933787;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MI3TsyI/afRVwYVxFYP2teMBdppIdDJRMOYMsQlLkN0=;
-        b=PXF5LF03hAgSrpRiqIAYc7BObSeVPZOYptu8aEqIn18ORGVqUSkOuBFBwObYDoPXNA
-         ArTLGh3A0xcFWw7Ry0CpTMWtDmWBT2ZdJTNzyqXEQuXgAjfOdSVypZk8rXnueuh1769n
-         TMFt5bHBWB62qDibx4MGXXqocCAmi/z7SahP7Hyh5lyz8dm9y7zAZPhVmtarH57Gx8kt
-         XLnCnfUf9UFi2IPcUsJLWH3MdA3OI8GMPjY38xIWLkj250QxH/Aj4unC9qVkSp7SflMm
-         xZ1ZP0eCQAIPyIKXBa0tgqzTFzdy9udaMcyyZIVj6Y9fa2PMAZ4hd4nat0Ha62Y0CJAz
-         W3Nw==
-X-Gm-Message-State: AOJu0YwOnMSp4ZdiKyF6VsqFY0vNxI3sjpXBZEwaWvTqjRSHVtrwc/8H
-	OvCmKyzIRdNcb40AGLEIquKcvQ/hhjkJPJ3dDQAXmF6zzfDTeOtwN+KdP1VxtWGhAIGaHBvJibd
-	w5L3aDNR4kIvVMnONJxSqxuQLK4bZT82M37+R8I2WSg==
-X-Gm-Gg: ATEYQzz3G77LB+JMqpjZhGuR4jfk6jrxMEA6wQ/Vy+cFdRgFa63E2FRGkoaUuSJBxbl
-	t0hkw7UX52APICjfQaSDbm792vaBESGHxDERj38O3eJUpbEZxfqzTlZTIcYlDuhnoRwSbBEdGqG
-	C4kswxrGLs68D8uT+liv77OGvrg5cj8HbKRBs+4bplLrO4tlk39IgbqOf5Ux5juVYckvsEOYcM5
-	bTILmb4w/Qj8TsZqaQJ35Koa4zZugbLIG+dFAD2wpUdFHh0xZ22quMbPhzTMPwjSEa7u8It3Vlb
-	Dj3rsuXgIrMGB9c34w4cCi+jplQqSTeRheu070d6jcMxNRrLDPayxhYo3bwJHZ3ywkQXbgo=
-X-Received: by 2002:a17:907:3e1e:b0:b98:57ab:3c44 with SMTP id
- a640c23a62f3a-b9857ab3fa7mr543257366b.7.1774328987437; Mon, 23 Mar 2026
- 22:09:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71E3AA4F7;
+	Tue, 24 Mar 2026 06:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774332273; cv=none; b=macCauwP7JFLUTNE0S/U1RzB+WDnuHdb5LvvKqxoRA9sjwiuazHpJ5lMNlg4Vie4kwdjAjXd0VzSpsClpJs0v8jesTKrPzukGcoNQHSuxUfcv33ySHmfyHq14IplQS1fIPypvgyvdWjmo5xb/nwf3lbp+klt967BRf6H1GVyvS8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774332273; c=relaxed/simple;
+	bh=46mKEmqJ7If9n6oOQLlB27h455jj6EdxRIvtHJgTEo0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hFytGNp7KuQsyj5+pXKJseNwmrDmkPRQvCAdaToZcNZ8kw0Y6EcaJEQIGxJizX7cQTwqvt+OjWvu0Q1G9XHTgXNXjc5CNR0T+HmTPg25LAfE9PBbYEzO9IWdNwmj2FwEzfKP99liSAKd5ZI8ib9NJtCEqANa6cx7F01HPUm0Yzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V1uJJN4w; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=IN
+	uffQ2bP82R6qrvw57oC8K0VZlNzr1HNS+Vrn9bxsA=; b=V1uJJN4wnePmsA8Q+f
+	XvG+Qb2PVZiaYk8Y+m4n3uufLbr4cxHsIhElapq8P61e9hebHfay5h8msFCkuSZt
+	12b+9wBcmFzIedwzphfLZ1nqxTWQm/MItVF634yRJlpcph/sJMhlzNLoI61zyXhR
+	7x5K0ldrVEpn23ljE8emv90SA=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3f63sKMJpJvBTBA--.36472S2;
+	Tue, 24 Mar 2026 14:02:21 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] wifi: iwlwifi: read txq->read_ptr under lock
+Date: Tue, 24 Mar 2026 14:02:20 +0800
+Message-Id: <20260324060220.1192543-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323134503.770111826@linuxfoundation.org>
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Tue, 24 Mar 2026 10:39:10 +0530
-X-Gm-Features: AaiRm51ycle4Dlzbyh1AtKW1eSsjfY-4H5rWphYFfb47-MTxxAPUDLCeC905FS8
-Message-ID: <CAG=yYwmCMf3konCjMAL2rE6-q=CHHLtouV7C5aDPHnpKqKLUkw@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/212] 6.18.20-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	lkml <linux-kernel@vger.kernel.org>, torvalds@linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Shuah Khan <shuah@kernel.org>, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
-	Slade Watkins <sr@sladewatkins.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3f63sKMJpJvBTBA--.36472S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJry3WrW7Aw43CF1xWr1DGFg_yoW8ZF4Up3
+	sa9r4jgrs5XFsrC3y8XF4S9rnIqa1DGanIkFyF9wnIvr13Jr1S9rWF9ryUtFyUtr4SvrWY
+	vF1jyFs8GF1UZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRSD77UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAg5Qu2nCKO4DywAA3C
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230052-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-230053-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[intel.com,163.com,codeaurora.org,davemloft.net,kernel.org,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rajagiritech.edu.in:email,rajagiritech-edu-in.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B70183022AF
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A88A6302A3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-hello,
+From: Johannes Berg <johannes.berg@intel.com>
 
- Compiled and booted  6.18.20-rc1+
-No new typical dmesg regressions
-.
+[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+If we read txq->read_ptr without lock, we can read the same
+value twice, then obtain the lock, and reclaim from there
+to two different places, but crucially reclaim the same
+entry twice, resulting in the WARN_ONCE() a little later.
+Fix that by reading txq->read_ptr under lock.
 
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Change read_ptr definition according to commit
+413be839bfca9("wifi: iwlwifi: add a validity check of queue_id in iwl_txq_reclaim"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---
-software engineer
-rajagiri school of engineering and technology-
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index cd852b95d812..d8322a40409b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1524,7 +1524,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ {
+ 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
+ 	int tfd_num = iwl_txq_get_cmd_index(txq, ssn);
+-	int read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
++	int read_ptr;
+ 	int last_to_free;
+ 
+ 	/* This function is not meant to release cmd queue*/
+@@ -1532,6 +1532,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 		return;
+ 
+ 	spin_lock_bh(&txq->lock);
++	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
+ 
+ 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
+ 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
+-- 
+2.34.1
+
 
