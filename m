@@ -1,203 +1,277 @@
-Return-Path: <stable+bounces-230161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJcrL9+TwmkXfAQAu9opvQ
-	(envelope-from <stable+bounces-230161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:38:39 +0100
+	id wPIeJK6VwmkXfAQAu9opvQ
+	(envelope-from <stable+bounces-230162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:46:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C233098F4
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:38:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E90309A98
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 14:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32EBD316A857
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 13:32:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7BC4F308CC75
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 13:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E989372ED6;
-	Tue, 24 Mar 2026 13:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4833C3D6CAB;
+	Tue, 24 Mar 2026 13:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MV0Q8U4U"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2TI68cai";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vdNbABGF";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2TI68cai";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vdNbABGF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D723264EF
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 13:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774359125; cv=pass; b=ukcFeCI7VpzXRwwq+cGY5PdHpvC0GxHENyenjmMoraUuOY5rzJI/liuk7S08oEh/xoTTs7Q6EoRKLK5DMkUQtU/tBNMgJ6uzLuL9Opz6sMbs+xl7OZdV6TxSlZnXcGUlohXJpGTJKVaC8h9QyF44iicakowgpTldQlh60o8n3LI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774359125; c=relaxed/simple;
-	bh=LWeIZ6enY1JbVgBJgC9UO6sV5H5N7YoQorzdHRagQO4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l6d6jjIIhhWfWRi8ycuMjU6bTqCBYg+Yqh66X9zMgS6/BbQ/nfbgG7Yb7USjWgo8R9r4bYsAfruiBG0kyjBBXHbb8rPmCnbiDxZRTcD2xRleDAVQyPoOe/bEhMVhenHbkeo7gfB+InCc+IqP1e9CGHa5QODP5Rg7YmXYqsiT/cs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MV0Q8U4U; arc=pass smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12a70b4de9bso247352c88.3
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 06:32:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774359123; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gP+1vauTBhqcraoDEU2uZRpWW6m/5ugv3canLpF9agBf6zroUqE5wZoezOKmTpUXnJ
-         ol59WfYL7lMXBKXCxzI0XCHt+ryHyZpa0aFNvTdzSPNc1BPem5TmvoMPk9ZA47fKEJhs
-         tVxApCqYY8PXtrsfNg6tnjnTeK4tnWDFsYD+vE5hJJVUoeZLeo31Mjt9kt2d44MtUSdF
-         +N0iCxqF27tsp7TJ7v7c66FmZ/nCdJ/OIbMH/O2NKJFQedftTTP78i+dNUDVJOOjbpuu
-         xQqHkfmRNArTTVHYkxhCGXstmy5LrOz0V2IHA/fC81QNTbOhLDF/Vu3FJ7jIekPimgTu
-         pLOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=j5883fLgA4Kxp5uDjU6jNZrlbfEleppgZMvpZ9qx8xQ=;
-        fh=AWYoNYFPpZ1revFnYq0Qg9XN2ruOjZEacxgrUa1dJWQ=;
-        b=GI+OLfEg5j+dICQeLXjusAvHatJtwKas13mc1riDoq0xsCJzXnhN1c2/WY1JnEEAsI
-         vTTP8v0hXsw5sOfUejUEVBqzRYIzWKykknKcu2rCQDGd8S6C9oqT9t3nkJZOP90jMTCm
-         MfMGVkzH7qBhQ8CvalXLk9wKOOhSm8tIUCFgIMOIrWD3j0kgrD4cpzM6AyLM33H9H9hY
-         7NO0bXRXOz5qCmp7rlsgvlByv0MR4j0rKrvAxfSiiPD48tgcMyPNQSR6DZ6wGd3fSeLp
-         QzJOkqldHLk8V7Tvl/EIx9VQ3j8NsjeISYsRmLoMnmHKwOq3ZMF5bokp0ZIjZyFKnWZ9
-         yjwg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774359123; x=1774963923; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j5883fLgA4Kxp5uDjU6jNZrlbfEleppgZMvpZ9qx8xQ=;
-        b=MV0Q8U4UdR8LJR7aDHK2nIdwga1jrEJK4wyDVJd6G0QJrd+cmPMKQs/cZBCqcgfAGD
-         UNNvyJqE9oPOaCi/airXZKhW4yDJf5hemRtLUXEY1EeD405miPmFRqBq58CsbT30bA4d
-         W2fBBJxMAEyt6mZBCKSUPlu+gmxYacEisoKVBs/QyNfETERCrmmx+I1GyFJeuIYTW7/e
-         pSgeAMoi4bDv569zjFc4KoAq2+JvjzYEb05niJ8Tq1A19iKhvB2apVRcQkCxpab9L2kX
-         YVXaGT010xtiXSN5eSukUTygkrn9mmJUNVKw94xXsZaQUpGHPh78hTSOYNM6LgC8ZYaB
-         yZ/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774359123; x=1774963923;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=j5883fLgA4Kxp5uDjU6jNZrlbfEleppgZMvpZ9qx8xQ=;
-        b=tDrFKNnjbLjclgC//GeeJcvVU0vDT1pGjJObPPC3zQGI6fHqHZ3956tqcEZIxIWHdc
-         chami7svIa27z1DJJw3YwPmJ2dmWkKyi7q3OYHzTDZB/MsJf7jkiV42z8StXZ9zT6PDl
-         1ruvjjLCCQVSlfsHRQfhlHdBTmMYcOwERQOGgnpJMcU29T14ZCl6/d24o1k/3YXoQknJ
-         oaY7Y+5kczD2KyO8rQCugQIMQkKeMGOMUDUIXZ4q+2vmg7sFXr4P+8FqEHFY1Z57YHi1
-         /xy9HssCFzUxU9VkGIFCEv3i0YmhpjWEnd5XGPFMBR1u+5FOd2CpY6YuPz8uvlcOyd2b
-         q8BA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQpvYK9FvDDtHhXFB4WVimCpScQXb568CHXmINdS0l/GdTwyN6FC8VKRExtSL3g0OnPuxQgr0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxze1HjY8vfMgNi6GL0kF5O7MtTVc8wq1QRYQFXJ8TwzMu4AiRP
-	rxWGJ/vTv1jZJ2YsX5bdeTzM9V7MuV3JGZFZ+apwXHonyYFYz4Qpls4qcm1HeUNMlCmizGZ+06W
-	BL9eqS6GRfsGZpNPsdt5VkTZpi5lz1iE=
-X-Gm-Gg: ATEYQzzcaZ0PBzQU9E8T+7UwMb1UEtMeKt104FggriyXkz3TtyuEsmSkYDgcTaRlhtw
-	W3vsQXxzAzMB6Jex9AD4tGhtpiK5KPgDrvpuc/zwLBFbWE89CAkNtE7XIorrJ6SyYSPDfrUSKyB
-	2tV04rIS3vt8zEv6md7CbIBM+WEOv2R4qUo3Luq5XTjZy79ffXSZObw49ZzprBuTzwnrayc+4eE
-	n8iXVXE82qX5cYL6CBZJJPLEVQj+UUEYPyHKJy1Npku52EADmiX3aacLfnJYx/abCNK4h8AwAke
-	GlGS1pi+jXDDb4ixwpS08qGNidNHns47HUdTi0by9KxzPzLMaKQMrfIRp/+dQITT01x7Ow==
-X-Received: by 2002:a05:7022:60c:b0:127:def:dd72 with SMTP id
- a92af1059eb24-12a72646221mr3600922c88.2.1774359123172; Tue, 24 Mar 2026
- 06:32:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997C33FCB20
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 13:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774359643; cv=none; b=c1vqed0VkmuT8yB9RaowWqQN3GeD0//7GLJX3E/VB6EXc83PoE2mBmebPmUyFx8lyNBlkYHsIatCO+8IOFYPT1wTk2UG6tcueI4Qx8GyJAGBCX2BBV/brKQ/V9gDun47K8vcmAaVEofiWDyGVMhheuJUuRaJ2czxzVipGHdsNDY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774359643; c=relaxed/simple;
+	bh=DB8sj3O8zIEtdMglYDNzhkPxuBV4sfXtfqTz2jAOpAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u5hAN7rtQM8ZStJi4RSCsyivsQTNZQcHn1nBNGbgMdbHt0GAzfn/5PJwYX48TdmT2j3BRQr5tcwDy+bCG2Z6/TuYA3HRPX1ciZooiG/T1+jp9ztjUJ5amnl1SeTy59s3spDc7ZxmucVYKQ9mDr22OnZuK/fvp60MZvuMSKX7BFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2TI68cai; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vdNbABGF; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2TI68cai; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vdNbABGF; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 058235BD26;
+	Tue, 24 Mar 2026 13:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774359640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HEowlndxnuwsn9HVqNtXyXIZr2cj2jqZ1HgraebDcfs=;
+	b=2TI68cai5rioLLy0ZZ330ZUge44UFBQsHbCkZl7YwCrfRT66dc6q1zojWFsinWKnoErymc
+	LvXTq7E7EeunhRBMjVcwVbOEHhpHt0pCdfFFsWMTh8AOYURPp9ztWQpir2+VAotMO1hdNy
+	GNscK9D6P/uIGJdrSoDgWpZmkvb96qc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774359640;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HEowlndxnuwsn9HVqNtXyXIZr2cj2jqZ1HgraebDcfs=;
+	b=vdNbABGFHKDCaDxTQMMeApArn1cqYrZ1T4FBVLDCDnW6wmuUCuW5giIBhkXKriBLqY0Lqm
+	rwJS20YMV8ZlLgBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774359640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HEowlndxnuwsn9HVqNtXyXIZr2cj2jqZ1HgraebDcfs=;
+	b=2TI68cai5rioLLy0ZZ330ZUge44UFBQsHbCkZl7YwCrfRT66dc6q1zojWFsinWKnoErymc
+	LvXTq7E7EeunhRBMjVcwVbOEHhpHt0pCdfFFsWMTh8AOYURPp9ztWQpir2+VAotMO1hdNy
+	GNscK9D6P/uIGJdrSoDgWpZmkvb96qc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774359640;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HEowlndxnuwsn9HVqNtXyXIZr2cj2jqZ1HgraebDcfs=;
+	b=vdNbABGFHKDCaDxTQMMeApArn1cqYrZ1T4FBVLDCDnW6wmuUCuW5giIBhkXKriBLqY0Lqm
+	rwJS20YMV8ZlLgBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA8B643E77;
+	Tue, 24 Mar 2026 13:40:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jhQ4OVeUwmksNgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 24 Mar 2026 13:40:39 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id AA894A0B32; Tue, 24 Mar 2026 14:40:31 +0100 (CET)
+Date: Tue, 24 Mar 2026 14:40:31 +0100
+From: Jan Kara <jack@suse.cz>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jan Kara <jack@suse.cz>, Brian Foster <bfoster@redhat.com>, 
+	Yongjian Sun <sunyongjian1@huawei.com>, Matthew Wilcox <willy@infradead.org>, 
+	Gou Hao <gouhao@uniontech.com>, Theodore Ts'o <tytso@mit.edu>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Zhang Yi <yi.zhang@huawei.com>, Baokun Li <libaokun1@huawei.com>, 
+	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
+Message-ID: <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260324073447.GA5062@francesco-nb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <SYBPR01MB78816FAF00EC3DADFA588E0CAF48A@SYBPR01MB7881.ausprd01.prod.outlook.com>
-In-Reply-To: <SYBPR01MB78816FAF00EC3DADFA588E0CAF48A@SYBPR01MB7881.ausprd01.prod.outlook.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Tue, 24 Mar 2026 09:31:51 -0400
-X-Gm-Features: AaiRm5082bmB1vEFeF97G50_iqqBjFx7HoPxAOrnxaX1HwxWGKygBeGTgapRc_0
-Message-ID: <CADnq5_N83j3ZjNKXH2K8jEod0s64JB_pdugGsx4AURoPjpveSA@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu: validate doorbell_offset in user queue creation
-To: Junrui Luo <moonafterrain@outlook.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Shashank Sharma <shashank.sharma@amd.com>, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324073447.GA5062@francesco-nb>
+X-Spam-Score: -2.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230161-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-230162-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email];
+	DMARC_NA(0.00)[suse.cz];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[30];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,suse.cz,redhat.com,huawei.com,infradead.org,uniontech.com,mit.edu,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexdeucher@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email]
-X-Rspamd-Queue-Id: 29C233098F4
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 03E90309A98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Applied.  Thanks!
+Hi!
 
-On Tue, Mar 24, 2026 at 5:49=E2=80=AFAM Junrui Luo <moonafterrain@outlook.c=
-om> wrote:
->
-> amdgpu_userq_get_doorbell_index() passes the user-provided
-> doorbell_offset to amdgpu_doorbell_index_on_bar() without bounds
-> checking. An arbitrarily large doorbell_offset can cause the
-> calculated doorbell index to fall outside the allocated doorbell BO,
-> potentially corrupting kernel doorbell space.
->
-> Validate that doorbell_offset falls within the doorbell BO before
-> computing the BAR index, using u64 arithmetic to prevent overflow.
->
-> Fixes: f09c1e6077ab ("drm/amdgpu: generate doorbell index for userqueue")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c b/drivers/gpu/drm/=
-amd/amdgpu/amdgpu_userq.c
-> index 7c450350847d..0a1b93259887 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-> @@ -600,6 +600,13 @@ amdgpu_userq_get_doorbell_index(struct amdgpu_userq_=
-mgr *uq_mgr,
->                 goto unpin_bo;
->         }
->
-> +       /* Validate doorbell_offset is within the doorbell BO */
-> +       if ((u64)db_info->doorbell_offset * db_size + db_size >
-> +           amdgpu_bo_size(db_obj->obj)) {
-> +               r =3D -EINVAL;
-> +               goto unpin_bo;
-> +       }
-> +
->         index =3D amdgpu_doorbell_index_on_bar(uq_mgr->adev, db_obj->obj,
->                                              db_info->doorbell_offset, db=
-_size);
->         drm_dbg_driver(adev_to_drm(uq_mgr->adev),
->
-> ---
-> base-commit: c369299895a591d96745d6492d4888259b004a9e
-> change-id: 20260324-fixes-9ee6cab7bc47
->
-> Best regards,
-> --
-> Junrui Luo <moonafterrain@outlook.com>
->
+On Tue 24-03-26 08:34:47, Francesco Dolcini wrote:
+> On Mon, Mar 23, 2026 at 02:39:42PM +0100, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.167 release.
+> > There are 481 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
+> > Anything received after that time might be too late.
+> 
+> Not ok
+> 
+> I have an ext4 Oops on arm
+> 
+> [   27.908560] 8<--- cut here ---
+> [   27.911697] Unable to handle kernel NULL pointer dereference at virtual address 00000000
+> [   27.919880] [00000000] *pgd=00000000
+> [   27.923482] Internal error: Oops: 5 [#1] SMP ARM
+> [   27.928117] Modules linked in: 8021q cfg80211 imx_sdma coda_vpu v4l2_jpeg imx_vdoa dw_hdmi_ahb_audio fuse
+> [   27.937784] CPU: 1 PID: 736 Comm: tar Not tainted 6.1.167-rc1-6.8.6-devel+git.67c872a868ac #1
+> [   27.946342] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+> [   27.952889] PC is at ext4_mb_load_buddy_gfp+0xac/0x438
+
+Can you run this through "addr2line -i" to get exact position in that big
+function? Because from a quick look it doesn't ring a bell...
+
+								Honza
+
+> [   27.958083] LR is at 0xe0f39b18
+> [   27.961248] pc : [<c035bc54>]    lr : [<e0f39b18>]    psr: 000f0013
+> [   27.967536] sp : e0f39b60  ip : 00000000  fp : c43046f8
+> [   27.972781] r10: 00000001  r9 : 00000c40  r8 : 00000016
+> [   27.978025] r7 : 00000016  r6 : c2b24000  r5 : e0f39bcc  r4 : 00000000
+> [   27.984574] r3 : d21b9611  r2 : d21b9611  r1 : c4277e40  r0 : 00000000
+> [   27.991123] Flags: nzcv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+> [   27.998287] Control: 10c5387d  Table: 131c804a  DAC: 00000051
+> [   28.004050] Register r0 information: NULL pointer
+> [   28.008787] Register r1 information: slab radix_tree_node start c4277e40 pointer offset 0
+> [   28.017024] Register r2 information: 0-page vmalloc region starting at 0xd0000000 allocated at iotable_init+0x0/0xf4
+> [   28.027619] Register r3 information: 0-page vmalloc region starting at 0xd0000000 allocated at iotable_init+0x0/0xf4
+> [   28.038199] Register r4 information: NULL pointer
+> [   28.042930] Register r5 information: 2-page vmalloc region starting at 0xe0f38000 allocated at kernel_clone+0x88/0x338
+> [   28.053693] Register r6 information: slab kmalloc-1k start c2b24000 pointer offset 0 size 1024
+> [   28.062369] Register r7 information: non-paged memory
+> [   28.067449] Register r8 information: non-paged memory
+> [   28.072527] Register r9 information: non-paged memory
+> [   28.077605] Register r10 information: non-paged memory
+> [   28.082771] Register r11 information: slab ext4_inode_cache start c4304620 pointer offset 216 size 60
+> [   28.092056] Register r12 information: NULL pointer
+> [   28.096875] Process tar (pid: 736, stack limit = 0x116a0825)
+> [   28.102562] Stack: (0xe0f39b60 to 0xe0f3a000)
+> [   28.106955] 9b60: e0f39b5c 00000000 c0c1b414 c2916000 c2b24000 c42e55d8 c2b24000 c29162a8
+> [   28.115162] 9b80: 00000048 c4589000 0000000b c035f804 00000001 00000001 00000001 c2b24000
+> [   28.123368] 9ba0: c2916000 0000001d 00000010 00000000 00000009 00000024 00000000 00000000
+> [   28.131573] 9bc0: c2b92300 00000001 00000000 00000000 e0f39d30 00000000 c2b92300 c42e55d8
+> [   28.139778] 9be0: c2b24000 0000000c 0000000b d21b9611 00000000 c4589000 c2b24000 e0f39d30
+> [   28.147983] 9c00: 00000001 c2916000 00000000 c42fbf60 00000001 c03628c0 00000001 00000000
+> [   28.156188] 9c20: e0f39d14 c2b92300 00000001 00000000 00000029 00000000 00000000 c03328b4
+> [   28.164393] 9c40: 00000000 00000000 c4886a60 c033be7c 00000000 c0294008 00000000 00000000
+> [   28.172597] 9c60: c48867d0 d21b9611 c2b92300 00000001 00000001 c2916000 00000000 00000000
+> [   28.180802] 9c80: 00000000 c48868a8 e0f39e10 c0336970 e0f39d24 47ffffff c2b24000 00000000
+> [   28.189007] 9ca0: c48868a8 00000000 e0f39d88 c0330844 00000000 00000001 c2b92300 c42fbf60
+> [   28.197212] 9cc0: e0f39d88 ffffffff 00000000 ffffffff c308da80 00000000 00000001 c308da98
+> [   28.205416] 9ce0: 00000000 c03362f4 ffffffff ffffffff 00000008 00000010 00000000 cf358340
+> [   28.213620] 9d00: c42fbf60 00000000 c0c1b2c8 00000000 c308da80 00000000 00000000 c4540001
+> [   28.221825] 9d20: 00000000 c0395154 c2b92300 000009dd c48868a8 00000001 00000000 00000000
+> [   28.230029] 9d40: 00000000 c034c0c0 00000000 00000000 00000000 00000000 00000000 00000000
+> [   28.238234] 9d60: 00000000 00000000 c4886a60 d21b9611 00000020 e0f39e10 c48868a8 00000000
+> [   28.246438] 9d80: 00000001 c42fbf60 c2b92300 00001000 00000000 c034ccdc 00000000 00000000
+> [   28.254642] 9da0: 00000000 00000000 c42fbf60 c4886890 00000000 00000000 c48868a8 00000000
+> [   28.262847] 9dc0: c4886a60 00000000 ffffffff e0f39e70 ffffffff 47ffffff 00000000 d21b9611
+> [   28.271052] 9de0: c2b92300 c48868a8 c48868a8 c42fbf60 c2b92300 00000000 00000001 00001000
+> [   28.279256] 9e00: 00000000 c034dc98 c48868a8 c038d7f4 00000000 00000000 00000000 00000001
+> [   28.287461] 9e20: 00000000 cf358300 00000000 d21b9611 c48868f0 c48868a8 00000000 c42fbf60
+> [   28.295666] 9e40: c2b92300 e0f39ec0 00000001 c034ded0 c48868a8 00000000 c42fbf60 c0367fec
+> [   28.303871] 9e60: 0000001d 000041ed 00000000 c42ffcd8 00000000 00000000 00000000 00000001
+> [   28.312076] 9e80: 00000000 c48868a8 69c15bf6 d21b9611 119d9a05 c48868a8 c2b24000 00000000
+> [   28.320281] 9ea0: 00000000 c42fbf60 c2b92300 c036e134 00000000 c036b544 00000000 c43043e8
+> [   28.328486] 9ec0: 00000000 d21b9611 0000000c c48868a8 c48868a8 c42fbf60 c43043e8 c0c1bc80
+> [   28.336690] 9ee0: 000041ed c2b92300 c120d3e8 c036e410 c42ffcd8 00000000 00000000 00000000
+> [   28.344895] 9f00: 00000004 00000bfa 00000027 c02a9b20 00000000 00000027 c42ffcd8 c42ffcc0
+> [   28.353100] 9f20: 00000000 d21b9611 00000002 c43043e8 c036e298 c120d3e8 c42ffcc0 00000000
+> [   28.361305] 9f40: 00000002 c2b92300 be83b824 c02ab1a0 c34dc010 d21b9611 01db0478 c34dc000
+> [   28.369510] 9f60: c42ffcc0 c34dc000 ffffff9c 000041ed 00000000 c02b0268 be83b824 c20c6910
+> [   28.377715] 9f80: c42e2a18 d21b9611 01db0478 01db01f8 00000000 00000027 c01002e8 c2b92300
+> [   28.385920] 9fa0: 00000027 c0100080 01db0478 01db01f8 01db0478 000041ed 00000020 00004000
+> [   28.394124] 9fc0: 01db0478 01db01f8 00000000 00000027 00000000 00000007 01db01f8 be83b824
+> [   28.402330] 9fe0: 00545dbc be83b754 004f9b0b b6e5ff98 600f0030 01db0478 00000000 00000000
+> [   28.410535]  ext4_mb_load_buddy_gfp from ext4_mb_regular_allocator+0x318/0xee0
+> [   28.417826]  ext4_mb_regular_allocator from ext4_mb_new_blocks+0x724/0x1000
+> [   28.424847]  ext4_mb_new_blocks from ext4_ext_map_blocks+0x7d8/0x1600
+> [   28.431351]  ext4_ext_map_blocks from ext4_map_blocks+0x21c/0x604
+> [   28.437492]  ext4_map_blocks from ext4_getblk+0x68/0x298
+> [   28.442844]  ext4_getblk from ext4_bread+0x8/0xa0
+> [   28.447587]  ext4_bread from ext4_append+0x98/0x1b4
+> [   28.452514]  ext4_append from ext4_init_new_dir+0x7c/0x1e0
+> [   28.458061]  ext4_init_new_dir from ext4_mkdir+0x178/0x384
+> [   28.463608]  ext4_mkdir from vfs_mkdir+0xcc/0x168
+> [   28.468364]  vfs_mkdir from do_mkdirat+0x80/0x104
+> [   28.473107]  do_mkdirat from ret_fast_syscall+0x0/0x54
+> [   28.478285] Exception stack(0xe0f39fa8 to 0xe0f39ff0)
+> [   28.483367] 9fa0:                   01db0478 01db01f8 01db0478 000041ed 00000020 00004000
+> [   28.491573] 9fc0: 01db0478 01db01f8 00000000 00000027 00000000 00000007 01db01f8 be83b824
+> [   28.499775] 9fe0: 00545dbc be83b754 004f9b0b b6e5ff98
+> [   28.504856] Code: ebfbad72 e3700a01 e1a04000 8a00005d (e5903000)
+> [   28.511102] ---[ end trace 0000000000000000 ]---
+> 
+> 
+> The bug is not systematic, and I do not see myself having the time to
+> bisect it in the next couple of days (it was reproduced by our CI / Lava
+> infrastructure).
+> 
+> I have added some of the ext4 folks to this thread, in case they know
+> how to help.
+> 
+> Francesco
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
