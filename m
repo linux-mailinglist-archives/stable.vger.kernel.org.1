@@ -1,160 +1,192 @@
-Return-Path: <stable+bounces-230211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHg8FwTYwmllmgQAu9opvQ
-	(envelope-from <stable+bounces-230211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:29:24 +0100
+	id KLgRO1Lcwmm0mwQAu9opvQ
+	(envelope-from <stable+bounces-230212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:47:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8A131AD76
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:29:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EAD31B0A2
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 19:47:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE0DC30EAEB6
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 18:26:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DB3830989DC
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 18:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3723A3E6C;
-	Tue, 24 Mar 2026 18:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7793F65FD;
+	Tue, 24 Mar 2026 18:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cfg+JLpx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="owWV3YyU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED9A391E46
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774376801; cv=none; b=E4LwFmSy+/26cnW6mgHgAPtNsTTHULKR0couIEHps4smFEkuHsnYmYKzrRNjgM4FRtNdDvwBFIVvvWixhs7QwXUeGEV6IssQq7Ag8lSuOv4OPUjEIlTeBEU2DS+/60vQwPe8wxXSnFPjPoBW+V0Oe+5BljZXyPf4nVIMceGKUJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774376801; c=relaxed/simple;
-	bh=GGfOKD68lU4mO+i2u+k2K6Xe8E5Qh/5WTgVtHzuV028=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F7C3F076E
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774377830; cv=pass; b=W6HBy3e9k4GE3Sq9O3y2PuLkq1/6AC2Ygu20Na+tUgJBGdp0S0z5FbTHQpsCtTM8y/N143MnhSCgNJbxy7jqyGNrmcjUixbdGYrY1wpP6SwHCPjMcD6YaMK3lUgQf6hnb9VdSyUskwLKyVHNXTROASUGJL0UAREtsKGWLJZrNic=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774377830; c=relaxed/simple;
+	bh=nZxOQ4beMWV/08ZiDnYmzsFd2k0Dz2IBEN+PHtEgCy8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AuE/axwIax9ZBwQvlGnbEPqNNomXu6oA7+5lT1dJQmZPDBsJPMlkSMaXkZGJSTr2cwjgp3lZFCqmEpRh8SPnOMN3um1xtAZN+aWxZ0iek2ERJ15nfj2CV7BiTb1v/Kknt1LW8wHrLHLqrKskfNX/apljVOJ5HHeeESrUj0tJ22A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cfg+JLpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECBCC19424
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774376801;
-	bh=GGfOKD68lU4mO+i2u+k2K6Xe8E5Qh/5WTgVtHzuV028=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Cfg+JLpxEk+H5ramG9hxsn7Th0tre4XE69ltgh+19ghxUgDdIZmwGjYxmQYG2PBw0
-	 +uEnpme9thyY+NIart74eLizikE9pbj0uDlJWd42xEcQQ2Ev+1xuC40Fnb7JekiaDV
-	 /3XFrA/5t8yFZ9120TifIZJ3WdiJ9lfz1ngZc4RNX0XSDqYV5aXyAT2s54ZalGsl5B
-	 gRwY1m1ubG3UID+70z+zKsLINJcB4s+jkJe3Oo9DfiVbQKp6iNHMYluejnu3HEn0Vs
-	 s6LP5H0atFBrASMWgKZQeBe52iqTRdabzodbipyk0yENYVqYR/hpimTqalqyI8JlSi
-	 wMJLVzarG8lew==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-67ba5921b84so2401772eaf.3
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 11:26:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVM0JBYu0osDmz9BzZa1CqUurV52NkyFwKyRdWY+E8Y3jJ5IdNKxf5Hs4tR1idys8HS2qxD4aA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq1kwNIReG9FFX3qgdy/aYwBB8xFrHaTA0/6YjvKDvf4Qx+BwS
-	SMY6sQcl8Acd50UTxN+txy8f+fKPoQli8S6+n6qkIXudoj4C2j5kWU6wfAv6H2zdKBEIN9Z23od
-	FI8Vd2sPjEeLxN5Sy8+r9AD7BHY7Bi70=
-X-Received: by 2002:a05:6820:4dc2:b0:67d:eeb3:a2dc with SMTP id
- 006d021491bc7-67dff46c33cmr473357eaf.30.1774376800859; Tue, 24 Mar 2026
- 11:26:40 -0700 (PDT)
+	 To:Cc:Content-Type; b=cvf0Bam/skWhnYRwEtcU14jMiDMf9lkfoHDYkgTB2KxiVb/kPhzVLiRqvCtUo2UIbXYRDXAfH3D5ZR9KjYAZlpaifxHCqJYDOYI7VulNmMGfn0rrBVgdnjmNpsFw1iIsJZpxW8h8HsV8K+SfbhS6ozX0jOjI0E1DKKDHOTTrVuE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=owWV3YyU; arc=pass smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a27c329e98so5505297e87.3
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 11:43:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774377827; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TIBjc+REE5UCq6xHeBySYO+tuciwfJFkySsZ7hCXb9uIE0mV+eX172sFUOoWmabsk3
+         R8A5B0OH8KbWoRr7wt3YgoRN7soogCqdJ8JAuBGr/hyWcReIZ2dEAtnbb5MovEEhuN80
+         GHLhe1MN6qR8DJGMjcf4VmemE5h4Yhsf/L9FbDYvLiamiENDwil2ensbS6ZoCBcN+KAG
+         KSv2+ccl17r5FDtc4LLpzXcyZCUOr9jTvrvg1EkXMjlyO2SbK3ebhTh0Yo4lRf949ffH
+         h7afbK+D9VYXLOq/h3vI/bbNUBZatLp6P1r1aj4SJoCW7Iop2i67iNNYQtVOfMYAd4PM
+         0/Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/G8eO0YKOV2qmE7vVQSycQc0H5lXwUfvvW9jfDbQN5w=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=kaM7S+pMFlxIMBqwGPYKZH1VQhcC4OIcikxpQ8mtIKGMgIz6SHo19nvx4Jev0Pgx0n
+         1U/5RLyrSwqinD4+CloNDFuN9/Z2LSakGup4cByWoZ+Sewaf31FQO9d2AjuhRVa1ZoI9
+         VrGerLN5oYhhvS+zZYxp3Laro6RHNsu6zOaOgx2coYmc+Pc8laWH03lJjRWR5TFK7Iup
+         VdtUgV8p4DfgaG0DS4Nk8PwA207cA6gIrBcBI4dspq+anC7n0vrI/4dii/q8PQSweqtA
+         Es3Wftbwrb0jMTmWqcvTHW0s2gMitazrJkcFLb1ve0F/Y1LxIL2vXYAmm1PQh5G/rw5g
+         MN5g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774377827; x=1774982627; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/G8eO0YKOV2qmE7vVQSycQc0H5lXwUfvvW9jfDbQN5w=;
+        b=owWV3YyUkqwa6IblqabcvkoUiEDjQAPcb4ge9+CeiUQpI2DQ/70nnGLeRPbJt6H1xU
+         VBgDuovHCULCchzUrPFkW9pe/aCsUa0LGbYbqmUOt31gMPn4BXrt1x6GfWscfmSfv1lh
+         MIWmw94SgODdt2nqdKSjauuxRN2vRhsRrlklEEsc+nNhjoRMkzOulzZ0SBkx/MWhajPf
+         xKvLNL7GdlLjknNRSZQfjAksvx4LuEPax2bc+q41fhk9LIq0jR+9p779PRvLeNwSROS9
+         +HEshfmIoVIesufaQZAItL4VI3cLB4rnp6pSqum0Ygm+hbFi+q4OlJh3WWonH2+jfIkg
+         +Vww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774377827; x=1774982627;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/G8eO0YKOV2qmE7vVQSycQc0H5lXwUfvvW9jfDbQN5w=;
+        b=R/TFnAfQ2oumWLawLkSW6x/Dcnmw3lDdj/c/t9p1AUvHIcD3V2cQ8RJ8mCmrxqA+//
+         uQZUPUv9DC9p2ALEPt78yWls4XOAEqDovbg3W/4/YW+nxv0J4EQFm5ryJNWg//pC2G8Q
+         4WyZ36LdZesEancnWwm3bFV829eBa8CFpzXJqaF8gtk7nh76+N4A3GgXPM7vUyLNvHh1
+         gFTfariScsNCDVXsAlH96hASdDz60ob+csCSWPj5jzjFQrz7VY6UECpKABryBw0MlXJg
+         y5KaiqMv474C5CArTL55PzcqjudniuTjwenG19CNPzeBcu3Dv4VgWuzImxVi1JjnjplB
+         XyKA==
+X-Gm-Message-State: AOJu0Yzjo+UeL7k3K2nQ943jL55fOw6sbsdwStBxbZqqVT7Eshq9DH93
+	0UYapzi6a59KECj6uaN5WA8zC7rKfUywFEMRZybFDlFioUInJ/CIfMIXlzkRLIB/qmSHyFH0yMh
+	tgsL7DBxko3kLvm5ozr/YwaNhsRoGjZE=
+X-Gm-Gg: ATEYQzxFjC6+QV8KhgmoaaxAbnlmpQf3A3EGI42kls9mLCYiqQ6MAE3IVviopwjbsT5
+	9LmAMbBQxMWBLu6Ybxtil/Fc5rmlILt0lLjpPrIUwkjJUXiqzYUByDh6SBBneYZidZrLL979PNZ
+	YzTrDBUj2ouBBbN1DcH/Ct6aRjvQRvoGhe1uY323ZlHtQL2URrr+36Z40OvXK71h+lByjiNGeRp
+	t+kUbahnNhgQh+ftVJzYB4Rt71HQeN8NT7Wgu8O0cZeuJ4uUZWJRC13HNOHABbd8TxzrHR42ebQ
+	nrL4QIMBcNLmU77AvElY41sUblNI5RtM+fSU29SUgJC1vCLPIvU=
+X-Received: by 2002:a05:6512:2313:b0:59e:1954:1d3f with SMTP id
+ 2adb3069b0e04-5a29b9a5930mr234603e87.44.1774377827112; Tue, 24 Mar 2026
+ 11:43:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324172346.3317145-1-srinivas.pandruvada@linux.intel.com>
-In-Reply-To: <20260324172346.3317145-1-srinivas.pandruvada@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 24 Mar 2026 19:26:29 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0h7HJqyQeahBv2eyMnhgbKk2X4zvwjpkrGdUhGBwVPueQ@mail.gmail.com>
-X-Gm-Features: AaiRm51AofyFCtfcyMJYXZx_-MoCwlvouvVBHdEPvFPgfbuTn6HsAYLZFEFBHdM
-Message-ID: <CAJZ5v0h7HJqyQeahBv2eyMnhgbKk2X4zvwjpkrGdUhGBwVPueQ@mail.gmail.com>
-Subject: Re: [PATCH] thermal: intel: int340x: Power Slider: Set offset only
- for balanced mode
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: rafael@kernel.org, daniel.lezcano@linaro.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Erin Park <erin.park@intel.com>, stable@vger.kernel.org
+References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Wed, 25 Mar 2026 00:13:34 +0530
+X-Gm-Features: AQROBzAAPqxjXSoph6rC11Skwz2i81O33ecaHqPAj2L0yvVXiZNBGvv6Tkk4uq4
+Message-ID: <CAC-m1rrD7ff5KMjtnXfAZkm1+ucc2iHUkXEvHeXHWduz8q+MYw@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/220] 6.19.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230211-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230212-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dileepdebian@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: CC8A131AD76
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 58EAD31B0A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 24, 2026 at 6:23=E2=80=AFPM Srinivas Pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
+On Mon, Mar 23, 2026 at 7:26=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> The slider offset can be set via debugfs for balanced mode. The offset
-> should be only applicable in balanced mode. For other modes, it should
-> be set 0 when writing to MMIO offset,
+> This is the start of the stable review cycle for the 6.19.10 release.
+> There are 220 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Fixes: 8306bcaba06d ("thermal: intel: int340x: Add module parameter to ch=
-ange slider offset")
-> Tested-by: Erin Park <erin.park@intel.com>
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: stable@vger.kernel.org # v6.18+
-> ---
->  .../intel/int340x_thermal/processor_thermal_soc_slider.c  | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
+> Anything received after that time might be too late.
 >
-> diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_=
-slider.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slid=
-er.c
-> index 49ff3bae7271..91f291627132 100644
-> --- a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.=
-c
-> +++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.=
-c
-> @@ -176,15 +176,21 @@ static inline void write_soc_slider(struct proc_the=
-rmal_device *proc_priv, u64 v
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.19.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.19.y
+> and the diffstat can be found below.
 >
->  static void set_soc_power_profile(struct proc_thermal_device *proc_priv,=
- int slider)
->  {
-> +       u8 offset;
->         u64 val;
+> thanks,
 >
->         val =3D read_soc_slider(proc_priv);
->         val &=3D ~SLIDER_MASK;
->         val |=3D FIELD_PREP(SLIDER_MASK, slider) | BIT(SLIDER_ENABLE_BIT)=
-;
+> greg k-h
 >
-> +       if (slider =3D=3D SOC_SLIDER_VALUE_MINIMUM || slider =3D=3D SOC_S=
-LIDER_VALUE_MAXIMUM)
-> +               offset =3D 0;
-> +       else
-> +               offset =3D slider_offset;
-> +
->         /* Set the slider offset from module params */
->         val &=3D ~SLIDER_OFFSET_MASK;
-> -       val |=3D FIELD_PREP(SLIDER_OFFSET_MASK, slider_offset);
-> +       val |=3D FIELD_PREP(SLIDER_OFFSET_MASK, offset);
->
->         write_soc_slider(proc_priv, val);
->  }
-> --
+> -------------
+Build and Boot Report for 6.19.10-rc1
 
-Applied as 7.0-rc material, thanks!
+Build and boot testing was performed on version 6.19.10-rc1 using the
+default configuration on both x86_64 and arm64 architectures in
+a virtual environment. The kernel built and booted successfully,
+and no dmesg regressions were observed.
+
+Configurations: x86_64_defconfig, defconfig
+Architectures: arm64, x86_64
+Kernel Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux=
+-stable-rc.git
+Commit: 5cf3b8242cca1247b6b278b778152b5e343e7d62
+
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+
+Best regards,
+Dileep Malepu
 
