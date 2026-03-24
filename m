@@ -1,177 +1,198 @@
-Return-Path: <stable+bounces-230095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QP8tFeJWwmnEbwQAu9opvQ
-	(envelope-from <stable+bounces-230095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:18:26 +0100
+	id ECRhJI1XwmmGbwQAu9opvQ
+	(envelope-from <stable+bounces-230096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:21:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81846305756
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:18:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C1E3057C4
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 10:21:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D921431C8D34
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 09:09:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DDB5310B9DD
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 09:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7191D3DDDA9;
-	Tue, 24 Mar 2026 09:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1513DBD52;
+	Tue, 24 Mar 2026 09:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="b4ioA8KL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="155BLQbW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qwwxKL3u"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F243DCD84;
-	Tue, 24 Mar 2026 09:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9543DB63A
+	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 09:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774343340; cv=none; b=IQqd/INABonkL5oewaOqI1W8E8Hj1zo3wOA8ifZTv/4qgxH2WBlIaMd9njZ56koY8CjbTpUXxYIQi1Ov1CWL/tAfctKESraEtD4TkGcKos0gsS215x2+7kp9Rx0yMSE2ASntJ8alN+L/28q1x/f/5cISiR0GtQdWne5wKwa6axA=
+	t=1774343463; cv=none; b=FQeQ5b83XWKoIFGgjBxuI2ix0d2V96Hlg+4JQd6dtoozFMx5unNxF+hak3zZemf7PaI1QAXHXlNBojLcNnB2wbn2uiRaQq1Vhu5CHvnlfvYt3/neuaUFXang0mQEKsw3qt4uM44jAWujiGZbYdY2/g1A+ZC3P84813EnTmesBjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774343340; c=relaxed/simple;
-	bh=/q08/hJS22kkdBfDNaW+au198b3yybnqZiagyp2PT1o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DhzAzxb2Rqjd9d31WDFz8vz++THZDRkafy7yjKcqrCEYGs4yF+ked+coZM6GvzoTqnFwg5XSE0vEMQgY2J9mh00OkHiX6M8kBl1DbviLjIeFjUlOBOWvEUu7v0wouHJVMZ06GdPbluMITpPtI2plTuPRWVXLJqxDPjPoheW86gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=b4ioA8KL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=155BLQbW; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D80F71400220;
-	Tue, 24 Mar 2026 05:08:52 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-04.internal (MEProxy); Tue, 24 Mar 2026 05:08:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774343332;
-	 x=1774429732; bh=QpCnatYRzwCG2zmiscszJ/0kViuwxysZZHdRGdDEVzY=; b=
-	b4ioA8KL4B+aDD0GBxeXeVlft9nI8g9u61k3WdeO5cbSuvwl+Wh6qQWzt9EyTa4W
-	ufepdBlBxvQfQNDh3wkhFaWneO7/sgA+eVDC/glGGQc7xvJa9P4Gj9FJkMqkAKHp
-	+ZVw2uHha1aIzwlGm6Z9s/SLhdb0ZLN4HD6RN8x1sxaYFTLQesAI0BtGjMQDhlYZ
-	peJVEQslDpH17oB8o5oq5HKjo4leRCiSRCZZoHTgJMO6BdYNLlLn4VOPWTC22dDh
-	ES6Ffmuh/t5bIlEFpvZAQp5AM9KwLbtW0379gzzwUgMDre7FQFyUlgQRda0tB1xd
-	ZsXccxf3h4bYttDsFauqXQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774343332; x=
-	1774429732; bh=QpCnatYRzwCG2zmiscszJ/0kViuwxysZZHdRGdDEVzY=; b=1
-	55BLQbWCubmfSpJx2r28C1iW0iNxfsByJqExyTin8dMHLA4+dN5FQ26SO6rlgmkb
-	8JWapu7Msr+XbAkKIVoLx5xwLKauulR4dbHDA1lhyVpgs/aGMSgAhq9fYmvHNDjW
-	sg56ODqvinfGoFtVLzKV4Kan4T7X2Wl63b1XMGhL7/PC0YJUvfeVLaJIYSdr2nmc
-	aLmZJMjmjRKkwceiknT7ycOmJqIp7zorhwsMdeylbDfOW5LNY+YqL0t3DjKnMPOP
-	7LMptCRUeyLs8uwDBtC38XIA82zDlqdXwTZMuipHe0MB433TG5SHiJ9X6/V+EVG6
-	pGsT9sG0OEWudl11zE1Hg==
-X-ME-Sender: <xms:o1TCaVmSf2Q0wMOm0U9WQ6BYSSezStKHUU0o22SZh5uZkuhvXf9A2Q>
-    <xme:o1TCacuU3FuYnkA7A9yF9c6Y0rUKyRPxZD2S9QTifhTx3Wdv9bkl36Y1DOUohQyV1
-    JQvMYEozl-HU5Cm51now10R0A11LPUNjbqQ1nVguHM4cXeqpWNkceM>
-X-ME-Received: <xmr:o1TCaXKj0Yj4lqW3NdiFdg_14mGWzP9P89AvyYpScnazD8ATs9FAxbjeAE1O0DMsUSrlblxF3KkfjEoyffJKhDDtJN9Hrw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdduudekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
-    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
-    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthh
-    gvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgush
-    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehl
-    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehroh
-    gvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
-X-ME-Proxy: <xmx:o1TCaZjtpXbdMN6a01OrbGgwfQLgl1CfzVeCOIBKryF43orjtj-gOg>
-    <xmx:o1TCabtyqOsYwvtEd_jwgfFHGdRJhuXRBIVk2BYcf9EELkjoWIOgyA>
-    <xmx:o1TCaThyjFyVI07MMI0zjAvI0TJFHKfSGxrwwovnKDhI6j6bJY2XxA>
-    <xmx:o1TCaWcT1Xt7ZUt6L2P-2fgGDDe5TjL1RiClmK-Z7op7pC7zwqYYGQ>
-    <xmx:pFTCaXLBpxWPcdLR-BVIU6i6NXe0CuXmkFpade-Ks0i2L7YZBeXwLiTE>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 24 Mar 2026 05:08:49 -0400 (EDT)
-Message-ID: <4bdd0b5b-520e-41c9-adf1-940b699736c6@pobox.com>
-Date: Tue, 24 Mar 2026 02:08:48 -0700
+	s=arc-20240116; t=1774343463; c=relaxed/simple;
+	bh=kdMOtPk2CJNdzK5TAPoFyAepYVoHlWSZWSQYeczlyIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=eyuFD2bfc4rSbZMkWb2uNVZ8V67utrUu791IKk7SQ7RPFyOvhKyEKQSPQWRi1wxwy1WQ4ALrmoqab1L7TWF1Haje757FtEa4kwgf5DFQzO2FMnlg+1fe4SHisrZ0WoHYu7zQH+wXebLVNypELDSiKnC9hFgO21Kt8TF/9NyaXh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qwwxKL3u; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486fe36cfabso19977145e9.1
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 02:10:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1774343454; x=1774948254; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
+        b=qwwxKL3ueOVVtil1WSpF3OnWEb3KwGAtG6JzyrqAVBtIwPN631O6+N+F7/l2r+Rl+5
+         N63Avp+BMuZo/iw9s+FVhZDrQbJm0P4JFaLPBlJqFtf/rgD3Jk60aYZNFpbcG/G/sLvY
+         XGw1PpgfIvY3J8q7KfL1iZBJp6oR5W7UdhvJaqoNa0Tufnaus0PMann4fyOwd8HYYmh6
+         nNc1jIMYUpt7NT63XSDIoiH3654N9BjNChyfIfMm7wi/BXJ1ho2TGyzKD/7FfU6X5Gs7
+         IgWzQauqgk+rPdD6du9jLYc9KRmsRQB4Bdl1KB/syKq/gGHH6OrcX81pjhk5EXsWhleV
+         H8qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774343454; x=1774948254;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
+        b=dzP2xVwzb99H8euS2XsspCZmscB+YoUTcSifaW6zchIjOIrYFhOgEIAAqAym+Saa2Y
+         oHKmB1Gk4v7jqDn63daz6GdNX7Ad+p2VT6wVd1eOVPG1cmYZNgjbcIrrEOkGe/AmyihA
+         1We6Uu3q6SLcGPK7gRXR+QnX03Ir3wr3JkVJGBl/7SLU+B+jBpTdxL49PLokjsRYmVSq
+         8lowZpzUHbeFmv4513dIPbxoHZnbd8MnwbaUb+4ZhH8+Cc7QdaHOE6MIBkvZdeD+w607
+         GDCZaHmxovAPlQ+jB1izL6e70ELF15NJuniUNzQD8nZ10xS8B3LbYWuBbTVq6aotuHHP
+         Clsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcAg+sE0+G5BMfkFVIHr4VGLhdIVSpSz3ooYIbJaW4w3xOrsWtWMYNZcm5v6dpUhQdJYyEFCg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoBeqHV0iSrtWcT+T/R1M3qxKedDlYkM7cB5RcqIH1RHIDLIea
+	4MhVqfVFYXpbxT2Pqg4iAnyAF3KlmNPgK4SoRMmvim3s4YeT7A1Cn54LaF6Dtn0BVvo=
+X-Gm-Gg: ATEYQzyDOAkaNLEXpRnRrRAJH95jiKV3wB/AuX5syGyIOQOCX3ixm8OFDVj8mZVzmOH
+	c8q1lqgiNvaQ5I+qb0MkQwY/eK/5UwbJmzdCosUqe23JCmmY676Y11XV9vKPWp894+i8EQ0g+oc
+	83g/8/EGUYdL7M/Yv8a17zayou737a2z9lo/bqWCrIQt0V53lK59iUL9QX/cMKo+h/ELPn5hFIt
+	UTUMoQQmucKpRHweUINQQ59A24t/VPN0ApxmIDKDwysT8B7yMF0uoXtPcYY930uuh9hmjkc9Rqf
+	b/dNpO4Hk/w+X3I7a4WXqhkgH/lH/Rf4WDxqFOXAxQec/W3+kmEnn2Xs7NYZ/C/NBts2t++26Gp
+	qgP9EVPxBBh4JbHuZv8AdAxgIZxEyoC/MJsNTwYasxM7R23QZTMSFnZoAjlSyzNze+7idf0XeFV
+	QjQgKDHHyNmbl+5objL4Z/JFrxi44BD2jEJRh622M=
+X-Received: by 2002:a05:600c:154b:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-4870f212c1emr37488815e9.13.1774343454041;
+        Tue, 24 Mar 2026 02:10:54 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871174f2desm44785325e9.9.2026.03.24.02.10.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 02:10:53 -0700 (PDT)
+Date: Tue, 24 Mar 2026 12:10:49 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, David Carlier <devnexen@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	David Carlier <devnexen@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+Message-ID: <202603241635.qNXDPwjs-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/567] 6.6.130-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260323134533.749096647@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260322164943.37460-1-devnexen@gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-230095-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-230096-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[lists.linux.dev,gmail.com,cmpxchg.org,kernel.org,linux.dev,linux-foundation.org,bytedance.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,lists.linux.dev,kvack.org,gmail.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[dan.carpenter@linaro.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 81846305756
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,linaro.org:email,intel.com:email,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,01.org:url]
+X-Rspamd-Queue-Id: 04C1E3057C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 06:38, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.130 release.
-> There are 567 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.130-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi David,
 
-Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well,
-no regressions observed.
+kernel test robot noticed the following build warnings:
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Carlier/mm-memcontrol-fix-obj_cgroup-leak-in-mem_cgroup_css_online-error-path/20260324-010357
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260322164943.37460-1-devnexen%40gmail.com
+patch subject: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online() error path
+config: arm64-randconfig-r072-20260324 (https://download.01.org/0day-ci/archive/20260324/202603241635.qNXDPwjs-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.3.0
+smatch: v0.5.0-9004-gb810ac53
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202603241635.qNXDPwjs-lkp@intel.com/
+
+smatch warnings:
+mm/memcontrol.c:4180 mem_cgroup_css_online() warn: variable dereferenced before check 'pn' (see line 4176)
+
+vim +/pn +4180 mm/memcontrol.c
+
+6f0df8e16eb543 Johannes Weiner  2023-08-23  4168  	 * regular ID destruction during offlining.
+6f0df8e16eb543 Johannes Weiner  2023-08-23  4169  	 */
+e77786b4682e69 Shakeel Butt     2025-12-25  4170  	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+6f0df8e16eb543 Johannes Weiner  2023-08-23  4171  
+2f7dd7a4100ad4 Johannes Weiner  2014-10-02  4172  	return 0;
+098fad3e1621cb Qi Zheng         2026-03-05  4173  free_objcg:
+098fad3e1621cb Qi Zheng         2026-03-05  4174  	for_each_node(nid) {
+098fad3e1621cb Qi Zheng         2026-03-05  4175  		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+59f75a1877fbf7 David Carlier    2026-03-22 @4176  		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
+                                                                                            ^^^^^^^^^
+Dereference
+
+59f75a1877fbf7 David Carlier    2026-03-22  4177  		if (objcg)
+59f75a1877fbf7 David Carlier    2026-03-22  4178  			percpu_ref_kill(&objcg->refcnt);
+098fad3e1621cb Qi Zheng         2026-03-05  4179  
+4a2f95f5c79e02 Qi Zheng         2026-03-09 @4180  		if (pn && pn->orig_objcg) {
+                                                                    ^^
+Checked too late.
+
+098fad3e1621cb Qi Zheng         2026-03-05  4181  			obj_cgroup_put(pn->orig_objcg);
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4182  			/*
+02b5fc7885d9f8 Andrew Morton    2026-03-09  4183  			 * Reset pn->orig_objcg to NULL to prevent
+02b5fc7885d9f8 Andrew Morton    2026-03-09  4184  			 * obj_cgroup_put() from being called again in
+02b5fc7885d9f8 Andrew Morton    2026-03-09  4185  			 * __mem_cgroup_free().
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4186  			 */
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4187  			pn->orig_objcg = NULL;
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4188  		}
+098fad3e1621cb Qi Zheng         2026-03-05  4189  	}
+a0dd8b1942f5bf Muchun Song      2026-03-05  4190  	free_shrinker_info(memcg);
+da0efe30944476 Muchun Song      2022-03-22  4191  offline_kmem:
+da0efe30944476 Muchun Song      2022-03-22  4192  	memcg_offline_kmem(memcg);
+e77786b4682e69 Shakeel Butt     2025-12-25  4193  	mem_cgroup_private_id_remove(memcg);
+da0efe30944476 Muchun Song      2022-03-22  4194  	return -ENOMEM;
+8cdea7c0545426 Balbir Singh     2008-02-07  4195  }
 
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
