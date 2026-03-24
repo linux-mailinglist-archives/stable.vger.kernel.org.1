@@ -1,327 +1,206 @@
-Return-Path: <stable+bounces-230136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MLLOQR0wmmncwQAu9opvQ
-	(envelope-from <stable+bounces-230136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:22:44 +0100
+	id kPfaJDt0wmmncwQAu9opvQ
+	(envelope-from <stable+bounces-230137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:23:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7893307363
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:22:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376453073AE
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 12:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 45E75304C688
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:21:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 942083047C94
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 11:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5C53F7E8A;
-	Tue, 24 Mar 2026 11:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2913E5590;
+	Tue, 24 Mar 2026 11:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LceuVVqI"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="jZSbPSl7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F72F3F54D3;
-	Tue, 24 Mar 2026 11:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46301384241;
+	Tue, 24 Mar 2026 11:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774351199; cv=none; b=fCW0c9rDXxRXTn03qxceEUgmEQ1esi2RtPdAv8mx04kaYbf8nDoW9d5KSIuZT6qXKM2+AsHGmAWtBQTOcozLqF/3+lWeRUcvKLunSfPY92cak4TyVmer3RXjbaEVxeiYoqDAAKg0MuKM+Sd/fvJNG5AhlAtpya4E2PnwE1wNvMo=
+	t=1774351335; cv=none; b=qs5urduhfAKvwim4p+rNV4FNWjNNL69TtePvJMUQNcyh9jbt2brR/65Fb8HSnUGmmdtTA2SuQYpojq21AfJ1XHsKUOzcMZy7oTIihcTPidlTH0Bne/FlYZZizQhff9zNHufdF+Exakb66wAIWvAXk4/DM5muDSqGvwq2+eKBQb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774351199; c=relaxed/simple;
-	bh=MLTjk6bv09SrxmiE4s7AyFcFYXA97AgixW/HTyZL0kY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pljzNAkZSiXwRE18RUNzAT3GKkaG+YavzCpyInia7s7zGuQ3L2EF+hb+sSkCRaAojttycOVWdDWzove+j9ntAsVnyVgtplmfHPa4g27LKwVqwjdC7U+oJSyo9qkgx3zdUWl0PstX2UycRyUyGyeNNYoIpHNM4KSCFUHB5NbM4fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LceuVVqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4C8C19424;
-	Tue, 24 Mar 2026 11:19:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774351199;
-	bh=MLTjk6bv09SrxmiE4s7AyFcFYXA97AgixW/HTyZL0kY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LceuVVqIoh6YFDl9QE8b+9/6rQUe3ygiT8rmD2qq8rYaCgHFvTMKPSjpd/p41bIIo
-	 LWmjHVqPhfahJC26YTVyvNaoZZ/dMQxZQdoFRTSao/ljl7PLJi2ixztrUrng6api/s
-	 F4BOTQgm6XxguUqUgGWYlt66zLwc7D28b552iW2kNkuQkHvnYR+OMxpYjVWDtvCaVD
-	 mNzzI5bWcRMVFAt3AX7zFEuDQuNTsaFKmlQym1PbMIvFmj9mDQKmK9j/Se62PLwySA
-	 QPA+O79Z3j/1hfX6lFvsL9iCXoWIyFXpl7Qq/rdGMguqdFQPUn3Cm7DrIL2PXJOZtE
-	 jkE1E8gcdCU5w==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] HID: multitouch: Check to ensure report responses match the request
-Date: Tue, 24 Mar 2026 07:19:28 -0400
-Message-ID: <20260324111931.3257972-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260324111931.3257972-1-sashal@kernel.org>
-References: <20260324111931.3257972-1-sashal@kernel.org>
+	s=arc-20240116; t=1774351335; c=relaxed/simple;
+	bh=H3irzzFXP1QUhS0MEN06n7KdYszJkAZOu85FhuOsUlE=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
+	 Content-Type; b=lijp51B/RKolgWFDOg8al65FIDXWqGnIwMAv6cf1X3OKqVBFZFG/ZhU45oXLnqBymqXLvbTS7X6nd46q8bbz3nDueuLKB0SPkkEQSfFCVGruXUF6ENmfhW1+wDX3k1hxJukLYZ6/cXV7mcUEvq1ffgYp4LagYN4jH/+7JdCiVYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=jZSbPSl7; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774351325; h=Message-ID:Subject:Date:From:To:Content-Type;
+	bh=cE5P4JOASd3UJaIvS7LJ8jdDwbmm6PYOejELrZOvIYM=;
+	b=jZSbPSl7MfzIWeYzCoyYFZSqtRCtvkcPFJdkWE74cKWOcSx+WMfyksV9rt0lRUZbwsr5XFeGSAHF/JrX0lzn6ieJ8sJ/v3IMLQMsvlDGaQ+EtfS2XkrdOUevptaMzdur1IiywfkKhitDXxHgorZzdCW+hr7R/G4/FJO+73VNls4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.eM0GG_1774351324;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.eM0GG_1774351324 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Mar 2026 19:22:04 +0800
+Message-ID: <1774351314.2550466-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net v2] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+Date: Tue, 24 Mar 2026 19:21:54 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: xietangxin <xietangxin@yeah.net>,
+ netdev@vger.kernel.org,
+ virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+References: <20260312025406.15641-1-xietangxin@yeah.net>
+ <1774335943.3427165-1-xuanzhuo@linux.alibaba.com>
+ <CANn89iJYj9Jc8-usgAYcFMoSo+Po3aOxsMkhg+F8BA_kME2e9g@mail.gmail.com>
+In-Reply-To: <CANn89iJYj9Jc8-usgAYcFMoSo+Po3aOxsMkhg+F8BA_kME2e9g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.9
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	MISSING_MIME_VERSION(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230136-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-230137-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[yeah.net,vger.kernel.org,lists.linux.dev,redhat.com,davemloft.net,kernel.org,lunn.ch];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xuanzhuo@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B7893307363
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,yeah.net:email,alibaba.com:email,linux.alibaba.com:dkim,linux.alibaba.com:mid]
+X-Rspamd-Queue-Id: 376453073AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Lee Jones <lee@kernel.org>
+On Tue, 24 Mar 2026 00:46:27 -0700, Eric Dumazet <edumazet@google.com> wrot=
+e:
+> On Tue, Mar 24, 2026 at 12:11=E2=80=AFAM Xuan Zhuo <xuanzhuo@linux.alibab=
+a.com> wrote:
+> >
+> > On Thu, 12 Mar 2026 10:54:06 +0800, xietangxin <xietangxin@yeah.net> wr=
+ote:
+> > > A UAF issue occurs when the virtio_net driver is configured with napi=
+_tx=3DN
+> > > and the device's IFF_XMIT_DST_RELEASE flag is cleared
+> > > (e.g., during the configuration of tc route filter rules).
+> > >
+> > > When IFF_XMIT_DST_RELEASE is removed from the net_device, the network=
+ stack
+> > > expects the driver to hold the reference to skb->dst until the packet
+> > > is fully transmitted and freed. In virtio_net with napi_tx=3DN,
+> > > skbs may remain in the virtio transmit ring for an extended period.
+> > >
+> > > If the network namespace is destroyed while these skbs are still pend=
+ing,
+> > > the corresponding dst_ops structure has freed. When a subsequent pack=
+et
+> > > is transmitted, free_old_xmit() is triggered to clean up old skbs.
+> > > It then calls dst_release() on the skb associated with the stale dst_=
+entry.
+> > > Since the dst_ops (referenced by the dst_entry) has already been free=
+d,
+> > > a UAF kernel paging request occurs.
+> >
+> > Sorry, this sounds a bit off to me. We know that napi_tx=3DN merely pro=
+longs the
+> > presence of the skb on the device side. However, even without napi_tx=
+=3DN, there
+> > is no guarantee that the skb will be freed within any specific timefram=
+e.
+> > Therefore, napi_tx=3DN just makes the issue more reproducible; it is no=
+t the root
+> > cause. Also, I'm surprised that the dst could be freed while it is still
+> > referenced/held. I have a feeling that something is being overlooked he=
+re.
+> >
+> > Thanks.
+> >
+> > >
+> > > fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+> > > the dst reference before the skb is queued in virtio_net.
+> > >
+> > > Call Trace:
+> > >  Unable to handle kernel paging request at virtual address ffff80007e=
+150000
+> > >  CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-r=
+c1+ #6 PREEMPT
+> > >   ...
+> > >   percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+> > >   dst_release+0xe0/0x110  net/core/dst.c:177
+> > >   skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+> > >   sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+> > >   dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+> > >   napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+> > >   __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_n=
+et]
+> > >   free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+> > >   start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+> > >   ...
+> > >
+> > > Reproduction Steps:
+> > > NETDEV=3D"enp3s0"
+> > >
+> > > config_qdisc_route_filter() {
+> > >     tc qdisc del dev $NETDEV root
+> > >     tc qdisc add dev $NETDEV root handle 1: prio
+> > >     tc filter add dev $NETDEV parent 1:0 \
+> > >       protocol ip prio 100 route to 100 flowid 1:1
+> > >     ip route add 192.168.1.100/32 dev $NETDEV realm 100
+> > > }
+> > >
+> > > test_ns() {
+> > >     ip netns add testns
+> > >     ip link set $NETDEV netns testns
+> > >     ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+> > >     ip netns exec testns ping -c 1 10.0.32.1
+> > >     ip netns del testns
+> > > }
+> > >
+> > > config_qdisc_route_filter
+> > >
+> > > test_ns
+> > > sleep 2
+> > > test_ns
+>
+> I took a stab at this, please look at
+>
+> https://lore.kernel.org/netdev/20260324073750.1500328-1-edumazet@google.c=
+om/T/#u
 
-[ Upstream commit e716edafedad4952fe3a4a273d2e039a84e8681a ]
+I see.
 
-It is possible for a malicious (or clumsy) device to respond to a
-specific report's feature request using a completely different report
-ID.  This can cause confusion in the HID core resulting in nasty
-side-effects such as OOB writes.
-
-Add a check to ensure that the report ID in the response, matches the
-one that was requested.  If it doesn't, omit reporting the raw event and
-return early.
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-As Tissoires noted, `hid-vivaldi-common.c` has the same vulnerable
-pattern. `wacom_sys.c` also has it. This confirms the bug is systemic.
-
-Record: Same vulnerable pattern exists in hid-vivaldi-common.c and
-wacom_sys.c. This is a known systemic issue.
-
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
-
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-
-The buggy code was introduced in commit `6d4f5440a3a2bb` from
-2015-10-07, which is approximately kernel v4.4. This means the
-vulnerable code exists in **ALL active stable trees** (5.4.y, 5.10.y,
-5.15.y, 6.1.y, 6.6.y, 6.12.y, etc.).
-
-Record: Buggy code exists in all active stable trees. Very wide
-exposure.
-
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-
-The fix is 7 lines added to a single function. The function has been
-stable since 2015 with only minor modifications (2018 `ret` variable and
-`hid_report_len` changes). The patch should apply cleanly to all stable
-trees or with trivial context adjustments.
-
-Record: Expected backport difficulty: clean apply or trivial conflicts.
-
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-No related fixes for this specific issue found in any stable tree.
-
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-- **Subsystem**: HID (Human Interface Devices) — drivers/hid/
-- **Criticality**: IMPORTANT — HID affects all USB input devices (mice,
-  keyboards, touchscreens, touchpads). Multitouch is used by virtually
-  all modern laptops and tablets.
-- **Security aspect**: USB devices are a common physical attack vector.
-  A malicious USB device can be plugged into any machine.
-
-Record: [HID/multitouch] [IMPORTANT - affects all multitouch devices,
-USB attack vector]
-
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Active subsystem with regular commits. The HID maintainer (Benjamin
-Tissoires) actively reviews and merges patches.
-
-Record: Active subsystem, responsive maintainer.
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: DETERMINE WHO IS AFFECTED
-Any system using HID multitouch devices (virtually all laptops, tablets,
-kiosks, and touchscreen-equipped systems). The vulnerability is
-triggerable via a malicious USB device.
-
-Record: Affected user population: universal (any system with USB ports
-and HID multitouch support).
-
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-- **Trigger**: A USB device sends a HID feature report response with a
-  report ID different from the one requested
-- **Attack scenario**: Malicious USB device (BadUSB-style attack) — plug
-  in a crafted USB device
-- **Also possible**: Buggy/clumsy device firmware (accidental trigger)
-- **Privilege**: Physical access to USB port required (no unprivileged
-  userspace trigger)
-- **Reproducibility**: Deterministic — controlled by the device firmware
-
-Record: Physical access via USB required. Deterministic trigger from
-device side. No unprivileged software trigger.
-
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-- **Failure mode**: Out-of-bounds memory write in kernel space
-- **Consequences**: Memory corruption, potential kernel crash, potential
-  privilege escalation
-- **Severity**: **CRITICAL** — OOB write is one of the most serious
-  vulnerability classes
-
-Record: [OOB write / memory corruption] [Severity: CRITICAL]
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-- **BENEFIT**: Very high — prevents OOB kernel memory corruption from
-  malicious USB devices
-- **RISK**: Very low — 7 lines, simple ID comparison check, only affects
-  feature report processing in multitouch driver
-- **Ratio**: Excellent — high benefit, minimal risk
-
-Record: [Benefit: VERY HIGH] [Risk: VERY LOW] [Ratio: strongly favors
-backporting]
-
-## PHASE 9: FINAL SYNTHESIS
-
-### Step 9.1: COMPILE THE EVIDENCE
-
-**FOR backporting:**
-- Fixes OOB write (CRITICAL severity security vulnerability)
-- Exploitable via malicious USB device (physical attack vector)
-- Fix is 7 lines, obviously correct (simple ID comparison)
-- Accepted by HID maintainer Benjamin Tissoires
-- Buggy code exists in ALL stable trees (since 2015, kernel v4.4)
-- No dependencies on other patches (standalone fix)
-- Clean backport expected
-- Verified the OOB mechanism in `hid_report_raw_event()` — the `memset`
-  at line 2062 can write beyond buffer bounds
-
-**AGAINST backporting:**
-- Part of a 2-patch series, but patch 1/2 is independent (different
-  file, different issue)
-- No explicit Cc: stable from author or reviewer (expected, that's why
-  we're reviewing)
-- Requires physical USB access (not remotely exploitable)
-
-**UNRESOLVED:**
-- None significant — the bug mechanism is clearly verified
-
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. **Obviously correct and tested?** YES — simple comparison of
-   report->id vs buf[0], reviewed and accepted by HID maintainer
-2. **Fixes a real bug that affects users?** YES — OOB write from
-   malicious/buggy USB devices
-3. **Important issue?** YES — memory corruption / security vulnerability
-   (CRITICAL)
-4. **Small and contained?** YES — 7 lines in one function in one file
-5. **No new features or APIs?** YES — purely validation logic
-6. **Can apply to stable trees?** YES — code has been stable since 2015
-
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Not an exception category — this is a standard security bug fix, which
-is the primary use case for stable.
-
-### Step 9.4: MAKE YOUR DECISION
-This is a clear YES. It's a small, obviously correct security fix that
-prevents OOB writes from malicious USB devices. The fix has been
-reviewed and accepted by the HID maintainer. It affects all stable trees
-and has minimal regression risk.
-
-## Verification
-
-- [Phase 1] Parsed tags: Signed-off-by Lee Jones (author), Signed-off-by
-  Benjamin Tissoires (HID maintainer). No Fixes/Reported-by/Cc:stable
-  tags.
-- [Phase 2] Diff analysis: 7 lines added to `mt_get_feature()` in hid-
-  multitouch.c, adds report ID validation check before calling
-  `hid_report_raw_event()`
-- [Phase 3] git blame: Buggy code introduced in commit `6d4f5440a3a2bb`
-  (2015-10-07, ~v4.4), present in ALL active stable trees
-- [Phase 3] git log: No previous related fixes for this issue found
-- [Phase 4] lore.kernel.org: Found patch submission at
-  `20260227163031.1166560-2-lee@kernel.org`. Patch 2/2 of series; patch
-  1/2 is independent (different file). Benjamin Tissoires reviewed and
-  accepted. He noted same bug exists in hid-vivaldi-common.c.
-- [Phase 4] RFC v3: Tissoires NACK'd core-level fix, preferred per-
-  driver fixes like this one — confirming this is the maintainer's
-  preferred approach.
-- [Phase 5] Callers: `mt_get_feature()` called from
-  `mt_feature_mapping()` at 3 sites during device enumeration — standard
-  path for multitouch devices
-- [Phase 5] Verified OOB mechanism: `hid_report_raw_event()` at hid-
-  core.c:2040 uses `data[0]` (buf[0]) to look up report; at line 2062,
-  `memset(cdata + csize, 0, rsize - csize)` writes beyond buffer if
-  looked-up report is larger than the buffer allocated for the requested
-  report
-- [Phase 5] Same vulnerable pattern confirmed in hid-vivaldi-common.c:87
-  and wacom_sys.c:397
-- [Phase 6] Code exists in all active stable trees (v4.4+), fix should
-  apply cleanly
-- [Phase 7] HID subsystem: IMPORTANT criticality, affects all multitouch
-  USB devices
-- [Phase 8] Failure mode: OOB kernel memory write, severity CRITICAL.
-  Trigger: malicious USB device (physical access required).
-
-**YES**
-
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index b8a748bbf0fd8..e82a3c4e5b44e 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -526,12 +526,19 @@ static void mt_get_feature(struct hid_device *hdev, struct hid_report *report)
- 		dev_warn(&hdev->dev, "failed to fetch feature %d\n",
- 			 report->id);
- 	} else {
-+		/* The report ID in the request and the response should match */
-+		if (report->id != buf[0]) {
-+			hid_err(hdev, "Returned feature report did not match the request\n");
-+			goto free;
-+		}
-+
- 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
- 					   size, 0);
- 		if (ret)
- 			dev_warn(&hdev->dev, "failed to report feature\n");
- 	}
- 
-+free:
- 	kfree(buf);
- }
- 
--- 
-2.51.0
-
+Thanks.
 
