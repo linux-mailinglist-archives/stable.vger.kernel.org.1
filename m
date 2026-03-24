@@ -1,169 +1,173 @@
-Return-Path: <stable+bounces-230194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4D+PAOe1wmlolAQAu9opvQ
-	(envelope-from <stable+bounces-230194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 17:03:51 +0100
+	id aOV2Dpu5wmlilAQAu9opvQ
+	(envelope-from <stable+bounces-230195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 17:19:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2303189E9
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 17:03:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A2C318E10
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 17:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCBB0310BA2C
-	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 15:57:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 191773092F42
+	for <lists+stable@lfdr.de>; Tue, 24 Mar 2026 16:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EA638AC73;
-	Tue, 24 Mar 2026 15:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9DC391820;
+	Tue, 24 Mar 2026 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="BAg+KLwb"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bfmkUMtj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J51j8CZb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBC7389445
-	for <stable@vger.kernel.org>; Tue, 24 Mar 2026 15:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367839; cv=pass; b=crj+iTv6Yr6//pLtFavpAMUzORPDmm/mHZznOJVN0gYCZhlqevVfddzJdsmINnZ1MQcLSKREK9MzFeQYxT3QerXMcfCXSU3kQenkCPZ728K92BXeTYH1MBfBdXyN0ubVBNHwPxszxohCwhbZnlR3CCkCHLAV27+lDDBLIOzlWFs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367839; c=relaxed/simple;
-	bh=9DWC/vfXqs338085CPXMd7zgnZlJCsKQugvNz+oO+5s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PpS1d5zU+AkKuVKU2V8KImJwhE7Hfd8EiaQUNWMezYxCxcX6z5HkJgnO0vHENjkKGXQfcn6AOtFmC43kj8nc33FwcB9Z8Yo4m1v1aSGIsTLp4X9HHoYJiOOgIfADO2XbF128Az7AyLZ2aYlieHvLH7OrPcW27MS0eO+Var+podY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=BAg+KLwb; arc=pass smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50b713d6baeso8927561cf.2
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 08:57:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774367836; cv=none;
-        d=google.com; s=arc-20240605;
-        b=f/AxGtzqh5K1uPlpDpIrozBekbDsYaXh/dTNAZC8YJNZswD0kk5XC3hBa8Br3VUhUP
-         6RUFB3pqBrWjQVRnMM0d1x6JwvYXsJ0P6yEZ1h5L0RW6hChvROImxfh4K/Fp+/k39Ak0
-         6SiWRldgdZ/znoCOXKzfM8E8McWJ89TJrWqAz2FlJWfyk8r5NPbVPMTZMi3VmaQSMJ1Q
-         e4myUWrRjuW+fzEzkGPEyJgCm8qunGdcsmYwy6iuKEtfImuUp7QeGJZqSk8F4EllhpSL
-         tXnKXhRuNCAfcOO9iI+aH8eD9O+74Lo3KCTtKMf8EsxgOc3pKlXnlckKz713QqKAEWpt
-         tYjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=3zCAzoW2GC6nZkAoqIbb9lMGmfhoc5bqKvLxG5ho4hQ=;
-        fh=BmeVIBN0z5iouUEdnT6RYEiVnAz+8GlC6GOOstq6q2Y=;
-        b=FpyzJLAAMDm9j11BXVGIUWYereUE2wTbDbrt59XQC0ngKtORLkqEBkxfoAB+1iBvip
-         yTvWtUVg5KUGdvM7wpyZeYJNVdmJwAXH50FdJgz+oM6MsuZa25pCitDk9w5WmrUozOT6
-         SNPnYfHaRV/7RskoKWIkgPbjAjsu39TCK3195+pPANMpA2QMsZ3JnQdsZAi5IsfnmS/w
-         MHtnlDj6/uqlAToa9dHqG8skXKUx13bFMsMvqDWuTHMUDgZedvlmBINOuEsvbE1+G9WQ
-         gZFhvcS7Qe+1xmW4IHce4XY0MataYWkGcI94MPyTwtbroQOu10gi116oioMVs7G1Ylu/
-         w2MQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1774367836; x=1774972636; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3zCAzoW2GC6nZkAoqIbb9lMGmfhoc5bqKvLxG5ho4hQ=;
-        b=BAg+KLwb5k/X5M6uv39u60APSUNLrQ60paxh53y0DYfI3ZbPxHVTJqRGZ6WEnMDNad
-         AvjHjB+TRWcokz+7/HxqTI+jj96230lS1v285zzCubYdwPSyruF3BYfxD8WgbyZ+N33C
-         3F1T0YM6etCYC4Nt7Sklmx/BeG/UgtW77GMI0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774367836; x=1774972636;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3zCAzoW2GC6nZkAoqIbb9lMGmfhoc5bqKvLxG5ho4hQ=;
-        b=E0HfKhzZ97F1tuWBq1t1P9N0S/Sv9HyJniekWC0xQzzBjF/eedQc9v+S8QKvgjNy0/
-         SDk4RhGYPft7Nk0UWtwFCyciUnUEt6LAb1pQD31cfiL3PmVD/j5s7iiMU9fmNbtZmJeE
-         MuBE0RIszBIB9KBmGdMEb2kgwScxydiOxHlO6VWkuSnvSLYMA6gQmUyNakZYXpFLeewy
-         aeo9qmTFmZQydx5QVXDi3juob1pjCaMH74pfeG8CGzq3y8/YFSL9EgKbWboXXDsd4j9W
-         jh8kzSXQb896nxDsbZelKNgwihGND91zke9ZJyvAABP5+iYyZgJ0YMqieYCBYNM7Uz85
-         y4vg==
-X-Forwarded-Encrypted: i=1; AJvYcCURTzglEy8LpEEyBw/Vc7xBLDXzLH/7GXWipIrnIsNPnrPMGHLCoc0eADw/ZqYKlgqz/wejvog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuOZMqU4S/4DPbhPqC452pvZtrhbPICDRSkaRm9oo+XJfHWFx0
-	fQm7kRWBOySQ9nCfVjoaFXXanG5rNp8PeeyY2LgOk2ZFhZgUJ6ayzDzHGSFIDulb+P5zmteyVHp
-	ZhIUapXjUgsyfafXn4DWGiVa+9NycDRbuZ4Cjwk0LAQ==
-X-Gm-Gg: ATEYQzxYQE2QoCPZoV3PQb1TePqr5hV4z7OYcrkpXkv4rLfRUPhIpdPvl5LMqW1B7P3
-	U/ueim09T1g+qXm2qBEkLMC49Xq8iQhvqbRoUJZvngqPEC6nIDSDo9lFdvnh0tR2tHtwFsZTLWU
-	Q1U/kw/0rC1K9oak103YeP5er/2UeL5pMNWKdx8pfth7+ZB+jHAY6WpdxHZ/TSaWanYChyzMHHl
-	x9Yj6mfI3OEJgwvt0e062Qju05ULpOZylNM87aJFZSb5bBwJsGlWrpvKnZvlg1GTTne6ZrW3HYm
-	d5qT4mPU8w==
-X-Received: by 2002:ac8:5783:0:b0:50b:382e:f09a with SMTP id
- d75a77b69052e-50b80e2ea85mr2025751cf.33.1774367835984; Tue, 24 Mar 2026
- 08:57:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD0131F9A1;
+	Tue, 24 Mar 2026 16:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774368593; cv=none; b=Y+ON50sdRrXbWjpSbMHMyYJegk1GSYTsZgK9nkfxDSIrel9VUwXWKaMitFPNL5ovEFr7/+Ba6+H3It5gTWRI6FqI2seOhuYaVWWHTfrXEoxyYZCZUnDlY0Oj6Z/cV96hunU7LVf0+JEkFyxNqRd9x49fxD9yNd0dS2SHx03ZNPk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774368593; c=relaxed/simple;
+	bh=0iAVex3HewGpzZCbgDi6IsYpcnd6c4TATUm/Qh5DItg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=o1cgqILN13JTy/lfJ6vWq9g3mw+fzr/vFnOzJuilwcjp540T6oxM5XfFCbhGq3WQ65+4y3UW1o32LC2lFeya2Nj8VzO4udYtwd4r9M7FgGWI/+M+2U0PTkcIxcTeoKwyzCa1/DYn2ndIDQgnMA3NcFmuFCV+651ZwBt+HM78rog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bfmkUMtj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J51j8CZb; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 24 Mar 2026 16:09:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1774368590;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dA8dgedcJpGxRQ52borizebSA/4UjBKwblVYGWJioNc=;
+	b=bfmkUMtj3mPA6+e0RVK+O42SPQmw8BKipx+gDTjfheAQJcppu8ZNSi4KSRCZJMOjnXxeOy
+	Qsuu0HVmT55w6C0gtmSkut5wxDfXEWs5RGV8B3p36Z8/QA3beyWR2h5r1vPvT3gn7+xMAf
+	in70oJ1Ji4VuK9x0YAi7ZNNejvOgG93BcCmbN6WX26WMQ0c0Zvz7/RatE2LnVNrMXItBAR
+	CzKz3Ux3FQCauIKadOhl9s1dQBveiWgRV0cQmgyS0USwEc+zJ8LN9HLi7aTqUTa0tjnBYU
+	5PmK52nTRsYvKQr50TMGNSH3CebbNvcKAtn1eqNXUaKY0sfwMmR05+qjn7+a5A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1774368590;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dA8dgedcJpGxRQ52borizebSA/4UjBKwblVYGWJioNc=;
+	b=J51j8CZbGSbNiNBa1I8xgogmgjkoWUG2zUNjRY2VvMMSOkPU+W8GMCuQKRMb70VLl/6G/u
+	MI1VWGcAtaJYPKDQ==
+From: "tip-bot2 for Jassi Brar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/qcom-mpm: Add missing mailbox TX done
+ acknowledgment
+Cc: Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@kernel.org>,
+ Douglas Anderson <dianders@chromium.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20260322171533.608436-1-jassisinghbrar@gmail.com>
+References: <20260322171533.608436-1-jassisinghbrar@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324152221.96677-1-amir73il@gmail.com>
-In-Reply-To: <20260324152221.96677-1-amir73il@gmail.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 24 Mar 2026 16:57:05 +0100
-X-Gm-Features: AaiRm52oL9hSK_cZrHM-DIg8dnovrChYo_u5d4j1I3-1UApTjM2HEzwX2tu5iYY
-Message-ID: <CAJfpegtkvxkMcdoG_tCxMP4FF3FUq-PhXMByWFx01gTWXZ+_QQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: fix wrong detection of 32bit inode numbers
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: linux-unionfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[szeredi.hu,quarantine];
-	R_DKIM_ALLOW(-0.20)[szeredi.hu:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Message-ID: <177436858927.1647592.6531954753628943644.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230194-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230195-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[szeredi.hu:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miklos@szeredi.hu,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,chromium.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,szeredi.hu:dkim]
-X-Rspamd-Queue-Id: 4C2303189E9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,msgid.link:url,vger.kernel.org:replyto]
+X-Rspamd-Queue-Id: E7A2C318E10
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 24 Mar 2026 at 16:22, Amir Goldstein <amir73il@gmail.com> wrote:
->
-> The implicit FILEID_INO32_GEN encoder was changed to be explicit,
-> so we need to fix the detection.
->
-> When mounting overlayfs with upperdir and lowerdir on different ext4
-> filesystems, the expected kmsg log is:
->
->   overlayfs: "xino" feature enabled using 32 upper inode bits.
->
-> But instead, since the regressing commit, the kmsg log was:
->
->   overlayfs: "xino" feature enabled using 2 upper inode bits.
->
-> Fixes: e21fc2038c1b9 ("exportfs: make ->encode_fh() a mandatory method for NFS export")
-> Cc: stable@vger.kernel.org # v6.7+
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> ---
->
-> Miklos,
->
-> I have queued up this fix.
-> The regression has no serious impact on most users, because xino
-> works pretty well either way.
->
-> A nested overlayfs, where the lower overlayfs is nonsamefs ext4
-> would have less xino overflows, but this is a very corner case.
+The following commit has been merged into the irq/urgent branch of tip:
 
-LGTM, thanks.
+Commit-ID:     213a1f66341adf9e911b5c887970f209c132c4c0
+Gitweb:        https://git.kernel.org/tip/213a1f66341adf9e911b5c887970f209c13=
+2c4c0
+Author:        Jassi Brar <jassisinghbrar@gmail.com>
+AuthorDate:    Sun, 22 Mar 2026 12:15:33 -05:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Tue, 24 Mar 2026 17:03:26 +01:00
 
-Miklos
+irqchip/qcom-mpm: Add missing mailbox TX done acknowledgment
+
+The mbox_client for qcom-mpm sends NULL doorbell messages via
+mbox_send_message() but never signals TX completion.
+
+Set knows_txdone=3Dtrue and call mbox_client_txdone() after a successful
+send, matching the pattern used by other Qualcomm mailbox clients (smp2p,
+smsm, qcom_aoss etc).
+
+Fixes: a6199bb514d8a6 "irqchip: Add Qualcomm MPM controller driver"
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260322171533.608436-1-jassisinghbrar@gmail.c=
+om
+---
+ drivers/irqchip/irq-qcom-mpm.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/irqchip/irq-qcom-mpm.c b/drivers/irqchip/irq-qcom-mpm.c
+index 83f31ea..1813205 100644
+--- a/drivers/irqchip/irq-qcom-mpm.c
++++ b/drivers/irqchip/irq-qcom-mpm.c
+@@ -306,6 +306,8 @@ static int mpm_pd_power_off(struct generic_pm_domain *gen=
+pd)
+ 	if (ret < 0)
+ 		return ret;
+=20
++	mbox_client_txdone(priv->mbox_chan, 0);
++
+ 	return 0;
+ }
+=20
+@@ -434,6 +436,7 @@ static int qcom_mpm_probe(struct platform_device *pdev, s=
+truct device_node *pare
+ 	}
+=20
+ 	priv->mbox_client.dev =3D dev;
++	priv->mbox_client.knows_txdone =3D true;
+ 	priv->mbox_chan =3D mbox_request_channel(&priv->mbox_client, 0);
+ 	if (IS_ERR(priv->mbox_chan)) {
+ 		ret =3D PTR_ERR(priv->mbox_chan);
 
