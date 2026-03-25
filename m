@@ -1,76 +1,65 @@
-Return-Path: <stable+bounces-230329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPKENLnaw2lwuQQAu9opvQ
-	(envelope-from <stable+bounces-230329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:53:13 +0100
+	id KOHANVjmw2lvugQAu9opvQ
+	(envelope-from <stable+bounces-230330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:42:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5AD325372
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:53:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE03325FF4
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 13186307762C
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:43:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9747C32B1E9C
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990393D47A7;
-	Wed, 25 Mar 2026 12:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0813D6CB4;
+	Wed, 25 Mar 2026 12:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="lzWTimfE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0UvsWor"
 X-Original-To: stable@vger.kernel.org
-Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114E63CEBA5;
-	Wed, 25 Mar 2026 12:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.71.153.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1D3347512;
+	Wed, 25 Mar 2026 12:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774442636; cv=none; b=HdZlqvvB5x+qAg0/xS+WzOjWJeOB0swNIgEMrwDczpb6LyEg1vkK7j4Wd17LPGMqv9XKfQenY0tdKYkTcctyGUJncL6Ar3F8R070SzICy7BE5k/e0VSDmcQA3DKMvuzMXJ3rB7fD9fhkspvMuxHj6eVNs4GLDzAO1fOt5I3TGO8=
+	t=1774443461; cv=none; b=USqa1IelMSt0hLKNTYv9Zm3XzYp+mAKj14BQIO4D1a78OJXy+iNE5Tt5OBLOjy+Y88IuO/wGgSNttiA1qe6Jm8vp61/L/OUJYRbAseYzqoaM6sbMx8IFs9W+onISf5iW0MAaWlCChSVB69TliwTGHJF66xZqoZYbJV2UZqrff9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774442636; c=relaxed/simple;
-	bh=P2st27FduWOKUuPltXFpdPPjpon9JhnO8jOTTyeeExk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D/H0iu+Krx4ZevcVJc2rDpMlcOfnWkhAj+XIQjeoK8TMcy50+TuSLaSTPV/HJQTeebx/kLXhRsvt5m+x+suJBrEv/0xOTeh3UUII9F8Y8YwOjOzs5FuDPAilsWzlYL9hzAcgqNMoWmoxohd20ZGG9P4y4AVacpQ1dEWoM6/apuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=lzWTimfE; arc=none smtp.client-ip=216.71.153.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1774442634; x=1805978634;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=P2st27FduWOKUuPltXFpdPPjpon9JhnO8jOTTyeeExk=;
-  b=lzWTimfEqxHqvFkHF9lNU3YaFhEvw5KgcOdbbUxPdptCA2yWXUzFFf7n
-   b8KYIqtaQay46VmsQeRnNtfOw+A4zH1Cy4ixCRH3LT6m0HxKjDkrkB0YD
-   YeCb8JR+BS+M3qpqlvjVjynRYp3HgKpTK7JXgTOb2xvMlnFQXRAYgR+SA
-   tbxsIyOZyJcZW7+AlEm+aQVD2q1XLhTwaIvaURydQVTqpy6+7YDrm8Acj
-   6mzEy/MAPq4M/VontCSM6gErGa0wAoK/yeuFtDWNCTr+yfDQzxRI+9Gk6
-   hP8oKl3Xt1N4z8sNViR50vH8+hOeNep400VByR7LmuPOkeTH7wOLCXKWM
-   g==;
-X-CSE-ConnectionGUID: t+1L1/bfRcCAW3SaaJQE8g==
-X-CSE-MsgGUID: hd4tVdALQz24dPkBa3CgUQ==
-X-IronPort-AV: E=Sophos;i="6.23,140,1770566400"; 
-   d="scan'208";a="143710495"
-Received: from unknown (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 25 Mar 2026 20:43:53 +0800
-IronPort-SDR: 69c3d86c_eoUiGHM+9tPRSAM1VzidqHP7ehpZ6yzes3P+psQ8WMScmDL
- WpHVPxYmjjq4JdEkMljNJlg8jwriSozJ8d/JTfw==
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Mar 2026 05:43:24 -0700
-WDCIronportException: Internal
-Received: from unknown (HELO gcv.wdc.com) ([10.224.20.47])
-  by uls-op-cesaip01.wdc.com with ESMTP; 25 Mar 2026 05:43:21 -0700
-From: Hans Holmberg <hans.holmberg@wdc.com>
-To: Carlos Maiolino <cem@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	Hans Holmberg <hans.holmberg@wdc.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] xfs: start gc on zonegc_low_space attribute updates
-Date: Wed, 25 Mar 2026 13:43:12 +0100
-Message-ID: <20260325124312.26349-1-hans.holmberg@wdc.com>
+	s=arc-20240116; t=1774443461; c=relaxed/simple;
+	bh=l8M9I9R09uIzgXauaUhIPnjcg4h+8HGRjaBcvx5EY3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XAoRRWx/yJ2Hkz4SB+TkntCTXsDrEE7W7oPz16uDTcvuo5HliVTle+H0k5IHHXgiwyvvQwDLJD4PLf8pp0i+HegSNrFXucKr49Uk2eE9i/QUWnnSTePD8sGEKtsfDlKXRXJn50kXQobBtCzd009m8xxTL/0BgCNYWDG8ODWm7jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0UvsWor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED221C4CEF7;
+	Wed, 25 Mar 2026 12:57:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774443460;
+	bh=l8M9I9R09uIzgXauaUhIPnjcg4h+8HGRjaBcvx5EY3Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p0UvsWorVmR8DvakHkJ88ECMQoRcz6AK6mKPME2P0bljb4FSSSNTcm1Sc9ncJVzTK
+	 B2WZ5ajKvwoedYHTcQSfRGtEHfxKH2TG7g9D/fSWv3jsL79g3i/kkm7+QYj81f82mX
+	 9zUMoeQteU79pNMy8MIDwWpoY7l1gcbHoz+tJrtGijIGLS44nv+HsztqvF7QOqGv/J
+	 D5/etv9s8uGmm2HEtHGtx0Q+J4pHPc+ua/EnteCG0OsqWZOnMZoo6F5O9JUyMwuF52
+	 Yyg/YV1EmNhtHGoEXYX10bblB4yDI1kcdB4R58I2BmUpdpSOO6Ve6Vba5flxF89Ftk
+	 Kl7UON9UCXXOg==
+From: Benno Lossin <lossin@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: stable@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.19.y 1/2] rust: pin-init: internal: init: document load-bearing fact of field accessors
+Date: Wed, 25 Mar 2026 13:57:31 +0100
+Message-ID: <20260325125734.944247-1-lossin@kernel.org>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,145 +68,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[wdc.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[wdc.com:s=dkim.wdc.com];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu];
+	TAGGED_FROM(0.00)[bounces-230330-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230329-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hans.holmberg@wdc.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[wdc.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,wdc.com:dkim,wdc.com:email,wdc.com:mid]
-X-Rspamd-Queue-Id: 4A5AD325372
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zulipchat.com:url,msgid.link:url]
+X-Rspamd-Queue-Id: 1AE03325FF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Start gc if the agressiveness of zone garbage collection is changed
-by the user (if the file system is not read only).
+[ Upstream commit 580cc37b1de4fcd9997c48d7080e744533f09f36 ]
 
-Without this change, the new setting will not be taken into account
-until the gc thread is woken up by e.g. a write.
+The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
+the `init!` macro require the passed pointer to be aligned. This fact is
+ensured by the creation of field accessors to previously initialized
+fields.
 
-Cc: <stable@vger.kernel.org> # v6.15
-Fixes: 845abeb1f06a8a ("xfs: add tunable threshold parameter for triggering zone GC")
-Signed-off-by: Hans Holmberg <hans.holmberg@wdc.com>
+Since we missed this very important fact from the beginning [1],
+document it in the code.
+
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
+Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
+Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust: pin-init: add references to previously initialized fields
+Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260302140424.4097655-2-lossin@kernel.org
+[ Updated Cc: stable@ tags as discussed. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+[ Moved changes to the declarative macro, because 6.19.y and earlier do not
+  have `syn`. Also duplicated the comment for all field accessor creations.
+  - Benno ]
+Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
+ rust/pin-init/src/macros.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-v2:
-- Added a new helper to wake up the gc thread in stead of unparking it,
-  which is required to make this work properly.
-- Added protection against races with unmounts as sysfs gets torn down
-  after the zone info struct is freed. This also avoids unneded
-  wakeups during remount.
-- Added fixes and stable cc tags as provided by Darrick.
+diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
+index 682c61a587a0..1980584c442a 100644
+--- a/rust/pin-init/src/macros.rs
++++ b/rust/pin-init/src/macros.rs
+@@ -1312,6 +1312,10 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         // return when an error/panic occurs.
+         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
+         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
+@@ -1351,6 +1355,10 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         // return when an error/panic occurs.
+         unsafe { $crate::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
+ 
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         // SAFETY:
+         // - the field is not structurally pinned, since the line above must compile,
+         // - the field has been initialized,
+@@ -1391,6 +1399,10 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+         }
+ 
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         #[allow(unused_variables)]
+         // SAFETY:
+         // - the field is not structurally pinned, since no `use_data` was required to create this
+@@ -1431,6 +1443,10 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+             // SAFETY: The memory at `slot` is uninitialized.
+             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+         }
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
 
-v1: https://lore.kernel.org/linux-xfs/20260320130256.35225-1-hans.holmberg@wdc.com/
-
- fs/xfs/xfs_sysfs.c      |  7 ++++++-
- fs/xfs/xfs_zone_alloc.h |  4 ++++
- fs/xfs/xfs_zone_gc.c    | 17 +++++++++++++++++
- 3 files changed, 27 insertions(+), 1 deletion(-)
-
-diff --git a/fs/xfs/xfs_sysfs.c b/fs/xfs/xfs_sysfs.c
-index 6c7909838234..4527119b2961 100644
---- a/fs/xfs/xfs_sysfs.c
-+++ b/fs/xfs/xfs_sysfs.c
-@@ -14,6 +14,7 @@
- #include "xfs_log_priv.h"
- #include "xfs_mount.h"
- #include "xfs_zones.h"
-+#include "xfs_zone_alloc.h"
- 
- struct xfs_sysfs_attr {
- 	struct attribute attr;
-@@ -724,6 +725,7 @@ zonegc_low_space_store(
- 	const char		*buf,
- 	size_t			count)
- {
-+	struct xfs_mount	*mp = zoned_to_mp(kobj);
- 	int			ret;
- 	unsigned int		val;
- 
-@@ -734,7 +736,10 @@ zonegc_low_space_store(
- 	if (val > 100)
- 		return -EINVAL;
- 
--	zoned_to_mp(kobj)->m_zonegc_low_space = val;
-+	if (mp->m_zonegc_low_space != val) {
-+		mp->m_zonegc_low_space = val;
-+		xfs_zone_gc_wakeup(mp);
-+	}
- 
- 	return count;
- }
-diff --git a/fs/xfs/xfs_zone_alloc.h b/fs/xfs/xfs_zone_alloc.h
-index 4db02816d0fd..8b2ef98c81ef 100644
---- a/fs/xfs/xfs_zone_alloc.h
-+++ b/fs/xfs/xfs_zone_alloc.h
-@@ -51,6 +51,7 @@ int xfs_mount_zones(struct xfs_mount *mp);
- void xfs_unmount_zones(struct xfs_mount *mp);
- void xfs_zone_gc_start(struct xfs_mount *mp);
- void xfs_zone_gc_stop(struct xfs_mount *mp);
-+void xfs_zone_gc_wakeup(struct xfs_mount *mp);
- #else
- static inline int xfs_mount_zones(struct xfs_mount *mp)
- {
-@@ -65,6 +66,9 @@ static inline void xfs_zone_gc_start(struct xfs_mount *mp)
- static inline void xfs_zone_gc_stop(struct xfs_mount *mp)
- {
- }
-+static inline void xfs_zone_gc_wakeup(struct xfs_mount *mp)
-+{
-+}
- #endif /* CONFIG_XFS_RT */
- 
- #endif /* _XFS_ZONE_ALLOC_H */
-diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
-index 0ff710fa0ee7..a8f71231f351 100644
---- a/fs/xfs/xfs_zone_gc.c
-+++ b/fs/xfs/xfs_zone_gc.c
-@@ -1171,6 +1171,23 @@ xfs_zone_gc_stop(
- 		kthread_park(mp->m_zone_info->zi_gc_thread);
- }
- 
-+void
-+xfs_zone_gc_wakeup(
-+	struct xfs_mount	*mp)
-+{
-+	struct super_block      *sb = mp->m_super;
-+
-+	/*
-+	 * If we are unmounting the file system we must not try to
-+	 * wake gc as m_zone_info might have been freed already.
-+	 */
-+	if (down_read_trylock(&sb->s_umount)) {
-+		if (!xfs_is_readonly(mp))
-+			wake_up_process(mp->m_zone_info->zi_gc_thread);
-+		up_read(&sb->s_umount);
-+	}
-+}
-+
- int
- xfs_zone_gc_mount(
- 	struct xfs_mount	*mp)
+base-commit: 4a2b0ed2ac7abe9743e1559d212075a0ebac96b3
 -- 
-2.34.1
+2.53.0
 
 
