@@ -1,188 +1,204 @@
-Return-Path: <stable+bounces-230359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gASvHKkKxGk+vgQAu9opvQ
-	(envelope-from <stable+bounces-230359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:17:45 +0100
+	id EPQDIMMLxGk+vgQAu9opvQ
+	(envelope-from <stable+bounces-230360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:22:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D832A328D46
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:17:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C137328E4B
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8EF6314B85A
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:46:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B2C73153BA7
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E39D3E5EE8;
-	Wed, 25 Mar 2026 15:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A92C3E1CE5;
+	Wed, 25 Mar 2026 15:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VoXYWwbL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T/m8H8Cm"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E8q7IxG4"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F383E4C68
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 15:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE3D3E4C8B
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 15:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774453587; cv=none; b=t8wFRnBqxIaONZcC8/IvICj7B1doqCC87mKbXBFG05GSkkdHplXeXuGNbjLYLsz0EhULyszjMPW9n87uP9nd1yORNcIix5uCxaE59S48UPc0MzjKU2z7WqGVEC3UWekhijS9eLRAiBnuxYTeiM920hJ5nwEdjpE3J8hVbSbEDi4=
+	t=1774453713; cv=none; b=aK9uXyZg0TxgkEurAB7FGifmn+Iq/k+DVJ7xLSEBd1ZXXd3bRXrJfsIFaA/1dTjaUsxQpQdqdHMlMr7IoCGFWv3pFkBJta3iCxejQhlu3YsorKJpxLlOOq1ytA203Kv/gl/CtxY4LEJl83XH20vVfruQfr307f3ptnEiflvGipo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774453587; c=relaxed/simple;
-	bh=Q26f3s9Ag27BxQHSfba+Y7YQD6BE1ILOOwdbgibPW/U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UokH/smk99xa23MyYi8HnxIOH3h5y4XZvS7aG/3kxy0Cp5Oy4YY8jQoOH1FtQehBvqMVOEZzr+I4L+YgU5gmmht4/1unj9fpalk8uR/hVrt9PoHnUcqIFWZdWZ+C52DgzYQgoEl1dLXI7Gpg4NOCGQnKLth24yA4tPqi454w6g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VoXYWwbL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T/m8H8Cm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774453583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s7cy/6cDx1rFE8ee3i8hr+hRak5k71ivXO/Y/xfktL8=;
-	b=VoXYWwbLfQpAIChJSYgUxQFpV9sRLM/nq+C7yi4XsXHy2I2ESQCi65z3jKKUHoVLnxuuEW
-	AxbeU/QBZWZ2gOewH0B9ViNq779B0/muh/xbYUy4B7wHPnbhJBoluxkjgjT4TetKq/wCxz
-	NFKW9pPk014uNlPJHudKngcsGJWZsbk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-SOOCpV3kPBmyMGYFK7EbNQ-1; Wed, 25 Mar 2026 11:46:20 -0400
-X-MC-Unique: SOOCpV3kPBmyMGYFK7EbNQ-1
-X-Mimecast-MFC-AGG-ID: SOOCpV3kPBmyMGYFK7EbNQ_1774453579
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43b42eee946so934723f8f.1
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 08:46:19 -0700 (PDT)
+	s=arc-20240116; t=1774453713; c=relaxed/simple;
+	bh=XQPzRGvc+NN8ZiYj/B//JMqvCRQ2hs4U1klIP2GW90c=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kDERAVjjIKXkRJ4dJG+3HNk2xytzM7CgPfUbzpbAsG9MVLlVcsRma+Axjj+KpcEui88nVLCaSPl+QWuL+AwUmMnWjpG7kYRaJCafDZ5G0fjkl4smHq+Rsc6YH6uWub6IOEE/CH9MChis90u7oxhxS4bWVmW9mIlOMdVGrCSxAHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E8q7IxG4; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8fbe7a6f41so220420266b.0
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 08:48:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774453579; x=1775058379; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s7cy/6cDx1rFE8ee3i8hr+hRak5k71ivXO/Y/xfktL8=;
-        b=T/m8H8CmTIgCcPSvXhaRpZ5Ppws9Z+qc90UYI4k7LhqfKGqO6G7o8/iSCh8s4Sdqa8
-         wwBOLeMi1hRKuwDCJ5H+xgyd6gGmWCFXZ0mY4dJGd1j3d/nPnjVRpiwlXEJy9SwAsDbZ
-         3KWDJoI5hGs7sB3tJvgTr2sfCT47CCo6s34OoiG9cva4JpHQpX2qWgkaqnDiwpvEEc62
-         4In78JsM69vSZB77wZlt5ixvjCSKwkLtTR4qbyOkFALCI3srO2Hi4ZnXkbR8vh3nqm0R
-         zT4vjR/cI+isTcwNBnx9/HMjhqcz5OulY+xZox3lzqN5LpSrbsVOMqQXVcMKrGQ/fGaw
-         +iiw==
+        d=google.com; s=20251104; t=1774453710; x=1775058510; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=M/sO4V9/AfamlzvH6Yz1izySgX6li4ODe+c+dOZMt3Y=;
+        b=E8q7IxG44o6idd1IUfTyigFJrul91UlH7uDzIevG1Cj3aWXslyFSm0R4B8h1rTM3u4
+         74sqeq55Kxem4FRebzfCwdziWD7rLbBeGnhiixUYUHYMOTs6I4XH6Hh6n0pmSmEek89l
+         Lv9WJlEBg0zu3YqOV2Bm0w/EyI2ZsFZ/oECnHQdEe1aj/LSF38bI0qEd3B4XeszRGFzd
+         senuvKq/oeAlxPjRDrWxNVHloi5NwTPkbLJsysp9MYaYoSZxgKgk6zYsureFm7Bs8rKx
+         jweHqG0oqIGYqL3P+Hc/uZY2AtCYWBBM7kyaC2Od6wwdfoWnp72zXw+ZQu/J8uQW2+WN
+         7bzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774453579; x=1775058379;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s7cy/6cDx1rFE8ee3i8hr+hRak5k71ivXO/Y/xfktL8=;
-        b=fLTiflVXvlAZUJ+l78cxIiIU7pDaqlETiwEXmtEjMlOryvhaiwWNUsSwm+StU6lV71
-         +L0atj9/d6KJ8yeUb4sgxPJ1BlSuAy5JE5Wr0yziEGeZwZH4zoKhmjVT9HknfQP7wDzd
-         9I6P76vWpSGUdNfZhchLKahMLjHq2eaovhqg2gzjfdEt5aCQRY98PWIPQHotEGLuZdmK
-         li6SIPzvhjIfyCXESWGrghf5Wvt4Muybm2yBFF1K4yyWVnc1QOicnfz05eQQKNEAaQAE
-         hUK7pMbeRSF1vMHEK/7CtR833/GH0qrrU5IiiHhYy0Y3EuqZYoLQPFWRhGM4WYN+bcQr
-         euLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbHvYnLpYJQbYCVh0SRFmWrXWNUJ3Ta5PbqGn1ClUOf3P809NxsTtxX4Oj0gljMlfsOkeR+lM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+8J2Km7fxjVLkset8tf3N0hhBZQJ3B3zEHZi8YpqyluKPRjIA
-	nXStwkVR358Zjhd+jy2JW5huB0NyJK7NUQRYCz/BRuGancbarnCaCC/atKuwVnFhbps2teiKMKW
-	MDFmquqPjbxcmetagfw4cQaH6ZQvRhmjAdDEZM844JOBBsB0ErtNRtx0dQA==
-X-Gm-Gg: ATEYQzysE2Htmcr2p3c6Gn04Wt26xSR0qdkqXcxiQtytmhI8YUdJyF/BuveqVnhV7xG
-	EJ6yHgNCC1u2QE2B1mpU6d0xAf/gyPP5xgC+DmtvNTwThZO2FpL7TrmjNvbeb/lo5q0+szfUnnr
-	j2sxum926R3jk17MTclfnMaEqF01uxH7LzmYUUaFtTPRpiE5d6a/g+0fGdHakcsdTrmk3bwp0CF
-	TtYjgyIKsA5ACo0K23G8MMzYBqcOgEut46uMC917irGp+jo811VSuRTmRXpD6++fqHQmG5rThbO
-	sGP7l1+wNkZvb2GeX2xEt6hVIrgNlVktHukNaDztrMPytmBLloTrmr9vKMGxDCW/uzZIsv7kS9Y
-	VK7DNHlEnl5I2BNtW/NKcJuR6rRBJF87sfhFABhjkkRDJ3GQYLxxZGCI6uEugSA==
-X-Received: by 2002:a05:600c:6814:b0:485:3c11:de84 with SMTP id 5b1f17b1804b1-487160a2589mr54835585e9.14.1774453578658;
-        Wed, 25 Mar 2026 08:46:18 -0700 (PDT)
-X-Received: by 2002:a05:600c:6814:b0:485:3c11:de84 with SMTP id 5b1f17b1804b1-487160a2589mr54835085e9.14.1774453578198;
-        Wed, 25 Mar 2026 08:46:18 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:8998:e0cf:68cc:1b62? ([2a01:e0a:c:37e0:8998:e0cf:68cc:1b62])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487166064fasm25225155e9.7.2026.03.25.08.46.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2026 08:46:17 -0700 (PDT)
-Message-ID: <9e395a20-3381-475c-983a-03644a012a0c@redhat.com>
-Date: Wed, 25 Mar 2026 16:46:14 +0100
+        d=1e100.net; s=20251104; t=1774453710; x=1775058510;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M/sO4V9/AfamlzvH6Yz1izySgX6li4ODe+c+dOZMt3Y=;
+        b=FonREKQvnzLq/7lTU/7y/Ghuy53vZ/QpypVExPQq27njMoIZllarfyvjUfBBF8wfyT
+         3rwhFxZoRxjHE6RLrgvbR+JyXlp8uA/JdIlKv9Hvd2shdbFGf0mWwFUtWVW+EP1CqQgz
+         y+UH6t+pVNm2rdMXUsC/tcPW8lDXo4w8yjN+qKDKuu+kQ5bzu8RCD3P5XtolyAXWPJkv
+         31P+d9Jn1FBA069QXf0RpOeTOk9q0CzHzFpT2YB+v+aEpZ++Am7UI1ygZVY3Wdk/6Ewc
+         A1GMgIBiUCwkoWgibp0SKUtpf9ZRwtHkJMSSHRqT9Nfi4V/0TFGCH9jhJ8x79hZQdp6d
+         wtGw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0HfbQUxZ5fwLsa1YV4zMajmiypwX5hFqC5W+eyZIOo5X9XpECP0sxrwl/FGSLdvksiYE9e0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHcZSVESTT6gRwBQrQmbX21glQUJW7zOtg3WOPoVN7Wasp8bOV
+	6Rhw82zCuQBf8I1iiHZpAvhsHNNuXhoCayp6H6fNrIl/Ig+rAKnpOTyvzRPXAcQy/09NWJUq6DJ
+	qUjqqpA==
+X-Received: from ejwi18.prod.google.com ([2002:a17:906:4fd2:b0:b98:b1fa:13b4])
+ (user=nogikh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:c20:b0:b8e:d1f3:4744
+ with SMTP id a640c23a62f3a-b9a546a0ba0mr275814266b.55.1774453709696; Wed, 25
+ Mar 2026 08:48:29 -0700 (PDT)
+Date: Wed, 25 Mar 2026 16:48:24 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/15] drm/ast: dp501: Fix initialization of SCU2C
-To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20260323160407.245773-1-tzimmermann@suse.de>
- <20260323160407.245773-2-tzimmermann@suse.de>
-Content-Language: en-US, fr
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20260323160407.245773-2-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <20260325154825.551191-1-nogikh@google.com>
+Subject: [PATCH v3] x86/kexec: Disable KCOV instrumentation after load_segments()
+From: Aleksandr Nogikh <nogikh@google.com>
+To: bp@alien8.de, tglx@kernel.org, mingo@redhat.com
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, dvyukov@google.com, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	Aleksandr Nogikh <nogikh@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_FROM(0.00)[bounces-230359-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[suse.de,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-230360-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[google.com:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jfalempe@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nogikh@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email]
-X-Rspamd-Queue-Id: D832A328D46
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 2C137328E4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 23/03/2026 16:56, Thomas Zimmermann wrote:
-> Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
-> and tries to set it to source data from VGA. But writes the update to
-> offset 0x0, with unknown results. Write the result to SCU instead.
-> 
-> The bug only happens in ast_init_analog(). There's similar code in
-> ast_init_dvo(), which works correctly.
+The load_segments() function changes segment registers, invalidating
+GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
+enabled, any subsequent instrumented C code call (e.g.
+native_gdt_invalidate()) begins crashing the kernel in an endless
+loop.
 
-Thanks, it looks good to me.
+To reproduce the problem, it's sufficient to do kexec on a
+KCOV-instrumented kernel:
+$ kexec -l /boot/otherKernel
+$ kexec -e
 
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Jocelyn Falempe <jfalempe@redhat.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v3.16+
-> ---
->   drivers/gpu/drm/ast/ast_dp501.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/ast/ast_dp501.c b/drivers/gpu/drm/ast/ast_dp501.c
-> index 9e19d8c17730..677c52c0d99a 100644
-> --- a/drivers/gpu/drm/ast/ast_dp501.c
-> +++ b/drivers/gpu/drm/ast/ast_dp501.c
-> @@ -436,7 +436,7 @@ static void ast_init_analog(struct ast_device *ast)
->   	/* Finally, clear bits [17:16] of SCU2c */
->   	data = ast_read32(ast, 0x1202c);
->   	data &= 0xfffcffff;
-> -	ast_write32(ast, 0, data);
-> +	ast_write32(ast, 0x1202c, data);
->   
->   	/* Disable DVO */
->   	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xcf, 0x00);
+The real-world context for this problem is enabling crash dump
+collection in syzkaller. For this, the tool loads a panic kernel
+before fuzzing and then calls makedumpfile after the panic. This
+workflow requires both CONFIG_KEXEC and CONFIG_KCOV to be enabled
+simultaneously.
+
+Adding safeguards directly to the KCOV fast-path
+(__sanitizer_cov_trace_pc()) is also undesirable as it would
+introduce an extra performance overhead.
+
+Disabling instrumentation for the individual functions would be too
+fragile, so disable KCOV instrumentation for the entire
+machine_kexec_64.c and physaddr.c. If coverage-guided fuzzing ever
+needs these components in the future, other approaches should be
+considered.
+
+The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
+supported there.
+
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
+Cc: stable@vger.kernel.org
+---
+v3:
+Changed the wording of the commit description and the comments.
+Added a Fixes tag.
+
+v2:
+https://lore.kernel.org/all/20260317220319.788561-1-nogikh@google.com/
+
+Updated the comments to explain the underlying context.
+
+v1:
+https://lore.kernel.org/all/20260216173716.2279847-1-nogikh@google.com/
+---
+ arch/x86/kernel/Makefile | 11 +++++++++++
+ arch/x86/mm/Makefile     |  2 ++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index e9aeeeafad173..febf6f49207b3 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -43,6 +43,17 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= n
+ KCOV_INSTRUMENT_unwind_orc.o				:= n
+ KCOV_INSTRUMENT_unwind_frame.o				:= n
+ KCOV_INSTRUMENT_unwind_guess.o				:= n
++# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
++# the GS base, which KCOV relies on for per-CPU data.
++# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
++# using it to collect crash dumps during kernel fuzzing), disabling
++# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
++# instrumentation for individual affected functions can be fragile, while
++# adding more checks to KCOV would slow it down.
++# As a compromise solution, disable KCOV instrumentation for the whole
++# source code file. If its coverage is ever needed, other approaches
++# should be considered.
++KCOV_INSTRUMENT_machine_kexec_64.o			:= n
+ 
+ CFLAGS_head32.o := -fno-stack-protector
+ CFLAGS_head64.o := -fno-stack-protector
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index 5b9908f13dcfd..3a5364853eab8 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -4,6 +4,8 @@ KCOV_INSTRUMENT_tlb.o			:= n
+ KCOV_INSTRUMENT_mem_encrypt.o		:= n
+ KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
+ KCOV_INSTRUMENT_pgprot.o		:= n
++# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
++KCOV_INSTRUMENT_physaddr.o		:= n
+ 
+ KASAN_SANITIZE_mem_encrypt.o		:= n
+ KASAN_SANITIZE_mem_encrypt_amd.o	:= n
+
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+-- 
+2.53.0.1018.g2bb0e51243-goog
 
 
