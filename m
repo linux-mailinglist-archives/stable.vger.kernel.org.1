@@ -1,200 +1,293 @@
-Return-Path: <stable+bounces-230368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCowImwbxGnlwQQAu9opvQ
-	(envelope-from <stable+bounces-230368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:29:16 +0100
+	id MKbWFo4bxGnlwQQAu9opvQ
+	(envelope-from <stable+bounces-230369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:29:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6F8329CDE
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:29:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBBA329D2D
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 629DF303F7D3
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:17:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48DCD305749D
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CB43D669E;
-	Wed, 25 Mar 2026 17:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64497402B88;
+	Wed, 25 Mar 2026 17:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cPnzPXf3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fBJ/JGBL"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="U4PO+79/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mqpb1XDv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77399309DB5
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 17:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D873537D6;
+	Wed, 25 Mar 2026 17:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774459066; cv=none; b=apQQVJ8vL5YSMA9uqwYoPMfb1vZpCLlOL/rKdJoqOkEqbYR/WmfvmWjdIQJ+qC0HhbHddCK0+aFNNG/Cds4Kg6ba46xzQUymSuYFmKgXirMOwpiP1UHo9Np+lAUTsX8UQotGCd7jLdfzqAshPiGef3mP501gouZWVwcR5BPrBeM=
+	t=1774459094; cv=none; b=tPaz1lfJ7BCd++GkiBFHAAgVgxHOuJXdcRVI+l1fspdbGPy2jlstaoio3rch1wHtaAwTZihgg8BYo2HlmOE/VPJ+fMx0EIR6LdSx/3BKDE78WqyLXLW9n/+F4nsfXEtd6GBQG5DUiv0FXjsXLnla4jrGoC3h6LYES6m2zLLjuLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774459066; c=relaxed/simple;
-	bh=DUeYUo8v2hrG8TO/xuYnnbrW1r9eSwbd9072+pSakI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H36I5/AtcCwUezVJsdL4i/cT8SfNxWNUps58QkgP4TKmv65ee1nH1jyIP9KhBsvZ/GE10BMxuI7qrcDzP6NFcKh1FwSEyBjAJBnZadSEjdCCGRjCgUCAqTk3t2LA7I4avlzlt8E8AK7uYTJqVs3H/QSBtndKhQ/jrtnuJfjdv9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cPnzPXf3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fBJ/JGBL; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PFH1td1554595
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 17:17:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=T4wGSBtw4Oq+7FiM6cxcwXwB
-	JwT66nkOPrc5ssKiSsw=; b=cPnzPXf3LuOAZTFFQ76uGhTtMTKKaGRkYK8Zbzyy
-	RelwctbN+yrwSohdaMcOxrW2WLe/+D2OGudVee0GDbdZsAjKobNbTslOxK7chksJ
-	7VlfNSjzS6VFSFByvYQy4Z2HAOgTvIiWETtrQ/Ca0S7rD0RdjAWM8nSQOvV26Bz7
-	prDP8f2QozwVWo3QXvJKU+nXzjeVW/c4uFpcfkDFFzReN2g6zqMR9ucpj0y5zxi3
-	ma9lk2P/i80H1Bsc4T5Yhx9WVc/QlLX2jaesF6RDQzSvT6yzX987oXSIaBdpKY80
-	X6izwoPhikT64PHPXUdzpzmaXISB6Be0/HsZbbX6MPwTaQ==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4gj78xau-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 17:17:44 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50b4987c698so380121cf.0
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774459064; x=1775063864; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T4wGSBtw4Oq+7FiM6cxcwXwBJwT66nkOPrc5ssKiSsw=;
-        b=fBJ/JGBLVxxnmwkj4T4mQz6aSXNwTw1ZG2dOTrntXAuWE9AMWd2z4MvvvhwvpB1ILO
-         HbIxc60EJkY8pnwlBshkfFTS4kFMZlPsuOnptX5FvnZqN0yvTgMlhJ1FkyOAGPMUyp/L
-         9FlI11uJ8htavkSAkzirn7TTv82A6AVZJSS7J0uZlR91nhvwWRptczAwI5/Co9y4bPR0
-         nLiC1BEf0vUdVKIHXHoryhOMpihUvub29o9RsVun9sdniPu1dDVWPaWVkWH9qBs/n6kt
-         jaZ0pqaLsVeOkU0yvJRPgLct6CQYPsTvBchZg7vuhmPBGtUWmqHUvt5tMri2VBsqZ0Sz
-         Hhgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774459064; x=1775063864;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T4wGSBtw4Oq+7FiM6cxcwXwBJwT66nkOPrc5ssKiSsw=;
-        b=lyW3t42PncrKZ2W8260WIbvQ/RtM8RUJfNcYfMEKPU16yAgbR4h1rYn6Ts6TRrEskh
-         4TIutkOFJ6hSvdVOtNeMde405BodRLyIhdop0KawAIDuuVrtWYUI4arrlXaxVn54iX0L
-         Xj0xBf3+avk5V+evlAKbOnUwVqAOv/1XpAhy7CpnKVymj/x3js2lrmbekZrfp2kxr7sg
-         U0erKwPHKH2tQYG66ZF05eYuzmDOyX4OGfyug1fb9thgzhJklYcRb7G8sdS51QT2jLhV
-         13oa4SRuCr7T97h/VznSF/uC4R5+Hjh765A6yPzDWyUqwyL2KzWJh/Ep2//7qS4KmPKI
-         0m4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUYYKSYGgX9pTMqZjCawGbWYAbnvLs2jmWxplB+cV6vUvlbHizfFSOYRNilmQPAY5cA2jJzusU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiLwNr6B/cIe9TGfV+4MNEXtRF6oCTGaOFXcAXnei7eQHjH0jU
-	aAMFEnAjhahaSweEWEr7v1nMpm1ubWgj95YFcG6RJ9HD7IAK2qvuDN2zWEx+LrUKMmt3CHyGKnL
-	L2fKjOkPg9uHNnEsHYWrPHSMqtFK1hlY6aJcXWEzn/LveLcb6supbru7ET0M=
-X-Gm-Gg: ATEYQzwYnjgzJLfSeh/StWOScIT5s4DU08GEZEuaAyAVgG2LXW0YFnCLwu4Fg13tz4x
-	EBbyjqJBNvvq0DhnFoxQPD6M2qjNyf1C7IZOgNbB9t9b8X/N2VfK3u4p16383WU3LYaEIgmW7XL
-	wRZGGc8dtArniA6azBOWTWVcSKVvbV2D76uQFP1i7/uCC9RjHkVx1pk11cNuKIkKLukypJA7cHh
-	96NTgE+hsLcHyu+VdIrQT4pQaupK4e9SUCenG8brYx9pGo2zx6rwWwj3L+nY/kxHJ2KeBo5tks0
-	B69cPHmzNokYWgS5szPT4BasdgVSQPyYgey/TN1iULNDK22ir/cVB0EVNNE+t9sWDi1pl5XvfGX
-	Yv7/GZfDKZtrCbJtyWCcFvIjVbd/i4Fxpd5hxP3+zFj2C54ez65NSx34uxrfqCe5PgFqfpIG+6X
-	wxn1/fzSqtIlXZwPuDQ7u2ebl7Jc43CUkJ2aU=
-X-Received: by 2002:a05:622a:8349:b0:509:e46:84ea with SMTP id d75a77b69052e-50b6eecc75cmr86464571cf.34.1774459063943;
-        Wed, 25 Mar 2026 10:17:43 -0700 (PDT)
-X-Received: by 2002:a05:622a:8349:b0:509:e46:84ea with SMTP id d75a77b69052e-50b6eecc75cmr86464181cf.34.1774459063384;
-        Wed, 25 Mar 2026 10:17:43 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a068f8c7sm27169e87.65.2026.03.25.10.17.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 10:17:41 -0700 (PDT)
-Date: Wed, 25 Mar 2026 19:17:39 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-        Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-        Shazad Hussain <quic_shazhuss@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: qcom: lemans: Correct QUP interrupt
- numbers
-Message-ID: <7ifkfgabmhkap7vnwewajmwtgptgioapgszj2klswqixbk4nex@f7nnwfcrit4v>
-References: <20260325-lemans-irq-num-v1-1-a470d544966a@oss.qualcomm.com>
+	s=arc-20240116; t=1774459094; c=relaxed/simple;
+	bh=u8/+z2Bgz4Wws55sOYWKPdJx57vqhgYOwGb75l1e8t4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bCaMFRngQvlSLpQerRvOcbm/OsMHWzxfRleYOqvLkEIZQCe6N1mrLSzPX7uscuBPwESkuX8q97FfvSMgiX6Fmp9wqRRxXWrIOkCKoD/chzPqTf/PEdx3Gl9EO89WHtHIjlxgGvmEu6nF4Bn1ihLjaO1z84DVtFlB5I2k0kx3TNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=U4PO+79/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mqpb1XDv; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 920DA7A05FF;
+	Wed, 25 Mar 2026 13:18:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 25 Mar 2026 13:18:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1774459091;
+	 x=1774545491; bh=4izl9m24J0MdH0vrTEK4+4uXMVu8bNMwm/FhZz2CVdc=; b=
+	U4PO+79/zAA0FkkU3YogSlYdJXQ1SpeONIStoMVCnxHq9wnoCMZUWoIR2YXxUSQr
+	KrjlRwBPfTQ8E/ljD3wQ8KDxYW80tOsdczBU/7RV0WyLPTZErmh3SncVS/qw5avS
+	HS5KjIjzNaw1/1Y2/c55kqr0MKQ+dxv20JI31ebPvNS9247L8X657hQFCVC4KoZU
+	QYtxPAr4Dn8EQhvvU36Cgbinho4HiSglxQpcKaEziZL1ZRyeRZCYa22JsK5MvtYj
+	tG52bMY4cZ2IGUFkA16Q6BdQv3rvatTcA7MzhZLdKttJGozJhq+cz21AWzqcf7t5
+	fBD1LQ3HEr2gTHnF6PV8lw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774459091; x=
+	1774545491; bh=4izl9m24J0MdH0vrTEK4+4uXMVu8bNMwm/FhZz2CVdc=; b=m
+	qpb1XDv6WSWP6VAE7r7zEWqiZl2OXosvVUYlycN/vYRuJpbA66870kXqi7arsDFu
+	d6+m1B5LwQHsAVxcRwTpvzoRpZJpFafrtMYm8OTi/Yn0W9IM4fh5kZ0ha1eXBEd7
+	ljd0c1BDa9/zyazTa+Jl/Ux4W/SHNZHppPIhcNexmlpnfcqcAdwloBY2s3HvasyR
+	X+siNW35RsIyuGXysNO/kHChT1r9HoWGRq9yzUcrDjX8YRECzlmQPiGEaGN6HyE3
+	vbtW6+zZC7MMFeTUeX/0vFfmTlnJWfX7fS3fm55dO3HazTE2vJhowcFqUglpaF2J
+	gCBi78Cgy2USGWyrvOgkA==
+X-ME-Sender: <xms:0xjEaR8QS7_cAtDMzaytOsQROsyFdYYRCzvvPli-E8JOxeXRfh2cOA>
+    <xme:0xjEaZaqyz8kaUICit2PBUQK4ir3Vlswf89ZaWQLJIsg2G691vKXm1RK2ulgY1906
+    Jrxdatbb6zUfO4bl4qpF7VXzpnbqVQggMwh985-eBTtHt3oUf1WEA>
+X-ME-Received: <xmr:0xjEaXqzuULEWrYkIBGozxUYZ5mjoUdkURB59c959ZvwYhFSSgco0UEW5x8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdehtdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
+    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
+    gprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihhf
+    mheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehlihhnuhigqdhsfeeltdesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhes
+    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhptghisehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgvlhhgrggrsheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhhukhgrshesfihunhhnvghrrdguvgdprhgtphhtthhope
+    hksghushgthheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghlghesrhgvughhrght
+    rdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:0xjEaW1OSbEYNLFDY5M-FoNhOdGjdjZZ6XiD5xOm7eNoJfqlDN78RA>
+    <xmx:0xjEaXnakkrmYKDrH61B0YSaeNVXhH0cAgnDJtYHCGZKQzjaA6J89A>
+    <xmx:0xjEaab6eaS0EWAxfUrDhJ8VuZW6qsx0oPD4egC76VsxyeMTOsGzRQ>
+    <xmx:0xjEaR9wpIZphF155loKWCfOBnl-VXxigrE9tqQQGr2jNdHCN8GEOg>
+    <xmx:0xjEafCdy3P-Cw5s71TDZYvrCoeZJ6VhxGEoqglvfFwPNhAkGGffbX0c>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Mar 2026 13:18:10 -0400 (EDT)
+Date: Wed, 25 Mar 2026 11:18:08 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
+ kbusch@kernel.org, clg@redhat.com, stable@vger.kernel.org,
+ schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alex@shazbot.org
+Subject: Re: [PATCH v11 7/9] vfio-pci/zdev: Add a device feature for error
+ information
+Message-ID: <20260325111808.263aef2c@shazbot.org>
+In-Reply-To: <20260316191544.2279-8-alifm@linux.ibm.com>
+References: <20260316191544.2279-1-alifm@linux.ibm.com>
+	<20260316191544.2279-8-alifm@linux.ibm.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325-lemans-irq-num-v1-1-a470d544966a@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=M9hA6iws c=1 sm=1 tr=0 ts=69c418b8 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=ZAk-9iMX1uhtNleSEbMA:9 a=CjuIK1q_8ugA:10
- a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDEyNSBTYWx0ZWRfX4lUqW7mq+Zjt
- vXU9WMR5L3CMug+P/IxI79Y+lBL97cpNhEjWqtUEM3NXY8UkzoSrYfoSu22GJ+r64eCar17dKJA
- E2pfdM1IsPe55PrCWLEUr94wDY4B2xZGlFqgP4hZHdt8XxNKlYaU9N2NL7ahMcuRaYhGlQUccoO
- u2J5hGiFVmbBpj6z64u2X6MjpgpPjSXaK7x/I9ldQA8c3rlHUvJ9TkYJyTii1noSz3V7mKgDYyh
- di0MzyS8wNpMSfpcaq+nwoMb/bd/dlyq7nH5toEothdLwGVgF7GYUxMIX70Y3keaGe1si+XNcov
- GVRb+t2/kEPOuf6I/0jI9nxfqLWuISDUfwnpzQ3gRUqmehw/H8AJU1YKsA6KWYe56+a2E8Y1CEj
- fhuG1E9Fc/DdYtZ46cPOTngyAAMUdx2TszXuOFZgb3aFY6C/WEvLEFQtWQfrkdXLfwKsnF+4TFM
- IMa2y3Sut7/0BLp6jQg==
-X-Proofpoint-GUID: NcBtiPoYLV3dy3mvUHZplRwcrGOaE4qd
-X-Proofpoint-ORIG-GUID: NcBtiPoYLV3dy3mvUHZplRwcrGOaE4qd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_05,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0
- adultscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250125
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230368-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-230369-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: EB6F8329CDE
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,shazbot.org:dkim,shazbot.org:mid]
+X-Rspamd-Queue-Id: DFBBA329D2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 06:30:37PM +0530, Viken Dadhaniya wrote:
-> Fix GIC_SPI interrupt numbers for QUPv3 SE6 nodes on Lemans SoC.
-> Using incorrect interrupt lines can prevent IRQs from triggering
-> and break I2C, SPI, and UART operation.
+On Mon, 16 Mar 2026 12:15:42 -0700
+Farhan Ali <alifm@linux.ibm.com> wrote:
+
+> For zPCI devices, we have platform specific error information. The platform
+> firmware provides this error information to the operating system in an
+> architecture specific mechanism. To enable recovery from userspace for
+> these devices, we want to expose this error information to userspace. Add a
+> new device feature to expose this information.
 > 
-> Fixes: 34a407316b7d3 ("arm64: dts: qcom: sa8775p: Populate additional UART DT nodes")
-> Fixes: 1b2d7ad5ac14d ("arm64: dts: qcom: sa8775p: add missing spi nodes")
-> Fixes: ee2f5f906d69d ("arm64: dts: qcom: sa8775p: add missing i2c nodes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 > ---
->  arch/arm64/boot/dts/qcom/lemans.dtsi | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/vfio/pci/vfio_pci_core.c |  2 ++
+>  drivers/vfio/pci/vfio_pci_priv.h |  9 ++++++++
+>  drivers/vfio/pci/vfio_pci_zdev.c | 36 ++++++++++++++++++++++++++++++++
+>  include/uapi/linux/vfio.h        | 17 +++++++++++++++
+>  4 files changed, 64 insertions(+)
 > 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index d43745fe4c84..bbdb625e35ef 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1534,6 +1534,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+>  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
+>  	case VFIO_DEVICE_FEATURE_DMA_BUF:
+>  		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
+> +	case VFIO_DEVICE_FEATURE_ZPCI_ERROR:
+> +		return vfio_pci_zdev_feature_err(device, flags, arg, argsz);
+>  	default:
+>  		return -ENOTTY;
+>  	}
+> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+> index 27ac280f00b9..eed69926d8a1 100644
+> --- a/drivers/vfio/pci/vfio_pci_priv.h
+> +++ b/drivers/vfio/pci/vfio_pci_priv.h
+> @@ -89,6 +89,8 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
+>  				struct vfio_info_cap *caps);
+>  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev);
+>  void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev);
+> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
+> +			      void __user *arg, size_t argsz);
+>  #else
+>  static inline int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
+>  					      struct vfio_info_cap *caps)
+> @@ -103,6 +105,13 @@ static inline int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
+>  
+>  static inline void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
+>  {}
+> +
+> +static inline int vfio_pci_zdev_feature_err(struct vfio_device *device,
+> +					    u32 flags, void __user *arg,
+> +					    size_t argsz)
+> +{
+> +	return -ENODEV;
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+-ENOTTY
 
+> +}
+>  #endif
+>  
+>  static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
+> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
+> index 2be37eab9279..d2748dd67c55 100644
+> --- a/drivers/vfio/pci/vfio_pci_zdev.c
+> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
+> @@ -141,6 +141,42 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
+>  	return ret;
+>  }
+>  
+> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
+> +			      void __user *arg, size_t argsz)
+> +{
+> +	struct vfio_device_feature_zpci_err err;
+> +	struct vfio_pci_core_device *vdev;
+> +	struct zpci_dev *zdev;
+> +	int head = 0;
+> +	int ret;
+> +
+> +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+> +	zdev = to_zpci(vdev->pdev);
+> +	if (!zdev)
+> +		return -ENODEV;
+> +
+> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
+> +				 sizeof(err));
+> +	if (ret != 1)
+> +		return ret;
+> +
+> +	mutex_lock(&zdev->pending_errs_lock);
+> +	if (zdev->pending_errs.count) {
+> +		head = zdev->pending_errs.head % ZPCI_ERR_PENDING_MAX;
+> +		err.pec = zdev->pending_errs.err[head].pec;
+> +		zdev->pending_errs.head++;
+> +		zdev->pending_errs.count--;
+> +		err.pending_errors = zdev->pending_errs.count;
+> +	}
+> +	mutex_unlock(&zdev->pending_errs_lock);
+> +
+> +	err.version = 1;
 
--- 
-With best wishes
-Dmitry
+Returns uninitialized kernel data for case where there are no pending
+errors, initialize err with = {};
+
+> +	if (copy_to_user(arg, &err, sizeof(err)))
+> +		return -EFAULT;
+> +
+> +	return 0;
+> +}
+> +
+>  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct zpci_dev *zdev = to_zpci(vdev->pdev);
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index bb7b89330d35..21b1473e4779 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+> @@ -1510,6 +1510,23 @@ struct vfio_device_feature_dma_buf {
+>  	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
+>  };
+>  
+> +/**
+> + * VFIO_DEVICE_FEATURE_ZPCI_ERROR feature provides PCI error information to
+> + * userspace for vfio-pci devices on s390x. On s390x PCI error recovery involves
+> + * platform firmware and notification to operating system is done by
+> + * architecture specific mechanism.  Exposing this information to userspace
+> + * allows userspace to take appropriate actions to handle an error on the
+> + * device.
+
+This should include some explicit discussion of how pending_errors in
+interpreted, ie. pending _additional_ errors, userspace should read
+until zero.  Thanks,
+
+Alex
+
+> + */
+> +
+> +struct vfio_device_feature_zpci_err {
+> +	__u8 version;
+> +	__u8 pending_errors;
+> +	__u16 pec;
+> +};
+> +
+> +#define VFIO_DEVICE_FEATURE_ZPCI_ERROR 12
+> +
+>  /* -------- API for Type1 VFIO IOMMU -------- */
+>  
+>  /**
+
 
