@@ -1,226 +1,148 @@
-Return-Path: <stable+bounces-230350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +D0EJQf9w2lXvQQAu9opvQ
-	(envelope-from <stable+bounces-230350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 16:19:35 +0100
+	id kOIREs/8w2lwvQQAu9opvQ
+	(envelope-from <stable+bounces-230351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 16:18:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3C3327C64
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 16:19:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054E1327BE9
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 16:18:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2172730D1099
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:06:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A5D9303D539
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687343F54CC;
-	Wed, 25 Mar 2026 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB753D348C;
+	Wed, 25 Mar 2026 15:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="KhSIP6Q0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ixOuxX03"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fC4wFbx9"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0213F27702D;
-	Wed, 25 Mar 2026 14:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2623E40DFDC
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 15:00:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774450650; cv=none; b=YQVLPnkmdj1ZZZeISNGduKgmmUKt+96Z6Te389/9sSZCLGOfuiFqsFzktNSBqI0EOpsqbwF3nK0cvp7nhXA5GLEIzeNVsDNK6N5g1X3yhhyqN9zGyagKUxdgIGICZhMeC6RbtLdgTZFUKULctJ9Xz75NiOOlB2F4KfeHWU3zB2w=
+	t=1774450842; cv=none; b=HMzyu7Tg9YX9m/vces7wPz09isG4SFv+f2ls9o1RmRZnMzEnmCrIzBe06JJSMhfJ1EVUQK9CGhyCYfx63jPRs4a2EV5eMLxkqmvSbl1ZFI+hYWc8xkrJdvNIRwr8LXO/54j8OTRaWQ2XCPJOZx/dCCOharMH2rZUsCOcZ2uoGFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774450650; c=relaxed/simple;
-	bh=ttO5AMEAYh/Sdd9vgNGtHMrfAZFeabvd3Zj4pgA3fUQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bn+nFug8o6grxJgKUP0qkq3p5J4fHd22IFRcFRjY+6/yLmQAQg0lrpVCimOFxXmznMduUrWa51OCMnsjP1g4xMXTsp7TvbBDpG/+3RPYrBl+nwy7wjkzVA6b2uVlRXlDKgMB4W19nJhMHeXvvQ/+s+IkIq4NCSpnRZOxcsuCQtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=KhSIP6Q0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ixOuxX03; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 2EF47EC0274;
-	Wed, 25 Mar 2026 10:57:27 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 25 Mar 2026 10:57:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm3; t=1774450647; x=1774537047; bh=EM
-	sfC+C8hkjlML1/d6QGXe1eGqdhJRkZw8/j30OlXS0=; b=KhSIP6Q0YowfzwKXHV
-	8A9C2InD+dT1JPQocDyEdPlCjkeW1DRju6WNlL89aV8Mx/H8XVKg9tnT1pYEEsmh
-	MOxH7e8aGrbjFbqc/GGDTEoQPsewZr7D2ilPvvaXNUWlV+3H6vnwRq+CcsEWKW2/
-	Q1uXPj3eCa8MdsWhBJtMR4+1PbuKpnLGy4i8Rl+mPvcP7z2UfQAlxiP3L2R09+va
-	oH+KApIA9YtnC4st+gCryz38t/cNc9GXgvNQ4TVMzW5srKc1N9j+EZWTHY8yFbuY
-	MrqxPZ3o+HcMEFFfTbcgyVKjrQpVa48kJgNhNmjwRgFY170s0ett9gGVGhtMamf+
-	btYA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1774450647; x=1774537047; bh=EMsfC+C8hkjlML1/d6QGXe1eGqdh
-	JRkZw8/j30OlXS0=; b=ixOuxX03SCwXdw8aNLNR+yo7cTNavMD4G30+1Zz9ueJH
-	WEAUR6DqJgMQcjWSzi4HvaL4DBw7cQ9pw2MMt22esMG6+GTA3Mo/9TlXTmTgZTpp
-	Uwi7etGq39tUUzBSNCTIQoy6XItWYagARKfRLzKEI0bXeG9avGQjutLbT7s+o90J
-	prBgiBazyViiabxnTl6NZ+pQLJ1LXGvN8yNhxrGjp03YT0dqbFoN+3V8xxkbrpl2
-	esTssYaWe/hWQlBljrf0jA+oo0Fyogm58PBS+VSrav1Z1372YvhKm2pw8zHPm5kM
-	1wfjn0yZlE3QTi4fs0/ADT/c9lsSObv0pvVSK/CEDQ==
-X-ME-Sender: <xms:1vfDade9mXiXBpB76t6UDd6BjH1jirocOkdKVx4xO_u-AMp1RDpwGw>
-    <xme:1vfDaRN2O8f0VxtobVOT9VfB1-4auNtFRQr7y1Or0du8ELne93uTplpU495rJI1yL
-    aPHzlFn_yhpwuRTqrI-nwH8LTuDlRVANoIABI-n7eANxmFJ5IBN0eW3>
-X-ME-Received: <xmr:1vfDaRXBqif8gAbdjj40ClKINnrXJufaTgU3fIgXSqLHb0E-6_A_PzWca-lIEl0vZSHRbUq0aN2SiKuCP8icY3_AEJhXaF1mgMmGFA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdegjeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepueehve
-    ehveeugfettedufeegveejjedvgfdugffhgfdtveduhfevueevtdejheeinecuffhomhgr
-    ihhnpehshihsthgvmhgurdhiohdpkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhn
-    sggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthhhoh
-    hmrghsrdifvghishhsshgthhhuhheslhhinhhuthhrohhnihigrdguvgdprhgtphhtthho
-    pehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegrrdhfrghtohhumhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepshhj
-    ghestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehnshgtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvg
-    hrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhksghuihhl
-    ugesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:1vfDaZwk-0RLkBl8EreqRhRE6_V2LZG8hKBqTgPHU5AftMQR_Ohd_A>
-    <xmx:1vfDaY-AHZPhW8WkyETTPPVCMsknn1fS3bj19oBuOW-uOOdRELuL8w>
-    <xmx:1vfDae-8XA2ya3knQfYo1ONUGbD1Aj7OJMmUBQoLou9Bb-cptUHPMQ>
-    <xmx:1vfDaXVv3WfPSNoDhxPiNUSDZZ35ZEP-keiMPDZfWym7HSH_Nn_YbQ>
-    <xmx:1_fDaf5ZOS6o5saKIrUFu_Zj-zoGhZseKAduAkJ4browV1Dc5df1j0-F>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Mar 2026 10:57:26 -0400 (EDT)
-From: Janne Grunau <j@jannau.net>
-Date: Wed, 25 Mar 2026 15:57:25 +0100
-Subject: [PATCH v2] kbuild: modules-cpio-pkg: Respect INSTALL_MOD_PATH
+	s=arc-20240116; t=1774450842; c=relaxed/simple;
+	bh=PiccF8KIAiz1/9y5gMKzRlxYq88TiQwROOpY/6mzq+Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gGWLXsSCEScl6Sua37sOyfBETb5s+PV5vbP3NCcTmKBb4IrqrZ1rK/QHNP6DdkKpx0ZUKiO8I2bryQOOutTyx5PsoOY4F+HO5PVi7wcoUWzB32xJSNv9vUFhP4110suu9nLGYjtUd4DLKk8F8yQqOmO+AhkYm1HbmLeCgc5RxU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fC4wFbx9; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774450841; x=1805986841;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PiccF8KIAiz1/9y5gMKzRlxYq88TiQwROOpY/6mzq+Y=;
+  b=fC4wFbx9V08ACYA4cSrzLr5dNtTURjdWD7NgsGfjwakaquUV8QLZ2j2O
+   dv9IkwiWFlqsi4pBkK3J+YGQksxby5Hl9QFFECnd2GL2JZzXMult9XLy0
+   SZ/5E0nihaJSc1tAmabXM2RUTTm47sZCpljtfa1Iw5fMhIUhjFSfS3rqD
+   srMdyyMvNQLYxvizODzyhQrVoXnW+4EaynwolA6BrYm8BZ80+6+t3oij8
+   inFw4Dd8/zL7uTnt4Hf+hIuzgYknwGxiFwcPRXtM+LjgsF0WQXPmH2rvP
+   3akdtc5miCL3oZogcbWCO9T/B65Dvvdt+/TOse6y1eqtjnC2RNOipnrNV
+   g==;
+X-CSE-ConnectionGUID: DQoKWCBNRcKX4B1AVfMl5w==
+X-CSE-MsgGUID: wi7i2bkFQxiPnnJtDQKI+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="74670256"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="74670256"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 08:00:40 -0700
+X-CSE-ConnectionGUID: ddgBB4qCTe+X4lgCNppT8A==
+X-CSE-MsgGUID: uxptITx9Rni/S3pZZdLe6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="229162209"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.56]) ([10.125.110.56])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 08:00:40 -0700
+Message-ID: <2c036114-72c8-4695-8bba-a9c642df5519@intel.com>
+Date: Wed, 25 Mar 2026 08:00:38 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 378/378] cxl/acpi: Fix CXL_ACPI and CXL_PMEM Kconfig
+ tristate mismatch
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Keith Busch <kbusch@kernel.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20260317163006.959177102@linuxfoundation.org>
+ <20260317163020.886316423@linuxfoundation.org> <acK_mxmLlvD5vQog@kbusch-mbp>
+ <551037c4-665e-4701-9689-a75bdabe4211@intel.com>
+ <2026032511-construct-blurt-07cf@gregkh>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <2026032511-construct-blurt-07cf@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-kbuild-modules-cpio-pkg-usr-merge-v2-1-339ac87d82ea@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WNSw6CMBRFt0I69pm2kmocuQ/CoJ8nPIGWtJRoC
- Hu3sgOH5yb3nI0ljISJ3auNRVwpUfAF5Klitte+QyBXmEkuFb9IDoPJNDqYgssjJrAzBZiHDnK
- KMGEsh1oqpWvF5U1aVjxzxCe9j0bTFu4pLSF+juQqfus/9lWAAIsotBPGXK15vLT3Op89Lqzd9
- /0L+PsQw9MAAAA=
-X-Change-ID: 20260320-kbuild-modules-cpio-pkg-usr-merge-4266a460282c
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Simon Glass <sjg@chromium.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3092; i=j@jannau.net;
- s=yk2025; h=from:subject:message-id;
- bh=ttO5AMEAYh/Sdd9vgNGtHMrfAZFeabvd3Zj4pgA3fUQ=;
- b=kA0DAAoWoRs8240vZWYByyZiAGnD99WiYfXbqNmx/kD64PcdtXeEfKHXzrtyLm2i1oevz5DFf
- 4h1BAAWCgAdFiEEYivpiACrfCFcfeBWoRs8240vZWYFAmnD99UACgkQoRs8240vZWZd7gEAkDF0
- 5w+nizOVQKx5rvo/bCG3tCjVNcEUELPDeQTYLOsBAODgBkXdRdGFAYHEiB1eNHmWnm7zfhS6iHg
- 8MGghHwEP
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[jannau.net:s=fm3,messagingengine.com:s=fm1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[jannau.net:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-230350-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[jannau.net];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[j@jannau.net,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-230351-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[systemd.io:url,chromium.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,messagingengine.com:dkim,jannau.net:dkim,jannau.net:email,jannau.net:mid]
-X-Rspamd-Queue-Id: 8B3C3327C64
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,intel.com:mid]
+X-Rspamd-Queue-Id: 054E1327BE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The modules-cpio-pkg target added in commit 2a9c8c0b59d3 ("kbuild: add
-target to build a cpio containing modules") is incompatible with
-initramfs with merged /lib and /usr/lib directories [1]. "/lib" cannot
-be a link and directory at the same time.
-Respect a non-empty INSTALL_MOD_PATH in the modules-cpio-pkg target so
-that `make INSTALL_MOD_PATH=/usr modules-cpio-pkg` results in the same
-module install location as `make INSTALL_MOD_PATH=/usr modules_install`.
 
-Tested with Fedora distribution initramfs produced by dracut.
 
-Link: https://systemd.io/THE_CASE_FOR_THE_USR_MERGE/ [1]
-Fixes: 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Glass <sjg@chromium.org>
-Signed-off-by: Janne Grunau <j@jannau.net>
----
-Hej,
+On 3/25/26 1:56 AM, Greg Kroah-Hartman wrote:
+> On Tue, Mar 24, 2026 at 09:49:43AM -0700, Dave Jiang wrote:
+>>
+>>
+>> On 3/24/26 9:45 AM, Keith Busch wrote:
+>>> On Tue, Mar 17, 2026 at 05:35:35PM +0100, Greg Kroah-Hartman wrote:
+>>>> 6.19-stable review patch.  If anyone has any objections, please let me know.
+>>>
+>>> No objection, but a little confused how this got to stable before
+>>> landing in Linus' tree. Does stable pull directly from downstream
+>>> subsystems now?
+>>>
+>>> Speaking of upstream, will the CXL maintainers be submitting a pull
+>>> request for the staged fixes soon? I'm just getting new bug reports from
+>>> people testing 7.0-rc, so wanted to check in on that.
+>>
+>> I can send it today. Looks like I got enough days in linux-next soaking for the PR.
+>>
+> 
+> I took it as it was "obviously" correct, fixed reported regressions, and
+> it was in linux-next and going to Linus "soon".
 
-this patch allows to produce modules-cpio initramfs which are compatible
-with initramfs with merged /lib and /usr/lib (/lib as symlink to
-/usr/lib). I expect initramfs of distributions with merged /usr to have
-a merged /usr as well. This is at least true for Fedora initramfs built
-with dracut.
+It's now in Linus's tree as of yesterday. We are all good.
 
-Janne
----
-Changes in v2:
-- drop pointless avoidance of repeated slashes
-- comment the changed Makefile rule
-- break long modles-cpio-pkg help text to 2 lines
-- imported Simon's Rb:
-- add fixes tag for commit 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
-- Link to v1: https://lore.kernel.org/r/20260320-kbuild-modules-cpio-pkg-usr-merge-v1-1-cee1ad1bb7cb@jannau.net
----
- scripts/Makefile.package | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile.package b/scripts/Makefile.package
-index 0ec946f9b905f74f8698d8d6967d22f5b76f64e0..c19b88b346d0632cc99e74617d79b07d81d48635 100644
---- a/scripts/Makefile.package
-+++ b/scripts/Makefile.package
-@@ -195,7 +195,8 @@ tar%-pkg: linux-$(KERNELRELEASE)-$(ARCH).tar.% FORCE
- .tmp_modules_cpio: FORCE
- 	$(Q)$(MAKE) -f $(srctree)/Makefile
- 	$(Q)rm -rf $@
--	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@ modules_install
-+	# Prepend INSTALL_MOD_PATH inside the staging dir
-+	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@/$(INSTALL_MOD_PATH) modules_install
- 
- quiet_cmd_cpio = CPIO    $@
-       cmd_cpio = $(CONFIG_SHELL) $(srctree)/usr/gen_initramfs.sh -o $@ $<
-@@ -264,6 +265,7 @@ help:
- 	@echo '  tarxz-pkg           - Build the kernel as a xz compressed tarball'
- 	@echo '  tarzst-pkg          - Build the kernel as a zstd compressed tarball'
- 	@echo '  modules-cpio-pkg    - Build the kernel modules as cpio archive'
-+	@echo '                        (uses INSTALL_MOD_PATH inside the archive)'
- 	@echo '  perf-tar-src-pkg    - Build the perf source tarball with no compression'
- 	@echo '  perf-targz-src-pkg  - Build the perf source tarball with gzip compression'
- 	@echo '  perf-tarbz2-src-pkg - Build the perf source tarball with bz2 compression'
-
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260320-kbuild-modules-cpio-pkg-usr-merge-4266a460282c
-
-Best regards,
--- 
-Janne Grunau <j@jannau.net>
+> 
+> thanks,
+> 
+> greg k-h
 
 
