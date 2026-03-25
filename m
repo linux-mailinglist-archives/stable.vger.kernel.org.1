@@ -1,170 +1,272 @@
-Return-Path: <stable+bounces-230295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GD/2JdGvw2nAtAQAu9opvQ
-	(envelope-from <stable+bounces-230295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 10:50:09 +0100
+	id IIeYLhSzw2litgQAu9opvQ
+	(envelope-from <stable+bounces-230296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:04:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D971322724
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 10:50:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215693229C9
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 96E88305A568
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 09:50:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 847623116D6A
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 09:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBBF39FCD2;
-	Wed, 25 Mar 2026 09:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320703A542C;
+	Wed, 25 Mar 2026 09:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpYoACiF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOYMZUqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3972359A8C;
-	Wed, 25 Mar 2026 09:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62713A4518;
+	Wed, 25 Mar 2026 09:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774432206; cv=none; b=Y+MYGipI/uZR9Zn0sGR1eYJm2Rxf9PLafRN4OdbaZ6U4rdvSHnK9EEVApZ6lN6sopRmkt/WwcsO53alFqYb2l/N0KOh76ilFWu8liT0Vw3SJHGzLoH7LyFZ7uhPc/TP4gmgWJgIWVjVzPjTbJIDjGbx7BprHZBvdEztZEaCKddA=
+	t=1774432758; cv=none; b=WC3rU8QdznMax+AfYfNQYV+7wFHtRQibgI9XV2PUoE93ICliLzE6UdKtU9UIbt9oIDlr39s45vSekda3NkyShl2YK95Xk/YoydkxYxP8PKY+l+MSL7NqG6vBWXdybPZ+lV/qIXtikaeef6v9TjqfLhT0wn5IbgwTSSrazsiHIDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774432206; c=relaxed/simple;
-	bh=Bf0PBw5Adw8enGJg9vZPnLPb1pWLLwp32Nna1aPLguc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LSVbgngZPcSWyKm2gQ77jJ25Esh3nt68TfjkAiSVgeD2aG9Dfp0lpBhvXXHTXsduZEtEraPfdkL22XBpJCjC7y5i7wqODWxnkoz56DxCmoZDGZYIpakBSQuVE2j1n7OIgSKTz4L1HiE6YYtCjYpt64tXAbYFcNKsDAjhEqraq7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpYoACiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EBEC4CEF7;
-	Wed, 25 Mar 2026 09:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774432206;
-	bh=Bf0PBw5Adw8enGJg9vZPnLPb1pWLLwp32Nna1aPLguc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OpYoACiFwpZzD7hxqtfIslwJd5mby0S8GfHQLcnUOGVqnykROGMgCTUut5LCxMmvb
-	 8hra4wguoV0cDs1AyXquxLsgH2FSGKmkOnYht1vgwg6eWsSbfCtvcyNYbn2eGVvUj8
-	 Hb7L/v6CfwohnmwYXQNX9+xjojKFdf3MaGJ5Kja4=
-Date: Wed, 25 Mar 2026 10:49:43 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Theodore Tso <tytso@mit.edu>
-Cc: Mark Brown <broonie@kernel.org>, Jan Kara <jack@suse.cz>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Brian Foster <bfoster@redhat.com>,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Gou Hao <gouhao@uniontech.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Zhang Yi <yi.zhang@huawei.com>, Baokun Li <libaokun1@huawei.com>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
-Message-ID: <2026032535-casino-cable-e039@gregkh>
-References: <20260323134525.256603107@linuxfoundation.org>
- <20260324073447.GA5062@francesco-nb>
- <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
- <d8080343-20cd-4a4a-b726-b9e3c6a5c5eb@sirena.org.uk>
- <20260325035931.GC61656@mac.lan>
+	s=arc-20240116; t=1774432758; c=relaxed/simple;
+	bh=2qe2hb3ehnVI+3DXdISg2rTtp7ZKp6aAIx4MjaZqwK0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=poA8qqxf+qa4xh6DM6ol4KpV/NgZgC5MUe5VK4ih41QVRJD3gs+IIrmJ/KM1BIzeF77ttHqsn8jhHL4AhvN1E32V+zbv9iQshTJP3gs2CPw7rNuc1x5UKNwitlfZYlON7Z0Wh4uofC6KXXX15fWE/RM3le3J+NIkL5+4lVw/PLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOYMZUqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A0B2C2BCB1;
+	Wed, 25 Mar 2026 09:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774432757;
+	bh=2qe2hb3ehnVI+3DXdISg2rTtp7ZKp6aAIx4MjaZqwK0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=XOYMZUqZL0YGKjmZVW8QW94McnxaueUbxuu91ZPKwyYUbiYpoKMTcJjsg/GmVCjUP
+	 xB+WTPVHDlkWSakfHgm2mLqEezdp/J4jTZIeHVssBm/MaSpBnwqQBYMKlQWzfVx/y9
+	 GTtqDYIo8266MndpTvfvfR5GMuxA4OMNKHrxYVrdHubXDvMBzMLSIOUiPYP1kC+aYM
+	 slWvmnMNphO0D5Xp/ogP6WryJ9mdmeoYs2I0b8Pvfzf7HFpDSz/O/tpTlU4ydICdB/
+	 zzBw5rMnks8NBESE39OY+9q5Ttjl3cpMVdVr55V/EtqIBpqVosy55zmhDBrwDQr9Z+
+	 TG3t1XClVrrhw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7986EFEA824;
+	Wed, 25 Mar 2026 09:59:17 +0000 (UTC)
+From: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>
+Date: Wed, 25 Mar 2026 10:59:16 +0100
+Subject: [PATCH v2] mm/pagewalk: fix race between concurrent split and
+ refault
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325035931.GC61656@mac.lan>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
+X-B4-Tracking: v=1; b=H4sIAPOxw2kC/42NTQ6CMBBGr0Jm7Zi2KIor72FYDGUKE37TImoId
+ 7dyApfvfcn7VgjshQPckhU8LxJkHCKYQwK2oaFmlCoyGGUyleoLTlTzi7oWbcO2xamv0LOjZzd
+ jxVenT67kjM4QA1Mc5L3HH0XkRsI8+s/+teif/Su7aNTosjwnpZUzZXqnlnqSox17KLZt+wK2a
+ pjvxQAAAA==
+X-Change-ID: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ stable@vger.kernel.org, Max Boone <mboone@akamai.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774432756; l=5936;
+ i=mboone@akamai.com; s=20260317; h=from:subject:message-id;
+ bh=dadFHTWNp/nC5fmA7WR3ReEmmPozjoOq5u7J1/Gx8+8=;
+ b=zHMIYTvae2Ac4rzwemvxPjAcizdYW3HB1l9t9Op4HrtWAALX1Y7kIn7m3Fq5Hj+Q+N1NiTtVb
+ 3cqf/gRrGx2AVN4HrNxz7W7mO+GYKYUjQnOSKWh9bu10p+SjGiQjOcw
+X-Developer-Key: i=mboone@akamai.com; a=ed25519;
+ pk=jWdC/h5H2KWQCiC2kpr/puMVX0mJmP9W5sM8YTGBXA4=
+X-Endpoint-Received: by B4 Relay for mboone@akamai.com/20260317 with
+ auth_id=685
+X-Original-From: Max Boone <mboone@akamai.com>
+Reply-To: mboone@akamai.com
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230296-lists,stable=lfdr.de,mboone.akamai.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230295-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FREEMAIL_CC(0.00)[kernel.org,suse.cz,dolcini.it,redhat.com,huawei.com,infradead.org,uniontech.com,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D971322724
+	HAS_REPLYTO(0.00)[mboone@akamai.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,akamai.com:email,akamai.com:replyto,akamai.com:mid]
+X-Rspamd-Queue-Id: 215693229C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 24, 2026 at 10:59:31PM -0500, Theodore Tso wrote:
-> On Tue, Mar 24, 2026 at 03:36:21PM +0000, Mark Brown wrote:
-> > I have a bisect for an ext4 issue in v6.1 which comes out at:
-> > 
-> > # first bad commit: [29897d75d6491ffe23cdc9d96caba9282a20dfc3] ext4: convert bd_bitmap_page to bd_bitmap_folio
-> > 
-> > For an oops which looks very similar (but on arm64):
-> 
-> I can confirm this bisection; I was testing on x86_64, and using
-> "kvm-xfstests -c ext4/4k generic/001" on a failure, it would crash
-> before running the first test (in my test runner infrastructure when
-> running syncfs on the results directory --- go figure).
-> 
-> Unfortunately, you can't just revert this commit because of merge
-> conflicts.  In order to get a clean revert, you have to revert (or
-> drop) three commits:
-> 
-> % git log -3
-> commit b12a69d9770b58fb02d3b4f72abe5acd28aa7e76 (HEAD)
-> Author: Theodore Ts'o <tytso@mit.edu>
-> Date:   Tue Mar 24 23:46:15 2026 -0400
-> 
->     Revert "ext4: convert bd_bitmap_page to bd_bitmap_folio"
-> 
->     This reverts commit 29897d75d6491ffe23cdc9d96caba9282a20dfc3.
-> 
-> commit 9c95c376c79f47fe9ee8ce562249d3630a50ab12
-> Author: Theodore Ts'o <tytso@mit.edu>
-> Date:   Tue Mar 24 23:44:23 2026 -0400
-> 
->     Revert "ext4: convert bd_buddy_page to bd_buddy_folio"
-> 
->     This reverts commit fe80bba8f76f9f0995cdc64fc89b65173e1ae828.
-> 
-> commit 98f5de80114f6194af4d9fae572b73440efa67c2
-> Author: Theodore Ts'o <tytso@mit.edu>
-> Date:   Tue Mar 24 23:43:40 2026 -0400
-> 
->     Revert "ext4: fix e4b bitmap inconsistency reports"
-> 
->     This reverts commit cb45b6209aa53979b054bd026d938107d5a3031b.
-> 
-> I haven't had time to investigate this more closely, but I'm assuming
-> the automated stable picker was trying to backport cb45b6209aa5
-> ("ext4: fix e4b bitmap inconsistency reports"), and determined that
-> the fe80bba8f76f ("ext4: convert bd_buddy_page to bd_buddy_folio") and
-> 29897d75d649 ("ext4: convert bd_bitmap_page to bd_bitmap_folio") were
-> prerequisite commits --- and while 29897d75d649 cherry picked
-> correctly, either the git scrwed up the cherry pick, or there was some
-> additional prerequisite commit needed, but wasn't caught by the "it
-> patches cleanly, ship it!" algorithm.
-> 
-> I don't have time to investigate further, but Greg, if you could drop
-> these three patches, that should address this issue.
+From: Max Boone <mboone@akamai.com>
 
-All now dropped, thanks!
+The splitting of a PUD entry in walk_pud_range() can race with
+a concurrent thread refaulting the PUD leaf entry causing it to
+try walking a PMD range that has disappeared.
 
-greg k-h
+An example and reproduction of this is to try reading numa_maps of
+a process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
+
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
+
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further. This mirrors the
+retry logic in walk_pte_range(), which lets walk_pmd_range() retry if
+the PTE is not being got by pte_offset_map_lock().
+
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Cc: stable@vger.kernel.org
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+---
+Changes in v2:
+- extended the comment in walk_pmd_range with split/refault example.
+- changed fixes, race not introduced by hugepage splitting but rather
+  with huge pfnmaps of BARs.
+- clarified that the retry logic mirrors walk_pte_range instead of
+  walk_pmd_range.
+- style changes (removed trailing newline)
+- Link to v1: https://lore.kernel.org/r/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com
+---
+ mm/pagewalk.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index a94c401ab..4e7bcd975 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 	int err = 0;
+ 	int depth = real_depth(3);
+ 
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim.
++	 *
++	 * Similarly, we have to be careful here - a PUD entry that points
++	 * to a PMD table cannot go away, so we can just walk it. But if
++	 * it's something else, we need to ensure we didn't race something,
++	 * so need to retry.
++	 *
++	 * A pertinent example of this is a PUD refault after PUD split -
++	 * we will need to split again or risk accessing invalid memory.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
++	}
++
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
+ 
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
+ 	} while (pud++, addr = next, addr != end);
+ 
+ 	return err;
+
+---
+base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
+change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
+
+Best regards,
+-- 
+Max Boone <mboone@akamai.com>
+
+
 
