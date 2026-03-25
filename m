@@ -1,204 +1,152 @@
-Return-Path: <stable+bounces-230360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPQDIMMLxGk+vgQAu9opvQ
-	(envelope-from <stable+bounces-230360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:22:27 +0100
+	id yDKBKcQIxGk+vgQAu9opvQ
+	(envelope-from <stable+bounces-230361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:09:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C137328E4B
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:22:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927EA328BB7
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B2C73153BA7
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:48:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA086300E19A
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A92C3E1CE5;
-	Wed, 25 Mar 2026 15:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3992C3E9288;
+	Wed, 25 Mar 2026 15:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E8q7IxG4"
+	dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b="gvTVpj8F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE3D3E4C8B
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 15:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774453713; cv=none; b=aK9uXyZg0TxgkEurAB7FGifmn+Iq/k+DVJ7xLSEBd1ZXXd3bRXrJfsIFaA/1dTjaUsxQpQdqdHMlMr7IoCGFWv3pFkBJta3iCxejQhlu3YsorKJpxLlOOq1ytA203Kv/gl/CtxY4LEJl83XH20vVfruQfr307f3ptnEiflvGipo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774453713; c=relaxed/simple;
-	bh=XQPzRGvc+NN8ZiYj/B//JMqvCRQ2hs4U1klIP2GW90c=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kDERAVjjIKXkRJ4dJG+3HNk2xytzM7CgPfUbzpbAsG9MVLlVcsRma+Axjj+KpcEui88nVLCaSPl+QWuL+AwUmMnWjpG7kYRaJCafDZ5G0fjkl4smHq+Rsc6YH6uWub6IOEE/CH9MChis90u7oxhxS4bWVmW9mIlOMdVGrCSxAHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E8q7IxG4; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8fbe7a6f41so220420266b.0
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 08:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774453710; x=1775058510; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=M/sO4V9/AfamlzvH6Yz1izySgX6li4ODe+c+dOZMt3Y=;
-        b=E8q7IxG44o6idd1IUfTyigFJrul91UlH7uDzIevG1Cj3aWXslyFSm0R4B8h1rTM3u4
-         74sqeq55Kxem4FRebzfCwdziWD7rLbBeGnhiixUYUHYMOTs6I4XH6Hh6n0pmSmEek89l
-         Lv9WJlEBg0zu3YqOV2Bm0w/EyI2ZsFZ/oECnHQdEe1aj/LSF38bI0qEd3B4XeszRGFzd
-         senuvKq/oeAlxPjRDrWxNVHloi5NwTPkbLJsysp9MYaYoSZxgKgk6zYsureFm7Bs8rKx
-         jweHqG0oqIGYqL3P+Hc/uZY2AtCYWBBM7kyaC2Od6wwdfoWnp72zXw+ZQu/J8uQW2+WN
-         7bzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774453710; x=1775058510;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M/sO4V9/AfamlzvH6Yz1izySgX6li4ODe+c+dOZMt3Y=;
-        b=FonREKQvnzLq/7lTU/7y/Ghuy53vZ/QpypVExPQq27njMoIZllarfyvjUfBBF8wfyT
-         3rwhFxZoRxjHE6RLrgvbR+JyXlp8uA/JdIlKv9Hvd2shdbFGf0mWwFUtWVW+EP1CqQgz
-         y+UH6t+pVNm2rdMXUsC/tcPW8lDXo4w8yjN+qKDKuu+kQ5bzu8RCD3P5XtolyAXWPJkv
-         31P+d9Jn1FBA069QXf0RpOeTOk9q0CzHzFpT2YB+v+aEpZ++Am7UI1ygZVY3Wdk/6Ewc
-         A1GMgIBiUCwkoWgibp0SKUtpf9ZRwtHkJMSSHRqT9Nfi4V/0TFGCH9jhJ8x79hZQdp6d
-         wtGw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0HfbQUxZ5fwLsa1YV4zMajmiypwX5hFqC5W+eyZIOo5X9XpECP0sxrwl/FGSLdvksiYE9e0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHcZSVESTT6gRwBQrQmbX21glQUJW7zOtg3WOPoVN7Wasp8bOV
-	6Rhw82zCuQBf8I1iiHZpAvhsHNNuXhoCayp6H6fNrIl/Ig+rAKnpOTyvzRPXAcQy/09NWJUq6DJ
-	qUjqqpA==
-X-Received: from ejwi18.prod.google.com ([2002:a17:906:4fd2:b0:b98:b1fa:13b4])
- (user=nogikh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:c20:b0:b8e:d1f3:4744
- with SMTP id a640c23a62f3a-b9a546a0ba0mr275814266b.55.1774453709696; Wed, 25
- Mar 2026 08:48:29 -0700 (PDT)
-Date: Wed, 25 Mar 2026 16:48:24 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E143E63A0;
+	Wed, 25 Mar 2026 15:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774453963; cv=pass; b=lwRXn2n4qqIAGr3e4K42nEjwgUwq4xPDM+/5Cn5LKPpIvjOapez8CQe955aX1DPh0sj033mXsXSL797sx1BTVFlomSNdjC+0jgd6I4RODDy/2CJaVKLbGIAlKjdBwKHg4P1YnWRTiy4iwvL3YWU6U55RAU0AgbCyobKzN3rqxIU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774453963; c=relaxed/simple;
+	bh=zjiPY9F9l+ajrYz/2vXsmADRabg/kNZ3PxSKmwn/tpc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kYEWyStr7UlbUzG5bK4uuA1BU+DzSH09mXeDD8u0HUPSssl2K/9izcW2NsoRnSiwwLGEvJoMzza3Uafhq2S2zzBmbmZj7r3ez400aEyfhvJYdQGgCSzelAfQJKl9Z54MTm+O92TypklPP7bhUB8laV1Fx/V6YXMSEsHJLPaGaKU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org; spf=pass smtp.mailfrom=objecting.org; dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b=gvTVpj8F; arc=pass smtp.client-ip=136.143.169.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=objecting.org
+ARC-Seal: i=1; a=rsa-sha256; t=1774453946; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=QdFFblBuAIkc6r/hP0G/80ZU7VKnIJtskTQLbHME4lRh/tygvBog4xcTtiUlLFzZU5rGd0A1gs2Fwm63WzcEKRZqhmEWoS0K5NkxgsfOPdoYI/gAdJSWuDjIH9G8xgpfFKFQ3fhFhUzdBOsPJKe6ZukaFNEdZRrB5Wkl+owup2g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774453946; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+OzSO0IWlJMDnZOc5tQIiXlFwu3Jx/5/svjrKhbwCZM=; 
+	b=cENAaHNeGLRRVYUam3qFB8h+BQvS/7Lcaop9gRCmEaN3bbW/+yK3HZszuXv2zc6Jn4un0df95S0fqObgtVcInWN3KrTug7C7Lbxvi3dSVzv4ZaGKRtvspCz58YEFu+t0wQECUiTBkIfCysdxmdYDFw8ayof3kJydbmYNk1ROCoU=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774453946;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=+OzSO0IWlJMDnZOc5tQIiXlFwu3Jx/5/svjrKhbwCZM=;
+	b=gvTVpj8F2f5gybCbW7aMb360K5/13wRUmPh06eJonIc5nItoMp4GzmVzkBxsEySi
+	BPG7GZgT9akuW8c6ESR2uvBmLViiAdgaD1dB6VMjE00xeVuuljMwls5Im+A0ALk4GyV
+	4DN4BezgucKGlEtdD7d3AKI7sknT0zwy55NT4ni4=
+Received: by mx.zoho.eu with SMTPS id 1774453943350571.0589292966793;
+	Wed, 25 Mar 2026 16:52:23 +0100 (CET)
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Josh Law <objecting@objecting.org>
+Subject: [PATCH v2] mm/damon/core: validate goal nid before accessing node data
+Date: Wed, 25 Mar 2026 15:52:21 +0000
+Message-Id: <20260325155221.202700-1-objecting@objecting.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260325154825.551191-1-nogikh@google.com>
-Subject: [PATCH v3] x86/kexec: Disable KCOV instrumentation after load_segments()
-From: Aleksandr Nogikh <nogikh@google.com>
-To: bp@alien8.de, tglx@kernel.org, mingo@redhat.com
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, dvyukov@google.com, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	Aleksandr Nogikh <nogikh@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[objecting.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[objecting.org:s=zmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230360-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[google.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230361-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[objecting.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[objecting@objecting.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nogikh@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 2C137328E4B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,objecting.org:dkim,objecting.org:email,objecting.org:mid]
+X-Rspamd-Queue-Id: 927EA328BB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The load_segments() function changes segment registers, invalidating
-GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
-enabled, any subsequent instrumented C code call (e.g.
-native_gdt_invalidate()) begins crashing the kernel in an endless
-loop.
+damos_get_node_mem_bp() and damos_get_node_memcg_used_bp() pass
+goal->nid directly to si_meminfo_node() and NODE_DATA() without
+checking that it refers to a valid, online NUMA node.  Since
+goal->nid is set from userspace via sysfs with no validation, a
+negative or out-of-range value causes an out-of-bounds access in
+NODE_DATA(), and a valid but offline node gives undefined results.
 
-To reproduce the problem, it's sufficient to do kexec on a
-KCOV-instrumented kernel:
-$ kexec -l /boot/otherKernel
-$ kexec -e
+Add bounds and node_state(N_MEMORY) checks before using the nid,
+consistent with damon_migrate_pages().
 
-The real-world context for this problem is enabling crash dump
-collection in syzkaller. For this, the tool loads a panic kernel
-before fuzzing and then calls makedumpfile after the panic. This
-workflow requires both CONFIG_KEXEC and CONFIG_KCOV to be enabled
-simultaneously.
-
-Adding safeguards directly to the KCOV fast-path
-(__sanitizer_cov_trace_pc()) is also undesirable as it would
-introduce an extra performance overhead.
-
-Disabling instrumentation for the individual functions would be too
-fragile, so disable KCOV instrumentation for the entire
-machine_kexec_64.c and physaddr.c. If coverage-guided fuzzing ever
-needs these components in the future, other approaches should be
-considered.
-
-The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
-supported there.
-
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
+Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")
 Cc: stable@vger.kernel.org
+Signed-off-by: Josh Law <objecting@objecting.org>
 ---
-v3:
-Changed the wording of the commit description and the comments.
-Added a Fixes tag.
+ mm/damon/core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-v2:
-https://lore.kernel.org/all/20260317220319.788561-1-nogikh@google.com/
-
-Updated the comments to explain the underlying context.
-
-v1:
-https://lore.kernel.org/all/20260216173716.2279847-1-nogikh@google.com/
----
- arch/x86/kernel/Makefile | 11 +++++++++++
- arch/x86/mm/Makefile     |  2 ++
- 2 files changed, 13 insertions(+)
-
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index e9aeeeafad173..febf6f49207b3 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -43,6 +43,17 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= n
- KCOV_INSTRUMENT_unwind_orc.o				:= n
- KCOV_INSTRUMENT_unwind_frame.o				:= n
- KCOV_INSTRUMENT_unwind_guess.o				:= n
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), disabling
-+# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
-+# instrumentation for individual affected functions can be fragile, while
-+# adding more checks to KCOV would slow it down.
-+# As a compromise solution, disable KCOV instrumentation for the whole
-+# source code file. If its coverage is ever needed, other approaches
-+# should be considered.
-+KCOV_INSTRUMENT_machine_kexec_64.o			:= n
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 59b709f04975..112125b635d7 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2227,6 +2227,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
+ 	struct sysinfo i;
+ 	__kernel_ulong_t numerator;
  
- CFLAGS_head32.o := -fno-stack-protector
- CFLAGS_head64.o := -fno-stack-protector
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 5b9908f13dcfd..3a5364853eab8 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -4,6 +4,8 @@ KCOV_INSTRUMENT_tlb.o			:= n
- KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
-+# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
-+KCOV_INSTRUMENT_physaddr.o		:= n
++	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
++	    !node_state(goal->nid, N_MEMORY))
++		return 0;
++
+ 	si_meminfo_node(&i, goal->nid);
+ 	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+ 		numerator = i.totalram - i.freeram;
+@@ -2243,6 +2247,10 @@ static unsigned long damos_get_node_memcg_used_bp(
+ 	unsigned long used_pages, numerator;
+ 	struct sysinfo i;
  
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
-
-base-commit: c369299895a591d96745d6492d4888259b004a9e
++	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
++	    !node_state(goal->nid, N_MEMORY))
++		return 0;
++
+ 	memcg = mem_cgroup_get_from_id(goal->memcg_id);
+ 	if (!memcg) {
+ 		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
 -- 
-2.53.0.1018.g2bb0e51243-goog
+2.34.1
 
 
