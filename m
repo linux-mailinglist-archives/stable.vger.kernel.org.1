@@ -1,204 +1,158 @@
-Return-Path: <stable+bounces-230344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNtsBJ/mw2lvugQAu9opvQ
-	(envelope-from <stable+bounces-230344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:43:59 +0100
+	id 8CcSIafnw2lvugQAu9opvQ
+	(envelope-from <stable+bounces-230345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:48:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766E3326059
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:43:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1340B326174
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 461DE3130AA5
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:28:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDBA931CE270
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FEA3D8911;
-	Wed, 25 Mar 2026 13:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFEA244660;
+	Wed, 25 Mar 2026 13:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ufpw2dmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBflX+cE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F9123B612
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC56238C3B;
+	Wed, 25 Mar 2026 13:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774445310; cv=none; b=nQ2hZwpgEK+tryn1vHsD5p+dgAsQMZBcpATb40WcB+0KEpGzA3RmCs6vEbw5v1xmjDh0xxvk7hswG8qotGuj3Dy6OZU3Pum2r4OdjtzL2tnuD95Rv3bBi/cX4O07lrV+IdlnorSAjdezuxH92/k87kK1ZuzX4HAjJON0Ff99+5Q=
+	t=1774445512; cv=none; b=dAzJJ5s8mbqINTHJq7ooGBuP7IAnqE3CaPlZXt9QMXCnts0azBblHS0yeg7+EcmdX3GvVToIWQu9YzZqJ9PNUA7DLwsgzRQmepI7lQNoNyibBEaEQlLN/Uj9MBgFIuFkSFvkGmli/tAOJT/31ft1+/Ig7nZoH17jMksJVYhzR88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774445310; c=relaxed/simple;
-	bh=VrtayuYLKmIwdMELbRfNa0BOEz+16aqgLPxRX1NOKPE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=S2AemWMv6lP7dhP7466Z4ufr2jI5UOFYZsusIGUZb+fWicVQ1Hc09fZ1PzOFRpXUA5/Y/LM4qpDzCiSUfHg0Ffa9ClJNZhGi3JpUconH5gDNUtD8HfjLZmbac4mydlmf60b95Lp80yReZ04rAIW6lSPbP1TXM9D1yRLU/y9bKnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ufpw2dmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733D1C4CEF7;
-	Wed, 25 Mar 2026 13:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774445309;
-	bh=VrtayuYLKmIwdMELbRfNa0BOEz+16aqgLPxRX1NOKPE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=Ufpw2dmd6/oA4c0ZAHC6bxe982nbyCkMRRmaYIDHiYe3iM/dbxnTP+6cYA3/IlQjC
-	 KF6VRYAq4jSZvVgPPuKK1jXNLPWkZSRIyRnWxAeOLn7nxSkpKTvfShyCqJlkwe+A44
-	 fnxV8sh8/LeW38RSE1q1ccPSMwbvMS0IaNm8EK3nwqqrjMj/uGEs4KP+SKtyrnYw0M
-	 Lqyo3KPyxaEzqJ6o4lQySiQ9PPQsxAaE7HWV8oVh+H9ZiR+2u8I1N2aRQkUsRmDSka
-	 8n6WHFfXyEp809GMPV99+pndJgphFxD0hT/uJ+YM4qHGdQ+mXLewhHNrZuaCqXyJet
-	 23PRSY16BkIDg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 68894F40070;
-	Wed, 25 Mar 2026 09:28:28 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Wed, 25 Mar 2026 09:28:28 -0400
-X-ME-Sender: <xms:_OLDaTfz9u7X5WeE3H20BwZG7x7IHAd7iaAPGplrwnk9JBi8ENJiMg>
-    <xme:_OLDaUDM62EKkYFlY0EAbXYExRpTDZii8UWo0Ub8s4xTeU0AJILNrCTJ2wGzaWAro
-    0KPjBqUxXG0vPKhHJlSTvk6m216UpMlvrQBX4gTpCjwxOvh49QiGKA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdegheekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfvehhuhgt
-    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeejhfdutdetfeetvdevfeevtdelueelffdtleefledtteefteefgffhieefgeelieen
-    ucffohhmrghinhepuggvsghirghnrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomheptghhuhgtkhhlvghvvghrodhmvghsmhhtphgruhht
-    hhhpvghrshhonhgrlhhithihqdduieefgeelleelheelqdefvdelkeeggedvfedqtggvlh
-    eppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthho
-    peekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehnvghilhessghrohifnhdrnh
-    grmhgvpdhrtghpthhtohepudduvdekkeeiudessghughhsrdguvggsihgrnhdrohhrghdp
-    rhgtphhtthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrvg
-    hgrhgvshhsihhonhhssehlvggvmhhhuhhishdrihhnfhhopdhrtghpthhtohepthhjrdhi
-    rghmrdhtjhesphhrohhtohhnrdhmvgdprhgtphhtthhopehokhhorhhnihgvvhesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:_OLDaQPHFcNP3khHfVWOshjoG-BFipJK1sc8KuhI1UX2ICVSOd-2ew>
-    <xmx:_OLDaZhOiuS-qOdUZWJcoUOnKINMRrv_UJuwaa6bdCnqNfnW35qldQ>
-    <xmx:_OLDaa7bvVz9YDK5eWMCUlSbLcH_xVXrKbbmzeZgKmoy5FfTT4ms7w>
-    <xmx:_OLDaY2SKYbNqFIPJL9SPxHHiHJ-ntLnE0awvimUNwhy8zA6mpUg3Q>
-    <xmx:_OLDadtD2lol2ZirswO9WjVuddTli5K98xdCbs98nMv79lzUVtwRMG_N>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3C3FF780076; Wed, 25 Mar 2026 09:28:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1774445512; c=relaxed/simple;
+	bh=uTUQBOCC/KBJgpZSREu4yYx7YWRXCtbxquPPa2PpGkA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AS+NBOLWQZp9YrYxrZRt+2H054W8F0ZIehFZe3H+unvwdf+XbbnhHSL4xtERIE/1JEr8hZkr/MFuLPh+zuoNguEILkoJgf93PXWp3TKa/qmryq8sjjlHCia9luoz8tn6mqJb8V3h5Z3pdSppkEpDcHo5rd9bleAY7OoAav93+8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBflX+cE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B05C2BCB0;
+	Wed, 25 Mar 2026 13:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774445511;
+	bh=uTUQBOCC/KBJgpZSREu4yYx7YWRXCtbxquPPa2PpGkA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zBflX+cE3+whyEdjBCgadMGWY/POxqdurO7EcmERS6ZjO3Ssf2kCu2xM4qnMbU68B
+	 wS0KDa6Tx38kyr+lIQs3K2ZWRJZ2oUHM2crw7bsjWFx4lvGlC08+iu53q0Hk7czU3S
+	 mlIIElH5e8Zylyqnje57eSQ4qBdI8nL8E/4n7yfw=
+Date: Wed, 25 Mar 2026 14:31:28 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Theodore Tso <tytso@mit.edu>
+Cc: Mark Brown <broonie@kernel.org>, Jan Kara <jack@suse.cz>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Brian Foster <bfoster@redhat.com>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Gou Hao <gouhao@uniontech.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Zhang Yi <yi.zhang@huawei.com>, Baokun Li <libaokun1@huawei.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
+Message-ID: <2026032547-spleen-mortify-1cf9@gregkh>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260324073447.GA5062@francesco-nb>
+ <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
+ <d8080343-20cd-4a4a-b726-b9e3c6a5c5eb@sirena.org.uk>
+ <20260325035931.GC61656@mac.lan>
+ <2026032535-casino-cable-e039@gregkh>
+ <20260325131110.GC2107@macsyma.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A_jyC0Lb0WUR
-Date: Wed, 25 Mar 2026 09:28:08 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: "Jeff Layton" <jlayton@kernel.org>,
- "Thorsten Leemhuis" <regressions@leemhuis.info>, 1128861@bugs.debian.org,
- Tj <tj.iam.tj@proton.me>, linux-nfs@vger.kernel.org,
- "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
-Message-Id: <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
-In-Reply-To: <177442248735.2237155.773724155681455344@noble.neil.brown.name>
-References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
- <177266540127.7472.3460090956713656639@noble.neil.brown.name>
- <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>
- <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>
- <177434721528.7102.13514118512738778346@noble.neil.brown.name>
- <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>
- <177442248735.2237155.773724155681455344@noble.neil.brown.name>
-Subject: Re: [PATCH] lockd: fix TEST handling when not all permissions are available.
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.15 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325131110.GC2107@macsyma.local>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230345-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230344-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_CC(0.00)[kernel.org,suse.cz,dolcini.it,redhat.com,huawei.com,infradead.org,uniontech.com,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,proton.me:email,brown.name:email];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cel@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 766E3326059
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1340B326174
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, Mar 25, 2026 at 08:11:10AM -0500, Theodore Tso wrote:
+> On Wed, Mar 25, 2026 at 10:49:43AM +0100, Greg Kroah-Hartman wrote:
+> > > I don't have time to investigate further, but Greg, if you could drop
+> > > these three patches, that should address this issue.
+> > 
+> > All now dropped, thanks!
+> 
+> Thanks!  Just as another heads up, I decided to run a full regression
+> test suite on 6.1.167-rc1 with those three reverts, and there ar still
+> some crashes with generic/051 and ext4/039:
+> 
+> ext4/4k: 711 tests, 1 errors, 83 skipped, 4645 seconds
+>   Errors: generic/051
+> ext4/1k: 636 tests, 7 failures, 1 errors, 78 skipped, 5612 seconds
+>   Errors: ext4/039
+> ext4/encrypt: 679 tests, 1 errors, 215 skipped, 3343 seconds
+>   Errors: generic/051
+> ext4/ext3conv: 706 tests, 1 errors, 85 skipped, 5282 seconds
+>   Errors: generic/051
+> ext4/adv: 713 tests, 13 failures, 1 errors, 91 skipped, 4944 seconds
+>   Errors: generic/051
+> ext4/dioread_nolock: 711 tests, 1 failures, 1 errors, 83 skipped, 5518 seconds
+>   Errors: generic/051
+> ext4/data_journal: 635 tests, 6 failures, 1 errors, 151 skipped, 4105 seconds
+>   Errors: ext4/039
+> ext4/bigalloc_4k: 604 tests, 1 errors, 79 skipped, 4876 seconds
+>   Errors: ext4/039
+> ext4/bigalloc_1k: 682 tests, 6 failures, 1 errors, 106 skipped, 5454 seconds
+>   Errors: generic/051
+> ext4/dax: 705 tests, 10 failures, 1 errors, 207 skipped, 3249 seconds
+>   Errors: generic/051
+> 
+> I'll start trying to bisect this as I have time today.  Are you going
+> to put out another rc and restart the 48 hour testing clock?
 
+No, I've already done a release, I dropped more than just those 3, I
+dropped all the dependent ext4 patches.
 
-On Wed, Mar 25, 2026, at 3:08 AM, NeilBrown wrote:
-> On Wed, 25 Mar 2026, Chuck Lever wrote:
->> 
->> On Tue, Mar 24, 2026, at 6:13 AM, NeilBrown wrote:
->> > From: NeilBrown <neil@brown.name>
->> >
->> > The F_GETLK fcntl can work with either read access or write access or
->> > both.  It can query F_RDLCK and F_WRLCK locks in either case.
->> >
->> > However lockd currently treats F_GETLK similar to F_SETLK in that read
->> > access is required to query an F_RDLCK lock and write access is required
->> > to query a F_WRLCK lock.
->> >
->> > This is wrong and can cause problem - e.g.  when qemu accesses a
->> > read-only (e.g. iso) filesystem image over NFS (though why it queries
->> > if it can get a write lock - I don't know.  But it does, and this works
->> > with local filesystems).
->> >
->> > So we need TEST requests to be handled differently.  To do this:
->> >
->> > - change nlm_do_fopen() to accept O_RDWR as a mode and in that case
->> >   succeed if either a O_RDONLY or O_WRONLY file can be opened.
->> > - change nlm_lookup_file() to accept a mode argument from caller,
->> >   instead of deducing base on lock time, and pass that on to nlm_do_fopen()
->> > - change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
->> >   TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
->> >   the same mode as before for other requests.  Also set
->> >    lock->fl.c.flc_file to whichever file is available for TEST requests.
->> > - change nlmsvc_testlock() to also not calculate the mode, but to use
->> >   whenever was stored in lock->fl.c.flc_file.
->> >
->> > Reported-by: Tj <tj.iam.tj@proton.me>
->> > Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1128861
->> > Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
->> > Signed-off-by: NeilBrown <neil@brown.name>
->> 
->> Hi Neil, which kernels should this fix apply to?
->> 
->
-> v6.13 and later. So linux-6.18.y and linux-6.19.y
+If you could test the last release and if I should do any reverts there,
+please let me know.
 
-Assuming that includes upstream, I recommend that I take this
-into nfsd-testing / nfsd-next and let nature, ah, er, stable
-automation, take it's course.
+thanks,
 
-
-> The Fixes: tag is actually wrong.  This bug has been present forever.
-> However a different bug that 
->   Commit: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-> fixed was hiding the bug.
->
-> So it should probably be marked
->   Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-> with an explanation.
-
-IIUC, we want Fixes: to point to the commit that introduced
-the issue (Fixes: since forever) and then use a "# v6.13+"
-comment on the Cc: stable to control how far back to backport
-it.
-
-Commit message could mention that 4cc9b9f2bf4d uncovered the
-issue.
-
--- 
-Chuck Lever
+greg k-h
 
