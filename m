@@ -1,190 +1,392 @@
-Return-Path: <stable+bounces-230271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPR0OaqAw2nZrAQAu9opvQ
-	(envelope-from <stable+bounces-230271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 07:28:58 +0100
+	id oF/xIt+Ew2kPrQQAu9opvQ
+	(envelope-from <stable+bounces-230272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 07:46:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0ACD3202A9
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 07:28:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50DB3204F3
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 07:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE8923057904
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 06:28:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48C50308010C
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 06:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E28C353EF9;
-	Wed, 25 Mar 2026 06:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50DB35C1A6;
+	Wed, 25 Mar 2026 06:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="m8yuhECE"
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="V6clP2D0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="M9nPMG/2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail114-241.sinamail.sina.com.cn (mail114-241.sinamail.sina.com.cn [218.30.114.241])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB5F313546
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 06:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A3635BDA4;
+	Wed, 25 Mar 2026 06:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774420129; cv=none; b=T6iWTOw3AZV4eDU0VsidiAmrThkhMyqOTDSOJsmJ+akHH3ZsFQ7E4c6mtE1wl1qWEfXnx4aa7VqaqK/ms5bM/YNYCkMItJuML3tD+yx0+1UYgFrBWZBRrxa3vCUxpjpuEqDXG4BjFa2HuXBwdYW3GxhlWaTgjruPYEzFVgGE1MQ=
+	t=1774421075; cv=none; b=R5biDzo7WyCjHsqrXj3+Ms/CQpjMp+GY2ou4QOClb7SBU9MDSev/OvfGPY3tTGE8KKvNUTQwuCv3pqMNv6qgyGQ/LB0uVY2r/3/3Te4l/G5kMl15eGhuDms6d2o9Hc2rrKCEGP4SVsmFw001fj4t4alF9+OfXZjwQ8q4y+UxBJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774420129; c=relaxed/simple;
-	bh=p7NXvVvfQNlLWr8HKYPTEjTaPzpyR1QqPIXdkZ4u9Dk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oVVwz2TN0TSc662Vcmr7kDdjEdiRIjKMCTpq7EbU7brReYxlLcRQ1gqffdqwv0GGsKhe1BmDqP5DLM29DBTzvKx0GodgDhsPhT1/U46c89dgsXqYPVCj/zlE8ncLptkg46vW1zwceZtGBSbq67MciLx2ygLNrQONUQ0IoaMpV88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=m8yuhECE; arc=none smtp.client-ip=218.30.114.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774420123;
-	bh=TMsRB3to/k/zBcz+8Wn5OoGb/as2lSJ6brutYuCSE3Y=;
-	h=From:Subject:Date:Message-Id;
-	b=m8yuhECEwbQREifzxD+75CW3Q98HBuNHCUgZXZEz/8hsJy+8ocZr6YmvqR4bMYIu5
-	 ulZPK/SsTRv8dpCEJvFFUme77zE2/Fkcp+R2HNLFYGMbwTRRuUyZmwp5zl3QAG0++D
-	 lVUmsLifq5nzzmv6D0CsQucerYe+FTbFd3P0OocI=
-X-SMAIL-HELO: pek-lpg-core6.wrs.com
-Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
-	by sina.com (10.185.250.23) with ESMTP
-	id 69C3808900006AF4; Wed, 25 Mar 2026 14:28:34 +0800 (CST)
-X-Sender: johnny_haocn@sina.com
-X-Auth-ID: johnny_haocn@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=johnny_haocn@sina.com
-X-SMAIL-MID: 1918078912987
-X-SMAIL-UIID: 5BCB09C9359243C397048549FCFF42E9-20260325-142834-1
-From: Johnny Hao <johnny_haocn@sina.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Yu Kuai <yukuai3@huawei.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Song Liu <song@kernel.org>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 5.15.y] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime
-Date: Wed, 25 Mar 2026 14:28:24 +0800
-Message-Id: <20260325062824.2373999-1-johnny_haocn@sina.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774421075; c=relaxed/simple;
+	bh=DRDbpBunxIzj0/SVBdjeKWGBlpnvw/F0PktwEiZofNM=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=OONtmJ23/rud8tmq98bo/7u7lrpjksGiQoOLHa2CDltm+mzmAOtCs8fpW/e/bw+I3A/SuWlPlLYdmDzyhbWpG0puvJNtFTrkPudxqqcSqwf+03RZetZt7132DQBkUgM5GyrxkYnAiolEjDUIhm+GRwiaZ80Ze+2s0pd2TnJQxx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=V6clP2D0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=M9nPMG/2; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4B9AA1D00099;
+	Wed, 25 Mar 2026 02:44:32 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 25 Mar 2026 02:44:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1774421072; x=1774507472; bh=UPj4cT/Zn+undZLMX9BvD2gvoHJu2zbhF8J
+	IJ3npyOA=; b=V6clP2D0rfLHCCczqVM0g/ysLfxBKwfIMdwhXKBQx0Xi8d9P9f5
+	E+H1GFIbX4SVMacUvaGjYh9xvDM8h7vXt2LAEC9bOClxL32rlZ1RN+jKGRunrAeT
+	/VD7GKyXW5GVZdnlwFGgeoUlipfDMiXSt8XKdnP1VxKl0xhJ4SNezStAGUFgaE4k
+	k/d82X98QIpk8JNvx4WsLbrZ+yfHJA9CJswRAziU0eBNzSuPZdPXAZ97QlKzwVyC
+	p83HILU/j6vw6niClpYVsQDxcMzOJ6ST8b5cmPhT226SvaHB7kVrOeh6Io0sO+Y/
+	IHmzc8KmVg4XaOnSLT//BZMuNyzm3qOfx8Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774421072; x=
+	1774507472; bh=UPj4cT/Zn+undZLMX9BvD2gvoHJu2zbhF8JIJ3npyOA=; b=M
+	9nPMG/2I0/GMJLLEpUAX+JLAV3tT7uoQqLUdl43QbWHg+xCmuzEUTvaqT2q5iTmT
+	8zVkMmQL2XIv/GfIavTpYmapUJek3kM92+Wa5EPzdQBhshWWnn2Hvdvv1JuVBKQA
+	tMrQoeJ6/x1a0qoeaszox6gEpIrdP4ajrklWwaJEzaEEPGqmo+PhfrCZZkUgVQUv
+	N6wESLQq6Vxbv4q19nn1qHSJpGhHSiOBhQ0r+TiVAXDmjrzB7nhUEl53FjOLfFM3
+	170x8B/0kX7gr8obU88A35ICxlHhYUlsQl9DHlKRdBitNud2WNiFO/auPaTk8etD
+	hrsYh8ZQYijG0Ck0ihfdw==
+X-ME-Sender: <xms:T4TDaYWTY6T-6E4In4dv1qdqA5QLedEj6YDlDzbYG3Zbrx_0j5enlg>
+    <xme:T4TDaWqt2BvaNR4OzqckUBiQleXpKwyEcHSeRz8TC6rcFqZby0UTn2oEgfefElZ7D
+    _wEVf8L5cGC2txM3fJ9aBk1WmCVPhuc2yvE5xHVOrpVSn_sfA>
+X-ME-Received: <xmr:T4TDacRtocTK37XyGqvF9BXJZZKrlb9zJBRKBCtgkZtffYbOmMhHM1kctcu2SOo6VM2JEU2og56fCmdL8civeTHC-PUkZrVo2D63lygxqhQT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdefjeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epudefueefheejhfeuhfehvdfhgeeulefgfeehffekffduvdettdelheeftdethfdvnecu
+    ffhomhgrihhnpeguvggsihgrnhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhkohhrnhhivghvsehrvgguhh
+    grthdrtghomhdprhgtphhtthhopehtjhdrihgrmhdrthhjsehprhhothhonhdrmhgvpdhr
+    tghpthhtoheprhgvghhrvghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtph
+    htthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeduuddvkeek
+    iedusegsuhhgshdruggvsghirghnrdhorhhg
+X-ME-Proxy: <xmx:T4TDaY3PcngfG71uXairwAKiJHIv-xb_ufluCVeN64uwvC6TmCdLAA>
+    <xmx:T4TDaQDL457t_iJi_DdGN8HrzvXLUzsVv5Xa1l1roAE7b_K-BkTMxA>
+    <xmx:T4TDaciMSOgshm4mrzB0Ne42n0hoKMxCiMXC2j1yzJgXH1eBkDmo-Q>
+    <xmx:T4TDaaMv_nWtv8N0qm_5puwIunEn_8ZFVsXQmj5XLLmPqApogH99Wg>
+    <xmx:UITDabob528WJ4az50pAAzN3K7N4R6gniGEudqvZfZKxPmDpNTH1wbZz>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Mar 2026 02:44:29 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Thorsten Leemhuis" <regressions@leemhuis.info>, 1128861@bugs.debian.org,
+ "Tj" <tj.iam.tj@proton.me>, linux-nfs@vger.kernel.org,
+ "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] lockd: fix TEST handling when not all permissions are available.
+In-reply-to: <f0cd6fb22c917f77e5b7f70bb9a8a64450ff3722.camel@kernel.org>
+References: <>, <f0cd6fb22c917f77e5b7f70bb9a8a64450ff3722.camel@kernel.org>
+Date: Wed, 25 Mar 2026 17:44:24 +1100
+Message-id: <177442106465.7102.4787487567766699153@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
+	DMARC_POLICY_ALLOW(-0.50)[ownmail.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ownmail.net:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230271-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,huawei.com,oracle.com,kernel.org,sina.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230272-lists,stable=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[sina.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sina.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[ownmail.net];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ownmail.net:+,messagingengine.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[neilb@ownmail.net,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sina.com:dkim,sina.com:email,sina.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,oracle.com:email]
-X-Rspamd-Queue-Id: A0ACD3202A9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[neil@brown.name];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,proton.me:email,brown.name:email,brown.name:replyto,ownmail.net:dkim]
+X-Rspamd-Queue-Id: A50DB3204F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yu Kuai <yukuai3@huawei.com>
+On Tue, 24 Mar 2026, Jeff Layton wrote:
+> On Tue, 2026-03-24 at 21:13 +1100, NeilBrown wrote:
+> > From: NeilBrown <neil@brown.name>
+> >=20
+> > The F_GETLK fcntl can work with either read access or write access or
+> > both.  It can query F_RDLCK and F_WRLCK locks in either case.
+> >=20
+> > However lockd currently treats F_GETLK similar to F_SETLK in that read
+> > access is required to query an F_RDLCK lock and write access is required
+> > to query a F_WRLCK lock.
+> >=20
+> > This is wrong and can cause problem - e.g.  when qemu accesses a
+> > read-only (e.g. iso) filesystem image over NFS (though why it queries
+> > if it can get a write lock - I don't know.  But it does, and this works
+> > with local filesystems).
+> >=20
+> > So we need TEST requests to be handled differently.  To do this:
+> >=20
+> > - change nlm_do_fopen() to accept O_RDWR as a mode and in that case
+> >   succeed if either a O_RDONLY or O_WRONLY file can be opened.
+> > - change nlm_lookup_file() to accept a mode argument from caller,
+> >   instead of deducing base on lock time, and pass that on to nlm_do_fopen=
+()
+> > - change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
+> >   TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
+> >   the same mode as before for other requests.  Also set
+> >    lock->fl.c.flc_file to whichever file is available for TEST requests.
+> > - change nlmsvc_testlock() to also not calculate the mode, but to use
+> >   whenever was stored in lock->fl.c.flc_file.
+> >=20
+> > Reported-by: Tj <tj.iam.tj@proton.me>
+> > Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1128861
+> > Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
+> > Signed-off-by: NeilBrown <neil@brown.name>
+> > ---
+> >  fs/lockd/svc4proc.c         | 13 ++++++++++---
+> >  fs/lockd/svclock.c          |  4 +---
+> >  fs/lockd/svcproc.c          | 15 ++++++++++++---
+> >  fs/lockd/svcsubs.c          | 26 +++++++++++++++++---------
+> >  include/linux/lockd/lockd.h |  2 +-
+> >  5 files changed, 41 insertions(+), 19 deletions(-)
+> >=20
+> > diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+> > index 4b6f18d97734..75e020a8bfd0 100644
+> > --- a/fs/lockd/svc4proc.c
+> > +++ b/fs/lockd/svc4proc.c
+> > @@ -26,6 +26,8 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nl=
+m_args *argp,
+> >  	struct nlm_host		*host =3D NULL;
+> >  	struct nlm_file		*file =3D NULL;
+> >  	struct nlm_lock		*lock =3D &argp->lock;
+> > +	bool			is_test =3D (rqstp->rq_proc =3D=3D NLMPROC_TEST ||
+> > +					   rqstp->rq_proc =3D=3D NLMPROC_TEST_MSG);
+> >  	__be32			error =3D 0;
+> > =20
+> >  	/* nfsd callbacks must have been installed for this procedure */
+> > @@ -46,15 +48,20 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct =
+nlm_args *argp,
+> >  	if (filp !=3D NULL) {
+> >  		int mode =3D lock_to_openmode(&lock->fl);
+> > =20
+> > +		if (is_test)
+> > +			mode =3D O_RDWR;
+> > +
+> >  		lock->fl.c.flc_flags =3D FL_POSIX;
+> > =20
+> > -		error =3D nlm_lookup_file(rqstp, &file, lock);
+> > +		error =3D nlm_lookup_file(rqstp, &file, lock, mode);
+> >  		if (error)
+> >  			goto no_locks;
+> >  		*filp =3D file;
+> > -
+> >  		/* Set up the missing parts of the file_lock structure */
+> > -		lock->fl.c.flc_file =3D file->f_file[mode];
+> > +		if (is_test)
+> > +			lock->fl.c.flc_file =3D nlmsvc_file_file(file);
+> > +		else
+> > +			lock->fl.c.flc_file =3D file->f_file[mode];
+> >  		lock->fl.c.flc_pid =3D current->tgid;
+> >  		lock->fl.fl_start =3D (loff_t)lock->lock_start;
+> >  		lock->fl.fl_end =3D lock->lock_len ?
+> > diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+> > index 255a847ca0b6..adfd8c072898 100644
+> > --- a/fs/lockd/svclock.c
+> > +++ b/fs/lockd/svclock.c
+> > @@ -614,7 +614,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_fi=
+le *file,
+> >  		struct nlm_lock *conflock)
+> >  {
+> >  	int			error;
+> > -	int			mode;
+> >  	__be32			ret;
+> > =20
+> >  	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=3D%d, %Ld-%Ld)\n",
+> > @@ -632,14 +631,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_=
+file *file,
+> >  		goto out;
+> >  	}
+> > =20
+> > -	mode =3D lock_to_openmode(&lock->fl);
+> >  	locks_init_lock(&conflock->fl);
+> >  	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
+> >  	conflock->fl.c.flc_file =3D lock->fl.c.flc_file;
+> >  	conflock->fl.fl_start =3D lock->fl.fl_start;
+> >  	conflock->fl.fl_end =3D lock->fl.fl_end;
+> >  	conflock->fl.c.flc_owner =3D lock->fl.c.flc_owner;
+> > -	error =3D vfs_test_lock(file->f_file[mode], &conflock->fl);
+> > +	error =3D vfs_test_lock(lock->fl.c.flc_file, &conflock->fl);
+> >  	if (error) {
+> >  		ret =3D nlm_lck_denied_nolocks;
+> >  		goto out;
+> > diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
+> > index 5817ef272332..d98e8d684376 100644
+> > --- a/fs/lockd/svcproc.c
+> > +++ b/fs/lockd/svcproc.c
+> > @@ -55,6 +55,8 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm=
+_args *argp,
+> >  	struct nlm_host		*host =3D NULL;
+> >  	struct nlm_file		*file =3D NULL;
+> >  	struct nlm_lock		*lock =3D &argp->lock;
+> > +	bool			is_test =3D (rqstp->rq_proc =3D=3D NLMPROC_TEST ||
+> > +					   rqstp->rq_proc =3D=3D NLMPROC_TEST_MSG);
+> >  	int			mode;
+> >  	__be32			error =3D 0;
+> > =20
+> > @@ -70,15 +72,22 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct n=
+lm_args *argp,
+> > =20
+> >  	/* Obtain file pointer. Not used by FREE_ALL call. */
+> >  	if (filp !=3D NULL) {
+> > -		error =3D cast_status(nlm_lookup_file(rqstp, &file, lock));
+> > +		mode =3D lock_to_openmode(&lock->fl);
+> > +
+> > +		if (is_test)
+> > +			mode =3D O_RDWR;
+> > +
+> > +		error =3D cast_status(nlm_lookup_file(rqstp, &file, lock, mode));
+> >  		if (error !=3D 0)
+> >  			goto no_locks;
+> >  		*filp =3D file;
+> > =20
+> >  		/* Set up the missing parts of the file_lock structure */
+> > -		mode =3D lock_to_openmode(&lock->fl);
+> >  		lock->fl.c.flc_flags =3D FL_POSIX;
+> > -		lock->fl.c.flc_file  =3D file->f_file[mode];
+> > +		if (is_test)
+> > +			lock->fl.c.flc_file =3D nlmsvc_file_file(file);
+> > +		else
+> > +			lock->fl.c.flc_file =3D file->f_file[mode];
+> >  		lock->fl.c.flc_pid =3D current->tgid;
+> >  		lock->fl.fl_lmops =3D &nlmsvc_lock_operations;
+> >  		nlmsvc_locks_init_private(&lock->fl, host, (pid_t)lock->svid);
+> > diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+> > index dd0214dcb695..b92eb032849f 100644
+> > --- a/fs/lockd/svcsubs.c
+> > +++ b/fs/lockd/svcsubs.c
+> > @@ -82,18 +82,28 @@ int lock_to_openmode(struct file_lock *lock)
+> >   *
+> >   * We have to make sure we have the right credential to open
+> >   * the file.
+> > + *
+> > + * mode can be O_RDONLY(0), O_WRONLY(1) or O_RDWR(2) meaning either
+>=20
+> Meaning either... ?
 
-[ Upstream commit 8d28d0ddb986f56920ac97ae704cc3340a699a30 ]
+If O_RDWR is given then either a O_RDONLY file or a O_WRONLY file is provided.
 
-After commit ec6bb299c7c3 ("md/md-bitmap: add 'sync_size' into struct
-md_bitmap_stats"), following panic is reported:
+I see now that isn't obvious from the text...
 
-Oops: general protection fault, probably for non-canonical address
-RIP: 0010:bitmap_get_stats+0x2b/0xa0
-Call Trace:
- <TASK>
- md_seq_show+0x2d2/0x5b0
- seq_read_iter+0x2b9/0x470
- seq_read+0x12f/0x180
- proc_reg_read+0x57/0xb0
- vfs_read+0xf6/0x380
- ksys_read+0x6c/0xf0
- do_syscall_64+0x82/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Root cause is that bitmap_get_stats() can be called at anytime if mddev
-is still there, even if bitmap is destroyed, or not fully initialized.
-Deferenceing bitmap in this case can crash the kernel. Meanwhile, the
-above commit start to deferencing bitmap->storage, make the problem
-easier to trigger.
 
-Fix the problem by protecting bitmap_get_stats() with bitmap_info.mutex.
+>=20
+> >   */
+> >  static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+> >  			   struct nlm_file *file, int mode)
+> >  {
+> > -	struct file **fp =3D &file->f_file[mode];
+> > +	struct file **fp;
+> >  	__be32	nfserr;
+> > +	int m;
+> > =20
+> > -	if (*fp)
+> > -		return 0;
+> > -	nfserr =3D nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, mode);
+> > -	if (nfserr)
+> > -		dprintk("lockd: open failed (error %d)\n", nfserr);
+> > +	for (m =3D O_RDONLY ; m <=3D O_WRONLY ; m++) {
+> > +		if (mode !=3D O_RDWR && mode !=3D m)
+> > +			continue;
+> > +
+> > +		fp =3D &file->f_file[m];
+> > +		if (*fp)
+> > +			return 0;
+> > +		nfserr =3D nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, m);
+> > +		if (!nfserr)
+> > +			return 0;
+> > +	}
+> > +	dprintk("lockd: open failed (error %d)\n", nfserr);
+> >  	return nfserr;
+> >  }
+> > =20
+> > @@ -103,17 +113,15 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+> >   */
+> >  __be32
+> >  nlm_lookup_file(struct svc_rqst *rqstp, struct nlm_file **result,
+> > -					struct nlm_lock *lock)
+> > +		struct nlm_lock *lock, int mode)
+> >  {
+> >  	struct nlm_file	*file;
+> >  	unsigned int	hash;
+> >  	__be32		nfserr;
+> > -	int		mode;
+> > =20
+> >  	nlm_debug_print_fh("nlm_lookup_file", &lock->fh);
+> > =20
+> >  	hash =3D file_hash(&lock->fh);
+> > -	mode =3D lock_to_openmode(&lock->fl);
+> > =20
+> >  	/* Lock file table */
+> >  	mutex_lock(&nlm_file_mutex);
+> > diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
+> > index 330e38776bb2..fe5cdd4d66f4 100644
+> > --- a/include/linux/lockd/lockd.h
+> > +++ b/include/linux/lockd/lockd.h
+> > @@ -294,7 +294,7 @@ void		  nlmsvc_locks_init_private(struct file_lock *,=
+ struct nlm_host *, pid_t);
+> >   * File handling for the server personality
+> >   */
+> >  __be32		  nlm_lookup_file(struct svc_rqst *, struct nlm_file **,
+> > -					struct nlm_lock *);
+> > +				  struct nlm_lock *, int);
+> >  void		  nlm_release_file(struct nlm_file *);
+> >  void		  nlmsvc_put_lockowner(struct nlm_lockowner *);
+> >  void		  nlmsvc_release_lockowner(struct nlm_lock *);
+>=20
+> Patch looks good though.
+>=20
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
 
-Cc: stable@vger.kernel.org # v6.12+
-Fixes: 32a7627cf3a3 ("[PATCH] md: optimised resync using Bitmap based intent logging")
-Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Closes: https://lore.kernel.org/linux-raid/ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com/T/#m6e5086c95201135e4941fe38f9efa76daf9666c5
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250124092055.4050195-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
-[ The context change is due to the commit 38f287d7e495
-("md/md-bitmap: replace md_bitmap_status() with a new helper md_bitmap_get_stats()")
-in v6.12 and the commit f9cfe7e7f96a ("md: Fix md_seq_ops() regressions") in v6.8
-which are irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
----
- drivers/md/md-bitmap.c | 4 ++++
- drivers/md/md.c        | 4 ++++
- 2 files changed, 8 insertions(+)
+Thanks,
+NeilBrown
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 03efb3c72980..2789dbbd7eaf 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2033,6 +2033,10 @@ void md_bitmap_status(struct seq_file *seq, struct bitmap *bitmap)
- 
- 	if (!bitmap)
- 		return;
-+	if (bitmap->mddev->bitmap_info.external)
-+		return;
-+	if (!bitmap->storage.sb_page) /* no superblock */
-+		return;
- 
- 	counts = &bitmap->counts;
- 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 332458ad9663..bb6b5360d94b 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8300,6 +8300,9 @@ static int md_seq_show(struct seq_file *seq, void *v)
- 		return 0;
- 	}
- 
-+	/* prevent bitmap to be freed after checking */
-+	mutex_lock(&mddev->bitmap_info.mutex);
-+
- 	spin_lock(&mddev->lock);
- 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
- 		seq_printf(seq, "%s : %sactive", mdname(mddev),
-@@ -8371,6 +8374,7 @@ static int md_seq_show(struct seq_file *seq, void *v)
- 		seq_printf(seq, "\n");
- 	}
- 	spin_unlock(&mddev->lock);
-+	mutex_unlock(&mddev->bitmap_info.mutex);
- 
- 	return 0;
- }
--- 
-2.34.1
 
 
