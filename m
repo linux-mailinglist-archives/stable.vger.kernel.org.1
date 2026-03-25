@@ -1,139 +1,196 @@
-Return-Path: <stable+bounces-230253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI9hGfwnw2n2ogQAu9opvQ
-	(envelope-from <stable+bounces-230253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 01:10:36 +0100
+	id wMbvMyYpw2n2ogQAu9opvQ
+	(envelope-from <stable+bounces-230254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 01:15:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504F331DE9F
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 01:10:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A8D31DEED
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 01:15:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3CFC43028040
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 00:10:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D553D3040538
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 00:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C3C1427A;
-	Wed, 25 Mar 2026 00:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C0F1B81D3;
+	Wed, 25 Mar 2026 00:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSGfo3vQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cip7d31g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E124A35;
-	Wed, 25 Mar 2026 00:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E6A19D8BC
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 00:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774397430; cv=none; b=l1S4Z6QRpKZ0ryqW5v0tk3hqPpuOnvqy1e7urZuOLnkqDvsZQgTN/Pjiyoy6C3WGnXYNeVzfPcHVpbZboqgjyEeoX/8GZZWTRU5yjo17PDSFj45bj9H7Bmp5jGo6jHt2BlY6+fGWdxP5morvQ67IyhsoSOhwsngqsAXugwcDGhs=
+	t=1774397732; cv=none; b=JQ1+WubLArjfIt1g4GEyH17oS58o/cNHvXGX1rRkDzezQb2PS8t2J4XOR5UGKJ6Ssu+4OQ/CnR4sus8U4OMcqJ5B1XQsjsBSzjSMzf1CeLBXKb0klsJgRyZJ/kPVxQ5HFe2mndEZzUIGXK2XuDhqxtSp2nwB513QRPPMhpxhBO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774397430; c=relaxed/simple;
-	bh=2MH0l+RGRfozqdvfagheEQvFMGcGic8A0BgdV4t99B8=;
+	s=arc-20240116; t=1774397732; c=relaxed/simple;
+	bh=0P7oBDeyrtiUEeDcuz2XhUSLvG1+u+qDk3LZCKzquw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7IM+43AviR2v4qfOUec5z6QWS7NS0F/AwvCYkvLec4V9b2kCFG821lkG+Ue7j6sypze+WTL4rMPJzkyE+9vK8U+v4LgCC8t2UzkEKxPSDTm/a6AQFjU4i2NGRSA0m3HnfoKvnlRaNnBlX+HXmBoSe4Gs4Hwb5/vXszrPBMy6Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSGfo3vQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72D4C19424;
-	Wed, 25 Mar 2026 00:10:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774397429;
-	bh=2MH0l+RGRfozqdvfagheEQvFMGcGic8A0BgdV4t99B8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSGfo3vQpT0WJioRbmF3awAqgT1Lgmu3ECe3FnMS6oXkr0mSKN4mujpSbt2bB4mVW
-	 V7Rna/rWmf/LEDXYn7H9onbU3q7Z0yUeF5diTUs9dPQttj7GbviOZt3CE7G59unqp2
-	 4HeJSfkRLJ9XE/YglgbOl4IPELiHEdv0mhBqYsl1yf6IMxqJByPfaYVPw4tN4aGwSJ
-	 O84X2VR12q9b05C2pqlexH6h+/6NO7Cqv16aeDnqdpHc/Qq0DMGIEEHDKyzuIrdLJD
-	 Y0lqkcj4cyeKbUDn10xZIf6STYu+y/FYRY2BHt7F/q//4cbfpULwUrEWNSb5lo89EY
-	 ksmL6zepJ52dQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: farbere@amazon.com,
-	patches@lists.linux.dev,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	tglx@linutronix.de,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>
-Subject: Re: [PATCH 6.12 017/460] kexec: Consolidate machine_kexec_mask_interrupts() implementation
-Date: Wed, 25 Mar 2026 01:10:22 +0100
-Message-ID: <20260325001022.57697-1-ojeda@kernel.org>
-In-Reply-To: <20260323134527.084575420@linuxfoundation.org>
-References: <20260323134527.084575420@linuxfoundation.org>
+	 MIME-Version:Content-Type; b=EE6VgTptK80wAX/nOIAsiqYMQ4hON77jxcWgVdvyhnUa3Lp3PlTj+ziwz6JXHKwYKawkGihqkefOLknrFvaEdkFIkHXzO7+t7FJmaZGcc1Qjyq67bfhAq8ggMv8nXgTpThxyvtBT2qVsdpQLEMaQDzwYcUcH08ddw5mljlyrnfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cip7d31g; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35b97ed057cso2824603a91.1
+        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 17:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774397730; x=1775002530; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CFu/4C9dcZr81R85Vo6ldm6Rbl3IdmjMsm6pyx/n7JI=;
+        b=Cip7d31g/X47oecqaofhDWvVIQDy1CJXls40L1McW3R0uzOyCpcM9y/ZH6QrPtv+Ut
+         rcQhXLL6DFO2cSAtx81nX9OXv+eiYted85+YAoQCUm8FycgM8/d7e6hhYNLCPwm2MvuM
+         RYtfk8/2m6kBgZSflT3Fycs750NGQ0j1Tb92R3ZZw0PR1JvNHeWxfQfmmTFtg6YeyzDo
+         /wFod/ZBe9RlJuI2v7pzWYVjeNWIoksfyC/F/b+LOtIJV9H/9ee7gow6qxf9HUU5P6M/
+         +YG7osWpz+pIQaZrTuHjb8hIkKsFO/Jnkbc3WE/0EBNMyPD4dP8PJBxzrBMzgA09XRUM
+         Wghg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774397730; x=1775002530;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CFu/4C9dcZr81R85Vo6ldm6Rbl3IdmjMsm6pyx/n7JI=;
+        b=binF6+QAjcShMmbcK3ej9sVfrxwddCfxCQTRz260gIB0ld8v6IxE4rx/G7kOxpDfNg
+         AePfHd31YDzvnHNtL9fqhjoLjIxB9V09GBIaOgXfnZmTF/sNT1mPwUAvc3EaPIs4Zk9Y
+         rF1+iTiFQvfow7l1EuvFDP4UZrfZGUEiKjXYU8g/yP+c/Kgg4bPwxQ6P2vpCuC+xbtZQ
+         PnmZAnIZ3dn7UTceLa1zoCZvt0GyI2hnIBs10+NVO40ugH+Y////AbJRtKseipIjV0Jv
+         AvgYqdxlzmsaC6RNtsyLMRJhgRGFuXxoEN1XMMqEJ3I9cjc4rYAD+cgvC5wU0rItqnII
+         5kCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIige/a1qSaW4pBQF3fjNLTANIyzp018T4pnhoDq0IwJ1g8gCQDXj+68L5YL2gLamEuumdEIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxI/p8NjCW1q2i23NS5c/dg85v4qbXe5xyCNI6y+ZA8RZ26hY7C
+	GywD4olJ/nSkkCZsyefpWQpMyemV7CaMr1xg7ULZmWahcLkGrLKb5eoJ
+X-Gm-Gg: ATEYQzw7ObDgX5UmjZQBzrz7cMvkfMc3fV2dqeAJs9n+8BlS5Q9qJbh4hq9rvw1np1/
+	nQsAtJtZbOwm1BDY4TPhBQiLcCA8ogC/3yPfCqdR7iiy/59hCo7lrpoPyxejeIIEpkVYc5o87De
+	/vhcBHBCRGc333xWNlmIQJIQu5FAfDRE1OTorjD1BykO212HaCXjmUToN/4Grhb2zZtVVd3+e7d
+	xwNO5NkBkiuUHB5raRpvLcD3fjfesHGemIOjWb2Q1gaTb7zuSwP9ECroKCvczoGgYbB1f4GtdA9
+	7jzFuHL4b+2VN2BbrKeFcpursA49sw29sfLw1KhCLGks4mMg8nzjzoPOesAvhUDzr70jBbDIm0F
+	kYmDQJQOu1olDFqnLKXulw+EFeAoDa8naTPn9L0y68nxoeOhkOUHMkhv/PHXC5Xfx22U7m010f0
+	GazXAfeWmxmZqtG52b8UGeNO5A6PLBOwV3fXUBfRZlRfbWeO5SL12Knm+m1yghgmjdoO8L0sKn5
+	zYw
+X-Received: by 2002:a17:90b:5783:b0:359:c7ef:97bc with SMTP id 98e67ed59e1d1-35c0dd8076fmr1097254a91.22.1774397730194;
+        Tue, 24 Mar 2026 17:15:30 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8a28:820:e910:f579:1a1f:54c3:bfb1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c744560683bsm11380577a12.30.2026.03.24.17.15.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 17:15:29 -0700 (PDT)
+From: =?UTF-8?q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
+To: oscar.alfonso.diaz@gmail.com
+Cc: =?UTF-8?q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
+Date: Wed, 25 Mar 2026 08:15:13 +0800
+Message-ID: <20260325001513.1303-1-fjhhz1997@gmail.com>
+X-Mailer: git-send-email 2.45.0.windows.1
+In-Reply-To: <CA+bbHrW0C9+Pz5TOUgM_oodhfJnoO7P0YiEdp85D08h=hLPF5A@mail.gmail.com>
+References: <CA+bbHrW0C9+Pz5TOUgM_oodhfJnoO7P0YiEdp85D08h=hLPF5A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230253-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230254-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fjhhz1997@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:email,linutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 504F331DE9F
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 77A8D31DEED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 23 Mar 2026 14:40:13 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
->
-> ------------------
->
-> From: Eliav Farber <farbere@amazon.com>
->
-> [ Upstream commit bad6722e478f5b17a5ceb039dfb4c680cf2c0b48 ]
->
-> Consolidate the machine_kexec_mask_interrupts implementation into a common
-> function located in a new file: kernel/irq/kexec.c. This removes duplicate
-> implementations from architecture-specific files in arch/arm, arch/arm64,
-> arch/powerpc, and arch/riscv, reducing code duplication and improving
-> maintainability.
->
-> The new implementation retains architecture-specific behavior for
-> CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, which was previously implemented
-> for ARM64. When enabled (currently for ARM64), it clears the active state
-> of interrupts forwarded to virtual machines (VMs) before handling other
-> interrupt masking operations.
->
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lore.kernel.org/all/20241204142003.32859-2-farbere@amazon.com
-> Stable-dep-of: 20197b967a6a ("powerpc/kexec/core: use big-endian types for crash variables")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hi Oscar,
 
-Please see my note at:
+Thank you for testing the v1 patch and reporting the VM hang -- your
+report was critical in identifying the root cause.
 
-  https://lore.kernel.org/stable/20260325000600.57287-1-ojeda@kernel.org/
+Lucid-Duck did extensive debugging and reproduction work on this.
+The full discussion is here:
+https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4120751621
 
-I hope that helps!
+Root cause of the crash:
 
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-Cc: Tianyang Zhang <zhangtianyang@loongson.cn>
+The v1 patch falls back to list_first_entry_or_null(&local->chanctx_list)
+when the monitor vif has no chanctx. In your Evil Twin + DoS scenario,
+the AP and monitor interfaces created multiple channel contexts. The
+fallback blindly grabbed whichever chanctx was first on the list --
+which could be the AP's chanctx that the firmware wasn't expecting
+monitor traffic on. Injecting frames on a chanctx where
+mt7921_mcu_config_sniffer() was never called is the likely trigger
+for the hard hang.
 
-Cheers,
-Miguel
+The v2 patch adds a list_is_singular() guard: injection only proceeds
+when there is exactly one chanctx (unambiguous), and is refused when
+multiple chanctxs exist. This covers the common single-channel AP +
+monitor case while preventing the dangerous multi-chanctx path that
+caused your crash.
+
+Lucid-Duck tested v2 extensively on kernel 6.19.8 with the MT7921AU
+(ALFA AWUS036AXML) -- single-channel AP + monitor + injection,
+multi-chanctx via P2P-GO, heavy load injection floods (50k fps,
+1.8M packets) -- all stable with zero crashes or kernel warnings.
+
+The v2 diff against net/mac80211/tx.c:
+
+ 	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
+-	if (chanctx_conf)
++	if (chanctx_conf) {
+ 		chandef = &chanctx_conf->def;
+-	else if (local->emulate_chanctx)
++	} else if (local->emulate_chanctx) {
+ 		chandef = &local->hw.conf.chandef;
+-	else
+-		goto fail_rcu;
++	} else {
++		struct ieee80211_chanctx *ctx;
++
++		ctx = list_first_entry_or_null(&local->chanctx_list,
++					       struct ieee80211_chanctx,
++					       list);
++		if (ctx && list_is_singular(&local->chanctx_list))
++			chandef = &ctx->conf.def;
++		else
++			goto fail_rcu;
++	}
+
+If you have time, could you re-test with this v2 patch in your
+original Evil Twin + DoS setup? That would help confirm the fix
+before I send v2 to the list.
+
+Thanks again for your help!
+
+Best regards,
+傅继晗
 
