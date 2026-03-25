@@ -1,207 +1,203 @@
-Return-Path: <stable+bounces-230274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sF5dIJiKw2nnrQQAu9opvQ
-	(envelope-from <stable+bounces-230274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 08:11:20 +0100
+	id AOmGOqiMw2nJrQQAu9opvQ
+	(envelope-from <stable+bounces-230275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 08:20:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2123432085D
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 08:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2D0320972
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 08:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56B59306643B
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 07:08:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C8B53034671
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 07:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC603624BC;
-	Wed, 25 Mar 2026 07:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5279291C10;
+	Wed, 25 Mar 2026 07:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="nv2BjE5c";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="S7AP5C9s"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="xXO1hlCO"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7343537F1;
-	Wed, 25 Mar 2026 07:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D18F234984;
+	Wed, 25 Mar 2026 07:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774422496; cv=none; b=UMar9XF9S/dz0frMImgs9yDv7JGlvUr4fbQIUMe+oZu/6pPjPKud7EsRcsssmXGyemJqH++03yfEyce/aIvAxXdaMGupY/Nuo0TfZgOQIeaW0kNWIRmfcA3EV0OYAvC9nUDs5bPHbSGhwOEsrtsZA/eD04YHr6Si63Jhs6lvvJ8=
+	t=1774422929; cv=none; b=P/AQXdRdP78qfcRaXzQ8/L4pKCYQDcHg1YPc52p8lAO5VNCLtUgaY6Xf4gnod+P4FYs1IfAT65LEOQqIJ05D+ltvngV8TUs0cusFpmZIMiFh9suSZ45cFJ7CK7AWQt11JvnEdSCioeeQzgyVxFo1+dn9jNXWlp98uCjYPX13VQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774422496; c=relaxed/simple;
-	bh=zgjxWS+RhrJIBmIISCNaRGFpIX+HWHmqf8NKfZWo2mI=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=aeVKDHEgtTwZfpCMSWc2gsyNo6tjxn2jArDj+dQsNjZzamNnajAVV3xX24JYztQboNodhmi1RqyKajR1EkNIFRIpwHw9jLI4wWF5qc2vN2XVs4EdT6EWgoVFMCJ9/1y0f4cnk2qXel2EUqpmmc+zHbsv6xVVfcJ4EqCMQ2jxeWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=nv2BjE5c; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=S7AP5C9s; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 787D71D00210;
-	Wed, 25 Mar 2026 03:08:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Wed, 25 Mar 2026 03:08:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
-	1774422493; x=1774508893; bh=yDHYE19CFaQ1R6/fwC2mCz5lsesvfQOwcSs
-	+b8LO3ho=; b=nv2BjE5cp9DCJInHCFLduVELnhTYa/jfVacFYwB4fUV5xLShMYS
-	PDOTz8oNxvcH8SJdZem/hqGPST6SrHT2y6XUPMkWLjxNdDAy377OhRzskNfbxI9m
-	5hZeZa7dGT3p0kHxnLM9iTOnJ9indDIQANMjvps7hGw29Q42CWZy+C96A0Su5PeK
-	CHDsLBwN13TemTlq6KychN6mD4zz0PUEWozKVwyt4P/uruL5rJL8Cy6rXjPu7Jwm
-	9OzmwPmsePEJZPk0gNlZzUQQYVpHo0zF5fVjiFcx0pMWkOVNutqgDOxefPi7x12v
-	R4lxLCE4NCYccIvyB/nJJWkfnQvjHKInt9g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774422493; x=
-	1774508893; bh=yDHYE19CFaQ1R6/fwC2mCz5lsesvfQOwcSs+b8LO3ho=; b=S
-	7AP5C9sXtd+P1xNM0F0ZUbH5yIr8xLXqmuspbavDeckTUh4NLJmSVZNtgrzbh+SL
-	sQodz4m7Ill8z+aiLyaI8UykVe6K2af+HRqgy+7qT054saWURdUsuUBYV+q1NKYq
-	PyYfJA4Z+P7wuHsiLMvbm7Iwi3ARDQkeFiNWFclbEfViFZqjhPQwp0IwHSKre4zD
-	ppYcLEBe8vv/4QphEDnD3s02SF/5LQwWRWoURw4Q+QPQklw31MV11GcCFKlNkkFC
-	DgmFLWjsQc54c+EVXLMZx6IWBFQZuClDQz6A1o7gRhYxtfoyiASdXDu58GeZMNPd
-	GSgwxbarq6C8FnSk1JTSA==
-X-ME-Sender: <xms:3YnDabGwNcLWsHzkVvYbfyK8iTP-_Yv5vanwLYEZmi4CgnN-Dtz5qw>
-    <xme:3YnDaUU_fy8O0n2lJvNI1-mPqaP5TlBXSXYZAYH3pI_eA38N_mZpM7aN9mhtXNS2v
-    mGL3SB7wPI2d8rPib_bxqRxiDdAXPGBGjVzdEZU2FKNZ7RMpA>
-X-ME-Received: <xmr:3YnDafU-ZTgndwIwoQXEUdd_d_4pi3cNqNZST6sbkrhPigJbQ2b0HDeN-Lgj-EEjIZKVAlBsz7iDJSUOVEVy_6BLG9flPNOaG_sgvDf9AlR8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdefkedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epudefueefheejhfeuhfehvdfhgeeulefgfeehffekffduvdettdelheeftdethfdvnecu
-    ffhomhgrihhnpeguvggsihgrnhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
-    rhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhkohhrnhhivghvsehrvgguhh
-    grthdrtghomhdprhgtphhtthhopehtjhdrihgrmhdrthhjsehprhhothhonhdrmhgvpdhr
-    tghpthhtoheprhgvghhrvghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtph
-    htthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtvghlsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopeduuddvkeekiedusegsuhhgshdruggvsghirg
-    hnrdhorhhg
-X-ME-Proxy: <xmx:3YnDaaLMO6xat5ypM4si0ppgdUPRI4fIo1iPi4K4lpBlRrG7fxOlVw>
-    <xmx:3YnDafCBxbc4sQPLkaOOUXZK2GiN7NQmbenx68Q_2siWwB3HEYcjNw>
-    <xmx:3YnDaaeooqj0HGI2iBQVbCFT8HLaNshPysGhRJbimInceEPPAq9wzw>
-    <xmx:3YnDae0IPL41gf9aKm_ojn65Sg-juPaN8XRO1wWaFaEdJ2ECAEDszA>
-    <xmx:3YnDaZVoSAXHqNiaewSzZco6CaquCW4o4vbNaGw5aWx3womiOLxc9QvQ>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Mar 2026 03:08:10 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1774422929; c=relaxed/simple;
+	bh=5hxyyJzeF5TPiJINbzaJ1X7s6AP4a+tNXOcQkWSBSes=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iCrPW0QdPYaalxys04MOXoF6OGp5KNCB6+2L/MkqAVwPebGpqmRym2V+rxsw3B4XlP8wkcCgvzc8DxCJHLS/coUr0WBs6LPqDh05TLsH+aTtQKhHXxRGitizDaSYPBtOXqjhTmPZhtEDK1y89lzOjOsb6rRD5FO+rM8F5EMSA3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=xXO1hlCO; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774422924; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Qd6WqezgwAV4gZZq0dBkIdEIitvF//h4rUdyQasOat0=;
+	b=xXO1hlCOJGYkVFfOYQn/0q5RwmLnwKp9kNqtcmkYnQuIcQ0GmezunGi6OwJrZ9wf96yw+2WFxa2I7ml6V6j0OD9T3uMAD8wa0Tm2h0aZHaCtW3p4IKQfsc+pNoti5Oq3YhIR1/0kZUnmRO+CI+DiPmNUntABDNmbCubwjcpvxy0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X.gv7nM_1774422922;
+Received: from 30.221.132.80(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X.gv7nM_1774422922 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 25 Mar 2026 15:15:23 +0800
+Message-ID: <ce0839b2-eb90-4139-9745-157e3f2701d8@linux.alibaba.com>
+Date: Wed, 25 Mar 2026 15:15:22 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Chuck Lever" <cel@kernel.org>
-Cc: "Jeff Layton" <jlayton@kernel.org>,
- "Thorsten Leemhuis" <regressions@leemhuis.info>, 1128861@bugs.debian.org,
- "Tj" <tj.iam.tj@proton.me>, linux-nfs@vger.kernel.org,
- "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
-Subject:
- Re: [PATCH] lockd: fix TEST handling when not all permissions are available.
-In-reply-to: <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>
-References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>,
- <177266540127.7472.3460090956713656639@noble.neil.brown.name>,
- <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>,
- <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>,
- <177434721528.7102.13514118512738778346@noble.neil.brown.name>,
- <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>
-Date: Wed, 25 Mar 2026 18:08:07 +1100
-Message-id: <177442248735.2237155.773724155681455344@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1.y] erofs: get rid of z_erofs_fill_inode()
+To: "driz2t@qq.com" <driz2t@qq.com>
+Cc: "xiang@kernel.org" <xiang@kernel.org>, "chao@kernel.org"
+ <chao@kernel.org>, "huyue2@coolpad.com" <huyue2@coolpad.com>,
+ "jefflexu@linux.alibaba.com" <jefflexu@linux.alibaba.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "syzbot+016d861797fd718491a8@syzkaller.appspotmail.com"
+ <syzbot+016d861797fd718491a8@syzkaller.appspotmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <tencent_9245CADBF1A8EA39C72025351E3BAE7F130A@qq.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <tencent_9245CADBF1A8EA39C72025351E3BAE7F130A@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-7.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ownmail.net,none];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ownmail.net:s=fm1,messagingengine.com:s=fm1];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230274-lists,stable=lfdr.de];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[ownmail.net];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230275-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[qq.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ownmail.net:+,messagingengine.com:+];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[neilb@ownmail.net,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,016d861797fd718491a8];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[neil@brown.name];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ownmail.net:dkim,noble.neil.brown.name:mid,proton.me:email,messagingengine.com:dkim,brown.name:email,brown.name:replyto]
-X-Rspamd-Queue-Id: 2123432085D
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,qq.com:email]
+X-Rspamd-Queue-Id: 6C2D0320972
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 25 Mar 2026, Chuck Lever wrote:
->=20
-> On Tue, Mar 24, 2026, at 6:13 AM, NeilBrown wrote:
-> > From: NeilBrown <neil@brown.name>
-> >
-> > The F_GETLK fcntl can work with either read access or write access or
-> > both.  It can query F_RDLCK and F_WRLCK locks in either case.
-> >
-> > However lockd currently treats F_GETLK similar to F_SETLK in that read
-> > access is required to query an F_RDLCK lock and write access is required
-> > to query a F_WRLCK lock.
-> >
-> > This is wrong and can cause problem - e.g.  when qemu accesses a
-> > read-only (e.g. iso) filesystem image over NFS (though why it queries
-> > if it can get a write lock - I don't know.  But it does, and this works
-> > with local filesystems).
-> >
-> > So we need TEST requests to be handled differently.  To do this:
-> >
-> > - change nlm_do_fopen() to accept O_RDWR as a mode and in that case
-> >   succeed if either a O_RDONLY or O_WRONLY file can be opened.
-> > - change nlm_lookup_file() to accept a mode argument from caller,
-> >   instead of deducing base on lock time, and pass that on to nlm_do_fopen=
-()
-> > - change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
-> >   TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
-> >   the same mode as before for other requests.  Also set
-> >    lock->fl.c.flc_file to whichever file is available for TEST requests.
-> > - change nlmsvc_testlock() to also not calculate the mode, but to use
-> >   whenever was stored in lock->fl.c.flc_file.
-> >
-> > Reported-by: Tj <tj.iam.tj@proton.me>
-> > Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1128861
-> > Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
-> > Signed-off-by: NeilBrown <neil@brown.name>
->=20
-> Hi Neil, which kernels should this fix apply to?
->=20
 
-v6.13 and later. So linux-6.18.y and linux-6.19.y
 
-The Fixes: tag is actually wrong.  This bug has been present forever.
-However a different bug that=20
-  Commit: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-fixed was hiding the bug.
+On 2026/3/25 14:57, driz2t@qq.com wrote:
+> This is a backport of upstream commit 4fdadd5b0f0c723c812842454f8cca1619f2e731.
+> (erofs: get rid of z_erofs_fill_inode())
+> 
+> Reported-by: syzbot+016d861797fd718491a8@syzkaller.appspotmail.com
+> Tested-by: syzbot+016d861797fd718491a8@syzkaller.appspotmail.com
+> Signed-off-by: Changjian Liu <driz2t@qq.com>
 
-So it should probably be marked
-  Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-with an explanation.
+Please follow the stable patch style.
 
-NeilBrown
+
+> ---
+>   fs/erofs/inode.c     |  12 ++++++++----
+>   fs/erofs/internal.h  |   2 --
+>   fs/erofs/zmap.c      |  18 ------------------
+>   scripts/extract-cert | Bin 0 -> 14608 bytes
+
+scripts/extract-cert | Bin 0 -> 14608 bytes
+What's that.
+
+Thanks,
+Gao Xiang
+
+>   4 files changed, 8 insertions(+), 24 deletions(-)
+>   create mode 100755 scripts/extract-cert
+> 
+> diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
+> index 3cbef6318b7b..484572504b4d 100644
+> --- a/fs/erofs/inode.c
+> +++ b/fs/erofs/inode.c
+> @@ -280,11 +280,15 @@ static int erofs_fill_inode(struct inode *inode)
+>        }
+>   
+>        if (erofs_inode_is_data_compressed(vi->datalayout)) {
+> +#ifdef CONFIG_EROFS_FS_ZIP
+>              if (!erofs_is_fscache_mode(inode->i_sb) &&
+> -               inode->i_sb->s_blocksize_bits == PAGE_SHIFT)
+> -                 err = z_erofs_fill_inode(inode);
+> -           else
+> -                 err = -EOPNOTSUPP;
+> +               inode->i_sb->s_blocksize_bits == PAGE_SHIFT) {
+> +                 inode->i_mapping->a_ops = &z_erofs_aops;
+> +                 err = 0;
+> +                 goto out_unlock;
+> +           }
+> +#endif
+> +           err = -EOPNOTSUPP;
+>              goto out_unlock;
+>        }
+>        inode->i_mapping->a_ops = &erofs_raw_access_aops;
+> diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+> index 126970932805..1a4d08a93339 100644
+> --- a/fs/erofs/internal.h
+> +++ b/fs/erofs/internal.h
+> @@ -423,12 +423,10 @@ enum {
+>   extern const struct iomap_ops z_erofs_iomap_report_ops;
+>   
+>   #ifdef CONFIG_EROFS_FS_ZIP
+> -int z_erofs_fill_inode(struct inode *inode);
+>   int z_erofs_map_blocks_iter(struct inode *inode,
+>                        struct erofs_map_blocks *map,
+>                        int flags);
+>   #else
+> -static inline int z_erofs_fill_inode(struct inode *inode) { return -EOPNOTSUPP; }
+>   static inline int z_erofs_map_blocks_iter(struct inode *inode,
+>                                  struct erofs_map_blocks *map,
+>                                  int flags)
+> diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+> index d2d7fe826091..ff84533da0c4 100644
+> --- a/fs/erofs/zmap.c
+> +++ b/fs/erofs/zmap.c
+> @@ -7,24 +7,6 @@
+>   #include <asm/unaligned.h>
+>   #include <trace/events/erofs.h>
+>   
+> -int z_erofs_fill_inode(struct inode *inode)
+> -{
+> -     struct erofs_inode *const vi = EROFS_I(inode);
+> -     struct erofs_sb_info *sbi = EROFS_SB(inode->i_sb);
+> -
+> -     if (!erofs_sb_has_big_pcluster(sbi) &&
+> -         !erofs_sb_has_ztailpacking(sbi) && !erofs_sb_has_fragments(sbi) &&
+> -         vi->datalayout == EROFS_INODE_COMPRESSED_FULL) {
+> -           vi->z_advise = 0;
+> -           vi->z_algorithmtype[0] = 0;
+> -           vi->z_algorithmtype[1] = 0;
+> -           vi->z_logical_clusterbits = inode->i_sb->s_blocksize_bits;
+> -           set_bit(EROFS_I_Z_INITED_BIT, &vi->flags);
+> -     }
+> -     inode->i_mapping->a_ops = &z_erofs_aops;
+> -     return 0;
+> -}
+> -
+>   struct z_erofs_maprecorder {
+>        struct inode *inode;
+>        struct erofs_map_blocks *map;
+> -- 
+> 2.43.0
+
 
