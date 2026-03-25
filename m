@@ -1,282 +1,199 @@
-Return-Path: <stable+bounces-230388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOuMJNxAxGlTxwQAu9opvQ
-	(envelope-from <stable+bounces-230388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 21:09:00 +0100
+	id oDw2FcBFxGm1xwQAu9opvQ
+	(envelope-from <stable+bounces-230389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 21:29:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A96432B9DF
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 21:08:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D10532BD86
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 21:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B642301AFF8
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 20:08:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6CA7D30148AD
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 20:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBF3363C49;
-	Wed, 25 Mar 2026 20:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9Kn5rjL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD21372EFE;
+	Wed, 25 Mar 2026 20:29:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7C4F4F1;
-	Wed, 25 Mar 2026 20:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47CD372ECF;
+	Wed, 25 Mar 2026 20:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774469317; cv=none; b=Utloc6mUignDphi2XTgUiPBJhnRaSo6d6GMq8RX3wyRWoFnvtzGltqZIW6PFfMj+ArU9K+lwKdANLnCslBQ7tO2QN0wETW4hv0kqepWGjAi1COU6hoSSOt71P6CGl43qWvqMghWDk7sSB2QXfanZUGwVF10GO/paL3/KLIHEW04=
+	t=1774470579; cv=none; b=bzqHj93ee/TbfGN4lLJqEz/x5FNFf5AOsLyAf0v4+YSZ8bsysIktgJ5iEdoor9TYeaf8SZ64g0xjI3AtHdwnzeUav20yrtNyIniLMRFYLE55yx7CVQBg5TedcmPDQycSzHkEp/ZI+rvumADC4Iz1hfUBtorAsY7B0HMHii+3GuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774469317; c=relaxed/simple;
-	bh=u0Cd5omrwW3YhsWw9m4ecHl9huofQib83nNWmHHNvaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=g/ZEWvVUvtDougtFY+CmzeCM7/05Ly55P1SWq/v52HNPdueXyWrNL42CbJbIsPmZGUrwzLUg4LE03FoWbrrS3Ob3Ep/HIj7yuS86ZY4Dn3dd75w2LjkQV+LVFPr+AQvsw0EZjmi9H5lyFA/YHFTMPwhauj+xuFtUI26i92YtHnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9Kn5rjL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06011C4CEF7;
-	Wed, 25 Mar 2026 20:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774469317;
-	bh=u0Cd5omrwW3YhsWw9m4ecHl9huofQib83nNWmHHNvaM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Z9Kn5rjLrhwK1kdqyaXdq9wyvg4ZxB1tPZ9jrqFS7RwJK2jJUBL+K3GypmqN49WUc
-	 7DF+RGwWI5JuMyhsC0VEXPeh93v1wJO7JvfeAJO0ldnRt6wJfPjLvSBUQai2E9Z94y
-	 rYO+BbiXWGd1o+13OdefEL0nuHWpvX+F0iemDZ2+CKOk6mHrz7Le9Q+mA03UxWfvFO
-	 VB5JM9Ml5U+22RVNF76VLqtK+gMk2Oz4adIOgGsd3tIKIV+b0RbOP1CEW5SPVZZMvh
-	 FGpia0iUKWLj+azTSqC1objNUboZrH/JXpm/l94LrGqBGhna07ebvTkNnVrNiN6EjE
-	 Vh7QS5w2CLHOg==
-Date: Wed, 25 Mar 2026 15:08:35 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Gerd Bayer <gbayer@linux.ibm.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Jay Cornwall <Jay.Cornwall@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	s=arc-20240116; t=1774470579; c=relaxed/simple;
+	bh=J2KTQLJtj/cmPEnsk8n2KBtfd9UmjZewpH2hwmIc5kE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iX3k6/EfD6oKVgGWHnDm9LY+DWBEV8Y8GJIbrpIqH+eLXJ05ZBlKO8Up3X+ipaLrJZSx5Y+2HfM2NFh7S3DHp8u+UQCNxI73bqu3iMGN8Hx1JJzsgZa0Iv94Z+HUUcUx0hbZAdc3c/a2D8r1PHA/01GjhAumonqeF5cc2jMp18s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:1810:1d14:e000:db6f:81d2:6624:c91c] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1w5Uqu-001ofs-1V;
+	Wed, 25 Mar 2026 20:29:19 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1w5Uqp-00000004iOy-2hHi;
+	Wed, 25 Mar 2026 21:29:15 +0100
+Message-ID: <eab4db41a02c4342bd6e5397f663c4e651f22e31.camel@decadent.org.uk>
+Subject: Re: Bug#1128861: [PATCH] lockd: fix TEST handling when not all
+ permissions are available.
+From: Ben Hutchings <ben@decadent.org.uk>
+To: NeilBrown <neil@brown.name>, 1128861@bugs.debian.org, Chuck Lever
+	 <cel@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>, Thorsten Leemhuis
+	 <regressions@leemhuis.info>, Tj <tj.iam.tj@proton.me>, 
+	linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>, 
 	stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] PCI: AtomicOps: Do not enable without support in
- root complex
-Message-ID: <20260325200835.GA1290451@bhelgaas>
+Date: Wed, 25 Mar 2026 21:29:09 +0100
+In-Reply-To: <177442248735.2237155.773724155681455344@noble.neil.brown.name>
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+	, <177266540127.7472.3460090956713656639@noble.neil.brown.name>
+	, <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>
+	, <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>
+	, <177434721528.7102.13514118512738778346@noble.neil.brown.name>
+	, <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>
+	 <177187492815.425331.14320091315652332093.reportbug@nimble>
+	 <177442248735.2237155.773724155681455344@noble.neil.brown.name>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-StOfTySkQjzSGJ9fd77x"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325-fix_pciatops-v6-1-10bf19d76dd1@linux.ibm.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-SA-Exim-Connect-IP: 2a02:1810:1d14:e000:db6f:81d2:6624:c91c
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230388-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DMARC_NA(0.00)[decadent.org.uk];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A96432B9DF
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230389-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 9D10532BD86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 04:16:17PM +0100, Gerd Bayer wrote:
-> When inspecting the config space of a Connect-X physical function in an
-> s390 system after it was initialized by the mlx5_core device driver, we
-> found the function to be enabled to request AtomicOps despite the
-> system's root-complex lacking support for completing them:
-> 
-> 1ed0:00:00.1 Ethernet controller: Mellanox Technologies MT2894 Family [ConnectX-6 Lx]
-> 	Subsystem: Mellanox Technologies Device 0002
->   [...]
-> 	DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
-> 		 AtomicOpsCtl: ReqEn+
-> 		 IDOReq- IDOCompl- LTR- EmergencyPowerReductionReq-
-> 		 10BitTagReq- OBFF Disabled, EETLPPrefixBlk-
-> 
-> Turns out the device driver calls pci_enable_atomic_ops_to_root() which
-> defaulted to enable AtomicOps requests even if it had no information
-> about the root-port that the PCIe device is attached to. Similarly,
-> AtomicOps requests are enabled for root complex integrated endpoints
-> (RCiEPs) unconditionally.
-> 
-> Change the logic of pci_enable_atomic_ops_to_root() to fully traverse the
-> PCIe tree upwards, check that the bridge devices support delivering
-> AtomicOps transactions, and finally check that there is a root port at
-> the end that does support completing AtomicOps - or that the support for
-> completing AtomicOps at the root complex is announced through some other
-> arch specific way.
-> 
-> Introduce a new pcibios_connects_to_atomicops_capable_rc() function to
-> implement the check - and default to always "true". This leaves the
-> semantics for today's RCiEPs intact. Pass in the device in question and
-> the requested capabilities for future expansions.
-> For s390, override pcibios_connects_to_atomicops_capable_rc() to
-> always return "false".
-> 
-> Do not change the enablement of AtomicOps requests if there is no
-> positive confirmation that the root complex can complete PCIe AtomicOps.
-> 
-> Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
-> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-> ---
->  arch/s390/pci/pci.c |  5 +++++
->  drivers/pci/pci.c   | 48 +++++++++++++++++++++++++++++++-----------------
->  include/linux/pci.h |  1 +
->  3 files changed, 37 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> index 2a430722cbe415dd56c92fed2e513e524f46481a..a0bef77082a153a258fbe4abb1070b22e020888e 100644
-> --- a/arch/s390/pci/pci.c
-> +++ b/arch/s390/pci/pci.c
-> @@ -265,6 +265,11 @@ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
->  	return rc;
->  }
->  
-> +bool pcibios_connects_to_atomicops_capable_rc(struct pci_dev *dev, u32 cap_mask)
-> +{
-> +	return false;
-> +}
-> +
->  resource_size_t pcibios_align_resource(void *data, const struct resource *res,
->  				       resource_size_t size,
->  				       resource_size_t align)
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 8479c2e1f74f1044416281aba11bf071ea89488a..006aa589926cb290de43f152100ddaf9961407d1 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3660,6 +3660,19 @@ void pci_acs_init(struct pci_dev *dev)
->  	pci_disable_broken_acs_cap(dev);
->  }
->  
-> +static bool pci_is_atomicops_capable_rp(struct pci_dev *dev, u32 cap, u32 cap_mask)
-> +{
-> +	if (!dev || !(pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT))
-> +		return false;
-> +
-> +	return (cap & cap_mask) == cap_mask;
-> +}
-> +
-> +bool __weak pcibios_connects_to_atomicops_capable_rc(struct pci_dev *dev, u32 cap_mask)
-> +{
-> +	return true;
-> +}
-> +
->  /**
->   * pci_enable_atomic_ops_to_root - enable AtomicOp requests to root port
->   * @dev: the PCI device
-> @@ -3676,8 +3689,9 @@ void pci_acs_init(struct pci_dev *dev)
->  int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
->  {
->  	struct pci_bus *bus = dev->bus;
-> -	struct pci_dev *bridge;
-> -	u32 cap, ctl2;
-> +	struct pci_dev *bridge = NULL;
-> +	u32 cap = 0;
-> +	u32 ctl2;
->  
->  	/*
->  	 * Per PCIe r5.0, sec 9.3.5.10, the AtomicOp Requester Enable bit
-> @@ -3714,29 +3728,29 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
->  		switch (pci_pcie_type(bridge)) {
->  		/* Ensure switch ports support AtomicOp routing */
->  		case PCI_EXP_TYPE_UPSTREAM:
-> -		case PCI_EXP_TYPE_DOWNSTREAM:
-> -			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-> -				return -EINVAL;
-> -			break;
-> -
-> -		/* Ensure root port supports all the sizes we care about */
-> -		case PCI_EXP_TYPE_ROOT_PORT:
-> -			if ((cap & cap_mask) != cap_mask)
-> -				return -EINVAL;
-> -			break;
-> -		}
-> -
-> -		/* Ensure upstream ports don't block AtomicOps on egress */
-> -		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
-> +			/* Upstream ports must not block AtomicOps on egress */
->  			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
->  						   &ctl2);
->  			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
->  				return -EINVAL;
-> +			fallthrough;
-> +		/* All switch ports need to route AtomicOps */
-> +		case PCI_EXP_TYPE_DOWNSTREAM:
-> +			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-> +				return -EINVAL;
-> +			break;
->  		}
-> -
->  		bus = bus->parent;
->  	}
->  
-> +	/*
-> +	 * Finally, last bridge must be root port and support requested sizes
-> +	 * or firmware asserts support
-> +	 */
-> +	if (!(pci_is_atomicops_capable_rp(bridge, cap, cap_mask) ||
-> +	      pcibios_connects_to_atomicops_capable_rc(dev, cap_mask)))
-> +		return -EINVAL;
 
-Sashiko says:
+--=-StOfTySkQjzSGJ9fd77x
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  Since the generic weak implementation of
-  pcibios_connects_to_atomicops_capable_rc() unconditionally returns
-  true, the logical OR expression pci_is_atomicops_capable_rp(...) ||
-  true will always evaluate to true. This makes the entire if
-  condition evaluate to false.
+On Wed, 2026-03-25 at 18:08 +1100, NeilBrown wrote:
+> On Wed, 25 Mar 2026, Chuck Lever wrote:
+> >=20
+> > On Tue, Mar 24, 2026, at 6:13 AM, NeilBrown wrote:
+> > > From: NeilBrown <neil@brown.name>
+> > >=20
+> > > The F_GETLK fcntl can work with either read access or write access or
+> > > both.  It can query F_RDLCK and F_WRLCK locks in either case.
+> > >=20
+> > > However lockd currently treats F_GETLK similar to F_SETLK in that rea=
+d
+> > > access is required to query an F_RDLCK lock and write access is requi=
+red
+> > > to query a F_WRLCK lock.
+> > >=20
+> > > This is wrong and can cause problem - e.g.  when qemu accesses a
+> > > read-only (e.g. iso) filesystem image over NFS (though why it queries
+> > > if it can get a write lock - I don't know.  But it does, and this wor=
+ks
+> > > with local filesystems).
+> > >=20
+> > > So we need TEST requests to be handled differently.  To do this:
+> > >=20
+> > > - change nlm_do_fopen() to accept O_RDWR as a mode and in that case
+> > >   succeed if either a O_RDONLY or O_WRONLY file can be opened.
+> > > - change nlm_lookup_file() to accept a mode argument from caller,
+> > >   instead of deducing base on lock time, and pass that on to nlm_do_f=
+open()
+> > > - change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
+> > >   TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
+> > >   the same mode as before for other requests.  Also set
+> > >    lock->fl.c.flc_file to whichever file is available for TEST reques=
+ts.
+> > > - change nlmsvc_testlock() to also not calculate the mode, but to use
+> > >   whenever was stored in lock->fl.c.flc_file.
+> > >=20
+> > > Reported-by: Tj <tj.iam.tj@proton.me>
+> > > Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1128861
+> > > Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
+> > > Signed-off-by: NeilBrown <neil@brown.name>
+> >=20
+> > Hi Neil, which kernels should this fix apply to?
+> >=20
+>=20
+> v6.13 and later. So linux-6.18.y and linux-6.19.y
 
-  Because of this, it appears -EINVAL is never returned here, and any
-  standard endpoint behind a Root Port will successfully be granted
-  AtomicOps even if the Root Port lacks the capability in its
-  PCI_EXP_DEVCAP2 register.
+6.12.y is also affected since commit 4cc9b9f2bf4d was backported there
+(triggering this bug report).
 
-> +
->  	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
->  				 PCI_EXP_DEVCTL2_ATOMIC_REQ);
->  	return 0;
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 1c270f1d512301de4d462fe7e5097c32af5c6f8d..ef90604c39859ea8e61e5392d0bdaa1b0e43874b 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -692,6 +692,7 @@ void pci_set_host_bridge_release(struct pci_host_bridge *bridge,
->  				 void *release_data);
->  
->  int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge);
-> +bool pcibios_connects_to_atomicops_capable_rc(struct pci_dev *dev, u32 cap_mask);
->  
->  #define PCI_REGION_FLAG_MASK	0x0fU	/* These bits of resource flags tell us the PCI region flags */
->  
-> 
-> -- 
-> 2.51.0
-> 
+Ben.
+
+>=20
+> The Fixes: tag is actually wrong.  This bug has been present forever.
+> However a different bug that=20
+>   Commit: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
+> fixed was hiding the bug.
+>=20
+> So it should probably be marked
+>   Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
+> with an explanation.
+>=20
+> NeilBrown
+
+--=20
+Ben Hutchings
+Theory and practice are closer in theory than in practice - John Levine
+
+--=-StOfTySkQjzSGJ9fd77x
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnERZYACgkQ57/I7JWG
+EQkcsA/+P9OPKkweOPNqOeCWouseIy/CyJKqNhLGjkCMsT/c+K3UtHKmioGin2Zu
+2qKNGyPkfvdGfhlMZGcjE/0ZA6N/HD24fnNTH0p0xzcIE3U6OJ+lcaqbdOvs45y8
+wcLF/v8B4KD3HwzcxqIEty/yJjuzzvgii7xOHzeah59yhY2sElxYyZrNrxDaQ8hZ
+SeTGvVWWJEgm3zYTykG5Yu0pdCWgj2rkbJFBebRWw41fnHBbEw28zINjQRs5usaA
+40ZGQkM1F0QSOABWzuakN50XJfvs/XfKgiRAUzifeH0qaUXE2mC4Zdx+GGSwTRb8
+8l/ASuz3at8lDSNglY+E956o8zekI0TUN3jrv5ViO2dwvBfh3zIYXNHytroJNjBV
+ZiL+XpW94rWOSTvpSQd0a6W/2jbyiIy2brdqj71BbrbdpPcuoaEVOFodKqbcqmsd
+uBm6vApisOzLX5jwOUgfnYBdpj4XQh3gGgbTm6k3khLt0Ok6I7fWCJb3gHEHHFGU
+UfD185p1E1YdPXFYj8aWkKdO6RJnOIQKZ4w+s9PJDFl9h8wifCIqMOGlMIVbrWSN
+ZdU1Xs/lT6xH6NDY8z+iIJkrE6LBjO2+rS4GjqXk8I4FoFgP5BCP7TlZKnBwTczc
+XvNJ5reVXnDaFOcO9v420KZ8u2BbYjzk6f0jPe1omz9WJ9YJ82M=
+=Dg/J
+-----END PGP SIGNATURE-----
+
+--=-StOfTySkQjzSGJ9fd77x--
 
