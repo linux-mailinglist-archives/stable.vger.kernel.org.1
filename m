@@ -1,293 +1,172 @@
-Return-Path: <stable+bounces-230369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKbWFo4bxGnlwQQAu9opvQ
-	(envelope-from <stable+bounces-230369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:29:50 +0100
+	id 0Jd6O2QdxGnlwQQAu9opvQ
+	(envelope-from <stable+bounces-230370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:37:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBBA329D2D
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:29:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 766F6329F5D
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48DCD305749D
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:18:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F3BD9305E9FA
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64497402B88;
-	Wed, 25 Mar 2026 17:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046B33FE348;
+	Wed, 25 Mar 2026 17:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="U4PO+79/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mqpb1XDv"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kVT1fFB9"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D873537D6;
-	Wed, 25 Mar 2026 17:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA333E0C64;
+	Wed, 25 Mar 2026 17:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774459094; cv=none; b=tPaz1lfJ7BCd++GkiBFHAAgVgxHOuJXdcRVI+l1fspdbGPy2jlstaoio3rch1wHtaAwTZihgg8BYo2HlmOE/VPJ+fMx0EIR6LdSx/3BKDE78WqyLXLW9n/+F4nsfXEtd6GBQG5DUiv0FXjsXLnla4jrGoC3h6LYES6m2zLLjuLM=
+	t=1774459775; cv=none; b=gQeONgG5R2G+OsoN8OrI0m30o5srlqEOVmCsucrN0qPdwAA+kPdjpm6f0MTU85nwEK+CnfwFaD+nH0az7YxYL6HweX0yzBYdEe/E4Aw0Iv7SLcle9zp2Z40KkdgYRFjqQaWo1StrXgAV5hTqG49ROpQYtoIQ7zme+1vY0x4S62Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774459094; c=relaxed/simple;
-	bh=u8/+z2Bgz4Wws55sOYWKPdJx57vqhgYOwGb75l1e8t4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bCaMFRngQvlSLpQerRvOcbm/OsMHWzxfRleYOqvLkEIZQCe6N1mrLSzPX7uscuBPwESkuX8q97FfvSMgiX6Fmp9wqRRxXWrIOkCKoD/chzPqTf/PEdx3Gl9EO89WHtHIjlxgGvmEu6nF4Bn1ihLjaO1z84DVtFlB5I2k0kx3TNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=U4PO+79/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mqpb1XDv; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 920DA7A05FF;
-	Wed, 25 Mar 2026 13:18:11 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 25 Mar 2026 13:18:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774459091;
-	 x=1774545491; bh=4izl9m24J0MdH0vrTEK4+4uXMVu8bNMwm/FhZz2CVdc=; b=
-	U4PO+79/zAA0FkkU3YogSlYdJXQ1SpeONIStoMVCnxHq9wnoCMZUWoIR2YXxUSQr
-	KrjlRwBPfTQ8E/ljD3wQ8KDxYW80tOsdczBU/7RV0WyLPTZErmh3SncVS/qw5avS
-	HS5KjIjzNaw1/1Y2/c55kqr0MKQ+dxv20JI31ebPvNS9247L8X657hQFCVC4KoZU
-	QYtxPAr4Dn8EQhvvU36Cgbinho4HiSglxQpcKaEziZL1ZRyeRZCYa22JsK5MvtYj
-	tG52bMY4cZ2IGUFkA16Q6BdQv3rvatTcA7MzhZLdKttJGozJhq+cz21AWzqcf7t5
-	fBD1LQ3HEr2gTHnF6PV8lw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774459091; x=
-	1774545491; bh=4izl9m24J0MdH0vrTEK4+4uXMVu8bNMwm/FhZz2CVdc=; b=m
-	qpb1XDv6WSWP6VAE7r7zEWqiZl2OXosvVUYlycN/vYRuJpbA66870kXqi7arsDFu
-	d6+m1B5LwQHsAVxcRwTpvzoRpZJpFafrtMYm8OTi/Yn0W9IM4fh5kZ0ha1eXBEd7
-	ljd0c1BDa9/zyazTa+Jl/Ux4W/SHNZHppPIhcNexmlpnfcqcAdwloBY2s3HvasyR
-	X+siNW35RsIyuGXysNO/kHChT1r9HoWGRq9yzUcrDjX8YRECzlmQPiGEaGN6HyE3
-	vbtW6+zZC7MMFeTUeX/0vFfmTlnJWfX7fS3fm55dO3HazTE2vJhowcFqUglpaF2J
-	gCBi78Cgy2USGWyrvOgkA==
-X-ME-Sender: <xms:0xjEaR8QS7_cAtDMzaytOsQROsyFdYYRCzvvPli-E8JOxeXRfh2cOA>
-    <xme:0xjEaZaqyz8kaUICit2PBUQK4ir3Vlswf89ZaWQLJIsg2G691vKXm1RK2ulgY1906
-    Jrxdatbb6zUfO4bl4qpF7VXzpnbqVQggMwh985-eBTtHt3oUf1WEA>
-X-ME-Received: <xmr:0xjEaXqzuULEWrYkIBGozxUYZ5mjoUdkURB59c959ZvwYhFSSgco0UEW5x8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdehtdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
-    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
-    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
-    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
-    gprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihhf
-    mheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehlihhnuhigqdhsfeeltdesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhes
-    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhptghisehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgvlhhgrggrsheskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheplhhukhgrshesfihunhhnvghrrdguvgdprhgtphhtthhope
-    hksghushgthheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghlghesrhgvughhrght
-    rdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:0xjEaW1OSbEYNLFDY5M-FoNhOdGjdjZZ6XiD5xOm7eNoJfqlDN78RA>
-    <xmx:0xjEaXnakkrmYKDrH61B0YSaeNVXhH0cAgnDJtYHCGZKQzjaA6J89A>
-    <xmx:0xjEaab6eaS0EWAxfUrDhJ8VuZW6qsx0oPD4egC76VsxyeMTOsGzRQ>
-    <xmx:0xjEaR9wpIZphF155loKWCfOBnl-VXxigrE9tqQQGr2jNdHCN8GEOg>
-    <xmx:0xjEafCdy3P-Cw5s71TDZYvrCoeZJ6VhxGEoqglvfFwPNhAkGGffbX0c>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Mar 2026 13:18:10 -0400 (EDT)
-Date: Wed, 25 Mar 2026 11:18:08 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
- kbusch@kernel.org, clg@redhat.com, stable@vger.kernel.org,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v11 7/9] vfio-pci/zdev: Add a device feature for error
- information
-Message-ID: <20260325111808.263aef2c@shazbot.org>
-In-Reply-To: <20260316191544.2279-8-alifm@linux.ibm.com>
-References: <20260316191544.2279-1-alifm@linux.ibm.com>
-	<20260316191544.2279-8-alifm@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1774459775; c=relaxed/simple;
+	bh=q6eWBosAeDItDiHUT1TERXLrvVldKxWmQvT5h1zzdjg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XTEmjXTsKxgXqZF6/Te3cmKHFHUeckOkyyS06nX8kJ1y3mNJIjWYMrcrHkK/g0ahXclTzxcHGocwzuoPsFmBN41j9rMmKw4SpZJJnvaK/DH2uzkwkhZDAMPOZRLWpwcAi6LNU4ET+7zu8Ivpynb3mNXjrA8q7FbCvMug5qpTro8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kVT1fFB9; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 90CCA2444;
+	Wed, 25 Mar 2026 10:29:27 -0700 (PDT)
+Received: from [10.1.26.165] (XHFQ2J9959.cambridge.arm.com [10.1.26.165])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DBB1D3F836;
+	Wed, 25 Mar 2026 10:29:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774459773; bh=q6eWBosAeDItDiHUT1TERXLrvVldKxWmQvT5h1zzdjg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kVT1fFB9AZMrcCSWy1U6kIZWPU+dsS9jxoN4CIZPyEpXOCoAF6sIhEyvYHFo3WGNR
+	 qd5xg84fI3shijg41iB5Vac8p4fbm62OtMv9hWbyQPG6nP00wlg/fXIydzNWD9FORC
+	 3gFA8+2rWeg5DfVXUnuS1+EjsnS9DXDKN9wDBS0o=
+Message-ID: <47d033cc-33dd-4fb2-9e8a-bc5762db6b6a@arm.com>
+Date: Wed, 25 Mar 2026 17:29:30 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] arm64: mm: Fix rodata=full block mapping support
+ for realm guests
+Content-Language: en-GB
+To: Yang Shi <yang@os.amperecomputing.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Jinjiang Tu <tujinjiang@huawei.com>, Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260323130317.1737522-1-ryan.roberts@arm.com>
+ <20260323130317.1737522-2-ryan.roberts@arm.com>
+ <a3766dfc-06ed-4cdc-9c55-0dcc3638746e@os.amperecomputing.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <a3766dfc-06ed-4cdc-9c55-0dcc3638746e@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-230369-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230370-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,shazbot.org:dkim,shazbot.org:mid]
-X-Rspamd-Queue-Id: DFBBA329D2D
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:dkim,arm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 766F6329F5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 16 Mar 2026 12:15:42 -0700
-Farhan Ali <alifm@linux.ibm.com> wrote:
-
-> For zPCI devices, we have platform specific error information. The platform
-> firmware provides this error information to the operating system in an
-> architecture specific mechanism. To enable recovery from userspace for
-> these devices, we want to expose this error information to userspace. Add a
-> new device feature to expose this information.
+On 23/03/2026 21:34, Yang Shi wrote:
 > 
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c |  2 ++
->  drivers/vfio/pci/vfio_pci_priv.h |  9 ++++++++
->  drivers/vfio/pci/vfio_pci_zdev.c | 36 ++++++++++++++++++++++++++++++++
->  include/uapi/linux/vfio.h        | 17 +++++++++++++++
->  4 files changed, 64 insertions(+)
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index d43745fe4c84..bbdb625e35ef 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1534,6 +1534,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
->  	case VFIO_DEVICE_FEATURE_DMA_BUF:
->  		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-> +	case VFIO_DEVICE_FEATURE_ZPCI_ERROR:
-> +		return vfio_pci_zdev_feature_err(device, flags, arg, argsz);
->  	default:
->  		return -ENOTTY;
->  	}
-> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-> index 27ac280f00b9..eed69926d8a1 100644
-> --- a/drivers/vfio/pci/vfio_pci_priv.h
-> +++ b/drivers/vfio/pci/vfio_pci_priv.h
-> @@ -89,6 +89,8 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
->  				struct vfio_info_cap *caps);
->  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev);
->  void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev);
-> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
-> +			      void __user *arg, size_t argsz);
->  #else
->  static inline int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
->  					      struct vfio_info_cap *caps)
-> @@ -103,6 +105,13 @@ static inline int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
->  
->  static inline void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
->  {}
-> +
-> +static inline int vfio_pci_zdev_feature_err(struct vfio_device *device,
-> +					    u32 flags, void __user *arg,
-> +					    size_t argsz)
-> +{
-> +	return -ENODEV;
+> On 3/23/26 6:03 AM, Ryan Roberts wrote:
+>> Commit a166563e7ec37 ("arm64: mm: support large block mapping when
+>> rodata=full") enabled the linear map to be mapped by block/cont while
+>> still allowing granular permission changes on BBML2_NOABORT systems by
+>> lazily splitting the live mappings. This mechanism was intended to be
+>> usable by realm guests since they need to dynamically share dma buffers
+>> with the host by "decrypting" them - which for Arm CCA, means marking
+>> them as shared in the page tables.
+>>
+>> However, it turns out that the mechanism was failing for realm guests
+>> because realms need to share their dma buffers (via
+>> __set_memory_enc_dec()) much earlier during boot than
+>> split_kernel_leaf_mapping() was able to handle. The report linked below
+>> showed that GIC's ITS was one such user. But during the investigation I
+>> found other callsites that could not meet the
+>> split_kernel_leaf_mapping() constraints.
+>>
+>> The problem is that we block map the linear map based on the boot CPU
+>> supporting BBML2_NOABORT, then check that all the other CPUs support it
+>> too when finalizing the caps. If they don't, then we stop_machine() and
+>> split to ptes. For safety, split_kernel_leaf_mapping() previously
+>> wouldn't permit splitting until after the caps were finalized. That
+>> ensured that if any secondary cpus were running that didn't support
+>> BBML2_NOABORT, we wouldn't risk breaking them.
+>>
+>> I've fix this problem by reducing the black-out window where we refuse
+>> to split; there are now 2 windows. The first is from T0 until the page
+>> allocator is inititialized. Splitting allocates memory for the page
+>> allocator so it must be in use. The second covers the period between
+>> starting to online the secondary cpus until the system caps are
+>> finalized (this is a very small window).
+>>
+>> All of the problematic callers are calling __set_memory_enc_dec() before
+>> the secondary cpus come online, so this solves the problem. However, one
+>> of these callers, swiotlb_update_mem_attributes(), was trying to split
+>> before the page allocator was initialized. So I have moved this call
+>> from arch_mm_preinit() to mem_init(), which solves the ordering issue.
+>>
+>> I've added warnings and return an error if any attempt is made to split
+>> in the black-out windows.
+>>
+>> Note there are other issues which prevent booting all the way to user
+>> space, which will be fixed in subsequent patches.
+> 
+> Hi Ryan,
+> 
+> Thanks for putting everything to together to have the patches so quickly. It
+> basically looks good to me. However, I'm thinking about whether we should have
+> split_kernel_leaf_mapping() call for different memory allocators in different
+> stages. If buddy has been initialized, it can call page allocator, otherwise,
+> for example, in early boot stage, it can call memblock allocator. So
+> split_kernel_leaf_mapping() should be able to be called anytime and we don't
+> have to rely on the boot order of subsystems.
 
--ENOTTY
+I considered that, but ultimately we would just be adding dead code. I've added
+a warning that will catch this usage. So I'd prefer to leave it as is for now
+and only add this functionality if we identify a need.
 
-> +}
->  #endif
->  
->  static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
-> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
-> index 2be37eab9279..d2748dd67c55 100644
-> --- a/drivers/vfio/pci/vfio_pci_zdev.c
-> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
-> @@ -141,6 +141,42 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
->  	return ret;
->  }
->  
-> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
-> +			      void __user *arg, size_t argsz)
-> +{
-> +	struct vfio_device_feature_zpci_err err;
-> +	struct vfio_pci_core_device *vdev;
-> +	struct zpci_dev *zdev;
-> +	int head = 0;
-> +	int ret;
-> +
-> +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> +	zdev = to_zpci(vdev->pdev);
-> +	if (!zdev)
-> +		return -ENODEV;
-> +
-> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
-> +				 sizeof(err));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	mutex_lock(&zdev->pending_errs_lock);
-> +	if (zdev->pending_errs.count) {
-> +		head = zdev->pending_errs.head % ZPCI_ERR_PENDING_MAX;
-> +		err.pec = zdev->pending_errs.err[head].pec;
-> +		zdev->pending_errs.head++;
-> +		zdev->pending_errs.count--;
-> +		err.pending_errors = zdev->pending_errs.count;
-> +	}
-> +	mutex_unlock(&zdev->pending_errs_lock);
-> +
-> +	err.version = 1;
+Thanks,
+Ryan
 
-Returns uninitialized kernel data for case where there are no pending
-errors, initialize err with = {};
 
-> +	if (copy_to_user(arg, &err, sizeof(err)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
->  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
->  {
->  	struct zpci_dev *zdev = to_zpci(vdev->pdev);
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index bb7b89330d35..21b1473e4779 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -1510,6 +1510,23 @@ struct vfio_device_feature_dma_buf {
->  	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
->  };
->  
-> +/**
-> + * VFIO_DEVICE_FEATURE_ZPCI_ERROR feature provides PCI error information to
-> + * userspace for vfio-pci devices on s390x. On s390x PCI error recovery involves
-> + * platform firmware and notification to operating system is done by
-> + * architecture specific mechanism.  Exposing this information to userspace
-> + * allows userspace to take appropriate actions to handle an error on the
-> + * device.
-
-This should include some explicit discussion of how pending_errors in
-interpreted, ie. pending _additional_ errors, userspace should read
-until zero.  Thanks,
-
-Alex
-
-> + */
-> +
-> +struct vfio_device_feature_zpci_err {
-> +	__u8 version;
-> +	__u8 pending_errors;
-> +	__u16 pec;
-> +};
-> +
-> +#define VFIO_DEVICE_FEATURE_ZPCI_ERROR 12
-> +
->  /* -------- API for Type1 VFIO IOMMU -------- */
->  
->  /**
-
+> 
+> Thanks,
+> Yang
+> 
 
