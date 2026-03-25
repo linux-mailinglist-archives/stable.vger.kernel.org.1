@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-230335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wI9/IYDiw2lvugQAu9opvQ
-	(envelope-from <stable+bounces-230335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:26:24 +0100
+	id iIOALYziw2lvugQAu9opvQ
+	(envelope-from <stable+bounces-230336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:26:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5E4325B5A
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:26:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA721325B79
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BB62309D96B
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:59:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 22D5D30AF11A
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEF23D6CC1;
-	Wed, 25 Mar 2026 12:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810523D88F1;
+	Wed, 25 Mar 2026 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcPeT11Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdWcwelW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519CA3CF678;
-	Wed, 25 Mar 2026 12:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F773D811D;
+	Wed, 25 Mar 2026 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774443562; cv=none; b=tEHjzGYVUhasJI/AvcBgmCVTo8pfpyAkPuG50/1z5jCdHW/AnEzA0gN00js5Rd8Frj63JQ/p35m7st8BpGkp7zNlagfxGD18gqQBAx3EZqG83LvYEtobpxblp+yM0Fo178QSa6ZKmJVDRB123rWMgXjDz8RKMi7xP5TSrZsc32s=
+	t=1774443568; cv=none; b=L22i+PEIdav3ohHX8YX/SPXsSP0zNGDQkQwQ7lH+l+vW5M7HEgoGXf+ZG2DxcpJlF3JGEBZSIshNJ9+cwB4qrPK+i2U0nSIizJ8rx9Bo9scYB5dnkpUmrDh90Df/hXhkWLmS5RZ1rLdLgWY+lXHM0JEFCJi502LL1a+9aMtKfgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774443562; c=relaxed/simple;
-	bh=raLZxnl1II5SLYJD4/BqT67TZIlLnyBBrtJ2CUc+s7w=;
+	s=arc-20240116; t=1774443568; c=relaxed/simple;
+	bh=gjjU1ngJrsBsWz/zYYHQdcgeaonPE3QitvQLDpViCLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFDeVw615I+71AHqscZj5/GAJLkRYvEDHuDKXEITzAJsG+pNQHl/+Nrf5MuRxWj2xXsOXeyYVrWqlLo7FBDQ8b1gg/SlND06QKXvZbsEhWkm+rFlaL20wnpAoGGd08gQ+eOTpvU2Cdu5UAIDplN92aYhwQ80u6oROvytJNIYWHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcPeT11Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D180C4CEF7;
-	Wed, 25 Mar 2026 12:59:18 +0000 (UTC)
+	 MIME-Version; b=HQaYyii5mQ7Zz1ain9Ybd8FdbQoRhsGKnghajcx6OD8e2elxN7M+19BmxWM0NiZmTkmlUZXlJagfalOo9+jFkB9Dt1/JbYd0bh/trNo11Cg+4BLCKV62hTha4s/Dgl7wcWV+bktGTAuIvFCCdC2YC6sIn7DLqPu7rIk+0K26VEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdWcwelW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7950C4CEF7;
+	Wed, 25 Mar 2026 12:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774443562;
-	bh=raLZxnl1II5SLYJD4/BqT67TZIlLnyBBrtJ2CUc+s7w=;
+	s=k20201202; t=1774443567;
+	bh=gjjU1ngJrsBsWz/zYYHQdcgeaonPE3QitvQLDpViCLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcPeT11ZvCorqCytQ1dSe9jUmeDixlRF3OgARuTZPXVEs/q1u42veAh8/Uz+E5m+S
-	 YjZ9dl1nionn8hCZBUlTvckS5grnmU1FG5EYqqx5f25yQmyeHQZyGVPGxOEfEVB+zc
-	 sYtmSc9GO7Er4DeTjvsJniC6J5OIap3FB3OVh6j5F6BvS1BedtAWZWBMvPfl14gath
-	 8rc6rmvmNm6Q3FZVfNlPIeRINMvbnqjw31+bqZbFdJ+9v3tzvOpAVo9DSCt/Hno/jr
-	 DYVzzfYfpwDYT9qkvSADDwsvwtj2Z+YqH/n7wAbKd0C9h8ek1fa8hlARh+si88q7SR
-	 oVJwxynOItxig==
+	b=PdWcwelW+QK7dVLCyHx6JVNsCRX8jtv5yvq6qx8ZXJf0/WRrQJQgwyOqj+6KLhIE0
+	 paCdlbmKV3kl5y3XZPnW0s9TWP9CNAjLT2+OSigBQAyIGDVHcfbKUOrfoENZR8Epq3
+	 X2iaGP9C0lw2G98dJiI92v0mRzT3/yYrZ1xxyy7UicoxzJEKVHdKj5jPhboFZ/nGla
+	 NSyksvtk27n3Wd2q9fjgttKmkhSClM84XU9j58y34BEiLblJbmoNbGoUmEN+zG6m4L
+	 g3LKMdYSpXfmnmSZRRMYWVYoeIU9XPrab4c3juc0TQmeJVigW7sG6H3+JhFEs6b2J3
+	 Zg/NHSUz19BhQ==
 From: Benno Lossin <lossin@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -54,15 +54,15 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	Danilo Krummrich <dakr@kernel.org>
 Cc: Benno Lossin <lossin@kernel.org>,
+	Tim Chirananthavat <theemathas@gmail.com>,
 	stable@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.12.y 2/3] rust: pin-init: internal: init: document load-bearing fact of field accessors
-Date: Wed, 25 Mar 2026 13:58:15 +0100
-Message-ID: <20260325125816.945578-3-lossin@kernel.org>
+Subject: [PATCH 6.12.y 3/3] rust: pin-init: replace shadowed return token by `unsafe`-to-create token
+Date: Wed, 25 Mar 2026 13:58:16 +0100
+Message-ID: <20260325125816.945578-4-lossin@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260325125816.945578-2-lossin@kernel.org>
 References: <20260325125816.945578-2-lossin@kernel.org>
@@ -75,112 +75,256 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,proton.me,google.com,umich.edu,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-230335-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230336-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,proton.me,google.com,umich.edu];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,zulipchat.com:url,msgid.link:url,garyguo.net:email]
-X-Rspamd-Queue-Id: 1F5E4325B5A
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,garyguo.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: BA721325B79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[ Upstream commit 580cc37b1de4fcd9997c48d7080e744533f09f36]
+[ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
 
-The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
-the `init!` macro require the passed pointer to be aligned. This fact is
-ensured by the creation of field accessors to previously initialized
-fields.
+We use a unit struct `__InitOk` in the closure generated by the
+initializer macros as the return value. We shadow it by creating a
+struct with the same name again inside of the closure, preventing early
+returns of `Ok` in the initializer (before all fields have been
+initialized).
 
-Since we missed this very important fact from the beginning [1],
-document it in the code.
+In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
+this solution no longer works [1]. The shadowed struct can be named
+through type inference. In addition, there is an RFC proposing to add
+the feature of path inference to Rust, which would similarly allow [2].
 
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
-Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
-Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust: pin-init: add references to previously initialized fields
-Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
+Thus remove the shadowed token and replace it with an `unsafe` to create
+token.
+
+The reason we initially used the shadowing solution was because an
+alternative solution used a builder pattern. Gary writes [3]:
+
+    In the early builder-pattern based InitOk, having a single InitOk
+    type for token is unsound because one can launder an InitOk token
+    used for one place to another initializer. I used a branded lifetime
+    solution, and then you figured out that using a shadowed type would
+    work better because nobody could construct it at all.
+
+The laundering issue does not apply to the approach we ended up with
+today.
+
+With this change, the example by Tim Chirananthavat in [1] no longer
+compiles and results in this error:
+
+    error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
+      --> src/main.rs:26:17
+       |
+    26 |                 InferredType {}
+       |                 ^^^^^^^^^^^^
+       |
+       = note: private field `0` that was not provided
+    help: you might have meant to use the `new` associated function
+       |
+    26 -                 InferredType {}
+    26 +                 InferredType::new()
+       |
+
+Applying the suggestion of using the `::new()` function, results in
+another expected error:
+
+    error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
+      --> src/main.rs:26:17
+       |
+    26 |                 InferredType::new()
+       |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
+       |
+       = note: consult the function's documentation for information on how to avoid undefined behavior
+
+Reported-by: Tim Chirananthavat <theemathas@gmail.com>
+Link: https://github.com/rust-lang/rust/issues/153535 [1]
+Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
+Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
+Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
+Cc: stable@vger.kernel.org
 Signed-off-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260302140424.4097655-2-lossin@kernel.org
-[ Updated Cc: stable@ tags as discussed. - Miguel ]
+Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
+[ Added period as mentioned. - Miguel ]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Moved changes to the declarative macro, because 6.19.y and earlier do not
-  have `syn`. Also duplicated the comment for all field accessor creations.
-  - Benno ]
+[ Moved to declarative macro, because 6.19.y and earlier do not have
+  `syn`. - Benno ]
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
- rust/kernel/init/macros.rs | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ rust/kernel/init/__internal.rs | 28 ++++++++++++--
+ rust/kernel/init/macros.rs     | 68 +++++++++++++---------------------
+ 2 files changed, 49 insertions(+), 47 deletions(-)
 
+diff --git a/rust/kernel/init/__internal.rs b/rust/kernel/init/__internal.rs
+index 74329cc3262c..aa412d71a845 100644
+--- a/rust/kernel/init/__internal.rs
++++ b/rust/kernel/init/__internal.rs
+@@ -45,6 +45,24 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+     }
+ }
+ 
++/// Token type to signify successful initialization.
++///
++/// Can only be constructed via the unsafe [`Self::new`] function. The initializer macros use this
++/// token type to prevent returning `Ok` from an initializer without initializing all fields.
++pub struct InitOk(());
++
++impl InitOk {
++    /// Creates a new token.
++    ///
++    /// # Safety
++    ///
++    /// This function may only be called from the `__init_internal!` macro in `./macros.rs`.
++    #[inline(always)]
++    pub unsafe fn new() -> Self {
++        Self(())
++    }
++}
++
+ /// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
+ /// the pin projections within the initializers.
+ ///
+@@ -67,9 +85,10 @@ pub unsafe trait PinData: Copy {
+     type Datee: ?Sized + HasPinData;
+ 
+     /// Type inference helper function.
+-    fn make_closure<F, O, E>(self, f: F) -> F
++    #[inline(always)]
++    fn make_closure<F, E>(self, f: F) -> F
+     where
+-        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
++        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
+     {
+         f
+     }
+@@ -97,9 +116,10 @@ pub unsafe trait InitData: Copy {
+     type Datee: ?Sized + HasInitData;
+ 
+     /// Type inference helper function.
+-    fn make_closure<F, O, E>(self, f: F) -> F
++    #[inline(always)]
++    fn make_closure<F, E>(self, f: F) -> F
+     where
+-        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
++        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
+     {
+         f
+     }
 diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index 54c0b255a9ce..e477e4de817b 100644
+index e477e4de817b..b5deca75a9d0 100644
 --- a/rust/kernel/init/macros.rs
 +++ b/rust/kernel/init/macros.rs
-@@ -1231,6 +1231,10 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-         // return when an error/panic occurs.
-         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
-         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         // SAFETY:
-         // - the project function does the correct field projection,
-         // - the field has been initialized,
-@@ -1270,6 +1274,10 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-         // return when an error/panic occurs.
-         unsafe { $crate::init::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
- 
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         // SAFETY:
-         // - the field is not structurally pinned, since the line above must compile,
-         // - the field has been initialized,
-@@ -1310,6 +1318,10 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-         }
- 
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         #[allow(unused_variables, unused_assignments)]
-         // SAFETY:
-         // - the field is not structurally pinned, since no `use_data` was required to create this
-@@ -1350,6 +1362,10 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-             // SAFETY: The memory at `slot` is uninitialized.
-             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-         }
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         // SAFETY:
-         // - the project function does the correct field projection,
-         // - the field has been initialized,
+@@ -1141,10 +1141,6 @@ macro_rules! __init_internal {
+         @construct_closure($construct_closure:ident),
+         @zeroed($($init_zeroed:expr)?),
+     ) => {{
+-        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
+-        // type and shadow it later when we insert the arbitrary user code. That way there will be
+-        // no possibility of returning without `unsafe`.
+-        struct __InitOk;
+         // Get the data about fields from the supplied type.
+         //
+         // SAFETY: TODO.
+@@ -1157,47 +1153,33 @@ macro_rules! __init_internal {
+             ::kernel::macros::paste!($t::$get_data())
+         };
+         // Ensure that `data` really is of type `$data` and help with type inference:
+-        let init = $crate::init::__internal::$data::make_closure::<_, __InitOk, $err>(
++        let init = $crate::init::__internal::$data::make_closure::<_, $err>(
+             data,
+             move |slot| {
+-                {
+-                    // Shadow the structure so it cannot be used to return early.
+-                    struct __InitOk;
+-                    // If `$init_zeroed` is present we should zero the slot now and not emit an
+-                    // error when fields are missing (since they will be zeroed). We also have to
+-                    // check that the type actually implements `Zeroable`.
+-                    $({
+-                        fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+-                        // Ensure that the struct is indeed `Zeroable`.
+-                        assert_zeroable(slot);
+-                        // SAFETY: The type implements `Zeroable` by the check above.
+-                        unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
+-                        $init_zeroed // This will be `()` if set.
+-                    })?
+-                    // Create the `this` so it can be referenced by the user inside of the
+-                    // expressions creating the individual fields.
+-                    $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
+-                    // Initialize every field.
+-                    $crate::__init_internal!(init_slot($($use_data)?):
+-                        @data(data),
+-                        @slot(slot),
+-                        @guards(),
+-                        @munch_fields($($fields)*,),
+-                    );
+-                    // We use unreachable code to ensure that all fields have been mentioned exactly
+-                    // once, this struct initializer will still be type-checked and complain with a
+-                    // very natural error message if a field is forgotten/mentioned more than once.
+-                    #[allow(unreachable_code, clippy::diverging_sub_expression)]
+-                    let _ = || {
+-                        $crate::__init_internal!(make_initializer:
+-                            @slot(slot),
+-                            @type_name($t),
+-                            @munch_fields($($fields)*,),
+-                            @acc(),
+-                        );
+-                    };
+-                }
+-                Ok(__InitOk)
++                // If `$init_zeroed` is present we should zero the slot now and not emit an
++                // error when fields are missing (since they will be zeroed). We also have to
++                // check that the type actually implements `Zeroable`.
++                $({
++                    fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
++                    // Ensure that the struct is indeed `Zeroable`.
++                    assert_zeroable(slot);
++                    // SAFETY: The type implements `Zeroable` by the check above.
++                    unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
++                    $init_zeroed // This will be `()` if set.
++                })?
++                // Create the `this` so it can be referenced by the user inside of the
++                // expressions creating the individual fields.
++                $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
++                // Initialize every field.
++                $crate::__init_internal!(init_slot($($use_data)?):
++                    @data(data),
++                    @slot(slot),
++                    @type_name($t),
++                    @munch_fields($($fields)*,),
++                    @acc(),
++                );
++                // SAFETY: we are the `__init_internal!` macro that is allowed to call this.
++                Ok(unsafe { $crate::init::__internal::InitOk::new() })
+             }
+         );
+         let init = move |slot| -> ::core::result::Result<(), $err> {
 -- 
 2.53.0
 
