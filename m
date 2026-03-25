@@ -1,132 +1,221 @@
-Return-Path: <stable+bounces-230355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qL9DDl//w2lXvQQAu9opvQ
-	(envelope-from <stable+bounces-230355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 16:29:35 +0100
+	id GClOEVYIxGk+vgQAu9opvQ
+	(envelope-from <stable+bounces-230356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:07:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96C7327FBC
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 16:29:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC58B328B21
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38C1133BD406
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:18:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 258F13366824
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 15:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730513DB64B;
-	Wed, 25 Mar 2026 15:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFD5238166;
+	Wed, 25 Mar 2026 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zwxA57Sc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PuXSjlqy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRdmiY+g"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33B73D523E;
-	Wed, 25 Mar 2026 15:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5B23A75B2;
+	Wed, 25 Mar 2026 15:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774451835; cv=none; b=EuBfqESAKN6qo1q0qILIcy2zmnsLiUwsuHCgtsFbodDOhpfDMqPM8fekWaLjTdN+WESICZF0jJqHX87RuQbm3He9sbZj2bG4UK1ZRPw1KPUG97GVX0HPFaZj+ZLVDkCcTNopMv/c9vJEdVGhvT6qKzqN2KME8sKzGkvj7h8Gsl4=
+	t=1774452140; cv=none; b=GfJNnj/VOXaKnjFbuijXDnse2akunZ1H85UlDoQIQ+M4txi8i8qgpYgZuZvxut+GeYuKFezX3scPSZSJ3qb1P381rQ9FBAeFOCyiXXhRYt9eZYhYgYEtF38aXJ85PUKM+h/Iv7cUAMuzeUgXUo6LtxllzqQzvfGqb6tX2eidcOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774451835; c=relaxed/simple;
-	bh=GEVodloLR7Mb7HYHhfdt+IrjJ27gzgcZUBO6PGtAqNs=;
+	s=arc-20240116; t=1774452140; c=relaxed/simple;
+	bh=K70/iUlpRZAOKn0Fz5AcQZ11ZiymDqiF6xc5xts1zDo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B4KLK3qGEa9fZMhLI7qneM6dNot3tOVGwqGWZgk1Rsjw8spklaB3qUo4N6r8wL9grqsn05pMJQ8ey+vrbDTg57d+IK0C9tjNVVPqvfRe9ZoUzO9DG6TbfPWVchpBWNeDEM4jQdnJ0db2HMA5fLUfRUZ2eUZQKfjdfbIyKqjLXcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zwxA57Sc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PuXSjlqy; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 25 Mar 2026 16:17:10 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1774451831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6V1FW5uH5af3L4LieaOmbNNe9Ykt11ITVEbrhLfFPDQ=;
-	b=zwxA57ScDtzY3CKqnBtWA76MqEkrptDQmbcZLnCODqjoNwO0Qya0Do3WphxVjqHgMaP4Un
-	GdosbmER3x91EE7rS6vUMRk6/l/00wSYixSfv0tKAkNtBqLqRKh9PaBSJ3q8KnZFqHsHIf
-	eywQLBmxVbkBVC/oajNe6ZltGzgVPqVSs6rf1JrWTRDwJZ4EPAbXCm+FGkYhoah3atZuo7
-	Zfrn3fNDizX3svJnCLxm80+ZK/qmrW8q7lwvgtGwc84PxG5ZNpznWeTBWYZTyiWd/RUR1Z
-	oiUU0uP4TQYM2WFNcG5S0R3T50kb+J2klb/oTWJBi5lks/q0kH6TdCtVrgyOWQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1774451831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6V1FW5uH5af3L4LieaOmbNNe9Ykt11ITVEbrhLfFPDQ=;
-	b=PuXSjlqymhjFUocAdGE4TX+9F1WM4ccsUS7A09s68i3mVa6HBTsPJOoM11FlPhda99EAzC
-	RdV2l8QooIc1JZDA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Janne Grunau <j@jannau.net>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Ahmad Fatoum <a.fatoum@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Simon Glass <sjg@chromium.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] kbuild: modules-cpio-pkg: Respect INSTALL_MOD_PATH
-Message-ID: <20260325161613-ee5a9561-af20-4d0d-99b5-2b1207b4c5ec@linutronix.de>
-References: <20260325-kbuild-modules-cpio-pkg-usr-merge-v2-1-339ac87d82ea@jannau.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tFyMzg83HZRYYLGqG1Z2b6Tp8Wa33KAYP9qxNChylYa9Kq9+8loYsPdIDk1BaUDCT2uW2mzks9RWTtdKUCAW3X03uuZY08no3wt+702FAa1sOp2VHnL0DLQh1VhdXSVk7S8/fMh9Oh4RLri0U7iSeD6RftLg7X/8XjYTmeLNEyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRdmiY+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2871DC4CEF7;
+	Wed, 25 Mar 2026 15:22:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774452140;
+	bh=K70/iUlpRZAOKn0Fz5AcQZ11ZiymDqiF6xc5xts1zDo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iRdmiY+gVs/BAYlfVZ+bRRGKClVEZtzaMQDThHS6TzUuh0ewVIoBidmiThoTC3hSJ
+	 CnFyvh6Z6AmXkJrsnD40gFQ0eh5S0pOJ+7gXqKavMV/hETMixTrTnzR21+47eqtxyo
+	 iTyuX8ebexWhlEiyLEtwP0MSuIGbGSk1+TFXzwNsXIbrKwUJaTCqofTfWryGr6fvLK
+	 pjUFokjmmP2AV9x2oVQUhWbAJcp/cFoCKZILqWIIhPcUti+YkXEsdhUlAFgGL/LZtT
+	 i6VjLQ5w1DmL5NP2Zl9+Y14EBT5im4vSy7/IMjFw0UJdfsJ6eEd89x9W3g0M4cUiNh
+	 hYNTOIoGAhoTA==
+Date: Wed, 25 Mar 2026 08:22:19 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Hans Holmberg <hans.holmberg@wdc.com>
+Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <david@fromorbit.com>,
+	Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] xfs: start gc on zonegc_low_space attribute updates
+Message-ID: <20260325152219.GS6223@frogsfrogsfrogs>
+References: <20260325124312.26349-1-hans.holmberg@wdc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260325-kbuild-modules-cpio-pkg-usr-merge-v2-1-339ac87d82ea@jannau.net>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <20260325124312.26349-1-hans.holmberg@wdc.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230355-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230356-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,systemd.io:url,chromium.org:email,jannau.net:email,linutronix.de:dkim,linutronix.de:email,linutronix.de:mid]
-X-Rspamd-Queue-Id: B96C7327FBC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wdc.com:email]
+X-Rspamd-Queue-Id: BC58B328B21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 03:57:25PM +0100, Janne Grunau wrote:
-> The modules-cpio-pkg target added in commit 2a9c8c0b59d3 ("kbuild: add
-> target to build a cpio containing modules") is incompatible with
-> initramfs with merged /lib and /usr/lib directories [1]. "/lib" cannot
-> be a link and directory at the same time.
-> Respect a non-empty INSTALL_MOD_PATH in the modules-cpio-pkg target so
-> that `make INSTALL_MOD_PATH=/usr modules-cpio-pkg` results in the same
-> module install location as `make INSTALL_MOD_PATH=/usr modules_install`.
+On Wed, Mar 25, 2026 at 01:43:12PM +0100, Hans Holmberg wrote:
+> Start gc if the agressiveness of zone garbage collection is changed
+> by the user (if the file system is not read only).
 > 
-> Tested with Fedora distribution initramfs produced by dracut.
+> Without this change, the new setting will not be taken into account
+> until the gc thread is woken up by e.g. a write.
 > 
-> Link: https://systemd.io/THE_CASE_FOR_THE_USR_MERGE/ [1]
-> Fixes: 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Simon Glass <sjg@chromium.org>
-> Signed-off-by: Janne Grunau <j@jannau.net>
+> Cc: <stable@vger.kernel.org> # v6.15
+> Fixes: 845abeb1f06a8a ("xfs: add tunable threshold parameter for triggering zone GC")
+> Signed-off-by: Hans Holmberg <hans.holmberg@wdc.com>
+> ---
+> 
+> v2:
+> - Added a new helper to wake up the gc thread in stead of unparking it,
+>   which is required to make this work properly.
+> - Added protection against races with unmounts as sysfs gets torn down
+>   after the zone info struct is freed. This also avoids unneded
+>   wakeups during remount.
+> - Added fixes and stable cc tags as provided by Darrick.
+> 
+> v1: https://lore.kernel.org/linux-xfs/20260320130256.35225-1-hans.holmberg@wdc.com/
+> 
+>  fs/xfs/xfs_sysfs.c      |  7 ++++++-
+>  fs/xfs/xfs_zone_alloc.h |  4 ++++
+>  fs/xfs/xfs_zone_gc.c    | 17 +++++++++++++++++
+>  3 files changed, 27 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/xfs/xfs_sysfs.c b/fs/xfs/xfs_sysfs.c
+> index 6c7909838234..4527119b2961 100644
+> --- a/fs/xfs/xfs_sysfs.c
+> +++ b/fs/xfs/xfs_sysfs.c
+> @@ -14,6 +14,7 @@
+>  #include "xfs_log_priv.h"
+>  #include "xfs_mount.h"
+>  #include "xfs_zones.h"
+> +#include "xfs_zone_alloc.h"
+>  
+>  struct xfs_sysfs_attr {
+>  	struct attribute attr;
+> @@ -724,6 +725,7 @@ zonegc_low_space_store(
+>  	const char		*buf,
+>  	size_t			count)
+>  {
+> +	struct xfs_mount	*mp = zoned_to_mp(kobj);
+>  	int			ret;
+>  	unsigned int		val;
+>  
+> @@ -734,7 +736,10 @@ zonegc_low_space_store(
+>  	if (val > 100)
+>  		return -EINVAL;
+>  
+> -	zoned_to_mp(kobj)->m_zonegc_low_space = val;
+> +	if (mp->m_zonegc_low_space != val) {
+> +		mp->m_zonegc_low_space = val;
+> +		xfs_zone_gc_wakeup(mp);
+> +	}
+>  
+>  	return count;
+>  }
+> diff --git a/fs/xfs/xfs_zone_alloc.h b/fs/xfs/xfs_zone_alloc.h
+> index 4db02816d0fd..8b2ef98c81ef 100644
+> --- a/fs/xfs/xfs_zone_alloc.h
+> +++ b/fs/xfs/xfs_zone_alloc.h
+> @@ -51,6 +51,7 @@ int xfs_mount_zones(struct xfs_mount *mp);
+>  void xfs_unmount_zones(struct xfs_mount *mp);
+>  void xfs_zone_gc_start(struct xfs_mount *mp);
+>  void xfs_zone_gc_stop(struct xfs_mount *mp);
+> +void xfs_zone_gc_wakeup(struct xfs_mount *mp);
+>  #else
+>  static inline int xfs_mount_zones(struct xfs_mount *mp)
+>  {
+> @@ -65,6 +66,9 @@ static inline void xfs_zone_gc_start(struct xfs_mount *mp)
+>  static inline void xfs_zone_gc_stop(struct xfs_mount *mp)
+>  {
+>  }
+> +static inline void xfs_zone_gc_wakeup(struct xfs_mount *mp)
+> +{
+> +}
+>  #endif /* CONFIG_XFS_RT */
+>  
+>  #endif /* _XFS_ZONE_ALLOC_H */
+> diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
+> index 0ff710fa0ee7..a8f71231f351 100644
+> --- a/fs/xfs/xfs_zone_gc.c
+> +++ b/fs/xfs/xfs_zone_gc.c
+> @@ -1171,6 +1171,23 @@ xfs_zone_gc_stop(
+>  		kthread_park(mp->m_zone_info->zi_gc_thread);
+>  }
+>  
+> +void
+> +xfs_zone_gc_wakeup(
+> +	struct xfs_mount	*mp)
+> +{
+> +	struct super_block      *sb = mp->m_super;
+> +
+> +	/*
+> +	 * If we are unmounting the file system we must not try to
+> +	 * wake gc as m_zone_info might have been freed already.
+> +	 */
+> +	if (down_read_trylock(&sb->s_umount)) {
 
-Looks reasonable.
+s_umount can be held exclusively for other things (e.g. freeze attempts)
+which means that you might miss a wakeup here even though the filesystem
+isn't unmounting.
 
-Reviewed-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+That's probably benign here and in the other place (inode flush) that
+does this, but it's worth asking -- will it matter that there's a slight
+chance that someone adjusts the value and we fail to wake up the gc
+thread?
 
+--D
 
-Thomas
+> +		if (!xfs_is_readonly(mp))
+> +			wake_up_process(mp->m_zone_info->zi_gc_thread);
+> +		up_read(&sb->s_umount);
+> +	}
+> +}
+> +
+>  int
+>  xfs_zone_gc_mount(
+>  	struct xfs_mount	*mp)
+> -- 
+> 2.34.1
+> 
+> 
 
