@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-230384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGsOEwA3xGnkxQQAu9opvQ
-	(envelope-from <stable+bounces-230384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 20:26:56 +0100
+	id 6OinBAg4xGnkxQQAu9opvQ
+	(envelope-from <stable+bounces-230385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 20:31:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28AF32B370
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 20:26:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8761A32B472
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 20:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B6C03028ECB
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 19:26:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1A9FA301982F
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 19:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF673559C0;
-	Wed, 25 Mar 2026 19:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86518355F43;
+	Wed, 25 Mar 2026 19:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T29qZ/V2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NGEZAvwX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F533542E5;
-	Wed, 25 Mar 2026 19:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08243233ED;
+	Wed, 25 Mar 2026 19:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774466809; cv=none; b=TvfKJIru0s21xYR4h3NUwgEBEpaHb5w2QEv6OXQC44yQXyrzaBrp2IZMmhZuHddejJzkT2I5SOzTSxpa+AJdOTWNlCjy+RusgLZ2sDfLlQ7QwU+SGUbA04VieMm8EPbBDrtPwr5F9lpGeImZ4McmyIy5LCqpLYUijoiMeQX5zhA=
+	t=1774466953; cv=none; b=JMqF0gJUdVQRGCnJXq8i6UNukQCxYiFA4MfpJt2P8mW5utNQru7CPRtfzf2qlXebmaF/ptogSVIARrNbwWtqdvFIv0UVK14gn3zRQvFDonJFnwzupnBzFcMIh5g+AxbIhU1fTgZSok9JWZt8IWV0Im/dWRIFWve3S7E6KLxdZa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774466809; c=relaxed/simple;
-	bh=EUSJ4WHhXpBP/yrcWI3vj8IKzFI1fiOhCeYVPZCdZK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DJHOyzJXMYQfMvHN/CyvPSShTjerwhewEgHx37yw3uWb9zlDGiHhveMP65Ap/uPtXrtn5Vgff0K9+OQpYwQWMLVBG1A25+ULrThSRA8pI/6YgHzjPbFA9ixoWcGQRxLr8RO7eSB6yFHre1pgnE0M/jN5j+LeJsN0XKLAX1eEH6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T29qZ/V2; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1774466953; c=relaxed/simple;
+	bh=L4jELdZiW+yzICSJhXuJ2ZU9mk1EByn80HKLZkT4cOA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M/+4mlZzRAQC8sPOOMRgOqNBsBzEyPuJae27qnvezOv3Ixj0D5+fjVBLK8fFN/e2hd1WtG9In943/DgDvvPHGRBi3YnzyQGPYvKXi6Znyo9AInMvOzHvrkbbCLQo2qBeCsM7Ebo4aNRuB1Udd++jph6+QiIKO/0RVMlYTylgPt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NGEZAvwX; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774466808; x=1806002808;
+  t=1774466952; x=1806002952;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=EUSJ4WHhXpBP/yrcWI3vj8IKzFI1fiOhCeYVPZCdZK0=;
-  b=T29qZ/V28G6C4fQ8Co9pvqe3e9ctR8v0go6uALxDg7TTKlRZzLP7Xl1f
-   G9xCylSHD3TNiiNFdsjoKATnQ9I9baEu6EDoSCOY3fEodGzaGk8FiJT1e
-   n1Yzbepo6+W7Jz0ZsD8Qe1UVgXFhooh0xQfn2yJoPMQXb81ICwRhsccs7
-   jbUrzth0PnGYxAHruGZgQ7VIYp6y4f7oH+JE4H96xbZVc9IiE6GQDQvU0
-   qxc5cp5ujQabmJ5BRUFi3+MXoRU+bmcQzWQl6I7+RIS2pMJp2yC2v3FyC
-   IDO8C66RyfcvNSg9tQCBNjzf+O70CNfW1Qtg05nFtRgN0dvd/8aQgXs/Y
-   A==;
-X-CSE-ConnectionGUID: iC8sDJsdToC5HXAqSLzoDg==
-X-CSE-MsgGUID: yunMiMR1SZa+2Iw30hFbrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75401029"
+  bh=L4jELdZiW+yzICSJhXuJ2ZU9mk1EByn80HKLZkT4cOA=;
+  b=NGEZAvwX8c6BGBSn5pjF4jL0HxtdI7gnjHHs0SEPtXUwTNF13dTePFDc
+   c8bH6HIZKkYxhTFeXpvYTolvCjGEejC3Gt4VvKs8ivHqQuuvK0WWMVpGu
+   nSOrhOMVbMKebE7FkzNakrrtHXpk14ziI1lvrZ8btAPa3K1MT+EdIKPkE
+   CLQ9fXp3Sx+dfANoCDLE3VV0t5orBNDa+qrQ5DESQ+a/bbhlenVQOfNDq
+   9f9HlFesb20fpHKpave7ZqP/twoQpRHHhkam/trLl6BkfDRaSTeQy6CKd
+   xV/2vq3D6ah2OeIdhLtfiRlLDVcwXRfv55/qV5ezLyCEwKGzd1VEfIwey
+   g==;
+X-CSE-ConnectionGUID: j2+32zDZTAe6FKQfQnWQEg==
+X-CSE-MsgGUID: ZQ1MGXGwRrCKSnraVJbWPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="98136697"
 X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="75401029"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 12:26:48 -0700
-X-CSE-ConnectionGUID: 3Q1ChaFPQtyMUFUUDzbYWQ==
-X-CSE-MsgGUID: bpEpeqTBRnWqjbh447nwww==
+   d="scan'208";a="98136697"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 12:29:11 -0700
+X-CSE-ConnectionGUID: e6+Jgx5tRCKnr9KO23nptQ==
+X-CSE-MsgGUID: JynbSqVwR7Ow7e6YH5x7qw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="229551188"
+   d="scan'208";a="248253996"
 Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
-  by fmviesa005.fm.intel.com with ESMTP; 25 Mar 2026 12:26:47 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 25 Mar 2026 12:29:11 -0700
 From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 To: hansg@kernel.org,
 	ilpo.jarvinen@linux.intel.com
@@ -67,9 +67,9 @@ Cc: platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] platform/x86: ISST: Reset core count to 0
-Date: Wed, 25 Mar 2026 12:26:38 -0700
-Message-ID: <20260325192638.3417281-1-srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH] platform/x86/intel-uncore-freq: Handle autonomous UFS status bit
+Date: Wed, 25 Mar 2026 12:29:09 -0700
+Message-ID: <20260325192909.3417322-1-srinivas.pandruvada@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -84,16 +84,16 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230384-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230385-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org];
@@ -103,37 +103,62 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E28AF32B370
+X-Rspamd-Queue-Id: 8761A32B472
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Based on feature revision, number of buckets can be less than the
-TRL_MAX_BUCKETS. In that case core counts in the remaining buckets
-can be set to some invalid values.
+When the AUTONOMOUS_UFS_DISABLED bit is set in the header, the ELC
+(Efficiency Latency Control) feature is non-functional. Hence, return
+error for read or write to ELC attributes.
 
-Hence reset core count to 0 for all buckets before assigning correct
-values.
-
-Fixes: 885d1c2a30b7 ("platform/x86: ISST: Support SST-TF revision 2")
+Fixes: bb516dc79c4a ("platform/x86/intel-uncore-freq: Add support for efficiency latency control")
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: stable@vger.kernel.org
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+Not urgent: In any current generations, it is never the case.
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-index b8cdaa233ea9..dc22504aea32 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -1458,6 +1458,8 @@ static int isst_if_get_turbo_freq_info(void __user *argp)
- 					    SST_MUL_FACTOR_FREQ)
- 	}
+ .../x86/intel/uncore-frequency/uncore-frequency-tpmi.c     | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+index 1237d9570886..b038dbb69447 100644
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+@@ -537,6 +537,7 @@ static void set_cdie_id(int domain_id, struct tpmi_uncore_cluster_info *cluster_
+ #define UNCORE_VERSION_MASK			GENMASK_ULL(7, 0)
+ #define UNCORE_LOCAL_FABRIC_CLUSTER_ID_MASK	GENMASK_ULL(15, 8)
+ #define UNCORE_CLUSTER_OFF_MASK			GENMASK_ULL(7, 0)
++#define UNCORE_AUTONOMOUS_UFS_DISABLED		BIT(32)
+ #define UNCORE_MAX_CLUSTER_PER_DOMAIN		8
  
-+	memset(turbo_freq.bucket_core_counts, 0, sizeof(turbo_freq.bucket_core_counts));
+ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_device_id *id)
+@@ -598,6 +599,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+ 
+ 	for (i = 0; i < num_resources; ++i) {
+ 		struct tpmi_uncore_power_domain_info *pd_info;
++		bool auto_ufs_enabled;
+ 		struct resource *res;
+ 		u64 cluster_offset;
+ 		u8 cluster_mask;
+@@ -647,6 +649,8 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+ 			continue;
+ 		}
+ 
++		auto_ufs_enabled = !(header & UNCORE_AUTONOMOUS_UFS_DISABLED);
 +
- 	if (feature_rev >= 2) {
- 		bool has_tf_info_8 = false;
+ 		/* Find out number of clusters in this resource */
+ 		pd_info->cluster_count = hweight8(cluster_mask);
  
+@@ -689,7 +693,8 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+ 
+ 			cluster_info->uncore_root = tpmi_uncore;
+ 
+-			if (TPMI_MINOR_VERSION(pd_info->ufs_header_ver) >= UNCORE_ELC_SUPPORTED_VERSION)
++			if (TPMI_MINOR_VERSION(pd_info->ufs_header_ver) >=
++			    UNCORE_ELC_SUPPORTED_VERSION && auto_ufs_enabled)
+ 				cluster_info->elc_supported = true;
+ 
+ 			ret = uncore_freq_add_entry(&cluster_info->uncore_data, 0);
 -- 
 2.52.0
 
