@@ -1,331 +1,247 @@
-Return-Path: <stable+bounces-230339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKbSG//iw2lvugQAu9opvQ
-	(envelope-from <stable+bounces-230339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:28:31 +0100
+	id MHDBGzDkw2lvugQAu9opvQ
+	(envelope-from <stable+bounces-230340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:33:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E64325C2C
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:28:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E16325D87
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AFBC53028C20
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:00:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E72A33C0CC0
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83A3D6CA2;
-	Wed, 25 Mar 2026 13:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9962538D00F;
+	Wed, 25 Mar 2026 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onH5OBRb"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nP4LXN+x";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RJGeply1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7F130C359;
-	Wed, 25 Mar 2026 13:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0341EE00A
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774443608; cv=none; b=Kzul85sDbU1UZGgJLWUcFO/a4hl4+krTP6Wo5X1hj3BqRn7mMj2bURdiTcouQsl+4Et90gNMEDN6+hYkTYTCXb3BIM0Nj/00JDmbVFfClGU6YEBsilEgjNY4j9SITysf3Co/h3epa00sfEC17Q7SZATO7LW6Jem0/vNiPzfz0WA=
+	t=1774443659; cv=none; b=jeYxN9V2mo/3Czb7ZavQrlTVMSQ2M4XpBFSw9rhUNxbsaGBMQ8elGwbXbAlnjfNpzXmjC5hcKypOkROh5MaPIK39jOb+zgxT2zcYfBPW8WbYwyVcoztHd0PwIXrCArL3lqUsSejcjK5I1Elrr99/oxb2RZ+reXjOA4LWduyTKRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774443608; c=relaxed/simple;
-	bh=hUR7iss9HrnhBMmrOABJrG+Z4UjRR4alSDU8JCKz0Hk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2C6+vGPjltRuDPG+SgT5BHUMRl7h0+xDzT4EUYC2zu8Iy1jCvXiO8OkMX+opluq2FGqrN1eHGmwXavq9Ayh9uOCL/jVbMnLDaoGQQlTnAwOpnkJLXjwUytNZjfKslN9pwkBBiLYSt7KmQF0ezjDo+nMWTUVDKIfuW7lDKiluqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onH5OBRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5EAC4CEF7;
-	Wed, 25 Mar 2026 13:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774443608;
-	bh=hUR7iss9HrnhBMmrOABJrG+Z4UjRR4alSDU8JCKz0Hk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onH5OBRb2lsxYzBc/1hJmWOqLquA9+OS2J8w0WmrjW/Xl4d1ZmQMfjnHKGklIW4HW
-	 tQ1fDSrUlSHE+O/EE3snGRdHpRRdwGO+VpQSZS8KpiBpQNgOjOll92iC014TV7009b
-	 eQkzsfz3MrfB8r0lPZkbOIRhhDc5SX1CoJ5WTCuq/GemqpTT6zXLBo6UfE1ohkHYdu
-	 dI5DlVmIU/x28v7dc6gAqJG9zAA0YqvnHKTi/07XHWUSrW1ZnkxvYijHo6S3A3If4J
-	 OmKBeR0ZwwDM3XMokxRz526nLyK/hL7mpum3A9fy3ZikoCCw/wpaOdaDrro7pVHrHp
-	 ZkcJqCA5uQMHw==
-From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>,
-	Tim Chirananthavat <theemathas@gmail.com>,
-	stable@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.6.y 3/3] rust: pin-init: replace shadowed return token by `unsafe`-to-create token
-Date: Wed, 25 Mar 2026 13:59:43 +0100
-Message-ID: <20260325125944.947263-3-lossin@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325125944.947263-1-lossin@kernel.org>
-References: <20260325125944.947263-1-lossin@kernel.org>
+	s=arc-20240116; t=1774443659; c=relaxed/simple;
+	bh=iECa52X1WMxQXk08e2oTItD2s9nnyd0o6WElpXC8J/Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=airmLMpW79YtjvmCxeqHHdwt45EB88F8IdSROngkRaL2ePGYfnuDnD075mSJeM6HouPz/4T2tt+IjK0JqKIy/WUZDmIdyF70fYb720M7xJnAhtE9JCSvpT3peWPgcKh7GAYOnaB+4vqmZv5EUiKvryCuRKezORuEiDXvDDzInUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nP4LXN+x; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RJGeply1; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PBGO863922568
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:00:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=LjdBzauvOqjzi+H4aHlYeX
+	gujOJFM540mstkGc96erE=; b=nP4LXN+xdbQ3uQDml1CVFhdhQPcjogVx96VHYt
+	blUy3wFnf7PB3e8Imt/g03JwpYDlNjKUHT/SbEZ83G89KQLyyNi6uC3Mo6MDDGJG
+	tOwT9PH8kTDJbGKOsVCta8KB62MXMdnplDQ7mgSUVkO+wqO/4Bn+ZrzkFxe1xGeA
+	T1lioRc5zvJcFCdLdAs1trBWGc8eZWft8bbNAKlNaGb7kzEJ+ZL2Qx/vaq/47fo2
+	Hg5mgHvsCmnflaZaV7LO/7GeJkOoueM+CIZd/8K/6AZPxNCuwZnAPqvA48RQQrOl
+	anmX9tIT0Ahdr3D7FyPP0fJxECqookHmux7jNrOqvId8FCrw==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d40rau68t-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:00:56 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2b07bd30b5eso13024385ad.1
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 06:00:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774443656; x=1775048456; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LjdBzauvOqjzi+H4aHlYeXgujOJFM540mstkGc96erE=;
+        b=RJGeply199+Zz0wGDrrxDCnJorsE/lWRsRmcZv5IyxvlYg9puEIAGFmtue1g+C+Xyw
+         7sfUjCVi7O23E625o3TBfEMg0CBPQR/UiMslss0qx+EmZc1qr9qmu5AG3pubJYdNx4om
+         sYcIVXgLqVbJb+dkvnKA+nNTVR/8dDsGDSd/Wt7mKqX5bAa4EGBioD/7gFsPrDDzHuAD
+         OZA26F1jof23ou25FeHf1ywbrc0kCt50LdQZsLkLOnuAO6ZiO3U84Lj+xThB/VpI0ujU
+         uUDCaCiNYzliowTfPBR5gWGo/1vYe+xFXto+cboSImYR7JY3mrwrE/puwtZmO1WVTyRX
+         8wDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774443656; x=1775048456;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LjdBzauvOqjzi+H4aHlYeXgujOJFM540mstkGc96erE=;
+        b=gXBL4sw1lWaqoCzHWoylHApVK+v8ArIfzcwclFId1bzJEVMpl/Sg2SFgA1z6eC5Or/
+         sB6HSJkI0gDgqs8W93pT1kDiiVroCPWi+oGz0N10cJ8URO9YGzBVVbTFljaogEMkmgKY
+         778mm0NIgeunPBvSoHiATCBRcJYIkMNjYvmwnXfJThmK/o4q9H7QsNWURwGrsJ0lFfqc
+         76SiAlTgevc8MYF7KFU/De9jSBCBVNsDIBbPU6JNJ2jFlJFn/wVMZ4Ws0+sMiPMCFcIk
+         vpc3hR5hSKX6syWaW84UAvD4E9VRZ9n9gVmUdnhjY1YSuBJQNdgHw8QHfdBBN15s/UcC
+         czBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUTH5Gi+uR0jqutMo8kkmPcMOLz1oDszVa4/Xjx9bgrvCc38cC24dKM4GISEaOQv6M6TJhRgt4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzl2pbmImEEmaQt3lW5mPK7apFBA8HFzc8PPaasgwkjOD6MZiLr
+	MY8bVZAMIhvMsv+QsWf9f4xpv0M+xpaiS5/dc6Uz7glksQgHCfii+yXJFs80ExFE8GinSrOVHg0
+	zze9LVE2zNQWHCGV/Fkn3wMgwCHiGhrPqwBtAP2rp9LCEO9t84jO3JcHqsCQ=
+X-Gm-Gg: ATEYQzzjN+SUlAxheaO3o2O+xMg5H4jM1amJsnQ0ebcDWBR8IJAhP86VoZrS9tujhbd
+	3ZiYuBnq9s8VHZctI9z6wb6ziTsOncLG0wWM/Dbldfors3JAPaIuLQqSg1PKU/6YBLjs2d1dkoG
+	xTKyC5DBdqxrruSFB8TSRM0o8JPZbP82OC3brKb4GWUNAqqMTh8JHE9ISe+uRzP2kJYYhXmcsMi
+	wbVF0Nkn1HLFANUmiXuDgxc+RpQ0gQZkpZMW3/V/F1wR+XqiujW8vrSd2FWTaUeO3USvRdvRssV
+	yOPbIlG8ZzlQDHd81uwz3c0oxsYFhDLDpweVAGMUu1FL0YGbIzpz00X80rK8ACvO6382anPy59U
+	IhCvkaAJ89mE+MZoKYHIY+NBN9Z1WVdFZ1fdXLlmflgaMde/kg/vx/XgLWg==
+X-Received: by 2002:a17:902:f607:b0:2ae:5350:3a4e with SMTP id d9443c01a7336-2b0b07efad5mr35559625ad.21.1774443655460;
+        Wed, 25 Mar 2026 06:00:55 -0700 (PDT)
+X-Received: by 2002:a17:902:f607:b0:2ae:5350:3a4e with SMTP id d9443c01a7336-2b0b07efad5mr35558835ad.21.1774443654537;
+        Wed, 25 Mar 2026 06:00:54 -0700 (PDT)
+Received: from hu-vdadhani-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083656f65sm262575755ad.45.2026.03.25.06.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 06:00:53 -0700 (PDT)
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Date: Wed, 25 Mar 2026 18:30:37 +0530
+Subject: [PATCH v1] arm64: dts: qcom: lemans: Correct QUP interrupt numbers
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260325-lemans-irq-num-v1-1-a470d544966a@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAHXcw2kC/yWMwQqDMBAFf0Xe2YUkVgv+SvGgca1bNG2zKoL47
+ 03b4wzMHFCOwoo6OxB5E5VnSGDzDH5sw51J+sRwxlWmcCVNPLdBSeKbwjqT96a4OjtcStsjRa/
+ Ig+y/4Q2bRfN3unYP9sv3hPP8AKhdIGR2AAAA
+X-Change-ID: 20260325-lemans-irq-num-cc03721f451d
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+        Viken Dadhaniya <quic_vdadhani@quicinc.com>,
+        Shazad Hussain <quic_shazhuss@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774443649; l=2483;
+ i=viken.dadhaniya@oss.qualcomm.com; s=20260324; h=from:subject:message-id;
+ bh=iECa52X1WMxQXk08e2oTItD2s9nnyd0o6WElpXC8J/Q=;
+ b=h7U3vULDB7kvty2wDiJfNo0SWaU2i9OgE41ELIdnqbE5iVVqQ7OQGEVtcw67Vr2XB2V3Cd5d6
+ novS8Vn0CVAAYodn9Z+B+8hwCdrVdlXpXgIduN37LRhShOP8opzZvNn
+X-Developer-Key: i=viken.dadhaniya@oss.qualcomm.com; a=ed25519;
+ pk=C39f+LOIGhh/02LQpT46TsUSXRvBn9qXC8Xb26KJ44Y=
+X-Authority-Analysis: v=2.4 cv=Jvr8bc4C c=1 sm=1 tr=0 ts=69c3dc89 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=nXOf96giqOHqJdTUQPAA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-ORIG-GUID: XIj9ETmcsN6kIs47OohO35l1-hoIUhjz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA5MyBTYWx0ZWRfX0Jl7VFntuEjF
+ aMsUqCblJzShJE2fn611Hvno1TYVQPbG3x0OI/1oHK4NAlg/4chXugiyUc8PZsry5kbcDkIYGAB
+ r9n2+YIry9roraHAwhNJvX0frdkmJGFat2Q2wJ/2xPIeWxJpD2IZU3vGkdOFIfx/JrxukUr5NvR
+ fp3KZ/tCN00QLauDBdk+1UGFDXAoOGaF5e9w+lNfhOYJk1sLfPxmC2aVIovfblN77gYcy6Zotsw
+ WsPt2XI3N1QsYBdmNcQQr3Mjw7d6uq33dlAy8NsYxrJXMHgyfPxKw3RTsVBGqR5YOMZCKVfO2DC
+ hCqvlL25j9LKwhbv44WTJ8Qecx7KOhE5Tv1Fhdzt1FJR9ZCNCTK6su01Mwx2WSvCkZz5U3Qz+7f
+ nBXmo/Eq11zvWCrQWLs0DKK8R8LZXyzV5SHKMq9wqDFLuiS0M1Ya0C03Zxw9FAkq7R6kP3Uyx9R
+ 9kc2hPPBL+Z6nqfDqQA==
+X-Proofpoint-GUID: XIj9ETmcsN6kIs47OohO35l1-hoIUhjz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-25_04,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 impostorscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 spamscore=0 clxscore=1011 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250093
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230339-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,proton.me,samsung.com,google.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230340-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.13.179.208:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,a98000:email];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[viken.dadhaniya@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,garyguo.net:email]
-X-Rspamd-Queue-Id: 91E64325C2C
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: C7E16325D87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
+Fix GIC_SPI interrupt numbers for QUPv3 SE6 nodes on Lemans SoC.
+Using incorrect interrupt lines can prevent IRQs from triggering
+and break I2C, SPI, and UART operation.
 
-We use a unit struct `__InitOk` in the closure generated by the
-initializer macros as the return value. We shadow it by creating a
-struct with the same name again inside of the closure, preventing early
-returns of `Ok` in the initializer (before all fields have been
-initialized).
-
-In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
-this solution no longer works [1]. The shadowed struct can be named
-through type inference. In addition, there is an RFC proposing to add
-the feature of path inference to Rust, which would similarly allow [2].
-
-Thus remove the shadowed token and replace it with an `unsafe` to create
-token.
-
-The reason we initially used the shadowing solution was because an
-alternative solution used a builder pattern. Gary writes [3]:
-
-    In the early builder-pattern based InitOk, having a single InitOk
-    type for token is unsound because one can launder an InitOk token
-    used for one place to another initializer. I used a branded lifetime
-    solution, and then you figured out that using a shadowed type would
-    work better because nobody could construct it at all.
-
-The laundering issue does not apply to the approach we ended up with
-today.
-
-With this change, the example by Tim Chirananthavat in [1] no longer
-compiles and results in this error:
-
-    error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
-      --> src/main.rs:26:17
-       |
-    26 |                 InferredType {}
-       |                 ^^^^^^^^^^^^
-       |
-       = note: private field `0` that was not provided
-    help: you might have meant to use the `new` associated function
-       |
-    26 -                 InferredType {}
-    26 +                 InferredType::new()
-       |
-
-Applying the suggestion of using the `::new()` function, results in
-another expected error:
-
-    error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
-      --> src/main.rs:26:17
-       |
-    26 |                 InferredType::new()
-       |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
-       |
-       = note: consult the function's documentation for information on how to avoid undefined behavior
-
-Reported-by: Tim Chirananthavat <theemathas@gmail.com>
-Link: https://github.com/rust-lang/rust/issues/153535 [1]
-Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
-Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
-Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
+Fixes: 34a407316b7d3 ("arm64: dts: qcom: sa8775p: Populate additional UART DT nodes")
+Fixes: 1b2d7ad5ac14d ("arm64: dts: qcom: sa8775p: add missing spi nodes")
+Fixes: ee2f5f906d69d ("arm64: dts: qcom: sa8775p: add missing i2c nodes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
-[ Added period as mentioned. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Moved to declarative macro, because 6.19.y and earlier do not have
-  `syn`. - Benno ]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 ---
- rust/kernel/init/__internal.rs | 28 ++++++++++++--
- rust/kernel/init/macros.rs     | 68 +++++++++++++---------------------
- 2 files changed, 49 insertions(+), 47 deletions(-)
+ arch/arm64/boot/dts/qcom/lemans.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/init/__internal.rs b/rust/kernel/init/__internal.rs
-index db3372619ecd..323dd05d8ef6 100644
---- a/rust/kernel/init/__internal.rs
-+++ b/rust/kernel/init/__internal.rs
-@@ -44,6 +44,24 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
-     }
- }
- 
-+/// Token type to signify successful initialization.
-+///
-+/// Can only be constructed via the unsafe [`Self::new`] function. The initializer macros use this
-+/// token type to prevent returning `Ok` from an initializer without initializing all fields.
-+pub struct InitOk(());
-+
-+impl InitOk {
-+    /// Creates a new token.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This function may only be called from the `__init_internal!` macro in `./macros.rs`.
-+    #[inline(always)]
-+    pub unsafe fn new() -> Self {
-+        Self(())
-+    }
-+}
-+
- /// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
- /// the pin projections within the initializers.
- ///
-@@ -65,9 +83,10 @@ pub unsafe trait PinData: Copy {
-     type Datee: ?Sized + HasPinData;
- 
-     /// Type inference helper function.
--    fn make_closure<F, O, E>(self, f: F) -> F
-+    #[inline(always)]
-+    fn make_closure<F, E>(self, f: F) -> F
-     where
--        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
-+        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
-     {
-         f
-     }
-@@ -94,9 +113,10 @@ pub unsafe trait InitData: Copy {
-     type Datee: ?Sized + HasInitData;
- 
-     /// Type inference helper function.
--    fn make_closure<F, O, E>(self, f: F) -> F
-+    #[inline(always)]
-+    fn make_closure<F, E>(self, f: F) -> F
-     where
--        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
-+        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
-     {
-         f
-     }
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index d6f8d5ce61af..1cbda44fa472 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -1118,10 +1118,6 @@ macro_rules! __init_internal {
-         @construct_closure($construct_closure:ident),
-         @zeroed($($init_zeroed:expr)?),
-     ) => {{
--        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
--        // type and shadow it later when we insert the arbitrary user code. That way there will be
--        // no possibility of returning without `unsafe`.
--        struct __InitOk;
-         // Get the data about fields from the supplied type.
-         let data = unsafe {
-             use $crate::init::__internal::$has_data;
-@@ -1132,47 +1128,33 @@ macro_rules! __init_internal {
-             ::kernel::macros::paste!($t::$get_data())
-         };
-         // Ensure that `data` really is of type `$data` and help with type inference:
--        let init = $crate::init::__internal::$data::make_closure::<_, __InitOk, $err>(
-+        let init = $crate::init::__internal::$data::make_closure::<_, $err>(
-             data,
-             move |slot| {
--                {
--                    // Shadow the structure so it cannot be used to return early.
--                    struct __InitOk;
--                    // If `$init_zeroed` is present we should zero the slot now and not emit an
--                    // error when fields are missing (since they will be zeroed). We also have to
--                    // check that the type actually implements `Zeroable`.
--                    $({
--                        fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
--                        // Ensure that the struct is indeed `Zeroable`.
--                        assert_zeroable(slot);
--                        // SAFETY: The type implements `Zeroable` by the check above.
--                        unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
--                        $init_zeroed // This will be `()` if set.
--                    })?
--                    // Create the `this` so it can be referenced by the user inside of the
--                    // expressions creating the individual fields.
--                    $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
--                    // Initialize every field.
--                    $crate::__init_internal!(init_slot($($use_data)?):
--                        @data(data),
--                        @slot(slot),
--                        @guards(),
--                        @munch_fields($($fields)*,),
--                    );
--                    // We use unreachable code to ensure that all fields have been mentioned exactly
--                    // once, this struct initializer will still be type-checked and complain with a
--                    // very natural error message if a field is forgotten/mentioned more than once.
--                    #[allow(unreachable_code, clippy::diverging_sub_expression)]
--                    let _ = || {
--                        $crate::__init_internal!(make_initializer:
--                            @slot(slot),
--                            @type_name($t),
--                            @munch_fields($($fields)*,),
--                            @acc(),
--                        );
--                    };
--                }
--                Ok(__InitOk)
-+                // If `$init_zeroed` is present we should zero the slot now and not emit an
-+                // error when fields are missing (since they will be zeroed). We also have to
-+                // check that the type actually implements `Zeroable`.
-+                $({
-+                    fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-+                    // Ensure that the struct is indeed `Zeroable`.
-+                    assert_zeroable(slot);
-+                    // SAFETY: The type implements `Zeroable` by the check above.
-+                    unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
-+                    $init_zeroed // This will be `()` if set.
-+                })?
-+                // Create the `this` so it can be referenced by the user inside of the
-+                // expressions creating the individual fields.
-+                $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
-+                // Initialize every field.
-+                $crate::__init_internal!(init_slot($($use_data)?):
-+                    @data(data),
-+                    @slot(slot),
-+                    @type_name($t),
-+                    @munch_fields($($fields)*,),
-+                    @acc(),
-+                );
-+                // SAFETY: we are the `__init_internal!` macro that is allowed to call this.
-+                Ok(unsafe { $crate::init::__internal::InitOk::new() })
-             }
-         );
-         let init = move |slot| -> ::core::result::Result<(), $err> {
--- 
-2.53.0
+diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
+index f565067bda31..05c0888e2bc6 100644
+--- a/arch/arm64/boot/dts/qcom/lemans.dtsi
++++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
+@@ -1512,7 +1512,7 @@ i2c20: i2c@898000 {
+ 				reg = <0x0 0x898000 0x0 0x4000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+-				interrupts = <GIC_SPI 834 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 833 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_i2c20_default>;
+@@ -1539,7 +1539,7 @@ spi20: spi@898000 {
+ 				reg = <0x0 0x898000 0x0 0x4000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+-				interrupts = <GIC_SPI 834 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 833 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_spi20_default>;
+@@ -1564,7 +1564,7 @@ &config_noc SLAVE_QUP_2 QCOM_ICC_TAG_ALWAYS>,
+ 			uart20: serial@898000 {
+ 				compatible = "qcom,geni-uart";
+ 				reg = <0x0 0x00898000 0x0 0x4000>;
+-				interrupts = <GIC_SPI 834 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 833 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_uart20_default>;
+@@ -2510,7 +2510,7 @@ i2c13: i2c@a98000 {
+ 				reg = <0x0 0xa98000 0x0 0x4000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+-				interrupts = <GIC_SPI 836 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 835 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_i2c13_default>;
+
+---
+base-commit: 85964cdcad0fac9a0eb7b87a0f9d88cc074b854c
+change-id: 20260325-lemans-irq-num-cc03721f451d
+
+Best regards,
+--  
+Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
 
