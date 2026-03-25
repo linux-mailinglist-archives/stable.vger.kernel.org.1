@@ -1,237 +1,148 @@
-Return-Path: <stable+bounces-230311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMGNBB29w2kRtwQAu9opvQ
-	(envelope-from <stable+bounces-230311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:46:53 +0100
+	id 0HytFMnAw2kRtwQAu9opvQ
+	(envelope-from <stable+bounces-230312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:02:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99DEC3233EA
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:46:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85F13236FB
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 98C663034DC2
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 10:45:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BABFD303F54A
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 10:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D073F3BED7F;
-	Wed, 25 Mar 2026 10:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1953AE1BC;
+	Wed, 25 Mar 2026 10:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SaUEpGDP";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="J7QHEEMN"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eRj+18VL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B62395DA5
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D8F330D22
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774435489; cv=none; b=o5V2y/8DxVy2ZVjFsaonJSlzZgEJ6Z7j1B3jxq0zLTkkxECqZbDZq0ZjGmQdLHZwABBzqsK6HClnYg4VwtKeH53hsTWLLt/e7rnJydTSbk67XsQvMW43R59QqHuFrGxHeEFdfncc83NqDZHbxOEpa6g9nI7u2k/q0+HHhb11GLU=
+	t=1774436163; cv=none; b=ax83k53Y1DWFBogVL9xj9LleAeqisOMDLHQZ/4dYLyBJlJ4BompnuldJO8JShs7UqYJxqkNpoTdRRUBkbyNF4KQsO65AT4QxifJmkR0/bhRCgHnqbSMo4N/C7c4seTtfFu2WCvG77RqWylaeIpTmYrM1DxuvRRvAvzX/ByerpqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774435489; c=relaxed/simple;
-	bh=VUckc1SdCNWURMt3QHIG/kYLSzYqTmALMFLTy9j3q9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1tGd1hGpGhrjYeGjSlwG1jue9R69If3uMNpLPGZtOvU0habNm91F2Fdilsr4RQC3/0uWN1zE+p7r4HwbGNTl6RkbVP22/U7mrTNvNcc3EcsX2WkOlEo9rsCveXy3w/hR5sUDhPoGr+0VDiOaI58HmhSEOexDeB+hA15XyHKrBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SaUEpGDP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=J7QHEEMN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PAQZpO2884887
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:44:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=ufmukem2JRe
-	bh6l819czpXtmpvPfo+OtOsxaUsB7OdE=; b=SaUEpGDPQpb8ngfVjbGra2zTUk5
-	FfKp4nIbTqWqPuh0ffH84bPugQq6YfCIMZSDK7cXxXYDZjH+4wFrUC9JlaCC5MAA
-	04fQwRe3VaTJP0h4jhkG7cja0P5Of7SAuxlbxz0FDlCCgD0wFXzwrFPNqSuF99hf
-	25U+j77Uszvhp0u9l9aGIZBG8Wwu+F4yA24P4h63N6NL7hcsLlLATQ0Lpuu3YZwd
-	+SD+fHTtes2YVuiHPK3z/NxV3YtxEkbKQFO5WblaycEu8dzR7Cgmxn02cw8VrhGc
-	Pt3O3ijGQVbNE3MUndZx/oAFqTrXmgCXIz2QetvgSOmtvdITX0CO1Njx51w==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4dy4g2bd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:44:47 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-35641c14663so8386730a91.2
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 03:44:47 -0700 (PDT)
+	s=arc-20240116; t=1774436163; c=relaxed/simple;
+	bh=m4571C4KsP5S+tvy3v4ajwODfqrsP5H3SzYFjB/0vtU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fyUmYXwa3BMYnsQ3lIdXZcc4mcAKSCnHqfckQoB+NWEDnwBrk1DbvC8+RgtxXPwu192rOCvnrr/AFWj4bNbMIB1FAWlH+PEUZ6zPL1VOMfO+ca/RRH65WC3Z5vvNZ+uRNSFyIaVavlguGHhJfjy1i6kka4eWceLlZQk/DWpt47Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eRj+18VL; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48704db565eso40824465e9.1
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 03:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774435486; x=1775040286; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ufmukem2JRebh6l819czpXtmpvPfo+OtOsxaUsB7OdE=;
-        b=J7QHEEMNmD8fI+e1elAZVwOn75WdQ7WmhTb5sUgfKyplH3dbGDdLe/yutxhBxyQXZP
-         Rp8j3PVUNqNVSkHsZwYJsx3rH+5a9eTLsQ/V804LUlKMD2mz3KA5Iz4Mr9Z6S3bLrmMQ
-         3haH5xtey9w3cXR+6LR0vgjIhkyLVjE8DmalUJ96ygxEhze1YcyigknvrhXVWkPQWXFA
-         bxyBcJqc4ow4yhl+6MqwqQuorqCZIzSv21G2xo6bhQjJUbLY5jlAWMRCTkAMRzGiKj5Z
-         8V35ghqfJWLwwXnTnYnV0qX+0Tc2sdV06it04AgWmggmnMBB2H1Nc5WznOmO2NaTl7ji
-         QHvQ==
+        d=suse.com; s=google; t=1774436160; x=1775040960; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6cS8MLONKqJ5qnXkc4uPkwYfi3bzAQ6aZbhxWDuF/ZQ=;
+        b=eRj+18VLUS2GkzRySvXJDY9Q5NGOE5wEPTHqwltU+9aj8Gcm+EJiKA1FDjGy7sYN3p
+         OtHZHPAwR2qFOU1fkpa60A7lk8p6kj55+WBg+UazzF4s+sgOO+UOEGcI/+Nekno6FKfG
+         OLjWITS+QpdzMc73lIWwCpgRyNTGUMTsJ76HHlSPef5pAS77+fmjWYJIBpckEvNsSkU3
+         RInwn0878cA9KeVB6BTKMqnP6NMgj5pKd10J4f/TjaVJX+Js3I3sj0p+Co9cn7EtQRaC
+         DYt+z0AkUYkwakhBJCTweuAosKV08Oe9OLo9a6Z++SHHEyg4JUquWJmgtTIVvS8bQWca
+         /jjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774435486; x=1775040286;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ufmukem2JRebh6l819czpXtmpvPfo+OtOsxaUsB7OdE=;
-        b=n1dP6Buxk0sjpkAJ5CiVyM1FIVNgd8J1DbYhNu1a8XXQg0Lqf7DtiU5dLWbCmUCuAh
-         Z7NWhr+JymAJKzh/VMVDns7fYWvqS/rWagCeQOgjbKUChMgMZpFCU7k1fREPap9zDL3r
-         C+BmDMatXoI1+G5YDoZZufMhcXsMK9nQaR7jwou59YLAVblm2bfsgLH+NXPGAgJgy6kb
-         dRA18cuuU/EjtCWC/f9OmUWnOidKoox21x7TJkY16yb2JZ58Ur5QozoutsQ8JFc5mJP3
-         X9qn5wMSdsu+XOp35zecQlruLNB2bCr4TrGi8JnOQvpkGZkUQiJHHCAsNHny1Ytc6kyF
-         E0CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnW1WL+gEtlRBe50cE54zr9bEH2YziccaW0up9c9u0pFfGy43LLGmbl6hHiKB1R+tGj3dkbII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOImsrE1RLofPIaLUNYpkvZM/+YNcAp98b1hZRCHtc9VujvfU2
-	ZphV0QQWPxC/DPiTpEE59rJTk3NTxlIYfu0gCwFCn2fVm5G7mPwBREpUb1Shh4j/X4DtLQSHunz
-	wLS6GsEENdA6GQBCElw8LJz15XLrMI01qURwrfAKcJmPRVAIfBgSW2iKQEKs=
-X-Gm-Gg: ATEYQzzv5C8BrXjpzePyYXedvsJqJqI9aFnmcUqA9DUOq1t11ZI7BSO/vyoSbbs+dnz
-	rsXE4fFOpLSsTwyIXGYEx7afFC6QqbKw3zqg197poKwx1K5u9jq2bIR05GZkidsfG9cpb/bcGfq
-	fnEcoIqcUCGwkEuDR8jtM1Ol0sZzMZ4mmj9jsTBbLkZJAyvTLQWI8grmELRphoGHpemL/NYC8IS
-	wbAGLEyEQlKuLLPFDf3aaRTYds1PYCzI24p+qRRBZPoMQ+q1yGJEzpBoEdIfaaGZ2BWbjdvDe+d
-	415pY0hnzxunO/EQkeNt9GfLnMhdD0mEDRe3grYPQ/NveEhboKMizSWlYy4SWucpcDMY1RCvZ7n
-	azMFvvWRHUgzSYuH/1UumeAOh3FNjr0BlE41a
-X-Received: by 2002:a05:6a20:3d1c:b0:39b:c686:6306 with SMTP id adf61e73a8af0-39c4ace66aemr2930382637.30.1774435486279;
-        Wed, 25 Mar 2026 03:44:46 -0700 (PDT)
-X-Received: by 2002:a05:6a20:3d1c:b0:39b:c686:6306 with SMTP id adf61e73a8af0-39c4ace66aemr2930342637.30.1774435485700;
-        Wed, 25 Mar 2026 03:44:45 -0700 (PDT)
-Received: from work ([120.60.74.210])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409c6besm17867251b3a.32.2026.03.25.03.44.41
+        d=1e100.net; s=20251104; t=1774436160; x=1775040960;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6cS8MLONKqJ5qnXkc4uPkwYfi3bzAQ6aZbhxWDuF/ZQ=;
+        b=VkzsNGupWTVFC5GZ0sPu2n+eKOUt7qOMhNq5LJwxjgAUkHwUMlIkNjxsB1uoFHhmba
+         Sg/Ebu2msuM6CXdGa9WGL/9sZnGMQUpAdktNnjvhGnjk1n5IrKFV+UP7PnCFegr0rAV4
+         Mx96t7njQw3iyJMn93ln/K+ffSYjO8GvWpb3t0hqeic11+EbJxSvFO8eqFIcwGibg9TB
+         Ja9F9RmmViQbowKH2/p66wCncWApDhx8rHI20Y8cStuUOm+sNQQccBmpygzK5VaRo8A3
+         oWbn0a1Rm3U4OjZ+2zysMrZnHOoPcJc/DWSSuMq2YUkywGGF6ZNeT083eqGT2hetL91L
+         hl1Q==
+X-Gm-Message-State: AOJu0YyhWJxsvbQoKe4wDO84/5fXUfXVd3WQ38ok8sOX4vsH4OCSNC7v
+	XWaHzktD040p7G0KuGuiTfe+cozHeY03WDI6HnwCAb6I2V3j5ZEXG/oDcwVyjsZPMfs=
+X-Gm-Gg: ATEYQzzj6Y3oxbgZnA1l1kNfrafUAkCCh3XgGMC5jfEnmYFxpTZmsrZ0lfrzqsJDgz8
+	Vc3hw3WTYlll22Kk1YryOwCjXQsybiMR3qkWWJjW3j+O2pAUN25SNDNuYUZ4gvAvmFpXzMY+8R9
+	MusyQ3BLLJElS5Kqzj+O2xfm44x8BDA0XOEIlktKH6IQbRglxHnUyY1U5h1AoApRBu0fHC+Jn6V
+	fDz2kioLgYMgy8igs9LaY/XEKNw3ErphQUSVaJYDPKPcCa4idm5VoND/8gWRLgJGIcZ6LTDLfWW
+	SveiUsGEadJ4aY+H11b9gT1VIoLHHqN0tDGNJU1cOBfJSIRIdfZ0pRKwyOi0pLTaeGiZJy2fK3m
+	gPIVA3fjLpbBucCHCavwgdxzOYT/Wcg/Gp+1pxGNX211z8TD7n7hUurYDrm/8GCyTBMWFPutz9e
+	FKC9dzk7DdorLYliWU0A==
+X-Received: by 2002:a05:600c:4f53:b0:485:531d:28b9 with SMTP id 5b1f17b1804b1-48715ff74dbmr44190865e9.14.1774436159850;
+        Wed, 25 Mar 2026 03:55:59 -0700 (PDT)
+Received: from u94a ([2401:e180:8d68:92ee:b67c:a5bb:13e0:f6f])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c0e919be5sm946775a91.3.2026.03.25.03.55.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 03:44:45 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, horms@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, andersson@kernel.org,
-        yimingqian591@gmail.com, chris.lew@oss.qualcomm.com, mani@kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-        stable@vger.kernel.org
-Subject: [PATCH 2/2] net: qrtr: ns: Limit the maximum lookups per socket
-Date: Wed, 25 Mar 2026 16:14:15 +0530
-Message-ID: <20260325104415.104972-3-manivannan.sadhasivam@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260325104415.104972-1-manivannan.sadhasivam@oss.qualcomm.com>
-References: <20260325104415.104972-1-manivannan.sadhasivam@oss.qualcomm.com>
+        Wed, 25 Mar 2026 03:55:58 -0700 (PDT)
+Date: Wed, 25 Mar 2026 18:55:48 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.19 000/220] 6.19.10-rc1 review
+Message-ID: <v5jifek56gr5vuh2x62uwq6eqxercf4ntfoil7bgwkcyaph2ay@lrgoyh2c6r4u>
+References: <20260323134504.575022936@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA3NiBTYWx0ZWRfXyAbkZQtILHpS
- L6dK1PlwR5JzFiWTw7pAZWw49GOPYv7TCuk5BYZgk0NyoywTKRasMr+O1TLXyX9loQ7YdUXRctm
- WgFrYgecjhte+ISg2uHEb4GiG72t+WGjjvtw1zzn/BcLrJkq34GPE3arEaltUsmxwGZ3fRek7VD
- q4qPXcr+inelGc3kEP+IVtgI4yMtD9YY9ISgu6JzCs5/AufU87OS0yZlGz9kXabYYti2oyzaH9a
- myKyRTPdquKW8Y7U7ZfdVak5XYb2yrIQxQpJafANHIpn8hCSBkYAo40SguCdPSP+hjN6pZd+2Db
- OgPD9AVs62W+uAQwFV161fwLeeR+54XKtC2ILilYwRS8+AUGzLxQfq5s9+WXg94uIwYL/Z45CVg
- IMZhpRS9p72juMxctRi0qy7N+NEtOTMuF2Noj8L7a1zhNrKgIu8yN6BoIejlKg745SHPsD3gg4w
- 0uVtlijcmb/Xz47RrFA==
-X-Proofpoint-ORIG-GUID: AeKLB06GEvl9oEAk_fpeE9IpmF0dH5L-
-X-Proofpoint-GUID: AeKLB06GEvl9oEAk_fpeE9IpmF0dH5L-
-X-Authority-Analysis: v=2.4 cv=eeUwvrEH c=1 sm=1 tr=0 ts=69c3bc9f cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=DfnuZq+CPLWApegUcJV09w==:17
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=X_qntSa0dJ9H4pJGHfIA:9 a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_03,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 adultscore=0
- suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250076
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-230311-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[manivannan.sadhasivam@oss.qualcomm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230312-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.c.6.3.0.1.0.0.e.4.0.c.3.0.0.6.2.asn6.rspamd.com:query timed out];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 99DEC3233EA
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:dkim,suse.com:email]
+X-Rspamd-Queue-Id: E85F13236FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Current code does no bound checking on the number of lookups a client can
-perform per socket. Though the code restricts the lookups to local clients,
-there is still a possibility of a malicious local client sending a flood of
-NEW_LOOKUP messages over the same socket.
+On Mon, Mar 23, 2026 at 02:42:57PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.10 release.
+> There are 220 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
+> Anything received after that time might be too late.
 
-Fix this issue by limiting the maximum number of lookups to 64 per socket.
-Note that, limit of 64 is chosen based on the current platform
-requirements. If requirement changes in the future, this limit can be
-increased.
+test_progs, test_progs-no_alu32, test_progs-cpuv4, test_maps,
+test_verifier in BPF selftests all passes[1] on x86_64.
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
----
- net/qrtr/ns.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index fb4e8a2d370d..707fde809939 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -70,10 +70,11 @@ struct qrtr_node {
- 	u32 server_count;
- };
- 
--/* Max server limit is chosen based on the current platform requirements. If the
-- * requirement changes in the future, this value can be increased.
-+/* Max server, lookup limits are chosen based on the current platform requirements.
-+ * If the requirement changes in the future, these values can be increased.
-  */
- #define QRTR_NS_MAX_SERVERS 256
-+#define QRTR_NS_MAX_LOOKUPS 64
- 
- static struct qrtr_node *node_get(unsigned int node_id)
- {
-@@ -545,11 +546,24 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
- 	struct qrtr_node *node;
- 	unsigned long node_idx;
- 	unsigned long srv_idx;
-+	u8 count = 0;
- 
- 	/* Accept only local observers */
- 	if (from->sq_node != qrtr_ns.local_node)
- 		return -EINVAL;
- 
-+	/* Make sure the client performs only maximum allowed lookups */
-+	list_for_each_entry(lookup, &qrtr_ns.lookups, li) {
-+		if (lookup->sq.sq_node == from->sq_node &&
-+		    lookup->sq.sq_port == from->sq_port)
-+			count++;
-+	}
-+
-+	if (count >= QRTR_NS_MAX_LOOKUPS) {
-+		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
-+		return -ENOSPC;
-+	}
-+
- 	lookup = kzalloc_obj(*lookup);
- 	if (!lookup)
- 		return -ENOMEM;
--- 
-2.51.0
+1: https://github.com/shunghsiyu/libbpf/actions/runs/23507388452/job/68418868804
 
+[...]
 
