@@ -1,206 +1,247 @@
-Return-Path: <stable+bounces-230343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFBNAcbjw2lvugQAu9opvQ
-	(envelope-from <stable+bounces-230343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:31:50 +0100
+	id qIH6Df7iw2lvugQAu9opvQ
+	(envelope-from <stable+bounces-230342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:28:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9171C325D22
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:31:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF57C325C25
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 310AF3183ADD
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:14:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0EED314D26A
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE9E3DB641;
-	Wed, 25 Mar 2026 13:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1D63DA7CF;
+	Wed, 25 Mar 2026 13:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="X/AwX8nn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nq+j9Fm7"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6028C3D88EF
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774444395; cv=none; b=Ky8u7sTHuBv3kZ2KIcBweFVI2NArvKjdFMeUNfTw4dT5fXjC4yn+1zYB9J0U9YvYlYqPpa0yj5+DiPN+hjIgvuE/Wa8ieHxTzdaZC3OSflhypL1bSXxsx5aUIIdFuW4FQD94gh4pcsz6DIWDmFmefpiOazAwdT6SoCKcAfTs05s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774444395; c=relaxed/simple;
-	bh=eL+Mj5TpPx8TwOlgoQWHtmqINkeGKGXM8RP7EJh/g2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D5V/y4RyaeFqBS0bvI71xqZvFB3NqIdXqvcPNuSk7IRmLdKd4WE6Y8hgEXNld3G2k1FQmm+yTlkceofTiuFy7foOMTea/CTDKdv7ohjY39bulMzmjGFyC7jDNTBnB+Php/ZtpK1a8+sbSLFAkqTVd0WMX/G0ivUpDshsz3acsTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=X/AwX8nn; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from macsyma.thunk.org (172-245-102-52-host.colocrossing.com [172.245.102.52] (may be forged))
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 62PDBBkJ027158
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 09:11:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1774444282; bh=7mIseyiI5gVhbpQ41lVFH4BsOHFD/Ed2Wjszawlx41U=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=X/AwX8nn6SKbJnMK+k7rXxgO12DhT2DL7TTl4++hsHi561WhkSAyDNay1WT/29avh
-	 Yd4meozyCIsnAMFQvXQaQtNQK77UsCQSH71XkbezhTXLTf9lo92WhU4StpEDurlIPC
-	 xcBLtea2m63G+vZEQVF0BMp5cl/TGstcCW5NqECIvk87Tn5w55oWqvDJoVT5muGC7y
-	 O+LbaaH2JlZ3issraJPOv+IVapjeTCSBxuV62u9iTusCZR0aTr3+7JQsoNv/7zqO+t
-	 kPP4sIwtCqKcn1ZQmexZLk64QK7Sz0u4DCVP88zC84KzRETbAq2gD2QadPtlViPSIT
-	 AsiuY7y6RQL7A==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id CF20F5F3D27A; Wed, 25 Mar 2026 08:11:10 -0500 (CDT)
-Date: Wed, 25 Mar 2026 08:11:10 -0500
-From: "Theodore Tso" <tytso@mit.edu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mark Brown <broonie@kernel.org>, Jan Kara <jack@suse.cz>,
-        Francesco Dolcini <francesco@dolcini.it>,
-        Brian Foster <bfoster@redhat.com>,
-        Yongjian Sun <sunyongjian1@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>, Gou Hao <gouhao@uniontech.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Zhang Yi <yi.zhang@huawei.com>,
-        Baokun Li <libaokun1@huawei.com>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-        conor@kernel.org, hargar@microsoft.com, achill@achill.org,
-        sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
-Message-ID: <20260325131110.GC2107@macsyma.local>
-References: <20260323134525.256603107@linuxfoundation.org>
- <20260324073447.GA5062@francesco-nb>
- <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
- <d8080343-20cd-4a4a-b726-b9e3c6a5c5eb@sirena.org.uk>
- <20260325035931.GC61656@mac.lan>
- <2026032535-casino-cable-e039@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CFA3D7D63
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774444307; cv=pass; b=phPeSmmjh5f+tALf88Nx+LPQEJhyOZ8yZresaFPoNcKCyCNjO4rBRUFlr+ZXECl45Wssh2e0pgM6t14v0Ri4/6jFbLTRIfbUsZQ2VmV4/bbLAxBTcwbX9iQCt8fC55qQ1X+Nhq24mXec9FfEtYG+tjGzuWUgXkDAt+kt8w4yeTs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774444307; c=relaxed/simple;
+	bh=YxIHujYENEm6EBmD9azc6mtyM7Yqawhb5mVPwFjsj6Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MGQnZP/havynnPPq3rW9DpfGd9I91A4ZPc91tsrLUUZHQSffHffP/IS+IkkLNCZJmmVsQe/EK79oH+bP5RotbYcjYam80VGKNM+5j/dpsz2M8fri8TkuTu4VUwVNkqVS1Q8QOSEhXZC14yxqUAHsYqmX+4xXbyQqa0Es5YyHObs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nq+j9Fm7; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66970715adbso7223071a12.3
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 06:11:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774444304; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kmDwC0PYSATs8eqGSf6NzAbNpiwRcegI3aZXQmWaSPpyIh1ud0CcnbDzvPPiqZkCuQ
+         OwYtUle/OGHwUncza5qBQU9ZRShyhGABiho9thsd1UFSIN+nxC07q5wOwUh6kXzcLJwt
+         H49mvoUMwffnWzO8YlKSgAZRHtamyOhtUgexEJ7ywFTvbhKDBHqx/oCiJ3v0cXtEUPmP
+         t4w70lCEe7zO2kNGb9HFJ3eq0ff9B1iETVNNz5fXCXPm22/Pg/nRUwrlot1tmkYP2JMX
+         foVGFeDLVzO17R9vI3CE0piSPFKeu58a22iKCbAKpfUbxW60NEHjlPZs4SOKhZ63vIKS
+         3SjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YAL3MktHcr/vcvwOIY/V2T5PrQZaA2TbVtTOY5hlRDk=;
+        fh=6hUvj3y1HWDEQjLIjQ1AdM7fJ0p5k49sCUyvdgSqWEE=;
+        b=A2zrswuC/+TPOkMDxcL8P2oV2tDJs992g0iRbgAninc07axsO2u9TrsgN5vUnZYwIB
+         hV/1Ner4YX+nj4fUpoE7bxliYOr8RHakv04AY4eEejkn9zXiOYI5VRIeufpTU3/Qyjqy
+         RN2rHcf/ZL+P9L4sUqysZ2UtnM4kFseUENZP62/XpdDJ2oG6in3Rl5fNfU8RlUs92RiX
+         VE0bYdkrqwr0zCyRQMC8bK3XM6KWg0ZCaao1FUT71BHW6qXAc1C+pCShSLDEOXKR2d+L
+         FDzhMMsP2BfBjT6L4j8Q00J8iKWevPLr2r65gMjarbXk4zdNux6u0f6+RWXKE9KIvfw9
+         m0NQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774444304; x=1775049104; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YAL3MktHcr/vcvwOIY/V2T5PrQZaA2TbVtTOY5hlRDk=;
+        b=Nq+j9Fm7dB3NlgPT/j7CFPL6q9kvtl27uyQKqZH3G5XyHTHID0r2CES3SG/6f50T1P
+         MQYyIw3FdJQxu+ImrGN8vzXHTx334aTeCr6USnlWtBUGJ1Iu2HSskcDqeQYkZcxLQddG
+         yFZ32GMhMGBgKID5XNE0IIK+OcKAWACNIQT6vb0cJBXrRVad8HsOfHYivWw9rDUSeE6G
+         JVcHnyOgmJ0Sb/oaGfgR0THeqQGRru7EtJ/vXJnwYXYc0rAsIhCmUwMTmUEKtZGY0O/a
+         S0Cfl3r/M+0tVsOHI5fZlzaQPhk2rvtqYQZNDxXbX39pKeOBfOfbjf2nu8A8BFch9ck2
+         76QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774444304; x=1775049104;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YAL3MktHcr/vcvwOIY/V2T5PrQZaA2TbVtTOY5hlRDk=;
+        b=T/79LoAeWlyvNud47ClEkNrekc2xS9LSbfC0Vi1FZ91hqdz1a/42bPAcZZyvCEq47b
+         wbe42dAHCNkhafF70zD2/82w8lXxtz77btA0V0HTEv+wmLymKsbblX6RqZfAIi3uP4q1
+         SGDuRVkosOr0EsBdlPswLOnaphISZy0kTMGr8BLnmnUafzIIuzZhYX8YJIguuw3Z7NgT
+         jjCR0TxaGtJnE6rQUc7gky+GfB3OfCuWqef5+S6C2aj2W26wPq1ehznJ8Fc0ydBXHfPl
+         /Y6BpXDl5nV4CzFyGKTl8vh9wozXyxQhRLho+u1pZCTq5dvRjlMsL8iUyWYXcbDN0LRE
+         IN/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXIdnzJk9BihUXK+Z8OuQ68/OQ/hyuMO8TedTtgSBXRBvdMLhoYXddEW44j0EXalLb147eelRA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9rt1OQurnuoi37Nq7fyR5yNG2ygqaDU8Igy2Ema5ZncBxn+Zt
+	BAF6ViS2DveoMwfoGtSAWTOI6JOSMVWa49Sarn2BdW9efMtm6/wK0D1D3qua9jSsknrvN2Hy6s2
+	9eLrDVcEDtwpMUwTNygA64YHf3Xu4wX0=
+X-Gm-Gg: ATEYQzzlhQeWKBqmS5Z8ndwUV3eLFHQVakZTlXel73VK/ow4rcb9EiXUPnLu3rU8Su6
+	MpAzZV/QVo3fztteRyk8Bx33CVysDs2p6Zfv7IRwQn2mB7EUrl4X6R9oqCdK8LzEermkz9jCzFm
+	onSJgySRomvVY0Q9AL5RBCOkkRL+AlTEmkR0acDjMrwm2IeAnhKtH36/cqpsqbksCm8t6cVMZSm
+	9ar57f2zW4Q9SG7gKyNPyyCQjx1OTj9iQThltTQcotG3+Nqq0SyNL5ytY7B02e3vRA6W4vDc7ZN
+	ghu3HgmP9sta7By/uLvi8JqpIDIKhuhytcGf1YtHzw==
+X-Received: by 2002:a05:6402:4557:b0:665:57e8:66f1 with SMTP id
+ 4fb4d7f45d1cf-66a8267303fmr1719430a12.21.1774444303803; Wed, 25 Mar 2026
+ 06:11:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026032535-casino-cable-e039@gregkh>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
+References: <20260324145750.90719-1-amir73il@gmail.com> <acN457svKhT5TcKI@infradead.org>
+ <CAOQ4uxh5NFvXGop6ne-zfRbH5p6BPT2kCt7dUkP__-TtpeJjJQ@mail.gmail.com>
+In-Reply-To: <CAOQ4uxh5NFvXGop6ne-zfRbH5p6BPT2kCt7dUkP__-TtpeJjJQ@mail.gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 25 Mar 2026 14:11:31 +0100
+X-Gm-Features: AQROBzDVeGqnKO3akasKMPWkhznjGnqFPgh3LUU0b-Y45Yn6DEKMp5I8lCECmUA
+Message-ID: <CAOQ4uxge9QDMwnLr1+W0xF2GocnFWVrbhRdriaf5Qe+4KkrG4Q@mail.gmail.com>
+Subject: Re: [PATCH] ovl: make fsync after metadata copy-up opt-in mount option
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, Fei Lv <feilv@asrmicro.com>, 
+	Chenglong Tang <chenglongtang@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230343-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[29];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230342-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,suse.cz,dolcini.it,redhat.com,huawei.com,infradead.org,uniontech.com,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mit.edu:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[macsyma.local:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9171C325D22
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[amir73il@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,asrmicro.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: DF57C325C25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 10:49:43AM +0100, Greg Kroah-Hartman wrote:
-> > I don't have time to investigate further, but Greg, if you could drop
-> > these three patches, that should address this issue.
-> 
-> All now dropped, thanks!
+On Wed, Mar 25, 2026 at 1:03=E2=80=AFPM Amir Goldstein <amir73il@gmail.com>=
+ wrote:
+>
+> On Wed, Mar 25, 2026 at 6:55=E2=80=AFAM Christoph Hellwig <hch@infradead.=
+org> wrote:
+> >
+> > On Tue, Mar 24, 2026 at 03:57:50PM +0100, Amir Goldstein wrote:
+> > > From: Fei Lv <feilv@asrmicro.com>
+> > >
+> > > Commit 7d6899fb69d25 ("ovl: fsync after metadata copy-up") was done t=
+o
+> > > fix durability of overlayfs copy up on an upper filesystem which does
+> > > not enforce ordering on storing of metadata changes (e.g. ubifs).
+> >
+> > I'm trying to understand this previous commit more than this one,
+> > but what 'enforce ordering on storing of metadata changes' does
+> > overlayfs encode right now?
+>
+> On copy up or a directory:
+> 1. create a directory in tmpdir
+> 2. copy attributes and xattr from lower directory to this staged
+> directory copy up
+> 3. move it into place in overlayfs upperdir
+>
+> Until commit 7d6899fb69d25, there was no fsync before step 2 to 3.
+> Only when copying a regular file there was fsync after data copy up.
+>
+> This of course provides no guarantee over the state of the copied up dir
+> after crash, whether the directory is observed in upperdir with or withou=
+t
+> the attributes, but in reality this is how it is since 2014 and for many =
+local
+> filesystems (e.g. xfs), there is little risk in this practice.
+>
+> It should be noted that overlayfs is quite picky about which filesystems
+> are allowed as upper filesystems and specifically network filesystems
+> are not allowed.
+>
+> > There is no real ordering requirements
+> > anywhere in the Linux file system API, so it does sounds like ovl
+> > is making some assumptions by default?
+>
+> Correct. I would say "making assumptions" I would just say that
+> overlayfs has never taken this aspect into account.
+>
+> > Are those documented somewhere?
+>
+> I guess not, but now that this commit introduces, fsync=3Dordered,strict
+> and a documentation section about them, it is a good opportunity
+> to expand on this point. I will add that.
+>
 
-Thanks!  Just as another heads up, I decided to run a full regression
-test suite on 6.1.167-rc1 with those three reverts, and there ar still
-some crashes with generic/051 and ext4/039:
+See modified documentation below:
 
-ext4/4k: 711 tests, 1 errors, 83 skipped, 4645 seconds
-  Errors: generic/051
-ext4/1k: 636 tests, 7 failures, 1 errors, 78 skipped, 5612 seconds
-  Errors: ext4/039
-ext4/encrypt: 679 tests, 1 errors, 215 skipped, 3343 seconds
-  Errors: generic/051
-ext4/ext3conv: 706 tests, 1 errors, 85 skipped, 5282 seconds
-  Errors: generic/051
-ext4/adv: 713 tests, 13 failures, 1 errors, 91 skipped, 4944 seconds
-  Errors: generic/051
-ext4/dioread_nolock: 711 tests, 1 failures, 1 errors, 83 skipped, 5518 seconds
-  Errors: generic/051
-ext4/data_journal: 635 tests, 6 failures, 1 errors, 151 skipped, 4105 seconds
-  Errors: ext4/039
-ext4/bigalloc_4k: 604 tests, 1 errors, 79 skipped, 4876 seconds
-  Errors: ext4/039
-ext4/bigalloc_1k: 682 tests, 6 failures, 1 errors, 106 skipped, 5454 seconds
-  Errors: generic/051
-ext4/dax: 705 tests, 10 failures, 1 errors, 207 skipped, 3249 seconds
-  Errors: generic/051
+Thanks,
+Amir.
 
-I'll start trying to bisect this as I have time today.  Are you going
-to put out another rc and restart the 48 hour testing clock?
+Durability and copy up
+----------------------
 
-       	   	      	  	      - Ted
+The fsync(2) system call ensures that the data and metadata of a file
+are safely written to the backing storage, which is expected to
+guarantee the existence of the information post system crash.
 
-P.S.  A sample crash:
+Without an fsync(2) call, there is no guarantee that the observed
+data after a system crash will be either the old or the new data, but
+in practice, the observed data after crash is often the old or new data
+or a mix of both.
 
-   BUG: unable to handle page fault for address: ffffffffffffffec
-   #PF: supervisor read access in kernel mode
-   #PF: error_code(0x0000) - not-present page
-   PGD 300d067 P4D 300d067 PUD 300f067 PMD 0 
-   Oops: 0000 [#1] PREEMPT SMP NOPTI
-   CPU: 1 PID: 326494 Comm: fsstress Not tainted 6.1.167-rc1-xfstests-00485-gb12a69d9770b #50
-   Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-   RIP: 0010:ext4_ext_map_blocks+0x190/0xa50
-   Code: 48 89 ef 48 8d 54 24 60 e8 9d 71 ff ff 85 c0 41 89 c3 89 44 24 28 0f 84 51 02 00 00 48 8b 44 24 30 48 85 c0 0f 84 72 04 00 00 <44> 0f b7 78 08 48 89 1c 24 49 89 c5 31 db 49 89 c6 49 8b 7d 28 48
-   RSP: 0018:ffffd16f045b7968 EFLAGS: 00010286
-   RAX: ffffffffffffffe4 RBX: ffffd16f045b7ac8 RCX: 00000000000005ea
-   RDX: ffffffff9b2407d0 RSI: 0000000000000000 RDI: ffff8e671ae1c410
-   RBP: ffff8e66f8b72688 R08: ffffffff9b4a7024 R09: 0000000000000000
-   R10: 0000000000000000 R11: ffff8e676f1e2ff0 R12: 0000000000000001
-   R13: 00000000000f6422 R14: ffff8e66c244c000 R15: ffff8e66c0fd3080
-   FS:  00007f67932c6740(0000) GS:ffff8e6799500000(0000) knlGS:0000000000000000
-   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   CR2: ffffffffffffffec CR3: 000000013d210000 CR4: 0000000000350ee0
-   Call Trace:
-    <TASK>
-    ext4_map_blocks+0x237/0x690
-    ext4_iomap_begin+0x2af/0x320
-    iomap_iter+0xb1/0x130
-    __iomap_dio_rw+0x21e/0x650
-    ? aio_fsync_work+0xf0/0xf0
-    iomap_dio_rw+0xe/0x30
-    ext4_dio_write_iter+0x612/0x6f0
-    ? filename_lookup+0xde/0x1a0
-    ? mntput_no_expire+0x4e/0x260
-    aio_write+0x159/0x2a0
-    ? fget+0x7a/0xa0
-    ? io_submit_one+0xef/0x3b0
-    io_submit_one+0xef/0x3b0
-    __x64_sys_io_submit+0xac/0x1d0
-    do_syscall_64+0x35/0x80
-    entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-   RIP: 0033:0x7f67933d7779
-   Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 67 76 0d 00 f7 d8 64 89 01 48
-   RSP: 002b:00007fff8d7191f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000d1
-   RAX: ffffffffffffffda RBX: 00007f67932c66c8 RCX: 00007f67933d7779
-   RDX: 00007fff8d719248 RSI: 0000000000000001 RDI: 00007f67934c6000
-   RBP: 00007f67934c6000 R08: 0000000000000001 R09: 0000000000007c38
-   R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000001
-   R13: 0000000000000019 R14: 00007fff8d719248 R15: 0000000000019000
-    </TASK>
-   CR2: ffffffffffffffec
-   ---[ end trace 0000000000000000 ]---
+When an overlayfs file is modified for the first time, copy up will
+create a copy of the lower file and its parent directories in the upper
+layer.  Since the Linux filesystem API does not enforce any particular
+ordering on storing changes without explicit fsync(2) calls, in case
+of a system crash, the upper file could end up with no data at all
+(i.e. zeros), which would be an unusual outcome.  To avoid this
+experience, overlayfs calls fsync(2) on the upper file before completing
+data copy up with rename(2) to make the copy up "atomic".
 
+By default, overlayfs does not call fsync(2) on copied up directories,
+so after a crash, a copied up directory could be observed in the upper
+layer without some of its attributes.  This has been the overlayfs
+behavior since its introduction and it poses little risk in practice
+for common local filesystems (e.g. ext4, xfs).  This risk is further
+mitigated by overlayfs restricting the upper layer to local filesystems
+only (i.e. network filesystems are not allowed).
 
+Overlayfs can be tuned to prefer performance or durability when storing
+to the underlying upper layer.  This is controlled by the "fsync" mount
+option, which supports these values:
+
+- "ordered": (default)
+    Call fsync(2) on upper file before completion of data copy up.
+    No fsync(2) is called on directory or metadata-only copy up.
+- "strict":
+    Call fsync(2) on upper file and directories before completion of any
+    copy up.
+- "volatile": [*]
+    Prefer performance over durability (see `Volatile mount`_)
+
+[*] The mount option "volatile" is an alias to "fsync=3Dvolatile".
 
