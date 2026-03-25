@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-230372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFxRGxgcxGnlwQQAu9opvQ
-	(envelope-from <stable+bounces-230372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:32:08 +0100
+	id oL/6CfgexGmZwgQAu9opvQ
+	(envelope-from <stable+bounces-230373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:44:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C79329DAB
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:32:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B889932A0C8
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A745A300669A
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:32:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9CF553067B25
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5505A402429;
-	Wed, 25 Mar 2026 17:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24068406289;
+	Wed, 25 Mar 2026 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Obv9TwkW"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="glNnsF7C"
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754E6405ACD;
-	Wed, 25 Mar 2026 17:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0AA3BADA3;
+	Wed, 25 Mar 2026 17:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774459917; cv=none; b=Ai/r1xsrBnnf9ql/T/g2ta0rJs4KyQUd/t8WKJ57jDM7f/PVkXRkhqOCL+cSNrJQzQax4hQCTu+GmQo3Ec/vY8aFduxTuokp3hOC+6vpwVn3UOrmq0nuvdQh1lwIWBc7lrJGbmSPE79HOen7XKg1BWJ7FtXoKjAzsk/hEAPULEM=
+	t=1774460270; cv=none; b=u+/MTn1zzFNlON5SnDlJh1d29A3CCsmK0PPdsBJLlRTpLEtIrCZee3cQeUgKqzNjkyaEo1TbLlikx9m+u3w7YI4d1bD9Thveu/aXDnD77wdH1sF30nANV8Z2v0o2ySrIY85jyOrpUjdyy0o303YR1OWo7zc1YnNaOegs2Q4k8bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774459917; c=relaxed/simple;
-	bh=tBVdeSRNe7fRzqK/8oRipl6PFfOAt1UzjCoVZmWpCSA=;
+	s=arc-20240116; t=1774460270; c=relaxed/simple;
+	bh=p/OEs0TnnejAQjkFdiUHioGmEvF9yvEKBIlw0HK/PAM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pI1fIugTeOuVm2MvRzvtHwJRylehGlf5sJVjUw9Vungm6/KTYrY3cFLT8M7b/8dlCdjhHOcn7338AD4LsEJinHPlRhUOlVlnZHulhDEsjFaX/4nGCwoF/bGEeOg+BGOc8/RnO5164s/AEL2491JEPcFq0u+zEd88cv87dwZTS5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Obv9TwkW; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=C5Z8PBfdKF00Mydbcc8KRMYq2TaTyGXeXjQSM/LVf7gVKcoLtG8qfxn3K4CUZB2JZ0v3hQyZxarNixdyOEp2487Mho4Z8lvgbo9cjjmeuy9KfMcNINP0/EfQux7LAakxpbEkZi/6NEMQBqIA1cQ5DFwXkBBDn25pCDIlI911HTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=glNnsF7C; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F03762444;
-	Wed, 25 Mar 2026 10:31:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3005F2444;
+	Wed, 25 Mar 2026 10:37:42 -0700 (PDT)
 Received: from [10.1.26.165] (XHFQ2J9959.cambridge.arm.com [10.1.26.165])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4802F3F836;
-	Wed, 25 Mar 2026 10:31:53 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B1903F836;
+	Wed, 25 Mar 2026 10:37:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774459914; bh=tBVdeSRNe7fRzqK/8oRipl6PFfOAt1UzjCoVZmWpCSA=;
+	t=1774460268; bh=p/OEs0TnnejAQjkFdiUHioGmEvF9yvEKBIlw0HK/PAM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Obv9TwkWRQQd6UqYFTc3lGVfBYe3zfqrZ+7EfT46GqiiLeYSzLM6vpfQf2WCRBkgF
-	 N9hFar9MYtIVCep1prkx8JKcmWXZSCbAAbI4vaoVgSEBmIStWVeG2uwPCsk9is+RuV
-	 1nCnY62qNSJt7m3z+Cgv7e4MzJZQR8QnLqfGf+ZY=
-Message-ID: <c6aef714-6736-42c8-8866-eb4da7ab85a1@arm.com>
-Date: Wed, 25 Mar 2026 17:31:51 +0000
+	b=glNnsF7CcUDAAtiQxqkCMQXTyvIocCHfcWpHI7Cc8ePSiH12sl/W7usdCm08571AD
+	 ow+Od3i/Bq2iHkQjQWuvCc3Y3V0Bh/uTgOYimBvgjHoXIwNyCuNR+qtLoRuLGVmxAM
+	 tYbuPCf8qzuXLc8rG/bgK3ztEP66XxLXaCGMRDQQ=
+Message-ID: <eea4f7f1-c929-453b-adca-606ba6e4ec69@arm.com>
+Date: Wed, 25 Mar 2026 17:37:44 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,26 +56,25 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 2/3] arm64: mm: Handle invalid large leaf mappings
  correctly
 Content-Language: en-GB
-To: Jinjiang Tu <tujinjiang@huawei.com>,
+To: Yang Shi <yang@os.amperecomputing.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  "David Hildenbrand (Arm)" <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Yang Shi <yang@os.amperecomputing.com>,
  Suzuki K Poulose <suzuki.poulose@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>
+ Jinjiang Tu <tujinjiang@huawei.com>, Kevin Brodsky <kevin.brodsky@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20260323130317.1737522-1-ryan.roberts@arm.com>
  <20260323130317.1737522-3-ryan.roberts@arm.com>
- <a7fa6fd9-79b2-4e46-8ee4-fde9d5853100@huawei.com>
+ <401073fd-3438-419d-8287-35eea61919b0@os.amperecomputing.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <a7fa6fd9-79b2-4e46-8ee4-fde9d5853100@huawei.com>
+In-Reply-To: <401073fd-3438-419d-8287-35eea61919b0@os.amperecomputing.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -84,9 +83,9 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230372-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230373-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
@@ -96,14 +95,15 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
-X-Rspamd-Queue-Id: 44C79329DAB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:dkim,arm.com:email,arm.com:mid]
+X-Rspamd-Queue-Id: B889932A0C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 24/03/2026 02:30, Jinjiang Tu wrote:
+On 24/03/2026 18:20, Yang Shi wrote:
 > 
-> 在 2026/3/23 21:03, Ryan Roberts 写道:
+> 
+> On 3/23/26 6:03 AM, Ryan Roberts wrote:
 >> It has been possible for a long time to mark ptes in the linear map as
 >> invalid. This is done for secretmem, kfence, realm dma memory un/share,
 >> and others, by simply clearing the PTE_VALID bit. But until commit
@@ -189,26 +189,191 @@ On 24/03/2026 02:30, Jinjiang Tu wrote:
 >> entry if it is a section mapping, since otherwise it concluded it must
 >> be a table entry so shouldn't be modified. But p[mu]d_sect() only
 >> returns true if the entry is valid. So the result was that the large
+>> leaf entry was made invalid in the first pass then ignored in the second
+>> pass. It remains invalid until the above code tries to access it and
+>> blows up.
 > 
-> Maybe I missed something, pmd_sect() only checks PMD_TYPE_SECT, doesn't check
-> PTE_VALID?
-> Why it only returns true if the entry is valid?
-
-PTE_VALID is bit 0.
-
-#define PMD_TYPE_MASK		(_AT(pmdval_t, 3) << 0)
-#define PMD_TYPE_TABLE		(_AT(pmdval_t, 3) << 0)
-#define PMD_TYPE_SECT		(_AT(pmdval_t, 1) << 0)
-
-So PMD_TYPE_TABLE and PMD_TYPE_SECT are both implicitly checking that PTE_VALID
-is set.
-
+> Good catch. I recall I met this problem when I worked on a very early PoC of
+> large block mapping patch. It took a total different approach than
+> BBML2_NOABORT. I didn't run into that problem when I implemented BBML2_NOABORT
+> because nobody actually changed valid/invalid attribute on large block mapping
+> granule so I forgot it. But I definitely missed realm usecase.
 > 
-> #define pmd_sect(pmd)        ((pmd_val(pmd) & PMD_TYPE_MASK) == \
->                  PMD_TYPE_SECT)
+>>
+>> The simple fix would be to update pageattr_pmd_entry() to use
+>> !pmd_table() instead of pmd_sect(). That would solve this problem.
 > 
+> Yes, I agree.
+> 
+>>
+>> But the ptdump code also suffers from a similar issue. It checks
+>> pmd_leaf() and doesn't call into the arch-specific note_page() machinery
+>> if it returns false. As a result of this, ptdump wasn't even able to
+>> show the invalid large leaf mappings; it looked like they were valid
+>> which made this super fun to debug. the ptdump code is core-mm and
+>> pmd_table() is arm64-specific so we can't use the same trick to solve
+>> that.
+> 
+> I don't quite get why we need to show invalid mappings in ptdump? IIUC ptdump is
+> not supposed to show invalid mappings even though they are transient.
+
+Let's say we have 8M of PMD mappings, then we want to mark 2M in the middle of
+that as invalid. Prior to my fix, ptdump would show the full 8M as still being
+valid after making the middle 2M invalid. This happened because the note_page()
+call for the 2M invalid part was suppressed, but there was also no ptdump_hole()
+call since the PMD entry is not none. After my fix, we call note_page() for the
+non-none but invalid pmd and now the "F" is correctly displayed for that portion.
 
 Thanks,
 Ryan
+
+
+
+> 
+> Thanks,
+> Yang
+> 
+> 
+>>
+>> But we already support the concept of "present-invalid" for user space
+>> entries. And even better, pmd_leaf() will return true for a leaf mapping
+>> that is marked present-invalid. So let's just use that encoding for
+>> present-invalid kernel mappings too. Then we can use pmd_leaf() where we
+>> previously used pmd_sect() and everything is magically fixed.
+>>
+>> Additionally, from inspection kernel_page_present() was broken in a
+>> similar way, so I'm also updating that to use pmd_leaf().
+>>
+>> I haven't spotted any other issues of this shape but plan to do a follow
+>> up patch to remove pmd_sect() and pud_sect() in favour of the more
+>> sophisticated pmd_leaf()/pud_leaf() which are core-mm APIs and will
+>> simplify arm64 code a bit.
+>>
+>> Fixes: a166563e7ec37 ("arm64: mm: support large block mapping when rodata=full")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+>>   arch/arm64/mm/pageattr.c | 50 ++++++++++++++++++++++------------------
+>>   1 file changed, 28 insertions(+), 22 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>> index 358d1dc9a576f..87dfe4c82fa92 100644
+>> --- a/arch/arm64/mm/pageattr.c
+>> +++ b/arch/arm64/mm/pageattr.c
+>> @@ -25,6 +25,11 @@ static ptdesc_t set_pageattr_masks(ptdesc_t val, struct
+>> mm_walk *walk)
+>>   {
+>>       struct page_change_data *masks = walk->private;
+>>   +    /*
+>> +     * Some users clear and set bits which alias eachother (e.g. PTE_NG and
+>> +     * PTE_PRESENT_INVALID). It is therefore important that we always clear
+>> +     * first then set.
+>> +     */
+>>       val &= ~(pgprot_val(masks->clear_mask));
+>>       val |= (pgprot_val(masks->set_mask));
+>>   @@ -36,7 +41,7 @@ static int pageattr_pud_entry(pud_t *pud, unsigned long addr,
+>>   {
+>>       pud_t val = pudp_get(pud);
+>>   -    if (pud_sect(val)) {
+>> +    if (pud_leaf(val)) {
+>>           if (WARN_ON_ONCE((next - addr) != PUD_SIZE))
+>>               return -EINVAL;
+>>           val = __pud(set_pageattr_masks(pud_val(val), walk));
+>> @@ -52,7 +57,7 @@ static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
+>>   {
+>>       pmd_t val = pmdp_get(pmd);
+>>   -    if (pmd_sect(val)) {
+>> +    if (pmd_leaf(val)) {
+>>           if (WARN_ON_ONCE((next - addr) != PMD_SIZE))
+>>               return -EINVAL;
+>>           val = __pmd(set_pageattr_masks(pmd_val(val), walk));
+>> @@ -132,11 +137,12 @@ static int __change_memory_common(unsigned long start,
+>> unsigned long size,
+>>       ret = update_range_prot(start, size, set_mask, clear_mask);
+>>         /*
+>> -     * If the memory is being made valid without changing any other bits
+>> -     * then a TLBI isn't required as a non-valid entry cannot be cached in
+>> -     * the TLB.
+>> +     * If the memory is being switched from present-invalid to valid without
+>> +     * changing any other bits then a TLBI isn't required as a non-valid
+>> +     * entry cannot be cached in the TLB.
+>>        */
+>> -    if (pgprot_val(set_mask) != PTE_VALID || pgprot_val(clear_mask))
+>> +    if (pgprot_val(set_mask) != (PTE_MAYBE_NG | PTE_VALID) ||
+>> +        pgprot_val(clear_mask) != PTE_PRESENT_INVALID)
+>>           flush_tlb_kernel_range(start, start + size);
+>>       return ret;
+>>   }
+>> @@ -237,18 +243,18 @@ int set_memory_valid(unsigned long addr, int numpages,
+>> int enable)
+>>   {
+>>       if (enable)
+>>           return __change_memory_common(addr, PAGE_SIZE * numpages,
+>> -                    __pgprot(PTE_VALID),
+>> -                    __pgprot(0));
+>> +                    __pgprot(PTE_MAYBE_NG | PTE_VALID),
+>> +                    __pgprot(PTE_PRESENT_INVALID));
+>>       else
+>>           return __change_memory_common(addr, PAGE_SIZE * numpages,
+>> -                    __pgprot(0),
+>> -                    __pgprot(PTE_VALID));
+>> +                    __pgprot(PTE_PRESENT_INVALID),
+>> +                    __pgprot(PTE_MAYBE_NG | PTE_VALID));
+>>   }
+>>     int set_direct_map_invalid_noflush(struct page *page)
+>>   {
+>> -    pgprot_t clear_mask = __pgprot(PTE_VALID);
+>> -    pgprot_t set_mask = __pgprot(0);
+>> +    pgprot_t clear_mask = __pgprot(PTE_MAYBE_NG | PTE_VALID);
+>> +    pgprot_t set_mask = __pgprot(PTE_PRESENT_INVALID);
+>>         if (!can_set_direct_map())
+>>           return 0;
+>> @@ -259,8 +265,8 @@ int set_direct_map_invalid_noflush(struct page *page)
+>>     int set_direct_map_default_noflush(struct page *page)
+>>   {
+>> -    pgprot_t set_mask = __pgprot(PTE_VALID | PTE_WRITE);
+>> -    pgprot_t clear_mask = __pgprot(PTE_RDONLY);
+>> +    pgprot_t set_mask = __pgprot(PTE_MAYBE_NG | PTE_VALID | PTE_WRITE);
+>> +    pgprot_t clear_mask = __pgprot(PTE_PRESENT_INVALID | PTE_RDONLY);
+>>         if (!can_set_direct_map())
+>>           return 0;
+>> @@ -296,8 +302,8 @@ static int __set_memory_enc_dec(unsigned long addr,
+>>        * entries or Synchronous External Aborts caused by RIPAS_EMPTY
+>>        */
+>>       ret = __change_memory_common(addr, PAGE_SIZE * numpages,
+>> -                     __pgprot(set_prot),
+>> -                     __pgprot(clear_prot | PTE_VALID));
+>> +                     __pgprot(set_prot | PTE_PRESENT_INVALID),
+>> +                     __pgprot(clear_prot | PTE_MAYBE_NG | PTE_VALID));
+>>         if (ret)
+>>           return ret;
+>> @@ -311,8 +317,8 @@ static int __set_memory_enc_dec(unsigned long addr,
+>>           return ret;
+>>         return __change_memory_common(addr, PAGE_SIZE * numpages,
+>> -                      __pgprot(PTE_VALID),
+>> -                      __pgprot(0));
+>> +                      __pgprot(PTE_MAYBE_NG | PTE_VALID),
+>> +                      __pgprot(PTE_PRESENT_INVALID));
+>>   }
+>>     static int realm_set_memory_encrypted(unsigned long addr, int numpages)
+>> @@ -404,15 +410,15 @@ bool kernel_page_present(struct page *page)
+>>       pud = READ_ONCE(*pudp);
+>>       if (pud_none(pud))
+>>           return false;
+>> -    if (pud_sect(pud))
+>> -        return true;
+>> +    if (pud_leaf(pud))
+>> +        return pud_valid(pud);
+>>         pmdp = pmd_offset(pudp, addr);
+>>       pmd = READ_ONCE(*pmdp);
+>>       if (pmd_none(pmd))
+>>           return false;
+>> -    if (pmd_sect(pmd))
+>> -        return true;
+>> +    if (pmd_leaf(pmd))
+>> +        return pmd_valid(pmd);
+>>         ptep = pte_offset_kernel(pmdp, addr);
+>>       return pte_valid(__ptep_get(ptep));
+> 
 
 
