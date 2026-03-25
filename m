@@ -1,123 +1,223 @@
-Return-Path: <stable+bounces-230328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HteN1ndw2kgugQAu9opvQ
-	(envelope-from <stable+bounces-230328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:04:25 +0100
+	id QPKENLnaw2lwuQQAu9opvQ
+	(envelope-from <stable+bounces-230329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:53:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA2132568E
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:04:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5AD325372
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50FBE3363E7F
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:13:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 13186307762C
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63C13DBD73;
-	Wed, 25 Mar 2026 12:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990393D47A7;
+	Wed, 25 Mar 2026 12:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ZgdxCoaA"
+	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="lzWTimfE"
 X-Original-To: stable@vger.kernel.org
-Received: from va-2-112.ptr.blmpb.com (va-2-112.ptr.blmpb.com [209.127.231.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100B53DA7E4
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 12:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114E63CEBA5;
+	Wed, 25 Mar 2026 12:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.71.153.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774440698; cv=none; b=l1Sl0nidpUeXszXboMs8lF++fTBPOd07Q52zuFNnoRSVy3evG5wwfUfejzaGYJMFOK6zayQihmih4NbbjzM4XpIalvsiy9atK/ECKZN18CrT1FVwMmoni0qd1ThwHgX9KgRzvBl0lTIfIAy+vKMBewwM7GHBMv9x0YdwWp6ELTY=
+	t=1774442636; cv=none; b=HdZlqvvB5x+qAg0/xS+WzOjWJeOB0swNIgEMrwDczpb6LyEg1vkK7j4Wd17LPGMqv9XKfQenY0tdKYkTcctyGUJncL6Ar3F8R070SzICy7BE5k/e0VSDmcQA3DKMvuzMXJ3rB7fD9fhkspvMuxHj6eVNs4GLDzAO1fOt5I3TGO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774440698; c=relaxed/simple;
-	bh=YAUtJDw2f3K/ebctitXa9tJPCYVwC+kEThdG8vlj+yw=;
-	h=From:Date:Message-Id:Mime-Version:To:Subject:Content-Type:Cc; b=u6OZz5x+60FkOPgwuzI50Ibld3iuDMWLKod7yuLsclISiOuY5Siqcguuu4Ruh64FCVMbdj7qkVCdhFhoMjU4rKPw7ThVwhXvtcHjcM/dXV46CH1vmSgUfPXxIb3P1uSS3VvYtXDwtTY3pZvyG+Iwt5WFsRuJ/YGmfnjs73h5ihc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ZgdxCoaA; arc=none smtp.client-ip=209.127.231.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1774440685; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=7gvAcvhp23Tp997YHFDCTzlIp6jmCAkjpZ+WoXr7cCM=;
- b=ZgdxCoaAnsIUVN/p44EDxIRkHUPLJ/n9e6YmiZCL9YaJ1wFN+3gX+22f1+m8QCvi7SizMi
- VFFkSbtw51NcqpiT8uWsHpyJ8SIPa0dgOtofoURVP/HgcF6TvaPZsv036J38NG+ShaVjN2
- xnVDz7CGYoyCNIycKxW3y6hkJTZxDD1Ro4F1r7TXv4PoLo58jMO3h/w2OWe7FOAnW2QT6b
- 8oeQ72yZOIDxffqc36ZAO3ay8vZxFZFr18HqH34fMthFuQ76VOZPZsHSNMmgApJMZDck4r
- dtVxtjlPumbGtwbM9Lqw+ppLahyN2+MBA59XH5yl4uZOZGAuj4Rqf4kKWR4Rcw==
-From: "Rui Qi" <qirui.001@bytedance.com>
-Date: Wed, 25 Mar 2026 20:11:09 +0800
-Message-Id: <20260325121109.89705-1-qirui.001@bytedance.com>
+	s=arc-20240116; t=1774442636; c=relaxed/simple;
+	bh=P2st27FduWOKUuPltXFpdPPjpon9JhnO8jOTTyeeExk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D/H0iu+Krx4ZevcVJc2rDpMlcOfnWkhAj+XIQjeoK8TMcy50+TuSLaSTPV/HJQTeebx/kLXhRsvt5m+x+suJBrEv/0xOTeh3UUII9F8Y8YwOjOzs5FuDPAilsWzlYL9hzAcgqNMoWmoxohd20ZGG9P4y4AVacpQ1dEWoM6/apuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=lzWTimfE; arc=none smtp.client-ip=216.71.153.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1774442634; x=1805978634;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=P2st27FduWOKUuPltXFpdPPjpon9JhnO8jOTTyeeExk=;
+  b=lzWTimfEqxHqvFkHF9lNU3YaFhEvw5KgcOdbbUxPdptCA2yWXUzFFf7n
+   b8KYIqtaQay46VmsQeRnNtfOw+A4zH1Cy4ixCRH3LT6m0HxKjDkrkB0YD
+   YeCb8JR+BS+M3qpqlvjVjynRYp3HgKpTK7JXgTOb2xvMlnFQXRAYgR+SA
+   tbxsIyOZyJcZW7+AlEm+aQVD2q1XLhTwaIvaURydQVTqpy6+7YDrm8Acj
+   6mzEy/MAPq4M/VontCSM6gErGa0wAoK/yeuFtDWNCTr+yfDQzxRI+9Gk6
+   hP8oKl3Xt1N4z8sNViR50vH8+hOeNep400VByR7LmuPOkeTH7wOLCXKWM
+   g==;
+X-CSE-ConnectionGUID: t+1L1/bfRcCAW3SaaJQE8g==
+X-CSE-MsgGUID: hd4tVdALQz24dPkBa3CgUQ==
+X-IronPort-AV: E=Sophos;i="6.23,140,1770566400"; 
+   d="scan'208";a="143710495"
+Received: from unknown (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 25 Mar 2026 20:43:53 +0800
+IronPort-SDR: 69c3d86c_eoUiGHM+9tPRSAM1VzidqHP7ehpZ6yzes3P+psQ8WMScmDL
+ WpHVPxYmjjq4JdEkMljNJlg8jwriSozJ8d/JTfw==
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Mar 2026 05:43:24 -0700
+WDCIronportException: Internal
+Received: from unknown (HELO gcv.wdc.com) ([10.224.20.47])
+  by uls-op-cesaip01.wdc.com with ESMTP; 25 Mar 2026 05:43:21 -0700
+From: Hans Holmberg <hans.holmberg@wdc.com>
+To: Carlos Maiolino <cem@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	Hans Holmberg <hans.holmberg@wdc.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] xfs: start gc on zonegc_low_space attribute updates
+Date: Wed, 25 Mar 2026 13:43:12 +0100
+Message-ID: <20260325124312.26349-1-hans.holmberg@wdc.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Rui Qi <qirui.001@bytedance.com>
-X-Lms-Return-Path: <lba+269c3d0eb+bbc1c0+vger.kernel.org+qirui.001@bytedance.com>
-To: <minyard@acm.org>
-Subject: [PATCH] ipmi: Fix rcu_read_unlock to srcu_read_unlock in handle_read_event_rsp
-Content-Type: text/plain; charset=UTF-8
-Cc: <linux-kernel@vger.kernel.org>, 
-	<openipmi-developer@lists.sourceforge.net>, 
-	"Rui Qi" <qirui.001@bytedance.com>, <stable@vger.kernel.org>
-Content-Transfer-Encoding: 7bit
-X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[wdc.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[wdc.com:s=dkim.wdc.com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230328-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230329-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hans.holmberg@wdc.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qirui.001@bytedance.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bytedance.com:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[wdc.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:dkim,bytedance.com:email,bytedance.com:mid]
-X-Rspamd-Queue-Id: 1FA2132568E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,wdc.com:dkim,wdc.com:email,wdc.com:mid]
+X-Rspamd-Queue-Id: 4A5AD325372
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Fix a bug where rcu_read_unlock() was used instead of srcu_read_unlock()
-in handle_read_event_rsp() when ipmi_alloc_recv_msg() fails.
+Start gc if the agressiveness of zone garbage collection is changed
+by the user (if the file system is not read only).
 
-This mismatch can lead to SRCU read-side critical section imbalance.
+Without this change, the new setting will not be taken into account
+until the gc thread is woken up by e.g. a write.
 
-Fixes: e86ee2d44b44 ("ipmi: Rework locking and shutdown for hot remove")
-Cc: stable@vger.kernel.org # 6.12
-
-Signed-off-by: Rui Qi <qirui.001@bytedance.com>
+Cc: <stable@vger.kernel.org> # v6.15
+Fixes: 845abeb1f06a8a ("xfs: add tunable threshold parameter for triggering zone GC")
+Signed-off-by: Hans Holmberg <hans.holmberg@wdc.com>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 71c6ec8a87927..d2bbf8ffd9d76 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4388,7 +4388,7 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
+v2:
+- Added a new helper to wake up the gc thread in stead of unparking it,
+  which is required to make this work properly.
+- Added protection against races with unmounts as sysfs gets torn down
+  after the zone info struct is freed. This also avoids unneded
+  wakeups during remount.
+- Added fixes and stable cc tags as provided by Darrick.
+
+v1: https://lore.kernel.org/linux-xfs/20260320130256.35225-1-hans.holmberg@wdc.com/
+
+ fs/xfs/xfs_sysfs.c      |  7 ++++++-
+ fs/xfs/xfs_zone_alloc.h |  4 ++++
+ fs/xfs/xfs_zone_gc.c    | 17 +++++++++++++++++
+ 3 files changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/fs/xfs/xfs_sysfs.c b/fs/xfs/xfs_sysfs.c
+index 6c7909838234..4527119b2961 100644
+--- a/fs/xfs/xfs_sysfs.c
++++ b/fs/xfs/xfs_sysfs.c
+@@ -14,6 +14,7 @@
+ #include "xfs_log_priv.h"
+ #include "xfs_mount.h"
+ #include "xfs_zones.h"
++#include "xfs_zone_alloc.h"
  
- 		recv_msg = ipmi_alloc_recv_msg(user);
- 		if (IS_ERR(recv_msg)) {
--			rcu_read_unlock();
-+			srcu_read_unlock(&intf->users_srcu, index);
- 			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
- 						 link) {
- 				list_del(&recv_msg->link);
+ struct xfs_sysfs_attr {
+ 	struct attribute attr;
+@@ -724,6 +725,7 @@ zonegc_low_space_store(
+ 	const char		*buf,
+ 	size_t			count)
+ {
++	struct xfs_mount	*mp = zoned_to_mp(kobj);
+ 	int			ret;
+ 	unsigned int		val;
+ 
+@@ -734,7 +736,10 @@ zonegc_low_space_store(
+ 	if (val > 100)
+ 		return -EINVAL;
+ 
+-	zoned_to_mp(kobj)->m_zonegc_low_space = val;
++	if (mp->m_zonegc_low_space != val) {
++		mp->m_zonegc_low_space = val;
++		xfs_zone_gc_wakeup(mp);
++	}
+ 
+ 	return count;
+ }
+diff --git a/fs/xfs/xfs_zone_alloc.h b/fs/xfs/xfs_zone_alloc.h
+index 4db02816d0fd..8b2ef98c81ef 100644
+--- a/fs/xfs/xfs_zone_alloc.h
++++ b/fs/xfs/xfs_zone_alloc.h
+@@ -51,6 +51,7 @@ int xfs_mount_zones(struct xfs_mount *mp);
+ void xfs_unmount_zones(struct xfs_mount *mp);
+ void xfs_zone_gc_start(struct xfs_mount *mp);
+ void xfs_zone_gc_stop(struct xfs_mount *mp);
++void xfs_zone_gc_wakeup(struct xfs_mount *mp);
+ #else
+ static inline int xfs_mount_zones(struct xfs_mount *mp)
+ {
+@@ -65,6 +66,9 @@ static inline void xfs_zone_gc_start(struct xfs_mount *mp)
+ static inline void xfs_zone_gc_stop(struct xfs_mount *mp)
+ {
+ }
++static inline void xfs_zone_gc_wakeup(struct xfs_mount *mp)
++{
++}
+ #endif /* CONFIG_XFS_RT */
+ 
+ #endif /* _XFS_ZONE_ALLOC_H */
+diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
+index 0ff710fa0ee7..a8f71231f351 100644
+--- a/fs/xfs/xfs_zone_gc.c
++++ b/fs/xfs/xfs_zone_gc.c
+@@ -1171,6 +1171,23 @@ xfs_zone_gc_stop(
+ 		kthread_park(mp->m_zone_info->zi_gc_thread);
+ }
+ 
++void
++xfs_zone_gc_wakeup(
++	struct xfs_mount	*mp)
++{
++	struct super_block      *sb = mp->m_super;
++
++	/*
++	 * If we are unmounting the file system we must not try to
++	 * wake gc as m_zone_info might have been freed already.
++	 */
++	if (down_read_trylock(&sb->s_umount)) {
++		if (!xfs_is_readonly(mp))
++			wake_up_process(mp->m_zone_info->zi_gc_thread);
++		up_read(&sb->s_umount);
++	}
++}
++
+ int
+ xfs_zone_gc_mount(
+ 	struct xfs_mount	*mp)
 -- 
-2.20.1
+2.34.1
+
 
