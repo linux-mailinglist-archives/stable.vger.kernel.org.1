@@ -1,213 +1,206 @@
-Return-Path: <stable+bounces-230341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCRAIjPhw2lvugQAu9opvQ
-	(envelope-from <stable+bounces-230341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:20:51 +0100
+	id IFBNAcbjw2lvugQAu9opvQ
+	(envelope-from <stable+bounces-230343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:31:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2293C3259BB
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:20:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9171C325D22
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 14:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 343323090856
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:09:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 310AF3183ADD
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8431C3D6CD3;
-	Wed, 25 Mar 2026 13:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE9E3DB641;
+	Wed, 25 Mar 2026 13:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="X/AwX8nn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C63D309DDF
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6028C3D88EF
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 13:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774444158; cv=none; b=pAQsOfZmEgcbHvSYC6F6bBTsYGesROlZ75X+5QvhWA05YKjZIfa1x3SJ9U7Q+mGh5GL4fdwn0UgDcKCi5XTQrQu9hqFp//bpsaxl9HN8UjGy0POROgkQ07KXi6xLT3OquOfdCWWXfPMfsu8MER6nsKj1Vl2SA5DJciFCJUlJs8s=
+	t=1774444395; cv=none; b=Ky8u7sTHuBv3kZ2KIcBweFVI2NArvKjdFMeUNfTw4dT5fXjC4yn+1zYB9J0U9YvYlYqPpa0yj5+DiPN+hjIgvuE/Wa8ieHxTzdaZC3OSflhypL1bSXxsx5aUIIdFuW4FQD94gh4pcsz6DIWDmFmefpiOazAwdT6SoCKcAfTs05s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774444158; c=relaxed/simple;
-	bh=5iPawtLo15CwqkkJmwsrHLhxOCNnGqzihkAjVkKHqY8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NGqc6AioKZ0+jKqGbHhAVnA2a9Y2lbj4+05a3yTXxV63cU7bJsCYW/URrbd/BxUVLli4L4VzcAu6exGzeB4A5G2rCYRgiNg6E/J3AI2IWCTT5hjv4gKEx6rYU1w4MaxEmHiJg/PxI/XggImO2LZxTGDijo5cGpl4y/ounx9hDwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-668d4751a3bso7837654a12.2
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 06:09:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774444155; x=1775048955;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ckxAXUDke0h5tovTl8PH/LMAmEb34wiiT3UqWY7x06M=;
-        b=MPI0ExjElEGtUsHDKBW+xctk+gpofreCEM+QHpH5mxJfapGv5GimYSxiF5HNxsKvGq
-         /9svmLLAUn3o9+2Wmoe5fFGjfWfGG8L/epYH1mRNob40J4rJ5uggPabETFuUY+CEN/8d
-         cWPcEpZ2ghTuVuMhbBnXqGhzvEDtrFJjhrBZPjpv4yITNoaIDKh7HgiuTgQPXZYEdcHO
-         v67kvyrCO6yS8MEzfdcgOjCzk+rsF6r4diEP85O8mUHBgb4rvLmYwiwn4AOR7DsifMC3
-         jN+tBmbubwgdXyQyuj35drnpbpHZVCWfQAUFsTs1Q7+wm9OASHe0zCRJnVchWMau9408
-         SjZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRLX7VHPtGnyAwWqtEG+bAvUGwzMijofc6H6reytf1ZO0o1Cni+7CLYfadc4rlIcSzYjoowz8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUwHOq8qys/u4dG4lVPuUkr5I464f0amyI8+m1++75oo7+lD25
-	xRiERknHh0b4MgDhYvb2Hxzn18OPgSqG4doBidSCGEIk8M5HNU7JfgyIiM00eAHfvOM=
-X-Gm-Gg: ATEYQzzqW6UPuKyrA1x/4glyPF8JHjwMgVbUZ6XSuqWv58em7hHxs36Mds3b4ZsnK1J
-	gsRDEaDIzd5IuBiGN2orxJ0fMSAT3N44pKt4SJtB5af2kVVxRCfZDBAeobCLXR0xze9PczcqI3k
-	wmt3hsaCtMjaAeBC9WH9JKCOKwQVO1wez5HYnc2qwE03IIo1+f0Ejqg5I4HZoVYQG9bZfzpPhF3
-	v0kg3JvizWeGVgnb+WvbBgsRf2iX6NHeiDUnOJmg2G3Unfu2o4QHshjHkl7dVoi67jPnNmM+DOp
-	Qf/9x7IjPKEtpb2lQq4/qdWLs4qvBD42zT3Ex3Lv0AI95Scra8BIW88cdVDa18DmHKoyTcww8Cl
-	XC/n7VahzhD5JfKB3WnqwizBWzXG+gUQJbI0FJiGGcBxms33IKoWZ7eneRkU5RLOLQMrcHdxC8Y
-	jcjV9S6EgDkuyTPnqj1xbMY/XWTPD5Vb+/G2lva8QEKHmvDblMVurvdZT+dPRx
-X-Received: by 2002:a17:907:7b8b:b0:b9b:e5d:719b with SMTP id a640c23a62f3a-b9b0e5d8597mr198760466b.14.1774444155109;
-        Wed, 25 Mar 2026 06:09:15 -0700 (PDT)
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b98336630d4sm799195066b.46.2026.03.25.06.09.12
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2026 06:09:14 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66a922a3a05so849060a12.0
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 06:09:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV8gDz4YikMG7oI77lskazgJ6PwVwug8iBHIl2CcQtwNVdWCf2P0K/eknM5EZ8e4fjcUv8505A=@vger.kernel.org
-X-Received: by 2002:a05:6402:458d:b0:66a:3390:30bc with SMTP id
- 4fb4d7f45d1cf-66a826728a0mr2218507a12.15.1774444152446; Wed, 25 Mar 2026
- 06:09:12 -0700 (PDT)
+	s=arc-20240116; t=1774444395; c=relaxed/simple;
+	bh=eL+Mj5TpPx8TwOlgoQWHtmqINkeGKGXM8RP7EJh/g2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D5V/y4RyaeFqBS0bvI71xqZvFB3NqIdXqvcPNuSk7IRmLdKd4WE6Y8hgEXNld3G2k1FQmm+yTlkceofTiuFy7foOMTea/CTDKdv7ohjY39bulMzmjGFyC7jDNTBnB+Php/ZtpK1a8+sbSLFAkqTVd0WMX/G0ivUpDshsz3acsTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=X/AwX8nn; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from macsyma.thunk.org (172-245-102-52-host.colocrossing.com [172.245.102.52] (may be forged))
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 62PDBBkJ027158
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Mar 2026 09:11:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1774444282; bh=7mIseyiI5gVhbpQ41lVFH4BsOHFD/Ed2Wjszawlx41U=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=X/AwX8nn6SKbJnMK+k7rXxgO12DhT2DL7TTl4++hsHi561WhkSAyDNay1WT/29avh
+	 Yd4meozyCIsnAMFQvXQaQtNQK77UsCQSH71XkbezhTXLTf9lo92WhU4StpEDurlIPC
+	 xcBLtea2m63G+vZEQVF0BMp5cl/TGstcCW5NqECIvk87Tn5w55oWqvDJoVT5muGC7y
+	 O+LbaaH2JlZ3issraJPOv+IVapjeTCSBxuV62u9iTusCZR0aTr3+7JQsoNv/7zqO+t
+	 kPP4sIwtCqKcn1ZQmexZLk64QK7Sz0u4DCVP88zC84KzRETbAq2gD2QadPtlViPSIT
+	 AsiuY7y6RQL7A==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id CF20F5F3D27A; Wed, 25 Mar 2026 08:11:10 -0500 (CDT)
+Date: Wed, 25 Mar 2026 08:11:10 -0500
+From: "Theodore Tso" <tytso@mit.edu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mark Brown <broonie@kernel.org>, Jan Kara <jack@suse.cz>,
+        Francesco Dolcini <francesco@dolcini.it>,
+        Brian Foster <bfoster@redhat.com>,
+        Yongjian Sun <sunyongjian1@huawei.com>,
+        Matthew Wilcox <willy@infradead.org>, Gou Hao <gouhao@uniontech.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Zhang Yi <yi.zhang@huawei.com>,
+        Baokun Li <libaokun1@huawei.com>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+        conor@kernel.org, hargar@microsoft.com, achill@achill.org,
+        sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
+Message-ID: <20260325131110.GC2107@macsyma.local>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260324073447.GA5062@francesco-nb>
+ <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
+ <d8080343-20cd-4a4a-b726-b9e3c6a5c5eb@sirena.org.uk>
+ <20260325035931.GC61656@mac.lan>
+ <2026032535-casino-cable-e039@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324143342.17872-1-marek.vasut+renesas@mailbox.org>
-In-Reply-To: <20260324143342.17872-1-marek.vasut+renesas@mailbox.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 25 Mar 2026 14:08:59 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVv5KUma8=2T+ibnXyH+45xvqVrQaPho0CSzP1_r+j_hQ@mail.gmail.com>
-X-Gm-Features: AQROBzDnZXf3SxdSqv07tNfP3QRyp5IV9cnubTU8PQao0RladIsBN2aCe5n6Z3Y
-Message-ID: <CAMuHMdVv5KUma8=2T+ibnXyH+45xvqVrQaPho0CSzP1_r+j_hQ@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: renesas: sparrow-hawk: Reserve first 128 MiB
- of DRAM
-To: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Cc: linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026032535-casino-cable-e039@gregkh>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,kernel.org,glider.be,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
-	TAGGED_FROM(0.00)[bounces-230341-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-230343-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[29];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,suse.cz,dolcini.it,redhat.com,huawei.com,infradead.org,uniontech.com,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_PROHIBIT(0.00)[2.98.90.0:email,35.195.70.0:email];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mit.edu:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas,dt];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,mail.gmail.com:mid,glider.be:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mailbox.org:email]
-X-Rspamd-Queue-Id: 2293C3259BB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[macsyma.local:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9171C325D22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Marek,
+On Wed, Mar 25, 2026 at 10:49:43AM +0100, Greg Kroah-Hartman wrote:
+> > I don't have time to investigate further, but Greg, if you could drop
+> > these three patches, that should address this issue.
+> 
+> All now dropped, thanks!
 
-On Tue, 24 Mar 2026 at 15:33, Marek Vasut
-<marek.vasut+renesas@mailbox.org> wrote:
-> Mark the first 128 MiB of DRAM as reserved. The first 128 MiB of DRAM
-> may optionally be used by TFA and other firmware for its own purposes,
-> and in such case, Linux must not use this memory.
->
-> On this platform, U-Boot runs in EL3 and starts TFA BL31 and Linux from
-> a single combined fitImage. U-Boot has full access to all memory in the
-> 0x40000000..0xbfffffff range, as well memory in the memory banks in the
-> 64-bit address ranges, and therefore U-Boot patches this full complete
-> view of platform memory layout into the DT that is passed to the next
-> stage.
->
-> The next stage is TFA BL31 and then the Linux kernel. The TFA BL31 does
-> not modify the DT passed from U-Boot to TFA BL31 and then to Linux with
-> any new reserved-memory {} node to reserve memory areas used by the TFA
-> BL31 to prevent the next stage from using those areas, which lets Linux
-> to use all of the available DRAM as described in the DT that was passed
-> in by U-Boot, including the areas that are newly utilized by TFA BL31.
->
-> In case of high DRAM utilization, for example in case of four instances
-> of "memtester 3900M" running in parallel, unless the memory used by TFA
-> BL31 is properly reserved, Linux may use and corrupt the memory used by
-> TFA BL31, which would often lead to system becoming unresponsive.
->
-> Until TFA BL31 can properly fill its own reserved-memory node into the
-> DT, and to assure older versions of TFA BL31 do not cause problems, add
-> explicitly reserved-memory {} node which prevents Linux from using the
-> first 128 MiB of DRAM.
->
-> Note that TFA BL31 can be adjusted to use different memory areas, this
-> newly added reserved-memory {} node follows longer-term practice on the
-> R-Car SoCs where the first 128 MiB of DRAM is reserved for firmware use.
-> In case user does modify TFA BL31 to use different memory ranges, they
-> must either use a future version of TFA BL31 which properly patches a
-> reserved-memory {} node into the DT, or they must adjust the address
-> ranges of this reserved-memory {} node accordingly.
->
-> Fixes: a719915e76f2 ("arm64: dts: renesas: r8a779g3: Add Retronix R-Car V4H Sparrow Hawk board support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Thanks!  Just as another heads up, I decided to run a full regression
+test suite on 6.1.167-rc1 with those three reverts, and there ar still
+some crashes with generic/051 and ext4/039:
 
-Thanks for your patch!
+ext4/4k: 711 tests, 1 errors, 83 skipped, 4645 seconds
+  Errors: generic/051
+ext4/1k: 636 tests, 7 failures, 1 errors, 78 skipped, 5612 seconds
+  Errors: ext4/039
+ext4/encrypt: 679 tests, 1 errors, 215 skipped, 3343 seconds
+  Errors: generic/051
+ext4/ext3conv: 706 tests, 1 errors, 85 skipped, 5282 seconds
+  Errors: generic/051
+ext4/adv: 713 tests, 13 failures, 1 errors, 91 skipped, 4944 seconds
+  Errors: generic/051
+ext4/dioread_nolock: 711 tests, 1 failures, 1 errors, 83 skipped, 5518 seconds
+  Errors: generic/051
+ext4/data_journal: 635 tests, 6 failures, 1 errors, 151 skipped, 4105 seconds
+  Errors: ext4/039
+ext4/bigalloc_4k: 604 tests, 1 errors, 79 skipped, 4876 seconds
+  Errors: ext4/039
+ext4/bigalloc_1k: 682 tests, 6 failures, 1 errors, 106 skipped, 5454 seconds
+  Errors: generic/051
+ext4/dax: 705 tests, 10 failures, 1 errors, 207 skipped, 3249 seconds
+  Errors: generic/051
 
-> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-> @@ -118,6 +118,17 @@ memory@600000000 {
->                 reg = <0x6 0x00000000 0x1 0x00000000>;
->         };
->
-> +       reserved-memory {
-> +               #address-cells = <2>;
-> +               #size-cells = <2>;
-> +               ranges;
-> +
-> +               tfa@40000000 {
-> +                       reg = <0x0 0x40000000 0x0 0x8000000>;
-> +                       no-map;
-> +               };
-> +       };
+I'll start trying to bisect this as I have time today.  Are you going
+to put out another rc and restart the 48 hour testing clock?
 
-Obviously I don't like this very much, but I agree there is not much
-else we can do at this point.  Shall I add a
+       	   	      	  	      - Ted
 
-    /* Temporary workaround for broken TFA BL31 */
+P.S.  A sample crash:
 
-comment while applying?
+   BUG: unable to handle page fault for address: ffffffffffffffec
+   #PF: supervisor read access in kernel mode
+   #PF: error_code(0x0000) - not-present page
+   PGD 300d067 P4D 300d067 PUD 300f067 PMD 0 
+   Oops: 0000 [#1] PREEMPT SMP NOPTI
+   CPU: 1 PID: 326494 Comm: fsstress Not tainted 6.1.167-rc1-xfstests-00485-gb12a69d9770b #50
+   Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+   RIP: 0010:ext4_ext_map_blocks+0x190/0xa50
+   Code: 48 89 ef 48 8d 54 24 60 e8 9d 71 ff ff 85 c0 41 89 c3 89 44 24 28 0f 84 51 02 00 00 48 8b 44 24 30 48 85 c0 0f 84 72 04 00 00 <44> 0f b7 78 08 48 89 1c 24 49 89 c5 31 db 49 89 c6 49 8b 7d 28 48
+   RSP: 0018:ffffd16f045b7968 EFLAGS: 00010286
+   RAX: ffffffffffffffe4 RBX: ffffd16f045b7ac8 RCX: 00000000000005ea
+   RDX: ffffffff9b2407d0 RSI: 0000000000000000 RDI: ffff8e671ae1c410
+   RBP: ffff8e66f8b72688 R08: ffffffff9b4a7024 R09: 0000000000000000
+   R10: 0000000000000000 R11: ffff8e676f1e2ff0 R12: 0000000000000001
+   R13: 00000000000f6422 R14: ffff8e66c244c000 R15: ffff8e66c0fd3080
+   FS:  00007f67932c6740(0000) GS:ffff8e6799500000(0000) knlGS:0000000000000000
+   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   CR2: ffffffffffffffec CR3: 000000013d210000 CR4: 0000000000350ee0
+   Call Trace:
+    <TASK>
+    ext4_map_blocks+0x237/0x690
+    ext4_iomap_begin+0x2af/0x320
+    iomap_iter+0xb1/0x130
+    __iomap_dio_rw+0x21e/0x650
+    ? aio_fsync_work+0xf0/0xf0
+    iomap_dio_rw+0xe/0x30
+    ext4_dio_write_iter+0x612/0x6f0
+    ? filename_lookup+0xde/0x1a0
+    ? mntput_no_expire+0x4e/0x260
+    aio_write+0x159/0x2a0
+    ? fget+0x7a/0xa0
+    ? io_submit_one+0xef/0x3b0
+    io_submit_one+0xef/0x3b0
+    __x64_sys_io_submit+0xac/0x1d0
+    do_syscall_64+0x35/0x80
+    entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+   RIP: 0033:0x7f67933d7779
+   Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 67 76 0d 00 f7 d8 64 89 01 48
+   RSP: 002b:00007fff8d7191f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000d1
+   RAX: ffffffffffffffda RBX: 00007f67932c66c8 RCX: 00007f67933d7779
+   RDX: 00007fff8d719248 RSI: 0000000000000001 RDI: 00007f67934c6000
+   RBP: 00007f67934c6000 R08: 0000000000000001 R09: 0000000000007c38
+   R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000001
+   R13: 0000000000000019 R14: 00007fff8d719248 R15: 0000000000019000
+    </TASK>
+   CR2: ffffffffffffffec
+   ---[ end trace 0000000000000000 ]---
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-fixes for v7.0.
 
-> +
->         /* Page 27 / DSI to Display */
->         dp-con {
->                 compatible = "dp-connector";
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
