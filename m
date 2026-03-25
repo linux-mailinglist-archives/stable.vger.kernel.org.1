@@ -1,149 +1,287 @@
-Return-Path: <stable+bounces-230325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLyCHPPPw2nuuAQAu9opvQ
-	(envelope-from <stable+bounces-230325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:07:15 +0100
+	id CMi2D7jQw2lBuQQAu9opvQ
+	(envelope-from <stable+bounces-230326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:10:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EDB324723
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D53BD324854
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5BCB3107F6C
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:56:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 537D4305C759
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9C33CF69E;
-	Wed, 25 Mar 2026 11:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE5C3BE644;
+	Wed, 25 Mar 2026 11:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WnlOwSqb"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kOSpeSGE"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1583BE644;
-	Wed, 25 Mar 2026 11:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCB830DED1;
+	Wed, 25 Mar 2026 11:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774439778; cv=none; b=jsA1xksZrx91yd640or+bknKgAMW4TXjNNpuw3lASkb74OHS4Q8frbyo5RAXESu4P+rM2HCco0LnV2BySKoZwgq3kTMAuMtPM3eHEmMTlxMRc7NEQhLQXd/f/rIO558goWa77cY1Xf/0ofdnM3oAb55MK2e1w9JtHjGO2JU7GFU=
+	t=1774439920; cv=none; b=UAPTgjCET4YPLhq/UEDZw1EHDqQDrZdYxqw2vWqiDLRlnmqMvg2QaDvYSvKaWnxUfmceMNvU51nODzIRJh3hEAxU/4vtomPd0rf3gPQ2xAdPRi1DDu0GMy6nWo6DuyHGAnjH3uJptcj6ceeoeTPR1NWSzAHry5C2TL1GzkfHYZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774439778; c=relaxed/simple;
-	bh=y5eicVOgre3NViIeaiEUviFFzj5lWVajoM5bukR7g8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a53PgVqCTc201hAu6UsJ3iE1whV1LyR/lO09//ySBuLV98AvDusf/noRoRctEv4MUWvwa5E0s9vsk6Xo6hAZna+4UJA5EwXJEpQqCdcxxQTYv+yBMeSkJwQJVcPtntbWcRn/AA/CXr8ksOfRRjiRGiRCDjimHgquI06EgVmgqUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WnlOwSqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AFAC2BCB0;
-	Wed, 25 Mar 2026 11:56:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774439778;
-	bh=y5eicVOgre3NViIeaiEUviFFzj5lWVajoM5bukR7g8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WnlOwSqbd5z6vbnv65t2kBFVk7MHWdjVvVY278mEQNIRoAXjwCfYqb90KQJ+qHRd4
-	 TdmcCIwkY1Huq400bmMfaCVOTud3PwPIE8LWGQUGMRxSaXu+nCkVUh8k6cu9JzjzTK
-	 necjyM5IBHT9qkXZrcOStRybX5whYZO7m6fb9s2mOX7o9TqU9TJge+8JYjzzqdiTyB
-	 W0RVJU6xKQzelk/VGKhEz/D+labRJPrsUSrzHrHOSsrzreH2WG2uV8m3Ma06Rur/YG
-	 WaA9j9vmlW3HoKajCP5tPA02bEvciUg3auAEq1nrR4O+DMPjoOX0Arv//1K2dsa282
-	 R/L4H0QUOn4gA==
-Date: Wed, 25 Mar 2026 11:56:12 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	mohammad.rafi.shaik@oss.qualcomm.com, linux-sound@vger.kernel.org,
-	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-	johan@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
-	konrad.dybcio@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	srini@kernel.org, val@packett.cool, mailingradian@gmail.com,
-	Stable@vger.kernel.org
-Subject: Re: [PATCH v7 04/13] ASoC: qcom: q6apm-lpass-dai: Fix multiple graph
- opens
-Message-ID: <54e3e041-0995-403b-a6c3-c7007bffc6a2@sirena.org.uk>
-References: <20260323223845.2126142-1-srinivas.kandagatla@oss.qualcomm.com>
- <20260323223845.2126142-5-srinivas.kandagatla@oss.qualcomm.com>
- <61596b66-4fef-4bdc-93f2-a8639da79d32@sirena.org.uk>
- <e03b2cf2-08a0-49c8-8ae6-1651de301a08@oss.qualcomm.com>
+	s=arc-20240116; t=1774439920; c=relaxed/simple;
+	bh=UAUxvHk33ET8fFMVzE0Lu0h6czNMoJdojwa93qgED3w=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=oQBeFPn66sbpGpE8SV/kIUcpTB4cOGzjz5S/VlmKMN2TaZDgHjFk5/iD+5YikgJYj9kri6/D7R3FZdOxVcQ52LD7FtQsxUpZJIoBASbKSOgih43wSEzuLqnVNkMfACxyvcxw4csVIugyD7dsTIm0SVSD8Fsb1cLuKpCGGBXSBhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kOSpeSGE; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774439919; x=1805975919;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=UAUxvHk33ET8fFMVzE0Lu0h6czNMoJdojwa93qgED3w=;
+  b=kOSpeSGE3t4jLqOOJobMp1nKEJFRLQ8pGOnuKApO2xMsQxwFwUjGv+Ih
+   Y/nEJrsPcQ9X4x2LQuZsQyTPESzgwwzxDJOmFxKDrBWfIV/bTXbNoPSby
+   h3lk+kYyfCKgtKaEG5rVZZN3BdVQVjp/I4oGmMASMdd5+zveH5SkE91Um
+   HIV3Zfcn5At28+4KHNFQbz2en3J9Xod3zXmRvCA2UYYcKwOKpN6fEr9/Y
+   hcHCDPXT3lIlvrpks//3LPbkb+e5GjcdSHIV0jztCYPL11VK+AzmTsfgv
+   wmXP8iAVo8IF78c8m+0tFo43O5ukYcpkJLa0zWq4NzBgm1xgSgcP9bSRf
+   A==;
+X-CSE-ConnectionGUID: iuU+Wu3uQbCiUbFcOA2TdQ==
+X-CSE-MsgGUID: eizVfLNpT+aO9Ktz66hB+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="85783692"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="85783692"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 04:58:38 -0700
+X-CSE-ConnectionGUID: e9x9KLkLRCGMb+/0WVwbRA==
+X-CSE-MsgGUID: Fvf5VaN5To+tsiDq3wlImA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="223866279"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.125])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 04:58:29 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 25 Mar 2026 13:58:26 +0200 (EET)
+To: Bjorn Helgaas <helgaas@kernel.org>
+cc: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org, 
+    Lukas Wunner <lukas@wunner.de>, alex@shazbot.org, kbusch@kernel.org, 
+    clg@redhat.com, stable@vger.kernel.org, schnelle@linux.ibm.com, 
+    mjrosato@linux.ibm.com
+Subject: Re: [PATCH v11 2/9] s390/pci: Add architecture specific resource/bus
+ address translation
+In-Reply-To: <20260324230641.GA1162880@bhelgaas>
+Message-ID: <328a79ef-7b73-582f-f36b-5139ff04e24d@linux.intel.com>
+References: <20260324230641.GA1162880@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VFBmEYn++veHZhxu"
-Content-Disposition: inline
-In-Reply-To: <e03b2cf2-08a0-49c8-8ae6-1651de301a08@oss.qualcomm.com>
-X-Cookie: -- I have seen the FUN --
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230326-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230325-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,vger.kernel.org,gmail.com,perex.cz,suse.com,packett.cool];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 59EDB324723
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,linux.intel.com:mid]
+X-Rspamd-Queue-Id: D53BD324854
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, 24 Mar 2026, Bjorn Helgaas wrote:
 
---VFBmEYn++veHZhxu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> [+cc Ilpo just for awareness; I assume there's nothing Linux can
+> actually *do* with s390 PCI resources?]
 
-On Wed, Mar 25, 2026 at 11:33:45AM +0000, Srinivas Kandagatla wrote:
-> On 3/24/26 6:25 PM, Mark Brown wrote:
-> > On Mon, Mar 23, 2026 at 10:38:36PM +0000, Srinivas Kandagatla wrote:
+I'm somewhat aware they've this speciality (and besides that, I'm 
+waiting for this change in order to proceed with the series to detect 
+which resources are properly setup when we enumerate them which got 
+reverted earlier).
 
-> >> -	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-> >> +	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK && dai_data->graph[dai->id] == NULL) {
+An additional thought related to this, there's IORESOURCE_PCI_FIXED 
+results in skipping most of the resource fitting and assignment code, so 
+if nothing really should touch these resources, perhaps that flag might be 
+of some help.
 
-> > This is an array of APM_PORT_MAX elements but we have DAI IDs in the DT
-> > bindings over that and now we're using the DAI ID to index into the
+-- 
+ i.
 
-> The driver has dai->id indexing the array in most places, and that is
-> how it has been for a while. This is one of the problem which last patch
-> is trying to address doing a check on the range. At somepoint we need to
-> move to dynamic allocation tbh.
-
-Yeah, I saw it was a bit shaky all over.  I think having the array size
-bumps earlier might help at least make it clearer things are OK, but
-dynamic structures of some kind would indeed be ideal.
-
---VFBmEYn++veHZhxu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnDzVsACgkQJNaLcl1U
-h9Coywf/WkiSE1/dEBYd/LGwvS28AJza6T4NhDfhu7UYyjUL+P6ADa9kAE2+vfKF
-oOr017m+7xPiWx30EwjASxMqO2o+Kx7s776j8XeSimJrn8I3Ibyi8luB6GHZU+fT
-pm1R/fSb+flQkwCcAwbFu/QvbtsH1tNpl2/Nu2x744PjVXG/oEuDPSNt3Jioi+vN
-IP4TPNzfobUJ9oyV+vZ6MnPdtaTpQ2S2PJjgjkg8kp31X0F1FqOOo7d26yYpHq6D
-mpOwELT9yuVEzT4Gvq/oCOnkQ1ATbbZLsfen2V2YHdzX/s996rHc+osDF2cO6RC3
-a0mxm0f+q6fuq9cAEuFNsEb1DtxQ5w==
-=/qLu
------END PGP SIGNATURE-----
-
---VFBmEYn++veHZhxu--
+> On Mon, Mar 16, 2026 at 12:15:37PM -0700, Farhan Ali wrote:
+> > On s390 today we overwrite the PCI BAR resource address to either an
+> > artificial cookie address or MIO address. However this address is different
+> > from the bus address of the BARs programmed by firmware. The artificial
+> > cookie address was created to index into an array of function handles
+> > (zpci_iomap_start). The MIO (mapped I/O) addresses are provided by firmware
+> > but maybe different from the bus addresses. This creates an issue when
+> > trying to convert the BAR resource address to bus address using the generic
+> > pcibios_resource_to_bus().
+> > 
+> > Implement an architecture specific pcibios_resource_to_bus() function to
+> > correctly translate PCI BAR resource addresses to bus addresses for s390.
+> > Similarly add architecture specific pcibios_bus_to_resource function to do
+> > the reverse translation.
+> 
+> 1) It's not clear to me *why* we need these arch-specific versions.
+> We went to a lot of trouble to make these interfaces generic, and I'll
+> be really sad if they have to be arch-specific again.  I don't see any
+> direct uses of these in the series.  In any case, some reference to
+> the user and the actual problem this solves would help.
+> 
+> 2) I'm kind of concerned that the "unusual" s390 PCI resources will be
+> unintelligible to people who are used to reading lspci or dmesg logs
+> from non-s390 systems, and they might confuse the PCI core resource
+> assignment code.  I guess there's not really a concept of a PCI host
+> bridge on s390, there's no bus hierarchy, and no visible PCI-to-PCI
+> bridges, so no windows?  Can you use PCIe switches at all?
+>
+> 3) Maybe this patch should be reordered to be closer to the patch that
+> needs these?  I don't think it's related to the "PCI: Avoid saving
+> config space state if inaccessible" and PCI: Add additional checks for
+> flr reset" patches.
+> 
+> > Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> > ---
+> >  arch/s390/pci/pci.c       | 74 +++++++++++++++++++++++++++++++++++++++
+> >  drivers/pci/host-bridge.c |  8 ++---
+> >  2 files changed, 78 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+> > index 2a430722cbe4..87077e510266 100644
+> > --- a/arch/s390/pci/pci.c
+> > +++ b/arch/s390/pci/pci.c
+> > @@ -272,6 +272,80 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+> >  	return 0;
+> >  }
+> >  
+> > +void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
+> > +			     struct resource *res)
+> > +{
+> > +	struct zpci_bus *zbus = bus->sysdata;
+> > +	struct zpci_bar_struct *zbar;
+> > +	struct zpci_dev *zdev;
+> > +
+> > +	region->start = res->start;
+> > +	region->end = res->end;
+> > +
+> > +	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
+> > +		int j = 0;
+> > +
+> > +		zbar = NULL;
+> > +		zdev = zbus->function[i];
+> > +		if (!zdev)
+> > +			continue;
+> > +
+> > +		for (j = 0; j < PCI_STD_NUM_BARS; j++) {
+> > +			if (zdev->bars[j].res->start == res->start &&
+> > +			    zdev->bars[j].res->end == res->end &&
+> > +			    res->flags & IORESOURCE_MEM) {
+> > +				zbar = &zdev->bars[j];
+> > +				break;
+> > +			}
+> > +		}
+> > +
+> > +		if (zbar) {
+> > +			/* only MMIO is supported */
+> > +			region->start = zbar->val & PCI_BASE_ADDRESS_MEM_MASK;
+> > +			if (zbar->val & PCI_BASE_ADDRESS_MEM_TYPE_64)
+> > +				region->start |= (u64)zdev->bars[j + 1].val << 32;
+> > +
+> > +			region->end = region->start + (1UL << zbar->size) - 1;
+> > +			return;
+> > +		}
+> > +	}
+> > +}
+> > +
+> > +void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
+> > +			     struct pci_bus_region *region)
+> > +{
+> > +	struct zpci_bus *zbus = bus->sysdata;
+> > +	struct zpci_dev *zdev;
+> > +	resource_size_t start, end;
+> > +
+> > +	res->start = region->start;
+> > +	res->end = region->end;
+> > +
+> > +	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
+> > +		zdev = zbus->function[i];
+> > +		if (!zdev || !zdev->has_resources)
+> > +			continue;
+> > +
+> > +		for (int j = 0; j < PCI_STD_NUM_BARS; j++) {
+> > +			if (!zdev->bars[j].size)
+> > +				continue;
+> > +
+> > +			/* only MMIO is supported */
+> > +			start = zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_MASK;
+> > +			if (zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_TYPE_64)
+> > +				start |= (u64)zdev->bars[j + 1].val << 32;
+> > +
+> > +			end = start + (1UL << zdev->bars[j].size) - 1;
+> > +
+> > +			if (start == region->start && end == region->end) {
+> > +				res->start = zdev->bars[j].res->start;
+> > +				res->end = zdev->bars[j].res->end;
+> > +				return;
+> > +			}
+> > +		}
+> > +	}
+> > +}
+> > +
+> >  void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+> >  			   pgprot_t prot)
+> >  {
+> > diff --git a/drivers/pci/host-bridge.c b/drivers/pci/host-bridge.c
+> > index be5ef6516cff..aed031b8a9f3 100644
+> > --- a/drivers/pci/host-bridge.c
+> > +++ b/drivers/pci/host-bridge.c
+> > @@ -49,8 +49,8 @@ void pci_set_host_bridge_release(struct pci_host_bridge *bridge,
+> >  }
+> >  EXPORT_SYMBOL_GPL(pci_set_host_bridge_release);
+> >  
+> > -void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
+> > -			     struct resource *res)
+> > +void __weak pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
+> > +				    struct resource *res)
+> >  {
+> >  	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
+> >  	struct resource_entry *window;
+> > @@ -74,8 +74,8 @@ static bool region_contains(struct pci_bus_region *region1,
+> >  	return region1->start <= region2->start && region1->end >= region2->end;
+> >  }
+> >  
+> > -void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
+> > -			     struct pci_bus_region *region)
+> > +void __weak pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
+> > +				    struct pci_bus_region *region)
+> >  {
+> >  	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
+> >  	struct resource_entry *window;
+> > -- 
+> > 2.43.0
+> > 
+> 
 
