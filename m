@@ -1,167 +1,211 @@
-Return-Path: <stable+bounces-230258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAigGBQ8w2mTpQQAu9opvQ
-	(envelope-from <stable+bounces-230258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 02:36:20 +0100
+	id sEyDL9Y+w2kFpgQAu9opvQ
+	(envelope-from <stable+bounces-230260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 02:48:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41A931E530
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 02:36:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7F331E6B6
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 02:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D0FF304995B
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 01:36:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3283F30515D0
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 01:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0653721A459;
-	Wed, 25 Mar 2026 01:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDE126FD93;
+	Wed, 25 Mar 2026 01:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ssrh8N94"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="re+R+U/e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-79.sinamail.sina.com.cn (mail115-79.sinamail.sina.com.cn [218.30.115.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FDD221F1F
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 01:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774402575; cv=pass; b=l4f7driKNvISHN80F6qfZfBLBGJZKcrya8BrPZh0Ye44n0PVe/2vF0PzOOYOV0Dzfsav5HyVHXzkxbSFcIRmxvz88vx6cs5/HTiLc+InBJO1QR2D5/C2yiEYSiW6lPZQYNgMqnr0nTXtJ7qLDYuB2c6qsA9rSTPnVOSYeOf51t4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774402575; c=relaxed/simple;
-	bh=0okK9xoYyd+Y7Hl9zukJB+XkCExB+thImigrJn9O0Hc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y7Y9+wjO1ZxysrK49hZeMz5UaOoYg78Q4IGhlMv8lO/2y6GxjSdIz7Ses84boUaDv0ROopTfheI4Yvtal4fxxZ8lFlNOBJriKrYq7lqRas4dC4pr4gYcXYwFJsr+yFA5wNM3T3h7siswDcjYzMOlS9awPp95f/rd3XoS3271GVc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ssrh8N94; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1277863a912so549758c88.0
-        for <stable@vger.kernel.org>; Tue, 24 Mar 2026 18:36:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774402574; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XfUHdXk4ONTz3ipLwwnfYqUCDB0RaV2gSMIgzvI8fru+NCuVp3qIeF9+Q2ifBHRTPp
-         yYuCCBkozPn4mKiA8pFcfobQU/AA91+WxcTafi4/BmzHyp6o2ewRvqppg7wWPo/aoREe
-         kDHwG66yzEyk6XFNt86faWKQKNiRwp8REyqWr0yG8MN8mT8SfpCcAZfdDZJ4Kzj8xFgC
-         ckM3WrkXnHXF+ZV9QzfR7G7T6MdHSFOvvF7+Dd9RKzIunEkwd89mTjN2id4YDh3AoCF9
-         sjBC+LJM8bQK2rafZVbFmrfxZCGFzOE1xonjjdrLH1RTZkCxjT7YGzP5w18qVXVodHkT
-         l9mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0okK9xoYyd+Y7Hl9zukJB+XkCExB+thImigrJn9O0Hc=;
-        fh=RTG3WUzEQuzyjmmzbkOd63Pv/+swumReAdxrAGgQlBg=;
-        b=MLsk3GD258L4B3xcIVfoia0p6dB1r3/i7avtfHx7AY31P9QwBAQ/spi0xKrjtDgTeA
-         4ti8bjnTF8vR7/o+k4C7Qh+49mC2IF4M1lwRUurAN34MCICE5Ouw/NvYI4p1Z/3clxT4
-         wyJO8DMNj0QnQfzbUxSKVHsyDhMJgUceHNI/borIwJZ4It6rXuBQ6+C3GKOM6K4Kxrpo
-         63zsQa8NdX6LEZo39A6NQN/o2ImbP/phocDJ2jU5tGuQZxYDAxenmlUtdOe8wau+lnQ9
-         eDw7vHcgXr//2KGBnOG6WnkkgYcWlcgwuAXdvecMfrfBKLjYlvhxbKAFk6jG/utGpe5i
-         xKBg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774402574; x=1775007374; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0okK9xoYyd+Y7Hl9zukJB+XkCExB+thImigrJn9O0Hc=;
-        b=Ssrh8N946wZojgU839yx9auMsTGxmDY7NaJ6srQTZme1oWJGnD0TWDn74xGXcOIGh6
-         H+w9yixBfEh9ZmTJ10oeh3igJXOC8Mf9mRo+UB6Rog4gUZn6BypqhHfRhDEYydcsOwv9
-         L1IOZd9zVYoMgEljeMuYhFle+V3AJahDl5ZbZVul8O+mXqOO8miB+rplqUedQi4Up8J3
-         1rgut45u8dZQjsVWm7trg8D4cy25j0sAyEIgvpUxB9aqe2T8AFG5wk/Qif3coi38xoUE
-         KureEU3Es+y7NgXmaO+57gbalb4nfegBsk31cgS38OnvrsaJH0CJhFsst/gS8G2mNIg2
-         uWpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774402574; x=1775007374;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0okK9xoYyd+Y7Hl9zukJB+XkCExB+thImigrJn9O0Hc=;
-        b=VvfOhk3VOpOBj06MuhQxo7Clgco1IhixJgwnypOb5gDTib9NmklvIKGqpyGJ7XmKmt
-         x+mGWRB6fiba7Gkyn89Vr1ZuADKdidkyFbYhY3h+apTrpAGc1zvEVORxiBsH3PvCVvEn
-         xHZbNFakIcYZKDViAklWK0hxIOGrVrkUN8ULS9j795VfVe4PDCeXLHViGzjOPXsbKzo9
-         zvLMQDuE00h8KLWNF4nEEl1OvBlchZ0ICFaG8I0Hsq3fbtHLcQoicBT08UiXvUo+r358
-         csvt+D+u4oPA/lOjZnyv+Wxj9s/LUPE9hSCyeQV60ug2hgi+8dM+A8vffAj6FISAzBpA
-         RjcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWB60+nYyY5VN3eDu8+FXXL6PnyZEggeizGJgpqibFck7Ml9rEC0sjYEQggmwtX6l9iG2az17M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz377ef1eY7PJvYgV+L2RUGPMk8l/2L/4zjU/Gr3kkyI/jtd7SD
-	M9YNVwwAMGEj5LePYrv/2GsnuI0ok9b//VpSR1hZndx3yJ6VnLIvuV7axju1MWS+HfLSWVc+1lu
-	HLQRqTo+khrmRfIdekjpMcoWwf2XEej41vDKpen8=
-X-Gm-Gg: ATEYQzyZx+7ReXSSRBluEtz/L7D3knoEdGbVW2guBhNV7KEok2xOx4+pfymt9OO32wx
-	0Gqy0D+e5W/t6hwTq6yV0DUfFim7Sm4pjPLoZP8LI22Q8qXoFIbHOP2wusNVeXnU2Ydd9W3Dw//
-	iuXq9qI5nd4RZt1ySbR6fWBoBrEGl8bzHn7CCwpSLJX6K/30W5+Bck7FF7wunoXB6eS4K0B6sbL
-	KIcZf/MpSjd4dgVzRunzD5Db1Aeh5C/jHadq9v1IDRYkxSos3bUxzrL1r1PKaSiD5UtGmesZs1O
-	f+rVmeTaS5hLn4f8YBwFTnsY2hhvJ32acL8R74DuIFUC3JYIXD+85eW+7y34QytaFSRFf+SCcRU
-	CDRG9UnmzPeZ15CBQ6+Be970=
-X-Received: by 2002:a05:7301:4e0b:b0:2bd:db75:c28b with SMTP id
- 5a478bee46e88-2c15d4125d7mr343033eec.7.1774402573473; Tue, 24 Mar 2026
- 18:36:13 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1548E19B5A3
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 01:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.79
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774403259; cv=none; b=EtF+3dpZUTVNkw11Eq14Nm79NLxYjXA40iIRH318JqpDTExiTchMFrFfMjJaVBXDfOIDNIA7fb1kBJmTWFbBqWfVjBFWe1EDntoPJ6AjoWBe6cEJfs4Hys9XNNlBnXU0+GDF43M25ErNMxYKmHHSwDeEBij7/hS6egNXCDqLc74=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774403259; c=relaxed/simple;
+	bh=y3wUchI4euG087/dGBLCL/DR030jRj50L8viLMeI5wE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hbVhQQuWKUeO1TtZUwWv+qLpwcjmEYQIxYkqX79koP2cddS04mhH+65NF15NvP09aTTjKYNIVgmqNgLeOwc2pQ4Qq3p8LEf/ZGtFqqZ+WVxcghONPHWjhC/49XIDm1hQ2V4E23qkjrIYpDWpnrxAeg8SfNG1ikk+BJkSa4bhpSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=re+R+U/e; arc=none smtp.client-ip=218.30.115.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774403256;
+	bh=k3X39rrnC7SX6DJDzJdrtuGNS4llrt1fQ3S0axsiZOg=;
+	h=From:Subject:Date:Message-Id;
+	b=re+R+U/eu4ftsrvLjDLnLciK/zeudy5IMrX3K03IFNLNu3roFDTbie8kVIwkGqkQO
+	 d6NYGhRTa2zdJiYs/PkIyrj00bmjtKcHlBHgyj8XmYBdMHLi3GF3yZg5L0qR6VQLfd
+	 p+ipLHkFBhs5ICguXFhNLDfXm3/wEI5osWFkV5NM=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.22) with ESMTP
+	id 69C33E200000708D; Wed, 25 Mar 2026 09:45:06 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 9224317602261
+X-SMAIL-UIID: 0FF4B9B0FA884FD9B072ED988F877CFE-20260325-094506-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] net: clear the dst when changing skb protocol
+Date: Wed, 25 Mar 2026 09:45:04 +0800
+Message-Id: <20260325014504.2853667-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323134504.575022936@linuxfoundation.org> <20260325013447.66771-1-ojeda@kernel.org>
-In-Reply-To: <20260325013447.66771-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 25 Mar 2026 02:36:00 +0100
-X-Gm-Features: AQROBzCWO5qPV_1hDuoqGflZm9Y9d8dfbSYWlGNb2lHRGldE_-fw23LWI6Wqy8o
-Message-ID: <CANiq72kdozG-2_VBaJyg1SZ1W9s25-=3+ER_qkYAX72avDJ9rA@mail.gmail.com>
-Subject: Re: [PATCH 6.19 000/220] 6.19.10-rc1 review
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: gregkh@linuxfoundation.org, achill@achill.org, akpm@linux-foundation.org, 
-	broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com, 
-	hargar@microsoft.com, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux@roeck-us.net, lkft-triage@lists.linaro.org, patches@kernelci.org, 
-	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, 
-	sr@sladewatkins.com, stable@vger.kernel.org, sudipm.mukherjee@gmail.com, 
-	torvalds@linux-foundation.org, Gary Guo <gary@garyguo.net>, 
-	Tim Kovalenko <tim.kovalenko@proton.me>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, nouveau@lists.freedesktop.org, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230258-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,iogearbox.net,sina.com];
+	TAGGED_FROM(0.00)[bounces-230260-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,garyguo.net,proton.me,lists.freedesktop.org,xen0n.name];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D41A931E530
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iogearbox.net:email,sina.com:dkim,sina.com:email,sina.com:mid]
+X-Rspamd-Queue-Id: 2F7F331E6B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 2:35=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> But 1) this is just for loongarch64, 2) Nova is still being developed
-> and 3) it is just for 6.19.y, so that is probably there was no Cc:
-> stable@. Anyway, Cc'ing here.
+From: Jakub Kicinski <kuba@kernel.org>
 
-And 4) it would need backporting more bits or a custom backport.
+[ Upstream commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 ]
 
-Cheers,
-Miguel
+A not-so-careful NAT46 BPF program can crash the kernel
+if it indiscriminately flips ingress packets from v4 to v6:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+    process_backlog (net/core/dev.c:6186:4)
+    napi_poll (net/core/dev.c:6906:9)
+    net_rx_action (net/core/dev.c:7028:13)
+    do_softirq (kernel/softirq.c:462:3)
+    netif_rx (net/core/dev.c:5326:3)
+    dev_loopback_xmit (net/core/dev.c:4015:2)
+    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+    NF_HOOK (./include/linux/netfilter.h:314:9)
+    ip_mc_output (net/ipv4/ip_output.c:400:5)
+    dst_output (./include/net/dst.h:459:9)
+    ip_local_out (net/ipv4/ip_output.c:130:9)
+    ip_send_skb (net/ipv4/ip_output.c:1496:8)
+    udp_send_skb (net/ipv4/udp.c:1040:8)
+    udp_sendmsg (net/ipv4/udp.c:1328:10)
+
+The output interface has a 4->6 program attached at ingress.
+We try to loop the multicast skb back to the sending socket.
+Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
+and changes skb->protocol to v6. We enter ip6_rcv_core which
+tries to use skb_dst(). But the dst is still an IPv4 one left
+after IPv4 mcast output.
+
+Clear the dst in all BPF helpers which change the protocol.
+Try to preserve metadata dsts, those may carry non-routing
+metadata.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
+Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit d219df60a70e
+("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+in v6.3 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ net/core/filter.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 77785e70cf70..87aaab182e60 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3219,6 +3219,13 @@ static const struct bpf_func_proto bpf_skb_vlan_pop_proto = {
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ };
+ 
++static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
++{
++	skb->protocol = htons(proto);
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++}
++
+ static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+ {
+ 	/* Caller already did skb_cow() with len as headroom,
+@@ -3315,7 +3322,7 @@ static int bpf_skb_proto_4_to_6(struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IPV6);
++	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3345,7 +3352,7 @@ static int bpf_skb_proto_6_to_4(struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IP);
++	bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3532,10 +3539,10 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
+ 		/* Match skb->protocol to new outer l3 protocol */
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+-			skb->protocol = htons(ETH_P_IPV6);
++			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 		else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+-			skb->protocol = htons(ETH_P_IP);
++			bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	}
+ 
+ 	if (skb_is_gso(skb)) {
+-- 
+2.34.1
+
 
