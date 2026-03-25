@@ -1,287 +1,195 @@
-Return-Path: <stable+bounces-230326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMi2D7jQw2lBuQQAu9opvQ
-	(envelope-from <stable+bounces-230326-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:10:32 +0100
+	id CJQpIc/Qw2lBuQQAu9opvQ
+	(envelope-from <stable+bounces-230327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:10:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53BD324854
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:10:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0D7324895
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 13:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 537D4305C759
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 11:58:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE3243104AC8
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE5C3BE644;
-	Wed, 25 Mar 2026 11:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D681D3D1CC5;
+	Wed, 25 Mar 2026 12:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kOSpeSGE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQYTgU3o"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCB830DED1;
-	Wed, 25 Mar 2026 11:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774439920; cv=none; b=UAPTgjCET4YPLhq/UEDZw1EHDqQDrZdYxqw2vWqiDLRlnmqMvg2QaDvYSvKaWnxUfmceMNvU51nODzIRJh3hEAxU/4vtomPd0rf3gPQ2xAdPRi1DDu0GMy6nWo6DuyHGAnjH3uJptcj6ceeoeTPR1NWSzAHry5C2TL1GzkfHYZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774439920; c=relaxed/simple;
-	bh=UAUxvHk33ET8fFMVzE0Lu0h6czNMoJdojwa93qgED3w=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=oQBeFPn66sbpGpE8SV/kIUcpTB4cOGzjz5S/VlmKMN2TaZDgHjFk5/iD+5YikgJYj9kri6/D7R3FZdOxVcQ52LD7FtQsxUpZJIoBASbKSOgih43wSEzuLqnVNkMfACxyvcxw4csVIugyD7dsTIm0SVSD8Fsb1cLuKpCGGBXSBhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kOSpeSGE; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774439919; x=1805975919;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=UAUxvHk33ET8fFMVzE0Lu0h6czNMoJdojwa93qgED3w=;
-  b=kOSpeSGE3t4jLqOOJobMp1nKEJFRLQ8pGOnuKApO2xMsQxwFwUjGv+Ih
-   Y/nEJrsPcQ9X4x2LQuZsQyTPESzgwwzxDJOmFxKDrBWfIV/bTXbNoPSby
-   h3lk+kYyfCKgtKaEG5rVZZN3BdVQVjp/I4oGmMASMdd5+zveH5SkE91Um
-   HIV3Zfcn5At28+4KHNFQbz2en3J9Xod3zXmRvCA2UYYcKwOKpN6fEr9/Y
-   hcHCDPXT3lIlvrpks//3LPbkb+e5GjcdSHIV0jztCYPL11VK+AzmTsfgv
-   wmXP8iAVo8IF78c8m+0tFo43O5ukYcpkJLa0zWq4NzBgm1xgSgcP9bSRf
-   A==;
-X-CSE-ConnectionGUID: iuU+Wu3uQbCiUbFcOA2TdQ==
-X-CSE-MsgGUID: eizVfLNpT+aO9Ktz66hB+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="85783692"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="85783692"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 04:58:38 -0700
-X-CSE-ConnectionGUID: e9x9KLkLRCGMb+/0WVwbRA==
-X-CSE-MsgGUID: Fvf5VaN5To+tsiDq3wlImA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="223866279"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.125])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 04:58:29 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 25 Mar 2026 13:58:26 +0200 (EET)
-To: Bjorn Helgaas <helgaas@kernel.org>
-cc: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org, 
-    Lukas Wunner <lukas@wunner.de>, alex@shazbot.org, kbusch@kernel.org, 
-    clg@redhat.com, stable@vger.kernel.org, schnelle@linux.ibm.com, 
-    mjrosato@linux.ibm.com
-Subject: Re: [PATCH v11 2/9] s390/pci: Add architecture specific resource/bus
- address translation
-In-Reply-To: <20260324230641.GA1162880@bhelgaas>
-Message-ID: <328a79ef-7b73-582f-f36b-5139ff04e24d@linux.intel.com>
-References: <20260324230641.GA1162880@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FBC3D16F8
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 12:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774440229; cv=pass; b=su/5VYeNT84C18i2c9lTWFf96G53u+KNal5V+cfGPUXSZmv9+AEyp8AK6wcLq9UCtFoD+0PaTmri4yQp1iXCdjrsJ1sWhMJS9bnoYR411zHpEtrWDjUmE6rhzTtEOo1v89BOkuLR7WBDIJjOV40P7iWHYYUAanjxLIH5aZFKJvI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774440229; c=relaxed/simple;
+	bh=vb7uvMgj+8pqSx85DvCgOQ/cEcgsqLMGegmZ1K2OngY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i5TgjClvi/pvELrZKkfvwc20lk0GtgD4LSRth2bKV/vdSoCjRiOyL3TI8WjZ+xtXzCi0S1xZa5HJcBs2tkfIpV+2J5kAs8JMzcqeFUbNMIbmlWmtozKroXUuPd3qhl6S0S1P4JxNI17b4rUOCMDOjBeQ2DJ2tCNG2HMNBvDuuXI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQYTgU3o; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-66a9a2187a5so506531a12.0
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 05:03:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774440226; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NnpvSNpvzUreuD7nRp5HxoTu78WLXQPCyGDiIi8vh2kTDk+4BET+meo3Tb5KOWm2Kr
+         1tMB1eCrtSU0OC6X+skuINmizAcytE55obrNDBdwXv9ltQr+AZcN3nkdFEyr4+EXWSOU
+         DnG0WS7fRGeb7SPQyg777NkgirqqqBezw4/thT8+tTRvDhDj84HwcSPgJTNSgeiWD3RK
+         Ko1DM5Zrf4prtqtbxNQ/gsEMvTL0we9GJuL0zFI0Gw7pB4KOYQPUtCzKLnInL1JyEHPi
+         azX3x1noeBUzS7SgzgaK6rOtlBK3cBDa8WAhhdD2l+avkVi+6OXsOLxnjDNNwosajR/a
+         guog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vb7uvMgj+8pqSx85DvCgOQ/cEcgsqLMGegmZ1K2OngY=;
+        fh=wijcXuyzZoD+adLIzREYrldapKEV3CIVSTVQLC+58QY=;
+        b=W+4MCHlUPUP4hic311OEtkYrJrcJM3kuvtfLeOCLeuwUvPVN/GLq1+qEhPNovA44nk
+         NsD//TU/oqmwY5odHSKwJlLlthQiK6V9gvAb8zkWGl1yCsDKqi18BKJruLxFDgbgI239
+         HqrtQD/2tzK5/bEIfejBndPH/OM2TQAOGPpvaxGBu/mt2QhydN5QhZ4x5OHJOeLn0xgm
+         DkjwupDF+0nsjXlj0mCwFgJI4fFTjXtlGLdcXqbSiwMTTlUw314DMDIR3bS8AZLOyCC6
+         +APzb4zJlc8hltr8yGbAPopdsY48lJVQB4A19MHgfCX72MQfcoJfLRZFUdFrsDkFw2v+
+         YQOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774440226; x=1775045026; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vb7uvMgj+8pqSx85DvCgOQ/cEcgsqLMGegmZ1K2OngY=;
+        b=QQYTgU3oqQkkuA3YhoETSzobfKrhfbQutworh0GWHJzNSUEQp4IIw8hk1RnWf/sWY/
+         jFpSW502ikRTJW0UXmYbQtp3hH08zM+qsk0pLGfDPnxUY+c8Xo+6DsssuGnJZXlN6nQL
+         XEeg+fXMsug+TQx6DcAbHqL9VNYMpfW+7qT4oj+Er60ErVHnJ0wb5hvsMwv24cewZGP7
+         oPLLJTAZ3JscWgATaEzi/hBTuZdYTdFH9cOYqT8D/f1DvQZiGKNzTxs3Mh7QTNPsRbQk
+         KxDQPF9J88sleBn0kW34Z6DYf4LH3pZMtrgAkZW5N7FWsJh9afPjZhnT0oWLonhph9th
+         IESA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774440226; x=1775045026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vb7uvMgj+8pqSx85DvCgOQ/cEcgsqLMGegmZ1K2OngY=;
+        b=B8IQL0ZtmU/+NjeOIl1z9DZb4giPe3OssgIWutUWM5JeJxEWfyvoVCm7MQzZzFsN4f
+         3aYrq5B2tT9sezVmWGD+awLRmcz3pgaOSSlacsCYYLKL8wGyQOlMIzxQmO+pdLJvXaU3
+         CeTiZbHJF+HTl+26QSYJ0Fh0uvo7z3Rd5WHt0W6jC4MjTG0fnx4R5ZxQ/Xzd5MzBpaLs
+         KoYBgNYXH6iJx/GzpneZ3/mZtV89cCO+Tu/ja2tlDXeqdd1q3YVNwQR5tyftgHHUp7Jj
+         OOTOAM51eX7Rxj0DygmbbhGd38zrbx5VDsp1SWOvOTqddemtsXfZSHuRz6ich4wGi0e+
+         cVhA==
+X-Forwarded-Encrypted: i=1; AJvYcCVuoXPjyjhMlAdC4TeZ/EJfic7whhVGPh+sODPs+zWSI7qAJ4DVCm0FMfJm219BMoKsoo1Wb0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1QrrwrgiPpvx5VEKjS2Ym7xrrDZu8YTHQveyGm0v8H49hz7OA
+	0eMxKqW66pSLX8ybczDXsxun63PPqe1MEvOcOipYsQnXEWH86Kzjr0gnufKh6mLcywQnNeZdPwZ
+	wR9I8kTBB4maiPwT4d+2KEvsEvZf0o0s=
+X-Gm-Gg: ATEYQzyuobFG3VBeB0oY/Q8dbAO5AIlit/thRqTITNZuPP4kIgx+MJnvUGpVUP321sF
+	5GiTwbCr2rbJTNAxi+IuazthPXFzQgIG5C6y0C5UeudcdrzJl/onXL6TtMOFqEvJgeC09bZPP1D
+	mkAzaymqXe8/qf4SKHt2sBXq3srSbNNyYUYiHSdibzzP+bCuCMpgKHYLTzkDrYegs/TKQp//x13
+	NX3ru7q0TqcP4G9oHAa2/WzkCxz1lus9X8IAJqxUdxjR0EQAgps1OsteUE1MCrfeqYv5gA+ihGl
+	b7P8kKrARwA7GxNZ3Bj9DsBMnNfsrwUH0C0x89Cm+A==
+X-Received: by 2002:a17:907:980e:b0:b8e:796a:fd5c with SMTP id
+ a640c23a62f3a-b9a5425bcafmr230697766b.27.1774440226200; Wed, 25 Mar 2026
+ 05:03:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20260324145750.90719-1-amir73il@gmail.com> <acN457svKhT5TcKI@infradead.org>
+In-Reply-To: <acN457svKhT5TcKI@infradead.org>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 25 Mar 2026 13:03:34 +0100
+X-Gm-Features: AQROBzAGy3XNT_kv4MdESc7yjI0imOrkuxyj3QWBiKFezafRk0eZnnUgjwE_k90
+Message-ID: <CAOQ4uxh5NFvXGop6ne-zfRbH5p6BPT2kCt7dUkP__-TtpeJjJQ@mail.gmail.com>
+Subject: Re: [PATCH] ovl: make fsync after metadata copy-up opt-in mount option
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, Fei Lv <feilv@asrmicro.com>, 
+	Chenglong Tang <chenglongtang@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230326-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-230327-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[amir73il@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,linux.intel.com:mid]
-X-Rspamd-Queue-Id: D53BD324854
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,infradead.org:email,asrmicro.com:email]
+X-Rspamd-Queue-Id: EF0D7324895
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 24 Mar 2026, Bjorn Helgaas wrote:
-
-> [+cc Ilpo just for awareness; I assume there's nothing Linux can
-> actually *do* with s390 PCI resources?]
-
-I'm somewhat aware they've this speciality (and besides that, I'm 
-waiting for this change in order to proceed with the series to detect 
-which resources are properly setup when we enumerate them which got 
-reverted earlier).
-
-An additional thought related to this, there's IORESOURCE_PCI_FIXED 
-results in skipping most of the resource fitting and assignment code, so 
-if nothing really should touch these resources, perhaps that flag might be 
-of some help.
-
--- 
- i.
-
-> On Mon, Mar 16, 2026 at 12:15:37PM -0700, Farhan Ali wrote:
-> > On s390 today we overwrite the PCI BAR resource address to either an
-> > artificial cookie address or MIO address. However this address is different
-> > from the bus address of the BARs programmed by firmware. The artificial
-> > cookie address was created to index into an array of function handles
-> > (zpci_iomap_start). The MIO (mapped I/O) addresses are provided by firmware
-> > but maybe different from the bus addresses. This creates an issue when
-> > trying to convert the BAR resource address to bus address using the generic
-> > pcibios_resource_to_bus().
-> > 
-> > Implement an architecture specific pcibios_resource_to_bus() function to
-> > correctly translate PCI BAR resource addresses to bus addresses for s390.
-> > Similarly add architecture specific pcibios_bus_to_resource function to do
-> > the reverse translation.
-> 
-> 1) It's not clear to me *why* we need these arch-specific versions.
-> We went to a lot of trouble to make these interfaces generic, and I'll
-> be really sad if they have to be arch-specific again.  I don't see any
-> direct uses of these in the series.  In any case, some reference to
-> the user and the actual problem this solves would help.
-> 
-> 2) I'm kind of concerned that the "unusual" s390 PCI resources will be
-> unintelligible to people who are used to reading lspci or dmesg logs
-> from non-s390 systems, and they might confuse the PCI core resource
-> assignment code.  I guess there's not really a concept of a PCI host
-> bridge on s390, there's no bus hierarchy, and no visible PCI-to-PCI
-> bridges, so no windows?  Can you use PCIe switches at all?
+On Wed, Mar 25, 2026 at 6:55=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+g> wrote:
 >
-> 3) Maybe this patch should be reordered to be closer to the patch that
-> needs these?  I don't think it's related to the "PCI: Avoid saving
-> config space state if inaccessible" and PCI: Add additional checks for
-> flr reset" patches.
-> 
-> > Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> > Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> > ---
-> >  arch/s390/pci/pci.c       | 74 +++++++++++++++++++++++++++++++++++++++
-> >  drivers/pci/host-bridge.c |  8 ++---
-> >  2 files changed, 78 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> > index 2a430722cbe4..87077e510266 100644
-> > --- a/arch/s390/pci/pci.c
-> > +++ b/arch/s390/pci/pci.c
-> > @@ -272,6 +272,80 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
-> >  	return 0;
-> >  }
-> >  
-> > +void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
-> > +			     struct resource *res)
-> > +{
-> > +	struct zpci_bus *zbus = bus->sysdata;
-> > +	struct zpci_bar_struct *zbar;
-> > +	struct zpci_dev *zdev;
-> > +
-> > +	region->start = res->start;
-> > +	region->end = res->end;
-> > +
-> > +	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
-> > +		int j = 0;
-> > +
-> > +		zbar = NULL;
-> > +		zdev = zbus->function[i];
-> > +		if (!zdev)
-> > +			continue;
-> > +
-> > +		for (j = 0; j < PCI_STD_NUM_BARS; j++) {
-> > +			if (zdev->bars[j].res->start == res->start &&
-> > +			    zdev->bars[j].res->end == res->end &&
-> > +			    res->flags & IORESOURCE_MEM) {
-> > +				zbar = &zdev->bars[j];
-> > +				break;
-> > +			}
-> > +		}
-> > +
-> > +		if (zbar) {
-> > +			/* only MMIO is supported */
-> > +			region->start = zbar->val & PCI_BASE_ADDRESS_MEM_MASK;
-> > +			if (zbar->val & PCI_BASE_ADDRESS_MEM_TYPE_64)
-> > +				region->start |= (u64)zdev->bars[j + 1].val << 32;
-> > +
-> > +			region->end = region->start + (1UL << zbar->size) - 1;
-> > +			return;
-> > +		}
-> > +	}
-> > +}
-> > +
-> > +void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
-> > +			     struct pci_bus_region *region)
-> > +{
-> > +	struct zpci_bus *zbus = bus->sysdata;
-> > +	struct zpci_dev *zdev;
-> > +	resource_size_t start, end;
-> > +
-> > +	res->start = region->start;
-> > +	res->end = region->end;
-> > +
-> > +	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
-> > +		zdev = zbus->function[i];
-> > +		if (!zdev || !zdev->has_resources)
-> > +			continue;
-> > +
-> > +		for (int j = 0; j < PCI_STD_NUM_BARS; j++) {
-> > +			if (!zdev->bars[j].size)
-> > +				continue;
-> > +
-> > +			/* only MMIO is supported */
-> > +			start = zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_MASK;
-> > +			if (zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_TYPE_64)
-> > +				start |= (u64)zdev->bars[j + 1].val << 32;
-> > +
-> > +			end = start + (1UL << zdev->bars[j].size) - 1;
-> > +
-> > +			if (start == region->start && end == region->end) {
-> > +				res->start = zdev->bars[j].res->start;
-> > +				res->end = zdev->bars[j].res->end;
-> > +				return;
-> > +			}
-> > +		}
-> > +	}
-> > +}
-> > +
-> >  void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
-> >  			   pgprot_t prot)
-> >  {
-> > diff --git a/drivers/pci/host-bridge.c b/drivers/pci/host-bridge.c
-> > index be5ef6516cff..aed031b8a9f3 100644
-> > --- a/drivers/pci/host-bridge.c
-> > +++ b/drivers/pci/host-bridge.c
-> > @@ -49,8 +49,8 @@ void pci_set_host_bridge_release(struct pci_host_bridge *bridge,
-> >  }
-> >  EXPORT_SYMBOL_GPL(pci_set_host_bridge_release);
-> >  
-> > -void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
-> > -			     struct resource *res)
-> > +void __weak pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
-> > +				    struct resource *res)
-> >  {
-> >  	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
-> >  	struct resource_entry *window;
-> > @@ -74,8 +74,8 @@ static bool region_contains(struct pci_bus_region *region1,
-> >  	return region1->start <= region2->start && region1->end >= region2->end;
-> >  }
-> >  
-> > -void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
-> > -			     struct pci_bus_region *region)
-> > +void __weak pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
-> > +				    struct pci_bus_region *region)
-> >  {
-> >  	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
-> >  	struct resource_entry *window;
-> > -- 
-> > 2.43.0
-> > 
-> 
+> On Tue, Mar 24, 2026 at 03:57:50PM +0100, Amir Goldstein wrote:
+> > From: Fei Lv <feilv@asrmicro.com>
+> >
+> > Commit 7d6899fb69d25 ("ovl: fsync after metadata copy-up") was done to
+> > fix durability of overlayfs copy up on an upper filesystem which does
+> > not enforce ordering on storing of metadata changes (e.g. ubifs).
+>
+> I'm trying to understand this previous commit more than this one,
+> but what 'enforce ordering on storing of metadata changes' does
+> overlayfs encode right now?
+
+On copy up or a directory:
+1. create a directory in tmpdir
+2. copy attributes and xattr from lower directory to this staged
+directory copy up
+3. move it into place in overlayfs upperdir
+
+Until commit 7d6899fb69d25, there was no fsync before step 2 to 3.
+Only when copying a regular file there was fsync after data copy up.
+
+This of course provides no guarantee over the state of the copied up dir
+after crash, whether the directory is observed in upperdir with or without
+the attributes, but in reality this is how it is since 2014 and for many lo=
+cal
+filesystems (e.g. xfs), there is little risk in this practice.
+
+It should be noted that overlayfs is quite picky about which filesystems
+are allowed as upper filesystems and specifically network filesystems
+are not allowed.
+
+> There is no real ordering requirements
+> anywhere in the Linux file system API, so it does sounds like ovl
+> is making some assumptions by default?
+
+Correct. I would say "making assumptions" I would just say that
+overlayfs has never taken this aspect into account.
+
+> Are those documented somewhere?
+
+I guess not, but now that this commit introduces, fsync=3Dordered,strict
+and a documentation section about them, it is a good opportunity
+to expand on this point. I will add that.
+
+Thanks for pointing this out.
+
+Amir.
 
