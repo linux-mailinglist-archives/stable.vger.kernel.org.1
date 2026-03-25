@@ -1,148 +1,253 @@
-Return-Path: <stable+bounces-230315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LLVDgjBw2kRtwQAu9opvQ
-	(envelope-from <stable+bounces-230315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:03:36 +0100
+	id 2KcuC2zCw2kOuAQAu9opvQ
+	(envelope-from <stable+bounces-230316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:09:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5DB323729
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:03:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8497B323982
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 12:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B82FC301DCFB
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 10:58:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB6A430F5A7E
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 10:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E523B0AFC;
-	Wed, 25 Mar 2026 10:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D49A3AF64B;
+	Wed, 25 Mar 2026 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="H95muBZM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kW5uaG+B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834513C4579
-	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774436281; cv=none; b=gfp86PXSGuNPVINO671T5VjXr/BOl3c+7atyD4QbsNz6Wx+Yoxn0kEanqR63gDSOPK+9SCGtDtBD0AccszrW1mhON4AdESHYQS0AWeXKwlrVVCTnjdH41AfkMPYTaGWrWdRyUSXhe2OMwSNt2kMqBwjCFfIEn8xzbK0w1TcCYnM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774436281; c=relaxed/simple;
-	bh=2i2zBV9L9/qV6AGrjVDSWPWPK8DLvyBNXgOJJh006E4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AWFVv3Xs475XDAUFHDKCjY41JlS8RZlEumE2qQVymOCI8QuZJKlwFNwbrc5Pm4/y298s9Z6XnGw7DJCigsRKUUKGk1C3bha5zu0w0OC6jm9gnI85vJFw8adAxlLCd8qnjIx2P7foB/dm1PWY/v43cgZ6HlWb69Rtcy2qv3kdLI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=H95muBZM; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486b9675d36so52906195e9.0
-        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 03:57:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D345396D2E
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 10:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774436379; cv=pass; b=FqqdNliulhg/PhcfiQ3Crhy+r/MQiM3Jo3R5kxU0MPS5/YexoHBSyF1DKJdQDFILGGgn3EN38o0manFZyTFBU1sRwzo5yZLcenTNOPVtg1lRUQUq+AA2A0EHCpldm1HRD9ZoRHXBfIIPRhtxdvWOgejcQTBmoq5+GmODr+DHiT8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774436379; c=relaxed/simple;
+	bh=6OarUN5/S8KW9TtgegaCy/h6lb+LwPoIPD0hOhnuUbA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=flnhdldzDLGbhxwbVqbTnN/m4ljOFQb9vKbuE+eJW9acJ0JxWRkkN+LIpLAtbGZ3cmVLc7TlBFbpoSvKKEdWkXB3qG8HLtS8B/6qV030z30ziAXin1lAiOLtEu5YbRBpQALPqz/f/9w4lip3N+RDpQn/p9DKZ62u5tFFfFW8Q+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kW5uaG+B; arc=pass smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-41576c5c01cso1337764fac.3
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 03:59:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774436377; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eRfHOdNJFF23DUNSvsZ7TPBBriI4hYkNppJGMaIYTJ4KTwP6UvMO1qfl76OROI7imn
+         amyk/ZH0W5hp7E1zKGJwKPjC7S5ALRtuS57bO6y3lRfXxGIzqzRQjFeyNojuNYhLaW/g
+         DY1vd3HtPrcojgvbcyR++uJtAMerGl7bjhBBbdIOA3k2jHwwZhfpnwzIs+ecJgYMSGrh
+         x50vh9SGhpwz4BP+2l2D6+UiFJcCcUu4JOYVMJQO6n0rb0vH8sBTTSj3CW+q12kYkiDU
+         YvEFuGsLN+57fpYvnH9ZG4vcb7F+lnJ7CKJD72Yqn+m/GP5c1UdnS53/NWzZiJiJo6kH
+         mGhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CRbV2+ZkI9Qv4tonWef15Wk6xuibNUPgwYnA9gQ8ovY=;
+        fh=odk6wcgU59tTcZVQUX3fjpgJEJWcJOMwVy+1M/+OOcw=;
+        b=W2eDOx94u7gfPGAWjbBp67TjJLpx/O+v6ChEsJUPl5mp1Amn8jFPG7RFCqd3+Ft7+P
+         Muc9JlYoJ7ju7XfHCZGLwkBRlzKrBpFuySIQRQXTi3Y+vmUM3I+7pFcnLUxkLRGbKTu0
+         kUpK0q6otGgW/DK2UiYsQ7E08IGSBLyacix1bnZtv+G+/qmAP+e3/azG2W4fqvd4l9Ea
+         kY+PGTMY6hCre+F4s6QQUpj9MedcG6UQBDkAr/rEHZwgE8YHYB0Y+g5C2H9kNwSk5RU4
+         0XO+066X4ZoLckfYlq/YcM7kfWyVkLllUaHGbyygWEdG5YMUBgDWesIci0SLRlZPBJ2S
+         a0rA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774436275; x=1775041075; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1tr+DPBLNHUTma6B3EgTqBqGFQCe6XWaXcahqS5DXuc=;
-        b=H95muBZMIt2ISw7FGfri/nT4FHBpajpWaAY/J2hsvp9tQ5PINFZoeuqSO2LZPZPGt3
-         0ljYTRbMGoew5FfGb9wnXNdT5+z9uSJP6HYSHH5c1aNaajdPYOCQmoQeZoBIqe9abS3s
-         a5CxljNYqT6DQe5cB+rgeZf1W5VNYONkgVNrHsxb26PQ+0qc4Pxsd6NddjW1kZKfR8T/
-         dwOVS60GBu/05BeZdSG0qgd5tk1hWtbc98EL9YocvDz3smewE/kPpfT4pKkH3fuWTvDM
-         B7KMjHWDVNWAUW/4dLcPrZwfa2lPfk9e24o3iZaid7adpDTUBUajcC9fHN/Mr9R5P+0F
-         sNnQ==
+        d=gmail.com; s=20251104; t=1774436377; x=1775041177; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CRbV2+ZkI9Qv4tonWef15Wk6xuibNUPgwYnA9gQ8ovY=;
+        b=kW5uaG+BLT9rKi4RFt6pShm6cAbISE6BcLdvqvJhA2EOh226+HM+rJyirBqoN0fvUV
+         fcZI+qOEWh1xNSt6iRJ4AjEUvbMHPJN1aNGrc+sv2HHlBkyzIZg3IaZlAcGzSc5l2iAo
+         w/FqaH777cvCZVIiljtQm5ZbPxD3ByCNghBIEdqNBiibghsvp8zABTTMg07zVuxZVv+h
+         G8orzlusxwr6uAaDgcH5UCT3asts1OBfHyhpfviRMH2Ss5yGNCMvrn+30mKI6N8cIvRU
+         rtM7oHVF3ZcaMD/8RLuLFcSUsSle2rEPlGRu9wzo/UcBK2ettbKC73EX2umEE9DWCbkf
+         n2tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774436275; x=1775041075;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1tr+DPBLNHUTma6B3EgTqBqGFQCe6XWaXcahqS5DXuc=;
-        b=sgu3NGTf22h5TqAjgN7ccCHoYSz18kcoa37Ja8WgRoq8MQJcRY+WwlQyZU3xXlpGvc
-         IOetrqRBK1T7pSowGIMIqYcbiFhNU5uPUUf9b+Y/SUs9GOEmdh2QAzfV885hZURY1qZE
-         w48akn0wE1w0lBLbGEWeWOQh9qGHJA3PTzCokQ5ME9tgDgCGWkhveoBkZFcd69ibn3MO
-         2gY8K++/DSBxIAUxfvIdTNR1UOHlbZ/7YeXKLiQpCJI4STTk5uSqGgrLne4vvRAc2B7K
-         QTqEeNY/vob1uAT82gMOcNKgeYb6BXbqTCTRPzCVb47APf1NihCO1hEbHUo+XtIhqNYU
-         an+A==
-X-Gm-Message-State: AOJu0Yyr60IAForwX/WnhZPavWi0DWHSjrPNk9hhiSxj+nF5BfuQft02
-	9wGs2w1Sada6mTB0iCG2YQxoHxRacL5VjCKM7hzOUlHrrANVpr4vo9gNv9ESNTH9h6I=
-X-Gm-Gg: ATEYQzzUW9AfW6z1cM64kp6hCa4v7hErFSp9iQwsIqIvtJhTuhngnjYbxKCi6QFol8l
-	petXAOpDBKO4MNpIA+saYXqccJqVJkWBCPt9BPiYM/qyiVwpiquuum2ByEnRgEX2EPjPxSdoK75
-	7ccGYgsKktt2jfpTNLTOtUr7RcPELKILFZdYiQ/9mQP6kw9qAEekvYX+nP2qNk/mdKrxYdZ4xxS
-	I3fCnQ9P1SGdELIVpxdAJa1SuAWRbLwdF7OM0akvqu/jJ/IntjkQuV/dV9YIwQKRkbZeKCIILWT
-	w2BKBcueQClQJwKfOUpDeD94rlY6Q23rov/pmYfTKxTfy+KIOqHOOASz2urG4xZtYBH23IAo2rT
-	UIF+7FhKYnMey3V3m2eC7/0AxuOcqxztb/2pQqhGnKqbyvEnV4tkCpVoSwZVVHQVm/cM/EJzD/v
-	FZNSyX3XaYmt+cZh5f9Wdq6hMbsSYQ
-X-Received: by 2002:a05:600c:8886:b0:480:4a8f:2d5c with SMTP id 5b1f17b1804b1-4871606dd88mr30844415e9.29.1774436275247;
-        Wed, 25 Mar 2026 03:57:55 -0700 (PDT)
-Received: from u94a ([2401:e180:8d68:92ee:b67c:a5bb:13e0:f6f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08366c56bsm258439545ad.57.2026.03.25.03.57.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 03:57:54 -0700 (PDT)
-Date: Wed, 25 Mar 2026 18:57:44 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/567] 6.6.130-rc1 review
-Message-ID: <mujla3hhjkr2qm3vydifnafnnuhgjje2woh233qle64srxudm4@cabmtcmjnj2v>
-References: <20260323134533.749096647@linuxfoundation.org>
+        d=1e100.net; s=20251104; t=1774436377; x=1775041177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CRbV2+ZkI9Qv4tonWef15Wk6xuibNUPgwYnA9gQ8ovY=;
+        b=d2h38bAPFueYJFCUG7ZucKGDWS4VLSMT0u8Pi34OfgKdBr7eZXhC86810H7tZyglK+
+         APo4Im+vmqzjT5FSSIrq5+rUupag+xNRrDaMSE6Qx5QgkEcN2swBo/JeFkwUIbinX6k9
+         /LzTQMTCzGcPbnKG6MT85ruhtrJIgGSD+7xa9jHLwqraT276Pie/rDlXzsUa51ky7jXU
+         uPWax3S6o7497GCrPoOSm4uMrCTQh0FOhCHEdfrem7mzrjXWIP4xTeLYzVXQpvx4xB0l
+         R1YViPlYjACNSmxXfDEuVzIqDgwc3/vZP6OVp8jupLIdy9nMRttt5/v/X53kz8BovbxC
+         1TGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFZ6r+fp/1FBpwzoQ2/6GBjOhiLpbyx3qYqNTdUd2CvMRLiQRbNPZHbEkeK1bx2OkmlN9yVbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywE7BBtAwH0Pc9fqN3AOasQ96P7/vw8cLGUNHtmkkWEiSIdvl3
+	6AZXRlaSRnNSFC3iu+Ez9tVg3XeweUkiJ63KBVXbAQTt/oxu9a+PXD6rBBqNS3H63EXWoWGenno
+	xYmHcYMltA98elHW+vhtAOWdgYRvv7pE=
+X-Gm-Gg: ATEYQzwccKp6pBtWaxRIEQzPWeqsonvtZjK22gERHIZFOrH+2TxNLhAFVm0lm0oDcEv
+	wcUblJioyUSEpcrQxuSUsVHxJXE6fIlgOnScFGTcj8mfxS/3rTtLc5BkeO+0ExSrGUrCW9LbCzX
+	p+VDBRGBPq4VryWxV5rwp4uBzHqEjteughLjiMdPLtBXhBum05aIC21Rm2qCA+DkOIr7NpFCLB2
+	2ZTxy4amnefbgyIHZ3hgAqm5BDwwDKMkHd7+O69NsvN39/GTa0T7Qbj1j0l6lzuzZVIr6xsYQkL
+	W53PVQ==
+X-Received: by 2002:a05:6871:5f09:b0:41b:f7f5:e88c with SMTP id
+ 586e51a60fabf-41ca6fd777fmr1829748fac.23.1774436377431; Wed, 25 Mar 2026
+ 03:59:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+References: <CA+bbHrW0C9+Pz5TOUgM_oodhfJnoO7P0YiEdp85D08h=hLPF5A@mail.gmail.com>
+ <20260325001513.1303-1-fjhhz1997@gmail.com>
+In-Reply-To: <20260325001513.1303-1-fjhhz1997@gmail.com>
+From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
+Date: Wed, 25 Mar 2026 11:59:27 +0100
+X-Gm-Features: AQROBzA2ShJuxo-ZuIgKycJxBGuFiWvCSCV0YHbexP8wyZK7UX0A9LeKEvpe0G4
+Message-ID: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mac80211: fix monitor mode frame capture for real
+ chanctx drivers
+To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.57 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MIXED_CHARSET(0.59)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230315-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230316-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8B5DB323729
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8497B323982
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 23, 2026 at 02:38:40PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.130 release.
-> There are 567 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
+Hello everybody. I've tested this patch and I'm sorry to say this...
+but, bad news. Same behaviour. I mean, as soon as the DoS window
+appears during the evil twin attack, the VM is completely frozen.
 
-test_progs, test_progs-no_alu32, test_progs-cpuv4, test_maps,
-test_verifier in BPF selftests all passes[1] on x86_64.
+I put the full report including screenshots on the github thread:
+https://github.com/morrownr/USB-WiFi/issues/682
 
-Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+If you are interested in reproducing what I do, it is pretty simple.
+You just need linux, one wireless adapter using an affected by the bug
+Mediatek chipset (in my case chipset is MT7921U, also tested on
+MT7921AUN), a wireless network and a client connected (your mobile
+phone is enough). Use the airgeddon tool and launch the most simple
+evil twin attack over it:
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/23507388452/job/68418868950
+git clone https://github.com/v1s1t0r1sh3r3/airgeddon
+cd airgeddon
+bash airgeddon.sh
+Navigate through menus selecting the Mediatek adapter, then evil twin
+menu (option 7) and then scan for your target network (option 4).
+After selecting it, Just launch the "Evil Twin attack just AP" (option
+5) and wait until all the 4 windows of the attack appear, then check
+if your client (mobile phone) is disconnected from the network. That's
+it.
 
-[...]
+In my case, just 3 windows opened... the first one is the Fake AP, the
+second is a DHCP server, the third one is the DoS window, and as I
+said, as soon as it appears, everything hangs... so no time for the
+4th window to be opened (the control window).
+
+Kind regards.
+--
+Oscar
+
+OpenPGP Key: DA9C60E9 ||
+https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+--
+
+El mi=C3=A9, 25 mar 2026 a las 1:15, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz199=
+7@gmail.com>) escribi=C3=B3:
+>
+> Hi Oscar,
+>
+> Thank you for testing the v1 patch and reporting the VM hang -- your
+> report was critical in identifying the root cause.
+>
+> Lucid-Duck did extensive debugging and reproduction work on this.
+> The full discussion is here:
+> https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4120751621
+>
+> Root cause of the crash:
+>
+> The v1 patch falls back to list_first_entry_or_null(&local->chanctx_list)
+> when the monitor vif has no chanctx. In your Evil Twin + DoS scenario,
+> the AP and monitor interfaces created multiple channel contexts. The
+> fallback blindly grabbed whichever chanctx was first on the list --
+> which could be the AP's chanctx that the firmware wasn't expecting
+> monitor traffic on. Injecting frames on a chanctx where
+> mt7921_mcu_config_sniffer() was never called is the likely trigger
+> for the hard hang.
+>
+> The v2 patch adds a list_is_singular() guard: injection only proceeds
+> when there is exactly one chanctx (unambiguous), and is refused when
+> multiple chanctxs exist. This covers the common single-channel AP +
+> monitor case while preventing the dangerous multi-chanctx path that
+> caused your crash.
+>
+> Lucid-Duck tested v2 extensively on kernel 6.19.8 with the MT7921AU
+> (ALFA AWUS036AXML) -- single-channel AP + monitor + injection,
+> multi-chanctx via P2P-GO, heavy load injection floods (50k fps,
+> 1.8M packets) -- all stable with zero crashes or kernel warnings.
+>
+> The v2 diff against net/mac80211/tx.c:
+>
+>         chanctx_conf =3D rcu_dereference(sdata->vif.bss_conf.chanctx_conf=
+);
+> -       if (chanctx_conf)
+> +       if (chanctx_conf) {
+>                 chandef =3D &chanctx_conf->def;
+> -       else if (local->emulate_chanctx)
+> +       } else if (local->emulate_chanctx) {
+>                 chandef =3D &local->hw.conf.chandef;
+> -       else
+> -               goto fail_rcu;
+> +       } else {
+> +               struct ieee80211_chanctx *ctx;
+> +
+> +               ctx =3D list_first_entry_or_null(&local->chanctx_list,
+> +                                              struct ieee80211_chanctx,
+> +                                              list);
+> +               if (ctx && list_is_singular(&local->chanctx_list))
+> +                       chandef =3D &ctx->conf.def;
+> +               else
+> +                       goto fail_rcu;
+> +       }
+>
+> If you have time, could you re-test with this v2 patch in your
+> original Evil Twin + DoS setup? That would help confirm the fix
+> before I send v2 to the list.
+>
+> Thanks again for your help!
+>
+> Best regards,
+> =E5=82=85=E7=BB=A7=E6=99=97
 
