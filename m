@@ -1,272 +1,245 @@
-Return-Path: <stable+bounces-230375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMSEKnAgxGmZwgQAu9opvQ
-	(envelope-from <stable+bounces-230375-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:50:40 +0100
+	id sHqIH/whxGmZwgQAu9opvQ
+	(envelope-from <stable+bounces-230376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:57:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAD632A1B7
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:50:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C3E32A2CD
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 18:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A95653011845
-	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:50:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ADEE6301D567
+	for <lists+stable@lfdr.de>; Wed, 25 Mar 2026 17:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6A7401491;
-	Wed, 25 Mar 2026 17:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA8E40FDAA;
+	Wed, 25 Mar 2026 17:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="cfle9mdS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dzKzY3a3"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2PMXgLzs"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013030.outbound.protection.outlook.com [40.93.201.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7290B3E92A8;
-	Wed, 25 Mar 2026 17:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774461032; cv=none; b=mutOb9hmU0P87I9gUToH/mnBsxx+8vJW1YO2HxWhW2RyGQEytcsWVRt6g4Agz2ZlQKCr3uSyEc6N+Xv9p5yFgVrGacdbWOP+XMZ4ioYdaVOQ84G6Gqz/E+NrNeZBGuAMODWwsJaQR6ySh4r1G2BhTxxq2fzuA3+tjgBSbmqLIb4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774461032; c=relaxed/simple;
-	bh=SIVSMCrBlz0KV8OK7G5My33qGsJMdpAScmuH+aPsA3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H7fsFAd0gLmsiHWIrBem0fKKvlmwhqo7SVgq8mqC7a4yJqCcvQgWkbiV3srqoLl5Onvd6NvkE/vKTPR9dUYPl1eKRMcYrgwtFWs8UKxNd5ijKwY2ZvXTnTm1CXnmR1Vt1HbwxOqKv2uwi24gc6ORqIMq9+oobveApUYx1XUXAa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=cfle9mdS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dzKzY3a3; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 54BBE7A006C;
-	Wed, 25 Mar 2026 13:50:28 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Wed, 25 Mar 2026 13:50:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774461028;
-	 x=1774547428; bh=pm7r3+s8pl7Hfj4UkVm3eVLx7AjrB7g+Dwi1zL2eB+4=; b=
-	cfle9mdSNpfVFHzJaDj3TZrRvAnS62+YfO0/FB7iyUsoPSI9TOs87nMImmIv18nu
-	fsER7ikAqwXUvKAhx1TAMeWmIADrKsLW5PtVGwTWjEBQYmjy+MMP5C5L7q3zR20E
-	FM9Dv98VB1RMFAvN3TNTE523sFlY+oPlgL+Cqtk+hEMnUGqyAD5S2YGZZveP6QoU
-	unvjhkOOBabsv4300o6RfVlIm1G0I+hZsUXi5lcvj+5flJ8Vm8qpQZxqFkS2V4ye
-	mt5OyLfAAvF7rWTVvuh8EI2p52S/MkA9C4PXCNkKsNleylTlSvBOguC/YB/E/VAb
-	CjRJUohknAyCvgIgsO2LQw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774461028; x=
-	1774547428; bh=pm7r3+s8pl7Hfj4UkVm3eVLx7AjrB7g+Dwi1zL2eB+4=; b=d
-	zKzY3a3ht2FpkDlIlrXiA8K6jrMX0B6Jn/6NS5udjFHfKmalHJhL0KKKghiBZRAw
-	BxpvNjLeHgyixd/GHdlXCG0Uo8ElniLMTE23xnZx5ZAScTvyC+PbhvrI7kksMBCF
-	gJbLOeBVsEHpgAVPL1LIVQh+Uutkq1dk4Nl7bvSnn7auwYLTsOcuQI+oDK2rKTlI
-	CDonl+o63TwpCmhvCDLU8bJ6PZvfMt1FS4UuBQpLUF1bHADcnZ/SrkpAlkmgoawE
-	7Sdy9FIXyiRloVW6tefTCF0xBPQJdpdh45+SqkwF9Bp6Yx81e+3R+Sz+GFEbYZ2U
-	+NSNnUeBYnZuT0R80eu9A==
-X-ME-Sender: <xms:YyDEaWypC8oszZOPBbB-3PPMdUdrd7SocPP-gbgzJnEJWbszHiS6QQ>
-    <xme:YyDEaco_899_ePnTU5GMoA8rffXzREhlfoH8ve1XdqbOqd0UxDUaFtWiXbhsB4tWa
-    Th88IPq0PebkXuuMq84biGtVdPaJfauygMIbQhKZBDzf5NnPcUH24g>
-X-ME-Received: <xmr:YyDEaedE4IyV8SP-LpHAukJlRxXZjxf-WMzracbxB-CMefd0dakYFCHSkR8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdehuddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudefpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegrlhhifhhmsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheplhhi
-    nhhugidqshefledtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhi
-    nhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhhkrg
-    hsseifuhhnnhgvrhdruggvpdhrtghpthhtohepkhgsuhhstghhsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegtlhhgsehrvgguhhgrthdrtghomhdprhgtphhtthhopehsthgrsg
-    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:YyDEaXoEwGtKHzarWg2KKcxKqdqMxFyKw4SUTrDG1CpieCYM1aeTKA>
-    <xmx:YyDEaQmJauXzDPGTCmTBM5bAJyXsCEDliIsGejkpHbI2l1Fc2xvkig>
-    <xmx:YyDEaQTicLvX5XKax1_5PI83b1WAASOvbb1qDxiEuLtV2KPBg-83zg>
-    <xmx:YyDEaeZDs24kA1MoQ6QFQxL8TXx1oAmCG0kzUbLXY50tUTyUY7_0HA>
-    <xmx:ZCDEaZEkRN8brBKY9ncpwlGqQxh2vfPdWeM6JPWoeja9Jf29wp9qNZXC>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Mar 2026 13:50:26 -0400 (EDT)
-Date: Wed, 25 Mar 2026 11:50:25 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, lukas@wunner.de,
- kbusch@kernel.org, clg@redhat.com, stable@vger.kernel.org,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, Julian Ruess
- <julianr@linux.ibm.com>, alex@shazbot.org
-Subject: Re: [PATCH v11 9/9] vfio: Remove the pcie check for
- VFIO_PCI_ERR_IRQ_INDEX
-Message-ID: <20260325115025.462317c8@shazbot.org>
-In-Reply-To: <20260324212602.GA1151826@bhelgaas>
-References: <20260316191544.2279-10-alifm@linux.ibm.com>
-	<20260324212602.GA1151826@bhelgaas>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D9240825C
+	for <stable@vger.kernel.org>; Wed, 25 Mar 2026 17:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774461308; cv=fail; b=fVdWyDa7p8+XwMfQlnm7RkLb/t8EcQCMLmlJVdvzB+cEqBX+scDoebmqNjQrX6nH6LzAx3K4/aKtCcl6ZTgrokHKKmnFVRvmurEpDFSgKHu+6GL1ash4I/GH0TDVy4L9P8Ndya7UQLn/glmiOeT8mOf2ObMoUdmmYVWqaWeIfO8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774461308; c=relaxed/simple;
+	bh=CaLoIeWt5fXhGkdx37+/lNUpOUw8Ej0HaqurTeYjFyQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Xv5nfrRch3smqNAQTUH2nF2v3CAFjzxsdqoSl6bEs0mMey0wybqvEr81ooMNSxyQV83fZaJZr1WiyYHGlIA1hsD/GBcIhHh61+n7OKIN2rdLWv4mlcsKM2/u10lML4P4cREE9O+mJULCULvHSxVgyKdCfxrik83jnSDwDn+dxWA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2PMXgLzs; arc=fail smtp.client-ip=40.93.201.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZUhsI0HehXtFZm1MjFPf/Z17HOLa3FGsxZDbzsYBRHHRQ85yVcIxOxNMQL7GwFAFICPhGReNJ/dtjVw3C0kYoncXD+RqEQLNZypymBR7nRy6MsoHjtTBuRCZ4J89qezhLA7AHKPFVkH5WFKle9EWZdhMfbxTxwVqOLobiEHDbCTfxROBVU6rx4uc9uAGsfH3tB+5Faa/iPUsGoCKlDGs5Zssr+GSIfM7wIpzVuF9FqcT905wFeFQ4CCOwpAEheNFxGuwX/acHjj2bYCvAK5D8Cm0VZx6/oIuiBPOJdXLtvjTFGiIgn+autFGl1IrAlas7m3DrUBNXliB3JXqOJE40g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7U/8V0Z5oPigqAGT0hiOSAvb8itpwdc2CSCvj6yeqWw=;
+ b=ow9SklcEhJRBH/BwH4NJ9Tzoz/YgbEmqA815RpfdVghnTGoOnA0nk+vlTi2VBI+3olLx4Iiuan2tC4ARuYWuUTbGdjYXWY0mavNHtc6+ebKRjevcR8zLfKxiqIO7EIFi5UC08HG5E1E29A1U2eMu+hl7URP1f9/ee5sIZovzig8Rlo2qFu3miBuHzxaJhD049bp15dgBo5YlepmzZYeu6r+zGZTxcGA363QuzGqE6QAivPjORjc2+OMWQJPx5leY0n6imlyNJhJxPxBcJkTlieWBTzVJZRUBJ6daxcF9/VyIu8LTtCprL4FUitvobKo/u5KF/9wMSbUIp2IgCjpmTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7U/8V0Z5oPigqAGT0hiOSAvb8itpwdc2CSCvj6yeqWw=;
+ b=2PMXgLzse2jiQ1gvPCKeugTEzCH5GkhZgp8aPp7sf48HoQatW2AEwElVFqngiFeQyh1f7WybgquPh6Ngs9HttOQDoVrIGHcMMHE9hpCQ8pz2E0Q6ltTtGnge5rnRfVVLnAU6E7mDZCijxaAHcDb2JfTXlOFBfWVUmrmmY4ZxGsQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5112.namprd12.prod.outlook.com (2603:10b6:208:316::16)
+ by MW6PR12MB8950.namprd12.prod.outlook.com (2603:10b6:303:24a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.7; Wed, 25 Mar
+ 2026 17:55:03 +0000
+Received: from BL1PR12MB5112.namprd12.prod.outlook.com
+ ([fe80::d977:95c9:e89:ff27]) by BL1PR12MB5112.namprd12.prod.outlook.com
+ ([fe80::d977:95c9:e89:ff27%6]) with mapi id 15.20.9769.006; Wed, 25 Mar 2026
+ 17:55:03 +0000
+Message-ID: <00db9c57-9d16-4123-8e2c-b9251aa702ad@amd.com>
+Date: Wed, 25 Mar 2026 13:54:58 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND RFC PATCH v3 1/6] drm/amdgpu: Change
+ AMDGPU_VA_RESERVED_TRAP_SIZE to 2 PAGE_SIZE pages
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Donet Tom <donettom@linux.ibm.com>, amd-gfx@lists.freedesktop.org,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Alex Deucher <alexdeucher@gmail.com>, Philip Yang <yangp@amd.com>
+Cc: David.YatSin@amd.com, Kent.Russell@amd.com,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, stable@vger.kernel.org
+References: <cover.1774239489.git.donettom@linux.ibm.com>
+ <d3a5bd9b4bcff28c1c43c4c46479cd95d4dcf7f0.1774239489.git.donettom@linux.ibm.com>
+ <65a96159-1266-4b42-91ce-359fcd1a76ea@amd.com>
+ <7beedf3b-99f7-4096-9a49-88f98b9b4eb5@linux.ibm.com>
+ <bf255b34-0def-4a0b-a07d-30b9271b0166@amd.com>
+ <6171f849-4164-4fd5-b31e-79c08df936c2@linux.ibm.com>
+ <6b2d502d-08ef-4008-8399-f5630de2385c@amd.com>
+ <cbbc63ba-0c21-4fd9-b701-d79356b75d12@amd.com>
+ <79783c4d-13cb-4ae9-b2ba-45c066fb515a@linux.ibm.com>
+ <f54a9107-a19f-47b8-83ee-6ebe0d305499@amd.com>
+Content-Language: en-US
+From: "Kuehling, Felix" <felix.kuehling@amd.com>
+In-Reply-To: <f54a9107-a19f-47b8-83ee-6ebe0d305499@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY1P220CA0009.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59d::7) To BL1PR12MB5112.namprd12.prod.outlook.com
+ (2603:10b6:208:316::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5112:EE_|MW6PR12MB8950:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ac2ec6a-67ae-4c83-d673-08de8a97a3d5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	0cKvsm0Pu5KEEIl25d2bfp8fO3kYoX8UK7F5pB0kTV5LzCSjgyiSRZk9PaCPB8p9Jzvyg8z5Bw67BafYaklwLXUzD8fsPccGFCWlsQKpQFKI7MB2CJ8gV5poYQ275F+yAZAasFmoMESPUazXqHc7B7naZbypSHz166BDCHxvzwHfcnMVu1YULbh87eDrHg1Y08UV0MwwOBWnGSfMugfGVqd/7IuutPjhnFNZtg6Db4iAx0mmTS8ipC60dFT0w2IiXZQxZGHo/VqKpBINggQ//unF8h5vD9GcreYfXXIH2bM8z03cXmT3ClE0nuFROB1qJJBJprLJSRbI0CGA+yCuIUkTCH9aOyXlIlCwPL6OHmxOYvMPiZHTRZznO37j8MFFVe1gMFb3c+jYqSdAOAiJpAMz0EImOISBt84uGJuVCmt/gP3its9ZNkg07o7y+uod9ujjWR69y7WGq2e653F0Krc4uKXjcDfNyyuYRkWacNtFqFnruiaeVL2LZ5ig3/TnfBCwx9UXxrW6OXBWAhq1jkx1OoCMorK/s/1hvRHF8fh6tRFgShSS1tG5zRIThi9WP49zjjKpGwSe5k4KGZI1wKz0LP92KDvk7ZuqxGQ9k8SipXHqgf+KIbadH4EG46aDRx6FBny2+pJ9EqZ4+/0+FEs95p0vHeJ3GhBSqD78cc48+3yqohZ14r/CR8Mx/cUgABMJq+BypoCF1vrw+WZFS+TFICnVp+I4vKSGHUid9MI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5112.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1N2eDZlUk0wSXhXbUY4OS90TXVBbTBNZ0ZaV2NwR2drWi9MNkNTWlBoZGY4?=
+ =?utf-8?B?M05sRGY4OEpHRlVwU2xqVysrZW9CNGtSNlZOKzBJV0xaMlJLNk9lbG1haitt?=
+ =?utf-8?B?U3ZDTXJRdHRTZTlrclBscUptVmhxR1RPWHdpMGlKdzZRK21QSTF4bEordlN5?=
+ =?utf-8?B?M2RnY28wQmxPY2QrMDVJWm1JUzJ1dXBnbHV3NWxma2IwdmxvYTNuY3RlMTZx?=
+ =?utf-8?B?MnBtRkhGSUdqb3Y1aHhrNExvbXRHZVJmOTl4R3dlSHExc21JMmhxclNRR24v?=
+ =?utf-8?B?TExHMmszaW11MWFjVDBsZTZZSGwrM0V2SU9qdXZESHVLYkZLVFpTcSs4WHgv?=
+ =?utf-8?B?bDZUYUhyb2RTRkxnSUdZQU5RSnY5cFlUQTgrZE5ldUh6Z1hnWlBYa2J4YzNJ?=
+ =?utf-8?B?a2JVejNlR3JNeERHc042cXBLZC96MDdidTlTSVhBTFFCVWxzOGx5Ny81d01O?=
+ =?utf-8?B?Y052MVJTbUVzUzVaZ2JRS2N5YzdjNFZENEVYYThkbmtrb0FSdEpkTG1YNnlL?=
+ =?utf-8?B?M0RaZmE2OFZEODJjK0RzeEVrYjgyajhISzhra1Q0eHZpRVA0b1RiMUJmYU5n?=
+ =?utf-8?B?c0FJSFJOU2FYd29QUGdIQkNoYk5Ia1NxV1V4ZTE2UTNvZVFCeVR3UjRUWjd4?=
+ =?utf-8?B?YllFY2YyNHNHY1pSREZMaXB3UFJTemFIRzBFZjQ5WStRR0s3MXhOaGRxK0lp?=
+ =?utf-8?B?cHBuNm9oVTFQMm5NSXhlMDlPd3NCZHlzcHdNSlU3MHVhR1czR3dabjYvUDdM?=
+ =?utf-8?B?b2F0ZW94dHBqYzQwUjNoQll6MTFueDdIT0hiY3RMa1RKdlNUUk5LS2czaWdF?=
+ =?utf-8?B?akpxT3JPN050dUh0TDQrOGFoNE40eW03Sk9zZGN6Z0tBK04vdzd5TFUrcXQx?=
+ =?utf-8?B?dG9SSWZjQUFFbm55ZS93dXlHMGlNRkVkeGxJVW1Xc2pYd2xKbFg0MCt6cTF0?=
+ =?utf-8?B?Z0o0a3JGZkFVanZKa0FKdGcrek5STzlVdTQ1K3JqQ2N3ZDJ3T01ESWQxTlhT?=
+ =?utf-8?B?Q1ZJZkwvRDRHZUNITVhteXhidC9mNVFUSHJlYmRKemE5bUJqMnBpRUwwZTQv?=
+ =?utf-8?B?Y25BblE2ajNQUVlXY2orQy84TWYzR0g0SzBpMHhCSHVZTU1YR2tCTTFmOHRs?=
+ =?utf-8?B?TTBiVmg1ZFBPZTdlOHVXZG1NUHo0aWpJT2tBRGhoQ3NUdzVCMmxOd1hJd2xI?=
+ =?utf-8?B?VWs2UmdpSHNwNC9ER0NjODQ5YzFxQWFqelowdnp1eEQ2UTVQQi9RSEN6QjVp?=
+ =?utf-8?B?eHhSYllmMzJuU2RtRlZIcHdHVm95Tk4rTkViRmN5OWVla2VqbXpHemVFN3l1?=
+ =?utf-8?B?UXRFejkvOWpmcE83dTRDcUw2NFV1bzlkWW1uVWZINzM5ZFI3WC8xRGg5QmFD?=
+ =?utf-8?B?Q1l3WHJLdEtvcnhPeDNWenE2N1JXd2pmbXVsSi80bW0ra1N5ZkR1UjZNNi9F?=
+ =?utf-8?B?OU1QQzBSZXhiQm1DSkRERVE4MjNPSGUzaERXWnZzQVF1Q0szK0kzZSsrMlZQ?=
+ =?utf-8?B?UHUzeW9wZmF1Mmsxc29hQlVqcEtoRGpQM1JjZjArOWFHSEs1RXJsUVBZd2py?=
+ =?utf-8?B?ZDNwN2pSWEdhVVhkU2JxajRaQVEvOXd1ZUMyZVl6MTRQbnRXZTM5dXZ1c0pB?=
+ =?utf-8?B?bVR0c2g1VSt3WGRGNHFJdVY1QjNjYmszemZhS0Jqdm5jSUpNSjBMbHFPNllJ?=
+ =?utf-8?B?Nzc4Y0YvRlZhY0lGV2lEYkt2RmVTU0tCUDdKWkk5S1Fudk5hSmhrV1VqWWFx?=
+ =?utf-8?B?SGZPMXR0V3RtbjVIQm1QcEtUZFRla3JScUQ4djZkelh6NGhucUVjQjZpTmUv?=
+ =?utf-8?B?bjhucVNsU1JzZUp5RXNSRXZ1TThXZ0ZmRmdOL09nRzdqRDRHYzQ0OHFSTS9M?=
+ =?utf-8?B?anpSZ3VUTS9OOWtxZlZrS2RKV29RN1RnNTkvRm5rR1lHSk4xLzBkTHByNU5t?=
+ =?utf-8?B?ZjV1WWMzdU16eVRiRGlYK29ENnVrWGRpZVpCcHRLQkJyclBRTmNvUUIrUFZa?=
+ =?utf-8?B?K0JibEo4a01ST1VjYkxtWHFBOGZ1b2k4TFg2N1Jvc2xTbUhMdldWVU5SOXhn?=
+ =?utf-8?B?MHZkaGJQRTFjSk0wMlBZOG0ya0pCZXNMSGJXcFh1TGJmSVFucEtXL05KeXMz?=
+ =?utf-8?B?Yyt3bnNYVUt3aG1XdW9jQTVKdXhFbnhpUnpZYngyVHNLSy9zUnlDSTBrVmlX?=
+ =?utf-8?B?WWUwQnp0dEN1azF2ZHArdnRXUHQyaThWN1hpOHVFUU5mcE1EcWtucWdsaTM4?=
+ =?utf-8?B?YWN5ejRxVEdxT1NKWjEzMUlDN2U1eTJPVEF6V2Q0SmV3aGFkS0Z3YVJoZ2FB?=
+ =?utf-8?B?Z3JwSUJ3d3BSNStYL3VvbFBnYmRLWFd2NGp1YWZHdFVaZEwvWkMyQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ac2ec6a-67ae-4c83-d673-08de8a97a3d5
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5112.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 17:55:02.8801
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jS7acs18qalW942uUuULCGmOjL68dVkZRq+P/nRD5rJo0TPOm/wc2iWKsBV0gE9AH8gn+im4kAzX1D+92mtt1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8950
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-230375-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[amd.com,linux.ibm.com,lists.freedesktop.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-230376-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,linux.ibm.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[felix.kuehling@amd.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[amd.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shazbot.org:dkim,shazbot.org:mid]
-X-Rspamd-Queue-Id: 4AAD632A1B7
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 77C3E32A2CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 24 Mar 2026 16:26:02 -0500
-Bjorn Helgaas <helgaas@kernel.org> wrote:
 
-> On Mon, Mar 16, 2026 at 12:15:44PM -0700, Farhan Ali wrote:
-> > We are configuring the error signaling on the vast majority of devices and  
-> 
-> Who is "we"?  If a function configures error signaling, can you
-> mention the name?
-> 
-> > it's extremely rare that it fires anyway. This allows userspace to
-> > be notified on errors for legacy PCI devices. The Internal Shared
-> > Memory (ISM) device on s390 is one such device.   
-> 
-> This commit log talks about things that could be done, but doesn't
-> actually say what the patch does or what makes it safe and effective,
-> and I'm not VFIO-literate enough for it to be clear.
-> 
-> These pci_is_pcie() tests were added by dad9f8972e04 ("VFIO-AER:
-> Vfio-pci driver changes for supporting AER"), so I suppose the
-> dad9f8972e04 assumption was that AER was the only error reporting
-> mechanism, and AER only exists on PCIe devices?
+On 2026-03-25 06:29, Christian König wrote:
+>> Hi @Christian @Felix
+>>
+>> Thanks for the review.
+>>
+>> I have made the suggested change. I am now reserving 64 KB
+>> in the  address space for the trap, while allocating
+>> only 8 KB for both 4K and 64K page sizes. With this change,
+>> I am no longer seeing crashes on either 4K or 64K systems.
+>>
+>> Does this approach look reasonable to you?
+> Looks correct to me, but Felix clearly has the last word on that.
 
-Yes, that's the conclusion we came to in previous discussions that
-Farhan notes in their reply.
+That works for me as well.
 
-> But s390 can report errors for conventional PCI devices, and you want
-> VFIO to support that as well?
-> 
-> Obviously this change needs to be safe for all arches, not just s390.
-> I suppose it's safe to report the VFIO_PCI_ERR_IRQ_INDEX info
-> everywhere; it's just that it will never be used except on s390?  And
-> I guess powerpc, which can get to vfio_pci_core_aer_err_detected() via
-> eeh_report_failure().
-> 
-> It looks like vfio_pci_driver provides vfio_pci_core_err_handlers
-> whether the device is conventional PCI or PCIe, and s390 can already
-> call vfio_pci_core_aer_err_detected() (the .error_detected() hook) via
-> zpci_event_notify_error_detected(), so this patch makes it possible
-> for the guest (QEMU, etc) to learn about it?
-> 
-> > For PCI devices on IBM s390 error
-> > recovery involves platform firmware and notification to operating system
-> > is done by architecture specific way. So the ISM device can still be
-> > recovered when notified of an error.  
-> 
-> I guess this error recovery part would be done by the guest ISM
-> driver, triggered when when something like QEMU receives the eventfd
-> signal from vfio_pci_core_aer_err_detected()?
-> 
-> > Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-> > Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> > Signed-off-by: Farhan Ali <alifm@linux.ibm.com>  
-> 
-> I don't maintain VFIO, so I'm just kibbitzing here.  Hopefully Alex
-> will chime in.
+Thanks,
+   Felix
 
-It's the previous patch about restoring open state of the device on
-.reset_done that gives me more anxiety than just reporting that
-non-PCIe (non-AER) devices can report errors.  At worst here, I think
-userspace might be wiring an interrupt on a conventional device that
-cannot fire, whereas most PCIe device have AER.  The number of
-conventional device in use with vfio-pci is probably not enough to
-worry about though.
 
-For completeness, I'll note that QEMU sets a "pci_aer" flag based on
-whether this error IRQ is exposed, where I think we had intended this
-might interact with emulated AER.  However, it never made it that far
-and just registers a handler that stops the VM.
-
-Farhan, this and the previous patch should use "vfio/pci:" as their
-title prefix.  Thanks,
-
-Alex
-
-> > ---
-> >  drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
-> >  drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
-> >  2 files changed, 3 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> > index f1bd1266b88f..cfd9a51cd194 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -786,8 +786,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
-> >  			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
-> >  		}
-> >  	} else if (irq_type == VFIO_PCI_ERR_IRQ_INDEX) {
-> > -		if (pci_is_pcie(vdev->pdev))
-> > -			return 1;
-> > +		return 1;
-> >  	} else if (irq_type == VFIO_PCI_REQ_IRQ_INDEX) {
-> >  		return 1;
-> >  	}
-> > @@ -1163,11 +1162,8 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio_pci_core_device *vdev,
-> >  	switch (info.index) {
-> >  	case VFIO_PCI_INTX_IRQ_INDEX ... VFIO_PCI_MSIX_IRQ_INDEX:
-> >  	case VFIO_PCI_REQ_IRQ_INDEX:
-> > -		break;
-> >  	case VFIO_PCI_ERR_IRQ_INDEX:
-> > -		if (pci_is_pcie(vdev->pdev))
-> > -			break;
-> > -		fallthrough;
-> > +		break;
-> >  	default:
-> >  		return -EINVAL;
-> >  	}
-> > diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-> > index 33944d4d9dc4..64f80f64ff57 100644
-> > --- a/drivers/vfio/pci/vfio_pci_intrs.c
-> > +++ b/drivers/vfio/pci/vfio_pci_intrs.c
-> > @@ -859,8 +859,7 @@ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
-> >  	case VFIO_PCI_ERR_IRQ_INDEX:
-> >  		switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
-> >  		case VFIO_IRQ_SET_ACTION_TRIGGER:
-> > -			if (pci_is_pcie(vdev->pdev))
-> > -				func = vfio_pci_set_err_trigger;
-> > +			func = vfio_pci_set_err_trigger;
-> >  			break;
-> >  		}
-> >  		break;
-> > -- 
-> > 2.43.0
-> >   
-
+>
+> Regards,
+> Christian.
+>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+>> index bb276c0ad06d..d5b7061556ba 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+>> @@ -173,7 +173,7 @@ struct amdgpu_bo_vm;
+>>   #define AMDGPU_VA_RESERVED_SEQ64_SIZE          (2ULL << 20)
+>>   #define AMDGPU_VA_RESERVED_SEQ64_START(adev)  (AMDGPU_VA_RESERVED_CSA_START(adev) \
+>>                                                   - AMDGPU_VA_RESERVED_SEQ64_SIZE)
+>> -#define AMDGPU_VA_RESERVED_TRAP_SIZE           (2ULL << 12)
+>> +#define AMDGPU_VA_RESERVED_TRAP_SIZE           (1ULL << 16)
+>>   #define AMDGPU_VA_RESERVED_TRAP_START(adev) (AMDGPU_VA_RESERVED_SEQ64_START(adev) \
+>>                                                   - AMDGPU_VA_RESERVED_TRAP_SIZE)
+>>   #define AMDGPU_VA_RESERVED_BOTTOM              (1ULL << 16)
+>> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+>> index e5b56412931b..035687a17d89 100644
+>> --- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+>> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+>> @@ -102,8 +102,8 @@
+>>    * The first chunk is the TBA used for the CWSR ISA code. The second
+>>    * chunk is used as TMA for user-mode trap handler setup in daisy-chain mode.
+>>    */
+>> -#define KFD_CWSR_TBA_TMA_SIZE (PAGE_SIZE * 2)
+>> -#define KFD_CWSR_TMA_OFFSET (PAGE_SIZE + 2048)
+>> +#define KFD_CWSR_TBA_TMA_SIZE (AMDGPU_GPU_PAGE_SIZE * 2)
+>> +#define KFD_CWSR_TMA_OFFSET (AMDGPU_GPU_PAGE_SIZE + 2048)
+>>
+>>   #define KFD_MAX_NUM_OF_QUEUES_PER_DEVICE               \
+>>          (KFD_MAX_NUM_OF_PROCESSES *
 
