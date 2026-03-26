@@ -1,154 +1,169 @@
-Return-Path: <stable+bounces-230405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGIcDQ+KxGn50AQAu9opvQ
-	(envelope-from <stable+bounces-230405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:21:19 +0100
+	id 8FRuB+eNxGkh0gQAu9opvQ
+	(envelope-from <stable+bounces-230406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:37:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D118E32DCE7
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:21:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D39732DF5C
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E33A33037E4B
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 01:20:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 327FE304804E
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 01:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD930376BEF;
-	Thu, 26 Mar 2026 01:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E8E38F252;
+	Thu, 26 Mar 2026 01:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrQwrNyH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPzxCEBd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C11372ED5;
-	Thu, 26 Mar 2026 01:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED8316F288
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 01:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774488039; cv=none; b=d5MHscjt4Z2bkvhQRcSoKXUz0kSvz3RlwsETxEfo96SDVFZVzvw1kv/2qqcthq1dO4JOMR/rVcW0Z1zDs+MDr9r6I7XBT3T2zx7S2BAvhvwW5djL8NliSmXf9Om22swwCeDPXNYlPURgOit5w1vSWqN9CZ4tPx5BsK3opQ9IxOo=
+	t=1774489057; cv=none; b=AEcrG9lYY6/Y+g2CzLBua3XBSJuH0NQFjIOKe7HhZkhKpbnT/Ss8Jx5foBHVpX62PJH/xmmywjWt158BMKkXPS11j2KJNf3G82yGoZaa2+/qZYPJYEtvQ9GkJH3F+lLtTXRaOGxtN8FM+McB+nSIWL7jMI71DuBGS6ZiI4pqvIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774488039; c=relaxed/simple;
-	bh=jCpZBWHBZGO+JFAuGtNCyOvnRm1CZWZVWKYWP+EJaTw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KTjjJfDYND0fd/K4WEBeZRSKD43UEzhvi5+4NjV7LPiE0rJ5nTm4waVyomVuZukr4jEQokbNTTRlLEVqG0bJ8EbCEOrEcekdcK24sikk8XEp6GHajIFuLKeo/YKV4hrCe1l7r9hyrUu5M5aOc46iaohnj7VzKNkl7uH2rTYyCGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrQwrNyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B7C4CEF7;
-	Thu, 26 Mar 2026 01:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774488039;
-	bh=jCpZBWHBZGO+JFAuGtNCyOvnRm1CZWZVWKYWP+EJaTw=;
-	h=From:Date:Subject:To:Cc:From;
-	b=JrQwrNyHL4MarhqXoKw+V0ExUGbq+Q0B41MaFvk3hZnAMP2nEQr3H9/+3WwLjJj0W
-	 XfL+2UPhuIJlc0CGtReyBFk+Myx0KryMJDbLvmsAb4T0zes5zcGh13xvT8ZBfjb/Y2
-	 Xd8SG11EuypIrkPGHt3M7y633jxeEYnJU8p6kO2D1969OwusPtge8fZHliRE7NYiip
-	 /BCXBRzcQudKS1tjRz4iWFb3s++tBPCCNnuH3CIulKxzyU0KaWQxRLoOKAQjxeExcp
-	 B/g1X1G4K6x2L9Mjkq0UgosN+553B6j/b4E6b1NpGCU9VD1N1igozmQ6Pl0BA63lXT
-	 D91gGg7K7TkQg==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 25 Mar 2026 18:20:30 -0700
-Subject: [PATCH] modpost: Declare extra_warn with unused attribute
+	s=arc-20240116; t=1774489057; c=relaxed/simple;
+	bh=Jj2qm8qG63CrbIFMV9IlMuOzVORLnHETDXVgtmwwQxo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jXc8lb7MjVhy/1bHE+1xOgYwUX1UP74RNAOdVtJdGwr4N2Envq61IBCCFYiYWR13bsnrxDt36v9ETyhrJE8wxrSWHzyLLwLIt11E88KqxLfvOLI0o9s+zEnxVxyw5YVaRShIVAy7rgTaotgds9jAWFJJ811xhbaYJ0mpoB/JksY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPzxCEBd; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829ac4670c4so362173b3a.0
+        for <stable@vger.kernel.org>; Wed, 25 Mar 2026 18:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774489055; x=1775093855; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TAPOHm+2rdklVBQSpRSKOLEhOKAWiuPin4IyJcaEptM=;
+        b=lPzxCEBdmqkipI9rRiylIAI9Pm8f+9DbddUXdmriv4csOgioReWznr1cTmg8xKFm4g
+         bH+kF1HTdylg2fbDUzuFYv4TC8BHxa9i3vxTOGoHOtPy+//jycwQ05UiEuGehqqHQ1Qc
+         E4BO1TJblnfZJbUiSrw8YukQXisZUv6jCtdSjow5iV5sHoHnrxDPWdk4SkefTEm34lpg
+         o5C+Roc981IZboV+bQzjCBmVyFh2UcJ9XIBKLF07nfgPlGZ7xnbS7pdthZa0ZpMffd3A
+         /PMx50RQx+EIihthMivVSrx+l0EtH5xh0+eGnbH1BNGY/LjQewPOeIuoOemdwD2tsgMb
+         irgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774489055; x=1775093855;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TAPOHm+2rdklVBQSpRSKOLEhOKAWiuPin4IyJcaEptM=;
+        b=TrIFJGzi9vZ9gPIWV6l3rzTMQ2aDZJ6hJ7/KmJor7N2zIKRziq8qR4PbLLF6iIrG8E
+         li0s+i0ISvdCTMR2fEf/dyv/LBSMybKrP5k8RVngPS0eBzJrptygWDxduc3kG1gAvVeU
+         cf4AqxOC5AabICP8Tg7TnsNFXVD/I0TM2K19y0HxUIrOvRae2RIj1bkCb1OPEfbK70gw
+         B+a6fG+EJxC1xhr0enO6nBWoXKzMlMFSeFcusBg1iIj+BrAxNvLgShfg7u4e2MjnQLXI
+         rqWFWaTXqXiy4xu7OY67gi4bHUA8kRf05bNonVzO8CttUvx2KbXASZWvkvL0NeWq8t8M
+         P8Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCXm7H0fr70ayezgYgfrF4x5EPX9npAizi4iTXWR0vAdMhCch+rgaVKoVLxMC4n0mDC9DWH/WQk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV1I6l8m96ki1oLuGtkfOr2ppqX6jsgQDLRSFhWzFyrPdIqd51
+	TjoQZF2TsT/T7Htfq/+Xaek/a18/AG97MWU05kjNakiFdeM6DAlBkoi0tQgzM3bA4pk=
+X-Gm-Gg: ATEYQzxXyM6eLGjo3U5mNPIL3z6tJfe1YSyF1CPWdwSpGbB/wRVmhaY7ijOBVdfcPDz
+	7PB58fpv7TMiRUmYD9yRH7uc7VyMLTl61tcocckBBUHcGcLR7jNLSZx4mF0EsA50uas9iRI3ww+
+	K50tmA6Jef80s7GqMHY8uWNpqBLuH9HmnYWXPkGB0pvqGgqP4g7TbO5e8x2Frsaze40/ShQstRh
+	kfyrExS55zwW0xv+4AH01uY4uh07ckxrZpoGGSxUF/CHTfEBMrfEYmqbF2u3DiQrHCNepYVSAjE
+	ecBSYNiEQWaxO8Q/HSDriKrWNu7AT4DHNAgZ8GhqP+VY9StGTank70pU0Wmtc6MD2c/sQMHnS1j
+	DNlivHhr9duQdxfri6ZMOMOcnnzRXkqeT8nV+ZDxAgjCMrcSbqjMx4Irar21R1HCF+CXAg8i1hg
+	ybgeVZS0vvYYQr61I2+VFKrxQpx56mX1HPKHSquF1dBf1JI4UIW3X8C5FCgbpUuxt6NwqircE/c
+	4G+
+X-Received: by 2002:a05:6a00:2ea4:b0:82a:6e7f:4c14 with SMTP id d2e1a72fcca58-82c6df6609emr5412590b3a.27.1774489054556;
+        Wed, 25 Mar 2026 18:37:34 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8a28:820:e910:540f:de1e:bee1:7630])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d400f62sm883251b3a.55.2026.03.25.18.37.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 18:37:34 -0700 (PDT)
+From: =?UTF-8?q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
+To: oscar.alfonso.diaz@gmail.com
+Cc: fjhhz1997@gmail.com,
+	johannes@sipsolutions.net,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access when deleting the virtual interface
+Date: Thu, 26 Mar 2026 09:37:19 +0800
+Message-ID: <20260326013719.1662-1-fjhhz1997@gmail.com>
+X-Mailer: git-send-email 2.45.0.windows.1
+In-Reply-To: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-modpost-extra_warn-unused-but-set-global-v1-1-2e84003b7e81@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQrCMBBA0auUWTsQI43gVURkkkxrpCYlk9RC6
- d2Nunyb/zcQzoEFLt0GmZcgIcWG46ED96A4MgbfDFppo066x1fyc5KCvJZM9zfliDVWYY+2FhQ
- uOE7J0oTKDGScN+deeWi5OfMQ1t/qevtbqn2yK98+7PsHdXzepowAAAA=
-X-Change-ID: 20260325-modpost-extra_warn-unused-but-set-global-06fa6cd6750d
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org, 
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1550; i=nathan@kernel.org;
- h=from:subject:message-id; bh=jCpZBWHBZGO+JFAuGtNCyOvnRm1CZWZVWKYWP+EJaTw=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDJlHOp/oXNIv4EmQ2HNMqVhJ/tCO1hfP7E3lTl9pZI4NX
- PQ4Truyo5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAExEhpXhf/3FYzIt3uv2OVnV
- VrXm30kzEXGzir/+T0xj9oeZSz6cX8nIMDdBtelD3glf20m10k9l3mlOZP71ILHredECJbmbVT0
- rGQA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,oss.qualcomm.com,kernel.org,vger.kernel.org,lists.linux.dev];
-	TAGGED_FROM(0.00)[bounces-230405-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230406-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fjhhz1997@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D118E32DCE7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7D39732DF5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
-in clang under a new subwarning, -Wunused-but-set-global, points out an
-unused static global variable in scripts/mod/modpost.c:
+Hi Óscar,
 
-  scripts/mod/modpost.c:59:13: error: variable 'extra_warn' set but not used [-Werror,-Wunused-but-set-global]
-     59 | static bool extra_warn;
-        |             ^
+Lucid-Duck spent some time trying to reproduce your crash and wasn't able
+to trigger it. Here's a summary of what was tested:
 
-This variable has been unused since commit 6c6c1fc09de3 ("modpost:
-require a MODULE_DESCRIPTION()") but that is expected, as there are
-currently no extra warnings at W=1 right now. Declare the variable with
-the unused attribute to make it clear to the compiler that this variable
-may be unused.
+- Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v2
+  patch applied
+- MT7921AU USB adapter, passthrough to VM
+- Full airgeddon evil twin flow: monitor VIF + hostapd AP + continuous
+  deauth via aireplay-ng
+- Also tested on bare metal Fedora 6.19.8 with the same adapter
 
-Cc: stable@vger.kernel.org
-Fixes: 6c6c1fc09de3 ("modpost: require a MODULE_DESCRIPTION()")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-I will apply this to kbuild-fixes for 7.0.
----
- scripts/mod/modpost.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+All tests were stable -- no crash, no dmesg errors, load stayed low. The
+deauth frames were confirmed sending for 30+ seconds under the v2 patch
+without issues.
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 0c25b5ad497b..c3bc801d8b2d 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -56,7 +56,7 @@ static bool allow_missing_ns_imports;
- 
- static bool error_occurred;
- 
--static bool extra_warn;
-+static bool extra_warn __attribute__((unused));
- 
- bool target_is_big_endian;
- bool host_is_big_endian;
+The one variable that couldn't be matched was the VM hypervisor.
+Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kernel
+level (xHCI). If you're using VirtualBox or VMware, the USB passthrough
+path is quite different (userspace proxy), and that could potentially
+explain a total VM freeze that isn't a kernel panic.
 
----
-base-commit: d2a43e7f89da55d6f0f96aaadaa243f35557291e
-change-id: 20260325-modpost-extra_warn-unused-but-set-global-06fa6cd6750d
+Could you please reply to Lucid-Duck directly on GitHub with the
+following information? Here's the link:
+https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4129198757
 
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
+1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, etc.)
+2. Your exact USB adapter model and ID? (0e8d:7961 covers several
+   MT7921 variants)
+3. If possible, try SSHing into the VM from the host while the display
+   is frozen -- if SSH still works, the issue is at the hypervisor/display
+   level, not the kernel.
 
+Thanks,
+傅继晗
 
