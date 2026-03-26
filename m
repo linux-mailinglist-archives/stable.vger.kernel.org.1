@@ -1,813 +1,365 @@
-Return-Path: <stable+bounces-230427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAWqNaDXxGnk4AQAu9opvQ
-	(envelope-from <stable+bounces-230427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:52:16 +0100
+	id kICwFmPaxGkq4gQAu9opvQ
+	(envelope-from <stable+bounces-230428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 08:04:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B513300DE
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:52:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB623302B2
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 08:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9236430094DC
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 06:52:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD652300E605
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621CF34D905;
-	Thu, 26 Mar 2026 06:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0B43AA1B9;
+	Thu, 26 Mar 2026 07:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="n0AnOfsc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twitnVTm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail78-36.sinamail.sina.com.cn (mail78-36.sinamail.sina.com.cn [219.142.78.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E334887E
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 06:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902683921CA
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 07:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774507920; cv=none; b=u6KnoarrcB5+lK05NgUmIHY8dug+jZZcvmHpt6YGeT75rAeYLMCfraKhroXeGGks0sI8sSCxSFxRWJZ8zXwW7SnCG0ryWqGwHJQ5iXx0mW0SZ/VY27cZD8S4ZZCZIasqzpqrxWKIB5WGWTTHKFFCYsMbMtWIEn3Dby4H1qjdEZ4=
+	t=1774508515; cv=none; b=a32v/vbtOqhDiU5P0AWBv7jZimQwctUwQEHb84yqqYMjz3XF9S2lJWgoOMT/694FCdReLHk8Y4i80ywjy/hZXy93PxJnbw3vqcts5BkW100z1gUIfpkymB2ILmP+IZYei5gRg2J+ab8SM8BT1ZFqJFcF8f39uWSJ3n+QmeTTSJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774507920; c=relaxed/simple;
-	bh=Qpq0FaBuGODpfY25dlWPf52EGUlaBP9+07b+QRH43BI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=e2H3syh55OZdzpXTBC96JBNi4kqzz8KS6P8a77sFxABiS10Zkn364ZXNHO+JX3/JGeAmbg3jmWZSxm8eFVjEQ+IV9zohCeQQ9WCjS6RWPrhAFuHO+1/2cBcsTDg7EZ3HJuE8GtE7KXbSfxB06BOPF4F0jIK9tZuGSc8m8U5q2SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=n0AnOfsc; arc=none smtp.client-ip=219.142.78.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774507915;
-	bh=GtzpN4NtOAd/DdvJtRg7QAsZhMYHPsZhzgQVP/7OAMM=;
-	h=From:Subject:Date:Message-Id;
-	b=n0AnOfscRgSpzwhTPkFzUT1wvlp4DzSuzakA7BLIKaeJH4H2zfTWllXz3U0Mq+SsL
-	 5yz5EU4cG6Icm/CgX/X2MTbCz6r4uiAMYmnKjKYzjCvANfEklXw4u+MsZV9vS8dMb+
-	 fbocKX79kMwDcGkxI/m286sCWwUYre3F5pBQ5rVg=
-X-SMAIL-HELO: pek-lpg-core6.wrs.com
-Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
-	by sina.com (10.185.250.24) with ESMTP
-	id 69C4D77C000003FE; Thu, 26 Mar 2026 14:51:45 +0800 (CST)
-X-Sender: johnny_haocn@sina.com
-X-Auth-ID: johnny_haocn@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=johnny_haocn@sina.com
-X-SMAIL-MID: 36266310748360
-X-SMAIL-UIID: 063D1ADFCFEB4DB3AF94DED3C91013E5-20260326-145145-1
-From: Johnny Hao <johnny_haocn@sina.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Daniel Starke <daniel.starke@siemens.com>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 5.15.y] tty: n_gsm: fix deadlock and link starvation in outgoing data path
-Date: Thu, 26 Mar 2026 14:51:39 +0800
-Message-Id: <20260326065139.1735715-1-johnny_haocn@sina.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774508515; c=relaxed/simple;
+	bh=09yf9yEfT+DjCAm9yhn7ytT47RWdJQm7vhsvXzEA1Ds=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LEKge6VOxWA0z5CWh1iOfBf0b2210Cyp6u9rVLoEI95wpJy/G572c/8WAwQXQE2sW5SJRhx5dg2PfZMEmoh+KN2O7gBsmVF+hMUqXYEpOHYXwWEAmUuabWvEa1wXrLma8QVIxANAKPgatdOoYxBoYVJXQTf95CFsc64khoOrjRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twitnVTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33253C116C6
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 07:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774508515;
+	bh=09yf9yEfT+DjCAm9yhn7ytT47RWdJQm7vhsvXzEA1Ds=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=twitnVTmBG5UHOHXXWH/upQeYwdOO+kz38IM8Fej619+nNMGR3v/QySyPxQhUap7B
+	 cO7/LGU+VAH+ADH9lqTxkdUh1ky6VE/hd6I2y4MPGzmkCXbJCBPfsJpuEpobi/SyVp
+	 95AXmPYLulazmWzJPNBmyznNShbkMP6dwY/IeD0nPizYSoAw4byb94uXK3KuR0/ZGl
+	 lXhI4BdPW2eYddlNQrF/ZR5WhFR6VUoklCJFBGu7zChhyMkTSOuPNG93LxNfSov4YF
+	 0EJ6ijqcDZNn/AoEhShmOuR/0AlzyGVaCRP/lHSsSidPAafqK3V6uTrc9ARg7yOA9u
+	 9JpeQIgdoAARQ==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b9825ba7e8dso85618066b.3
+        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 00:01:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUY603AjiAN2MIqZkmXC9+6+yUHFRmML8JSfM+S6pvjW+4qdeQbRU9cJZXmyjdE+EmYukzheEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX3AELEPMY/1dvqBhQLfFxwNRLrzaQQRxKleb0HFReav9OdTwy
+	UHJZmD/8YtWhfWrh+9Qkkl39t3/2nvTtpMJnATbkPszwTuHI8n/V9twpeXpB7Ow971/jcoogHRV
+	kdQ3Z806/J4zi74/l3ZiXnoPvxhTVRJ4=
+X-Received: by 2002:a17:906:ee8e:b0:b88:6309:c300 with SMTP id
+ a640c23a62f3a-b9a54268f23mr451338766b.39.1774508508709; Thu, 26 Mar 2026
+ 00:01:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20260312101440.772081-1-xry111@xry111.site>
+In-Reply-To: <20260312101440.772081-1-xry111@xry111.site>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 26 Mar 2026 15:01:45 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6RPEJ+K0bObgSR6K7-DSxiEzVpOpevBYuiAXK3H4wGzA@mail.gmail.com>
+X-Gm-Features: AQROBzBJQrnEXt1U-RWfdZWn51P-R5aifLcwNbXyiZ2o7T1PFoW9AMHl4heJT3Q
+Message-ID: <CAAhV-H6RPEJ+K0bObgSR6K7-DSxiEzVpOpevBYuiAXK3H4wGzA@mail.gmail.com>
+Subject: Re: [PATCH v4] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: WANG Xuerui <kernel@xen0n.name>, Jinyang He <hejinyang@loongson.cn>, 
+	WANG Rui <wangrui@loongson.cn>, Mingcong Bai <jeffbai@aosc.io>, Zixing Liu <liushuyu@aosc.io>, 
+	"H . Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org, 
+	Peter Zijlstra <peterz@infradead.org>, Menglong Dong <menglong8.dong@gmail.com>, 
+	Bibo Mao <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	Hanlu Li <lihanlu@loongson.cn>, Nathan Chancellor <nathan@kernel.org>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Wentao Guan <guanwentao@uniontech.com>, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
-	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230428-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[xen0n.name,loongson.cn,aosc.io,zytor.com,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[sina.com];
-	TAGGED_FROM(0.00)[bounces-230427-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[sina.com:+];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,siemens.com,sina.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 63B513300DE
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gnu.org:url,mail.gmail.com:mid,xry111.site:email]
+X-Rspamd-Queue-Id: CCB623302B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Daniel Starke <daniel.starke@siemens.com>
+Applied, thanks.
 
-[ Upstream commit 0af021678d5d30c31f5a6b631f404ead3575212a ]
+Huacai
 
-The current implementation queues up new control and user packets as needed
-and processes this queue down to the ldisc in the same code path.
-That means that the upper and the lower layer are hard coupled in the code.
-Due to this deadlocks can happen as seen below while transmitting data,
-especially during ldisc congestion. Furthermore, the data channels starve
-the control channel on high transmission load on the ldisc.
-
-Introduce an additional control channel data queue to prevent timeouts and
-link hangups during ldisc congestion. This is being processed before the
-user channel data queue in gsm_data_kick(), i.e. with the highest priority.
-Put the queue to ldisc data path into a workqueue and trigger it whenever
-new data has been put into the transmission queue. Change
-gsm_dlci_data_sweep() accordingly to fill up the transmission queue until
-TX_THRESH_HI. This solves the locking issue, keeps latency low and provides
-good performance on high data load.
-Note that now all packets from a DLCI are removed from the internal queue
-if the associated DLCI was closed. This ensures that no data is sent by the
-introduced write task to an already closed DLCI.
-
-BUG: spinlock recursion on CPU#0, test_v24_loop/124
- lock: serial8250_ports+0x3a8/0x7500, .magic: dead4ead, .owner: test_v24_loop/124, .owner_cpu: 0
-CPU: 0 PID: 124 Comm: test_v24_loop Tainted: G           O      5.18.0-rc2 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x34/0x44
- do_raw_spin_lock+0x76/0xa0
- _raw_spin_lock_irqsave+0x72/0x80
- uart_write_room+0x3b/0xc0
- gsm_data_kick+0x14b/0x240 [n_gsm]
- gsmld_write_wakeup+0x35/0x70 [n_gsm]
- tty_wakeup+0x53/0x60
- tty_port_default_wakeup+0x1b/0x30
- serial8250_tx_chars+0x12f/0x220
- serial8250_handle_irq.part.0+0xfe/0x150
- serial8250_default_handle_irq+0x48/0x80
- serial8250_interrupt+0x56/0xa0
- __handle_irq_event_percpu+0x78/0x1f0
- handle_irq_event+0x34/0x70
- handle_fasteoi_irq+0x90/0x1e0
- __common_interrupt+0x69/0x100
- common_interrupt+0x48/0xc0
- asm_common_interrupt+0x1e/0x40
-RIP: 0010:__do_softirq+0x83/0x34e
-Code: 2a 0a ff 0f b7 ed c7 44 24 10 0a 00 00 00 48 c7 c7 51 2a 64 82 e8 2d
-e2 d5 ff 65 66 c7 05 83 af 1e 7e 00 00 fb b8 ff ff ff ff <49> c7 c2 40 61
-80 82 0f bc c5 41 89 c4 41 83 c4 01 0f 84 e6 00 00
-RSP: 0018:ffffc90000003f98 EFLAGS: 00000286
-RAX: 00000000ffffffff RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffffffff82642a51 RDI: ffffffff825bb5e7
-RBP: 0000000000000200 R08: 00000008de3271a8 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000030 R14: 0000000000000000 R15: 0000000000000000
- ? __do_softirq+0x73/0x34e
- irq_exit_rcu+0xb5/0x100
- common_interrupt+0xa4/0xc0
- </IRQ>
- <TASK>
- asm_common_interrupt+0x1e/0x40
-RIP: 0010:_raw_spin_unlock_irqrestore+0x2e/0x50
-Code: 00 55 48 89 fd 48 83 c7 18 53 48 89 f3 48 8b 74 24 10 e8 85 28 36 ff
-48 89 ef e8 cd 58 36 ff 80 e7 02 74 01 fb bf 01 00 00 00 <e8> 3d 97 33 ff
-65 8b 05 96 23 2b 7e 85 c0 74 03 5b 5d c3 0f 1f 44
-RSP: 0018:ffffc9000020fd08 EFLAGS: 00000202
-RAX: 0000000000000000 RBX: 0000000000000246 RCX: 0000000000000000
-RDX: 0000000000000004 RSI: ffffffff8257fd74 RDI: 0000000000000001
-RBP: ffff8880057de3a0 R08: 00000008de233000 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000100 R14: 0000000000000202 R15: ffff8880057df0b8
- ? _raw_spin_unlock_irqrestore+0x23/0x50
- gsmtty_write+0x65/0x80 [n_gsm]
- n_tty_write+0x33f/0x530
- ? swake_up_all+0xe0/0xe0
- file_tty_write.constprop.0+0x1b1/0x320
- ? n_tty_flush_buffer+0xb0/0xb0
- new_sync_write+0x10c/0x190
- vfs_write+0x282/0x310
- ksys_write+0x68/0xe0
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7f3e5e35c15c
-Code: 8b 7c 24 08 89 c5 e8 c5 ff ff ff 89 ef 89 44 24 08 e8 58 bc 02 00 8b
-44 24 08 48 83 c4 10 5d c3 48 63 ff b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff
-ff 76 10 48 8b 15 fd fc 05 00 f7 d8 64 89 02 48 83
-RSP: 002b:00007ffcee77cd18 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007ffcee77cd70 RCX: 00007f3e5e35c15c
-RDX: 0000000000000100 RSI: 00007ffcee77cd90 RDI: 0000000000000003
-RBP: 0000000000000100 R08: 0000000000000000 R09: 7efefefefefefeff
-R10: 00007f3e5e3bddeb R11: 0000000000000246 R12: 00007ffcee77ce8f
-R13: 0000000000000001 R14: 000056214404e010 R15: 00007ffcee77cd90
- </TASK>
-
-Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20220701122332.2039-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ The context change is due to the commit a8c5b8255f8a
-("tty: n_gsm: fix broken virtual tty handling") in v5.18
-which is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
----
- drivers/tty/n_gsm.c | 403 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 279 insertions(+), 124 deletions(-)
-
-diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
-index aae9f73585bd..d468e22ce68d 100644
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -5,6 +5,14 @@
-  *
-  *	* THIS IS A DEVELOPMENT SNAPSHOT IT IS NOT A FINAL RELEASE *
-  *
-+ * Outgoing path:
-+ * tty -> DLCI fifo -> scheduler -> GSM MUX data queue    ---o-> ldisc
-+ * control message               -> GSM MUX control queue --´
-+ *
-+ * Incoming path:
-+ * ldisc -> gsm_queue() -o--> tty
-+ *                        `-> gsm_control_response()
-+ *
-  * TO DO:
-  *	Mostly done:	ioctls for setting modes/timing
-  *	Partly done:	hooks so you can pull off frames to non tty devs
-@@ -212,6 +220,9 @@ struct gsm_mux {
- 	/* Events on the GSM channel */
- 	wait_queue_head_t event;
- 
-+	/* ldisc send work */
-+	struct work_struct tx_work;
-+
- 	/* Bits for GSM mode decoding */
- 
- 	/* Framing Layer */
-@@ -243,7 +254,8 @@ struct gsm_mux {
- 	unsigned int tx_bytes;		/* TX data outstanding */
- #define TX_THRESH_HI		8192
- #define TX_THRESH_LO		2048
--	struct list_head tx_list;	/* Pending data packets */
-+	struct list_head tx_ctrl_list;	/* Pending control packets */
-+	struct list_head tx_data_list;	/* Pending data packets */
- 
- 	/* Control messages */
- 	struct timer_list kick_timer;	/* Kick TX queuing on timeout */
-@@ -377,6 +389,11 @@ static const u8 gsm_fcs8[256] = {
- 
- static int gsmld_output(struct gsm_mux *gsm, u8 *data, int len);
- static int gsm_modem_update(struct gsm_dlci *dlci, u8 brk);
-+static struct gsm_msg *gsm_data_alloc(struct gsm_mux *gsm, u8 addr, int len,
-+								u8 ctrl);
-+static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg);
-+static void gsmld_write_trigger(struct gsm_mux *gsm);
-+static void gsmld_write_task(struct work_struct *work);
- 
- /**
-  *	gsm_fcs_add	-	update FCS
-@@ -661,53 +678,73 @@ static int gsm_stuff_frame(const u8 *input, u8 *output, int len)
-  *	@cr: command/response bit seen as initiator
-  *	@control:  control byte including PF bit
-  *
-- *	Format up and transmit a control frame. These do not go via the
-- *	queueing logic as they should be transmitted ahead of data when
-- *	they are needed.
-- *
-- *	FIXME: Lock versus data TX path
-+ *	Format up and transmit a control frame. These should be transmitted
-+ *	ahead of data when they are needed.
-  */
--
--static void gsm_send(struct gsm_mux *gsm, int addr, int cr, int control)
-+static int gsm_send(struct gsm_mux *gsm, int addr, int cr, int control)
- {
--	int len;
--	u8 cbuf[10];
--	u8 ibuf[3];
-+	struct gsm_msg *msg;
-+	u8 *dp;
- 	int ocr;
-+	unsigned long flags;
-+
-+	msg = gsm_data_alloc(gsm, addr, 0, control);
-+	if (!msg)
-+		return -ENOMEM;
- 
- 	/* toggle C/R coding if not initiator */
- 	ocr = cr ^ (gsm->initiator ? 0 : 1);
- 
--	switch (gsm->encoding) {
--	case 0:
--		cbuf[0] = GSM0_SOF;
--		cbuf[1] = (addr << 2) | (ocr << 1) | EA;
--		cbuf[2] = control;
--		cbuf[3] = EA;	/* Length of data = 0 */
--		cbuf[4] = 0xFF - gsm_fcs_add_block(INIT_FCS, cbuf + 1, 3);
--		cbuf[5] = GSM0_SOF;
--		len = 6;
--		break;
--	case 1:
--	case 2:
--		/* Control frame + packing (but not frame stuffing) in mode 1 */
--		ibuf[0] = (addr << 2) | (ocr << 1) | EA;
--		ibuf[1] = control;
--		ibuf[2] = 0xFF - gsm_fcs_add_block(INIT_FCS, ibuf, 2);
--		/* Stuffing may double the size worst case */
--		len = gsm_stuff_frame(ibuf, cbuf + 1, 3);
--		/* Now add the SOF markers */
--		cbuf[0] = GSM1_SOF;
--		cbuf[len + 1] = GSM1_SOF;
--		/* FIXME: we can omit the lead one in many cases */
--		len += 2;
--		break;
--	default:
--		WARN_ON(1);
--		return;
-+	msg->data -= 3;
-+	dp = msg->data;
-+	*dp++ = (addr << 2) | (ocr << 1) | EA;
-+	*dp++ = control;
-+
-+	if (gsm->encoding == 0)
-+		*dp++ = EA; /* Length of data = 0 */
-+
-+	*dp = 0xFF - gsm_fcs_add_block(INIT_FCS, msg->data, dp - msg->data);
-+	msg->len = (dp - msg->data) + 1;
-+
-+	gsm_print_packet("Q->", addr, cr, control, NULL, 0);
-+
-+	spin_lock_irqsave(&gsm->tx_lock, flags);
-+	list_add_tail(&msg->list, &gsm->tx_ctrl_list);
-+	gsm->tx_bytes += msg->len;
-+	spin_unlock_irqrestore(&gsm->tx_lock, flags);
-+	gsmld_write_trigger(gsm);
-+
-+	return 0;
-+}
-+
-+/**
-+ *	gsm_dlci_clear_queues	-	remove outstanding data for a DLCI
-+ *	@gsm: mux
-+ *	@dlci: clear for this DLCI
-+ *
-+ *	Clears the data queues for a given DLCI.
-+ */
-+static void gsm_dlci_clear_queues(struct gsm_mux *gsm, struct gsm_dlci *dlci)
-+{
-+	struct gsm_msg *msg, *nmsg;
-+	int addr = dlci->addr;
-+	unsigned long flags;
-+
-+	/* Clear DLCI write fifo first */
-+	spin_lock_irqsave(&dlci->lock, flags);
-+	kfifo_reset(&dlci->fifo);
-+	spin_unlock_irqrestore(&dlci->lock, flags);
-+
-+	/* Clear data packets in MUX write queue */
-+	spin_lock_irqsave(&gsm->tx_lock, flags);
-+	list_for_each_entry_safe(msg, nmsg, &gsm->tx_data_list, list) {
-+		if (msg->addr != addr)
-+			continue;
-+		gsm->tx_bytes -= msg->len;
-+		list_del(&msg->list);
-+		kfree(msg);
- 	}
--	gsmld_output(gsm, cbuf, len);
--	gsm_print_packet("-->", addr, cr, control, NULL, 0);
-+	spin_unlock_irqrestore(&gsm->tx_lock, flags);
- }
- 
- /**
-@@ -769,6 +806,45 @@ static struct gsm_msg *gsm_data_alloc(struct gsm_mux *gsm, u8 addr, int len,
- 	return m;
- }
- 
-+/**
-+ *	gsm_send_packet	-	sends a single packet
-+ *	@gsm: GSM Mux
-+ *	@msg: packet to send
-+ *
-+ *	The given packet is encoded and sent out. No memory is freed.
-+ *	The caller must hold the gsm tx lock.
-+ */
-+static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg)
-+{
-+	int len, ret;
-+
-+
-+	if (gsm->encoding == 0) {
-+		gsm->txframe[0] = GSM0_SOF;
-+		memcpy(gsm->txframe + 1, msg->data, msg->len);
-+		gsm->txframe[msg->len + 1] = GSM0_SOF;
-+		len = msg->len + 2;
-+	} else {
-+		gsm->txframe[0] = GSM1_SOF;
-+		len = gsm_stuff_frame(msg->data, gsm->txframe + 1, msg->len);
-+		gsm->txframe[len + 1] = GSM1_SOF;
-+		len += 2;
-+	}
-+
-+	if (debug & 4)
-+		gsm_hex_dump_bytes(__func__, gsm->txframe, len);
-+	gsm_print_packet("-->", msg->addr, gsm->initiator, msg->ctrl, msg->data,
-+			 msg->len);
-+
-+	ret = gsmld_output(gsm, gsm->txframe, len);
-+	if (ret <= 0)
-+		return ret;
-+	/* FIXME: Can eliminate one SOF in many more cases */
-+	gsm->tx_bytes -= msg->len;
-+
-+	return 0;
-+}
-+
- /**
-  *	gsm_is_flow_ctrl_msg	-	checks if flow control message
-  *	@msg: message to check
-@@ -801,59 +877,81 @@ static bool gsm_is_flow_ctrl_msg(struct gsm_msg *msg)
- }
- 
- /**
-- *	gsm_data_kick		-	poke the queue
-+ *	gsm_data_kick	-	poke the queue
-  *	@gsm: GSM Mux
-- *	@dlci: DLCI sending the data
-  *
-  *	The tty device has called us to indicate that room has appeared in
-- *	the transmit queue. Ram more data into the pipe if we have any
-+ *	the transmit queue. Ram more data into the pipe if we have any.
-  *	If we have been flow-stopped by a CMD_FCOFF, then we can only
-- *	send messages on DLCI0 until CMD_FCON
-- *
-- *	FIXME: lock against link layer control transmissions
-+ *	send messages on DLCI0 until CMD_FCON. The caller must hold
-+ *	the gsm tx lock.
-  */
--
--static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
-+static int gsm_data_kick(struct gsm_mux *gsm)
- {
- 	struct gsm_msg *msg, *nmsg;
--	int len;
-+	struct gsm_dlci *dlci;
-+	int ret;
-+
-+	clear_bit(TTY_DO_WRITE_WAKEUP, &gsm->tty->flags);
- 
--	list_for_each_entry_safe(msg, nmsg, &gsm->tx_list, list) {
-+	/* Serialize control messages and control channel messages first */
-+	list_for_each_entry_safe(msg, nmsg, &gsm->tx_ctrl_list, list) {
- 		if (gsm->constipated && !gsm_is_flow_ctrl_msg(msg))
-+			return -EAGAIN;
-+		ret = gsm_send_packet(gsm, msg);
-+		switch (ret) {
-+		case -ENOSPC:
-+			return -ENOSPC;
-+		case -ENODEV:
-+			/* ldisc not open */
-+			gsm->tx_bytes -= msg->len;
-+			list_del(&msg->list);
-+			kfree(msg);
- 			continue;
--		if (gsm->encoding != 0) {
--			gsm->txframe[0] = GSM1_SOF;
--			len = gsm_stuff_frame(msg->data,
--						gsm->txframe + 1, msg->len);
--			gsm->txframe[len + 1] = GSM1_SOF;
--			len += 2;
--		} else {
--			gsm->txframe[0] = GSM0_SOF;
--			memcpy(gsm->txframe + 1 , msg->data, msg->len);
--			gsm->txframe[msg->len + 1] = GSM0_SOF;
--			len = msg->len + 2;
--		}
--
--		if (debug & 4)
--			gsm_hex_dump_bytes(__func__, gsm->txframe, len);
--		if (gsmld_output(gsm, gsm->txframe, len) <= 0)
-+		default:
-+			if (ret >= 0) {
-+				list_del(&msg->list);
-+				kfree(msg);
-+			}
- 			break;
--		/* FIXME: Can eliminate one SOF in many more cases */
--		gsm->tx_bytes -= msg->len;
-+		}
-+	}
- 
--		list_del(&msg->list);
--		kfree(msg);
-+	if (gsm->constipated)
-+		return -EAGAIN;
- 
--		if (dlci) {
--			tty_port_tty_wakeup(&dlci->port);
--		} else {
--			int i = 0;
--
--			for (i = 0; i < NUM_DLCI; i++)
--				if (gsm->dlci[i])
--					tty_port_tty_wakeup(&gsm->dlci[i]->port);
-+	/* Serialize other channels */
-+	if (list_empty(&gsm->tx_data_list))
-+		return 0;
-+	list_for_each_entry_safe(msg, nmsg, &gsm->tx_data_list, list) {
-+		dlci = gsm->dlci[msg->addr];
-+		/* Send only messages for DLCIs with valid state */
-+		if (dlci->state != DLCI_OPEN) {
-+			gsm->tx_bytes -= msg->len;
-+			list_del(&msg->list);
-+			kfree(msg);
-+			continue;
-+		}
-+		ret = gsm_send_packet(gsm, msg);
-+		switch (ret) {
-+		case -ENOSPC:
-+			return -ENOSPC;
-+		case -ENODEV:
-+			/* ldisc not open */
-+			gsm->tx_bytes -= msg->len;
-+			list_del(&msg->list);
-+			kfree(msg);
-+			continue;
-+		default:
-+			if (ret >= 0) {
-+				list_del(&msg->list);
-+				kfree(msg);
-+			}
-+			break;
- 		}
- 	}
-+
-+	return 1;
- }
- 
- /**
-@@ -902,9 +1000,21 @@ static void __gsm_data_queue(struct gsm_dlci *dlci, struct gsm_msg *msg)
- 	msg->data = dp;
- 
- 	/* Add to the actual output queue */
--	list_add_tail(&msg->list, &gsm->tx_list);
-+	switch (msg->ctrl & ~PF) {
-+	case UI:
-+	case UIH:
-+		if (msg->addr > 0) {
-+			list_add_tail(&msg->list, &gsm->tx_data_list);
-+			break;
-+		}
-+		fallthrough;
-+	default:
-+		list_add_tail(&msg->list, &gsm->tx_ctrl_list);
-+		break;
-+	}
- 	gsm->tx_bytes += msg->len;
--	gsm_data_kick(gsm, dlci);
-+
-+	gsmld_write_trigger(gsm);
- 	mod_timer(&gsm->kick_timer, jiffies + 10 * gsm->t1 * HZ / 100);
- }
- 
-@@ -1131,32 +1241,39 @@ static int gsm_dlci_modem_output(struct gsm_mux *gsm, struct gsm_dlci *dlci,
- 
- static int gsm_dlci_data_sweep(struct gsm_mux *gsm)
- {
--	int len, ret = 0;
- 	/* Priority ordering: We should do priority with RR of the groups */
--	int i = 1;
--
--	while (i < NUM_DLCI) {
--		struct gsm_dlci *dlci;
-+	int i, len, ret = 0;
-+	bool sent;
-+	struct gsm_dlci *dlci;
- 
--		if (gsm->tx_bytes > TX_THRESH_HI)
--			break;
--		dlci = gsm->dlci[i];
--		if (dlci == NULL || dlci->constipated) {
--			i++;
--			continue;
-+	while (gsm->tx_bytes < TX_THRESH_HI) {
-+		for (sent = false, i = 1; i < NUM_DLCI; i++) {
-+			dlci = gsm->dlci[i];
-+			/* skip unused or blocked channel */
-+			if (!dlci || dlci->constipated)
-+				continue;
-+			/* skip channels with invalid state */
-+			if (dlci->state != DLCI_OPEN)
-+				continue;
-+			/* count the sent data per adaption */
-+			if (dlci->adaption < 3 && !dlci->net)
-+				len = gsm_dlci_data_output(gsm, dlci);
-+			else
-+				len = gsm_dlci_data_output_framed(gsm, dlci);
-+			/* on error exit */
-+			if (len < 0)
-+				return ret;
-+			if (len > 0) {
-+				ret++;
-+				sent = true;
-+				/* The lower DLCs can starve the higher DLCs! */
-+				break;
-+			}
-+			/* try next */
- 		}
--		if (dlci->adaption < 3 && !dlci->net)
--			len = gsm_dlci_data_output(gsm, dlci);
--		else
--			len = gsm_dlci_data_output_framed(gsm, dlci);
--		if (len < 0)
-+		if (!sent)
- 			break;
--		/* DLCI empty - try the next */
--		if (len == 0)
--			i++;
--		else
--			ret++;
--	}
-+	};
- 
- 	return ret;
- }
-@@ -1405,7 +1522,6 @@ static void gsm_control_message(struct gsm_mux *gsm, unsigned int command,
- 						const u8 *data, int clen)
- {
- 	u8 buf[1];
--	unsigned long flags;
- 	struct gsm_dlci *dlci;
- 	int i;
- 	int address;
-@@ -1440,9 +1556,7 @@ static void gsm_control_message(struct gsm_mux *gsm, unsigned int command,
- 		gsm->constipated = false;
- 		gsm_control_reply(gsm, CMD_FCON, NULL, 0);
- 		/* Kick the link in case it is idling */
--		spin_lock_irqsave(&gsm->tx_lock, flags);
--		gsm_data_kick(gsm, NULL);
--		spin_unlock_irqrestore(&gsm->tx_lock, flags);
-+		gsmld_write_trigger(gsm);
- 		break;
- 	case CMD_FCOFF:
- 		/* Modem wants us to STFU */
-@@ -1645,8 +1759,6 @@ static int gsm_control_wait(struct gsm_mux *gsm, struct gsm_control *control)
- 
- static void gsm_dlci_close(struct gsm_dlci *dlci)
- {
--	unsigned long flags;
--
- 	del_timer(&dlci->t1);
- 	if (debug & 8)
- 		pr_debug("DLCI %d goes closed.\n", dlci->addr);
-@@ -1655,17 +1767,16 @@ static void gsm_dlci_close(struct gsm_dlci *dlci)
- 	dlci->constipated = true;
- 	if (dlci->addr != 0) {
- 		tty_port_tty_hangup(&dlci->port, false);
--		spin_lock_irqsave(&dlci->lock, flags);
--		kfifo_reset(&dlci->fifo);
--		spin_unlock_irqrestore(&dlci->lock, flags);
-+		gsm_dlci_clear_queues(dlci->gsm, dlci);
- 		/* Ensure that gsmtty_open() can return. */
- 		tty_port_set_initialized(&dlci->port, 0);
- 		wake_up_interruptible(&dlci->port.open_wait);
- 	} else
- 		dlci->gsm->dead = true;
--	wake_up(&dlci->gsm->event);
- 	/* A DLCI 0 close is a MUX termination so we need to kick that
- 	   back to userspace somehow */
-+	gsm_dlci_data_kick(dlci);
-+	wake_up(&dlci->gsm->event);
- }
- 
- /**
-@@ -1688,6 +1799,7 @@ static void gsm_dlci_open(struct gsm_dlci *dlci)
- 	/* Send current modem state */
- 	if (dlci->addr)
- 		gsm_modem_update(dlci, 0);
-+	gsm_dlci_data_kick(dlci);
- 	wake_up(&dlci->gsm->event);
- }
- 
-@@ -2325,7 +2437,7 @@ static void gsm1_receive(struct gsm_mux *gsm, unsigned char c)
- 	} else if ((c & ISO_IEC_646_MASK) == XOFF) {
- 		gsm->constipated = false;
- 		/* Kick the link in case it is idling */
--		gsm_data_kick(gsm, NULL);
-+		gsmld_write_trigger(gsm);
- 		return;
- 	}
- 	if (c == GSM1_SOF) {
-@@ -2460,6 +2572,9 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
- 	del_timer_sync(&gsm->kick_timer);
- 	del_timer_sync(&gsm->t2_timer);
- 
-+	/* Finish writing to ldisc */
-+	flush_work(&gsm->tx_work);
-+
- 	/* Free up any link layer users and finally the control channel */
- 	if (gsm->has_devices) {
- 		gsm_unregister_devices(gsm_tty_driver, gsm->num);
-@@ -2471,9 +2586,12 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
- 	mutex_unlock(&gsm->mutex);
- 	/* Now wipe the queues */
- 	tty_ldisc_flush(gsm->tty);
--	list_for_each_entry_safe(txq, ntxq, &gsm->tx_list, list)
-+	list_for_each_entry_safe(txq, ntxq, &gsm->tx_ctrl_list, list)
-+		kfree(txq);
-+	INIT_LIST_HEAD(&gsm->tx_ctrl_list);
-+	list_for_each_entry_safe(txq, ntxq, &gsm->tx_data_list, list)
- 		kfree(txq);
--	INIT_LIST_HEAD(&gsm->tx_list);
-+	INIT_LIST_HEAD(&gsm->tx_data_list);
- }
- 
- /**
-@@ -2496,6 +2614,7 @@ static int gsm_activate_mux(struct gsm_mux *gsm)
- 
- 	timer_setup(&gsm->kick_timer, gsm_kick_timer, 0);
- 	timer_setup(&gsm->t2_timer, gsm_control_retransmit, 0);
-+	INIT_WORK(&gsm->tx_work, gsmld_write_task);
- 	init_waitqueue_head(&gsm->event);
- 	spin_lock_init(&gsm->control_lock);
- 	spin_lock_init(&gsm->tx_lock);
-@@ -2602,7 +2721,8 @@ static struct gsm_mux *gsm_alloc_mux(void)
- 	spin_lock_init(&gsm->lock);
- 	mutex_init(&gsm->mutex);
- 	kref_init(&gsm->ref);
--	INIT_LIST_HEAD(&gsm->tx_list);
-+	INIT_LIST_HEAD(&gsm->tx_ctrl_list);
-+	INIT_LIST_HEAD(&gsm->tx_data_list);
- 
- 	gsm->t1 = T1;
- 	gsm->t2 = T2;
-@@ -2759,6 +2879,47 @@ static int gsmld_output(struct gsm_mux *gsm, u8 *data, int len)
- 	return gsm->tty->ops->write(gsm->tty, data, len);
- }
- 
-+
-+/**
-+ *	gsmld_write_trigger	-	schedule ldisc write task
-+ *	@gsm: our mux
-+ */
-+static void gsmld_write_trigger(struct gsm_mux *gsm)
-+{
-+	if (!gsm || !gsm->dlci[0] || gsm->dlci[0]->dead)
-+		return;
-+	schedule_work(&gsm->tx_work);
-+}
-+
-+
-+/**
-+ *	gsmld_write_task	-	ldisc write task
-+ *	@work: our tx write work
-+ *
-+ *	Writes out data to the ldisc if possible. We are doing this here to
-+ *	avoid dead-locking. This returns if no space or data is left for output.
-+ */
-+static void gsmld_write_task(struct work_struct *work)
-+{
-+	struct gsm_mux *gsm = container_of(work, struct gsm_mux, tx_work);
-+	unsigned long flags;
-+	int i, ret;
-+
-+	/* All outstanding control channel and control messages and one data
-+	 * frame is sent.
-+	 */
-+	ret = -ENODEV;
-+	spin_lock_irqsave(&gsm->tx_lock, flags);
-+	if (gsm->tty)
-+		ret = gsm_data_kick(gsm);
-+	spin_unlock_irqrestore(&gsm->tx_lock, flags);
-+
-+	if (ret >= 0)
-+		for (i = 0; i < NUM_DLCI; i++)
-+			if (gsm->dlci[i])
-+				tty_port_tty_wakeup(&gsm->dlci[i]->port);
-+}
-+
- /**
-  *	gsmld_attach_gsm	-	mode set up
-  *	@tty: our tty structure
-@@ -2902,6 +3063,7 @@ static int gsmld_open(struct tty_struct *tty)
- 
- 	timer_setup(&gsm->kick_timer, gsm_kick_timer, 0);
- 	timer_setup(&gsm->t2_timer, gsm_control_retransmit, 0);
-+	INIT_WORK(&gsm->tx_work, gsmld_write_task);
- 
- 	return 0;
- }
-@@ -2918,16 +3080,9 @@ static int gsmld_open(struct tty_struct *tty)
- static void gsmld_write_wakeup(struct tty_struct *tty)
- {
- 	struct gsm_mux *gsm = tty->disc_data;
--	unsigned long flags;
- 
- 	/* Queue poll */
--	clear_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
--	spin_lock_irqsave(&gsm->tx_lock, flags);
--	gsm_data_kick(gsm, NULL);
--	if (gsm->tx_bytes < TX_THRESH_LO) {
--		gsm_dlci_data_sweep(gsm);
--	}
--	spin_unlock_irqrestore(&gsm->tx_lock, flags);
-+	gsmld_write_trigger(gsm);
- }
- 
- /**
--- 
-2.34.1
-
+On Thu, Mar 12, 2026 at 6:15=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
+e:
+>
+> With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+> of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+> empty.  This is not valid, as the current DWARF specification mandates
+> the first byte of the EH frame to be the version number 1.  It causes
+> some unwinders to complain, for example the ClickHouse query profiler
+> spams the log with messages:
+>
+>     clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
+>     version: 127 at 7ffffffb0000
+>
+> Here "127" is just the byte located at the p_vaddr (0, i.e. the
+> beginning of the vDSO) of the empty GNU_EH_FRAME segment.
+> Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
+> the start of vDSO in the process VM image.
+>
+> In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+> MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
+> "genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+> use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
+> limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
+> we can simply flip it over to -fasynchronous-unwind-tables and pass
+> --eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
+> stack for statistics even if the sample point is taken when the PC is in
+> the vDSO.
+>
+> However simply adjusting the options above would exploit an issue: when
+> the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+> falled back to a machine-specific routine to match the code pattern of
+> rt_sigreturn and extract the registers saved in the sigframe if the code
+> pattern is matched.  As unwinding from signal handlers is vital for
+> libgcc to support pthread cancellation etc., the fall-back routine had
+> been silently keeping the LoongArch Linux systems functioning since
+> Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
+> format, fall-back routine will no longer be used and libgcc will fail
+> to unwind the sigframe, and unwinding from signal handlers will no
+> longer work, causing dozens of glibc test failures.  To make it possible
+> to unwind from signal handlers again, it's necessary to code the unwind
+> info in __vdso_rt_sigreturn via .cfi_* directives.
+>
+> The offsets in the .cfi_* directives depend on the layout of struct
+> sigframe, notably the offset of sigcontect in the sigframe.  To use the
+> offset in the assembly file, factor out struct sigframe into a header to
+> allow asm-offsets.c to output the offset for assembly.
+>
+> To work around a long-term issue in the libgcc unwinder (the pc is
+> unconditionally substracted by 1: doing so is technically incorrect for
+> a signal frame), a nop instruction is included with the two real
+> instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
+> hack has been used on x86 for a long time.
+>
+> Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> ---
+>
+> Changes from [v3]:
+> - Move SYM_SIGFUNC_* into include guard.
+> - Retain ".section .text".
+>
+> Changes from [v2] to v3:
+> - Wrap .cfi_* for signal trampoline in SYM_SIGFUNC_START.
+> - Remove comment lines in sigframe.h not so meaningful.
+>
+> Changes from [v1] to v2:
+> - Use DWARF column 0 instead of the libgcc-specific column 72.
+> - Style change to sigframe.h.
+>
+> [v3]: https://lore.kernel.org/20260303083248.567185-1-xry111@xry111.site
+> [v2]: https://lore.kernel.org/20260227072031.581229-1-xry111@xry111.site
+> [v1]: https://lore.kernel.org/20260225104607.3803060-1-xry111@xry111.site
+>
+>  arch/loongarch/include/asm/linkage.h  | 34 +++++++++++++++++++++++++++
+>  arch/loongarch/include/asm/sigframe.h |  9 +++++++
+>  arch/loongarch/kernel/asm-offsets.c   |  2 ++
+>  arch/loongarch/kernel/signal.c        |  6 +----
+>  arch/loongarch/vdso/Makefile          |  4 ++--
+>  arch/loongarch/vdso/sigreturn.S       |  8 +++----
+>  6 files changed, 51 insertions(+), 12 deletions(-)
+>  create mode 100644 arch/loongarch/include/asm/sigframe.h
+>
+> diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/includ=
+e/asm/linkage.h
+> index e2eca1a25b4e..9f10de85b3f6 100644
+> --- a/arch/loongarch/include/asm/linkage.h
+> +++ b/arch/loongarch/include/asm/linkage.h
+> @@ -41,4 +41,38 @@
+>         .cfi_endproc;                                   \
+>         SYM_END(name, SYM_T_NONE)
+>
+> +/*
+> + * This is for the signal handler trampoline, which is used as the retur=
+n
+> + * address of the signal handlers in userspace instead of called normall=
+y.
+> + * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
+> + * nop between .cfi_startproc and the actual address of the trampoline, =
+so
+> + * we cannot simply use SYM_FUNC_START.
+> + *
+> + * This wrapper also contains all the .cfi_* directives for recovering
+> + * the content of the GPRs and the "return address" (where the rt_sigret=
+urn
+> + * syscall will jump to), assuming there is a struct rt_sigframe (where
+> + * a struct sigcontext containing those information we need to recover) =
+at
+> + * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
+> + * column 0 is for $zero, but it does not make too much sense to
+> + * save/restore the hardware zero register.  Repurpose this column here
+> + * for the return address (here it's not the content of $ra we cannot us=
+e
+> + * the default column 3).
+> + */
+> +#define SYM_SIGFUNC_START(name)                                \
+> +       .cfi_startproc;                                 \
+> +       .cfi_signal_frame;                              \
+> +       .cfi_def_cfa 3, RT_SIGFRAME_SC;                 \
+> +       .cfi_return_column 0;                           \
+> +       .cfi_offset 0, SC_PC;                           \
+> +       .irp    num, 1, 2, 3, 4, 5, 6, 7, 8,            \
+> +                    9, 10, 11, 12, 13, 14, 15, 16,     \
+> +                    17, 18, 19, 20, 21, 22, 23, 24,    \
+> +                    25, 26, 27, 28, 29, 30, 31;        \
+> +       .cfi_offset \num, SC_REGS + \num * SZREG;       \
+> +       .endr;                                          \
+> +       nop;                                            \
+> +       SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
+> +
+> +#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
+> +
+>  #endif
+> diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/inclu=
+de/asm/sigframe.h
+> new file mode 100644
+> index 000000000000..109298b8d7e0
+> --- /dev/null
+> +++ b/arch/loongarch/include/asm/sigframe.h
+> @@ -0,0 +1,9 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +
+> +#include <asm/siginfo.h>
+> +#include <asm/ucontext.h>
+> +
+> +struct rt_sigframe {
+> +       struct siginfo rs_info;
+> +       struct ucontext rs_uctx;
+> +};
+> diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/=
+asm-offsets.c
+> index 3017c7157600..2cc953f113ac 100644
+> --- a/arch/loongarch/kernel/asm-offsets.c
+> +++ b/arch/loongarch/kernel/asm-offsets.c
+> @@ -16,6 +16,7 @@
+>  #include <asm/ptrace.h>
+>  #include <asm/processor.h>
+>  #include <asm/ftrace.h>
+> +#include <asm/sigframe.h>
+>  #include <vdso/datapage.h>
+>
+>  static void __used output_ptreg_defines(void)
+> @@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
+>         COMMENT("Linux sigcontext offsets.");
+>         OFFSET(SC_REGS, sigcontext, sc_regs);
+>         OFFSET(SC_PC, sigcontext, sc_pc);
+> +       OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
+>         BLANK();
+>  }
+>
+> diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signa=
+l.c
+> index c9f7ca778364..e297d54ea638 100644
+> --- a/arch/loongarch/kernel/signal.c
+> +++ b/arch/loongarch/kernel/signal.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/lbt.h>
+>  #include <asm/ucontext.h>
+>  #include <asm/vdso.h>
+> +#include <asm/sigframe.h>
+>
+>  #ifdef DEBUG_SIG
+>  #  define DEBUGP(fmt, args...) printk("%s: " fmt, __func__, ##args)
+> @@ -51,11 +52,6 @@
+>  #define lock_lbt_owner()       ({ preempt_disable(); pagefault_disable()=
+; })
+>  #define unlock_lbt_owner()     ({ pagefault_enable(); preempt_enable(); =
+})
+>
+> -struct rt_sigframe {
+> -       struct siginfo rs_info;
+> -       struct ucontext rs_uctx;
+> -};
+> -
+>  struct _ctx_layout {
+>         struct sctx_info *addr;
+>         unsigned int size;
+> diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+> index 520f1513f07d..294c16b9517f 100644
+> --- a/arch/loongarch/vdso/Makefile
+> +++ b/arch/loongarch/vdso/Makefile
+> @@ -26,7 +26,7 @@ cflags-vdso :=3D $(ccflags-vdso) \
+>         $(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+>         -std=3Dgnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-com=
+mon -fno-builtin \
+>         -fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING =
+\
+> -       $(call cc-option, -fno-asynchronous-unwind-tables) \
+> +       $(call cc-option, -fasynchronous-unwind-tables) \
+>         $(call cc-option, -fno-stack-protector)
+>  aflags-vdso :=3D $(ccflags-vdso) \
+>         -D__ASSEMBLY__ -Wa,-gdwarf-2
+> @@ -41,7 +41,7 @@ endif
+>
+>  # VDSO linker flags.
+>  ldflags-y :=3D -Bsymbolic --no-undefined -soname=3Dlinux-vdso.so.1 \
+> -       $(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
+> +       $(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr =
+-T
+>
+>  #
+>  # Shared build commands.
+> diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigret=
+urn.S
+> index 9cb3c58fad03..a876dbdc458a 100644
+> --- a/arch/loongarch/vdso/sigreturn.S
+> +++ b/arch/loongarch/vdso/sigreturn.S
+> @@ -12,13 +12,11 @@
+>
+>  #include <asm/regdef.h>
+>  #include <asm/asm.h>
+> +#include <asm/asm-offsets.h>
+>
+>         .section        .text
+> -       .cfi_sections   .debug_frame
+> -
+> -SYM_FUNC_START(__vdso_rt_sigreturn)
+>
+> +SYM_SIGFUNC_START(__vdso_rt_sigreturn)
+>         li.w    a7, __NR_rt_sigreturn
+>         syscall 0
+> -
+> -SYM_FUNC_END(__vdso_rt_sigreturn)
+> +SYM_SIGFUNC_END(__vdso_rt_sigreturn)
+> --
+> 2.53.0
+>
 
