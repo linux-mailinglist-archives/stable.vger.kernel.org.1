@@ -1,78 +1,64 @@
-Return-Path: <stable+bounces-230521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4P/SLpaIxWlc+wQAu9opvQ
-	(envelope-from <stable+bounces-230521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:27:18 +0100
+	id uEtUDL6IxWlc+wQAu9opvQ
+	(envelope-from <stable+bounces-230522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:27:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F81933AE9F
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:27:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BFD33AEA7
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4BF6302768B
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 19:18:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2973B30180AB
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 19:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B39234F48E;
-	Thu, 26 Mar 2026 19:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B04B33A716;
+	Thu, 26 Mar 2026 19:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="brf6p5QZ"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hxPsbjEH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB72F31ED80;
-	Thu, 26 Mar 2026 19:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68C68287E;
+	Thu, 26 Mar 2026 19:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774552735; cv=none; b=LQ7eb+ZVieSLE71NxVhA7wFeGJuNcA98jwTSJd9DsG8+Df5jmXiejrSYv8KBB8C+2y7IFJwdXn97Hxk1b8/kL6MRN8lrB5sw/zZk95TdtaqREYvFTrrLarFLYZFBlfp+w6wbkY5xbMGnLuwIqQCfYQbpxfUE+ukJX69DiwfKLEA=
+	t=1774552895; cv=none; b=pZgB8YhROlFGohMTmj+kaPfmrJMD1aTAj2rfjAcFCdOc6iUdJSAUGHuT6N3SEv7TV4Wd6qyepMuLJ/ZdKax1A2wAByh6t6GuiWCZZzWByhCvzhswgTcYJccx8jj3+TOssMSpmYXPODs3HJhwWhXnS+4Pptfr6HR29BkYjq7872Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774552735; c=relaxed/simple;
-	bh=PsrYfTmQrZHHnAcsRgaMikiSSJ3FgQWb6eTiJbFOmYM=;
+	s=arc-20240116; t=1774552895; c=relaxed/simple;
+	bh=/65EHT+st3JqgU9/2mQ82iX7ppQBJTP4LM0jM1i1SFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MTOhcd/Qy1hM5GaPBZkQnOI9yleu/g1+jPGTpZodoZQiIp28XpVmUn5TVte1ypUaJAQYhx+Hzwmxr+zRQeiqfLY0lYh5jIfvDRtNHnS/8qcid1Jj3TwjbLEw0pFrc5zG6zTPnhwQ1/ZMQMNlDZ/mJOeqhNN4E2L7qdX8yO4H7hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=brf6p5QZ; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774552734; x=1806088734;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PsrYfTmQrZHHnAcsRgaMikiSSJ3FgQWb6eTiJbFOmYM=;
-  b=brf6p5QZL9QaYGrLZzCkxclnyhwxUYJLFXqFGGgRzN7ON6i/qdsQEqMF
-   qKTRX6fmGSYYsXtXSd4fA1e6lVXGfQOFu8fwza5bVgr6CGLF6TuRQXcib
-   E+rzDPb1Wx6hhOfaHwtIVztr1lUwTq9GTChKC9t6ilYbIVWkf6DNjkfXk
-   tejPxH8fM8QXRSiqAnxaaEwYr7wFZolVZSAFi+Zc9X99NumzTp4+r1kJm
-   tnhYopXJAGTp8fHDS1xZz92hrCecbLnIJq5ZpknDUXKmwhx7TnNiU+5Cj
-   PZlSE3AwPF/cKHnoSKNoyd3YO2omvFSomcqF2/IYUL9FyUC0Y71QVQKq5
-   w==;
-X-CSE-ConnectionGUID: mBRPdRrUST+sjNtpeD1FNw==
-X-CSE-MsgGUID: p3dDX/PFR8eEUeq4Y+6VWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74806985"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="74806985"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 12:18:41 -0700
-X-CSE-ConnectionGUID: 6GhBGAblRPe82ogoVeJO7A==
-X-CSE-MsgGUID: nRp5t4b1SaK0TSm8RMcvbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="263005323"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.216])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 12:18:38 -0700
-Date: Thu, 26 Mar 2026 21:18:35 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Andy Shevchenko <andy@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	=?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] auxdisplay: line-display: fix NULL dereference in
- linedisp_release
-Message-ID: <acWGi1aMWrk05GLz@ashevche-desk.local>
-References: <20260326171412.1109402-1-lgs201920130244@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fslaQuRKq5gCakS5JxBMyg/O70uuIcnDXtxFyyjtlTMs1BFcGTrX6E0fYooS/53bD00lsS6Ql2bUM5MFLVDCrQ7SYG6q1W9c0IMPG/Ft9x+opI4I8IzdvLPewhn7Zs+R678uiEDYxo4eGe5Xne/henYdecvJDUEIQiFFCTxP2No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hxPsbjEH; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7gv3RRqjtCugysMfLD0330dJ+E6bzXxwyRRm5BMEPU8=; b=hxPsbjEHxR1+gWzqYEyhseSoeE
+	g1GTfN4qhjwZq9fUwHgkonFxe/cHMkO13ZSpTV18uOoi1CUBon6p/yG5bU6XbBA2B3QkzaN3Edd6v
+	ksXQy/I2Ax4SAtLKU+AlQZG3TXybUEL4or53vB4Ot6N9hcHKzYRevMZx0AUCAqswRd9WPVpDNqpPF
+	8R/UW3frNF0I/EQmoVHKT3P1p9CN0cBC4jLDo33VLl7Ep7hjlpJe8/zPPVM3NtmjP3sF+T9HKUDg0
+	XT9M9NBC85mUxfq2E5RS43Ss2m6L5UiyEE+XH6ipdzqVMth9DqFjFPRZnDDQaj3tdpfgmNk4o4+IW
+	h30qNMrQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5qGf-00000000XBq-39sL;
+	Thu, 26 Mar 2026 19:21:21 +0000
+Date: Thu, 26 Mar 2026 19:21:21 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com,
+	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
+Message-ID: <acWHMQ2MPFjOSq5T@casper.infradead.org>
+References: <20260326162611.693539-1-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,62 +67,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326171412.1109402-1-lgs201920130244@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20260326162611.693539-1-gourry@gourry.net>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux-m68k.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-230521-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230522-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim]
-X-Rspamd-Queue-Id: 2F81933AE9F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:dkim,casper.infradead.org:mid]
+X-Rspamd-Queue-Id: 85BFD33AEA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 01:14:12AM +0800, Guangshuo Li wrote:
-> linedisp_release() currently retrieves the enclosing struct linedisp via
-> to_linedisp(). That lookup depends on the attachment list, but the
-> attachment may already have been removed before put_device() invokes the
-> release callback. This can happen in linedisp_unregister(), and can also
-> be reached from some linedisp_register() error paths.
-> 
-> In that case, to_linedisp() returns NULL and linedisp_release()
-> dereferences it while freeing the display resources.
-> 
-> The struct device released here is the embedded linedisp->dev used by
-> linedisp_register(), so retrieve the enclosing object directly with
-> container_of() instead.
+On Thu, Mar 26, 2026 at 11:26:11AM -0500, Gregory Price wrote:
+> This also requires removing the rcu_read_lock() from
+> do_fault_around() so that .map_pages may use sleeping locks.
 
-Makes sense to me. How did you find the issue?
+NACK.
 
-Geert, do you agree with this change?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+->map_pages() is called when VM asks to map easy accessible pages.
+Filesystem should find and map pages associated with offsets from "start_pgoff"
+till "end_pgoff". ->map_pages() is called with the RCU lock held and must
+not block.  If it's not possible to reach a page without blocking,
+filesystem should skip it. Filesystem should use set_pte_range() to setup
+page table entry. Pointer to entry associated with the page is passed in
+"pte" field in vm_fault structure. Pointers to entries for other offsets
+should be calculated relative to "pte".
 
 
