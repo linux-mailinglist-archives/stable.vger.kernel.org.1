@@ -1,234 +1,187 @@
-Return-Path: <stable+bounces-230532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230533-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PLUJgaqxWlUAQUAu9opvQ
-	(envelope-from <stable+bounces-230532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:49:58 +0100
+	id wEw6HcWuxWlrAwUAu9opvQ
+	(envelope-from <stable+bounces-230533-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:10:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B6833C1E1
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:49:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD2233C388
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2E9C30210FD
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:49:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5689F304C11A
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9FB30FF37;
-	Thu, 26 Mar 2026 21:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641813368A0;
+	Thu, 26 Mar 2026 22:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="W1Zz6j/C"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="GZeqvDR6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6BA301460
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 21:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DC333509B
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 22:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774561794; cv=none; b=C0UIUVEji+aUQHMpRWBTGKFdSxevWFPgTwBKbOHhhjxJAze1F2jZk+B51bCEhASU9JNYrpYUuAax1Q2hCuej6+X95vY/M/f+kYSF9YzaJ0fZxEzy8KNHRl3sKtV0cUEjsEC/2+UzvFqBlc9kZcBoyBHfE/JUmjxgyvP03p0QMn0=
+	t=1774562716; cv=none; b=olwmBzK9jfZmr3RvrdSFcqafKTVRj0N7O4PDNNAFT3T3n9IbMZ6KxpMIOVYPeZjIG7QIDVBY0TMrGhHzWh4vGXm4HH1hTrd/eWkE6H3c0GWrKFEPxwhws4pEMq9D3pRrwzFHhy/FUExljk50LHxqeyV8OcdemUsTsjgtdYG4lGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774561794; c=relaxed/simple;
-	bh=aKLX+hNPaI0XlfoPJagBu5mZrf265cU668okNsNseKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PZoe+icQBdQ0zfGSK2MHjhMEWYy9jP13FQdP5Yk5hiLtGYD6Hvg16z2k46ztN1evFBV8JGLvGHfByHFhACphOp2lutwxPrx5RoU9OdC22m16HVbry6+csLrN+LwSETM6TnUNGQyle3pUT0ylOSmmggXeYUEWcPVmsSQcWVhIDUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=W1Zz6j/C; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-661cfb9f3aaso2210507a12.2
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 14:49:49 -0700 (PDT)
+	s=arc-20240116; t=1774562716; c=relaxed/simple;
+	bh=u684RyFUCmg8ujTk2N6tNVsPJBod1PTom9yEeQrkutU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ErcmjVh3WfeDIR+auzipUoEHNtWYRJfwdTjltkXnmS4+98iFs4bXQ1xFxmxEwNN2yZdU8p0Lvx+QOGQ/IqNRe/eaBGe1GmxjgTgq0H5jQVDbjQu1YZZaVHZPNbITp4mlt253E99ZD4j20fQWPxAYZ8JGLQWNy05k4aK6cPAJ5ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=GZeqvDR6; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50b713d6baeso15069111cf.2
+        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 15:05:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1774561787; x=1775166587; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VAKkSou4roERMDhHrtw7MaZZUWuXxGKKeAc/MZ02tbA=;
-        b=W1Zz6j/CyUTAvk0EL97msDUjJj0pJWuaLBkhxIK4prYHXWHrrnpuiiYFDtLsST/GSF
-         f1obD1H/sx12nUF4eamtLPRcrXezaJlqMwJs/1VyCEwL9UDbP7pOO74RXg+aGxXGuxnh
-         OleVh8iXecnONoMjOSK+iCOevDT7nu2XfU8tw=
+        d=ziepe.ca; s=google; t=1774562713; x=1775167513; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qt4Bouy7zFS2Ghg5Ne8+cryR/mFwEWJzdsa/JCE70NE=;
+        b=GZeqvDR6Qc4E+MKIm1scFgkfl1AM6grkxsny0TaEwgdWxcDxdpgATf20Ac0z64cClX
+         cM7ecqCBzBiAOn4a0yJqCms9RM1y6c+FxdeRfOj+Uf9fsQs0gsi1gATgsTgt13AJaYOu
+         TAMKktvEDTxeULEz9m+TM9B4ctvLq/suYrgtYpx22f1tXsci1F0+QAAG/S8KJ/ojhuJD
+         ObuCRluT7zbYnqg8henrloFcDfiREwIMoJlLAuzhSsWZdQNQCFDbMjk0L3uDSPj0FI3y
+         hNSgP0vwOqQmgpsv0GcIL4QT5mFS2VCF3AZgTRsM6HoLKgn4D+mHz61htEIcfTyYhxAS
+         /qpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774561787; x=1775166587;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VAKkSou4roERMDhHrtw7MaZZUWuXxGKKeAc/MZ02tbA=;
-        b=k/ro5sJtLhlSt5dQOWEoQeZmq5MmscxHLnfu/UZl78g70DODyUb05w7hjo+kITrLnc
-         LhsK3ssZKOnpDQlks9OatuKS0us9VLm2jsmJWHi43BH9o3CvDPTOFJ4WwsG6wYjlWYRt
-         ZmBFYW+SZZ2WOTC2dc09D7O/8JWY4o4J0g3YsoGO6f1ZkeXvAXQxOjYFcgR8fk6RqnbL
-         Gq5DK3651qteFTrP9/YOn2NtIPJ7dTPwNQIB6REaWwziSyEkT3vJbWRdNNUU8EpHeeOW
-         KfeydgwyjIMtxEmnCtdm2OlDaU/Vwz5MVFcMyx8sLgDTe6pfFXEGKvaHbSZlV2E2BH7f
-         afRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXoIkszXMwvubZhsVMWABPRBms6hkcHR+pZYizd9zArrBNgQA6G0KOqWAhPVmKWBJebkQawpI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvUnE8vPufPEbpxHnqKB5cPodYFquTmssQG/+p83K9AevGc6G+
-	hQ1E/c6loQ4WzatADEyOigTssx+2WaFEGhnmgznsCDauP1opteKHfPz0RfwuHb7p40dh24LWwQ3
-	iyZ4+cA==
-X-Gm-Gg: ATEYQzzLDyFKCx7xVVAA3SwsJsDbAp8eQLGJQKxAnov0bE9TurD2ZdveSFsqHRYTUFs
-	FdXLTjeIeXlP6irvgN5ytjRsqeocxEbl5yRA516VEwcoEw928gaaNvHgHS5UiftpPzaglVl0r36
-	P6pnKiaagjmBHqUtNrzSlEv64Zb/9X4PjEmPrDvFXvdK07Ps3xV/J6MLCtFoDyw88X3fhca/Zck
-	I3CJm/vrAgKE+BZeBEv5A+qeUFbX0QhiIkvWMGySXrVBwi5VBL1L9HODlL8tpjhrjHNcMg5wLjk
-	YOojBEn2CQ1sFKudmmjgVaDWG1uA6kOlCHr6wywes/cKIDJB76SyhwU9ITCujFdyUZneq/+J2hT
-	abH3wOPnYbZvAxrQiGrIF6oRpyBDNaIkpAx4aYjNPbn1JJ47MSedLHNmqlphHxyCLxDHofYxnf+
-	YifwU4MDP55ftkUox0AAlbTDxKfLTWbijNsIsm1TEa5TyavyWgb6/MwcjD8NgEew==
-X-Received: by 2002:a17:907:8b95:b0:b94:21a8:f7d9 with SMTP id a640c23a62f3a-b9b507b5d93mr3801566b.36.1774561787084;
-        Thu, 26 Mar 2026 14:49:47 -0700 (PDT)
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com. [209.85.221.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b203ef93bsm169337566b.50.2026.03.26.14.49.45
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 14:49:45 -0700 (PDT)
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-439af7d77f0so1166943f8f.0
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 14:49:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVlyONBRxFGV9FXoF5wjF5BQbZC9onniWhcpQmIc6dQ/FWIAqcr5yLr2pU6YPhxgNQqQNXRhIw=@vger.kernel.org
-X-Received: by 2002:a05:6000:18a5:b0:439:d755:a895 with SMTP id
- ffacd0b85a97d-43b889f5a83mr15702276f8f.42.1774561785162; Thu, 26 Mar 2026
- 14:49:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774562713; x=1775167513;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qt4Bouy7zFS2Ghg5Ne8+cryR/mFwEWJzdsa/JCE70NE=;
+        b=Zd9Ky5ha6s/mobWqvPwfeU/TwdbJxUbUgk0tF8vBLJplNTh0Ge8XFtA521Nqp5PYbk
+         OUm4V6hNzbkouxwM0Vt/uKrz0zkEl7cC6kGEYHOBEWhNQFhDf0QSCzt1WkrC6ZXhJzEN
+         qLyNJNIsCFOxjSOvblSWZoE/kCxxfTxyLuqcMCrLmcUpLGa8rELHGHX2QbIiJlbRhnrd
+         66mpzpm1N6+kWKpIPDFc36rI1RLnMy9O+8qtuU2V4jLJYLLYVpCJOWLXJG3iPHtG1jzl
+         9WRXvZNMFZiu13pxMX7yNfUap1K5jzqFe2T+r4Aosss/cLbAfVO4GVbWzpVv6C/HMxfJ
+         z4sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5AvEBHuZ+SL73og0tR4IKyZe7lXYx3YZ3JiLBLDo7kdnXLeFn3HfVi1boAs9GJgtDhN0lVnw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXxpa845Wr/pnpsFBut3WpLEFB8cZeUM1lnmLaWZGVUu2Bjtrb
+	dizt9tS924gO1R2aKi5VAbBNnX5dj+Up3gDa/9w1XBwxiXIuBHQPSHaec0fzOGj5l1k=
+X-Gm-Gg: ATEYQzxFgKoTv6+Jgm4aKZihE832Lv3mngniDYAOSbjexU58zj2faigc7L9nJjwpm+R
+	5x5UCa7MPOgcEG3TgdKSqFH4+T+cdpfw7eCmYmbfs3PEhujOTUvKd9lHM658BstQGdxiE/BjqqS
+	VEw/3EKGUSaKI4xGn236gi0N/B/71374mshxSRvfHNaw2whvbMqiY5jheAeELq+aDDLuWM55LRz
+	VVrMMOx/rjQesG0Ln2KDv1va/Ut14TesEQncMBljtT1XnfWOLR71PpG3ebUHrf3vUPsRBmsgdr+
+	i/QUZn6hrO0P25IYVhhgPJCXA7mBqys0TNgWVWytRrzVzpkIrjE3F12glkVtuL/OKENg838jSg0
+	EpUQaNH6YWkIgvWPVO4o6Ax0lK3sZPrK4FV+vEC7C1xCPfJmgqvZLKA0pAXbOsHPYSjrbt298ug
+	L4TDyc1UYyu0SHkwvsjQJpkUiLsb/gjH6YmhHZukhpHf5fJ7Nb62yn9Djcng9viainHsjCiA==
+X-Received: by 2002:a05:622a:112:b0:509:348f:bc1a with SMTP id d75a77b69052e-50ba380a83cmr3922441cf.26.1774562713431;
+        Thu, 26 Mar 2026 15:05:13 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89cd58d3756sm33752176d6.22.2026.03.26.15.05.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 15:05:12 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w5spE-0000000120i-0TvX;
+	Thu, 26 Mar 2026 19:05:12 -0300
+Date: Thu, 26 Mar 2026 19:05:12 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: joro@8bytes.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] amd/iommu: do not split domain flushes when flushing the
+ entire range
+Message-ID: <20260326220512.GA245789@ziepe.ca>
+References: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
+ <20260312134025.GJ1469476@ziepe.ca>
+ <CAEzrpqeO68eg1dFr2fm8FNXSodJWSxT_9Gk0EHSK=hzRAQgJHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260320200656.RFC.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
- <2026032152-getting-carmaker-29d5@gregkh> <CAD=FV=Wag5qx9RXkAHrf+zbwtQgVQW1UUc6DRhUzudBtjbD8ug@mail.gmail.com>
- <2026032114-unlocked-unmoving-091b@gregkh> <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
- <6ff1444b-f83e-47f6-ab0d-6745738523ba@rowland.harvard.edu>
- <CAD=FV=Vco+hRBNxGpUDf-YofEwTR13ht=nTnjvUvT+3_76+1MA@mail.gmail.com>
- <6511a5b9-ac67-49a1-8336-3d2afaaab593@rowland.harvard.edu>
- <CAD=FV=WBgKN2MNO-xBHZ3tRN91M82vk3h1AEAXtpBQ-nQocKCQ@mail.gmail.com> <bfd4e1f5-7bc5-448d-aa33-1a977bf00733@rowland.harvard.edu>
-In-Reply-To: <bfd4e1f5-7bc5-448d-aa33-1a977bf00733@rowland.harvard.edu>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 26 Mar 2026 14:49:33 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WeeBoQAoPgNq+5ocZas+mOn1RuNto3k57ag4ODo2vOLw@mail.gmail.com>
-X-Gm-Features: AQROBzCCSDGRZbt8Tt1gAypD9l0-fhRzQjRInpIAEQRFJCJSpoBx2KceRxCnDFw
-Message-ID: <CAD=FV=WeeBoQAoPgNq+5ocZas+mOn1RuNto3k57ag4ODo2vOLw@mail.gmail.com>
-Subject: Re: [RFC PATCH] driver core: Don't link the device to the bus until
- we're ready to probe
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEzrpqeO68eg1dFr2fm8FNXSodJWSxT_9Gk0EHSK=hzRAQgJHQ@mail.gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230532-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230533-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	DMARC_NA(0.00)[ziepe.ca];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:dkim]
-X-Rspamd-Queue-Id: 03B6833C1E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1CD2233C388
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
-
-On Tue, Mar 24, 2026 at 8:21=E2=80=AFAM Alan Stern <stern@rowland.harvard.e=
-du> wrote:
->
-> > I'll do that if that's what everyone wants, but the more I think about
-> > it the more worried I am that we'll end up with a hidden / harder to
-> > debug problem where some driver gets unhappy when its probe is called
-> > before dpm_sysfs_add(), device_pm_add(), device_create_file(),
-> > device_create_sys_dev_entry(), BUS_NOTIFY_ADD_DEVICE, ...
->
-> It's hard to know for all of them.  However, it seems pretty clear that
-> device_pm_add() should come before probing, since a probe routine will
-> generally want to affect the device's runtime PM state.
-
-Yup, that seems right to me, too. It's why I was trying to avoid just
-moving fixing the fwdevlink assignment. I didn't want to run into more
-hard-to-debug issues later.
-
-
-> > > There should not be any difference between probing caused by the devi=
-ce
-> > > being added to the bus, vs. caused by a new driver being registered, =
-vs.
-> > > caused by anything else (such as sysfs).  None of these should be
-> > > allowed until all of them can be handled properly.
+On Sat, Mar 14, 2026 at 02:24:11PM -0400, Josef Bacik wrote:
+> On Thu, Mar 12, 2026 at 9:40 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
 > >
-> > Right. ...and I think that's what my proposed "ready_to_probe" does.
-> > It really does seem like quite a safe change. It _just_ prevents the
-> > driver load path from initiating a probe too early.
->
-> Any such consideration should apply to all the probe paths, not just
-> driver loading.  (Also, if it's too early to probe the device, perhaps
-> the return code should be -EAGAIN instead of 0.)
-
-In my proposed solution, I was returning 0 from __driver_attach(). The
-only place that's called from is driver_attach(), which calls it with
-bus_for_each_dev(). I don't think returning -EAGAIN is a good idea
-there since it stops bus_for_each_dev(). In general __driver_attach()
-always returns 0.
-
-In general, the goal of my new proposed patch is to add the device to
-the subsystem's "klist_devices" exactly where we do it today for
-maximum compatibility. This means that if any code was relying on
-being able to find the device, they can still find it. The _only_
-exception is that I don't want to be able to find the device in
-driver_attach(). So my proposed solution just hides the device in that
-one case.
-
-I believe this should be fine. Specifically, driver_attach() could
-have been called (in another thread) immediately before
-bus_add_device() and everything would have been fine. driver_attach()
-wouldn't have found the device (because it wasn't linked in) but the
-probe would still happen.
-
-
-> I'm not at all sure whether the constraints we've got will need to force
-> some events to happen after adding the device to the bus list and before
-> allowing probing to start.
->
-> > > And linking the device into the bus's list of devices should be the
-> > > event that makes probing possible.
+> > On Wed, Mar 04, 2026 at 04:30:03PM -0500, Josef Bacik wrote:
+> > > We are hitting the following soft lockup in production on v6.6 and
+> > > v6.12, but the bug exists in all versions
+> > >
+> > > watchdog: BUG: soft lockup - CPU#24 stuck for 31s! [tokio-runtime-w:1274919]
+> > > CPU: 24 PID: 1274919 Comm: tokio-runtime-w Not tainted 6.6.105+ #1
+> > > Hardware name: Google Google Compute Engine/Google Comput Engine, BIOS Google 10/25/2025
+> > > RIP: 0010:__raw_spin_unlock_irqrestore+0x21/0x30
+> > > Call Trace:
+> > >  <TASK>
+> > >  amd_iommu_attach_device+0x69/0x450
+> > >  __iommu_device_set_domain+0x7b/0x190
+> > >  __iommu_group_set_core_domain+0x61/0xd0
+> > >  iommu_detatch_group+0x27/0x40
+> > >  vfio_iommu_type1_detach_group+0x157/0x780 [vfio_iommu_type1]
+> > >  vfio_group_detach_container+0x59/0x160 [vfio]
+> > >  vfio_group_fops_release+0x4d/0x90 [vfio]
+> > >  __fput+0x95/0x2a0
+> > >  task_work_run+0x93/0xc0
+> > >  do_exit+0x321/0x950
+> > >  do_group_exit+0x7f/0xa0
+> > >  get_signal_0x77d/0x780
+> > >  </TASK>
+> > >
+> > > This occurs because we're a VM and we're splitting up the size
+> > > CMD_INV_IOMMU_ALL_PAGES_ADDRESS we get from
+> > > amd_iommu_domain_flush_tlb_pde() into a bunch of smaller flushes.
 > >
-> > Sure, but moving the linking into the bus's list of devices all the
-> > way to the end is definitely a bigger change. If nothing else,
-> > "bus_for_each_dev()" starts to be able to find the device once it's
-> > linked into the list. If any of the ~50 drivers who register for
-> > BUS_NOTIFY_ADD_DEVICE are relying on the device to show up in
-> > "bus_for_each_dev()", it would be bad...
->
-> I don't know the answer to this.  That is, I don't know if there are any
-> notification handlers depending on the device showing up in the bus's
-> list.  The safest thing to do is issue the notification after adding the
-> device to the list -- which may mean after probing has potentially
-> started.  Is there any reason why that would be a problem?  I'm not
-> aware of any.
+> > This function doesn't exist in the upstream kernel anymore, and the
+> > new code doesn't generate CMD_INV_IOMMU_ALL_PAGES_ADDRESS flushes at
+> > all, AFAIK.
+> 
+> This was based on linus/master as of March 4th, and we get here via
+> amd_iommu_flush_tlb_all, which definitely still exists, so what
+> specifically are you talking about? Thanks,
 
-I'm not completely sure I follow what you're suggesting here...
+$ git grep amd_iommu_domain_flush_tlb_pde | wc -l
+0
 
+The entire page table logic was rewritten. The stuff that caused these
+issues is gone and the new stuff doesn't appear to have this bug of
+passing size == CMD_INV_IOMMU_ALL_PAGES_ADDRESS.
 
-> The order constraints should be commented explicitly in device_add(),
-> not just implicitly implied by the code.  Otherwise people won't know
-> what changes are allowed and what changes are forbidden.
+If it does please explain it in terms of the new stuff without
+referencing deleted functions.
 
-Yup! I added comments about ordering constraints in this RFC patch,
-and will continue to do so as it evolves.
+I don't know how you get something like this into -stable.
 
-I still believe adding a flag that just hides the device from
-driver_attach() is a safe and correct approach. In general I don't
-want to fragment the discussoin, but I think it might be useful to
-send a v2 that shows what that looks like. Any objections?
-
--Doug
+Jason
 
