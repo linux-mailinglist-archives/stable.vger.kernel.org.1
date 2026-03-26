@@ -1,158 +1,145 @@
-Return-Path: <stable+bounces-230528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFYNANeTxWmq/gQAu9opvQ
-	(envelope-from <stable+bounces-230528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:15:19 +0100
+	id WKDwOR6fxWlqAAUAu9opvQ
+	(envelope-from <stable+bounces-230529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:03:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5283333B4F4
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:15:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F5733BA44
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C53C301B708
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:09:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 183AE3036D49
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E433976BB;
-	Thu, 26 Mar 2026 20:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690D93A1E96;
+	Thu, 26 Mar 2026 21:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="Kc48d92s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPAAIB3f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63F530B529
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 20:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176DA346E63;
+	Thu, 26 Mar 2026 21:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774555754; cv=none; b=qqAkf6XQw+WzaAkayQdC+rXbBtGmIwvkpqYvzh/kyFBIdRNRybvJqhUCcmDZllPjSDfMtWPI0BmE5wU9EjOGEMhLmn1LGEU9rcy6hZ8DwA1YwJoaEIOG7ZYvAwfMt9iMXPK2+uD+v8F+zBfHv3JXIZXakFkLiur/GiCOGe9TnYI=
+	t=1774558991; cv=none; b=AGrv5rwy69ZCxe0ocg/aMu8YX+EgIh5k7FGi1LMOpytl7OAnhHzvtycrciYQWXSmTqgQBpCDTL3wKeY27PfaWy4iXvBdr1mI3N1jPZrndAOS5EMbC9iC0uUVAenJh7+NHgjhdLRN/TtDDNAmxjhutK3OimS8w3YyzPUHVFQuT9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774555754; c=relaxed/simple;
-	bh=O08vcziHn5E/h2BMlzMYY1qPElNvRHUnS23RXL/skmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ULZC0aYLCOFWOJq8PkKIk4umcniwDc0nCyB6H5ShHdaxnKxEHupAZZrB097G70YLNrictMcw5sRDlB3jcq2g73Ln+A1fXonQ7M8RioDI3MXso9HCXN/ux/JwO3qmhqLTXGutCKOgFYZKyxBbqGSB4AVZ6msrc3PDGNJnPKiqCog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=Kc48d92s; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-506aa68065eso12175421cf.1
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 13:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1774555752; x=1775160552; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
-        b=Kc48d92sYkZTDcy3q456P/xVKGZKfA+xGg9I3vp5GdwK1XMkyfImia/fj+MKEzXqbF
-         q2axkF89HT19f8vU7LNkpLQpQb16ugZSjak+YnbD4nIa0+D875N3uDzDseWjAMYqdWah
-         LGybVxUIuwAFJuogmP1Y+kysMd0V/tk61Y2rDYFx5RE4DYKQcjMbCbm1bQe6TAOjkT7o
-         no05AXru9n5PowsiKvzdQ0T7PNkEeJ+u7kUaePuo//Frmxw4Qz5DFxFbDtAqQ6Mp9y64
-         8w4y8kw3v39M66KRg43KZVntwGWZzYcIvFP9nLUKH/0t4LwwExH2l49oKSjjaG7K5dmG
-         W6dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774555752; x=1775160552;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
-        b=bb5HK5QRFC6l7zki3XB5zWpAKBjQZv6lNlh79KpnmTAPgoC3qtAKS6wsXCpKAleUr6
-         eNsqaSmJ1vaBf8h6vEqCNAyoWUg9cxqjAe8638454vNn04Z+/4wL2Xr+K/ntU2ujlKFe
-         oH6atUa62eLpMNhlAUQAbKWMgqmVsV53sr7OrHcSEytsRvCLhDopiQjcXoMW6uRdHTpR
-         d+2ZamSodmwKaGMsgsucorqWCx5HDE1KnpVEuAEv/RWkYfsw6E6GbS42XxGzGjaIC4Uy
-         +aZxTaSc9rUYQ/j91qybfa8+3N03xKUavwQm3RBJkC4L0D4rnS/mL3hpq4vlzhpcyi1G
-         eXPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDqN23bq5yeP6Av3ROlDMEio7SMNklSRrStTh1K64JeCCO6fKRP9agldNsRS/wLChMJN9e+9U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+wGgB5Zrj/jgZBkQ95RIRFw9eTS3GXJOLT/HrJeB2EnCJqQhA
-	g4nKjVyAwu00bbIX5fBnftqBV91E8Ggehak2IAKr8Is64P3T3shfWvShvZDe32YNfbk=
-X-Gm-Gg: ATEYQzyuDiZq0Z4++mZCPFoP6MCYi7IfVUMGfuatKy9/5VmTv+OPvH2XQYsgt4pS4Ad
-	BW3ybZ29BcK43iKAINcXpQQ65P+IPpkqPoY6FhokLuIPgH7raVJ1Nvoqy1OHglaMEBJd6OllgTa
-	zVRiqGihzp4F7XSvUCT90PYYVsY8Px7BlN+6ImDPPyfDvDWxaql89mM9UA32T+/sWY46Ll8g5wd
-	AI73aw7AWdySQm+5trHgpExQeGqvyiTBR7rVTBTHShBzNX5nkrXaby1rgQB5Q4LBDjZIkdW96rO
-	L4g1k1IcjSE5L9I1CqfGDdytEfLuELkJ1Y/YUue9ZRQweqMj3XgPj0h7c7toBtBjAHpHqdAv9PN
-	sRV6+hAdxkQz0l6ixci5Oon7JhOdIv95M44xHwg3oxalrEM+L9Cfpw4i5LxQdg3q/EbHTk6PG9x
-	7uqXIqdDMc8CFrgVZOeMkLluD5RSthhdU=
-X-Received: by 2002:a05:622a:20c:b0:50b:4778:ac60 with SMTP id d75a77b69052e-50b80cd380fmr124966951cf.10.1774555751762;
-        Thu, 26 Mar 2026 13:09:11 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::2:e5e8])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b9237a40asm31637111cf.21.2026.03.26.13.09.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 13:09:11 -0700 (PDT)
-Date: Thu, 26 Mar 2026 15:09:09 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com,
-	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, baolin.wang@linux.alibaba.com,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
-Message-ID: <acWSZZ1MPGZi6PH8@gourry-fedora-PF4VCD3F>
-References: <20260326162611.693539-1-gourry@gourry.net>
- <acWHMQ2MPFjOSq5T@casper.infradead.org>
+	s=arc-20240116; t=1774558991; c=relaxed/simple;
+	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=szeZkdJJEMaEKEac4/jeT1SsUEMRT55nf43o96zp0tzF4C0WskdEWf4Do1YrS0zir83x9XuewaUh6xPvnopAOvBxU18C/h+q6XCVThmbSeWtLBo55oJbX0nW8TKedAgWHjzOkk+wMsNUfkZyGPeEplpJHZwCwuG4U0d8EHEpmf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPAAIB3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9306BC116C6;
+	Thu, 26 Mar 2026 21:03:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774558990;
+	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=gPAAIB3fsENGAvoB1ls1d+lyJstfElum/pLWj2DuNK2WleRkSJpZzbuOcSRguNRex
+	 LE7yjFpGJeYqgeiTWSX6kkVoDPXfYgQsoiYvVNcYBuRy7Weff6IyhdJ7LJejW3y2q7
+	 Lu58LJqd2qR99uWpkNGFPfJeYhdGTH7gmxUd9PImDf3hgeIKuz12xa1bfI6GtosZ25
+	 zz/3VILPimPfvECimlah9QRnSQlerX84zqBcJ1XtWuuz4pCn2J3IQkAwYpmSsY+R6p
+	 Vq0PeeQgRdA6sV45AaVZZ3KVJItFvjXCg6L1WvlZQDmeunZRkvtTNmqHb/caoBZYIw
+	 rdfYLFPYbjpsg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acWHMQ2MPFjOSq5T@casper.infradead.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Mar 2026 22:03:02 +0100
+Message-Id: <DHD0NQH9UJ21.3J691DBDXS0K0@kernel.org>
+To: "Douglas Anderson" <dianders@chromium.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2] device property: Make modifications of fwnode
+ "flags" thread safe
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, <stable@vger.kernel.org>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>, "Mark Brown" <broonie@kernel.org>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>, "Andrew Lunn"
+ <andrew@lunn.ch>, "Daniel Scally" <djrscally@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Fabio
+ Estevam" <festevam@gmail.com>, "Frank Li" <Frank.Li@nxp.com>, "Heikki
+ Krogerus" <heikki.krogerus@linux.intel.com>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "Jakub Kicinski" <kuba@kernel.org>, "Len Brown"
+ <lenb@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Pengutronix Kernel
+ Team" <kernel@pengutronix.de>, "Rob Herring" <robh@kernel.org>, "Russell
+ King" <linux@armlinux.org.uk>, "Sakari Ailus"
+ <sakari.ailus@linux.intel.com>, "Saravana Kannan" <saravanak@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
+ <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-spi@vger.kernel.org>, <netdev@vger.kernel.org>
+References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+In-Reply-To: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230529-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230528-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,linux.intel.com,sang-engineering.com,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[33];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gourry.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5283333B4F4
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 66F5733BA44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 07:21:21PM +0000, Matthew Wilcox wrote:
-> On Thu, Mar 26, 2026 at 11:26:11AM -0500, Gregory Price wrote:
-> > This also requires removing the rcu_read_lock() from
-> > do_fault_around() so that .map_pages may use sleeping locks.
-> 
-> NACK.
-> 
-> ->map_pages() is called when VM asks to map easy accessible pages.
-> Filesystem should find and map pages associated with offsets from "start_pgoff"
-> till "end_pgoff". ->map_pages() is called with the RCU lock held and must
-> not block.  If it's not possible to reach a page without blocking,
-> filesystem should skip it. Filesystem should use set_pte_range() to setup
-> page table entry. Pointer to entry associated with the page is passed in
-> "pte" field in vm_fault structure. Pointers to entries for other offsets
-> should be calculated relative to "pte".
-> 
+On Tue Mar 17, 2026 at 5:01 PM CET, Douglas Anderson wrote:
+> In various places in the kernel, we modify the fwnode "flags" member
+> by doing either:
+>   fwnode->flags |=3D SOME_FLAG;
+>   fwnode->flags &=3D ~SOME_FLAG;
+>
+> This type of modification is not thread-safe. If two threads are both
+> mucking with the flags at the same time then one can clobber the
+> other.
+>
+> While flags are often modified while under the "fwnode_link_lock",
+> this is not universally true.
+>
+> Create some accessor functions for setting, clearing, and testing the
+> FWNODE flags and move all users to these accessor functions. New
+> accessor functions use set_bit() and clear_bit(), which are
+> thread-safe.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-Hm, I follow. I was originally thinking this was scoping issue given
-we take the rcu_read_lock shortly after the call anyway, but I see.
+    [ Fix fwnode_clear_flag() argument alignment, restore dropped blank
+      line in fwnode_dev_initialized(), and remove unnecessary parentheses
+      around fwnode_test_flag() calls. - Danilo ]
 
-If the invalidate lock ends up being needed then i could leave rcu
-and just use trylock/fallback to fault.
-
-But I need to test a few things, nothing else protects filemap_map_pages
-with the invalidate lock at the moment but only shmem appears broken.
-
-~Gregory
+Applied to driver-core-testing, thanks!
 
