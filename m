@@ -1,238 +1,204 @@
-Return-Path: <stable+bounces-230534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AK1WGim2xWnEAwUAu9opvQ
-	(envelope-from <stable+bounces-230534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:41:45 +0100
+	id wIkUM0i4xWnxAwUAu9opvQ
+	(envelope-from <stable+bounces-230535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:50:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE88433CA9E
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:41:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7FA33CCD9
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEEBE319E0E0
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:34:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 72479304F4A0
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097C61E5B88;
-	Thu, 26 Mar 2026 22:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F653358DA;
+	Thu, 26 Mar 2026 22:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="ZFPY8DVt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JK2V5cuJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Exhf8utC"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A62329E49;
-	Thu, 26 Mar 2026 22:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2691332604;
+	Thu, 26 Mar 2026 22:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774564405; cv=none; b=PV0FDdPQmPY7dVs9i7CEWVSMK67KjUSlxO5Bifnrv0wpF4tKnclDVxtaDN4EQNXAGDKSVLiGGpKxZED9Z9jAm8xMrmPoCKdyIP+32Pp/hm2JHGGN8qDYoFmWKb/FHKuDakep/Exd9g8HlAXhxlyovo5kai2OoHIYHn8AqaO177E=
+	t=1774564803; cv=none; b=BeF7ycT+qb+RPNzGnL9KducPI8cJx84v8ykt9TrrDgA47q8U53qQaU5kRcLbCHEGa4Ron7exs7ZcvDXhUNvT1jshZB21CN5JKGir2utW6EcQW3NP7FvghHpQwvCaF67fTOAEFD47/04HO1K7barw9nAzw9xP6xljVDqJSeKri2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774564405; c=relaxed/simple;
-	bh=dvT0QjqTxSglOG0YLmRiHgenY55/5qto9Am1f/wHY18=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=t64DFyr0Q9d5C7z6FeWL3tZsLyrPP7uuL+v0sNvIadcdUZBHpZrrK37gmuf0d2j5/gntHFfO6y3oDmNmng586xVVrKz8muqtWew7HSkKNfEY9GKRkNj4wQg7fEDdcrlJ/ltSFdjo0zd11YYGx+RE72SwOhhywiTxDbx7G7VgtqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=ZFPY8DVt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JK2V5cuJ; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id CE53CEC0204;
-	Thu, 26 Mar 2026 18:33:23 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Thu, 26 Mar 2026 18:33:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
-	1774564403; x=1774650803; bh=PkYlU33uHlNKB92F0bwzHy7Iv/+QCbIt8IO
-	K7/s9obA=; b=ZFPY8DVtNlteRQSL2gULrhj8qFzNaEy3p6Us9Fw1cV1/FMMMjrD
-	jCpuk80POksqXv9GrnDcBVxIcdjUprFtDv/i/CuzViY8y8a0gOb0MN59v8+TL0XH
-	G/pljyqWab+BMe+j1/5EoMU6ri5NNNErQ0suiJHsiOUVRK3wCvoXW2N+jHfcm8pd
-	D7XJ/x7sQ8isBuZdjRv9Qhvu4zGnVmha1A8PkMBnspqnFIDr9HuXx/Or6LMRoApL
-	70LTnuVg0yNBkYQ415bd1aCEbvEeweAM9pCdhLAZAocOiiA7IEtwBRpa4bwUn0gQ
-	0Sjo452iAonQxmV8v7p9UEfNw1ebPoivBDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774564403; x=
-	1774650803; bh=PkYlU33uHlNKB92F0bwzHy7Iv/+QCbIt8IOK7/s9obA=; b=J
-	K2V5cuJVz6Xy+p9Vwn0r7gG95ri4s3vgmMkOpKREfPVdQvh8bIgTm/2XnBNRhWD/
-	H7GDyAeFebGCxsNmTWOh40e2P2MaWzpdRLqDVYUHSRxrrTbanOSmUMfDvqawLOMd
-	Z86TzNNMEmzFVPZS4lUM39UOgOPW4bRJTM/HzX2cradn2yWWDvMMO30pAKHzia4T
-	MVQVpgElV0Vu8Q44tq4MSXDk3p9O/7BdxZOKRdvUVRQZ2luZMRpAfRpH3ZtSmHpf
-	Z4CieoZ3JI/oyUsVbyev8WKSvaup80iKnE8FjTekkPCUpMlBVdesBB+tMGkaEOuV
-	VvN97i5V4DtzoPnxO+0Hw==
-X-ME-Sender: <xms:M7TFaXd5RVlN8kl2WhwZfJqwJ5jdbrT3V6TUAhDAMSAJ2deODw2MwA>
-    <xme:M7TFaZOfIXqterc8X0dNRB-Akt0jyJfHbWaXS5ALLnzzBtAbq12F78RDI6Ueu9FHO
-    ntBwqYiWSf6_qiNsc3uspCsDQ1GCM4zSTBOS-OY_SSx_ZKkzQ>
-X-ME-Received: <xmr:M7TFaStU9k1XrD-8-aaXOQaMVNqwwGk-LthWH2AAF4pQuyoIZw57EotjvNwYi4OmJWy_r8uMtxohNs3f9FfqX88Ebi_dgZc36Becg8p6oHwG>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdekiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epudefueefheejhfeuhfehvdfhgeeulefgfeehffekffduvdettdelheeftdethfdvnecu
-    ffhomhgrihhnpeguvggsihgrnhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
-    rhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhkohhrnhhivghvsehrvgguhh
-    grthdrtghomhdprhgtphhtthhopehtjhdrihgrmhdrthhjsehprhhothhonhdrmhgvpdhr
-    tghpthhtoheprhgvghhrvghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtph
-    htthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtvghlsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopeduuddvkeekiedusegsuhhgshdruggvsghirg
-    hnrdhorhhg
-X-ME-Proxy: <xmx:M7TFaaBY2JUU9buWBwHKWJ9DLeZJ6qL6aj3QONhgTBLSyuZzXWE_3w>
-    <xmx:M7TFaRZRWycSSBHxiNy7QRS10YE6r0cfwtZUkWznhMaFPaH8DXLpfg>
-    <xmx:M7TFadX_j67eGkvQmW54dq1ImxB7dwDdwH0ceA72xtlIlx5G0tGfjg>
-    <xmx:M7TFaYN7BcOG9byuWgi0TrFdBQhEFqgTdWvbrPpKhgyRRe_xLw95-Q>
-    <xmx:M7TFaauyDN2YZtmoSljf0XgXE2O9My3dWyZ8f6YOeSUZy3cZbncR0g4b>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Mar 2026 18:33:20 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1774564803; c=relaxed/simple;
+	bh=oh80rKsHBrtYcSrCoMb+q7py+fza9k3+/UWp0y1ZT8c=;
+	h=Date:To:From:Subject:Message-Id; b=t12J+2DmuUnbEPPsWUHUMFiUkSfSBOcJBRyDuS7bIx1VxSnN1wR7x6WxrRPAzbOK7zZNAMkXV8eg8I8FcGd6r8EARi28f+LTd9Y9tIVZf/zCflgdmr89d7kov5trQlXPuxri/tCsKNTkfDOB1OrJbO6Vw02l622e3hQMmqS05yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Exhf8utC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5354C116C6;
+	Thu, 26 Mar 2026 22:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774564802;
+	bh=oh80rKsHBrtYcSrCoMb+q7py+fza9k3+/UWp0y1ZT8c=;
+	h=Date:To:From:Subject:From;
+	b=Exhf8utClP4KNk9G51G9SWgFUmq/jp9ScqvJ8AYDW6utttW07AUtPYKArxnOOGcZk
+	 EQS2q0XHZSTzhOyAy0bOg5J4n468/V5A6MMC+xTe7Cu2xjIda2mqgIq8BVi+B0M6pa
+	 8AcibKhCvs/Ne8jSJZ6GdHiAiILP6KjiOmveArls=
+Date: Thu, 26 Mar 2026 15:40:01 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pmladek@suse.com,kees@kernel.org,dhowells@redhat.com,davidgow@google.com,lk@c--e.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-scatterlist-fix-length-calculations-in-extract_kvec_to_sg.patch added to mm-nonmm-unstable branch
+Message-Id: <20260326224002.A5354C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Chuck Lever" <cel@kernel.org>
-Cc: "Jeff Layton" <jlayton@kernel.org>,
- "Thorsten Leemhuis" <regressions@leemhuis.info>, 1128861@bugs.debian.org,
- "Tj" <tj.iam.tj@proton.me>, linux-nfs@vger.kernel.org,
- "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
-Subject:
- Re: [PATCH] lockd: fix TEST handling when not all permissions are available.
-In-reply-to: <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
-References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>,
- <177266540127.7472.3460090956713656639@noble.neil.brown.name>,
- <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>,
- <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>,
- <177434721528.7102.13514118512738778346@noble.neil.brown.name>,
- <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>,
- <177442248735.2237155.773724155681455344@noble.neil.brown.name>,
- <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
-Date: Fri, 27 Mar 2026 09:33:18 +1100
-Message-id: <177456439801.1851489.13361466107404119184@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ownmail.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ownmail.net:s=fm1,messagingengine.com:s=fm1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230534-lists,stable=lfdr.de];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[ownmail.net];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ownmail.net:+,messagingengine.com:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[neilb@ownmail.net,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-230535-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[neil@brown.name];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,brown.name:replyto,proton.me:email,messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,noble.neil.brown.name:mid,ownmail.net:dkim]
-X-Rspamd-Queue-Id: BE88433CA9E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,c--e.de:email,suse.com:email,sashiko.dev:url,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: CA7FA33CCD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 26 Mar 2026, Chuck Lever wrote:
->=20
-> On Wed, Mar 25, 2026, at 3:08 AM, NeilBrown wrote:
-> > On Wed, 25 Mar 2026, Chuck Lever wrote:
-> >>=20
-> >> On Tue, Mar 24, 2026, at 6:13 AM, NeilBrown wrote:
-> >> > From: NeilBrown <neil@brown.name>
-> >> >
-> >> > The F_GETLK fcntl can work with either read access or write access or
-> >> > both.  It can query F_RDLCK and F_WRLCK locks in either case.
-> >> >
-> >> > However lockd currently treats F_GETLK similar to F_SETLK in that read
-> >> > access is required to query an F_RDLCK lock and write access is requir=
-ed
-> >> > to query a F_WRLCK lock.
-> >> >
-> >> > This is wrong and can cause problem - e.g.  when qemu accesses a
-> >> > read-only (e.g. iso) filesystem image over NFS (though why it queries
-> >> > if it can get a write lock - I don't know.  But it does, and this works
-> >> > with local filesystems).
-> >> >
-> >> > So we need TEST requests to be handled differently.  To do this:
-> >> >
-> >> > - change nlm_do_fopen() to accept O_RDWR as a mode and in that case
-> >> >   succeed if either a O_RDONLY or O_WRONLY file can be opened.
-> >> > - change nlm_lookup_file() to accept a mode argument from caller,
-> >> >   instead of deducing base on lock time, and pass that on to nlm_do_fo=
-pen()
-> >> > - change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
-> >> >   TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
-> >> >   the same mode as before for other requests.  Also set
-> >> >    lock->fl.c.flc_file to whichever file is available for TEST request=
-s.
-> >> > - change nlmsvc_testlock() to also not calculate the mode, but to use
-> >> >   whenever was stored in lock->fl.c.flc_file.
-> >> >
-> >> > Reported-by: Tj <tj.iam.tj@proton.me>
-> >> > Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1128861
-> >> > Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
-> >> > Signed-off-by: NeilBrown <neil@brown.name>
-> >>=20
-> >> Hi Neil, which kernels should this fix apply to?
-> >>=20
-> >
-> > v6.13 and later. So linux-6.18.y and linux-6.19.y
->=20
-> Assuming that includes upstream, I recommend that I take this
-> into nfsd-testing / nfsd-next and let nature, ah, er, stable
-> automation, take it's course.
->=20
->=20
-> > The Fixes: tag is actually wrong.  This bug has been present forever.
-> > However a different bug that=20
-> >   Commit: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-> > fixed was hiding the bug.
-> >
-> > So it should probably be marked
-> >   Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-> > with an explanation.
->=20
-> IIUC, we want Fixes: to point to the commit that introduced
-> the issue (Fixes: since forever) and then use a "# v6.13+"
-> comment on the Cc: stable to control how far back to backport
-> it.
->=20
-> Commit message could mention that 4cc9b9f2bf4d uncovered the
-> issue.
 
-What you suggest is correct in a pure sense (and I like that) but as Ben
-points out, it will miss older kernels that have backported
-4cc9b9f2bf4d.
-We know which kernel.org kernels that includes, but not what other
-organisations might maintain for their own purposes.
+The patch titled
+     Subject: lib/scatterlist: fix length calculations in extract_kvec_to_sg
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     lib-scatterlist-fix-length-calculations-in-extract_kvec_to_sg.patch
 
-So I think we meet the needs of automation best by saying:
-  Fixes: 4cc9b9f2bf4d
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-scatterlist-fix-length-calculations-in-extract_kvec_to_sg.patch
 
-even though that didn't introduce the bug but only expose the bug.
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-NeilBrown
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "Christian A. Ehrhardt" <lk@c--e.de>
+Subject: lib/scatterlist: fix length calculations in extract_kvec_to_sg
+Date: Thu, 26 Mar 2026 22:49:01 +0100
+
+Patch series "Fix bugs in extract_iter_to_sg()", v3.
+
+Fix bugs in the kvec and user variants of extract_iter_to_sg.  This series
+is growing due to useful remarks made by sashiko.dev.
+
+The main bugs are:
+- The length for an sglist entry when extracting from
+  a kvec can exceed the number of bytes in the page. This
+  is obviously not intended.
+- When extracting a user buffer the sglist is temporarily
+  used as a scratch buffer for extracted page pointers.
+  If the sglist already contains some elements this scratch
+  buffer could overlap with existing entries in the sglist.
+
+The series adds test cases to the kunit_iov_iter test that demonstrate all
+of these bugs.  Additionally, there is a memory leak fix for the test
+itself.
+
+The bugs were orignally introduced into kernel v6.3 where the function
+lived in fs/netfs/iterator.c.  It was later moved to lib/scatterlist.c in
+v6.5.  Thus the actual fix is only marked for backports to v6.5+.
+
+
+This patch (of 5):
+
+When extracting from a kvec to a scatterlist, do not cross page
+boundaries.  The required length was already calculated but not used as
+intended.
+
+Adjust the copied length if the loop runs out of sglist entries without
+extracting everything.
+
+While there, return immediately from extract_iter_to_sg if there are no
+sglist entries at all.
+
+A subsequent commit will add kunit test cases that demonstrate that the
+patch is necessary.
+
+Link: https://lkml.kernel.org/r/20260326214905.818170-1-lk@c--e.de
+Link: https://lkml.kernel.org/r/20260326214905.818170-2-lk@c--e.de
+Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Gow <davidgow@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>	[v6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/scatterlist.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+--- a/lib/scatterlist.c~lib-scatterlist-fix-length-calculations-in-extract_kvec_to_sg
++++ a/lib/scatterlist.c
+@@ -1247,7 +1247,7 @@ static ssize_t extract_kvec_to_sg(struct
+ 			else
+ 				page = virt_to_page((void *)kaddr);
+ 
+-			sg_set_page(sg, page, len, off);
++			sg_set_page(sg, page, seg, off);
+ 			sgtable->nents++;
+ 			sg++;
+ 			sg_max--;
+@@ -1256,6 +1256,7 @@ static ssize_t extract_kvec_to_sg(struct
+ 			kaddr += PAGE_SIZE;
+ 			off = 0;
+ 		} while (len > 0 && sg_max > 0);
++		ret -= len;
+ 
+ 		if (maxsize <= 0 || sg_max == 0)
+ 			break;
+@@ -1409,7 +1410,7 @@ ssize_t extract_iter_to_sg(struct iov_it
+ 			   struct sg_table *sgtable, unsigned int sg_max,
+ 			   iov_iter_extraction_t extraction_flags)
+ {
+-	if (maxsize == 0)
++	if (maxsize == 0 || sg_max == 0)
+ 		return 0;
+ 
+ 	switch (iov_iter_type(iter)) {
+_
+
+Patches currently in -mm which might be from lk@c--e.de are
+
+lib-scatterlist-fix-length-calculations-in-extract_kvec_to_sg.patch
+lib-scatterlist-fix-temp-buffer-in-extract_user_to_sg.patch
+lib-kunit_iov_iter-fix-memory-leaks.patch
+lib-kunit_iov_iter-improve-error-detection.patch
+lib-kunit_iov_iter-add-tests-for-extract_iter_to_sg.patch
+
 
