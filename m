@@ -1,187 +1,238 @@
-Return-Path: <stable+bounces-230533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEw6HcWuxWlrAwUAu9opvQ
-	(envelope-from <stable+bounces-230533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:10:13 +0100
+	id AK1WGim2xWnEAwUAu9opvQ
+	(envelope-from <stable+bounces-230534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:41:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD2233C388
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE88433CA9E
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5689F304C11A
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:05:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEEBE319E0E0
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 22:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641813368A0;
-	Thu, 26 Mar 2026 22:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097C61E5B88;
+	Thu, 26 Mar 2026 22:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="GZeqvDR6"
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="ZFPY8DVt";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JK2V5cuJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DC333509B
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 22:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A62329E49;
+	Thu, 26 Mar 2026 22:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774562716; cv=none; b=olwmBzK9jfZmr3RvrdSFcqafKTVRj0N7O4PDNNAFT3T3n9IbMZ6KxpMIOVYPeZjIG7QIDVBY0TMrGhHzWh4vGXm4HH1hTrd/eWkE6H3c0GWrKFEPxwhws4pEMq9D3pRrwzFHhy/FUExljk50LHxqeyV8OcdemUsTsjgtdYG4lGQ=
+	t=1774564405; cv=none; b=PV0FDdPQmPY7dVs9i7CEWVSMK67KjUSlxO5Bifnrv0wpF4tKnclDVxtaDN4EQNXAGDKSVLiGGpKxZED9Z9jAm8xMrmPoCKdyIP+32Pp/hm2JHGGN8qDYoFmWKb/FHKuDakep/Exd9g8HlAXhxlyovo5kai2OoHIYHn8AqaO177E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774562716; c=relaxed/simple;
-	bh=u684RyFUCmg8ujTk2N6tNVsPJBod1PTom9yEeQrkutU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ErcmjVh3WfeDIR+auzipUoEHNtWYRJfwdTjltkXnmS4+98iFs4bXQ1xFxmxEwNN2yZdU8p0Lvx+QOGQ/IqNRe/eaBGe1GmxjgTgq0H5jQVDbjQu1YZZaVHZPNbITp4mlt253E99ZD4j20fQWPxAYZ8JGLQWNy05k4aK6cPAJ5ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=GZeqvDR6; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50b713d6baeso15069111cf.2
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 15:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1774562713; x=1775167513; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qt4Bouy7zFS2Ghg5Ne8+cryR/mFwEWJzdsa/JCE70NE=;
-        b=GZeqvDR6Qc4E+MKIm1scFgkfl1AM6grkxsny0TaEwgdWxcDxdpgATf20Ac0z64cClX
-         cM7ecqCBzBiAOn4a0yJqCms9RM1y6c+FxdeRfOj+Uf9fsQs0gsi1gATgsTgt13AJaYOu
-         TAMKktvEDTxeULEz9m+TM9B4ctvLq/suYrgtYpx22f1tXsci1F0+QAAG/S8KJ/ojhuJD
-         ObuCRluT7zbYnqg8henrloFcDfiREwIMoJlLAuzhSsWZdQNQCFDbMjk0L3uDSPj0FI3y
-         hNSgP0vwOqQmgpsv0GcIL4QT5mFS2VCF3AZgTRsM6HoLKgn4D+mHz61htEIcfTyYhxAS
-         /qpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774562713; x=1775167513;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qt4Bouy7zFS2Ghg5Ne8+cryR/mFwEWJzdsa/JCE70NE=;
-        b=Zd9Ky5ha6s/mobWqvPwfeU/TwdbJxUbUgk0tF8vBLJplNTh0Ge8XFtA521Nqp5PYbk
-         OUm4V6hNzbkouxwM0Vt/uKrz0zkEl7cC6kGEYHOBEWhNQFhDf0QSCzt1WkrC6ZXhJzEN
-         qLyNJNIsCFOxjSOvblSWZoE/kCxxfTxyLuqcMCrLmcUpLGa8rELHGHX2QbIiJlbRhnrd
-         66mpzpm1N6+kWKpIPDFc36rI1RLnMy9O+8qtuU2V4jLJYLLYVpCJOWLXJG3iPHtG1jzl
-         9WRXvZNMFZiu13pxMX7yNfUap1K5jzqFe2T+r4Aosss/cLbAfVO4GVbWzpVv6C/HMxfJ
-         z4sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5AvEBHuZ+SL73og0tR4IKyZe7lXYx3YZ3JiLBLDo7kdnXLeFn3HfVi1boAs9GJgtDhN0lVnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXxpa845Wr/pnpsFBut3WpLEFB8cZeUM1lnmLaWZGVUu2Bjtrb
-	dizt9tS924gO1R2aKi5VAbBNnX5dj+Up3gDa/9w1XBwxiXIuBHQPSHaec0fzOGj5l1k=
-X-Gm-Gg: ATEYQzxFgKoTv6+Jgm4aKZihE832Lv3mngniDYAOSbjexU58zj2faigc7L9nJjwpm+R
-	5x5UCa7MPOgcEG3TgdKSqFH4+T+cdpfw7eCmYmbfs3PEhujOTUvKd9lHM658BstQGdxiE/BjqqS
-	VEw/3EKGUSaKI4xGn236gi0N/B/71374mshxSRvfHNaw2whvbMqiY5jheAeELq+aDDLuWM55LRz
-	VVrMMOx/rjQesG0Ln2KDv1va/Ut14TesEQncMBljtT1XnfWOLR71PpG3ebUHrf3vUPsRBmsgdr+
-	i/QUZn6hrO0P25IYVhhgPJCXA7mBqys0TNgWVWytRrzVzpkIrjE3F12glkVtuL/OKENg838jSg0
-	EpUQaNH6YWkIgvWPVO4o6Ax0lK3sZPrK4FV+vEC7C1xCPfJmgqvZLKA0pAXbOsHPYSjrbt298ug
-	L4TDyc1UYyu0SHkwvsjQJpkUiLsb/gjH6YmhHZukhpHf5fJ7Nb62yn9Djcng9viainHsjCiA==
-X-Received: by 2002:a05:622a:112:b0:509:348f:bc1a with SMTP id d75a77b69052e-50ba380a83cmr3922441cf.26.1774562713431;
-        Thu, 26 Mar 2026 15:05:13 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89cd58d3756sm33752176d6.22.2026.03.26.15.05.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 15:05:12 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w5spE-0000000120i-0TvX;
-	Thu, 26 Mar 2026 19:05:12 -0300
-Date: Thu, 26 Mar 2026 19:05:12 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: joro@8bytes.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] amd/iommu: do not split domain flushes when flushing the
- entire range
-Message-ID: <20260326220512.GA245789@ziepe.ca>
-References: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
- <20260312134025.GJ1469476@ziepe.ca>
- <CAEzrpqeO68eg1dFr2fm8FNXSodJWSxT_9Gk0EHSK=hzRAQgJHQ@mail.gmail.com>
+	s=arc-20240116; t=1774564405; c=relaxed/simple;
+	bh=dvT0QjqTxSglOG0YLmRiHgenY55/5qto9Am1f/wHY18=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=t64DFyr0Q9d5C7z6FeWL3tZsLyrPP7uuL+v0sNvIadcdUZBHpZrrK37gmuf0d2j5/gntHFfO6y3oDmNmng586xVVrKz8muqtWew7HSkKNfEY9GKRkNj4wQg7fEDdcrlJ/ltSFdjo0zd11YYGx+RE72SwOhhywiTxDbx7G7VgtqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=ZFPY8DVt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JK2V5cuJ; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id CE53CEC0204;
+	Thu, 26 Mar 2026 18:33:23 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Thu, 26 Mar 2026 18:33:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1774564403; x=1774650803; bh=PkYlU33uHlNKB92F0bwzHy7Iv/+QCbIt8IO
+	K7/s9obA=; b=ZFPY8DVtNlteRQSL2gULrhj8qFzNaEy3p6Us9Fw1cV1/FMMMjrD
+	jCpuk80POksqXv9GrnDcBVxIcdjUprFtDv/i/CuzViY8y8a0gOb0MN59v8+TL0XH
+	G/pljyqWab+BMe+j1/5EoMU6ri5NNNErQ0suiJHsiOUVRK3wCvoXW2N+jHfcm8pd
+	D7XJ/x7sQ8isBuZdjRv9Qhvu4zGnVmha1A8PkMBnspqnFIDr9HuXx/Or6LMRoApL
+	70LTnuVg0yNBkYQ415bd1aCEbvEeweAM9pCdhLAZAocOiiA7IEtwBRpa4bwUn0gQ
+	0Sjo452iAonQxmV8v7p9UEfNw1ebPoivBDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774564403; x=
+	1774650803; bh=PkYlU33uHlNKB92F0bwzHy7Iv/+QCbIt8IOK7/s9obA=; b=J
+	K2V5cuJVz6Xy+p9Vwn0r7gG95ri4s3vgmMkOpKREfPVdQvh8bIgTm/2XnBNRhWD/
+	H7GDyAeFebGCxsNmTWOh40e2P2MaWzpdRLqDVYUHSRxrrTbanOSmUMfDvqawLOMd
+	Z86TzNNMEmzFVPZS4lUM39UOgOPW4bRJTM/HzX2cradn2yWWDvMMO30pAKHzia4T
+	MVQVpgElV0Vu8Q44tq4MSXDk3p9O/7BdxZOKRdvUVRQZ2luZMRpAfRpH3ZtSmHpf
+	Z4CieoZ3JI/oyUsVbyev8WKSvaup80iKnE8FjTekkPCUpMlBVdesBB+tMGkaEOuV
+	VvN97i5V4DtzoPnxO+0Hw==
+X-ME-Sender: <xms:M7TFaXd5RVlN8kl2WhwZfJqwJ5jdbrT3V6TUAhDAMSAJ2deODw2MwA>
+    <xme:M7TFaZOfIXqterc8X0dNRB-Akt0jyJfHbWaXS5ALLnzzBtAbq12F78RDI6Ueu9FHO
+    ntBwqYiWSf6_qiNsc3uspCsDQ1GCM4zSTBOS-OY_SSx_ZKkzQ>
+X-ME-Received: <xmr:M7TFaStU9k1XrD-8-aaXOQaMVNqwwGk-LthWH2AAF4pQuyoIZw57EotjvNwYi4OmJWy_r8uMtxohNs3f9FfqX88Ebi_dgZc36Becg8p6oHwG>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdekiedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epudefueefheejhfeuhfehvdfhgeeulefgfeehffekffduvdettdelheeftdethfdvnecu
+    ffhomhgrihhnpeguvggsihgrnhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhkohhrnhhivghvsehrvgguhh
+    grthdrtghomhdprhgtphhtthhopehtjhdrihgrmhdrthhjsehprhhothhonhdrmhgvpdhr
+    tghpthhtoheprhgvghhrvghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtph
+    htthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtvghlsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopeduuddvkeekiedusegsuhhgshdruggvsghirg
+    hnrdhorhhg
+X-ME-Proxy: <xmx:M7TFaaBY2JUU9buWBwHKWJ9DLeZJ6qL6aj3QONhgTBLSyuZzXWE_3w>
+    <xmx:M7TFaRZRWycSSBHxiNy7QRS10YE6r0cfwtZUkWznhMaFPaH8DXLpfg>
+    <xmx:M7TFadX_j67eGkvQmW54dq1ImxB7dwDdwH0ceA72xtlIlx5G0tGfjg>
+    <xmx:M7TFaYN7BcOG9byuWgi0TrFdBQhEFqgTdWvbrPpKhgyRRe_xLw95-Q>
+    <xmx:M7TFaauyDN2YZtmoSljf0XgXE2O9My3dWyZ8f6YOeSUZy3cZbncR0g4b>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Mar 2026 18:33:20 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEzrpqeO68eg1dFr2fm8FNXSodJWSxT_9Gk0EHSK=hzRAQgJHQ@mail.gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+From: NeilBrown <neilb@ownmail.net>
+To: "Chuck Lever" <cel@kernel.org>
+Cc: "Jeff Layton" <jlayton@kernel.org>,
+ "Thorsten Leemhuis" <regressions@leemhuis.info>, 1128861@bugs.debian.org,
+ "Tj" <tj.iam.tj@proton.me>, linux-nfs@vger.kernel.org,
+ "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] lockd: fix TEST handling when not all permissions are available.
+In-reply-to: <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>,
+ <177266540127.7472.3460090956713656639@noble.neil.brown.name>,
+ <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>,
+ <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>,
+ <177434721528.7102.13514118512738778346@noble.neil.brown.name>,
+ <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>,
+ <177442248735.2237155.773724155681455344@noble.neil.brown.name>,
+ <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
+Date: Fri, 27 Mar 2026 09:33:18 +1100
+Message-id: <177456439801.1851489.13361466107404119184@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ownmail.net,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	R_DKIM_ALLOW(-0.20)[ownmail.net:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230534-lists,stable=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230533-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	DMARC_NA(0.00)[ziepe.ca];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[ownmail.net];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ownmail.net:+,messagingengine.com:+];
 	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[neilb@ownmail.net,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1CD2233C388
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[neil@brown.name];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,brown.name:replyto,proton.me:email,messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,noble.neil.brown.name:mid,ownmail.net:dkim]
+X-Rspamd-Queue-Id: BE88433CA9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Mar 14, 2026 at 02:24:11PM -0400, Josef Bacik wrote:
-> On Thu, Mar 12, 2026 at 9:40 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+On Thu, 26 Mar 2026, Chuck Lever wrote:
+>=20
+> On Wed, Mar 25, 2026, at 3:08 AM, NeilBrown wrote:
+> > On Wed, 25 Mar 2026, Chuck Lever wrote:
+> >>=20
+> >> On Tue, Mar 24, 2026, at 6:13 AM, NeilBrown wrote:
+> >> > From: NeilBrown <neil@brown.name>
+> >> >
+> >> > The F_GETLK fcntl can work with either read access or write access or
+> >> > both.  It can query F_RDLCK and F_WRLCK locks in either case.
+> >> >
+> >> > However lockd currently treats F_GETLK similar to F_SETLK in that read
+> >> > access is required to query an F_RDLCK lock and write access is requir=
+ed
+> >> > to query a F_WRLCK lock.
+> >> >
+> >> > This is wrong and can cause problem - e.g.  when qemu accesses a
+> >> > read-only (e.g. iso) filesystem image over NFS (though why it queries
+> >> > if it can get a write lock - I don't know.  But it does, and this works
+> >> > with local filesystems).
+> >> >
+> >> > So we need TEST requests to be handled differently.  To do this:
+> >> >
+> >> > - change nlm_do_fopen() to accept O_RDWR as a mode and in that case
+> >> >   succeed if either a O_RDONLY or O_WRONLY file can be opened.
+> >> > - change nlm_lookup_file() to accept a mode argument from caller,
+> >> >   instead of deducing base on lock time, and pass that on to nlm_do_fo=
+pen()
+> >> > - change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
+> >> >   TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
+> >> >   the same mode as before for other requests.  Also set
+> >> >    lock->fl.c.flc_file to whichever file is available for TEST request=
+s.
+> >> > - change nlmsvc_testlock() to also not calculate the mode, but to use
+> >> >   whenever was stored in lock->fl.c.flc_file.
+> >> >
+> >> > Reported-by: Tj <tj.iam.tj@proton.me>
+> >> > Link:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1128861
+> >> > Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
+> >> > Signed-off-by: NeilBrown <neil@brown.name>
+> >>=20
+> >> Hi Neil, which kernels should this fix apply to?
+> >>=20
 > >
-> > On Wed, Mar 04, 2026 at 04:30:03PM -0500, Josef Bacik wrote:
-> > > We are hitting the following soft lockup in production on v6.6 and
-> > > v6.12, but the bug exists in all versions
-> > >
-> > > watchdog: BUG: soft lockup - CPU#24 stuck for 31s! [tokio-runtime-w:1274919]
-> > > CPU: 24 PID: 1274919 Comm: tokio-runtime-w Not tainted 6.6.105+ #1
-> > > Hardware name: Google Google Compute Engine/Google Comput Engine, BIOS Google 10/25/2025
-> > > RIP: 0010:__raw_spin_unlock_irqrestore+0x21/0x30
-> > > Call Trace:
-> > >  <TASK>
-> > >  amd_iommu_attach_device+0x69/0x450
-> > >  __iommu_device_set_domain+0x7b/0x190
-> > >  __iommu_group_set_core_domain+0x61/0xd0
-> > >  iommu_detatch_group+0x27/0x40
-> > >  vfio_iommu_type1_detach_group+0x157/0x780 [vfio_iommu_type1]
-> > >  vfio_group_detach_container+0x59/0x160 [vfio]
-> > >  vfio_group_fops_release+0x4d/0x90 [vfio]
-> > >  __fput+0x95/0x2a0
-> > >  task_work_run+0x93/0xc0
-> > >  do_exit+0x321/0x950
-> > >  do_group_exit+0x7f/0xa0
-> > >  get_signal_0x77d/0x780
-> > >  </TASK>
-> > >
-> > > This occurs because we're a VM and we're splitting up the size
-> > > CMD_INV_IOMMU_ALL_PAGES_ADDRESS we get from
-> > > amd_iommu_domain_flush_tlb_pde() into a bunch of smaller flushes.
+> > v6.13 and later. So linux-6.18.y and linux-6.19.y
+>=20
+> Assuming that includes upstream, I recommend that I take this
+> into nfsd-testing / nfsd-next and let nature, ah, er, stable
+> automation, take it's course.
+>=20
+>=20
+> > The Fixes: tag is actually wrong.  This bug has been present forever.
+> > However a different bug that=20
+> >   Commit: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
+> > fixed was hiding the bug.
 > >
-> > This function doesn't exist in the upstream kernel anymore, and the
-> > new code doesn't generate CMD_INV_IOMMU_ALL_PAGES_ADDRESS flushes at
-> > all, AFAIK.
-> 
-> This was based on linus/master as of March 4th, and we get here via
-> amd_iommu_flush_tlb_all, which definitely still exists, so what
-> specifically are you talking about? Thanks,
+> > So it should probably be marked
+> >   Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
+> > with an explanation.
+>=20
+> IIUC, we want Fixes: to point to the commit that introduced
+> the issue (Fixes: since forever) and then use a "# v6.13+"
+> comment on the Cc: stable to control how far back to backport
+> it.
+>=20
+> Commit message could mention that 4cc9b9f2bf4d uncovered the
+> issue.
 
-$ git grep amd_iommu_domain_flush_tlb_pde | wc -l
-0
+What you suggest is correct in a pure sense (and I like that) but as Ben
+points out, it will miss older kernels that have backported
+4cc9b9f2bf4d.
+We know which kernel.org kernels that includes, but not what other
+organisations might maintain for their own purposes.
 
-The entire page table logic was rewritten. The stuff that caused these
-issues is gone and the new stuff doesn't appear to have this bug of
-passing size == CMD_INV_IOMMU_ALL_PAGES_ADDRESS.
+So I think we meet the needs of automation best by saying:
+  Fixes: 4cc9b9f2bf4d
 
-If it does please explain it in terms of the new stuff without
-referencing deleted functions.
+even though that didn't introduce the bug but only expose the bug.
 
-I don't know how you get something like this into -stable.
-
-Jason
+NeilBrown
 
