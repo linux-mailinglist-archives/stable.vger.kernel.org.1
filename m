@@ -1,160 +1,172 @@
-Return-Path: <stable+bounces-230462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MjpH48yxWk98AQAu9opvQ
-	(envelope-from <stable+bounces-230462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 14:20:15 +0100
+	id CL7ULYIxxWkP8AQAu9opvQ
+	(envelope-from <stable+bounces-230463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 14:15:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2306C335E02
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 14:20:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8908E335C9E
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 14:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D668311525F
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:13:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9361D3044839
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B1E2D7393;
-	Thu, 26 Mar 2026 13:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF1529BDB1;
+	Thu, 26 Mar 2026 13:14:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176D41E2834;
-	Thu, 26 Mar 2026 13:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+Received: from outboundhk.mxmail.xiaomi.com (unknown [207.226.244.123])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4F6221DB5;
+	Thu, 26 Mar 2026 13:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774530815; cv=none; b=cEIr+OAV5dl8N862I8TG2bN4FZWKBryBRplLlJdLPz1NwGbnqDx3tIOEkWuWo1YfOcqTHbbvnjG4aPVEqG4FqFL2ccJ+PrSv6YH12fIjr+eYg3XOFsd8brN4fmV4mHFXqMBsr71LbcPld0iClmJfXveil2bf5HDc3mwo7yYvSTM=
+	t=1774530842; cv=none; b=HRHwWRq1ong5w9sOZhXLgn9yFT1GwfWo3YnjOTOpkQo47+ZFLVT3YYFtbMJr8aHGET16nUuY299XTNbJoG9+sjghz3f2lOCx165H+PAjn6pQ0x2LsAS72keVTUqaji/dQIGgAMFHONjXinjsR6gj5FVaqh7kB7DoOT+9txtSrg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774530815; c=relaxed/simple;
-	bh=wcZPEj3KhU0bhzKLJ+c6QP97jsQ7Iaql8YCNi/kvDJg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UVhezQNN1NHsKnoCEAL907Mo1moCeAWFLU/qyFnq7PrmjcJVO5e+6A7as8P2AOwC+Fz58Qw1+zzKYVrociXaCztvbN89XHasGst4gXrB/WdgH/ajTl9jXSX6uAVz091xZGA2XRJwg6BYeewAVNMd4NR1ymYicH2wxPqrM3Sh2VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1w5kWZ-001svC-2K;
-	Thu, 26 Mar 2026 13:13:22 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1w5kWX-00000000JEH-0vGB;
-	Thu, 26 Mar 2026 14:13:21 +0100
-Message-ID: <607a6e7f86abd50273cd8af3c08ae7ee51e22ccf.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 000/334] 5.10.252-rc2 review
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, 	shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, 	pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, 	broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-Date: Thu, 26 Mar 2026 14:13:15 +0100
-In-Reply-To: <20260302161007.2523181-1-sashal@kernel.org>
-References: <20260302161007.2523181-1-sashal@kernel.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-HguhDMPYvc51dwp+GxDJ"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1774530842; c=relaxed/simple;
+	bh=peJJaHsjLqEK05OjKSP0jF59iOfq+EQDL41e+emQEio=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kT/kt4bdkr4N3SvuSrf2pySK3obw44uphp6xPkf1aoShzPn5v7fI5dfBR10DIJgv8/uLd613G7Jjib3maRU9Zsj9W8nE1PmbHt6WMJ4/oAILJM0SyxVYeptyAtyt/+t2DAPepuThV85L2+OlqJ7KaVc+QPW78mbcjLCwHoL/3i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
+X-CSE-ConnectionGUID: SoBTSYuVTQ6J1qgAiwfOXg==
+X-CSE-MsgGUID: Xy4JArEoRtC/t343N6rIdg==
+X-IronPort-AV: E=Sophos;i="6.23,142,1770566400"; 
+   d="scan'208";a="170857910"
+Date: Thu, 26 Mar 2026 21:13:46 +0800
+From: Dayu Jiang <jiangdayu@xiaomi.com>
+To: Kuen-Han Tsai <khtsai@google.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: David Brownell <dbrownell@users.sourceforge.net>,
+	<linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect
+ and eth_stop
+Message-ID: <acUxCk+C1FiP9Zuh@oa-jiangdayu.localdomain>
+References: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-2.06 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="gbk"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
+X-ClientProxiedBy: BJ-MBX06.mioffice.cn (10.237.8.126) To BJ-MBX03.mioffice.cn
+ (10.237.8.123)
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[xiaomi.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230462-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[decadent.org.uk];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: 2306C335E02
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oa-jiangdayu.localdomain:mid];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiangdayu@xiaomi.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230463-lists,stable=lfdr.de];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 8908E335C9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, Mar 11, 2026 at 05:12:15PM +0800, Kuen-Han Tsai wrote:
+> A race condition between gether_disconnect() and eth_stop() leads to a
+> NULL pointer dereference. Specifically, if eth_stop() is triggered
+> concurrently while gether_disconnect() is tearing down the endpoints,
+> eth_stop() attempts to access the cleared endpoint descriptor, causing
+> the following NPE:
+> 
+>   Unable to handle kernel NULL pointer dereference
+>   Call trace:
+>    __dwc3_gadget_ep_enable+0x60/0x788
+>    dwc3_gadget_ep_enable+0x70/0xe4
+>    usb_ep_enable+0x60/0x15c
+>    eth_stop+0xb8/0x108
+> 
+> Because eth_stop() crashes while holding the dev->lock, the thread
+> running gether_disconnect() fails to acquire the same lock and spins
+> forever, resulting in a hardlockup:
+> 
+>   Core - Debugging Information for Hardlockup core(7)
+>   Call trace:
+>    queued_spin_lock_slowpath+0x94/0x488
+>    _raw_spin_lock+0x64/0x6c
+>    gether_disconnect+0x19c/0x1e8
+>    ncm_set_alt+0x68/0x1a0
+>    composite_setup+0x6a0/0xc50
+> 
+> The root cause is that the clearing of dev->port_usb in
+> gether_disconnect() is delayed until the end of the function.
+> 
+> Move the clearing of dev->port_usb to the very beginning of
+> gether_disconnect() while holding dev->lock. This cuts off the link
+> immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+> safely bail out.
+> 
+Hi Greg,
+Hit the same issue during NCM switch stress test.
+Can you take a look at this patch and check if it¡¯s ready for merge?
 
---=-HguhDMPYvc51dwp+GxDJ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2026-03-02 at 11:10 -0500, Sasha Levin wrote:
-[...]
->   Bluetooth: l2cap: Check encryption key size on incoming connection
-
-This causes a regression, fixed by commit c82b6357a546 "Bluetooth:
-hci_event: Fix not using key encryption size when its known".
-
-[...]
->   lan78xx: Fix memory allocation bug
-
-This causes a regression, fixed by commit 03819abbeb11 "net: usb:
-lan78xx: Fix double free issue with interrupt buffer allocation", but I
-see that won't apply cleanly.
-
-[...]
->   fbdev: vt8500lcdfb: fix missing dma_free_coherent()
-[...]
-
-This depends on commit 63a11adaceb8 "fbdev/vt8500lcdfb: Initialize
-fb_ops with fbdev macros" from 6.8, but that doesn't seem to be
-backportable.  This should either be reverted on all older stable
-branches, or fixed up to use the screen_base field instead of
-screen_buffer.
-
-Ben.
-
---=20
-Ben Hutchings
-Theory and practice are closer in theory than in practice - John Levine
-
---=-HguhDMPYvc51dwp+GxDJ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnFMOsACgkQ57/I7JWG
-EQkIsg/+MqA7pnTHGgSH7h6n6cSifc5pmxSNVJHLAx1kE/8ixZlPUvn3qsZOHLH3
-YNW2KcznEWUbbwVCdFct7WBsTKn/awr9zrT4+YE3ziR0YjCHpFpc73UFUx2f1BJA
-xZ8k0o7LsMXo4xAKeYuOmLM5qyZ9EsODRHGw6mGdYMFOvJ3cWXeMWBdDE3sQTtnx
-13iQUWIwZ3G7JCEgj0NjLg2ywnwWBW0CqaXZ2n4oDlNM8f2ctTytKNz+bSi4XxOH
-FpYgra2MyI61PPLnx7s6pYIW6UIDSyyI/bb7lcZWauLHWK4ed5t5+wxPx+JzJSCW
-CtKLn5SF/H83k26IzVHU1Dx2s0cvB0b/cYW8wXahMLgJ7UPSrA3UfTw7cjfeQl3c
-x4t+Cy82Nr4N3fv/Ww3u/9DMdC+DTZCfeksx+W9QAotff53ZuY1eO+VbB1m5KmZ2
-jOGdJrFOKtcvWIdzh4VucMh8PeSF0G/kisahSXcSo5wEvm2wE5UcMZSloDDxSTaM
-dqu9OvakmXVTtI0Omytf9evgvDa6fUf21OJyE26NwEBZPgXmdkEtIISymsMqL/PX
-pj0ZH0OxLCGVg87RM4HX+0bSodnOlqg1wE8xpcmsbOzh439/xiuAt6M6p+HcjTtv
-rIzlegvTXHTGW8R/Pe92EAau1oKAy6JI8iFJZNbx1ENO0D/CUw8=
-=uEz7
------END PGP SIGNATURE-----
-
---=-HguhDMPYvc51dwp+GxDJ--
+Thanks,
+Dayu Jiang
+> Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+> ---
+>  drivers/usb/gadget/function/u_ether.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+> index 338f6e2a85a9..2c970a0eafd9 100644
+> --- a/drivers/usb/gadget/function/u_ether.c
+> +++ b/drivers/usb/gadget/function/u_ether.c
+> @@ -1246,6 +1246,11 @@ void gether_disconnect(struct gether *link)
+>  
+>  	DBG(dev, "%s\n", __func__);
+>  
+> +	spin_lock(&dev->lock);
+> +	dev->port_usb = NULL;
+> +	link->is_suspend = false;
+> +	spin_unlock(&dev->lock);
+> +
+>  	netif_stop_queue(dev->net);
+>  	netif_carrier_off(dev->net);
+>  
+> @@ -1283,11 +1288,6 @@ void gether_disconnect(struct gether *link)
+>  	dev->header_len = 0;
+>  	dev->unwrap = NULL;
+>  	dev->wrap = NULL;
+> -
+> -	spin_lock(&dev->lock);
+> -	dev->port_usb = NULL;
+> -	link->is_suspend = false;
+> -	spin_unlock(&dev->lock);
+>  }
+>  EXPORT_SYMBOL_GPL(gether_disconnect);
+>  
+> 
+> ---
+> base-commit: 1be3b77de4eb89af8ae2fd6610546be778e25589
+> change-id: 20260311-gether-disconnect-npe-5861d9831dff
+> 
+> Best regards,
+> -- 
+> Kuen-Han Tsai <khtsai@google.com>
+> 
 
