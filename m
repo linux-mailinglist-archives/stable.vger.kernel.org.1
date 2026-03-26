@@ -1,63 +1,93 @@
-Return-Path: <stable+bounces-230527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEy/BUmRxWlG/QQAu9opvQ
-	(envelope-from <stable+bounces-230527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:04:25 +0100
+	id EFYNANeTxWmq/gQAu9opvQ
+	(envelope-from <stable+bounces-230528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:15:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1D033B394
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:04:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5283333B4F4
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC42F30107F9
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:01:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C53C301B708
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9F834C815;
-	Thu, 26 Mar 2026 20:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E433976BB;
+	Thu, 26 Mar 2026 20:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhhP0pHm"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="Kc48d92s"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC740823DD;
-	Thu, 26 Mar 2026 20:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63F530B529
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 20:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774555297; cv=none; b=isqGwJq3V86uCMi4SxXoaamdSG/yNpyW6lTWWJhV7rxybH42AzLSyzmNrUG+HAw5E/XrAfyuYTj91ECbEFYznVHY9kbIAP6wEOqzo144o/1B+RlxxRBO/5xZ1Vo8e/usmrG4avxadriIoAnP2df03zz7HqfyQ8h1cPu6u35pNc8=
+	t=1774555754; cv=none; b=qqAkf6XQw+WzaAkayQdC+rXbBtGmIwvkpqYvzh/kyFBIdRNRybvJqhUCcmDZllPjSDfMtWPI0BmE5wU9EjOGEMhLmn1LGEU9rcy6hZ8DwA1YwJoaEIOG7ZYvAwfMt9iMXPK2+uD+v8F+zBfHv3JXIZXakFkLiur/GiCOGe9TnYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774555297; c=relaxed/simple;
-	bh=jK7Uvx3qiOAu88aK2LbmX3iGTbCOWx9vtglc4wZEfmQ=;
+	s=arc-20240116; t=1774555754; c=relaxed/simple;
+	bh=O08vcziHn5E/h2BMlzMYY1qPElNvRHUnS23RXL/skmU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5lM1eC7Y0fUWIXCuRzeDserJS0BHqzdHMig8hiqCmmTg7hKG5cxOyduJKCLtcsUS+lcKmVTdtqFYWfUZ0Bf1EjJPvGRzZ2mjvILSd9/LAgeQlYy50LbcoIHYB7f45lmbC9BYiCL+5Z7oECKPK2/keluZKZJ0TuzPYjRC+7uKS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhhP0pHm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3992C116C6;
-	Thu, 26 Mar 2026 20:01:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774555297;
-	bh=jK7Uvx3qiOAu88aK2LbmX3iGTbCOWx9vtglc4wZEfmQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BhhP0pHmQ1930LlWJ/7fsGD/Ip+YzH2+XKpDAQBLBM47n4SN1xoADzPTcAhZDsKTj
-	 IUqMLhx2+cg5dDxavXaI+smA/+4OWqNTx0TkykCbCngE7zAiZ3Ad7q51aqq7D+8LNC
-	 hmkMZZKBk033v1XdoVsPbyCCEl92y+eEcaO8jI9ETenZD3m+5S9D8K2Z3WC5OZx8cc
-	 5JUHh1aQ5OMs39OMaNoXUWzGySAfAVcvW8b1Mk4phXoHyGHw+G+eQqYdb6TxRW+dtl
-	 urcY2Z20SMZahpFHmMdFJILhU2Pkjpn2zz7aiyCFcB9p6f00IveR4GJ6Sl/KWB8+LL
-	 aLkBVjRkCA8vg==
-Date: Thu, 26 Mar 2026 20:01:33 +0000
-From: Simon Horman <horms@kernel.org>
-To: Oleh Konko <security@1seal.org>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net] nfc: llcp: fix tlv offset wrap and missing bounds
- checks
-Message-ID: <20260326200133.GX111839@horms.kernel.org>
-References: <463598db3dea48fc963e8431181ae68a.security@1.0.0.127.in-addr.arpa>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ULZC0aYLCOFWOJq8PkKIk4umcniwDc0nCyB6H5ShHdaxnKxEHupAZZrB097G70YLNrictMcw5sRDlB3jcq2g73Ln+A1fXonQ7M8RioDI3MXso9HCXN/ux/JwO3qmhqLTXGutCKOgFYZKyxBbqGSB4AVZ6msrc3PDGNJnPKiqCog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=Kc48d92s; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-506aa68065eso12175421cf.1
+        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 13:09:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1774555752; x=1775160552; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
+        b=Kc48d92sYkZTDcy3q456P/xVKGZKfA+xGg9I3vp5GdwK1XMkyfImia/fj+MKEzXqbF
+         q2axkF89HT19f8vU7LNkpLQpQb16ugZSjak+YnbD4nIa0+D875N3uDzDseWjAMYqdWah
+         LGybVxUIuwAFJuogmP1Y+kysMd0V/tk61Y2rDYFx5RE4DYKQcjMbCbm1bQe6TAOjkT7o
+         no05AXru9n5PowsiKvzdQ0T7PNkEeJ+u7kUaePuo//Frmxw4Qz5DFxFbDtAqQ6Mp9y64
+         8w4y8kw3v39M66KRg43KZVntwGWZzYcIvFP9nLUKH/0t4LwwExH2l49oKSjjaG7K5dmG
+         W6dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774555752; x=1775160552;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
+        b=bb5HK5QRFC6l7zki3XB5zWpAKBjQZv6lNlh79KpnmTAPgoC3qtAKS6wsXCpKAleUr6
+         eNsqaSmJ1vaBf8h6vEqCNAyoWUg9cxqjAe8638454vNn04Z+/4wL2Xr+K/ntU2ujlKFe
+         oH6atUa62eLpMNhlAUQAbKWMgqmVsV53sr7OrHcSEytsRvCLhDopiQjcXoMW6uRdHTpR
+         d+2ZamSodmwKaGMsgsucorqWCx5HDE1KnpVEuAEv/RWkYfsw6E6GbS42XxGzGjaIC4Uy
+         +aZxTaSc9rUYQ/j91qybfa8+3N03xKUavwQm3RBJkC4L0D4rnS/mL3hpq4vlzhpcyi1G
+         eXPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDqN23bq5yeP6Av3ROlDMEio7SMNklSRrStTh1K64JeCCO6fKRP9agldNsRS/wLChMJN9e+9U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+wGgB5Zrj/jgZBkQ95RIRFw9eTS3GXJOLT/HrJeB2EnCJqQhA
+	g4nKjVyAwu00bbIX5fBnftqBV91E8Ggehak2IAKr8Is64P3T3shfWvShvZDe32YNfbk=
+X-Gm-Gg: ATEYQzyuDiZq0Z4++mZCPFoP6MCYi7IfVUMGfuatKy9/5VmTv+OPvH2XQYsgt4pS4Ad
+	BW3ybZ29BcK43iKAINcXpQQ65P+IPpkqPoY6FhokLuIPgH7raVJ1Nvoqy1OHglaMEBJd6OllgTa
+	zVRiqGihzp4F7XSvUCT90PYYVsY8Px7BlN+6ImDPPyfDvDWxaql89mM9UA32T+/sWY46Ll8g5wd
+	AI73aw7AWdySQm+5trHgpExQeGqvyiTBR7rVTBTHShBzNX5nkrXaby1rgQB5Q4LBDjZIkdW96rO
+	L4g1k1IcjSE5L9I1CqfGDdytEfLuELkJ1Y/YUue9ZRQweqMj3XgPj0h7c7toBtBjAHpHqdAv9PN
+	sRV6+hAdxkQz0l6ixci5Oon7JhOdIv95M44xHwg3oxalrEM+L9Cfpw4i5LxQdg3q/EbHTk6PG9x
+	7uqXIqdDMc8CFrgVZOeMkLluD5RSthhdU=
+X-Received: by 2002:a05:622a:20c:b0:50b:4778:ac60 with SMTP id d75a77b69052e-50b80cd380fmr124966951cf.10.1774555751762;
+        Thu, 26 Mar 2026 13:09:11 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::2:e5e8])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b9237a40asm31637111cf.21.2026.03.26.13.09.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 13:09:11 -0700 (PDT)
+Date: Thu, 26 Mar 2026 15:09:09 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com,
+	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
+Message-ID: <acWSZZ1MPGZi6PH8@gourry-fedora-PF4VCD3F>
+References: <20260326162611.693539-1-gourry@gourry.net>
+ <acWHMQ2MPFjOSq5T@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,159 +96,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <463598db3dea48fc963e8431181ae68a.security@1.0.0.127.in-addr.arpa>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <acWHMQ2MPFjOSq5T@casper.infradead.org>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230527-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[gourry.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230528-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gourry.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1seal.org:email]
-X-Rspamd-Queue-Id: 8C1D033B394
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5283333B4F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 24, 2026 at 09:25:41PM +0000, Oleh Konko wrote:
-> nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv() iterate a
-> u16 tlv_array_len with a u8 offset. once cumulative TLV consumption
-> crosses 255 bytes, offset wraps and the loop may continue past the
-> declared TLV array bounds.
+On Thu, Mar 26, 2026 at 07:21:21PM +0000, Matthew Wilcox wrote:
+> On Thu, Mar 26, 2026 at 11:26:11AM -0500, Gregory Price wrote:
+> > This also requires removing the rcu_read_lock() from
+> > do_fault_around() so that .map_pages may use sleeping locks.
 > 
-> both parsers also read tlv[1] before checking that a full 2-byte TLV
-> header remains, and they advance by length + 2 without validating that
-> the declared payload still fits in the remaining array.
+> NACK.
 > 
-> fix this by widening offset to u16 and by rejecting incomplete headers
-> or truncated TLVs before dereferencing or advancing the cursor.
-
-This patch seems to fix two problems.  It's usually best to fix one problem
-per patch, creating a patch-set with two or more patches and a cover letter
-if necessary.
-
+> ->map_pages() is called when VM asks to map easy accessible pages.
+> Filesystem should find and map pages associated with offsets from "start_pgoff"
+> till "end_pgoff". ->map_pages() is called with the RCU lock held and must
+> not block.  If it's not possible to reach a page without blocking,
+> filesystem should skip it. Filesystem should use set_pte_range() to setup
+> page table entry. Pointer to entry associated with the page is passed in
+> "pte" field in vm_fault structure. Pointers to entries for other offsets
+> should be calculated relative to "pte".
 > 
-> Fixes: d646960f7986 ("NFC: Initial LLCP support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Oleh Konko <security@1seal.org>
-> Signed-off-by: Oleh Konko <security@1seal.org>
 
-This patch seems to have been sent twice in about half an hour.
-Please don't do that.
+Hm, I follow. I was originally thinking this was scoping issue given
+we take the rcu_read_lock shortly after the call anyway, but I see.
 
-Rather, please observe a pause of 24h between sending updated
-revisions of a patch.
+If the invalidate lock ends up being needed then i could leave rcu
+and just use trylock/fallback to fault.
 
-Link: https://docs.kernel.org/process/maintainer-netdev.html
+But I need to test a few things, nothing else protects filemap_map_pages
+with the invalidate lock at the moment but only shmem appears broken.
 
-> ---
->  net/nfc/llcp_commands.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
-> index 291f26fac..157afd62f 100644
-> --- a/net/nfc/llcp_commands.c
-> +++ b/net/nfc/llcp_commands.c
-> @@ -193,7 +193,8 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
->  			  const u8 *tlv_array, u16 tlv_array_len)
->  {
->  	const u8 *tlv = tlv_array;
-> -	u8 type, length, offset = 0;
-> +	u8 type, length;
-> +	u16 offset = 0;
-
-It seems to me that the value passed to this function by the caller,
-nfc_llcp_set_remote_gb(), is limited to a maximum value of 255 - 3 by
-virtue of being a u8 with 3 subtracted. So I'm not sure that offset
-can overflow here.
-
-For consistency with other parts of this call-chain
-it might be worth changing the type of tlv_array_len to u8.
-But that would be a clean-up for net-next rather than a fix for net.
-
->  
->  	pr_debug("TLV array length %d\n", tlv_array_len);
->  
-> @@ -201,6 +202,9 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
->  		return -ENODEV;
->  
->  	while (offset < tlv_array_len) {
-> +		if (tlv_array_len - offset < 2)
-> +			return -EINVAL;
-> +
->  		type = tlv[0];
->  		length = tlv[1];
->  
-> @@ -227,6 +231,9 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
->  			break;
->  		}
->  
-> +		if (tlv_array_len - offset < (u16)length + 2)
-> +			return -EINVAL;
-> +
->  		offset += length + 2;
->  		tlv += length + 2;
->  	}
-> @@ -243,7 +250,8 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
->  				  const u8 *tlv_array, u16 tlv_array_len)
->  {
->  	const u8 *tlv = tlv_array;
-> -	u8 type, length, offset = 0;
-> +	u8 type, length;
-> +	u16 offset = 0;
-
-In this case the callers pass skb->ken as tlv_array_len.
-As skb->len is an unsigned int in theory it might overflow
-the u16 used for tlv_array_len. But perhaps in practice that
-doesn't occur?
-
-In any case, if you are going to update the type of offset, then
-I would just change the type of type, length and offset to unsigned int.
-I don't see a value in using narrower types here.
-
->  
->  	pr_debug("TLV array length %d\n", tlv_array_len);
->  
-> @@ -251,6 +259,9 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
->  		return -ENOTCONN;
->  
->  	while (offset < tlv_array_len) {
-> +		if (tlv_array_len - offset < 2)
-> +			return -EINVAL;
-> +
->  		type = tlv[0];
->  		length = tlv[1];
->  
-> @@ -270,6 +281,9 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
->  			break;
->  		}
->  
-> +		if (tlv_array_len - offset < (u16)length + 2)
-> +			return -EINVAL;
-> +
->  		offset += length + 2;
->  		tlv += length + 2;
->  	}
-> -- 
-> 2.50.0
-> 
+~Gregory
 
