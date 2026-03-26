@@ -1,127 +1,140 @@
-Return-Path: <stable+bounces-230412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEIoLF2fxGki1gQAu9opvQ
-	(envelope-from <stable+bounces-230412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 03:52:13 +0100
+	id OBAmHq2hxGkJ1wQAu9opvQ
+	(envelope-from <stable+bounces-230413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 04:02:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559FF32E832
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 03:52:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BDA32E969
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 04:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 370613014FEA
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:52:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29F0330247E1
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 03:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FBC34402B;
-	Thu, 26 Mar 2026 02:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8174FA92E;
+	Thu, 26 Mar 2026 03:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E96b6OMM"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="1KaPn96K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5717A77F39;
-	Thu, 26 Mar 2026 02:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED64977F39;
+	Thu, 26 Mar 2026 03:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774493523; cv=none; b=pn83FAJBFob1tAebRili3/aTGSHqvc1nGHLxpsHtVZVu9uedwwPwpPXLVGrYQZ8YZZIT1GJiwZcEqC0imi7SHIu2B8H9tT+XOtAlaG8PGhVpHT4+gxeuGQ/804wXUkd69CP1n01AuskB977eE46mmdgwnL64i0kFTltafPn1TkQ=
+	t=1774494120; cv=none; b=JV4GSbiu6PI1I52ofhJ4o2+WzQcC+wmuNWpGKvKISQIjAid9GuNla+C3fog7qMOlB2xfAVJSCkzvpeWHaY1ffCCrvcOlayg+qg54g71HsBK+9y8zyCKBtG3yuRjxbRRkcmOW0Er4By2sY27862vfCURSjEuKb+K1PEV4cpEM2xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774493523; c=relaxed/simple;
-	bh=A+GXnGT9Ep3iwufn3Pmxa7uHTI+2orro7gkD2bePT7c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AQQDAesOYrngSXNyO7h0jEtrhreRz0wZ1zanzmWM2G8GT9nD2z4n+4RZtRJ8tjRgpdU5zYbYCw+XeFBaE9vnqbXSq4gSM8IG//Cnf8BMvZHwI/vokAMtL+TNG+XX6kJ+oHP8dcFwDW10id0St8efWhW/w5Y+YkCl591pE2nq7+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E96b6OMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94256C4CEF7;
-	Thu, 26 Mar 2026 02:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774493523;
-	bh=A+GXnGT9Ep3iwufn3Pmxa7uHTI+2orro7gkD2bePT7c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E96b6OMMq/PGfVGGxG5F3VmYcRtn3DwFeCyF82CcVS9/vmB9a3WA4IXux2MzLienI
-	 +O/VDw+ck3Yrh/h65c4dSafbBUXcYGFqy7xgGiSV6f4nUnkwzgIpEx+4P9md9kFB0O
-	 4E2/YaY65xyaWw0tq+8l9FJWzpI+oIAYYlEtrMDRCLRr6l8bIKTtKQUVtwnU4HJRjh
-	 IrLYUXLTCnBO27noyggqzgGAAQPExY+tpeOFndnqxyV/jY/rk4NdwHjpir3DiuODKw
-	 sqt3ul0ERaBwiiFKbB6WTzR0snVMeltCsP9gYZZ10tNqn4liWsjK0zi+YB2c0F5Luw
-	 +nE5n6BwditIg==
-Date: Thu, 26 Mar 2026 13:51:54 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: Hans Holmberg <hans.holmberg@wdc.com>
-Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <david@fromorbit.com>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
-	linux-xfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] xfs: start gc on zonegc_low_space attribute updates
-Message-ID: <acSfSmE_IBjWl_cR@dread>
-References: <20260325124312.26349-1-hans.holmberg@wdc.com>
+	s=arc-20240116; t=1774494120; c=relaxed/simple;
+	bh=thbOWSOqrhQKqwfKETz+0O3aR0qSREUl5isN3IimXjc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=C82hcGYKnVy5GAUN3Gj0TKV0GtzPhrQxqCC7DGRu3s77lMWvPXnwYAMq43KlbLMZkSeG5ApDN8VEYASvxORhbEOjxbcXAI2zTrc3GpwJAVFGc5R1+lKFX4AgrtJthlsrMHWcCLWuvBj4F4K8V62DJ8OK9ulywtNMatmCam054uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=1KaPn96K; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=kcy1jzR3GKVXHVdCc1RqC8re+/bIxuG8qN8lVpGjxF4=;
+	b=1KaPn96KrUqf35EsISAzK+OVzIECrhD4QkFREp414aEQXGf9+ngXpENw1IJ3dy/XSuz1i5Vmp
+	7Kkwt8vVxk1eMZUAJDXhIlj1ir16j270aEA6oIbA8ltJiKGirNklCN7N5vAMZKN0vUh/UJkNRTi
+	AzF35Glo6nzcrphDYde8GjA=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fh7hQ3n1YznTwR;
+	Thu, 26 Mar 2026 10:56:22 +0800 (CST)
+Received: from kwepemr100006.china.huawei.com (unknown [7.202.194.218])
+	by mail.maildlp.com (Postfix) with ESMTPS id B8654402AB;
+	Thu, 26 Mar 2026 11:01:49 +0800 (CST)
+Received: from [10.174.179.92] (10.174.179.92) by
+ kwepemr100006.china.huawei.com (7.202.194.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 26 Mar 2026 11:01:48 +0800
+Message-ID: <c2fe8cab-2f92-4c82-9743-04ed35003105@huawei.com>
+Date: Thu, 26 Mar 2026 11:01:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325124312.26349-1-hans.holmberg@wdc.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
+To: Theodore Tso <tytso@mit.edu>
+CC: Francesco Dolcini <francesco@dolcini.it>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@nabladev.com>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, Jan Kara <jack@suse.cz>, Brian
+ Foster <bfoster@redhat.com>, Matthew Wilcox <willy@infradead.org>, Gou Hao
+	<gouhao@uniontech.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Zhang Yi
+	<yi.zhang@huawei.com>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260324073447.GA5062@francesco-nb>
+ <d22ffe9f-8cd5-41ee-9da1-d0d2800a5f16@huawei.com>
+ <20260325133456.GD2107@macsyma.local>
+From: Sun Yongjian <sunyongjian1@huawei.com>
+In-Reply-To: <20260325133456.GD2107@macsyma.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr100006.china.huawei.com (7.202.194.218)
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230412-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dgc@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230413-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[dolcini.it,linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,suse.cz,redhat.com,infradead.org,uniontech.com,huaweicloud.com,huawei.com];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sunyongjian1@huawei.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,wdc.com:email]
-X-Rspamd-Queue-Id: 559FF32E832
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D1BDA32E969
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 01:43:12PM +0100, Hans Holmberg wrote:
-> Start gc if the agressiveness of zone garbage collection is changed
-> by the user (if the file system is not read only).
-> 
-> Without this change, the new setting will not be taken into account
-> until the gc thread is woken up by e.g. a write.
-> 
-> Cc: <stable@vger.kernel.org> # v6.15
-> Fixes: 845abeb1f06a8a ("xfs: add tunable threshold parameter for triggering zone GC")
-> Signed-off-by: Hans Holmberg <hans.holmberg@wdc.com>
-> ---
-> 
-> v2:
-> - Added a new helper to wake up the gc thread in stead of unparking it,
->   which is required to make this work properly.
-> - Added protection against races with unmounts as sysfs gets torn down
->   after the zone info struct is freed. This also avoids unneded
->   wakeups during remount.
 
-Isn't that a deadlock vector?
 
-i.e. unmount takes s_umount, concurrently userspace writes a new
-value to sysfs file. sysfs file write blocks on s_umount, unmount
-blocks holding s_umount waiting for sysfs file reference count to go
-to zero to destroy it?
+在 2026/3/25 21:34, Theodore Tso 写道:
+> I'm confused.  That commit 060913999d7a should be backported to
+> 6.1.yy?  Since 6.1 lacks this patch, I dont understand your statement
+> "the race condition doesn't exist there".  Or were you trying to say
+> that the_fix_ for race condition is missing in 6.1?
+> 
+> Or is there some other commit which fixes 060913999d7a that needs to
+> be backported to 6.1?
+Hi Ted,
 
--Dave.
--- 
-Dave Chinner
-dgc@kernel.org
+Sorry for the confusion. To clarify: commit 060913999d7a is actually the 
+regressing commit that introduced the race condition by reordering the 
+migrate mapping and folio copy operations.
+
+Because 6.1.y does not include this specific commit, the concurrency 
+window it created does not exist in the 6.1 kernel. Therefore, 6.1.y is 
+not affected by this particular issue and does not require this backport 
+(ext4: fix e4b bitmap inconsistency reports).
+
+      	       	   		     	     - Yongjian
 
