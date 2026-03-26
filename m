@@ -1,135 +1,196 @@
-Return-Path: <stable+bounces-230448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIA0OUcNxWkI6AQAu9opvQ
-	(envelope-from <stable+bounces-230448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 11:41:11 +0100
+	id ACF+M00TxWmr6QQAu9opvQ
+	(envelope-from <stable+bounces-230450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 12:06:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D28B3339D8
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 11:41:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BDE334083
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 12:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5953A30786FF
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 10:35:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 509EF311FA53
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 10:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4113C9EE3;
-	Thu, 26 Mar 2026 10:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A9D3537F6;
+	Thu, 26 Mar 2026 10:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn1ToLLB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fdNr7itg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B63A3C13F8;
-	Thu, 26 Mar 2026 10:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2021383C7C
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 10:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774521355; cv=none; b=ABGdA5aEZYPKseYV7gh9MX5AcSZ39/wseyLxrq8L8zcyIFotPMUxo7rAUY2sbzILV9EviP5pLvJNgyomgXq6XzxnJCccd4ejkJrUN3wJ813P4o0Bgm86ROa7RGdzffbOVMfT6CVBlQpkB502YI8OoElZp/hvvUkJkAl5o66gZHI=
+	t=1774522014; cv=none; b=QFzIj6hRHJLRw7FaNYTefA25+IYVWFi/xhXdM/+0rZLhjnsFL5Xxy8+iqFZtmMVodv2sHFENOUIK4yRGCRfNWZei6ySuL0mvtb8ymLCV7JHa2J9GoQDfOWL6AIE1A/K6X9tYWHhI7cED3I6Q0YZCPKcFJNWt/F7RPU2NCI/Qkl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774521355; c=relaxed/simple;
-	bh=T+tLJajTyOj4cDuHYlCGpyyZ8ZAzb5glWR6e0jJZxUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K2NIOSKWjojW6ng8GrBIqncREPMO26jWbc8XOdael9vfjZqbufwDgOqZ0kKkitQ+XUQs6wzQmFLmiMP689pKkhbi66KeJUKZfrcOeQSYgUBdwUUVh08f6dV4EolKyt+cJINEMrs3hc7kriHAL0hNSQl2KL8MFFJmZim/B2FNEgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn1ToLLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C138EC116C6;
-	Thu, 26 Mar 2026 10:35:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774521355;
-	bh=T+tLJajTyOj4cDuHYlCGpyyZ8ZAzb5glWR6e0jJZxUg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hn1ToLLB2byk1NZDFwKzsUicxXfVcpJWB2UGJWqAAa6O6Mg1F6OCgCOm8+ZcdD7US
-	 53YcIQH/1t1M8tTmiFuw0+K3ah+GP08177/30dA36jyr1uzLO5mNjciwPoA8wqedf6
-	 aA4XdlPTkWshdiohafwCmMu92n8PqcGjGDctfrJ4=
-Date: Thu, 26 Mar 2026 11:35:31 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dayu Jiang <jiangdayu@xiaomi.com>
-Cc: Kuen-Han Tsai <khtsai@google.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1774522014; c=relaxed/simple;
+	bh=3fxCrPv5jOhzXpbEPh03vPyoVSVq+MIAtMK0QRjzkYs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V4Qv15YGU9I/fv7r42PrG/DeEjt3f6e9yY4iemH5Qpy3uylWrRjXVkR5IArPISTRCpnYoeRvLg1MTlrkwyO5XF0xhuYVE3TdB4X63AwNXiJHpvQcDQfVb4ajjyMZJ9ANOFPb09Ds3xybWbks5XCy8ZMRexPG5yPa/eQhNYyCScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fdNr7itg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774522011;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HpVDvhFE67l3OFnKv5DoNdb7shfVdE092GWoAVAsAa0=;
+	b=fdNr7itgIL0tCRBt3NKwSRaZ9sCrF6W5pfJyMkAHMFWrWsod7FZKry/TeKQeF4V9qeW6Dr
+	LNKHlR5jWwPDYutUARhNo6SfrxRA8/B/603r9j/2zE++JAaMrXEy7r40ArNi2gVftyfEdy
+	gnR2vAlM3iMHWAKxfGNmm1imK8NmA0w=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-SbEJ6LxhO5WiP_Ngehg1ZQ-1; Thu,
+ 26 Mar 2026 06:46:46 -0400
+X-MC-Unique: SbEJ6LxhO5WiP_Ngehg1ZQ-1
+X-Mimecast-MFC-AGG-ID: SbEJ6LxhO5WiP_Ngehg1ZQ_1774522003
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 04DF719560B9;
+	Thu, 26 Mar 2026 10:46:43 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.121])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 586C419560B1;
+	Thu, 26 Mar 2026 10:46:35 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paulo Alcantara <pc@manguebit.org>,
+	Xiaoli Feng <xifeng@redhat.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect
- and eth_stop
-Message-ID: <2026032614-most-opposing-4363@gregkh>
-References: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
- <acTl6bUJTQp6kjCO@oa-jiangdayu.localdomain>
+Subject: [PATCH 04/26] netfs: fix error handling in netfs_extract_user_iter()
+Date: Thu, 26 Mar 2026 10:45:19 +0000
+Message-ID: <20260326104544.509518-5-dhowells@redhat.com>
+In-Reply-To: <20260326104544.509518-1-dhowells@redhat.com>
+References: <20260326104544.509518-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <acTl6bUJTQp6kjCO@oa-jiangdayu.localdomain>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230448-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,manguebit.com,kernel.dk,kernel.org,samba.org,chenxiaosong.com,auristor.com,codewreck.org,gmail.com,lists.linux.dev,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,manguebit.org];
+	RCPT_COUNT_TWELVE(0.00)[26];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230450-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9D28B3339D8
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,manguebit.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 72BDE334083
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 03:53:13PM +0800, Dayu Jiang wrote:
-> On Wed, Mar 11, 2026 at 05:12:15PM +0800, Kuen-Han Tsai wrote:
-> > A race condition between gether_disconnect() and eth_stop() leads to a
-> > NULL pointer dereference. Specifically, if eth_stop() is triggered
-> > concurrently while gether_disconnect() is tearing down the endpoints,
-> > eth_stop() attempts to access the cleared endpoint descriptor, causing
-> > the following NPE:
-> > 
-> >   Unable to handle kernel NULL pointer dereference
-> >   Call trace:
-> >    __dwc3_gadget_ep_enable+0x60/0x788
-> >    dwc3_gadget_ep_enable+0x70/0xe4
-> >    usb_ep_enable+0x60/0x15c
-> >    eth_stop+0xb8/0x108
-> > 
-> > Because eth_stop() crashes while holding the dev->lock, the thread
-> > running gether_disconnect() fails to acquire the same lock and spins
-> > forever, resulting in a hardlockup:
-> > 
-> >   Core - Debugging Information for Hardlockup core(7)
-> >   Call trace:
-> >    queued_spin_lock_slowpath+0x94/0x488
-> >    _raw_spin_lock+0x64/0x6c
-> >    gether_disconnect+0x19c/0x1e8
-> >    ncm_set_alt+0x68/0x1a0
-> >    composite_setup+0x6a0/0xc50
-> >
-> Hi Greg,
-> Hit the same issue during NCM switch stress test.
-> Can you take a look at this patch and check if it’s ready for merge?
+From: Paulo Alcantara <pc@manguebit.org>
 
-This is already in my tree and in linux-next and will go to Linus this
-weekend.
+In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
+extract user pages, bail out on -ENOMEM, otherwise return the error
+code only if @npages == 0, allowing short DIO reads and writes to be
+issued.
 
-thanks,
+This fixes mmapstress02 from LTP tests against CIFS.
 
-greg k-h
+Reported-by: Xiaoli Feng <xifeng@redhat.com>
+Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev
+Cc: stable@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: David Howells <dhowells@redhat.com>
+---
+ fs/netfs/iterator.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
+index 154a14bb2d7f..adca78747f23 100644
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -22,7 +22,7 @@
+  *
+  * Extract the page fragments from the given amount of the source iterator and
+  * build up a second iterator that refers to all of those bits.  This allows
+- * the original iterator to disposed of.
++ * the original iterator to be disposed of.
+  *
+  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
+  * allowed on the pages extracted.
+@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 		ret = iov_iter_extract_pages(orig, &pages, count,
+ 					     max_pages - npages, extraction_flags,
+ 					     &offset);
+-		if (ret < 0) {
+-			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
++		if (unlikely(ret <= 0)) {
++			ret = ret ?: -EIO;
+ 			break;
+ 		}
+ 
+@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 		npages += cur_npages;
+ 	}
+ 
++	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
++		for (i = 0; i < npages; i++)
++			unpin_user_page(bv[i].bv_page);
++		kvfree(bv);
++		return ret;
++	}
++
+ 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
+ 	return npages;
+ }
+
 
