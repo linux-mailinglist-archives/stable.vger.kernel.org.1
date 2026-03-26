@@ -1,156 +1,204 @@
-Return-Path: <stable+bounces-230488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OP5RLLxWxWl39gQAu9opvQ
-	(envelope-from <stable+bounces-230488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 16:54:36 +0100
+	id EN+eJntXxWkk9gQAu9opvQ
+	(envelope-from <stable+bounces-230489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 16:57:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF22E337EC4
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 16:54:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D410337FA9
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 16:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0985F30F8634
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 15:27:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33F153091D5C
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 15:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003BC4014A2;
-	Thu, 26 Mar 2026 15:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC403411627;
+	Thu, 26 Mar 2026 15:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="iZWvtOxo";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="EkuaFTiN"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="rQ5KslQP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78ED3F210F;
-	Thu, 26 Mar 2026 15:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB40337F8BA
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 15:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774538813; cv=none; b=Dny/VsXz4GCP4sY9A+SX5EWD9UVxgkpdbOYLLJxlW0mwC2c+Lr6kvD85ycG4xcvJ2KgeWzqndGXt9FXXovK77AW82iLNC/W7sxOejANaHTvVMRKPjcj51UI7aXsJAEV9Y6xDhiA0XomDah48NP07nPgP5rnAtYaiaXZcf90RV44=
+	t=1774538876; cv=none; b=oCUzh6fUE5UJT1IzdaMB0UD86oTCe/rMiYoE+ZDHPuVjflE/h2Pg9+g9Ca4RFmKHd6YXaknse3KtV6JS6wxtvvAzm1R6IUE2GqgtF7rTMtbI9RPQeE3G7RlV4KObVrYCBI+XYqD/tqxBjfJUHNVL8HDReJzr6888iSwYuFkwVfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774538813; c=relaxed/simple;
-	bh=KjbFPWZ52zjrwBOztZYvBAKOfo7bGoPD2DP/sKJUKVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nzin3N8kCZpuJnJuApwqFLQCiIPS1VdyByUNysodIQ7t68IH7Efx1LxDSAsPPjBdq31+4DZUkupLM+5zLq8uENFn9k4sRu248z6W5+G2ZUZOZIiOfEf7k8GBmv5osfFevhjdisPyfWY47t4Q6/Dm6b9HwNUuLzaF0IefO92b2Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=iZWvtOxo; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=EkuaFTiN; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1774538665; bh=5yWH0aBEsh9Z+ZlkcQnP2na
-	Jb810iE/tfOrPtXpGt/E=; b=iZWvtOxobEN+2bXRJ9/vwqsowV7cc9Z2DM1mhUI68D5CoOvxSR
-	VThBf0lpUiRBXLiPjJ/nVAu/zmrAet/8kSDGl3QTRYkub5oInA5ctJJWh3uuGj+LkKLVObcSc9C
-	ErBHpKWYYG83uB+ZHKLagZM2aqIShLVe9JfmdkhUs2syErpzSjm+z+2lmTidwrL628aJTHSGsQI
-	1pWGhqq5e4jb2r3K8FAqRDguWCuJyjmogALRIv58WzwBPF9o690GcKw9t2R5KnZt/cYXXsSYPvK
-	s6afrW4j2wwRM/jaH2pmtLXxj/XPklt7NvSi/mV0htYvGv0xyKoc3yV4SCLR2yEZjig==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1774538665; bh=5yWH0aBEsh9Z+ZlkcQnP2na
-	Jb810iE/tfOrPtXpGt/E=; b=EkuaFTiNEjBrnLfchD8BGwWIIKWbo8LulXtIWJDdRORf5YJwVG
-	FVS5iC2Pc2iTZ8B/6jyvBjPPad5ISrAG5VBw==;
-Message-ID: <1f2dd742-a845-4b51-86a5-755c39f75b45@mainlining.org>
-Date: Thu, 26 Mar 2026 16:24:25 +0100
+	s=arc-20240116; t=1774538876; c=relaxed/simple;
+	bh=mGgmdF3aJj3DGu7fy8hgugCqV8W3H7PXemwNRcisZuc=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID; b=LVpQe6gTxHNshb6qoktCNvRKOfGy2OznVZBe/OXsk6NJHRTsMeuuIlqDyvFD7dL0IWxprKnac7x/Dx6emrlKGOElQmLKo0wYEt4/JK4BRbQHld802enT9y7v37gW7qRzVtExEVtuHGPP8+GHD/rL8MwfrvMlYFDxyPBHT+W8X8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=rQ5KslQP; arc=none smtp.client-ip=203.205.221.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774538863; bh=l5ZC23wpmQP6RyS8MXmj5KQa0llDcC+2mrSFuC+X+XU=;
+	h=From:To:Cc:Subject:Date;
+	b=rQ5KslQPyQBmudkzpQ3N/NXf6LdqeEdcrnN11/Lm2qEE0PUey3ar2KaZnr1oNtH0C
+	 dHCjQlknKl79wLkzGxCc8vxq1ea5DgVXlvxN+t4E8lYKue1ljmkRJ1R6W76n/4e1Pq
+	 jCoGX25qq3lBSDU57m4qchmOyJ0Q6h7ONpO2h19Y=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-XMAILINFO: MzJb22FmC4KUD66quCoKhZbYd2R+aC3fiN1A9aw8HdRDQF0qKR0G1gF2M8hNuY
+	 s+H8OKmAeLDR5SwMUM9w0tQfYyevnqkTdwJldh5VBKG9y0JfDc7x7l2inAaobQa++EfkVi1DZX/0/
+	 BXt4DYWUQLklvfjD/lNf867Bbh3FCRNaQEkrEGRZvezHPlh7jTVhakFBdy7TF41EwESzHJU2qpyTF
+	 lKP04D706IvMWUr5vqn/zqSDf2QukDfArMdttBeDEJYzQuYeuf0I29zLM7QVshY94bHxzLZfrM+dM
+	 3fZ1OdHdoB50WgxXy7RDXk5iZoSAl6ereqIxY/ctj4gyceqDwiC1I/kDLPF7D/kqckNBTL5HFPPip
+	 bGLODz2EShxKf7g+YL/+DeGGN1y8DTociFdp0tr5297W/ki8nthJOh5Yj5+C/T8tsukAKo8zj/OUr
+	 gCD0I3N81+u6UbsXKkt+yJ2pYrbyqqBFIDBksoQuwBkfCrkpz9e9H6g+puMIx23xUKG2IEI+jd5MC
+	 OL8ggA0JfhCSK3vRtn01FE+K9PO+CLIU75XOAPBjxmsTEw20ViN+OUxcne5WTJ2/e7fKHQeXDtzUt
+	 loxOFvsjHsRM0dlvLPdYu5Yxn9PhQ8qrZf2dFlK9kzYQ2QB/y7fRWcDhJLIsKWFrdlswVzob1e+Hr
+	 7V3rWMvg5ipslJyWQ3+yzJN3qzBT3F/BiaLQScS9hkemBWGFBo7VN7KwITilTXSGDRZuVQr29Iy+A
+	 AbUvqSmVcYU0eOpKba8oiFp7rWG0ryAKG8q8m6nABKo3cvHVNSfsQ5J5dVLNC7O29jopUP2DRD8fG
+	 fBv7K2fUomkp3RcJgJ9XlotFBcyuaZ3h4kqgQpwLHzZa+EAQB6uSe0uobtgTW/5OZ4ouawgfymyoJ
+	 xcWMtqnLVAnr4Ad+VIb3c6+mkxOiXkh5KLiO9+yPK+BukUlhFwQ5TillQTqwvnRvT0SjeTnRkVmcJ
+	 o5/OvxX90slseWDMrnCv9JpeKNPn/t3oiPEoYBzXzrXEa4r4T2/MQn5oX+GqMLFqpI3xwtx+RSBw0
+	 E3aw/XSHqAAO02ipULsaF6i9gEARbioWbf61slPOrdxFHUhg=
+X-QQ-FEAT: oHWrrGTW1dC5tAPeTNEktQWzsGuk/wXs
+X-QQ-SSF: 00000000000000F0000000000000
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-STYLE: 
+X-QQ-mid: webmail746t1774538862t7647904
+From: "=?ISO-8859-1?B?ZHJpejJ0?=" <driz2t@qq.com>
+To: "=?ISO-8859-1?B?c3l6Ym90KzZkNDFkY2Y2ODliODYxODI0NGQ2?=" <syzbot+6d41dcf689b8618244d6@syzkaller.appspotmail.com>
+Cc: "=?ISO-8859-1?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Subject: [PATCH 6.1.y]  WARNING in ext4_dirty_folio
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: gadget: u_ether: Fix NULL pointer deref in
- eth_get_drvinfo
-To: Kuen-Han Tsai <khtsai@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: David Heidelberg <david@ixit.cz>, Val Packett <val@packett.cool>,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260316-eth-null-deref-v1-1-07005f33be85@google.com>
-Content-Language: en-US
-From: Aelin Reidel <aelin@mainlining.org>
-In-Reply-To: <20260316-eth-null-deref-v1-1-07005f33be85@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_69C5506E_11969AD8_3C0E2C83"
+Content-Transfer-Encoding: 8Bit
+Date: Thu, 26 Mar 2026 23:27:42 +0800
+X-Priority: 3
+Message-ID: <tencent_983857212537723BA67CEF4462DAD5A9120A@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-Spamd-Result: default: False [2.94 / 15.00];
+	CC_EXCESS_BASE64(1.50)[];
+	TO_EXCESS_BASE64(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mainlining.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[mainlining.org:s=202507r,mainlining.org:s=202507e];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	CTE_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230488-lists,stable=lfdr.de];
+	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mainlining.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aelin@mainlining.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230489-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qq.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mainlining.org:dkim,mainlining.org:email,mainlining.org:mid,packett.cool:email]
-X-Rspamd-Queue-Id: BF22E337EC4
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[driz2t@qq.com,stable@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable,6d41dcf689b8618244d6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_EXCESS_BASE64(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:dkim,qq.com:mid]
+X-Rspamd-Queue-Id: 5D410337FA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/16/26 8:49 AM, Kuen-Han Tsai wrote:
-> Commit ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with
-> device_move") reparents the gadget device to /sys/devices/virtual during
-> unbind, clearing the gadget pointer. If the userspace tool queries on
-> the surviving interface during this detached window, this leads to a
-> NULL pointer dereference.
-> 
-> Unable to handle kernel NULL pointer dereference
-> Call trace:
->  eth_get_drvinfo+0x50/0x90
->  ethtool_get_drvinfo+0x5c/0x1f0
->  __dev_ethtool+0xaec/0x1fe0
->  dev_ethtool+0x134/0x2e0
->  dev_ioctl+0x338/0x560
-> 
-> Add a NULL check for dev->gadget in eth_get_drvinfo(). When detached,
-> skip copying the fw_version and bus_info strings, which is natively
-> handled by ethtool_get_drvinfo for empty strings.
-> 
-> Suggested-by: Val Packett <val@packett.cool>
-> Reported-by: Val Packett <val@packett.cool>
-> Closes: https://lore.kernel.org/linux-usb/10890524-cf83-4a71-b879-93e2b2cc1fcc@packett.cool/
-> Fixes: ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with device_move")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-> ---
->  drivers/usb/gadget/function/u_ether.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-> index 1a9e7c495e2e..a653fae9c0cb 100644
-> --- a/drivers/usb/gadget/function/u_ether.c
-> +++ b/drivers/usb/gadget/function/u_ether.c
-> @@ -113,8 +113,10 @@ static void eth_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *p)
->  
->  	strscpy(p->driver, "g_ether", sizeof(p->driver));
->  	strscpy(p->version, UETH__VERSION, sizeof(p->version));
-> -	strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
-> -	strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
-> +	if (dev->gadget) {
-> +		strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
-> +		strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
-> +	}
->  }
->  
->  /* REVISIT can also support:
-> 
-> ---
-> base-commit: d0d9b1f4f5391e6a00cee81d73ed2e8f98446d5f
-> change-id: 20260316-eth-null-deref-0304bb048267
-> 
-> Best regards,
+This is a multi-part message in MIME format.
 
-Thank you for the patch! This does fix the null pointer dereference for me.
+------=_NextPart_69C5506E_11969AD8_3C0E2C83
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_69C5506E_11969AD8_73DFEB1F";
 
-Tested-by: Aelin Reidel <aelin@mainlining.org>
+------=_NextPart_69C5506E_11969AD8_73DFEB1F
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: base64
+
+SGksDQoNClBsZWFzZSB0ZXN0IHRoaXMgcGF0Y2ggb24gc3RhYmxlIDYuMS55Lg0KDQoNCiNz
+eXogdGVzdDogZ2l0Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0
+L3N0YWJsZS9saW51eC5naXQgZjJkZGFmYTkzYTI1OTMxMGNhNDc1MDcxNTNiNzgxMWVjNTRh
+YjdmZA0KDQoNClRoYW5rcywNCkNoYW5namlhbiBMaXU=
+
+------=_NextPart_69C5506E_11969AD8_73DFEB1F
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: base64
+
+SGksPGRpdj48YnI+PC9kaXY+PGRpdj5QbGVhc2UgdGVzdCB0aGlzIHBhdGNoIG9uIHN0YWJs
+ZSA2LjEueS48L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PiNzeXogdGVzdDogZ2l0Oi8vZ2l0
+Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC5naXQg
+ZjJkZGFmYTkzYTI1OTMxMGNhNDc1MDcxNTNiNzgxMWVjNTRhYjdmZDwvZGl2PjxkaXY+PGJy
+PjwvZGl2PjxkaXY+VGhhbmtzLDwvZGl2PjxkaXY+Q2hhbmdqaWFuIExpdTxicj48L2Rpdj4=
+
+------=_NextPart_69C5506E_11969AD8_73DFEB1F--
+
+------=_NextPart_69C5506E_11969AD8_3C0E2C83
+Content-Type: application/octet-stream;
+	charset="ISO-8859-1";
+	name="6d41dcf689b8618244d6.patch"
+Content-Disposition: attachment; filename="6d41dcf689b8618244d6.patch"
+Content-Transfer-Encoding: base64
+
+LS0tIGEvbW0vZ3VwLmMKKysrIGIvbW0vZ3VwLmMKQEAgLTEwNjAsMTYgKzEwNjAsNTQgQEAg
+c3RhdGljIGludCBmYXVsdGluX3BhZ2Uoc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWEsCiAJ
+cmV0dXJuIDA7CiB9CiAKKy8qCisgKiBXcml0aW5nIHRvIGZpbGUtYmFja2VkIG1hcHBpbmdz
+IHdoaWNoIHJlcXVpcmUgZm9saW8gZGlydHkgdHJhY2tpbmcgdXNpbmcgR1VQCisgKiBpcyBh
+IGZ1bmRhbWVudGFsbHkgYnJva2VuIG9wZXJhdGlvbiwgYXMga2VybmVsIHdyaXRlIGFjY2Vz
+cyB0byBHVVAgbWFwcGluZ3MKKyAqIGRvIG5vdCBhZGhlcmUgdG8gdGhlIHNlbWFudGljcyBl
+eHBlY3RlZCBieSBhIGZpbGUgc3lzdGVtLgorICoKKyAqIENvbnNpZGVyIHRoZSBmb2xsb3dp
+bmcgc2NlbmFyaW86LQorICoKKyAqIDEuIEEgZm9saW8gaXMgd3JpdHRlbiB0byB2aWEgR1VQ
+IHdoaWNoIHdyaXRlLWZhdWx0cyB0aGUgbWVtb3J5LCBub3RpZnlpbmcKKyAqICAgIHRoZSBm
+aWxlIHN5c3RlbSBhbmQgZGlydHlpbmcgdGhlIGZvbGlvLgorICogMi4gTGF0ZXIsIHdyaXRl
+YmFjayBpcyB0cmlnZ2VyZWQsIHJlc3VsdGluZyBpbiB0aGUgZm9saW8gYmVpbmcgY2xlYW5l
+ZCBhbmQKKyAqICAgIHRoZSBQVEUgYmVpbmcgbWFya2VkIHJlYWQtb25seS4KKyAqIDMuIFRo
+ZSBHVVAgY2FsbGVyIHdyaXRlcyB0byB0aGUgZm9saW8sIGFzIGl0IGlzIG1hcHBlZCByZWFk
+L3dyaXRlIHZpYSB0aGUKKyAqICAgIGRpcmVjdCBtYXBwaW5nLgorICogNC4gVGhlIEdVUCBj
+YWxsZXIsIG5vdyBkb25lIHdpdGggdGhlIHBhZ2UsIHVucGlucyBpdCBhbmQgc2V0cyBpdCBk
+aXJ0eQorICogICAgKHRob3VnaCBpdCBkb2VzIG5vdCBoYXZlIHRvKS4KKyAqCisgKiBUaGlz
+IHJlc3VsdHMgaW4gYm90aCBkYXRhIGJlaW5nIHdyaXR0ZW4gdG8gYSBmb2xpbyB3aXRob3V0
+IHdyaXRlbm90aWZ5LCBhbmQKKyAqIHRoZSBmb2xpbyBiZWluZyBkaXJ0aWVkIHVuZXhwZWN0
+ZWRseSAoaWYgdGhlIGNhbGxlciBkZWNpZGVzIHRvIGRvIHNvKS4KKyAqLworc3RhdGljIGJv
+b2wgd3JpdGFibGVfZmlsZV9tYXBwaW5nX2FsbG93ZWQoc3RydWN0IHZtX2FyZWFfc3RydWN0
+ICp2bWEsCisgdW5zaWduZWQgbG9uZyBndXBfZmxhZ3MpCit7CisgLyoKKyAgKiBJZiB3ZSBh
+cmVuJ3QgcGlubmluZyB0aGVuIG5vIHByb2JsZW1hdGljIHdyaXRlIGNhbiBvY2N1ci4gQSBs
+b25nIHRlcm0KKyAgKiBwaW4gaXMgdGhlIG1vc3QgZWdyZWdpb3VzIGNhc2Ugc28gdGhpcyBp
+cyB0aGUgY2FzZSB3ZSBkaXNhbGxvdy4KKyAgKi8KKyBpZiAoKGd1cF9mbGFncyAmIChGT0xM
+X1BJTiB8IEZPTExfTE9OR1RFUk0pKSAhPQorIChGT0xMX1BJTiB8IEZPTExfTE9OR1RFUk0p
+KQorIHJldHVybiB0cnVlOworCisgLyoKKyAgKiBJZiB0aGUgVk1BIGRvZXMgbm90IHBlcm1p
+dCB3cml0ZSBhY2Nlc3MgdGhlbiBubyBwcm9ibGVtYXRpYyB3cml0ZQorICAqIGNhbiBvY2N1
+ciBlaXRoZXIuCisgICovCisgcmV0dXJuICh2bWEtPnZtX2ZsYWdzICYgVk1fV1JJVEUpICE9
+IDA7Cit9CisKIHN0YXRpYyBpbnQgY2hlY2tfdm1hX2ZsYWdzKHN0cnVjdCB2bV9hcmVhX3N0
+cnVjdCAqdm1hLCB1bnNpZ25lZCBsb25nIGd1cF9mbGFncykKIHsKIAl2bV9mbGFnc190IHZt
+X2ZsYWdzID0gdm1hLT52bV9mbGFnczsKIAlpbnQgd3JpdGUgPSAoZ3VwX2ZsYWdzICYgRk9M
+TF9XUklURSk7CiAJaW50IGZvcmVpZ24gPSAoZ3VwX2ZsYWdzICYgRk9MTF9SRU1PVEUpOwor
+IGJvb2wgdm1hX2Fub24gPSB2bWFfaXNfYW5vbnltb3VzKHZtYSk7CiAKIAlpZiAodm1fZmxh
+Z3MgJiAoVk1fSU8gfCBWTV9QRk5NQVApKQogCQlyZXR1cm4gLUVGQVVMVDsKIAotCWlmIChn
+dXBfZmxhZ3MgJiBGT0xMX0FOT04gJiYgIXZtYV9pc19hbm9ueW1vdXModm1hKSkKKyBpZiAo
+KGd1cF9mbGFncyAmIEZPTExfQU5PTikgJiYgIXZtYV9hbm9uKQogCQlyZXR1cm4gLUVGQVVM
+VDsKIAogCWlmICgoZ3VwX2ZsYWdzICYgRk9MTF9MT05HVEVSTSkgJiYgdm1hX2lzX2ZzZGF4
+KHZtYSkpCkBAIC0xMDc5LDYgKzExMTcsMTAgQEAgc3RhdGljIGludCBjaGVja192bWFfZmxh
+Z3Moc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWEsIHVuc2lnbmVkIGxvbmcgZ3VwX2ZsYWdz
+KQogCQlyZXR1cm4gLUVGQVVMVDsKIAogCWlmICh3cml0ZSkgeworIGlmICghdm1hX2Fub24g
+JiYKKyAhd3JpdGFibGVfZmlsZV9tYXBwaW5nX2FsbG93ZWQodm1hLCBndXBfZmxhZ3MpKQor
+IHJldHVybiAtRUZBVUxUOworCiAJCWlmICghKHZtX2ZsYWdzICYgVk1fV1JJVEUpKSB7CiAJ
+CQlpZiAoIShndXBfZmxhZ3MgJiBGT0xMX0ZPUkNFKSkKIAkJCQlyZXR1cm4gLUVGQVVMVDsK
+
+------=_NextPart_69C5506E_11969AD8_3C0E2C83--
+
 
