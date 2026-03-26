@@ -1,276 +1,813 @@
-Return-Path: <stable+bounces-230426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGwkADbXxGnk4AQAu9opvQ
-	(envelope-from <stable+bounces-230426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:50:30 +0100
+	id mAWqNaDXxGnk4AQAu9opvQ
+	(envelope-from <stable+bounces-230427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:52:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEF93300CE
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:50:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B513300DE
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E29A6301BC2B
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 06:50:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9236430094DC
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 06:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49EC332604;
-	Thu, 26 Mar 2026 06:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621CF34D905;
+	Thu, 26 Mar 2026 06:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ZT6wMSMV";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="UtN4oC4U"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="n0AnOfsc"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mail78-36.sinamail.sina.com.cn (mail78-36.sinamail.sina.com.cn [219.142.78.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4555D336885;
-	Thu, 26 Mar 2026 06:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774507824; cv=fail; b=VV1gHKMkFtoTZdESfzmmbq8iLKCuh+gDZz9PF661zx85OAKNWu70Lgpu2Ud8EbKQYH1RvXaUSSlJfTvzycBJ3ll+aTzhoEkFwSV5mldCuChwMiRHpQKnF1Bt+ISakV26hJom5EdI7mXKrQJouxiROV0cBsjNoX3XHLx/8ChOvrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774507824; c=relaxed/simple;
-	bh=GnmSF6XUGLu3VsQnSGhs8/Iia24jDgwFN3iXJ0XEkhw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Kt/hOgz6NKAKNdb9LkSB4+PUmwOFC8MGxmfkOYbn7cBk9kKZzIYKouNFDLXGiz6jFE8/jK+pX95AUM9oVwV4i8GnZjfn6H1zOzuFKTXEh4DvPGe9Tj/kEafxdlJE7oug2pXtg9r2NklYqkRvwuH+nx2Cj/bcXYBq0MzIB+ky3Ek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ZT6wMSMV; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=UtN4oC4U; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PFtx9o2664765;
-	Thu, 26 Mar 2026 06:50:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=a8sQZWp4oEryuMU9fvT9WG4XHnuv7eIhPxudwJbaEJE=; b=
-	ZT6wMSMVrT8NWqSs0l2XCRZsn+KoRGUOk8LNlK8Tj3IfrTufdotz+hlCszQHCgPs
-	aeagYZr5qsKEaHTqcYukaHI5ZITUKf9Y4UQIggVgZ6YNfExlGZlqWBfIMoUe/YAt
-	5e8WHdy+xT8Vf3W6rpABCno2KM2FAO1NUwLcNlfl7Nkqzbo99G/sVYyYudKni1dO
-	Jnnr8/K24bbcLC3iHoT6w0w1JuCWQHmq8AR+5rELvV2mSAGYWHaje+yJgW51Aykz
-	vmP1MeiRbhNhMCiKJWDwLdC7WUWn3t5Q82CE6ByWJ7wNsgZo+dbFONgoPzq19Odl
-	CjzzArOIYjymoHNdDImo3w==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4d1kj2fqce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Mar 2026 06:50:06 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62Q6U30I038371;
-	Thu, 26 Mar 2026 06:50:05 GMT
-Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010015.outbound.protection.outlook.com [52.101.193.15])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4d26xs5p1a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Mar 2026 06:50:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fGlH5u1w2CtIsvzZgpC3DFts+lL12PD7MzXC9n40+mAhzwhVNgFKvRkMOcAOFM9z0v6/WzXE/forquySs+8lJjd7hAPfm3Itq5PxkpRDwO5qDJdBXVRYiJa2IIU1F8d8RBqCtKx71m86xgIjtR7ffjAlGKT3RvUHSn3pm9nxCgEldkmK7hey4To9l9lIqGMDViyVIcqo+GihU3Kl3+25InoJUJTr2hVj59EDDd89sLQyI9UwAlwS9EzAKPIvdkiTtWmNoYNj5P6yKtjcwSqZv18EKehmPeKIzFuDvxb7xrnTA0eRseGs226qEpXJxHYo+nUrbVLUIuErgL4+fLJRMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a8sQZWp4oEryuMU9fvT9WG4XHnuv7eIhPxudwJbaEJE=;
- b=Opq02YQRvucrucweYjymySf4R3M96onzvC5hHcgl8MlzLLRc8dO2WHkvn8pG3BjA1PKNHbLmyAe6wnPTggH5JlSJ+Qw113eNOABlQDDJfqlKRqSMoEqPM686xEUtmpaofE1W+srVLClqeZGou7HY0wpEWsmgvvFp1HzYOHRd6ghxeFQwzFq+dMKcgzYeJIGaP3rUGg2fC3URCFYeOriVBQmdV3l9kGYGZ7r7CMv8tidmbTydIO9apcR4FtcN+TJACCIFYHjtYwoOupznWmsO9KTkRx7zNWbOGkCmTj3g96lksJX8TKdvTJ9lJKnzen1PgI/aVGr3ig0WbOjm8dALRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a8sQZWp4oEryuMU9fvT9WG4XHnuv7eIhPxudwJbaEJE=;
- b=UtN4oC4UyD4ndvGhyUmzURfwD/1rjoEAFtdXWr1lfHgDY8O0M6Zj/31cfu/5AeMa59hu5S6YaZysEbmbTYbPlJ8SltGyBHU5wLwNjmKbhxPBs2H3mNc9pbhgWTZMJDgz2Yye+IbtJJvNQuzHPvDAEn7eTFcZ8b2v3+xxl7JarfQ=
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
- by PH7PR10MB6555.namprd10.prod.outlook.com (2603:10b6:510:206::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Thu, 26 Mar
- 2026 06:50:02 +0000
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a%6]) with mapi id 15.20.9745.020; Thu, 26 Mar 2026
- 06:50:01 +0000
-Message-ID: <9223c139-3c0e-49b0-a5c2-27025739e8e9@oracle.com>
-Date: Thu, 26 Mar 2026 12:19:55 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 6.18.19 -- amdgpu bug and a new warning
-To: Mario Limonciello <superm1@kernel.org>,
-        Cal Peake
- <cp@absolutedigital.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>, stable@vger.kernel.org,
-        jslaby@suse.cz, Alex Deucher <alexander.deucher@amd.com>
-References: <2026031914-send-embezzle-1648@gregkh>
- <1df33732-8d66-d669-84a8-259f1b7f3278@absolutedigital.net>
- <156c7e58-df60-44ca-8c26-78ccab2c1647@kernel.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <156c7e58-df60-44ca-8c26-78ccab2c1647@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO3P123CA0015.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:ba::20) To DS3PR10MB997700.namprd10.prod.outlook.com
- (2603:10b6:8:347::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E334887E
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 06:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774507920; cv=none; b=u6KnoarrcB5+lK05NgUmIHY8dug+jZZcvmHpt6YGeT75rAeYLMCfraKhroXeGGks0sI8sSCxSFxRWJZ8zXwW7SnCG0ryWqGwHJQ5iXx0mW0SZ/VY27cZD8S4ZZCZIasqzpqrxWKIB5WGWTTHKFFCYsMbMtWIEn3Dby4H1qjdEZ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774507920; c=relaxed/simple;
+	bh=Qpq0FaBuGODpfY25dlWPf52EGUlaBP9+07b+QRH43BI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=e2H3syh55OZdzpXTBC96JBNi4kqzz8KS6P8a77sFxABiS10Zkn364ZXNHO+JX3/JGeAmbg3jmWZSxm8eFVjEQ+IV9zohCeQQ9WCjS6RWPrhAFuHO+1/2cBcsTDg7EZ3HJuE8GtE7KXbSfxB06BOPF4F0jIK9tZuGSc8m8U5q2SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=n0AnOfsc; arc=none smtp.client-ip=219.142.78.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774507915;
+	bh=GtzpN4NtOAd/DdvJtRg7QAsZhMYHPsZhzgQVP/7OAMM=;
+	h=From:Subject:Date:Message-Id;
+	b=n0AnOfscRgSpzwhTPkFzUT1wvlp4DzSuzakA7BLIKaeJH4H2zfTWllXz3U0Mq+SsL
+	 5yz5EU4cG6Icm/CgX/X2MTbCz6r4uiAMYmnKjKYzjCvANfEklXw4u+MsZV9vS8dMb+
+	 fbocKX79kMwDcGkxI/m286sCWwUYre3F5pBQ5rVg=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.24) with ESMTP
+	id 69C4D77C000003FE; Thu, 26 Mar 2026 14:51:45 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 36266310748360
+X-SMAIL-UIID: 063D1ADFCFEB4DB3AF94DED3C91013E5-20260326-145145-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Daniel Starke <daniel.starke@siemens.com>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] tty: n_gsm: fix deadlock and link starvation in outgoing data path
+Date: Thu, 26 Mar 2026 14:51:39 +0800
+Message-Id: <20260326065139.1735715-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|PH7PR10MB6555:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73850663-216c-4475-14b4-08de8b03e765
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	SiHBEMhn1zibZwBVLPLs4gzB+87LmD1inwo0eWwp7BlVae5rdiAruyo8bWW1U6UHTnolmwbJPbsdjFdKNQSG/kxFYpojE2TBzujXeLrnfW4Y/PaANW9EYUIF8KsaC+9M3A2sTHkRNetsW3BU3nBndkAbZhmaMlsNmXDmhV8/cgN3N/SqPqUBK1ew50aUgumsGmLHZ+jVTpaI0wVMvrqU/MlBBDXjBThd1ekQcGIpO1NACKIa398nRV/fhAW1mg2v5ZXmGp2s2P4mESYnAibz6hSuq1mtDh9EmAIgL3icOZJFH2tl/NeRg1cUq2+y3oc9odRZvUBbqjcRCeQXuZ8SmEYOWSlQylE0JOPD+rzh8vaGgPqAg9Docb4den0GJa2YhmQa9/e6kYSTdoLLv7J/WiY1Y5Z5LAg7msUY1zBunlCC7PpeHVaKlAi9bH8Q2twqBR0snYND8oIL27LJy1N5t3JyeoJKzNCZfsr7tnEjUfH9lGfZksa03pY3PSM9Ta7sMyh2/VPgEAlbjMdupd3Z2doQYw0wHzOErnqUynOeiJAq9QMQIgA1ZJb+tbrJ7GIPq8dRo3+ltCqEnJr/qadujwY8xaundkC+/zUJOWP7a7+g+fC1HEzZl/ZQHuR5rW7LpMj6j+beoUqFvVjDv71SaiR1kVW78uQEQUYv3N89U6gXZDXl8x/7n8/Rusz+U+571CJlKH0GwoZAWXhyVpRhSI4FmZZnfVzwnppZ3ip2V3c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dkJUNExCYVhENUVGWVJEM0dCNUoyYUpPeTJFejQyWHB2ZjZDNmJjNnQyNUNZ?=
- =?utf-8?B?S01GV0RkVDJmMExzZUZxRk9iWEllSEZNUUlHSjN6YUV0K2JDdTR5MjNxWVRY?=
- =?utf-8?B?Kzl4amhBaXdTVU5oRnVDKy93QzJZR3JwUzZqVGpSYmFhVzhpZDhRa01VOFV4?=
- =?utf-8?B?UUxRcmg0N0F6QnVKc3o3MWRaTFMwSVVEMUNhUTlLTHl5Qnk1LzJNRHBnQUlY?=
- =?utf-8?B?UGhqR3dhV1QyS1FSeXNnVVR5MXduSnJkY1dGK1N4Yk03Z2ZPQmo5ZkgxSG9V?=
- =?utf-8?B?YkFIMDcreWxCZ0Q3OU53ZEZGSWlaZEFjbWFMNnZad3ZPb0tia3J6eFE5OTZL?=
- =?utf-8?B?ZUZTWkZXVkdLWW5nMTRZKzF5Tm10YTBKZnplTTFab1AveGlYUi9DS3VMc2hT?=
- =?utf-8?B?S3JSd3lHUjBOT3lRWENka3kvTytaRXhIVitGVjFWekRlL2ZudW55M2xMaENm?=
- =?utf-8?B?VjlSb3pjREJCdW9VZnpuaWZCMnJ4aHRPL1N3QnhJbk1INVo4Q0F5cHZScVVp?=
- =?utf-8?B?LzYya2ZnMWdmMlBmT1NIdDBHUWt4UmFTTnZKbi9UaUJyK1lXNnJUT2tVQzQ4?=
- =?utf-8?B?YzJveHNYNDZkQzF2c1BRTXhvQnVMMThwekc5Y0I1NU9wc0VnSmxyWmw0aDVV?=
- =?utf-8?B?dVpya3VvMmxXNllwN3dhZHRnNnlZSEJ6dzA5aHZzZHZ1YnJPZWY3anpYaTVX?=
- =?utf-8?B?Y2gwZk1xUzFuUWJoQUlvc0VzZlpnM2tRNkNTVGNjMHd2WVhIbEwwRWFLb0lm?=
- =?utf-8?B?MWV4S1EwVldCYzBBakxycTI2cVhkazY0TmJUOVQxRHlkN1QvYklTOXB3a3VF?=
- =?utf-8?B?bUgyM1VYQWJCSmFQSEY4akduNHJwNENCbUcwdjJUcmlJUGNZQU1uR3RMeS9E?=
- =?utf-8?B?V2tiV2JyNExoU0I5b2N4WkVBNUY3VDMxaUNpbkY0MC9BbnFrV1UrWVpSRkJk?=
- =?utf-8?B?bTFzWlNYS2htVjlQZ0dNWlMwQU41UlBJbTV5aEk2NGZMbnBWeWhWaTI3Y25p?=
- =?utf-8?B?aE54OXhZVFBSMDNCY1c2SnJyYW1tSjd3SUZQak5UbHJhQmw2Y3FLanNZVkw3?=
- =?utf-8?B?UU12NXowMXAzM1VGbjFtNUZock1tQUZYWi9pRmZ1dDNRamFsWHQ2Z21aZjJB?=
- =?utf-8?B?V1lPQk1uK0Y0bDRqcVlheVNkamQ2UGpmOUExR0M3TkNOL3kvTjQwRWhJcXV5?=
- =?utf-8?B?clg2QWlBdHVkMXFod2N3M042WlhXS0NBYkJQWDdtTjJVWU9RdW90WWZnQjBX?=
- =?utf-8?B?cXY3RlhBWk54WGkvU01kYk9wbmp1RlNXZC9pbzZhMEUrbFhaY2ZwYTZValo1?=
- =?utf-8?B?aWdVTXVpdXgrbktoMFMyTlVIWmlTZkcrOXhYZHNuM0hiTmRxM3JrYzRKZWVr?=
- =?utf-8?B?U29GZGY4YzVVUlpic2xqeFl2ZjgvN0F0MUZaOGU5T3UxK1VDNFZBeUc4cUl3?=
- =?utf-8?B?T0YvcHA2aGZTUnRZeWxWdndNYUg1L0ZkMzZISzlibzg0SGx5cmx3dk51ZzlS?=
- =?utf-8?B?TW4yODY3U01GOWg5Wmd1TFJOWmZmczUwYy85MXlXbzBxczkwOUlDbUdLbkNz?=
- =?utf-8?B?eEpyMWNMRDZ0bitnOHRYZFVVR3BFR056c2FaZDZLWkZpODdyU1B4YnIwZEl2?=
- =?utf-8?B?TmdaVmxpZDk4cUxUSXV4UWdHbmdLempGelg3aWlrMCtlazdTa0dJTVhFVEJL?=
- =?utf-8?B?K2UzSitBa210VmlSN0NMekFpZmNZQnYwTDVhb2RvR2dnZE5GRVA4KzhMMHdq?=
- =?utf-8?B?SStTSy9najJUL0o2VVFkMndHQmR5TXdlU0ZFZEpNaDJqVHZaVm9xY2pkWkRT?=
- =?utf-8?B?WVhBS0lCN2p0K08rWHlpM05BVjRkL3Q4K3ZJVXNITTNmWGtEWWM3UDY4dXpo?=
- =?utf-8?B?NzdjdWRycEhjWlBvdmx3L0J6cFQ3blh4Ny9laHRGdjFIZTBvQzJwT1JaMXRi?=
- =?utf-8?B?U2dYU0lQbW5KSUViWFh1L0l4WG5MbHk2aXhhcTh4S3ZWTU45N2diUExPY3hU?=
- =?utf-8?B?RmZEWXBJOVJ0aFAwM0xYL0x3TFRzZW4xZS85Z3RndVI4MlJlcjlDYi9adkw1?=
- =?utf-8?B?UW43cmNUQ3lBczUycVA4dUdhL2Vra2V3TEF3TlNwdEZRUjUyVk1ld0N1Wnhn?=
- =?utf-8?B?NHMvZGROSlZFK2huRUpZWFo5bzM4SVFJY2xjSmNLb0xHelJVUjRQZVM3V1dE?=
- =?utf-8?B?K1J2OVJSRGRHdjdYcEJKa3RMZlBOeFp6TXBCUlNYUjFEMGZmT1FxMUl2ekJO?=
- =?utf-8?B?MWdjeWVtWkxlRkwrOVF1VzNLOXQzOVdyeS9oaVQwVG5vYUJzV0xYMGp0UjU2?=
- =?utf-8?B?Mm1VV1ZsNVJBTE1QZU5LZjFMN3p0L0oxN3VEUkc3bjZDRlhuV2p1eXB4cjhS?=
- =?utf-8?Q?9iHQtHaoYb4tWbiyey0ep5QWfKXTwWz6kUn9p?=
-X-Exchange-RoutingPolicyChecked:
-	ld/a2qexylfMajSK+2ZOaRNa/L3VkSDp0sExAkt1MK9uCQRknBbWo+BvVa6Sl0u1rsYB8hB67lClcd8U+nFOvkn3WTbeQSXShosNQy/gY8pzW1I5RA0SwZK+oIY3SEd98/jTF52filmpUroWoamiF9Ruw5g4A3QcNLrKst/V/fWlzfPDPBpi8TcdqdnZKCUNDxpqYgwe1SwSjMukjSeCeKGY5t2qOcPFIvRQH8b9mISaKrD0gzShlVfQ8J9W73cfZyH3qoBLj9RKfSJcCUDyghbnYNB9r5MuA7wRP7TOUKJWQOTsA95oSY4zT8C2v2GB4pjxz4FCZviDma1a5PKXmQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	kKyifqJvCoDfa1TGKWADW+DZ1GN6J0yKO3HBwEaU+T/tYKQbl/pmLyDJJGlDU62Z4R7BmuYYfbA6rBPPujXok7NeKKCEN1XJiZjRCnnrC1YPy5hNvRIHdhym8r7wIj1E78Lh7GfTaqLcjNOtc5/WAncEqLfgU8VHPcDuI4a2XOARtyduHohga1xDcK7Mmw7/8NMqTqYPgTF90dxYh9h7as1K30VaJSQT37iJPPwWJOpiIAwbQeSNQDtJNjCOtcVYUJMSs9L6lJ4Z0dHGxDo6ja/UMESfhbH9NE0E1dWTOumF27JDRs2HYHkXFPAQKZ9aTuMntQuRTbRIC1ZdDh2DOM29TR5ykcwD/YMIq3da6xpNaAbCXYo1YHE36gpluldK9P087C2295kUjQyNddu199cfzL3+2DWvNUrYs6U6AoVBuzFHcLvFKAZlR/t+pHJuxDgXxqz8WFpZ3Rr1dVAfsyhcE633Vh5LsB/eeAcayeoa6aVPfc6gwSL/M/i0SI1IqtwkhVr4TA1byGSFFoykdgFkc7Iqus8P2+L5C+v7ojh3edAWKaaHgXTMbnWDdlwsi9aVpJumtB58sc4ircqaZQXzp2hs/LvPsLsfpo6WZbU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73850663-216c-4475-14b4-08de8b03e765
-X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 06:50:01.8558
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +iP7zCdRg3xRy1jLHBZBMxQ6Hj2Nu/9qBieLp3HANSleSYOPhR2NQTjJgRM8xyJG7LIg+6XR8siDQFaCU1Ywk7J79m5y1C/Pr0GM9selQsDvmf7Sq8ESunP8A7H14zob
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6555
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_01,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 spamscore=0
- adultscore=0 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
- definitions=main-2603260049
-X-Proofpoint-ORIG-GUID: sYt8TPSARzFjncrB0hp1sNRea3v9Oyf8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA1MCBTYWx0ZWRfX01m2eVwTBiSS
- 3rsjx5kQ/yuW0jAYlZiseytP8ITcdGGl6YUymipcdJw/SYUB/ucbSsCWfG+4+tELiUGbu/iw2Rv
- zll03hJc5YLhKl6d0dlL7vGhNmxF+SGx5GT/fsW1WJTLWl9oZ7z48Vw4c415sdzxCAiZV6TU7Yz
- 0/9fTKisGmQ4vy8lnOm8Bb5i29ijLOsVjme0mwGaeUUQKSGTjO72eOSESYv44WqDK8fytp1zD+2
- cgFA4wpCucCfFnppP0SYLww3d4quARPj0q6FuuRez0ax9sLK9M9x4yivtobZT2oszx0TDIiQ7ow
- 4WztYhkBLBOMFAwsomPgn46LmOaisLhjfuKJ7xnenuuDeu/o7rZIDATsawQWnatWdgDFcpzFe0i
- v1307P3A1fxO3tujXnyUXLsx7njKuc7JLm2CXaXc50X2Orb9mjUOF/X2b1DV7BIffv7OmSB0s98
- 1Wjy0WDKdEuJMOIQMcGkuJSsNK2lixKG9W/WmdPs=
-X-Proofpoint-GUID: sYt8TPSARzFjncrB0hp1sNRea3v9Oyf8
-X-Authority-Analysis: v=2.4 cv=KtJAGGWN c=1 sm=1 tr=0 ts=69c4d71e b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=4PkGp1oktIktu0GHUjMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 cc=ntf awl=host:12273
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230426-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bind-device.sh:url,oracle.com:dkim,oracle.com:mid];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[sina.com];
+	TAGGED_FROM(0.00)[bounces-230427-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[sina.com:+];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,siemens.com,sina.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 4FEF93300CE
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 63B513300DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+From: Daniel Starke <daniel.starke@siemens.com>
 
->>
->> A commit in 6.18.19 has introduced a bug and a new warning when doing
->> amdgpu driver re-binding. In addition to the bug, the last line of the
->> output below is a new warning re: the thermal alert
->>
->> This bug doesn't seem to cause any show-stopping problems, but it is a 
->> bug
->> and it persists into 6.18.20.
->>
->> I can do a bisect if needed, but I'm hoping one of our AMD guys can more
->> quickly spot what's going on :)
-> 
-> Are you saying it is from 6.18.18 to 6.18.19 it was introduced?  Nothing 
-> immediately jumps out to me.  So I would say bisect please.
-> 
+[ Upstream commit 0af021678d5d30c31f5a6b631f404ead3575212a ]
 
-I think backporting this would help ?
+The current implementation queues up new control and user packets as needed
+and processes this queue down to the ldisc in the same code path.
+That means that the upper and the lower layer are hard coupled in the code.
+Due to this deadlocks can happen as seen below while transmitting data,
+especially during ldisc congestion. Furthermore, the data channels starve
+the control channel on high transmission load on the ldisc.
 
-commit: e12603bf2c3d ("drm/amd/pm: fix amdgpu_irq enabled counter 
-unbalanced on smu v11.0")
+Introduce an additional control channel data queue to prevent timeouts and
+link hangups during ldisc congestion. This is being processed before the
+user channel data queue in gsm_data_kick(), i.e. with the highest priority.
+Put the queue to ldisc data path into a workqueue and trigger it whenever
+new data has been put into the transmission queue. Change
+gsm_dlci_data_sweep() accordingly to fill up the transmission queue until
+TX_THRESH_HI. This solves the locking issue, keeps latency low and provides
+good performance on high data load.
+Note that now all packets from a DLCI are removed from the internal queue
+if the associated DLCI was closed. This ensures that no data is sent by the
+introduced write task to an already closed DLCI.
 
->>
->>
->>    amdgpu 0000:14:00.0: amdgpu: amdgpu: finishing device.
->>    ------------[ cut here ]------------
->>    WARNING: CPU: 1 PID: 2773 at drivers/gpu/drm/amd/amdgpu/ 
->> amdgpu_irq.c:639 amdgpu_irq_put+0xa4/0xc0 [amdgpu]
-...
->>    CPU: 1 UID: 0 PID: 2773 Comm: bind-device.sh Not tainted 6.18.20 #1 
->> PREEMPT(lazy)
-..
->>     <TASK>
->>     smu_smc_hw_cleanup+0x61/0x490 [amdgpu]
->>     smu_hw_fini+0xef/0x180 [amdgpu]
->>     amdgpu_ip_block_hw_fini+0x37/0x41 [amdgpu]
-Thanks,
-Harshit
+BUG: spinlock recursion on CPU#0, test_v24_loop/124
+ lock: serial8250_ports+0x3a8/0x7500, .magic: dead4ead, .owner: test_v24_loop/124, .owner_cpu: 0
+CPU: 0 PID: 124 Comm: test_v24_loop Tainted: G           O      5.18.0-rc2 #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x34/0x44
+ do_raw_spin_lock+0x76/0xa0
+ _raw_spin_lock_irqsave+0x72/0x80
+ uart_write_room+0x3b/0xc0
+ gsm_data_kick+0x14b/0x240 [n_gsm]
+ gsmld_write_wakeup+0x35/0x70 [n_gsm]
+ tty_wakeup+0x53/0x60
+ tty_port_default_wakeup+0x1b/0x30
+ serial8250_tx_chars+0x12f/0x220
+ serial8250_handle_irq.part.0+0xfe/0x150
+ serial8250_default_handle_irq+0x48/0x80
+ serial8250_interrupt+0x56/0xa0
+ __handle_irq_event_percpu+0x78/0x1f0
+ handle_irq_event+0x34/0x70
+ handle_fasteoi_irq+0x90/0x1e0
+ __common_interrupt+0x69/0x100
+ common_interrupt+0x48/0xc0
+ asm_common_interrupt+0x1e/0x40
+RIP: 0010:__do_softirq+0x83/0x34e
+Code: 2a 0a ff 0f b7 ed c7 44 24 10 0a 00 00 00 48 c7 c7 51 2a 64 82 e8 2d
+e2 d5 ff 65 66 c7 05 83 af 1e 7e 00 00 fb b8 ff ff ff ff <49> c7 c2 40 61
+80 82 0f bc c5 41 89 c4 41 83 c4 01 0f 84 e6 00 00
+RSP: 0018:ffffc90000003f98 EFLAGS: 00000286
+RAX: 00000000ffffffff RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff82642a51 RDI: ffffffff825bb5e7
+RBP: 0000000000000200 R08: 00000008de3271a8 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000030 R14: 0000000000000000 R15: 0000000000000000
+ ? __do_softirq+0x73/0x34e
+ irq_exit_rcu+0xb5/0x100
+ common_interrupt+0xa4/0xc0
+ </IRQ>
+ <TASK>
+ asm_common_interrupt+0x1e/0x40
+RIP: 0010:_raw_spin_unlock_irqrestore+0x2e/0x50
+Code: 00 55 48 89 fd 48 83 c7 18 53 48 89 f3 48 8b 74 24 10 e8 85 28 36 ff
+48 89 ef e8 cd 58 36 ff 80 e7 02 74 01 fb bf 01 00 00 00 <e8> 3d 97 33 ff
+65 8b 05 96 23 2b 7e 85 c0 74 03 5b 5d c3 0f 1f 44
+RSP: 0018:ffffc9000020fd08 EFLAGS: 00000202
+RAX: 0000000000000000 RBX: 0000000000000246 RCX: 0000000000000000
+RDX: 0000000000000004 RSI: ffffffff8257fd74 RDI: 0000000000000001
+RBP: ffff8880057de3a0 R08: 00000008de233000 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000100 R14: 0000000000000202 R15: ffff8880057df0b8
+ ? _raw_spin_unlock_irqrestore+0x23/0x50
+ gsmtty_write+0x65/0x80 [n_gsm]
+ n_tty_write+0x33f/0x530
+ ? swake_up_all+0xe0/0xe0
+ file_tty_write.constprop.0+0x1b1/0x320
+ ? n_tty_flush_buffer+0xb0/0xb0
+ new_sync_write+0x10c/0x190
+ vfs_write+0x282/0x310
+ ksys_write+0x68/0xe0
+ do_syscall_64+0x3b/0x90
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f3e5e35c15c
+Code: 8b 7c 24 08 89 c5 e8 c5 ff ff ff 89 ef 89 44 24 08 e8 58 bc 02 00 8b
+44 24 08 48 83 c4 10 5d c3 48 63 ff b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff
+ff 76 10 48 8b 15 fd fc 05 00 f7 d8 64 89 02 48 83
+RSP: 002b:00007ffcee77cd18 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007ffcee77cd70 RCX: 00007f3e5e35c15c
+RDX: 0000000000000100 RSI: 00007ffcee77cd90 RDI: 0000000000000003
+RBP: 0000000000000100 R08: 0000000000000000 R09: 7efefefefefefeff
+R10: 00007f3e5e3bddeb R11: 0000000000000246 R12: 00007ffcee77ce8f
+R13: 0000000000000001 R14: 000056214404e010 R15: 00007ffcee77cd90
+ </TASK>
+
+Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20220701122332.2039-1-daniel.starke@siemens.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ The context change is due to the commit a8c5b8255f8a
+("tty: n_gsm: fix broken virtual tty handling") in v5.18
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ drivers/tty/n_gsm.c | 403 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 279 insertions(+), 124 deletions(-)
+
+diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+index aae9f73585bd..d468e22ce68d 100644
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -5,6 +5,14 @@
+  *
+  *	* THIS IS A DEVELOPMENT SNAPSHOT IT IS NOT A FINAL RELEASE *
+  *
++ * Outgoing path:
++ * tty -> DLCI fifo -> scheduler -> GSM MUX data queue    ---o-> ldisc
++ * control message               -> GSM MUX control queue --´
++ *
++ * Incoming path:
++ * ldisc -> gsm_queue() -o--> tty
++ *                        `-> gsm_control_response()
++ *
+  * TO DO:
+  *	Mostly done:	ioctls for setting modes/timing
+  *	Partly done:	hooks so you can pull off frames to non tty devs
+@@ -212,6 +220,9 @@ struct gsm_mux {
+ 	/* Events on the GSM channel */
+ 	wait_queue_head_t event;
+ 
++	/* ldisc send work */
++	struct work_struct tx_work;
++
+ 	/* Bits for GSM mode decoding */
+ 
+ 	/* Framing Layer */
+@@ -243,7 +254,8 @@ struct gsm_mux {
+ 	unsigned int tx_bytes;		/* TX data outstanding */
+ #define TX_THRESH_HI		8192
+ #define TX_THRESH_LO		2048
+-	struct list_head tx_list;	/* Pending data packets */
++	struct list_head tx_ctrl_list;	/* Pending control packets */
++	struct list_head tx_data_list;	/* Pending data packets */
+ 
+ 	/* Control messages */
+ 	struct timer_list kick_timer;	/* Kick TX queuing on timeout */
+@@ -377,6 +389,11 @@ static const u8 gsm_fcs8[256] = {
+ 
+ static int gsmld_output(struct gsm_mux *gsm, u8 *data, int len);
+ static int gsm_modem_update(struct gsm_dlci *dlci, u8 brk);
++static struct gsm_msg *gsm_data_alloc(struct gsm_mux *gsm, u8 addr, int len,
++								u8 ctrl);
++static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg);
++static void gsmld_write_trigger(struct gsm_mux *gsm);
++static void gsmld_write_task(struct work_struct *work);
+ 
+ /**
+  *	gsm_fcs_add	-	update FCS
+@@ -661,53 +678,73 @@ static int gsm_stuff_frame(const u8 *input, u8 *output, int len)
+  *	@cr: command/response bit seen as initiator
+  *	@control:  control byte including PF bit
+  *
+- *	Format up and transmit a control frame. These do not go via the
+- *	queueing logic as they should be transmitted ahead of data when
+- *	they are needed.
+- *
+- *	FIXME: Lock versus data TX path
++ *	Format up and transmit a control frame. These should be transmitted
++ *	ahead of data when they are needed.
+  */
+-
+-static void gsm_send(struct gsm_mux *gsm, int addr, int cr, int control)
++static int gsm_send(struct gsm_mux *gsm, int addr, int cr, int control)
+ {
+-	int len;
+-	u8 cbuf[10];
+-	u8 ibuf[3];
++	struct gsm_msg *msg;
++	u8 *dp;
+ 	int ocr;
++	unsigned long flags;
++
++	msg = gsm_data_alloc(gsm, addr, 0, control);
++	if (!msg)
++		return -ENOMEM;
+ 
+ 	/* toggle C/R coding if not initiator */
+ 	ocr = cr ^ (gsm->initiator ? 0 : 1);
+ 
+-	switch (gsm->encoding) {
+-	case 0:
+-		cbuf[0] = GSM0_SOF;
+-		cbuf[1] = (addr << 2) | (ocr << 1) | EA;
+-		cbuf[2] = control;
+-		cbuf[3] = EA;	/* Length of data = 0 */
+-		cbuf[4] = 0xFF - gsm_fcs_add_block(INIT_FCS, cbuf + 1, 3);
+-		cbuf[5] = GSM0_SOF;
+-		len = 6;
+-		break;
+-	case 1:
+-	case 2:
+-		/* Control frame + packing (but not frame stuffing) in mode 1 */
+-		ibuf[0] = (addr << 2) | (ocr << 1) | EA;
+-		ibuf[1] = control;
+-		ibuf[2] = 0xFF - gsm_fcs_add_block(INIT_FCS, ibuf, 2);
+-		/* Stuffing may double the size worst case */
+-		len = gsm_stuff_frame(ibuf, cbuf + 1, 3);
+-		/* Now add the SOF markers */
+-		cbuf[0] = GSM1_SOF;
+-		cbuf[len + 1] = GSM1_SOF;
+-		/* FIXME: we can omit the lead one in many cases */
+-		len += 2;
+-		break;
+-	default:
+-		WARN_ON(1);
+-		return;
++	msg->data -= 3;
++	dp = msg->data;
++	*dp++ = (addr << 2) | (ocr << 1) | EA;
++	*dp++ = control;
++
++	if (gsm->encoding == 0)
++		*dp++ = EA; /* Length of data = 0 */
++
++	*dp = 0xFF - gsm_fcs_add_block(INIT_FCS, msg->data, dp - msg->data);
++	msg->len = (dp - msg->data) + 1;
++
++	gsm_print_packet("Q->", addr, cr, control, NULL, 0);
++
++	spin_lock_irqsave(&gsm->tx_lock, flags);
++	list_add_tail(&msg->list, &gsm->tx_ctrl_list);
++	gsm->tx_bytes += msg->len;
++	spin_unlock_irqrestore(&gsm->tx_lock, flags);
++	gsmld_write_trigger(gsm);
++
++	return 0;
++}
++
++/**
++ *	gsm_dlci_clear_queues	-	remove outstanding data for a DLCI
++ *	@gsm: mux
++ *	@dlci: clear for this DLCI
++ *
++ *	Clears the data queues for a given DLCI.
++ */
++static void gsm_dlci_clear_queues(struct gsm_mux *gsm, struct gsm_dlci *dlci)
++{
++	struct gsm_msg *msg, *nmsg;
++	int addr = dlci->addr;
++	unsigned long flags;
++
++	/* Clear DLCI write fifo first */
++	spin_lock_irqsave(&dlci->lock, flags);
++	kfifo_reset(&dlci->fifo);
++	spin_unlock_irqrestore(&dlci->lock, flags);
++
++	/* Clear data packets in MUX write queue */
++	spin_lock_irqsave(&gsm->tx_lock, flags);
++	list_for_each_entry_safe(msg, nmsg, &gsm->tx_data_list, list) {
++		if (msg->addr != addr)
++			continue;
++		gsm->tx_bytes -= msg->len;
++		list_del(&msg->list);
++		kfree(msg);
+ 	}
+-	gsmld_output(gsm, cbuf, len);
+-	gsm_print_packet("-->", addr, cr, control, NULL, 0);
++	spin_unlock_irqrestore(&gsm->tx_lock, flags);
+ }
+ 
+ /**
+@@ -769,6 +806,45 @@ static struct gsm_msg *gsm_data_alloc(struct gsm_mux *gsm, u8 addr, int len,
+ 	return m;
+ }
+ 
++/**
++ *	gsm_send_packet	-	sends a single packet
++ *	@gsm: GSM Mux
++ *	@msg: packet to send
++ *
++ *	The given packet is encoded and sent out. No memory is freed.
++ *	The caller must hold the gsm tx lock.
++ */
++static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg)
++{
++	int len, ret;
++
++
++	if (gsm->encoding == 0) {
++		gsm->txframe[0] = GSM0_SOF;
++		memcpy(gsm->txframe + 1, msg->data, msg->len);
++		gsm->txframe[msg->len + 1] = GSM0_SOF;
++		len = msg->len + 2;
++	} else {
++		gsm->txframe[0] = GSM1_SOF;
++		len = gsm_stuff_frame(msg->data, gsm->txframe + 1, msg->len);
++		gsm->txframe[len + 1] = GSM1_SOF;
++		len += 2;
++	}
++
++	if (debug & 4)
++		gsm_hex_dump_bytes(__func__, gsm->txframe, len);
++	gsm_print_packet("-->", msg->addr, gsm->initiator, msg->ctrl, msg->data,
++			 msg->len);
++
++	ret = gsmld_output(gsm, gsm->txframe, len);
++	if (ret <= 0)
++		return ret;
++	/* FIXME: Can eliminate one SOF in many more cases */
++	gsm->tx_bytes -= msg->len;
++
++	return 0;
++}
++
+ /**
+  *	gsm_is_flow_ctrl_msg	-	checks if flow control message
+  *	@msg: message to check
+@@ -801,59 +877,81 @@ static bool gsm_is_flow_ctrl_msg(struct gsm_msg *msg)
+ }
+ 
+ /**
+- *	gsm_data_kick		-	poke the queue
++ *	gsm_data_kick	-	poke the queue
+  *	@gsm: GSM Mux
+- *	@dlci: DLCI sending the data
+  *
+  *	The tty device has called us to indicate that room has appeared in
+- *	the transmit queue. Ram more data into the pipe if we have any
++ *	the transmit queue. Ram more data into the pipe if we have any.
+  *	If we have been flow-stopped by a CMD_FCOFF, then we can only
+- *	send messages on DLCI0 until CMD_FCON
+- *
+- *	FIXME: lock against link layer control transmissions
++ *	send messages on DLCI0 until CMD_FCON. The caller must hold
++ *	the gsm tx lock.
+  */
+-
+-static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
++static int gsm_data_kick(struct gsm_mux *gsm)
+ {
+ 	struct gsm_msg *msg, *nmsg;
+-	int len;
++	struct gsm_dlci *dlci;
++	int ret;
++
++	clear_bit(TTY_DO_WRITE_WAKEUP, &gsm->tty->flags);
+ 
+-	list_for_each_entry_safe(msg, nmsg, &gsm->tx_list, list) {
++	/* Serialize control messages and control channel messages first */
++	list_for_each_entry_safe(msg, nmsg, &gsm->tx_ctrl_list, list) {
+ 		if (gsm->constipated && !gsm_is_flow_ctrl_msg(msg))
++			return -EAGAIN;
++		ret = gsm_send_packet(gsm, msg);
++		switch (ret) {
++		case -ENOSPC:
++			return -ENOSPC;
++		case -ENODEV:
++			/* ldisc not open */
++			gsm->tx_bytes -= msg->len;
++			list_del(&msg->list);
++			kfree(msg);
+ 			continue;
+-		if (gsm->encoding != 0) {
+-			gsm->txframe[0] = GSM1_SOF;
+-			len = gsm_stuff_frame(msg->data,
+-						gsm->txframe + 1, msg->len);
+-			gsm->txframe[len + 1] = GSM1_SOF;
+-			len += 2;
+-		} else {
+-			gsm->txframe[0] = GSM0_SOF;
+-			memcpy(gsm->txframe + 1 , msg->data, msg->len);
+-			gsm->txframe[msg->len + 1] = GSM0_SOF;
+-			len = msg->len + 2;
+-		}
+-
+-		if (debug & 4)
+-			gsm_hex_dump_bytes(__func__, gsm->txframe, len);
+-		if (gsmld_output(gsm, gsm->txframe, len) <= 0)
++		default:
++			if (ret >= 0) {
++				list_del(&msg->list);
++				kfree(msg);
++			}
+ 			break;
+-		/* FIXME: Can eliminate one SOF in many more cases */
+-		gsm->tx_bytes -= msg->len;
++		}
++	}
+ 
+-		list_del(&msg->list);
+-		kfree(msg);
++	if (gsm->constipated)
++		return -EAGAIN;
+ 
+-		if (dlci) {
+-			tty_port_tty_wakeup(&dlci->port);
+-		} else {
+-			int i = 0;
+-
+-			for (i = 0; i < NUM_DLCI; i++)
+-				if (gsm->dlci[i])
+-					tty_port_tty_wakeup(&gsm->dlci[i]->port);
++	/* Serialize other channels */
++	if (list_empty(&gsm->tx_data_list))
++		return 0;
++	list_for_each_entry_safe(msg, nmsg, &gsm->tx_data_list, list) {
++		dlci = gsm->dlci[msg->addr];
++		/* Send only messages for DLCIs with valid state */
++		if (dlci->state != DLCI_OPEN) {
++			gsm->tx_bytes -= msg->len;
++			list_del(&msg->list);
++			kfree(msg);
++			continue;
++		}
++		ret = gsm_send_packet(gsm, msg);
++		switch (ret) {
++		case -ENOSPC:
++			return -ENOSPC;
++		case -ENODEV:
++			/* ldisc not open */
++			gsm->tx_bytes -= msg->len;
++			list_del(&msg->list);
++			kfree(msg);
++			continue;
++		default:
++			if (ret >= 0) {
++				list_del(&msg->list);
++				kfree(msg);
++			}
++			break;
+ 		}
+ 	}
++
++	return 1;
+ }
+ 
+ /**
+@@ -902,9 +1000,21 @@ static void __gsm_data_queue(struct gsm_dlci *dlci, struct gsm_msg *msg)
+ 	msg->data = dp;
+ 
+ 	/* Add to the actual output queue */
+-	list_add_tail(&msg->list, &gsm->tx_list);
++	switch (msg->ctrl & ~PF) {
++	case UI:
++	case UIH:
++		if (msg->addr > 0) {
++			list_add_tail(&msg->list, &gsm->tx_data_list);
++			break;
++		}
++		fallthrough;
++	default:
++		list_add_tail(&msg->list, &gsm->tx_ctrl_list);
++		break;
++	}
+ 	gsm->tx_bytes += msg->len;
+-	gsm_data_kick(gsm, dlci);
++
++	gsmld_write_trigger(gsm);
+ 	mod_timer(&gsm->kick_timer, jiffies + 10 * gsm->t1 * HZ / 100);
+ }
+ 
+@@ -1131,32 +1241,39 @@ static int gsm_dlci_modem_output(struct gsm_mux *gsm, struct gsm_dlci *dlci,
+ 
+ static int gsm_dlci_data_sweep(struct gsm_mux *gsm)
+ {
+-	int len, ret = 0;
+ 	/* Priority ordering: We should do priority with RR of the groups */
+-	int i = 1;
+-
+-	while (i < NUM_DLCI) {
+-		struct gsm_dlci *dlci;
++	int i, len, ret = 0;
++	bool sent;
++	struct gsm_dlci *dlci;
+ 
+-		if (gsm->tx_bytes > TX_THRESH_HI)
+-			break;
+-		dlci = gsm->dlci[i];
+-		if (dlci == NULL || dlci->constipated) {
+-			i++;
+-			continue;
++	while (gsm->tx_bytes < TX_THRESH_HI) {
++		for (sent = false, i = 1; i < NUM_DLCI; i++) {
++			dlci = gsm->dlci[i];
++			/* skip unused or blocked channel */
++			if (!dlci || dlci->constipated)
++				continue;
++			/* skip channels with invalid state */
++			if (dlci->state != DLCI_OPEN)
++				continue;
++			/* count the sent data per adaption */
++			if (dlci->adaption < 3 && !dlci->net)
++				len = gsm_dlci_data_output(gsm, dlci);
++			else
++				len = gsm_dlci_data_output_framed(gsm, dlci);
++			/* on error exit */
++			if (len < 0)
++				return ret;
++			if (len > 0) {
++				ret++;
++				sent = true;
++				/* The lower DLCs can starve the higher DLCs! */
++				break;
++			}
++			/* try next */
+ 		}
+-		if (dlci->adaption < 3 && !dlci->net)
+-			len = gsm_dlci_data_output(gsm, dlci);
+-		else
+-			len = gsm_dlci_data_output_framed(gsm, dlci);
+-		if (len < 0)
++		if (!sent)
+ 			break;
+-		/* DLCI empty - try the next */
+-		if (len == 0)
+-			i++;
+-		else
+-			ret++;
+-	}
++	};
+ 
+ 	return ret;
+ }
+@@ -1405,7 +1522,6 @@ static void gsm_control_message(struct gsm_mux *gsm, unsigned int command,
+ 						const u8 *data, int clen)
+ {
+ 	u8 buf[1];
+-	unsigned long flags;
+ 	struct gsm_dlci *dlci;
+ 	int i;
+ 	int address;
+@@ -1440,9 +1556,7 @@ static void gsm_control_message(struct gsm_mux *gsm, unsigned int command,
+ 		gsm->constipated = false;
+ 		gsm_control_reply(gsm, CMD_FCON, NULL, 0);
+ 		/* Kick the link in case it is idling */
+-		spin_lock_irqsave(&gsm->tx_lock, flags);
+-		gsm_data_kick(gsm, NULL);
+-		spin_unlock_irqrestore(&gsm->tx_lock, flags);
++		gsmld_write_trigger(gsm);
+ 		break;
+ 	case CMD_FCOFF:
+ 		/* Modem wants us to STFU */
+@@ -1645,8 +1759,6 @@ static int gsm_control_wait(struct gsm_mux *gsm, struct gsm_control *control)
+ 
+ static void gsm_dlci_close(struct gsm_dlci *dlci)
+ {
+-	unsigned long flags;
+-
+ 	del_timer(&dlci->t1);
+ 	if (debug & 8)
+ 		pr_debug("DLCI %d goes closed.\n", dlci->addr);
+@@ -1655,17 +1767,16 @@ static void gsm_dlci_close(struct gsm_dlci *dlci)
+ 	dlci->constipated = true;
+ 	if (dlci->addr != 0) {
+ 		tty_port_tty_hangup(&dlci->port, false);
+-		spin_lock_irqsave(&dlci->lock, flags);
+-		kfifo_reset(&dlci->fifo);
+-		spin_unlock_irqrestore(&dlci->lock, flags);
++		gsm_dlci_clear_queues(dlci->gsm, dlci);
+ 		/* Ensure that gsmtty_open() can return. */
+ 		tty_port_set_initialized(&dlci->port, 0);
+ 		wake_up_interruptible(&dlci->port.open_wait);
+ 	} else
+ 		dlci->gsm->dead = true;
+-	wake_up(&dlci->gsm->event);
+ 	/* A DLCI 0 close is a MUX termination so we need to kick that
+ 	   back to userspace somehow */
++	gsm_dlci_data_kick(dlci);
++	wake_up(&dlci->gsm->event);
+ }
+ 
+ /**
+@@ -1688,6 +1799,7 @@ static void gsm_dlci_open(struct gsm_dlci *dlci)
+ 	/* Send current modem state */
+ 	if (dlci->addr)
+ 		gsm_modem_update(dlci, 0);
++	gsm_dlci_data_kick(dlci);
+ 	wake_up(&dlci->gsm->event);
+ }
+ 
+@@ -2325,7 +2437,7 @@ static void gsm1_receive(struct gsm_mux *gsm, unsigned char c)
+ 	} else if ((c & ISO_IEC_646_MASK) == XOFF) {
+ 		gsm->constipated = false;
+ 		/* Kick the link in case it is idling */
+-		gsm_data_kick(gsm, NULL);
++		gsmld_write_trigger(gsm);
+ 		return;
+ 	}
+ 	if (c == GSM1_SOF) {
+@@ -2460,6 +2572,9 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+ 	del_timer_sync(&gsm->kick_timer);
+ 	del_timer_sync(&gsm->t2_timer);
+ 
++	/* Finish writing to ldisc */
++	flush_work(&gsm->tx_work);
++
+ 	/* Free up any link layer users and finally the control channel */
+ 	if (gsm->has_devices) {
+ 		gsm_unregister_devices(gsm_tty_driver, gsm->num);
+@@ -2471,9 +2586,12 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+ 	mutex_unlock(&gsm->mutex);
+ 	/* Now wipe the queues */
+ 	tty_ldisc_flush(gsm->tty);
+-	list_for_each_entry_safe(txq, ntxq, &gsm->tx_list, list)
++	list_for_each_entry_safe(txq, ntxq, &gsm->tx_ctrl_list, list)
++		kfree(txq);
++	INIT_LIST_HEAD(&gsm->tx_ctrl_list);
++	list_for_each_entry_safe(txq, ntxq, &gsm->tx_data_list, list)
+ 		kfree(txq);
+-	INIT_LIST_HEAD(&gsm->tx_list);
++	INIT_LIST_HEAD(&gsm->tx_data_list);
+ }
+ 
+ /**
+@@ -2496,6 +2614,7 @@ static int gsm_activate_mux(struct gsm_mux *gsm)
+ 
+ 	timer_setup(&gsm->kick_timer, gsm_kick_timer, 0);
+ 	timer_setup(&gsm->t2_timer, gsm_control_retransmit, 0);
++	INIT_WORK(&gsm->tx_work, gsmld_write_task);
+ 	init_waitqueue_head(&gsm->event);
+ 	spin_lock_init(&gsm->control_lock);
+ 	spin_lock_init(&gsm->tx_lock);
+@@ -2602,7 +2721,8 @@ static struct gsm_mux *gsm_alloc_mux(void)
+ 	spin_lock_init(&gsm->lock);
+ 	mutex_init(&gsm->mutex);
+ 	kref_init(&gsm->ref);
+-	INIT_LIST_HEAD(&gsm->tx_list);
++	INIT_LIST_HEAD(&gsm->tx_ctrl_list);
++	INIT_LIST_HEAD(&gsm->tx_data_list);
+ 
+ 	gsm->t1 = T1;
+ 	gsm->t2 = T2;
+@@ -2759,6 +2879,47 @@ static int gsmld_output(struct gsm_mux *gsm, u8 *data, int len)
+ 	return gsm->tty->ops->write(gsm->tty, data, len);
+ }
+ 
++
++/**
++ *	gsmld_write_trigger	-	schedule ldisc write task
++ *	@gsm: our mux
++ */
++static void gsmld_write_trigger(struct gsm_mux *gsm)
++{
++	if (!gsm || !gsm->dlci[0] || gsm->dlci[0]->dead)
++		return;
++	schedule_work(&gsm->tx_work);
++}
++
++
++/**
++ *	gsmld_write_task	-	ldisc write task
++ *	@work: our tx write work
++ *
++ *	Writes out data to the ldisc if possible. We are doing this here to
++ *	avoid dead-locking. This returns if no space or data is left for output.
++ */
++static void gsmld_write_task(struct work_struct *work)
++{
++	struct gsm_mux *gsm = container_of(work, struct gsm_mux, tx_work);
++	unsigned long flags;
++	int i, ret;
++
++	/* All outstanding control channel and control messages and one data
++	 * frame is sent.
++	 */
++	ret = -ENODEV;
++	spin_lock_irqsave(&gsm->tx_lock, flags);
++	if (gsm->tty)
++		ret = gsm_data_kick(gsm);
++	spin_unlock_irqrestore(&gsm->tx_lock, flags);
++
++	if (ret >= 0)
++		for (i = 0; i < NUM_DLCI; i++)
++			if (gsm->dlci[i])
++				tty_port_tty_wakeup(&gsm->dlci[i]->port);
++}
++
+ /**
+  *	gsmld_attach_gsm	-	mode set up
+  *	@tty: our tty structure
+@@ -2902,6 +3063,7 @@ static int gsmld_open(struct tty_struct *tty)
+ 
+ 	timer_setup(&gsm->kick_timer, gsm_kick_timer, 0);
+ 	timer_setup(&gsm->t2_timer, gsm_control_retransmit, 0);
++	INIT_WORK(&gsm->tx_work, gsmld_write_task);
+ 
+ 	return 0;
+ }
+@@ -2918,16 +3080,9 @@ static int gsmld_open(struct tty_struct *tty)
+ static void gsmld_write_wakeup(struct tty_struct *tty)
+ {
+ 	struct gsm_mux *gsm = tty->disc_data;
+-	unsigned long flags;
+ 
+ 	/* Queue poll */
+-	clear_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
+-	spin_lock_irqsave(&gsm->tx_lock, flags);
+-	gsm_data_kick(gsm, NULL);
+-	if (gsm->tx_bytes < TX_THRESH_LO) {
+-		gsm_dlci_data_sweep(gsm);
+-	}
+-	spin_unlock_irqrestore(&gsm->tx_lock, flags);
++	gsmld_write_trigger(gsm);
+ }
+ 
+ /**
+-- 
+2.34.1
+
 
