@@ -1,184 +1,172 @@
-Return-Path: <stable+bounces-230431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wI/BFovmxGkz5AQAu9opvQ
-	(envelope-from <stable+bounces-230431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 08:55:55 +0100
+	id IGT8BsvmxGkz5AQAu9opvQ
+	(envelope-from <stable+bounces-230432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 08:56:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE899330B6E
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 08:55:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBB1330BA8
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 08:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52F4E3033D21
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:50:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E0A2303C116
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 07:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C5D20C012;
-	Thu, 26 Mar 2026 07:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qGwvJqBM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148B63B6363;
+	Thu, 26 Mar 2026 07:53:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9371E1E16
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 07:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from outboundhk.mxmail.xiaomi.com (unknown [207.226.244.123])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED783B4EAD;
+	Thu, 26 Mar 2026 07:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774511414; cv=none; b=XxU4waeu23ptfO2m0N4wGgCxUaN9EbCXdkK0nzl6vfmE9t3xABS380KIWvomKDG4/FjJ/6uMHwJuAiibOB84l+lJ/rrC80fkzi0C04jkjzLPe+5OZtAlrL4TjeO3yb1xjaTQWsP2Gqc9b3ug+3Y46FjVaJZiy5jsvRjNtoay840=
+	t=1774511615; cv=none; b=o8K2cB7vQrP0G/8UVvtmhl6k4HU3CjxWYZJOO03TZh5gKiCmtsCiJP8p5zwYOKs3PU21vgWXFA0u3NX3739IklXdr9huxRjIG/PpRNSQepFrJGVNLdrE43JTLEdjLwbeXIedd96IoRix6XEm01pjYyaBUV/QDOBmp4EWc0PdLSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774511414; c=relaxed/simple;
-	bh=CidhCkxqlmlhREGUgMDvYlj86xoccIq7LTI+/JoLyZk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EHl06PAZJBWMIQeyg+i/Bfl85y6PnkhmKaRArtZr5s1Ten6Kw0BI5b+gZsHxQQfwWqWlDbFw4Je1ZxT6YlKLM1oVw4+ZTOnxSdbkhM0ncsffpIWLFok6/i556Q36z/DcYkOvdtNa+egLBYhKDqUo2jTz6krl4P5OsBHltdsnI0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qGwvJqBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1D7C2BC87
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 07:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774511413;
-	bh=CidhCkxqlmlhREGUgMDvYlj86xoccIq7LTI+/JoLyZk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qGwvJqBMyqAlyZXvw0pdOSbXDhRHajlR/t2bPHcuRUmTNBAgYS9SjT9bUjXaT8wcJ
-	 dfPUALk0bAFQGTT4XYU/fiPNLmyuu1Ld1kZByB/O4IOxvxX0YYVEIaituQda6yluKW
-	 hfoUxvc275/uG055GnafTGnxphLAtmh+nKNbXmeF+IFL00yOFnuvIy/VzYfuu1hlqC
-	 M6qnfN5k6IH7JVI5gW6pZk4xZeK8TySZ8685GTVaYm6BUvLPIJz5EzVaMbi18eIkvY
-	 QWh7/3dEW+JA3hfp67G/A/OwA1fsT2wyCdxNwDBygL+f9SfdashxxuMrueQCgqucIW
-	 GW/xeGjKc4zDg==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b97a9f4b4dcso76523366b.3
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 00:50:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVhBu5FE1UpE4DlXpAWaaldY+gB50bZb1C2LLTgVrsFX2cPORGGCXY3wMtvw5nFutu2QZ0Cs3Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfIwF6yz4D915W3AFI8bVApeO9R9VpUX7K29ZTwkQA1aPymY0a
-	3dCb8SAMFJ0h7wI2BLufMOzp9mBAu7UJpgRT78/u+oJRjeDkANhhG4CMv8FB8riASKb7xPpXtj+
-	UdbxgxgG+I0j4p0fm/dbI97ndcKcMD8I=
-X-Received: by 2002:a17:907:6d05:b0:b99:7462:3c57 with SMTP id
- a640c23a62f3a-b9b0f0ffb2dmr362584866b.14.1774511412117; Thu, 26 Mar 2026
- 00:50:12 -0700 (PDT)
+	s=arc-20240116; t=1774511615; c=relaxed/simple;
+	bh=dgB4zDooAMgwWFm1H4Pqw8snfjAaPuQYe0kRybxszII=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hU4aNwrg/kg/CP/Xfdxc4kr1pQv49gedh3EVJcSmciidsF2xcn+QM43tMvQ96U9RCcnnnhhTz8IIUGDy0YWz5rjh+T/VYO2YFuqQuQJAex6LcyYTNcCQwXgo0fYAaaBnR/wdFhdVB28H8wtOzB1gQ2+U3calLIFy/RpdeXY+JkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
+X-CSE-ConnectionGUID: q8DIlBLxQ1il940KlsP3RA==
+X-CSE-MsgGUID: q96C3JdRTB2Ito48KE4Vtg==
+X-IronPort-AV: E=Sophos;i="6.23,141,1770566400"; 
+   d="scan'208";a="170821612"
+Date: Thu, 26 Mar 2026 15:53:13 +0800
+From: Dayu Jiang <jiangdayu@xiaomi.com>
+To: Kuen-Han Tsai <khtsai@google.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: David Brownell <dbrownell@users.sourceforge.net>,
+	<linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect
+ and eth_stop
+Message-ID: <acTl6bUJTQp6kjCO@oa-jiangdayu.localdomain>
+References: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324031506.264062-1-maobibo@loongson.cn>
-In-Reply-To: <20260324031506.264062-1-maobibo@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 26 Mar 2026 15:50:09 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6T46kbfHz-mhFVMy=JGkF3Vz9SjBeyBx=OCLiGJWjR1w@mail.gmail.com>
-X-Gm-Features: AQROBzBwOrxmFRO_JN7udjv0Dk91DmL0OdTTwak67tLk1zOK-VjDTxgp8v4hUQU
-Message-ID: <CAAhV-H6T46kbfHz-mhFVMy=JGkF3Vz9SjBeyBx=OCLiGJWjR1w@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: KVM: Fix base address calculation problem in kvm_eiointc_regs_access()
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Aurelien Jarno <aurel32@debian.org>, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset="gbk"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
+X-ClientProxiedBy: BJ-MBX05.mioffice.cn (10.237.8.125) To BJ-MBX03.mioffice.cn
+ (10.237.8.123)
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[xiaomi.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230431-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oa-jiangdayu.localdomain:mid];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: AE899330B6E
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiangdayu@xiaomi.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230432-lists,stable=lfdr.de];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 2CBB1330BA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Applied, thanks.
-
-Huacai
-
-On Tue, Mar 24, 2026 at 11:15=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
-te:
+On Wed, Mar 11, 2026 at 05:12:15PM +0800, Kuen-Han Tsai wrote:
+> A race condition between gether_disconnect() and eth_stop() leads to a
+> NULL pointer dereference. Specifically, if eth_stop() is triggered
+> concurrently while gether_disconnect() is tearing down the endpoints,
+> eth_stop() attempts to access the cleared endpoint descriptor, causing
+> the following NPE:
+> 
+>   Unable to handle kernel NULL pointer dereference
+>   Call trace:
+>    __dwc3_gadget_ep_enable+0x60/0x788
+>    dwc3_gadget_ep_enable+0x70/0xe4
+>    usb_ep_enable+0x60/0x15c
+>    eth_stop+0xb8/0x108
+> 
+> Because eth_stop() crashes while holding the dev->lock, the thread
+> running gether_disconnect() fails to acquire the same lock and spins
+> forever, resulting in a hardlockup:
+> 
+>   Core - Debugging Information for Hardlockup core(7)
+>   Call trace:
+>    queued_spin_lock_slowpath+0x94/0x488
+>    _raw_spin_lock+0x64/0x6c
+>    gether_disconnect+0x19c/0x1e8
+>    ncm_set_alt+0x68/0x1a0
+>    composite_setup+0x6a0/0xc50
 >
-> In function kvm_eiointc_regs_access(), register base address is caculated
-> from array base address plus offset, the offset is absolute value from ba=
-se
-> address. The data type of array base address is u64, it should be convert=
-ed
-> into void * type and then plus the offset.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: d3e43a1f34ac ("LoongArch: KVM: Use 64-bit register definition for =
-EIOINTC").
-> Reported-by: Aurelien Jarno <aurel32@debian.org>
-> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Hi Greg,
+Hit the same issue during NCM switch stress test.
+Can you take a look at this patch and check if it¡¯s ready for merge?
+
+Thanks,
+Dayu Jiang
+> The root cause is that the clearing of dev->port_usb in
+> gether_disconnect() is delayed until the end of the function.
+> 
+> Move the clearing of dev->port_usb to the very beginning of
+> gether_disconnect() while holding dev->lock. This cuts off the link
+> immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+> safely bail out.
+> 
+> Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
 > ---
->  arch/loongarch/kvm/intc/eiointc.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> index d2acb4d09e73..71bd67b57338 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -472,34 +472,34 @@ static int kvm_eiointc_regs_access(struct kvm_devic=
-e *dev,
->         switch (addr) {
->         case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
->                 offset =3D (addr - EIOINTC_NODETYPE_START) / 4;
-> -               p =3D s->nodetype + offset * 4;
-> +               p =3D (void *)s->nodetype + offset * 4;
->                 break;
->         case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
->                 offset =3D (addr - EIOINTC_IPMAP_START) / 4;
-> -               p =3D &s->ipmap + offset * 4;
-> +               p =3D (void *)&s->ipmap + offset * 4;
->                 break;
->         case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
->                 offset =3D (addr - EIOINTC_ENABLE_START) / 4;
-> -               p =3D s->enable + offset * 4;
-> +               p =3D (void *)s->enable + offset * 4;
->                 break;
->         case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
->                 offset =3D (addr - EIOINTC_BOUNCE_START) / 4;
-> -               p =3D s->bounce + offset * 4;
-> +               p =3D (void *)s->bounce + offset * 4;
->                 break;
->         case EIOINTC_ISR_START ... EIOINTC_ISR_END:
->                 offset =3D (addr - EIOINTC_ISR_START) / 4;
-> -               p =3D s->isr + offset * 4;
-> +               p =3D (void *)s->isr + offset * 4;
->                 break;
->         case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
->                 if (cpu >=3D s->num_cpu)
->                         return -EINVAL;
->
->                 offset =3D (addr - EIOINTC_COREISR_START) / 4;
-> -               p =3D s->coreisr[cpu] + offset * 4;
-> +               p =3D (void *)s->coreisr[cpu] + offset * 4;
->                 break;
->         case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
->                 offset =3D (addr - EIOINTC_COREMAP_START) / 4;
-> -               p =3D s->coremap + offset * 4;
-> +               p =3D (void *)s->coremap + offset * 4;
->                 break;
->         default:
->                 kvm_err("%s: unknown eiointc register, addr =3D %d\n", __=
-func__, addr);
->
-> base-commit: c369299895a591d96745d6492d4888259b004a9e
-> --
-> 2.39.3
->
->
+>  drivers/usb/gadget/function/u_ether.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+> index 338f6e2a85a9..2c970a0eafd9 100644
+> --- a/drivers/usb/gadget/function/u_ether.c
+> +++ b/drivers/usb/gadget/function/u_ether.c
+> @@ -1246,6 +1246,11 @@ void gether_disconnect(struct gether *link)
+>  
+>  	DBG(dev, "%s\n", __func__);
+>  
+> +	spin_lock(&dev->lock);
+> +	dev->port_usb = NULL;
+> +	link->is_suspend = false;
+> +	spin_unlock(&dev->lock);
+> +
+>  	netif_stop_queue(dev->net);
+>  	netif_carrier_off(dev->net);
+>  
+> @@ -1283,11 +1288,6 @@ void gether_disconnect(struct gether *link)
+>  	dev->header_len = 0;
+>  	dev->unwrap = NULL;
+>  	dev->wrap = NULL;
+> -
+> -	spin_lock(&dev->lock);
+> -	dev->port_usb = NULL;
+> -	link->is_suspend = false;
+> -	spin_unlock(&dev->lock);
+>  }
+>  EXPORT_SYMBOL_GPL(gether_disconnect);
+>  
+> 
+> ---
+> base-commit: 1be3b77de4eb89af8ae2fd6610546be778e25589
+> change-id: 20260311-gether-disconnect-npe-5861d9831dff
+> 
+> Best regards,
+> -- 
+> Kuen-Han Tsai <khtsai@google.com>
+> 
 
