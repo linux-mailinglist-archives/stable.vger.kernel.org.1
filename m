@@ -1,261 +1,180 @@
-Return-Path: <stable+bounces-230401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI/eGQCDxGnszwQAu9opvQ
-	(envelope-from <stable+bounces-230401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 01:51:12 +0100
+	id ZWVFBBqIxGnB0AQAu9opvQ
+	(envelope-from <stable+bounces-230402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:12:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C478732DB5F
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 01:51:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A56932DC5B
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 02:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10AAD302B3AD
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 00:50:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F103B3034646
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 01:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFCE1F2380;
-	Thu, 26 Mar 2026 00:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r+lrkeuh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D47B2E2663;
+	Thu, 26 Mar 2026 01:12:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39361ACEDE;
-	Thu, 26 Mar 2026 00:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E399F20C012;
+	Thu, 26 Mar 2026 01:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774486252; cv=none; b=CeasIJZc8qfoqSxFZkCO/v+wqC/OUFcbaMHnyJy2ZH/MFgOyNH2mc7i7ilLY9szpGtjSZnCknTc7tm5pVz/Pf+aqeDQEojq+CIL6l/YGgvj6Cm9EPDxpxkqg+b6ca9p44Q9CT7NQ9C10kwh6BnNuu8qegcsk9aNS5s3Q2R7yh6w=
+	t=1774487571; cv=none; b=mFGgXfMq9rR+jDMP1fXpBlG0ngIoeJwS7x//vymPFSjqYhVGV/tgYXP/VlXSIsdR/Gdcn6kK6b3wN8GevaxN0M+UBLXa52IAxcw710/0TYCrrE+z3kgLoUrwQDFMvpbjSC6G2JmkvTCbX+Kq5c5pGAVzLv3100vsmtL6mmOtsn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774486252; c=relaxed/simple;
-	bh=ZWpC5+2AaJwflsdBJLXUq0NLkEyQYO1woqPH2DgGFvM=;
-	h=Date:To:From:Subject:Message-Id; b=qtOWKDwmlZvmsRpzSLualaJQf88jkRz6Nb0ekvnx8xIikDsMd2Y82bH6JYINDfZ9F/nDkDaGcfgY/asr6+7EY5Qt6xSGVJ3L3e9JzYsnaGAgI4r7aQ9U3f+H/UDrC6uLaBPy6fHzaWPEfD74SCBZXxUX+Pvw1+T8zNa+EUuGl84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r+lrkeuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775C9C4CEF7;
-	Thu, 26 Mar 2026 00:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774486252;
-	bh=ZWpC5+2AaJwflsdBJLXUq0NLkEyQYO1woqPH2DgGFvM=;
-	h=Date:To:From:Subject:From;
-	b=r+lrkeuhVXzQBRfQ5fv9YVLaIlKaSgYfErHiS2Bqxxm04G4aGk4vZy7Qfi6kfKxXI
-	 hO0TjpiyyJWQqmJBu7zKGVRWHnX4DzQDUYjjnM5ClBgmxjmBht4CXpMpoGhKXj3HlG
-	 bCfXxDM0s0Vqg1SE9SZPdLgdfCYpluyVMWfkgh8c=
-Date: Wed, 25 Mar 2026 17:50:51 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam.howlett@oracle.com,david@kernel.org,mboone@akamai.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260326005052.775C9C4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1774487571; c=relaxed/simple;
+	bh=mSNQB/kyfeHjvhCQ1N6GTP8BpN+Ju2famxd6FScXTUo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=DRxU4+9DFPS3/77wf0lD9BDcdFrjqPPROg2nUWfJOOypLw6ZwVe29FkCxwwmwIAT0HBFn/FrzjXH2cX86nxMAhkfy1H+awrJ0NP5+Dq9i1P7O1W3e/EzBvocLR5rka9i8STPx4IUOYHdZAUXsfpsHKOedJkmr9SRFYoCC2N8zCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.17])
+	by gateway (Coremail) with SMTP id _____8Bx36sJiMRpk8QeAA--.28946S3;
+	Thu, 26 Mar 2026 09:12:41 +0800 (CST)
+Received: from chenhuacai$loongson.cn ( [223.64.68.17] ) by
+ ajax-webmail-front1 (Coremail) ; Thu, 26 Mar 2026 09:12:22 +0800
+ (GMT+08:00)
+Date: Thu, 26 Mar 2026 09:12:22 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+Cc: gregkh@linuxfoundation.org, achill@achill.org, akpm@linux-foundation.org,
+	broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com,
+	hargar@microsoft.com, jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org, linux@roeck-us.net,
+	lkft-triage@lists.linaro.org, patches@kernelci.org,
+	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de,
+	shuah@kernel.org, sr@sladewatkins.com, stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org,
+	"Tianyang Zhang" <zhangtianyang@loongson.cn>
+Subject: Re: Re: [PATCH 6.12 000/460] 6.12.78-rc1 review
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250609(354f7833) Copyright (c) 2002-2026 www.mailtech.cn loongson
+In-Reply-To: <20260325000600.57287-1-ojeda@kernel.org>
+References: <20260323134526.647552166@linuxfoundation.org>
+ <20260325000600.57287-1-ojeda@kernel.org>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: CfmPV2Zvb3Rlcl90eHQ9MjM0ODo2MTg=
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Message-ID: <7f616aa1.4eda2.19d27b31b8c.Coremail.chenhuacai@loongson.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:qMiowJDxKOD2h8Rp5oZdAA--.15631W
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAgESBmnDeSQV0QABsl
+X-Coremail-Antispam: 1Uk129KBj93XoW7KF15KF4kAr1xCF48ur43twc_yoW5JFWfpF
+	W7Gr4DWa10qwn7Can7u34j9FyUX3Z5CasIgrs5G3s5uF98ur1jqrn7ZFZ8uFn8KryvgF1j
+	vFnrXas2ga45J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUQIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCY1x0262kKe7AKxVW8
+	ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxV
+	WUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UMVCEFcxC0V
+	AYjxAxZFUvcSsGvfC2KfnxnUUI43ZEXa7IUehiSJUUUUU==
+X-Spamd-Result: default: False [1.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-230401-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230402-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+];
+	HAS_X_PRIO_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,loongson.cn];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,oracle.com:email,suse.com:email,akamai.com:email]
-X-Rspamd-Queue-Id: C478732DB5F
+	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2A56932DC5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-The patch titled
-     Subject: mm/pagewalk: fix race between concurrent split and refault
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Max Boone <mboone@akamai.com>
-Subject: mm/pagewalk: fix race between concurrent split and refault
-Date: Wed, 25 Mar 2026 10:59:16 +0100
-
-The splitting of a PUD entry in walk_pud_range() can race with a
-concurrent thread refaulting the PUD leaf entry causing it to try walking
-a PMD range that has disappeared.
-
-An example and reproduction of this is to try reading numa_maps of a
-process while VFIO-PCI is setting up DMA (specifically the
-vfio_pin_pages_remote call) on a large BAR for that process.
-
-This will trigger a kernel BUG:
-vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-BUG: unable to handle page fault for address: ffffa23980000000
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-...
-RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
-   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- __walk_page_range+0x195/0x1b0
- walk_page_vma+0x62/0xc0
- show_numa_map+0x12b/0x3b0
- seq_read_iter+0x297/0x440
- seq_read+0x11d/0x140
- vfs_read+0xc2/0x340
- ksys_read+0x5f/0xe0
- do_syscall_64+0x68/0x130
- ? get_page_from_freelist+0x5c2/0x17e0
- ? mas_store_prealloc+0x17e/0x360
- ? vma_set_page_prot+0x4c/0xa0
- ? __alloc_pages_noprof+0x14e/0x2d0
- ? __mod_memcg_lruvec_state+0x8d/0x140
- ? __lruvec_stat_mod_folio+0x76/0xb0
- ? __folio_mod_stat+0x26/0x80
- ? do_anonymous_page+0x705/0x900
- ? __handle_mm_fault+0xa8d/0x1000
- ? __count_memcg_events+0x53/0xf0
- ? handle_mm_fault+0xa5/0x360
- ? do_user_addr_fault+0x342/0x640
- ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
- ? irqentry_exit_to_user_mode+0x24/0x100
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe88464f47e
-Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
-   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
-
-Fix this by validating the PUD entry in walk_pmd_range() using a stable
-snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
-walk via ACTION_AGAIN instead of descending further.  This mirrors the
-retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
-PTE is not being got by pte_offset_map_lock().
-
-Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
-Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Max Boone <mboone@akamai.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/pagewalk.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
-
---- a/mm/pagewalk.c~mm-pagewalk-fix-race-between-concurrent-split-and-refault
-+++ a/mm/pagewalk.c
-@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
- {
-+	pud_t pudval = pudp_get(pud);
- 	pmd_t *pmd;
- 	unsigned long next;
- 	const struct mm_walk_ops *ops = walk->ops;
-@@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, un
- 	int err = 0;
- 	int depth = real_depth(3);
- 
-+	/*
-+	 * For PTE handling, pte_offset_map_lock() takes care of checking
-+	 * whether there actually is a page table. But it also has to be
-+	 * very careful about concurrent page table reclaim.
-+	 *
-+	 * Similarly, we have to be careful here - a PUD entry that points
-+	 * to a PMD table cannot go away, so we can just walk it. But if
-+	 * it's something else, we need to ensure we didn't race something,
-+	 * so need to retry.
-+	 *
-+	 * A pertinent example of this is a PUD refault after PUD split -
-+	 * we will need to split again or risk accessing invalid memory.
-+	 */
-+	if (!pud_present(pudval) || pud_leaf(pudval)) {
-+		walk->action = ACTION_AGAIN;
-+		return 0;
-+	}
-+
- 	pmd = pmd_offset(pud, addr);
- 	do {
- again:
-@@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, un
- 		else if (pud_leaf(*pud) || !pud_present(*pud))
- 			continue; /* Nothing to do. */
- 
--		if (pud_none(*pud))
--			goto again;
--
- 		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
-+
-+		if (walk->action == ACTION_AGAIN)
-+			goto again;
- 	} while (pud++, addr = next, addr != end);
- 
- 	return err;
-_
-
-Patches currently in -mm which might be from mboone@akamai.com are
-
-mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
+SGksIEdyZWcsIFNhc2hhLAoKCj4gLS0tLS3ljp/lp4vpgq7ku7YtLS0tLQo+IOWPkeS7tuS6ujog
+Ik1pZ3VlbCBPamVkYSIgPG9qZWRhQGtlcm5lbC5vcmc+Cj4g5Y+R6YCB5pe26Ze0OjIwMjYtMDMt
+MjUgMDg6MDY6MDAgKOaYn+acn+S4iSkKPiDmlLbku7bkuro6IGdyZWdraEBsaW51eGZvdW5kYXRp
+b24ub3JnCj4g5oqE6YCBOiBhY2hpbGxAYWNoaWxsLm9yZywgYWtwbUBsaW51eC1mb3VuZGF0aW9u
+Lm9yZywgYnJvb25pZUBrZXJuZWwub3JnLCBjb25vckBrZXJuZWwub3JnLCBmLmZhaW5lbGxpQGdt
+YWlsLmNvbSwgaGFyZ2FyQG1pY3Jvc29mdC5jb20sIGpvbmF0aGFuaEBudmlkaWEuY29tLCBsaW51
+eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLCBsaW51eEByb2Vjay11cy5uZXQsIGxrZnQtdHJpYWdl
+QGxpc3RzLmxpbmFyby5vcmcsIHBhdGNoZXNAa2VybmVsY2kub3JnLCBwYXRjaGVzQGxpc3RzLmxp
+bnV4LmRldiwgcGF2ZWxAbmFibGFkZXYuY29tLCByd2Fyc293QGdteC5kZSwgc2h1YWhAa2VybmVs
+Lm9yZywgc3JAc2xhZGV3YXRraW5zLmNvbSwgc3RhYmxlQHZnZXIua2VybmVsLm9yZywgc3VkaXBt
+Lm11a2hlcmplZUBnbWFpbC5jb20sIHRvcnZhbGRzQGxpbnV4LWZvdW5kYXRpb24ub3JnLCAiTWln
+dWVsIE9qZWRhIiA8b2plZGFAa2VybmVsLm9yZz4sICJIdWFjYWkgQ2hlbiIgPGNoZW5odWFjYWlA
+bG9vbmdzb24uY24+LCAiVGlhbnlhbmcgWmhhbmciIDx6aGFuZ3RpYW55YW5nQGxvb25nc29uLmNu
+Pgo+IOS4u+mimDogUmU6IFtQQVRDSCA2LjEyIDAwMC80NjBdIDYuMTIuNzgtcmMxIHJldmlldwo+
+IAo+IE9uIE1vbiwgMjMgTWFyIDIwMjYgMTQ6Mzk6NTYgKzAxMDAgR3JlZyBLcm9haC1IYXJ0bWFu
+IDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4gd3JvdGU6Cj4gPgo+ID4gVGhpcyBpcyB0aGUg
+c3RhcnQgb2YgdGhlIHN0YWJsZSByZXZpZXcgY3ljbGUgZm9yIHRoZSA2LjEyLjc4IHJlbGVhc2Uu
+Cj4gPiBUaGVyZSBhcmUgNDYwIHBhdGNoZXMgaW4gdGhpcyBzZXJpZXMsIGFsbCB3aWxsIGJlIHBv
+c3RlZCBhcyBhIHJlc3BvbnNlCj4gPiB0byB0aGlzIG9uZS4gIElmIGFueW9uZSBoYXMgYW55IGlz
+c3VlcyB3aXRoIHRoZXNlIGJlaW5nIGFwcGxpZWQsIHBsZWFzZQo+ID4gbGV0IG1lIGtub3cuCj4g
+Pgo+ID4gUmVzcG9uc2VzIHNob3VsZCBiZSBtYWRlIGJ5IFdlZCwgMjUgTWFyIDIwMjYgMTM6NDQ6
+MzMgKzAwMDAuCj4gPiBBbnl0aGluZyByZWNlaXZlZCBhZnRlciB0aGF0IHRpbWUgbWlnaHQgYmUg
+dG9vIGxhdGUuCj4gCj4gQm9vdC10ZXN0ZWQgdW5kZXIgUUVNVSBmb3IgUnVzdCB4ODZfNjQsIGFy
+bTY0IGFuZCByaXNjdjY0OyBidWlsdC10ZXN0ZWQKPiBmb3IgbG9vbmdhcmNoNjQ6Cj4gCj4gVGVz
+dGVkLWJ5OiBNaWd1ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+Cj4gCj4gbG9vbmdhcmNoNjQg
+ZmFpbGVkIHRvIGJ1aWxkIGZvciBtZToKPiAKPiAgICAgYXJjaC9sb29uZ2FyY2gva2VybmVsL21h
+Y2hpbmVfa2V4ZWMuYzoxMzk6MTM6IGVycm9yOiBzdGF0aWMgZGVjbGFyYXRpb24gb2YgJ21hY2hp
+bmVfa2V4ZWNfbWFza19pbnRlcnJ1cHRzJyBmb2xsb3dzIG5vbi1zdGF0aWMgZGVjbGFyYXRpb24K
+PiAgICAgICAxMzkgfCBzdGF0aWMgdm9pZCBtYWNoaW5lX2tleGVjX21hc2tfaW50ZXJydXB0cyh2
+b2lkKQo+ICAgICAgICAgICB8ICAgICAgICAgICAgIF4KPiAgICAgLi9pbmNsdWRlL2xpbnV4L2ly
+cS5oOjY5ODoxMzogbm90ZTogcHJldmlvdXMgZGVjbGFyYXRpb24gaXMgaGVyZQo+ICAgICAgIDY5
+OCB8IGV4dGVybiB2b2lkIG1hY2hpbmVfa2V4ZWNfbWFza19pbnRlcnJ1cHRzKHZvaWQpOwo+ICAg
+ICAgICAgICB8ICAgICAgICAgICAgIF4KPiAKPiBUaGUgYHN0YXRpYyB2b2lkIG1hY2hpbmVfa2V4
+ZWNfbWFza19pbnRlcnJ1cHRzKHZvaWQpYCBmb3IgbG9vbmdhcmNoNjQKPiB3YXMgbm90IHJlbW92
+ZWQgYmVjYXVzZSBpdCB3YXMgYWRqdXN0ZWQgaW46Cj4gCj4gICA0MjliZjNmMDRjMjQgKCJMb29u
+Z0FyY2g6IEFkZCBtYWNoaW5lX2tleGVjX21hc2tfaW50ZXJydXB0cygpIGltcGxlbWVudGF0aW9u
+IikKWWVzLCA0MjliZjNmMDRjMjQgKCJMb29uZ0FyY2g6IEFkZCBtYWNoaW5lX2tleGVjX21hc2tf
+aW50ZXJydXB0cygpIGltcGxlbWVudGF0aW9uIikKc2hvdWxkIGJlIHJldmVydGVkIGZvciB0aGlz
+IHZlcnNpb24uIEJ1dCB3aHkgeW91IGlnbm9yZSBNaWd1ZWwncyByZXBvcnQ/CgpIdWFjYWkKCj4g
+Cj4gd2hpY2ggaXMgb25seSBpbiA2LjEyLgo+IAo+IENjOiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNh
+aUBsb29uZ3Nvbi5jbj4KPiBDYzogVGlhbnlhbmcgWmhhbmcgPHpoYW5ndGlhbnlhbmdAbG9vbmdz
+b24uY24+Cj4gCj4gSSBob3BlIHRoYXQgaGVscHMhCj4gCj4gQ2hlZXJzLAo+IE1pZ3VlbAoNCg0K
+5pys6YKu5Lu25Y+K5YW26ZmE5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR55qE5ZWG5Lia56eY5a+G5L+h
+5oGv77yM5LuF6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE5Liq5Lq65oiW
+576k57uE44CC56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/55So77yI5YyF
+5ous5L2G5LiN6ZmQ5LqO5YWo6YOo5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi25oiW5pWj5Y+R
+77yJ5pys6YKu5Lu25Y+K5YW26ZmE5Lu25Lit55qE5L+h5oGv44CC5aaC5p6c5oKo6ZSZ5pS25pys
+6YKu5Lu277yM6K+35oKo56uL5Y2z55S16K+d5oiW6YKu5Lu26YCa55+l5Y+R5Lu25Lq65bm25Yig
+6Zmk5pys6YKu5Lu244CCIA0KVGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1lbnRzIGNvbnRhaW4g
+Y29uZmlkZW50aWFsIGluZm9ybWF0aW9uIGZyb20gTG9vbmdzb24gVGVjaG5vbG9neSAsIHdoaWNo
+IGlzIGludGVuZGVkIG9ubHkgZm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdob3NlIGFkZHJlc3Mg
+aXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVy
+ZWluIGluIGFueSB3YXkgKGluY2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRvLCB0b3RhbCBvciBw
+YXJ0aWFsIGRpc2Nsb3N1cmUsIHJlcHJvZHVjdGlvbiBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJz
+b25zIG90aGVyIHRoYW4gdGhlIGludGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJ
+ZiB5b3UgcmVjZWl2ZSB0aGlzIGVtYWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5k
+ZXIgYnkgcGhvbmUgb3IgZW1haWwgaW1tZWRpYXRlbHkgYW5kIGRlbGV0ZSBpdC4gDQoNCg0K
 
 
