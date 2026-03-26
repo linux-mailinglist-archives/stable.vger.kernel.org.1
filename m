@@ -1,78 +1,80 @@
-Return-Path: <stable+bounces-230544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKVAHbvFxWmgBgUAu9opvQ
-	(envelope-from <stable+bounces-230544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:48:11 +0100
+	id EFVDOdjFxWmgBgUAu9opvQ
+	(envelope-from <stable+bounces-230545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:48:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12AC33D391
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:48:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B90433D3B2
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F0D3303CE38
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:47:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43467304C077
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 23:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42542773E4;
-	Thu, 26 Mar 2026 23:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE50495E5;
+	Thu, 26 Mar 2026 23:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r/35t8fI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iGpMWln7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C85F1F03DE
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 23:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8CA2FFFA4
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 23:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774568857; cv=none; b=Uh6bYYS/OjrOXJ/2kW1iyFQOaTzuuFUw1viYgYxZ9Hh63bi0s0K4I9sOT5u30Zrrdplz18ak377zxxxf7cQVp0cN+CFjbjIpJNn2wJ2NY4lKjsv7F0T+Rh1i/zI3vPW/8v9D0HtJ0HmY0W5zYzeor37CSyrhTjsRu8UWF4PcYAY=
+	t=1774568859; cv=none; b=MDvmdWHEhN96jtllTOVoyl7doN/6XKNlBxLOk1tJbEXt63mE+EhwRIm/bWaPyGcsWQemyJaayLi3j2Z+fDEafr0qoptfr6O+QfbhECXQGt+JnxmSsSsh96ftgSDMVQmOpo1EotEoOdD70WKIuNP85tk+15qWKgAVgDqZpuJE91g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774568857; c=relaxed/simple;
-	bh=ozmh3QbLf1cZ17USPITVQl5g1vdgQp79kXwp6BBn+8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HGD5+btI8mmptP5LEdk5H4TYchNUVEPIqy3nr9P60+MvUduWDWW4e5MGUKJ4dy3meRNKOSdep6QP9EXrLGvzfP0S8RyqZ7heDeNCtGDP+sUE3N2maxmQJ2TObFZsxNBUxsvlmMbKJF0QFaEjUM/wIwUgP0Zam+t1KoRwJO8386M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r/35t8fI; arc=none smtp.client-ip=209.85.215.176
+	s=arc-20240116; t=1774568859; c=relaxed/simple;
+	bh=whw5ih33RKzhzjxmn7G9KhAZAEVLCxqBpYjISYPPjr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Q2DTTHRysRzo93phy8yFy7Bs9Zethxhs4Fyl9q7MX2jngQSzoZW9LouHgqhbs6pRMsjbwbeayX7A6r02MIpW67tx+otjs9uVgbIvupGW8HzIjFcwXwWI/uqRonjP90P3Ej8foCJkiRJ7S2NV9pwNTD9oHCYuTBQ3/M3gmlWVyvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iGpMWln7; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c74f0c3fc16so572057a12.2
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 16:47:36 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c76864f4e58so40365a12.1
+        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 16:47:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774568855; x=1775173655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5DHuKVgXN+dD1YajVE7A08pLyTvO/MeTPUKN+QQ6x/Q=;
-        b=r/35t8fItdYTFh99+k9in1oMTUEIxs6UZKD86hca7IIPE6uO+SlmFBjpV3eksvptAr
-         wF4jWqdXM7hWZmvhe/p2OQfwfeerFPGnGXFfAzHiRKUBxroxfJtOjmM+5BgG6Np7jqDD
-         dXBpgIFgNoEVwCJK1NAuUyFOEv9cat6PhjXN5b7tU2fhIEqN0Zi5CufQhcYMjtq6rnux
-         rSk+od9vYhbiiHTcG89yyy0BHobDrzwkyOG0GtKjA+g/qOY9kKNyAfzdti1B0F1uyHUM
-         8snKKNOaiAe39IBYDj7ecYZNzGqCpuez4S9VwSia9+mBzI47Pj/DoUU1NBIHzrQ4K93z
-         eqag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774568855; x=1775173655;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774568857; x=1775173657; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5DHuKVgXN+dD1YajVE7A08pLyTvO/MeTPUKN+QQ6x/Q=;
-        b=Te7pNv1x0cDIFoOmccN104/e3F7LUmLYkApIgTr4dTkfqwISbg91JxkxB3+Y/AvxAk
-         h15o7nbDqLX9qWefDurof76JUsLObrdKAR3OUbjNCujpfbrKyNh7atBEPRFshSup1gIS
-         VKz7m+h1lc6kI9ohqvyg9E5tLk9ofAPz89gYYzB0IwU3sLPQ+oQbi+SkzTbQDKyxebqT
-         qo/ECbc0vm53iU8G4TGO/sU/1Ju0JpnNaUKMwYPHwrrX+D4sbFmeB1AQVtDmn1BZ8lQh
-         NgM2rRpSVAzBVeM8HWTkMWBreOi+3VC0cq677fC0JfU2Qx7bLm/ef26lNkWpH+pVgcdS
-         bRrw==
-X-Gm-Message-State: AOJu0Yyu5W/jpYVlaC6sZBQUcrU16DSjZM9UmbOz3WFjjP6JcapkLYpP
-	Z0NtFiNdoTrWDpe/YGu47zGDifU3DB6+qSqwv2M5tu7Fawm73jBy1RMqB1mCn3OC
-X-Gm-Gg: ATEYQzzE22PYoJoTW4H/isGwIzRq35dWsnO8T+4hGMsNiKYyEKTZM/hEoux3tEKE/il
-	/5zN0nEpCC66La5LquOHPVYQDn8ejS2sB1eiuRFa+fRZZmpy0LXQWrKZCnoh/cX4Iat56+Ax2Bh
-	AHzXS7Lja8zYT7eYYhbH4Mer8v1g2tTqwQ0nKgaL0C5/adSQGz7kG5q043uE0lqujf22uW8xHV8
-	QTQhQO+hDsKTmUaaf3efYvTdnw1VX7TXR+WB0YU5mrBHnWy5ThvSs+evJjhDz5YGMS5bVTYPJIm
-	kpd7kkZq67LFPZj/Ej/YDiBgKSE5pCJhDJxtwEO7AOgUTc3gesEYkTcIIDX4aCTmA5J2uHatNhI
-	YOn2+37lUM4wt2CTeTWBZQLcV/tkJNrc49sStFAJQvKbt9AfB5pZATESg/Zq7H60rg/PgZXWw7R
-	8OQdeng8qwDaDJZspr1e+T8WKbq3RmY6Td1vkgcjmTHwn1ItTg7BD8hX0vKaWmguquIw==
-X-Received: by 2002:a05:6a20:60d3:b0:39c:14c1:43f6 with SMTP id adf61e73a8af0-39c87c0b0b5mr394562637.61.1774568855408;
-        Thu, 26 Mar 2026 16:47:35 -0700 (PDT)
+        bh=jlXNZ6YErxvr6V0/1Nzao8eMwm0DA+edMLaU07KmQkY=;
+        b=iGpMWln7/gOOyCIdyrY9IIUUPax5Ihg/SM+WiQH4tbDBnzgKkOgyijltbnfQzKuxoI
+         Nf6iKem0iDX178mCpgy2Q/1zh21o03DWP7tDI5i/Q4UweSvJAF/G27pPtywGRN6E3i9m
+         xNZn6OafPbZf0Oh7f4gS7Q9X2XaXFau+YKvd6SbP8XjbAZXMeIOFagOrlUNcY5X898No
+         rvixebWR/ttU56QDQXdJ8Kd9Y6rwvSIl8aQHBXRyf/2hKYBCYj8eExoi8AM0N//JJ8Cl
+         Q9INmzygXWkURZxVJ9UGE4hrTpOKlra4Q0LJ5tlJ0nO6xm2xybHLflqnLOYOYVyV/G+v
+         HTOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774568857; x=1775173657;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jlXNZ6YErxvr6V0/1Nzao8eMwm0DA+edMLaU07KmQkY=;
+        b=o0zNJihV4B6n3VoxLes9qZG/PZAG6N9e25XDk1r9IxL5VzcP4W1nRps70jxltnGQw3
+         z2Zi6qbkB59uViMrVcJ6bg+bgymPYh77H5r3L7pICgAX3cefH8NgQfjO/dVsEtA+bpaO
+         j1XXxg5RNgNPbf9lDXeYqIzmscKL44sjpRpTuqKdgZZsZ1FMkVNVU63SbgLC+2KQMxjg
+         kf3A8Wdr5NR512CRPJHRXyF0V+zSyhrqoEJZsxbfwNDGXenksidT54Gmvf+Bgnwcdtbn
+         6BV8fE+CzQbpN+xX/RzTA3hOndvAeotP1XqbATMtzQQwuy0p861umLj/S0XF2bYqDN7D
+         Yr/Q==
+X-Gm-Message-State: AOJu0YwCC+5Vyo7AXJA9FmDcpgw5AQ3e2pbdHbjD+nCXY1hWwIRQAByl
+	MerxOSeqrE02xiWxJZuxNUC38My8E9op4oAhlFFGoJkx37lG/gtEGgQmKJKciH3Z
+X-Gm-Gg: ATEYQzy4njhnj/zBGPMGl49dqzCkCL/F6qNxluUteJBQZGzm+ANZLqh4EZitrCKddmk
+	MRAmstuigXEaRs1Z/oxWWlZvCO4oclW7IGWRp9fbFgkm9WLpVXlpojW2V3oeobA9coo4Eqik1/1
+	8+ONoYaF4GdelOothopPnj7pKyB67qQYj2uDVXcl3rzp9Y4EeovcTospPh5BYnzY2FnLhLOVVrK
+	cfKS5Mt3osZs97g7lsoOxdp7TAMHjOuIsK/lKd6aiqMIA6xhOeYDvNb/0/yFF0s+seat6KAh+Dh
+	8VPCjWl0py4VUBKy2Pmuiy48PHc3G54j/oB/f5h77PEGjB0fU+UJAciD6P8giYG3qEoCrjFmCoi
+	IJYNUEcy23ixwji5spGqhsoAJfEUMcLAUVy07aRR5QmdFtEob4X7KiRmrno0TPIvsP4H8cO4odn
+	Ao0iboljjYQ9tBA+vhXJVMPJVN64/uNzsN2iCFxNsj57EweBXRscWCR/A=
+X-Received: by 2002:a05:6a20:3d83:b0:398:4bf2:4285 with SMTP id adf61e73a8af0-39c877fe4bamr553257637.16.1774568857439;
+        Thu, 26 Mar 2026 16:47:37 -0700 (PDT)
 Received: from ryzen ([2601:644:8000:5b5d::8bd])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7673933816sm3201162a12.21.2026.03.26.16.47.33
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7673933816sm3201162a12.21.2026.03.26.16.47.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 16:47:34 -0700 (PDT)
+        Thu, 26 Mar 2026 16:47:36 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: stable@vger.kernel.org
 Cc: Alex Deucher <alexander.deucher@amd.com>,
@@ -99,85 +101,82 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
 	amd-gfx@lists.freedesktop.org (open list:RADEON and AMDGPU DRM DRIVERS),
 	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH for 6.12 0/9] drm: amdgpu: backport suspend fixes for
-Date: Thu, 26 Mar 2026 16:47:07 -0700
-Message-ID: <20260326234716.16723-1-rosenp@gmail.com>
+Subject: [PATCH for 6.12 1/9] drm/amd/amdgpu: decouple ASPM with pcie dpm
+Date: Thu, 26 Mar 2026 16:47:08 -0700
+Message-ID: <20260326234716.16723-2-rosenp@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260326234716.16723-1-rosenp@gmail.com>
+References: <20260326234716.16723-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amd.com,linux.ie,ffwll.ch,linuxfoundation.org,windriver.com,igalia.com,gmail.com,lists.freedesktop.org,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-230544-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[amd.com,linux.ie,ffwll.ch,linuxfoundation.org,windriver.com,igalia.com,gmail.com,lists.freedesktop.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	TAGGED_FROM(0.00)[bounces-230545-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D12AC33D391
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 5B90433D3B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Work that completed in kernel 6.18 resulted in working suspend with DC
-on old hardware. This series aims to backport it to 6.12 to have working
-suspend there as well.
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-All commits were applied with git cherry-pick, the only changes being
-adding upstream commit, and signing off.
+[ Upstream commit df0e722fbdbedb6f2b682dc2fad9e0c221e3622d ]
 
-Tested on AMD HD7750 with:
-radeon.si_support=0 amdgpu.si_support=1 amdgpu.dc=1
-on Arch Linux.
+ASPM doesn't need to be disabled if pcie dpm is disabled.
+So ASPM can be independantly enabled.
 
-Kenneth Feng (2):
-  drm/amd/amdgpu: decouple ASPM with pcie dpm
-  drm/amd/amdgpu: disable ASPM in some situations
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Timur Kristóf (7):
-  drm/amd/display: Disable fastboot on DCE 6 too
-  drm/amd/display: Reject modes with too high pixel clock on DCE6-10
-  drm/amd/display: Keep PLL0 running on DCE 6.0 and 6.4
-  drm/amd/display: Fix DCE 6.0 and 6.4 PLL programming.
-  drm/amd/display: Adjust DCE 8-10 clock, don't overclock by 15%
-  drm/amd/display: Disable scaling on DCE6 for now
-  drm/amd: Disable ASPM on SI
-
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    | 39 +++++++++++-
- .../display/dc/clk_mgr/dce100/dce_clk_mgr.c   | 20 ++++---
- .../display/dc/clk_mgr/dce60/dce60_clk_mgr.c  |  5 ++
- .../drm/amd/display/dc/dce60/dce60_resource.c | 59 +++++++++++++------
- .../amd/display/dc/hwss/dce110/dce110_hwseq.c |  6 +-
- .../dc/resource/dce100/dce100_resource.c      | 10 +++-
- .../dc/resource/dce80/dce80_resource.c        | 10 +++-
- 7 files changed, 117 insertions(+), 32 deletions(-)
-
---
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index d5e6d5ec69c8..dbee43c58741 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1782,8 +1782,6 @@ bool amdgpu_device_should_use_aspm(struct amdgpu_device *adev)
+ 	}
+ 	if (adev->flags & AMD_IS_APU)
+ 		return false;
+-	if (!(adev->pm.pp_feature & PP_PCIE_DPM_MASK))
+-		return false;
+ 	return pcie_aspm_enabled(adev->pdev);
+ }
+ 
+-- 
 2.53.0
 
 
