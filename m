@@ -1,179 +1,225 @@
-Return-Path: <stable+bounces-230456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOWNCKYmxWkU7QQAu9opvQ
-	(envelope-from <stable+bounces-230456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:29:26 +0100
+	id uDGNH10kxWkU7QQAu9opvQ
+	(envelope-from <stable+bounces-230454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:19:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87587335317
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:29:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71853351A5
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07C2630786D3
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 12:22:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1AF2300ADBC
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 12:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681B83F7A89;
-	Thu, 26 Mar 2026 12:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FD83F786B;
+	Thu, 26 Mar 2026 12:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="jhpEcI7Q";
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="RDYGKP4e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KR6GLlbV"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-01.yadro.com (mta-01.yadro.com [195.3.219.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CBA3B8D40;
-	Thu, 26 Mar 2026 12:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.3.219.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774527745; cv=none; b=FCVjdl1f0KqONwPGG5SWc/Tn7t9TcX12UgXOozjyQxYb4lqxeRk3+5beUQnvmKpmw8Kxqye9rUGh2zhAvdBSG9V0dk29yXLDGf3VRAsoSjKuQvWXU8QPTtGiNWpalkDB0ivAdrflAdWdPx8wenCwkjL8aULKgq2OvdUQfyha+yQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774527745; c=relaxed/simple;
-	bh=15VocTy4o/xxlpnNhqf5BJlz3r0bfkqXV7wtOp/ELIk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EvQ3s2ZmTzO1tc3sOwo8/gdHbcBEhkZBT7DFCHgYUMnjxtVvkA141S1LlZDCXu71pJF08DEAWlNJxTZK7eM8Sqpkuo7zYcwvSyj4gTZrIXz1ECU3Re6W/PezMh38AxM1tS+Lc7cZmngoCdHWchA1abRmpav98rzHqKvmLn7CJSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=jhpEcI7Q; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=RDYGKP4e; arc=none smtp.client-ip=195.3.219.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yadro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
-Received: from mta-01.yadro.com (localhost [127.0.0.1])
-	by mta-01.yadro.com (Postfix) with ESMTP id A2D6220015;
-	Thu, 26 Mar 2026 15:16:16 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-01.yadro.com A2D6220015
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-02;
-	t=1774527376; bh=FoOP4qebKTXWnvFydCw2Y595nhFLe9ikCfHLVPx27xw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From;
-	b=jhpEcI7QocnF2J04QrRuhpoS8iR/oHwMDscv3q9kcfPe1ieXmaC48auTaOWOXn0Db
-	 tLtvCxU7Zspf03LH8Q+6dY8iBI7nXowPfnnzsRTCl1q76bg/PoDt0z9vPr4eLuEsiE
-	 N+9m96IrEfzVyr8hRdfYOCl460ljUO49p4W6xhH9vyDrs2S7Bid78hTaw9onkZoT2r
-	 mcz1Y025w9g/JzSbms66+2ry2p7umolyeLgKaT8eLmmScVGSZGwc2e5vysu+SdQtgo
-	 6VjPdNB19W32LE/oBGlxmMXbkYMelqGCGTRVz52ycLn2oe/mbsjG9Nu1pIDA/hhabh
-	 sjNw4rd9mm9Mg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
-	t=1774527376; bh=FoOP4qebKTXWnvFydCw2Y595nhFLe9ikCfHLVPx27xw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From;
-	b=RDYGKP4ey2GS5JcEEyDTwXN57JkdWmhc+Asf9nzcKJBA0yvUJBC6AAIL6QIYdYjcz
-	 gpsO6K5IfNz9F6IzZuGgnFcPzQdISre9iNQeblpcBRswktSBhSFTByEqywugw/BojK
-	 +Lp9dO0rgvrmDEndb1SbWhMWG5EU50+nFRkNlFFrJcPStPPGaTp3moYctPOivXFIR+
-	 pobZtfSCcUsOXjmnGKX035oWD62J3X7AqJtQvprNDIgoV9mKXO2FIzkqUlf17rjjTd
-	 BxYTYnTzqTHsyGCyEjJDEzARlA4BJTQQl3BUHFMi1vaMyVMEYrJpCH4Iq8EKxlGA6t
-	 9yA4yD8IlOsaQ==
-Received: from RTM-EXCH-06.corp.yadro.com (unknown [10.34.9.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mta-01.yadro.com (Postfix) with ESMTPS;
-	Thu, 26 Mar 2026 15:16:13 +0300 (MSK)
-Received: from yadro.com (10.34.9.247) by RTM-EXCH-06.corp.yadro.com
- (10.34.9.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Thu, 26 Mar
- 2026 15:16:14 +0300
-Date: Thu, 26 Mar 2026 15:16:14 +0300
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
-To: Daniil Dulov <d.dulov@aladdin.ru>
-CC: Nilesh Javali <njavali@marvell.com>,
-	<GR-QLogic-Storage-Upstream@marvell.com>, "James E.J. Bottomley"
-	<James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
-	<martin.petersen@oracle.com>, Tony Battersby <tonyb@cybernetics.com>,
-	<linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] scsi: qla2xxx: Check if target mode enabled in case of
- task management commands
-Message-ID: <20260326121614.GA31733@yadro.com>
-References: <20260326094249.1366353-1-d.dulov@aladdin.ru>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573E733F8D4
+	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 12:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774527400; cv=pass; b=k0sjkI3cWDlgNmTpde+lJx7G/uCf6iFKaykdTZOsNp0Ja6UfDfXfeRpv/O/tVP+E6EnpsJ5FrSZ3YFM7Ym6/1KHYO3Dhf5BkEXwdMJMWw8RzZ0InFFU5pn9TxPe/nu4REybs3pSSkgeIBN2mZ7yxM6AOAfR8IkFV4qb9kGJwwDU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774527400; c=relaxed/simple;
+	bh=PYCc/ATpnym011AgK+0P6Tb2mKVBgUCH0DqbilqhAa4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=daXdwVq05u+a/RDU+SFBbYg8bYNNQ5lBow2nkih9ikjvlG4ZlrrgUKdwd2EEl31oqgbLIRjPEDY6+u1ij7U9wtBWjNrgWjP+prirKKHHP43dR8xbPkffZd80uC0BpNxZIWj/dOffjoKwWwjCsTeL+7pFLY+WbFmQcTE52BKTPXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KR6GLlbV; arc=pass smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-40ef10ec84cso719355fac.2
+        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 05:16:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774527398; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZBT8Yb9tn0LCZic0UZ1CA+nGBYV2dORwFXopU80WiNjbkW5mCLiNltUa8aUX9QgpTg
+         zThW16R5YA5y44QvdsXP/FvFKNf1cEj2Diy9Jr/MMy5SxSPLusLfU6AqSnHtdQfu5Jp/
+         Cuq0b4gCs3Y2sbXol/kHwQNepiyveTxbSp8bFK7VgS0HjvXXclyb6VdG9vVGaAWiWQBm
+         CAYR96eyu2QYQ2f6TZNImbVvUJhcW1/9zcj58KVtrm2WnJ61db6JtlXcQh1bCEa5H/by
+         o5WMJmBzyQwHJihU0DG6OIzZAXJx3UUMKio00LVAZLnAQzmtsX2cEMFBk4WMTkMEwj/J
+         bhSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IzqmWQY9PdTlI25+3zB4WndqeSZSv2VgqzxKhkjqgpE=;
+        fh=l8RFLEyEzIzGKmuVu2DpRBo/nYkEnS3358K5TvD85NE=;
+        b=W6qj5aGGgAGUHzIzCaofUDpob3qNoOKshkTe5HG+9uaSc588njs35N4S0rft0nFBcV
+         qhfnUeKZfWKLZ9rRzwnQcmKO7o+xNQSnhytPVJjwP9r9mYnBcAfrE+DuMoz/mCLr04SD
+         jIMvW3RJlufThyTCdIjsrUkC6n7mQau56cuejTfqOqcN+rOydW9szg9MGpNoCkr5whV7
+         n8EIjFGtSiF94Cajg9ZV4S3h1oUtT2WkqrG6i9Uf4APTuYDnXXeXPhTpfo88jzUmEfBN
+         n/DdlyT7vYLPPS5H/H607PO44Wo/yLTVm7PF+VT6Fh5XxEVpesUPDNJ+dvs6CxvPMUaP
+         JZmg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774527398; x=1775132198; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IzqmWQY9PdTlI25+3zB4WndqeSZSv2VgqzxKhkjqgpE=;
+        b=KR6GLlbViajL5EuvlpszLjw6tLDn9VLkSDqyHxqLhNRTY71sO4f1elKua5DyYn9utT
+         hB3NhI71bKJ1cxIb7yvBlEaZ4N/4QhS4evitpH13MD/Goe5RmTxVF4Bdlnt96GtBYsnr
+         J6IutPJaU/J+QDli6YYw1TpNpWNHT7stygevnIzlLwJ0/IjsS9gxhEn0r/LXOeUmhafo
+         XTLOsRw04qOWV6rSrGiP/7LoeFZ/hCHhIK2OzJ/gqZ+MIIAUgs59np33etMzSmZRwyjQ
+         LjEgVxlQU7ESHErj0z8nehgJLN2HRU17F71UypGnA6pa/p+1tgnnpPRnEAp2WP+X5gb9
+         A6xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774527398; x=1775132198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IzqmWQY9PdTlI25+3zB4WndqeSZSv2VgqzxKhkjqgpE=;
+        b=G+8tXMthVTfb39uUE5oTKqEFXl3InZQcW7soL1hAPGUdT2TneqnsVKUobw/6hGKs3o
+         gxEbiON/9z43NkcxWw+2XWtECuAwuUFrwKAgdE+jkEhNRDoFQbnh7vyzjsZ+S1qoywFA
+         Vyv3ovB2/b4QKyzOztidOwOaVmwt8G6qxOPI4GxpF0AUJi2vSrHTE5NH/JOr+dBa2Jnl
+         0u86tRM/ypyjkRvHYsDAf4Z9tbIYj/C/mUgdwqu5XcAqrS7dI6lZwcu28+AtwhUoYU1T
+         spYOZGCinoz3WVpGSVGuLy4sdhRRdK20CCAdZZMm4fVjiRAE19v0TUar9WGkDkaA0Txn
+         6vBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ8BI2DLPb3j2BfmfiRS92evy4poglNz51QOVw832IHpXJ2s5iNXoJm4PqSQgiirir5dAM4zQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWj7dWQR7bGgO9QGqWTKG2fRcT5BdLvvp6q/xNDx9DTBKSJjzF
+	F8+mfTrnsOch2rCn0tiZH7iyu8uggP8P/PypfimMUwaHCdeRZCWPsUJ4jnHyD3jFy6wfEVHxcOU
+	OvUP9hdqaPz5S0gMQ+BMtcg7gsXOE4wU=
+X-Gm-Gg: ATEYQzz+xWymM2QB/P/2iljQaD39uREa/aa87o4AF8Y7hBSv7UazVaRnW0AMc9JkaOG
+	9gWjedVPaBdZYrJ2AVv4iyOJUqG3yD8FvmOO+DX/j/AGS6ABeLR6QUMV50JNdQ1KVb0pRRxH+Sc
+	Kd4cjBSeLIM8JB09+373DElvgXUQnQq5+7YjnELtXGRgfmQWM0u18SQpFbi/COiVeExc+Ha7q33
+	S5fTgSrma35xQjMkx1G99ZFX45bLMK/Z26cQd5nsJK472GUGZD7TL6T5H8YEvKO97F2/Qd4n/I6
+	+chqzRw=
+X-Received: by 2002:a05:6870:458c:b0:417:4c0a:1ff4 with SMTP id
+ 586e51a60fabf-41ca6d15f6amr4017036fac.10.1774527398240; Thu, 26 Mar 2026
+ 05:16:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260326094249.1366353-1-d.dulov@aladdin.ru>
-X-ClientProxiedBy: RTM-EXCH-01.corp.yadro.com (10.34.9.201) To
- RTM-EXCH-06.corp.yadro.com (10.34.9.206)
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/03/26 12:00:00
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/03/26 09:27:00 #28335688
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-KATA-Status: Not Scanned
-X-KSMG-LinksScanning: NotDetected, bases: 2026/03/26 12:00:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
+References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+ <20260326013719.1662-1-fjhhz1997@gmail.com>
+In-Reply-To: <20260326013719.1662-1-fjhhz1997@gmail.com>
+From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
+Date: Thu, 26 Mar 2026 13:16:27 +0100
+X-Gm-Features: AQROBzC5df8Kx53ffXvlh9wIgTM-6dOUFOdkLJ4dqCoP6Ot6c-qSsWpAuHW8GuQ
+Message-ID: <CA+bbHrX3CdXqW6b0GbY_C7rmte3_9Q=89TJN=A2EBCQM1xSzag@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access
+ when deleting the virtual interface
+To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>
+Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[yadro.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[yadro.com:s=mta-02,yadro.com:s=mta-03];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[yadro.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230456-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230454-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[d.bogdanov@yadro.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,aladdin.ru:email,yadro.com:dkim,yadro.com:mid]
-X-Rspamd-Queue-Id: 87587335317
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,aliexpress.com:url]
+X-Rspamd-Queue-Id: A71853351A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 12:42:49PM +0300, Daniil Dulov wrote:
-> 
-> TYPE_TGT_TMCMD are not being skipped now, but tgt_ops are dereferenced
-> in qlt_free_ul_cmd() without checking if target mode is enabled. However,
-> it is possible that commands requiring target mode to be enabled are
+Hi, in response to the three points:
 
-Is is really possible? TYPE_TGT_TMCMD is allocated using tgt_ops
-pointer. So at creation time tgt_ops was a valid.
+1. VMware
 
-> received while target mode is disabled as it is seen in TYPE_TGT_CMD case.
+2. This is the output of the lsusb command: "Bus 004 Device 002: ID
+0e8d:7961 MediaTek Inc. Wireless_Device". The adapter is very cheap,
+it=E2=80=99s a Fenvi AX1800 (MT7921U), this one:
+https://s.click.aliexpress.com/e/_okxhxNl . But as I said, the bug
+also happens when using the Alfa AWUS036AXML (MT7921AUN).
 
-That condition in TYPE_TGT_CMD is also some legacy leftover.
+3. I=E2=80=99m not sure about this right now. I=E2=80=99d say everything di=
+es. I=E2=80=99ll
+test that to see if SSH is still available (I don=E2=80=99t think so, but I=
+=E2=80=99m
+not 100% sure at the moment).
 
-Race condition when tgt_ops might be get nulled during HBA reset was fixed in
-https://lore.kernel.org/all/20210415203554.27890-1-d.bogdanov@yadro.com/
+Give me a few days. I=E2=80=99ll test this again over the weekend. I=E2=80=
+=99ll also
+run a test on bare metal (not in a VM). That said, like me, many
+people use VMs for pentesting. So even if it works on bare metal,
+which I=E2=80=99ll test this weekend, I think it would still be worth
+investigating whether it can be fixed for VMs, since many people,
+myself included, use them for work. If it works with other WiFi
+adapters, it would be a big drawback if it didn=E2=80=99t work with MediaTe=
+k
+adapters.
 
-> To fix the issue check if target mode is enabled in TYPE_TGT_TMCMD
-> case as well.
-> 
-> Fixes: d46c69a087aa ("scsi: qla2xxx: Clear cmds after chip reset")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-> ---
->  drivers/scsi/qla2xxx/qla_os.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-> index 72b1c28e4dae..e81ef3629aaa 100644
-> --- a/drivers/scsi/qla2xxx/qla_os.c
-> +++ b/drivers/scsi/qla2xxx/qla_os.c
-> @@ -1890,6 +1890,13 @@ __qla2x00_abort_all_cmds(struct qla_qpair *qp, int res)
->                                 }
->                                 break;
->                         case TYPE_TGT_TMCMD:
-> +                               if (!vha->hw->tgt.tgt_ops || !tgt ||
-> +                                   qla_ini_mode_enabled(vha)) {
-> +                                       ql_dbg(ql_dbg_tgt_mgt, vha, 0xf004,
-> +                                           "HOST-ABORT-HNDLR: dpc_flags=%lx. Target mode disabled\n",
-> +                                           vha->dpc_flags);
-> +                                       continue;
-> +                               }
->                                 /*
->                                  * Currently, only ABTS response gets on the
->                                  * outstanding_cmds[]
-> --
-> 2.34.1
-> 
+I=E2=80=99ll also reply with a similar message in the thread.
+
+Thanks and regards.
+--
+Oscar
+
+OpenPGP Key: DA9C60E9 ||
+https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+--
+
+El jue, 26 mar 2026 a las 2:37, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz1997@gma=
+il.com>) escribi=C3=B3:
+>
+> Hi =C3=93scar,
+>
+> Lucid-Duck spent some time trying to reproduce your crash and wasn't able
+> to trigger it. Here's a summary of what was tested:
+>
+> - Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v2
+>   patch applied
+> - MT7921AU USB adapter, passthrough to VM
+> - Full airgeddon evil twin flow: monitor VIF + hostapd AP + continuous
+>   deauth via aireplay-ng
+> - Also tested on bare metal Fedora 6.19.8 with the same adapter
+>
+> All tests were stable -- no crash, no dmesg errors, load stayed low. The
+> deauth frames were confirmed sending for 30+ seconds under the v2 patch
+> without issues.
+>
+> The one variable that couldn't be matched was the VM hypervisor.
+> Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kernel
+> level (xHCI). If you're using VirtualBox or VMware, the USB passthrough
+> path is quite different (userspace proxy), and that could potentially
+> explain a total VM freeze that isn't a kernel panic.
+>
+> Could you please reply to Lucid-Duck directly on GitHub with the
+> following information? Here's the link:
+> https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4129198757
+>
+> 1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, etc.)
+> 2. Your exact USB adapter model and ID? (0e8d:7961 covers several
+>    MT7921 variants)
+> 3. If possible, try SSHing into the VM from the host while the display
+>    is frozen -- if SSH still works, the issue is at the hypervisor/displa=
+y
+>    level, not the kernel.
+>
+> Thanks,
+> =E5=82=85=E7=BB=A7=E6=99=97
 
