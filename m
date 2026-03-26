@@ -1,171 +1,171 @@
-Return-Path: <stable+bounces-230460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHbMC4EtxWnb7gQAu9opvQ
-	(envelope-from <stable+bounces-230460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:58:41 +0100
+	id aM96B6UxxWkP8AQAu9opvQ
+	(envelope-from <stable+bounces-230461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 14:16:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996283359C2
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:58:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7276335CD1
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 14:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C210F300E162
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 12:58:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEEF8301F336
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 13:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A531A28467D;
-	Thu, 26 Mar 2026 12:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047BB2989BC;
+	Thu, 26 Mar 2026 13:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYOd/acu"
 X-Original-To: stable@vger.kernel.org
-Received: from outboundhk.mxmail.xiaomi.com (unknown [207.226.244.123])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F8123D2AB;
-	Thu, 26 Mar 2026 12:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DFF50276;
+	Thu, 26 Mar 2026 13:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774529896; cv=none; b=i1M6ve+m6yEHJrx63ueRe3yRvoZZ8JzV08zO9vBpVGDmO6Z7+3/XUOA3i+TmBdxKkKwM+KBRjcSSAmgRVXPUge72vc2kh+hG58D3onl8ZFSUdagK8rGjIMZwj2Z5PdJbRdD4/bEMsPlxKVviLdcyijCyjwT70/Gcc2XKUVTxKto=
+	t=1774530591; cv=none; b=o5izMUM12Ry8Ht8BiN2YUpaIQ+Oq33REMwIRQ+079TkWjmCeMc0IXLmDb/1CqPl5hy+RnjpC4N1oSRiu4ugwdKJEbao7iwqrfuakMYJa/MRGXp6FxgPHfoEQS9TlOtwTLoOJZcxI25C2+bXrPzq7lsY3JqNFynfr0YL3UCAKebk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774529896; c=relaxed/simple;
-	bh=oXo++8QkiS+RCSD7fllVubL4zBcYEotY3CNFSGzSi/4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SGei2LjeEshtd1NbpD60dmkZAF0q6dOguBYcEDZyeYYPrmPM7AC16lbyTlubEXfOG827FH8Qow6WxupP1gybUVd+6Cl4q1F1VIFCyNQuQM3ZbyHOzrQLwxLrh1aMkBej5vhcMoqGizFCZzdbuo4kMqn0E48QgojA/O8NdD0IAwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
-X-CSE-ConnectionGUID: lSXvh1AFTTaaoss9pDsJag==
-X-CSE-MsgGUID: QVnBldPRTDaQQjlyuic97A==
-X-IronPort-AV: E=Sophos;i="6.23,142,1770566400"; 
-   d="scan'208";a="170856193"
-Date: Thu, 26 Mar 2026 20:58:08 +0800
-From: Dayu Jiang <jiangdayu@xiaomi.com>
-To: Kuen-Han Tsai <khtsai@google.com>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, David Brownell
-	<dbrownell@users.sourceforge.net>, <linux-usb@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect
- and eth_stop
-Message-ID: <acUtYO9PZKwNyXTp@oa-jiangdayu.localdomain>
-References: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
+	s=arc-20240116; t=1774530591; c=relaxed/simple;
+	bh=er3KzhSuAGfHatEh8lJMvE7A0kqZ7oRX7FqUVAt4bY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tIwdB+9Mo4pXWvF6Z5gQmmv/7q0fx90s7y3IV+5AP7Pv+ycnCVAZAfIgZ4lJUI6huYNQDsgQmizc6cmMNPP5XdIGTnKfsCKxFsUHOel735e+SYzDm/vGCxaAXoLsGz+kwxWJBobsEQxc5LxkN98/Dq8wfkLJxZ1H43gXWJBXIcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYOd/acu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FA6C19424;
+	Thu, 26 Mar 2026 13:09:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774530591;
+	bh=er3KzhSuAGfHatEh8lJMvE7A0kqZ7oRX7FqUVAt4bY8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lYOd/acuH2hB+D5XL8xFR1uRx5UTQvLtDsOhF76D/IEBt9Kc4VPkxqjdAuQ/dIvwf
+	 Cd5kGEoQfNqHN35P9EJfqaw3f5YzSdr0VEtKElZdzzL33v0gwvb8GlmoYVAfbf3Hko
+	 g/rmb1Wi+FgMtysUIe0UCWkrGWfYL6LidzzRJKcfQlh+zlakgTbbUFcL3zI+ThkWhS
+	 4sDaft9JZs6HASwxpTPaSFjq1ez3apPWpdDPieYGYZf0sOj8yB+Nc1gV1wHCKpjsdB
+	 YhKr9Gfz/X09xL3QAdCwU4m29GDh8YDDQZDchFvgUd6YE4Mvy6j+I3r7qjBYOS7yrO
+	 SyLnF6btI1obA==
+Date: Thu, 26 Mar 2026 14:09:27 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Janne Grunau <j@jannau.net>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Simon Glass <sjg@chromium.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] kbuild: modules-cpio-pkg: Respect INSTALL_MOD_PATH
+Message-ID: <acUwBwms3Gjrujwn@levanger>
+Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
+	Janne Grunau <j@jannau.net>, Nathan Chancellor <nathan@kernel.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Simon Glass <sjg@chromium.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+References: <20260325-kbuild-modules-cpio-pkg-usr-merge-v2-1-339ac87d82ea@jannau.net>
+ <20260326104557.GC2137845@robin.jannau.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="gbk"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
-X-ClientProxiedBy: BJ-MBX19.mioffice.cn (10.237.8.139) To BJ-MBX03.mioffice.cn
- (10.237.8.123)
-X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[xiaomi.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+In-Reply-To: <20260326104557.GC2137845@robin.jannau.net>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiangdayu@xiaomi.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230461-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230460-lists,stable=lfdr.de];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 996283359C2
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B7276335CD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 11, 2026 at 05:12:15PM +0800, Kuen-Han Tsai wrote:
-> A race condition between gether_disconnect() and eth_stop() leads to a
-> NULL pointer dereference. Specifically, if eth_stop() is triggered
-> concurrently while gether_disconnect() is tearing down the endpoints,
-> eth_stop() attempts to access the cleared endpoint descriptor, causing
-> the following NPE:
+On Thu, Mar 26, 2026 at 11:45:57AM +0100, Janne Grunau wrote:
+> On Wed, Mar 25, 2026 at 03:57:25PM +0100, Janne Grunau wrote:
+> > The modules-cpio-pkg target added in commit 2a9c8c0b59d3 ("kbuild: add
+> > target to build a cpio containing modules") is incompatible with
+> > initramfs with merged /lib and /usr/lib directories [1]. "/lib" cannot
+> > be a link and directory at the same time.
+> > Respect a non-empty INSTALL_MOD_PATH in the modules-cpio-pkg target so
+> > that `make INSTALL_MOD_PATH=/usr modules-cpio-pkg` results in the same
+> > module install location as `make INSTALL_MOD_PATH=/usr modules_install`.
+> > 
+> > Tested with Fedora distribution initramfs produced by dracut.
+> > 
+> > Link: https://systemd.io/THE_CASE_FOR_THE_USR_MERGE/ [1]
+> > Fixes: 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Simon Glass <sjg@chromium.org>
+> > Signed-off-by: Janne Grunau <j@jannau.net>
+> > ---
+> > Hej,
+> > 
+> > this patch allows to produce modules-cpio initramfs which are compatible
+> > with initramfs with merged /lib and /usr/lib (/lib as symlink to
+> > /usr/lib). I expect initramfs of distributions with merged /usr to have
+> > a merged /usr as well. This is at least true for Fedora initramfs built
+> > with dracut.
+> > 
+> > Janne
+> > ---
+> > Changes in v2:
+> > - drop pointless avoidance of repeated slashes
+> > - comment the changed Makefile rule
+> > - break long modles-cpio-pkg help text to 2 lines
+> > - imported Simon's Rb:
+> > - add fixes tag for commit 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
+> > - Link to v1: https://lore.kernel.org/r/20260320-kbuild-modules-cpio-pkg-usr-merge-v1-1-cee1ad1bb7cb@jannau.net
+> > ---
+> >  scripts/Makefile.package | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/scripts/Makefile.package b/scripts/Makefile.package
+> > index 0ec946f9b905f74f8698d8d6967d22f5b76f64e0..c19b88b346d0632cc99e74617d79b07d81d48635 100644
+> > --- a/scripts/Makefile.package
+> > +++ b/scripts/Makefile.package
+> > @@ -195,7 +195,8 @@ tar%-pkg: linux-$(KERNELRELEASE)-$(ARCH).tar.% FORCE
+> >  .tmp_modules_cpio: FORCE
+> >  	$(Q)$(MAKE) -f $(srctree)/Makefile
+> >  	$(Q)rm -rf $@
+> > -	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@ modules_install
+> > +	# Prepend INSTALL_MOD_PATH inside the staging dir
 > 
->   Unable to handle kernel NULL pointer dereference
->   Call trace:
->    __dwc3_gadget_ep_enable+0x60/0x788
->    dwc3_gadget_ep_enable+0x70/0xe4
->    usb_ep_enable+0x60/0x15c
->    eth_stop+0xb8/0x108
+> The comment needs to be indented with spaces. With a tab it gets printed
+> to the shell.
 > 
-> Because eth_stop() crashes while holding the dev->lock, the thread
-> running gether_disconnect() fails to acquire the same lock and spins
-> forever, resulting in a hardlockup:
+> I'll send a v3 tomorrow
 > 
->   Core - Debugging Information for Hardlockup core(7)
->   Call trace:
->    queued_spin_lock_slowpath+0x94/0x488
->    _raw_spin_lock+0x64/0x6c
->    gether_disconnect+0x19c/0x1e8
->    ncm_set_alt+0x68/0x1a0
->    composite_setup+0x6a0/0xc50
-> 
-> The root cause is that the clearing of dev->port_usb in
-> gether_disconnect() is delayed until the end of the function.
-> 
-> Move the clearing of dev->port_usb to the very beginning of
-> gether_disconnect() while holding dev->lock. This cuts off the link
-> immediately, ensuring eth_stop() will see dev->port_usb as NULL and
-> safely bail out.
->
-Hi Greg,
-Hit the same issue during NCM switch stress test.
-Can you take a look at this patch and check if it¡¯s ready for merge?
+> Janne
 
-Thanks,
-Dayu Jiang
-> Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-> ---
->  drivers/usb/gadget/function/u_ether.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-> index 338f6e2a85a9..2c970a0eafd9 100644
-> --- a/drivers/usb/gadget/function/u_ether.c
-> +++ b/drivers/usb/gadget/function/u_ether.c
-> @@ -1246,6 +1246,11 @@ void gether_disconnect(struct gether *link)
->  
->  	DBG(dev, "%s\n", __func__);
->  
-> +	spin_lock(&dev->lock);
-> +	dev->port_usb = NULL;
-> +	link->is_suspend = false;
-> +	spin_unlock(&dev->lock);
-> +
->  	netif_stop_queue(dev->net);
->  	netif_carrier_off(dev->net);
->  
-> @@ -1283,11 +1288,6 @@ void gether_disconnect(struct gether *link)
->  	dev->header_len = 0;
->  	dev->unwrap = NULL;
->  	dev->wrap = NULL;
-> -
-> -	spin_lock(&dev->lock);
-> -	dev->port_usb = NULL;
-> -	link->is_suspend = false;
-> -	spin_unlock(&dev->lock);
->  }
->  EXPORT_SYMBOL_GPL(gether_disconnect);
->  
-> 
-> ---
-> base-commit: 1be3b77de4eb89af8ae2fd6610546be778e25589
-> change-id: 20260311-gether-disconnect-npe-5861d9831dff
-> 
-> Best regards,
-> -- 
-> Kuen-Han Tsai <khtsai@google.com>
-> 
+Please just remove the comment.  With v2 the change is such simple that
+it's obvious what is done here.
+
+-- 
+Nicolas
 
