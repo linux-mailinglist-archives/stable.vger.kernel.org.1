@@ -1,121 +1,150 @@
-Return-Path: <stable+bounces-230416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDPeG5amxGmZ1wQAu9opvQ
-	(envelope-from <stable+bounces-230416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 04:23:02 +0100
+	id 1a7COuapxGly2AQAu9opvQ
+	(envelope-from <stable+bounces-230417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 04:37:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A57932EBFC
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 04:23:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C6A32EDD5
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 04:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8231A3031ED9
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 03:20:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C2083017C34
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 03:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABB939D6CA;
-	Thu, 26 Mar 2026 03:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0482392821;
+	Thu, 26 Mar 2026 03:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dC6rpezc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drH4eTLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA84B39F165;
-	Thu, 26 Mar 2026 03:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05CE37F756;
+	Thu, 26 Mar 2026 03:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774495190; cv=none; b=M2IuAEB/7G8/eJw8aK0Qge+wfr7VRJtAC6BLtuZLQNEmDZFja9oKkJlHVGTOWAuxlp8nLdgVF9WUKl/H8Z9+uPaiLdKYSOvkVHLzmEeKpf4cnvohQgGIutfaCVHSELSijLDZhbyPJPdxFd96XTNNcxhLIXK+XbhNTBjVYRk3StY=
+	t=1774495986; cv=none; b=bu6IDGd2w9/4ddfr/yu0F7n4kApQ2knZJmIoVVaOOClq397YWJ1oxwX151N3V51DLcB3xiY5fBkJAvNz+v9WHHka/PJb1mQhF9u+z/GwmBP5no7JQMJ3XbarxH8R3zwpeYTEno98QIguCzsesmyNy/exp53dQJ4dkttAPvaVpUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774495190; c=relaxed/simple;
-	bh=/M7mOqCX1K7TXaJhj2uzZY1b/rLm7BLy/+oKGNGIdhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltlgX4d3mfGi1KNk669dWn2ONIERoVmSP7v/emGlr8HzU4leJj1MV56dv1eLnV7ziH71jl7ql0hPI/k30WqQDC/ypT20pP+kEzdi5zmHOB6jRQYgTjYka8RKa7BM8rqXUZkDxKnxG0+R/LQDhdu5ta6BAvnypI7YldYg57Rk8BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dC6rpezc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444A2C2BCB1;
-	Thu, 26 Mar 2026 03:19:48 +0000 (UTC)
+	s=arc-20240116; t=1774495986; c=relaxed/simple;
+	bh=Tf1Gc+wdaA69JC/0diifOEr9gLMWAOHHyznsWH5jEEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K+3hbzavxUslD4JpmsT6ugpUOG0YuK2BX2VNQr2j5a6QPc4SbfExKvN4iBR1+8rI2NkGFsAYt82v+lh6jbZeOOoVpvQY8xxjeddPN+aWxUR7sPR9qiQPg7l0ObWZsZKJCaK2C9LSqPcmK4RngY3MRji9ehhbeyS0JJQK2u1VcV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drH4eTLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8232C4CEF7;
+	Thu, 26 Mar 2026 03:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774495189;
-	bh=/M7mOqCX1K7TXaJhj2uzZY1b/rLm7BLy/+oKGNGIdhQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC6rpezcgvWFoKd97ZwiNGADaynI7+0s4k94u2Of0/e+y50zdUAQbeO9wsKaxl0jt
-	 mEmr202OmhgHy6F9fCl7yxflo5ZgkRYbEVm1e0J5956zgkdLVMlpxuNekrACeHZ5dA
-	 qdo7e14MFmNV6zawlNfAF1wwOhGcP4drjWAfq9LPP2cPt/roCUgP1G/Nt0S0yHmObs
-	 Qz0lJvUECPTeSa2mfmhsUnbh/HeNNfaXUhDGvCmrbUmky84aU2yZshirN52GzmXa3A
-	 SQGqeAFKHPOhcN/bDIC7p0IAbkstvyF1x8jDy66VuaUs4C2j/bWoy8PCQ7nVuv1ynH
-	 kjm0YZFYCwV3Q==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Shazad Hussain <quic_shazhuss@quicinc.com>,
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=k20201202; t=1774495986;
+	bh=Tf1Gc+wdaA69JC/0diifOEr9gLMWAOHHyznsWH5jEEQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=drH4eTLXJ0sbgyelffhZhxTdhuW2c2k2Iw2nd3zgjA5+KZvu+vcWt42lnkEvEaeiD
+	 91K0kuwfQL8KjYwJD64u5rbUbqDag8DOXIOpWM3hAaXnbRk7KXsScjITvWw5GUrPry
+	 oRggzwnaXZiKUI4nH0kigRtdpTA+39l9pG1rNq6jjozZJ4swY2GmmWcGGUSm8rOQ5+
+	 gDDi91I6urNFz40gZ/eel+si5lUPsnw7oC4lUyF0QUCs7bFeApOJewQpSTl2pWIYGt
+	 myrwKZl2H1m/m8gUJOy9t3csdQxKXJKXE79HE0H4DtLzX/3ul67KGkfQzQxoILNkfs
+	 dMy4Kd1rFOxcQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Eric Biggers <ebiggers@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: qcom: lemans: Correct QUP interrupt numbers
-Date: Wed, 25 Mar 2026 22:19:29 -0500
-Message-ID: <177449516592.60308.9671178778300798173.b4-ty@kernel.org>
+Subject: [PATCH] lib/crypto: chacha - Zeroize permuted_state before it leaves scope
+Date: Wed, 25 Mar 2026 20:29:20 -0700
+Message-ID: <20260326032920.39408-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325-lemans-irq-num-v1-1-a470d544966a@oss.qualcomm.com>
-References: <20260325-lemans-irq-num-v1-1-a470d544966a@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230416-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230417-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2A57932EBFC
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 40C6A32EDD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Since the ChaCha permutation is invertible, the local variable
+'permuted_state' is sufficient to compute the original 'state', and thus
+the key, even after the permutation has been done.
 
-On Wed, 25 Mar 2026 18:30:37 +0530, Viken Dadhaniya wrote:
-> Fix GIC_SPI interrupt numbers for QUPv3 SE6 nodes on Lemans SoC.
-> Using incorrect interrupt lines can prevent IRQs from triggering
-> and break I2C, SPI, and UART operation.
-> 
-> 
+While the kernel is quite inconsistent about zeroizing secrets on the
+stack (and some prominent userspace crypto libraries don't bother at all
+since it's not guaranteed to work anyway), the kernel does try to do it
+as a best practice, especially in cases involving the RNG.
 
-Applied, thanks!
+Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
 
-[1/1] arm64: dts: qcom: lemans: Correct QUP interrupt numbers
-      commit: a8c84db62c97dad3625c08d7aef4311a71fb0d27
+Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
 
-Best regards,
+This patch is targeting libcrypto-fixes
+
+ lib/crypto/chacha-block-generic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/lib/crypto/chacha-block-generic.c b/lib/crypto/chacha-block-generic.c
+index 77f68de71066..4a6d627580cb 100644
+--- a/lib/crypto/chacha-block-generic.c
++++ b/lib/crypto/chacha-block-generic.c
+@@ -85,10 +85,12 @@ void chacha_block_generic(struct chacha_state *state,
+ 	for (i = 0; i < ARRAY_SIZE(state->x); i++)
+ 		put_unaligned_le32(permuted_state.x[i] + state->x[i],
+ 				   &out[i * sizeof(u32)]);
+ 
+ 	state->x[12]++;
++
++	chacha_zeroize_state(&permuted_state);
+ }
+ EXPORT_SYMBOL(chacha_block_generic);
+ 
+ /**
+  * hchacha_block_generic - abbreviated ChaCha core, for XChaCha
+@@ -108,7 +110,9 @@ void hchacha_block_generic(const struct chacha_state *state,
+ 
+ 	chacha_permute(&permuted_state, nrounds);
+ 
+ 	memcpy(&out[0], &permuted_state.x[0], 16);
+ 	memcpy(&out[4], &permuted_state.x[12], 16);
++
++	chacha_zeroize_state(&permuted_state);
+ }
+ EXPORT_SYMBOL(hchacha_block_generic);
+
+base-commit: 0138af2472dfdef0d56fc4697416eaa0ff2589bd
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.53.0
+
 
