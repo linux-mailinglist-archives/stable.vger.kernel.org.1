@@ -1,95 +1,63 @@
-Return-Path: <stable+bounces-230526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CixA/GOxWlG/QQAu9opvQ
-	(envelope-from <stable+bounces-230526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:54:25 +0100
+	id WEy/BUmRxWlG/QQAu9opvQ
+	(envelope-from <stable+bounces-230527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:04:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9B833B286
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:54:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1D033B394
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 21:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A50230B6A2A
-	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 19:48:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC42F30107F9
+	for <lists+stable@lfdr.de>; Thu, 26 Mar 2026 20:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5639634E754;
-	Thu, 26 Mar 2026 19:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9F834C815;
+	Thu, 26 Mar 2026 20:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="lB1140pd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhhP0pHm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A298F34CFDA
-	for <stable@vger.kernel.org>; Thu, 26 Mar 2026 19:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC740823DD;
+	Thu, 26 Mar 2026 20:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774554532; cv=none; b=QzDYX/au2Ux7rfeaHvsAu5LT6eWZCaHMS2yf2IIjSxqySLzeZP+2k2cLqN8ymA2x8Lbh5fd7/kVQLyP5Mjwbm/Mfrl24RT2gxrdJ01B3rtpe/XEWjp4h8l97XeLi6wGq1obIilHzf6+eXorUCZlfzV3vLczwRISSb8UtH0VH8IY=
+	t=1774555297; cv=none; b=isqGwJq3V86uCMi4SxXoaamdSG/yNpyW6lTWWJhV7rxybH42AzLSyzmNrUG+HAw5E/XrAfyuYTj91ECbEFYznVHY9kbIAP6wEOqzo144o/1B+RlxxRBO/5xZ1Vo8e/usmrG4avxadriIoAnP2df03zz7HqfyQ8h1cPu6u35pNc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774554532; c=relaxed/simple;
-	bh=wyI53cHLh4BIgCM0ffLwIHRJXy0SO5cJeVuYYiW1xi4=;
+	s=arc-20240116; t=1774555297; c=relaxed/simple;
+	bh=jK7Uvx3qiOAu88aK2LbmX3iGTbCOWx9vtglc4wZEfmQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOhLNcJov4GuXmhZe/U8r5QXM8kji77+xyMwFVypydAl41+NbLxdqOaffhuZdRqbBM7u5SlTGqhI5BJOLjrdMzrLcFsK0wSpHkBHUCXxu1Rpptm6eODa+4twYTGnmDuUeOCPWHKo0yYQABICuDorFyYFa5zIfsuRpE83z6himFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=lB1140pd; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cfbbf35354so189165785a.0
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 12:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1774554529; x=1775159329; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Y8SN5o1ZkvY84l2Y0g1HhDr11A0odVfZb13rFexrew=;
-        b=lB1140pd9C7fcVB6f8UW1kmkie4YkVH5vVzTfkBMF4x6qSZL06WeD3xVeoD4brSiP4
-         enVx0pk90r0h5reiiEu3jlt2q2ATMPre5jUEvB58hsDilQCsm6SuYz9aX1V8uRF1msxV
-         2zR/yjDQVwnD2JFvM1T6megsC3IXxY3eCufUTlespF1CR2kedV+kjME/hHA+oG3GDl7M
-         NMXcGXyrpj0MEbFKTxmlHxYgFgXsfW/pqEH9ds4QH1HxmpIVhtPrbNNaPP9KWoGSnkRM
-         c4r5ByDYmCaFpUKw/x8THFQH9scAgx+rN/FAjlLHwxKUnie62ZLjgxSteJhlnh2sAiII
-         PBNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774554529; x=1775159329;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Y8SN5o1ZkvY84l2Y0g1HhDr11A0odVfZb13rFexrew=;
-        b=l64sYPt3ztSMvNk2X0bd/JxvUuZ+kqi6S7ZrjqG7sdfvLozXkvu32vY08Mib/bjjiV
-         HKSgPYtO8uqcPxwgGNXch+sJn/rrhuy0ifbVdWXDXO5wyzyWpQ2ua5LPt6IzWyGheQC5
-         MmsLA75wtEv8FZD1rZCx1Lb2w9XuWu1Gb7aEmDsG7IUMV/DmEEpbo3WGR2qbV2zOnsgW
-         9R8PkV4l5QXExfqyAiA2Q9t21ltT62mjDjiXGq4+ezndaNlTiv7QvF9KPJnVPlg9pvNs
-         kr0pV47bkp2KWvfj4AoJyKtMAJdfMlv8+VLP5d3AE5lyr4Xo5Itg+jvTMr9xSnb7WBBq
-         QZpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbpG+pMKF4RtutFaZuYh78J9QqZBFiVlWFPDElHG/kUJDWwis7c7ia1+RyS61mt/7L2TC7jzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBBRbASsiyvLg3NesJ4KTH08lMp4fWApiYUAKD/x5Ibuxg8RYf
-	/kj4at2gCqvkJeJuFcZwcwnewjUMncrpR/oDnWFWsDFG9dV4VlwERjt4aMbkhNgH6TM=
-X-Gm-Gg: ATEYQzwG7fEwV+da3RgkgQCDB4KjmqeFJe73tjSrRo/httvTcQpSPfxPVG/069qQ0A7
-	B/530ji5kk/WKQ4cyI5gdjpl2qGA0kmu3gS7Lm3qjZsUL+ta/iNyY671xqyp1g5DGb3DxwOR/Sy
-	Bp7fK9at3TBZy1XmnEM3FVdOUiPR1gsF38H5Y50Z8x8u6zLWRW6A8EffDKSO6KvoZzc2WBbYA1C
-	44hq1h3pPvug+VVp7XQx3TvAfS9YUJJPaYWPxtAJ/iBplyjCITMdKBf/XkqW6KekVJxzgeYQu+5
-	4K6TR2mCq/ye7Bc8BbjNp5RSiAPgVIAMZ1F2rk03OGeoEJgdaZQwHY79w+2HohdaloB0l18giIZ
-	XQdrVypzjYEsx0QbhXmHMw8Q7wd8H862CX5Y69261wCeANcUq+Fy8SXNWTBQu624kUNF+A8z+EQ
-	EcZxBzvr3BR7aCQFuUnoeQ
-X-Received: by 2002:a05:620a:46a5:b0:8b6:1877:3689 with SMTP id af79cd13be357-8d00101300amr1194245185a.35.1774554529547;
-        Thu, 26 Mar 2026 12:48:49 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::2:e5e8])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d00e39fbb0sm305859085a.8.2026.03.26.12.48.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 12:48:49 -0700 (PDT)
-Date: Thu, 26 Mar 2026 14:48:47 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com,
-	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, baolin.wang@linux.alibaba.com,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
-Message-ID: <acWNn1sewTJhnA2f@gourry-fedora-PF4VCD3F>
-References: <20260326162611.693539-1-gourry@gourry.net>
- <jm5rmcwiauy2fn6fvj6cjowiu2dudjndhhlcd2tm275ibmos5i@dwxwchbs24ko>
- <acV83cdc9ZfNk8Xh@gourry-fedora-PF4VCD3F>
- <bnukmnuxxuhdfeasjz33miemgr7w35c4aa6pqdmgupx7oxmeeb@gozgc3yxhcdd>
+	 Content-Type:Content-Disposition:In-Reply-To; b=I5lM1eC7Y0fUWIXCuRzeDserJS0BHqzdHMig8hiqCmmTg7hKG5cxOyduJKCLtcsUS+lcKmVTdtqFYWfUZ0Bf1EjJPvGRzZ2mjvILSd9/LAgeQlYy50LbcoIHYB7f45lmbC9BYiCL+5Z7oECKPK2/keluZKZJ0TuzPYjRC+7uKS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhhP0pHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3992C116C6;
+	Thu, 26 Mar 2026 20:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774555297;
+	bh=jK7Uvx3qiOAu88aK2LbmX3iGTbCOWx9vtglc4wZEfmQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BhhP0pHmQ1930LlWJ/7fsGD/Ip+YzH2+XKpDAQBLBM47n4SN1xoADzPTcAhZDsKTj
+	 IUqMLhx2+cg5dDxavXaI+smA/+4OWqNTx0TkykCbCngE7zAiZ3Ad7q51aqq7D+8LNC
+	 hmkMZZKBk033v1XdoVsPbyCCEl92y+eEcaO8jI9ETenZD3m+5S9D8K2Z3WC5OZx8cc
+	 5JUHh1aQ5OMs39OMaNoXUWzGySAfAVcvW8b1Mk4phXoHyGHw+G+eQqYdb6TxRW+dtl
+	 urcY2Z20SMZahpFHmMdFJILhU2Pkjpn2zz7aiyCFcB9p6f00IveR4GJ6Sl/KWB8+LL
+	 aLkBVjRkCA8vg==
+Date: Thu, 26 Mar 2026 20:01:33 +0000
+From: Simon Horman <horms@kernel.org>
+To: Oleh Konko <security@1seal.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net] nfc: llcp: fix tlv offset wrap and missing bounds
+ checks
+Message-ID: <20260326200133.GX111839@horms.kernel.org>
+References: <463598db3dea48fc963e8431181ae68a.security@1.0.0.127.in-addr.arpa>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,71 +66,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bnukmnuxxuhdfeasjz33miemgr7w35c4aa6pqdmgupx7oxmeeb@gozgc3yxhcdd>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+In-Reply-To: <463598db3dea48fc963e8431181ae68a.security@1.0.0.127.in-addr.arpa>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230526-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gourry.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-230527-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6C9B833B286
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1seal.org:email]
+X-Rspamd-Queue-Id: 8C1D033B394
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 07:16:05PM +0000, Pedro Falcato wrote:
+On Tue, Mar 24, 2026 at 09:25:41PM +0000, Oleh Konko wrote:
+> nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv() iterate a
+> u16 tlv_array_len with a u8 offset. once cumulative TLV consumption
+> crosses 255 bytes, offset wraps and the loop may continue past the
+> declared TLV array bounds.
 > 
-> Sure, but can child - parent happen when traversing the i_mmap tree? I don't
-> think so? (in mm/mmap.c)
-> 	/* insert tmp into the share list, just after mpnt */
-> 	vma_interval_tree_insert_after(tmp, mpnt,
-> 			&mapping->i_mmap);
+> both parsers also read tlv[1] before checking that a full 2-byte TLV
+> header remains, and they advance by length + 2 without validating that
+> the declared payload still fits in the remaining array.
 > 
-> The function itself is somewhat straightforward - find the leftmost node at the
-> right of 'prev' (our parent) and link ourselves. So an in-order traversal should
-> always go parent - child. Unless there's some awful tree rotation that can
-> happen and screw us in the meanwhile.
-> 
+> fix this by widening offset to u16 and by rejecting incomplete headers
+> or truncated TLVs before dereferencing or advancing the cursor.
 
-hm, i think you're right, i have this inverted.
-
-But this patch objectively fixed my issue, I no longer see this BUG(),
-I don't get softlocks, and I don't get the guest corruption I was seeing
-previously. It could simply be that the contention added makes the race
-less likely.
-
-Let me dig into this and just smoke test your suggestion - but I think
-your patch would cause some contention issues on unmaps.
-
-It's been difficult to generate a reproducer for this without running
-hundreds of VMs, whatever race is going on here is extremely narrow.
+This patch seems to fix two problems.  It's usually best to fix one problem
+per patch, creating a patch-set with two or more patches and a cover letter
+if necessary.
 
 > 
-> If this is broken, then every filesystem out there using filemap_fault() and
-> filemap_fault_around() has to be broken, and I hope that's not true :p
+> Fixes: d646960f7986 ("NFC: Initial LLCP support")
+> Cc: stable@vger.kernel.org
+> Reported-by: Oleh Konko <security@1seal.org>
+> Signed-off-by: Oleh Konko <security@1seal.org>
+
+This patch seems to have been sent twice in about half an hour.
+Please don't do that.
+
+Rather, please observe a pause of 24h between sending updated
+revisions of a patch.
+
+Link: https://docs.kernel.org/process/maintainer-netdev.html
+
+> ---
+>  net/nfc/llcp_commands.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
 > 
+> diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
+> index 291f26fac..157afd62f 100644
+> --- a/net/nfc/llcp_commands.c
+> +++ b/net/nfc/llcp_commands.c
+> @@ -193,7 +193,8 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
+>  			  const u8 *tlv_array, u16 tlv_array_len)
+>  {
+>  	const u8 *tlv = tlv_array;
+> -	u8 type, length, offset = 0;
+> +	u8 type, length;
+> +	u16 offset = 0;
 
-Me too, but i never rule anything out.
+It seems to me that the value passed to this function by the caller,
+nfc_llcp_set_remote_gb(), is limited to a maximum value of 255 - 3 by
+virtue of being a u8 with 3 subtracted. So I'm not sure that offset
+can overflow here.
 
-~Gregory
+For consistency with other parts of this call-chain
+it might be worth changing the type of tlv_array_len to u8.
+But that would be a clean-up for net-next rather than a fix for net.
+
+>  
+>  	pr_debug("TLV array length %d\n", tlv_array_len);
+>  
+> @@ -201,6 +202,9 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
+>  		return -ENODEV;
+>  
+>  	while (offset < tlv_array_len) {
+> +		if (tlv_array_len - offset < 2)
+> +			return -EINVAL;
+> +
+>  		type = tlv[0];
+>  		length = tlv[1];
+>  
+> @@ -227,6 +231,9 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
+>  			break;
+>  		}
+>  
+> +		if (tlv_array_len - offset < (u16)length + 2)
+> +			return -EINVAL;
+> +
+>  		offset += length + 2;
+>  		tlv += length + 2;
+>  	}
+> @@ -243,7 +250,8 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
+>  				  const u8 *tlv_array, u16 tlv_array_len)
+>  {
+>  	const u8 *tlv = tlv_array;
+> -	u8 type, length, offset = 0;
+> +	u8 type, length;
+> +	u16 offset = 0;
+
+In this case the callers pass skb->ken as tlv_array_len.
+As skb->len is an unsigned int in theory it might overflow
+the u16 used for tlv_array_len. But perhaps in practice that
+doesn't occur?
+
+In any case, if you are going to update the type of offset, then
+I would just change the type of type, length and offset to unsigned int.
+I don't see a value in using narrower types here.
+
+>  
+>  	pr_debug("TLV array length %d\n", tlv_array_len);
+>  
+> @@ -251,6 +259,9 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
+>  		return -ENOTCONN;
+>  
+>  	while (offset < tlv_array_len) {
+> +		if (tlv_array_len - offset < 2)
+> +			return -EINVAL;
+> +
+>  		type = tlv[0];
+>  		length = tlv[1];
+>  
+> @@ -270,6 +281,9 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
+>  			break;
+>  		}
+>  
+> +		if (tlv_array_len - offset < (u16)length + 2)
+> +			return -EINVAL;
+> +
+>  		offset += length + 2;
+>  		tlv += length + 2;
+>  	}
+> -- 
+> 2.50.0
+> 
 
