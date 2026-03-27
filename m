@@ -1,275 +1,212 @@
-Return-Path: <stable+bounces-230698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPypFqi8xmnoNwUAu9opvQ
-	(envelope-from <stable+bounces-230698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:21:44 +0100
+	id IPnwMX2/xmnoNwUAu9opvQ
+	(envelope-from <stable+bounces-230699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:33:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00123483C5
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:21:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F85D3486DD
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5524F30217D9
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:21:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1074E30FD055
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65CE38F92B;
-	Fri, 27 Mar 2026 17:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E093C6613;
+	Fri, 27 Mar 2026 17:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="OUxFSufd";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="JZsNiNpx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ccnG7TFP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E01E377ECE;
-	Fri, 27 Mar 2026 17:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A5325B305
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 17:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774632099; cv=fail; b=mZx2pVdmTXyOV5EZ42PO2mJk05yAN8WlYN5hrg81yfk71M64eA7LVRxJpFeN0AQDNaYxMQrgsZ20vQW5N2mwF7M0hmaOwlsswNfELt8DuzNmLpkMyaqqomygLk9/uRVXIGY7LJb6+8eG14MYDFc3op+t/XPSzVz2HOkGh+83xwM=
+	t=1774632360; cv=pass; b=IHNt0MJ6AtZ81Fl89cFmtPt6hliqtU1a2WKGBZBDjnleEv3xFTOxDp1alOXe6UqQnzz1b0sb2pl/BjbYUiUCJGcWsUbTEaILx1zLG18stKBhgLXA5krXBCSID8g7x/YoQbOCsFsDpLBLvovr0jRnrDNA+yo+AWnzuzLfWoY3t5o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774632099; c=relaxed/simple;
-	bh=dX5X7B7s7k9aPrXD/fwZkWR+Zaufg/gH6QATfScccHc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tRjSXqVFs9GMxVfRseFe8woLk4jlTxSGawLqvTAK7qHn/073pC7BTT0mvp+6D3pZjq05RwvKCVI/QY5gRYyT7Z+O/iXv9G4pVl9IoVMP95//bCT6DmwfEw/B1t1T/K22EXIyKpHc6ntTKYoeCBqXoCbMkLtmiCqd1LqE2KrwGIM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=OUxFSufd; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=JZsNiNpx; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62RGuCie833679;
-	Fri, 27 Mar 2026 17:21:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=cW/+xH1OgdRUBujV0M3P9pJxVf2BofZSv6Jey34UCVc=; b=
-	OUxFSufd1G+V11jXP8aT8/BeVMeVZov0YZLTtC43X8nqo0zpQaXehHzmYQj21zin
-	uQr9Z4Y1jfPtN8Uy4q/hcQKo9N9BxjkGex91S54Dz6hxLfEYseB6kpdMPRgczPYk
-	FjCxxTlqODYoNEwdPxNwb1cDQ6aQZxRw2Yg/Fq6nRF575BOtSC3dsNyji5H67wOQ
-	X9UlDel1EmFufZ0Q98qlLOZTVdDMG+PuMudXRpVolbGxnPtaOWyh2fekemjxyF38
-	2n9TLvyiofnggBTW8a46EkUr0caw/4H61110bpa8cUxO2yBot4D8dHel9bR1z4Hq
-	irLvYcX1QS/lJrNL99dquw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4d1kfptcnq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 17:21:25 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62RH6TW3028873;
-	Fri, 27 Mar 2026 17:21:24 GMT
-Received: from bn8pr05cu002.outbound.protection.outlook.com (mail-eastus2azon11011036.outbound.protection.outlook.com [52.101.57.36])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4d1hsepk1k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 17:21:24 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VlOtDlMxAyuKAUQ6jAjpfhwb68hXnQJ4WOECWqUA3o+7IBuDX1AcdDUVcE0i1nUhdeATD+9kiUO+ZQFwA73hQHqjzl79nZK2eq3gsmgy14foSBjlkbLZyqetg7/YBDkEXZWFgYQRxa835cRxoA2fg46KHanOU6wp7syVVgk/fsFgdNacS3NjclWnXy2upK5B7V90GCGhfz2BmkHKXpBPNZqLqMMx+WkvjomjOd22IqInQ9LGA1KkH4RBj1x7UIPGnhxWTpzwT7Ksyf3pK1oWST2rikSWoMSJeRRrvwKV/6YkSm1aXZ/D8OGTW/VZP8uYdzQjhuS+MTUzYYwon6TKlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cW/+xH1OgdRUBujV0M3P9pJxVf2BofZSv6Jey34UCVc=;
- b=ha++INv6Lee26otQKoa1NU/jiBmyzPaVUzdYwKgcGnJGL/SbBQi3yuWfJD9DENIiItxANFZLvjhlU/YVw8byenWXrZUlQi9S4vSG4bZ8BRZSrg62u+HZNlgwYv9OOP0aoDa2raoZuL57DY0p6d/bJ6pvtbufveEy/C6oC+GJBn1qRJaZvV56kFIXK3I1EzbzBw6GgENPwre1c0w+JDws9StZezcnPm+sIevRsNqoyq0azH8S7qgwQa0bSC6YwHIZH/xIhNjOAf39O1xig0LlHWXCg+uveRodwhiZ0JJFodsU2/jJNBkC/lFRvuUaigYDYrX5Cg3ueajKhYF81QW1LA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	s=arc-20240116; t=1774632360; c=relaxed/simple;
+	bh=zcOnHwG5ZNuoLmTQnLGpPgoXVz2POHNyps+Emo76gQU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p0yz5784JceG1q+SH2tLx5Sjy36ExE+3yJD6CfjewxXVi7q0DY08uBt5FVP1rG5uX0bnGMG1QfU1LYRCD/dOAgoie93F9n7GzP3y231+gfO0q3LX9NbYBFLi/QdccYY6QJ3dLUgjAQk7CrmsPgiYbRXbo5spXO4Q2cBUi4eKd9w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ccnG7TFP; arc=pass smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43b87970468so2270552f8f.3
+        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 10:25:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774632357; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KboGPcvisRW54jJUYynqRsWbA91CGQBkd9oONXUt9XzWGcub3oNKhqjoOSXDuoCy6e
+         TpPx5Ju1hIoknNmTTFAgnLYaoosfiT0EGHbjarQJGRsqLWlbgbcPuG1W0l8VGJejpoDL
+         ycveWTk7L4OMmlkuInmjDfGwCMwUEn3X2r38T4HpDCqJeIlGKGDbcH+ZtGgUUPVshGvb
+         zdoNuOaq2/t69yUWmUyzkOlOQehgAKrctRcN8Ds4+Ou48HlEFOzKthxLOhhh2LcSYdM5
+         qC2oJEUJUVPUjX6v2xzIl8TGtaUK5OSrwMDzfo5KH90zUDIG6on8Md1eHJHqEswq0V0J
+         g3kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uFdwACOA/5NIvGhP9qfJgtCcIScwIeOnsvABYKAXQYk=;
+        fh=R8oTS5KtURUM8Unv1ihf5uOFo201tDNMjxFDCzPAYng=;
+        b=bPuKvGyNYkd9CiIqaCi4Z+AAta50SEDJCj4kMHQLnfC7C+izR1LjmGnwP1Xg+DOD9j
+         MSrRJHE9vMgVqJ1hE9DuBXNZUQ5ajwo5ShUsAyrxOEFYdfm89ka6mfEVDT2yJvUbw71p
+         0hlYNpUXTrOl23jLMVk23AJSyg21Kh79nLIFYDfKJmPWEuFqH1CzRwzDffWGpQDPWTY2
+         TIp/r7M1ovPxgx2+98SeMqGxXFobI6QX19V4ReKmSgAFGTdhEaO8OKgejQX7Jh9SA3mA
+         xfeE/ikLGIJEHeTIR4kSM5oxmBAAp+vU0O1ZD+Per07fX3FQQw9bQnzkUME4Hv7S1ebf
+         ul3A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cW/+xH1OgdRUBujV0M3P9pJxVf2BofZSv6Jey34UCVc=;
- b=JZsNiNpx631RhcFmEeCs3/WP7XYRR6ybtXoG+QTNwCj9gPiwIz7MKH/dbez4yMqqRqVxI2kjsA92yfY/O15Q7IicL8C5TaVEcbDZW9VLIBvHFQ2IJpZ3R0co7cEiJZqzxTblHWjx5C/UpvxJmxpOPDHaPY9DiFlp9BPqC2m7uIs=
-Received: from DS4PPFEAFA21C69.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::d54) by SA3PR10MB6950.namprd10.prod.outlook.com
- (2603:10b6:806:31d::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Fri, 27 Mar
- 2026 17:21:20 +0000
-Received: from DS4PPFEAFA21C69.namprd10.prod.outlook.com
- ([fe80::5266:1601:5598:3f0a]) by DS4PPFEAFA21C69.namprd10.prod.outlook.com
- ([fe80::5266:1601:5598:3f0a%5]) with mapi id 15.20.9745.019; Fri, 27 Mar 2026
- 17:21:20 +0000
-Message-ID: <6b009c4b-39cb-40e8-a8f6-03cd6c9f922f@oracle.com>
-Date: Fri, 27 Mar 2026 17:21:17 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] scsi: sd: fix missing put_disk() in sd_probe() error
- path
-To: Yang Xiuwei <yangxiuwei@kylinos.cn>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, Ming Lei <ming.lei@redhat.com>,
-        Bart Van Assche <bvanassche@acm.org>, stable@vger.kernel.org
-References: <20260320015817.4080359-1-yangxiuwei@kylinos.cn>
-Content-Language: en-US
-From: John Garry <john.g.garry@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <20260320015817.4080359-1-yangxiuwei@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0246.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a7::17) To DS4PPFEAFA21C69.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::d54)
+        d=gmail.com; s=20251104; t=1774632357; x=1775237157; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uFdwACOA/5NIvGhP9qfJgtCcIScwIeOnsvABYKAXQYk=;
+        b=ccnG7TFPvff0TO4r7j+aPypZwA94X36wE3kX+TgAeXSoSuFjt7x93GcaHAzhsnLDlv
+         u5FFKJ55v8GQu08EaDzA5tiLmswHuyfyFUhT8Hfhguyt54NOu61L0yTHaHIy/HZPjNud
+         PneqpAbON599McnrgnSXWyHow/ZOIIRNuSgxMjG7OQ+1qDdNq3D998KlKH5JJ2khIL6+
+         QBO3q7iTEb4W/CsMUVpQbuyT1DeRB7+oorH8eFpONZwHNMjFUJIglZdLevZmLJDfeSlI
+         oj66roDqF93VMgEzM6PswyQpH13zfdIn+TAduAMj2r7wR5eHc265ibTQuhP8V+jLeeuD
+         ePIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774632357; x=1775237157;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uFdwACOA/5NIvGhP9qfJgtCcIScwIeOnsvABYKAXQYk=;
+        b=dk4C+WFYtXbscPXH/7bn4U3rB6hg3BsilIKPRXSkw3QEAtKtxwu0gkYxbxRsLlTs8L
+         QAC3lO8W4KG5nv6vrU+LFKMpB0smdYk5ET/1Yhvcv2xXAszuk+mfCylL1JPkMHeP8iuX
+         XcEiOUHOme1kL33bbmbjJEPXvuiEmCRP4A+Z29wPPRMN+gfsj9GqsfFSIb8DMwgrNuO5
+         3K66Oc3G0htZL/SVM87XO9Mc2fy7LArVNz8mwkNnMFxjz3MDVZnk64y9c7kahvCY1ykP
+         dH/06nSqXrPH/wOPunaNEIKYWbihg2AnqfIXlHbne4EJbTS8lAHUhMi+90VaqRJCqhLA
+         5Ebg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbp0cM/XTRUDWOienYngOoDLe3g1rY3MRK4+JlInZAdjc7bd94UavkCy5A5fE002/tE85qMDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDkjxeoofwCDEFAtxpe2pjhFDz8tmgEhIY1TJo4S2kQIoKJUbB
+	Eav0Vjq8f3j0PYAd9u1fSM9HotzlzcwWO+fei0mH4zc33i3aXUioohRIsnDGR6Zfm5lNfjLEVKS
+	VSJRuf7yfiflgdP5Rba2ZBJJyUspfYxg=
+X-Gm-Gg: ATEYQzyJKs9P1KC43tSKmcXjS9wZs5v3jRxUb6EKXAxHnADntCPqsNqFIrejnDUvHbV
+	1Pku2GQhbKnptOyULUxhFDyCHRwh7YFQBA2Nrt6R1XjL/MQSqvdNLHU+p7fJ2clzJlmZr851Dmn
+	UW0NlEOBSj+y7cuBerxCI9ASFtZpgcZaoymZ+Xe1Y4AYK2Z7ppOaG/BunBQejSpDjgIc+wd/LpL
+	OX8LiTmfbxl4LS6PNNCjEwV6RXUCn5bXS7D6sgODTlfWZPTzNzB4KcRKQgQ19LEyiqRHXR3luzV
+	zu08DIB/F2wE7MIQTBFhBhgsbUK6Zlv4CsQgQt18qFwzFxO0aeObLPK+pZtUTK+rXJ9n6g==
+X-Received: by 2002:a05:6000:2901:b0:43b:436d:782a with SMTP id
+ ffacd0b85a97d-43b9ea1a1bbmr5909653f8f.5.1774632357029; Fri, 27 Mar 2026
+ 10:25:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PPFEAFA21C69:EE_|SA3PR10MB6950:EE_
-X-MS-Office365-Filtering-Correlation-Id: 034b7081-b67b-4cd5-645d-08de8c254307
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	3CJkPxsqPpoiVF+ND2y0uAGgLYrxsVao3CcqGAPNHbsWQ70oM/Zu54kJhQkg/dbjGUp8ZqLLx8aqEn5X31i3b2iGXUxeFoTbcazd2JzS/cngsy4dF2kDE9dwo6QJxSN0RGzBP5On3FpFvGhXts3xu9Cz9NQzGhSCRTMLAgQSMiljzhE9v0D0QPrVSLXh1WfP5/J9LvCbFhNO22w4o6onsB+1mZMi7dJh5GikDQq6kC5S8diLeLlrcV6L1LDI3hbuEIw/0WC9Ls5Cy70LHFfoe+OpCou5bKZwNl/GWp2o1ckwes2prt/3rjJ9Ls5+MF5hMO/mhKSbCgevIxp1qpA7Enm7kNx4dS0toKx+XJw78zJlhxoc0zFYXYvEUTjxlC9j1zjimSIJZ3dJXw9xREMyxTqM7kOUhtJo4j5qxXTTcV/VyKqIgKEEmapbhh622jTd+oiT69WsG7PWOIQYwceMibdeDQn+CHpecjgdBl+Oge9/wWBps5jvXNpf3NHhpkyXexk03Bf+a4D8d0QyE2ScQagZ5klMISjTt7Vvey2u9cK+kDb+9V3qnJhhSpmBETR7FGhBv/P/an0Oxl4Rz9L7gEY+x2TIT4hLWJGo+2XxteQJoNiyvAnEhSfPFkMI4ct7o39xecJkYmQejY3mQvXb6GwmionH4StpTMHkvKy/wZkQCHR7EMfiNWuHPWoXECWLYpobW/x5kwCu/yjrxNuvUYIr3zWcGroJUS9VwPFW8Zo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPFEAFA21C69.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VjZzd1V1U3NnVDB4MGg3VVh1ZFJVb0Y4WFRtNk5weEQxanhZRlpCZCtpUExs?=
- =?utf-8?B?ZERTdmdoZVcvdnZHMGExRTlyc1Zoc0pDTjMzd3Q1NGF2WHVuSzNQa2tMTDJm?=
- =?utf-8?B?UG5hRmhOWktNaWREUFdrL2FUOHQ1dkhCNk44MVJsNW0vTW4wSHJ6bnhWVlV0?=
- =?utf-8?B?R1JBMTJxRFduY0lrTjhXbTRiWXlDbnRJanIwQWZ5dG5mK1JqY2JLUG5YbmhJ?=
- =?utf-8?B?QjVlNnJXZDNOTFVTcTRhd2xXdzM0bDkvMzJNc2gxMjMxM3ZvekFsUTV1UmlL?=
- =?utf-8?B?UEFCSTIwbTh2ZHo2dDJ5RFNxUWRrc0pwcldYdFhBRkJWMk4rbllWa3A1eHM1?=
- =?utf-8?B?cDFYSUYyVmsyanFVZXE3RkNWMnRDMDNkMHh1TFQ5V0ZuRnpYc2hQajRiRjh6?=
- =?utf-8?B?L3ZDVDM4TGlYOVJjTkF2VTBRNG1xT2I2OWZNQXFRWTFoQWhla1lHcWoyRmd5?=
- =?utf-8?B?eUxjNy9uZlM1bSs5MEgzZ200SGtiU0xmMWY1VW5iSUlKMUliM2VJeWQ1a0sv?=
- =?utf-8?B?UHpON0NYT0dyd1RSNDVzMmF3T0JwbG9KVlpKRXFpcDhaYVlmdTNJY3VEQ05M?=
- =?utf-8?B?WCtBV3E2SEZsZjVEWGFEUUpFNkdBcmhURHNzQStubEJNaWg5V0V5eW0wNnJr?=
- =?utf-8?B?Nm1lMEJORHkwLzJNVmxVaXl5NXd0Y1cyZzVUZmpZR1NvWUhGSDEyZUdvRUUw?=
- =?utf-8?B?TE1qZk9EanN5ZEl0WlY2NWs3c29kUU9obDA5Yi83Zm96Zk1Eb1FJSTlrZi8z?=
- =?utf-8?B?OStJRSsvdXYzbTZuSmdiSzNTSGx2eGFLUTMxVS90aHhQcFNRdEJXSFV4cmdn?=
- =?utf-8?B?Y3plYlVHWUE1cjVVRUVTZW1GWTYrVUNzN3JIWlBYZXJiS1krbG1RRmJFVm5y?=
- =?utf-8?B?aDQ4ajhpbXpnZWc2Y0hWUGYvR1ROL0V2dDNnWDFnQm9nZFVVNDdZTDBmVUJG?=
- =?utf-8?B?VWxlQllpUW9JU0syOHhNc1NMbjdqdWZKVlhFRUpvbW5YWllSUWFSYmc0UnNj?=
- =?utf-8?B?V2pmWWYwOXp5d3ZBTVR3YVJOamZ4aUFPYS9sWmx6Nm16QUhRaFZ5WVh6a3ds?=
- =?utf-8?B?SmRPOHZyTVdQcGZvWkZoZW1xSmI5MGduUUpDSmVrTXZldVBqWEpqTCt5V2xn?=
- =?utf-8?B?b2hxazlHUXVaUU5kVXpmbHhmM256c01sMXJWbGE4dXNyb3piejVuUk5GR0J6?=
- =?utf-8?B?RzIyYk0wdTBVSGt3amFzV3dqWUdXNlRpQnhqV2U0MHFIRU5lM3pTNHB2SUdk?=
- =?utf-8?B?MCtTcmd2Z1M3YnVWRlVJTmxVT1FBZGh0MmdpR3prVlhrUWFCcmt1WnlKcTl3?=
- =?utf-8?B?ckpEbTdiQ3U2anFiWHN2U3pyS1FFOGpiNG5SOGFCTGIrSWJURTFoMmc3cUtC?=
- =?utf-8?B?cXpYeG90REE0NVZGcXY1a0JDdmdXcjVwbzBUSVI1cXhLdWxEWGhhRGV6NFhu?=
- =?utf-8?B?cWJ0T1k3ZVFZbDVBWDRSUFErOVRLYjBXNjZzclB4Umhsb3pycE1uaHRXVWdS?=
- =?utf-8?B?UWNZOWV1SHZCeWdFK0FUaDRnRlFNb3o4RDhjdTBCblB6RWVXQk1jY1I3UGRU?=
- =?utf-8?B?bXdXSjNaRldSZ3RUTDhtNVlOcnMrNkFLd255RmF6MHdzYWkyNTk5VzJhbXdI?=
- =?utf-8?B?Z0xvejhMZ1d2OEx2bDBmKy9ZM1I2UUJvSngzbDZ1UUgvYkU0dGxvN0xQR2h3?=
- =?utf-8?B?dXJBeUJWdGp5MFRJTHRpbTJURVBnUm00UkNRUm5kWHNxbzB3Q084WS8vNUpv?=
- =?utf-8?B?b3c4SDBFRjkxWE5YZGZxVko4Wk56U0dEbmxLZ2ZlZjBKK2pHWWhYMUdTeWFI?=
- =?utf-8?B?ejdUeGlFekdoekFqRGtWd3RiVE44NXFXZGhFMmZWMTFaa210V2dicDdSZ016?=
- =?utf-8?B?a3NXNDM1UlAwVGlWb3VDWGFZRGNpd0QvSnF4alVsY3hwNzkxYlF2aG1zOGhD?=
- =?utf-8?B?L2hkUTRBNm5ZSkhDTkRiZDl5YmJjWTV6cmlCcFpWUkc2MWRkVXpkZmN5N1ho?=
- =?utf-8?B?UjRjYzRVOGZqcDcwZW5zNDl4anJ0WXUyV0dEd2pNbFV1aDZpcVZUYTdycFNy?=
- =?utf-8?B?QlRqL1huamtKRE8wM0RYdDZSODRXOUZSdHF1eHRZalEyeGVwVWR1YVBXR05C?=
- =?utf-8?B?aiszZmFDWk5jeGhkZzVPV0VSUTA4VlRFRW1TM2c2RmhNcDN4QXFvTkQ3YnZu?=
- =?utf-8?B?VGx6TWdQVld5aFNtUDlpWW9KN0dsTGk5VGJlcGxmUm94TEJ1b2lVZHZ4aVNM?=
- =?utf-8?B?SGMrTzlaemt3V1RFWStmNWJTS3oreW5ZNnZmbU9hZGFvUi8rdllZOGNVcVhV?=
- =?utf-8?B?THJnSGhMQmdyb2JMWllOWUVDeGsrM2UwMFFzOGJNbnJQdFUxVjJ0UT09?=
-X-Exchange-RoutingPolicyChecked:
-	VKTqbEU2dD3hegW2BkU9Ibs0WVA8Ik49vXA1x4YXxVhC4RaDfNX1PeyYJ6+tjl9N0EjpaRt+DtKBqDfrgwJffTDApmulMD0LcrzCaRrx7AtU9ZuNeFcA8Yu0Bho8tYi7QpWmMkk2DCk5k2aYlgVU0SN5UrjNKgpo+HOPcqxZab2PyJ/KFYxYliX8sPWAC2V39f5Yqz6nScaumop6tmcCbUUL04QkXFlYY+arH6unO/AQnSgP/i7JnFPykyDnV5mDXgb20iwuzKhM3zsLT3dGfQysOJg+HJgvf/cXctGl2eC0OUli9fekdZLt7gFnZrm9GT2TPwynNj4OLnUr6DXP9A==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	JmbIr/9s72he13ip13CnGnmZBgp6Zild0NT2jV76yOUko5BR5EEHkVen3ogf9pivTu+O+hkA6srI6uZVwElLh6KH81IGhz8aJ3JcuWouMGvrwUZKOoA1JYWqjdy3B4NbCURW+Fzb+juOrRzkwGqYRP9QaMvayD4gQdxfwkZtnMf/bUglYFa2OyHgNz2RaHt8SCXSQPfeppH2HUY/S1WLDKBJrkTZiCQ58vcVrRuE51rBUFzAdfJhbPNvTMS7Dsb53cykaFBpkxG50pv7uUhTC7WElmMbKj35sImMy87UF9thuHbxAa08A4rhGb2+fo16NJFVW5/UgmSot3gyuL6IxH/GYOqO0Q3o5t2g3tWmnYEWx+9SS47LnNTS4sS9r2hIalR7k/xc8P0cuc0Eke/A6kTSyVBs1QGaHGRF4Z/lFft93jWbB3Ao2i1yOU792k3NYTlaEtnlDkp2jWMHshb6IVag9EXCfqfGuKWa1GbZsy8rGAHn+maWPLoCW0cKdcPTqd+mXUoE6KLB00/h+7r2jdHoGX35Df1548Ze30YythfJK4/dv4gVD0ZMSURQPOpIPmPkj9UAeg1KhhKhtZDYcQ9+2vpwilduOZ3+0gOEyDI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 034b7081-b67b-4cd5-645d-08de8c254307
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPFEAFA21C69.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 17:21:20.2187
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QR+xT9e+cc0w6s8/J8G7CTJLZT+Y+d3WSW0i9ImI7Ys6aUU/12+35tqwhP3Euxl+efAfFSQMr1fVSBLtCDVPIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB6950
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-27_01,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=999
- phishscore=0 suspectscore=0 spamscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
- definitions=main-2603270120
-X-Proofpoint-GUID: 0Rbrp5VFWRNQ0-rQdoUDbQwj5WW2fyc6
-X-Authority-Analysis: v=2.4 cv=VKnQXtPX c=1 sm=1 tr=0 ts=69c6bc95 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=4pv-yrbR1MMxuXTRHQQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 0Rbrp5VFWRNQ0-rQdoUDbQwj5WW2fyc6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDEyMCBTYWx0ZWRfX5w6L5wIikEQA
- malU9sfIX8PQaQ3Q7fptbBbVTzt4KXfICA5rTsaSZVpSZvXdp9A6faiQ8gxseTR1ps5MOQ55xfu
- OiOKOhAvr80ruKpbGcpY8h6rLAR+lXTedWrXDnHBVW4whGXZKQy8a4tW7WFNp4hDtRE7txJmAMl
- XxRZlaSUrnKOSQRdNbd7B4668T7gN/OIbdEOQOcBGgJOPGi/9jxNIRvbOkJfnJEfZbgwi6Rlu41
- MSPbO/ciFBi2RH6e/o0JbTSkzYiGrg5ttVsOMRnEiTktejseCOoVSZeL9ijxCaoFoHSMRn42XDs
- EWWpKoSUyARVPIcy0vQJB0bP87LybbkdTa12t0jNJNDanU75wvmeJe5Z2/G/K8s2mioic/Z7cBM
- fg0qk55hjYkYKFJfPC/ZUsH57aGizMzjt4lBpaTz92cLNunRFh3IWCx2dkeNhcYKJEe3EPJuTnV
- vq6jh7Dl3OGTd8OMqBg==
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+References: <20260327-b4-cru-rework-v1-0-3b7d0430f538@ideasonboard.com>
+In-Reply-To: <20260327-b4-cru-rework-v1-0-3b7d0430f538@ideasonboard.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Fri, 27 Mar 2026 17:25:30 +0000
+X-Gm-Features: AQROBzDwR819SzFEyJKhCBra1CbmnZlX5k2P5IVizM0X6dRmp5GASk58N6WJJG4
+Message-ID: <CA+V-a8tGfAzMdFgY7U+pLitDXbnj3xD8-RzXjbkOQ-iH4mtkug@mail.gmail.com>
+Subject: Re: [PATCH 00/14] media: rzg2l-cru: Rework slot programming for V2H/G3E
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Hans Verkuil <hverkuil+cisco@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
+	Daniel Scally <dan.scally@ideasonboard.com>, =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, 
+	Daniel Scally <dan.scally+renesas@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230698-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.onmicrosoft.com:dkim];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[john.g.garry@oracle.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230699-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[kernel.org,ideasonboard.com,bp.renesas.com,linux.intel.com,protonmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: F00123483C5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0F85D3486DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 20/03/2026 01:58, Yang Xiuwei wrote:
-> Call put_disk(gd) when device_add(&sdkp->disk_dev) fails in sd_probe()
-> to keep error-path cleanup balanced.
-> 
-> The issue was found while studying the code.
+Hi Jacopo,
 
-Please don't add such a comment
+Thank you for the patches.
 
-> 
-> Fixes: 265dfe8ebbab ("scsi: sd: Free scsi_disk device via put_device()")
- > Cc: stable@vger.kernel.org> Signed-off-by: Yang Xiuwei 
-<yangxiuwei@kylinos.cn>
-
-This looks correct to me:
-
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-
+On Fri, Mar 27, 2026 at 5:19=E2=80=AFPM Jacopo Mondi
+<jacopo.mondi@ideasonboard.com> wrote:
+>
+> This patch series starts by collecting a patch sent from Dan in the past
+> which improves the HW slot programming on V2H(P) to avoid losing frames
+> under heavy system load conditions.
+>
+> Tommaso also sent a series a few months ago for the CRU from which I
+> collected the first two patches.
+>
+> Around it, I've reworked a bit the locking in the driver which is a bit
+> coarse and causes lost of frames under heavy system load conditions.
+>
+> Along with these, bit of drive-by cometic changes here and there to
+> modernize the driver code.
+>
+> I've tested on V2H(P) but I've also modified the G2L IRQ handler, so if
+> anyone could test on G2L and G3E it would be great!
+>
+> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 > ---
-> v2: Update commit message (add Fixes, Cc stable, and how the issue was found).
-> 
->   drivers/scsi/sd.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-> index 628a1d0a74ba..aba22060fcd5 100644
-> --- a/drivers/scsi/sd.c
-> +++ b/drivers/scsi/sd.c
-> @@ -4018,6 +4018,7 @@ static int sd_probe(struct scsi_device *sdp)
->   	error = device_add(&sdkp->disk_dev);
->   	if (error) {
->   		put_device(&sdkp->disk_dev);
+> Daniel Scally (1):
+>       media: rzg2l-cru: Rework rzg2l_cru_fill_hw_slot()
+>
+> Jacopo Mondi (11):
+>       media: rzg2l-cru: Modernize spin_lock usage with cleanup.h
+>       media: rzg2l-cru: Use proper guard() in irq handler
+>       media: rzg2l-cru: Remove locking from start/stop routines
+>       media: rzg2l-cru: Do not use irqsave when not needed
+>       media: rzg2l-cru: Remove wrong locking comment
+>       media: rz2gl-cru: Introduce a spinlock for hw operations
+>       media: rzg2l-cru: Split hw locking from buffers
+>       media: rzg2l-cru: Manually track active slot number
+You beat me to it, I had a similar patch internally.
 
-this causes scsi_disk_release() to be called, but that does not put the 
-gd - that is normally called in sd_remove(), but that would not be 
-called in that case as sd_probe() failed.
+>       media: rz2gl-cru: Return pending buffers in order
+>       media: rzg2l-cru: Remove the 'state' variable
+>       media: rzg2l-cru: Simplify irq return value handling
+>
+> Tommaso Merciai (2):
+>       media: rzg2l-cru: Skip ICnMC configuration when ICnSVC is used
+>       media: rzg2l-cru: Use only frame end interrupts
+>
+>  .../platform/renesas/rzg2l-cru/rzg2l-cru-regs.h    |   2 +
+>  .../media/platform/renesas/rzg2l-cru/rzg2l-cru.h   |  28 +-
+>  .../media/platform/renesas/rzg2l-cru/rzg2l-video.c | 328 ++++++++-------=
+------
+>  3 files changed, 140 insertions(+), 218 deletions(-)
 
-> +		put_disk(gd);
->   		goto out;
->   	}
->   
+I'll test these patches with ISP enabled next week.
 
+Cheers,
+Prabhakar
 
