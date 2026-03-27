@@ -1,331 +1,290 @@
-Return-Path: <stable+bounces-230722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLY0IiH0xmmpQQUAu9opvQ
-	(envelope-from <stable+bounces-230722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:18:25 +0100
+	id mJi6D2f1xmnaQgUAu9opvQ
+	(envelope-from <stable+bounces-230723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:23:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F00E34B9D8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:18:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868CF34BA4A
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:23:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EDE89304EE62
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 21:18:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 766BC300E716
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 21:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA537391E58;
-	Fri, 27 Mar 2026 21:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55856391E58;
+	Fri, 27 Mar 2026 21:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PbleQqgw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DtrcpsyN";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nNy5HERm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BDB386C24;
-	Fri, 27 Mar 2026 21:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774646296; cv=fail; b=mav2sH949uxzlBQvZXmeWo+Ryul3gseuToBrKQUvXWzXHg2FKNu4kkHVf1X48WkSF98xszBku2U1YwJZ3/LoloNkkQjYRzRYgVLOwzvO5OzSgj+uCl60wLtNg9xXtGf6JbFs5ziALrBl/tLH3wxeFkBoAeAXomOoa5AsgWyLPz0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774646296; c=relaxed/simple;
-	bh=gwo7aklEtFfcAadg1qjEpdnorfGMgYUVwOZdGwd1BwM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JQZyu64bNJk4UgTdI2lhk8N9w13qlSNg9ysWGAVSAe+jbalcbehOj9bZrellwI27divMLN6fNy7JW2/EhbUXviJxGFFIyHdduqSfl0lgm/Dujd67ckNitpkIoZ9bTby+E+ZsN28y4Glkz9zGrI0mJwkprKClE2MvkCUd2RnEc7o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PbleQqgw; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774646294; x=1806182294;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=gwo7aklEtFfcAadg1qjEpdnorfGMgYUVwOZdGwd1BwM=;
-  b=PbleQqgwQ72V2ZJ7VVXoC52FDWRJbCrQ0jVd2k0VvIT5yYJ4ustxlcCZ
-   7ANysUp4HCa7l/p1SuQPvv5hhT78I5edXfd2IgAoKMrW5wlMawAgUv7o6
-   YAt7+0YL9UbSsqi/FcHvm4001ELpm/IP4P4a3O25z72bh6ddnTi8tH6Tx
-   rcmVsoW3Fc0OXvUVBJ+pxkQB9f7lGuN3/E4pmtFexKzqF0bBJwJmOhu2O
-   5SS6tpsHcCdwhOmmivA7aWh4LGalft24wU6P1G+QVqSRhvxDX9pioDX89
-   YT1j1QRsZdqmqYcKKbOAjZ623ZW43hSCk3g7C1+zZTpJNnicRx1V+OQCL
-   g==;
-X-CSE-ConnectionGUID: W6v7+LstTISFL9pMBtcFEQ==
-X-CSE-MsgGUID: yMTXKnSgQgi2xM1UnF0QjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="78327665"
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="78327665"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 14:18:12 -0700
-X-CSE-ConnectionGUID: m0xhWOuzQHG4saV9LuC/og==
-X-CSE-MsgGUID: 2eGSPJLHSjibQ1HWx9j7Qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="248463795"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 14:18:12 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Mar 2026 14:18:11 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 27 Mar 2026 14:18:11 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.68) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Mar 2026 14:18:09 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h7OeRiVblptS2SP8+N6Hlv9CW2Ox8dQa2AZeL4cBeREfmgb1NF4sbJljA24TIsUygtgV5zZemr7NV680VvMu7RC6znQfeB06Mk1fCt3cpAWBgFwPXDhmxsJCI3CS+w62WFPXd9AH5UPXVq+ubOY1H2VBoMdhICi8gUrgd79hwOcFDQKQ0pNkM/nN8LHzF/MeiyObucrn+t8VCBC9eh0zzICFIIwJlChNrDwwe1b/c9UbXDXjSA0BixQL2UzL8DrJKOzxd9xpSq03xeHSTgNo4L1m+zNE3jCVlZOsbr9hyvkjlS3fdtOQiJo15GmRRdQtfQPfFmu+nKDIFmlQ8iJpYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IqBCo/0T83lAYksxjjFT1l9U6bRPqDKsbsmFx4f4VOc=;
- b=HwH+2gXzvYQKiIeAY0Bd88UmXThUXvAI3455HoN37kvCdJ08I+KLashTrvDRKJ2KVI4EottneXFRoMPjBKgEAqohb0G0BshOmhkX7acOm0qYZVXhRW4ZRPy9F/9Y/pQ4C7Ug62PPCOcXl5IpEWw7Fhyd6DMCxyPiGtvQh1+s7MJewiP1D8Bhgle1qXrjMh+/+EAkuCeOplGf0e3jSluKNNk1oLRSo4YKVGc/R+yMakcoA+m8LmVujRBbOQeB28Yn+JzXpO2m71OiCmtClj7HK/dZiFcmW0PMtuq2qjZuW5nNdIwtC50n5iABb8g+b98zubgOSoi9w/tAWzbeWoPw0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
- by DS0PR11MB7191.namprd11.prod.outlook.com (2603:10b6:8:139::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
- 2026 21:18:02 +0000
-Received: from IA1PR11MB6219.namprd11.prod.outlook.com
- ([fe80::a2b9:8e8:c48b:ea31]) by IA1PR11MB6219.namprd11.prod.outlook.com
- ([fe80::a2b9:8e8:c48b:ea31%5]) with mapi id 15.20.9769.006; Fri, 27 Mar 2026
- 21:17:59 +0000
-From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
-To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, "Oros, Petr"
-	<poros@redhat.com>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, "Kubalewski,
- Arkadiusz" <arkadiusz.kubalewski@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, "Vecera, Ivan" <ivecera@redhat.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH iwl-net] ice: fix PTP timestamping broken by SyncE code on
- E825C
-Thread-Topic: [PATCH iwl-net] ice: fix PTP timestamping broken by SyncE code
- on E825C
-Thread-Index: AQHcvb34udXBMjTtc0OHxzLflCr4iLXC4Z9w
-Date: Fri, 27 Mar 2026 21:17:59 +0000
-Message-ID: <IA1PR11MB6219F451E9B7C31E074C8EED9257A@IA1PR11MB6219.namprd11.prod.outlook.com>
-References: <20260327074658.2963328-1-poros@redhat.com>
-In-Reply-To: <20260327074658.2963328-1-poros@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|DS0PR11MB7191:EE_
-x-ms-office365-filtering-correlation-id: be56b359-dd4a-4916-73ec-08de8c4652e2
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info: C2d77Z4Ti8/DYGtH+XtF6BOZwyw701dkE3A7qDIwbhMto/LOjMuAy2wTQhcDjPHYCmWx/t+sPJjbxs+LKDLrKr6/CxZbl8YMmntAnf6SO9NKzQwxMnUJobfW9b+RsG0i6vogozmR86BjANIBgD0z5TkpPTophDwHZg8IDHaj0y81gN4V2IIOgFkSFfZ8gfGx0n0f0clUjq135BCJKL8nzOimGIdy5PRPxssoWaERJyOKY4h809qtE3HmGFeMexedE5C1Daec1x7pH5iMdvsli0Mp7WvgKqjOC98TTVg459tVV1uxBV5ON7fIlQfqKaZQhl9oy9SuL2/uEQ694gxQxtz/1fIuSrLD2/fhp6p5yN6nl5OczzCinSQomI3JUR4X2uku2Vn87ME2DHjOU12vZ0HHs1Id9+zV+3IkAgZJbqCrM5ta6Wa3OvTIpSriEmmnaYq2Q3vjXbmmAe6m3zE1ixFzR3eON1I1A8qHT8DXqzrnofeN1SsQKm/2xqXmpN22NnsrrFzl7oIjSXr6nzn5mXJ1dWuOacTAFPNzon9CfX0iEI/diNKa6uSQwDe0oAQ1B/bqD6qjR2XFMjhL3NLXKuUiKBVZuiH0R2ZBaHXjn9UKgHwf6vyBfkZl8A3++EvhByDfRG9Z3FxijQhgbxYnBuydEcq8+Fzk/MXK/kIuEyDTthzsYf8qaqINGbJdizzdK2jjoGh1B7XkbMYGQBRjo5Q3I05W1AbLNOtKADylqE7fTpXTdEQbhZRaULdfpQR9SN3Fxk7IEEtTJXsCphRTgzpYTjbSHats9SR8mUnHDbE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?lkQJE/fIOBn8RO+yWEdaeDiMpuARr1r/b5gjHqV61fnjpxmTaFQEzlWDAzJ/?=
- =?us-ascii?Q?mS9pYWB3A9pfROPGvA9LAtZ3M/5vLx2bSfAJYx8TU4ggzVY/IpnS2nrqs7E+?=
- =?us-ascii?Q?A0/MLsAIzzsJdVO/m1cOrmkaeEJgGnaUgwkfvGQH4JgegV4I5/OBy0Zq9YVM?=
- =?us-ascii?Q?kSywgvQ8qhsYUUolbfWcfk/Anj+YcVEtcq9TMFhjEOqG3L6yY6WNvsmj6eEa?=
- =?us-ascii?Q?VAAcr5CJEst2nSUgfqfukEzGpra6JBLS17X20fJXgrHHAkuvdYpW4L/pwHgv?=
- =?us-ascii?Q?uD3EXEv7ZxMU8OY6coKnHEG2VmZQuZqEQRV6tI/NUY+R/nXvkY6H1flEXGwP?=
- =?us-ascii?Q?U1mRm+rZoFf48iiuJdR9h62hpIG35kr/LSufR57zoHM9G7QW3KC/m0uyWntu?=
- =?us-ascii?Q?LI9volGQxD5S7CSTjKJfxYqGVlrW7aoZhtjkWCPTglKnM+HkP8bvHiA/mAt6?=
- =?us-ascii?Q?yPHO976zFQHJc2nVKJLsYr72NJIPEB5ynCg2jBfPIqS1h9dbzgVWShxw4KDV?=
- =?us-ascii?Q?PP/ibZAz3eZq71K332NElNvdVQ/x4REnDXgDRQ+SWrWUpwPp+NE1XeNBOd7F?=
- =?us-ascii?Q?dcdCRrqTpdPJmonGkQyHioux9PVXAyPrAVE2XW24zEk8KTJI2AHBjkKAfLYD?=
- =?us-ascii?Q?vCP+/FrMvFtNcARScg0ad5/yF9nFRjUnJ6DtJs+kltu9tihwAyWZ3J0f4uQa?=
- =?us-ascii?Q?MVK2WnUBtN5qdVfoWN3fjGnsxg+hWg5wysw0svFa/WdSuzCyrhYnhessj7c2?=
- =?us-ascii?Q?EfIV9b/656r+0UViRHKDKaz3FmvmkhPff/pcN31hvzlkp6ygHoxHHC0dyaES?=
- =?us-ascii?Q?a/zFXooTpN621sNhPi6CUUAbEVmle2+zDod3MydLAIzK89eOmGaK/mxR6MKt?=
- =?us-ascii?Q?O50eaTw1aP/89GwgBd5cH5ylHBaKXNEzuhIYj54Guqr+OuEU85tPGdE7EwIC?=
- =?us-ascii?Q?pdQGldEEeTsn0EDMXpxEIJA9xzCT8FNPVDaOxNc6BA8JDM6wD99Yp+GqdRQR?=
- =?us-ascii?Q?B/eM+B+eWCbKuA6+QCTztNDY0nUZUnciaMnymkbl04omvwPEn276vN5vmsPX?=
- =?us-ascii?Q?Izul+EeeGgunHrhY0kBRjQ5pl+BuUhuqWSlnEwKj1Hi4RcybNXb6C78nmfLd?=
- =?us-ascii?Q?K1kw8ruZayRwIixkvKmhG+dqF1EdMKJybrzUIlArF45Wqc2p2/wZAtUrPJ0B?=
- =?us-ascii?Q?u72pEUQ1y2wuiAH7Ezmwxm9QrjzTudg/uGJlOmAzOLUD2hLEotPviqV63BGA?=
- =?us-ascii?Q?046DupzlmKY1XhFnjVDySo3z9bDI/EzZSrF+B2J7c3+PTybbWdTj8pdLqgq7?=
- =?us-ascii?Q?PTE9h09Jj/OSYKU+3CwEjCYE8pp76gL4jlm5umPRNJ24WSh9kctr5gjtBcF1?=
- =?us-ascii?Q?oaduGTfhjFBGKX3qD6Oe9YVmAf1EDWOypSJVKfHrseDx051kbVaXLmZf2BQ/?=
- =?us-ascii?Q?j1IpAVSe3Qu/hio/QsjlavZzOHyjq53Ms0g7E73BF4vUNDO02CCWKk+WRnnN?=
- =?us-ascii?Q?KBEsi9LHHsE5JADeGNCKe4N7YNzd0uh4rUj2Z7TaMRqhruW8fVmhgY9HK3v/?=
- =?us-ascii?Q?Ebq3GRjyYU/5rloVsJQJ3amEaI17LG7Yl0anPGyAQeEpbL57xFQ4AII2GHe3?=
- =?us-ascii?Q?U4q1tKk4yCASvbj+AMIkCTeo9X8MuxH3xVDuvA2Qn0vI88H3kPBT4cHRTLml?=
- =?us-ascii?Q?jMV3+xSATKzChEJQ/L1MuuWEX3z5TyDJo70wE2psq6CULN8LmSTd239g5S2Y?=
- =?us-ascii?Q?rWs4ju/XGQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B75433555B
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 21:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774646424; cv=none; b=PeZs7FiFBxnI3a5hVBPTHfN0lmrkpSQw7uKPuw6T3APeHdWJ3oyEJGztcGOQ+FQ57GTC9RXe43X8Zh+U2dOVLVvzdCGSAp2aqgwudWMI8bk+pbvItMVeQ82Jd6QRIKBGhb+R4/KpjFnoW5x4JtJI378kYcuX8XArDdnEvo9dyPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774646424; c=relaxed/simple;
+	bh=zO5ZQduTxTCmSDqyTGew3zVq4QVTM0kkUNYM6Qjch50=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cNOMsSXXbRhsBqeiypPwc7WnlgALXo6STOxKHayAOPgb4aAkdaqpXXxnS7kuTMdM35ewhTJAvdb2QvLysFR1IM8KkE6mGE6EeatNxmwKUSZR+uj26Js7FZNA9yzJn3ool/e2hICm9DBDMYI9qvoZeujeqsDDs4wzAwPgYBMbIXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DtrcpsyN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nNy5HERm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774646421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kcY/ZAkLvNE5jmsW6XKb47cOytwFbrLwLeYAjxJQGVc=;
+	b=DtrcpsyNOmTLxAhy/tRjkOpJ8Babfe8LkjpceKd9mFdTQ5Obw1Jv2+U/Tg2gXuGJyEV0lJ
+	3Qoi6h7ocuFDbFl5JFdFz8pvEOsDecsHrRL0H7pISHXcDS3wLkq+Jv0O1mmNAh5ib64rJj
+	glRmgplAJTM+t1ZkrmIWwjULnt2WNso=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-371-x6BWP3MCM66OZLdANSzP4g-1; Fri, 27 Mar 2026 17:20:20 -0400
+X-MC-Unique: x6BWP3MCM66OZLdANSzP4g-1
+X-Mimecast-MFC-AGG-ID: x6BWP3MCM66OZLdANSzP4g_1774646420
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5093787e2fdso120067851cf.2
+        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 14:20:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774646420; x=1775251220; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kcY/ZAkLvNE5jmsW6XKb47cOytwFbrLwLeYAjxJQGVc=;
+        b=nNy5HERmmtLtI52xPFO8uCgsoy40P2OXG4O7yWiNPVDB6ZdGIxHyee2VDCsKXqq7jY
+         KiAGCWsBQO+z4A+m0G53USxTtXvJWdKt25cYKRscKYg8VfoPhGbHq5G61JJstynia+bJ
+         S1pSfZjWPoEPcBUGgTzdhBexT1YEPijSusai43nElhuSBplHa30koUdfvjs0I5kbjFLT
+         L1IOLv5ZWEnIdI+/4Yue+NESSeB14K+1tNpx7fL5XBib/uIH5ILCpLaEPg5x+Um6Iyob
+         fWqznnpdr5Hxrf5E39Gv/Y35oiszucBbPp0O0Zh+qsD0cUdeQoOszGpHP5QOYC9+wYW9
+         M7WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774646420; x=1775251220;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kcY/ZAkLvNE5jmsW6XKb47cOytwFbrLwLeYAjxJQGVc=;
+        b=p8bZv4HyzhAnmLcHdFqbiNCcXqW/Tc2/zghpZNvYAvq5qzOfKezhX2SIC1l28/AQAq
+         JruX7NLjHqclrtDTZSzOOmVvEG3aVz8mfoG2ufJGPsMxj+iNEJf1HWYgfVXAU/y6dRnN
+         Kv3JocSmeeEX0DkrxzY1TQeOczvpR4eXQY16TVhmtKk830wrEorjW/SSh1J+WfTPNth2
+         uPlf4THIcx/qeTyqjv6a3M34syj4vUD3zl8ahkdFNAynNBctvnqTw69o2LAFMM+kUxPo
+         CP/5K26y6t/ZVbkV/Ldnh53SW8CTRAPsd2fLiesTwmICReIXq8lQZm2Cuk+6mz6G3Sso
+         mJ2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUMpVh3YUZLGMyGG98Hg3QkAseJFwT0kFUsBK4HA1YwapPcd3TRhsziawinxQ67DadoY02TVrk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvN3y5rfvtGCYHPFBHH44tNlSEOBe3gKjo73vuepN8HcbUbrSv
+	9FRBhM+s74dSLnVanXX/L+63bzND/3LNjtIRQ5MbQ4X8przsLxubXDhbjJUH76kTkHQiwjFYleI
+	ewJQQC8rXu8FgNDsffyU+eHbhW2Z5oqr7QgQYGQ+kREu7ojmsFOc+qsJVyw==
+X-Gm-Gg: ATEYQzy7DrQgl6svLYlV9hejrZl1rO8DDh9w12gorVKI4o8JJ/ZKPxv7R7lBcUvsNj4
+	x9OOOy2AWEl1wawWB1r658s3gPyAtxFW9mYuMUCM6TyWQpzxPdUiLIvx7N3q8ezmeBWVtef6svt
+	KN5EoZ8Cy9vJ26H4gElCyHMUhusP+7tNz6oweMVlT0ouFTqduN3NgaSPHBKu5mVVpBqC9m94CaL
+	kZGmUrddaWyIPmxQnAv2w4i/eCq+uw5jvmqdyQR1Dr6hwMAj6Krys4kXkz3dqdPvpcwz2mG6Qc8
+	PZdF+C5GwDKmlfN1xPq+Nb9hU0p3TitfCbT1Vp3TmmWWwRUN6paIn8MPH5KsJA1lk+VfO9dVVD0
+	x5kuJP75JnEHvdBI4OWwhxScoyj/n92hI24qsD/WPYuj9/knMpG8=
+X-Received: by 2002:a05:622a:11c1:b0:509:2b5a:7ff with SMTP id d75a77b69052e-50ba37d1cd0mr57723331cf.10.1774646419741;
+        Fri, 27 Mar 2026 14:20:19 -0700 (PDT)
+X-Received: by 2002:a05:622a:11c1:b0:509:2b5a:7ff with SMTP id d75a77b69052e-50ba37d1cd0mr57722851cf.10.1774646419246;
+        Fri, 27 Mar 2026 14:20:19 -0700 (PDT)
+Received: from crwood-thinkpadp16vgen1.minnmso.csb ([50.145.183.242])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50bb2cc79d8sm3941081cf.12.2026.03.27.14.20.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 14:20:18 -0700 (PDT)
+Message-ID: <279cd4c6b4eece55a63936f2ad0912e41be7838b.camel@redhat.com>
+Subject: Re: [REGRESSION] osnoise: "eventpoll: Replace rwlock with spinlock"
+ causes ~50us noise spikes on isolated PREEMPT_RT cores
+From: Crystal Wood <crwood@redhat.com>
+To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>, 
+	florian.bezdeka@siemens.com
+Cc: namcao@linutronix.de, brauner@kernel.org, linux-fsdevel@vger.kernel.org,
+ 	linux-rt-users@vger.kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, frederic@kernel.org, vschneid@redhat.com, 
+	gregkh@linuxfoundation.org, chris.friesen@windriver.com, 
+	viorel-catalin.rapiteanu@windriver.com, iulian.mocanu@windriver.com, 
+	jan.kiszka@siemens.com
+Date: Fri, 27 Mar 2026 16:20:17 -0500
+In-Reply-To: <20260327183610.594667-1-ionut.nechita@windriver.com>
+References: <480f889c1744132f39983178fbad90ad11e081ed.camel@siemens.com>
+	 <20260327183610.594667-1-ionut.nechita@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: HcCZhP8UecFeZVn0oTdlKJJzj17POzMLa5KFdCwfAaib+EmfSYn0uX0Fk/5IV4+FII0tecHK7Bnc6SrN9BBJPmYoBuTp3ZGqP2+0+vNf1K+zAi6SOHg1+V8icWidIM1xjZnamAwjtPqpN9g3chfn/89uNIVLfsj9ItFVVb/jBkJjQqt+6Oc2FTILsDR1dKc+SmuiwuCc5/O6ltH358Z3nss2L3vjPZ5fd9OHqDO4TW9aHkkriRJEE33JKwCEzZ5/F+OHIG/D4dMXVy96skfwKfCwDBrgKrRUEQbiwjwIFaUUbIIysJErJIV2shlpeziAQQC0m5sKddFjqnP/Nj/aIQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be56b359-dd4a-4916-73ec-08de8c4652e2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2026 21:17:59.9308
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CcTtVo5zCNl2S39CivkwyHprcCVO3J6fOf+s5LWQwh9SUPJ2jHW/No6D6LpHwXp7aIAbtGK2ljeP3A8mokvEc8ddEHbQzX7E3E+Ep+DWU4U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7191
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230722-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,intel.com,lunn.ch,davemloft.net,google.com,kernel.org,gmail.com,lists.osuosl.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,osuosl.org:email,IA1PR11MB6219.namprd11.prod.outlook.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lunn.ch:email];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[grzegorz.nitka@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-230723-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[crwood@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 2F00E34B9D8
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.com:url]
+X-Rspamd-Queue-Id: 868CF34BA4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, 2026-03-27 at 20:36 +0200, Ionut Nechita (Wind River) wrote:
+> From: Ionut Nechita <ionut.nechita@windriver.com>
+>=20
+> On Thu, 2026-03-27 at 08:44 +0100, Florian Bezdeka wrote:
+> > A revert alone is not an option as it would bring back [1] and [2]
+> > for all LTS releases that did not receive [3].
+>=20
+> Florian, Crystal, thanks for the feedback.
+>=20
+> I understand the revert concern regarding the CFS throttle deadlock.
+> However, I want to clarify that the noise regression on isolated cores
+> is a separate issue from the deadlock fixed by [3], and it remains
+> unfixed even on linux-next which has [3] merged or not.
 
+Nobody's saying that [3] would fix your issue.  They're saying that the
+deadlock issue is the reason why simply reverting the epoll change is
+not acceptable, at least on kernels without [3].
 
-> -----Original Message-----
-> From: Petr Oros <poros@redhat.com>
-> Sent: Friday, March 27, 2026 8:47 AM
-> To: netdev@vger.kernel.org
-> Cc: stable@vger.kernel.org; Oros, Petr <poros@redhat.com>; Nguyen,
-> Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Richard Cochran <richardcochran@gmail.com>;
-> Kubalewski, Arkadiusz <arkadiusz.kubalewski@intel.com>; Nitka, Grzegorz
-> <grzegorz.nitka@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Vecera, Ivan <ivecera@redhat.com>;
-> intel-wired-lan@lists.osuosl.org; linux-kernel@vger.kernel.org
-> Subject: [PATCH iwl-net] ice: fix PTP timestamping broken by SyncE code o=
-n
-> E825C
+> I've done extensive testing across multiple kernels to identify the
+> exact mechanism. Here are the results.
 >=20
-> The E825C SyncE support added in commit ad1df4f2d591 ("ice: dpll:
-> Support E825-C SyncE and dynamic pin discovery") introduced a SyncE
-> reconfiguration block in ice_ptp_link_change() that prevents
-> ice_ptp_port_phy_restart() from being called in several error paths.
-> Without the PHY restart, PTP timestamps stop working after any link
-> change event.
->=20
-> There are three ways the PHY restart gets blocked:
->=20
-> 1. When DPLL initialization fails (e.g. missing ACPI firmware node
->    properties), ICE_FLAG_DPLL is not set and the function returns early
->    before reaching the PHY restart.
->=20
-> 2. When ice_tspll_bypass_mux_active_e825c() fails to read the CGU
->    register, WARN_ON_ONCE fires and the function returns early.
->=20
-> 3. When ice_tspll_cfg_synce_ethdiv_e825c() fails to configure the
->    clock divider for an active pin, same early return.
->=20
-> SyncE and PTP are independent features. SyncE reconfiguration failures
-> must not prevent the PTP PHY restart that is essential for timestamp
-> recovery after link changes.
->=20
-> Fix by making the entire SyncE block conditional on ICE_FLAG_DPLL
-> without an early return, and replacing the WARN_ON_ONCE + return error
-> handling inside the loop with dev_err_once + break. The function always
-> proceeds to ice_ptp_port_phy_restart() regardless of SyncE errors.
->=20
-> Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin
-> discovery")
-> Signed-off-by: Petr Oros <poros@redhat.com>
+> Tool: eBPF-based osnoise tracer (https://gitlab.com/rt-linux-tools/eosnoi=
+se)
+> which uses perf_event_open() + epoll on each monitored CPU, combined
+> with /proc/interrupts delta measurement.
 
-Thanks Petr for catching and fixing this.
-Tested it in the environment w/o ACPI support and, indeed, PTP stopped=20
-working. This is a valid fix.
+I recommend sticking with the kernel's osnoise (with or without rtla).
 
-Thanks!
+Besides the IPI issue, it doesn't look like eosnoise is being
+maintained anymore, ever since osnoise went into the kernel.
 
-Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_ptp.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
+> Setup:
+>   - Hardware: x86_64, SMT/HT enabled (CPUs 0-63)
+>   - Boot: nohz_full=3D1-16,33-48 isolcpus=3Dnohz,domain,managed_irq,1-16,=
+33-48
+>     rcu_nocbs=3D1-31,33-63 kthread_cpus=3D0,32 irqaffinity=3D17-31,49-63
+>   - Duration: 120s per test
 >=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 094e96219f4565..60bc47099432a2 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -1296,12 +1296,10 @@ void ice_ptp_link_change(struct ice_pf *pf, bool
-> linkup)
->  	if (pf->hw.reset_ongoing)
->  		return;
+> IRQ delta on isolated CPUs (representative CPU1, 120s sample):
 >=20
-> -	if (hw->mac_type =3D=3D ICE_MAC_GENERIC_3K_E825) {
-> +	if (hw->mac_type =3D=3D ICE_MAC_GENERIC_3K_E825 &&
-> +	    test_bit(ICE_FLAG_DPLL, pf->flags)) {
->  		int pin, err;
+>                     6.12.79-rt    6.18.20-rt    7.0-rc5-next-rt   6.18.19=
+-rt    7.0-rc5-next-rt
+>                     spinlock      spinlock      spinlock           rwlock=
+(rev)   rwlock(rev)
+>   RES (IPI):        324,279       323,864       321,594            0     =
+        1
+>   LOC (timer):       50,827        53,995        59,793           125,791=
+       125,791
+>   IWI (irq work):  359,590       357,289       357,798           588,245 =
+      588,245
 >=20
-> -		if (!test_bit(ICE_FLAG_DPLL, pf->flags))
-> -			return;
-> -
->  		mutex_lock(&pf->dplls.lock);
->  		for (pin =3D 0; pin < ICE_SYNCE_CLK_NUM; pin++) {
->  			enum ice_synce_clk clk_pin;
-> @@ -1314,15 +1312,19 @@ void ice_ptp_link_change(struct ice_pf *pf, bool
-> linkup)
->  								port_num,
->  								&active,
->  								clk_pin);
-> -			if (WARN_ON_ONCE(err)) {
-> -				mutex_unlock(&pf->dplls.lock);
-> -				return;
-> +			if (err) {
-> +				dev_err_once(ice_pf_to_dev(pf),
-> +					     "Failed to read SyncE bypass mux
-> for pin %d, err %d\n",
-> +					     pin, err);
-> +				break;
->  			}
+> osnoise on isolated CPUs (per 950ms sample):
 >=20
->  			err =3D ice_tspll_cfg_synce_ethdiv_e825c(hw, clk_pin);
-> -			if (active && WARN_ON_ONCE(err)) {
-> -				mutex_unlock(&pf->dplls.lock);
-> -				return;
-> +			if (active && err) {
-> +				dev_err_once(ice_pf_to_dev(pf),
-> +					     "Failed to configure SyncE ETH
-> divider for pin %d, err %d\n",
-> +					     pin, err);
-> +				break;
->  			}
->  		}
->  		mutex_unlock(&pf->dplls.lock);
-> --
-> 2.52.0
+>                     6.12.79-rt    6.18.20-rt    7.0-rc5-next-rt   6.18.19=
+-rt    7.0-rc5-next-rt
+>                     spinlock      spinlock      spinlock           rwlock=
+(rev)   rwlock(rev)
+>   MAX noise (ns):   ~57,000       ~57,000       ~57,000            ~9    =
+        ~140
+>   IRQ/sample:       ~7,280        ~7,030        ~7,020             ~1    =
+        ~961
+>   Thread/sample:    ~6,330        ~6,090        ~6,090             ~1    =
+        ~1
+>   Availability:     ~93.5%        ~93.5%        ~93.5%             ~100% =
+        ~99.99%
+>=20
+> The smoking gun is RES (reschedule IPI): ~322,000 on every isolated CPU
+> in 120 seconds with the spinlock, essentially zero with rwlock. That is
+> ~2,680 reschedule IPIs per second hitting each isolated core.
+>=20
+> The mechanism: on PREEMPT_RT, spinlock_t becomes rt_mutex. When the
+> eBPF osnoise tool (or any BPF/perf tool using epoll) calls
+> epoll_ctl(EPOLL_CTL_ADD) for perf events on each CPU,=20
+
+I don't see BPF calls from the inner loop of osnoise_main().  There are
+BPF hooks for various interruptions...  I'm guessing there's a loop
+where each hook causes an IPI that causes another BPF hook.  I
+wouldn't have expected a wakeup for every sample, but it seems like
+that's the default specified by libbpf (eosnoise doesn't set
+sample_period).
+
+> ep_poll_callback()
+> runs under ep->lock (now rt_mutex) in IRQ context. The rt_mutex PI
+> mechanism sends reschedule IPIs to wake waiters, which hit isolated
+> cores. With rwlock, read_lock() in ep_poll_callback() does not generate
+> cross-CPU IPIs.
+
+Because it doesn't need to block in the first place (unless there's a
+writer).
+
+> Note on the tool: the eBPF osnoise tracer itself creates epoll activity
+> on all CPUs via perf_event_open() + epoll_ctl(). This is representative
+> of real-world scenarios where any BPF/perf monitoring tool, or system
+> services like systemd/journald using epoll, would trigger the same
+> regression on isolated cores.
+
+Using BPF to hook IRQ entry/exit isn't representative of real-world
+scenarios.  Assuming I'm right about the underlying cause, this is an
+issue with eosnoise, that the epoll change exacerbates.
+
+> When using the kernel's built-in osnoise tracer (which does not use
+> epoll), isolated cores show 1ns noise / 1 IRQ per sample on all kernels
+> regardless of spinlock vs rwlock =E2=80=94 confirming the noise source is
+> specifically the epoll spinlock contention path.
+>
+> Key finding: the task-based CFS throttle series [3] (Aaron Lu, merged
+> in 6.18/linux-next) does NOT fix this issue. The regression is identical
+> on 6.12, 6.18, and linux-next 7.0-rc5 with the spinlock. Only reverting
+> to rwlock eliminates it.
+>=20
+> To answer Crystal's question "when would you ever reach that path on an
+> isolated CPU?" =E2=80=94 the answer is: any tool or service that uses
+> perf_event_open() + epoll across all CPUs (BPF tools, perf, monitoring
+> agents) will trigger ep_poll_callback() on isolated CPUs. On RT with the
+> spinlock, this generates ~2,680 reschedule IPIs/s per isolated core.
+
+Keep in mind that if you use kernel services, you can't expect perfect
+isolation, or to never block on a mutex or get a callback -- but this
+eosnoise issue does not mean that any perf_event_open() + epoll user
+will be getting thousands of IPIs per second.
+
+> The eventpoll spinlock noise regression needs its own fix =E2=80=94 perha=
+ps=20
+> a lockless path in ep_poll_callback() for the RT case, or=20
+
+Again, if you mean the old lockless path, RT is exactly where we don't
+want that.  What would be the reason to do this *only* for RT?
+
+> converting ep->lock to a raw_spinlock with trylock semantics to avoid=20
+> the rt_mutex IPI overhead.
+
+Among other problems (what happens if the trylock fails?  why a trylock
+in the first place?), you can't call wake_up() with a raw lock held.=20
+It has its own non-raw spinlock.
+
+-Crystal
 
 
