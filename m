@@ -1,118 +1,173 @@
-Return-Path: <stable+bounces-230609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCXMOHFQxmk2IgUAu9opvQ
-	(envelope-from <stable+bounces-230609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:40:01 +0100
+	id 3dUbIYZQxmnrIgUAu9opvQ
+	(envelope-from <stable+bounces-230610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:40:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41770341E00
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:40:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C6B341E48
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BBDE3152A93
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:32:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E67C53072B93
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9E8194A60;
-	Fri, 27 Mar 2026 09:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317593D6689;
+	Fri, 27 Mar 2026 09:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OEBKXaog";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1jS7dupU";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OEBKXaog";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1jS7dupU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A230129827E
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 09:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F55F3D647C
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774603925; cv=none; b=Ohkxhi2J44c0+nesgG8tRv1Or3QwVDFCYGMJFl9bTAU8eFlloAKP/ftbKQycM0Wa2N1nn3P7dvJuuAyqKKlzaePtoDvbagqmpZrYkmtrexQp1i0g55hvoLwiUEa0f4jLGHas2TKvmpbeFsxjgap311giinYJY56zDci1uk7hn10=
+	t=1774604368; cv=none; b=uwWlMpJlqxGPGdlf42VWdNu6+BqLJydktd3BvNm/zn4sEBsBWWW/npOZwl2fXIUhdmlZuxqP1CDmLxcQsswMG8Lx0JO+cxZe6RVx1/adHH6bTKXcUMeuKBlW+Amei/NZno1jTzjzUns71gwyZ27lBEUmv+EpmifqRVChCLk9lsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774603925; c=relaxed/simple;
-	bh=LC3XJqQO6ogN6D+P2sYpfny4MlGSBwxnth6zslNwYkw=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=hUKbB5pYnv7grq64uIpfsBwLbe+4dL1Ve2waA8B2f9TdoYsSFqkuW7R/LXa0mKdeim4AYFrXjCmfiD9jC55Y/y5UUyCsKhCGFLQGTHZlSHGxAptTHCh0AsDLdT3TkdPgj2x6AmZJzqkSsaQ8is203Fx2wtjj93VMXfSsd5xfnN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67bab42bbe3so1922687eaf.1
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 02:32:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774603922; x=1775208722;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2FqHJq087MePJDnyS/wkwxervkU82LVSfXfQlx4yrBc=;
-        b=s49EC+9QhKRZ9BPrcZdXwPjHjcuhKqZh+2BwL+G6/JmUg0ASob0zY5SMV1agxnccEY
-         vYwJRSec3oqnhjc03MvcsFMl+47GstfId/QMjGKS4a8soNo5wooA00T2VGTD0OrPqVbZ
-         bFYuG7/iOk2Hd0j7I7FVXcGAo0xftA41fitYKpPpa7k9J0LCmJANCuqNe6o23gEeMNuq
-         OB72O2eI/rTYJgXnW8aef9hsnA12z332TScmaHZULWB4MMnUB7E+WkvOsjPNYllyQS6t
-         +Xi/Yh2JbCN76ucJZBOD9Kd0qjvBKfjV+MmaD879PLorugXLrSmIVLa1SqwEMhpaxot5
-         HiCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkVjrx7uMFFDY9NOB1TSOyVP8sdnRXFTIvGoNhx9qZMvAfr/845/rb7S1jEnEO4qNdLcq13gQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNi1oZJ5w8/Bit2E2XNXT7puTkiUkpw4VIRHIfnyLgZ2ZEQf5i
-	99cmHF/4I/ASgs24ITEgjTWUaSD1S44XMtPwn/rVYBKOz/2Vy1v26GurxpvHxo26HaXByB+q/+3
-	zYLinSxSgRSSpAPa46miI6WCwqgQXgxBHQdBEi2GDKRw3OP3BnQllVrk22ys=
+	s=arc-20240116; t=1774604368; c=relaxed/simple;
+	bh=pwTR0QqbwReZc1SbAd5F2Xp4iDIRC6btaRbRLlbbKS4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pyQaUCKuLGf1iXli1yN8c6kQFu8eTKG2HtIABsNzbdbp2VRmSZmAg0i87D4zmGk5kJnF8XtKrMLqn6+5E3CZ3tiaWak4ccathANgWGYDe45jUjJR+tRjhueBC6YDa7Iq/XFg65ZbKVDqMXbXsJPAZEc2F9+Qxra7Rwn8gow0ROA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OEBKXaog; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1jS7dupU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OEBKXaog; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1jS7dupU; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 78AAB5BCEC;
+	Fri, 27 Mar 2026 09:39:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774604363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=50G9CEqPsLiumlGVBbxUdK9qRhfJiXO51L5OmkxkXnA=;
+	b=OEBKXaogOgFQq9jfDk9JmIF5Ex7pm63fm9Lxp770AqHnkTo0oU+08HIn6jgbII+pePS6GI
+	GCar2J/zOmE3A7Y7gC3eMK/1JJL9mTXhhZaLJwW9dATjNXcBbBe4MtHuAiklEa13ciAXlv
+	4eHcuEsVpe//98+Cq5A+/SOWWW7oBzM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774604363;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=50G9CEqPsLiumlGVBbxUdK9qRhfJiXO51L5OmkxkXnA=;
+	b=1jS7dupUs5lyvCzGNmFOqUClGtxmOoqnJ4ERhnHNZ1linpeHcAPupEPiXOkEYAWaKUh05D
+	49HIVG9LyT7oEgCA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OEBKXaog;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1jS7dupU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774604363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=50G9CEqPsLiumlGVBbxUdK9qRhfJiXO51L5OmkxkXnA=;
+	b=OEBKXaogOgFQq9jfDk9JmIF5Ex7pm63fm9Lxp770AqHnkTo0oU+08HIn6jgbII+pePS6GI
+	GCar2J/zOmE3A7Y7gC3eMK/1JJL9mTXhhZaLJwW9dATjNXcBbBe4MtHuAiklEa13ciAXlv
+	4eHcuEsVpe//98+Cq5A+/SOWWW7oBzM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774604363;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=50G9CEqPsLiumlGVBbxUdK9qRhfJiXO51L5OmkxkXnA=;
+	b=1jS7dupUs5lyvCzGNmFOqUClGtxmOoqnJ4ERhnHNZ1linpeHcAPupEPiXOkEYAWaKUh05D
+	49HIVG9LyT7oEgCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 342154A0A2;
+	Fri, 27 Mar 2026 09:39:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xhiCC0tQxmlIKQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 27 Mar 2026 09:39:23 +0000
+Date: Fri, 27 Mar 2026 10:39:22 +0100
+Message-ID: <87ikahsjat.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Zhang Heng <zhangheng@kylinos.cn>
+Cc: tiwai@suse.com,
+	perex@perex.cz,
+	chris.chiu@canonical.com,
+	kailang@realtek.com,
+	sbinding@opensource.cirrus.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	"Artem S . Tashkinov" <aros@gmx.com>
+Subject: Re: [PATCH] ALSA: hda/realtek: add new quirk for HP OmniBook 7 Laptop 16-bh0xxx
+In-Reply-To: <e2ae2b1f-b058-47d0-9bb6-889044f2af16@kylinos.cn>
+References: <20260323030503.3988941-1-zhangheng@kylinos.cn>
+	<e2ae2b1f-b058-47d0-9bb6-889044f2af16@kylinos.cn>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4c15:b0:67c:2c83:acf4 with SMTP id
- 006d021491bc7-67e1870c298mr807786eaf.39.1774603922607; Fri, 27 Mar 2026
- 02:32:02 -0700 (PDT)
-Date: Fri, 27 Mar 2026 02:32:02 -0700
-In-Reply-To: <tencent_2AE721E935EA3B467CAF450ADACDAB5A3B0A@qq.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c64e92.050a0220.37d09.0001.GAE@google.com>
-Subject: Re: [v6.6] kernel BUG in ocfs2_remove_extent
-From: syzbot <syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com>
-To: driz2t@qq.com, stable@vger.kernel.org, syzkaller-lts-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.36 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=cf30d9e358c58220];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230609-lists,stable=lfdr.de,1dd53396e7124586dca9];
+	FREEMAIL_CC(0.00)[suse.com,perex.cz,canonical.com,realtek.com,opensource.cirrus.com,vger.kernel.org,gmx.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[qq.com,vger.kernel.org,googlegroups.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TAGGED_FROM(0.00)[bounces-230610-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 41770341E00
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 20C6B341E48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+On Mon, 23 Mar 2026 04:13:01 +0100,
+Zhang Heng wrote:
+> 
+> Please help me check whether it is more appropriate to add a new quirk
+> or replace the existing one:
+> 
+> SND_PCI_QUIRK(0x103c, 0x8e60, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2)
+> 
+> with
+> 
+> SND_PCI_QUIRK(0x103c, 0x8e60, "HP OmniBook 7 Laptop 16-bh0xxx",
+> ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED)
+> 
+> Both the PCI subsystem ID and the HDA subsystem ID are 0x103c8e60.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+I believe we can replace it as it seems using the same Cirrus s-codec
+and setup.  So I skip this one for now and expect you'll submit a new
+one instead.
 
-Reported-by: syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com
-Tested-by: syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com
 
-Tested on:
+thanks,
 
-commit:         c09fbcd3 Linux 6.6.130
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=10410116580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cf30d9e358c58220
-dashboard link: https://syzkaller.appspot.com/bug?extid=1dd53396e7124586dca9
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=11cf706a580000
-
-Note: testing is done by a robot and is best-effort only.
+Takashi
 
