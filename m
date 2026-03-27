@@ -1,106 +1,67 @@
-Return-Path: <stable+bounces-230590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFtED9Maxml/GgUAu9opvQ
-	(envelope-from <stable+bounces-230590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:51:15 +0100
+	id GGg5MkUdxmnvGgUAu9opvQ
+	(envelope-from <stable+bounces-230591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 07:01:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE5B33F506
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:51:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B77433F598
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 07:01:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25ABD3022FB3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 05:50:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A72CB3035D53
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4202D46B2;
-	Fri, 27 Mar 2026 05:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1665D27FD75;
+	Fri, 27 Mar 2026 06:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ChYwy7+/"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="KEK9ifUU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-95.sinamail.sina.com.cn (mail115-95.sinamail.sina.com.cn [218.30.115.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCB4223DD6
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 05:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EF42FD1B6
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 06:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774590652; cv=none; b=ASUVDZHbYvzRUFAHLy548zILlC9Cu3CNJ1G0fdch1ZLRhL9pGHIiGOiE40igEabTEvF26a0qKS/EsZ2cra0mZWApjvaaV1RzP4zWJkD/fauB6IxKqSDIUPgDy+YEUNVWBOv17Wc0z9q0XMaEMzWhIckUGXegqQ0QNCo2NbfzU/g=
+	t=1774591206; cv=none; b=NPB5k8ezUGbas2jzrkGbhgd41CBHNUHxm4QaORHhjdT8OrlYQW+UCku3Ke2QvHdKOirRoKs7qtOh8P28cji7xEa5JZTiGHsJB5s9YhUYm1S7OB/con69b3JEb96Y3uyGuj0tYaqG25DrOsK867tmuJ1o2G7h+w/BWYJsBaCHqQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774590652; c=relaxed/simple;
-	bh=N+7Tp4p8L0/ygPCZTSIJtPoeEEy8WuNCT5GxnmBre8k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbLO4XYxHWaAGb8Q76nTST7INsEorZyn8lX5CT6fK50LFoJtNLNEO74ZWBv+gljWM5PYSC+LuVGHG5mSxUmeTz8zAkVP/J5guMLtTagaBCUMUX6P+RXZYMRuXuwN6bFlZfeRGEXrf237WlH8CquIZe4YAI4Hd64ClFxyV3y1Kzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ChYwy7+/; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2c11c43aca0so1214380eec.1
-        for <stable@vger.kernel.org>; Thu, 26 Mar 2026 22:50:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774590650; x=1775195450; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UgT27hTFjI7iP0xWY3qluKjtmwi9mzjCCAJfSwRGG8M=;
-        b=ChYwy7+/KUgXzRW8XF3z1IOIJ64dd9fRFeX8DuduerxWVvS1MoKgLcTlRQ2BhzPYqh
-         eoGw+VCjC3pWxkDmFJVjQyj8hxtGHJj3tT0IulzTUTOPUJXShF7GvRIJKPzZyvODmcQN
-         YrQH0lkVs5E9y3E+TCIQ71d8fIUhXGi0VhRlz0ONYDxjlALfSVs/d+UEjbYHfO1FZpM4
-         O4Aa4tqNdRKZJtQPsJmQ/7/jXtxGR8Zf2telOdQoZ7VtFpEc0YZDBVP3XaXXsfGT1ty6
-         xLH/89XJDoQBEDkxhsvcLJZfhVTnXcwTNJ4ADuSvbZWI9tzmOn0CtlmDRBNnKR+bouhq
-         41uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774590650; x=1775195450;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UgT27hTFjI7iP0xWY3qluKjtmwi9mzjCCAJfSwRGG8M=;
-        b=magkYwUiPKvR3aWTvjX7EqM4BNXJmgzPki8PsA8Ej+MG8Jd9wBkI6rn/Z+364/HW+5
-         HkAKVW6xVJPHzDzipbx026svenRt9eOXUw5O7GVwQR7idnWTu+gmGv4YariHLhJXRSxK
-         KlsEIHADllHBl60YAmRnmY+ai43tA4gtWRHKHTAEHEfFz5HykS3uVMXgi/BplBac10+B
-         jcsrmxWxMtPlIyNnLX/nvmikie6eL+3d8EJ0oWpcM1x5M7of4aHqq8c2maDsFeRodigK
-         MUDmfOaOEUHV0339TVfBneuecYJxYt2RmuyoK6eN8RJbWCu6ELEoliMIKTH3p+NKtLu6
-         C3GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWeNZQeEdfk1ZR/kOGoRyVIEsxTrLDGaF55fhKVsgLvPYfrw0zI6a4inHTwWoJjK4yXXMHlDD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyT4ifGp0gr+ddxcGksoIg4aW7TEKlPThr2EZpm/EJ6ckkMlq4O
-	ZGe8ztmqyt7SS2E9ESRXQwyvGNCz2IqR4pLsnDqEJLWIxmzSIFe2H5Hb
-X-Gm-Gg: ATEYQzyWBOzUtHMw36zHkKI1g7zIm6auXMPr8l4fcMSb9fg1jG6z4ESsuWPwn544o/H
-	8rqGorqWBtrCVK9ca9haK8UjQzdmOuDp2nroxpKy9Py771UOnajt1YOnKQE7JA5JR3pV7mxceaM
-	DAYU1GMVq2Ca01mzeniJ4U7OoeNaN0xu5t+lSYYYPe4pKELZMAx96khJENqJryASZbxth8YYP6/
-	CvxKVakb7LDDLzAVRJxiV3JKF9FbZuHd6jZk9/o0UaP9zKnJCSQ4I6q1i3wpeiidFZkNKOBsAig
-	t1rZVSGZ2qLqDVersrDAkP2txGsziYofLVkGqtaZrL+RHwkiN56hViCrTTlFvyEmphs7ukx06Ic
-	2h4bslKFwsUxs2lgSLBZxv08HPYf02L3um7Uy8HDalkVDy2mZIT2J/GJ5v+9ZZeDBIeDfxBCG8e
-	huA38v+jYVuwdqoTvTUPjn4av+kWU=
-X-Received: by 2002:a05:7300:2315:b0:2c1:67e1:61a9 with SMTP id 5a478bee46e88-2c186ef3bffmr417092eec.13.1774590650011;
-        Thu, 26 Mar 2026 22:50:50 -0700 (PDT)
-Received: from homebox ([66.75.253.8])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c16ed9f75csm4127815eec.15.2026.03.26.22.50.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 22:50:49 -0700 (PDT)
-From: Yuan Tan <yuantan098@gmail.com>
-X-Google-Original-From: Yuan Tan <tanyuan98@outlook.com>
-To: security@kernel.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	zhen.ni@easystack.cn,
-	kadlec@netfilter.org,
-	kees@kernel.org,
-	tomapufckgml@gmail.com,
-	dstsmallbird@foxmail.com,
-	yifanwucs@gmail.com,
-	yuantan098@gmail.com,
+	s=arc-20240116; t=1774591206; c=relaxed/simple;
+	bh=gNPN+lsNLG2GUPRQKoAWKY0ykON4ZP/tO61Pm6Pb82Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Fhxk4vpPsBFnuAeJOSRlOV0i4aFmMRk1AAZW2iTyEBXhRF4Kbt3WZxZEv1sCc3VvCKFM8f1pBhFc2Zr+IfVWfbj+1ehK6peTdTywMtWJTsFnsm8LN36N+3TZdI4StOQxk7IEEawbWolh5/l7K6mkR+nZiXYlrRNAS7j/CC5G090=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=KEK9ifUU; arc=none smtp.client-ip=218.30.115.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774591203;
+	bh=fJ+PW7eX9qy32TknMnIEOu3LYMXyYnqf2Eu5m31NLNc=;
+	h=From:Subject:Date:Message-Id;
+	b=KEK9ifUU/f6TSGcoKgp+B22pU+p6U/cjIli7zJLMqoA03v0p1DgQnlY+T+eOKiUYX
+	 +JJOXanBglSAeFR4J4XnwRhoIZkd/Ezy+8NPsXcfyAHlNt/zl8UCa7JdixxmZOUacK
+	 NbOX/EGLYhdgIUCocSdzB2IOWgIXxrKPFN4auVPk=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.23) with ESMTP
+	id 69C61CD700001811; Fri, 27 Mar 2026 13:59:53 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 3599558913296
+X-SMAIL-UIID: 758896704EBF4874B582EB967FDEA279-20260327-135953-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/1] netfilter: ipset: drop logically empty buckets in mtype_del
-Date: Thu, 26 Mar 2026 22:50:38 -0700
-Message-ID: <d3d1e38f2001ec225344f24e59727299f6a39a7a.1774578045.git.yifanwucs@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1774578045.git.yifanwucs@gmail.com>
-References: <cover.1774578045.git.yifanwucs@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] xen-netfront: handle NULL returned by xdp_convert_buff_to_frame()
+Date: Fri, 27 Mar 2026 13:59:50 +0800
+Message-Id: <20260327055950.2618928-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,73 +69,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-230591-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230590-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,easystack.cn,gmail.com,foxmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nppct.ru,kernel.org,sina.com];
+	DKIM_TRACE(0.00)[sina.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yuantan098@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9EE5B33F506
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nppct.ru:email]
+X-Rspamd-Queue-Id: 3B77433F598
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yifan Wu <yifanwucs@gmail.com>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-mtype_del() counts empty slots below n->pos in k, but it only drops the
-bucket when both n->pos and k are zero. This misses buckets whose live
-entries have all been removed while n->pos still points past deleted slots.
+[ Upstream commit cc3628dcd851ddd8d418bf0c897024b4621ddc92 ]
 
-Treat a bucket as empty when all positions below n->pos are unused and
-release it directly instead of shrinking it further.
+The function xdp_convert_buff_to_frame() may return NULL if it fails
+to correctly convert the XDP buffer into an XDP frame due to memory
+constraints, internal errors, or invalid data. Failing to check for NULL
+may lead to a NULL pointer dereference if the result is used later in
+processing, potentially causing crashes, data corruption, or undefined
+behavior.
 
-Fixes: 8af1c6fbd923 ("netfilter: ipset: Fix forceadd evaluation path")
-Cc: stable@vger.kernel.org
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <dstsmallbird@foxmail.com>
-Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+On XDP redirect failure, the associated page must be released explicitly
+if it was previously retained via get_page(). Failing to do so may result
+in a memory leak, as the pages reference count is not decremented.
+
+Cc: stable@vger.kernel.org # v5.9+
+Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/xen-netfront.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 181daa9c2019..b79e5dd2af03 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -1098,7 +1098,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 			if (!test_bit(i, n->used))
- 				k++;
- 		}
--		if (n->pos == 0 && k == 0) {
-+		if (k == n->pos) {
- 			t->hregion[r].ext_size -= ext_size(n->size, dsize);
- 			rcu_assign_pointer(hbucket(t, key), NULL);
- 			kfree_rcu(n, rcu);
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index 4b19d54fa2e2..310bc1f7d404 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -982,20 +982,27 @@ static u32 xennet_run_xdp(struct netfront_queue *queue, struct page *pdata,
+ 	act = bpf_prog_run_xdp(prog, xdp);
+ 	switch (act) {
+ 	case XDP_TX:
+-		get_page(pdata);
+ 		xdpf = xdp_convert_buff_to_frame(xdp);
++		if (unlikely(!xdpf)) {
++			trace_xdp_exception(queue->info->netdev, prog, act);
++			break;
++		}
++		get_page(pdata);
+ 		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
+-		if (unlikely(!err))
++		if (unlikely(err <= 0)) {
++			if (err < 0)
++				trace_xdp_exception(queue->info->netdev, prog, act);
+ 			xdp_return_frame_rx_napi(xdpf);
+-		else if (unlikely(err < 0))
+-			trace_xdp_exception(queue->info->netdev, prog, act);
++		}
+ 		break;
+ 	case XDP_REDIRECT:
+ 		get_page(pdata);
+ 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
+ 		*need_xdp_flush = true;
+-		if (unlikely(err))
++		if (unlikely(err)) {
+ 			trace_xdp_exception(queue->info->netdev, prog, act);
++			xdp_return_buff(xdp);
++		}
+ 		break;
+ 	case XDP_PASS:
+ 	case XDP_DROP:
 -- 
-2.43.0
+2.34.1
 
 
