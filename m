@@ -1,196 +1,176 @@
-Return-Path: <stable+bounces-230694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JUgEDW9xmnoNwUAu9opvQ
-	(envelope-from <stable+bounces-230694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:24:05 +0100
+	id QDm+LPu7xmnoNwUAu9opvQ
+	(envelope-from <stable+bounces-230695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:18:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BEE34844B
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:24:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F054348323
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7125B30A6DF8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:03:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76F5E306B175
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B6735E94B;
-	Fri, 27 Mar 2026 17:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812C337700F;
+	Fri, 27 Mar 2026 17:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4xmMvZf"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="q08zsj8J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4350D352C44
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 17:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E3D34107A;
+	Fri, 27 Mar 2026 17:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774630999; cv=none; b=GKkq+FUXdUj+TJUdrCAjQJHlxCXPu7pGIi3/e+ld86/FTDasUymgWj8hWZgSHQL1t4VsBJ+WHgnM957ATlwVzGZ5q5ity8pvf99NCbFEGWXL4EwUAN9c9ZyGb9Ggyq90KxXhgt0dPXsejCeOBv/NKlDEzH1fSVf/1m28s0Gry6A=
+	t=1774631440; cv=none; b=Su28bJcEa3cXx6Ms/Pwc4Yv8NJvvgFZ8DT/zapPIw/MBBe2WFl8mXGmPzhIzEPlWL4FDaVoe1AovXue4TMnvp8Cmqfu60FpP8EGw3MT7kECXgNQzv80m92WfAuG/YoSpj6RWTyMmqsw6Oukh9hC5Rhm4OPhwUUk61e9DSq1Zv60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774630999; c=relaxed/simple;
-	bh=XF387l1iSQ3JkQCBcOvMlB0b0a6/XXCleJmbhWho1Ik=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPf3hjivPPm+xxEfZ29nBUK1wrgz4Szv9AIJRwlW2MK4LifZFdFXm3aiKZHq6A6IjRJdVuwoZauLEr4zcQtiSJe7ZuZhfXjeCO6Vcdgt+oCROgbCNU4PRj17n6UV4dj1QvYZvNEKsvvK3kPUCHXTVz2j1973uc3z++qjohZw4rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4xmMvZf; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso20616895e9.1
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 10:03:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774630996; x=1775235796; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nGa1Fe6pEa0kmcSO0r7Ez3fp7Jynbk4KITXYq/Ow8IU=;
-        b=S4xmMvZfaAhYK32nf8aC8DHDGCmGMc8jKvoAQ1DHZwH6rsDBlpZfMemJHAYg24LZR6
-         h2T83CRRdveIrK0pnsDKVlQHF64E+3uv4d9rmzMCgtuYCPlr/2QhwSuA+X7YroAyF9iq
-         i8E//rnRn3J8Bcx81xOHZ2yGu7h4+0bZ1a6RqOBTCBH/jAjTy0cSduEaF5OKyiYfJcHP
-         JQ/YKOaUQknaGGoACVF5UdQ9rl/0HvkqBFq5zWmPuFH3Qz5ILF4YBfJrC9fvSjELGiKh
-         1fDUCbraX1id9hFB/3yE4JBG9h32EyUSLBtwcf3KE0jmi35yaPFznlvmYvFCj4XDxf1Z
-         j0mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774630996; x=1775235796;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nGa1Fe6pEa0kmcSO0r7Ez3fp7Jynbk4KITXYq/Ow8IU=;
-        b=kw0jxCaWTNoTjMmPUhSPOykCkikzsOCdDGxrdlg5icsmJoStzPBVc3Dc825ZV35WQp
-         vu5snw8kOkwfAbr0EFEqg9GAUQ0w9n+vl8JgfRQlT55fzk5TvBPlyk9yQ1TauMTYN00y
-         laBmbaNiY6bEgru+3I8P4mopAJD5IZBINEeB/ZNEJVodiaAq79RN5j2C4BQn2945F7le
-         QCieM0F3KP3fieBqh2tv6uLjMAfN7Z/hJxdPzp1J0yGctdym34M4llpvo0WSSXzqCRUq
-         DdbFn1+NlePrm8qDP2t90VY83xn4vRszGJikZwth2zeriNcERg+gakfT3nnyOwhyWcRZ
-         kUWw==
-X-Gm-Message-State: AOJu0YzPcCLfEhTKnaMgoDPio2FTEo2MRuS6/PF19bCq96G0criEais4
-	oDvmgHkmXo/FHGiGa2D+02o8UKnKP3sTw2IYcOHOskEelqZciFf2v0T+zvqzTYe7
-X-Gm-Gg: ATEYQzxbqvhZUiEkmgQ9eKiJteTpfsgUuLEzw0Pha8ihEfla3ZLNJVlxx2rJ+SFggFi
-	TXiC5pFqFOJc7C7epM8ywj2XTTDgyWZGXrYaHj3Fo77RiZF+h3QYB2LkpmJcN+5v2PTjoFoWxAM
-	S+MLEN2/wOK8dGkjinHq1mqSlTJAYt9JxWeD05ZCH8A1GWNrmijqShiKlfhnfu8n6aYxQzVOcv7
-	zSjEv4mmeLXbKnod7K1tUQep0+3B+YGgXjtW8CSnQRgE4m9FvDoxmaEUUwF0Wh9oGqiWAp1bFnI
-	CtPGRsjtOhYl7BjPNsZaj+NZN+QyrxY+s2WUVxTjQHqE1hmX3IgxyBlEif5OTKG8Mk6wG05gf7a
-	XdOmBK6Nuwym6WUn120qIk/JJyOejDADhATeE7/L4rHcpsEensvbNFb8E/b8zc3iAcAoRxBGNEX
-	rM+oWP4FLsEJZ2R5lxBg==
-X-Received: by 2002:a05:600c:1f11:b0:47d:8479:78d5 with SMTP id 5b1f17b1804b1-48727d5a31emr58021875e9.7.1774630995986;
-        Fri, 27 Mar 2026 10:03:15 -0700 (PDT)
-Received: from tux ([2a00:a041:e07d:7c00:1ac0:4dff:feb8:fd3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c65989sm164553475e9.2.2026.03.27.10.03.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 10:03:15 -0700 (PDT)
-From: Liav Mordouch <liavmordouch@gmail.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	npitre@baylibre.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vt: discard stale unicode buffer on alt screen exit after resize
-Date: Fri, 27 Mar 2026 20:02:04 +0300
-Message-ID: <20260327170204.29706-1-liavmordouch@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260327160050.31631-1-liavmordouch@gmail.com>
-References: <20260327160050.31631-1-liavmordouch@gmail.com>
+	s=arc-20240116; t=1774631440; c=relaxed/simple;
+	bh=I0Fe6R9aZANzFW2MXqhySfLHgdmw2At0tLxMgznYH+8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hloOwPtHIt7BSzG+lrXHOndwTMvvNA+RjT7d20rNcF9VWO7Grrm5HUXhe/jWcEtKcLt3qjDREFc5kkgrnr9aFZX6MHTsnTKxu0zjKd67IqInwRH7sO5aqvbUzhHeRJBskl2aIkD0U+qH4EOVvYdZ6yXl2Xl3WWyRGk7eONZMJbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=q08zsj8J; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [100.93.44.16] (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 22850225;
+	Fri, 27 Mar 2026 18:09:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1774631356;
+	bh=I0Fe6R9aZANzFW2MXqhySfLHgdmw2At0tLxMgznYH+8=;
+	h=From:Subject:Date:To:Cc:From;
+	b=q08zsj8JZympvZmjLgAdaNL1Nmxh6JpQrhKJNupaJxmN8kfnbRzgQHE9xzU+Iv9Nt
+	 Co1M0qPO4h3fD7Q2jRRPaKlDTnFWmWP7TEO/U5U8MS0xzsqAoFgb/EWhB2Ib2Bxzox
+	 6U0Q5a5rVsDkZ0O3PIcTtIK4UcX3b3pDGTMyqa7Y=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: [PATCH 00/14] media: rzg2l-cru: Rework slot programming for
+ V2H/G3E
+Date: Fri, 27 Mar 2026 18:10:05 +0100
+Message-Id: <20260327-b4-cru-rework-v1-0-3b7d0430f538@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAO25xmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYyMz3SQT3eSiUt2i1PL8omzdpETjJHNDo6Rkc0NTJaCegqLUtMwKsHn
+ RsbW1ABWZbyBfAAAA
+X-Change-ID: 20260326-b4-cru-rework-ba3b712bc715
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Biju Das <biju.das.jz@bp.renesas.com>, 
+ Hans Verkuil <hverkuil+cisco@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Cc: Daniel Scally <dan.scally@ideasonboard.com>, 
+ =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, stable@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, 
+ Daniel Scally <dan.scally+renesas@ideasonboard.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2067;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=I0Fe6R9aZANzFW2MXqhySfLHgdmw2At0tLxMgznYH+8=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBpxroJnfJQ1OTkptkEXd3yRYKC5ul7oMQG9B9la
+ hYdg/CvDmWJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaca6CQAKCRByNAaPFqFW
+ PA4qEADCKTp5JrRQOxzSpYyf51NvHYMgi8IsLpggPeEfcmBdsXUD9IVBqhb2GGe0CdYwZAvuTUh
+ 1YlyHmbDJtfWot+qZ3syPEjzrjzTuXUe0rGUdN2M5CQji9ExrO3dTejXH3XtkSjN3sbtULzNe4/
+ LxZHDs82A61JTsvBDOGMfZ0pRZXvVhbX3WX34vLolSfyPjQBiAYnaf0dYJyZjp+Kr33YK616d9j
+ M2rMd/oC9ZjJ2X2+uW6KBge2fsoJPPNOTrnqr6zKt0LXSlZOsbu3qMlkWrPVWsfxWnm2JruDJAB
+ U39KwVsC0PWCIOsDpF1X4Yl6taNDctY598S4Cy++s1k7UHtfJZGr82LWa0249XMq7BNpoUOm4+K
+ 2zy+1EbG01okVQk41a66fnMZD8DaAolBhXjWYY5ihVh3PjqnO1Hpoh3fuLOwbDg0m0AP7y1kM4c
+ 3+wbnlPPwIaouYFnLOhCPaMVtR47Bh+vS1d4BRENLKycD4eduljTmPM6DjUR9ppXBedswGV8BPp
+ 1CINAGSLL4fV5P+D+n5lmEFUGBR9+QPEN+KCYKj/cB3eQzyI+ggAw70yW+ADP8Y6GJCiuB0C5lD
+ HUb9JqQFbQEyyRP0bZe6zUQLHVzcs6pQ+WZr7fzYQnt7wNisiAYs7OJHtC+sPKGiUlPlmGNf8zq
+ LZPGg0RS2vRhGiw==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230695-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230694-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[ideasonboard.com,protonmail.com,bp.renesas.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[liavmordouch@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 52BEE34844B
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid]
+X-Rspamd-Queue-Id: 1F054348323
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When enter_alt_screen() saves vc_uni_lines into vc_saved_uni_lines and
-sets vc_uni_lines to NULL, a subsequent console resize via vc_do_resize()
-skips reallocating the unicode buffer because vc_uni_lines is NULL.
-However, vc_saved_uni_lines still points to the old buffer allocated for
-the original dimensions.
+This patch series starts by collecting a patch sent from Dan in the past
+which improves the HW slot programming on V2H(P) to avoid losing frames
+under heavy system load conditions.
 
-When leave_alt_screen() later restores vc_saved_uni_lines, the buffer
-dimensions no longer match vc_rows/vc_cols. Any operation that iterates
-over the unicode buffer using the current dimensions (e.g. csi_J clearing
-the screen) will access memory out of bounds, causing a kernel oops:
+Tommaso also sent a series a few months ago for the CRU from which I
+collected the first two patches.
 
-  BUG: unable to handle page fault for address: 0x0000002000000020
-  RIP: 0010:csi_J+0x133/0x2d0
+Around it, I've reworked a bit the locking in the driver which is a bit
+coarse and causes lost of frames under heavy system load conditions.
 
-The faulting address 0x0000002000000020 is two adjacent u32 space
-characters (0x20) interpreted as a pointer, read from the row data area
-past the end of the 25-entry pointer array in a buffer allocated for
-80x25 but accessed with 240x67 dimensions.
+Along with these, bit of drive-by cometic changes here and there to
+modernize the driver code.
 
-Fix this by checking whether the console dimensions changed while in the
-alternate screen. If they did, free the stale saved buffer instead of
-restoring it. The unicode screen will be lazily rebuilt via
-vc_uniscr_check() when next needed.
+I've tested on V2H(P) but I've also modified the G2L IRQ handler, so if
+anyone could test on G2L and G3E it would be great!
 
-Fixes: 5eb608319bb5 ("vt: save/restore unicode screen buffer for alternate screen")
-Cc: stable@vger.kernel.org
-Tested-by: Liav Mordouch <liavmordouch@gmail.com>
-Signed-off-by: Liav Mordouch <liavmordouch@gmail.com>
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
-v1 -> v2: Reformatted as a proper patch with commit message, Fixes tag,
-          and Signed-off-by. v1 was sent as an inline analysis + diff.
+Daniel Scally (1):
+      media: rzg2l-cru: Rework rzg2l_cru_fill_hw_slot()
 
-Note: writing of this patch and analysis was assisted by AI for grammar
-and flow. Apologies in advance if anything reads off.
+Jacopo Mondi (11):
+      media: rzg2l-cru: Modernize spin_lock usage with cleanup.h
+      media: rzg2l-cru: Use proper guard() in irq handler
+      media: rzg2l-cru: Remove locking from start/stop routines
+      media: rzg2l-cru: Do not use irqsave when not needed
+      media: rzg2l-cru: Remove wrong locking comment
+      media: rz2gl-cru: Introduce a spinlock for hw operations
+      media: rzg2l-cru: Split hw locking from buffers
+      media: rzg2l-cru: Manually track active slot number
+      media: rz2gl-cru: Return pending buffers in order
+      media: rzg2l-cru: Remove the 'state' variable
+      media: rzg2l-cru: Simplify irq return value handling
 
- drivers/tty/vt/vt.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Tommaso Merciai (2):
+      media: rzg2l-cru: Skip ICnMC configuration when ICnSVC is used
+      media: rzg2l-cru: Use only frame end interrupts
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1907,6 +1907,7 @@
- 	unsigned int rows = min(vc->vc_saved_rows, vc->vc_rows);
- 	unsigned int cols = min(vc->vc_saved_cols, vc->vc_cols);
- 	u16 *src, *dest;
-+	bool uni_lines_stale;
- 
- 	if (vc->vc_saved_screen == NULL)
- 		return; /* Not inside an alt-screen */
-@@ -1915,7 +1916,18 @@
- 		dest = ((u16 *)vc->vc_origin) + r * vc->vc_cols;
- 		memcpy(dest, src, 2 * cols);
- 	}
--	vc_uniscr_set(vc, vc->vc_saved_uni_lines);
-+	/*
-+	 * If the console was resized while in the alternate screen,
-+	 * vc_saved_uni_lines was allocated for the old dimensions.
-+	 * Restoring it would cause out-of-bounds accesses. Discard it
-+	 * and let the unicode screen be lazily rebuilt.
-+	 */
-+	uni_lines_stale = vc->vc_saved_rows != vc->vc_rows ||
-+			  vc->vc_saved_cols != vc->vc_cols;
-+	if (uni_lines_stale)
-+		vc_uniscr_free(vc->vc_saved_uni_lines);
-+	else
-+		vc_uniscr_set(vc, vc->vc_saved_uni_lines);
- 	vc->vc_saved_uni_lines = NULL;
- 	restore_cur(vc);
- 	/* Update the entire screen */
+ .../platform/renesas/rzg2l-cru/rzg2l-cru-regs.h    |   2 +
+ .../media/platform/renesas/rzg2l-cru/rzg2l-cru.h   |  28 +-
+ .../media/platform/renesas/rzg2l-cru/rzg2l-video.c | 328 ++++++++-------------
+ 3 files changed, 140 insertions(+), 218 deletions(-)
+---
+base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
+change-id: 20260326-b4-cru-rework-ba3b712bc715
+
+Best regards,
+-- 
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+
 
