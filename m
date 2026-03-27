@@ -1,120 +1,146 @@
-Return-Path: <stable+bounces-230690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFB/IvO1xmnoNwUAu9opvQ
-	(envelope-from <stable+bounces-230690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:53:07 +0100
+	id KHecNzS1xmnFNwUAu9opvQ
+	(envelope-from <stable+bounces-230691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:49:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C6347DFC
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:53:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FCC347CCB
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9D52E3114DE5
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:47:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E2B293072B92
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1E735DA70;
-	Fri, 27 Mar 2026 16:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DEF35F184;
+	Fri, 27 Mar 2026 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="S8rahmQO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHnbF2XL"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5070F35836D;
-	Fri, 27 Mar 2026 16:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1736308A;
+	Fri, 27 Mar 2026 16:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774630017; cv=none; b=moc8M5RqeOZ+QdB9st83NW5kdkew+36pgshf9mqczQ8/PkIF2kMfCX7vJNcj5JIxXx8l5CQBQLqqk606qxgpu9rdCCT8VeXK8c7h8TQX15AExdnif1G0gq0NW85hobKmaqxUYiUqQrjwMpjytTobWlSwyTXWZN3xB5DA6VOOLwM=
+	t=1774630085; cv=none; b=Ui4GM8hXXoDHHsTKAlrPyu3yuWZvJ1xCK9S4pe/qHkHAxaKXhNM7j74ZigRioJlePldyaLrs2j3iB5WlhThjT71+ujnDrr16iS4965PAp5crsaro59vtQxfiou0Tm8P/4ZFtBiwcRWVU3xe+m8iWNPL85GMhbU10KFySbLyYMGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774630017; c=relaxed/simple;
-	bh=wohXqDGk7Z1RD9kbBN7gbSivjh2qLtElRyl+H0MeHmk=;
+	s=arc-20240116; t=1774630085; c=relaxed/simple;
+	bh=d3PijMvDbvxnUEzU6gxuyBsPTheOglT+TbYXjvUHlxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IJESY4NjU/HGgYGSau1KSOvvludCuLytvK6PkHXzphtPhyTtGZggC24JylRPu5IR0MY2iJzAk5XQ0F/Gq6p9YwLl+0MihwZxZVbwEhS3vnmPVlme8jPKRJq816OPH/vTOUZQztcnmuZfa7ohr/ThzMVKb5zYwk7PJ0ydG/XyyDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=S8rahmQO; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6+p84I+dufFeYRWkA87WTcUlR5WvMECiOcTYPoz6Vok=; b=S8rahmQOPhsOv3sO8XmJDWyp+P
-	9t8X0uhKof+StRHr5MPnsTjcAp8xI7eKDS/25uANc9rVpZi25FjghxCu4h6/1nWHFn56XDW4US7dM
-	8lwpDVP3YS6Ykmy+3ts4nNu35hqLE4e7y6ZUIjz+0fgxJRhJz/hzb82zGmWdOoViztCE5kqXbVtHm
-	tu4xRBhCQNyGRRq58t89GN6i5HiS5Sy4fu/cZ/vxYbAAtWvoMv+G2B2Cyx1BDuUOD5oggJuxkVQoP
-	8edu9Ox1KuNbaYQb4Xj/2GsylNbLynvvnb5OZwcOrWNeWb0hVcDEyUBI8WeXIiVjAnIRijBhD0d6V
-	FBbFLXvw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1w6AKa-00AlXB-90; Fri, 27 Mar 2026 16:46:44 +0000
-Date: Fri, 27 Mar 2026 09:46:39 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3] xfrm: clear trailing padding in build_polexpire()
-Message-ID: <aca0YEL_PC3GFySl@gmail.com>
-References: <20260326055801.897013-1-yasuakitorimaru@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=iU02vzkwIEdvP8Xiv9cjkCacV+lI+l/bHbODUSoeo0f8/kVhVD8OUtuIa0z4AijCWienQ6+7Ng7PY/9COoXRaRs/NNwGpz2jgTitz5ga9tDNHqm0VO8mUUyet/WKnBxR8nKgycdDodPVaKaOpL6i79Do42mCBSEOU+YZIrxqUps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHnbF2XL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9C2C2BCB0;
+	Fri, 27 Mar 2026 16:48:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774630084;
+	bh=d3PijMvDbvxnUEzU6gxuyBsPTheOglT+TbYXjvUHlxo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FHnbF2XLg1VpyGIZjp0fO1fyXZ247/0Qx4/UQ8rQAVd/KGIBOhagbnA0bTyP6g9cy
+	 6t4/LwHmYL7m1UYXLtYpWzAuNHv6ylaWaq+eucABINGOC0orQoNHJKx8HUCfVo+6uz
+	 Is5R7E8vOErjYJmacjGSP5qRgWu4+Wdr9zYL4QceQyfg4dHThlMfeGVsPk3gE/dxAe
+	 BXLtndhV16gmg+79HMYObz+j9v8qeseCJsB/LHAbPy9PVa63yIcEDa+tnZO3HVIOBH
+	 kCkgW4TPxFD+LwDV8JAAAaE5eaWt5KtexV8supiFW3XTd71IgEJIK5mou+RNU0XkVH
+	 o0rro4PxEOf7g==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id E20141AC5731; Fri, 27 Mar 2026 16:48:00 +0000 (GMT)
+Date: Fri, 27 Mar 2026 16:48:00 +0000
+From: Mark Brown <broonie@kernel.org>
+To: "Liao, Bard" <bard.liao@intel.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Paul Olaru <paul.olaru@oss.nxp.com>,
+	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
+	"sound-open-firmware@alsa-project.org" <sound-open-firmware@alsa-project.org>,
+	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] ASoC: SOF: Don't allow pointer operations on
+ unconfigured streams
+Message-ID: <aca0wNJokCY1ImEk@sirena.co.uk>
+References: <20260326-asoc-compress-tstamp-params-v1-1-3dc735b3d599@kernel.org>
+ <SJ2PR11MB8424B402A94D8CB8A178BF14FF57A@SJ2PR11MB8424.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6ZUEPrAzetSX6Z5N"
 Content-Disposition: inline
-In-Reply-To: <20260326055801.897013-1-yasuakitorimaru@gmail.com>
-X-Debian-User: leitao
-X-Spamd-Result: default: False [-0.66 / 15.00];
+In-Reply-To: <SJ2PR11MB8424B402A94D8CB8A178BF14FF57A@SJ2PR11MB8424.namprd11.prod.outlook.com>
+X-Cookie: Identify your visitor.
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_MATCH_TO(1.00)[];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,nxp.com,linux.dev,perex.cz,suse.com,oss.nxp.com,alsa-project.org,vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TAGGED_FROM(0.00)[bounces-230691-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	TAGGED_FROM(0.00)[bounces-230690-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[debian.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1A2C6347DFC
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.co.uk:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 99FCC347CCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 02:58:00PM +0900, Yasuaki Torimaru wrote:
-> build_expire() clears the trailing padding bytes of struct
-> xfrm_user_expire after setting the hard field via memset_after(),
-> but the analogous function build_polexpire() does not do this for
-> struct xfrm_user_polexpire.
-> 
-> The padding bytes after the __u8 hard field are left
-> uninitialized from the heap allocation, and are then sent to
-> userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
-> leaking kernel heap memory contents.
-> 
-> Add the missing memset_after() call, matching build_expire().
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+--6ZUEPrAzetSX6Z5N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Mar 27, 2026 at 02:09:40AM +0000, Liao, Bard wrote:
+
+> > +	if (!sstream->channels || !sstream->sample_container_bytes)
+> > +		return -EBUSY;
+
+> Sorry, but why it is BUSY in this case?
+
+-EBUSY is often "wrong state".  Could also be -EINVAL, it doesn't super
+make a difference I think - nobody should actually be doing this.
+
+--6ZUEPrAzetSX6Z5N
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnGtMAACgkQJNaLcl1U
+h9CaJQf+IVjaqUbzUXV6gRp5wytogHz5dvAUlo/Fe3LMGpzH8kzUtnyNJQ+ACcpG
+2RnFIOgX6s6Xnw+i/f02rCj/mKAKbana+RDJLbBi5/qgQSUmsvzKJv9nbhTz1+QM
+cYdJ2YBwglKvxdMACR3yX//zYaHeLPSelQ4GmwTh2y+JcV3hyayRkZv5/drDoFID
+Ko0oBWAZxerqpPMzq+NmMTl+D4ftEMTZkfjL9ukQ7qHirXgMmreor38/1YSL4nFT
+H45AME+nE4LSccbuHqMlL4eMswXBwKYKBPT8QIj3Lv9AS4hmhEpj8a8/aytBvyrY
+rtV1zogwH51/VelCkjtydq1gD6HSiA==
+=2Sv+
+-----END PGP SIGNATURE-----
+
+--6ZUEPrAzetSX6Z5N--
 
