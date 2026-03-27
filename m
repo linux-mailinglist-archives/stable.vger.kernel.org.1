@@ -1,233 +1,151 @@
-Return-Path: <stable+bounces-230603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEekCCJBxmlRIAUAu9opvQ
-	(envelope-from <stable+bounces-230603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:34:42 +0100
+	id WL6YMiBExmmgIAUAu9opvQ
+	(envelope-from <stable+bounces-230604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:47:28 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D638341112
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3250B341433
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9558230BC53F
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:30:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 44EFC30575A3
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA523D47DB;
-	Fri, 27 Mar 2026 08:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="IvXB5NwT";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qc/7UUME"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C7A3D9044;
+	Fri, 27 Mar 2026 08:47:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDAF372EE4;
-	Fri, 27 Mar 2026 08:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE703A6B9E;
+	Fri, 27 Mar 2026 08:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774600236; cv=none; b=pLpAUgoFexm7bM3504XXuI+fWdbG1PnPpi5xOA8fUPsPHCtr5XqfY+bWRP4yBkMDW1fNzwk6VctSF6Pmz/Obeu5gLhHnAnAWD7gzOTrMmceAWS4tN7tm9++iIQvri0H3dyU6SLv3UlpXTg7eONhnyDHfw2B2jrKRxnuB2SB63/c=
+	t=1774601241; cv=none; b=OpLWzzUuBp3D48IhQ7M/+WamPKvrOM32QYBezrBdBoXSgP6gT1QSFoQs3P86cu++h5WW0plH51HCr/a2DRZ60jaqczj332HvoidP9fsrID8Gx1aq/7vVBtBXneqEi5+O+291gz1WTfqilJoWwyBdG/CYvvbRS7hcQ1iKuFCyZ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774600236; c=relaxed/simple;
-	bh=N3CWqIr+H/5bpCg0yNtyZ3Pl3arkZH594k5xZqiRbi8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=O5MvxaAv/qs1h/SPGOvyvHO9wOtl+T/xBBPqCnHssIJnCUzpJlqnD/iGp9oOwd2YoL7OQ0KMCmRF5CORvGR2q4hpDd1N3tJyFpdYQeAkuJ75jqRxDlI+1DzshHq6CfbDvQxmktHguqq0uSD+rJ5ymI2V4mIZU9Pxe8uGOrJ1H14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=IvXB5NwT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qc/7UUME; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 5800C1D0022E;
-	Fri, 27 Mar 2026 04:30:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 27 Mar 2026 04:30:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm3; t=1774600232; x=1774686632; bh=Do
-	ipKypdA5mG0i5AzZtRlEoooQf+DEP/m8Jnv7weVCI=; b=IvXB5NwTOeOqdBA2q3
-	T5x1aSEtQ0EGnX1vX0IBRDAHqvclGqpY/3FPiS9kJeZBrp9hpQKz7a9dOt3KyFx2
-	Wzh+QPtaztDy7Y6C2T+tvc2q+4ggIn31LHjpYXYxUwuJ/MMzuJwtI/MZ94vge6gQ
-	sXbdCgcBZj0EemdOZ9/ujCtM77EH99eEn9/4GLKyaaYvoF6J5fwGMrk05gT1PlOC
-	6ee8lrKwCJn7XtIguOqcUcISJ2CXjnU2vtpOda6X+D2b7vgSaINct/0X1RD5uUTx
-	XBQZM+wsug7kpf3LovziG6aM6hs9+pnSOJGOREI7SKZ/liGR3a7sp/rvP4ztZoo/
-	f6lQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1774600232; x=1774686632; bh=DoipKypdA5mG0i5AzZtRlEoooQf+
-	DEP/m8Jnv7weVCI=; b=qc/7UUME6xSAA2quXNX5gCvbDxbXPE2KVkFhKMr18cBJ
-	Trg6VhHQbVQppkYlrT23S8guddxfMTtIKe8klPICzXCcSIazTS8bW/JIH/gpvNLY
-	LHtyf07ASVps9GW6Xl5/E4BIBG3Y/Sj93Kr1c4dzzx2LQ/CzrwFMA3NzZH/Z8N7f
-	hE2iPXebfYwbpaP2YzGla/+1EIv7iprhd90UyfDxJ2YM/wrioEYDQ4k2JsrNLTXV
-	lIudt1MWoOLtz5b54/0Ovjsl1QzDzQBD/F0PdDAC/mdqzIIwUScdEVjwlwCTNQWU
-	AJ/5h3mEhk/NHvtH7vDpRk5MiERus+6ZlnH7FCTZCw==
-X-ME-Sender: <xms:J0DGaWvsHt2nQ2jj4xVstf2CUsEJR2n2zs5uBG8WtGVZxEmabK_d1g>
-    <xme:J0DGaRdDOYS9k5jE0nEpTPHrt4QRhB34GyM5lPdEUlz3Vx0LzlTwN7gq5vaKZV03O
-    Kj3fivJ2NOc5WhiGofMcRq_IGhTMckK3yDPF-4AHEJ8m-IxsfT06nU>
-X-ME-Received: <xmr:J0DGacmjnB3DmIrtXSwxo-XO4vhlkzVLw3lyz26hjAWPBSDOWi5XNbsmy_CWev6IUZUxmmpyij4itDk6xOeceSn87w2RrgQYFzMn-w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdelkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephfffufggtgfgkffvvefosehtkeertdertdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepkeeige
-    ehuefguddvteellefgtefhteehgfeiuddugfeifffhvddtgfdvgfehveejnecuffhomhgr
-    ihhnpehshihsthgvmhgurdhiohdpkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhn
-    sggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhjgh
-    estghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepnhhstgeskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehthh
-    homhgrshdrfigvihhsshhstghhuhhhsehlihhnuhhtrhhonhhigidruggvpdhrtghpthht
-    ohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrfh
-    grthhouhhmsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhk
-    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjsehjrghnnh
-    gruhdrnhgvthdprhgtphhtthhopehlihhnuhigqdhksghuihhlugesvhhgvghrrdhkvghr
-    nhgvlhdrohhrgh
-X-ME-Proxy: <xmx:J0DGaUBjlmTFlSE4v_hbD2bY_ag8-NzKE29jUe8RaPHYDakLU2fjCg>
-    <xmx:J0DGaWOErnn8i58om-5sKCCx9dtJe_CbhFcPhs4l0-w2JwHeA7bBmw>
-    <xmx:J0DGaTPW--EgZgvVBmYzhy3iMnad3D3knCBtUJzJpUzaxf1Ud7Wpzw>
-    <xmx:J0DGaWlJ_iLF9chBVo1d0k2SKPk_iC1Tcwp9nW46W4Fqnl1gOryBHw>
-    <xmx:KEDGabnlpWxM7Lm1gjB1Slt4Ry2u_fvfRKTPUh_iaAYMp_PIkZGcZdZQ>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Mar 2026 04:30:31 -0400 (EDT)
-From: Janne Grunau <j@jannau.net>
-Date: Fri, 27 Mar 2026 09:30:29 +0100
-Subject: [PATCH v3] kbuild: modules-cpio-pkg: Respect INSTALL_MOD_PATH
+	s=arc-20240116; t=1774601241; c=relaxed/simple;
+	bh=TdagGWkVKdOB2FB7rtgDLzTRoWcGbugJNdmrD6BKscc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fMbi6JjhchfXTOGdib6vcDr9Y7N3u/dB4Ja7s5TjJsakPY4mPPjvA9bR5wveFoNSSuBymmKeoSAdjmw0UUuOYd/R1PKuOXDGl7LbhSwg4x8s6CnQ3wmPvk4GM2BZx1EfMORespTBiJaX9udT96G/Gd09jNa4u90fB0A+pIgPLCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.17])
+	by gateway (Coremail) with SMTP id _____8Dx_8MURMZp_TofAA--.23907S3;
+	Fri, 27 Mar 2026 16:47:16 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.17])
+	by front1 (Coremail) with SMTP id qMiowJAx18ANRMZpFLReAA--.34869S2;
+	Fri, 27 Mar 2026 16:47:15 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH for 6.12] Revert "LoongArch: Add machine_kexec_mask_interrupts() implementation"
+Date: Fri, 27 Mar 2026 16:47:01 +0800
+Message-ID: <20260327084701.2692699-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260327-kbuild-modules-cpio-pkg-usr-merge-v3-1-ef507dfa006c@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5XNQQ6CMBCF4auQrh1DByzoynsYF6UdpQKFtJRoC
- He3sNKdLv9J5nsz8+QMeXZKZuZoMt70Nka2S5iqpb0TGB2bYYoizTCFpgqm1dD1OrTkQQ2mh6G
- 5Q/AOOnLxIUchZC5SLFGx6AyObua5bVyusWvjx969tsmJr9d/9IkDB0XEpeZVVajq/JDWyrC3N
- LKVn/CTPPxCYiSz7ChVWegSSX6Ry7K8AdOl9F0mAQAA
-X-Change-ID: 20260320-kbuild-modules-cpio-pkg-usr-merge-4266a460282c
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Simon Glass <sjg@chromium.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3427; i=j@jannau.net;
- s=yk2025; h=from:subject:message-id;
- bh=N3CWqIr+H/5bpCg0yNtyZ3Pl3arkZH594k5xZqiRbi8=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhsxjDqqf/D+X2M0zv9Jqd0Uq4eUvdfWutst/VqQ7vzljH
- C/hb3qio5SFQYyLQVZMkSVJ+2UHw+oaxZjaB2Ewc1iZQIYwcHEKwEQMuxkZLpxqjdTKFHVJrTvX
- ydAUFavOeXyFxZJFy4ubajQFJz1cz/BXztdvcuLph96ufq+uL1azaVF6t3v2wf9NB3b966uItDn
- PAwA=
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-CM-TRANSID:qMiowJAx18ANRMZpFLReAA--.34869S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cw4xGr1DCF17JrW5Gw4DGFX_yoW8JFWkpF
+	WfAw1DJr45WwsIvF1kJ3s7WF15G34DG3y2qa4rKF1fW3WqkwnYq3WkAr1vqFyjyrWYqryS
+	9rZYqa4IqF1UJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[jannau.net:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[jannau.net:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-230603-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[jannau.net];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-230604-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[j@jannau.net,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linutronix.de:email,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 6D638341112
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3250B341433
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The modules-cpio-pkg target added in commit 2a9c8c0b59d3 ("kbuild: add
-target to build a cpio containing modules") is incompatible with
-initramfs with merged /lib and /usr/lib directories [1]. "/lib" cannot
-be a link and directory at the same time.
-Respect a non-empty INSTALL_MOD_PATH in the modules-cpio-pkg target so
-that `make INSTALL_MOD_PATH=/usr modules-cpio-pkg` results in the same
-module install location as `make INSTALL_MOD_PATH=/usr modules_install`.
+This reverts commit 429bf3f04c24a1590ed18cd7bf802cf63f937a0f.
 
-Tested with Fedora distribution initramfs produced by dracut.
+6.12.78 bakported "kexec: Consolidate machine_kexec_mask_interrupts()
+implementation" so the arch-specific implementation is redundant.
 
-Link: https://systemd.io/THE_CASE_FOR_THE_USR_MERGE/ [1]
-Fixes: 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Glass <sjg@chromium.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
-Hej,
+ arch/loongarch/kernel/machine_kexec.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
 
-this patch allows to produce modules-cpio initramfs which are compatible
-with initramfs with merged /lib and /usr/lib (/lib as symlink to
-/usr/lib). I expect initramfs of distributions with merged /usr to have
-a merged /usr as well. This is at least true for Fedora initramfs built
-with dracut.
-
-Janne
----
-Changes in v3:
-- Drop comment added in v2, change is straight forward after dropping
-  the repeated slash prevention
-- collect Thomas' and Nathan's Rb:
-- Link to v2: https://lore.kernel.org/r/20260325-kbuild-modules-cpio-pkg-usr-merge-v2-1-339ac87d82ea@jannau.net
-
-Changes in v2:
-- drop pointless avoidance of repeated slashes
-- comment the changed Makefile rule
-- break long modles-cpio-pkg help text to 2 lines
-- imported Simon's Rb:
-- add fixes tag for commit 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
-- Link to v1: https://lore.kernel.org/r/20260320-kbuild-modules-cpio-pkg-usr-merge-v1-1-cee1ad1bb7cb@jannau.net
----
- scripts/Makefile.package | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile.package b/scripts/Makefile.package
-index 0ec946f9b905f74f8698d8d6967d22f5b76f64e0..6d36786ba31cefaf5ae2c6e2537d421b5bfb7a06 100644
---- a/scripts/Makefile.package
-+++ b/scripts/Makefile.package
-@@ -195,7 +195,7 @@ tar%-pkg: linux-$(KERNELRELEASE)-$(ARCH).tar.% FORCE
- .tmp_modules_cpio: FORCE
- 	$(Q)$(MAKE) -f $(srctree)/Makefile
- 	$(Q)rm -rf $@
--	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@ modules_install
-+	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@/$(INSTALL_MOD_PATH) modules_install
+diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
+index 19bd763263d3..8ef4e4595d61 100644
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -136,28 +136,6 @@ void kexec_reboot(void)
+ 	BUG();
+ }
  
- quiet_cmd_cpio = CPIO    $@
-       cmd_cpio = $(CONFIG_SHELL) $(srctree)/usr/gen_initramfs.sh -o $@ $<
-@@ -264,6 +264,7 @@ help:
- 	@echo '  tarxz-pkg           - Build the kernel as a xz compressed tarball'
- 	@echo '  tarzst-pkg          - Build the kernel as a zstd compressed tarball'
- 	@echo '  modules-cpio-pkg    - Build the kernel modules as cpio archive'
-+	@echo '                        (uses INSTALL_MOD_PATH inside the archive)'
- 	@echo '  perf-tar-src-pkg    - Build the perf source tarball with no compression'
- 	@echo '  perf-targz-src-pkg  - Build the perf source tarball with gzip compression'
- 	@echo '  perf-tarbz2-src-pkg - Build the perf source tarball with bz2 compression'
-
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260320-kbuild-modules-cpio-pkg-usr-merge-4266a460282c
-
-Best regards,
+-static void machine_kexec_mask_interrupts(void)
+-{
+-	unsigned int i;
+-	struct irq_desc *desc;
+-
+-	for_each_irq_desc(i, desc) {
+-		struct irq_chip *chip;
+-
+-		chip = irq_desc_get_chip(desc);
+-		if (!chip)
+-			continue;
+-
+-		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
+-			chip->irq_eoi(&desc->irq_data);
+-
+-		if (chip->irq_mask)
+-			chip->irq_mask(&desc->irq_data);
+-
+-		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
+-			chip->irq_disable(&desc->irq_data);
+-	}
+-}
+ 
+ #ifdef CONFIG_SMP
+ static void kexec_shutdown_secondary(void *regs)
 -- 
-Janne Grunau <j@jannau.net>
+2.52.0
 
 
