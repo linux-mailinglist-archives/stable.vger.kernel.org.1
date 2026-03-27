@@ -1,213 +1,164 @@
-Return-Path: <stable+bounces-230571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FVvB1joxWlTDQUAu9opvQ
-	(envelope-from <stable+bounces-230571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:15:52 +0100
+	id wFeJE+bpxWlTDQUAu9opvQ
+	(envelope-from <stable+bounces-230572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:22:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB47533E273
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:15:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDAD33E451
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D95983049A83
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:15:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2A643101F28
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473A532E143;
-	Fri, 27 Mar 2026 02:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E37334C28;
+	Fri, 27 Mar 2026 02:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AIKx6qeW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2jC1u1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0920C329E5A;
-	Fri, 27 Mar 2026 02:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479C1333729;
+	Fri, 27 Mar 2026 02:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774577726; cv=none; b=dthh41AsSWfOySQ2XTzVj2gR1qsPBaD4WHTxr1nL1q2r4XtbWZxoYCyDGlobQfgTXnODnbtmejn/7xYmb6Gl0AV6D959Ft2SlarF7Qkok9t3vUGRtkI2TJRBMiht8by4a2xI8ETPX9z/LUOcSIDdMtXgedafL4MgAiIuu7oKu38=
+	t=1774577748; cv=none; b=pcvD88RvEhs3z0vHsJ1xa23rpGCUbeGm5+zBMQqZmfjW0piBNd0lobxgOQH0D4NGY5JaHr9fp6jFDSr3rNapIqGro4DwyCVZZ/WD8F83/vdKlCRUZpiKo7nPlILOLiVPBOZwgxMkbhRkZ2TBRyy57ohc7XQpCbQ7vfT6QAsgYyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774577726; c=relaxed/simple;
-	bh=CtAWkGMvmgaWzI6n1vOUwGCglJtxx00IEzrd0BAI64Y=;
-	h=Date:To:From:Subject:Message-Id; b=A4zrK0Epm+7OWkKWktlocWJeKCmZPEaaL/KAa3LFwWOQRHFciRJ1PKTLfDCssiS7IFGhswPIV8vX8NMy4Ms4GNXYGhGfRYvG+xKff/MDHqqw/V3nRk/x7RfiUfZjo+2BKnQEmRtqp18WTX5libYPxvpi8aD1Wib2MIaNH+dm0gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AIKx6qeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79721C19423;
-	Fri, 27 Mar 2026 02:15:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774577725;
-	bh=CtAWkGMvmgaWzI6n1vOUwGCglJtxx00IEzrd0BAI64Y=;
-	h=Date:To:From:Subject:From;
-	b=AIKx6qeWVQHVSCKMHAMmFpWVSQS776sQ3eQT5zr1OZ1ON3FNdUA1Zk3GAc/NVW5I3
-	 u4+oRRv+GOk6zVKb798zQrw8TJchlokduRe0kE/PLIMsOl6Ncobp4pq42BC+xwNvXi
-	 kJaoIIeU67Usp7atDwk0zQslk8T7oETwJWXjPNdQ=
-Date: Thu, 26 Mar 2026 19:15:24 -0700
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,weixugc@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,mhocko@kernel.org,ljs@kernel.org,koichiro.den@canonical.com,kasong@tencent.com,hannes@cmpxchg.org,david@kernel.org,dave@stgolabs.net,baolin.wang@linux.alibaba.com,axelrasmussen@google.com,arnd@arndb.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-vmscan-avoid-false-positive-wuninitialized-warning.patch removed from -mm tree
-Message-Id: <20260327021525.79721C19423@smtp.kernel.org>
+	s=arc-20240116; t=1774577748; c=relaxed/simple;
+	bh=iAZCC0jak100OlBn9OLxcx6Eaf+7FiXRyV9AXruRfRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ILCL64+USw0qkTBIC7gqBlP2kOIExAMurm8O1tGTUz2oMus+mYp9aeGC7Yv+ALoXRs/cMViYqaPZQ2MNUU5TU3O4KvX+t3jJa/3UFDgAcSyFl0DNyPmZ3WD5Xwb5548X4hgU8fxbYmW5MEMyHMTbWu4LFAsnQvKmqCGE47x8q8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2jC1u1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BB9C116C6;
+	Fri, 27 Mar 2026 02:15:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774577747;
+	bh=iAZCC0jak100OlBn9OLxcx6Eaf+7FiXRyV9AXruRfRY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=a2jC1u1gck+ljBf4h40oqMRwlJbkMC3F2h5tVxzpwEXS5jZAFJQgA+UGIJVNXtypI
+	 zlW8ybs1wyrvlxpOy5wr3MrQFnM6p0sbYKaU7zHnPXec8gE9UKYl205ZAja6damTJ7
+	 R8IEsbvfxWtaD246K/qJy1tu5LECQ2bqSvd5p49/8Nm8haauxGPGs3rvI0ATRwYzm4
+	 76xmH965FsCTSUkxS+h+oN5fTPtoOr+WMIICC0in8KbbTbfNA693PREkRlY//2FH8K
+	 5nuDBdz246QMecQ+5ZSQz7ET69Cm5pk4gWk19ZwwU4yLiqTBHUSE8BLdkzuZTuTrPF
+	 De6M2TNVWVlfg==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 14 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH v2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
+Date: Thu, 26 Mar 2026 19:15:45 -0700
+Message-ID: <20260327021546.66441-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260327004952.58266-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230571-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230572-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BB47533E273
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CBDAD33E451
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Forwarding Sashiko review for doing discussions via mails.
 
-The quilt patch titled
-     Subject: mm/vmscan: avoid false-positive -Wuninitialized warning
-has been removed from the -mm tree.  Its filename was
-     mm-vmscan-avoid-false-positive-wuninitialized-warning.patch
+# review url: https://sashiko.dev/#/patchset/20260327004952.58266-1-sj@kernel.org
+# start of sashiko.dev inline review
+commit 36b78ee39968830aca3d375219a2cfce73d0d1d0
+Author: SeongJae Park <sj@kernel.org>
 
-This patch was dropped because an updated version will be issued
+mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
 
-------------------------------------------------------
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: mm/vmscan: avoid false-positive -Wuninitialized warning
-Date: Fri, 13 Feb 2026 13:38:56 +0100
+This commit fixes a race condition between damon_call and the
+kdamond_fn exit path that could result in a deadlock. It introduces a
+call_controls_obsolete flag to prevent damon_call from waiting
+indefinitely for a terminating thread.
 
-When the -fsanitize=bounds sanitizer is enabled, gcc-16 sometimes runs
-into a corner case in the read_ctrl_pos() pos function, where it sees
-possible undefined behavior from the 'tier' index overflowing, presumably
-in the case that this was called with a negative tier:
+Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org
 
-In function 'get_tier_idx',
-    inlined from 'isolate_folios' at mm/vmscan.c:4671:14:
-mm/vmscan.c: In function 'isolate_folios':
-mm/vmscan.c:4645:29: error: 'pv.refaulted' is used uninitialized [-Werror=uninitialized]
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
 
-This can happen with CONFIG_UBSAN_ARRAY_BOUNDS=y.  The actual warning
-only shows up in some configurations with that, so either there is some
-other dependency, or an element of chance based on gcc optimizations.
+[ ... ]
 
-Part of the problem seems to be that read_ctrl_pos() has unusual calling
-conventions since commit 37a260870f2c ("mm/mglru: rework type selection")
-where passing MAX_NR_TIERS makes it accumulate all tiers but passing a
-smaller positive number makes it read a single tier instead.
+> @@ -3062,6 +3042,9 @@ static int kdamond_fn(void *data)
+>  	damon_destroy_targets(ctx);
+>  
+>  	kfree(ctx->regions_score_histogram);
+> +	mutex_lock(&ctx->call_controls_lock);
+> +	ctx->call_controls_obsolete = true;
+> +	mutex_unlock(&ctx->call_controls_lock);
+>  	kdamond_call(ctx, true);
+>  	damos_walk_cancel(ctx);
 
-Avoid this case by splitting read_ctrl_pos() into two separate helpers
-that each only do one of the two cases.  This avoids the warning as far as
-I can tell, and seems a bit easier to understand to me.
+Does damos_walk suffer from the same exit race regression that this patch
+fixes for damon_call?
 
-Link: https://lkml.kernel.org/r/20260213123902.3466040-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Koichiro Den <koichiro.den@canonical.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+In kdamond_fn, the thread termination sequence executes damos_walk_cancel
+and only later sets ctx->kdamond = NULL under the kdamond_lock.
 
- mm/vmscan.c |   37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+damos_walk appears to use the same pattern as the old damon_call where it
+registers ctx->walk_control, checks damon_is_running (which verifies
+ctx->kdamond != NULL), and then unconditionally blocks on wait_for_completion.
 
---- a/mm/vmscan.c~mm-vmscan-avoid-false-positive-wuninitialized-warning
-+++ a/mm/vmscan.c
-@@ -3125,20 +3125,15 @@ struct ctrl_pos {
- static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
- 			  struct ctrl_pos *pos)
- {
--	int i;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
- 
- 	pos->gain = gain;
--	pos->refaulted = pos->total = 0;
--
--	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
--		pos->refaulted += lrugen->avg_refaulted[type][i] +
--				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
--		pos->total += lrugen->avg_total[type][i] +
--			      lrugen->protected[hist][type][i] +
--			      atomic_long_read(&lrugen->evicted[hist][type][i]);
--	}
-+	pos->refaulted = lrugen->avg_refaulted[type][tier] +
-+			 atomic_long_read(&lrugen->refaulted[hist][type][tier]);
-+	pos->total = lrugen->avg_total[type][tier] +
-+		     lrugen->protected[hist][type][tier] +
-+		     atomic_long_read(&lrugen->evicted[hist][type][tier]);
- }
- 
- static void reset_ctrl_pos(struct lruvec *lruvec, int type, bool carryover)
-@@ -4775,6 +4770,24 @@ static int get_tier_idx(struct lruvec *l
- 	return tier - 1;
- }
- 
-+static void aggregate_ctrl_pos(struct lruvec *lruvec, int type, int gain,
-+			       struct ctrl_pos *pos)
-+{
-+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
-+
-+	pos->gain = gain;
-+	pos->refaulted = pos->total = 0;
-+
-+	for (int i = 0; i < MAX_NR_TIERS; i++) {
-+		pos->refaulted += lrugen->avg_refaulted[type][i] +
-+				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
-+		pos->total += lrugen->avg_total[type][i] +
-+			      lrugen->protected[hist][type][i] +
-+			      atomic_long_read(&lrugen->evicted[hist][type][i]);
-+	}
-+}
-+
- static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
- {
- 	struct ctrl_pos sp, pv;
-@@ -4788,8 +4801,8 @@ static int get_type_to_scan(struct lruve
- 	 * Compare the sum of all tiers of anon with that of file to determine
- 	 * which type to scan.
- 	 */
--	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
--	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
-+	aggregate_ctrl_pos(lruvec, LRU_GEN_ANON, swappiness, &sp);
-+	aggregate_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_SWAPPINESS - swappiness, &pv);
- 
- 	return positive_ctrl_err(&sp, &pv);
- }
-_
+If a user triggers a DAMOS walk in the exact window after damos_walk_cancel
+has finished but before ctx->kdamond = NULL is executed, wouldn't damos_walk
+successfully register its control and pass the damon_is_running check?
 
-Patches currently in -mm which might be from arnd@arndb.de are
+If so, it would then block indefinitely on wait_for_completion because the
+cancellation phase has already passed and the thread is exiting.
 
-bug-avoid-format-attribute-warning-for-clang-as-well.patch
-ubsan-turn-off-kmsan-inside-of-ubsan-instrumentation.patch
+Because damos_walk is invoked via state_store with the global
+damon_sysfs_lock held, could this infinite wait block the entire DAMON sysfs
+interface for all users on the system?
 
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260327004952.58266-1-sj@kernel.org
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260327004952.58266-1-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
