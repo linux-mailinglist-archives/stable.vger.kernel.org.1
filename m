@@ -1,136 +1,213 @@
-Return-Path: <stable+bounces-230570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MkNMF/nxWlTDQUAu9opvQ
-	(envelope-from <stable+bounces-230570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:11:43 +0100
+	id 6FVvB1joxWlTDQUAu9opvQ
+	(envelope-from <stable+bounces-230571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:15:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8C533E1A7
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:11:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB47533E273
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 03:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 557263050D62
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:10:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D95983049A83
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9161F330D2F;
-	Fri, 27 Mar 2026 02:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473A532E143;
+	Fri, 27 Mar 2026 02:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSuJmIOR"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AIKx6qeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504E9330330;
-	Fri, 27 Mar 2026 02:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0920C329E5A;
+	Fri, 27 Mar 2026 02:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774577421; cv=none; b=qTnHcu7m8/Vcup4XY0Ezk/WjsyWMnFd9aDkdcw4Nyd971WcRoVtX9FJxh6jf1gHljG4MLjYYrL7A639MoG/wa7pmpQdV9D+nBwhgRGFrNdAfPeKMjrvKN2F9hvS4hmLHIZbJTDkqEmEuaRAyol9W5gY9NZ468c6rqw41uWi5vw8=
+	t=1774577726; cv=none; b=dthh41AsSWfOySQ2XTzVj2gR1qsPBaD4WHTxr1nL1q2r4XtbWZxoYCyDGlobQfgTXnODnbtmejn/7xYmb6Gl0AV6D959Ft2SlarF7Qkok9t3vUGRtkI2TJRBMiht8by4a2xI8ETPX9z/LUOcSIDdMtXgedafL4MgAiIuu7oKu38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774577421; c=relaxed/simple;
-	bh=HWwilsjJarrXBHBtNXrPyxHPRfiQkF06LtsZJa2qGkA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UAIqkJxFV6tS/RbGqHTFCa09NW6JLbPBlYkP+r/Bu6D8QGiSR7zP972Im3aDsUxxJuhLsB6/WB21dC7ToE8c7meC1cc40pLtJFVWjghvumyGZKjgCaalAnKgOBfSik4Zz/coxXtil3elwwtl/gL9nbTLkKJdUFCgRInKanNiQPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSuJmIOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FA2C116C6;
-	Fri, 27 Mar 2026 02:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774577420;
-	bh=HWwilsjJarrXBHBtNXrPyxHPRfiQkF06LtsZJa2qGkA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=DSuJmIORxKBJJtnJzkNSMJXiooHONZU2DElijz/D7oxorXHmt0c+wnNgMsF3t+0im
-	 /l8CBDrFEy8Sk6/YUwytwUbF8WF69hNuMJjVxSzUO9qRoMMfOAWeBT68+m2wwfuQZN
-	 7XWEGkLgvq91e8ndQ3sgQneprjb4C9PEIZ52h+UCL4VHLjTShmHK66qGLJRYdwTzcC
-	 33Tff46XKsp6nVTEGYlzQApKluVCbj7/KWePE8odAzTdID5FyX5KRakEs8gen5QBEP
-	 q1mGN3WSZ3JdMjcXRx04rkhUVG/dUpwaQvp6iJ3d7yw3Itgak66hlmoBe0ixOns4mL
-	 2dXSOnZW6N6CQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEC23809A07;
-	Fri, 27 Mar 2026 02:10:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1774577726; c=relaxed/simple;
+	bh=CtAWkGMvmgaWzI6n1vOUwGCglJtxx00IEzrd0BAI64Y=;
+	h=Date:To:From:Subject:Message-Id; b=A4zrK0Epm+7OWkKWktlocWJeKCmZPEaaL/KAa3LFwWOQRHFciRJ1PKTLfDCssiS7IFGhswPIV8vX8NMy4Ms4GNXYGhGfRYvG+xKff/MDHqqw/V3nRk/x7RfiUfZjo+2BKnQEmRtqp18WTX5libYPxvpi8aD1Wib2MIaNH+dm0gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AIKx6qeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79721C19423;
+	Fri, 27 Mar 2026 02:15:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774577725;
+	bh=CtAWkGMvmgaWzI6n1vOUwGCglJtxx00IEzrd0BAI64Y=;
+	h=Date:To:From:Subject:From;
+	b=AIKx6qeWVQHVSCKMHAMmFpWVSQS776sQ3eQT5zr1OZ1ON3FNdUA1Zk3GAc/NVW5I3
+	 u4+oRRv+GOk6zVKb798zQrw8TJchlokduRe0kE/PLIMsOl6Ncobp4pq42BC+xwNvXi
+	 kJaoIIeU67Usp7atDwk0zQslk8T7oETwJWXjPNdQ=
+Date: Thu, 26 Mar 2026 19:15:24 -0700
+To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,weixugc@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,mhocko@kernel.org,ljs@kernel.org,koichiro.den@canonical.com,kasong@tencent.com,hannes@cmpxchg.org,david@kernel.org,dave@stgolabs.net,baolin.wang@linux.alibaba.com,axelrasmussen@google.com,arnd@arndb.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-vmscan-avoid-false-positive-wuninitialized-warning.patch removed from -mm tree
+Message-Id: <20260327021525.79721C19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: ethernet: mtk_ppe: avoid NULL deref when gmac0
- is
- disabled
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177457740729.3263687.4179857130043396261.git-patchwork-notify@kernel.org>
-Date: Fri, 27 Mar 2026 02:10:07 +0000
-References: 
- <20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de>
-In-Reply-To: 
- <20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de>
-To: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
-Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- eladwf@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- stable@vger.kernel.org
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230570-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230571-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2A8C533E1A7
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BB47533E273
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The quilt patch titled
+     Subject: mm/vmscan: avoid false-positive -Wuninitialized warning
+has been removed from the -mm tree.  Its filename was
+     mm-vmscan-avoid-false-positive-wuninitialized-warning.patch
 
-On Tue, 24 Mar 2026 09:36:01 +0100 you wrote:
-> If the gmac0 is disabled, the precheck for a valid ingress device will
-> cause a NULL pointer deref and crash the system. This happens because
-> eth->netdev[0] will be NULL but the code will directly try to access
-> netdev_ops.
-> 
-> Instead of just checking for the first net_device, it must be checked if
-> any of the mtk_eth net_devices is matching the netdev_ops of the ingress
-> device.
-> 
-> [...]
+This patch was dropped because an updated version will be issued
 
-Here is the summary with links:
-  - [net] net: ethernet: mtk_ppe: avoid NULL deref when gmac0 is disabled
-    https://git.kernel.org/netdev/net/c/976ff48c2ac6
+------------------------------------------------------
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: mm/vmscan: avoid false-positive -Wuninitialized warning
+Date: Fri, 13 Feb 2026 13:38:56 +0100
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+When the -fsanitize=bounds sanitizer is enabled, gcc-16 sometimes runs
+into a corner case in the read_ctrl_pos() pos function, where it sees
+possible undefined behavior from the 'tier' index overflowing, presumably
+in the case that this was called with a negative tier:
 
+In function 'get_tier_idx',
+    inlined from 'isolate_folios' at mm/vmscan.c:4671:14:
+mm/vmscan.c: In function 'isolate_folios':
+mm/vmscan.c:4645:29: error: 'pv.refaulted' is used uninitialized [-Werror=uninitialized]
+
+This can happen with CONFIG_UBSAN_ARRAY_BOUNDS=y.  The actual warning
+only shows up in some configurations with that, so either there is some
+other dependency, or an element of chance based on gcc optimizations.
+
+Part of the problem seems to be that read_ctrl_pos() has unusual calling
+conventions since commit 37a260870f2c ("mm/mglru: rework type selection")
+where passing MAX_NR_TIERS makes it accumulate all tiers but passing a
+smaller positive number makes it read a single tier instead.
+
+Avoid this case by splitting read_ctrl_pos() into two separate helpers
+that each only do one of the two cases.  This avoids the warning as far as
+I can tell, and seems a bit easier to understand to me.
+
+Link: https://lkml.kernel.org/r/20260213123902.3466040-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Koichiro Den <koichiro.den@canonical.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmscan.c |   37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
+
+--- a/mm/vmscan.c~mm-vmscan-avoid-false-positive-wuninitialized-warning
++++ a/mm/vmscan.c
+@@ -3125,20 +3125,15 @@ struct ctrl_pos {
+ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+ 			  struct ctrl_pos *pos)
+ {
+-	int i;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
+ 
+ 	pos->gain = gain;
+-	pos->refaulted = pos->total = 0;
+-
+-	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
+-		pos->refaulted += lrugen->avg_refaulted[type][i] +
+-				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
+-		pos->total += lrugen->avg_total[type][i] +
+-			      lrugen->protected[hist][type][i] +
+-			      atomic_long_read(&lrugen->evicted[hist][type][i]);
+-	}
++	pos->refaulted = lrugen->avg_refaulted[type][tier] +
++			 atomic_long_read(&lrugen->refaulted[hist][type][tier]);
++	pos->total = lrugen->avg_total[type][tier] +
++		     lrugen->protected[hist][type][tier] +
++		     atomic_long_read(&lrugen->evicted[hist][type][tier]);
+ }
+ 
+ static void reset_ctrl_pos(struct lruvec *lruvec, int type, bool carryover)
+@@ -4775,6 +4770,24 @@ static int get_tier_idx(struct lruvec *l
+ 	return tier - 1;
+ }
+ 
++static void aggregate_ctrl_pos(struct lruvec *lruvec, int type, int gain,
++			       struct ctrl_pos *pos)
++{
++	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
++
++	pos->gain = gain;
++	pos->refaulted = pos->total = 0;
++
++	for (int i = 0; i < MAX_NR_TIERS; i++) {
++		pos->refaulted += lrugen->avg_refaulted[type][i] +
++				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
++		pos->total += lrugen->avg_total[type][i] +
++			      lrugen->protected[hist][type][i] +
++			      atomic_long_read(&lrugen->evicted[hist][type][i]);
++	}
++}
++
+ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+ {
+ 	struct ctrl_pos sp, pv;
+@@ -4788,8 +4801,8 @@ static int get_type_to_scan(struct lruve
+ 	 * Compare the sum of all tiers of anon with that of file to determine
+ 	 * which type to scan.
+ 	 */
+-	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
+-	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
++	aggregate_ctrl_pos(lruvec, LRU_GEN_ANON, swappiness, &sp);
++	aggregate_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_SWAPPINESS - swappiness, &pv);
+ 
+ 	return positive_ctrl_err(&sp, &pv);
+ }
+_
+
+Patches currently in -mm which might be from arnd@arndb.de are
+
+bug-avoid-format-attribute-warning-for-clang-as-well.patch
+ubsan-turn-off-kmsan-inside-of-ubsan-instrumentation.patch
 
 
