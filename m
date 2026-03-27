@@ -1,310 +1,164 @@
-Return-Path: <stable+bounces-230636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILudCRhmxmnnJgUAu9opvQ
-	(envelope-from <stable+bounces-230636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:12:24 +0100
+	id oOoMLNloxmnTJwUAu9opvQ
+	(envelope-from <stable+bounces-230637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:24:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51593432A4
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:12:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5BC3435FA
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17643305C152
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:10:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0510B30BA796
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B35D3EBF1F;
-	Fri, 27 Mar 2026 11:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FADA34A76A;
+	Fri, 27 Mar 2026 11:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oJTa2gs1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IS0dUb2l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD3A3ECBE5
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 11:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774609791; cv=pass; b=I75fTQcTyl+Ct7s7zgiKHFwsi3H1W06j3NBOaSq10v7YC2ymKVYN7rQRLpxgTbubPCvxnlElHJQeCSxZqwECphBzK4+++Y35GC6dAoS6Bny26vpuQU9KJe8OtlnS4T6ij3+Sej5JjJ7DNK83oGClaJOcjy4wnuqe7c73unpt3x4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774609791; c=relaxed/simple;
-	bh=ZVUSVN22rirdB2W+suD1qjIDwFy/2R7FDSsezZv8VSQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K6+B9piwI7uyXhq3XHibPObhrq1x+oJLvNg2CklwXCYxMSLe08Ls16lM3p/CokYXL3F6mgJYSvac+5+D+aH99Z2IWLUJVuMRXqnCeJ5lrUGV+JpG2lVXnUv/3Z+bdR0vNbtArGDDKKDrvQKawwy6KyvNruTD6ncA1BTwMlR0Wtg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oJTa2gs1; arc=pass smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b9825ba7f9dso460804766b.0
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 04:09:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774609779; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GdWWDiwZ1AYoOVyt0ib0UD5WgGypsrF65lWa5TuVlSMG7xsiYl9fDgn4Z0uS1X2yRB
-         iP+Gy5U9aj71QzmSgd07VpdCKx2aIHnxLf95jTFDrHMXEG0oblEiifk6QnrDM4FdHep+
-         PZOZ5XBGljc4fWDWnBz43YfSQJolX1eZ9uxOBPSaAraHmh+eJdzCi0ruUW9U6LxGsoT1
-         paQhA11dpQUYCLHuDmBiSwAwafAnatLvR0aLjqQu+d+uSF336bOgaGhyJ/W8txrOf+7y
-         +YrNkm66kI0WJ3xT7XgohxSPDHXXLiWt6NLtDhbHt9u+539sC1e15gio+riIo1cSo0ZZ
-         WkFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qByozSkeAIvuXKwVx4Y1ULXB+DloAKTWtZ7pVWLDr2A=;
-        fh=XrbxbxftFDJHa0QRMC9DOrST39+LCM/Ts5+/OtpzDi4=;
-        b=UCWhYudUsyCckCL/11Lmkgf324vZnGbLpVp8ziWyTRVu7M9IqUsO6UoObfH1IZxzfv
-         Qh73WbQsMGS5tuPrEERXo2MVyyAw7H5Fma+GD0ufcumweiWpY1+yXk+d+bJOVQUmMnbe
-         6zdBN7a/anrucp+hCNAh2vksynU9yqJ9FN+mp7pc8vWWMQPnV6jP5G3BQAa/GO2G2+Nq
-         FKJkTjxhjX63Y+ac2AObWvlZ8wvvbz5jxo/w9/ZKNmUDAjQrncMQG08XzNGv3dwu30RF
-         8zw01/x9WST5GIdJ+FI1+KGi8mEuKk4lEwtqMjoVZpISDYfJg+XziglL1APTi9MpkSYT
-         t7Yg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774609779; x=1775214579; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qByozSkeAIvuXKwVx4Y1ULXB+DloAKTWtZ7pVWLDr2A=;
-        b=oJTa2gs1N55wIpENqrRMTHB8A7/O6skSt1ymi7jTOAUyPSutz67dcIcceYSbKaMfDV
-         o+d/gxuJ7aWksPMw7iRLwjwjIWBK/eSTDqandNFVpyDWNxlgYBTtd2cE89IIlad+tqWB
-         35YzmFIUWhPkBG2PFi9jcEP3aOhovYvHvYhAl2YQClbggCdX8BaCZnDtbm004bgruPHk
-         E0Ib0Qf4Nb4jx6NX9qDBuEcns5fAWN8xrNNp1LsaIJg4c3zChMEMpq1sQIeGmXw0B5am
-         M5Lpx9apWme9gt6u5qG1tsXPeKdo4nN2aNFs9wgnPi5LFJL+bGrW8fkp2JBHGJEvCgEO
-         yK0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774609779; x=1775214579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qByozSkeAIvuXKwVx4Y1ULXB+DloAKTWtZ7pVWLDr2A=;
-        b=mF/wbxZkN1jzOCiHBIcavyqetx7e+bSbwVp7WvqT6ZLHCx72WMCibLhW2KmtpB7yRN
-         OHicCb6bZriy/itKZXlUTQEQZ69eiCzoMFcyIzCnQ91403AfRCzTubvGOwrJnYrdkKj0
-         RTEVug+8/3lpypKR4pd/g3RiDXgjR47dpkRoIcNXPd8b8coD53NASIy2h8ukBDR+aoUQ
-         sLvKMV4YBlR0iB52RlVbx3fIOmcv1JPeg1puHOx/SoxV6nUkKOoqIlXzL2Bl7MvX6B92
-         lGuPa2cH7oZzLAcLEcmDwMsi84L7pPHK32HPsu8paiYWDLLS0I0TztjAEqOT/8++57Ir
-         zilg==
-X-Forwarded-Encrypted: i=1; AJvYcCWtyHTaeYn6wBsRksfl2F4TQsPIQZetsJHC326ivanPQxcpnmHWXcGWkM2EmW3K2QdLjJS7zaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFJc7zfajayf2ibiWrkrOvBQoxjnrhmilaW+tJSWODQ8boxG0j
-	HVDFDM54DUwGTkMM6OGzES1eQcbeMtZPsTHwlsKQNn3mHN6bEXlw/UM8ZdCRqCDONqp+WdVKR1j
-	9+380KZyA4UHYXJ4iSwqKJoJSwY6dOL4=
-X-Gm-Gg: ATEYQzwCWU3IATgDO/VLFkYsn8PVhsdaYpZjlBg6QJJJXSNy9AgivuTtlltuuB7/dPZ
-	Avya6yhRyRdKZxjyyhmVmqUwxY+HUXlLo+t7Bm+K/3HHLo23hqJzNcdD5LHY86q8HtgoPRATTkv
-	PZgo92Xk1BbSpOiadCqQgK2cJJRkYeGVHkR9+Uk9RU9Erfp/grZH4/Xvdrb1V5MjDQfPE6y1Aqk
-	W5XkGGgyX5Em+GwfI3/dLrUZ+727QX1yQzrr+ofmidLCZ+MgaACxib23ZXDkJUNetKPSJR33BJK
-	vIqqQSnAYHVzzrFwuTh1ZWGHPXQEYNQu2biKz3XyrA==
-X-Received: by 2002:a17:907:3f8d:b0:b97:b88c:386b with SMTP id
- a640c23a62f3a-b9b2eb9bd1bmr316439866b.29.1774609778731; Fri, 27 Mar 2026
- 04:09:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C78386429;
+	Fri, 27 Mar 2026 11:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774610490; cv=none; b=pyYCWXOor8mHH3qkCdMxdZRo3DinXVwMKnzawg6E4ULLIWXfyEZNJjQJQ8DS4/lF1fQf8yVHF23QpfuKJRhTYS1W4xuF6FkUqZb0zvrxOLtAXa+hMZd076q1fZ5gP9oomj0U3HkchPJLpDfojf6Xhr2dBhBgjJCsqg5LXgsyOpM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774610490; c=relaxed/simple;
+	bh=swcohrFbsQ9OatkiOSOTSr2Oxhk0CH56KvYFD2WN+Ys=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FGVeBERbDGV5kQAFif50TQh33Cyj1iPohM08qEQO8/nNf55rLqSjFZG853ZLKHpFt1K2KXChQzc9fy90h/oriKj1cw0NuBwlrQSczOF3asvEy5DxaKtU+TS0cFDgNVUXusxAhKG1cZ8B0KpgrqFVgICHV4JW1PRX2+WViZvs7HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IS0dUb2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD33C19423;
+	Fri, 27 Mar 2026 11:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774610490;
+	bh=swcohrFbsQ9OatkiOSOTSr2Oxhk0CH56KvYFD2WN+Ys=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IS0dUb2l6dq/UKuQvOxjZqoanLCXjZM37R1bc4wCScoCJe4XW8j2TvJ+wLupL5zn4
+	 /5+ULZLFGH97Bb84dwDA6SaV6wum4iCZYiVl7bAMK5c9/zGxj1Pcpqx6qj4m1ELKw7
+	 tTo5wVnT//ihfdMz19PopHmuv+Wtie7OyKTk8UCqowLlxFHq6C7dH/6DgA+NI4XW0s
+	 MqGDbpHnUvkRsy9SlPdgGLyxftYSB5tdhn7ou2al0Bu7ezYiGcyMWJ5AtgSEarW4Q+
+	 1z2fKkkmgqsYj1iQ0dDmcE/+ChBUdBwUSGZeTlyt4g/w0pBwbutvb8OsV1/oWSEZQk
+	 uQ4PspkZSd0hg==
+Message-ID: <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
+Date: Fri, 27 Mar 2026 12:21:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324145750.90719-1-amir73il@gmail.com> <acN457svKhT5TcKI@infradead.org>
- <CAOQ4uxh5NFvXGop6ne-zfRbH5p6BPT2kCt7dUkP__-TtpeJjJQ@mail.gmail.com>
- <CAOQ4uxge9QDMwnLr1+W0xF2GocnFWVrbhRdriaf5Qe+4KkrG4Q@mail.gmail.com> <acYZglh4iyauvDZj@infradead.org>
-In-Reply-To: <acYZglh4iyauvDZj@infradead.org>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Fri, 27 Mar 2026 12:09:27 +0100
-X-Gm-Features: AQROBzC2dL79PdiPpxlUD5MQNlb4iqMJeIMOPJZddoCKl1fQWRstl-FZvT8sICw
-Message-ID: <CAOQ4uxgw55ibvCx2ihXZ_oEfRQsbBacaoRi4onUWu_XDp9w1nQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: make fsync after metadata copy-up opt-in mount option
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, Fei Lv <feilv@asrmicro.com>, 
-	Chenglong Tang <chenglongtang@google.com>, stable@vger.kernel.org, 
-	Theodore Tso <tytso@mit.edu>, Ext4 <linux-ext4@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+ Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
+ "Paul E. McKenney" <paulmck@kernel.org>
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
+ <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
+ <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
+ <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
+ <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
+ <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com> <acZVS-ehXCtvcA9s@hyeyoo>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <acZVS-ehXCtvcA9s@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230636-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,arm.com,suse.cz,suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,oracle.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[amir73il@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B51593432A4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D5BC3435FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[CC ext4]
+On 3/27/26 11:00, Harry Yoo (Oracle) wrote:
+> On Fri, Mar 27, 2026 at 08:58:36AM +0000, Ryan Roberts wrote:
+>> >>>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
+>> >>> Right so there should be just the overhead of the extra is_vmalloc_addr()
+>> >>> test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
+>> >>> I'd say it's something we can just accept? It seems this is a unit test
+>> >>> being used as a microbenchmark, so it can be very sensitive even to such
+>> >>> details, but it should be negligible in practice.
+>> >>
+>> >> The perf/syscall cases might be a bit more concerning though? (those tests are
+>> >> from "perf bench syscall fork|execve"). Yes they are microbenchmarks, but a 7%
+>> >> increased cost for fork seems like something we'd want to avoid if we can.
+>> > 
+>> > Sure, I tried to explain those in my first reply. Harry then linked to how
+>> > that explanation can be verified. Hopefully it's really the same reason.
+>> 
+>> Ahh sorry I missed your first email. We only added that benchmark from 6.19 so
+>> don't have results for earlier kernels, but I'll ask Aishu to run it for 6.17
+>> and 6.18 to see if the results correlate with your expectation.
+>> 
+>> But from a high level perspective, a 7% regression on fork is not ideal even if
+>> there was a 7% improvement in 6.18.
 
-On Fri, Mar 27, 2026 at 6:45=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
-g> wrote:
->
-> On Wed, Mar 25, 2026 at 02:11:31PM +0100, Amir Goldstein wrote:
-> > When an overlayfs file is modified for the first time, copy up will
-> > create a copy of the lower file and its parent directories in the upper
-> > layer.  Since the Linux filesystem API does not enforce any particular
-> > ordering on storing changes without explicit fsync(2) calls, in case
-> > of a system crash, the upper file could end up with no data at all
-> > (i.e. zeros), which would be an unusual outcome.  To avoid this
-> > experience, overlayfs calls fsync(2) on the upper file before completin=
-g
-> > data copy up with rename(2) to make the copy up "atomic".
->
-> Sounds good so far.
->
-> > By default, overlayfs does not call fsync(2) on copied up directories,
-> > so after a crash, a copied up directory could be observed in the upper
-> > layer without some of its attributes.
->
-> This does sound a bit scary.  How does a directory copy up work?
-> mkdir + adding the copies up entries, probably with some chmod or
-> chown thrown in?
->
+In retrospect it was an oversight not to disable the pre-existing cpu
+caching layer immediately for sheaf-enabled caches in 6.18. Can't undo that
+mistake now, unfortunately.
 
-Don't worry, there is no attempt to implement "directory content copy up"
+> If that improvement comes from the number of objects cached per CPU,
+> I'm not sure if determining the default value (# of cached objs) based on
+> "a point when microbenchmarks stop improving" is a reasonable measure
+> because the default value affects all slab caches and will inevitably
+> increase overall memory usage.
 
-There is only "directory inode copy up"
-or in a more generic description there is:
-1. "inode metadata copy up" - attributes, xattr and some fileattr
-2. "inode data copy up"
+Yeah that's the thing, some workloads might just keep improving as you throw
+more caching at them, but there's a memory usage cost to that.
+A case of stress test doing nothing but forks might also not be
+representative of performance of forks under normal workload where other
+operations also happen, returning the related slab objects, so in the end it
+doesn't expose the batch size that much.
 
-Copy up of directory a is:
-mkdir workdir/tmpdir
-set attrs on workdir/tmpdir
-fsync workdir/tmpdir (fsync =3D=3D strict)
-mv workdir/tmpdir upperdir/a
+> Hopefully we could discuss what a reasonable heuristic that
+> "works for most situations" looks like, and allow users to tune it further
+> based on their needs.
+> 
+> As a side note, changing sheaf capacity at runtime is not supported yet
+> (I'm working on it) and targeting at least before the next LTS.
+> 
 
-Copy up of a/b/c/file is
-copy up a (if needed)
-copy up a/b (if needed)
-copy up a/b/c (if needed)
-open O_TMPFILE
-write data to tmpfile
-fsync tmpfile (fsync !=3D volatile)
-set attr on tmpfile
-fsync tmpfile (fsync =3D=3D strict)
-link tmpfile to upperdir/a/b/c/file
-
-But note that the trigger to copy up is file data or metadata modification.
-Overlayfs provides no guarantee to persist the modification unless
-user does fsync themselves.
-
-Overlayfs only provides the guarantee that if the copy up is observed,
-the observed data is not zeros because data is synced before the link(2).
-
-> > - "ordered": (default)
-> >     Call fsync(2) on upper file before completion of data copy up.
-> >     No fsync(2) is called on directory or metadata-only copy up.
->
-> "ordered" sounds like an odd name here.  It's more like lazy or
-
-The inspiration is the journal=3Dorderded mode which provides
-similar guarantee to ext4 (after the delalloc mitigation) -
-no zeros observed after write+rename even without  explicit fsync.
-
-> "nodirfsync".  And it might help to explain what this implies, which
-> is that the fsync on the files in the directory also sync the
-> directories out, because they are usually modified in the same
-> transaction, and a traditional simple log model implies that.  That
-> traditional single log model also implies that you get the metadata
-> file fsync for free in that case.  I.e. if you did:
-
-I wish to avoid a naming discussion, so this is going to be fsync=3Dauto
-and documentation will elaborate on what it does.
-See rephrased doc below.
-
->
->         for each file:
->                 sync_file_range(file, .., SYNC_FILE_RANGE_WRITE |
->                                     SYNC_FILE_RANGE_WAIT_AFTER);
->
->         fsync(dir)
->         for each file:
->                 fsync(file)
-
-This doesn't happen but I get what you mean.
-
->
-> at least for xfs (and probably the others) you should get the
-> performance of your ordered mode with the durability guarantees
-> of the strict version.
->
-
-Honestly, we did not think that adding fsync on the parent dirs
-would impact performance so much, that is why we did not
-do this opt-in to begin with.
-
-My guess is that ext4 fell from a fast commit workload to
-non-fast commit workload due to this change.
-
-If ext4 developers want to investigate, then may do so with the fsync=3Dstr=
-ict
-mount option. The regression report is from Google COS so...
-
-I just want to make this ovl behavior change opt-in because I do not
-want any more surprises from any other upper fs.
-
-Thanks,
-Amir.
-
-Durability and copy up
-----------------------
-
-The fsync(2) system call ensures that the data and metadata of a file
-are safely written to the backing storage, which is expected to
-guarantee the existence of the information post system crash.
-
-Without an fsync(2) call, there is no guarantee that the observed
-data after a system crash will be either the old or the new data, but
-in practice, the observed data after crash is often the old or new data
-or a mix of both.
-
-When an overlayfs file is modified for the first time, copy up will
-create a copy of the lower file and its parent directories in the upper
-layer.  Since the Linux filesystem API does not enforce any particular
-ordering on storing changes without explicit fsync(2) calls, in case
-of a system crash, the upper file could end up with no data at all
-(i.e. zeros), which would be an unusual outcome.  To avoid this
-experience, overlayfs calls fsync(2) on the upper file before completing
-data copy up with rename(2) or link(2) to make the copy up "atomic".
-
-By default, overlayfs does not explicitly call fsync(2) on copied up
-directories or on metadata-only copy up, so it provides no guarantee to
-persist the user's modification unless the user calls fsync(2).
-The fsync during copy up only guarantees that if a copy up is observed
-after a crash, the observed data is not zeroes or intermediate values
-from the copy up staging area.
-
-On traditional local filesystems with a single journal (e.g. ext4, xfs),
-fsync on a file also persists the parent directory changes, because they
-are usually modified in the same transaction, so metadata durability during
-data copy up effectively comes for free.  Overlayfs further limits risk by
-disallowing network filesystems as upper layer.
-
-Overlayfs can be tuned to prefer performance or durability when storing
-to the underlying upper layer.  This is controlled by the "fsync" mount
-option, which supports these values:
-
-- "auto": (default)
-    Call fsync(2) on upper file before completion of data copy up.
-    No explicit fsync(2) on directory or metadata-only copy up.
-- "strict":
-    Call fsync(2) on upper file and directories before completion of any
-    copy up.
-- "volatile": [*]
-    Prefer performance over durability (see `Volatile mount`_)
-
-[*] The mount option "volatile" is an alias to "fsync=3Dvolatile".
 
