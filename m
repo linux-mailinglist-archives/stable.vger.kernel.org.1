@@ -1,162 +1,118 @@
-Return-Path: <stable+bounces-230608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4O4+GndMxmmgIAUAu9opvQ
-	(envelope-from <stable+bounces-230608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:23:03 +0100
+	id WCXMOHFQxmk2IgUAu9opvQ
+	(envelope-from <stable+bounces-230609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:40:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B9C341A40
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:23:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41770341E00
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59709309D716
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:18:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BBDE3152A93
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912FE3DB621;
-	Fri, 27 Mar 2026 09:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsQTH7m8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9E8194A60;
+	Fri, 27 Mar 2026 09:32:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CC83CA4A2;
-	Fri, 27 Mar 2026 09:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A230129827E
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 09:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774603096; cv=none; b=iQ3C3ECLQOHJEpegTyakhowu4vOc5Uf4bgd/OK4HToNwIWJcJAfUAUjg+/r510+cfWNq1CaExSnQ10LuP+HNYy398Jcmx+6zXd08N5lh5tpunbYlzv4qrdtnySjbp4h2Z8R+rs6Aj7QfpBWoai1xSd/GDdBw78gEVf3EYV1dHKY=
+	t=1774603925; cv=none; b=Ohkxhi2J44c0+nesgG8tRv1Or3QwVDFCYGMJFl9bTAU8eFlloAKP/ftbKQycM0Wa2N1nn3P7dvJuuAyqKKlzaePtoDvbagqmpZrYkmtrexQp1i0g55hvoLwiUEa0f4jLGHas2TKvmpbeFsxjgap311giinYJY56zDci1uk7hn10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774603096; c=relaxed/simple;
-	bh=EdZE4OSQJ5jcy+T+KWJVJdsHRhqdz9413qk1sHzTPOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ULExfaxKo+m/+6CytB4Mh9GyRNO30kZF5CeiOtdeG7mhWwC8MGlECC/neBcYYDSCB9D0scPfqIJ0s86nXQqJGOxSeHZTazCcVSVEjZMeGEkcRcvstxdFjDYGz/mNLsfBLmxMnFyrOPZxrTo/JA9RxPiJhUBXZWzE0MeWCBrgwKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsQTH7m8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB33EC19423;
-	Fri, 27 Mar 2026 09:18:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774603095;
-	bh=EdZE4OSQJ5jcy+T+KWJVJdsHRhqdz9413qk1sHzTPOs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VsQTH7m8ePru7c0sy4eNd/mRAkAQI8WTiLS1J7yZtNThprzbeZMb3AQoZ2FIisOJL
-	 GT9TIP+YQXW54oLAmgxPbfupDogNxCSuvEyBoqDZZ8mVnazGdrje6uL7t7CZfqJxqq
-	 qQggKw/j8vWRvGhekGIkKLO+Jvs0vhal1hkDFEPA=
-Date: Fri, 27 Mar 2026 10:17:51 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: =?utf-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, achill@achill.org,
-	akpm@linux-foundation.org, broonie@kernel.org, conor@kernel.org,
-	f.fainelli@gmail.com, hargar@microsoft.com, jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org, linux@roeck-us.net,
-	lkft-triage@lists.linaro.org, patches@kernelci.org,
-	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de,
-	shuah@kernel.org, sr@sladewatkins.com, stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org,
-	Tianyang Zhang <zhangtianyang@loongson.cn>
-Subject: Re: Re: [PATCH 6.12 000/460] 6.12.78-rc1 review
-Message-ID: <2026032736-reproach-dipper-f6bc@gregkh>
-References: <20260323134526.647552166@linuxfoundation.org>
- <20260325000600.57287-1-ojeda@kernel.org>
- <7f616aa1.4eda2.19d27b31b8c.Coremail.chenhuacai@loongson.cn>
+	s=arc-20240116; t=1774603925; c=relaxed/simple;
+	bh=LC3XJqQO6ogN6D+P2sYpfny4MlGSBwxnth6zslNwYkw=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=hUKbB5pYnv7grq64uIpfsBwLbe+4dL1Ve2waA8B2f9TdoYsSFqkuW7R/LXa0mKdeim4AYFrXjCmfiD9jC55Y/y5UUyCsKhCGFLQGTHZlSHGxAptTHCh0AsDLdT3TkdPgj2x6AmZJzqkSsaQ8is203Fx2wtjj93VMXfSsd5xfnN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67bab42bbe3so1922687eaf.1
+        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 02:32:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774603922; x=1775208722;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2FqHJq087MePJDnyS/wkwxervkU82LVSfXfQlx4yrBc=;
+        b=s49EC+9QhKRZ9BPrcZdXwPjHjcuhKqZh+2BwL+G6/JmUg0ASob0zY5SMV1agxnccEY
+         vYwJRSec3oqnhjc03MvcsFMl+47GstfId/QMjGKS4a8soNo5wooA00T2VGTD0OrPqVbZ
+         bFYuG7/iOk2Hd0j7I7FVXcGAo0xftA41fitYKpPpa7k9J0LCmJANCuqNe6o23gEeMNuq
+         OB72O2eI/rTYJgXnW8aef9hsnA12z332TScmaHZULWB4MMnUB7E+WkvOsjPNYllyQS6t
+         +Xi/Yh2JbCN76ucJZBOD9Kd0qjvBKfjV+MmaD879PLorugXLrSmIVLa1SqwEMhpaxot5
+         HiCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkVjrx7uMFFDY9NOB1TSOyVP8sdnRXFTIvGoNhx9qZMvAfr/845/rb7S1jEnEO4qNdLcq13gQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNi1oZJ5w8/Bit2E2XNXT7puTkiUkpw4VIRHIfnyLgZ2ZEQf5i
+	99cmHF/4I/ASgs24ITEgjTWUaSD1S44XMtPwn/rVYBKOz/2Vy1v26GurxpvHxo26HaXByB+q/+3
+	zYLinSxSgRSSpAPa46miI6WCwqgQXgxBHQdBEi2GDKRw3OP3BnQllVrk22ys=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7f616aa1.4eda2.19d27b31b8c.Coremail.chenhuacai@loongson.cn>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Received: by 2002:a05:6820:4c15:b0:67c:2c83:acf4 with SMTP id
+ 006d021491bc7-67e1870c298mr807786eaf.39.1774603922607; Fri, 27 Mar 2026
+ 02:32:02 -0700 (PDT)
+Date: Fri, 27 Mar 2026 02:32:02 -0700
+In-Reply-To: <tencent_2AE721E935EA3B467CAF450ADACDAB5A3B0A@qq.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69c64e92.050a0220.37d09.0001.GAE@google.com>
+Subject: Re: [v6.6] kernel BUG in ocfs2_remove_extent
+From: syzbot <syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com>
+To: driz2t@qq.com, stable@vger.kernel.org, syzkaller-lts-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=cf30d9e358c58220];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230609-lists,stable=lfdr.de,1dd53396e7124586dca9];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230608-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FREEMAIL_CC(0.00)[kernel.org,achill.org,linux-foundation.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,loongson.cn];
+	FREEMAIL_TO(0.00)[qq.com,vger.kernel.org,googlegroups.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 05B9C341A40
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: 41770341E00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 09:12:22AM +0800, 陈华才 wrote:
-> Hi, Greg, Sasha,
-> 
-> 
-> > -----原始邮件-----
-> > 发件人: "Miguel Ojeda" <ojeda@kernel.org>
-> > 发送时间:2026-03-25 08:06:00 (星期三)
-> > 收件人: gregkh@linuxfoundation.org
-> > 抄送: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com, hargar@microsoft.com, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, linux@roeck-us.net, lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com, stable@vger.kernel.org, sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org, "Miguel Ojeda" <ojeda@kernel.org>, "Huacai Chen" <chenhuacai@loongson.cn>, "Tianyang Zhang" <zhangtianyang@loongson.cn>
-> > 主题: Re: [PATCH 6.12 000/460] 6.12.78-rc1 review
-> > 
-> > On Mon, 23 Mar 2026 14:39:56 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 6.12.78 release.
-> > > There are 460 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> > > Anything received after that time might be too late.
-> > 
-> > Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-> > for loongarch64:
-> > 
-> > Tested-by: Miguel Ojeda <ojeda@kernel.org>
-> > 
-> > loongarch64 failed to build for me:
-> > 
-> >     arch/loongarch/kernel/machine_kexec.c:139:13: error: static declaration of 'machine_kexec_mask_interrupts' follows non-static declaration
-> >       139 | static void machine_kexec_mask_interrupts(void)
-> >           |             ^
-> >     ./include/linux/irq.h:698:13: note: previous declaration is here
-> >       698 | extern void machine_kexec_mask_interrupts(void);
-> >           |             ^
-> > 
-> > The `static void machine_kexec_mask_interrupts(void)` for loongarch64
-> > was not removed because it was adjusted in:
-> > 
-> >   429bf3f04c24 ("LoongArch: Add machine_kexec_mask_interrupts() implementation")
-> Yes, 429bf3f04c24 ("LoongArch: Add machine_kexec_mask_interrupts() implementation")
-> should be reverted for this version. But why you ignore Miguel's report?
+Hello,
 
-Sorry, but your footer email:
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-> 本邮件及其附件含有龙芯中科的商业秘密信息，仅限于发送给上面地址中列出的个人或群组。禁止任何其他人以任何形式使用（包括但不限于全部或部分地泄露、复制或散发）本邮件及其附件中的信息。如果您错收本邮件，请您立即电话或邮件通知发件人并删除本邮件。 
-> This email and its attachments contain confidential information from Loongson Technology , which is intended only for the person or entity whose address is listed above. Any use of the information contained herein in any way (including, but not limited to, total or partial disclosure, reproduction or dissemination) by persons other than the intended recipient(s) is prohibited. If you receive this email in error, please notify the sender by phone or email immediately and delete it. 
-> 
-> 
+Reported-by: syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com
+Tested-by: syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com
 
+Tested on:
 
-Caused me to miss this as my filters shove it aside :(
+commit:         c09fbcd3 Linux 6.6.130
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=10410116580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cf30d9e358c58220
+dashboard link: https://syzkaller.appspot.com/bug?extid=1dd53396e7124586dca9
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=11cf706a580000
 
-Anyway, my fault, I'll go take your revert now, and do a quick release
-to resolve this issue, sorry about that.  They "joys" of doing stable
-releases while traveling at a conference at the same time...
-
-greg k-h
+Note: testing is done by a robot and is best-effort only.
 
