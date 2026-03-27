@@ -1,189 +1,402 @@
-Return-Path: <stable+bounces-230707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Px+CFrJxmn5OgUAu9opvQ
-	(envelope-from <stable+bounces-230707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 19:15:54 +0100
+	id YIgUMHfJxmn5OgUAu9opvQ
+	(envelope-from <stable+bounces-230708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 19:16:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9669348EA8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 19:15:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4949348EBE
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 19:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 648ED300A10D
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:13:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5912F301B73F
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32273401A2A;
-	Fri, 27 Mar 2026 18:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262163128CA;
+	Fri, 27 Mar 2026 18:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jWcHRhx+"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rjGvqC0K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529E740148F
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 18:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774635233; cv=pass; b=scKRUEyimZ3qPlblzgOoOzms7+kRQibnbrlIImIbV3TpIX5WHEyzeecryzoEEnkO8aZt4xLSfNGqxeIJJ+BBU4ew6+bqeeVhkrNXZZh5XPhDI/UFZJZWTqfAuzIQepTrbxjXr9qMru+8AQNmLQ/TVnq0a3o5Q2kENBKKLU9nNdE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774635233; c=relaxed/simple;
-	bh=PomC0oS5CuuImOTnjYhtKxZ663q+D4Qa+tGklzvibcg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=KiIlwgJQi7QX96HLAZR+ttPnZoz4FXub5G3hZcb+VnWy/KG5biYl534wdh3KtXHkAws0eznxLg7h89+KShzeS6tG6pGHmVf9kc6j/gC6u7JH0jBbCwPgaovh6gtp4gNRyI60312tdBLZBAlvnfAKrb8IW7FSe0zcaZF9mKukC2A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jWcHRhx+; arc=pass smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-64c9a6d7f81so2454929d50.3
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 11:13:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774635229; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VPfFWevBJKy++YsDyLmXyGiH/SO05xDR/VGa0uLRnSvAJyKYhztdtIyYMNBYgvwmDx
-         T7GcUo/okPVgN2loXAQuaoOLd3iQvwdbUcMAtofSugQvtl7urmKZdpsyYFK+nBjjSznL
-         5CdGe7iT2pvnNqESmQGqltpV8OdAWe29mO/aGyPCuu/L7ZwptKTpVTWKVAerc0dBicmf
-         gl9A0tYRKX29M4zq9vqPMOEByWPBFEGfWCSudpRO0+DOgQ3fepzEhb1us/6k8dZK3HnN
-         TEkOuGEKF2ccKWT+QcOcBjlZ6HCIBjT/9BHm5pDpiBre7Aj49Yw3TT+GMdbg5yX+U0tH
-         8gsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=p+wY7nudsBUevwgkVemBDLjljU1N+r4KZ6n0hiiepL4=;
-        fh=W2PKFq3Z9Ps0Jw+GreuNM3cIf2LRCGgo0ZilY+a+cp8=;
-        b=PJe4TYLiqLr8gKI/y8Ck6EtiohcpMi6VIc8W3rOw1so7X5acemmBAoxDYpMBX9KZDH
-         rVBuwVj7GnWK/CybmCfyQnyOnp/gzy2xRRZCOw4oCQreJVayTKYRhnUCZAsCtnIQZBHP
-         10Y1Uu1oRPrihimimYjyYCvzT65CWBDW6sd76nqOb2xUTTDjsZCbb8y7794qya4QY/Ib
-         UgQCMLtyoNFEuVV75ba8S1cyi9AQfADKDyAC1KJjycLiZ6sUPKbvlf8uOA/UZeGCphT4
-         91HqUGDkJjQiYm9tAzSL0F5TA32XsVp1vSeIlvOoApYChtQ4labxNaQwudsS7oCOfydK
-         jvAA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774635229; x=1775240029; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p+wY7nudsBUevwgkVemBDLjljU1N+r4KZ6n0hiiepL4=;
-        b=jWcHRhx++JZ9uv/5BN+9tCrS7UAGIosgCVjZ9j5GCMWEJgZ+6ppU02xr6hRHupsuxK
-         7SeNly1d5ezR7a1DBMRX3gcLQcNDq46oDLuRoDBPJvf8GJ4qKWr2MBYo2z37jWqcSSmI
-         rscZM8dd3jFrfsxL0QlC8DGIO0hHUUmwMma5BlKKA6MSYzuZGH5g5wpsXJVK5Sd9SWce
-         uo4g/e4f5eKbBtatIEW7wEL+4ah+16F6z98srYThKGr5lAVaO9DQmd7CmnNTpHug+w8Z
-         Id8t1e3ZfD6E3MhJBRChN9vp2cEK5euWbTpUTlhh6xUTVbhDkhBM79iY5KdI4Ob9pWrZ
-         flpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774635229; x=1775240029;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p+wY7nudsBUevwgkVemBDLjljU1N+r4KZ6n0hiiepL4=;
-        b=JSTCPEJMQ5pQLAmn/XIqCu0Me0yotXVU7NwDEYF8SFRTfo/aI9Q1XlRzKevwHJy9ud
-         zFK3vj3ci8sthqzR5C+go3rnp0e2l0Rtw9wWYdFWwG+r5jFWv2LR67u0koajz/tbSSMY
-         4V6ZlWQI31dAqHdPmlUAwxnX68wdA1LQkt0j4uI1MezYmCcJrDLsduDcGblWF6+WbwQj
-         TX1XNWbfkmUMDbC1LgFov7iVtgH1J9MTicXWxViEVaPzk/sTd3gURHgt4HMA/0UuSxjU
-         q1UKifLk/aBW1j1AIeQPAA3HflbE7MB05sf7UM9gZ5CXLSpMQGOA9C5+Y31CPF9WJI4y
-         I+0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUfZZSHMdPnCuI4Xp53j1GMk9no7kWlEDFqYnM/a/OrlJ3dXN6CWMFEaB37Bqr+HFflxrQgABU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLiQoJtrdDg4BHvvBa61j69GMFyyJLz2NlZw9H8HzDMY4vOnxD
-	R14pdFwwKD5qlMYDAB76NhVtUOBUXKj8VJ3RVz1toQCCyOm/6ImtWSOna8VEzh4DYs1LxptBH/S
-	+47gCt31iJ7bwlXMtVoVOV59ZGnQHE8t8OxFt
-X-Gm-Gg: ATEYQzwByzXtweYVg5LkAgXnNy/Dj1gnirlxzc3mPKijvprqps0an/hbwY/PJewH6Sd
-	+dT1l0ajksoAP8y1ZqCtFjFzpow92zaGKd//dqDGDb7/Dpq8O8QB+Wk33e4a75ZhwJ3Pq8K/zwl
-	8z0Rj2Uz9xdkrebD4lksLr//lWjoo10XIWCdiVrwPfkFb786dgJEG0kHABT5Rb7xOGxlIxyRhiR
-	hbNPdba2A9nj8ycTsoJ+speutKK0gxSq4xtoAWxByj6ia7XqrcjIuYTljn/vDzVabNkJhOH/BBR
-	1HRgfkKqezpx1fXwqtrZkG9qFc+oXYlQtJ3h78BSIap+whXOxbQLk1xJwvTLZS9jejA/PW7O+gi
-	iYu+N2M2uuFQVlTflG4LPXEN0k6I6zs6WN0uykoJIsK5lrrghBg==
-X-Received: by 2002:a05:690e:28f:b0:64c:9a9a:e2c9 with SMTP id
- 956f58d0204a3-64ff741ad66mr2718343d50.60.1774635228140; Fri, 27 Mar 2026
- 11:13:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBCD3FF8BE;
+	Fri, 27 Mar 2026 18:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774635259; cv=none; b=V5oSjY10u+0rVF1oQbEQxOCpaRGsiLnmkgnj1DPVNi9ieZLBKiglWhq3ZFQkLalvM4dmZwTRojjK+/Rgh47GNOajk/6woO1Tn8fDPXD62eosZIhAuIMLLbYGdS0vpExnmGU80x3bLf2Vsfj0FngtB1k4MVOJ4/Fd/1GdaadHzIs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774635259; c=relaxed/simple;
+	bh=zc4d3FvKlr4oBNvf9faTXLUK7GhlIUW9mkekfm3A+BY=;
+	h=Date:To:From:Subject:Message-Id; b=jBek1qCd6b4GoW6KAlCp96U4KG8d301EGsVINtiNcMDc2pNAN+Jutrg0SqumF9y9peHAP4hSpprh73mUTnzSjrm8hRzihfB5cruqh6UH3s2AzPgXTXCDl3Ly+7CWBwTGP41aYok9hPrkrTRkGCFF0uHqJHpYjNoXmPHpKMUlflo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rjGvqC0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441CAC19423;
+	Fri, 27 Mar 2026 18:14:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774635258;
+	bh=zc4d3FvKlr4oBNvf9faTXLUK7GhlIUW9mkekfm3A+BY=;
+	h=Date:To:From:Subject:From;
+	b=rjGvqC0KudQlJveC1z2GRBdAm2OQOh8qe9wxbeYfcDIT891qyr+q4BnodfIQVbJ6p
+	 8FAxX6luRwM8AlHjP0kG8pyVr4kALfQzbXsaiZwNV/qgWecLAZ5u1HrLQVcLwhAMEV
+	 e2yx4n/zJlczthKtErhrC/fTTpvWhat9VgYtX/qw=
+Date: Fri, 27 Mar 2026 11:14:17 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,hao.ge@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization.patch added to mm-new branch
+Message-Id: <20260327181418.441CAC19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Date: Fri, 27 Mar 2026 11:13:37 -0700
-X-Gm-Features: AQROBzCmlSmEqZs4hMI2Z9xBrY5G4JyB7qj28Y6BMnYe_KKxzMDly9Vsr4RRMYk
-Message-ID: <CAE5sdEiLuFj_8m89PGJwFit0QHg1=TL6=O==Mirt39BfbrRkVA@mail.gmail.com>
-Subject: [Regression] net: tls: Change async resync helpers argument
-To: sashal@kernel.org
-Cc: apais@microsoft.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230707-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-230708-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sidchintamaneni@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C9669348EA8
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qemu.org:url,linux-foundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: D4949348EBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 74bf749662a29 [upstream e98cda764aa9c] is backported to match
-the function signature of tls_offload_rx_resync_async_request_cancel
-function that is introduced in Patch 2 of this series -
-https://lore.kernel.org/all/1760943954-909301-1-git-send-email-tariqt@nvidia.com/
-but this break nvidia's mlx-ofa driver build which is still
-referencing the old driver signature.
 
-Build environment:
-  - mlnx-ofa_kernel-25.{07,10}
-  - kernel: 6.12.68.1-1.azl3
+The patch titled
+     Subject: mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+has been added to the -mm mm-new branch.  Its filename is
+     mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization.patch
 
-Failure
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization.patch
 
-466 |         tls_offload_rx_resync_async_request_end(priv_rx->sk,
-cpu_to_be32(hw_seq));"
-      |                                                 ~~~~~~~^~~~"
-      |                                                        |"
-      |                                                        struct sock *"
-In file included from
-/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/include/net/tls.h:6,"
-                 from
-/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h:9,"
-                 from
-/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h:40,"
-                 from
-/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c:6:"
-./include/net/tls.h:461:74: note: expected 'struct
-tls_offload_resync_async *' but argument is of type 'struct sock *'"
-  461 | tls_offload_rx_resync_async_request_end(struct
-tls_offload_resync_async *resync_async,"
-      |
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~"
-/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c:
-In function 'resync_update_sn':"
-/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c:562:51:
-error: passing argument 1 of
-'tls_offload_rx_resync_async_request_start' from incompatible pointer
-type [-Werror=incompatible-pointer-types]"
-  562 |         tls_offload_rx_resync_async_request_start(sk, seq, datalen);"
-      |                                                   ^~"
-      |                                                   |"
-      |                                                   struct sock *"
-./include/net/tls.h:451:76: note: expected 'struct
-tls_offload_resync_async *' but argument is of type 'struct sock *'"
-  451 | tls_offload_rx_resync_async_request_start(struct
-tls_offload_resync_async *resync_async,"
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Reverting 74bf749662a2 makes the build pass again in our environment.
-Let me know if you need more details.
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
 
-Siddharth
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Hao Ge <hao.ge@linux.dev>
+Subject: mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+Date: Fri, 27 Mar 2026 16:06:23 +0800
+
+Due to initialization ordering, page_ext is allocated and initialized
+relatively late during boot.  Some pages have already been allocated and
+freed before page_ext becomes available, leaving their codetag
+uninitialized.
+
+A clear example is in init_section_page_ext(): alloc_page_ext() calls
+kmemleak_alloc().  If the slab cache has no free objects, it falls back to
+the buddy allocator to allocate memory.  However, at this point page_ext
+is not yet fully initialized, so these newly allocated pages have no
+codetag set.  These pages may later be reclaimed by KASAN, which causes
+the warning to trigger when they are freed because their codetag ref is
+still empty.
+
+Use a global array to track pages allocated before page_ext is fully
+initialized.  The array size is fixed at 8192 entries, and will emit a
+warning if this limit is exceeded.  When page_ext initialization
+completes, set their codetag to empty to avoid warnings when they are
+freed later.
+
+This warning is only observed with CONFIG_MEM_ALLOC_PROFILING_DEBUG=Y
+and mem_profiling_compressed disabled:
+
+[    9.582133] ------------[ cut here ]------------
+[    9.582137] alloc_tag was not set
+[    9.582139] WARNING: ./include/linux/alloc_tag.h:164 at __pgalloc_tag_sub+0x40f/0x550, CPU#5: systemd/1
+[    9.582190] CPU: 5 UID: 0 PID: 1 Comm: systemd Not tainted 7.0.0-rc4 #1 PREEMPT(lazy)
+[    9.582192] Hardware name: Red Hat KVM, BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[    9.582194] RIP: 0010:__pgalloc_tag_sub+0x40f/0x550
+[    9.582196] Code: 00 00 4c 29 e5 48 8b 05 1f 88 56 05 48 8d 4c ad 00 48 8d 2c c8 e9 87 fd ff ff 0f 0b 0f 0b e9 f3 fe ff ff 48 8d 3d 61 2f ed 03 <67> 48 0f b9 3a e9 b3 fd ff ff 0f 0b eb e4 e8 5e cd 14 02 4c 89 c7
+[    9.582197] RSP: 0018:ffffc9000001f940 EFLAGS: 00010246
+[    9.582200] RAX: dffffc0000000000 RBX: 1ffff92000003f2b RCX: 1ffff110200d806c
+[    9.582201] RDX: ffff8881006c0360 RSI: 0000000000000004 RDI: ffffffff9bc7b460
+[    9.582202] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff3a62324
+[    9.582203] R10: ffffffff9d311923 R11: 0000000000000000 R12: ffffea0004001b00
+[    9.582204] R13: 0000000000002000 R14: ffffea0000000000 R15: ffff8881006c0360
+[    9.582206] FS:  00007ffbbcf2d940(0000) GS:ffff888450479000(0000) knlGS:0000000000000000
+[    9.582208] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    9.582210] CR2: 000055ee3aa260d0 CR3: 0000000148b67005 CR4: 0000000000770ef0
+[    9.582211] PKRU: 55555554
+[    9.582212] Call Trace:
+[    9.582213]  <TASK>
+[    9.582214]  ? __pfx___pgalloc_tag_sub+0x10/0x10
+[    9.582216]  ? check_bytes_and_report+0x68/0x140
+[    9.582219]  __free_frozen_pages+0x2e4/0x1150
+[    9.582221]  ? __free_slab+0xc2/0x2b0
+[    9.582224]  qlist_free_all+0x4c/0xf0
+[    9.582227]  kasan_quarantine_reduce+0x15d/0x180
+[    9.582229]  __kasan_slab_alloc+0x69/0x90
+[    9.582232]  kmem_cache_alloc_noprof+0x14a/0x500
+[    9.582234]  do_getname+0x96/0x310
+[    9.582237]  do_readlinkat+0x91/0x2f0
+[    9.582239]  ? __pfx_do_readlinkat+0x10/0x10
+[    9.582240]  ? get_random_bytes_user+0x1df/0x2c0
+[    9.582244]  __x64_sys_readlinkat+0x96/0x100
+[    9.582246]  do_syscall_64+0xce/0x650
+[    9.582250]  ? __x64_sys_getrandom+0x13a/0x1e0
+[    9.582252]  ? __pfx___x64_sys_getrandom+0x10/0x10
+[    9.582254]  ? do_syscall_64+0x114/0x650
+[    9.582255]  ? ksys_read+0xfc/0x1d0
+[    9.582258]  ? __pfx_ksys_read+0x10/0x10
+[    9.582260]  ? do_syscall_64+0x114/0x650
+[    9.582262]  ? do_syscall_64+0x114/0x650
+[    9.582264]  ? __pfx_fput_close_sync+0x10/0x10
+[    9.582266]  ? file_close_fd_locked+0x178/0x2a0
+[    9.582268]  ? __x64_sys_faccessat2+0x96/0x100
+[    9.582269]  ? __x64_sys_close+0x7d/0xd0
+[    9.582271]  ? do_syscall_64+0x114/0x650
+[    9.582273]  ? do_syscall_64+0x114/0x650
+[    9.582275]  ? clear_bhb_loop+0x50/0xa0
+[    9.582277]  ? clear_bhb_loop+0x50/0xa0
+[    9.582279]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[    9.582280] RIP: 0033:0x7ffbbda345ee
+[    9.582282] Code: 0f 1f 40 00 48 8b 15 29 38 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff c3 0f 1f 40 00 f3 0f 1e fa 49 89 ca b8 0b 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d fa 37 0d 00 f7 d8 64 89 01 48
+[    9.582284] RSP: 002b:00007ffe2ad8de58 EFLAGS: 00000202 ORIG_RAX: 000000000000010b
+[    9.582286] RAX: ffffffffffffffda RBX: 000055ee3aa25570 RCX: 00007ffbbda345ee
+[    9.582287] RDX: 000055ee3aa25570 RSI: 00007ffe2ad8dee0 RDI: 00000000ffffff9c
+[    9.582288] RBP: 0000000000001000 R08: 0000000000000003 R09: 0000000000001001
+[    9.582289] R10: 0000000000001000 R11: 0000000000000202 R12: 0000000000000033
+[    9.582290] R13: 00007ffe2ad8dee0 R14: 00000000ffffff9c R15: 00007ffe2ad8deb0
+[    9.582292]  </TASK>
+[    9.582293] ---[ end trace 0000000000000000 ]---
+
+Link: https://lkml.kernel.org/r/20260327080623.123212-1-hao.ge@linux.dev
+Fixes: dcfe378c81f72 ("lib: introduce support for page allocation tagging")
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/alloc_tag.h   |    2 
+ include/linux/pgalloc_tag.h |    2 
+ lib/alloc_tag.c             |  109 ++++++++++++++++++++++++++++++++++
+ mm/page_alloc.c             |   10 ++-
+ 4 files changed, 121 insertions(+), 2 deletions(-)
+
+--- a/include/linux/alloc_tag.h~mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization
++++ a/include/linux/alloc_tag.h
+@@ -163,9 +163,11 @@ static inline void alloc_tag_sub_check(u
+ {
+ 	WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
+ }
++void alloc_tag_add_early_pfn(unsigned long pfn);
+ #else
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
+ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
++static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
+ #endif
+ 
+ /* Caller should verify both ref and tag to be valid */
+--- a/include/linux/pgalloc_tag.h~mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization
++++ a/include/linux/pgalloc_tag.h
+@@ -181,7 +181,7 @@ static inline struct alloc_tag *__pgallo
+ 
+ 	if (get_page_tag_ref(page, &ref, &handle)) {
+ 		alloc_tag_sub_check(&ref);
+-		if (ref.ct)
++		if (ref.ct && !is_codetag_empty(&ref))
+ 			tag = ct_to_alloc_tag(ref.ct);
+ 		put_page_tag_ref(handle);
+ 	}
+--- a/lib/alloc_tag.c~mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization
++++ a/lib/alloc_tag.c
+@@ -6,7 +6,9 @@
+ #include <linux/kallsyms.h>
+ #include <linux/module.h>
+ #include <linux/page_ext.h>
++#include <linux/pgalloc_tag.h>
+ #include <linux/proc_fs.h>
++#include <linux/rcupdate.h>
+ #include <linux/seq_buf.h>
+ #include <linux/seq_file.h>
+ #include <linux/string_choices.h>
+@@ -758,8 +760,115 @@ static __init bool need_page_alloc_taggi
+ 	return mem_profiling_support;
+ }
+ 
++#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++/*
++ * Track page allocations before page_ext is initialized.
++ * Some pages are allocated before page_ext becomes available, leaving
++ * their codetag uninitialized. Track these early PFNs so we can clear
++ * their codetag refs later to avoid warnings when they are freed.
++ *
++ * Early allocations include:
++ *   - Base allocations independent of CPU count
++ *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
++ *     such as trace ring buffers, scheduler per-cpu data)
++ *
++ * For simplicity, we fix the size to 8192.
++ * If insufficient, a warning will be triggered to alert the user.
++ *
++ * TODO: Replace fixed-size array with dynamic allocation using
++ * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
++ */
++#define EARLY_ALLOC_PFN_MAX		8192
++
++static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
++static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
++
++static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
++{
++	int old_idx, new_idx;
++
++	do {
++		old_idx = atomic_read(&early_pfn_count);
++		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
++			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
++				      EARLY_ALLOC_PFN_MAX);
++			return;
++		}
++		new_idx = old_idx + 1;
++	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
++
++	early_pfns[old_idx] = pfn;
++}
++
++typedef void (*alloc_tag_add_func)(unsigned long pfn);
++static alloc_tag_add_func __rcu alloc_tag_add_early_pfn_ptr __refdata =
++		__alloc_tag_add_early_pfn;
++
++void alloc_tag_add_early_pfn(unsigned long pfn)
++{
++	alloc_tag_add_func alloc_tag_add;
++
++	if (static_key_enabled(&mem_profiling_compressed))
++		return;
++
++	rcu_read_lock();
++	alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
++	if (alloc_tag_add)
++		alloc_tag_add(pfn);
++	rcu_read_unlock();
++}
++
++static void __init clear_early_alloc_pfn_tag_refs(void)
++{
++	unsigned int i;
++
++	if (static_key_enabled(&mem_profiling_compressed))
++		return;
++
++	rcu_assign_pointer(alloc_tag_add_early_pfn_ptr, NULL);
++	/* Make sure we are not racing with __alloc_tag_add_early_pfn() */
++	synchronize_rcu();
++
++	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
++		unsigned long pfn = early_pfns[i];
++
++		if (pfn_valid(pfn)) {
++			struct page *page = pfn_to_page(pfn);
++			union pgtag_ref_handle handle;
++			union codetag_ref ref;
++
++			if (get_page_tag_ref(page, &ref, &handle)) {
++				/*
++				 * An early-allocated page could be freed and reallocated
++				 * after its page_ext is initialized but before we clear it.
++				 * In that case, it already has a valid tag set.
++				 * We should not overwrite that valid tag with CODETAG_EMPTY.
++				 *
++				 * Note: there is still a small race window between checking
++				 * ref.ct and calling set_codetag_empty(). We accept this
++				 * race as it's unlikely and the extra complexity of atomic
++				 * cmpxchg is not worth it for this debug-only code path.
++				 */
++				if (ref.ct) {
++					put_page_tag_ref(handle);
++					continue;
++				}
++
++				set_codetag_empty(&ref);
++				update_page_tag_ref(handle, &ref);
++				put_page_tag_ref(handle);
++			}
++		}
++
++	}
++}
++#else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
++static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
++#endif /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
++
+ static __init void init_page_alloc_tagging(void)
+ {
++	clear_early_alloc_pfn_tag_refs();
+ }
+ 
+ struct page_ext_operations page_alloc_tagging_ops = {
+--- a/mm/page_alloc.c~mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization
++++ a/mm/page_alloc.c
+@@ -1252,10 +1252,18 @@ void __pgalloc_tag_add(struct page *page
+ 	union pgtag_ref_handle handle;
+ 	union codetag_ref ref;
+ 
+-	if (get_page_tag_ref(page, &ref, &handle)) {
++	if (likely(get_page_tag_ref(page, &ref, &handle))) {
+ 		alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
+ 		update_page_tag_ref(handle, &ref);
+ 		put_page_tag_ref(handle);
++	} else {
++		/*
++		 * page_ext is not available yet, record the pfn so we can
++		 * clear the tag ref later when page_ext is initialized.
++		 */
++		alloc_tag_add_early_pfn(page_to_pfn(page));
++		if (task->alloc_tag)
++			alloc_tag_set_inaccurate(task->alloc_tag);
+ 	}
+ }
+ 
+_
+
+Patches currently in -mm which might be from hao.ge@linux.dev are
+
+mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization.patch
+
 
