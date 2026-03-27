@@ -1,94 +1,81 @@
-Return-Path: <stable+bounces-230669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCibB2GUxmkyMAUAu9opvQ
-	(envelope-from <stable+bounces-230669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:29:53 +0100
+	id EMgbOZiWxmnrMQUAu9opvQ
+	(envelope-from <stable+bounces-230670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:39:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2F134612A
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:29:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9BD346371
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CB2DC3062D8F
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:29:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18234300E5BA
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448AB3F2110;
-	Fri, 27 Mar 2026 14:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0033F880F;
+	Fri, 27 Mar 2026 14:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sISg4eQI"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="bnURapak"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418673D3497
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 14:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD7D3F87FA;
+	Fri, 27 Mar 2026 14:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774621740; cv=none; b=WBZmMR0Rtht65/FFousjaI4CJqktRoJwzhi1A59sLefpXHGNKyToQOyTnfxEL46PFD0oTRdmPqEzZiHpGGYjsLcTEnf27YmV0RIcEqj5zgH/TQuyGjbQ6YbKjnK78BFb8npmpHvY8q923sPu3Tfz2+O0iOuLFiaeaGVlmZmA8gY=
+	t=1774622321; cv=none; b=Sc238nwkEgv4mF7xC8g1HDxHT9cYAMuHy1jcQTGf9KwzahizkkcOid/1ds39B+oJ5xJ/ZemaVAcM83QbQC5F5WhcAOCFXQf7gND1g3EzPYm8tDJYe/zdpkPKJeX9nOeBOxcQN55cyw+rrqERFtZEbx6ydD1E/K+QZYrhnN/2qtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774621740; c=relaxed/simple;
-	bh=itCE97GetdjhJ1mCFZ8r6FCd3SfvCLfAVih8FSZBw94=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+HPr75UNyRKTDmlrRFcoXyIMaC2mX0Chahju7pdTlSa//a7XYjS0OtavRqt/h204e/N60fd63ACe1Lwrq073gpBR8uz3i8cVs1PK2vprQF5Yt5pi7jRo9BmKlR4Zdyj6cj5tT0CUYnpOzyxopykkibk23oPB5tPhwZVu8yDyG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sISg4eQI; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c2af7d09533so1692550a12.1
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 07:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774621737; x=1775226537; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cUSU1xSC29TgfkGjkqsyqB9Aeajan9NX1aSuNMNNxok=;
-        b=sISg4eQIZxvdsxRv8e4V/1ROJ6EHij691xGx7tD3pNKWovPfI+EJGve+CzrTka9aRo
-         Qtbydh10fpkK20aQEUHYKTaok8xmt6ZbX34qYEPToLYQw07SZD0XmVjts4AwlBLeQkFy
-         qvF3/FrDEhSqlbuXk4zSiI1VMF5BNTWrj54fwjVw2TL1/Lw9azFKVktexJSi7XcIRjY8
-         am+fj2Ono7Y0/BOgtky+HT2BHmsdDKKMB3ykNc1FuI54Y5TIJU6c04YK1jSAyIGCbRYQ
-         8HwPbjbEfZDEazjQY7/TmjPDSNliYVyKUHv95XBDsv5bH96AfjbJdDyJlPiTxsAsRlTl
-         63Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774621737; x=1775226537;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cUSU1xSC29TgfkGjkqsyqB9Aeajan9NX1aSuNMNNxok=;
-        b=DPfFlyvZbNHw9vtXvxb6R32yRyKMWjKViIvV2SYJtJ9fByzJ4oLSl19BgC7IdDMGcy
-         7Ee8HdBi/0TdwYhKs7gQBLkJWM9aBXn87+U2J0Q+u5SEOJMZTHZKLVyO9Tyi4rheurjy
-         TOxLgPdFwtxcvjwUhbONJja6gbGueOxa3ER8zeXZOF9iSHIdIlD2keC1ynCXrC7DywI+
-         MfnIKxG1X6Nt3cmu19Ejx4egAvWqaUjgb7dH3l6muL+LeUywFJmYC1IQrUlwNyo35MWx
-         UJILnO/PHXuV3seAbY+aPt8GYTbcpf8kCRLADCwAedQhmc1Nn9Cun7O5j7dH7cZjgQkh
-         lCUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwElILe1Qo67nd/dpn8V/amg1WP81xTUWxBpBjQeXT29ZuLC1bqmV2auwHd86b42WR1FzopKA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4Z0md8rZSHQsMes/ksSlZicz0NLJrLdGWuAf3RtQeE9uYqAlo
-	Kbyr/vKixowXUBVEvFfg6GYMBdzuULrzcfI1Msc7uwW6WYwz1/O/fO2G5Cg44g==
-X-Gm-Gg: ATEYQzyy8X12LUO3bqhdQwayBHYYz08cYuXpZEtY3piUmMgOnajOxWAFDtLSAXtI9fe
-	qUi7xDgP5VgJzN8USZYAnTmbd0UsjnSoKMu0SWoNsQO1FvOZ7dJj4kWqDDfdJCrc7QTXiMkfGs9
-	UIoEn03AcDE/s399AG6+S06iudMXCJKGKnAXG8b+/Az4JsdAkQsXfTZ8Ra9FGLjyW4sssURkp9B
-	SXqxxIixFdYBLElGi/AQzNOSZV4PfVlEsNA+iQipvO7WAmQ4OvGxDOU/c1z3symBUf2leZnAyM+
-	vbhsYMy1XaIzCp2w8EwajzuxrhecA6hqfX6hNAdLulyAZycy1Zq4lwHCF9azQG5km14YGSD83jN
-	wRTUI9U2oUmToeZ9DNjWC8Y53RbnFSER30WRn2PNJtkQxCXsBi6QG+qJEFuJsXQ4+KLHtrZRiZi
-	PofpjsjQ2w5Xc4/iM+KjIsPzWVO3WdDTYq/xV6J6OtACBG
-X-Received: by 2002:a05:6a21:32a5:b0:398:8766:4d0a with SMTP id adf61e73a8af0-39c878aa568mr3193205637.19.1774621737176;
-        Fri, 27 Mar 2026 07:28:57 -0700 (PDT)
-Received: from localhost.localdomain ([2409:40e2:1a2:687:d90c:7dc8:7860:bbd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76737f28d6sm5557230a12.6.2026.03.27.07.28.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 07:28:56 -0700 (PDT)
-From: Sourav Nayak <nonameblank007@gmail.com>
-To: nonameblank007@gmail.com
-Cc: greg@kroah.com,
-	linux-sound@vger.kernel.org,
-	stable@vger.kernel.org,
-	tiwai@suse.com,
-	tiwai@suse.de
-Subject: [PATCH 1/1] ALSA: hda/realtek: add quirk for HP Victus 15-fb0xxx
-Date: Fri, 27 Mar 2026 19:58:05 +0530
-Message-ID: <20260327142805.17139-1-nonameblank007@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAJ9UwXAYD2PwdBnt=hFKkbKUTm9kY8zXacAgE6zXDKOLhBKmKQ@mail.gmail.com>
-References: <CAJ9UwXAYD2PwdBnt=hFKkbKUTm9kY8zXacAgE6zXDKOLhBKmKQ@mail.gmail.com>
+	s=arc-20240116; t=1774622321; c=relaxed/simple;
+	bh=Pa3nBkbgcSlsYbSRA38GAPFni2EADrmpImFsg5jcMAU=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=lS2phEcKPVfmhvGXJstKZkfmAxwoVRWP1Xf8wTr2BpXtDK6iY1OY+CbSfbW3oeUH2tC3xW/Gf3Lj5GBf8944CoxL/wX8380YWWtjCkfEA0HP4d82McE+QmC8n+LtOzhTVJ1RNEXGsNFzJ3oyVUF06y7DqneJFlUMOdA5RzjkcyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=bnURapak; arc=none smtp.client-ip=203.205.221.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774622298; bh=wY60V7j/mX8a5CofQ5zKceewlG16GFAgDK+PPn9k2Zc=;
+	h=From:To:Cc:Subject:Date;
+	b=bnURapakQlZBDZy7K5eCLagRv/uQ9t7N9wjcbeztXdbQnbCbeNNYUZY+CL6fI8gWt
+	 Y0wq3uZrIeB7q6i7ibbxs9ywOHIngcwKzD+pPIn5nHZtNpgdpN+iUSH7Xna3Q65g68
+	 yKOa3s/GMEERAGCdp/IKIzGBVFhS0WqLmkQ+6RHY=
+Received: from LAPTOP-KQCD4QBN.localdomain ([123.121.145.48])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 98F0E252; Fri, 27 Mar 2026 22:38:15 +0800
+X-QQ-mid: xmsmtpt1774622295tlq39w192
+Message-ID: <tencent_A6BA9F112D5C2AF48A24BA55113B562D2F09@qq.com>
+X-QQ-XMAILINFO: N/WmRbclY25GevpqaKte0fd3tYsNb129t0ZpA+W9huvWxZy6+WlWJnOwedS/KO
+	 2V6zk4WZvnqd2acSHw4QKHo76htYvh0D9LtAnflKVH+bnKI72r0CH0OZWjo6Nignkd+bCiBI8Ugv
+	 8pngi8rTHHWaagoF5jCUk6dPMZxUA6EZXmduFwSmdkBJnPArgS8kMAxZjiNyBCIc/dcWCXbztcTM
+	 1hg2aZEC9SHZ3qIHOLVddjRaDtZTsQNV2JMptZNyjDdT6NYQ7F69XMNg/a4VRWlotjPB8GwtLL7I
+	 r9NtlHoNbY9XkCisp+1D50TKqUYoU0BmSp/g9mg9KZjpqbwd3nZcb+olFp3oxcuvpEwjJv2+D2kB
+	 t5Y2TIVQW+1ePybiStV8Y+efHSF0ZAM+09EVOpzWX2LSjjcOUlZ7WjgLKAAN2S+ETtonN6XPzH8v
+	 1y8QdZ9hN2OmrwGbyTvtY0tjHHX8Ffcvm3NeJvcr3EruirMbRT2gXlflJD26DovaybDJsHSTy2VT
+	 xbXeJAXHn1/WlHyQyvOBmapZSg5qdw2T+AxnSqNNxeoNYvf2y0+o0Iv0S16MUHATecQoQAWBq0nk
+	 76Jtv7arwNQgve1XF2iJB0xkNPdqZq6JHa+q7K3ulLKmIe3WeTL4rCe/UkstG+OTUsTUZ8+AP37p
+	 PnHyNh4DW6+uo1JqsJNahwAaGQaBsn7DaY7CWufJo/Qng+koTYZ7S1G0Y7ILMZ7hmaxkPFDo21Zc
+	 TO5dxT+wEWYKmp9fuHMjYZZv+llUpcUjux7pFqfOMCL0DXMqJjFVpqCo6LR2be4jWj6pc+jga2z/
+	 ZuBq3Mvz3jE1uK1vdcOaXXBDR3uFX0XgoAl2inpIebtaoVQV/rPYXLlck5hpXYDhh5HUc505G42K
+	 S0HX+YrGXjFJr4YgRGXqr64UT4yYh/+RMmTyxxqctwEvneaxo4MLCNcmXHFXhUxzgX0VrG9uSYNz
+	 7Zp3juKl0OsqqQWH8g8+yIVpLDr+7QTrDlUdS5eC+6mk96Xs+4nB2fFWhm3VEA3AQVpr+g4nTF9H
+	 qM/fK/xdChCz7PffUsVVyuL6LEc7GRaQa5XKcHLsx1enPPV+3c47zZs9KHIXU1si4p4FiER9bLbR
+	 nfg8Ss
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Wenyuan Li <2063309626@qq.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Markus Elfring <Markus.Elfring@web.de>,
+	gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	Wenyuan Li <2063309626@qq.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] media: tuner: add error handling for I2C transfers in set_type()
+Date: Fri, 27 Mar 2026 22:38:13 +0800
+X-OQ-MSGID: <20260327143813.482-1-2063309626@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,64 +83,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_FROM(0.00)[bounces-230669-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,bjtu.edu.cn,qq.com];
+	TAGGED_FROM(0.00)[bounces-230670-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[nonameblank007@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB2F134612A
+X-Rspamd-Queue-Id: CB9BD346371
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This adds a mute led quirck for HP Victus 15-fb0xxx (103c:8a3d) model
+In set_type(), multiple I2C transfers are performed to initialize
+certain tuners (FMD1216ME, FMD1216MEX, TD1316). However, the return
+values of i2c_master_send() are not checked.
 
-- As it used 0x8(full bright)/0x7f(little dim) for mute led on and other values as 0ff (0x0, 0x4, ...)
+If any of these I2C transfers fail, the tuner initialization may be
+incomplete, leading to incorrect device state or silent failures.
 
-- So, use ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT insted for safer approach
+Fix this by:
+- Adding a helper function tuner_i2c_send() that checks the return
+  value of i2c_master_send() and logs errors with %pe format
+- Replacing direct i2c_master_send() calls with tuner_i2c_send()
+- Propagating errors to the attach_failed path
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Sourav Nayak <nonameblank007@gmail.com>
+This ensures that I2C communication failures during tuner
+initialization are properly detected and handled.
+
+Fixes: 93df3413f1b4 ("[PATCH] v4l: 655: added support for the philips td1316 tuner")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
+
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+v4:
+- Added Cc: stable@vger.kernel.org
+- Updated Fixes: to original commit (93df3413f1b4)
+---
+ drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index ab4b22fcb..7f3e88999 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6954,6 +6954,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a34, "HP Pavilion x360 2-in-1 Laptop 14-ek0xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
-+	SND_PCI_QUIRK(0x103c, 0x8a3d, "HP Victus 15-fb0xxx (MB 8A3D)", ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a4f, "HP Victus 15-fa0xxx (MB 8A4F)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
- 	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/media/v4l2-core/tuner-core.c b/drivers/media/v4l2-core/tuner-core.c
+index 004ec4d7beea..01f28436a1f8 100644
+--- a/drivers/media/v4l2-core/tuner-core.c
++++ b/drivers/media/v4l2-core/tuner-core.c
+@@ -280,6 +280,19 @@ static const struct analog_demod_ops tuner_analog_ops = {
+  * Functions to select between radio and TV and tuner probe/remove functions
+  */
+ 
++static int tuner_i2c_send(struct i2c_client *c, u8 *buf, int len)
++{
++	int ret = i2c_master_send(c, buf, len);
++
++	if (ret != len) {
++		int err = ret < 0 ? ret : -EIO;
++
++		dev_err(&c->dev, "I2C send failed: %pe\n", ERR_PTR(err));
++		return err;
++	}
++	return 0;
++}
++
+ /**
+  * set_type - Sets the tuner type for a given device
+  *
+@@ -351,11 +364,13 @@ static void set_type(struct i2c_client *c, unsigned int type,
+ 		buffer[1] = 0xdc;
+ 		buffer[2] = 0x9c;
+ 		buffer[3] = 0x60;
+-		i2c_master_send(c, buffer, 4);
++		if (tuner_i2c_send(c, buffer, 4))
++			goto attach_failed;
+ 		mdelay(1);
+ 		buffer[2] = 0x86;
+ 		buffer[3] = 0x54;
+-		i2c_master_send(c, buffer, 4);
++		if (tuner_i2c_send(c, buffer, 4))
++			goto attach_failed;
+ 		if (!dvb_attach(simple_tuner_attach, &t->fe,
+ 				t->i2c->adapter, t->i2c->addr, t->type))
+ 			goto attach_failed;
+@@ -365,7 +380,8 @@ static void set_type(struct i2c_client *c, unsigned int type,
+ 		buffer[1] = 0xdc;
+ 		buffer[2] = 0x86;
+ 		buffer[3] = 0xa4;
+-		i2c_master_send(c, buffer, 4);
++		if (tuner_i2c_send(c, buffer, 4))
++			goto attach_failed;
+ 		if (!dvb_attach(simple_tuner_attach, &t->fe,
+ 				t->i2c->adapter, t->i2c->addr, t->type))
+ 			goto attach_failed;
 -- 
-2.53.0
+2.43.0
 
 
