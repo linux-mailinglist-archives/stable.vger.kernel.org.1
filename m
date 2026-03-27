@@ -1,248 +1,189 @@
-Return-Path: <stable+bounces-230559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kP9/LDXUxWnQCAUAu9opvQ
-	(envelope-from <stable+bounces-230559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:49:57 +0100
+	id AFFyCs/UxWnQCAUAu9opvQ
+	(envelope-from <stable+bounces-230560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:52:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DDF33D9DB
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:49:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539F633DA10
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A6B3E3030A08
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:49:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9A923033D37
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFEA27B343;
-	Fri, 27 Mar 2026 00:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B284E283FD8;
+	Fri, 27 Mar 2026 00:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXvYVPXH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IVACX+/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4AA21C173;
-	Fri, 27 Mar 2026 00:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A3324468B;
+	Fri, 27 Mar 2026 00:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774572595; cv=none; b=Ebly2IMzEKooUtUe6q3yz0RceyE6G6lQjybHE4d6axiHM5c70lzicfi6VlYnzwlcVFZEhF3srsE+vySl6XAyh4KR7Z9H8/FBzJguoKqm/gQ687axMJ1JflxoqYb36+pGaq/qcfIdziw0+pUBc5rc5mLhlKza2Cc5suZznFH6um4=
+	t=1774572706; cv=none; b=l3/VzDCgZ1gHHUYePTRxPi1DfRf38KVVDhEwr75eyzkEG4WB4VPkg1rol+m04RJj/opGRJe6w/kjWC2pgLYOyWpIvi9PnJ4RP0XrHQA8ZgofsWVbMvrVInzTy2tnE6yDwGE4BSKI7Vai09yR7FGGQItkOc2m5ZRNxAwRUdgAZmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774572595; c=relaxed/simple;
-	bh=v2ytZre0hctDpszcbcqLcBzEhOlj7hZ5jEoUksm0I7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NJWDoIbytkZfBK9WuesvRQthDJs5YuGDIsp68liLcQAbcF7YBwfVqB7HhfJfpijQyjU58xxjiaU8wx7A99UEQkgGyeabQid9IC7pRzIEC+wAtpy0fxwOmzuVGDsIYPNnT37oVViTUinnEKq6w0PvqOO2rJX4LvM7WYgyKqUoUhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXvYVPXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87F4C116C6;
-	Fri, 27 Mar 2026 00:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774572594;
-	bh=v2ytZre0hctDpszcbcqLcBzEhOlj7hZ5jEoUksm0I7Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fXvYVPXHy2TM1GE27qw8sqseNe+LQ1FDwsxdtQDQq1ipjO6hPU9EWJUAkjrb2N1Y/
-	 YslVJ8Dw6K8dLTEI0f1DCxOZttuChn4SqU0Zl9ZrdBAx10BTeB845ImvYUI0/pt39Z
-	 ZW82HZ+c7LuXM+e/iZPn4lzVg7/je/umDJXLwKLw7LvWQoE/BghJtkqu1Vwz3jrM/C
-	 C70txyu4PdUq4dJpGrfSkwWKmw+sXaFCzBs16gylVIKCjOEM0cyTBHt2lpr3tyW95x
-	 fYP6l2iiHc+gPwyZkiQqsjMQ4AYc4U99mZCLhH1qq0MlZPJ/lxe0evrSCwWjHCNpaK
-	 JarTwIVFAi3Ng==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
-Date: Thu, 26 Mar 2026 17:49:51 -0700
-Message-ID: <20260327004952.58266-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1774572706; c=relaxed/simple;
+	bh=NaAB+U4FjkCmZsunfUfk7y95LS0w7btp2dL/bA1OujI=;
+	h=Date:To:From:Subject:Message-Id; b=bRuRbGl8Pr692WMe3HMJZPgvQK8pDMw4n3CmpO3p60tWd4f0h0PLBnD2rN0oBEppL2RdVWIC/iwzcBijEa6EoxZKDmdYpA7hiR7Qt3dGPS1KJ8E4k7PWHMnP826kmZM9HgIy4it3OlAocfF3pK8Ii0vaOuSM4ajrKE5n4ar69HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IVACX+/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD3EC116C6;
+	Fri, 27 Mar 2026 00:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774572706;
+	bh=NaAB+U4FjkCmZsunfUfk7y95LS0w7btp2dL/bA1OujI=;
+	h=Date:To:From:Subject:From;
+	b=IVACX+/508djJS65EKWgboqrK2Xg4/fjiiAe7hRHXc0PQFRxoEUM11R09Jo2pxvs0
+	 AwKwFXvrNIQFmWUzCfv8rsXCtS2n/fEgJWaJWZzfBmfxNTAPr/rwcHkdjqlTCV7ycP
+	 bmRR47wt95D/qYzrYcjnDnQVNQ43wZV/tflV02nM=
+Date: Thu, 26 Mar 2026 17:51:45 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,jack@suse.cz,hch@infradead.org,hannes@cmpxchg.org,joannelkoong@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-reinstate-unconditional-writeback-start-in-balance_dirty_pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260327005145.EFD3EC116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230559-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230560-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,infradead.org,suse.cz,cmpxchg.org,gmail.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 59DDF33D9DB
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cmpxchg.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,linux-foundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 539F633DA10
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When kdamond_fn() main loop is finished, the function cancels all
-remaining damon_call() requests and unset the damon_ctx->kdamond so that
-API callers can show the context is terminated.  damon_call() adds the
-caller's request to the queue first.  After that, it shows if the
-kdamond of the damon_ctx is still running (damon_ctx->kdamond is set).
-Only if the kdamond is running, damon_call() starts waiting for the
-kdamond's handling of the newly added request.
 
-The damon_call() requests registration and damon_ctx->kdamond unset are
-protected by different mutexes, though.  Hence, damon_call() could race
-with damon_ctx->kdamond unset, and result in deadlocks.
+The patch titled
+     Subject: mm: reinstate unconditional writeback start in balance_dirty_pages()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-reinstate-unconditional-writeback-start-in-balance_dirty_pages.patch
 
-For example, let's suppose kdamond successfully finished the
-damon_call() requests cancelling.  Right after that, damon_call() is
-called for the context.  It registers the new request, and shows the
-context is still running, because damon_ctx->kdamond unset is not yet
-done.  Hence the damon_call() caller starts waiting for the handling of
-the request.  However, the kdamond is already on the termination steps,
-so it never handles the new request.  As a result, the damon_call()
-caller threads infinitely waits.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-reinstate-unconditional-writeback-start-in-balance_dirty_pages.patch
 
-Fix this by introducing another damon_ctx field, namely
-call_controls_obsolete.  It is protected by the
-damon_ctx->call_controls_lock, which protects damon_call() registration.
-Initialize (unset) it in kdamond_init_ctx() and set it just before the
-cancelling of remaining damon_call() is executed.  damon_call() reads
-the obsolete field under the lock and avoids adding a new request.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-After this change, only requests that are guaranteed to be handled or
-cancelled are registered.  Hence the after-registration DAMON context
-termination check is no longer needed.  Remove it together.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-The issue is found by sashiko [1].
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-[1] https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
-Cc: <stable@vger.kernel.org> # 6.14.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
+------------------------------------------------------
+From: Joanne Koong <joannelkoong@gmail.com>
+Subject: mm: reinstate unconditional writeback start in balance_dirty_pages()
+Date: Thu, 26 Mar 2026 14:51:27 -0700
+
+Commit 64dd89ae01f2 ("mm/block/fs: remove laptop_mode") removed this
+unconditional writeback start from balance_dirty_pages():
+
+       if (unlikely(!writeback_in_progress(wb)))
+	       wb_start_background_writeback(wb);
+
+This logic needs to be reinstated to prevent performance regressions for
+strictlimited BDIs and memcg setups.  The problem occurs because:
+
+a) For strictlimited BDIs, throttling is calculated using per-wb
+   thresholds.  The per-wb threshold can be exceeded even when the global
+   dirty threshold was not exceeded (nr_dirty < gdtc->bg_thresh)
+
+b) For memcg-based throttling, memcg uses its own dirty count /
+   thresholds and can trigger throttling even when the global threshold
+   isn't exceeded
+
+Without the unconditional writeback start, IO is throttled as it waits for
+dirty pages to be written back but there is no writeback running.  This
+leads to severe stalls.  On fuse, buffered write performance dropped from
+1400 MiB/s to 2000 KiB/s.
+
+Reinstate the unconditional writeback start so that writeback is
+guaranteed to be running whenever IO needs to be throttled.
+
+Link: https://lkml.kernel.org/r/20260326215127.3857682-2-joannelkoong@gmail.com
+Fixes: 64dd89ae01f2 ("mm/block/fs: remove laptop_mode")
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-Changes from RFC v1
-(https://lore.kernel.org/20260326062347.88569-3-sj@kernel.org)
-- Clarify damon_call() call condition.
-- Init call_controls_obsolete before kdamond_started completion.
-- Wordsmith commit message.
 
- include/linux/damon.h |  1 +
- mm/damon/core.c       | 45 ++++++++++++++-----------------------------
- 2 files changed, 15 insertions(+), 31 deletions(-)
+ mm/page-writeback.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d9a3babbafc1..5129de70e7b7 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -818,6 +818,7 @@ struct damon_ctx {
+--- a/mm/page-writeback.c~mm-reinstate-unconditional-writeback-start-in-balance_dirty_pages
++++ a/mm/page-writeback.c
+@@ -1858,6 +1858,27 @@ free_running:
+ 			break;
+ 		}
  
- 	/* lists of &struct damon_call_control */
- 	struct list_head call_controls;
-+	bool call_controls_obsolete;
- 	struct mutex call_controls_lock;
++		/*
++		 * Unconditionally start background writeback if it's not
++		 * already in progress. We need to do this because the global
++		 * dirty threshold check above (nr_dirty > gdtc->bg_thresh)
++		 * doesn't account for these cases:
++		 *
++		 * a) strictlimit BDIs: throttling is calculated using per-wb
++		 * thresholds. The per-wb threshold can be exceeded even when
++		 * nr_dirty < gdtc->bg_thresh
++		 *
++		 * b) memcg-based throttling: memcg uses its own dirty count and
++		 * thresholds and can trigger throttling even when global
++		 * nr_dirty < gdtc->bg_thresh
++		 *
++		 * Writeback needs to be started else the writer stalls in the
++		 * throttle loop waiting for dirty pages to be written back
++		 * while no writeback is running.
++		 */
++		if (unlikely(!writeback_in_progress(wb)))
++			wb_start_background_writeback(wb);
++
+ 		mem_cgroup_flush_foreign(wb);
  
- 	struct damos_walk_control *walk_control;
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index db6c67e52d2b..1e8fce6a2a96 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1573,35 +1573,6 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
- 	return pid;
- }
- 
--/*
-- * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
-- *				      an inactive context.
-- * @ctx:	The inactive DAMON context.
-- * @control:	Control variable of the call request.
-- *
-- * This function is called in a case that @control is added to @ctx but @ctx is
-- * not running (inactive).  See if @ctx handled @control or not, and cleanup
-- * @control if it was not handled.
-- *
-- * Returns 0 if @control was handled by @ctx, negative error code otherwise.
-- */
--static int damon_call_handle_inactive_ctx(
--		struct damon_ctx *ctx, struct damon_call_control *control)
--{
--	struct damon_call_control *c;
--
--	mutex_lock(&ctx->call_controls_lock);
--	list_for_each_entry(c, &ctx->call_controls, list) {
--		if (c == control) {
--			list_del(&control->list);
--			mutex_unlock(&ctx->call_controls_lock);
--			return -EINVAL;
--		}
--	}
--	mutex_unlock(&ctx->call_controls_lock);
--	return 0;
--}
--
- /**
-  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-  * @ctx:	DAMON context to call the function for.
-@@ -1619,6 +1590,10 @@ static int damon_call_handle_inactive_ctx(
-  * synchronization.  The return value of the function will be saved in
-  * &damon_call_control->return_code.
-  *
-+ * Note that this function should be called only after damon_start() with the
-+ * @ctx has succeed.  Otherwise, this function could fall into an indefinite
-+ * wait.
-+ *
-  * Return: 0 on success, negative error code otherwise.
-  */
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
-@@ -1629,10 +1604,12 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- 	INIT_LIST_HEAD(&control->list);
- 
- 	mutex_lock(&ctx->call_controls_lock);
-+	if (ctx->call_controls_obsolete) {
-+		mutex_unlock(&ctx->call_controls_lock);
-+		return -ECANCELED;
-+	}
- 	list_add_tail(&control->list, &ctx->call_controls);
- 	mutex_unlock(&ctx->call_controls_lock);
--	if (!damon_is_running(ctx))
--		return damon_call_handle_inactive_ctx(ctx, control);
- 	if (control->repeat)
- 		return 0;
- 	wait_for_completion(&control->completion);
-@@ -2952,6 +2929,9 @@ static int kdamond_fn(void *data)
- 
- 	pr_debug("kdamond (%d) starts\n", current->pid);
- 
-+	mutex_lock(&ctx->call_controls_lock);
-+	ctx->call_controls_obsolete = false;
-+	mutex_unlock(&ctx->call_controls_lock);
- 	complete(&ctx->kdamond_started);
- 	kdamond_init_ctx(ctx);
- 
-@@ -3062,6 +3042,9 @@ static int kdamond_fn(void *data)
- 	damon_destroy_targets(ctx);
- 
- 	kfree(ctx->regions_score_histogram);
-+	mutex_lock(&ctx->call_controls_lock);
-+	ctx->call_controls_obsolete = true;
-+	mutex_unlock(&ctx->call_controls_lock);
- 	kdamond_call(ctx, true);
- 	damos_walk_cancel(ctx);
- 
+ 		/*
+_
 
-base-commit: 871ee9fc2ebebaa1fa26d4a266ebdf36252b53cf
--- 
-2.47.3
+Patches currently in -mm which might be from joannelkoong@gmail.com are
+
+mm-reinstate-unconditional-writeback-start-in-balance_dirty_pages.patch
+
 
