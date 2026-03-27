@@ -1,199 +1,181 @@
-Return-Path: <stable+bounces-230670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMgbOZiWxmnrMQUAu9opvQ
-	(envelope-from <stable+bounces-230670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:39:20 +0100
+	id sGzSGrWWxmnrMQUAu9opvQ
+	(envelope-from <stable+bounces-230671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:39:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9BD346371
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7FC346382
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 18234300E5BA
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:38:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 431AD3060A80
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0033F880F;
-	Fri, 27 Mar 2026 14:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A52E22173D;
+	Fri, 27 Mar 2026 14:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="bnURapak"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="VWpeNFUD"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD7D3F87FA;
-	Fri, 27 Mar 2026 14:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37CB3F7AA2
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 14:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774622321; cv=none; b=Sc238nwkEgv4mF7xC8g1HDxHT9cYAMuHy1jcQTGf9KwzahizkkcOid/1ds39B+oJ5xJ/ZemaVAcM83QbQC5F5WhcAOCFXQf7gND1g3EzPYm8tDJYe/zdpkPKJeX9nOeBOxcQN55cyw+rrqERFtZEbx6ydD1E/K+QZYrhnN/2qtI=
+	t=1774622350; cv=none; b=psUc0u3wYsLTERWJEH0uMHiSqipbO2yz4D625XAZ6ksqJuOD0UzMBAitux+A55esCXKcl+I8Vb+hOOPPl3rlWFWW14ccHXdL84EygupEcRpoaEqGn5qKp/fRIp5OO4SNFpJRG58mTH3UZYNg7eX4umV7g0F7jS5reb6uUJ9nt1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774622321; c=relaxed/simple;
-	bh=Pa3nBkbgcSlsYbSRA38GAPFni2EADrmpImFsg5jcMAU=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=lS2phEcKPVfmhvGXJstKZkfmAxwoVRWP1Xf8wTr2BpXtDK6iY1OY+CbSfbW3oeUH2tC3xW/Gf3Lj5GBf8944CoxL/wX8380YWWtjCkfEA0HP4d82McE+QmC8n+LtOzhTVJ1RNEXGsNFzJ3oyVUF06y7DqneJFlUMOdA5RzjkcyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=bnURapak; arc=none smtp.client-ip=203.205.221.190
+	s=arc-20240116; t=1774622350; c=relaxed/simple;
+	bh=ivqfIqsPHjsbNqGTrsfhY7ry0sTkKC76dDXgJ70bhk0=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID; b=HeMbTbF4wHyfOoubQ8KgdyC3kzoKmLADxg9xMh4zpjEKvLJnfpIogG/AOD6ciBUhwSSe46X206io+vmvpcL4VT3T2gVgc/R30DjZrMty+OVR9CZa9qhpUe5N6iVrC5Ezxwr/73bJlsymRQXX3PpE2nEvihf7qOKYXLfdJpbuZGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=VWpeNFUD; arc=none smtp.client-ip=43.163.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1774622298; bh=wY60V7j/mX8a5CofQ5zKceewlG16GFAgDK+PPn9k2Zc=;
+	t=1774622343; bh=44k7foZklptCmE4v/K8cnSHo+zV38+zAOd+Nkim+sE0=;
 	h=From:To:Cc:Subject:Date;
-	b=bnURapakQlZBDZy7K5eCLagRv/uQ9t7N9wjcbeztXdbQnbCbeNNYUZY+CL6fI8gWt
-	 Y0wq3uZrIeB7q6i7ibbxs9ywOHIngcwKzD+pPIn5nHZtNpgdpN+iUSH7Xna3Q65g68
-	 yKOa3s/GMEERAGCdp/IKIzGBVFhS0WqLmkQ+6RHY=
-Received: from LAPTOP-KQCD4QBN.localdomain ([123.121.145.48])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 98F0E252; Fri, 27 Mar 2026 22:38:15 +0800
-X-QQ-mid: xmsmtpt1774622295tlq39w192
-Message-ID: <tencent_A6BA9F112D5C2AF48A24BA55113B562D2F09@qq.com>
-X-QQ-XMAILINFO: N/WmRbclY25GevpqaKte0fd3tYsNb129t0ZpA+W9huvWxZy6+WlWJnOwedS/KO
-	 2V6zk4WZvnqd2acSHw4QKHo76htYvh0D9LtAnflKVH+bnKI72r0CH0OZWjo6Nignkd+bCiBI8Ugv
-	 8pngi8rTHHWaagoF5jCUk6dPMZxUA6EZXmduFwSmdkBJnPArgS8kMAxZjiNyBCIc/dcWCXbztcTM
-	 1hg2aZEC9SHZ3qIHOLVddjRaDtZTsQNV2JMptZNyjDdT6NYQ7F69XMNg/a4VRWlotjPB8GwtLL7I
-	 r9NtlHoNbY9XkCisp+1D50TKqUYoU0BmSp/g9mg9KZjpqbwd3nZcb+olFp3oxcuvpEwjJv2+D2kB
-	 t5Y2TIVQW+1ePybiStV8Y+efHSF0ZAM+09EVOpzWX2LSjjcOUlZ7WjgLKAAN2S+ETtonN6XPzH8v
-	 1y8QdZ9hN2OmrwGbyTvtY0tjHHX8Ffcvm3NeJvcr3EruirMbRT2gXlflJD26DovaybDJsHSTy2VT
-	 xbXeJAXHn1/WlHyQyvOBmapZSg5qdw2T+AxnSqNNxeoNYvf2y0+o0Iv0S16MUHATecQoQAWBq0nk
-	 76Jtv7arwNQgve1XF2iJB0xkNPdqZq6JHa+q7K3ulLKmIe3WeTL4rCe/UkstG+OTUsTUZ8+AP37p
-	 PnHyNh4DW6+uo1JqsJNahwAaGQaBsn7DaY7CWufJo/Qng+koTYZ7S1G0Y7ILMZ7hmaxkPFDo21Zc
-	 TO5dxT+wEWYKmp9fuHMjYZZv+llUpcUjux7pFqfOMCL0DXMqJjFVpqCo6LR2be4jWj6pc+jga2z/
-	 ZuBq3Mvz3jE1uK1vdcOaXXBDR3uFX0XgoAl2inpIebtaoVQV/rPYXLlck5hpXYDhh5HUc505G42K
-	 S0HX+YrGXjFJr4YgRGXqr64UT4yYh/+RMmTyxxqctwEvneaxo4MLCNcmXHFXhUxzgX0VrG9uSYNz
-	 7Zp3juKl0OsqqQWH8g8+yIVpLDr+7QTrDlUdS5eC+6mk96Xs+4nB2fFWhm3VEA3AQVpr+g4nTF9H
-	 qM/fK/xdChCz7PffUsVVyuL6LEc7GRaQa5XKcHLsx1enPPV+3c47zZs9KHIXU1si4p4FiER9bLbR
-	 nfg8Ss
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: Wenyuan Li <2063309626@qq.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Markus Elfring <Markus.Elfring@web.de>,
-	gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn,
-	25125283@bjtu.edu.cn,
-	23120469@bjtu.edu.cn,
-	Wenyuan Li <2063309626@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] media: tuner: add error handling for I2C transfers in set_type()
-Date: Fri, 27 Mar 2026 22:38:13 +0800
-X-OQ-MSGID: <20260327143813.482-1-2063309626@qq.com>
-X-Mailer: git-send-email 2.43.0
+	b=VWpeNFUD10Y5GlXc6K0246OllkuLvGKXaAnW1GMGZ4AWmSm6yqPNqb5PJWQ82duKH
+	 XfIXBc+wr57jyuTpmIQ39FnW3n/i2QLH+o5TyCYNBmfoZOuN4Tn+UsORXjPynYdL/n
+	 2Yem7KKWnWloBeaJDgYRavWBIIurs5GVxU4emh9M=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-XMAILINFO: NDhVf3b/OhrxwGNDeR6rDAAhRg/J+NShiZknThntU6eDege5y6tm4JRFfLwVSB
+	 ci8c1Eerdp3iOLfMCQ6bAsyPracGzLaGG81jE64AVb6KAnnP/awwAFm/58ug3wvJ90nBH+yne5x6H
+	 Wto9Ghydy4vWdC6UhwHnuT+9gYnC1jI0W85TjfVMoak/l4BNlNxGs80GANY798z0UvkdMPWEmIr2p
+	 JcHhvWHldzDgyBdTKOG07MuZTzVFdgDrj422QlH51jX5Epl4h+PeaaZmsJw45YX2FpX5vqJHF9fOs
+	 U/zC/rjWNVbx+/CorO2I6HiRksf0Zrv8zXVkf4Zc/SZ4ceSEuY7bkrl/966prn40F7JLsuE/URtdy
+	 U8chZqIL6U0YLwY+L5xsolTa5DKjVRDCO2nmDaLMwFsvn++vznTscbtdbgcVq2a9Ad3XtwHIloewm
+	 ymOMW1wGq4hVAS4dmWnJKhsC0EzmQuC+n7Qei/tKczIFEBi+hT8la97T5xavWXB2eHRNOEaAcjgBH
+	 F4bxXWs/Ktf2UwUAh8NhJt3ynx+6ukBVz2uuwla1cRj1oXQZPzj1yTlEqaRS1pHup3iTa/jN5kOij
+	 AAp8J6GbyzWeCLSgtSPq/xH4RjoY6sDmRHaafVXRcv/2jlmStMsRxsM7zXYOSM8hfiPiBSyY5wO+d
+	 SxBOES1OagtquvA5VoBKUI2/KN2aeL7hHW15hzy4N4dTkuwM0WoaiYbpVQfpAATxfY5uW1XdItt2s
+	 b0IWzNoTIoDjmXuW+6AkS1wA1k1yoy5KtvX+l0nmgb3otWrvV2NsIw0saNNDDjCsZHiEmCzaCeej8
+	 tRFUfInAHebIfduvBt3BLGU5yl2CvwalCr58gWxNZBWUSQyfeqUw8vUcWJMRn9c+rDqNqBXixDiLj
+	 NCguukoo/R5KllSg5tJnHvoVsD9MRumauQVMQ9FJwjAHVxg8T2LKi4NPdpiwprn0vUFJ41w294QHS
+	 YlI27e2C4ACI87cTUPUGl5xdvoXrkWp7lWa21deggMKn0mt7eIJgjMEVsI5cl9DEiqj0fEdLd14IQ
+	 E1B+1iIOwr/1m8VPXf6/sXTb5mxfKXy5hLNGkgcMlIG3RVds=
+X-QQ-FEAT: oHWrrGTW1dC5tAPeTNEktQWzsGuk/wXs
+X-QQ-SSF: 00000000000000F0000000000000
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-STYLE: 
+X-QQ-mid: webmail746t1774622342t6868857
+From: "=?ISO-8859-1?B?ZHJpejJ0?=" <driz2t@qq.com>
+To: "=?ISO-8859-1?B?c3l6Ym90KzczOWMxMjhiNTU1N2FiYjlmODE2?=" <syzbot+739c128b5557abb9f816@syzkaller.appspotmail.com>
+Cc: "=?ISO-8859-1?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Subject: [PATCH 6.6.y]  9p/trans_fd: p9_fd_request: kick rx thread if EPOLLIN
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_69C69686_11EA5508_7CD21DB8"
+Content-Transfer-Encoding: 8Bit
+Date: Fri, 27 Mar 2026 22:39:01 +0800
+X-Priority: 3
+Message-ID: <tencent_3A22B535EA39B67E9B4402D84DAA4E3B8B0A@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-Spamd-Result: default: False [2.94 / 15.00];
+	CC_EXCESS_BASE64(1.50)[];
+	TO_EXCESS_BASE64(1.50)[];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	MV_CASE(0.50)[];
+	CTE_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,bjtu.edu.cn,qq.com];
-	TAGGED_FROM(0.00)[bounces-230670-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qq.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[qq.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230671-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	DKIM_TRACE(0.00)[qq.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[driz2t@qq.com,stable@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable,739c128b5557abb9f816];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_EXCESS_BASE64(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB9BD346371
+X-Rspamd-Queue-Id: EC7FC346382
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In set_type(), multiple I2C transfers are performed to initialize
-certain tuners (FMD1216ME, FMD1216MEX, TD1316). However, the return
-values of i2c_master_send() are not checked.
+This is a multi-part message in MIME format.
 
-If any of these I2C transfers fail, the tuner initialization may be
-incomplete, leading to incorrect device state or silent failures.
+------=_NextPart_69C69686_11EA5508_7CD21DB8
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_69C69686_11EA5508_5C5F493C";
 
-Fix this by:
-- Adding a helper function tuner_i2c_send() that checks the return
-  value of i2c_master_send() and logs errors with %pe format
-- Replacing direct i2c_master_send() calls with tuner_i2c_send()
-- Propagating errors to the attach_failed path
+------=_NextPart_69C69686_11EA5508_5C5F493C
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: base64
 
-This ensures that I2C communication failures during tuner
-initialization are properly detected and handled.
+SGksDQoNClBsZWFzZSB0ZXN0IHRoaXMgcGF0Y2ggb24gc3RhYmxlIDYuNi55Lg0KDQoNCiNz
+eXogdGVzdDogZ2l0Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0
+L3N0YWJsZS9saW51eC5naXQgYzA5ZmJjZDMxYWU2ZDcxZTdjNjk1NDU4MzliZWM5MmQ4ZTE1
+YzEzYg0KDQoNClRoYW5rcywNCkNoYW5namlhbiBMaXU=
 
-Fixes: 93df3413f1b4 ("[PATCH] v4l: 655: added support for the philips td1316 tuner")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wenyuan Li <2063309626@qq.com>
+------=_NextPart_69C69686_11EA5508_5C5F493C
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: base64
 
----
-v4:
-- Added Cc: stable@vger.kernel.org
-- Updated Fixes: to original commit (93df3413f1b4)
----
- drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+SGksPGRpdj48YnI+PC9kaXY+PGRpdj5QbGVhc2UgdGVzdCB0aGlzIHBhdGNoIG9uIHN0YWJs
+ZSA2LjYueS48L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PiNzeXogdGVzdDogZ2l0Oi8vZ2l0
+Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC5naXQg
+YzA5ZmJjZDMxYWU2ZDcxZTdjNjk1NDU4MzliZWM5MmQ4ZTE1YzEzYjwvZGl2PjxkaXY+PGJy
+PjwvZGl2PjxkaXY+VGhhbmtzLDwvZGl2PjxkaXY+Q2hhbmdqaWFuIExpdTxicj48L2Rpdj4=
 
-diff --git a/drivers/media/v4l2-core/tuner-core.c b/drivers/media/v4l2-core/tuner-core.c
-index 004ec4d7beea..01f28436a1f8 100644
---- a/drivers/media/v4l2-core/tuner-core.c
-+++ b/drivers/media/v4l2-core/tuner-core.c
-@@ -280,6 +280,19 @@ static const struct analog_demod_ops tuner_analog_ops = {
-  * Functions to select between radio and TV and tuner probe/remove functions
-  */
- 
-+static int tuner_i2c_send(struct i2c_client *c, u8 *buf, int len)
-+{
-+	int ret = i2c_master_send(c, buf, len);
-+
-+	if (ret != len) {
-+		int err = ret < 0 ? ret : -EIO;
-+
-+		dev_err(&c->dev, "I2C send failed: %pe\n", ERR_PTR(err));
-+		return err;
-+	}
-+	return 0;
-+}
-+
- /**
-  * set_type - Sets the tuner type for a given device
-  *
-@@ -351,11 +364,13 @@ static void set_type(struct i2c_client *c, unsigned int type,
- 		buffer[1] = 0xdc;
- 		buffer[2] = 0x9c;
- 		buffer[3] = 0x60;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		mdelay(1);
- 		buffer[2] = 0x86;
- 		buffer[3] = 0x54;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		if (!dvb_attach(simple_tuner_attach, &t->fe,
- 				t->i2c->adapter, t->i2c->addr, t->type))
- 			goto attach_failed;
-@@ -365,7 +380,8 @@ static void set_type(struct i2c_client *c, unsigned int type,
- 		buffer[1] = 0xdc;
- 		buffer[2] = 0x86;
- 		buffer[3] = 0xa4;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		if (!dvb_attach(simple_tuner_attach, &t->fe,
- 				t->i2c->adapter, t->i2c->addr, t->type))
- 			goto attach_failed;
--- 
-2.43.0
+------=_NextPart_69C69686_11EA5508_5C5F493C--
+
+------=_NextPart_69C69686_11EA5508_7CD21DB8
+Content-Type: application/octet-stream;
+	charset="ISO-8859-1";
+	name="739c128b5557abb9f816.patch"
+Content-Disposition: attachment; filename="739c128b5557abb9f816.patch"
+Content-Transfer-Encoding: base64
+
+LS0tIGEvbmV0LzlwL3RyYW5zX2ZkLmMKKysrIGIvbmV0LzlwL3RyYW5zX2ZkLmMKQEAgLTY1
+NCwzNCArNjU0LDMxIEBACiAvKioKICAqIHA5X2ZkX3JlcXVlc3QgLSBzZW5kIDlQIHJlcXVl
+c3QKICAqIFRoZSBmdW5jdGlvbiBjYW4gc2xlZXAgdW50aWwgdGhlIHJlcXVlc3QgaXMgc2No
+ZWR1bGVkIGZvciBzZW5kaW5nLgogICogVGhlIGZ1bmN0aW9uIGNhbiBiZSBpbnRlcnJ1cHRl
+ZC4gUmV0dXJuIGZyb20gdGhlIGZ1bmN0aW9uIGlzIG5vdAogICogYSBndWFyYW50ZWUgdGhh
+dCB0aGUgcmVxdWVzdCBpcyBzZW50IHN1Y2Nlc3NmdWxseS4KICAqCiAgKiBAY2xpZW50OiBj
+bGllbnQgaW5zdGFuY2UKICAqIEByZXE6IHJlcXVlc3QgdG8gYmUgc2VudAogICoKICAqLwog
+CiBzdGF0aWMgaW50IHA5X2ZkX3JlcXVlc3Qoc3RydWN0IHA5X2NsaWVudCAqY2xpZW50LCBz
+dHJ1Y3QgcDlfcmVxX3QgKnJlcSkKIHsKIAlfX3BvbGxfdCBuOwogCXN0cnVjdCBwOV90cmFu
+c19mZCAqdHMgPSBjbGllbnQtPnRyYW5zOwogCXN0cnVjdCBwOV9jb25uICptID0gJnRzLT5j
+b25uOwogCiAJcDlfZGVidWcoUDlfREVCVUdfVFJBTlMsICJtdXggJXAgdGFzayAlcCB0Y2Fs
+bCAlcCBpZCAlZFxuIiwKIAkJIG0sIGN1cnJlbnQsICZyZXEtPnRjLCByZXEtPnRjLmlkKTsK
+IAlpZiAobS0+ZXJyIDwgMCkKIAkJcmV0dXJuIG0tPmVycjsKIAogCXNwaW5fbG9jaygmbS0+
+cmVxX2xvY2spOwogCVdSSVRFX09OQ0UocmVxLT5zdGF0dXMsIFJFUV9TVEFUVVNfVU5TRU5U
+KTsKIAlsaXN0X2FkZF90YWlsKCZyZXEtPnJlcV9saXN0LCAmbS0+dW5zZW50X3JlcV9saXN0
+KTsKIAlzcGluX3VubG9jaygmbS0+cmVxX2xvY2spOwogCi0JaWYgKHRlc3RfYW5kX2NsZWFy
+X2JpdChXcGVuZGluZywgJm0tPndzY2hlZCkpCi0JCW4gPSBFUE9MTE9VVDsKLQllbHNlCi0J
+CW4gPSBwOV9mZF9wb2xsKG0tPmNsaWVudCwgTlVMTCwgTlVMTCk7CisgcDlfcG9sbF9tdXgo
+bSk7CiAKIAlpZiAobiAmIEVQT0xMT1VUICYmICF0ZXN0X2FuZF9zZXRfYml0KFd3b3Jrc2No
+ZWQsICZtLT53c2NoZWQpKQogCQlzY2hlZHVsZV93b3JrKCZtLT53cSk7Cg==
+
+------=_NextPart_69C69686_11EA5508_7CD21DB8--
 
 
