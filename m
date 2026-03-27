@@ -1,247 +1,229 @@
-Return-Path: <stable+bounces-230685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMtlCNewxmmiNgUAu9opvQ
-	(envelope-from <stable+bounces-230685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:31:19 +0100
+	id 6FaxN9izxmmiNgUAu9opvQ
+	(envelope-from <stable+bounces-230686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:44:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC67347793
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:31:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF386347A41
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1975310EB32
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:23:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9CA0D309F38C
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDC73612FE;
-	Fri, 27 Mar 2026 16:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB62B3C73F6;
+	Fri, 27 Mar 2026 16:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="clsEIBUb"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="dFlUZDKm"
 X-Original-To: stable@vger.kernel.org
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013040.outbound.protection.outlook.com [52.101.83.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691A635F5ED;
-	Fri, 27 Mar 2026 16:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774628574; cv=fail; b=o2hjZBtwjIU+aq1yAgLi5C/hIgC+dB1q0oR1GEaYSo8o/sebSD9K/m0FiOSkOay8vv47zvoTdqC0QOQXpfhsyCx8fR5OVwenK87V/bPbPuG5PnlTGGx8BQi8UvnREnfBjUTspNhy4CoHDn/yud8GA11VGstLeIu+qA8gsIr1t+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774628574; c=relaxed/simple;
-	bh=LwgG8TU7vsXVwsc3teABNDYGCRomwC53j0Gf0s2JTYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GmB78T/MmOXpY0spb3FV+LjVs+OBoJHt6b2XAgEWIiO5qdQuAU1YMmK6fT9OcbSq5NADJ7zYBp9oGmLO8gj+nRwWz2P4nFqSPouu9OfK3M3A2GaJ/bDhRffMrcIemudgjwvGaVk0MCgYN3JOiProqzO0ynLJZr2EQKur3wIbK9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=clsEIBUb; arc=fail smtp.client-ip=52.101.83.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eii1W1KlUrmns2LtdBo3H41QlVYcm4rHgROvy7jdAPVo0jsrN/h6GPsTNnTSeod22peUALBmpV5EFycrYHuDfy9f9eL0fUU1yJA2zc05r7Th12o2ohHB+XcnXhHvfJuWuizOrEaZfglAxRe7kPgewctf6igC9gPEidAIywWoVkznI3r99clBLL8upz+xzH7rmIMzc/bATaKlq+EZj29HSPG/+a6vGLGum4CjC/AX0Mx/81b4nAQcpxoXtTv0gReLqe6ZKn+HYpUCkYsqKWSCC6b/GPQHOd3afGr1n+XzwEVcJOizSoKyq1sGyAUQqEMs5smbdMOXGlLLAvPEZA0y+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y7Nob2cvqQMgVv8m0k5at0xHQgEtfA40XCp8AXq2fMY=;
- b=xluzkkW8R+WJj1TYMz3+K1zCcVl2YkEovJ6LCiFbukUB6QPnJSmLXqQdc/MUo5Dnf227VXthYEFXbR+0HGgE1xproeHqvqMHuxQx3x+EYyktzo259uAWvkRlKlylme1+amyb1CYJwnSgEf7VNNqVn2saVnlmZMm2lV0holKttcO2ZxYEjps+f0RdwjT0zsxxQfWuMZ97lG1GiEQ27Z82ArLYeFW2j4yJ8UzYQ52mMnCzMuCB7icqMIUt9Ncmcf6/oCqJEwLNKguJrPhVwytHl7w4gAH6OZB1UAiaPKNKCFN7wEhti1VRciCqL87ljES9T4N5VxdzWn+8QYDh/Pxh2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y7Nob2cvqQMgVv8m0k5at0xHQgEtfA40XCp8AXq2fMY=;
- b=clsEIBUb0e2NC0nAduvci/eVL3jCJGWoqZB0cYQXVjXzy3snA+dF4aoRyYS4xVGcm1p7J7YhUv/yvSTKPasWsB834LZVvTyYENG6HwHV+W1zSUKVx+xKWrYjxUCEpq9nDKDH6nJZksxLe/1UojbB4GEhE5xSIHxDq7+dMtGalbgP5HMKyrZmy+yaFXHyz+XT563k2Si/gAuZ0ZaktBItwk3VRgQnr1bsZiUvrseUIOdXJszAlasaUTtNV1reQ/3QHcshY4O5csf/YWM8HVqKhoGA9+QuY4gQvVVIvMu/zWn7Ev2hvadpHGogML/alP2OGSVI27oxLRVjhuqs7Tgs6A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DBAPR04MB7367.eurprd04.prod.outlook.com (2603:10a6:10:1aa::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.23; Fri, 27 Mar
- 2026 16:22:49 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9745.023; Fri, 27 Mar 2026
- 16:22:49 +0000
-Date: Fri, 27 Mar 2026 12:22:42 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] PCI: imx6: Don't remove MSI capability For
- i.MX7D/i.MX8M
-Message-ID: <acau0qZNUqEQmGKS@lizhi-Precision-Tower-5810>
-References: <20260319091823.446030-1-hongxing.zhu@nxp.com>
- <abwFVpxrriV7Bt2L@lizhi-Precision-Tower-5810>
- <AS8PR04MB883306406390FCB4106C3A978C57A@AS8PR04MB8833.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB883306406390FCB4106C3A978C57A@AS8PR04MB8833.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: SA0PR11CA0071.namprd11.prod.outlook.com
- (2603:10b6:806:d2::16) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9816A30CD82
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 16:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774628609; cv=none; b=ir674hHzCefAnQNJKYdmCSmmwkeMurqqwf1sMGqbr6J3PYmbUfc8HlEVl/LiBASnC9YqPOZf9CKj0CIWZeoLZZNq5OoIHWmQ4kts/IuHh+u4V3j7IshH0Ib0gqxBdWWmX2S7elyyooL3gHD552ajHyJT9cUw5v6z1kg9iXRlSZA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774628609; c=relaxed/simple;
+	bh=kM6h7buYmvPWe3WeN4m+xIms9TRX4kj6vu1ECi4LQ8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MIBWukQa6XkoyqQeCKuB5OwAMQW+PkbIPvbuiqP7tnawZjG4WfkTTZJ7cTRVouYH6xHTqKD7WExgWxMg4tZfwfJG+X1gifIKUEg3OyPt/lm4ROzlsGR/doIuKv6ct9tzllJtn14SW5PnXksK8QBBMhhxy8sSrE+lsKughyi33ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=dFlUZDKm; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4852afd42ceso17866445e9.2
+        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 09:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1774628606; x=1775233406; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Li+MhdhKR/VteHKksntf5bm/t2yJMb4kcBZQfykWGTU=;
+        b=dFlUZDKmBRY1fmnnK16YeViu7Zb+gj1Z2dR46ickp8ZY5iSqmX3bwV8lQYjpS9VOgR
+         sfUPMUTTholfEsJ7EBlVJxmlNFt3uATsJ5eBKD3/zXbnOpieY7oHjLooLdeaOK7Yc6P7
+         XvyR9Feg79e3c8dKcv9oVTwms8bUmOnMtThKvqHK0K9pf7Y+jU6nqCbt0Ut4Sy0yyOX8
+         bXDl6cvtKtJWxgrgTuqF2UbSYvem+jVADrqOLVQLipJX49kdXART1WIfJMiUeSnpvz9T
+         UZ4p7Xu1AUimd+GlMElEBn0NWHMv8UkSimpyCL+7gU9+C/gqRUKxYUEbd7Dh4Vt4AftS
+         VOcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774628606; x=1775233406;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Li+MhdhKR/VteHKksntf5bm/t2yJMb4kcBZQfykWGTU=;
+        b=PxK7L60CGZF9dukkYOvGnjjT2XLkUQY2Vp8pyPD+yNS2pNtsAYeC48Fu6Gq6maqPQ5
+         LWzRwYhCX7yS/8bDHkZDGNTbRGmRDUPplAxOKQ88NC/DU9fWc3EPRabuenydBElxwO9e
+         Zb8tEPeEc1nFQVuuAxo3FrOem/Zajcb+Pe9SCwXoqczgFptE/HeG5hZP0sO77R52KAjw
+         rcmfaGWwxLzyY6Jr82vDdkUtxuKjw5RWutwfxL5Y97DwI6rod0Yi321444zH7qc3qziO
+         jsbPWYuboU+sSEM0vpYqyDJmtlF3gaBV4+HExlgJ6HFuNEeiAyfxy5Av4BZiwk1rHUYs
+         NqDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKdCRAYehvWUjxs+JPccT/Erezf4q4dmluURKMO82HwklzIW4pUw6P2RVv+gbBOLm8hyXfgh8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3UpBW8u1XFUkdbGLTcFryVBmpxWdXFi0Ct8eL6KBDsBC2fPra
+	LUdz5aAPPbCq6bvzAEP194yLCAYUlWmbOIgExX/BuBlDdC2+/Km/OeNrJFt/MZeBd3k=
+X-Gm-Gg: ATEYQzw0W0yP9mUn7gh9vIho/Br/mWEt1ED22Fr4OCh5OSVnGl9CHUOAdz/ZbyiCrdH
+	ouh/zVKF/felguAD2Fe12Vf39EQhMd+QBeIuW/TCYCAhaTTr2v/9tmmGULCjsJT26zm5kgkv8xz
+	MxBbhljobfZIiqCpIs/kC1LkszsdVfIkdX4ClztAy3h0iWbVSmpLwL5OzujdEzN0SF5i9qM4OEG
+	ftiwaSaMYrXCAFkp0QilDHsccIML2Q+QKskBoj2SgWsnwoz1066RI1W7wgUUpX+dkAIIhEkiVUy
+	MhNtKoZEaN4vTknKymaAyTSauFT1sEZ3TY8z1Ua4AkboStQHetT5lhXgM9MNFeUkguBmQOmOwiR
+	ljvwLDeTwlLNSVibzgrQrViexdDQbpVaqWKBQhFUTPmblFHW1G/qcn+MsdRyw9lpVpYm+7gpN/a
+	tkIQok/4WbPv+XnNZtc7s2o18eozRCbSFnMwBAuCNU/uSmECBLU9RZkP1gxq3nF81eqkew1uA4r
+	BKQuJGzcFjeki7C7YHUBIpNgpI=
+X-Received: by 2002:a05:600c:a108:b0:485:4388:348b with SMTP id 5b1f17b1804b1-48727c81d77mr45901305e9.0.1774628605920;
+        Fri, 27 Mar 2026 09:23:25 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f2b4400023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2b:4400:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c7cec3sm97085725e9.6.2026.03.27.09.23.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 09:23:25 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: idryomov@gmail.com,
+	amarkuze@redhat.com,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ceph: only d_add() negative dentries when they are unhashed
+Date: Fri, 27 Mar 2026 17:23:08 +0100
+Message-ID: <20260327162308.1118621-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DBAPR04MB7367:EE_
-X-MS-Office365-Filtering-Correlation-Id: a48d8f03-20c5-4653-5b89-08de8c1d1638
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|366016|376014|7416014|1800799024|38350700014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	hKcF9hXmrjJkiT05o8hyXl7NFpWkG6Lm0hkUsKhCPJMnuIrWMRbGDUG9GwoAYGW9/SjgePqEb3pwrtLDM+bheQP/iquUD+uJggMfS1W0t31pGkwname+IpFu7hC745s9Ax68A7z37eVCsP6tp+3UOgtpxL0xWEAu7D2sFHaPvP6mQw+kyjTWPhdifaV89CL4AmnfUZDCQ0NHKARm3IiYcgwfKtk99fnoNirMU49UY7DmC3/0KK5yc3emzBJQfJwEZWKqVnNMx0/KvpYrEwzQepO+gK+D1Fz4Rw4f75HBekzvwIqt/FH0oUHkU5ZVwkpx6wdntRVim6KVXWFAD/RYKHBHwxLtc5f9uLCQvdH3+KQNCA72bNs6XhhFtZIUYB/1ftwGkdcS+fu+xGiJqcK10v3w4G1PcCvLy61G1Cmuwnf+iVwLkY87Z0JKrLIfeiXr4yxY5+Hef2s3az0P3dLuK+qXN2wBqtzquQP2UyUHunayMCqK7zEIvfvkrOOu/cKGGdNQkUDy6MVys3VCAyOf4I6Dc3LiwFrejSBUW4W0IzpEAwDLYQo7QgfkFgLO1XIAJzUANZfBZHOy10AUvR1eJYVn/L8+TaieqAg6JZR7aVO7Bg5hSPM7Ztp6y3qiZMltDgivuG+llP644hBDzOKFThBmyX67cofy6wAtkcuNGbFDiub/QGoANvemSzoO5tWKorGact392RZCsqc2ADCoKGjIzz4SDgKSr2qSY1izAnwSDLjYEURemv0BXQiQNrpRACMeisvhJYBP6Mjf+6608HN10lqRiBXMW9rJziULQCc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(366016)(376014)(7416014)(1800799024)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3RkbXp6SGp2VllqSmJmQmZ3UUh5c0lUVkUvbGgrdGtBcnlIQ3hHS25jaGlk?=
- =?utf-8?B?Ulo4SUJzTlhrL3lkbzFLZmVOTGNVckRYTktYS0ZJYUtxemFsbERXUERHYjhy?=
- =?utf-8?B?RXFraWdMSGdyR1gxT1VKaE1FUU8xUnV5Y3dsZzNsOU9jR1cxSWxTL1pJSjY3?=
- =?utf-8?B?emN5UktveVJHd3dRczdXMTc1eHE5d0c3cEdvZWduMnFHZ1YyYVFrcTdIdVJB?=
- =?utf-8?B?U0ZWbW1oaktwMmpFakU4SHBwTWtxZEcydnNsVTFvL2ZjUzlPNkVhWGw0QUt4?=
- =?utf-8?B?Z1U0Wk53cndPMFh2U1JNd0daZDN5dVA3dHVkbUd2a1JmdTlma2FlVDNBb2xq?=
- =?utf-8?B?MHF0b2FjazJQZ1o0S2JuUlZrMGw0clF2QUsxbjhHU0MrMFdwRFVDKzlJMWd5?=
- =?utf-8?B?dGZPUjlvRlhtWk1maWtuTyt3SjBzV0VXYmVXWDZpTndqU2FEc1NMTXJrOFZY?=
- =?utf-8?B?dlRlaUswZHJwREtoS3NxUWhPVGVQRzhhZEg5RExRYXRuMkx1eVZQdUx6ZEU0?=
- =?utf-8?B?Y2tXcnFtK1RZeVdIeWhlYmxPUUhtY2M3TXl4UDRhVlIxQ0hTekJZdFhVRlc0?=
- =?utf-8?B?dCszcDg5dS9UM0V4K0NCbTlLRG9wZ2VUM3hhd2VuTjFHNTNSQlVkSUNGbHNk?=
- =?utf-8?B?Snh6c1R5K3kyeGc3bUI3R1lvT1RKZDg1ZEhGbXg5emZna0JwL0cyWGpEWkFn?=
- =?utf-8?B?SWpJSWhZNkM3ZnNidnA1bHNJd2YyeUhZeXJYY2FnejJJazBNZjVNYmJJOXhQ?=
- =?utf-8?B?UkpRS2IvakRkU2swUkRNekovVUN3Tm80V1RGaEhzRmFlRCtBNURVVWg4eElR?=
- =?utf-8?B?bXpkVGxoRCs0a0NZeGRkSC9NZ1BaYVBkcFVLMGdscS92VlJoaWM1ak94dGhO?=
- =?utf-8?B?RDlQenVLeStrM3dvUlpjQ09TK1dsYitvZksxT092NWtySWZIb3UzUi9oVnRG?=
- =?utf-8?B?L3lVc2dtVGx1NWdvem5ObFg2cTVlODM2R0FrNmFOT3FZZHBxQjlOZ2s3N09U?=
- =?utf-8?B?YVFYSDRHSnVRMG9iZmxjYXBzZ2xkdkxTYmpyL3Z4a0ZrTjJ4WnRhd1kyTzFS?=
- =?utf-8?B?QUF5ZDRDRWJZbmw2bnpOa29TMHdkSXRFZStrRFFYNEVkeWlxeDZ5VVdsNFJT?=
- =?utf-8?B?VDFBQ21MUTlHUG1JODVzZzdSV0o2aVR4cGM1TllJZFRld0xwU3Q5WEdvc3Vp?=
- =?utf-8?B?dzdodXdUSWpXYUFheGV2cXM5SUlkZG96TVlwZTNpZk9sR1B6UGhBViswTDVw?=
- =?utf-8?B?VzBkU0pYaVQwWlJCYW9UOE9RRmUxVGt0dkwzb2ZHN2JFK3RrNW01YUtrbEJ6?=
- =?utf-8?B?dUYwcVRucFB6U1RER2Niei9mbHFYYlBNQlh3a3RXYVpJYVh4aVdyQWRHMkhU?=
- =?utf-8?B?VWRqK1NyVGRZSHAxemJKU0JYYmtvenp3YUowYmp2VFlJeHEvblpTaDRYQ29T?=
- =?utf-8?B?K1RrZExYWURXcFk1SlVhbUwvYnpsbTJMQ1hjWFJzQnhmcFJHbDk0WENPWjZw?=
- =?utf-8?B?Y2hkdmR2aXhDTXVYVFY5YWFzaEJYYUhEbXN4WlZZR3dQbVR4ekhFTy9yWmND?=
- =?utf-8?B?SWd0eVgxRGNGbmtQeEdQTVlIMFBLVlF6M3FEeUE5REorNDE4KytMUUhuQlNh?=
- =?utf-8?B?dHp2K0UxVm02SkxnaVFjbzdTRTdpditOcWY2OEx4TjBiUE5QUW1NcUoxT09k?=
- =?utf-8?B?dVp6VnVmeTNuWFpDbGI0Q1kxQThPTFZmMFJKSjU4YTNUT0pXVXAydVBuRmpZ?=
- =?utf-8?B?VlV5MmhmdVRWMHZhWkVGNUZSWWpsdjhVaUZhZ0VoZlEvZFJtWDZhL2w0bHoz?=
- =?utf-8?B?VmhiN1J5WG1UWXVpOVhuajlTTW4rQU5vbWE3UmlQV09hY09NbG5CTE5Cd29J?=
- =?utf-8?B?S241UXYrU0xUOHhYN0VPVUczR1R5M3FmY2NqUW5MMkJ0SXl5ZTIyckVQUHNY?=
- =?utf-8?B?MUFjMldwc1BPVFpGeTV2VjJ1RjAxNnN3NGdPZWVjRCtZOEZNbHpFN1RxZmNv?=
- =?utf-8?B?Y3lQU1JUWkVkYjBkekx2T3E2TU1BTHcrZXNhY0QvWU9XN0QvN2FMa1hrRjAx?=
- =?utf-8?B?bmdjbXlTYkRCQjFBVm1EaUtzdDdNTVJ2Qll1TkVUNGx1UEFteVhQMmJqZExp?=
- =?utf-8?B?dGlabEJPMGNaUUlsdnF4TzNycVE2d01DL0ErZzlpMUZqZzZhS1V5eGZ1OWFU?=
- =?utf-8?B?YjhUR2hTMGhrazJ5NEdtcFNzTzV0MWV4NmRrU1R1SHN4WXMxQkphRDZqSS9I?=
- =?utf-8?B?ZVFJYmlDdmZQRWc0ZEQ5NlkzTXZxbHVqaGJORVBUNkRpOFZuWHA3ZGZiMCtl?=
- =?utf-8?Q?QMs/ua5+wFvih+6jft?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a48d8f03-20c5-4653-5b89-08de8c1d1638
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 16:22:48.9553
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IlUI5orc2QLtoq5s0l0LKTgz9lrme/rJ0cr40HirU7EFEhMsS0/NkZVNDl6HeENsMms+ZjlJYKa074RnOR3Csg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7367
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ionos.com,reject];
+	R_DKIM_ALLOW(-0.20)[ionos.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230685-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[pengutronix.de,kernel.org,google.com,gmail.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230686-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[ionos.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[max.kellermann@ionos.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[nxp.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:dkim,nxp.com:email,infradead.org:email,linux.dev:email,pengutronix.de:email]
-X-Rspamd-Queue-Id: 9FC67347793
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ionos.com:dkim,ionos.com:email,ionos.com:mid]
+X-Rspamd-Queue-Id: DF386347A41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 08:12:29AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Frank Li <frank.li@nxp.com>
-> > Sent: 2026年3月19日 22:17
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: l.stach@pengutronix.de; lpieralisi@kernel.org; kwilczynski@kernel.org;
-> > mani@kernel.org; robh@kernel.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH v2] PCI: imx6: Don't remove MSI capability For
-> > i.MX7D/i.MX8M
-> >
-> > On Thu, Mar 19, 2026 at 05:18:23PM +0800, Richard Zhu wrote:
-> > > The MSI trigger mechanism for endpoint devices connected to i.MX7D,
-> > > i.MX8MM, and i.MX8MQ PCIe root complex ports depends on the MSI
-> > > capability register settings in the root complex. Removing the MSI
-> > > capability breaks MSI functionality for these endpoints.
-> > >
-> > > Preserve the MSI capability for i.MX7D/i.MX8M PCIe root complex to
-> > > maintain MSI functionality.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root
-> > > Port if iMSI-RX is used as MSI controller")
-> >
-> > I think it'd better add another varible to check in f5cd8a929c825 if
-> > (pp->has_msi_ctrl && !pp->xxx_broken) or direct use IP version, which
-> > already auto detected.
-> >
-> > Previous patch have not consider this old version controller.
-> Hi Frank:
-> From what I've observed, this behavior seems tied to the specific controller
-> design. For example, neither the i.MX6Q nor the i.MX6SX exhibit this issue.
+Ceph can call d_add(dentry, NULL) on a negative dentry that is already
+present in the primary dcache hash.
 
-Yes, should rename has_msi_ctrl -> disable_msi_ctrl. Set it according to
-difference condition, such as has_msi_ctrl or skip it for problem platform
-such as i.MX8MM and i.MX8MQ.
+In the current VFS that is not safe.  d_add() goes through __d_add()
+to __d_rehash(), which unconditionally reinserts dentry->d_hash into
+the hlist_bl bucket.  If the dentry is already hashed, reinserting the
+same node can corrupt the bucket, including creating a self-loop.
+Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
+typically looping only on the d_name.hash mismatch check and
+eventually triggering RCU stall reports like this one:
 
-Disable it and overwrite later will cause confuse.
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
+ rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
+ CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
+ Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
+ RIP: 0010:__d_lookup+0x46/0xb0
+ Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
+ RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
+ RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
+ RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
+ RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
+ R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
+ R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
+ FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  lookup_fast+0x9f/0x100
+  walk_component+0x1f/0x150
+  link_path_walk+0x20e/0x3d0
+  path_lookupat+0x68/0x180
+  filename_lookup+0xdc/0x1e0
+  vfs_statx+0x6c/0x140
+  vfs_fstatat+0x67/0xa0
+  __do_sys_newfstatat+0x24/0x60
+  do_syscall_64+0x6a/0x230
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
->
-> The intention of commit f5cd8a929c825 is to remove the MSI capability from the
-> Root Complex (RC). From the author's perspective, this change should not
-> affect the  Endpoint's (EP) MSI functionality.
+This is reachable with reused cached negative dentries.  A Ceph lookup
+or atomic_open can be handed a negative dentry that is already hashed,
+and fs/ceph/dir.c then hits one of two paths that incorrectly assume
+"negative" also means "unhashed":
 
-Yes, your patch fix  RC  mode?
+  - ceph_finish_lookup():
+      MDS reply is -ENOENT with no trace
+      -> d_add(dentry, NULL)
 
-Frank
->
-> I'm not sure do this check (pp->has_msi_ctrl && !pp->msi_broken) is proper or not.
-> Best Regards
-> Richard Zhu
-> > >
+  - ceph_lookup():
+      local ENOENT fast path for a complete directory with shared caps
+      -> d_add(dentry, NULL)
+
+Both paths can therefore re-add an already-hashed negative dentry.
+
+Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
+calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
+is true.
+
+Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
+negative dentry when it is actually unhashed.  If the negative dentry
+is already hashed, leave it in place and reuse it as-is.
+
+This preserves the existing behavior for unhashed dentries while
+avoiding d_hash list corruption for reused hashed negatives.
+
+Fixes: 2817b000b02c ("ceph: directory operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/ceph/dir.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
+index bac9cfb6b982..27ce9e55e947 100644
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -769,7 +769,8 @@ struct dentry *ceph_finish_lookup(struct ceph_mds_request *req,
+ 				d_drop(dentry);
+ 				err = -ENOENT;
+ 			} else {
+-				d_add(dentry, NULL);
++				if (d_unhashed(dentry))
++					d_add(dentry, NULL);
+ 			}
+ 		}
+ 	}
+@@ -840,7 +841,8 @@ static struct dentry *ceph_lookup(struct inode *dir, struct dentry *dentry,
+ 			spin_unlock(&ci->i_ceph_lock);
+ 			doutc(cl, " dir %llx.%llx complete, -ENOENT\n",
+ 			      ceph_vinop(dir));
+-			d_add(dentry, NULL);
++			if (d_unhashed(dentry))
++				d_add(dentry, NULL);
+ 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
+ 			return NULL;
+ 		}
+-- 
+2.47.3
+
 
