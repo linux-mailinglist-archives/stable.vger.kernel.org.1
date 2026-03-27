@@ -1,62 +1,69 @@
-Return-Path: <stable+bounces-230565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAEYKdDbxWneCQUAu9opvQ
-	(envelope-from <stable+bounces-230565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:22:24 +0100
+	id WOdfKZbkxWkeCwUAu9opvQ
+	(envelope-from <stable+bounces-230567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:59:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DE633DCBE
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:22:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1EA33E0A6
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3D9830374BF
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:22:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 677713089788
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816A22C375A;
-	Fri, 27 Mar 2026 01:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF39B311C07;
+	Fri, 27 Mar 2026 01:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imXgyYWA"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="3XiAAVNA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443B84F881;
-	Fri, 27 Mar 2026 01:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F362226F46F;
+	Fri, 27 Mar 2026 01:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774574539; cv=none; b=YzMdtCxUr5v2ngDSFDOL0MoQflswPBYHEcQvHKfW/eNj/JRUkB8DVAquO8y9Kjjt4kVElVqqsUeUHH8YufZ0mwQKBPHzJmiauS9BsdrEWww3HgVjddiWw1oEhZz7LDqOKaGAPM25u52UsWqm9N9S6GMpW4l8tumzTS6v0PfoQ7w=
+	t=1774576488; cv=none; b=S67Gx7A4LSNQbpBTh9o/WzDjB04XbAzBYZv9ffj4ho6QNy9PwWkCB5VSG+2sH5xqJlfZ2V0ECv1ZGXNGu6FAQzH3StK9bGWm0G60xwWda/vBprVwTk6nYFqm6eqsqN0mOfqP73Gz5NHfvjKycsio+ZG7/Wp3ujhVtgo7zK3Ya3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774574539; c=relaxed/simple;
-	bh=ptJUWvPNGK94YQ89lMNnnFafMWg0AR2vxZSfEMXpOEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFzwcMOb+Fr+gq+ivuSuuqG2GCZIcmr3H+d8qQbzA8h1wctKdOxPjabMkD8e6WUvsAuQSGuRoLeGPLS5eLwTPlFCHbwzRQPQrP3F8WU8QPBrlxHy5FapDOkpt7qknNEM6zDs6XRcZtaJK0FBvFiUiTuSHohhJx0PC7EoM8dB7u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imXgyYWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26E8C116C6;
-	Fri, 27 Mar 2026 01:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774574538;
-	bh=ptJUWvPNGK94YQ89lMNnnFafMWg0AR2vxZSfEMXpOEk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imXgyYWAGdQqTNjfLLfY4Sl3qrRvkUWanFtm6ASO9QlyWBBVezX0L4R24t6kFmFGf
-	 dbsByDHFA6Vn6zEHEce4qDI62K8Y+KFHA/I5RmgfRf7b9go/yD2tx9cJsrTADYMW5Q
-	 R/5BFPqFfV+qxERxs/K/qqtzgH9KOlJcpQhJ9xaTP5SWf1Z49bM45U4ANY7WEunKZq
-	 7JJ/1jLFIR/a8YWRRicXhTVKFyyf2wj8N3/+0IpXTox8iBQDOc43+1SAGzbrvXlgX6
-	 MxwvubmeQl7eAK6ygDUO6fWO0E/g/I6yTXLCMQQYYBD9ZZQsuFddeeApf5QXo4yYXU
-	 c4Rg73WDrzmmw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
+	s=arc-20240116; t=1774576488; c=relaxed/simple;
+	bh=ZqV+tRZXIY15nG5MUbhJ9kF9CsPGNZz/KgeQrtcorBM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X1JDEM+VAina4i8QEjVgWjgWsUVQQdhpmky4dtriaLIg6vW00VTq9JyrXjWUy8PG5gZF5MAkea9RZ5MtmlhWjEpLvMtjXZG4nIwoPVnznW58hdCKxKu0HK8U2S8PUzS94KDpMljZb4aZbZd15al5Nw4VdsYIaVLAcItwuc+ooAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=3XiAAVNA; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=3XiAAVNADMJx0bKCLvOhGJSLsN2KhUSC6/qZT8qw6WVoLhOfCHMvqmzULics/bX4caTmO46HAaI95
+	 LmAusC7XR8Eq2YVdAFGXv+V8J0A/uGkqq3EkXDwW0hlNyWNkKzP54zHy7eeW4AvWruk88+UDBWb+RT
+	 4itDxmadmy/WDbXU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-04-12082 (RichMail) with SMTP id 2f3269c5e29809b-010b3;
+	Fri, 27 Mar 2026 09:51:22 +0800 (CST)
+X-RM-TRANSID:2f3269c5e29809b-010b3
+From: Rajani Kantha <681739313@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	vladimir.oltean@nxp.com
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
-Date: Thu, 26 Mar 2026 18:22:16 -0700
-Message-ID: <20260327012217.66272-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260327011747.66127-1-sj@kernel.org>
-References: 
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	rmk+kernel@armlinux.org.uk
+Subject: [PATCH 6.1.y 1/3] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
+Date: Fri, 27 Mar 2026 09:51:20 +0800
+Message-Id: <20260327015120.1712759-1-681739313@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,106 +71,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230565-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[139.com];
+	TAGGED_FROM(0.00)[bounces-230567-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,google.com,kernel.org,redhat.com];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 22DE633DCBE
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	NEURAL_HAM(-0.00)[-0.974];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,139.com:mid,armlinux.org.uk:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
+X-Rspamd-Queue-Id: 0A1EA33E0A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-TL; DR: nice finding but orthogonal to this patch.
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-On Thu, 26 Mar 2026 18:17:47 -0700 SeongJae Park <sj@kernel.org> wrote:
+[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260327003224.55752-1-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit aba7f94d0accfda5ab9b573157f691de9e9acf00
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
-> 
-> This commit attempts to fix a memory leak where repeat_call_control is
-> not deallocated if damon_call() fails because the kdamond stopped before
-> the invocation. It adds a check to free repeat_call_control when
-> damon_call() returns an error.
-> 
-> Link: https://lore.kernel.org/20260320020630.962-1-sj@kernel.org
-> 
-> > diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> > index 6a44a2f3d8fc..eefa959aa30a 100644
-> > --- a/mm/damon/sysfs.c
-> > +++ b/mm/damon/sysfs.c
-> > @@ -1670,7 +1670,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
-> >  	repeat_call_control->data = kdamond;
-> >  	repeat_call_control->repeat = true;
-> >  	repeat_call_control->dealloc_on_cancel = true;
-> > -	damon_call(ctx, repeat_call_control);
-> > +	if (damon_call(ctx, repeat_call_control))
-> > +		kfree(repeat_call_control);
-> 
-> Does this fully resolve the leak of repeat_call_control?
-> 
-> If a sysfs writer thread calls damon_call() during kdamond shutdown,
-> after the worker thread in kdamond_fn() flushes pending controls but
-> before it sets ctx->kdamond = NULL:
-> 
-> kdamond_fn()
->    kdamond_call(ctx, true);
->    ...
->    // Before ctx->kdamond = NULL
-> 
-> Would damon_call() add the new request to ctx->call_controls and return 0
-> since ctx->kdamond is not yet NULL and repeat is true?
-> 
-> If so, does this leave repeat_call_control in the queue and leaked since
-> the worker is already exiting and this check is bypassed?
-> 
-> Could this same window also cause a deadlock for synchronous commands like
-> DAMON_SYSFS_CMD_UPDATE_SCHEMES_STATS?
-> 
-> If a synchronous command with repeat = false is added to the queue during
-> this same window, would the caller hang indefinitely on
-> wait_for_completion() since the worker thread will never process the queue
-> again?
+In an upcoming change, mdio_bus_phy_may_suspend() will need to
+distinguish a phylib-based PHY client from a phylink PHY client.
+For that, it will need to compare the phydev->phy_link_change() function
+pointer with the eponymous phy_link_change() provided by phylib.
 
-Nice catch, but orthogonal to this patch.
+To avoid forward function declarations, the default PHY link state
+change method should be moved upwards. There is no functional change
+associated with this patch, it is only to reduce the noise from a real
+bug fix.
 
-I'm working on fixing the race with a separate patch:
-https://lore.kernel.org/20260327004952.58266-1-sj@kernel.org
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Minor context change fixed ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ drivers/net/phy/phy_device.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-The patch would fix the two issues at once.
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 11839dca8f56..7d19857a6dc4 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -234,6 +234,19 @@ static struct phy_driver genphy_driver;
+ static LIST_HEAD(phy_fixup_list);
+ static DEFINE_MUTEX(phy_fixup_lock);
+ 
++static void phy_link_change(struct phy_device *phydev, bool up)
++{
++	struct net_device *netdev = phydev->attached_dev;
++
++	if (up)
++		netif_carrier_on(netdev);
++	else
++		netif_carrier_off(netdev);
++	phydev->adjust_link(netdev);
++	if (phydev->mii_ts && phydev->mii_ts->link_state)
++		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
++}
++
+ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+ {
+ 	struct device_driver *drv = phydev->mdio.dev.driver;
+@@ -1036,19 +1049,6 @@ struct phy_device *phy_find_first(struct mii_bus *bus)
+ }
+ EXPORT_SYMBOL(phy_find_first);
+ 
+-static void phy_link_change(struct phy_device *phydev, bool up)
+-{
+-	struct net_device *netdev = phydev->attached_dev;
+-
+-	if (up)
+-		netif_carrier_on(netdev);
+-	else
+-		netif_carrier_off(netdev);
+-	phydev->adjust_link(netdev);
+-	if (phydev->mii_ts && phydev->mii_ts->link_state)
+-		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
+-}
+-
+ /**
+  * phy_prepare_link - prepares the PHY layer to monitor link status
+  * @phydev: target phy_device struct
+-- 
+2.34.1
 
-Nonetheless, the seaprate patch was motivated for only the deadlock issue.
-Finding of the leak possibility is a good call.
 
-
-Thanks,
-SJ
-
-[...]
 
