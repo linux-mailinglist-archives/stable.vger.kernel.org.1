@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-230627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +L1BOhdjxmm+JAUAu9opvQ
-	(envelope-from <stable+bounces-230627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:59:35 +0100
+	id MFSpBCZjxmm+JAUAu9opvQ
+	(envelope-from <stable+bounces-230628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:59:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD94342FF2
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:59:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1401534300F
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 337A230F4450
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:43:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF6423047293
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989F53DD539;
-	Fri, 27 Mar 2026 10:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E243DD52B;
+	Fri, 27 Mar 2026 10:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6gHhpXw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQPa98aY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C0C346A08;
-	Fri, 27 Mar 2026 10:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0B03CB2EF;
+	Fri, 27 Mar 2026 10:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774608197; cv=none; b=b/XDl/9hRAXu1q53j+jp0MfdQaUIC5avvGvH+Igw5Kt8a3jOitehig2b4oqFUJ/AdUgZ4KZg1qecjr4/XKfH5KlirCZnzB08fyJJlkGcilgtsCZxByRyMDaHtdrFR6cSnoRgbB/6HUZXS2oRjVe+JdM6AdK+5xinNufjL7n6KEo=
+	t=1774608271; cv=none; b=JrJeA8ttJWHLCNKf8LWA0RNV3c1bgOs1aw92ezQ611nr/l8XaB0DS/3ZyBvZKyQg0pIMMz/qRSOIrPMmOe1GW82d67zoWByk2rQd/9gCumDJTOkuVrUyCkkLq+6hGGiB26CxNOYSY/oB9TnTx/f7tLEd7x73E/B5NptptFRyhqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774608197; c=relaxed/simple;
-	bh=P+b/76Q5D8tsdfUser9wn1Tp9CUID1FpPhgoB3vBf+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DudaJBjpt6qhiTVefH90WKwdvE38nEYEQ8J5d3ZWbpWl8gp6w6+LdrS/DS/zx3YUR2GukA1fibpnKxMDLUdNQgTewG0KA/JVMCW7a5eDeIwXYtjSzDnW1/e22vHsLFU4TvU9FAOZdvi4bvlcS3kJ51uLN3FOTuXpVysMrBQ1KFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6gHhpXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36816C2BC9E;
-	Fri, 27 Mar 2026 10:43:17 +0000 (UTC)
+	s=arc-20240116; t=1774608271; c=relaxed/simple;
+	bh=ABG0CSIH876atnwjG/bMJyj5tgP2Y1cXgkDnMZe6CTo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L709n8JxgFPhn4l8Lei6j5Lypvmfbbv9MLF6a6huI4CMj7HsHg5qBXHjSFrEoArc+PsEzDFAAkOvBRf9RMYiqSGNJd/6VTKYEkqIOmFLR1PU+GH1P+vMdCwwdyPYka6NtRVrXJnzjklJMGCtfKemq/yLXVzjTDGjygbq5HAtKrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQPa98aY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8040C19423;
+	Fri, 27 Mar 2026 10:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774608197;
-	bh=P+b/76Q5D8tsdfUser9wn1Tp9CUID1FpPhgoB3vBf+4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6gHhpXw0ojhHKTb/cqpZmmwNF0wBYbuoAJI/wDPFobq+BXzKd36JC0CbESFeVOxP
-	 qxz90DR1CrWfaxV/u0YcekHEgxKCjFWJ5u898ef+rBabbGzM0MIUUBhj2/5ki1RPQJ
-	 cajf69iViWkKQgNTyPOhhDmhdx6mLivlTfcJs9NbSHQOT7OJeNARW8JKZh9wV0iUqj
-	 T/whun5mzP/4L2nq3szNCGR+PMmxdwu+oZkoZyEuAtYpRLMzTRqzMqiLc0NHbf4PB2
-	 lLY38lR2fs5e95ynRFbxCzDNiYbjhMin+IibbmgkQdl3uGc4XN0JUY0acWJqIVFyv0
-	 VgrbvzFDLHxjw==
+	s=k20201202; t=1774608270;
+	bh=ABG0CSIH876atnwjG/bMJyj5tgP2Y1cXgkDnMZe6CTo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AQPa98aYFXl1baRQfvEcgwBx29S8DOvo0FY1ZytboPnCjplJxXTa1nAr8BVebuOAr
+	 zZ9ZD1wwt1qQDWbVnpCcArchYezz3Mnh8pnLPWRlHXuine7MCNXtdHHsjkaDjb5/sB
+	 ZUKvDuL3rfZjRuvQh6nPnlZz24GlTeeIUs9Qy+Ow93fty0FsDdg6XhH4YwVmjfpHhy
+	 imeHSxeoFG5k1p17tlN7P8byAlpPCOMPs7BciHOA9MiPaZ6Cir/NqO5dhYJhyOtGag
+	 PIYkwfHI6y0kMGRMG8qgLn4YRSxV1or0HB137D8maYNnI/90fUO0tgoIiiFXoagX5m
+	 tUqACEb9OyLjw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w64eo-00000005Um8-3ePF;
-	Fri, 27 Mar 2026 11:43:14 +0100
+	id 1w64g0-00000005UoM-2ObN;
+	Fri, 27 Mar 2026 11:44:28 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Johannes Thumshirn <jth@kernel.org>,
-	linux-spi@vger.kernel.org,
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] spi: ch341: fix devres lifetime
-Date: Fri, 27 Mar 2026 11:43:05 +0100
-Message-ID: <20260327104305.1309915-3-johan@kernel.org>
+Subject: [PATCH] media: cx231xx: fix devres lifetime
+Date: Fri, 27 Mar 2026 11:43:55 +0100
+Message-ID: <20260327104355.1310012-1-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260327104305.1309915-1-johan@kernel.org>
-References: <20260327104305.1309915-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,13 +69,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230627-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230628-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
@@ -92,10 +88,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9BD94342FF2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1401534300F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,52 +101,71 @@ device. This avoids issues like memory leaks when drivers are unbound
 without their devices being physically disconnected (e.g. on probe
 deferral or configuration changes).
 
-Fix the controller and driver data lifetime so that they are released
-on driver unbind.
+Fix the driver state lifetime so that it is released on driver unbind.
 
-Note that this also makes sure that the SPI controller is placed
-correctly under the USB interface in the device tree.
-
-Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
-Cc: stable@vger.kernel.org	# 6.11
-Cc: Johannes Thumshirn <jth@kernel.org>
+Fixes: 184a82784d50 ("[media] cx231xx: use devm_ functions to allocate memory")
+Cc: stable@vger.kernel.org	# 3.17
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-ch341.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-cards.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
-index ea92ba986201..0e71a32900b3 100644
---- a/drivers/spi/spi-ch341.c
-+++ b/drivers/spi/spi-ch341.c
-@@ -152,7 +152,7 @@ static int ch341_probe(struct usb_interface *intf,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/media/usb/cx231xx/cx231xx-cards.c b/drivers/media/usb/cx231xx/cx231xx-cards.c
+index b75535d6abaf..69b24205bc56 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-cards.c
++++ b/drivers/media/usb/cx231xx/cx231xx-cards.c
+@@ -1573,7 +1573,8 @@ static int cx231xx_init_v4l2(struct cx231xx *dev,
+ 		 dev->video_mode.end_point_addr,
+ 		 dev->video_mode.num_alt);
  
--	ctrl = devm_spi_alloc_host(&udev->dev, sizeof(struct ch341_spi_dev));
-+	ctrl = devm_spi_alloc_host(&intf->dev, sizeof(struct ch341_spi_dev));
- 	if (!ctrl)
+-	dev->video_mode.alt_max_pkt_size = devm_kmalloc_array(&udev->dev, 32, dev->video_mode.num_alt, GFP_KERNEL);
++	dev->video_mode.alt_max_pkt_size = devm_kmalloc_array(&interface->dev, 32,
++							      dev->video_mode.num_alt, GFP_KERNEL);
+ 	if (dev->video_mode.alt_max_pkt_size == NULL)
  		return -ENOMEM;
  
-@@ -163,7 +163,7 @@ static int ch341_probe(struct usb_interface *intf,
- 	ch341->read_pipe = usb_rcvbulkpipe(udev, usb_endpoint_num(in));
+@@ -1614,7 +1615,8 @@ static int cx231xx_init_v4l2(struct cx231xx *dev,
+ 		 dev->vbi_mode.num_alt);
  
- 	ch341->rx_len = usb_endpoint_maxp(in);
--	ch341->rx_buf = devm_kzalloc(&udev->dev, ch341->rx_len, GFP_KERNEL);
-+	ch341->rx_buf = devm_kzalloc(&intf->dev, ch341->rx_len, GFP_KERNEL);
- 	if (!ch341->rx_buf)
+ 	/* compute alternate max packet sizes for vbi */
+-	dev->vbi_mode.alt_max_pkt_size = devm_kmalloc_array(&udev->dev, 32, dev->vbi_mode.num_alt, GFP_KERNEL);
++	dev->vbi_mode.alt_max_pkt_size = devm_kmalloc_array(&interface->dev, 32,
++							    dev->vbi_mode.num_alt, GFP_KERNEL);
+ 	if (dev->vbi_mode.alt_max_pkt_size == NULL)
  		return -ENOMEM;
  
-@@ -171,8 +171,7 @@ static int ch341_probe(struct usb_interface *intf,
- 	if (!ch341->rx_urb)
+@@ -1656,7 +1658,9 @@ static int cx231xx_init_v4l2(struct cx231xx *dev,
+ 		 "sliced CC EndPoint Addr 0x%x, Alternate settings: %i\n",
+ 		 dev->sliced_cc_mode.end_point_addr,
+ 		 dev->sliced_cc_mode.num_alt);
+-	dev->sliced_cc_mode.alt_max_pkt_size = devm_kmalloc_array(&udev->dev, 32, dev->sliced_cc_mode.num_alt, GFP_KERNEL);
++	dev->sliced_cc_mode.alt_max_pkt_size = devm_kmalloc_array(&interface->dev, 32,
++								  dev->sliced_cc_mode.num_alt,
++								  GFP_KERNEL);
+ 	if (dev->sliced_cc_mode.alt_max_pkt_size == NULL)
  		return -ENOMEM;
  
--	ch341->tx_buf =
--		devm_kzalloc(&udev->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
-+	ch341->tx_buf = devm_kzalloc(&intf->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
- 	if (!ch341->tx_buf) {
- 		ret = -ENOMEM;
- 		goto err_free_urb;
+@@ -1720,7 +1724,7 @@ static int cx231xx_usb_probe(struct usb_interface *interface,
+ 	udev = interface_to_usbdev(interface);
+ 
+ 	/* allocate memory for our device state and initialize it */
+-	dev = devm_kzalloc(&udev->dev, sizeof(*dev), GFP_KERNEL);
++	dev = devm_kzalloc(&interface->dev, sizeof(*dev), GFP_KERNEL);
+ 	if (dev == NULL) {
+ 		retval = -ENOMEM;
+ 		goto err_if;
+@@ -1850,7 +1854,9 @@ static int cx231xx_usb_probe(struct usb_interface *interface,
+ 			 dev->ts1_mode.end_point_addr,
+ 			 dev->ts1_mode.num_alt);
+ 
+-		dev->ts1_mode.alt_max_pkt_size = devm_kmalloc_array(&udev->dev, 32, dev->ts1_mode.num_alt, GFP_KERNEL);
++		dev->ts1_mode.alt_max_pkt_size = devm_kmalloc_array(&interface->dev, 32,
++								    dev->ts1_mode.num_alt,
++								    GFP_KERNEL);
+ 		if (dev->ts1_mode.alt_max_pkt_size == NULL) {
+ 			retval = -ENOMEM;
+ 			goto err_video_alt;
 -- 
 2.52.0
 
