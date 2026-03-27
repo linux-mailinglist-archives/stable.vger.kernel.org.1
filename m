@@ -1,406 +1,241 @@
-Return-Path: <stable+bounces-230678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JmAAPCgxmnrMQUAu9opvQ
-	(envelope-from <stable+bounces-230678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:23:28 +0100
+	id qFwzCXGixmnrMQUAu9opvQ
+	(envelope-from <stable+bounces-230679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:29:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7210F346A89
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:23:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0A2346C17
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C9B63082CCA
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:21:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1F3F3041BFC
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 15:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE94232E121;
-	Fri, 27 Mar 2026 15:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D97B3016E0;
+	Fri, 27 Mar 2026 15:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="LuDwOLTg"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Eyu64sUS"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268802DC764;
-	Fri, 27 Mar 2026 15:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774624911; cv=pass; b=ZtUrZBFB3n86Kq3dhCH0+mgr2+mKPx3E4pemLUehJFWi4bmuc3Hij/ZKV+FtirYAvEJ0o1JGGz8zCbmWywP0WFHwQe6QTnaIXqEMGN3oAm+WrJ87soJlGFvqYuhIuU66xuhE0pt3Sch9NMeQiKNe8wKL802pXFjJZ7KFYFZFjhY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774624911; c=relaxed/simple;
-	bh=YgrZg5XAjkLH5f5sVu2AoSl1cCMFK/jzqOnUWwiA5vk=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=kGBXXRpH2g0VyC6jLxCLB9j+X9jn2hyozOxHLz3Q8hmIpSozsO+7k6Ca30E/Z3p9M5AHPAXe+JVNhdyDIXfZ1YgbmrKUnASn+UHrGVuYSGBL2eJKZs1EVMHo1GBgpniImxwD6NWiftCBDfDyOqgf13hGRe33T8W3hc2RgW49Jw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=LuDwOLTg; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
-ARC-Seal: i=1; a=rsa-sha256; t=1774624897; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MDbq14TNDDoD8tniAMHxafY6e3kNLVc0/vjC26pPryOWs+XZwlpCqE4Ro+GJWe70yMLZEqqqzdNE1b97y7MgLBk/ysXvGpx4vWW5lDvfACHSPmYFTYWoERju+b82k+0ZZxEvnOp4z1ib+Cu6IKE0S/9qFp3Wo9R95C1FmSBCE40=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774624897; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=38tU4QDZcLf0ZOAVBo9/Q1Vox9MVHRrT2KOUdFjj+1w=; 
-	b=PFdBmOfoa8bSfLh8bc0Q5pim45tC+CWU7WFcW6PB/Dp8tdg7/VrGnH632PzS9REBWFX9IXCRZBsl9wQivN2ennTNzZzRDNOMLYnxa56s1lkr5ZhxkAyFrFu2DhOZta4YRdvbbjp8mbIkxjbUbXUjmhrVYTDqVW40DogJoBgZYzE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774624896;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:Date:MIME-Version:Message-Id:Reply-To;
-	bh=38tU4QDZcLf0ZOAVBo9/Q1Vox9MVHRrT2KOUdFjj+1w=;
-	b=LuDwOLTgBb+Pg0qGRcJgeFMv8NvA25JVH9hWu3FEOG8XEe2s9xb6GAE25qoQ28Bt
-	I65zx1jJ4ThwfOUaPjr7HE5ERlU8ioQG2r5DMy6V2ODpQA5UHTeonweIW425nFlCdES
-	UtEg0Tap7zO0cBN03equOngRxhIpiZVj6oXgTszVqoihYoH1jfjDjMbM7oHZBHzRC41
-	ucT6BLTJFH/vIzrSHQSeZOc6Yn6FQP47csoDyJUzLkfO3BOZqNJi8Do+HtvSEwE+kib
-	VTeaQhDn9ZUxmURYuLB3UCodAuHrWvB3lz/aKL2OZ8LkdTweD+U4Q/lfdNF6FmAlqHB
-	kSCVbrqzEA==
-Received: by mx.zohomail.com with SMTPS id 1774624894831431.44387687844517;
-	Fri, 27 Mar 2026 08:21:34 -0700 (PDT)
-Message-ID: <afa0c48c0adac075411dae92ff9079e52c77a3fe.camel@rong.moe>
-Subject: Re: [PATCH] platform/x86: lenovo: Decouple lenovo-wmi-gamezone and
- lenovo-wmi-other
-From: Rong Zhang <i@rong.moe>
-To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Derek John Clark <derekjohn.clark@gmail.com>, Hans de Goede
-	 <hansg@kernel.org>, oe-kbuild-all@lists.linux.dev, Mark Pearson
-	 <mpearson-lenovo@squebb.ca>, Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet
-	 <corbet@lwn.net>, Kurt Borja <kuurtb@gmail.com>, 
-	platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
- kernel test robot
-	 <lkp@intel.com>, stable@vger.kernel.org
-In-Reply-To: <d824bf55-8c1a-1374-04f9-aff9ffdaaa0d@linux.intel.com>
-References: <861d0276a759461be446df8e996d196037c9b581.camel@rong.moe>
-	 <20260326161724.72186-1-i@rong.moe>
-	 <d824bf55-8c1a-1374-04f9-aff9ffdaaa0d@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Mar 2026 23:16:25 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A602C027B
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 15:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774625024; cv=none; b=KOMMKErNk35n6LZ8Q+SHdnl4k0hkAEJcbyqQTypZjJkBwEke/0sfQz0FKvDC9t89JjmX8eg/x/mtrDCb4myvFuAp/8h0A0v5iMBZLvtdjTlzyDlT0DEzr/SxrZWY3iUxept3JAWA9pjEOIwLyF9ULzJuZtDMjAjNkI2vKqhRAEA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774625024; c=relaxed/simple;
+	bh=UqoKYbZbcVVpBMXRYx6tCAQwVv/M7Yv+pltGt1g1dCM=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID; b=HS2GKRzVIamyVaaCLsZfiMzN8OWI3nuJSPfwUp2mcK5ziE1Yvs7fMWCEeT0HXrPCsR2YOqX9e1dZNimXb8LCf0p0MfuEPOHkmgP/hiQygKIZ5wL+oOa6/UN6lJ7Bg0YulGh9DqkwjIRdVz1m57xujv0rQ2yIwI2U55jayqDZfCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Eyu64sUS; arc=none smtp.client-ip=43.163.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774625017; bh=NP/FqPtwAwxBUsjqppqyfHKoRZEDTAHaJRxFnA3eWwY=;
+	h=From:To:Cc:Subject:Date;
+	b=Eyu64sUS+j+Z517efaekp/hol8E12szh0a7lm/34fLyIxhJYf+4RVgPNixAQZIuAP
+	 VCTSATZY2RjQYNVIXf3ymDubh9R07Hmy2a9T0CLHlSlDUXsMeKVKv8wa4JrO0HuwyB
+	 bmMbIFmfhDc7+WrqwnLtwsKeA6e5jIcWYK3HXpIk=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-XMAILINFO: NOCVdBo066pNuH2Wy9T7AOblmOtk44YZDultW9ev0EFhUVFnl1pIFzMJ9LyU5Y
+	 ovquUkWuEgjOAS5cPz8HgbuE2QmSyEPdn47BcKNuA3i3wXj4+Y+gXJMNE76v4pYf6tEboW3OZKeQr
+	 rr4NXChS2Kn2YJmnWvMgmeP18qmzwN8m+8YRvTlndQhQvv3ESteAnlo8j8Rl46AI3793lVCD/hTGK
+	 gqnBOBEL93THgQcEM7KXAAIRPbpVpYseVvKgcA0n/Ncy6GtAW/mZERPXoHeIzh8WDK3yni9xYF0lv
+	 mN1E9Liz5kCwwjKLAjaCCthfJ+7wxO4ZfqjgSewLsNd9McAfsBhxALDxmAdG+gluvCRkbodG6OXru
+	 7AJ8PC98pyzAr6fwXSJsQGaoG3+HrEPpf7ym93F8XFgZesqVEF6qlemr55gLCNC4amcmKKBLs5C9p
+	 TTx19xQWFxrigXO6dAyURDCvyBe5VFiV8Mgy4+Xr7LloPFtAGQCqT58mZrrA2QCqoKJl+0EDLBofR
+	 nq9AkmNTBCiDgRPDtnFGer8A9V03BUnqNSbr9A2yWKmlRoPUwTnikcoUdNiAGkNXOtfOK9xCWvvAd
+	 20b2njoBBeulrqRaK8k6uqHe8P2nWMl8CSRCjUSqr1uVphLAZmNhXi962VIonw2sKKeIGoBNE3gvB
+	 0QEgpw3mwydkoorVyNGhzMHdtVSSQg7D8isHdVbQGUSHCK5Rz2GRFAK/TxBmFBLwdqIgJ7DxmBcZC
+	 rN5ZxSSbYtS6twI6qPR36Pdfhv1cev4QUnE9OQjW93bVOS5taqTX8z8r5jbRTRS87LaaILIprfoWE
+	 zCt7j8HTrdKDjlTO4ps3neC/lXeHE7wPS4iJq0G8ERyXL5XfRm/0ZZ05UVashVoiNy7GQiUk0l+8J
+	 wwsKWwKBtKbcbab+8L4U1Vt08AcOoDbjqffjlMiawkwd8heomN+hqdV2ROggfXapkIngEson3kHQk
+	 BRA6WLHShJ42jehPtQjHBd50NQy0qX1H5sbblYF5s6HKKqUinLVxcfl91OXnefEvif7KQwzFz+wzF
+	 aeN8FhunRxlkVUqsSNFNnzdotki1msi6Dy9WNjTbCojTJ73FGojhHYWUULBRfM/yzmjTqN9viCbcv
+	 mK8=
+X-QQ-FEAT: oHWrrGTW1dC5tAPeTNEktQWzsGuk/wXs
+X-QQ-SSF: 00000000000000F0000000000000
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-STYLE: 
+X-QQ-mid: webmail746t1774625016t6331364
+From: "=?ISO-8859-1?B?ZHJpejJ0?=" <driz2t@qq.com>
+To: "=?ISO-8859-1?B?c3l6Ym90K2FhNGViN2M2NzkxM2RiZDg4ZjU2?=" <syzbot+aa4eb7c67913dbd88f56@syzkaller.appspotmail.com>
+Cc: "=?ISO-8859-1?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Subject: [PATCH 6.6.y]  net: sched: fix TCF_LAYER_TRANSPORT handling in tcf_get_base_ptr()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Evolution 3.56.2-9 
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[rong.moe,none];
-	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail2048];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_69C6A0F8_13AC0400_127BED1B"
+Content-Transfer-Encoding: 8Bit
+Date: Fri, 27 Mar 2026 23:23:36 +0800
+X-Priority: 3
+Message-ID: <tencent_3E39327F0345F6D90DAB823B4B23D1357A0A@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-Spamd-Result: default: False [2.94 / 15.00];
+	CC_EXCESS_BASE64(1.50)[];
+	TO_EXCESS_BASE64(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	CTE_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230678-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lists.linux.dev,squebb.ca,gmx.de,lwn.net,vger.kernel.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-230679-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[rong.moe:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[qq.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 7210F346A89
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[driz2t@qq.com,stable@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable,aa4eb7c67913dbd88f56];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_EXCESS_BASE64(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4B0A2346C17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Ilpo,
+This is a multi-part message in MIME format.
 
-On Fri, 2026-03-27 at 13:25 +0200, Ilpo J=C3=A4rvinen wrote:
-> On Fri, 27 Mar 2026, Rong Zhang wrote:
->=20
-> > Currently, lenovo-wmi-gamezone depends on lenovo-wmi-other as the forme=
-r
-> > imports symbols from the latter. The imported symbols are just used to
-> > register a notifier block. However, there is no runtime dependency
-> > between both drivers, and either of them can run without the other,
-> > which is the major purpose of using the notifier framework.
-> >=20
-> > Such a link-time dependency is non-optimal. A previous attempt to "fix"
-> > it made LENOVO_WMI_GAMEZONE select LENOVO_WMI_TUNING, which was
-> > fundamentally broken and resulted in undefined Kconfig behavior, as
-> > `select' cannot be used on a symbol with potentially unmet dependencies=
-.
-> >=20
-> > Decouple both drivers by moving the thermal mode notifier chain to
-> > lenovo-wmi-helpers. Methods for notifier block (un)registration are
-> > exported for lenovo-wmi-gamezone, while a method for querying the
-> > current thermal mode are exported for lenovo-wmi-other.
-> >=20
-> > This turns the dependency graph from
-> >=20
-> >             +------------ lenovo-wmi-gamezone
-> >             |                     |
-> >             v                     |
-> >     lenovo-wmi-helpers            |
-> >             ^                     |
-> >             |                     V
-> >             +------------ lenovo-wmi-other
-> >=20
-> > into
-> >=20
-> >             +------------ lenovo-wmi-gamezone
-> >             |
-> >             v
-> >     lenovo-wmi-helpers
-> >             ^
-> >             |
-> >             +------------ lenovo-wmi-other
-> >=20
-> > To make it clear, the name of the notifier chain is also renamed from
-> > `om_chain_head' to `tm_chain_head', indicating that it's used to query
-> > the current thermal mode.
-> >=20
-> > No functional change intended.
-> >=20
-> > Fixes: 6e38b9fcbfa3 ("platform/x86: lenovo: gamezone needs "other mode"=
-")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202603252259.gHvJDyh3-lkp=
-@intel.com/
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202603260302.X0NjQOda-lkp=
-@intel.com/
-> > Signed-off-by: Rong Zhang <i@rong.moe>
-> > ---
-> >  drivers/platform/x86/lenovo/Kconfig        |   1 -
-> >  drivers/platform/x86/lenovo/wmi-gamezone.c |   4 +-
-> >  drivers/platform/x86/lenovo/wmi-helpers.c  | 102 ++++++++++++++++++++
-> >  drivers/platform/x86/lenovo/wmi-helpers.h  |   8 ++
-> >  drivers/platform/x86/lenovo/wmi-other.c    | 104 +--------------------
-> >  drivers/platform/x86/lenovo/wmi-other.h    |  16 ----
-> >  6 files changed, 113 insertions(+), 122 deletions(-)
-> >  delete mode 100644 drivers/platform/x86/lenovo/wmi-other.h
-> >=20
-> > diff --git a/drivers/platform/x86/lenovo/Kconfig b/drivers/platform/x86=
-/lenovo/Kconfig
-> > index f885127b007f..09b1b055d2e0 100644
-> > --- a/drivers/platform/x86/lenovo/Kconfig
-> > +++ b/drivers/platform/x86/lenovo/Kconfig
-> > @@ -252,7 +252,6 @@ config LENOVO_WMI_GAMEZONE
-> >  	select ACPI_PLATFORM_PROFILE
-> >  	select LENOVO_WMI_EVENTS
-> >  	select LENOVO_WMI_HELPERS
-> > -	select LENOVO_WMI_TUNING
-> >  	help
-> >  	  Say Y here if you have a WMI aware Lenovo Legion device and would l=
-ike to use the
-> >  	  platform-profile firmware interface to manage power usage.
-> > diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platf=
-orm/x86/lenovo/wmi-gamezone.c
-> > index c7fe7e3c9f17..92020225db27 100644
-> > --- a/drivers/platform/x86/lenovo/wmi-gamezone.c
-> > +++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
-> > @@ -23,7 +23,6 @@
-> >  #include "wmi-events.h"
-> >  #include "wmi-gamezone.h"
-> >  #include "wmi-helpers.h"
-> > -#include "wmi-other.h"
-> > =20
-> >  #define LENOVO_GAMEZONE_GUID "887B54E3-DDDC-4B2C-8B88-68A26A8835D0"
-> > =20
-> > @@ -383,7 +382,7 @@ static int lwmi_gz_probe(struct wmi_device *wdev, c=
-onst void *context)
-> >  		return ret;
-> > =20
-> >  	priv->mode_nb.notifier_call =3D lwmi_gz_mode_call;
-> > -	return devm_lwmi_om_register_notifier(&wdev->dev, &priv->mode_nb);
-> > +	return devm_lwmi_tm_register_notifier(&wdev->dev, &priv->mode_nb);
-> >  }
-> > =20
-> >  static const struct wmi_device_id lwmi_gz_id_table[] =3D {
-> > @@ -405,7 +404,6 @@ module_wmi_driver(lwmi_gz_driver);
-> > =20
-> >  MODULE_IMPORT_NS("LENOVO_WMI_EVENTS");
-> >  MODULE_IMPORT_NS("LENOVO_WMI_HELPERS");
-> > -MODULE_IMPORT_NS("LENOVO_WMI_OTHER");
-> >  MODULE_DEVICE_TABLE(wmi, lwmi_gz_id_table);
-> >  MODULE_AUTHOR("Derek J. Clark <derekjohn.clark@gmail.com>");
-> >  MODULE_DESCRIPTION("Lenovo GameZone WMI Driver");
-> > diff --git a/drivers/platform/x86/lenovo/wmi-helpers.c b/drivers/platfo=
-rm/x86/lenovo/wmi-helpers.c
-> > index 7379defac500..5a88bccb5037 100644
-> > --- a/drivers/platform/x86/lenovo/wmi-helpers.c
-> > +++ b/drivers/platform/x86/lenovo/wmi-helpers.c
-> > @@ -21,11 +21,16 @@
-> >  #include <linux/errno.h>
-> >  #include <linux/export.h>
-> >  #include <linux/module.h>
-> > +#include <linux/notifier.h>
-> >  #include <linux/unaligned.h>
-> >  #include <linux/wmi.h>
-> > =20
-> > +#include "wmi-gamezone.h"
-> >  #include "wmi-helpers.h"
-> > =20
-> > +/* Thermal mode notifier chain. */
-> > +static BLOCKING_NOTIFIER_HEAD(tm_chain_head);
-> > +
-> >  /**
-> >   * lwmi_dev_evaluate_int() - Helper function for calling WMI methods t=
-hat
-> >   * return an integer.
-> > @@ -84,6 +89,103 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, =
-u8 instance, u32 method_id,
-> >  };
-> >  EXPORT_SYMBOL_NS_GPL(lwmi_dev_evaluate_int, "LENOVO_WMI_HELPERS");
-> > =20
-> > +/**
-> > + * lwmi_tm_register_notifier() - Add a notifier to the blocking notifi=
-er chain
-> > + * @nb: The notifier_block struct to register
-> > + *
-> > + * Call blocking_notifier_chain_register to register the notifier bloc=
-k to the
-> > + * thermal mode notifier chain.
-> > + *
-> > + * Return: 0 on success, %-EEXIST on error.
-> > + */
-> > +int lwmi_tm_register_notifier(struct notifier_block *nb)
-> > +{
-> > +	return blocking_notifier_chain_register(&tm_chain_head, nb);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(lwmi_tm_register_notifier, "LENOVO_WMI_HELPERS");
-> > +
-> > +/**
-> > + * lwmi_tm_unregister_notifier() - Remove a notifier from the blocking=
- notifier
-> > + * chain.
-> > + * @nb: The notifier_block struct to register
-> > + *
-> > + * Call blocking_notifier_chain_unregister to unregister the notifier =
-block from the
-> > + * thermal mode notifier chain.
-> > + *
-> > + * Return: 0 on success, %-ENOENT on error.
-> > + */
-> > +int lwmi_tm_unregister_notifier(struct notifier_block *nb)
-> > +{
-> > +	return blocking_notifier_chain_unregister(&tm_chain_head, nb);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(lwmi_tm_unregister_notifier, "LENOVO_WMI_HELPERS"=
-);
-> > +
-> > +/**
-> > + * devm_lwmi_tm_unregister_notifier() - Remove a notifier from the blo=
-cking
-> > + * notifier chain.
-> > + * @data: Void pointer to the notifier_block struct to register.
-> > + *
-> > + * Call lwmi_tm_unregister_notifier to unregister the notifier block f=
-rom the
-> > + * thermal mode notifier chain.
-> > + *
-> > + * Return: 0 on success, %-ENOENT on error.
-> > + */
-> > +static void devm_lwmi_tm_unregister_notifier(void *data)
-> > +{
-> > +	struct notifier_block *nb =3D data;
-> > +
-> > +	lwmi_tm_unregister_notifier(nb);
-> > +}
-> > +
-> > +/**
-> > + * devm_lwmi_tm_register_notifier() - Add a notifier to the blocking n=
-otifier
-> > + * chain.
-> > + * @dev: The parent device of the notifier_block struct.
-> > + * @nb: The notifier_block struct to register
-> > + *
-> > + * Call lwmi_tm_register_notifier to register the notifier block to th=
-e
-> > + * thermal mode notifier chain. Then add devm_lwmi_tm_unregister_notif=
-ier
-> > + * as a device managed action to automatically unregister the notifier=
- block
-> > + * upon parent device removal.
-> > + *
-> > + * Return: 0 on success, or an error code.
-> > + */
-> > +int devm_lwmi_tm_register_notifier(struct device *dev,
-> > +				   struct notifier_block *nb)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret =3D lwmi_tm_register_notifier(nb);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	return devm_add_action_or_reset(dev, devm_lwmi_tm_unregister_notifier=
-,
-> > +					nb);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(devm_lwmi_tm_register_notifier, "LENOVO_WMI_HELPE=
-RS");
-> > +
-> > +/**
-> > + * lwmi_tm_notifier_call() - Call functions for the notifier call chai=
-n.
-> > + * @mode: Pointer to a thermal mode enum to retrieve the data from.
-> > + *
-> > + * Call blocking_notifier_call_chain to retrieve the thermal mode from=
- the
-> > + * lenovo-wmi-gamezone driver.
-> > + *
-> > + * Return: 0 on success, or an error code.
-> > + */
-> > +int lwmi_tm_notifier_call(enum thermal_mode *mode)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret =3D blocking_notifier_call_chain(&tm_chain_head,
-> > +					   LWMI_GZ_GET_THERMAL_MODE, &mode);
-> > +	if ((ret & ~NOTIFY_STOP_MASK) !=3D NOTIFY_OK)
-> > +		return -EINVAL;
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(lwmi_tm_notifier_call, "LENOVO_WMI_HELPERS");
-> > +
-> >  MODULE_AUTHOR("Derek J. Clark <derekjohn.clark@gmail.com>");
-> >  MODULE_DESCRIPTION("Lenovo WMI Helpers Driver");
-> >  MODULE_LICENSE("GPL");
-> > diff --git a/drivers/platform/x86/lenovo/wmi-helpers.h b/drivers/platfo=
-rm/x86/lenovo/wmi-helpers.h
-> > index 20fd21749803..651a039228ed 100644
-> > --- a/drivers/platform/x86/lenovo/wmi-helpers.h
-> > +++ b/drivers/platform/x86/lenovo/wmi-helpers.h
-> > @@ -7,6 +7,8 @@
-> > =20
-> >  #include <linux/types.h>
-> > =20
-> > +struct device;
-> > +struct notifier_block;
-> >  struct wmi_device;
-> > =20
-> >  struct wmi_method_args_32 {
-> > @@ -17,4 +19,10 @@ struct wmi_method_args_32 {
-> >  int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 me=
-thod_id,
-> >  			  unsigned char *buf, size_t size, u32 *retval);
-> > =20
-> > +int lwmi_tm_register_notifier(struct notifier_block *nb);
-> > +int lwmi_tm_unregister_notifier(struct notifier_block *nb);
-> > +int devm_lwmi_tm_register_notifier(struct device *dev,
-> > +				   struct notifier_block *nb);
-> > +int lwmi_tm_notifier_call(enum thermal_mode *mode);
->=20
-> This enum is not introduced earlier within this header?
+------=_NextPart_69C6A0F8_13AC0400_127BED1B
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_69C6A0F8_13AC0400_7B008694";
 
-Hmm, no. Declaring a opaque enum earlier should be enough to fix it, as
-wmi-gamezone.h shouldn't be included here. Derek, what do you think?
+------=_NextPart_69C6A0F8_13AC0400_7B008694
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: base64
 
-Thanks,
-Rong
+SGksDQoNClBsZWFzZSB0ZXN0IHRoaXMgcGF0Y2ggb24gc3RhYmxlIDYuNi55Lg0KDQoNCiNz
+eXogdGVzdDogZ2l0Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0
+L3N0YWJsZS9saW51eC5naXQgYzA5ZmJjZDMxYWU2ZDcxZTdjNjk1NDU4MzliZWM5MmQ4ZTE1
+YzEzYg0KDQoNClRoYW5rcywNCkNoYW5namlhbiBMaXU=
+
+------=_NextPart_69C6A0F8_13AC0400_7B008694
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: base64
+
+SGksPGRpdj48YnI+PC9kaXY+PGRpdj5QbGVhc2UgdGVzdCB0aGlzIHBhdGNoIG9uIHN0YWJs
+ZSA2LjYueS48L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PiNzeXogdGVzdDogZ2l0Oi8vZ2l0
+Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC5naXQg
+YzA5ZmJjZDMxYWU2ZDcxZTdjNjk1NDU4MzliZWM5MmQ4ZTE1YzEzYjwvZGl2PjxkaXY+PGJy
+PjwvZGl2PjxkaXY+VGhhbmtzLDwvZGl2PjxkaXY+Q2hhbmdqaWFuIExpdTxicj48L2Rpdj4=
+
+------=_NextPart_69C6A0F8_13AC0400_7B008694--
+
+------=_NextPart_69C6A0F8_13AC0400_127BED1B
+Content-Type: application/octet-stream;
+	charset="ISO-8859-1";
+	name="aa4eb7c67913dbd88f56.patch"
+Content-Disposition: attachment; filename="aa4eb7c67913dbd88f56.patch"
+Content-Transfer-Encoding: base64
+
+Y29tbWl0IDRmZTVhMDBlYzcwNzE3YTdmMTAwMmQ4OTEzZWM2MTQzNTgyYjNjOGUKQXV0aG9y
+OiBFcmljIER1bWF6ZXQgPGVkdW1hemV0QGdvb2dsZS5jb20+CkRhdGU6ICAgRnJpIE5vdiAy
+MSAxNTo0MTowMCAyMDI1ICswMDAwCgogICAgbmV0OiBzY2hlZDogZml4IFRDRl9MQVlFUl9U
+UkFOU1BPUlQgaGFuZGxpbmcgaW4gdGNmX2dldF9iYXNlX3B0cigpCiAgICAKICAgIHN5emJv
+dCByZXBvcnRlZCB0aGF0IHRjZl9nZXRfYmFzZV9wdHIoKSBjYW4gYmUgY2FsbGVkIHdoaWxl
+IHRyYW5zcG9ydAogICAgaGVhZGVyIGlzIG5vdCBzZXQgWzFdLgogICAgCiAgICBJbnN0ZWFk
+IG9mIHJldHVybmluZyBhIGRhbmdsaW5nIHBvaW50ZXIsIHJldHVybiBOVUxMLgogICAgCiAg
+ICBGaXggdGNmX2dldF9iYXNlX3B0cigpIGNhbGxlcnMgdG8gaGFuZGxlIHRoaXMgTlVMTCB2
+YWx1ZS4KICAgIAogICAgWzFdCiAgICAgV0FSTklORzogQ1BVOiAxIFBJRDogNjAxOSBhdCAu
+L2luY2x1ZGUvbGludXgvc2tidWZmLmg6MzA3MSBza2JfdHJhbnNwb3J0X2hlYWRlciBpbmNs
+dWRlL2xpbnV4L3NrYnVmZi5oOjMwNzEgW2lubGluZV0KICAgICBXQVJOSU5HOiBDUFU6IDEg
+UElEOiA2MDE5IGF0IC4vaW5jbHVkZS9saW51eC9za2J1ZmYuaDozMDcxIHRjZl9nZXRfYmFz
+ZV9wdHIgaW5jbHVkZS9uZXQvcGt0X2Nscy5oOjUzOSBbaW5saW5lXQogICAgIFdBUk5JTkc6
+IENQVTogMSBQSUQ6IDYwMTkgYXQgLi9pbmNsdWRlL2xpbnV4L3NrYnVmZi5oOjMwNzEgZW1f
+bmJ5dGVfbWF0Y2grMHgyZDgvMHgzZjAgbmV0L3NjaGVkL2VtX25ieXRlLmM6NDMKICAgIE1v
+ZHVsZXMgbGlua2VkIGluOgogICAgQ1BVOiAxIFVJRDogMCBQSUQ6IDYwMTkgQ29tbTogc3l6
+LjAuMTcgTm90IHRhaW50ZWQgc3l6a2FsbGVyICMwIFBSRUVNUFQoZnVsbCkKICAgIENhbGwg
+VHJhY2U6CiAgICAgPFRBU0s+CiAgICAgIHRjZl9lbV9tYXRjaCBuZXQvc2NoZWQvZW1hdGNo
+LmM6NDk0IFtpbmxpbmVdCiAgICAgIF9fdGNmX2VtX3RyZWVfbWF0Y2grMHgxYWMvMHg3NzAg
+bmV0L3NjaGVkL2VtYXRjaC5jOjUyMAogICAgICB0Y2ZfZW1fdHJlZV9tYXRjaCBpbmNsdWRl
+L25ldC9wa3RfY2xzLmg6NTEyIFtpbmxpbmVdCiAgICAgIGJhc2ljX2NsYXNzaWZ5KzB4MTE1
+LzB4MmQwIG5ldC9zY2hlZC9jbHNfYmFzaWMuYzo1MAogICAgICB0Y19jbGFzc2lmeSBpbmNs
+dWRlL25ldC90Y193cmFwcGVyLmg6MTk3IFtpbmxpbmVdCiAgICAgIF9fdGNmX2NsYXNzaWZ5
+IG5ldC9zY2hlZC9jbHNfYXBpLmM6MTc2NCBbaW5saW5lXQogICAgICB0Y2ZfY2xhc3NpZnkr
+MHg0Y2YvMHgxMTQwIG5ldC9zY2hlZC9jbHNfYXBpLmM6MTg2MAogICAgICBtdWx0aXFfY2xh
+c3NpZnkgbmV0L3NjaGVkL3NjaF9tdWx0aXEuYzozOSBbaW5saW5lXQogICAgICBtdWx0aXFf
+ZW5xdWV1ZSsweGZkLzB4NGMwIG5ldC9zY2hlZC9zY2hfbXVsdGlxLmM6NjYKICAgICAgZGV2
+X3FkaXNjX2VucXVldWUrMHg0ZS8weDI2MCBuZXQvY29yZS9kZXYuYzo0MTE4CiAgICAgIF9f
+ZGV2X3htaXRfc2tiIG5ldC9jb3JlL2Rldi5jOjQyMTQgW2lubGluZV0KICAgICAgX19kZXZf
+cXVldWVfeG1pdCsweGU4My8weDNiNTAgbmV0L2NvcmUvZGV2LmM6NDcyOQogICAgICBwYWNr
+ZXRfc25kIG5ldC9wYWNrZXQvYWZfcGFja2V0LmM6MzA3NiBbaW5saW5lXQogICAgICBwYWNr
+ZXRfc2VuZG1zZysweDNlMzMvMHg1MDgwIG5ldC9wYWNrZXQvYWZfcGFja2V0LmM6MzEwOAog
+ICAgICBzb2NrX3NlbmRtc2dfbm9zZWMgbmV0L3NvY2tldC5jOjcyNyBbaW5saW5lXQogICAg
+ICBfX3NvY2tfc2VuZG1zZysweDIxYy8weDI3MCBuZXQvc29ja2V0LmM6NzQyCiAgICAgIF9f
+X19zeXNfc2VuZG1zZysweDUwNS8weDgzMCBuZXQvc29ja2V0LmM6MjYzMAogICAgCiAgICBG
+aXhlczogMWRhMTc3ZTRjM2Y0ICgiTGludXgtMi42LjEyLXJjMiIpCiAgICBSZXBvcnRlZC1i
+eTogc3l6Ym90K2YzYTQ5N2YwMmMzODlkODZlZjE2QHN5emthbGxlci5hcHBzcG90bWFpbC5j
+b20KICAgIENsb3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbmV0ZGV2LzY5MjA4NTVh
+LmE3MGEwMjIwLjJlYTUwMy4wMDU4LkdBRUBnb29nbGUuY29tL1QvI3UKICAgIFNpZ25lZC1v
+ZmYtYnk6IEVyaWMgRHVtYXpldCA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT4KICAgIFJldmlld2Vk
+LWJ5OiBKYW1hbCBIYWRpIFNhbGltIDxqaHNAbW9qYXRhdHUuY29tPgogICAgTGluazogaHR0
+cHM6Ly9wYXRjaC5tc2dpZC5saW5rLzIwMjUxMTIxMTU0MTAwLjE2MTYyMjgtMS1lZHVtYXpl
+dEBnb29nbGUuY29tCiAgICBTaWduZWQtb2ZmLWJ5OiBKYWt1YiBLaWNpbnNraSA8a3ViYUBr
+ZXJuZWwub3JnPgotLS0gYS9pbmNsdWRlL25ldC9wa3RfY2xzLmgKKysrIGIvaW5jbHVkZS9u
+ZXQvcGt0X2Nscy5oCkBAIC01MzYsNiArNTM2LDggQEAgc3RhdGljIGlubGluZSB1bnNpZ25l
+ZCBjaGFyICogdGNmX2dldF9iYXNlX3B0cihzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBpbnQgbGF5
+ZXIpCiAJCWNhc2UgVENGX0xBWUVSX05FVFdPUks6CiAJCQlyZXR1cm4gc2tiX25ldHdvcmtf
+aGVhZGVyKHNrYik7CiAJCWNhc2UgVENGX0xBWUVSX1RSQU5TUE9SVDoKKwkJCWlmICghc2ti
+X3RyYW5zcG9ydF9oZWFkZXJfd2FzX3NldChza2IpKQorCQkJCWJyZWFrOwogCQkJcmV0dXJu
+IHNrYl90cmFuc3BvcnRfaGVhZGVyKHNrYik7CiAJfQogCi0tLSBhL25ldC9zY2hlZC9lbV9j
+bXAuYworKysgYi9uZXQvc2NoZWQvZW1fY21wLmMKQEAgLTIyLDkgKzIyLDEyIEBAIHN0YXRp
+YyBpbnQgZW1fY21wX21hdGNoKHN0cnVjdCBza19idWZmICpza2IsIHN0cnVjdCB0Y2ZfZW1h
+dGNoICplbSwKIAkJCXN0cnVjdCB0Y2ZfcGt0X2luZm8gKmluZm8pCiB7CiAJc3RydWN0IHRj
+Zl9lbV9jbXAgKmNtcCA9IChzdHJ1Y3QgdGNmX2VtX2NtcCAqKSBlbS0+ZGF0YTsKLQl1bnNp
+Z25lZCBjaGFyICpwdHIgPSB0Y2ZfZ2V0X2Jhc2VfcHRyKHNrYiwgY21wLT5sYXllcikgKyBj
+bXAtPm9mZjsKKwl1bnNpZ25lZCBjaGFyICpwdHIgPSB0Y2ZfZ2V0X2Jhc2VfcHRyKHNrYiwg
+Y21wLT5sYXllcik7CiAJdTMyIHZhbCA9IDA7CiAKKwlpZiAoIXB0cikKKwkJcmV0dXJuIDA7
+CisJcHRyICs9IGNtcC0+b2ZmOwogCWlmICghdGNmX3ZhbGlkX29mZnNldChza2IsIHB0ciwg
+Y21wLT5hbGlnbikpCiAJCXJldHVybiAwOwogCi0tLSBhL25ldC9zY2hlZC9lbV9uYnl0ZS5j
+CisrKyBiL25ldC9zY2hlZC9lbV9uYnl0ZS5jCkBAIC00Miw2ICs0Miw4IEBAIHN0YXRpYyBp
+bnQgZW1fbmJ5dGVfbWF0Y2goc3RydWN0IHNrX2J1ZmYgKnNrYiwgc3RydWN0IHRjZl9lbWF0
+Y2ggKmVtLAogCXN0cnVjdCBuYnl0ZV9kYXRhICpuYnl0ZSA9IChzdHJ1Y3QgbmJ5dGVfZGF0
+YSAqKSBlbS0+ZGF0YTsKIAl1bnNpZ25lZCBjaGFyICpwdHIgPSB0Y2ZfZ2V0X2Jhc2VfcHRy
+KHNrYiwgbmJ5dGUtPmhkci5sYXllcik7CiAKKwlpZiAoIXB0cikKKwkJcmV0dXJuIDA7CiAJ
+cHRyICs9IG5ieXRlLT5oZHIub2ZmOwogCiAJaWYgKCF0Y2ZfdmFsaWRfb2Zmc2V0KHNrYiwg
+cHRyLCBuYnl0ZS0+aGRyLmxlbikpCi0tLSBhL25ldC9zY2hlZC9lbV90ZXh0LmMKKysrIGIv
+bmV0L3NjaGVkL2VtX3RleHQuYwpAQCAtMjksMTIgKzI5LDE5IEBAIHN0YXRpYyBpbnQgZW1f
+dGV4dF9tYXRjaChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3QgdGNmX2VtYXRjaCAqbSwK
+IAkJCSBzdHJ1Y3QgdGNmX3BrdF9pbmZvICppbmZvKQogewogCXN0cnVjdCB0ZXh0X21hdGNo
+ICp0bSA9IEVNX1RFWFRfUFJJVihtKTsKKwl1bnNpZ25lZCBjaGFyICpwdHI7CiAJaW50IGZy
+b20sIHRvOwogCi0JZnJvbSA9IHRjZl9nZXRfYmFzZV9wdHIoc2tiLCB0bS0+ZnJvbV9sYXll
+cikgLSBza2ItPmRhdGE7CisJcHRyID0gdGNmX2dldF9iYXNlX3B0cihza2IsIHRtLT5mcm9t
+X2xheWVyKTsKKwlpZiAoIXB0cikKKwkJcmV0dXJuIDA7CisJZnJvbSA9IHB0ciAtIHNrYi0+
+ZGF0YTsKIAlmcm9tICs9IHRtLT5mcm9tX29mZnNldDsKIAotCXRvID0gdGNmX2dldF9iYXNl
+X3B0cihza2IsIHRtLT50b19sYXllcikgLSBza2ItPmRhdGE7CisJcHRyID0gdGNmX2dldF9i
+YXNlX3B0cihza2IsIHRtLT50b19sYXllcik7CisJaWYgKCFwdHIpCisJCXJldHVybiAwOwor
+CXRvID0gcHRyIC0gc2tiLT5kYXRhOwogCXRvICs9IHRtLT50b19vZmZzZXQ7CiAKIAlyZXR1
+cm4gc2tiX2ZpbmRfdGV4dChza2IsIGZyb20sIHRvLCB0bS0+Y29uZmlnKSAhPSBVSU5UX01B
+WDsK
+
+------=_NextPart_69C6A0F8_13AC0400_127BED1B--
+
 
