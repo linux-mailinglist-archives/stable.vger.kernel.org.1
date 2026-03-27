@@ -1,223 +1,125 @@
-Return-Path: <stable+bounces-230661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHE4M7qJxmlELgUAu9opvQ
-	(envelope-from <stable+bounces-230661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:44:26 +0100
+	id +PvAMTOKxmlELgUAu9opvQ
+	(envelope-from <stable+bounces-230660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:46:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7154E3457B2
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:44:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA0A345846
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5C9D30059BA
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:44:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69EF0309BED0
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2793EDAA5;
-	Fri, 27 Mar 2026 13:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592B83EB809;
+	Fri, 27 Mar 2026 13:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="UiLRe9jJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVvPZ1Cb"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766213ED13E;
-	Fri, 27 Mar 2026 13:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8B81DE3B5;
+	Fri, 27 Mar 2026 13:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774619064; cv=none; b=OvULSsBqniMr7vTcoWHhYNQHSwoXEiFlSOpUIRRBtO91CHKp4rvo/GBUXJqtGH5sVwf1aMn4xardkiyHik9D/7YcvgAxL3LXATsgiHfb3AH5N+0lqFaBALoWEfh3JYji1pl+jXF3P7szfupszSD0Y7kgCNq5OSJs3QMOmyvmwmU=
+	t=1774618732; cv=none; b=gCEp0KZq15X/MkYMRsOBVwygYoEx/A/kkLa6J4X0mDHArCUFO/i01kFUgb4L5KmDF5cQXJUZZg9wUzVLR6vPLAIGolbmv8aPgXBOyN0m/oyx2zhSRWdxd8+xW3Jn9aE5jo1jUgDP6uKpx77q3xw9AMqoR6lR181z5tB3yMrEv4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774619064; c=relaxed/simple;
-	bh=zp4B8gtOxCsufdh7wy4QZSlBVelDOoXz75eKfybgmTU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LLXiIXa3H949P6p+TYxcVslblXc0phDizLKDLG1sntheIF1dsthoq4w838vApEe+JwsWeCZlY9zgUd8kND6c7BplNSOPtPwz/MHxxl6R2KMM4jp/2dVJuJZmpbIdmBw1i4eyXuBDWvOZtDaDIN0385bGWBAs4B5ozxgqCwPraf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=UiLRe9jJ; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1774619049; x=1775223849; i=markus.elfring@web.de;
-	bh=jTyYuoqxeyiOIyclnpl5xPZNS+Xje0DXiwYwhpsRafM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=UiLRe9jJV1L823s9sfZ8OPDx2PR5E6yVatDTZvy4ROz0yiLATbA4yZxoR2+nhEol
-	 iiod+SDLFbiimdV7kn+IKHgcoYbGYO7ckFod5bmW54LKh4v/0M9XMpJiPWvxhrEQp
-	 gyz+Tfh7716LODRNMwhA3yvdvWM0hmlicA+XhsRScYsZM1pxY3jJ4L4K+LG7sW35S
-	 /MdSfSEKY9Z/LbrwddvzFGMcR5w9t71fOXjOCWc9ayid0rv0pIKlRfKUJtn0PFrvH
-	 nCM/vQBoFIq1ZFpM92nuak/aglQJ2O526v2RfskGY7ncAwWUdu1lzbVE7zDDnhqcW
-	 sBhOmexTjebeRKY7KA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MhFlm-1vaeWI3IDy-00p8qM; Fri, 27
- Mar 2026 14:38:24 +0100
-Message-ID: <0201d4dd-f7dd-40af-90e6-0865bfdb5190@web.de>
-Date: Fri, 27 Mar 2026 14:38:22 +0100
+	s=arc-20240116; t=1774618732; c=relaxed/simple;
+	bh=WNYm/2QaUqI20NA6qh0PjfU0eFWt+j2QfcgwdY6dQJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VMUtaG73ND1qCYkJm3wuIBcAZsUsR+PzK4QFa0gLgWZb2WZOXUZoq5PQH539rn2NfTjFXu2s7wmjGd+OwuPwk9XxEDhZghjoRx12EgQRBz60D0TJmrOlhS8lJ61eJBityh7yepiWv7nvuyjPbcSDIEqskMy5Bt5z3xAcCRc+Wu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVvPZ1Cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25475C19423;
+	Fri, 27 Mar 2026 13:38:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774618732;
+	bh=WNYm/2QaUqI20NA6qh0PjfU0eFWt+j2QfcgwdY6dQJQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eVvPZ1CbMk/lfrV194gdcnVcKyufXg/WoNNraQHTtHfRE/yFmTzKmBw5KOtBhb/GP
+	 B7obE2opX0q6ixieQ8qMfzoPX6mFzmFmziWdnhHo+nqU+DmIG/A789t6jgO8mS7NKu
+	 5WVc1ZwwdyjemmQwWfMP0OoBQipQLVyASG6R6O7rCBZGnp0aMtvVdXTQi7Ikb38nTK
+	 Am9WXQkMiRWWfTDKLPVGjrPCxueEII7+fOQHIxUd2wfirGenRlG3jhFtuuuie9NRTn
+	 K4TTq0OAMuysrUJYHVmqEiFYF5+jGN7+dX8oSsNiiyFLqz9/29XFBoAOB71o4Kw9XT
+	 4C2b/xGLmCJBA==
+Date: Fri, 27 Mar 2026 13:38:47 +0000
+From: Simon Horman <horms@kernel.org>
+To: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] xfrm: clear trailing padding in build_polexpire()
+Message-ID: <20260327133847.GG567789@horms.kernel.org>
+References: <20260326055801.897013-1-yasuakitorimaru@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] media: tuner: add error handling for I2C transfers in
- set_type()
-To: Wenyuan Li <2063309626@qq.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, linux-media@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- gszhai@bjtu.edu.cn, 23120469@bjtu.edu.cn, 25125332@bjtu.edu.cn,
- 25125283@bjtu.edu.cn
-References: <20260327100815.23565-1-2063309626@qq.com>
- <tencent_3F73117D57532EA69EDD2C9E2BA48A5EBA09@qq.com>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <tencent_3F73117D57532EA69EDD2C9E2BA48A5EBA09@qq.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:k83fKmn5KHlhxebbQsj/6pzWah7pUy7UqT+MTFCr2qbhy+Fu0hk
- eGVfNP9kC/VnHWvpX/V+B8oXm42Py77DSHjsm3/aO2nlk2z8cA3cvZJ7I+ViqiXUaQGwLor
- Qqpx9RYD8QORyhFsBZACWOLzCSM6sDCc/cSqx0A0QK/Ju6ORJBzkaNYTTnEjdC7WeF4rSZg
- GzyrkdTggErYdkHhQU6dQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:SbOBkcrHn4Q=;ugIMbLDaZxJQWPwK3Iammw0bTve
- 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
- i7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326055801.897013-1-yasuakitorimaru@gmail.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[web.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[web.de:s=s29768273];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230661-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[qq.com,kernel.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230660-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[web.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[web.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Markus.Elfring@web.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qq.com:email]
-X-Rspamd-Queue-Id: 7154E3457B2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid]
+X-Rspamd-Queue-Id: 2BA0A345846
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-=E2=80=A6
-> Fix this by:
-> - Adding a helper function tuner_i2c_send() that checks the return
->   value of i2c_master_send() and logs errors with %pe format
-> - Replacing direct i2c_master_send() calls with tuner_i2c_send()
-> - Propagating errors to the attach_failed path
->=20
-> This ensures that I2C communication failures during tuner
-> initialization are properly detected and handled.
-
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv7.0-rc5#n94
-
-
-=E2=80=A6
-> Signed-off-by: Wenyuan Li <2063309626@qq.com>
->=20
-> v4:
-> - Added Cc: stable@vger.kernel.org
-> - Updated Fixes: to original commit (93df3413f1b4)
+On Thu, Mar 26, 2026 at 02:58:00PM +0900, Yasuaki Torimaru wrote:
+> build_expire() clears the trailing padding bytes of struct
+> xfrm_user_expire after setting the hard field via memset_after(),
+> but the analogous function build_polexpire() does not do this for
+> struct xfrm_user_polexpire.
+> 
+> The padding bytes after the __u8 hard field are left
+> uninitialized from the heap allocation, and are then sent to
+> userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
+> leaking kernel heap memory contents.
+> 
+> Add the missing memset_after() call, matching build_expire().
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 > ---
->  drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
-=E2=80=A6
+> v3:
+>   - fix Fixes tag to cite the commit that introduced the bug
+>     (was: e3e5fc1698ae which fixed the related build_expire() function)
+> v2: https://lore.kernel.org/netdev/20260324013742.939533-1-yasuakitorimaru@gmail.com/
+>   - add Fixes tag and Cc stable (requested by Steffen Klassert)
+> v1: https://lore.kernel.org/netdev/20260321210421.2504711-1-yasuakitorimaru@gmail.com/
 
-Please move patch version descriptions behind the marker line.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv7.0-rc5#n785
+Thanks for the updates.
 
-Regards,
-Markus
+Reviewed-by: Simon Horman <horms@kernel.org>
 
