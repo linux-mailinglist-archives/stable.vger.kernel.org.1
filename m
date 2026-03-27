@@ -1,203 +1,205 @@
-Return-Path: <stable+bounces-230595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJLNIx04xmm7HgUAu9opvQ
-	(envelope-from <stable+bounces-230595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:56:13 +0100
+	id iD9AAjg2xmm7HgUAu9opvQ
+	(envelope-from <stable+bounces-230593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:48:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBB3340A85
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B713409C1
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41C42300D6B4
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 07:54:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0329301DBAD
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 07:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83B73C7DE8;
-	Fri, 27 Mar 2026 07:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAAD3CC9EE;
+	Fri, 27 Mar 2026 07:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="I3SwD6rH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QpoxDDFT"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1A23BE62B
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 07:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBE335B65E
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 07:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774598080; cv=none; b=oYMWk0d9sD8jqRmkkM/zrmVTGtGZ5YYIoyxPvR2DsknWXXekOPYO6JgARUVY2JGxxD9NuWjeNPlCyPz7FkldicrvR03eHJesbqvDdiBA3JMqloNN9qPFliFJYSHqDfV3Op8pvUM81K33U3gzsCNLA0fXaeRbDzzKFhDljhfZ/XQ=
+	t=1774597645; cv=none; b=MLDylQ9Z9RZBuWyuQKX60MVy2waIt1Ok/TiamukEiCG5pZZks407DRGQtkE0a5RoglmhDEzaHwPeVJD16+6ZodU494h3+eMDgFvz8kE3lW2HPcutcvZdSnisd/4tXlDv4uAkg5WZQ3zfded+LBsxWfjmi76BLCucXnGEvAetGjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774598080; c=relaxed/simple;
-	bh=QKoij/UHiladQPESXJyemd48Dww0EegD39OySnyWzpY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ALbWFAaFsMqDINgTxsBQG2vEPi0//3dImmgLdMCi58ZZ+5ZrwpcB85PKmsBq8H3tcH4ljPqLZZtdB/GiuxKPQHs6YUeQObbld1mdmEX6cOnrEHmynDcxqgXzHW6i7KtOJOuyFyTRX8Zve7gtTMjGGMYzAVA+6cibJaga8PhtlaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=I3SwD6rH; arc=none smtp.client-ip=185.136.64.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 202603270744191895210ef30002076e
-        for <stable@vger.kernel.org>;
-        Fri, 27 Mar 2026 08:44:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=florian.bezdeka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=QKoij/UHiladQPESXJyemd48Dww0EegD39OySnyWzpY=;
- b=I3SwD6rHZcWkmTh/XeYhjtnf9b8O6+K0tlI5sBGHYfv+TiUM8Z/cuyl94x+K9J1K2fV7EL
- A/qIJevINCZsStACtlFP6Ukk6w2pTfcenmTuvKmgs+31eP7BpDRbwVhkp40TiDmJf2nBidhb
- fgqdNVNjZOdQbC/LzwYDcTrAMO1WMt1U/vX8Ncu9nSD+tzIwTruxmw88g1qiHgAXiwoWUJ8H
- OGHrnl8Zq1ksiauMoNLTffqw60omF4AP8EBCQqJNaHpvevRElG9T03x0JqnAUk3V7mRUUe9L
- BcF/M50rkHgk0rnRCHPodiMuQ7O8erpTcTFg5Be40VX+MaOxjOIeTfNg==;
-Message-ID: <480f889c1744132f39983178fbad90ad11e081ed.camel@siemens.com>
-Subject: Re: [REGRESSION] osnoise: "eventpoll: Replace rwlock with spinlock"
- causes =?ISO-8859-1?Q?~50=B5s?= noise spikes on isolated PREEMPT_RT cores
-From: Florian Bezdeka <florian.bezdeka@siemens.com>
-To: Crystal Wood <crwood@redhat.com>, "Ionut Nechita (Wind River)"
-	 <ionut.nechita@windriver.com>, namcao@linutronix.de, brauner@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, linux-rt-users@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org, frederic@kernel.org, 
-	vschneid@redhat.com, gregkh@linuxfoundation.org,
- chris.friesen@windriver.com, 	viorel-catalin.rapiteanu@windriver.com,
- iulian.mocanu@windriver.com, 	jan.kiszka@siemens.com
-Date: Fri, 27 Mar 2026 08:44:18 +0100
-In-Reply-To: <af22ac4288e36ff879fa8993790c11973f6af45d.camel@redhat.com>
-References: <20260326140058.272854-1-ionut.nechita@windriver.com>
-	 <af22ac4288e36ff879fa8993790c11973f6af45d.camel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1774597645; c=relaxed/simple;
+	bh=0/WtdtXwB4HbLOBB/i29YghftIrngRbaQdXqbmrmeMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nO6TtKxddK18nQ2DFmiSjx0wiWww9oQEEfzJ7qJadXtCTM4qHfLpPiftCvThNChFsTu6LcqEHJi5Z4SDYTt5JlyhLEawDs+mbGA4eupnvCFlN37qjTsyB872xitQxN8hC/7II8jaM2Z1T+AA8ItiPNWUUWNjJQv3UOHI9ErN/Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QpoxDDFT; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774597636;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+Ya0OKIOhrl1q5883EggLqKidONP4W3BL2eswWDJDRg=;
+	b=QpoxDDFTQsXBTn1so9EpYon771VvXH5Wv12Yt0cDsyjov27NTfR+His29nX3ByzkpEvWQX
+	1z0AsqumbJ1FlNMy7ZCFFCzM8VHENBQiDIyY1rUQDxDTpquWATT9sj1TxQ3Plg5r3xstUc
+	Ga6aliKT+Vk0QU6kYW/4SH1Xlyu3BsQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-LCiNJ1KkO36QsokeeGwf6A-1; Fri,
+ 27 Mar 2026 03:47:11 -0400
+X-MC-Unique: LCiNJ1KkO36QsokeeGwf6A-1
+X-Mimecast-MFC-AGG-ID: LCiNJ1KkO36QsokeeGwf6A_1774597629
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CACD318002CF;
+	Fri, 27 Mar 2026 07:47:08 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.45.224.50])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2F2B11800671;
+	Fri, 27 Mar 2026 07:47:03 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net] ice: fix PTP timestamping broken by SyncE code on E825C
+Date: Fri, 27 Mar 2026 08:46:58 +0100
+Message-ID: <20260327074658.2963328-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-68982:519-21489:flowmailer
-X-Spamd-Result: default: False [-2.06 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[siemens.com,reject];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[siemens.com:s=fm1];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230595-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,intel.com,lunn.ch,davemloft.net,google.com,kernel.org,gmail.com,lists.osuosl.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[siemens.com:+];
+	TAGGED_FROM(0.00)[bounces-230593-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florian.bezdeka@siemens.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[poros@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,siemens.com:dkim,siemens.com:mid]
-X-Rspamd-Queue-Id: EFBB3340A85
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 78B713409C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-T24gVGh1LCAyMDI2LTAzLTI2IGF0IDEzOjEyIC0wNTAwLCBDcnlzdGFsIFdvb2Qgd3JvdGU6Cj4g
-T24gVGh1LCAyMDI2LTAzLTI2IGF0IDE2OjAwICswMjAwLCBJb251dCBOZWNoaXRhIChXaW5kIFJp
-dmVyKSB3cm90ZToKPiA+IEhpLAo+ID4gCj4gPiBJJ20gcmVwb3J0aW5nIGEgcmVncmVzc2lvbiBp
-bnRyb2R1Y2VkIGJ5IGNvbW1pdCAwYzQzMDk0ZjhjYzkKPiA+ICgiZXZlbnRwb2xsOiBSZXBsYWNl
-IHJ3bG9jayB3aXRoIHNwaW5sb2NrIiksIGJhY2twb3J0ZWQgdG8gc3RhYmxlIDYuMTIueS4KPiA+
-IAo+ID4gT24gYSBQUkVFTVBUX1JUIHN5c3RlbSB3aXRoIG5vaHpfZnVsbCBpc29sYXRlZCBjb3Jl
-cywgdGhpcyBjb21taXQgY2F1c2VzCj4gPiBzaWduaWZpY2FudCBvc25vaXNlIGRlZ3JhZGF0aW9u
-IG9uIHRoZSBpc29sYXRlZCBDUFVzLgo+ID4gCj4gPiBTZXR1cDoKPiA+IMKgwqAgLSBLZXJuZWw6
-IDYuMTIuNzggd2l0aCBQUkVFTVBUX1JUCj4gPiDCoMKgIC0gSGFyZHdhcmU6IHg4Nl82NCwgZHVh
-bC1zb2NrZXQgKENQVXMgMC02MykKPiA+IMKgwqAgLSBCb290IHBhcmFtczogbm9oel9mdWxsPTEt
-MTYsMzMtNDggaXNvbGNwdXM9bm9oeixkb21haW4sbWFuYWdlZF9pcnEsMS0xNiwzMy00OAo+ID4g
-wqDCoMKgwqAgcmN1X25vY2JzPTEtMzEsMzMtNjMga3RocmVhZF9jcHVzPTAsMzIgaXJxYWZmaW5p
-dHk9MTctMzEsNDktNjMKPiA+IMKgwqAgLSBUb29sOiBvc25vaXNlIHRyYWNlciAoLi9vc25vaXNl
-IC1jIDEtMTYsMzMtNDgpCj4gCj4gSXMgU01UIGRpc2FibGVkPwo+IAo+IAo+ID4gV2l0aCBjb21t
-aXQgYXBwbGllZCAoc3BpbmxvY2ssIGtlcm5lbCA2LjEyLjc4LXZhbmlsbGEtMCk6Cj4gPiAKPiA+
-IMKgwqAgQ1BVwqDCoMKgIFJVTlRJTUXCoMKgIE1BWF9OT0lTRcKgwqAgQVZBSUwlwqDCoMKgwqDC
-oCBOT0lTRcKgIE5NScKgwqAgSVJRwqDCoCBTSVJRwqAgVGhyZWFkCj4gPiDCoMKgIFswMDFdwqDC
-oCA5NTAwMDDCoMKgwqDCoMKgwqAgNTAxNjPCoMKgIDk0LjcxOSXCoMKgwqDCoMKgwqDCoCAxNMKg
-wqDCoCAwwqDCoCA2ODY0wqDCoMKgwqAgMMKgwqDCoCA1OTIyCj4gPiDCoMKgIFswMDRdwqDCoCA5
-NTAwMDDCoMKgwqDCoMKgwqAgNTAyOTTCoMKgIDk0LjcwNSXCoMKgwqDCoMKgwqDCoCAxNMKgwqDC
-oCAwwqDCoCA2ODY0wqDCoMKgwqAgMMKgwqDCoCA1OTIwCj4gPiDCoMKgIFswMDddwqDCoCA5NTAw
-MDDCoMKgwqDCoMKgwqAgNDk3ODLCoMKgIDk0Ljc1OSXCoMKgwqDCoMKgwqDCoCAxNMKgwqDCoCAw
-wqDCoCA2ODY0wqDCoMKgwqAgMcKgwqDCoCA1OTIxCj4gPiDCoMKgIFswMzNdwqDCoCA5NTAwMDDC
-oMKgwqDCoMKgwqAgNDk1MjjCoMKgIDk0Ljc4NiXCoMKgwqDCoMKgwqDCoCAxNcKgwqDCoCAwwqDC
-oCA2ODY0wqDCoMKgwqAgMsKgwqDCoCA1OTIyCj4gPiDCoMKgIFswMTZdwqDCoCA5NTAwMDDCoMKg
-wqDCoMKgwqAgNDg1NTHCoMKgIDk0Ljg4OSXCoMKgwqDCoMKgwqDCoCAyMMKgwqDCoCAwwqDCoCA2
-ODYzwqDCoMKgIDE5wqDCoMKgIDU5NDIKPiA+IMKgwqAgWzAwOF3CoMKgIDk1MDAwMMKgwqDCoMKg
-wqDCoCA0NDM0M8KgwqAgOTUuMzMyJcKgwqDCoMKgwqDCoMKgIDE0wqDCoMKgIDDCoMKgIDY4NjTC
-oMKgwqDCoCAwwqDCoMKgIDU5MjUKPiA+IAo+ID4gV2l0aCBjb21taXQgcmV2ZXJ0ZWQgKHJ3bG9j
-ayByZXN0b3JlZCwga2VybmVsIDYuMTIuNzgtdmFuaWxsYS0xKToKPiA+IAo+ID4gwqDCoCBDUFXC
-oMKgwqAgUlVOVElNRcKgwqAgTUFYX05PSVNFwqDCoCBBVkFJTCXCoMKgwqDCoMKgIE5PSVNFwqAg
-Tk1JwqDCoCBJUlHCoMKgIFNJUlHCoCBUaHJlYWQKPiA+IMKgwqAgWzAwMV3CoMKgIDk1MDAwMMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIDDCoMKgIDEwMC4wMDAlwqDCoMKgwqDCoMKgIDDCoMKgwqAgMMKg
-wqDCoMKgwqAgNsKgwqDCoMKgIDDCoMKgwqDCoMKgwqAgMAo+ID4gwqDCoCBbMDA0XcKgwqAgOTUw
-MDAwwqDCoMKgwqDCoMKgwqDCoMKgwqAgMMKgwqAgMTAwLjAwMCXCoMKgwqDCoMKgwqAgMMKgwqDC
-oCAwwqDCoMKgwqDCoCA0wqDCoMKgwqAgMMKgwqDCoMKgwqDCoCAwCj4gPiDCoMKgIFswMDddwqDC
-oCA5NTAwMDDCoMKgwqDCoMKgwqDCoMKgwqDCoCAwwqDCoCAxMDAuMDAwJcKgwqDCoMKgwqDCoCAw
-wqDCoMKgIDDCoMKgwqDCoMKgIDTCoMKgwqDCoCAwwqDCoMKgwqDCoMKgIDAKPiA+IMKgwqAgWzAz
-M13CoMKgIDk1MDAwMMKgwqDCoMKgwqDCoMKgwqDCoMKgIDDCoMKgIDEwMC4wMDAlwqDCoMKgwqDC
-oMKgIDDCoMKgwqAgMMKgwqDCoMKgwqAgNMKgwqDCoMKgIDDCoMKgwqDCoMKgwqAgMAo+ID4gwqDC
-oCBbMDE2XcKgwqAgOTUwMDAwwqDCoMKgwqDCoMKgwqDCoMKgwqAgMMKgwqAgMTAwLjAwMCXCoMKg
-wqDCoMKgwqAgMMKgwqDCoCAwwqDCoMKgwqDCoCA1wqDCoMKgwqAgMMKgwqDCoMKgwqDCoCAwCj4g
-PiDCoMKgIFswMDhdwqDCoCA5NTAwMDDCoMKgwqDCoMKgwqDCoMKgwqDCoCA3wqDCoMKgIDk5Ljk5
-OSXCoMKgwqDCoMKgwqAgN8KgwqDCoCAwwqDCoMKgwqDCoCA1wqDCoMKgwqAgMMKgwqDCoMKgwqDC
-oCAwCj4gPiAKPiA+IFN1bW1hcnkgYWNyb3NzIGFsbCBpc29sYXRlZCBjb3JlcyAoMzIgQ1BVcyk6
-Cj4gPiAKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgV2l0aCBzcGlubG9ja8KgwqDCoMKgwqDCoCBXaXRoIHJ3bG9jayAocmV2ZXJ0ZWQpCj4g
-PiDCoMKgIE1BWCBub2lzZSAobnMpOsKgwqDCoMKgwqDCoMKgwqAgNDQsMzQzIC0gNTEsODY5wqDC
-oMKgwqAgMCAtIDEwCj4gPiDCoMKgIElSUSBjb3VudC9zYW1wbGU6wqDCoMKgwqDCoMKgIH42LDY1
-MCAtIDYsODcwwqDCoMKgwqDCoCAzIC0gNwo+ID4gwqDCoCBUaHJlYWQgbm9pc2Uvc2FtcGxlOsKg
-wqDCoCB+NSw3MDAgLSA1LDk0MMKgwqDCoMKgwqAgMCAtIDEKPiA+IMKgwqAgQ1BVIGF2YWlsYWJp
-bGl0eTrCoMKgwqDCoMKgwqAgOTQuNSUgLSA5NS4zJcKgwqDCoMKgwqDCoCB+MTAwJQo+ID4gCj4g
-PiBUaGUgcmVncmVzc2lvbiBpcyByb3VnaGx5IDMgb3JkZXJzIG9mIG1hZ25pdHVkZSBpbiBub2lz
-ZSBvbiBpc29sYXRlZAo+ID4gY29yZXMuIFRoZSB0ZXN0IHdhcyBydW4gb3ZlciBtYW55IGNvbnNl
-Y3V0aXZlIHNhbXBsZXMgYW5kIHRoZSBwYXR0ZXJuCj4gPiBpcyBjb25zaXN0ZW50OiB3aXRoIHRo
-ZSBzcGlubG9jaywgZXZlcnkgaXNvbGF0ZWQgY29yZSBzZWVzIHRob3VzYW5kcwo+ID4gb2YgSVJR
-cyBhbmQgfjUwwrVzIG9mIG5vaXNlIHBlciA5NTBtcyBzYW1wbGUgd2luZG93LiBXaXRoIHRoZSBy
-d2xvY2ssCj4gPiB0aGUgY29yZXMgYXJlIGVzc2VudGlhbGx5IHNpbGVudC4KPiA+IAo+ID4gTm90
-ZSB0aGF0IENQVSAwMTYgb2NjYXNpb25hbGx5IHNob3dzIFNJUlEgbm9pc2UgKHNvZnRpcnEpIHdp
-dGggYm90aAo+ID4ga2VybmVscywgd2hpY2ggaXMgYSBzZXBhcmF0ZSBrbm93biBpc3N1ZSB3aXRo
-IHRoZSB0aWNrIG9uIHRoZSBmaXJzdAo+ID4gbm9oel9mdWxsIENQVS4gVGhlIGV2ZW50cG9sbCBy
-ZWdyZXNzaW9uIGlzIHRoZSBkb21pbmFudCBub2lzZSBzb3VyY2UuCj4gPiAKPiA+IE15IHVuZGVy
-c3RhbmRpbmcgb2YgdGhlIHJvb3QgY2F1c2U6IHRoZSBvcmlnaW5hbCByd2xvY2sgYWxsb3dlZAo+
-ID4gZXBfcG9sbF9jYWxsYmFjaygpIChwcm9kdWNlciBzaWRlLCBydW5uaW5nIGZyb20gSVJRIGNv
-bnRleHQgb24gYW55IENQVSkKPiA+IHRvIHVzZSByZWFkX2xvY2ssIHdoaWNoIGRvZXMgbm90IGNh
-dXNlIGNyb3NzLUNQVSBjb250ZW50aW9uIG9uIGlzb2xhdGVkCj4gPiBjb3JlcyB3aGVuIG5vIGxv
-Y2FsIGVwb2xsIGFjdGl2aXR5IGV4aXN0cy4gV2l0aCB0aGUgc3BpbmxvY2sgY29udmVyc2lvbiwK
-PiA+IG9uIFBSRUVNUFRfUlQgc3BpbmxvY2tfdCBiZWNvbWVzIGFuIHJ0X211dGV4LiBUaGlzIG1l
-YW5zIHRoYXQgZXZlbiBpZgo+ID4gdGhlIGlzb2xhdGVkIGNvcmUgaXMgbm90IGludm9sdmVkIGlu
-IGFueSBlcG9sbCBhY3Rpdml0eSwgdGhlIGxvY2sncwo+ID4gY2FjaGVsaW5lIGJvdW5jaW5nIGFu
-ZCBwb3RlbnRpYWwgUEktYm9vc3RlZCB3YWtldXBzIGZyb20gaG91c2VrZWVwaW5nCj4gPiBDUFVz
-IGNhbiBpbmplY3Qgbm9pc2UgaW50byB0aGUgaXNvbGF0ZWQgY29yZXMgdmlhIElQSSBvciBjYWNo
-ZQo+ID4gaW52YWxpZGF0aW9uIHRyYWZmaWMuCj4gCj4gVGhhdCBzb3VuZHMgbGlrZSBhIGdlbmVy
-YWwgaXNvbGF0aW9uIHByb2JsZW0uLi4gaXQncyBub3QgYSBidWcgZm9yIG5vbi0KPiBpc29sYXRl
-ZCBDUFVzIHRvIGJvdW5jZSBjYWNoZWxpbmVzIG9yIHNlbmQgSVBJcyB0byBlYWNoIG90aGVyLgo+
-IAo+IFdoZXRoZXIgaXQncyBJUElzIG9yIG5vdCwgb3Nub2lzZSBpcyBzaG93aW5nIElSUXMgb24g
-dGhlIGlzb2xhdGVkIENQVXMsCj4gc28gSSdkIGxvb2sgaW50byB3aGljaCBJUlFzIGFuZCB3aHku
-wqAgRXZlbiB3aXRoIHRoZSBwYXRjaCByZXZlcnRlZCwKPiB0aGVyZSBhcmUgc29tZSBJUlFzIG9u
-IHRoZSBpc29sYXRlZCBDUFVzLgo+IAo+ID4gCj4gPiBUaGUgY29tbWl0IG1lc3NhZ2UgYWNrbm93
-bGVkZ2VzIHRoZSB0aHJvdWdocHV0IHJlZ3Jlc3Npb24gYnV0IGFyZ3Vlcwo+ID4gcmVhbCB3b3Jr
-bG9hZHMgd29uJ3Qgbm90aWNlLiBIb3dldmVyLCBmb3IgUlQvbGF0ZW5jeS1zZW5zaXRpdmUKPiA+
-IGRlcGxveW1lbnRzIHdpdGggQ1BVIGlzb2xhdGlvbiwgdGhlIGltcGFjdCBpcyBzZXZlcmUgYW5k
-IG1lYXN1cmFibGUKPiA+IGV2ZW4gd2l0aCB6ZXJvIGxvY2FsIGVwb2xsIHVzYWdlLgo+ID4gCj4g
-PiBJIGJlbGlldmUgdGhpcyBuZWVkcyBlaXRoZXI6Cj4gPiDCoMKgIGEpIEEgcmV2ZXJ0IG9mIHRo
-ZSBiYWNrcG9ydCBmb3Igc3RhYmxlIFJUIHRyZWVzLCBvcgo+IAo+IEV2ZW4gaWYgdGhlIHBhdGNo
-IHdlcmVuJ3QgdHJ5aW5nIHRvIGFkZHJlc3MgYW4gUlQgaXNzdWUgaW4gdGhlIGZpcnN0Cj4gcGxh
-Y2UsIHRoaXMgd291bGQganVzdCBiZSBhIGJhbmRhaWQgcmF0aGVyIHRoYW4gYSByZWFsIHNvbHV0
-aW9uLgoKQSByZXZlcnQgYWxvbmUgaXMgbm90IGFuIG9wdGlvbiBhcyBpdCB3b3VsZCBicmluZyBi
-YWNrIFsxXSBhbmQgWzJdIGZvcgphbGwgTFRTIHJlbGVhc2VzIHRoYXQgZGlkIG5vdCByZWNlaXZl
-IFszXS4gSWYgbXkgbWVtb3J5IGlzIGNvcnJlY3Qgb25seQo2LjE4IGhhcyBpdC4KClRoZSByZXN1
-bHQgd2FzIGEgc3lzdGVtIGxvY2t1cCBlYXNpbHkgdHJpZ2dlcmVkIGJ5IHVzaW5nIHRoZSBlcG9s
-bAppbnRlcmZhY2UuCgpbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtcnQtdXNlcnMv
-MjAyMTA4MjUxMzI3NTQuR0E4OTU2NzVAbG90aHJpbmdlbi8KWzJdIGh0dHBzOi8vbG9yZS5rZXJu
-ZWwub3JnL2xpbnV4LXJ0LXVzZXJzL3hoc21odHRxdm5hbGwubW9nbmV0QHZzY2huZWlkLnJlbW90
-ZS5jc2IvClszXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNTA4MjkwODExMjAuODA2
-LTEtemlxaWFubHVAYnl0ZWRhbmNlLmNvbS8KCgpGbG9yaWFuCg==
+The E825C SyncE support added in commit ad1df4f2d591 ("ice: dpll:
+Support E825-C SyncE and dynamic pin discovery") introduced a SyncE
+reconfiguration block in ice_ptp_link_change() that prevents
+ice_ptp_port_phy_restart() from being called in several error paths.
+Without the PHY restart, PTP timestamps stop working after any link
+change event.
+
+There are three ways the PHY restart gets blocked:
+
+1. When DPLL initialization fails (e.g. missing ACPI firmware node
+   properties), ICE_FLAG_DPLL is not set and the function returns early
+   before reaching the PHY restart.
+
+2. When ice_tspll_bypass_mux_active_e825c() fails to read the CGU
+   register, WARN_ON_ONCE fires and the function returns early.
+
+3. When ice_tspll_cfg_synce_ethdiv_e825c() fails to configure the
+   clock divider for an active pin, same early return.
+
+SyncE and PTP are independent features. SyncE reconfiguration failures
+must not prevent the PTP PHY restart that is essential for timestamp
+recovery after link changes.
+
+Fix by making the entire SyncE block conditional on ICE_FLAG_DPLL
+without an early return, and replacing the WARN_ON_ONCE + return error
+handling inside the loop with dev_err_once + break. The function always
+proceeds to ice_ptp_port_phy_restart() regardless of SyncE errors.
+
+Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index 094e96219f4565..60bc47099432a2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -1296,12 +1296,10 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+ 	if (pf->hw.reset_ongoing)
+ 		return;
+ 
+-	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825) {
++	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825 &&
++	    test_bit(ICE_FLAG_DPLL, pf->flags)) {
+ 		int pin, err;
+ 
+-		if (!test_bit(ICE_FLAG_DPLL, pf->flags))
+-			return;
+-
+ 		mutex_lock(&pf->dplls.lock);
+ 		for (pin = 0; pin < ICE_SYNCE_CLK_NUM; pin++) {
+ 			enum ice_synce_clk clk_pin;
+@@ -1314,15 +1312,19 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+ 								port_num,
+ 								&active,
+ 								clk_pin);
+-			if (WARN_ON_ONCE(err)) {
+-				mutex_unlock(&pf->dplls.lock);
+-				return;
++			if (err) {
++				dev_err_once(ice_pf_to_dev(pf),
++					     "Failed to read SyncE bypass mux for pin %d, err %d\n",
++					     pin, err);
++				break;
+ 			}
+ 
+ 			err = ice_tspll_cfg_synce_ethdiv_e825c(hw, clk_pin);
+-			if (active && WARN_ON_ONCE(err)) {
+-				mutex_unlock(&pf->dplls.lock);
+-				return;
++			if (active && err) {
++				dev_err_once(ice_pf_to_dev(pf),
++					     "Failed to configure SyncE ETH divider for pin %d, err %d\n",
++					     pin, err);
++				break;
+ 			}
+ 		}
+ 		mutex_unlock(&pf->dplls.lock);
+-- 
+2.52.0
 
 
