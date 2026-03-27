@@ -1,51 +1,68 @@
-Return-Path: <stable+bounces-230687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA/kG/CzxmmiNgUAu9opvQ
-	(envelope-from <stable+bounces-230687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:44:32 +0100
+	id eNkiE120xmmgNwUAu9opvQ
+	(envelope-from <stable+bounces-230688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:46:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A499347A70
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:44:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A413F347AF1
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2FF230FD2B3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2463931C5C3D
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD0F355F23;
-	Fri, 27 Mar 2026 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE4235C1B5;
+	Fri, 27 Mar 2026 16:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YiI6Npr6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WVwFT3Uk"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE7034A3D8;
-	Fri, 27 Mar 2026 16:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3072F1EB5FD;
+	Fri, 27 Mar 2026 16:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774628713; cv=none; b=GH7KQ5jJJ7B257d6Lg/hhM7fYQ2VYLTtu/kAlgHXLgTFFXfuZ6WKADb4pKd2mSdoD361JGbpD7L66In2ydO4FrGomUr99cQtXZvIcUa2H2jnNGa68/lMNwGsH6pD02/AojnQMdxx0hvFIvQDswP4h4hG9QLnEIx2lGNfwSEu4nQ=
+	t=1774628887; cv=none; b=nCwX3pg/MKq7Kb+dNXE4UdqnsdiDi0v2ZDgTwMvZl2NWOXsRKB3ys2Tk3wope/VPKmD7c/wNp/iWGroqmePKBrt78bIGsAX7Y2AGC51nqsPhRrN8AUsgXxI+PY5i9Jkse26/r0VOzwc7hLo1K83umMpX7ZFrOP/T9jrtN2uExCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774628713; c=relaxed/simple;
-	bh=o37e/u2s3ApNY3T2Mivm5sQi2e7lLw78zt9EIlgSSfo=;
+	s=arc-20240116; t=1774628887; c=relaxed/simple;
+	bh=SrWPints0vHGYHWyPjQHx90+UPQQEFjUU6Wx7ybHNCA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fcPRprlC2tUEiTqAwVPHTleBR11qdNlaqApv/RHHTJmszMJeGPStI6XWuKoiaopb5N+PrJHQqNX8K3YUDtz2s4acXj7Q180NWfbHbfZZQ1OSR8JFay/ZRWJQURH5umL16AkyYs/XbNV9YCp0PAQEsFSJRKHUYDWKLCb3RlcxDhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YiI6Npr6; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 24FC935DA;
-	Fri, 27 Mar 2026 09:25:05 -0700 (PDT)
-Received: from [10.163.180.175] (unknown [10.163.180.175])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB3E73F905;
-	Fri, 27 Mar 2026 09:25:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774628711; bh=o37e/u2s3ApNY3T2Mivm5sQi2e7lLw78zt9EIlgSSfo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YiI6Npr6YyJq4PlBLVpfqiUTOOL161bptBTF8MU82La2TI82X2RO4XSVDq+AGrDXt
-	 LHhV9Pdl3j6OF27Npzjr4tIAziCsnEIupAbkdCevLtRBxf4jTYQjxcj+BAnG3ri7lV
-	 w2AICP2O5dCu263VnHUEwfdWQqetcjrXRZ2nJ/Wg=
-Message-ID: <346eeb8c-616b-4f4e-b811-ad1a3ae4a58f@arm.com>
-Date: Fri, 27 Mar 2026 21:54:43 +0530
+	 In-Reply-To:Content-Type; b=GWdTWgjhXOrG5gWOWIt75zsoWPMdXczQrtspZvKvuzWB87jDN21eOm5TvcmhDiwxiItzByaplJaw2wAjuRymuu0eYnIm0iViBMSRas5JduA+sRG/JQjD54YM/mFnKf0/+t4FOBtBgwA+paAyVFaRN2zq+GVFQf2P9MVOcqW/er0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WVwFT3Uk; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774628886; x=1806164886;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SrWPints0vHGYHWyPjQHx90+UPQQEFjUU6Wx7ybHNCA=;
+  b=WVwFT3UknHktYmTf6mDlPVFHQzFsB+n9E+1UtWdmo+Yf6v2UMFF/VILo
+   hY9iLnCiXiMXAVpz8XbuYG7xJf/abYtJ1VN56Lu4pEdLk4s9zXaBV6lKO
+   kUaYWIByTEENXvDIqZxSZYBUfXWbFzeG19n16JLxY/b2ysSeUJPSxBg4z
+   95h/shwSz6i8AnGtxd3hoFCxvJaBCHL0jmgW64BRjOWs/V3eAi+e2BSsG
+   q1UrauMSWruiY8XFSEWY18wH9MpmWpuKd3i8Kqrq2fr9CtFycA44AMk8i
+   QlQrVjOU03hHDK7KOOUBHqTkyuPsPgjfkrEW1vMDthzc6IKq/E8V7nyIN
+   w==;
+X-CSE-ConnectionGUID: zfcZnkRsRluY9t29ixb7Pw==
+X-CSE-MsgGUID: iScAQm9EQg+IZvZ77CoE5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="101164638"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="101164638"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 09:28:06 -0700
+X-CSE-ConnectionGUID: I2iv5+elRe63QVWojFX58Q==
+X-CSE-MsgGUID: z4Sf5YEUQ9SY46Mwe0Oxsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="218742875"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.180]) ([10.125.110.180])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 09:28:05 -0700
+Message-ID: <d1cf65bc-7c0f-4f17-9c22-418a2f6df367@intel.com>
+Date: Fri, 27 Mar 2026 09:28:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,134 +70,199 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Harry Yoo (Oracle)" <harry@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>,
- Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
- "Paul E. McKenney" <paulmck@kernel.org>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
- <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
- <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
- <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
- <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
- <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com> <acZVS-ehXCtvcA9s@hyeyoo>
- <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
+Subject: Re: [PATCH 1/9] cxl/region: Fix use-after-free from auto assembly
+ failure
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: patches@lists.linux.dev, linux-cxl@vger.kernel.org,
+ alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ stable@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20260327052821.440749-1-dan.j.williams@intel.com>
+ <20260327052821.440749-2-dan.j.williams@intel.com>
 Content-Language: en-US
-From: Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>
-In-Reply-To: <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20260327052821.440749-2-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,oracle.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230687-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230688-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aishwarya.rambhadran@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:dkim,arm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1A499347A70
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: A413F347AF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi all,
 
-Thanks for the discussion and the insights.
 
-For completeness, the SUTs used are single NUMA node:
-$ numactl -H
-available: 1 nodes (0)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
-43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
-node 0 size: 257218 MB
-node 0 free: 255376 MB
-node distances:
-node   0
-   0:  10
+On 3/26/26 10:28 PM, Dan Williams wrote:
+> The following crash signature results from region destruction while an
+> endpoint decoder is staged, but not fully attached.
+> 
+> ---
+>  BUG: KASAN: slab-use-after-free in __cxl_decoder_detach+0x724/0x830 [cxl_core]
+>  Read of size 8 at addr ffff888265638840 by task modprobe/1287
+> 
+>  Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x68/0x90
+>   print_report+0x170/0x4e2
+>   kasan_report+0xc2/0x1a0
+>   __cxl_decoder_detach+0x724/0x830 [cxl_core]
+>   cxl_decoder_detach+0x6c/0x100 [cxl_core]
+>   unregister_region+0x88/0x140 [cxl_core]
+>   devres_release_all+0x172/0x230
+> ---
+> 
+> The "staged" state is established by cxl_region_attach_auto() and finalized
+> by cxl_region_attach_position(). When that is finalized a memdev removal
+> event will destroy regions before endpoint decoders. However, in the
+> interim the memdev removal will falsely assume that the endpoint decoder is
+> unattached. Later, the eventual region removal finds the stale pointer to
+> the now freed endpoint decoder.
+> 
+> Introduce CXL_DECODER_STATE_AUTO_STAGED and cxl_cancel_auto_attach() to
+> cleanup this interim state.
+> 
+> Fixes: a32320b71f08 ("cxl/region: Add region autodiscovery")
+> Cc: <stable@vger.kernel.org>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-As suggested by Ryan, I re-ran and compared the perf benchmarks
-across 6.17, 6.18, and later kernels. The behavior is consistent
-with what has been discussed in this thread and aligns with our
-observations.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-Thanks again for the clarifications and apologies for the table
-rendering issues in the initial email.
 
-Regards,
-Aishwarya Rambhadran
-
-On 27/03/26 4:51 PM, Vlastimil Babka (SUSE) wrote:
-> On 3/27/26 11:00, Harry Yoo (Oracle) wrote:
->> On Fri, Mar 27, 2026 at 08:58:36AM +0000, Ryan Roberts wrote:
->>>>>>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote: 
->>>>>> Right so there should be just the overhead of the extra 
->>>>>> is_vmalloc_addr() test. Possibly also the call of 
->>>>>> kfree_rcu_sheaf() if it's not inlined. I'd say it's something we 
->>>>>> can just accept? It seems this is a unit test being used as a 
->>>>>> microbenchmark, so it can be very sensitive even to such details, 
->>>>>> but it should be negligible in practice. 
->>>>> The perf/syscall cases might be a bit more concerning though? 
->>>>> (those tests are from "perf bench syscall fork|execve"). Yes they 
->>>>> are microbenchmarks, but a 7% increased cost for fork seems like 
->>>>> something we'd want to avoid if we can. 
->>>> Sure, I tried to explain those in my first reply. Harry then linked 
->>>> to how that explanation can be verified. Hopefully it's really the 
->>>> same reason. 
->>> Ahh sorry I missed your first email. We only added that benchmark 
->>> from 6.19 so don't have results for earlier kernels, but I'll ask 
->>> Aishu to run it for 6.17 and 6.18 to see if the results correlate 
->>> with your expectation. But from a high level perspective, a 7% 
->>> regression on fork is not ideal even if there was a 7% improvement 
->>> in 6.18. 
-> In retrospect it was an oversight not to disable the pre-existing cpu 
-> caching layer immediately for sheaf-enabled caches in 6.18. Can't undo 
-> that mistake now, unfortunately.
->> If that improvement comes from the number of objects cached per CPU, 
->> I'm not sure if determining the default value (# of cached objs) 
->> based on "a point when microbenchmarks stop improving" is a 
->> reasonable measure because the default value affects all slab caches 
->> and will inevitably increase overall memory usage. 
-> Yeah that's the thing, some workloads might just keep improving as you 
-> throw more caching at them, but there's a memory usage cost to that. A 
-> case of stress test doing nothing but forks might also not be 
-> representative of performance of forks under normal workload where 
-> other operations also happen, returning the related slab objects, so 
-> in the end it doesn't expose the batch size that much.
->> Hopefully we could discuss what a reasonable heuristic that "works 
->> for most situations" looks like, and allow users to tune it further 
->> based on their needs. As a side note, changing sheaf capacity at 
->> runtime is not supported yet (I'm working on it) and targeting at 
->> least before the next LTS. 
+> ---
+>  drivers/cxl/cxl.h         |  6 +++--
+>  drivers/cxl/core/region.c | 54 ++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 57 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 9b947286eb9b..30a31968f266 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -378,12 +378,14 @@ struct cxl_decoder {
+>  };
+>  
+>  /*
+> - * Track whether this decoder is reserved for region autodiscovery, or
+> - * free for userspace provisioning.
+> + * Track whether this decoder is free for userspace provisioning, reserved for
+> + * region autodiscovery, whether it is started connecting (awaiting other
+> + * peers), or has completed auto assembly.
+>   */
+>  enum cxl_decoder_state {
+>  	CXL_DECODER_STATE_MANUAL,
+>  	CXL_DECODER_STATE_AUTO,
+> +	CXL_DECODER_STATE_AUTO_STAGED,
+>  };
+>  
+>  /**
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index f7b20f60ac5c..b72556c1458b 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -1064,6 +1064,14 @@ static int cxl_rr_ep_add(struct cxl_region_ref *cxl_rr,
+>  
+>  	if (!cxld->region) {
+>  		cxld->region = cxlr;
+> +
+> +		/*
+> +		 * Now that cxld->region is set the intermediate staging state
+> +		 * can be cleared.
+> +		 */
+> +		if (cxld == &cxled->cxld &&
+> +		    cxled->state == CXL_DECODER_STATE_AUTO_STAGED)
+> +			cxled->state = CXL_DECODER_STATE_AUTO;
+>  		get_device(&cxlr->dev);
+>  	}
+>  
+> @@ -1805,6 +1813,7 @@ static int cxl_region_attach_auto(struct cxl_region *cxlr,
+>  	pos = p->nr_targets;
+>  	p->targets[pos] = cxled;
+>  	cxled->pos = pos;
+> +	cxled->state = CXL_DECODER_STATE_AUTO_STAGED;
+>  	p->nr_targets++;
+>  
+>  	return 0;
+> @@ -2154,6 +2163,47 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+>  	return 0;
+>  }
+>  
+> +static int cxl_region_by_target(struct device *dev, const void *data)
+> +{
+> +	const struct cxl_endpoint_decoder *cxled = data;
+> +	struct cxl_region_params *p;
+> +	struct cxl_region *cxlr;
+> +
+> +	if (!is_cxl_region(dev))
+> +		return 0;
+> +
+> +	cxlr = to_cxl_region(dev);
+> +	p = &cxlr->params;
+> +	return p->targets[cxled->pos] == cxled;
+> +}
+> +
+> +/*
+> + * When an auto-region fails to assemble the decoder may be listed as a target,
+> + * but not fully attached.
+> + */
+> +static void cxl_cancel_auto_attach(struct cxl_endpoint_decoder *cxled)
+> +{
+> +	struct cxl_region_params *p;
+> +	struct cxl_region *cxlr;
+> +	int pos = cxled->pos;
+> +
+> +	if (cxled->state != CXL_DECODER_STATE_AUTO_STAGED)
+> +		return;
+> +
+> +	struct device *dev __free(put_device) = bus_find_device(
+> +		&cxl_bus_type, NULL, cxled, cxl_region_by_target);
+> +	if (!dev)
+> +		return;
+> +
+> +	cxlr = to_cxl_region(dev);
+> +	p = &cxlr->params;
+> +
+> +	p->nr_targets--;
+> +	cxled->state = CXL_DECODER_STATE_AUTO;
+> +	cxled->pos = -1;
+> +	p->targets[pos] = NULL;
+> +}
+> +
+>  static struct cxl_region *
+>  __cxl_decoder_detach(struct cxl_region *cxlr,
+>  		     struct cxl_endpoint_decoder *cxled, int pos,
+> @@ -2177,8 +2227,10 @@ __cxl_decoder_detach(struct cxl_region *cxlr,
+>  		cxled = p->targets[pos];
+>  	} else {
+>  		cxlr = cxled->cxld.region;
+> -		if (!cxlr)
+> +		if (!cxlr) {
+> +			cxl_cancel_auto_attach(cxled);
+>  			return NULL;
+> +		}
+>  		p = &cxlr->params;
+>  	}
+>  
 
 
