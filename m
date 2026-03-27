@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-230639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MtWH9JpxmmkJwUAu9opvQ
-	(envelope-from <stable+bounces-230639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:28:18 +0100
+	id uAQhE09qxmmkJwUAu9opvQ
+	(envelope-from <stable+bounces-230640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:30:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF683436FD
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:28:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BF9343758
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:30:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29664302D5F9
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:27:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1248E303C86B
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A321D3BED1D;
-	Fri, 27 Mar 2026 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9E23E3D85;
+	Fri, 27 Mar 2026 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrQuJqkf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npyekksz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB8C34E755;
-	Fri, 27 Mar 2026 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC33DC4A4;
+	Fri, 27 Mar 2026 11:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774610853; cv=none; b=Jvd/Nm6pgdu6amARe30Pm2osXoC6GG+l3oCMj+4rTn4mmtJiI217TqvuM4LKj6dvm6Ee2faQsuQeyX9I0P4MVaI3K4N00Z5hJ26/kqNF5eTYRs6t0KClJzutMOWyIe0afz30FxMlZtcUNr2sxBsqBBsp2o7dr4KoxZRqkX+N7ng=
+	t=1774610921; cv=none; b=q5iyFZtTHqB6fkA40b2g5eEp+33ifgqA21cpJxBH+Bu3NMrd7VIMU6y7yw6Im1p0TiVEB0HqwQMhDOMxd2bY3ynaDlp8FTEUqxptFOMyDIVH201xD/5QCp/J1CnUqGEnALwLIQCHar7HD+fDHmt+DuXN806SYP1FakztXiMyjEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774610853; c=relaxed/simple;
-	bh=WmFJlNvZHGYXUq61O9RjDMuzddoHfNL+ByXwaPGC+Rw=;
+	s=arc-20240116; t=1774610921; c=relaxed/simple;
+	bh=iasJ4QWocp2ZzX8ajhF2a0x2zaj/ryj6nhV9m0U9Orw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SoY/NH5mUjOczC7jh/OAAeC0TDllOGIncW1GkmfvxJbo4JOZT7XzNERtEKUoNhCqHWNzdbTDO6UgaWo7y6MDfEX+9YTTNFor2AuQP663ttbtpg53Y5s/S+1dV0c7wASWS1wBQJIjoeFnTK2K/lS82mAbWW5KmrhbZKYg0D3JTj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrQuJqkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F68C19423;
-	Fri, 27 Mar 2026 11:27:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=gfUICchYwnuZuGw1y77ZdN9djCFJ7bSbizG1SMUH//sfGZNeXhNhuXtA8FSHF8ltwE77m8Sw3rrxhA3NY+JUTVq1Rv5b4qL5An8ETb9vatyYwzWAtCi+HTf/Y02qE1uVsYf+V2e8YaKri1Wnf9kbOi8Lr2E3OmM4l2drIOaAmcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npyekksz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6ECC19423;
+	Fri, 27 Mar 2026 11:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774610853;
-	bh=WmFJlNvZHGYXUq61O9RjDMuzddoHfNL+ByXwaPGC+Rw=;
+	s=k20201202; t=1774610921;
+	bh=iasJ4QWocp2ZzX8ajhF2a0x2zaj/ryj6nhV9m0U9Orw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MrQuJqkfL9Epgatks420ZueD2J++U90FxUczhyF1qsz1DrLqcHPnOX806Atq78AjL
-	 aIrmN9JJK++VN34Gmzc7VXm2eO4Nv5dzI1LOYJfV4HQL1IhsTHHPJLkrzt2BjmdL0d
-	 25+UdyqLpptCDbAyJ+cRO4AzG+FsjQC4vRsW/VWgZ+Rb6hysvNoDyOpJD4tZhy/02h
-	 gtGcHnLX15sgwnYVYiztSOqEMrEbnfDM+SO2XocoFvTl+Y4NnyEJ7JAJ4CPbYbwU2F
-	 Tdegm3LXeTsKsBNgvPmTwkcoJayAKrC8b8vp3ihotCqIbQUHKV4xfOV1wUeoaS7lSz
-	 kKuFkWHGhwiNA==
+	b=npyekkszAMo/Q1yUelVG3+xe7sV/JPxwyW/XinuhHGlU+njuBoNHF4jZVGZTs14u6
+	 CJrFPDX6Ns5RyfT7pG24ibaM78TolkQeO0lVq2gbhlaNRhaHS7tQ+A+2B5UKH0R7p9
+	 oennoKctGnvUyIwbAW1o0eYRo6vC8MUutztmvF+VRK54h8LEkwMkIczyWnbKzsQc8W
+	 A9hsLlDlRLGVTwm1RRv4sqEt6ZigPtJbEKYQC3FmsNyYmZTa8rJUIrar3iwbTvsNpv
+	 LvHo+MKmIHmF49brQGjBi9/Qr6pCMM4CSwp+NQz8JYFiWLJSGOMZ79a538HPn9TXz2
+	 CXGsGdzTKpAMw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w65Le-00000005VcX-3Ddy;
-	Fri, 27 Mar 2026 12:27:30 +0100
-Date: Fri, 27 Mar 2026 12:27:30 +0100
+	id 1w65Mk-00000005VeL-33oV;
+	Fri, 27 Mar 2026 12:28:38 +0100
+Date: Fri, 27 Mar 2026 12:28:38 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Greg KH <greg@kroah.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: cx231xx: fix devres lifetime
-Message-ID: <acZpot3pM7_5xus8@hovoldconsulting.com>
-References: <20260327104355.1310012-1-johan@kernel.org>
- <2026032742-sublet-wolverine-e88d@gregkh>
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>
+Subject: Re: [PATCH] wifi: rt2x00usb: fix devres lifetime
+Message-ID: <acZp5kY0U_dTfbD_@hovoldconsulting.com>
+References: <20260327104726.1310327-1-johan@kernel.org>
+ <20260327110730.GA16592@wp.pl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,56 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2026032742-sublet-wolverine-e88d@gregkh>
+In-Reply-To: <20260327110730.GA16592@wp.pl>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230639-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230640-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[wp.pl];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DFF683436FD
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hovoldconsulting.com:mid]
+X-Rspamd-Queue-Id: B0BF9343758
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 12:08:24PM +0100, Greg Kroah-Hartman wrote:
-> On Fri, Mar 27, 2026 at 11:43:55AM +0100, Johan Hovold wrote:
+On Fri, Mar 27, 2026 at 12:07:30PM +0100, Stanislaw Gruszka wrote:
+> Hi
+> 
+> On Fri, Mar 27, 2026 at 11:47:26AM +0100, Johan Hovold wrote:
 > > USB drivers bind to USB interfaces and any device managed resources
 > > should have their lifetime tied to the interface rather than parent USB
 > > device. This avoids issues like memory leaks when drivers are unbound
 > > without their devices being physically disconnected (e.g. on probe
 > > deferral or configuration changes).
 > > 
-> > Fix the driver state lifetime so that it is released on driver unbind.
+> > Fix the USB anchor lifetime so that it is released on driver unbind.
+> > 
+> > Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
 > 
-> Wow, I bet we have a lot of these now, did you find this with a script
-> or something that you can run over the whole tree?
+> Fix tag is wrong (and also cc based on it). Tag should be:
+> 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB").
 
-I spotted one driver that got this wrong while fixing another bug and
-grepped for similar issues tree wide.
-
-I think I got most of them fixed now, but I'll do another pass in case
-my grep patterns were too restrictive (e.g. I think they were limited to
-probe functions).
+Of course, thanks for catching that. I'll send a v2.
 
 Johan
 
