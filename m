@@ -1,268 +1,202 @@
-Return-Path: <stable+bounces-230688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNkiE120xmmgNwUAu9opvQ
-	(envelope-from <stable+bounces-230688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:46:21 +0100
+	id 2P37HqW1xmmgNwUAu9opvQ
+	(envelope-from <stable+bounces-230689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:51:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A413F347AF1
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:46:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF5A347D65
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2463931C5C3D
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:32:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A29D30DB62E
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE4235C1B5;
-	Fri, 27 Mar 2026 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF91342CBA;
+	Fri, 27 Mar 2026 16:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WVwFT3Uk"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Awk6qrQm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3072F1EB5FD;
-	Fri, 27 Mar 2026 16:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED485341ADF;
+	Fri, 27 Mar 2026 16:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774628887; cv=none; b=nCwX3pg/MKq7Kb+dNXE4UdqnsdiDi0v2ZDgTwMvZl2NWOXsRKB3ys2Tk3wope/VPKmD7c/wNp/iWGroqmePKBrt78bIGsAX7Y2AGC51nqsPhRrN8AUsgXxI+PY5i9Jkse26/r0VOzwc7hLo1K83umMpX7ZFrOP/T9jrtN2uExCY=
+	t=1774629790; cv=none; b=CIfO/VSSnmCznZhxOBMg/C6UWzlQBF5eNK5UvozT/bVFEw0s6dj8YseQaIH39eWUtA/JTI4VjW/70Y8MXFRUkhyFaxJuepSFF+tBeBjrPT8qW75hLGxaZYoIB3I5ZIHLFNeQtg/2KppXb4ncmogWBp4eLfsfhahBN9gW4pboE3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774628887; c=relaxed/simple;
-	bh=SrWPints0vHGYHWyPjQHx90+UPQQEFjUU6Wx7ybHNCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GWdTWgjhXOrG5gWOWIt75zsoWPMdXczQrtspZvKvuzWB87jDN21eOm5TvcmhDiwxiItzByaplJaw2wAjuRymuu0eYnIm0iViBMSRas5JduA+sRG/JQjD54YM/mFnKf0/+t4FOBtBgwA+paAyVFaRN2zq+GVFQf2P9MVOcqW/er0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WVwFT3Uk; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774628886; x=1806164886;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SrWPints0vHGYHWyPjQHx90+UPQQEFjUU6Wx7ybHNCA=;
-  b=WVwFT3UknHktYmTf6mDlPVFHQzFsB+n9E+1UtWdmo+Yf6v2UMFF/VILo
-   hY9iLnCiXiMXAVpz8XbuYG7xJf/abYtJ1VN56Lu4pEdLk4s9zXaBV6lKO
-   kUaYWIByTEENXvDIqZxSZYBUfXWbFzeG19n16JLxY/b2ysSeUJPSxBg4z
-   95h/shwSz6i8AnGtxd3hoFCxvJaBCHL0jmgW64BRjOWs/V3eAi+e2BSsG
-   q1UrauMSWruiY8XFSEWY18wH9MpmWpuKd3i8Kqrq2fr9CtFycA44AMk8i
-   QlQrVjOU03hHDK7KOOUBHqTkyuPsPgjfkrEW1vMDthzc6IKq/E8V7nyIN
-   w==;
-X-CSE-ConnectionGUID: zfcZnkRsRluY9t29ixb7Pw==
-X-CSE-MsgGUID: iScAQm9EQg+IZvZ77CoE5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="101164638"
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="101164638"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 09:28:06 -0700
-X-CSE-ConnectionGUID: I2iv5+elRe63QVWojFX58Q==
-X-CSE-MsgGUID: z4Sf5YEUQ9SY46Mwe0Oxsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="218742875"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.180]) ([10.125.110.180])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 09:28:05 -0700
-Message-ID: <d1cf65bc-7c0f-4f17-9c22-418a2f6df367@intel.com>
-Date: Fri, 27 Mar 2026 09:28:04 -0700
+	s=arc-20240116; t=1774629790; c=relaxed/simple;
+	bh=mQ/JSz+CKJtWutzkgkYxzpBGTZ9QtEkXBi6RD9kDOLE=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=gmB4QxvzBTkwn4eUyb/A6Gk1FjT8fpgdbR+phaZwyE80oytGqH1u8DzPcADLMCwA52iZygxJbMVzekkkjQFgXO0y6QW+Uh/D+us91fQZeGhZvUWgeQoL6cL+Qq+fc4g9qmGPQVwvJAeLaCGA5eyVvMMpBMLw4hxkbsoH2pHiskM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Awk6qrQm; arc=none smtp.client-ip=43.163.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774629782; bh=UroK1ySqjbLJQwKcb7vPgXzRaw08F6AMfh8Pj4bu2ew=;
+	h=From:To:Cc:Subject:Date;
+	b=Awk6qrQms55Of76PL2KcAhPGj5g+Ez0cIf1Fstj064T0N2F5G0UGKF5RxtoSimMOD
+	 vTH8KaNthf4YMU27SlasFV4ReC/w4tnaO7BB9ctBPZypWEVsVtSp+EiN8JSCKIgW/+
+	 /YOfZQ7GaJKUZnOLUOteqtSKzwyPoPTV+vMweyFQ=
+Received: from LAPTOP-KQCD4QBN.localdomain ([183.242.199.70])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id ABB93C66; Sat, 28 Mar 2026 00:42:59 +0800
+X-QQ-mid: xmsmtpt1774629779tm9r2nd56
+Message-ID: <tencent_4E3977BB234AAFC65C503EF35B9C54DC140A@qq.com>
+X-QQ-XMAILINFO: MZtEYADUG4AgAeOlNmeDWbNl1yYje6epPQ+N2n10UY8Fgz/hRCIf5BLLDYGOSU
+	 iCinbi+h9v6N+twFrDJ/OfBOyj07gReOa8W4EmAu2uLS1axIVZtclurbb+JrCHRl8EhI9diFhNvj
+	 7ovKPbyBUuBwYYAvXvZqbIu+Edr47SflO7Rx3kzVEPDmx3mMUudGVSmQnMk1hh+Zg8ywZCehnR5n
+	 FQHUCDJdJX+cwjkUSYXe9spufgRu2QK5p2GPiSO43t9FRoKnxYpPTCV1e4QC1HWRJzlG0J5Gn0Zf
+	 zfu+Ko0fcu/9PMrEhHcHCKBUw5p+hGBSXeCM05RcdRViyg9h34Esk0sact8hwlcI9AfmxxQ8iIzy
+	 H/Pvj1r/11ywODnj1C2nN7MHE9bWh4DPYCADQB6KclkJ2xfkEnpLKPgIcjQlvC+yFbmjqbwJzmFD
+	 7mAG82mQPFSumrUxPSmOZkt8eY/VC046peT7+r8a4MnBGmtakC4OMSfdnmOLUof2MDfn2m4x/OWl
+	 u0xZ8Gxe0gTQ5356SZet/Cox+mYg4qdeCACYgTd1Lz/8PlV+/Vu4pkFx5xX4U8MjUXeinObVk8t5
+	 f+Ts94aQqzFH8cvKKSNpH4RKxyktjkiJKeqob/U1TyKz5FgL+i8r9SrxnBdwLzlE9ck5Lgi4z6uG
+	 rZsB3tatk2vM8xFwJBap5gkVgnQmA009bwKiWskNr/gUha4XyW/bo464PqhH++2fT8Lp+6NNS3QE
+	 qjnE7kawG0kzSBmLYvHy++sfBnoTxOjc58Zy/Qw5+2HNik4XbNbvEzTefKO1GwwCSQNKSL2xc1s7
+	 Z6bPSf4u3xNLPbiglTSMyA483qquy1uy7bgrZpa1ifN8Hfzj470N4BXsXVg5nbRpmEFkSxCE/8lS
+	 Ncexn5Yt1XSJKItqwXkzJQ0ewfTYbmnRAZAWUDZYt4NSkZb5QT52aQSbyFNOQ6tTd9DpIqms7F8W
+	 fgUYl/HOHAt4OXMhzWDNMq9BTMaJF5+JhYl19Of/zxJOA7RUjko+Q4hsjI9swjPgnlt6TKFYKS7X
+	 4CMHppTvgEpuGG6AHkmbjtbI8KfNk=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: Wenyuan Li <2063309626@qq.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Markus Elfring <Markus.Elfring@web.de>,
+	gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	Wenyuan Li <2063309626@qq.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] media: tuner: check return value of I2C transfers in set_type()
+Date: Sat, 28 Mar 2026 00:42:58 +0800
+X-OQ-MSGID: <20260327164258.2503-1-2063309626@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] cxl/region: Fix use-after-free from auto assembly
- failure
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: patches@lists.linux.dev, linux-cxl@vger.kernel.org,
- alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
- stable@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20260327052821.440749-1-dan.j.williams@intel.com>
- <20260327052821.440749-2-dan.j.williams@intel.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260327052821.440749-2-dan.j.williams@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230688-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,bjtu.edu.cn,qq.com];
+	TAGGED_FROM(0.00)[bounces-230689-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: A413F347AF1
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EAF5A347D65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+In set_type(), several I2C transfers are performed to initialize
+specific tuners (e.g. FMD1216ME, FMD1216MEX, TD1316), but the return
+value of i2c_master_send() is not checked.
 
+If an I2C transfer fails, the initialization sequence may be
+incomplete, potentially leaving the tuner in an inconsistent state
+without any error being reported.
 
-On 3/26/26 10:28 PM, Dan Williams wrote:
-> The following crash signature results from region destruction while an
-> endpoint decoder is staged, but not fully attached.
-> 
-> ---
->  BUG: KASAN: slab-use-after-free in __cxl_decoder_detach+0x724/0x830 [cxl_core]
->  Read of size 8 at addr ffff888265638840 by task modprobe/1287
-> 
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x68/0x90
->   print_report+0x170/0x4e2
->   kasan_report+0xc2/0x1a0
->   __cxl_decoder_detach+0x724/0x830 [cxl_core]
->   cxl_decoder_detach+0x6c/0x100 [cxl_core]
->   unregister_region+0x88/0x140 [cxl_core]
->   devres_release_all+0x172/0x230
-> ---
-> 
-> The "staged" state is established by cxl_region_attach_auto() and finalized
-> by cxl_region_attach_position(). When that is finalized a memdev removal
-> event will destroy regions before endpoint decoders. However, in the
-> interim the memdev removal will falsely assume that the endpoint decoder is
-> unattached. Later, the eventual region removal finds the stale pointer to
-> the now freed endpoint decoder.
-> 
-> Introduce CXL_DECODER_STATE_AUTO_STAGED and cxl_cancel_auto_attach() to
-> cleanup this interim state.
-> 
-> Fixes: a32320b71f08 ("cxl/region: Add region autodiscovery")
-> Cc: <stable@vger.kernel.org>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Check the return value of i2c_master_send() and propagate failures
+to the attach_failed path. A small helper is introduced to reduce
+duplication and provide consistent error reporting.
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+This ensures that I2C communication errors during tuner
+initialization are properly detected and handled.
 
+Fixes: 93df3413f1b4 ("[PATCH] v4l: 655: added support for the philips td1316 tuner")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
 
-> ---
->  drivers/cxl/cxl.h         |  6 +++--
->  drivers/cxl/core/region.c | 54 ++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 57 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 9b947286eb9b..30a31968f266 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -378,12 +378,14 @@ struct cxl_decoder {
->  };
->  
->  /*
-> - * Track whether this decoder is reserved for region autodiscovery, or
-> - * free for userspace provisioning.
-> + * Track whether this decoder is free for userspace provisioning, reserved for
-> + * region autodiscovery, whether it is started connecting (awaiting other
-> + * peers), or has completed auto assembly.
->   */
->  enum cxl_decoder_state {
->  	CXL_DECODER_STATE_MANUAL,
->  	CXL_DECODER_STATE_AUTO,
-> +	CXL_DECODER_STATE_AUTO_STAGED,
->  };
->  
->  /**
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index f7b20f60ac5c..b72556c1458b 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -1064,6 +1064,14 @@ static int cxl_rr_ep_add(struct cxl_region_ref *cxl_rr,
->  
->  	if (!cxld->region) {
->  		cxld->region = cxlr;
-> +
-> +		/*
-> +		 * Now that cxld->region is set the intermediate staging state
-> +		 * can be cleared.
-> +		 */
-> +		if (cxld == &cxled->cxld &&
-> +		    cxled->state == CXL_DECODER_STATE_AUTO_STAGED)
-> +			cxled->state = CXL_DECODER_STATE_AUTO;
->  		get_device(&cxlr->dev);
->  	}
->  
-> @@ -1805,6 +1813,7 @@ static int cxl_region_attach_auto(struct cxl_region *cxlr,
->  	pos = p->nr_targets;
->  	p->targets[pos] = cxled;
->  	cxled->pos = pos;
-> +	cxled->state = CXL_DECODER_STATE_AUTO_STAGED;
->  	p->nr_targets++;
->  
->  	return 0;
-> @@ -2154,6 +2163,47 @@ static int cxl_region_attach(struct cxl_region *cxlr,
->  	return 0;
->  }
->  
-> +static int cxl_region_by_target(struct device *dev, const void *data)
-> +{
-> +	const struct cxl_endpoint_decoder *cxled = data;
-> +	struct cxl_region_params *p;
-> +	struct cxl_region *cxlr;
-> +
-> +	if (!is_cxl_region(dev))
-> +		return 0;
-> +
-> +	cxlr = to_cxl_region(dev);
-> +	p = &cxlr->params;
-> +	return p->targets[cxled->pos] == cxled;
-> +}
-> +
-> +/*
-> + * When an auto-region fails to assemble the decoder may be listed as a target,
-> + * but not fully attached.
-> + */
-> +static void cxl_cancel_auto_attach(struct cxl_endpoint_decoder *cxled)
-> +{
-> +	struct cxl_region_params *p;
-> +	struct cxl_region *cxlr;
-> +	int pos = cxled->pos;
-> +
-> +	if (cxled->state != CXL_DECODER_STATE_AUTO_STAGED)
-> +		return;
-> +
-> +	struct device *dev __free(put_device) = bus_find_device(
-> +		&cxl_bus_type, NULL, cxled, cxl_region_by_target);
-> +	if (!dev)
-> +		return;
-> +
-> +	cxlr = to_cxl_region(dev);
-> +	p = &cxlr->params;
-> +
-> +	p->nr_targets--;
-> +	cxled->state = CXL_DECODER_STATE_AUTO;
-> +	cxled->pos = -1;
-> +	p->targets[pos] = NULL;
-> +}
-> +
->  static struct cxl_region *
->  __cxl_decoder_detach(struct cxl_region *cxlr,
->  		     struct cxl_endpoint_decoder *cxled, int pos,
-> @@ -2177,8 +2227,10 @@ __cxl_decoder_detach(struct cxl_region *cxlr,
->  		cxled = p->targets[pos];
->  	} else {
->  		cxlr = cxled->cxld.region;
-> -		if (!cxlr)
-> +		if (!cxlr) {
-> +			cxl_cancel_auto_attach(cxled);
->  			return NULL;
-> +		}
->  		p = &cxlr->params;
->  	}
->  
+---
+v5:
+- Reword commit message to better explain rationale
+- Clarify error handling approach
+- No functional changes
+
+v4:
+- Added Cc: stable@vger.kernel.org
+- Updated Fixes tag
+---
+ drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/v4l2-core/tuner-core.c b/drivers/media/v4l2-core/tuner-core.c
+index 004ec4d7beea..01f28436a1f8 100644
+--- a/drivers/media/v4l2-core/tuner-core.c
++++ b/drivers/media/v4l2-core/tuner-core.c
+@@ -280,6 +280,19 @@ static const struct analog_demod_ops tuner_analog_ops = {
+  * Functions to select between radio and TV and tuner probe/remove functions
+  */
+ 
++static int tuner_i2c_send(struct i2c_client *c, u8 *buf, int len)
++{
++	int ret = i2c_master_send(c, buf, len);
++
++	if (ret != len) {
++		int err = ret < 0 ? ret : -EIO;
++
++		dev_err(&c->dev, "I2C send failed: %pe\n", ERR_PTR(err));
++		return err;
++	}
++	return 0;
++}
++
+ /**
+  * set_type - Sets the tuner type for a given device
+  *
+@@ -351,11 +364,13 @@ static void set_type(struct i2c_client *c, unsigned int type,
+ 		buffer[1] = 0xdc;
+ 		buffer[2] = 0x9c;
+ 		buffer[3] = 0x60;
+-		i2c_master_send(c, buffer, 4);
++		if (tuner_i2c_send(c, buffer, 4))
++			goto attach_failed;
+ 		mdelay(1);
+ 		buffer[2] = 0x86;
+ 		buffer[3] = 0x54;
+-		i2c_master_send(c, buffer, 4);
++		if (tuner_i2c_send(c, buffer, 4))
++			goto attach_failed;
+ 		if (!dvb_attach(simple_tuner_attach, &t->fe,
+ 				t->i2c->adapter, t->i2c->addr, t->type))
+ 			goto attach_failed;
+@@ -365,7 +380,8 @@ static void set_type(struct i2c_client *c, unsigned int type,
+ 		buffer[1] = 0xdc;
+ 		buffer[2] = 0x86;
+ 		buffer[3] = 0xa4;
+-		i2c_master_send(c, buffer, 4);
++		if (tuner_i2c_send(c, buffer, 4))
++			goto attach_failed;
+ 		if (!dvb_attach(simple_tuner_attach, &t->fe,
+ 				t->i2c->adapter, t->i2c->addr, t->type))
+ 			goto attach_failed;
+-- 
+2.43.0
 
 
