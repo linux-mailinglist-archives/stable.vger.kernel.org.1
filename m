@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-230630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLyULOZgxmm+JAUAu9opvQ
-	(envelope-from <stable+bounces-230630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:50:14 +0100
+	id MDiQApNixmm+JAUAu9opvQ
+	(envelope-from <stable+bounces-230632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:57:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D475342DC9
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:50:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AFF342F4E
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 658C430DED2E
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:47:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 662A4312AB5F
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AFE3DC4BA;
-	Fri, 27 Mar 2026 10:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34103E3C60;
+	Fri, 27 Mar 2026 10:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1JYJtXM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSoU9hMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A49C351C3E;
-	Fri, 27 Mar 2026 10:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F0233F385;
+	Fri, 27 Mar 2026 10:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774608477; cv=none; b=L0WjTx3tXYr4FThXAHDI+tNWMZaYge0SpoDKVSwTsAqNW/bsRNym5SXVKAoP7FkhmhpUV8XL9yq5pTaUx3aokfk789vD3cYdeRTLjqwiwHkoStN/gB4tLYigIGAcJOcdUKdIiIUlSEFuHZ1/CH8sN9xJJUrq69/7CtpTLTgBC4E=
+	t=1774608740; cv=none; b=gQ88tW1i/LRCnwi49CIsG1HuQd5+JndJZX3fTqX87pPp5JHujq1+OAgL+D3FC3BMdsUOsq1DiDInxYWRqPLNcTdGPakJCVQiFntb2EUnbl6z4Qz8vYB2Htd2dIV32kvns5WOdCztHHMuZkUYkeRve7mEPR7YuYutQWc87Bbe9sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774608477; c=relaxed/simple;
-	bh=EY+zApDmLCojDGrospVJyoGtGtB/mFNCfZFnX5EpXno=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qj45YKhuWGV7PcY0g6tMB1VFSVfJqbA8bXXCt4zfVvwxiuwmpjmN5whG3yHwFpcoodxkOUlVJujmFKE6AS+fHkmDHwGJNsEJ5Y1+RlilE9i5Nnt89i7UbwngklEgB1FMm/psIYjPi8ENxYiyMswWKxxskDitzXFrMl/WE7zg9ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1JYJtXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98197C19423;
-	Fri, 27 Mar 2026 10:47:56 +0000 (UTC)
+	s=arc-20240116; t=1774608740; c=relaxed/simple;
+	bh=PIjhqXV96eZdpEdqYKATLZ86ccJJiq7XCV261VUyjdg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GFNG8v281TZSwtP07ScUvqIXyQMNtf7VuPd4aF1fzFkPs83NSmLJ0JWm+hVZELLDm8VBmsnvE4Lds4Q3uih/59qM8i/1sTkssNi4jahM5re0XQgaxvhYiIY9G/BCBdGJSRvkFTLNxiOSXww1pymnCNkxOsdvar2dYrow4lf+rlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSoU9hMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE41C2BC86;
+	Fri, 27 Mar 2026 10:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774608476;
-	bh=EY+zApDmLCojDGrospVJyoGtGtB/mFNCfZFnX5EpXno=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a1JYJtXMJ5pzHCPyty+gsN9EsuWIUkkKwtTTUvYsDKbvi8zoQTEHMLD6d+/txQ8VU
-	 oDWclszowchsZ9M1WGL9o3lG+ypaYob1rrBSS7/Afo7aeuUj7fFOuNNUZRhSZriD75
-	 DxtKJGBC6HMrYWhQhean9mv0eW+8QAZAwLvBvuMSwXe3169YOALUNJr0Zz+mvKY3KP
-	 WPOPmyez8XWNV+n/nAMKAA5TyYaFcnieMYNQSpvQQUanqhep2zur5SsOBknes6dwFL
-	 30IPHITnItqlEOM0dGioBO1vnhqSPFca99UFrgXFY8nbhHrtGfsCg0HQwfPPRtWSgr
-	 woGTjwJiva7sw==
+	s=k20201202; t=1774608740;
+	bh=PIjhqXV96eZdpEdqYKATLZ86ccJJiq7XCV261VUyjdg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HSoU9hMtl1mpvyS+eR6AvXOwZ/ntnp6B3E7TT74fiScs0MJHSKFQC8EmBkr6pWYDZ
+	 dHnED8ne9UwQeZVPu7TyMbzhkrHT20UxQBaTyY61YHE2DBSHOQzs7BlbeHr4LRXcbD
+	 codAwSjme9EYZ5DYnVUBGTO4rf3rul3Nzfnz0ilr8++pr6JiicfRk37eiyim+I7m+d
+	 XfG8FftrC8brcEoLelHr1jsJTwwc/BsQY72T15AYkA5awIFzS8SZS36/Z2V+WCzxjg
+	 k0oBRzmytmBC2kt/bIk+lkc/yqwLwWSDpU6VYL21Bf4h6JDVxfmkXu+Qn598qTEwlJ
+	 5N9NB013H/gXQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w64jK-00000005Ut5-1mpV;
-	Fri, 27 Mar 2026 11:47:54 +0100
+	id 1w64na-00000005UzU-14MI;
+	Fri, 27 Mar 2026 11:52:18 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: linux-wireless@vger.kernel.org,
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>
-Subject: [PATCH] wifi: rt2x00usb: fix devres lifetime
-Date: Fri, 27 Mar 2026 11:47:26 +0100
-Message-ID: <20260327104726.1310327-1-johan@kernel.org>
+	Tony Olech <tony.olech@elandigitalsystems.com>
+Subject: [PATCH 1/4] mmc: vub300: fix NULL-deref on disconnect
+Date: Fri, 27 Mar 2026 11:52:05 +0100
+Message-ID: <20260327105208.1310739-2-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260327105208.1310739-1-johan@kernel.org>
+References: <20260327105208.1310739-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,64 +71,60 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230630-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230632-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[wp.pl];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[theobroma-systems.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0D475342DC9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 85AFF342F4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-USB drivers bind to USB interfaces and any device managed resources
-should have their lifetime tied to the interface rather than parent USB
-device. This avoids issues like memory leaks when drivers are unbound
-without their devices being physically disconnected (e.g. on probe
-deferral or configuration changes).
+Make sure to deregister the controller before dropping the reference to
+the driver data on disconnect to avoid NULL-pointer dereferences or
+use-after-free.
 
-Fix the USB anchor lifetime so that it is released on driver unbind.
-
-Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Cc: stable@vger.kernel.org	# 3.0
+Cc: Tony Olech <tony.olech@elandigitalsystems.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 2 +-
+ drivers/mmc/host/vub300.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-index 83d00b6baf64..174d89b0b1d7 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-@@ -826,7 +826,7 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
- 	if (retval)
- 		goto exit_free_device;
- 
--	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
-+	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
- 					sizeof(struct usb_anchor),
- 					GFP_KERNEL);
- 	if (!rt2x00dev->anchor) {
+diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
+index ff49d0770506..f173c7cf4e1a 100644
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2365,8 +2365,8 @@ static void vub300_disconnect(struct usb_interface *interface)
+ 			usb_set_intfdata(interface, NULL);
+ 			/* prevent more I/O from starting */
+ 			vub300->interface = NULL;
+-			kref_put(&vub300->kref, vub300_delete);
+ 			mmc_remove_host(mmc);
++			kref_put(&vub300->kref, vub300_delete);
+ 			pr_info("USB vub300 remote SDIO host controller[%d]"
+ 				" now disconnected", ifnum);
+ 			return;
 -- 
 2.52.0
 
