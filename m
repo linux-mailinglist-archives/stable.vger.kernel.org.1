@@ -1,170 +1,181 @@
-Return-Path: <stable+bounces-230622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +K47MQpbxmm+JAUAu9opvQ
-	(envelope-from <stable+bounces-230622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:25:14 +0100
+	id 2PEDHkhbxmm+JAUAu9opvQ
+	(envelope-from <stable+bounces-230623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:26:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6A83427D2
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:25:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BE93427F7
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDAE930B8CCE
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:17:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A8EBA30917C8
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CBC3B4E9B;
-	Fri, 27 Mar 2026 10:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s9fOKIL+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929333AE1A4;
+	Fri, 27 Mar 2026 10:24:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739D83B0AD7;
-	Fri, 27 Mar 2026 10:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E173B3BEC
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 10:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774606642; cv=none; b=mCd2uQJsfoCwWR8NypEGIBTZrSRwunwm+zIbJxUO0HEDO8bzGX34pFmRsb95FnlnBWtzoy9FnhHGGKSON/wGUkXIaesfVWqD4zNsGfqryVzKP1UJvWOqmGrg8YFrTT0devJFyaLYGITlh9N1bbfkTAG6MkJ0M4+nTefF/lIgARI=
+	t=1774607056; cv=none; b=Dl6gqWHlkDLRCtjcGyJXEdNdRyO/0p8SZR9QeHd5FyOr8Ime4jyywiWSdcwJcCmvvgtBr1Me5Bjx9JQI7u3MhK3wCNScaQFGiBu285UVxDzVBGo+0e9y7ZjmYftR11kmNc13xAVeTPrG6+7PmUdhS+O88CaRhq9URGbbF7FQNVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774606642; c=relaxed/simple;
-	bh=bACH9bXuLwoHnf+XcfEWG6Dc4J1VuQFONU9E2meVulE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DxBo8n6crUMa4xU33VrKdj8D+fDHpoIA9e4eyL+j5LfpmnoH/dlXCk5YkeRroxbmjsxX9zce/SMMEVh/uIiU1PUcO0u6TTxn44YDoM+Vphh2TDdxLytIXWG4N71V7dO6OpzRcR0ecJT4lEyX/8FPzlt7FK6DeS0E/cu65YqiGQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s9fOKIL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F308C19424;
-	Fri, 27 Mar 2026 10:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774606641;
-	bh=bACH9bXuLwoHnf+XcfEWG6Dc4J1VuQFONU9E2meVulE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s9fOKIL+dX+W4/MXW5OX2tHskObWyXv2ANnHyDH+xl/+4baLZPdd25uKJhOpyga5R
-	 AASsDavOsscwyeMGbaFi6qMvF5uTIYzQb7zLn6mpkkm2awK+eemQ/GjagQW1GwsH7W
-	 Ye984MS7w0xSKYeuW/ImHfOvf28lJpWPYvand9LA1B5rzTXkry9ELImzkleKdGrMn7
-	 bKyA33V9Q6ATrLa4VyFY+sfEpSuCLg5xRdtYQlLY8tnV8QHKt/Dp6cxn+UT7ZwvEto
-	 WRBYEjuN08VI/LK1ekpzrGjpFQFW6PZWhja6DYyWq7pszI7CCJXPAfEy/ukO5BGMjY
-	 YsrXLeZfQMO8A==
-Date: Fri, 27 Mar 2026 15:47:13 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	andersson@kernel.org, yimingqian591@gmail.com, chris.lew@oss.qualcomm.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: qrtr: ns: Limit the maximum lookups per socket
-Message-ID: <b3i64wszqrmxmpl453z6mpaiqmuespxiioexb3wwbt3bz7mmen@rlewkfc4v25s>
-References: <20260325104415.104972-1-manivannan.sadhasivam@oss.qualcomm.com>
- <20260325104415.104972-3-manivannan.sadhasivam@oss.qualcomm.com>
- <20260327100709.GD111839@horms.kernel.org>
+	s=arc-20240116; t=1774607056; c=relaxed/simple;
+	bh=nWYlOMgtW9PYTaMfr7s+wxi9OgIs++O4f495sV6svJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uZ19OaYJlh80Y4gH7ik/XW6QBSWsdiUVI5jnUXal2PU0JwZmOF0Iix7y5eCMuSDyw7Yx+jyveV88cF5NxZWd6YZtouZGAwmlnsnAA5rWXIFsI6IIUTu0gOcjKZBjNwV1vNQjAkexb2ctMGsaE5dJIQ5anSXla65JyKdMscBCLYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1w64MD-0003WQ-MY; Fri, 27 Mar 2026 11:24:01 +0100
+Message-ID: <2c770b8e-985d-4182-8392-cfbee745e600@pengutronix.de>
+Date: Fri, 27 Mar 2026 11:24:00 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] kbuild: modules-cpio-pkg: Respect INSTALL_MOD_PATH
+To: Janne Grunau <j@jannau.net>, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Simon Glass <sjg@chromium.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260327-kbuild-modules-cpio-pkg-usr-merge-v3-1-ef507dfa006c@jannau.net>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260327-kbuild-modules-cpio-pkg-usr-merge-v3-1-ef507dfa006c@jannau.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260327100709.GD111839@horms.kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230622-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 5B6A83427D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:email,jannau.net:email,systemd.io:url,pengutronix.de:email,pengutronix.de:mid,pengutronix.de:url];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230623-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 21BE93427F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 10:07:09AM +0000, Simon Horman wrote:
-> On Wed, Mar 25, 2026 at 04:14:15PM +0530, Manivannan Sadhasivam wrote:
-> > Current code does no bound checking on the number of lookups a client can
-> > perform per socket. Though the code restricts the lookups to local clients,
-> > there is still a possibility of a malicious local client sending a flood of
-> > NEW_LOOKUP messages over the same socket.
-> > 
-> > Fix this issue by limiting the maximum number of lookups to 64 per socket.
-> > Note that, limit of 64 is chosen based on the current platform
-> > requirements. If requirement changes in the future, this limit can be
-> > increased.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  net/qrtr/ns.c | 18 ++++++++++++++++--
-> >  1 file changed, 16 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> > index fb4e8a2d370d..707fde809939 100644
-> > --- a/net/qrtr/ns.c
-> > +++ b/net/qrtr/ns.c
-> > @@ -70,10 +70,11 @@ struct qrtr_node {
-> >  	u32 server_count;
-> >  };
-> >  
-> > -/* Max server limit is chosen based on the current platform requirements. If the
-> > - * requirement changes in the future, this value can be increased.
-> > +/* Max server, lookup limits are chosen based on the current platform requirements.
-> > + * If the requirement changes in the future, these values can be increased.
-> >   */
-> >  #define QRTR_NS_MAX_SERVERS 256
-> > +#define QRTR_NS_MAX_LOOKUPS 64
-> >  
-> >  static struct qrtr_node *node_get(unsigned int node_id)
-> >  {
-> > @@ -545,11 +546,24 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
-> >  	struct qrtr_node *node;
-> >  	unsigned long node_idx;
-> >  	unsigned long srv_idx;
-> > +	u8 count = 0;
-> >  
-> >  	/* Accept only local observers */
-> >  	if (from->sq_node != qrtr_ns.local_node)
-> >  		return -EINVAL;
-> >  
-> > +	/* Make sure the client performs only maximum allowed lookups */
-> > +	list_for_each_entry(lookup, &qrtr_ns.lookups, li) {
-> > +		if (lookup->sq.sq_node == from->sq_node &&
-> > +		    lookup->sq.sq_port == from->sq_port)
-> > +			count++;
+Hi,
+
+On 3/27/26 9:30 AM, Janne Grunau wrote:
+> The modules-cpio-pkg target added in commit 2a9c8c0b59d3 ("kbuild: add
+> target to build a cpio containing modules") is incompatible with
+> initramfs with merged /lib and /usr/lib directories [1]. "/lib" cannot
+> be a link and directory at the same time.
+> Respect a non-empty INSTALL_MOD_PATH in the modules-cpio-pkg target so
+> that `make INSTALL_MOD_PATH=/usr modules-cpio-pkg` results in the same
+> module install location as `make INSTALL_MOD_PATH=/usr modules_install`.
 > 
-> This feels like it could get quite expensive.
-> If many lookups are added, it feels like it may be O(n^2).
+> Tested with Fedora distribution initramfs produced by dracut.
 > 
+> Link: https://systemd.io/THE_CASE_FOR_THE_USR_MERGE/ [1]
+> Fixes: 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Simon Glass <sjg@chromium.org>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-Lookups are not something that'll happen very often. A client only registers
-for the lookup once per service that it depends on. That shouldn't be too
-much. And then once lookup is registered, it will be used throughout the
-lifetime of the client.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-So there is no overhead associated with this check.
+Thanks,
+Ahmad
 
-- Mani
+> Signed-off-by: Janne Grunau <j@jannau.net>
+> ---
+> Hej,
+> 
+> this patch allows to produce modules-cpio initramfs which are compatible
+> with initramfs with merged /lib and /usr/lib (/lib as symlink to
+> /usr/lib). I expect initramfs of distributions with merged /usr to have
+> a merged /usr as well. This is at least true for Fedora initramfs built
+> with dracut.
+> 
+> Janne
+> ---
+> Changes in v3:
+> - Drop comment added in v2, change is straight forward after dropping
+>   the repeated slash prevention
+> - collect Thomas' and Nathan's Rb:
+> - Link to v2: https://lore.kernel.org/r/20260325-kbuild-modules-cpio-pkg-usr-merge-v2-1-339ac87d82ea@jannau.net
+> 
+> Changes in v2:
+> - drop pointless avoidance of repeated slashes
+> - comment the changed Makefile rule
+> - break long modles-cpio-pkg help text to 2 lines
+> - imported Simon's Rb:
+> - add fixes tag for commit 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
+> - Link to v1: https://lore.kernel.org/r/20260320-kbuild-modules-cpio-pkg-usr-merge-v1-1-cee1ad1bb7cb@jannau.net
+> ---
+>  scripts/Makefile.package | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile.package b/scripts/Makefile.package
+> index 0ec946f9b905f74f8698d8d6967d22f5b76f64e0..6d36786ba31cefaf5ae2c6e2537d421b5bfb7a06 100644
+> --- a/scripts/Makefile.package
+> +++ b/scripts/Makefile.package
+> @@ -195,7 +195,7 @@ tar%-pkg: linux-$(KERNELRELEASE)-$(ARCH).tar.% FORCE
+>  .tmp_modules_cpio: FORCE
+>  	$(Q)$(MAKE) -f $(srctree)/Makefile
+>  	$(Q)rm -rf $@
+> -	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@ modules_install
+> +	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@/$(INSTALL_MOD_PATH) modules_install
+>  
+>  quiet_cmd_cpio = CPIO    $@
+>        cmd_cpio = $(CONFIG_SHELL) $(srctree)/usr/gen_initramfs.sh -o $@ $<
+> @@ -264,6 +264,7 @@ help:
+>  	@echo '  tarxz-pkg           - Build the kernel as a xz compressed tarball'
+>  	@echo '  tarzst-pkg          - Build the kernel as a zstd compressed tarball'
+>  	@echo '  modules-cpio-pkg    - Build the kernel modules as cpio archive'
+> +	@echo '                        (uses INSTALL_MOD_PATH inside the archive)'
+>  	@echo '  perf-tar-src-pkg    - Build the perf source tarball with no compression'
+>  	@echo '  perf-targz-src-pkg  - Build the perf source tarball with gzip compression'
+>  	@echo '  perf-tarbz2-src-pkg - Build the perf source tarball with bz2 compression'
+> 
+> ---
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> change-id: 20260320-kbuild-modules-cpio-pkg-usr-merge-4266a460282c
+> 
+> Best regards,
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
