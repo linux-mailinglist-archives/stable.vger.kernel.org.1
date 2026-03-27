@@ -1,261 +1,151 @@
-Return-Path: <stable+bounces-230588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MD/eG2cVxmkGGQUAu9opvQ
-	(envelope-from <stable+bounces-230588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:28:07 +0100
+	id cIKAAJAZxmkJGgUAu9opvQ
+	(envelope-from <stable+bounces-230589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:45:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08B133F3F3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:28:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918B133F497
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 06:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE17E306F5F4
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 05:27:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C372302269F
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 05:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1194D377011;
-	Fri, 27 Mar 2026 05:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987C31DF25C;
+	Fri, 27 Mar 2026 05:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZdZkY8Qs"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XOJeQ4Rm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EC73783D7;
-	Fri, 27 Mar 2026 05:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992440DFCD;
+	Fri, 27 Mar 2026 05:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774589227; cv=none; b=B8LOSpV5dZfhj9ALHL/RDT5933BtvLRfwXH4nb4K6aHvv3hkR7VbGnWX+7fxIkv0oU1o0cJtumJgqZk7VIuPuy5q2NXyWhVSDmxoeTNqVegVoBXPpENLwqg6H1ShpNFA7Yi3bOd+3GSLDhpuI/BS9jNyREUdTnCcaIeyfe5oado=
+	t=1774590342; cv=none; b=eBExMNtSleDwR1nfQDppoTADv5Bge75cQfqWKM3/GcAUaSft9A8WOco5PgCFS7qVfMoxJZGvQQQsymPZCyF6rCWSQS603bO2Qnxlbjmetx+L4oQImjXwRK4iXWNePqNRCw3bgC7civumMT6EXXlbwiFEDMxNGr0Wlugfff1ZIvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774589227; c=relaxed/simple;
-	bh=6du4GSLdFcOKnui2hMxoipbmDJNYMO6D2vPAVJPls/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVmV+jsJDm0/jd4ujoLMTfiBeg4VdJ6rEWxdmjb9UNbrTb1HVd/4qg2orgX1f71jSG/ZYVI0dPcKM27QTiyHZZ69+ZJv9Hh6eoMGDEUUZJvFmDa4jG2WgAEO5ahRCprs0sh4nXFTPZBsAvZYvjDlyqLrdr/8Wtrg2N4iSW9jDH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZdZkY8Qs; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774589227; x=1806125227;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6du4GSLdFcOKnui2hMxoipbmDJNYMO6D2vPAVJPls/k=;
-  b=ZdZkY8QsKAvgqJpLqLZ3pAshBSC4Lp5MXdPF4ocKslTCSDizEXEXMY1f
-   5fHaC+kmpqbxfm0CYeyNRaRin+1PLFKmO7wG3DELn0Y+6AP6r0+CrF/hS
-   OaYNFNFoiGWFslLM9zNXK4UY2PqKUhqUb0F65Vt6xCesYvSaDZ13vLCfb
-   vwPrkzFqr9PmvxmY2ALqFT61zzRVPVRUW7Sa+vS30M5oI07GnSQ24eB2U
-   9a7HLdtptcrr97fLq4ZUTapJ+o0yw4TyGvm6xslrUNzrXMhad3L58P3aV
-   wep6NjeT3tVVUXYRVaUw2W5xBUCUWmQp1wGhDu+0HURGezn2pjt5VXuUo
-   g==;
-X-CSE-ConnectionGUID: mdPY6XO9SfOeVQWHKdvBHQ==
-X-CSE-MsgGUID: aD95+amMTjuy30l6XzzLxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="101117940"
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="101117940"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 22:27:05 -0700
-X-CSE-ConnectionGUID: dejRaGOsSLmdSRhCHQ5deQ==
-X-CSE-MsgGUID: x7JZO6bXSbKpWkWjrm+tgg==
-X-ExtLoop1: 1
-Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa003.fm.intel.com with ESMTP; 26 Mar 2026 22:27:05 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: dave.jiang@intel.com
-Cc: patches@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	alison.schofield@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 1/9] cxl/region: Fix use-after-free from auto assembly failure
-Date: Thu, 26 Mar 2026 22:28:13 -0700
-Message-ID: <20260327052821.440749-2-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260327052821.440749-1-dan.j.williams@intel.com>
-References: <20260327052821.440749-1-dan.j.williams@intel.com>
+	s=arc-20240116; t=1774590342; c=relaxed/simple;
+	bh=f0cQxxZfEEzEmOTwIGbf7QxHnhQAOe/10G9wXnnIJAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EmhXvIFki/2nK3FL7rbUekOHZMBV8mOAfrcwl1Ju7KhaHKIQz1Tj85pnz8HgsvKryJEgkt6UPnoTRqhl6TYB0eBL8I0ZvKdFndWBvyubhz6Q48QMXUgeBge0cVmySAGkBvXwu9epE+c66YnCTflPUGDjsR5WeuS6nyP8GMt2SGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XOJeQ4Rm; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oD2hbHuEvJ0Rs4gWYxap6QJQG6BMO9tLtx5+NGYsEkw=; b=XOJeQ4Rm+E7HOgiQhT80ZOb96t
+	/lNkvpYOpLSY3hDq8DCsD1n3X+KPrqVBUIezzRA0zTPgkor5WEfcr3hwqUlbjwx0Gv2tFP3veDW9y
+	pMENUngrUyBn0AJh5mrd+w9hMZVdK+9TNOxjJ1XS5Wi+2Y6MzvnAfHCqSvcTaVJr69F8Ehf33SbYN
+	QYQK+irbxe1Y0bOuyy3Ki/k3M4WVrJE6gQ6G4ewoRTLkQWARtHn5PKFvlEW7ktE4U2YWxrBSJ0Tkz
+	QHhAJPaH48GGRkLIyHlmNH988IM8vDm0cVaoqrDffv1yp4ljFeMwmXswZENbXGpH2lW5j3lcj6vxo
+	rkb+uz4g==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w600o-00000006icq-1r4N;
+	Fri, 27 Mar 2026 05:45:38 +0000
+Date: Thu, 26 Mar 2026 22:45:38 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+	Fei Lv <feilv@asrmicro.com>,
+	Chenglong Tang <chenglongtang@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] ovl: make fsync after metadata copy-up opt-in mount
+ option
+Message-ID: <acYZglh4iyauvDZj@infradead.org>
+References: <20260324145750.90719-1-amir73il@gmail.com>
+ <acN457svKhT5TcKI@infradead.org>
+ <CAOQ4uxh5NFvXGop6ne-zfRbH5p6BPT2kCt7dUkP__-TtpeJjJQ@mail.gmail.com>
+ <CAOQ4uxge9QDMwnLr1+W0xF2GocnFWVrbhRdriaf5Qe+4KkrG4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxge9QDMwnLr1+W0xF2GocnFWVrbhRdriaf5Qe+4KkrG4Q@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230588-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.j.williams@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_FROM(0.00)[bounces-230589-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hch@infradead.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid,huawei.com:email]
-X-Rspamd-Queue-Id: E08B133F3F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,infradead.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 918B133F497
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following crash signature results from region destruction while an
-endpoint decoder is staged, but not fully attached.
+On Wed, Mar 25, 2026 at 02:11:31PM +0100, Amir Goldstein wrote:
+> When an overlayfs file is modified for the first time, copy up will
+> create a copy of the lower file and its parent directories in the upper
+> layer.  Since the Linux filesystem API does not enforce any particular
+> ordering on storing changes without explicit fsync(2) calls, in case
+> of a system crash, the upper file could end up with no data at all
+> (i.e. zeros), which would be an unusual outcome.  To avoid this
+> experience, overlayfs calls fsync(2) on the upper file before completing
+> data copy up with rename(2) to make the copy up "atomic".
 
----
- BUG: KASAN: slab-use-after-free in __cxl_decoder_detach+0x724/0x830 [cxl_core]
- Read of size 8 at addr ffff888265638840 by task modprobe/1287
+Sounds good so far.
 
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x68/0x90
-  print_report+0x170/0x4e2
-  kasan_report+0xc2/0x1a0
-  __cxl_decoder_detach+0x724/0x830 [cxl_core]
-  cxl_decoder_detach+0x6c/0x100 [cxl_core]
-  unregister_region+0x88/0x140 [cxl_core]
-  devres_release_all+0x172/0x230
----
+> By default, overlayfs does not call fsync(2) on copied up directories,
+> so after a crash, a copied up directory could be observed in the upper
+> layer without some of its attributes.
 
-The "staged" state is established by cxl_region_attach_auto() and finalized
-by cxl_region_attach_position(). When that is finalized a memdev removal
-event will destroy regions before endpoint decoders. However, in the
-interim the memdev removal will falsely assume that the endpoint decoder is
-unattached. Later, the eventual region removal finds the stale pointer to
-the now freed endpoint decoder.
+This does sound a bit scary.  How does a directory copy up work?
+mkdir + adding the copies up entries, probably with some chmod or
+chown thrown in?
 
-Introduce CXL_DECODER_STATE_AUTO_STAGED and cxl_cancel_auto_attach() to
-cleanup this interim state.
+> - "ordered": (default)
+>     Call fsync(2) on upper file before completion of data copy up.
+>     No fsync(2) is called on directory or metadata-only copy up.
 
-Fixes: a32320b71f08 ("cxl/region: Add region autodiscovery")
-Cc: <stable@vger.kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/cxl/cxl.h         |  6 +++--
- drivers/cxl/core/region.c | 54 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 57 insertions(+), 3 deletions(-)
+"ordered" sounds like an odd name here.  It's more like lazy or
+"nodirfsync".  And it might help to explain what this implies, which
+is that the fsync on the files in the directory also sync the
+directories out, because they are usually modified in the same
+transaction, and a traditional simple log model implies that.  That
+traditional single log model also implies that you get the metadata
+file fsync for free in that case.  I.e. if you did:
 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 9b947286eb9b..30a31968f266 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -378,12 +378,14 @@ struct cxl_decoder {
- };
- 
- /*
-- * Track whether this decoder is reserved for region autodiscovery, or
-- * free for userspace provisioning.
-+ * Track whether this decoder is free for userspace provisioning, reserved for
-+ * region autodiscovery, whether it is started connecting (awaiting other
-+ * peers), or has completed auto assembly.
-  */
- enum cxl_decoder_state {
- 	CXL_DECODER_STATE_MANUAL,
- 	CXL_DECODER_STATE_AUTO,
-+	CXL_DECODER_STATE_AUTO_STAGED,
- };
- 
- /**
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index f7b20f60ac5c..b72556c1458b 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1064,6 +1064,14 @@ static int cxl_rr_ep_add(struct cxl_region_ref *cxl_rr,
- 
- 	if (!cxld->region) {
- 		cxld->region = cxlr;
-+
-+		/*
-+		 * Now that cxld->region is set the intermediate staging state
-+		 * can be cleared.
-+		 */
-+		if (cxld == &cxled->cxld &&
-+		    cxled->state == CXL_DECODER_STATE_AUTO_STAGED)
-+			cxled->state = CXL_DECODER_STATE_AUTO;
- 		get_device(&cxlr->dev);
- 	}
- 
-@@ -1805,6 +1813,7 @@ static int cxl_region_attach_auto(struct cxl_region *cxlr,
- 	pos = p->nr_targets;
- 	p->targets[pos] = cxled;
- 	cxled->pos = pos;
-+	cxled->state = CXL_DECODER_STATE_AUTO_STAGED;
- 	p->nr_targets++;
- 
- 	return 0;
-@@ -2154,6 +2163,47 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 	return 0;
- }
- 
-+static int cxl_region_by_target(struct device *dev, const void *data)
-+{
-+	const struct cxl_endpoint_decoder *cxled = data;
-+	struct cxl_region_params *p;
-+	struct cxl_region *cxlr;
-+
-+	if (!is_cxl_region(dev))
-+		return 0;
-+
-+	cxlr = to_cxl_region(dev);
-+	p = &cxlr->params;
-+	return p->targets[cxled->pos] == cxled;
-+}
-+
-+/*
-+ * When an auto-region fails to assemble the decoder may be listed as a target,
-+ * but not fully attached.
-+ */
-+static void cxl_cancel_auto_attach(struct cxl_endpoint_decoder *cxled)
-+{
-+	struct cxl_region_params *p;
-+	struct cxl_region *cxlr;
-+	int pos = cxled->pos;
-+
-+	if (cxled->state != CXL_DECODER_STATE_AUTO_STAGED)
-+		return;
-+
-+	struct device *dev __free(put_device) = bus_find_device(
-+		&cxl_bus_type, NULL, cxled, cxl_region_by_target);
-+	if (!dev)
-+		return;
-+
-+	cxlr = to_cxl_region(dev);
-+	p = &cxlr->params;
-+
-+	p->nr_targets--;
-+	cxled->state = CXL_DECODER_STATE_AUTO;
-+	cxled->pos = -1;
-+	p->targets[pos] = NULL;
-+}
-+
- static struct cxl_region *
- __cxl_decoder_detach(struct cxl_region *cxlr,
- 		     struct cxl_endpoint_decoder *cxled, int pos,
-@@ -2177,8 +2227,10 @@ __cxl_decoder_detach(struct cxl_region *cxlr,
- 		cxled = p->targets[pos];
- 	} else {
- 		cxlr = cxled->cxld.region;
--		if (!cxlr)
-+		if (!cxlr) {
-+			cxl_cancel_auto_attach(cxled);
- 			return NULL;
-+		}
- 		p = &cxlr->params;
- 	}
- 
--- 
-2.53.0
+	for each file:
+		sync_file_range(file, .., SYNC_FILE_RANGE_WRITE |
+				    SYNC_FILE_RANGE_WAIT_AFTER);
+
+	fsync(dir)
+	for each file:
+		fsync(file)
+
+at least for xfs (and probably the others) you should get the
+performance of your ordered mode with the durability guarantees
+of the strict version.
 
 
