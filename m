@@ -1,151 +1,157 @@
-Return-Path: <stable+bounces-230604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WL6YMiBExmmgIAUAu9opvQ
-	(envelope-from <stable+bounces-230604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:47:28 +0100
+	id GKPIHJhGxmmgIAUAu9opvQ
+	(envelope-from <stable+bounces-230605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:58:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3250B341433
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:47:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2745A3415E6
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 44EFC30575A3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:47:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F2BE309D752
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C7A3D9044;
-	Fri, 27 Mar 2026 08:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5413D9DD6;
+	Fri, 27 Mar 2026 08:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gbYSLisq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE703A6B9E;
-	Fri, 27 Mar 2026 08:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F3C3D9045;
+	Fri, 27 Mar 2026 08:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774601241; cv=none; b=OpLWzzUuBp3D48IhQ7M/+WamPKvrOM32QYBezrBdBoXSgP6gT1QSFoQs3P86cu++h5WW0plH51HCr/a2DRZ60jaqczj332HvoidP9fsrID8Gx1aq/7vVBtBXneqEi5+O+291gz1WTfqilJoWwyBdG/CYvvbRS7hcQ1iKuFCyZ8w=
+	t=1774601696; cv=none; b=JHJDuWZ+F9m+D5fx/CSwmzOfn3QHV3i4g33jfJNSVqdXufV0vCBNsP9MGEnzbrJOkdb2Za/h2WU55M2p+B2PP6+Plh2Ay+rbcepTkB0uwYNCVhT3Uz3EgVJgpDzrgxdJEVhXpM+p23vABC8xUqfTZoQ36c/kKotCjL8z0ubEzfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774601241; c=relaxed/simple;
-	bh=TdagGWkVKdOB2FB7rtgDLzTRoWcGbugJNdmrD6BKscc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fMbi6JjhchfXTOGdib6vcDr9Y7N3u/dB4Ja7s5TjJsakPY4mPPjvA9bR5wveFoNSSuBymmKeoSAdjmw0UUuOYd/R1PKuOXDGl7LbhSwg4x8s6CnQ3wmPvk4GM2BZx1EfMORespTBiJaX9udT96G/Gd09jNa4u90fB0A+pIgPLCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.17])
-	by gateway (Coremail) with SMTP id _____8Dx_8MURMZp_TofAA--.23907S3;
-	Fri, 27 Mar 2026 16:47:16 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.17])
-	by front1 (Coremail) with SMTP id qMiowJAx18ANRMZpFLReAA--.34869S2;
-	Fri, 27 Mar 2026 16:47:15 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH for 6.12] Revert "LoongArch: Add machine_kexec_mask_interrupts() implementation"
-Date: Fri, 27 Mar 2026 16:47:01 +0800
-Message-ID: <20260327084701.2692699-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1774601696; c=relaxed/simple;
+	bh=GT5s6SukjMZBZVEPM5ZT8q2nEZACMQgI+mtZ4XZWFMM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G8TLoG08xllyYexE1cUuUxWBXcfhaE3EVQAVLd9mFHqRgNjhO4D9O+MNXZxAzAs/ms10CeH64QbqmXJ33w/JyZbzfxn7CmLIDCmno7sdjJxkAZnHXXOTewNS7WsOy+TXzkZApwLKHEBhoN/hfdMmLnpUKLRoofrbVe2dw4cE3N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gbYSLisq; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774601694; x=1806137694;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GT5s6SukjMZBZVEPM5ZT8q2nEZACMQgI+mtZ4XZWFMM=;
+  b=gbYSLisqCV1zqvOry6ABxJdjkQBSYa0J4t4+nI9E4yVMEguz4w9i7nRn
+   0CDBtfIQFONoTj6Hpv5ql6YTRnShF3skNe+tepnTAge880wCcMkpIY0AL
+   Wrq/aBWFNXdSOd8rKA7WTEWsPsZ4VZxCRUu52OTK9HFjbIRwSB0TVK8W5
+   vAtXCtqQDCLypC55cM09w+OsG3kXZzzZnYBreKs4odk3ptl8BCQ3KhM1I
+   z32aMg30T3CUE7DAkPaLig5SeO4AcZZiC1KGnL9YOBkApMZufVOT6NQ8J
+   Wa7nwnWf/TPWIyPwEn9GsrOrUZfVXxLFgkaZpsCS1s0gBDWAiBL8Ur78J
+   w==;
+X-CSE-ConnectionGUID: JLKvOQueTlivp9FMU6E9dw==
+X-CSE-MsgGUID: gu3DG+rATSa7ypheedRKmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75386697"
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
+   d="scan'208";a="75386697"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 01:54:54 -0700
+X-CSE-ConnectionGUID: WuY9rM5aTSOLyJKZuw5YLA==
+X-CSE-MsgGUID: 9gOiy6CPRXevPJwTJfN1Ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
+   d="scan'208";a="230185947"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.127])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 01:54:52 -0700
+Date: Fri, 27 Mar 2026 10:54:49 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] auxdisplay: line-display: fix NULL dereference in
+ linedisp_release
+Message-ID: <acZF2YSN2C5cinTi@ashevche-desk.local>
+References: <20260326171412.1109402-1-lgs201920130244@gmail.com>
+ <CAMuHMdWY=pjuLvqU2baRsetbOYf=cFF_y4PsJ0DxH_zTGfx8ng@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAx18ANRMZpFLReAA--.34869S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Cw4xGr1DCF17JrW5Gw4DGFX_yoW8JFWkpF
-	WfAw1DJr45WwsIvF1kJ3s7WF15G34DG3y2qa4rKF1fW3WqkwnYq3WkAr1vqFyjyrWYqryS
-	9rZYqa4IqF1UJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
-	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWY=pjuLvqU2baRsetbOYf=cFF_y4PsJ0DxH_zTGfx8ng@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230604-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230605-lists,stable=lfdr.de];
+	SEM_URIBL_UNKNOWN_FAIL(0.00)[linux-m68k.org:query timed out];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3250B341433
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,ashevche-desk.local:mid,linux-m68k.org:email]
+X-Rspamd-Queue-Id: 2745A3415E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This reverts commit 429bf3f04c24a1590ed18cd7bf802cf63f937a0f.
+On Fri, Mar 27, 2026 at 09:10:50AM +0100, Geert Uytterhoeven wrote:
+> Hi Guangshuo,
+> 
+> Thanks for your patch!
+> 
+> On Thu, 26 Mar 2026 at 18:14, Guangshuo Li <lgs201920130244@gmail.com> wrote:
+> > linedisp_release() currently retrieves the enclosing struct linedisp via
+> > to_linedisp(). That lookup depends on the attachment list, but the
+> > attachment may already have been removed before put_device() invokes the
+> > release callback. This can happen in linedisp_unregister(), and can also
+> > be reached from some linedisp_register() error paths.
+> >
+> > In that case, to_linedisp() returns NULL and linedisp_release()
+> > dereferences it while freeing the display resources.
+> 
+> Indeed, the attachment is not yet or no longer available when
+> put_device() is called.
+> 
+> > The struct device released here is the embedded linedisp->dev used by
+> > linedisp_register(), so retrieve the enclosing object directly with
+> > container_of() instead.
+> 
+> True.
+> 
+> > Fixes: 66c93809487e ("auxdisplay: linedisp: encapsulate container_of usage within to_linedisp")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> 
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-6.12.78 bakported "kexec: Consolidate machine_kexec_mask_interrupts()
-implementation" so the arch-specific implementation is redundant.
+Pushed to my review and testing queue, thanks!
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/kernel/machine_kexec.c | 22 ----------------------
- 1 file changed, 22 deletions(-)
-
-diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
-index 19bd763263d3..8ef4e4595d61 100644
---- a/arch/loongarch/kernel/machine_kexec.c
-+++ b/arch/loongarch/kernel/machine_kexec.c
-@@ -136,28 +136,6 @@ void kexec_reboot(void)
- 	BUG();
- }
- 
--static void machine_kexec_mask_interrupts(void)
--{
--	unsigned int i;
--	struct irq_desc *desc;
--
--	for_each_irq_desc(i, desc) {
--		struct irq_chip *chip;
--
--		chip = irq_desc_get_chip(desc);
--		if (!chip)
--			continue;
--
--		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
--			chip->irq_eoi(&desc->irq_data);
--
--		if (chip->irq_mask)
--			chip->irq_mask(&desc->irq_data);
--
--		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
--			chip->irq_disable(&desc->irq_data);
--	}
--}
- 
- #ifdef CONFIG_SMP
- static void kexec_shutdown_secondary(void *regs)
 -- 
-2.52.0
+With Best Regards,
+Andy Shevchenko
+
 
 
