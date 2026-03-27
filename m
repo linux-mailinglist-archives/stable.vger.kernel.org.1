@@ -1,202 +1,120 @@
-Return-Path: <stable+bounces-230689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2P37HqW1xmmgNwUAu9opvQ
-	(envelope-from <stable+bounces-230689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:51:49 +0100
+	id aFB/IvO1xmnoNwUAu9opvQ
+	(envelope-from <stable+bounces-230690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:53:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF5A347D65
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C6347DFC
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A29D30DB62E
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:43:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D52E3114DE5
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 16:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF91342CBA;
-	Fri, 27 Mar 2026 16:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1E735DA70;
+	Fri, 27 Mar 2026 16:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Awk6qrQm"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="S8rahmQO"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.49])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED485341ADF;
-	Fri, 27 Mar 2026 16:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5070F35836D;
+	Fri, 27 Mar 2026 16:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774629790; cv=none; b=CIfO/VSSnmCznZhxOBMg/C6UWzlQBF5eNK5UvozT/bVFEw0s6dj8YseQaIH39eWUtA/JTI4VjW/70Y8MXFRUkhyFaxJuepSFF+tBeBjrPT8qW75hLGxaZYoIB3I5ZIHLFNeQtg/2KppXb4ncmogWBp4eLfsfhahBN9gW4pboE3g=
+	t=1774630017; cv=none; b=moc8M5RqeOZ+QdB9st83NW5kdkew+36pgshf9mqczQ8/PkIF2kMfCX7vJNcj5JIxXx8l5CQBQLqqk606qxgpu9rdCCT8VeXK8c7h8TQX15AExdnif1G0gq0NW85hobKmaqxUYiUqQrjwMpjytTobWlSwyTXWZN3xB5DA6VOOLwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774629790; c=relaxed/simple;
-	bh=mQ/JSz+CKJtWutzkgkYxzpBGTZ9QtEkXBi6RD9kDOLE=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=gmB4QxvzBTkwn4eUyb/A6Gk1FjT8fpgdbR+phaZwyE80oytGqH1u8DzPcADLMCwA52iZygxJbMVzekkkjQFgXO0y6QW+Uh/D+us91fQZeGhZvUWgeQoL6cL+Qq+fc4g9qmGPQVwvJAeLaCGA5eyVvMMpBMLw4hxkbsoH2pHiskM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Awk6qrQm; arc=none smtp.client-ip=43.163.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1774629782; bh=UroK1ySqjbLJQwKcb7vPgXzRaw08F6AMfh8Pj4bu2ew=;
-	h=From:To:Cc:Subject:Date;
-	b=Awk6qrQms55Of76PL2KcAhPGj5g+Ez0cIf1Fstj064T0N2F5G0UGKF5RxtoSimMOD
-	 vTH8KaNthf4YMU27SlasFV4ReC/w4tnaO7BB9ctBPZypWEVsVtSp+EiN8JSCKIgW/+
-	 /YOfZQ7GaJKUZnOLUOteqtSKzwyPoPTV+vMweyFQ=
-Received: from LAPTOP-KQCD4QBN.localdomain ([183.242.199.70])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id ABB93C66; Sat, 28 Mar 2026 00:42:59 +0800
-X-QQ-mid: xmsmtpt1774629779tm9r2nd56
-Message-ID: <tencent_4E3977BB234AAFC65C503EF35B9C54DC140A@qq.com>
-X-QQ-XMAILINFO: MZtEYADUG4AgAeOlNmeDWbNl1yYje6epPQ+N2n10UY8Fgz/hRCIf5BLLDYGOSU
-	 iCinbi+h9v6N+twFrDJ/OfBOyj07gReOa8W4EmAu2uLS1axIVZtclurbb+JrCHRl8EhI9diFhNvj
-	 7ovKPbyBUuBwYYAvXvZqbIu+Edr47SflO7Rx3kzVEPDmx3mMUudGVSmQnMk1hh+Zg8ywZCehnR5n
-	 FQHUCDJdJX+cwjkUSYXe9spufgRu2QK5p2GPiSO43t9FRoKnxYpPTCV1e4QC1HWRJzlG0J5Gn0Zf
-	 zfu+Ko0fcu/9PMrEhHcHCKBUw5p+hGBSXeCM05RcdRViyg9h34Esk0sact8hwlcI9AfmxxQ8iIzy
-	 H/Pvj1r/11ywODnj1C2nN7MHE9bWh4DPYCADQB6KclkJ2xfkEnpLKPgIcjQlvC+yFbmjqbwJzmFD
-	 7mAG82mQPFSumrUxPSmOZkt8eY/VC046peT7+r8a4MnBGmtakC4OMSfdnmOLUof2MDfn2m4x/OWl
-	 u0xZ8Gxe0gTQ5356SZet/Cox+mYg4qdeCACYgTd1Lz/8PlV+/Vu4pkFx5xX4U8MjUXeinObVk8t5
-	 f+Ts94aQqzFH8cvKKSNpH4RKxyktjkiJKeqob/U1TyKz5FgL+i8r9SrxnBdwLzlE9ck5Lgi4z6uG
-	 rZsB3tatk2vM8xFwJBap5gkVgnQmA009bwKiWskNr/gUha4XyW/bo464PqhH++2fT8Lp+6NNS3QE
-	 qjnE7kawG0kzSBmLYvHy++sfBnoTxOjc58Zy/Qw5+2HNik4XbNbvEzTefKO1GwwCSQNKSL2xc1s7
-	 Z6bPSf4u3xNLPbiglTSMyA483qquy1uy7bgrZpa1ifN8Hfzj470N4BXsXVg5nbRpmEFkSxCE/8lS
-	 Ncexn5Yt1XSJKItqwXkzJQ0ewfTYbmnRAZAWUDZYt4NSkZb5QT52aQSbyFNOQ6tTd9DpIqms7F8W
-	 fgUYl/HOHAt4OXMhzWDNMq9BTMaJF5+JhYl19Of/zxJOA7RUjko+Q4hsjI9swjPgnlt6TKFYKS7X
-	 4CMHppTvgEpuGG6AHkmbjtbI8KfNk=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Wenyuan Li <2063309626@qq.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Markus Elfring <Markus.Elfring@web.de>,
-	gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn,
-	25125283@bjtu.edu.cn,
-	23120469@bjtu.edu.cn,
-	Wenyuan Li <2063309626@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v5] media: tuner: check return value of I2C transfers in set_type()
-Date: Sat, 28 Mar 2026 00:42:58 +0800
-X-OQ-MSGID: <20260327164258.2503-1-2063309626@qq.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1774630017; c=relaxed/simple;
+	bh=wohXqDGk7Z1RD9kbBN7gbSivjh2qLtElRyl+H0MeHmk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IJESY4NjU/HGgYGSau1KSOvvludCuLytvK6PkHXzphtPhyTtGZggC24JylRPu5IR0MY2iJzAk5XQ0F/Gq6p9YwLl+0MihwZxZVbwEhS3vnmPVlme8jPKRJq816OPH/vTOUZQztcnmuZfa7ohr/ThzMVKb5zYwk7PJ0ydG/XyyDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=S8rahmQO; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6+p84I+dufFeYRWkA87WTcUlR5WvMECiOcTYPoz6Vok=; b=S8rahmQOPhsOv3sO8XmJDWyp+P
+	9t8X0uhKof+StRHr5MPnsTjcAp8xI7eKDS/25uANc9rVpZi25FjghxCu4h6/1nWHFn56XDW4US7dM
+	8lwpDVP3YS6Ykmy+3ts4nNu35hqLE4e7y6ZUIjz+0fgxJRhJz/hzb82zGmWdOoViztCE5kqXbVtHm
+	tu4xRBhCQNyGRRq58t89GN6i5HiS5Sy4fu/cZ/vxYbAAtWvoMv+G2B2Cyx1BDuUOD5oggJuxkVQoP
+	8edu9Ox1KuNbaYQb4Xj/2GsylNbLynvvnb5OZwcOrWNeWb0hVcDEyUBI8WeXIiVjAnIRijBhD0d6V
+	FBbFLXvw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1w6AKa-00AlXB-90; Fri, 27 Mar 2026 16:46:44 +0000
+Date: Fri, 27 Mar 2026 09:46:39 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3] xfrm: clear trailing padding in build_polexpire()
+Message-ID: <aca0YEL_PC3GFySl@gmail.com>
+References: <20260326055801.897013-1-yasuakitorimaru@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326055801.897013-1-yasuakitorimaru@gmail.com>
+X-Debian-User: leitao
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	MID_RHS_MATCH_TO(1.00)[];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,bjtu.edu.cn,qq.com];
-	TAGGED_FROM(0.00)[bounces-230689-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[debian.org];
+	TAGGED_FROM(0.00)[bounces-230690-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[debian.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qq.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[qq.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EAF5A347D65
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1A2C6347DFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In set_type(), several I2C transfers are performed to initialize
-specific tuners (e.g. FMD1216ME, FMD1216MEX, TD1316), but the return
-value of i2c_master_send() is not checked.
+On Thu, Mar 26, 2026 at 02:58:00PM +0900, Yasuaki Torimaru wrote:
+> build_expire() clears the trailing padding bytes of struct
+> xfrm_user_expire after setting the hard field via memset_after(),
+> but the analogous function build_polexpire() does not do this for
+> struct xfrm_user_polexpire.
+> 
+> The padding bytes after the __u8 hard field are left
+> uninitialized from the heap allocation, and are then sent to
+> userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
+> leaking kernel heap memory contents.
+> 
+> Add the missing memset_after() call, matching build_expire().
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 
-If an I2C transfer fails, the initialization sequence may be
-incomplete, potentially leaving the tuner in an inconsistent state
-without any error being reported.
-
-Check the return value of i2c_master_send() and propagate failures
-to the attach_failed path. A small helper is introduced to reduce
-duplication and provide consistent error reporting.
-
-This ensures that I2C communication errors during tuner
-initialization are properly detected and handled.
-
-Fixes: 93df3413f1b4 ("[PATCH] v4l: 655: added support for the philips td1316 tuner")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wenyuan Li <2063309626@qq.com>
-
----
-v5:
-- Reword commit message to better explain rationale
-- Clarify error handling approach
-- No functional changes
-
-v4:
-- Added Cc: stable@vger.kernel.org
-- Updated Fixes tag
----
- drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/media/v4l2-core/tuner-core.c b/drivers/media/v4l2-core/tuner-core.c
-index 004ec4d7beea..01f28436a1f8 100644
---- a/drivers/media/v4l2-core/tuner-core.c
-+++ b/drivers/media/v4l2-core/tuner-core.c
-@@ -280,6 +280,19 @@ static const struct analog_demod_ops tuner_analog_ops = {
-  * Functions to select between radio and TV and tuner probe/remove functions
-  */
- 
-+static int tuner_i2c_send(struct i2c_client *c, u8 *buf, int len)
-+{
-+	int ret = i2c_master_send(c, buf, len);
-+
-+	if (ret != len) {
-+		int err = ret < 0 ? ret : -EIO;
-+
-+		dev_err(&c->dev, "I2C send failed: %pe\n", ERR_PTR(err));
-+		return err;
-+	}
-+	return 0;
-+}
-+
- /**
-  * set_type - Sets the tuner type for a given device
-  *
-@@ -351,11 +364,13 @@ static void set_type(struct i2c_client *c, unsigned int type,
- 		buffer[1] = 0xdc;
- 		buffer[2] = 0x9c;
- 		buffer[3] = 0x60;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		mdelay(1);
- 		buffer[2] = 0x86;
- 		buffer[3] = 0x54;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		if (!dvb_attach(simple_tuner_attach, &t->fe,
- 				t->i2c->adapter, t->i2c->addr, t->type))
- 			goto attach_failed;
-@@ -365,7 +380,8 @@ static void set_type(struct i2c_client *c, unsigned int type,
- 		buffer[1] = 0xdc;
- 		buffer[2] = 0x86;
- 		buffer[3] = 0xa4;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		if (!dvb_attach(simple_tuner_attach, &t->fe,
- 				t->i2c->adapter, t->i2c->addr, t->type))
- 			goto attach_failed;
--- 
-2.43.0
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
