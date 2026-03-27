@@ -1,148 +1,160 @@
-Return-Path: <stable+bounces-230652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BpbFCt9xmnwKgUAu9opvQ
-	(envelope-from <stable+bounces-230652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:50:51 +0100
+	id 0CNgC2yAxmm1LAUAu9opvQ
+	(envelope-from <stable+bounces-230653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:04:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6693448FF
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:50:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10B7344B33
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 14:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22B8A30EF408
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:46:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 37D62301D264
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEC33542CA;
-	Fri, 27 Mar 2026 12:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="gKdutiZV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cDc2QD/A"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4793E6DE3;
+	Fri, 27 Mar 2026 13:04:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD1B2D978B;
-	Fri, 27 Mar 2026 12:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A143E6391
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 13:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774615574; cv=none; b=ZyHQDq5Gaf/95CJF0k2+QPsrrnYa/mtBDl2B80kwSk+PJ5omPu3coNz31O6su0oZeScjvN6TIjTaG1PNgR0Znru019M7XF4ce1JYO+NFO/uKpt4j1jp/zzYH1JYwe9jRtuPtNt7fULvqCOl5Fo/wR/SDOjGS0QUrgJ5eLMSUfDM=
+	t=1774616679; cv=none; b=PJQiW9MvimirR6LLBTMceJV336N3S8F4leXyC+VsGTDeKZZZK3yfbixsVYZzCw1+R6rwK9wZJm2ZCxXZR2O7Qvz9PFt4k0MAzr47xytjP9rSK8FObY7o0P78QkvtCdQejh6UNvHFnM0g/jgVhJOiIN2UU1NrQMHP6ja4bQ+Ns6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774615574; c=relaxed/simple;
-	bh=LV/CegolQ2DUUGI210WS5MfvRar0ZCHgiBr76XhCbNo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pmd/XVrShypWkl2H/PUXUXVf0+Hz1H8yVsSsS8TKxiakNuDHFn1jhkgD2Eg4YB2EmGxN0QGTI+sb/XKUHMUz36ur8lilwoPOkPMVDGSotrulsCNntQb27hJht3zOMTRZBmZXqgqbIUo1qYntYkVjmeiIp2V8LyKBtKqgskgXXf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=gKdutiZV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cDc2QD/A; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id F19AC7A01B2;
-	Fri, 27 Mar 2026 08:46:11 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 27 Mar 2026 08:46:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1774615571; x=1774701971; bh=LV/CegolQ2
-	DUUGI210WS5MfvRar0ZCHgiBr76XhCbNo=; b=gKdutiZVn72RBFBBol2twYxbtx
-	mL45DkBv050Kd9MpqfmUjeIkNOO+1xKDJCz+CctOdneEoKO5tuR8VGVPfSVMZNMq
-	72UW0Yn7n29K7pAl2DKXcM090Gy5S6x/jGy/E3dKIEP8jlySemU5JOCuzW+AvPiP
-	cVvMk17IjsUSM9+gMqc6+V2rW2soWJhNpKCwnJr8Xdk4HhI5Jg4ochqiNQqW7Csi
-	Z/2mrPr5+4kmf7NhbQi2ipSeF0OihaM1yiiRy8WdjawcAKDOZR8D/lZqSBfhO6hS
-	VxDTwy8WuTzFYxGLgGAh+YVNBNT5+3yli3B4JoqSTIK5Y/wooTiQrFknLAgw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1774615571; x=1774701971; bh=LV/CegolQ2DUUGI210WS5MfvRar0ZCHgiBr
-	76XhCbNo=; b=cDc2QD/A4u2yLRP1stoO9IAGTHVcZ29CiCKAwtUNo5+txsGWiv5
-	zlorcjMPZHNvXBLxF2JNI5lAS06qVGof/3G1sqqrN3JqdE4sQZO7QZgMR0Qo8i6r
-	LekNLjxqEn2Xg4AFqGpD17436ss+tJHyXnP3bKcOQSZkhTYf8AxT6zJvfbrw+c/2
-	n/9YpTLXWtH5gOblo7Bb4eEJPiSl4PHucAr1PnZ0lfp6/Q8u7sC/+x1m7Bz0GvSO
-	8Rg0ZW3UsmGfj8XpEOm+AgibeTfKeL6j2bE/8xQuKL6LpkECRiGDP2SsWm8kJ1mE
-	MDDMS2nSqM8w/wO/b+YgLjYKkurczPUYKOQ==
-X-ME-Sender: <xms:E3zGaRDXeuilQvxj0AqG4r3CQHTDYu74ikhJ3VVAF6FdqZOToGF3Ww>
-    <xme:E3zGaXsCuD7zTKzaEZU4qhcU-VyT1IfHhoBWftpS6V8kfHD61ZKDFWX5X5e0jgesl
-    ez5ckJbE8EKpOqQq306bOlVS4tsO3sSrhh6E6iJkc82ilkAaA>
-X-ME-Received: <xmr:E3zGaYJScoOH3Ea5d_6jJQkdBejts-46tW8VZt2Hxlhx8UiEN_849ft1khna>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffedtfedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeen
-    ucggtffrrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhf
-    dtueefhffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddtpdhmoh
-    guvgepshhmthhpohhuthdprhgtphhtthhopehnohhnrghmvggslhgrnhhktddtjeesghhm
-    rghilhdrtghomhdprhgtphhtthhopehtihifrghisehsuhhsvgdruggvpdhrtghpthhtoh
-    eplhhinhhugidqshhouhhnugesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtihifrg
-    hisehsuhhsvgdrtghomh
-X-ME-Proxy: <xmx:E3zGaWZzHtx46-3OjJ74jUjsUhblj-wKEXVbzG5-rbxXV8p7z1vm3g>
-    <xmx:E3zGaSAK--EGLB3mURwd86paFk--B6k6epBLr_3L6-PzlNUvLxHutA>
-    <xmx:E3zGaYbiYM8ER1efc9VnhE-3NssWHgM9PPQ5EWdiD-VB4ew_72n2kA>
-    <xmx:E3zGaSnyFy_HmOvCCatGkfkHETYUGF-nsKOCYrC7_w1VwiiV5RHHPw>
-    <xmx:E3zGaTsuitEtSsNMeemK4mK_rlc4VjGKQYWQ-v2GVqmQCAWc3jNU_QcY>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Mar 2026 08:46:10 -0400 (EDT)
-Date: Fri, 27 Mar 2026 13:45:45 +0100
-From: Greg KH <greg@kroah.com>
-To: Sourav Nayak <nonameblank007@gmail.com>
-Cc: tiwai@suse.de, linux-sound@vger.kernel.org, stable@vger.kernel.org,
-	tiwai@suse.com
-Subject: Re: [PATCH 1/1] ALSA: hda/realtek: add quirk for HP Victus 15-fb0xxx
-Message-ID: <2026032724-reveal-oblivion-e2db@gregkh>
-References: <877bqxsin3.wl-tiwai@suse.de>
- <20260327120149.18076-1-nonameblank007@gmail.com>
+	s=arc-20240116; t=1774616679; c=relaxed/simple;
+	bh=0Enk6zN0+6/OhBFfGHJz9coCUsGMV5UM92PLDdpD/uM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iziKy7tq9t5fwsBGUMXGMecLutLW3Av8IDf+BBzDMlaSAwwObMKHFoP/RNniaMPR1Ps+Hrp2ZS+m/xKlAJxMO1WDVNMoAfVExw5AN6RosSV+KEOPkBMD+2cJqo1YQFuqk5Qejqglp+GKMStbi7oIH6Q2oXDaHojUgjdRKXNyoxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 386774D31C;
+	Fri, 27 Mar 2026 13:04:36 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E425B4A0B1;
+	Fri, 27 Mar 2026 13:04:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uK6ANmOAxmmweQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 27 Mar 2026 13:04:35 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	simona@ffwll.ch,
+	sam@ravnborg.org
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 01/10] fbcon: Avoid OOB font access if console rotation fails
+Date: Fri, 27 Mar 2026 13:49:34 +0100
+Message-ID: <20260327130431.59481-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260327130431.59481-1-tzimmermann@suse.de>
+References: <20260327130431.59481-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327120149.18076-1-nonameblank007@gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230652-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-230653-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,ffwll.ch,ravnborg.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,kroah.com:dkim]
-X-Rspamd-Queue-Id: AA6693448FF
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:url]
+X-Rspamd-Queue-Id: C10B7344B33
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 05:31:49PM +0530, Sourav Nayak wrote:
-> From: NonameBlank007 <nonameblank007@gmail.com>
+Clear the font buffer if the reallocation during console rotation fails
+in fbcon_rotate_font(). The putcs implementations for the rotated buffer
+will return early in this case. See [1] for an example.
 
-This doesn't seem to match:
+Currently, fbcon_rotate_font() keeps the old buffer, which is to small
+for the rotated font. Printing to the rotated console with a high-enough
+character code will overflow the font buffer.
 
-> Signed-off-by: Sourav Nayak <nonameblank007@gmail.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
+Cc: <stable@vger.kernel.org> # v2.6.15+
+Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
+---
+ drivers/video/fbdev/core/fbcon_rotate.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-^that :(
+diff --git a/drivers/video/fbdev/core/fbcon_rotate.c b/drivers/video/fbdev/core/fbcon_rotate.c
+index 1562a8f20b4f..5348f6c6f57c 100644
+--- a/drivers/video/fbdev/core/fbcon_rotate.c
++++ b/drivers/video/fbdev/core/fbcon_rotate.c
+@@ -46,6 +46,10 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
+ 		info->fbops->fb_sync(info);
+ 
+ 	if (par->fd_size < d_cellsize * len) {
++		kfree(par->fontbuffer);
++		par->fontbuffer = NULL;
++		par->fd_size = 0;
++
+ 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
+ 
+ 		if (dst == NULL) {
+@@ -54,7 +58,6 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
+ 		}
+ 
+ 		par->fd_size = d_cellsize * len;
+-		kfree(par->fontbuffer);
+ 		par->fontbuffer = dst;
+ 	}
+ 
+-- 
+2.53.0
 
 
