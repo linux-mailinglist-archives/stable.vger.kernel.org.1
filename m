@@ -1,118 +1,138 @@
-Return-Path: <stable+bounces-230649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NsZK+x1xmlFKgUAu9opvQ
-	(envelope-from <stable+bounces-230649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:19:56 +0100
+	id cF3uB/l1xmlFKgUAu9opvQ
+	(envelope-from <stable+bounces-230650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:20:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FA33441D3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:19:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2D73441DA
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 13:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C959330F6DA8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:14:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2EEB43001CD4
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 12:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFED396D0F;
-	Fri, 27 Mar 2026 12:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B25039B4A3;
+	Fri, 27 Mar 2026 12:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="EcLJ95J9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2C5392836
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 12:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7D4396D0F
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 12:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774613644; cv=none; b=gRz0NntuaQ+lgCQ73w2o2s16H0O7yZ0+iQdTh6WTyK/+WD36kC4R30hslk2pUwGrKX3Aw62T+quijctmfoPDLqOCczbT+MCHBwCwW91mOyPqKIkskbaKoLoHi9YKr1Ro1tBAhh0KZRYOvK6P4uaXV6owiKnSVdkLJ12SqrNGmA8=
+	t=1774613982; cv=none; b=smelaIuL9IPZOt2SlWnfJTkLGI0GVOztYINzOtGYJUf8NQtaJzWg2AyqXEgIh4GGQ44YWIZ+ksFZcAJTIUlcPqG/3Y5AyZlSTUbvtnYptG8gbTIXMJ5oU9fLHW8CEJSnaPrwC2mDwuYEbGCw0NgU4N0oerbaSzKky4YnbcnjFQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774613644; c=relaxed/simple;
-	bh=okNs3h4fAo11yjZpOsTmZge2N3A4XGJhqEb8wC+tykM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=VV4cTqLAmos5En8qp5htS2aRp9afMlD1S8m2jSCOFvtP9IzQrajvCP6bExZ2dlg+4PyJRv58+QfzRz3EbCXfiDL7mRdytBMsLZptpRi+h+VPm4mKrcT6YR28ZiRDrQZ5/So931xwyfB7nUcmpHpYEbu0iy1FAECePbOsTFMQNfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67df0afe34fso5589699eaf.0
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 05:14:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774613642; x=1775218442;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iSgyg6G12jqQ7L5pa8uEZO73Z9H7gCigUdwQSvZJW0Y=;
-        b=NqA9k2sm5mXIV9oIFAMt3Dpitkb6TzN9f00Fvf7Vq4FCzM9W285mpc/whkTykdCeFb
-         v3J5vIP3jHmC0lWTmL/MPfi3ywm0KuqIrOuNlfbh3G6qjHPoD9/gureuD4mdbejBGgqt
-         QWncflDDrXgPXzhglRjYIyPshTkngb2nvTCdZFCB50TCxBt+pWAljfFjdiuEDZDA/uhC
-         o+jhPKPQpxrmuJ9MF59wf3XlZwq0QP3dDqAQ8/XqZm1O2CKmneHELx1iMHBt6feAf1Go
-         w5Y1d94iHUzY63KQFw7nFlGQ8TwQoaHLKAFX4bcB+UBT5qszMOSKhRDS7PFBkjbiiUu6
-         LCFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5HlyeuDUA2d1FqqdSXoFvrmYzmdsWcT9kLF47QCF4OF3HADmbtW6Dw/lnpw8lu15Rh+FTfbM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySRQRdpPOZbbYMpLedeOGjmz9ksuv7QQlESp4xFNQnEu7hUN/R
-	pxWlmPn/H1wO8NMsUik/ui4rXXi0Jxz9R6snXjWRkA/NFQsyyU0pxilCKXagTUllAyx178NI3Uq
-	G4bgk9Tp0ALSBBKopeXRkCvFHBnGNL2zPvt6vY2j4hJ9d0tIPx4JBwuV34PA=
+	s=arc-20240116; t=1774613982; c=relaxed/simple;
+	bh=nXO58KgcOSFD5NXL3UaqWfOGuPdY+H+Uby+ffFErYcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tpMbotZ58WY4V3PS5BlTIOAo7k5rALT0HP5HZBwL82I0yySPBjY17Yw7gIzRnACgMWHzQIF8oZXbB6DwJ4NJTrpUZXGSSyj09+5xM+0qjpE7A2iszRhiNx6TXqPcMzBm8OrC+iFEgMhG0NhJsHv7QgDSOQ8GSXgDX/waRWO/vZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=EcLJ95J9; arc=none smtp.client-ip=212.77.101.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 36376 invoked from network); 27 Mar 2026 13:19:33 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1774613973; bh=+9KIb0T+WT9OzqTMOwo1n0HvVm6k3ENENUEgwuOw2DU=;
+          h=From:To:Cc:Subject;
+          b=EcLJ95J9NQpAYhH4N7sr508RLabGwlNpO0mS2QVjBSsDT1qglBae+nJsnE4aG1HYl
+           SsOnbOA7KIAQLUyxDcXcawj9FTl7L5sFt5so3h/CFw59+X1+RBk0bKmW0iDSttUI3P
+           vNi1ZqZbRg9Nqx7pv2G5nCwMc9b66HU58sb6n5G0dIlmNihT0ApoyrkrdYy4z1Jeb5
+           sUNFgzQO7GK4F1uWDIVuiwP3olfLdx1kNm8FHkHSm0096Si6YwGvBv0+x39EGXV3iQ
+           WbIRE8/3cncLico2pZcrLjDOCRje9btq9162yHa0OSwU1um0El0SCBTFG8Tk+DjIv/
+           l4Wh6feTpX89Q==
+Received: from 77-236-5-223.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.5.223])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <johan@kernel.org>; 27 Mar 2026 13:19:33 +0100
+Date: Fri, 27 Mar 2026 13:19:33 +0100
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Vishal Thanki <vishalthanki@gmail.com>
+Subject: Re: [PATCH v2] wifi: rt2x00usb: fix devres lifetime
+Message-ID: <20260327121933.GC16800@wp.pl>
+References: <20260327113219.1313748-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1a0b:b0:67e:8fc:2b with SMTP id
- 006d021491bc7-67e185eb191mr1028251eaf.6.1774613642117; Fri, 27 Mar 2026
- 05:14:02 -0700 (PDT)
-Date: Fri, 27 Mar 2026 05:14:02 -0700
-In-Reply-To: <tencent_1D818E8FDF0991A176CDAAC6CE0B481D8D08@qq.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c6748a.050a0220.172bcd.0000.GAE@google.com>
-Subject: Re: [v6.6] KASAN: slab-use-after-free Write in gfs2_qd_dealloc
-From: syzbot <syzbot+469b584076b88cbb037d@syzkaller.appspotmail.com>
-To: driz2t@qq.com, stable@vger.kernel.org, syzkaller-lts-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327113219.1313748-1-johan@kernel.org>
+X-WP-MailID: bd41d97f0885404bb4e168523c1c8c2c
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [gSMR]                               
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=cf30d9e358c58220];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
+	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230649-lists,stable=lfdr.de,469b584076b88cbb037d];
+	TAGGED_FROM(0.00)[bounces-230650-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[qq.com,vger.kernel.org,googlegroups.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[wp.pl];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[wp.pl:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 25FA33441D3
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1E2D73441DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+On Fri, Mar 27, 2026 at 12:32:19PM +0100, Johan Hovold wrote:
+> USB drivers bind to USB interfaces and any device managed resources
+> should have their lifetime tied to the interface rather than parent USB
+> device. This avoids issues like memory leaks when drivers are unbound
+> without their devices being physically disconnected (e.g. on probe
+> deferral or configuration changes).
+> 
+> Fix the USB anchor lifetime so that it is released on driver unbind.
+> 
+> Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+> Cc: stable@vger.kernel.org	# 4.7
+> Cc: Vishal Thanki <vishalthanki@gmail.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
-
-Reported-by: syzbot+469b584076b88cbb037d@syzkaller.appspotmail.com
-Tested-by: syzbot+469b584076b88cbb037d@syzkaller.appspotmail.com
-
-Tested on:
-
-commit:         c09fbcd3 Linux 6.6.130
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=162b8ef6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cf30d9e358c58220
-dashboard link: https://syzkaller.appspot.com/bug?extid=469b584076b88cbb037d
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=10966f72580000
-
-Note: testing is done by a robot and is best-effort only.
+> ---
+>  drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+> index 83d00b6baf64..174d89b0b1d7 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+> @@ -826,7 +826,7 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
+>  	if (retval)
+>  		goto exit_free_device;
+>  
+> -	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
+> +	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+>  					sizeof(struct usb_anchor),
+>  					GFP_KERNEL);
+>  	if (!rt2x00dev->anchor) {
+> -- 
+> 2.52.0
+> 
 
