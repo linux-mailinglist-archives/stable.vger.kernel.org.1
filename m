@@ -1,169 +1,161 @@
-Return-Path: <stable+bounces-230724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6B1DApX2xmkGQwUAu9opvQ
-	(envelope-from <stable+bounces-230724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:28:53 +0100
+	id aGgzLgr5xmlwQwUAu9opvQ
+	(envelope-from <stable+bounces-230725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:39:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C8134BB5E
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:28:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1316134BC99
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43B23304CA5F
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 21:27:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0778300DF7B
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 21:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00CE396597;
-	Fri, 27 Mar 2026 21:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67DA39B484;
+	Fri, 27 Mar 2026 21:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ms6teX8r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toHYW7vR"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2DA392C5A;
-	Fri, 27 Mar 2026 21:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856D729DB88;
+	Fri, 27 Mar 2026 21:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774646846; cv=none; b=eK3EgWxbXQwHiWMyera1AjW139Sn6m3QNOs2szvG1la0eSqsWBOE2LWqua80dqvRFh9jKCAbVRe7Kg4iqzBqXujuXv+T+YYJC9xFgJGgr997Nt2mY6rsHNB7V2+rVvZ0B8TT2kZb6io7ctf+oMVyDTEuiD182m6altpSV+gVW0c=
+	t=1774647545; cv=none; b=q49AvDUeDI1zVPkVmAqGVFYc7Q/qFuenk5PSg2UAMbNXkZGGkbcajLsurCM/XcU2BlZv2bK5+r0k9OCKvIupRE2eDMZFi4vDo+VaF3P2Ta/olWe0Yqihvd2M40axeTgaLG1BNr+YN5ssKi51et2L/qx3C0y/PicKYkrEs+Fg0/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774646846; c=relaxed/simple;
-	bh=5KA0kZt4s0Pa0hT1hYmZ5xCmj7e+CT/d+UoZc79RQ2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bRWhfg6KUU3zo5NoUg7B35bcJ9vyYy4ffNGkpKVxyEl8vp5kB78mSBImBXzyPmj2j4Fnm5H7oUKFi0Bb3L6JLmI1M3W9oKfE34XBkk1d2q+nJ1xA20Wc8OQrOhstUSPiYDD7eGGMoqYL3JDR7GjKI4KZpPGvSkUexrTMMzUfHy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ms6teX8r; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.17.149.12] (unknown [131.107.8.12])
-	by linux.microsoft.com (Postfix) with ESMTPSA id A8F6D20B6F01;
-	Fri, 27 Mar 2026 14:27:24 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A8F6D20B6F01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774646844;
-	bh=rOEiR+xqNwP7mi5DMkwFjv/YmDpf5sOAdwYcP1lPfCU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ms6teX8rQ/QhSM0TRb/L+6L0QiQ1pSwDvM/YDAqecVmDuw3BOFfkuov2LsbZyBpRa
-	 zdY4g72PXsKja/NAwe9pX3kENSZzlghkhg7pUync6wAEli9VU0uR1IdD0HVPCo8DXY
-	 S5PSilxlirLRpo6x/eJ+IuZJpRbHUTOxtjtZjiKk=
-Message-ID: <eb567b6f-2822-4802-97d2-d78fe63a7342@linux.microsoft.com>
-Date: Fri, 27 Mar 2026 14:27:23 -0700
+	s=arc-20240116; t=1774647545; c=relaxed/simple;
+	bh=m0xyN/K4zSKcbMCe0Pigk/i5SRWQIcAcko2GQbCvTjg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qSOetwC/dY+VH02tCTgp3QyJZbpVN95ByBxy0w1nnxOd2MPQj7ClYBc3Lt0iCSnRSnQ7OI4YUc3tFiSX9JPyR6sCqLf6dUTqx5aILyFNX9AQ8l6HjCFapIkKpBeZa6WDcFAoA6r3Ut3jkZ2xQ49j5Owdo64A1CzhaxsWgGPai58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toHYW7vR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0354EC19423;
+	Fri, 27 Mar 2026 21:39:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774647545;
+	bh=m0xyN/K4zSKcbMCe0Pigk/i5SRWQIcAcko2GQbCvTjg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=toHYW7vRoEUWdcJjPz6TA1qTwrnJuw2lVfyg8XYEcr3C0SVa0+i7LFe3PEWxhRPTc
+	 30a33Msav4wL0TDWZZoYgjok56+O/WV61RkBGsTLgiTCfPt5RVH43WWN+3438Gp1KY
+	 aEPIWd0YQrdraTa95iIUQbZk2H9jnaQoY+VaXXXXI0A0FZebSDUdrwI4qSdjV6cuoA
+	 Himl6hXUQlpqErfe/E7QeQgqzlUuc7WLH9YlS47oCxwKJ9XEPXuR5hHx9MTHg0gLhM
+	 4OFsZb7t95rOXQXoPDu0FDH8rqrOhDXORg0kaYOxKomajkS5UUDH1GjpMk2Z/i+UPF
+	 maLu4iHUMzzcw==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 27 Mar 2026 22:38:55 +0100
+Subject: [PATCH] scripts/dtc: Remove unused dts_version in dtc-lexer.l
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: mana: fix use-after-free in add_adev() error path
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Saurabh Sengar <ssengar@linux.microsoft.com>,
- Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
- Shradha Gupta <shradhagupta@linux.microsoft.com>,
- Dipayaan Roy <dipayanroy@linux.microsoft.com>,
- Aditya Garg <gargaditya@linux.microsoft.com>,
- Shiraz Saleem <shirazsaleem@microsoft.com>, Leon Romanovsky
- <leon@kernel.org>, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260318154041.638747-1-lgs201920130244@gmail.com>
-Content-Language: en-US
-From: Hardik Garg <hargar@linux.microsoft.com>
-In-Reply-To: <20260318154041.638747-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Message-Id: <20260327-dtc-drop-dts_version-v1-1-41066690aefd@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDMBAAvyJ7NmBiTcWvSBG7WdvtQWU3FUH8u
+ 1FvM4eZDZSESaHJNhBaWHkak9g8A/z244cMh+TgCueL0j1NiGiCTHMC7RaSMzC2Kqm26P3DIqR
+ 0Fhp4vbbt63b9v3+E8XzBvh+CB5t5eAAAAA==
+X-Change-ID: 20260327-dtc-drop-dts_version-153e81c6641c
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1703; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=m0xyN/K4zSKcbMCe0Pigk/i5SRWQIcAcko2GQbCvTjg=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJnHfnxz6zbt2fzjTpVxvsc/dZ5Mly/2E942ZbxUPK9v8
+ un4kuQjHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiQPX/7N7rva6YLSAaW/rW
+ NWJD+P80jTOCtT/V2gN9K8IZxGauYmS4mBW/ovheWF+kewjD33tPNz06+lve6qN3j/F9Lp0l4n1
+ cAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230724-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,vger.kernel.org,lists.linux.dev,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230725-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hargar@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
-X-Rspamd-Queue-Id: 67C8134BB5E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1316134BC99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+in clang under a new subwarning, -Wunused-but-set-global, points out an
+unused static global variable in dtc-lexer.lex.c (compiled from
+dtc-lexer.l):
 
+  scripts/dtc/dtc-lexer.lex.c:641:12: warning: variable 'dts_version' set but not used [-Wunused-but-set-global]
+    641 | static int dts_version = 1;
+        |            ^
 
-On 3/18/2026 8:40 AM, Guangshuo Li wrote:
-> If auxiliary_device_add() fails, add_adev() calls
-> auxiliary_device_uninit(adev), whose release callback adev_release()
-> frees the containing struct mana_adev.
-> 
-> The current error path then falls through to init_fail and accesses
-> adev->id. Since adev is embedded in struct mana_adev, this may lead
-> to a use-after-free.
-> 
-> Fix it by storing the allocated auxiliary device id in a local
-> variable and using that saved id in the cleanup path after
-> auxiliary_device_uninit().
-> 
-> Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 1ad154f9db1a..70d71594c599 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -3362,6 +3362,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
->  {
->  	struct auxiliary_device *adev;
->  	struct mana_adev *madev;
-> +	int id;
->  	int ret;
->  
->  	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
-> @@ -3372,7 +3373,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
->  	ret = mana_adev_idx_alloc();
->  	if (ret < 0)
->  		goto idx_fail;
-> -	adev->id = ret;
-> +	id = ret;
-> +	adev->id = id;
->  
->  	adev->name = name;
->  	adev->dev.parent = gd->gdma_context->dev;
-> @@ -3398,7 +3400,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
->  	auxiliary_device_uninit(adev);
->  
->  init_fail:
-> -	mana_adev_idx_free(adev->id);
-> +	mana_adev_idx_free(id);
->  
->  idx_fail:
->  	kfree(madev);
+This variable has been unused since commit 658f29a51e98 ("of/flattree:
+Update dtc to current mainline."). Remove it to clear up the warning.
 
-Reviewed-by: Hardik Garg <hargar@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+This is commit 53373d1 ("dtc: Remove unused dts_version in dtc-lexer.l")
+in upstream dtc. I sent it separately to make it easier to backport to
+stable, along with updating the warning and hash to match the kernel's
+version.
+---
+ scripts/dtc/dtc-lexer.l | 3 ---
+ 1 file changed, 3 deletions(-)
 
+diff --git a/scripts/dtc/dtc-lexer.l b/scripts/dtc/dtc-lexer.l
+index 15d585c80798..1b129b118b0f 100644
+--- a/scripts/dtc/dtc-lexer.l
++++ b/scripts/dtc/dtc-lexer.l
+@@ -39,8 +39,6 @@ extern bool treesource_error;
+ #define DPRINT(fmt, ...)	do { } while (0)
+ #endif
+ 
+-static int dts_version = 1;
+-
+ #define BEGIN_DEFAULT()		DPRINT("<V1>\n"); \
+ 				BEGIN(V1); \
+ 
+@@ -101,7 +99,6 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 
+ <*>"/dts-v1/"	{
+ 			DPRINT("Keyword: /dts-v1/\n");
+-			dts_version = 1;
+ 			BEGIN_DEFAULT();
+ 			return DT_V1;
+ 		}
 
-Thanks,
-Hardik
+---
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+change-id: 20260327-dtc-drop-dts_version-153e81c6641c
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
