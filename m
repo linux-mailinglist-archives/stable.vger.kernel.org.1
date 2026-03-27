@@ -1,84 +1,59 @@
-Return-Path: <stable+bounces-230555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ6LAIHLxWmZBwUAu9opvQ
-	(envelope-from <stable+bounces-230555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:12:49 +0100
+	id wBJWEyDQxWm5BwUAu9opvQ
+	(envelope-from <stable+bounces-230556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:32:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B31B33D608
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DB033D921
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F4BC303B7F0
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:12:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D99B301184A
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00622199920;
-	Fri, 27 Mar 2026 00:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A8E25EFBE;
+	Fri, 27 Mar 2026 00:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="mL0VJlty"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNRNrlnn"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE600149C6F;
-	Fri, 27 Mar 2026 00:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560408635D;
+	Fri, 27 Mar 2026 00:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774570362; cv=none; b=gADsZIvoO0j6PQAd0MTOYqqQEuPJtQY8ZBNaGm0X7+ThwXgg/S2Uz1y/ln27VXMO+wME5j2ZX6p28yiC9Jp6CDXC4wu0hJhBekILi+xnTyzCMKsIrU6Yi/CdC/h6hX95ZDQEAoDMuuT3HQgDo3+BaUPN9ToW5S25FbT/s+tge0I=
+	t=1774571547; cv=none; b=hwQvD7Y25f2YdG2r5+aZ37SPxci/uHtmM/Jah62kN/oYmV0jJx0NCpea4Xj9oTi6SAfOzsr7jHipDv0oSNZDuc3czDOnU5/W9yvHZgwLd//YNa59ak8BPN/GLCEbs7sme+bD1FYQrU3YsFhB3r18SuoQYaovApTUYIcsf8civVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774570362; c=relaxed/simple;
-	bh=j4WT0tTagW1CWnW4KdeSu6pwouXwlHPu5mc86e+IKTM=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=U0lYBk49Z8yygZ88CnAIRG/9S21UdtNKqP11gKe2aBsKlL26sFAhftjXkxwtthx+wu8JgEmwgPflCcQPtn3sS/M7WzOljAg7Bq/A3vdqYmoZJXDL8Sl2mMPZu8mKj/v5JG2xClvgnPT9SN85WuXXZHUG5Kz1eOXMkBW+RGTQsYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=mL0VJlty; arc=none smtp.client-ip=43.163.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1774570351; bh=jF3VGWtFl5+5o0uq4BkVs4561ebEJfqMmvq/lQMWgIo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mL0VJltyFIuTAuDiXbq0SFZZtwXZHycgE0zQd8Pdni5gtRYlgRrFs9iSWsjYNIDLU
-	 ZahxIJ3swxFCe87FTCNeYIsqADKSVTn6R0wWFabTzgvXmuuIbclLK8pWh1Fj/ub4vr
-	 F8P0rOdwNduvAkO37xvewIeztKUaL2YOLszylhWM=
-Received: from June.localdomain ([123.121.145.35])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id 31B3D40A; Fri, 27 Mar 2026 08:12:27 +0800
-X-QQ-mid: xmsmtpt1774570347t0b1u0f4c
-Message-ID: <tencent_FED49CF5331CC0C7910618883332A08E2606@qq.com>
-X-QQ-XMAILINFO: NOcEdvLhLw8TC3ZRP/Ms0StBJXSMyXt0mU2UswUKCWUlYxFjktxm4PCFaA1xS/
-	 EyzMCbbnf0yAdffRpg0L3tinYG7P33cxMV7HET/P46r2gumZSJli6l+weTKjXu4Xz05bnuUZjiq0
-	 pmeNp96t6ySl+iel6n/kLFUQ4jB/oHXJUdtkfa/4GsK1oSi3mE9NcU0/7Sm8GouX218nqxeCKNAe
-	 LwiiNRm1iCtCBsLAz/96ynLKP6QvZ52ne2DDmdgcYgi9GkisNL5EWjuxwkA4c5TsawyE1bNa3DO7
-	 BF7XbJPNNVsa06JylxRz4kLskpVXqmPs09Vwxn6iaK3eANR3IN5vmGDXzw2dA/9nx4UVIfov0F9+
-	 3FD3ZLQom/kbFJOxCJfcD4ehTLaPG8nbmWOf982IWvOn24PKa5+3owmU1y4w3Pp5eVulVOIKMu+6
-	 zVwphqDXppwIFAD9JKisnxWxKJ4+5Uq23hUJ2U3ZkSX05uxIxwqgEf87bC+SEHkaomIac4p9/3Lg
-	 Jdd6Z5lXAueJyRSQIdrsOYeGy8aTMf61MnSrNMD1y8QJKlKOblGFejXIGN8oaRqLMgvCqOFYr2F6
-	 bGmGgmB6z92I/MWqt+cdi5K0oJl00zBWs2XD1kucFkDnSUD6P2iwgpjMd2Wym5mMlLu1yXkHXK1t
-	 AjaDRV3xkdT+duBWUk6CYiEZTHnHqh4Rox1fC6OWWh7gxV5vGXGKfK+ygKFdaGL7bQHhpo8OsNrh
-	 ILo4L/k6l6CuNO/Un5shA//IrgSSL9zzT+RnjY+ZSWgfEnKoae1MaeBHmgzDi/x9BfGneqNimrwb
-	 OhMBwcNZZ0TX5XskB89pFRAXzg0hm643TXzLnfu02X7O/reQluAWrKdhpBh6A+Nadf0L9IbxRBSi
-	 WZDXm7B5wMHfT0pyXkm8jnvYn4f/aCcEkXwplDrHpumfbOjAd0WoOsHzgZqu6YwwTJpSIRSHlZ+y
-	 bn/YtDozYt7Ua0ncRNxltyxIGiWiRxbsBIdkxiv/qeGhyD8dTE6x+RpXiFCF1H85SAkSvMx6+pkh
-	 MbR+YM2tq39v/Tkg0aQM7b1OV2cDEx3JJo5eTeKpOo2liS2EZfZt4Db4lsRjzANEK2TNxpbQ==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: Wang Jun <1742789905@qq.com>
-To: Qiang Zhao <qiang.zhao@nxp.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn,
-	25125283@bjtu.edu.cn,
-	23120469@bjtu.edu.cn,
-	Wang Jun <1742789905@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] soc: fsl: qe: panic on ioremap() failure in qe_reset()
-Date: Fri, 27 Mar 2026 08:12:25 +0800
-X-OQ-MSGID: <20260327001225.23192-1-1742789905@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <780c1ba3-6639-478e-896f-e35ec059b58c@kernel.org>
-References: <780c1ba3-6639-478e-896f-e35ec059b58c@kernel.org>
+	s=arc-20240116; t=1774571547; c=relaxed/simple;
+	bh=477C8/cGg78aynYBDYa7PrZfozFomytf/sPOXH4AIRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fn/oTjIcuwo/FEcrMeOIKMV/v0jr6ivZdxL+e2dQW5VHEMTMDK5PTsjHFh4dPuRc6vJ0LsmEUajR0MJdeGFk9ahLR0PVARNSIbsO8tX59Xt7YNkbUkiIj8w9X2sx+gMAAU5GhywcCGQqCT4TOVLzWMIGPLtpUl1e72vN0pe8wTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNRNrlnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BA6C116C6;
+	Fri, 27 Mar 2026 00:32:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774571546;
+	bh=477C8/cGg78aynYBDYa7PrZfozFomytf/sPOXH4AIRQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VNRNrlnndzxNHwOR3H1P0LyEaSzC3fKlp9bvoAeQkgrbwDSrawZ4MQkHylGTEEu2U
+	 QBbB2PNMZdbpNGVoFrbc/3d2L/K+IKXmRc91AtWvqFsSlvqSLdQejHRLE+RFXQ9F0t
+	 U61RAX23zAH4AbAk00tdOUv5kSLg0y7SLSd/VUjRukFBarHMbw5Tal48SSE/eGqqI7
+	 Latq5hJEOWLZOAbOd/djTMFhKn83suMfR0eoAqbDBLLMWuLErFja/Luhf7fL7bfsIz
+	 vQIiJplsCZfeCPdcakTUF/u6BMrTigjSs2yd4/ogxT01t6dERfBDfOn5s8W46HJ3ff
+	 GsVDiATzoWyBA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
+Date: Thu, 26 Mar 2026 17:32:22 -0700
+Message-ID: <20260327003224.55752-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,74 +61,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,bjtu.edu.cn,qq.com];
-	TAGGED_FROM(0.00)[bounces-230555-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230556-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qq.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[qq.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5B31B33D608
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A7DB033D921
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When ioremap() fails in qe_reset(), the global pointer qe_immr remains
-NULL, leading to a subsequent NULL pointer dereference when the pointer
-is accessed. Since this happens early in the boot process, a failure to
-map a few bytes of I/O memory indicates a fatal error from which the
-system cannot recover.
+damon_call() for repeat_call_control of DAMON_SYSFS could fail if
+somehow the kdamond is stopped before the damon_call().  It could
+happen, for example, when te damon context was made for monitroing of a
+virtual address processes, and the process is terminated immediately,
+before the damon_call() invocation.  In the case, the dyanmically
+allocated repeat_call_control is not deallocated and leaked.
 
-Follow the same pattern as qe_sdma_init() and panic immediately when
-ioremap() fails. This avoids a silent NULL pointer dereference later
-and makes the error explicit.
+Fix the leak by deallocating the repeat_call_control under the
+damon_call() failure.
 
-Fixes: 986585385131 ("[POWERPC] Add QUICC Engine (QE) infrastructure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wang Jun <1742789905@qq.com>
+This issue is discovered by sashiko [1].
+
+[1] https://lore.kernel.org/20260320020630.962-1-sj@kernel.org
+
+Fixes: 04a06b139ec0 ("mm/damon/sysfs: use dynamically allocated repeat mode damon_call_control")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- drivers/soc/fsl/qe/qe.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Changes from RFC
+(https://lore.kernel.org/20260326062347.88569-2-sj@kernel.org)
+- Split out from the series.
+- Drop RFC tag.
+- Add Fixes: and Cc: stable.
 
-diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-index 70b6eddb867b..9f6223043ee3 100644
---- a/drivers/soc/fsl/qe/qe.c
-+++ b/drivers/soc/fsl/qe/qe.c
-@@ -86,8 +86,12 @@ static phys_addr_t get_qe_base(void)
+ mm/damon/sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 6a44a2f3d8fc..eefa959aa30a 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1670,7 +1670,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
+ 	repeat_call_control->data = kdamond;
+ 	repeat_call_control->repeat = true;
+ 	repeat_call_control->dealloc_on_cancel = true;
+-	damon_call(ctx, repeat_call_control);
++	if (damon_call(ctx, repeat_call_control))
++		kfree(repeat_call_control);
+ 	return err;
+ }
  
- void qe_reset(void)
- {
--	if (qe_immr == NULL)
-+	if (qe_immr == NULL) {
- 		qe_immr = ioremap(get_qe_base(), QE_IMMAP_SIZE);
-+		if (qe_immr == NULL) {
-+			panic("QE:ioremap failed!");
-+		}
-+	}
- 
- 	qe_snums_init();
- 
+
+base-commit: dd478b2be41492a9f7be5abbdbd4dceddc46818f
 -- 
-2.43.0
-
+2.47.3
 
