@@ -1,173 +1,121 @@
-Return-Path: <stable+bounces-230618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CllLwpZxmkrJAUAu9opvQ
-	(envelope-from <stable+bounces-230618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:16:42 +0100
+	id eAdpDVJaxmlgJAUAu9opvQ
+	(envelope-from <stable+bounces-230619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:22:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072B3342553
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DF43426A6
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34E9A31530E8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:10:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30FA8316A858
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A558F3AA4FC;
-	Fri, 27 Mar 2026 10:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC043A9DAB;
+	Fri, 27 Mar 2026 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWOMHv7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn7VUUnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A4129D268;
-	Fri, 27 Mar 2026 10:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6523A6B6C;
+	Fri, 27 Mar 2026 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774606210; cv=none; b=nuvUndFWg1ByQJjTtH3sSe2lnVK+A+GLmkccD0PaS1N28u4t+v2W0Q6MMOlWausmbhf/zGfrg8KND6CfHGBaxkfFpvIeQ1LAnHZdywZguEPnvEM4o2JPaCMSLQqOuwR70GXHf6Ui7gL8UWc9cQCaYL+Lxec3Eb1oqCj+Kl2sWek=
+	t=1774606339; cv=none; b=LwxWiXbJzy5sc9LjhQt4Ze4hAFrfses34c4u/fh9FhpYT6Fthoyy4z+oDF9zLJaNddBdNZ/iDA/Vg2wzl825RiBNY0rsISIg7HWhUn/6D5cSrE9a0iJMPFRVDfp05JAGHA67B0QCLu0SOezGN5ZALbHmoADuq45ua7ipk58o2ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774606210; c=relaxed/simple;
-	bh=VzV0a2wBVr6FuxEykZ4Kknr6vJ2PWsntBc81QU/RXx4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TxV1Nq8j1vLullTbVzYQ1aSwpzS3Nir8eDTSqNwUthf/oY/YYud3eCYpdfbk5KWZgg7EJLdDWbBJmGaXqe6S1E8YA7ALQuyxk7f9+MJozyqW58g3gcqBGvcpWLpzA8/mS5Yi9G13WAKywbxkAQg7CFUU40/6xKcC4gM+NwwLSOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWOMHv7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82D2C19423;
-	Fri, 27 Mar 2026 10:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774606210;
-	bh=VzV0a2wBVr6FuxEykZ4Kknr6vJ2PWsntBc81QU/RXx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eWOMHv7GdJVsNiq7QeD3LDSH7SG53YpdiOMGylNR0E1e7bEMmQxxUcCJGeVEoNKh1
-	 XicN29ckV3v+haOqufcY1L8rHRPsaCwEkZX41IyJzVoGpl5kggfEglldozHeD/l3sF
-	 17YF94HU1uvxgTyAVMF99viLgD5D1UFwO+twYAzEv8TrxRH1aOPA487QlapvDI2Djf
-	 K1rmBmIxDaCp8mUTIvSiUY6lERD4eC3x1EJstiWEu9VeuBQWgkn8W7Pz+0tZp6NJs5
-	 xkncQka0AdTLd3Bw6P7LOTXUeLGM+AOXK9LnD4dUKB260v6IlLYZXQhhGeIpEzU2UU
-	 yZMz1Rc1FyD9A==
-Date: Fri, 27 Mar 2026 15:40:01 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	andersson@kernel.org, yimingqian591@gmail.com, chris.lew@oss.qualcomm.com, 
+	s=arc-20240116; t=1774606339; c=relaxed/simple;
+	bh=/sBlDAuD+k0xiaI00BMG8cbz3yQl8lhd2eBMiuzWDEw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H3GOTQeVYd14C3jaY4fkAscCUuAjwwUo5+U7Dxe5OO4MnNJlofXCvLQvvHA71u7nskc8urVgwOjDEF5AGqo78WFgHJDrddabw4vIiygRc9UBird51OpHo6I5iE2aegbqhLEDFV3L1d5xdoqKiY+iIkRPxqWBgSCPjxyLyhoJuA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn7VUUnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F08C19423;
+	Fri, 27 Mar 2026 10:12:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774606339;
+	bh=/sBlDAuD+k0xiaI00BMG8cbz3yQl8lhd2eBMiuzWDEw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cn7VUUnc1i/pW1bYvRLIUVJ0/hLspYWhIoGI2Y4f1f7Es67jmpczos39BTGcXDveR
+	 yKzvONjRUuA3mp3WU2ksJhrNuJuNJ4WGAxC05iFTL92Qhg+n03Vp4LjlU0JyFf/MJv
+	 DXkjdhOhrTvpDEfeBmCutgkx2giLp6SQqcrhDLeg=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] net: qrtr: ns: Limit the maximum server registration
- per node
-Message-ID: <as3zucfwr4z2x5pxww6ognmqcujkwnhppulm7jquex6fy6sqn5@qa33h5mxxdz7>
-References: <20260325104415.104972-1-manivannan.sadhasivam@oss.qualcomm.com>
- <20260325104415.104972-2-manivannan.sadhasivam@oss.qualcomm.com>
- <20260327095832.GC111839@horms.kernel.org>
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.12.79
+Date: Fri, 27 Mar 2026 11:11:54 +0100
+Message-ID: <2026032708-voting-grafted-04f0@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260327095832.GC111839@horms.kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230618-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-230619-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 072B3342553
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D9DF43426A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 09:58:32AM +0000, Simon Horman wrote:
-> On Wed, Mar 25, 2026 at 04:14:14PM +0530, Manivannan Sadhasivam wrote:
-> > Current code does no bound checking on the number of servers added per
-> > node. A malicious client can flood NEW_SERVER messages and exhaust memory.
-> > 
-> > Fix this issue by limiting the maximum number of server registrations to
-> > 256 per node. If the NEW_SERVER message is received for an old port, then
-> > don't restrict it as it will get replaced.
-> > 
-> > Note that the limit of 256 is chosen based on the current platform
-> > requirements. If requirement changes in the future, this limit can be
-> > increased.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-> > Reported-by: Yiming Qian <yimingqian591@gmail.com>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> 
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> 
-> > ---
-> >  net/qrtr/ns.c | 24 ++++++++++++++++++++----
-> >  1 file changed, 20 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> > index 3203b2220860..fb4e8a2d370d 100644
-> > --- a/net/qrtr/ns.c
-> > +++ b/net/qrtr/ns.c
-> > @@ -67,8 +67,14 @@ struct qrtr_server {
-> >  struct qrtr_node {
-> >  	unsigned int id;
-> >  	struct xarray servers;
-> > +	u32 server_count;
-> >  };
-> >  
-> > +/* Max server limit is chosen based on the current platform requirements. If the
-> > + * requirement changes in the future, this value can be increased.
-> > + */
-> > +#define QRTR_NS_MAX_SERVERS 256
-> > +
-> >  static struct qrtr_node *node_get(unsigned int node_id)
-> >  {
-> >  	struct qrtr_node *node;
-> > @@ -229,6 +235,17 @@ static struct qrtr_server *server_add(unsigned int service,
-> >  	if (!service || !port)
-> >  		return NULL;
-> >  
-> > +	node = node_get(node_id);
-> > +	if (!node)
-> > +		return NULL;
-> 
-> This is not new behaviour added by patch, but If I understand things
-> correctly, node_get will allocate a new node if one doesn't already exist
-> for the node_id.
-> 
+I'm announcing the release of the 6.12.79 kernel.
 
-Yes!
+Only users that could not build the 6.12.78 release on the LoongArch platform
+need to upgrade, this fixes a regression that was introduced in the last
+release accidentally.
 
-> I am wondering if any bounds are placed on the number of nodes that can be
-> created. And, if not, is this a point of concern from a memory exhaustion
-> perspective?
-> 
+The updated 6.12.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-That's true. I plan to send a followup for that. This series just limits the
-scope in addressing the reported issue.
+thanks,
 
-- Mani
+greg k-h
 
--- 
-மணிவண்ணன் சதாசிவம்
+------------
+
+ Makefile                              |    2 +-
+ arch/loongarch/kernel/machine_kexec.c |   22 ----------------------
+ 2 files changed, 1 insertion(+), 23 deletions(-)
+
+Greg Kroah-Hartman (1):
+      Linux 6.12.79
+
+Huacai Chen (1):
+      Revert "LoongArch: Add machine_kexec_mask_interrupts() implementation"
+
 
