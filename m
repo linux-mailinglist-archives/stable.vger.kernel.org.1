@@ -1,181 +1,187 @@
-Return-Path: <stable+bounces-230594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yH4hKVU4xmm7HgUAu9opvQ
-	(envelope-from <stable+bounces-230594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:57:09 +0100
+	id eAX3Jn84xmm7HgUAu9opvQ
+	(envelope-from <stable+bounces-230596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:57:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2014340AD7
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:57:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F265E340ADF
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 08:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EDED9305D4A3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 07:54:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D7FF3008200
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 07:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EC53CEB81;
-	Fri, 27 Mar 2026 07:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF1C3CD8A4;
+	Fri, 27 Mar 2026 07:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVPrWOIS"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="LOQUaLQt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A526429BDB1;
-	Fri, 27 Mar 2026 07:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAB137E30A;
+	Fri, 27 Mar 2026 07:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774598058; cv=none; b=fmJNBq5VZZx03xcs0MFHwmmu76Nxc1Wsq5QcvBe5p+ErP/pHZp08YzzCQAx6N5ZGMYiY7WAVlFNdgap8fzQaDWegTbWL3FBwb0Yotbt9VY4C2O8hNEJFgPqn86Ajqqeey1k/aISdNlSIgDX/gb2zZnqo5IwFL8bcDFjzsWxFkaM=
+	t=1774598264; cv=none; b=cwmuX1EOATtEJa6Xsc/lCGJ0iCTWXxRezGIhH4k8+Sgg/B7rxr3QIMv8EqUPU42bbDMEQ48fZWHN9lIVXgFCtxx++w7My4012rurWhZbDvTsOYzCM0770DtTQl5aCaHGcL9OqG5FDKKwsF7djQuPrOVtn4jY1Sl0cCWdeFVuWhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774598058; c=relaxed/simple;
-	bh=fVfnbrCFPbx56fN5k/LPGrEtqO3hIsGVAx/y6wA1wg4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OSd2APQlEW6XqfhmzBhswwB6tYmvknXQqGPIW4bGlguSbu0ihA3CxXZMop9ay1N4R7J+FtVXFr7lvAoOVfFzEzER2AIXtI3EvdcCo8RfUY0m8MSn7la5BeW+VVzPRmQPfod+ulNyFXUCfnugNk8yxEYt3guO72UZI1z0Zofp0PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVPrWOIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DA0C19423;
-	Fri, 27 Mar 2026 07:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774598058;
-	bh=fVfnbrCFPbx56fN5k/LPGrEtqO3hIsGVAx/y6wA1wg4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZVPrWOISjGykaGNzIuPtynp7+S7nBx1sHQrIkRq0Ii27psJLu9c27zdY01msai7yk
-	 CasYCrJaSnnQZhJLWTdEdFoBZ+kqCk+5JoisOZcZ9nr+duf+gdbONshdbiiQ/JCZU4
-	 iWHJcsIJdAfJY30N67YOibmQus+oUA1jknUZLH4QJdfFhxV/N/axs8bRQtFIgY0wEv
-	 kenlEZo/d2owb7l+oNs+vmGM3lzJ56F3gh6o3m/s1jH3HVBEFwxvJs7mXCqittnYNX
-	 6ks1u+duSS5PGp9aBywxJONjmeVwtvV33w53j0JWZJ55a361bo0Y/ZL6l4jYySTUqh
-	 vtGSTFjdYnZsg==
-Message-ID: <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
-Date: Fri, 27 Mar 2026 08:54:11 +0100
+	s=arc-20240116; t=1774598264; c=relaxed/simple;
+	bh=nD3a7ca5zXF3Flx/ktgkCUyfrL1kJnSzSg2w9Fei4dg=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=t+JGN+zCWREpPenPg2l4a/JqDcyExndCdBfVXw7333+kGnaq+3o2uDSui1KBsQ8GYSPgL+ssnBDT5JbnooAk49lfpyzPcCAiZ1LK7Xq2DWih/h9f6dRSE2miV48RBZJNqUlKGxUiUUlt/mukxB4tw6w3LplPv+EwM/a1lTjRYcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=LOQUaLQt; arc=none smtp.client-ip=203.205.221.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774598247; bh=k2hiTA0VrEVVfu22MmrOZ7p/qypkx3TZutY3DMt9uEw=;
+	h=From:To:Cc:Subject:Date;
+	b=LOQUaLQtyT3m5Jyu524KYJicOLY7oF3fcGuFGvqAsAK6HzI946EE5oVy/AIg9rR7I
+	 OZThbXSvqFi4SynyzNHL3pUe8UUn19bfI7edyKBiHDmsHElf5yKQDtUFOTrTaepDds
+	 MF746KO4jqLtMRho0KvMDbYCB//Jo+2XVUwjKNKk=
+Received: from LAPTOP-KQCD4QBN.localdomain ([123.121.145.48])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id E57AD248; Fri, 27 Mar 2026 15:57:23 +0800
+X-QQ-mid: xmsmtpt1774598243tgkyhgoqm
+Message-ID: <tencent_86EEF38C057E85789162B70AA2D92AC90506@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLmyMCnm3AfQaOvF342rYuJlVJ+r7CMnGe+5tdP8p7R+K3WH4+HP
+	 tqFQqqwdUBhzyqEUZM+2/psq8xnn8lm6xOftAbvndIk4XGMiUKBWyf4eKTvAE1pSX/ydMkGVpw6T
+	 6laolkoeHerjj3O2Hf+kN6908HJdOAb03Y9VQHYONdHE4M2DQ0OZeyYZVvpSXMlfK6Q9wFLemEyC
+	 uprmX9jy5XEiNFlk7e/m6mFHU4dULdHNJgvlwETZanLgTj2yiG6vkKNnjaLk4n7a6aopzfT3KEyE
+	 DraDX2RiBNf5H6pBvjzLpjuZkLZpBEVw1vah3JyqpDrveyDYXUdjN3FW2WSKpuQpnhqSyhhoOLSV
+	 GKvnScXNbKgyQ8gh2D5dlZSHwWur+Gg6N28Q7/KHcWCuXSCHHoVR2T8cPoZp4y54VD0NClyDDkSQ
+	 BdJUwqaUpC8XDcjwQoWiIhzmBL4vUtwhvGTnHuZjRWhfMn+7FgvwcYp1izKaLzORd/BMB5vUcYgu
+	 AXYxEsYl2gQOB4zaZamft3oqLu3s96bVvph/kMgMil2yvC+IsbY+i8F8k+S8T7IUYargA8pxEd6S
+	 6RR44f01kgLDgIvo+uYe1D0yetAbq++9OjmhNBIwIWtYp5eQy8nuQo8opCBU/zGqCFek2qyFvg8v
+	 iiIy+FeLZo8RElHw/9McHfqGfpmqfTX+/g8AtMTN08hQOQOFnjcmaC4v2xHQnwOgWrzSfJ+n4+Tb
+	 0qtRVSBg5NmHDzjOnRMJqpDhLZhg48zxr24b7aknWzhcCY5gVjQoegMiXFUp5HvBZPszna3wfBVy
+	 hS+lDue4GOqyhfJerIs2MJOxwRzdjrFzj32OlC7jxtocrVQ54kYGNozEcdGQMvdEsQnMYcL6gkx6
+	 oP2bcOiqIgWzkKcDWYKQOhfGNKRpXR6oKOgcVqnKlINhPew+t0XelhYIiF2M/j48tmpVVkUEGuVR
+	 zb1xgEMVQgIbBx1PTuespl/rd9IZsARk+Psi87MlYjCTTAjVfvCR9xRKZQl1cnGl8A5e+insE77o
+	 Q+i2XVdetJ7v6s6HlkI8Fr4hR7/S1Jvi20t4OtJA==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: Wenyuan Li <2063309626@qq.com>
+To: Andy Walls <awalls@md.metrocast.net>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	Wenyuan Li <2063309626@qq.com>
+Subject: [PATCH v2] media: ir-i2c: add error handling for I2C send in get_key_adaptec()
+Date: Fri, 27 Mar 2026 15:57:21 +0800
+X-OQ-MSGID: <20260327075721.11411-1-2063309626@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
-To: Ryan Roberts <ryan.roberts@arm.com>, Uladzislau Rezki <urezki@gmail.com>,
- Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
- Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
- "Paul E. McKenney" <paulmck@kernel.org>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
- <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
- <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
- <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,bjtu.edu.cn,qq.com];
+	TAGGED_FROM(0.00)[bounces-230596-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[arm.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230594-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D2014340AD7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:dkim,qq.com:email,qq.com:mid]
+X-Rspamd-Queue-Id: F265E340ADF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/26/26 19:50, Ryan Roberts wrote:
-> On 26/03/2026 18:24, Vlastimil Babka (SUSE) wrote:
->> On 3/26/26 19:16, Uladzislau Rezki wrote:
->>> On Thu, Mar 26, 2026 at 03:42:02PM +0100, Vlastimil Babka (SUSE) wrote:
->>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
->>>>> Hi Vlastimil, Harry,
->>>>
->>>
->>> static bool kfree_rcu_sheaf(void *obj)
->>> {
->>> 	struct kmem_cache *s;
->>> 	struct slab *slab;
->>>
->>> 	if (is_vmalloc_addr(obj))
->>> 		return false;
->>>
->>> 	slab = virt_to_slab(obj);
->>> 	if (unlikely(!slab))
->>> 		return false;
->>>
->>> 	s = slab->slab_cache;
->>> 	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
->>> 		return __kfree_rcu_sheaf(s, obj);
->>>
->>> 	return false;
->>> }
->>>
->>> it does not go via sheaf since it is a vmalloc address.
-> 
-> Isn't vmalloc doing slab allocations for vmap_area, vm_struct, etc, which will
-> occasionally go via sheaves though? I had assumed that was the reason of the
-> observed regression.
+In get_key_adaptec(), a command byte (0x00) is sent to the IR chip via
+i2c_master_send() to initiate a key read. However, the return value of
+i2c_master_send() is not checked.
 
-You're right. And in the table Harry fixed up (thanks!) I can see the
-regressions are also in tests that don't do kvfree_rcu() but a plain vfree()
-so that rules out the overhead of kfree_rcu_sheaf() returning false.
+If this I2C transfer fails, the IR chip may not receive the read
+command, causing the subsequent i2c_master_recv() to read stale or
+invalid data. The driver would then return 0 (no key) without logging
+the error, making debugging difficult.
 
-It might be due to sheaf_capacity not matching the capacity of cpu (partial)
-slabs. We are working to improve that.
+Fix this by:
+- Checking the return value of i2c_master_send()
+- Converting partial sends to -EIO while preserving kernel error codes
+- Adding dev_err_ratelimited() logging with %pe format
+- Adding similar error logging for the i2c_master_recv() path
 
->> 
->> Right so there should be just the overhead of the extra is_vmalloc_addr()
->> test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
->> I'd say it's something we can just accept? It seems this is a unit test
->> being used as a microbenchmark, so it can be very sensitive even to such
->> details, but it should be negligible in practice.
-> 
-> The perf/syscall cases might be a bit more concerning though? (those tests are
-> from "perf bench syscall fork|execve"). Yes they are microbenchmarks, but a 7%
-> increased cost for fork seems like something we'd want to avoid if we can.
+If the send fails, return 0 to maintain the existing behavior (no key
+detected), but log the error for debugging purposes.
 
-Sure, I tried to explain those in my first reply. Harry then linked to how
-that explanation can be verified. Hopefully it's really the same reason.
+Cc: stable@vger.kernel.org
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
 
-Thanks!
-Vlastimil
+---
+v2:
+- Add error handling for i2c_master_send() as suggested
+- Extend checking to i2c_master_recv()
+- Use dev_err_ratelimited() instead of dev_err()
+- Clarify error handling behavior
+- Drop incorrect Fixes tag
+---
+ drivers/media/pci/ivtv/ivtv-i2c.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-> Thanks,
-> Ryan
-> 
-> 
->> 
->>>
->>> --
->>> Uladzislau Rezki
->> 
-> 
+diff --git a/drivers/media/pci/ivtv/ivtv-i2c.c b/drivers/media/pci/ivtv/ivtv-i2c.c
+index 28cb22d6a892..c011f2246add 100644
+--- a/drivers/media/pci/ivtv/ivtv-i2c.c
++++ b/drivers/media/pci/ivtv/ivtv-i2c.c
+@@ -138,11 +138,28 @@ static int get_key_adaptec(struct IR_i2c *ir, enum rc_proto *protocol,
+ 			   u32 *scancode, u8 *toggle)
+ {
+ 	unsigned char keybuf[4];
++	int ret;
+ 
+ 	keybuf[0] = 0x00;
+-	i2c_master_send(ir->c, keybuf, 1);
++
++	ret = i2c_master_send(ir->c, keybuf, 1);
++	if (ret != 1) {
++		int err = ret < 0 ? ret : -EIO;
++
++		dev_err_ratelimited(&ir->c->dev, "i2c_master_send failed: %pe\n", ERR_PTR(err));
++
++		/* Preserve existing behavior: treat error as no key */
++		return 0;
++	}
++
+ 	/* poll IR chip */
+-	if (i2c_master_recv(ir->c, keybuf, sizeof(keybuf)) != sizeof(keybuf)) {
++	ret = i2c_master_recv(ir->c, keybuf, sizeof(keybuf));
++	if (ret != sizeof(keybuf)) {
++		int err = ret < 0 ? ret : -EIO;
++
++		dev_err_ratelimited(&ir->c->dev, "i2c_master_recv failed: %pe\n", ERR_PTR(err));
++
++		/* Preserve existing behavior */
+ 		return 0;
+ 	}
+ 
+-- 
+2.43.0
 
 
