@@ -1,140 +1,170 @@
-Return-Path: <stable+bounces-230556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBJWEyDQxWm5BwUAu9opvQ
-	(envelope-from <stable+bounces-230556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:32:32 +0100
+	id o67NAvnSxWnHCAUAu9opvQ
+	(envelope-from <stable+bounces-230557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:44:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7DB033D921
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:32:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A13A33D994
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D99B301184A
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:32:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B2543018085
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 00:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A8E25EFBE;
-	Fri, 27 Mar 2026 00:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA1F274B39;
+	Fri, 27 Mar 2026 00:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNRNrlnn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OCqRmyww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560408635D;
-	Fri, 27 Mar 2026 00:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59641B808;
+	Fri, 27 Mar 2026 00:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774571547; cv=none; b=hwQvD7Y25f2YdG2r5+aZ37SPxci/uHtmM/Jah62kN/oYmV0jJx0NCpea4Xj9oTi6SAfOzsr7jHipDv0oSNZDuc3czDOnU5/W9yvHZgwLd//YNa59ak8BPN/GLCEbs7sme+bD1FYQrU3YsFhB3r18SuoQYaovApTUYIcsf8civVM=
+	t=1774572236; cv=none; b=EZu8KgzYOekTzAEzTfhOUDfIVznQN1+lGfUT7Qw7cWiu+UfR3ARCZE5jI8eLbUa0GOGvfyxV8dVSvnGA29ON0JDwAOdL9h/moYWfCahbqVVDTCBhTz+lwcdifwLnqw5RhiLy+LFABYFrhURwcmX4zqVX32923xrOIBLnApaWbH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774571547; c=relaxed/simple;
-	bh=477C8/cGg78aynYBDYa7PrZfozFomytf/sPOXH4AIRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fn/oTjIcuwo/FEcrMeOIKMV/v0jr6ivZdxL+e2dQW5VHEMTMDK5PTsjHFh4dPuRc6vJ0LsmEUajR0MJdeGFk9ahLR0PVARNSIbsO8tX59Xt7YNkbUkiIj8w9X2sx+gMAAU5GhywcCGQqCT4TOVLzWMIGPLtpUl1e72vN0pe8wTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNRNrlnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BA6C116C6;
-	Fri, 27 Mar 2026 00:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774571546;
-	bh=477C8/cGg78aynYBDYa7PrZfozFomytf/sPOXH4AIRQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VNRNrlnndzxNHwOR3H1P0LyEaSzC3fKlp9bvoAeQkgrbwDSrawZ4MQkHylGTEEu2U
-	 QBbB2PNMZdbpNGVoFrbc/3d2L/K+IKXmRc91AtWvqFsSlvqSLdQejHRLE+RFXQ9F0t
-	 U61RAX23zAH4AbAk00tdOUv5kSLg0y7SLSd/VUjRukFBarHMbw5Tal48SSE/eGqqI7
-	 Latq5hJEOWLZOAbOd/djTMFhKn83suMfR0eoAqbDBLLMWuLErFja/Luhf7fL7bfsIz
-	 vQIiJplsCZfeCPdcakTUF/u6BMrTigjSs2yd4/ogxT01t6dERfBDfOn5s8W46HJ3ff
-	 GsVDiATzoWyBA==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
-Date: Thu, 26 Mar 2026 17:32:22 -0700
-Message-ID: <20260327003224.55752-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1774572236; c=relaxed/simple;
+	bh=A1baT92GkExPeLSVcPdQDvtQiYQMSXImJ3IARwj7h3o=;
+	h=Date:To:From:Subject:Message-Id; b=imLj2cbg/wEAH5ODtP3HrGKrcGop9aBmqW/WcuzWzZ0nbRT96bXT1cC9Gsy9JQvG7J0JI08ATP3IPxb7GI5ex55SITuPnNR8zJaEudF2dWLOIlbLogZGEbENZPHaaZ5lmN/7SVBgMvczE/j5bb7US1O7NwcAYp48xMj3fdSNiuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OCqRmyww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2720C116C6;
+	Fri, 27 Mar 2026 00:43:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774572235;
+	bh=A1baT92GkExPeLSVcPdQDvtQiYQMSXImJ3IARwj7h3o=;
+	h=Date:To:From:Subject:From;
+	b=OCqRmywwFlKSumVS3fOrad2x+GuqEf7mZxJiwZkG0FHjhVBT+lOzZEPw6aLvV9MTy
+	 gbTh1NVPE0zpwtCPV1cZGt0/Z496TPxIeJkGvgR0xYfaBHhMh8sQu+/qKu4QrtOB0N
+	 JjXpYDkUJ6LEKqtt/LW3zeG8Wd1KoPOYhQ59qXB8=
+Date: Thu, 26 Mar 2026 17:43:55 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,miklos@szeredi.hu,jack@suse.cz,hch@infradead.org,hannes@cmpxchg.org,joannelkoong@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-start-background-writeback-based-on-per-wb-threshold-for-strictlimit-bdis.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260327004355.A2720C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230556-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230557-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,infradead.org,szeredi.hu,suse.cz,cmpxchg.org,gmail.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A7DB033D921
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linux-foundation.org:dkim,linux-foundation.org:email,szeredi.hu:email,suse.cz:email]
+X-Rspamd-Queue-Id: 2A13A33D994
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-damon_call() for repeat_call_control of DAMON_SYSFS could fail if
-somehow the kdamond is stopped before the damon_call().  It could
-happen, for example, when te damon context was made for monitroing of a
-virtual address processes, and the process is terminated immediately,
-before the damon_call() invocation.  In the case, the dyanmically
-allocated repeat_call_control is not deallocated and leaked.
 
-Fix the leak by deallocating the repeat_call_control under the
-damon_call() failure.
+The patch titled
+     Subject: mm: start background writeback based on per-wb threshold for strictlimit BDIs
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-start-background-writeback-based-on-per-wb-threshold-for-strictlimit-bdis.patch
 
-This issue is discovered by sashiko [1].
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-start-background-writeback-based-on-per-wb-threshold-for-strictlimit-bdis.patch
 
-[1] https://lore.kernel.org/20260320020630.962-1-sj@kernel.org
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: 04a06b139ec0 ("mm/damon/sysfs: use dynamically allocated repeat mode damon_call_control")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Joanne Koong <joannelkoong@gmail.com>
+Subject: mm: start background writeback based on per-wb threshold for strictlimit BDIs
+Date: Thu, 26 Mar 2026 16:46:29 -0700
+
+The proactive nr_dirty > gdtc->bg_thresh check in balance_dirty_pages()
+only checks the global dirty threshold to start background writeback
+while the writer is still free-running, but for strictlimit BDIs (eg
+fuse), the per-wb dirty count can exceed the per-wb background threshold
+while the global threshold is not yet exceeded, so background writeback
+for this case never gets proactively started.
+
+This leads to severe stalls and degraded throughput.  On fuse, buffered
+write performance drops from 1400 MiB/s to 2000 KiB/s.
+
+Add a per-wb threshold check for strictlimit BDIs so that background
+writeback is started when wb_dirty exceeds wb_bg_thresh, which drains
+dirty pages before the writer hits the throttle wall, matching the
+proactive behavior that the global check provides for non-strictlimit
+BDIs.
+
+fio runs on fuse show about a 3-4% improvement in perf for buffered
+writes:
+fio --name=writeback_test --ioengine=psync --rw=write --bs=128k \
+    --size=2G --numjobs=4 --ramp_time=10 --runtime=20 \
+    --time_based --group_reporting=1 --direct=0
+
+Link: https://lkml.kernel.org/r/20260326234629.840938-2-joannelkoong@gmail.com
+Fixes: 64dd89ae01f2 ("mm/block/fs: remove laptop_mode") 
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-Changes from RFC
-(https://lore.kernel.org/20260326062347.88569-2-sj@kernel.org)
-- Split out from the series.
-- Drop RFC tag.
-- Add Fixes: and Cc: stable.
 
- mm/damon/sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/page-writeback.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6a44a2f3d8fc..eefa959aa30a 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1670,7 +1670,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
- 	repeat_call_control->data = kdamond;
- 	repeat_call_control->repeat = true;
- 	repeat_call_control->dealloc_on_cancel = true;
--	damon_call(ctx, repeat_call_control);
-+	if (damon_call(ctx, repeat_call_control))
-+		kfree(repeat_call_control);
- 	return err;
- }
+--- a/mm/page-writeback.c~mm-start-background-writeback-based-on-per-wb-threshold-for-strictlimit-bdis
++++ a/mm/page-writeback.c
+@@ -1835,7 +1835,9 @@ static int balance_dirty_pages(struct bd
+ 			balance_domain_limits(mdtc, strictlimit);
+ 		}
  
+-		if (nr_dirty > gdtc->bg_thresh && !writeback_in_progress(wb))
++		if (!writeback_in_progress(wb) &&
++		    (nr_dirty > gdtc->bg_thresh ||
++		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh)))
+ 			wb_start_background_writeback(wb);
+ 
+ 		/*
+_
 
-base-commit: dd478b2be41492a9f7be5abbdbd4dceddc46818f
--- 
-2.47.3
+Patches currently in -mm which might be from joannelkoong@gmail.com are
+
+mm-start-background-writeback-based-on-per-wb-threshold-for-strictlimit-bdis.patch
+
 
