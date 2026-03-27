@@ -1,62 +1,79 @@
-Return-Path: <stable+bounces-230614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHKJHepVxmmMIwUAu9opvQ
-	(envelope-from <stable+bounces-230614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:03:22 +0100
+	id SH63MSJWxmmMIwUAu9opvQ
+	(envelope-from <stable+bounces-230615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:04:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3888134221C
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6942C342234
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 11:04:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 323B130AD2E3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 09:58:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 10ECB30B93EE
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 10:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F6A3DD502;
-	Fri, 27 Mar 2026 09:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3723A75A0;
+	Fri, 27 Mar 2026 10:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J1Xv15HH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DGpUVyiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF4C3A640A;
-	Fri, 27 Mar 2026 09:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0F2361DD1;
+	Fri, 27 Mar 2026 10:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774605517; cv=none; b=JxsCU3Xq/kFwKzu6zMzLv7VxXujKtkhW6S98msIs+9AH0vGPDduAVK+vvjtqohUn6HW35l/Z5+7wXfZU8CxoqD/LCsEBtfXz6pk57mrZCgdbBbvRpeiWj1G6a81M+E8pqj3s0Wq6pqFBQdX3iJm0EmJt2/mBI0RFQz5B1gfQRWc=
+	t=1774605645; cv=none; b=N9jpMbIPk+Zlu6cJ0CKVFMQUDpssJKtTv3vZQrYx9w33T+88fh6xaFnaz4slIy2f4ZD5clkTI0wVHpst/3SSZiTzdQqwqIByEjvgFHTSjdlM6gwQ1X/8QYeOa76LRC5u7L2l3CXuj4Kz8Tc/W1O4v81/Xkr9my5PLlfZNuhVctA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774605517; c=relaxed/simple;
-	bh=AM7rnISf7JfBForn0qmjVQiKgfYkEahF8MtcviElcvg=;
+	s=arc-20240116; t=1774605645; c=relaxed/simple;
+	bh=8CaLLkSgumSYT7IJ6abf2lHJKc4ycWuvxtapyXVpyac=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PawQqFoSj3wyY09QKqZQJ0kSkOuTfiykADmRujLzPoNdU0G0awzg89pEp176memDSiIk2eS2JAx4M4YG4u9CnvaanmBOQTtxRSeSFEnkJDxOs8kT/DDungecRQFJ7L5XQtamXwyy4yp9MMm/XwIL5n6ELCXCAW2k0nSbX6Vc5pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J1Xv15HH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2136C19423;
-	Fri, 27 Mar 2026 09:58:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UlnpUlVMlAnhnWWHPykfRdE1UL+MdlcoeEqvRCijFZyijdd14HsgEtO0mGdofNdG79PEwXFs/1KNX/MPaJDqklYNi27FX72FA4bwcE4Lf3E2aRaMsb5MZXaz5j9Ku2Cgpm5cEzHNp4ZWO4FbtCDbTkBal3/ZEPfZZuRybjDoJXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGpUVyiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F342CC19423;
+	Fri, 27 Mar 2026 10:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774605517;
-	bh=AM7rnISf7JfBForn0qmjVQiKgfYkEahF8MtcviElcvg=;
+	s=k20201202; t=1774605645;
+	bh=8CaLLkSgumSYT7IJ6abf2lHJKc4ycWuvxtapyXVpyac=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J1Xv15HH7yLF6fAOMtRICCySYjBqasNemIAF+Pim2aYv0NGnvuEvkMzhGts+MFvdX
-	 /8ORLVNvMBjnGj1hxMT9OmC7qFm10ih+a3CAMgU2GG4025yVzMQONF8xwg7xbxDIby
-	 p51akux4xygWk9fX8YyUmhvGz6rhAljIeRTlKtMqE+PTVI7U39pIGm+Q/+UlvDRFS0
-	 5mGf9AIJCT454nvwqkJIsFn7v3dpcpeiuSypyxsNgHYLsXXslfd4msHH8/xeW2w9jZ
-	 1jKJNDj0tRhfbCmIMqrRSx+2hXs9hQL7W4gB6OgDxTaThgA2sZYRZa68Wak0zZyJZJ
-	 UaqrsNJaQf0xg==
-Date: Fri, 27 Mar 2026 09:58:32 +0000
-From: Simon Horman <horms@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	andersson@kernel.org, yimingqian591@gmail.com,
-	chris.lew@oss.qualcomm.com, mani@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] net: qrtr: ns: Limit the maximum server registration
- per node
-Message-ID: <20260327095832.GC111839@horms.kernel.org>
-References: <20260325104415.104972-1-manivannan.sadhasivam@oss.qualcomm.com>
- <20260325104415.104972-2-manivannan.sadhasivam@oss.qualcomm.com>
+	b=DGpUVyiJMP4UazDfTLYwE+zeASuQdCPtsTHi/T5V93Qx4ufFer+yJBmEI0KQx7Pdl
+	 szM4zo8FVLWf4zAUKMgynpU1T4fppMgr0JrdxK1cErr8HKJ46IHsJupFWgB6PxQcyq
+	 lopKGMGX8wRxHHAXz2yfG9HTgf+uHpnWN9+HgxWFXXTltxUvB9SQRtkDeaNd2w5Wex
+	 nnCmicZ+PQ+Uy+AMllm+X/JKg+s1zyzRNdFh98DyOVxEYx+79c9UzGexJ1FwYLv/lJ
+	 eKurtVMw/eKFIYCy0hF62t51vUEvd+yOwNA2WBAYx9c20mPhg9veTWby1KCYXml7nn
+	 H1MqdMS80syig==
+Date: Fri, 27 Mar 2026 19:00:43 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Petr Tesarik <ptesarik@suse.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
+Message-ID: <acZVS-ehXCtvcA9s@hyeyoo>
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
+ <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org>
+ <acV36oPNFMgL4puz@milan>
+ <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
+ <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
+ <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
+ <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,97 +82,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325104415.104972-2-manivannan.sadhasivam@oss.qualcomm.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-230614-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-230615-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,arm.com,suse.cz,suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,oracle.com,linutronix.de,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[manivannan.sadhasivam.oss.qualcomm.com:query timed out];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,horms.kernel.org:mid]
-X-Rspamd-Queue-Id: 3888134221C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 6942C342234
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 04:14:14PM +0530, Manivannan Sadhasivam wrote:
-> Current code does no bound checking on the number of servers added per
-> node. A malicious client can flood NEW_SERVER messages and exhaust memory.
+On Fri, Mar 27, 2026 at 08:58:36AM +0000, Ryan Roberts wrote:
+> >>>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
+> >>> Right so there should be just the overhead of the extra is_vmalloc_addr()
+> >>> test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
+> >>> I'd say it's something we can just accept? It seems this is a unit test
+> >>> being used as a microbenchmark, so it can be very sensitive even to such
+> >>> details, but it should be negligible in practice.
+> >>
+> >> The perf/syscall cases might be a bit more concerning though? (those tests are
+> >> from "perf bench syscall fork|execve"). Yes they are microbenchmarks, but a 7%
+> >> increased cost for fork seems like something we'd want to avoid if we can.
+> > 
+> > Sure, I tried to explain those in my first reply. Harry then linked to how
+> > that explanation can be verified. Hopefully it's really the same reason.
 > 
-> Fix this issue by limiting the maximum number of server registrations to
-> 256 per node. If the NEW_SERVER message is received for an old port, then
-> don't restrict it as it will get replaced.
+> Ahh sorry I missed your first email. We only added that benchmark from 6.19 so
+> don't have results for earlier kernels, but I'll ask Aishu to run it for 6.17
+> and 6.18 to see if the results correlate with your expectation.
 > 
-> Note that the limit of 256 is chosen based on the current platform
-> requirements. If requirement changes in the future, this limit can be
-> increased.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-> Reported-by: Yiming Qian <yimingqian591@gmail.com>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> But from a high level perspective, a 7% regression on fork is not ideal even if
+> there was a 7% improvement in 6.18.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+If that improvement comes from the number of objects cached per CPU,
+I'm not sure if determining the default value (# of cached objs) based on
+"a point when microbenchmarks stop improving" is a reasonable measure
+because the default value affects all slab caches and will inevitably
+increase overall memory usage.
 
-> ---
->  net/qrtr/ns.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> index 3203b2220860..fb4e8a2d370d 100644
-> --- a/net/qrtr/ns.c
-> +++ b/net/qrtr/ns.c
-> @@ -67,8 +67,14 @@ struct qrtr_server {
->  struct qrtr_node {
->  	unsigned int id;
->  	struct xarray servers;
-> +	u32 server_count;
->  };
->  
-> +/* Max server limit is chosen based on the current platform requirements. If the
-> + * requirement changes in the future, this value can be increased.
-> + */
-> +#define QRTR_NS_MAX_SERVERS 256
-> +
->  static struct qrtr_node *node_get(unsigned int node_id)
->  {
->  	struct qrtr_node *node;
-> @@ -229,6 +235,17 @@ static struct qrtr_server *server_add(unsigned int service,
->  	if (!service || !port)
->  		return NULL;
->  
-> +	node = node_get(node_id);
-> +	if (!node)
-> +		return NULL;
+Hopefully we could discuss what a reasonable heuristic that
+"works for most situations" looks like, and allow users to tune it further
+based on their needs.
 
-This is not new behaviour added by patch, but If I understand things
-correctly, node_get will allocate a new node if one doesn't already exist
-for the node_id.
+As a side note, changing sheaf capacity at runtime is not supported yet
+(I'm working on it) and targeting at least before the next LTS.
 
-I am wondering if any bounds are placed on the number of nodes that can be
-created. And, if not, is this a point of concern from a memory exhaustion
-perspective?
-
-...
+-- 
+Cheers,
+Harry / Hyeonggon
 
