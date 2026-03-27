@@ -1,273 +1,262 @@
-Return-Path: <stable+bounces-230726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCyLHLT6xmkaRAUAu9opvQ
-	(envelope-from <stable+bounces-230726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:46:28 +0100
+	id gLCeIZ78xmmBRAUAu9opvQ
+	(envelope-from <stable+bounces-230727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:54:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC50234BCCF
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:46:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DE534BD1A
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 22:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 499F5300FC5C
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 21:46:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 63F063036B2B
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 21:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768AC37D13D;
-	Fri, 27 Mar 2026 21:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B4D3939A9;
+	Fri, 27 Mar 2026 21:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QvB7DzWK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gAJbKF79"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A634D937
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 21:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774647985; cv=none; b=CIPA66PWoivhkIY9UA/7SKIWtDNIspRFuKpfhDV9jzhJZWbW3xxVx0lRxiEWMk4L7EWohfwGkNdph5ncg8SdiINY5Cc1kC9lr+EuDj29iubYP+jNZ87JBfeaj67cvuLKZ8mNTv0kbxbmt6LtlDmXvsPulXH8yZT7wsFM7mgad30=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774647985; c=relaxed/simple;
-	bh=SQeUWl33c6QDsi9zu0TJJKbLRHn3yB32jLspSrqamZQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jcg4MaiG8gzp/NyGTvVnUSiUbRwiZwpRBvlBDeEXy0XpzYlTaw9WgvULyjOyDGEE20EhZ1+0uyl0KUnaqYpccAwKlfRWp2pqapCu7eC8d2ic+6o0HOvdGVLfQh3ofrAGr2IUOvahDHGYRHJeOh+rSkslKfK208T7S8CNS44hNio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QvB7DzWK; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48557c8ad47so19281185e9.0
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 14:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774647982; x=1775252782; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FA+vLxdI5HeF7c7rhynzB4yEqQYz3+SkFF3yOKC3P34=;
-        b=QvB7DzWKqa8satP6FgAz0yW2b6kQNC711tGiFqLUogIQMlCJVApq7sy2iJTW+WAmhN
-         765s55ggbMd39O8hdFVbr30TRf8ZL51tzKsef7U9BYMgljLdvCY8M2YsBOxy94SRPY94
-         X5I6CCXlhjjEkKGNfqqrHAPOBSSviM3YXBxoZKmeHt+f1QQx7MlLT75ufgM4F3VGcdt4
-         JwqLYeSMqB+FS9tfMjWJ6SkOZmGycFcXruquwTUQ7lBw4nnq48TazuPvydPcsHAGgARA
-         b9rnu4lvOlR8fyAeb1WaLyXKvDqjB243KUTsIHg1+GQiyQW+fcvWU7edmkNCAAa7MpxN
-         z8OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774647982; x=1775252782;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FA+vLxdI5HeF7c7rhynzB4yEqQYz3+SkFF3yOKC3P34=;
-        b=Gcqh8lCQQodBJOYQJTO5x29aSzXn7Ymu5v9evPPii2oX0iXwxUaiOKlZcvZrk3HSwB
-         iHTyyKOLikWcg8nR7zzSkd64Yly6T4YEkrKNZ+7QPU4vLYnWdkP1aHzSaDZO4w7BAXyp
-         nZcczowOXyJUDLiW08Hk56KzJXzC0jB0whYjFVJO2KmNiL9kOSB7TxGton0LsLOzwZ+1
-         nK52zUWZdR5YR4HAm96CT6O3K4hfWdhncD47i4eS3SuYNZAkJGwKPNGYPiXrGEsKvLDZ
-         npJGFlpOlXZMAJghJclTFnR9OPBeXRkf7dhJjEnEc1hmlsN+qJBIRQ21SnTwDQNEwbsa
-         KRnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDL/ULUGk5wwFOAUUp9QdcJAyOgrLgmBKBGK5MxZY4MZCXLyPz5sDT9s+2/e3TzTUAeVpfT4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjgmfonHCkhDjq7s1gliOzJTU3b3orm0JvmTzYInjUqTOIdvRP
-	GpreokbqXIiDAjgEoH/gJXuCDqDcTUxufIdM2WR1TNS+SUugO4W4fh06Fuqqgv3W9sm8cN1j8WE
-	gsmF3DZo=
-X-Gm-Gg: ATEYQzzHXLeslMrwSjLceEcxAx441YEDH8CQjOe3+CdHObPWqC70FDWXN39K/n1JaIT
-	VbvVD97a/9VJO4qA12Zxi4gN5kZb/Lynz+LmvTLYvEa11X1hWS2AhFw6kaQRTSZDuiwTJiIz9+8
-	/U4NNauFrq9QlvU+Lwtwegi3+i1hguSUqy1dO+8fHdKElkRDfJTeUfpQ5/x6RjMmCwdljcFp6H/
-	oYcE2izKiSDo6Zy77vmOj/cjhrCPTWoyTqyLlozJldGlLvNrpV/WlM+A5Xn7fAb2VHnGL5nf8n/
-	mneT+SZfc1Ei6V5RVgKnv62Sz76+0XIVISoZc8oZ7Xzldlf5RYgG4P1HPR7z66VF6TvvHWNZNKc
-	/Hj0na2V3koBbaLIDcIb8raZOmQNQjFzIpjPyzZDOJdNpyoxZjLVKh/Ly0g97vnqSnnSIuQiGUe
-	ADLFq6AjJOg1XlKkpwL0N69Xt5hOsokCY1vagFNaAx+2g4ge9FWdrnacCOJVT1+Q==
-X-Received: by 2002:a05:600c:c109:b0:485:40ed:2d1 with SMTP id 5b1f17b1804b1-48727ec777emr51375695e9.17.1774647981798;
-        Fri, 27 Mar 2026 14:46:21 -0700 (PDT)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2427663acsm2619455ad.46.2026.03.27.14.46.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2026 14:46:20 -0700 (PDT)
-Message-ID: <e51b3afa-751f-41e9-b454-3405252dc6e2@suse.com>
-Date: Sat, 28 Mar 2026 08:16:11 +1030
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E90E55A;
+	Fri, 27 Mar 2026 21:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774648475; cv=fail; b=TIcxoE3LhZ7kkNLhrE6xeZXDqYpnD3i3cetl65gHPCQZU7URhXV/HX1Z6ERktXeZbH+jatPz3GIJ5LOEaR164zjz8KUYcDmmhRb/mKin0C9m2tE8pFCaWK+HBJK18gzMoTQZXAqNkd8Hj47tqIz50inZLC3SQYUBsWCr5seECgk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774648475; c=relaxed/simple;
+	bh=K2LqnqhUD4tUrDRmnNcre4Kvw9edwLuxuA9JeEiZZs4=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=mCNwENqxc9+nPjpIDQ0TQnNT/M9qef8rWoAqwJ7GnCURa0T7oAyU6XTHdM4LlJmF6XfpPAAeYIoKlCKmsrNk/cywc07vzxqYYRqynfGhWwRyEmrE2DRv7Xr3H3u/puHM+wXRziNHdTDedmslF6HgDQ3QKehx7pmXg/cg2bllyZs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gAJbKF79; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774648474; x=1806184474;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=K2LqnqhUD4tUrDRmnNcre4Kvw9edwLuxuA9JeEiZZs4=;
+  b=gAJbKF79JsXMUBZA40DFPtJ8wose/O1Jlf6qkT8A+eK4FGxLyIREz3lW
+   LuzI7OgqHM/3d6b/LjgpA6qeLIjgsG5DoFF7IntsC4xftbg8eYCjg2NwA
+   7H38GpJDNJviMNNxsKioYwSxHoVBk/IgW8+LKbPbdMoXVJy52suwOc/X5
+   nWAme4aXsIgS+bvstAH+EyWU/3QldH7tgw1ie71XEO8kfIUL5pWKS0HPF
+   yZLpfR+MC1uLiXe6033b3AoWhkkF+fSR9eUMRE/aJD6x+PAECb81DQXcE
+   HA6fl/A+Dy/ATC7wFOfwkuid0bkUa5gGaDqaUP7XAbT1IOOmGqEvwmENh
+   Q==;
+X-CSE-ConnectionGUID: uVgVWmFwSXef0UDoOY5+Qw==
+X-CSE-MsgGUID: d/2IWjB7Tgapyj2bLvmPSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="63282443"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="63282443"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 14:54:33 -0700
+X-CSE-ConnectionGUID: g/GK4mOpRj2lZ6Fwk0wb3g==
+X-CSE-MsgGUID: K4qDOtGOSPKfBJn9BUoClQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="248701203"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 14:54:33 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 27 Mar 2026 14:54:32 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 27 Mar 2026 14:54:32 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.35) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 27 Mar 2026 14:54:32 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fvg9FBMmpkD8ifcFrcKVnj05b2C6fRRCcHwNAu+ll0EuXcIJ02pVP2ikSiUQgjkMgP5zMg7Qyq2mW+4h9G5fzMoCl/lpVqouHd222Yqv9glWv7XcMNdz8lIVJ1WJtlLYvtUg9wLNfyRefBUG/jvT8HdvpkPsE0VzAVkWN5gIzmqxfoQuEIWohaj1Mx0nJmOc/ryRQaEBuFo7Tc+aT+4q90E3A0EBjnz3HwTDF+esBzaF31u5sYSDta5MNVBqrWC+SwWYMGsFhoFHaheSr2f34cpk7+SUtrhJy7ShduY1oHIaW76SepzMdd3RYRazdn0gQ+6CFCbtlISW65G2ZWgLcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VqbmlSWgRi6FSenQaSOMJgjvEt4MRkzAxbmDzqE8c1A=;
+ b=Bu76rYdeRY7d2tkhWAGPSMfMSoCUQFW2KZP/6ujsgwiz9gnUCiH2LOWM9/V8r2saKSfagLP2c+9o8eemdfpN6h5Y2ELEFNqKquyrnsoVhlX8cgt5bMYnT2pua/etj6vMlQnicq9Nse3eXblBH4TIP+u3KAytwuKxkBE8rKTq+cZ8UMpHMEo85KSwBs0rpvOog4nvRyX6nOJjf7LCqA57cBq/xJh4h0iwH7BwNLlnXrMdnk8O/mbFfZqjO+RMSXm1SJL3CQCBPCkLXz1AcH0mekSyCazRXGFDXbQrKxeHaQWdGSghOCCPIAuxWw5YYkN0Es49cnpXgYgJc+BUXOVzPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA1PR11MB7917.namprd11.prod.outlook.com (2603:10b6:208:3fe::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
+ 2026 21:54:28 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9769.006; Fri, 27 Mar 2026
+ 21:54:28 +0000
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 27 Mar 2026 14:54:24 -0700
+To: Alison Schofield <alison.schofield@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <dave.jiang@intel.com>, <patches@lists.linux.dev>,
+	<linux-cxl@vger.kernel.org>, <Smita.KoralahalliChannabasappa@amd.com>,
+	<stable@vger.kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-ID: <69c6fc90593bd_1b0cc610088@dwillia2-mobl4.notmuch>
+In-Reply-To: <acbYgkczKrpG4x6d@aschofie-mobl2.lan>
+References: <20260327052821.440749-1-dan.j.williams@intel.com>
+ <20260327052821.440749-2-dan.j.williams@intel.com>
+ <acbYgkczKrpG4x6d@aschofie-mobl2.lan>
+Subject: Re: [PATCH 1/9] cxl/region: Fix use-after-free from auto assembly
+ failure
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0212.namprd03.prod.outlook.com
+ (2603:10b6:303:b9::7) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] btrfs: Fix BTRFS arm64 tagged KASAN false-positive
-To: Daniel J Blueman <daniel@quora.org>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>
-Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, stable@vger.kernel.org
-References: <20260327082419.12654-1-daniel@quora.org>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <20260327082419.12654-1-daniel@quora.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA1PR11MB7917:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b3f2404-6b89-4bb4-d3a8-08de8c4b6b58
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: Nz8aAttuOm5CPujhvW4Mm8Xdj+zy74a/7gVuzjKFa9qbO3WuoWBfaV64pDi/B8lXqioWgrrbBqoWJ8uasJOkUzFxfp62YNVIKnfAYudJCtUne5fmT3fi7zeeVnR4cBjOr8NKFxusGt/w20YXY/nhpW2YVxbpQgVfoGBP/tgGxjolXYlmtggvWToZK2ZuoQ0wy+AQX2z3rBn+mD7JYSuMGDCdbgCXJyF3KerTHVPEB/yu0GuOBVvYJKTtU+KaLBa8kNhpRjyBO868HQSYPKtE1EHgjVejd2DS+ccRY52ZRxT/UPj3Jkb6mEuf3t9mU1RYWVVOK4WprMZs0lcCzXM+u2362akXvD/ncqJa4Y0hwtXRM2lU6EIRbl8/TZba46ZwMTcuxkreihMIwfkzc++yq1+FKzy1i4wdW2srPSnk9AionMnnp8ppM1qv/91W6UcLcb16WRYfc9ZksKWRChUN9osBNroIdVd7dAV7ldp/EzOBV6SVxV9erUPKgb8Domy0MA/B2JebRTYlW502qACGPJqg5CdQlSAijPxKGR6IOPHG2INaRqayW5jkBMecI7+Vh3mhYvVhQ+k9Dk4ecqJg6wCuhHoE8Dw74mbzOv42xZ2q1BTuwlGLdwhZVfQCSSs069gdkOmHKLSMTq8lXvy7/89OEwr3bX/kJigmXe/+SBhIP+mkZ2tm9g5rLQfL47BDnfrTksKx/waINcjb+Cq7vkRcTqRAZHbvBU6ZvXOmFxc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MG1Wa1g4S0NpMXRaWmwyMktnSitjakluWkFVMzF6NnFMVm9kRFpvOWpLeHF0?=
+ =?utf-8?B?aEttby9HSnQ4T0t4Rm9xQTRBc3MyS2ZyTTM3KzJzZ21kVW5YS2x5Vmpra1I3?=
+ =?utf-8?B?N2dOVnF6bUVhYXlnK3kvVkluZzB2RXVMcThBV2R6VTJSV05DbTUwYzF2dGZk?=
+ =?utf-8?B?V2JjRTc4RGU1S2gxOUF5RWt1UGZRK1B5endiSkFLZUx2VDdhMDNpZ3Fpdm9w?=
+ =?utf-8?B?djRyUEhOeldHR0luR2dTN1gvVDRncklXZW9iWlpvanB3bUw5bFF5aXBSQzh0?=
+ =?utf-8?B?VkZXb21pd2MxZ1JJcFJhTFg2Q2E3WHRsL1hzci8wZUdndzdYRVhhSktZUXoy?=
+ =?utf-8?B?dG5RajYxb2hKMVBsQ08xZzBiYzU1NGd4M1ZkcXp4MXFaOFN5TmZqVmxnNFRQ?=
+ =?utf-8?B?djRGUS9aWlNZQ21yZlM5RXM1T2FyeFpUZjVjOGt1THB5aEFDQ0c2WGkzSEVC?=
+ =?utf-8?B?ZWx6M1k2dHhsOUVJT002Yy9ybDU1QzVqNGkySTNKNitFbmkrVkh0cTdlVU9G?=
+ =?utf-8?B?SjdCUit5Z1FKN3JLS2Rlczcrdlp4SUdydHlsblFsYzhUbkliOG9FaExCejdE?=
+ =?utf-8?B?d2xNbW0vekE2RU1hTGYrZnRYNm9LV1BxcitHTGlnOHcrRzJTUVpBaGhyVUcr?=
+ =?utf-8?B?VnprblRXYWUvQTBwNFdWMjdaazRUbldSS3RudXpCbmJkL05wbWova083T3Ex?=
+ =?utf-8?B?N0F2b3hodzlpRHFuNFgwak00RHk4MHdubnVUZmVqbUJWSWh3bm5hMDlCS0Zx?=
+ =?utf-8?B?K08vSk1DblphMXgveW1MNUlxdW52a09PeHgvU3FkWDJlMEkzT3VvZEp1RGlj?=
+ =?utf-8?B?V0R2a1ZqazZlU1J1WG4zelhCa1hUY1N3UjRIVlNsSy9DS2xONkFTR1lPa29T?=
+ =?utf-8?B?d0x5ZjczNXZIWFVVekRnU21STHA2Vm8ra2J2UHFZeWYvMHZDNU1MN25TUnpi?=
+ =?utf-8?B?RTFhMm9xdlZCZENYUTAxdURhMVdrWTJHdXhYcHZIU1hVMGUxR3FSVDRWMXpi?=
+ =?utf-8?B?MjBLZTVVMzlhWVRTVFI4aElSM3p4WnhNT1dJejJINU9LTWl5RVFlWXFyMG9R?=
+ =?utf-8?B?RzJmUFpHQTF4QkhXUzE2ZUhSUlpnVTBTeUQvbjh5MWczUStWTzh6SjBFckZu?=
+ =?utf-8?B?U2ZsaUMwMlNEUWMxVkNWOVpsUWtTLzNyOW11NGhGRXkzTjd6K1ZWUzh4MDVm?=
+ =?utf-8?B?QmcvdWRZQ3dteE9uOFhMdnA5dE1vUXFzV245enhzWHcxbE1XbS8wMFRFSVZP?=
+ =?utf-8?B?bUp5Z004L3FLUUMwdlhhZmYyRmh5eHhlcnhseVdMUVNOSjZEV1BEZjA4NUh4?=
+ =?utf-8?B?Y2tSYXZ2R2ZyQ1plc1F0WWQ3Z2oxam9kTFZUSi9rT1c2MGxPNUN6NmUya1Vs?=
+ =?utf-8?B?RU1KSUFYRFgzK2F4NDJTc0pONGRuOVpmQWN5eXRuQlFEcjJUZmEyRlNrL2Fi?=
+ =?utf-8?B?UHhKVk5NcjF5d3JTNXlPaXdmblVmYUt5N3VKRWVnaG9ibjJTMG0wdWlOZVox?=
+ =?utf-8?B?M0twNHFxeTNrdmpuT1FYWkRjYTVvcGo3NjVuTnA2SVlhS2QvYnhueXRqZFpW?=
+ =?utf-8?B?T0pNMzUyd3lwUHJQMjNpUTljQUIwVStwT0JPa3pBZ1NkSnd5cGlUVUU5MlVo?=
+ =?utf-8?B?N2FtT1dUdWpHaGtrRUhGN0Q0dXJGM3B2RU1Lclhqc3ZUTlRDWWpEbW9meFA0?=
+ =?utf-8?B?OTYrQXBOSmZUc2pIK2dCUTR3TFB6VFpGSWpnQmNuRWtMZkhhdjdLWnlUd21O?=
+ =?utf-8?B?VmRFdDcybWsvRVJIM3I1VHYyb1BNTXFoMDVmWjFrS0gyR0NDREtwcDJDeEJO?=
+ =?utf-8?B?Sm5uOFNsQkpNZ2FTSGZSVkpTc1JCTDdvV1pTUndPZ2MzN0FjcDJScE44RWF3?=
+ =?utf-8?B?bHVxQ0hMMDQyblZ1K2xrVFd0M2MxU1NpVVFmV1pwSVlkMkdpMEFaZU92ZjJj?=
+ =?utf-8?B?VTBTV1RYNy9oMjc5OTZ4eXdFZEtaa2piWFZuUWZHOEZ6bHprQSt0QllRcjBn?=
+ =?utf-8?B?MjhKZEkrZnVZZ0J2Y2xMTTJEZk16TVQ5YU9mN3dCc09haERjYitVbUQ0YWww?=
+ =?utf-8?B?QnZSQzJQRDM2VXh4YmhtSDAwRU5qY1JIKzVQM2FNcEtIV2ZtbDl5YjVmNEFO?=
+ =?utf-8?B?dGpQWUxEK3NyaUFWUDlaeFQwZTNuU3pxT3M4bnhEc0Q5ZjJLdlBCWTFDcWFi?=
+ =?utf-8?B?Z2ltc0F4S1dFa3NGeDBHUVErNzhteXl6Q1RnY05VNUhoN3pTWFlhaDhQT21j?=
+ =?utf-8?B?ekpFWjhpMzgvYm4yK1ZEaTcxZXpxckdzQmZQN1BMQkdDTk1VMDh2WHIxb2wz?=
+ =?utf-8?B?a21qbVVrSlV1eGpFcEZuZ3E0dXNsZDZscXpxa2h3aUpVOEpFNEdYOXJnbDBz?=
+ =?utf-8?Q?ndNsz7YnesFo5sSM=3D?=
+X-Exchange-RoutingPolicyChecked: nnSLyy/tpFDtLlDZ+n51WMkbauk2BRPHZyOI9MjQnPJNEVqu1QEaI19muKKaRw/vKMxpoGZlv+Ci8VYh+RCqNdhF6zzL3AxCu07DetltOpGYko9ALv6ZESlym0zUZci2B1fJNsy+JtsaNqG8RHwFM0dsPUqSaX+bSjmI9XX4vbpBBvVFBiL8ua70J6Vp+d0rAReziEpSp1RvwqDk12pi3Y7+/NuvyOVf6TrEta0o6qkjWvO/oatrZ+Lfw/qrug1f/844tSbxwLpRYG9qAaf6wo1MDbK+tbyeRs+tvHB2xa12wv05LA4rQYYrpWPbRwpOui/ldvmgX/1C52ymYFeYbg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b3f2404-6b89-4bb4-d3a8-08de8c4b6b58
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 21:54:28.6383
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qfh75EXN2z6IQK0Pt9yOmYmMzUmkBq1dMSg37y0gMsFFlD2XK3CtMoMLJnL3n4Wng6Nstzp9y12B0nW4DqExx4mGt/ZWfykNySPgK4rk+Yg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7917
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230727-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,dwillia2-mobl4.notmuch:mid];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230726-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dan.j.williams@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid]
-X-Rspamd-Queue-Id: BC50234BCCF
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 21DE534BD1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-在 2026/3/27 18:54, Daniel J Blueman 写道:
-> When booting Linux 7.0-rc5 on a Qualcomm Snapdragon X1 with KASAN
-> software tagging with a BTRFS filesystem, we see:
+Alison Schofield wrote:
+> On Thu, Mar 26, 2026 at 10:28:13PM -0700, Dan Williams wrote:
+> > The following crash signature results from region destruction while an
+> > endpoint decoder is staged, but not fully attached.
+> > 
+> > ---
+> >  BUG: KASAN: slab-use-after-free in __cxl_decoder_detach+0x724/0x830 [cxl_core]
+> >  Read of size 8 at addr ffff888265638840 by task modprobe/1287
+> > 
+> >  Call Trace:
+> >   <TASK>
+> >   dump_stack_lvl+0x68/0x90
+> >   print_report+0x170/0x4e2
+> >   kasan_report+0xc2/0x1a0
+> >   __cxl_decoder_detach+0x724/0x830 [cxl_core]
+> >   cxl_decoder_detach+0x6c/0x100 [cxl_core]
+> >   unregister_region+0x88/0x140 [cxl_core]
+> >   devres_release_all+0x172/0x230
+> > ---
+> > 
+> > The "staged" state is established by cxl_region_attach_auto() and finalized
+> > by cxl_region_attach_position(). When that is finalized a memdev removal
+> > event will destroy regions before endpoint decoders. However, in the
+> > interim the memdev removal will falsely assume that the endpoint decoder is
+> > unattached. Later, the eventual region removal finds the stale pointer to
+> > the now freed endpoint decoder.
 > 
-> BUG: KASAN: invalid-access in xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
-> Read of size 8 at addr 7bff000804fe1000 by task kworker/u49:2/138
-> Pointer tag: [7b], memory tag: [b2]
+> I'm wondering how this is exposed. What is 'eventual region removal'? 
 > 
-> CPU: 0 UID: 0 PID: 138 Comm: kworker/u49:2 Not tainted 7.0.0-rc4+ #34 PREEMPTLAZY
-> Hardware name: LENOVO 83ED/LNVNB161216, BIOS NHCN60WW 09/11/2025
-> Workqueue: btrfs-endio-meta simple_end_io_work
-> Call trace:
-> show_stack (arch/arm64/kernel/stacktrace.c:501) (C)
-> dump_stack_lvl (lib/dump_stack.c:122)
-> print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-> kasan_report (mm/kasan/report.c:597)
-> kasan_check_range (mm/kasan/sw_tags.c:86 (discriminator 1))
-> __hwasan_loadN_noabort (mm/kasan/sw_tags.c:158)
-> xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
-> btrfs_csum_update (fs/btrfs/fs.c:106)
-> csum_tree_block (fs/btrfs/disk-io.c:103 (discriminator 3))
-> btrfs_validate_extent_buffer (fs/btrfs/disk-io.c:389)
-> end_bbio_meta_read (fs/btrfs/extent_io.c:3853 (discriminator 1))
-> btrfs_bio_end_io (fs/btrfs/bio.c:152)
-> simple_end_io_work (fs/btrfs/bio.c:388)
-> process_one_work (./arch/arm64/include/asm/jump_label.h:36 ./include/trace/events/workqueue.h:110 kernel/workqueue.c:3281)
-> worker_thread (kernel/workqueue.c:3353 (discriminator 2) kernel/workqueue.c:3440 (discriminator 2))
-> kthread (kernel/kthread.c:436)
-> ret_from_fork (arch/arm64/kernel/entry.S:861)
+> The region driver does not clean up after failed auto assembly.
+> The cxl-cli cannot because topology is broken.
 > 
-> The buggy address belongs to the physical page:
-> page: refcount:3 mapcount:0 mapping:f1ff00080055dee8 index:0x2467bd pfn:0x884fe1
-> memcg:51ff000800e68ec0 aops:btree_aops ino:1
-> flags: 0x9340000000004000(private|zone=2|kasantag=0x4d)
-> raw: 9340000000004000 0000000000000000 dead000000000122 f1ff00080055dee8
-> raw: 00000000002467bd 43ff00081d0cc6f0 00000003ffffffff 51ff000800e68ec0
-> page dumped because: kasan: bad access detected
-> 
-> Memory state around the buggy address:
-> ffff000804fe0e00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
-> ffff000804fe0f00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
->> ffff000804fe1000: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-> ^
-> ffff000804fe1100: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-> ffff000804fe1200: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-> 
-> This occurs as allocation in btrfs_alloc_page_array is from multiple
-> discrete pages thus different KASAN tags by design, leading to a tag
-> mismatch when linear access is used where the pages are physically
-> contiguous.
-> 
-> Fix this by retagging all the EB pages with the same KASAN tag.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daniel J Blueman <daniel@quora.org>
-> Fixes: 397239ed6a6c ("btrfs: allow extent buffer helpers to skip cross-page handling")
-> Changelog:
->   v3: Retag only when contiguous; fix build failure when generic KASAN configured
->   v2: https://lore.kernel.org/lkml/20260323061827.22903-1-daniel@quora.org/
->    - Retag pages rather than bypass linear access optimisation
->   v1: https://lore.kernel.org/lkml/20260319053413.14771-1-daniel@quora.org/
+> How did you get here?
 
-This one looks good to me for btrfs.
+tl;dr: "modprobe -r cxl_test"
 
-But still a question related to kasan_unpoison_range().
+When the cxl_acpi driver is removed the CXL Window root decoders are
+destroyed along with any regions that were in the process of being
+created.
 
-> ---
->   fs/btrfs/extent_io.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index 5f97a3d2a8d7..141092da871b 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -3533,8 +3533,23 @@ struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
->   	if (uptodate)
->   		set_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags);
->   	/* All pages are physically contiguous, can skip cross page handling. */
-> -	if (page_contig)
-> +	if (page_contig) {
-> +#if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
-> +		struct page *page = folio_page(eb->folios[0], 0);
-> +		u8 tag = page_kasan_tag(page);
-> +
-> +		/*
-> +		 * Since pages are from multiple allocations and physically
-> +		 * contiguous allowing linear access, prevent KASAN warnings
-> +		 * by retagging with the first tag
-> +		 */
-> +		for (int i = 1; i < num_extent_pages(eb); i++) {
-> +			page_kasan_tag_set(page + i, tag);
-> +			kasan_unpoison_range(page_address(page + i), PAGE_SIZE);
+If one of the region's to be cleaned up has a p->targets[] entry setup
+by cxl_region_attach_auto(), but not finalized by
+cxl_region_attach_position() then there is nothing to stop that @cxled
+object from being freed.
 
-There is a LKP report that __kasan_unpoison_range() is not properly 
-exported thus if btrfs is compiled as a module, we can not properly link 
-the module.
-
-   https://lore.kernel.org/linux-btrfs/202603240559.BNndaqHO-lkp@intel.com/
-
-You may need to export __kasan_unpoison_range() to fix it, or explain 
-why kasan_unpoison_range() is needed here.
-
-AFAIK those pages are already unpoisoned at allocation, thus I'm not 
-sure why we need to call kasan_unpoison_range() here again.
-
-Thanks,
-Qu
-
-> +      }
-> +#endif
->   		eb->addr = folio_address(eb->folios[0]) + offset_in_page(eb->start);
-> +	}
->   again:
->   	xa_lock_irq(&fs_info->buffer_tree);
->   	existing_eb = __xa_cmpxchg(&fs_info->buffer_tree,
-
+The "modprobe -r cxl_test" event destroys all the memdevs. When the
+memdev goes to free its decoders it sees that @cxled->cxld.region is not
+yet set, assumes it is idle and frees it. Later, unregister_region()
+sees the now freed @cxled in its p->targets[] list, tries to
+de-reference it and boom.
 
