@@ -1,145 +1,222 @@
-Return-Path: <stable+bounces-230701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFd3LvnCxmm8OQUAu9opvQ
-	(envelope-from <stable+bounces-230701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:48:41 +0100
+	id sNSWLyfExmm8OQUAu9opvQ
+	(envelope-from <stable+bounces-230702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:53:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2433489A8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55167348AD4
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 18:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A8325302A0E8
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:48:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4CE293035313
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 17:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514043FCB0A;
-	Fri, 27 Mar 2026 17:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F18C3FEB0F;
+	Fri, 27 Mar 2026 17:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZP2xBRlM"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="C3epP8Tp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81093FB7F0
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 17:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F323FE362;
+	Fri, 27 Mar 2026 17:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774633718; cv=none; b=R7k4igJMH122LY8OhUjaG2JADU68YK+HfoEMXXuVUGQhfjWI0nVfD2nyHAffyTjRei2CjEzBj+SeEH53YgJNxSYKpQ+/+VK3M4xQ1PtZThsiIJvmzvzQnSq9o91Xujx8TmZ+kt9G3ikJPoWKJy+oJQWXsQ5gby0Oukn/pLilm8E=
+	t=1774633974; cv=none; b=fzhJWgnYII8SNx7+IOrEOlTqyYGEWzK3dGHl8Uw6HXNv/87H2cJ/mMMbwYgDYizeBSkYHiyAlcJA6PzPbxfz/tS/+e5npJVmdwlh2GdzgCXYMBesK9wYzUXMxhiCT60JqLmvkGIMp6wCGu9TYvn5PNRU54c+uWt6t5C2wx4c+0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774633718; c=relaxed/simple;
-	bh=llklB1En8Ndzue06w7liksuXHSZughmp9gHG6cT0T9A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=uZu+HQ6UGGIuBtDqQ8dEVKnXdHgb/kNXT/DqKJ+Jeo/9aKWnzOcRgTibg6GHFAX1ZNLSBxCegBxkIWPlAvB+rPNroThpVfBQ4ldI9D3UYiuQMmzU/NVXCnwibJaee0egi7RRCVyWakB9pPTwyMxnQRd0S19urwyYAGsMxli1bRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZP2xBRlM; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a283c44478so2632147e87.3
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 10:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774633715; x=1775238515; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=llklB1En8Ndzue06w7liksuXHSZughmp9gHG6cT0T9A=;
-        b=ZP2xBRlMHJGZZ7sEvUDuqeo0o6arH3oSL97+mRv1w5NYLE8p2phprtlX4RtmJD2TfT
-         rCkBMoYqQloyOKa94qmu20VmPFn9j2PO3n9UFgHnfsPd64Tuk87zszMBfj96VsRqbgqD
-         +R8E+GNa/I/Vpj6VCUFkTonYYBvKVeR4Q5c0Et6LHs6TBSDwISkzx7GqsWl+LirP75Hg
-         9Rb/MAJx3f216jcpfq9UaLIWCcW1QRClo7/FB3i+heCApYHcBeX34xgBr5g6t8tZBR5H
-         kcB57POP1AXVVE+ivRh/iqLus01EMekZOh8YHIdWuMBES57xya0JCCh2riqTCQq/uEhK
-         bWUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774633715; x=1775238515;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=llklB1En8Ndzue06w7liksuXHSZughmp9gHG6cT0T9A=;
-        b=av63KBXjeZAqCzz0yTmdzGKklfi/SlMHTpPGFDpOBuKfv6tRTgpCLxRpyebUpH28+f
-         i3tC/RN9zAYN9ItHtHjXpJvQrkmhpOPRJCqVPEgegyVqZg+RlMIy7Wv2mvwqfIoyDJTc
-         aGWyIYvhTFm3ntj5QEp70mhoPtuNWBNVQx7YaFxya5CGi2enn9zbX2qRLYB70KgfOQHj
-         jz8zzciopLARHtFx2IHGcnVBHjfbxqZ+Vv51S9unyGhH233dSHFnN4VWfwDnsyTTl4ZE
-         jOzEHGCSNGxIy2bCX2zEXUcFqcTp2zvtWV0isn/ryc2GSj5bsEAHL7S0rqtux3orMAL8
-         H6RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6qrVWhG559B3aCvO4cmgIA0UMrub+cuc+3K4WyYSqivXc1ySftMkyJD2kY4L1RldOeUM4Yic=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyyR5Z0Cw7kTfhebaAcABGI2MmOStRHSKc3k+qgKQ0cYtLUNfr
-	rrH+cCtngKu0gBnZpOTrlB5Vuw18ZUhA2BXDpNOswk8jkX9aBFxILOA=
-X-Gm-Gg: ATEYQzyZSTISICe/vgpMbA4GPheTYXdr0fqXk9GWYCXRRm9lIKdZoV8O0Z8C+Tsb0Cz
-	Ou7fVcQp6Nt/QdbqGVBjmTpYwXArqTIQ3JmclLvd7VHbT25JNDB78bH0YttGgRPEUjBfeCDwfMQ
-	kt4kr8FZLs2m19hPK88Lyh06YZ3wXKahhhaL0dwGt1c/ofeB6QygfxvHldwgU3rUCJM8bwuKJ3r
-	CgJgtSgYOk9RK4ajRDSwX5YzTE1FYoEAA6tyu7sStJFkX3JrB55miia0y69wHVQoC2Xbkfl+Rhi
-	jX242aJBOv8Xqi5KKi9uz2HKKt9WiRqstW8ahTFYQfKISGRjOVzYgi2Nh/0YuLVCuaR9D3DIEuY
-	MntJG59FRD2/6LPk+v1RpMjgC9chcY5rqqwDQvItoVVXcx93EiSVfDFo4cCVFRhxRlRCevwjnM+
-	gIgDeh5Wd7ytwES+omnazuBhh6qUx/yVxK/Vwg7CDr4lybRoj8Op/og9BQY3OaQvBSQujOZOv98
-	uaGQHZ1/TGYgcKOoExXGd10FJe1G3VK3frBzO+E8hKu
-X-Received: by 2002:a05:6512:1088:b0:5a2:a13e:9095 with SMTP id 2adb3069b0e04-5a2ab5ff25emr1603294e87.9.1774633714730;
-        Fri, 27 Mar 2026 10:48:34 -0700 (PDT)
-Received: from bf-laptop.int.bjornfor.name ([84.215.3.106])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a0645116sm1498878e87.21.2026.03.27.10.48.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 10:48:33 -0700 (PDT)
-Message-ID: <c4c952a0adbb28e572f2a05fcb317f905fe3f607.camel@gmail.com>
-Subject: Re: [REGRESSION] PCI: Revert "Enable ACS after configuring IOMMU
- for OF platforms"
-From: bjorn.forsman@gmail.com
-To: mani@kernel.org
-Cc: bhelgaas@google.com, iommu@lists.linux.dev, john@kernel.doghat.io, 
-	joro@8bytes.org, linux-pci@vger.kernel.org, 
-	manivannan.sadhasivam@oss.qualcomm.com, robin.murphy@arm.com, 
-	stable@vger.kernel.org, sashal@kernel.org
-Date: Fri, 27 Mar 2026 18:48:32 +0100
-In-Reply-To: <ovfco6pqzw734flu7navat36avt6yfosruouduhmbti7umunus@ijmu6nhz56l5>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1774633974; c=relaxed/simple;
+	bh=DupfEdME4n3J9GIhP++80G1+fIhn11d9i7wblGyQNuI=;
+	h=Date:To:From:Subject:Message-Id; b=ZEDYldSKF5RAOSn7t1241F5+b+JUeEvKYae6pxHpzRGZHQ1LotyiAKEDNrvuhova7cfr4EpQWQgA3dH4EcDr6j45x0Lp5T+gWJFfbpIUzFJsH0EdtoGLh/5diu0bDpF4Q3f9JlU0caUOVOjbmHJds+VC9UhuWzmKgSOt4wCtQrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=C3epP8Tp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7BEC19423;
+	Fri, 27 Mar 2026 17:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774633974;
+	bh=DupfEdME4n3J9GIhP++80G1+fIhn11d9i7wblGyQNuI=;
+	h=Date:To:From:Subject:From;
+	b=C3epP8TpVQuIx/tagNUBT/rViKmu6HsCJULOR82QXHJWDYcqVDfRtz2dYEmJgYO24
+	 XzzRUiF6ERsnuTdILGcMwjTSUXuLjLjgLJzQXCVkXWUYsDXE4Fow/WJjw6NW5BrBAD
+	 FqEPMgljUEq45agu6S79N/eg/SDMZfJikz7Z5NBw=
+Date: Fri, 27 Mar 2026 10:52:54 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,pfalcato@suse.de,liam.howlett@oracle.com,jeffxu@chromium.org,jannh@google.com,david@kernel.org,antonius@bluedragonsec.com,ljs@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-mseal-update-vma-end-correctly-on-merge.patch removed from -mm tree
+Message-Id: <20260327175254.AE7BEC19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_NEQ_ENVFROM(0.00)[bjornforsman@gmail.com,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230701-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NO_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-230702-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D2433489A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bluedragonsec.com:email,linux-foundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,smtp.kernel.org:mid,chromium.org:email]
+X-Rspamd-Queue-Id: 55167348AD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Mani,
 
-[CC Sasha Levin as git committer of all the cherry-picks to the LTS
-kernels.]
+The quilt patch titled
+     Subject: mm/mseal: update VMA end correctly on merge
+has been removed from the -mm tree.  Its filename was
+     mm-mseal-update-vma-end-correctly-on-merge.patch
 
-What's the status of the reverts/fixes?
+This patch was dropped because an updated version will be issued
 
-I tested even older LTS kernels (5.15.x and 5.10.x) and they're
-affected too. IOW, the only LTS kernel that isn't affected is 6.18.x.
+------------------------------------------------------
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Subject: mm/mseal: update VMA end correctly on merge
+Date: Fri, 27 Mar 2026 09:06:40 +0000
 
-I hope this can be fixed soon.
+Previously we stored the end of the current VMA in curr_end, and then upon
+iterating to the next VMA updated curr_start to curr_end to advance to the
+next VMA.
 
-Best regards,
-Bj=C3=B8rn Forsman
+However, this doesn't take into account the fact that a VMA might be
+updated due to a merge by vma_modify_flags(), which can result in curr_end
+being stale and thus, upon setting curr_start to curr_end, ending up with
+an incorrect curr_start on the next iteration.
+
+Resolve the issue by setting curr_end to vma->vm_end unconditionally to
+ensure this value remains updated should this occur.
+
+Link: https://lkml.kernel.org/r/20260327090640.146308-1-ljs@kernel.org
+Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Reported-by: Antonius <antonius@bluedragonsec.com>
+Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mseal.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/mseal.c~mm-mseal-update-vma-end-correctly-on-merge
++++ a/mm/mseal.c
+@@ -66,7 +66,7 @@ static int mseal_apply(struct mm_struct
+ 		prev = vma;
+ 
+ 	for_each_vma_range(vmi, vma, end) {
+-		const unsigned long curr_end = MIN(vma->vm_end, end);
++		unsigned long curr_end = MIN(vma->vm_end, end);
+ 
+ 		if (!(vma->vm_flags & VM_SEALED)) {
+ 			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
+@@ -76,6 +76,7 @@ static int mseal_apply(struct mm_struct
+ 			if (IS_ERR(vma))
+ 				return PTR_ERR(vma);
+ 			vm_flags_set(vma, VM_SEALED);
++			curr_end = vma->vm_end; /* Merge may have updated. */
+ 		}
+ 
+ 		prev = vma;
+_
+
+Patches currently in -mm which might be from ljs@kernel.org are
+
+mm-rename-vma-flag-helpers-to-be-more-readable.patch
+mm-add-vma_desc_test_all-and-use-it.patch
+mm-always-inline-__mk_vma_flags-and-invoked-functions.patch
+mm-reintroduce-vma_flags_test-as-a-singular-flag-test.patch
+mm-reintroduce-vma_desc_test-as-a-singular-flag-test.patch
+tools-testing-vma-add-test-for-vma_flags_test-vma_desc_test.patch
+mm-mremap-correct-invalid-map-count-check.patch
+mm-abstract-reading-sysctl_max_map_count-and-read_once.patch
+mm-mremap-check-map-count-under-mmap-write-lock-and-abstract.patch
+mm-vma-add-vma_flags_empty-vma_flags_and-vma_flags_diff_pair.patch
+tools-testing-vma-add-unit-tests-flag-empty-diff_pair-and.patch
+mm-vma-add-further-vma_flags_t-unions.patch
+tools-testing-vma-convert-bulk-of-test-code-to-vma_flags_t.patch
+mm-vma-use-new-vma-flags-for-sticky-flags-logic.patch
+tools-testing-vma-fix-vma-flag-tests.patch
+mm-vma-add-append_vma_flags-helper.patch
+tools-testing-vma-add-simple-test-for-append_vma_flags.patch
+mm-unexport-vm_brk_flags-and-eliminate-vm_flags-parameter.patch
+mm-vma-introduce-vma_flags_same.patch
+mm-vma-introduce-_to_-helpers.patch
+tools-testing-vma-test-that-legacy-flag-helpers-work-correctly.patch
+mm-vma-introduce-vma_test-and-make-inlining-consistent.patch
+tools-testing-vma-update-vma-flag-tests-to-test-vma_test.patch
+mm-introduce-vma_flags_count-and-vma_test_single_mask.patch
+tools-testing-vma-test-vma_flags_countvma_test_single_mask.patch
+mm-convert-do_brk_flags-to-use-vma_flags_t.patch
+mm-update-vma_supports_mlock-to-use-new-vma-flags.patch
+mm-vma-introduce-vma_clear_flags.patch
+tools-testing-vma-update-vma-tests-to-test-vma_clear_flags.patch
+mm-vma-convert-as-much-as-we-can-in-mm-vmac-to-vma_flags_t.patch
+tools-bitmap-add-missing-bitmap_copy-implementation.patch
+mm-vma-convert-vma_modify_flags-to-use-vma_flags_t.patch
+mm-vma-convert-__mmap_region-to-use-vma_flags_t.patch
+mm-simplify-vma-flag-tests-of-excluded-flags.patch
+mm-various-small-mmap_prepare-cleanups.patch
+mm-add-documentation-for-the-mmap_prepare-file-operation-callback.patch
+mm-document-vm_operations_struct-open-the-same-as-close.patch
+mm-avoid-deadlock-when-holding-rmap-on-mmap_prepare-error.patch
+mm-switch-the-rmap-lock-held-option-off-in-compat-layer.patch
+mm-vma-remove-superfluous-map-hold_file_rmap_lock.patch
+mm-have-mmap_action_complete-handle-the-rmap-lock-and-unmap.patch
+mm-add-vm_ops-mapped-hook.patch
+fs-afs-revert-mmap_prepare-change.patch
+fs-afs-restore-mmap_prepare-implementation.patch
+mm-add-mmap_action_simple_ioremap.patch
+misc-open-dice-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+hpet-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+mtdchar-replace-deprecated-mmap-hook-with-mmap_prepare-clean-up.patch
+stm-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+staging-vme_user-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+mm-allow-handling-of-stacked-mmap_prepare-hooks-in-more-drivers.patch
+drivers-hv-vmbus-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+uio-replace-deprecated-mmap-hook-with-mmap_prepare-in-uio_info.patch
+mm-add-mmap_action_map_kernel_pages.patch
+mm-on-remap-assert-that-input-range-within-the-proposed-vma.patch
+mm-huge_memory-simplify-vma_is_specal_huge.patch
+mm-huge-avoid-big-else-branch-in-zap_huge_pmd.patch
+mm-huge_memory-have-zap_huge_pmd-return-a-boolean-add-kdoc.patch
+mm-huge_memory-handle-buggy-pmd-entry-in-zap_huge_pmd.patch
+mm-huge_memory-add-a-common-exit-path-to-zap_huge_pmd.patch
+mm-huge_memory-remove-unnecessary-vm_bug_on_page.patch
+mm-huge_memory-deduplicate-zap-deposited-table-call.patch
+mm-huge_memory-remove-unnecessary-sanity-checks.patch
+mm-huge_memory-use-mm-instead-of-tlb-mm.patch
+mm-huge_memory-separate-out-the-folio-part-of-zap_huge_pmd.patch
+mm-add-softleaf_is_valid_pmd_entry-pmd_to_softleaf_folio.patch
+mm-huge_memory-add-and-use-normal_or_softleaf_folio_pmd.patch
+mm-huge_memory-add-and-use-normal_or_softleaf_folio_pmd-fix.patch
+mm-huge_memory-add-and-use-has_deposited_pgtable.patch
+mm-huge_memory-add-and-use-has_deposited_pgtable-fix.patch
+maintainers-update-mglru-entry-to-reflect-current-status.patch
+
 
