@@ -1,206 +1,203 @@
-Return-Path: <stable+bounces-230715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CaSJETcxmkoPQUAu9opvQ
-	(envelope-from <stable+bounces-230715-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 20:36:36 +0100
+	id iIJBO5DfxmnAPgUAu9opvQ
+	(envelope-from <stable+bounces-230716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 20:50:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA38A34A3D5
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 20:36:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE7A34A742
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 20:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D984C30D87E1
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 19:31:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21DDF3030A1C
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 19:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0164D381AF3;
-	Fri, 27 Mar 2026 19:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF493939DB;
+	Fri, 27 Mar 2026 19:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="WYctW9NY"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pJNQ8bn8";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jvu15aWP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF592382283
-	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 19:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6243939B6
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 19:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774639870; cv=none; b=uW51BNdCOHcyMLph0+BPcio79v6agC7R1im6oeNCzxkiG8o0FRZM6IxrngJxJcFnvj5CpEZ0YE6HImQA4rEdiGq9Qx6URB3qt54s61g1yKOIcQA14nfqQmiHio9u0eXqRsCAjsVK/smfW2689HReLIqm8jTGIAVlmqTWBfRN6hE=
+	t=1774640899; cv=none; b=ZE8GuWF7zsyOzulSrHMsirLEqUc1AWrMjPhnNTLrDhLAHAGAmQjkK2p9rTSdLwDUv/3QSb6PzEVlJ11beORyjJH8YOXKx+cUSusCnFtdfcPPLO7A4KsBbgJ4kxH4DqccwnDhPvqV39tHTM2KluSR9LbB3JuApr/5oh4ojgXMCK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774639870; c=relaxed/simple;
-	bh=UdbT8M+h+T/8FIRyzyUEwSC00Y3Lxmg3ItzAi+c/6HQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EqJu+lvG1epV2z6BC7aBifm0f2KQu0dmMXPgiE/CCzJGnXM9/P8lJxTuzRz0R6nzBsdXKmSAOfgvgZZFjk7VvbXBlqR5nS+uOOKjlVmF3HzyOJ5QGDHPV6v/OSyhnv0Ff9ZvEFbmBu8lFgq+JT4DnGyOiQ2mlLpOl5QyUMeULAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=WYctW9NY; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b97905516faso331762766b.1
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 12:31:07 -0700 (PDT)
+	s=arc-20240116; t=1774640899; c=relaxed/simple;
+	bh=M9yFdKVnxfaBThcDkIddKciB+kotta7uqMM6KThTDFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SwSDOj1OyPV+i34QiPm/sqKYzwsouFKPx9Q4pz4PFhTykW1uXkkS3A/PvGOCcV0zmRYJ58j8nSPa3jCcztR7+qzdzA3lGh5ZHsD08T/+1ZqRHDyIgFA4OsoCfsZLKWWqaELkC5ekJFYPc92qsBxZPwRtvKZg+JVf41Fl8UIP90U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pJNQ8bn8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jvu15aWP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62RI2i853351634
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 19:48:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Nc5BQLdxMwwYUmrYYywNJDjCwfZ322iu+GCikJgAULc=; b=pJNQ8bn8/fEJnd1M
+	4pvsKtWckqfiDvbsfp3Zs867WCOwlOETW+gIoFn7+pmimIUOQH+m05McVffzqgMP
+	Z3cXMqFNR5+Gdtu/AWGk9riAimNg0JJTGMPtOM3HUIhtEflDGk+BxCK8V13KluTm
+	2dB9Vj0hvia1f1R2yWrCwe1hAzLGjXXlKFVT801xSzbP5E3ma0N0uK26nWAWplHw
+	W4e6wwSLtfZLFxU7Oh+jBsQP/t7Ccgw30ye6lBH+zAWbO0YkdcmsTFvcH5Xjj6Lf
+	OpLb71+iRdEAT1jeerUqxQ6ciRAe6comHGKWd4cpBIeYXs0zSA42L1/4PUjA5XbT
+	gJxBJw==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d5bxv4g3y-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 27 Mar 2026 19:48:17 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5093025ffecso73592161cf.0
+        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 12:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1774639863; x=1775244663; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1774640897; x=1775245697; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=99gWaYSzjnyq01Amp2SCb6AR3PTrEPRcQ1jAAPcG8L8=;
-        b=WYctW9NYS4pqViGtJeVcxu7Z7/GjP7Tlf2nsQKOHOMcY48ICwsKcH1UVnO5aFP2uAc
-         k0oPmx/Ogk9AcfLSeWyeofxI9foitN906iQ4EgSBAqs9a07bMbMXWmy9kiRfiJBLeoKJ
-         uufSfDgwitU9tAh1xSU+LvKtNAZB6PImL2bow=
+        bh=Nc5BQLdxMwwYUmrYYywNJDjCwfZ322iu+GCikJgAULc=;
+        b=jvu15aWPTJwd3XCfg91iDmBUJYl5xC1ag2KIcMPx9Oboqw3J0b354zO2e49vUhiKAM
+         +oDYiH+Dziqo+EksUJaZzv8+vtJxtHhso0jrOCWr7kTS8wKQu7+hN6El3+5X66Mkk8c/
+         NQqfR1Vhqz6ebo1LmHdJF3blz+GRU84geLJoCIBYsjqDDKMCakleIrSW5VtTFXUpGjqS
+         qwu7Bk1UBbLic4Here8Ml8UW2Uo9C2rAzK4eD2CfAUmOuqmOpHkbNVEHTsgS55V4ysJh
+         gdwX1TRDSfHXH7FWqIm0JD+CS5whg9xt9ZMktthNVNhQ5tXQtA8FyMjorwz0ehq3NRO/
+         Ykww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774639863; x=1775244663;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774640897; x=1775245697;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=99gWaYSzjnyq01Amp2SCb6AR3PTrEPRcQ1jAAPcG8L8=;
-        b=ec3KsK5RZx/Jc+wHAmrmuRS72TI0iKK0uRzNYwIo8HNwSID7EooN5Pvp69YETnt6CQ
-         hv4DnZ63dW4W2mdt4IO5s8BP7ltsnizAF7+TXlsrEhHuZeek1reFm3sToc2HwvzmH+pD
-         wKStF8IKQx5Vd+lJOtNlP4KZIF8QDvP13bOrFtAf1+FNtce++PKt6acb+iLF/rLZztz7
-         HDGK86NGidCZmthO5pzupd4W9eW492D16taBCls0+4gr5XjB+5VrKsHNCL8UgH8DlqPQ
-         Yex8GASk+LIzLqZbW2z9y62BYF9GHdADAI0SkZFna365husbximqZX4XloQJ1rRwsZLt
-         ROzw==
-X-Forwarded-Encrypted: i=1; AJvYcCULMIkp25S7+6EIyeUp53971xiH6xxW2pziuw1Gu5qZg5Au8zsvi9RxjIGZeySNT/J77fRma9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOJavzCXuc6Wl6aYewo8xZG1jMiD2HzWAMe8bEQqW4UwZRW0Uu
-	+WsjarJMaebUJKP8l35Mi3mW8vkOaxtbYr9q6S4Vwgz/vXEpERsMrXodJ3VJ+qBiqVS8gNMR5Uv
-	+9/KUPA==
-X-Gm-Gg: ATEYQzyRiaNsTkt2FdCdjR9yKebErN6ytCi6rB8aETR+N0Ud2VW3UxGPGt/5TlS0gjl
-	Vv0DnSNShTOggBhwrbdYGCBAejzVQmxuUl132cTAzOnphsUvLMofmjToHSfbH0EBFEkjiJkkXrR
-	g+xuZceulQJgKDEvY8ytZatvx/7EBxeN2nKLaVhJ7Qk6JKClPrCLPBYz9oIOQ2uI2vXFxOWVZki
-	fIp8sEPqS7ru1YapqE2TC5kT1GXapslPKzjg2bFd0iyPaHXR+HbUX5H6eoQbZAe8dvbMSLNMijt
-	IWrxSmLIcGxkNN2GdOpY0E9dK14s3u0mN0sOxj4NVC3jj8Wu5S90gFYhJEY7KyyP85PnBLNBWdO
-	jJLyYX8fiHHAVradmAQbpFlRLZUtAxKYQlbQNT6nnWwKlu7IHfcmaBuZUXw4vGaqhFG2vM/JpnR
-	nfLmoTjM/74wQjRaOGIv95OEpgwZJp1ewPhEwN9aJ+Q6EV5Mo7DhKLcOgwYiooDBJBpu00a4QL
-X-Received: by 2002:a17:906:4795:b0:b97:2a5:8a48 with SMTP id a640c23a62f3a-b9b507b0eb8mr260539866b.37.1774639862670;
-        Fri, 27 Mar 2026 12:31:02 -0700 (PDT)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com. [209.85.221.49])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66b75ba9742sm1098a12.16.2026.03.27.12.31.00
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2026 12:31:02 -0700 (PDT)
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43b9144790dso1391016f8f.1
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 12:31:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWGF6U3ELPzhs8VxCnPJAiIVqIEG1/JAJqjDZA/Zj8zKDa4tjs/AhWiyjK7dcGqjK7D+TRF1gA=@vger.kernel.org
-X-Received: by 2002:adf:f5d0:0:b0:43c:f1da:488b with SMTP id
- ffacd0b85a97d-43cf1da494emr250211f8f.30.1774639859273; Fri, 27 Mar 2026
- 12:30:59 -0700 (PDT)
+        bh=Nc5BQLdxMwwYUmrYYywNJDjCwfZ322iu+GCikJgAULc=;
+        b=BPs0XpIjZQmXob9lrV4DiD5zqIPYT4l8OHUuEpQ0jXSOfQVC5/0g/6CAyFSbr/fNK0
+         Eykydqr0DYDBJagdowfRDk/KbDzZeW0wn0cCjQCEUUc+5yUwCC+TsoYTuHACYgUDdIEi
+         uUyCLZje8PFcs4whsiwyuMVRYkx4lJNSTArvsQptfLPj1ZQZOfbfC7f+Qvd2QVI1PsF9
+         JFbjrnTjf1/I7CqrWpEUWOTSYfobekfuZ2hxp2ATlifTGFkcRbp59lXlX3K2pIt8JwXq
+         XJaNjA8GvnWFAAsU6+15A36yyXmRIN1m32crBhA4B+D/FpSEP24v6PheKjNjciZO2ohQ
+         uiEQ==
+X-Gm-Message-State: AOJu0YwnbfIWNVHTWkUvlYM2aPO7yH8MHa4g479+LpSUYkCjtTEJPqXV
+	kCWP83tTirWDgrkLz/h9B0oDbvvMymCPUEmSu5M9+UMZwsgZn6PxVE8Ls7C859szOiUtxNFTCda
+	dQSCz07y95iUqFA0Po9+OwiZ/VmpdcRtDCg9A6afwWG3aKRqjmhC+ww6PT9A=
+X-Gm-Gg: ATEYQzx7ghbKyk8yQ7pizstfICPM+dmOTuonala5ltaJpRsCBP0yqFz6859dMeIuESt
+	qNsGqrZ/qR2lUpxF4JEvWS5P/9hwL1i9CfzUTuZhkZ6hCUOKGBqmgFJ1qxEHDE2W6BSBn3Vp2Wa
+	XGXkJ2XGQnOFDsp4Gv8oizTlCA7zoIQ/AtDxS0k9i1FPN7n3DV6fJ7g0c+P88u2Om9Dwu1SqUfQ
+	6MDIbB80+mAiWySpLoKFw14ug3RW9+nPmyzeU6LzR1sQLn0IkcEu5Vr93iLB3ggWmQCHiQT+1Bv
+	BMgsV0mwhpH/oKrze8fGkyHEPWuEJHXVznsPYRgsNSQ9b36+5AJlMuZ/uuL6vQVaRiTtBBXfNfc
+	dvFQETISP+V4/43Y1la8IIwJo5N28BGVEOsKUXizM/ZKIUGlQJF0cBpXdC45s55Eyi+L/3QEwsF
+	KSugjXjsk+2fhF/cGKnk8kx40G/uLfRxLq
+X-Received: by 2002:ac8:7d4b:0:b0:509:3d06:96a with SMTP id d75a77b69052e-50ba397b630mr47748751cf.53.1774640896741;
+        Fri, 27 Mar 2026 12:48:16 -0700 (PDT)
+X-Received: by 2002:ac8:7d4b:0:b0:509:3d06:96a with SMTP id d75a77b69052e-50ba397b630mr47748431cf.53.1774640896323;
+        Fri, 27 Mar 2026 12:48:16 -0700 (PDT)
+Received: from umbar.. (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c837130basm275211fa.12.2026.03.27.12.48.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 12:48:15 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Maxime Ripard <mripard@kernel.org>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] drm/msm/hdmi: Fix wrong CTRL1 register used in writing info frames
+Date: Fri, 27 Mar 2026 21:47:49 +0200
+Message-ID: <177463970801.3488980.2533820588503538950.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260311191620.245394-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260311191620.245394-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2026032152-getting-carmaker-29d5@gregkh> <CAD=FV=Wag5qx9RXkAHrf+zbwtQgVQW1UUc6DRhUzudBtjbD8ug@mail.gmail.com>
- <2026032114-unlocked-unmoving-091b@gregkh> <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
- <6ff1444b-f83e-47f6-ab0d-6745738523ba@rowland.harvard.edu>
- <CAD=FV=Vco+hRBNxGpUDf-YofEwTR13ht=nTnjvUvT+3_76+1MA@mail.gmail.com>
- <6511a5b9-ac67-49a1-8336-3d2afaaab593@rowland.harvard.edu>
- <CAD=FV=WBgKN2MNO-xBHZ3tRN91M82vk3h1AEAXtpBQ-nQocKCQ@mail.gmail.com>
- <bfd4e1f5-7bc5-448d-aa33-1a977bf00733@rowland.harvard.edu>
- <CAD=FV=WeeBoQAoPgNq+5ocZas+mOn1RuNto3k57ag4ODo2vOLw@mail.gmail.com> <852cd509-4ce1-4b22-ab1f-b9b9bbf6a52e@rowland.harvard.edu>
-In-Reply-To: <852cd509-4ce1-4b22-ab1f-b9b9bbf6a52e@rowland.harvard.edu>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 27 Mar 2026 12:30:47 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UroO1vQYJDkrp86D475F8b-RStUXYejWwTQ0NqP1a_ew@mail.gmail.com>
-X-Gm-Features: AQROBzB1FKb3rh0thX0FLzEGHt2HXFbkx3ukymP0tbJUZxNnXoTJGwjGT2c25ZE
-Message-ID: <CAD=FV=UroO1vQYJDkrp86D475F8b-RStUXYejWwTQ0NqP1a_ew@mail.gmail.com>
-Subject: Re: [RFC PATCH] driver core: Don't link the device to the bus until
- we're ready to probe
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=A99h/qWG c=1 sm=1 tr=0 ts=69c6df01 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=e5mUnYsNAAAA:8
+ a=s7uc8e38FLtQ-qa--o4A:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
+ a=Vxmtnl_E_bksehYqCbjh:22
+X-Proofpoint-ORIG-GUID: Sh0S7ejDZEc-mRpn0KEPHW_2kGsRaTBV
+X-Proofpoint-GUID: Sh0S7ejDZEc-mRpn0KEPHW_2kGsRaTBV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDEzOCBTYWx0ZWRfXztYhgoQz+di9
+ ZdluBCD3ecCU36ZOnsijEFlxQmlxHPaHT9Xv/+axIgaM9+WhsYiH523JpI8nqsFLc34LrlbD+Gt
+ PxC8ShZX2nd+ITniqbtpJv4NnzjysO/tcCEC7Ob1Mdo4+SzWuDCKUwlS6S+/OaUF/gu7CVb4PFH
+ P6BEy+SMCn5RwOM4ZJJn39yP80sz4gGSSTNcVysN9OUjKuwCUFQ0C0UXfl96UnRWy/NJ3/YPL37
+ /9gqKvEW3e9/ShRhl6qCQ0+vhe0XMgB6v9kUK/ZYUUQZ+5+jAryvYCzmpi9NNpdVy5jVh1JWu3Y
+ Z815RLd78AVioZkCS8H3je/ZVVN/z/qW/Y+6o8zT53Y99yrBw2f0pfXShUIC4IGYng92sd/jl0G
+ UsraS59P5peuteGh8QkWp0k1nPlbyiHnvSvzH8Mf3RHFMSTucKmujLJNlzUtukV286u5b3MNb8/
+ iLH31Ps4Y3QmCOMROUg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-27_01,2026-03-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 impostorscore=0
+ phishscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603270138
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230715-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch,vger.kernel.org,lists.freedesktop.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230716-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,oss.qualcomm.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:dkim,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,harvard.edu:email]
-X-Rspamd-Queue-Id: EA38A34A3D5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 9EE7A34A742
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On Wed, 11 Mar 2026 20:16:21 +0100, Krzysztof Kozlowski wrote:
+> Commit 384d2b03d0a1 ("drm/msm/hdmi: make use of the drm_connector_hdmi
+> framework") changed the unconditional register writes in few places to
+> updates: read, apply mask, write.  The new code reads
+> REG_HDMI_INFOFRAME_CTRL1 register, applies fields/mask for
+> HDMI_INFOFRAME_CTRL0 register and finally writes to
+> HDMI_INFOFRAME_CTRL0.  This difference between CTRL1 and CTRL0 looks
+> unintended and may result in wrong data being written to HDMI bridge
+> registers.
+> 
+> [...]
 
-On Fri, Mar 27, 2026 at 11:46=E2=80=AFAM Alan Stern <stern@rowland.harvard.=
-edu> wrote:
->
-> On Thu, Mar 26, 2026 at 02:49:33PM -0700, Doug Anderson wrote:
-> > > > Right. ...and I think that's what my proposed "ready_to_probe" does=
-.
-> > > > It really does seem like quite a safe change. It _just_ prevents th=
-e
-> > > > driver load path from initiating a probe too early.
-> > >
-> > > Any such consideration should apply to all the probe paths, not just
-> > > driver loading.  (Also, if it's too early to probe the device, perhap=
-s
-> > > the return code should be -EAGAIN instead of 0.)
-> >
-> > In my proposed solution, I was returning 0 from __driver_attach(). The
-> > only place that's called from is driver_attach(), which calls it with
-> > bus_for_each_dev(). I don't think returning -EAGAIN is a good idea
-> > there since it stops bus_for_each_dev(). In general __driver_attach()
-> > always returns 0.
-> >
-> > In general, the goal of my new proposed patch is to add the device to
-> > the subsystem's "klist_devices" exactly where we do it today for
-> > maximum compatibility. This means that if any code was relying on
-> > being able to find the device, they can still find it. The _only_
-> > exception is that I don't want to be able to find the device in
-> > driver_attach(). So my proposed solution just hides the device in that
-> > one case.
->
-> But why just in that one case?  That's what I don't understand.  If it's
-> not okay to bind at this time on the driver-load path, why is it okay to
-> bind on other pathways (such as bus.c:bind_store())?
+Applied to msm-next, thanks!
 
-Ah, I see!
+[1/1] drm/msm/hdmi: Fix wrong CTRL1 register used in writing info frames
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/8c6c93b7db42
 
-Yeah, OK. I spent more time, and I think I've a patch that will
-address things. I still like adding the "ready_to_probe" flag and
-setting it in device_add() right before bus_probe_device(). ...but
-I've changed where I'm testing this flag. Now I've got the test in
-__driver_probe_device(), where I simply do:
+Best regards,
+-- 
+With best wishes
+Dmitry
 
-  /*
-   * In device_add(), the "struct device" gets linked into the subsystem's
-   * list of devices and broadcast to userspace (via uevent) before we're
-   * quite ready to probe. Those open pathways to driver probe before
-   * we've finished enough of device_add() to reliably support probe.
-   * Detect this and tell other pathways to try again later. device_add()
-   * itself will also try to probe immediately after setting
-   * "ready_to_probe".
-   */
-  if (!dev->ready_to_probe)
-    return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready_to_probe");
 
-I think that is more inline with your intuition that we should return
-some sort of "try again" code when we end up with this situation. This
-should also block _all_ probe paths safely by adding to the deferral
-list (just in case) or returning -EAGAIN (in the case of
-device_driver_attach()).
-
-Does that sound like what you're looking for?
-
--Doug
 
