@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOdfKZbkxWkeCwUAu9opvQ
-	(envelope-from <stable+bounces-230567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:59:50 +0100
+	id yKV3JBTkxWkeCwUAu9opvQ
+	(envelope-from <stable+bounces-230568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:57:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1EA33E0A6
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:59:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5048733E05E
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 02:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 677713089788
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:54:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32401309F495
+	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 01:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF39B311C07;
-	Fri, 27 Mar 2026 01:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755CC313539;
+	Fri, 27 Mar 2026 01:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="3XiAAVNA"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="tujcAx/B"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F362226F46F;
-	Fri, 27 Mar 2026 01:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9524F2E3AEA;
+	Fri, 27 Mar 2026 01:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774576488; cv=none; b=S67Gx7A4LSNQbpBTh9o/WzDjB04XbAzBYZv9ffj4ho6QNy9PwWkCB5VSG+2sH5xqJlfZ2V0ECv1ZGXNGu6FAQzH3StK9bGWm0G60xwWda/vBprVwTk6nYFqm6eqsqN0mOfqP73Gz5NHfvjKycsio+ZG7/Wp3ujhVtgo7zK3Ya3s=
+	t=1774576565; cv=none; b=d1CyawMF6zQAvk7apJBcSdzP7izo14jJkuMN792+f9flVgh+IOrS9PkI/xs4T8KhlH2RljwZEkQpnU/bqduBYLsrEbnGb4a1KPAm+ISwMMEfhRm993G2G+lgoUS1B4EGeIzmSrNMSDoHBSqeu26m2mPfF/0nn52kniEMpflYNzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774576488; c=relaxed/simple;
-	bh=ZqV+tRZXIY15nG5MUbhJ9kF9CsPGNZz/KgeQrtcorBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X1JDEM+VAina4i8QEjVgWjgWsUVQQdhpmky4dtriaLIg6vW00VTq9JyrXjWUy8PG5gZF5MAkea9RZ5MtmlhWjEpLvMtjXZG4nIwoPVnznW58hdCKxKu0HK8U2S8PUzS94KDpMljZb4aZbZd15al5Nw4VdsYIaVLAcItwuc+ooAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=3XiAAVNA; arc=none smtp.client-ip=120.232.169.110
+	s=arc-20240116; t=1774576565; c=relaxed/simple;
+	bh=NFJnpicLI5cm346Kgai/jAAAFpfOESyBxq3+wZhrQWQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A5jNyS8XsL1lsw4MxFzCGheBioxe2hDdawVYe/xjw1gST3329WnicYzkb0usHis2ftvtHr+vY17OBdGZHecJqQqADCl56pzZmd1X/kZavyXAH9MdzzWpSwLignVleqotHmjLw3yBJpD9lGgZWfdRR0DBBM4HdpZrQ3fBty5B7Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=tujcAx/B; arc=none smtp.client-ip=120.232.169.114
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=3XiAAVNADMJx0bKCLvOhGJSLsN2KhUSC6/qZT8qw6WVoLhOfCHMvqmzULics/bX4caTmO46HAaI95
-	 LmAusC7XR8Eq2YVdAFGXv+V8J0A/uGkqq3EkXDwW0hlNyWNkKzP54zHy7eeW4AvWruk88+UDBWb+RT
-	 4itDxmadmy/WDbXU=
+	b=tujcAx/BS3Ii9CWy1ufqr8+jv2uW+4hRFuohfkpdq/oBN/mswbESSPSMfC+FaOYzRWT3EwNXB7EKD
+	 Z/IjiNt25OF1a3eYrTcgqFWk1IR51llpQnUu2ANa8X+ApnGblj25yNe5ZVZlKcI/ujo4jx5he/xF2n
+	 TLDky607OsRero5o=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-04-12082 (RichMail) with SMTP id 2f3269c5e29809b-010b3;
-	Fri, 27 Mar 2026 09:51:22 +0800 (CST)
-X-RM-TRANSID:2f3269c5e29809b-010b3
+	by rmsmtp-lg-appmail-40-12054 (RichMail) with SMTP id 2f1669c5e2e1df3-00e06;
+	Fri, 27 Mar 2026 09:52:38 +0800 (CST)
+X-RM-TRANSID:2f1669c5e2e1df3-00e06
 From: Rajani Kantha <681739313@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -58,11 +58,15 @@ Cc: patches@lists.linux.dev,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	f.fainelli@gmail.com,
 	netdev@vger.kernel.org,
-	rmk+kernel@armlinux.org.uk
-Subject: [PATCH 6.1.y 1/3] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
-Date: Fri, 27 Mar 2026 09:51:20 +0800
-Message-Id: <20260327015120.1712759-1-681739313@139.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	wei.fang@nxp.com
+Subject: [PATCH 6.1.y 2/3] net: phy: allow MDIO bus PM ops to start/stop state machine for phylink-controlled PHY
+Date: Fri, 27 Mar 2026 09:52:37 +0800
+Message-Id: <20260327015237.1713008-1-681739313@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,16 +81,16 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[139.com];
-	TAGGED_FROM(0.00)[bounces-230567-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-230568-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,google.com,kernel.org,redhat.com];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,google.com,kernel.org,redhat.com,lists.infradead.org,nxp.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -96,82 +100,168 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[139.com:-];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	NEURAL_HAM(-0.00)[-0.974];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,139.com:mid,armlinux.org.uk:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: 0A1EA33E0A6
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,139.com:mid,msgid.link:url,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5048733E05E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
+[ Upstream commit fc75ea20ffb452652f0d4033f38fe88d7cfdae35 ]
 
-In an upcoming change, mdio_bus_phy_may_suspend() will need to
-distinguish a phylib-based PHY client from a phylink PHY client.
-For that, it will need to compare the phydev->phy_link_change() function
-pointer with the eponymous phy_link_change() provided by phylib.
+DSA has 2 kinds of drivers:
 
-To avoid forward function declarations, the default PHY link state
-change method should be moved upwards. There is no functional change
-associated with this patch, it is only to reduce the noise from a real
-bug fix.
+1. Those who call dsa_switch_suspend() and dsa_switch_resume() from
+   their device PM ops: qca8k-8xxx, bcm_sf2, microchip ksz
+2. Those who don't: all others. The above methods should be optional.
 
+For type 1, dsa_switch_suspend() calls dsa_user_suspend() -> phylink_stop(),
+and dsa_switch_resume() calls dsa_user_resume() -> phylink_start().
+These seem good candidates for setting mac_managed_pm = true because
+that is essentially its definition [1], but that does not seem to be the
+biggest problem for now, and is not what this change focuses on.
+
+Talking strictly about the 2nd category of DSA drivers here (which
+do not have MAC managed PM, meaning that for their attached PHYs,
+mdio_bus_phy_suspend() and mdio_bus_phy_resume() should run in full),
+I have noticed that the following warning from mdio_bus_phy_resume() is
+triggered:
+
+	WARN_ON(phydev->state != PHY_HALTED && phydev->state != PHY_READY &&
+		phydev->state != PHY_UP);
+
+because the PHY state machine is running.
+
+It's running as a result of a previous dsa_user_open() -> ... ->
+phylink_start() -> phy_start() having been initiated by the user.
+
+The previous mdio_bus_phy_suspend() was supposed to have called
+phy_stop_machine(), but it didn't. So this is why the PHY is in state
+PHY_NOLINK by the time mdio_bus_phy_resume() runs.
+
+mdio_bus_phy_suspend() did not call phy_stop_machine() because for
+phylink, the phydev->adjust_link function pointer is NULL. This seems a
+technicality introduced by commit fddd91016d16 ("phylib: fix PAL state
+machine restart on resume"). That commit was written before phylink
+existed, and was intended to avoid crashing with consumer drivers which
+don't use the PHY state machine - phylink always does, when using a PHY.
+But phylink itself has historically not been developed with
+suspend/resume in mind, and apparently not tested too much in that
+scenario, allowing this bug to exist unnoticed for so long. Plus, prior
+to the WARN_ON(), it would have likely been invisible.
+
+This issue is not in fact restricted to type 2 DSA drivers (according to
+the above ad-hoc classification), but can be extrapolated to any MAC
+driver with phylink and MDIO-bus-managed PHY PM ops. DSA is just where
+the issue was reported. Assuming mac_managed_pm is set correctly, a
+quick search indicates the following other drivers might be affected:
+
+$ grep -Zlr PHYLINK_NETDEV drivers/ | xargs -0 grep -L mac_managed_pm
+drivers/net/ethernet/atheros/ag71xx.c
+drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
+drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+drivers/net/ethernet/freescale/ucc_geth.c
+drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+drivers/net/ethernet/marvell/mvneta.c
+drivers/net/ethernet/marvell/prestera/prestera_main.c
+drivers/net/ethernet/mediatek/mtk_eth_soc.c
+drivers/net/ethernet/altera/altera_tse_main.c
+drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
+drivers/net/ethernet/tehuti/tn40_phy.c
+drivers/net/ethernet/mscc/ocelot_net.c
+
+Make the existing conditions dependent on the PHY device having a
+phydev->phy_link_change() implementation equal to the default
+phy_link_change() provided by phylib. Otherwise, we implicitly know that
+the phydev has the phylink-provided phylink_phy_change() callback, and
+when phylink is used, the PHY state machine always needs to be stopped/
+started on the suspend/resume path. The code is structured as such that
+if phydev->phy_link_change() is absent, it is a matter of time until the
+kernel will crash - no need to further complicate the test.
+
+Thus, for the situation where the PM is not managed by the MAC, we will
+make the MDIO bus PM ops treat identically the phylink-controlled PHYs
+with the phylib-controlled PHYs where an adjust_link() callback is
+supplied. In both cases, the MDIO bus PM ops should stop and restart the
+PHY state machine.
+
+[1] https://lore.kernel.org/netdev/Z-1tiW9zjcoFkhwc@shell.armlinux.org.uk/
+
+Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Reported-by: Wei Fang <wei.fang@nxp.com>
+Tested-by: Wei Fang <wei.fang@nxp.com>
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
+Link: https://patch.msgid.link/20250407094042.2155633-1-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor context change fixed ]
 Signed-off-by: Rajani Kantha <681739313@139.com>
 ---
- drivers/net/phy/phy_device.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/phy/phy_device.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 11839dca8f56..7d19857a6dc4 100644
+index 7d19857a6dc4..fd49616c6608 100644
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -234,6 +234,19 @@ static struct phy_driver genphy_driver;
- static LIST_HEAD(phy_fixup_list);
- static DEFINE_MUTEX(phy_fixup_lock);
+@@ -247,6 +247,33 @@ static void phy_link_change(struct phy_device *phydev, bool up)
+ 		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
+ }
  
-+static void phy_link_change(struct phy_device *phydev, bool up)
++/**
++ * phy_uses_state_machine - test whether consumer driver uses PAL state machine
++ * @phydev: the target PHY device structure
++ *
++ * Ultimately, this aims to indirectly determine whether the PHY is attached
++ * to a consumer which uses the state machine by calling phy_start() and
++ * phy_stop().
++ *
++ * When the PHY driver consumer uses phylib, it must have previously called
++ * phy_connect_direct() or one of its derivatives, so that phy_prepare_link()
++ * has set up a hook for monitoring state changes.
++ *
++ * When the PHY driver is used by the MAC driver consumer through phylink (the
++ * only other provider of a phy_link_change() method), using the PHY state
++ * machine is not optional.
++ *
++ * Return: true if consumer calls phy_start() and phy_stop(), false otherwise.
++ */
++static bool phy_uses_state_machine(struct phy_device *phydev)
 +{
-+	struct net_device *netdev = phydev->attached_dev;
++	if (phydev->phy_link_change == phy_link_change)
++		return phydev->attached_dev && phydev->adjust_link;
 +
-+	if (up)
-+		netif_carrier_on(netdev);
-+	else
-+		netif_carrier_off(netdev);
-+	phydev->adjust_link(netdev);
-+	if (phydev->mii_ts && phydev->mii_ts->link_state)
-+		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
++	/* phydev->phy_link_change is implicitly phylink_phy_change() */
++	return true;
 +}
 +
  static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
  {
  	struct device_driver *drv = phydev->mdio.dev.driver;
-@@ -1036,19 +1049,6 @@ struct phy_device *phy_find_first(struct mii_bus *bus)
- }
- EXPORT_SYMBOL(phy_find_first);
+@@ -307,7 +334,7 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
+ 	 * may call phy routines that try to grab the same lock, and that may
+ 	 * lead to a deadlock.
+ 	 */
+-	if (phydev->attached_dev && phydev->adjust_link)
++	if (phy_uses_state_machine(phydev))
+ 		phy_stop_machine(phydev);
  
--static void phy_link_change(struct phy_device *phydev, bool up)
--{
--	struct net_device *netdev = phydev->attached_dev;
--
--	if (up)
--		netif_carrier_on(netdev);
--	else
--		netif_carrier_off(netdev);
--	phydev->adjust_link(netdev);
--	if (phydev->mii_ts && phydev->mii_ts->link_state)
--		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
--}
--
- /**
-  * phy_prepare_link - prepares the PHY layer to monitor link status
-  * @phydev: target phy_device struct
+ 	if (!mdio_bus_phy_may_suspend(phydev))
+@@ -361,7 +388,7 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
+ 		}
+ 	}
+ 
+-	if (phydev->attached_dev && phydev->adjust_link)
++	if (phy_uses_state_machine(phydev))
+ 		phy_start_machine(phydev);
+ 
+ 	return 0;
 -- 
 2.34.1
 
