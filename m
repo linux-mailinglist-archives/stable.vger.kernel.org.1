@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-230801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGd9DH8PyGmNggUAu9opvQ
-	(envelope-from <stable+bounces-230801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:27:27 +0100
+	id MBtEDI8PyGmNggUAu9opvQ
+	(envelope-from <stable+bounces-230802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:27:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D69334F5AA
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:27:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BE134F5C0
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E53213078C28
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:24:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1506F3086853
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3503E3A4F5D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A076A3A4F3E;
 	Sat, 28 Mar 2026 17:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnA3KcWP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxMa1z7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E547723C4E9;
-	Sat, 28 Mar 2026 17:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA503A542B;
+	Sat, 28 Mar 2026 17:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774718658; cv=none; b=qc5D6hQLuRmwnGRxMXc9DaTZ3dbhMCcauwF9Zvzxs7Aj+yGSRzr7yGlpePe0ZyguxqfKkNOTOlLFbjWlq8p1Pb6LFpB0EcLJwwzfeKl+W1GxCpyzASlqK6MXxVtLLPbSUvcvIo7K74Cmkxhvh+9N6sa5NuXd1MMdX2GzukGk3dQ=
+	t=1774718658; cv=none; b=tDhKxw2rpInhY3oz9c0Yb4xJzTI6LIMTrkGHFVIdGRGsx5MsUARzIhZlaWtS7+R7f4q54jp2OtqPt9RbgSZvuSsoM8knJvVMKQIwf957hXzOfYNr52DDlg4RNObkvy1M9NsCGyWyd728YY5ClKttwFCn71rA/DGUWI0qSqXe+n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774718658; c=relaxed/simple;
-	bh=rxZ5v+493qUKNyvAIRBys9sdJcZoxizzLtuheu+9T1E=;
+	bh=xJrrCtoEJEbKyudyQ6eBIwNiMqyIA+gXrBCwV3hcjTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBtHi4OzwEoBFDwK7dNGOsMQgI/+vXceFGnhmPMDdLlC40hSWudb4il/BA8gZLvdRCvgkZO69J34GRLgjiGtO4/FaH7h4ItOd0laFOoYP6bHamfgFj2NHXpwVNAsyiz2v2LxqT5s0JO9EuiuRcxp06L33JXdjm3Xxv6gFC1x4+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnA3KcWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66494C2BC87;
+	 MIME-Version; b=AwqcmpBa/tuhb329Jel1jJA0CabEzdfOyFNQ1TbYyI1hprq64qRNsuNJuicP3tDoMZlISvNXUZoMmyCj/tL1nZtb49BA8T0ISlFufPuA4Mk64HsbygOCKKOzc87A/HdC7xS26rs7VjvYlNIdiT4Y0QTEvsfjSEMo+9YabiiocSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxMa1z7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6980C2BCB0;
 	Sat, 28 Mar 2026 17:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774718657;
-	bh=rxZ5v+493qUKNyvAIRBys9sdJcZoxizzLtuheu+9T1E=;
+	s=k20201202; t=1774718658;
+	bh=xJrrCtoEJEbKyudyQ6eBIwNiMqyIA+gXrBCwV3hcjTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DnA3KcWPS2Bihi+ez56+vQVjO3g96g14BfLqXUaKMprA0MagaepT0khcCUenin5Bb
-	 ileS6tYCQj9LR6L/wBYGYHMX33gOGLXWwOI32iJEWdvmQPDGA5M6+l+3l0nb3n1M+f
-	 taxUVKCByiyACRcZPDM8dhbXfhB05M89YfY6Tfd1CJqZwUA3GUsSxfh07Q6vdDyfWf
-	 UDK5YpuduGp4EfWSpyhQhSbFa+7a763kIpBFKLDMEJ9A05ctuVMZY+dqoopPFBQg+3
-	 sWevR88YEQXWqb3EwywQPfpIIPkwGDHI+m5rbP0mJ8aPFZklbpIYqHKPBkCuo+GMpT
-	 APHc/QSGANZfQ==
+	b=YxMa1z7JQD1bg7ZdA5XktEe5juSvFFUGjvuOpb+1vEpUwNSe/RqC5XanXNQU4Xf61
+	 NWhC4Y/q/Oy01fj6SE1qOjAUkjutZOUUksV5826Q6h7O5SVZaxUh0CEEmF100G+2Vr
+	 7HjOqpmMv/2fVNVB4tKczWGugz8g3SptlGsXcyGit49UXXR9lZFN7pMZ9d4igcokx0
+	 f4qiVub4MjZhlBAoQJ2PBiNmyZFl2lkSyE9uZIFhk8rwv9lgGmPEtcQHhrxFWI+TEg
+	 4PyNBAYsrUbFym6Ah2qCg/xJlQoEYhoB/RSRaeguxRAfnBsxJ4et9elpNXdX3m+40A
+	 7Qjy/lO27ZSlA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	"# 6 . 0 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -62,9 +62,9 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
-Date: Sat, 28 Mar 2026 10:24:12 -0700
-Message-ID: <20260328172415.49940-2-sj@kernel.org>
+Subject: [RFC PATCH 2/2] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
+Date: Sat, 28 Mar 2026 10:24:13 -0700
+Message-ID: <20260328172415.49940-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260328172415.49940-1-sj@kernel.org>
 References: <20260328172415.49940-1-sj@kernel.org>
@@ -81,11 +81,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230801-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230802-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -99,13 +99,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8D69334F5AA
+X-Rspamd-Queue-Id: C6BE134F5C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DAMON_RECLAIM handles commit_inputs request inside kdamond thread,
+DAMON_LRU_SORT handles commit_inputs request inside kdamond thread,
 reading the module parameters.  If the user updates the module
 parameters while the kdamond thread is reading those, races can happen.
 To avoid this, the commit_inputs parameter shows whether it is still in
@@ -115,29 +115,29 @@ behavior.
 
 The issue was discovered [1] by sashiko.
 
-[1] https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org
+[1] https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org
 
-Fixes: 81a84182c343 ("Docs/admin-guide/mm/damon/reclaim: document 'commit_inputs' parameter")
-Cc: <stable@vger.kernel.org> # 5.19.x
+Fixes: 6acfcd0d7524 ("Docs/admin-guide/damon: add a document for DAMON_LRU_SORT")
+Cc: <stable@vger.kernel.org> # 6.0.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/reclaim.rst | 4 ++++
+ Documentation/admin-guide/mm/damon/lru_sort.rst | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index a100216f3a72..7e22cdfd277a 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -71,6 +71,10 @@ of parameters except ``enabled`` again.  Once the re-reading is done, this
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 797962a459e6..5b8e16394228 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -79,6 +79,10 @@ of parameters except ``enabled`` again.  Once the re-reading is done, this
  parameter is set as ``N``.  If invalid parameters are found while the
- re-reading, DAMON_RECLAIM will be disabled.
+ re-reading, DAMON_LRU_SORT will be disabled.
  
 +Once ``Y`` is written to this parametr, the user must not write to any
 +parameters until reading ``commit_inputs`` again returns ``N``.  If users
 +violate this rule, the kernel can do undefined behaviors.
 +
- min_age
- -------
+ active_mem_bp
+ -------------
  
 -- 
 2.47.3
