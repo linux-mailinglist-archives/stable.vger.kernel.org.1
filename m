@@ -1,235 +1,118 @@
-Return-Path: <stable+bounces-230748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBc8DUUjx2lATgUAu9opvQ
-	(envelope-from <stable+bounces-230748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:39:33 +0100
+	id 2GASIw0kx2lATgUAu9opvQ
+	(envelope-from <stable+bounces-230749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:42:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43BF34CBDC
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:39:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221E534CC56
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5758B3035A5D
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:39:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04C42304F21D
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856311EEA54;
-	Sat, 28 Mar 2026 00:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0659C1F37D3;
+	Sat, 28 Mar 2026 00:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jJqJwMQ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIQtZgA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489569443;
-	Sat, 28 Mar 2026 00:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8670AD5A;
+	Sat, 28 Mar 2026 00:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774658366; cv=none; b=sDGpZxmhzMn2vftIBLs8aWRammxrtUQgRQrwOLEeNZLosgOGLxxoOyeRRc2U//CWqv9zI7fnfqGnj6+BEn4sNKASBEh0i6ADJqeHhFSqPgvRQI2V+6+9W66JUe1pmB/FagIoeBvBa03YFjIpo7mnjRFMED9zNQY54iEXWSaZQIQ=
+	t=1774658570; cv=none; b=cmpOJBvW4dj+o0YQcq4uzQnzd1heBGMaVzOEUbnCVMLj0Gdj2QPXRJCGXgpyxx9yVcUeVSqeECEq1XkCdYEilqpuLGzVeFef3sCWs1ZFBveCBoV2SNRMPnXZNEHRdG6X8BGeCbepl+aoBOW3S+E+3BuxJ0AmgdpppHg81eR+XjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774658366; c=relaxed/simple;
-	bh=hjaC45aoFSTNT+nVIKvbEjhcT4oR4lb9+uV5SI0ho6U=;
-	h=Date:To:From:Subject:Message-Id; b=PpuSy+BeK5QOh9RBNOfB7P5+Uqy8zNtsEXxrI89jlr3bS518jzgcw34bHb+4dy7pvwj+TFP+nc997B/Xym6jaZ4BO4ebtqspCC3LS5iF7XyPYwNXBNhmj76JSujZYqldMzWxnwqU413VFVrPoaHZgCWD5g6ucMzK4hIRYirbc+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jJqJwMQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222F2C19423;
-	Sat, 28 Mar 2026 00:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774658366;
-	bh=hjaC45aoFSTNT+nVIKvbEjhcT4oR4lb9+uV5SI0ho6U=;
-	h=Date:To:From:Subject:From;
-	b=jJqJwMQ5ggssR97m1IpZHyP/nqRDGFt7XpEBZZrVpC97qNrOvuiD4PdBoXhXvBmXd
-	 EcfCPkqHw4Iz+w0T7E4lR8YD1lCqwZrkS2L0/qGRj5Y8gKqZAeVobFaBker+ninVLb
-	 dyMw7PiEby69FgK4+2BLG1WV4vcmiXlV8DefoNl8=
-Date: Fri, 27 Mar 2026 17:39:25 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,pfalcato@suse.de,liam.howlett@oracle.com,jeffxu@chromium.org,jannh@google.com,david@kernel.org,antonius@bluedragonsec.com,ljs@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-mseal-update-vma-end-correctly-on-merge.patch removed from -mm tree
-Message-Id: <20260328003926.222F2C19423@smtp.kernel.org>
+	s=arc-20240116; t=1774658570; c=relaxed/simple;
+	bh=tHes9tujM299r1urFSferkNbsuKXc5jy+H3o7lTRdJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y7gQ1kZfh/CRsQbM2X4NyZEG956gPaK29qzuGMWSJyWflHj++JFMFTyLsRcVpBuF7FhWvuIq7YyDpH4Fdym56DeFtVfSwCrgoF26wS2HFAWIUiFidHUQNsYXZ1dke9EKWbOQXpnC2SLZ8r00wiHHdA+IDSHb9LsTqMuUPp1yc0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIQtZgA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596C3C19423;
+	Sat, 28 Mar 2026 00:42:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774658570;
+	bh=tHes9tujM299r1urFSferkNbsuKXc5jy+H3o7lTRdJQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WIQtZgA2OfkDInqDspKtfTq6oZwEBuFw1b2Bb3qBuqJEzI+9tRXVNkRd59vntaQvb
+	 +t304fg1jVcAGb/hg5iIWKI0P13043WPWATwdg/LbXMpnEi6mQq5CAcult9oNJg9fQ
+	 S1nxOHCKtQEKW62Hz6PDfUMLGVefT4kF93T7fp9e7OdCo47Dlfs3xDTmSvcwkq2B/1
+	 TuwPpUrUsHItrlTe0Iw4FEibeCEqLK3Qa9ka+yv2P8IibElytBJ8UrPe8g7ZpGkQAg
+	 OF/Cy5Y0Mal1pyCKx4OPAHI04Psdk1VP61gxd/V6GDQxrH9K1LY7Wtrnaos+1aPn3A
+	 PU29NlSAoHOLQ==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 14 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko status) [PATCH 0/2] mm/damon/core: fix damon_call()/damos_walk() vs kdmond exit race
+Date: Fri, 27 Mar 2026 17:42:48 -0700
+Message-ID: <20260328004249.7135-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260327233319.3528-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-230748-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230749-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,suse.de:email,oracle.com:email]
-X-Rspamd-Queue-Id: E43BF34CBDC
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
+X-Rspamd-Queue-Id: 221E534CC56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Forwarding sashiko.dev review status for this thread.
 
-The quilt patch titled
-     Subject: mm/mseal: update VMA end correctly on merge
-has been removed from the -mm tree.  Its filename was
-     mm-mseal-update-vma-end-correctly-on-merge.patch
+# review url: https://sashiko.dev/#/patchset/20260327233319.3528-1-sj@kernel.org
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+- [PATCH 1/2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race
+  - status: Reviewed
+  - review: ISSUES MAY FOUND
+- [PATCH 2/2] mm/damon/core: fix damos_walk() vs kdamond_fn() exit race
+  - status: Reviewed
+  - review: No issues found.
 
-------------------------------------------------------
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Subject: mm/mseal: update VMA end correctly on merge
-Date: Fri, 27 Mar 2026 17:31:04 +0000
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --thread_status --for_forwarding \
+#             20260327233319.3528-1-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
-Previously we stored the end of the current VMA in curr_end, and then upon
-iterating to the next VMA updated curr_start to curr_end to advance to the
-next VMA.
-
-However, this doesn't take into account the fact that a VMA might be
-updated due to a merge by vma_modify_flags(), which can result in curr_end
-being stale and thus, upon setting curr_start to curr_end, ending up with
-an incorrect curr_start on the next iteration.
-
-Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-ensure this value remains updated should this occur.
-
-While we're here, eliminate this entire class of bug by simply setting
-const curr_[start/end] to be clamped to the input range and VMAs, which
-also happens to simplify the logic.
-
-Link: https://lkml.kernel.org/r/20260327173104.322405-1-ljs@kernel.org
-Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
-Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jeff Xu <jeffxu@chromium.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mseal.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
---- a/mm/mseal.c~mm-mseal-update-vma-end-correctly-on-merge
-+++ a/mm/mseal.c
-@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct
- 		unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma, *prev;
--	unsigned long curr_start = start;
- 	VMA_ITERATOR(vmi, mm, start);
- 
- 	/* We know there are no gaps so this will be non-NULL. */
-@@ -66,6 +65,7 @@ static int mseal_apply(struct mm_struct
- 		prev = vma;
- 
- 	for_each_vma_range(vmi, vma, end) {
-+		const unsigned long curr_start = MAX(vma->vm_start, start);
- 		const unsigned long curr_end = MIN(vma->vm_end, end);
- 
- 		if (!(vma->vm_flags & VM_SEALED)) {
-@@ -79,7 +79,6 @@ static int mseal_apply(struct mm_struct
- 		}
- 
- 		prev = vma;
--		curr_start = curr_end;
- 	}
- 
- 	return 0;
-_
-
-Patches currently in -mm which might be from ljs@kernel.org are
-
-mm-rename-vma-flag-helpers-to-be-more-readable.patch
-mm-add-vma_desc_test_all-and-use-it.patch
-mm-always-inline-__mk_vma_flags-and-invoked-functions.patch
-mm-reintroduce-vma_flags_test-as-a-singular-flag-test.patch
-mm-reintroduce-vma_desc_test-as-a-singular-flag-test.patch
-tools-testing-vma-add-test-for-vma_flags_test-vma_desc_test.patch
-mm-mremap-correct-invalid-map-count-check.patch
-mm-abstract-reading-sysctl_max_map_count-and-read_once.patch
-mm-mremap-check-map-count-under-mmap-write-lock-and-abstract.patch
-mm-vma-add-vma_flags_empty-vma_flags_and-vma_flags_diff_pair.patch
-tools-testing-vma-add-unit-tests-flag-empty-diff_pair-and.patch
-mm-vma-add-further-vma_flags_t-unions.patch
-tools-testing-vma-convert-bulk-of-test-code-to-vma_flags_t.patch
-mm-vma-use-new-vma-flags-for-sticky-flags-logic.patch
-tools-testing-vma-fix-vma-flag-tests.patch
-mm-vma-add-append_vma_flags-helper.patch
-tools-testing-vma-add-simple-test-for-append_vma_flags.patch
-mm-unexport-vm_brk_flags-and-eliminate-vm_flags-parameter.patch
-mm-vma-introduce-vma_flags_same.patch
-mm-vma-introduce-_to_-helpers.patch
-tools-testing-vma-test-that-legacy-flag-helpers-work-correctly.patch
-mm-vma-introduce-vma_test-and-make-inlining-consistent.patch
-tools-testing-vma-update-vma-flag-tests-to-test-vma_test.patch
-mm-introduce-vma_flags_count-and-vma_test_single_mask.patch
-tools-testing-vma-test-vma_flags_countvma_test_single_mask.patch
-mm-convert-do_brk_flags-to-use-vma_flags_t.patch
-mm-update-vma_supports_mlock-to-use-new-vma-flags.patch
-mm-vma-introduce-vma_clear_flags.patch
-tools-testing-vma-update-vma-tests-to-test-vma_clear_flags.patch
-mm-vma-convert-as-much-as-we-can-in-mm-vmac-to-vma_flags_t.patch
-tools-bitmap-add-missing-bitmap_copy-implementation.patch
-mm-vma-convert-vma_modify_flags-to-use-vma_flags_t.patch
-mm-vma-convert-__mmap_region-to-use-vma_flags_t.patch
-mm-simplify-vma-flag-tests-of-excluded-flags.patch
-mm-various-small-mmap_prepare-cleanups.patch
-mm-add-documentation-for-the-mmap_prepare-file-operation-callback.patch
-mm-document-vm_operations_struct-open-the-same-as-close.patch
-mm-avoid-deadlock-when-holding-rmap-on-mmap_prepare-error.patch
-mm-switch-the-rmap-lock-held-option-off-in-compat-layer.patch
-mm-vma-remove-superfluous-map-hold_file_rmap_lock.patch
-mm-have-mmap_action_complete-handle-the-rmap-lock-and-unmap.patch
-mm-add-vm_ops-mapped-hook.patch
-fs-afs-revert-mmap_prepare-change.patch
-fs-afs-restore-mmap_prepare-implementation.patch
-mm-add-mmap_action_simple_ioremap.patch
-misc-open-dice-replace-deprecated-mmap-hook-with-mmap_prepare.patch
-hpet-replace-deprecated-mmap-hook-with-mmap_prepare.patch
-mtdchar-replace-deprecated-mmap-hook-with-mmap_prepare-clean-up.patch
-stm-replace-deprecated-mmap-hook-with-mmap_prepare.patch
-staging-vme_user-replace-deprecated-mmap-hook-with-mmap_prepare.patch
-mm-allow-handling-of-stacked-mmap_prepare-hooks-in-more-drivers.patch
-drivers-hv-vmbus-replace-deprecated-mmap-hook-with-mmap_prepare.patch
-uio-replace-deprecated-mmap-hook-with-mmap_prepare-in-uio_info.patch
-mm-add-mmap_action_map_kernel_pages.patch
-mm-on-remap-assert-that-input-range-within-the-proposed-vma.patch
-mm-huge_memory-simplify-vma_is_specal_huge.patch
-mm-huge-avoid-big-else-branch-in-zap_huge_pmd.patch
-mm-huge_memory-have-zap_huge_pmd-return-a-boolean-add-kdoc.patch
-mm-huge_memory-handle-buggy-pmd-entry-in-zap_huge_pmd.patch
-mm-huge_memory-add-a-common-exit-path-to-zap_huge_pmd.patch
-mm-huge_memory-remove-unnecessary-vm_bug_on_page.patch
-mm-huge_memory-deduplicate-zap-deposited-table-call.patch
-mm-huge_memory-remove-unnecessary-sanity-checks.patch
-mm-huge_memory-use-mm-instead-of-tlb-mm.patch
-mm-huge_memory-separate-out-the-folio-part-of-zap_huge_pmd.patch
-mm-add-softleaf_is_valid_pmd_entry-pmd_to_softleaf_folio.patch
-mm-huge_memory-add-and-use-normal_or_softleaf_folio_pmd.patch
-mm-huge_memory-add-and-use-normal_or_softleaf_folio_pmd-fix.patch
-mm-huge_memory-add-and-use-has_deposited_pgtable.patch
-mm-huge_memory-add-and-use-has_deposited_pgtable-fix.patch
-maintainers-update-mglru-entry-to-reflect-current-status.patch
-
+Sent using hkml (https://github.com/sjp38/hackermail)
 
