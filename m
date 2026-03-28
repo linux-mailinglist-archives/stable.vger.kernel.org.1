@@ -1,246 +1,134 @@
-Return-Path: <stable+bounces-230761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oN36HbFSx2nfVQUAu9opvQ
-	(envelope-from <stable+bounces-230761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:01:53 +0100
+	id fCuaDFxYx2kjVwUAu9opvQ
+	(envelope-from <stable+bounces-230762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:26:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF8234D395
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5D834D434
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:26:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B946B302BBAE
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:01:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F24E304B8C7
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3255D1F30BB;
-	Sat, 28 Mar 2026 04:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787A83385A7;
+	Sat, 28 Mar 2026 04:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cYsj/zhn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2PzSyEiB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF93EC2FD;
-	Sat, 28 Mar 2026 04:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9C433557B;
+	Sat, 28 Mar 2026 04:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774670509; cv=none; b=tsMjIm7fzIYnCYFyB/UPhFVdd8NgNvc4jO6rZ6IBIXKd9ByYPFtdUpixqxyWlvN2LVqAh6AVT89OootNbovl+WhGXsqhaOFtIq5dJ0bD+j2LAGpstYVKKCAZBg+TGmnzOGl5+fvyz2mIeq/EQaQlAfQwl8nj8arqCHDmjkAdKfU=
+	t=1774671922; cv=none; b=ILTkhubK8FizFx4neoA1qWKcKGPhJJiTCxKus5ZmhUEC/dUD/GYXqvnHc+YvK49xiwY2sVJdK8wg2W8OvEnbPQkbZfrtEK6oLdQuIKb+7oKETM5pWtT1Fa02IQ1h8aA+3cPNUwTo9A4JdKq6mpmSWccIyK5VJ+gtscDrN8HZMlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774670509; c=relaxed/simple;
-	bh=xYdBGSuKe/2Uz+P/xMdEru42IC0I9uypbpuiMNDXlsU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=CCY/H61gu/ge5Ksoqe0//mCeCvPmHaTn5v8KUEx8LmgFMqCo0IBXexrwFlQfrnFe3M0+lViZBamSxQd05E3PaEyce8SHUR/wUSHKOWwfIyPoGrNKqpCaUDdcHC8Lj/JZN/GBrCqopAESnlss6mZ3krrGSxrbW8X0XTFdXv7K9vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cYsj/zhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19095C4CEF7;
-	Sat, 28 Mar 2026 04:01:48 +0000 (UTC)
+	s=arc-20240116; t=1774671922; c=relaxed/simple;
+	bh=8FPl9/q8zv53IgGIRA/JD2ZGMSCaF1t5e0LsHHVCG+c=;
+	h=Date:To:From:Subject:Message-Id; b=Xc2YZI2NPGAmn6RVqMM+tUu3tSh/7oAyNOLk6JKH3yxi8Gj93XVGSXAMU0S9a19p20r1XBzNDdCHroEWUPuE7hrPLEYnusFg2e5HYO3tUDUxIvIqSWRhLS/97oqCERdKhFTYu5KM+FffBtTmd7vO9VeG2fqU4jpNZMTsIxQxacc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2PzSyEiB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CC7C4CEF7;
+	Sat, 28 Mar 2026 04:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774670508;
-	bh=xYdBGSuKe/2Uz+P/xMdEru42IC0I9uypbpuiMNDXlsU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cYsj/zhnC9B2FaRI8QVi2AIF8xWhVBKJQGhE/YIDeDtOpKYitKlOsfPIeeIrpw1vq
-	 QK+TMSc6Pk8gh1SjO2NjDYDu0OoOZ3K6eLPzDPLIDtDlYlzodRg3wnVoV7tKk01SG5
-	 1hBJ8jKMNYpy09nc/dImYa6CN8mdYeIUzCdcuses=
-Date: Fri, 27 Mar 2026 21:01:47 -0700
+	s=korg; t=1774671922;
+	bh=8FPl9/q8zv53IgGIRA/JD2ZGMSCaF1t5e0LsHHVCG+c=;
+	h=Date:To:From:Subject:From;
+	b=2PzSyEiBrHW6uyPHzlr11BODdwHLb+5fsxgrF1n29trCf/KeQxaGwRcG5xuGgmCZ0
+	 5/twDkpLUp1SUgXJZT0mDq6NhH5bVv5fOhug8FK2gnbiSbekir2sEOA6fUpPnGLwvn
+	 Vbw5Oe9oA1rg0DywrILUSnxFAWXYb3zocK9YdcIM=
+Date: Fri, 27 Mar 2026 21:25:21 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,johannes.berg@intel.com,jan.kiszka@siemens.com,iii@linux.ibm.com,benjamin.berg@intel.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: mm-commits@vger.kernel.org, xiangzao@linux.alibaba.com,
- willy@infradead.org, stable@vger.kernel.org, p.raghav@samsung.com,
- mcgrof@kernel.org, ljs@kernel.org, kas@kernel.org, hare@suse.de,
- djwong@kernel.org, dhowells@redhat.com, dchinner@redhat.com,
- david@kernel.org, da.gomez@samsung.com, brauner@kernel.org
-Subject: Re: [merged mm-hotfixes-stable]
- mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages.patch
- removed from -mm tree
-Message-Id: <20260327210147.b481ba4e68a652f4936dc260@linux-foundation.org>
-In-Reply-To: <011665ea-ebde-4c5e-9eb9-b9adffff056f@linux.alibaba.com>
-References: <20260328003911.5D84BC19423@smtp.kernel.org>
-	<011665ea-ebde-4c5e-9eb9-b9adffff056f@linux.alibaba.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: [merged mm-nonmm-stable] scripts-gdb-symbols-handle-module-path-parameters.patch removed from -mm tree
+Message-Id: <20260328042522.02CC7C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-230762-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230761-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,samsung.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: CEF8234D395
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,intel.com:email,linux-foundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 7D5D834D434
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, 28 Mar 2026 10:02:09 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-> What happened to this fix patch? The commit message doesn't belong to my 
-> original patch.
+The quilt patch titled
+     Subject: scripts/gdb/symbols: handle module path parameters
+has been removed from the -mm tree.  Its filename was
+     scripts-gdb-symbols-handle-module-path-parameters.patch
 
-Crap, thanks for noticing.  At some point I must have pasted in the
-changelog text from "mm/huge_memory: fix folio isn't locked in
-softleaf_to_folio()".  Redone as below:
+This patch was dropped because it was merged into the mm-nonmm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+------------------------------------------------------
+From: Benjamin Berg <benjamin.berg@intel.com>
+Subject: scripts/gdb/symbols: handle module path parameters
+Date: Wed, 4 Mar 2026 12:06:43 +0100
 
+commit 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available
+to GDB") added support to make BPF debug information available to GDB. 
+However, the argument handling loop was slightly broken, causing it to
+fail if further modules were passed.  Fix it to append these passed
+modules to the instance variable after expansion.
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
-Date: Tue, 17 Mar 2026 17:29:55 +0800
-
-When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
-encountered some very strange crash issues showing up as "Bad page state":
-
-"
-[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
-[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
-[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
-[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
-[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
-[  734.496442] page dumped because: nonzero mapcount
-"
-
-After analyzing this page’s state, it is hard to understand why the
-mapcount is not 0 while the refcount is 0, since this page is not where
-the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
-reproduce the crash as well and captured the first warning where the issue
-appears:
-
-"
-[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
-[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  734.469315] memcg:ffff000807a8ec00
-[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
-[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
-......
-[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
-const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
-(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
-[  734.469390] ------------[ cut here ]------------
-[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
-CPU#90: stress-ng-mlock/9430
-[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
-[  734.469555]  set_pte_range+0xd8/0x2f8
-[  734.469566]  filemap_map_folio_range+0x190/0x400
-[  734.469579]  filemap_map_pages+0x348/0x638
-[  734.469583]  do_fault_around+0x140/0x198
-......
-[  734.469640]  el0t_64_sync+0x184/0x188
-"
-
-The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
-nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
-tried to map beyond the large folio’s size.
-
-By adding more debug information, I found that 'nr_pages' had overflowed
-in filemap_map_pages(), causing set_pte_range() to establish mappings for
-a range exceeding the folio size, potentially corrupting fields of pages
-that do not belong to this folio (e.g., page->_mapcount).
-
-After above analysis, I think the possible race is as follows:
-
-CPU 0                                                  CPU 1
-filemap_map_pages()                                   ext4_setattr()
-   //get and lock folio with old inode->i_size
-   next_uptodate_folio()
-
-                                                          .......
-                                                          //shrink the inode->i_size
-                                                          i_size_write(inode, attr->ia_size);
-
-   //calculate the end_pgoff with the new inode->i_size
-   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-   end_pgoff = min(end_pgoff, file_end);
-
-   ......
-   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
-   end = folio_next_index(folio) - 1;
-   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
-
-   ......
-   //map large folio
-   filemap_map_folio_range()
-                                                          ......
-                                                          //truncate folios
-                                                          truncate_pagecache(inode, inode->i_size);
-
-To fix this issue, move the 'end_pgoff' calculation before
-next_uptodate_folio(), so the retrieved folio stays consistent with the
-file end to avoid 'nr_pages' calculation overflow.  After this patch, the
-crash issue is gone.
-
-Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
-Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <dchinner@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
+Link: https://lkml.kernel.org/r/20260304110642.2020614-2-benjamin@sipsolutions.net
+Fixes: 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available to GDB")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/filemap.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ scripts/gdb/linux/symbols.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/filemap.c~mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages
-+++ a/mm/filemap.c
-@@ -3883,14 +3883,19 @@ vm_fault_t filemap_map_pages(struct vm_f
- 	unsigned int nr_pages = 0, folio_type;
- 	unsigned short mmap_miss = 0, mmap_miss_saved;
+--- a/scripts/gdb/linux/symbols.py~scripts-gdb-symbols-handle-module-path-parameters
++++ a/scripts/gdb/linux/symbols.py
+@@ -298,7 +298,7 @@ are loaded as well."""
+             if p == "-bpf":
+                 monitor_bpf = True
+             else:
+-                p.append(os.path.abspath(os.path.expanduser(p)))
++                self.module_paths.append(os.path.abspath(os.path.expanduser(p)))
+         self.module_paths.append(os.getcwd())
  
-+	/*
-+	 * Recalculate end_pgoff based on file_end before calling
-+	 * next_uptodate_folio() to avoid races with concurrent
-+	 * truncation.
-+	 */
-+	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-+	end_pgoff = min(end_pgoff, file_end);
-+
- 	rcu_read_lock();
- 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
- 	if (!folio)
- 		goto out;
- 
--	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
--	end_pgoff = min(end_pgoff, file_end);
--
- 	/*
- 	 * Do not allow to map with PMD across i_size to preserve
- 	 * SIGBUS semantics.
+         if self.breakpoint is not None:
 _
+
+Patches currently in -mm which might be from benjamin.berg@intel.com are
+
 
 
