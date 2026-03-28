@@ -1,236 +1,136 @@
-Return-Path: <stable+bounces-230736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFATGE8Xx2mWSgUAu9opvQ
-	(envelope-from <stable+bounces-230736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:48:31 +0100
+	id /v0jOu0dx2kgTQUAu9opvQ
+	(envelope-from <stable+bounces-230737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:16:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2C934C8A6
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8A434CA89
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F3B0930265A3
-	for <lists+stable@lfdr.de>; Fri, 27 Mar 2026 23:44:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B7883030EAB
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466C5364940;
-	Fri, 27 Mar 2026 23:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D00D175A62;
+	Sat, 28 Mar 2026 00:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RS7wYxuz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j4UL/RdA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E562310652;
-	Fri, 27 Mar 2026 23:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774655049; cv=fail; b=DIHa6dZiddLsBZNRyNKzHwaBGz6Ym4fBvqmEPJVgyIvieMjOzebUrA6Kcvai7wafqnUYKXiOrzf/xwdmkM3hOOJ+lyOU09pmXJ/Vwh4Hpp2kGo/jv5UCEnKdS9Ti4a2oOu5X9Z6YxrV4frx0GNEknmnmjpUmEQdJEI0VftH8GdI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774655049; c=relaxed/simple;
-	bh=RStWxUHM6dWLH7y6EXAD8OniIZ4TG/6+rX9zjwS3Pvk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uHtEuWJ9sfQ0luPZmx25/kqLcUVZdntAu0pfL+h/kIse+tFNY8Vr/dNXG3YIiXxtHEGK2M3AN9gEn1y8BULl1+x5BOqg+ULDuYQxCjiOTCjupY/X/bQCpQu6iZcia6DLE2Wlk94v7e4OdQGw/3fmS4Q+rYi3l2sHIlthGruJJ0k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RS7wYxuz; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774655048; x=1806191048;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=RStWxUHM6dWLH7y6EXAD8OniIZ4TG/6+rX9zjwS3Pvk=;
-  b=RS7wYxuzu/E+yXez61Xo9l9ua+uB2MqS+44NyiP75ccxVEj0ige2hI34
-   wBqWHUjEljZZ50mQstG2R+irc7I2v9gtk3GBTNeUtF6WbhonC42B6eZYZ
-   B5anrKpyVP5XI3MvdJ2EehFTtUG+UGth1DvMKLuV8tLKpcqRSQSFhfZDQ
-   xELQJpmSS17XeBUtZE2YcMvfXksEvSWAR9GNDHWlEux6wh8CwRgEQpDkv
-   CLUcl58QwdmyCVb4Yg+4tce4tI7RJbZLZB/U+32lE3is6A2WICYvP4UkX
-   6vlXSnE6/v+WXSAo5wmyfFJiEJY7o+89gRymSGHK3RcA8eZVeM3fKFrfJ
-   A==;
-X-CSE-ConnectionGUID: hnZ90cj9QMyiTlH/68PyaQ==
-X-CSE-MsgGUID: NeaOQNMOSYa/+FqslmGCHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="86353370"
-X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
-   d="scan'208";a="86353370"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 16:44:07 -0700
-X-CSE-ConnectionGUID: KN6GePwJQWqNmWaVDHPYcQ==
-X-CSE-MsgGUID: VLb5LKfwSm6gw1hiz2hC9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
-   d="scan'208";a="263405215"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 16:44:07 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Mar 2026 16:44:06 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 27 Mar 2026 16:44:06 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.61) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Mar 2026 16:43:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LAQ8HKhYmPwsZIMAT1KmfYdtBWIsgoQ1sQ7JAJ+OSYG5PYo5PX/kcahGtHeeUlZNsSi/JqQc2AAV3FuvJOtdYKm6XfkZ7lxx7meOzCn4hwy0m3uUJQ4copU1B8vF6hkd35Xkc8Vu7pBP/x2adVLq8tl2wgJzE6RWHcRiyskpAJmgxWAvo9rg3+nwabyk30PiqSuo+wh1YIaidRN6tpijIkw2+1b3wsCtyjyIKr512wsgZh4pzG/F5vvOVhmmBViHFKKYa+8MJomN//Hw7E9ffMwTLz7sJiXecTgmQYcVO/ymBHX8rP8Xt/amAz6gp3TDDqqB9pZHJMAXmtetWLNMuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BP3NI1gCHyjz4towZjiwvuf7pfUrl3dXg3QniQY2QyY=;
- b=BgKKuxq4XwopbvY4Q6VONk/4g6rsK/Txhl0PTB6g3trZSHpGJXv47gk3zU62aRzQkI3FjEeG9YhDlcMyFg1N6k2qpVeS1FaHxpPBX99kFME8OBqycAyRqelV5ZesS/ul3T8Y/0jiyjr+k4vzD6i3gqP52xYE5Fgl7q31PSb/JIIwQSmRE1kvbG7iYvCGStG5ZyC8yVjS+2DDy/7EmWTm/D1952u5LJBjoEaEwucxw4qIQ3v0k5czQumJYmVN8Q7MLy6IpWxR+sxyzjRtlE5WsQoNuTjULx/emBFdTOxRNbVdGk+4Ym1TW0FfoT4FXs4JpE/Yj5T9FnxO8rRq/sjtgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS4PPF0BAC23327.namprd11.prod.outlook.com (2603:10b6:f:fc02::9)
- by SA1PR11MB8254.namprd11.prod.outlook.com (2603:10b6:806:251::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
- 2026 23:43:53 +0000
-Received: from DS4PPF0BAC23327.namprd11.prod.outlook.com
- ([fe80::fa8a:90e4:57d4:8026]) by DS4PPF0BAC23327.namprd11.prod.outlook.com
- ([fe80::fa8a:90e4:57d4:8026%7]) with mapi id 15.20.9745.019; Fri, 27 Mar 2026
- 23:43:53 +0000
-Date: Fri, 27 Mar 2026 16:43:50 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <dave.jiang@intel.com>, <patches@lists.linux.dev>,
-	<linux-cxl@vger.kernel.org>, <Smita.KoralahalliChannabasappa@amd.com>,
-	<stable@vger.kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/9] cxl/region: Fix use-after-free from auto assembly
- failure
-Message-ID: <accWNqe9uABSGKUH@aschofie-mobl2.lan>
-References: <20260327052821.440749-1-dan.j.williams@intel.com>
- <20260327052821.440749-2-dan.j.williams@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260327052821.440749-2-dan.j.williams@intel.com>
-X-ClientProxiedBy: SJ0PR13CA0088.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::33) To DS4PPF0BAC23327.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1030415FA81
+	for <stable@vger.kernel.org>; Sat, 28 Mar 2026 00:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774657002; cv=none; b=pSRboBnENbluQl+/CBGm2fIMDclGj+TE0B2Nq+p9lJpm9K4jhUGHqFIDTVbGG9UTuSlaWZtwXA3J9YCtO2rOKtNnCrRKLt23ANUtpFFFJpdeiqXAyl0gx6t2dOmD5if2qCYvQ/3nYEVpmChTg6TTdNa4Sjc+bvk/heALmHI+2MY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774657002; c=relaxed/simple;
+	bh=AwzYlsMDUsH3mn3UN17QGh3mvbvULDCbCpM39oPXkAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j8FG8XSwtQ/jhSTvJbLIG9MLNtQ77pAAxqDQ5fBBx3KFVqSSPbDZnEk2RiuEfhNBpAvk8wnnHbJSHtq9oResgf79qu+LYVzBpxzSLrRbs9GrFrvI1Xszh7GjgWNUglT7c2AKM1e/7c4/wLfCne7f2wtuDdwT5sYx4PeANuxMEi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j4UL/RdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52302C19423;
+	Sat, 28 Mar 2026 00:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774657001;
+	bh=AwzYlsMDUsH3mn3UN17QGh3mvbvULDCbCpM39oPXkAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j4UL/RdAzEN2L5IwQMtWSW2CZQxzkAKOUj/2t+jU6BE9uUQzi6yx+O6P7Z596BUHS
+	 75UKoyL4p7KY7rRrt9yrSgfUI5eB/bLjVggOO9ESq42hQXWdKldS5jrzij5mQTOffW
+	 rGfnQY6U8iRehBHODYf/m0QC+R56olcgLnBo3aAmJauMlgrnxCwteR1iz+LyI3b02S
+	 Ii7scGSF3vcRFuoI0vsMxeHG0Yr4aIeOfhJMBnkRxL4/nmjaL9nbnOsAR3tcsIlO+E
+	 WFztuu2yhVtnUl12ZM8pv5IPadiHjiQZ2drVcWFtjtZAONamPFfyqyJPgSLwbpRsg1
+	 zIWYU4lcQkobg==
+Date: Fri, 27 Mar 2026 20:16:40 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Cc: apais@microsoft.com, stable@vger.kernel.org, tariqt@nvidia.com,
+	leon@kernel.org, mbloch@nvidia.com, shshitrit@nvidia.com
+Subject: Re: [Regression] net: tls: Change async resync helpers argument
+Message-ID: <accd6CGZat7m84Qg@laps>
+References: <CAE5sdEiLuFj_8m89PGJwFit0QHg1=TL6=O==Mirt39BfbrRkVA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PPF0BAC23327:EE_|SA1PR11MB8254:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8faa1fb-29b8-4831-7f66-08de8c5ab46f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: CGQkNH5amuHe6NyuPRWomQC2l7+bWhyAhjcNPnYT3B8cfibgnVsWhKZnWl3hddEdmBhTHNJ7zBPRA22OLAFzFV7BadNsBBpc9G2PprxU/W02NHQIUZ4OW37MgcUr0sRF48s6NmiX6EF5S7AvGziVgWcToC2SaJSo7fhaD8Nwnvul9KddFkIS3QJPMG053rlKfTCW94349TVQPWB8vd6k0EYeLPeQlIAF93+Fg9+cKQSEBE0gPcoQTZGm9wQpofDkvPoD360OXKjNsf7IxI5i1Cg5LvCxOk4t2HPLl142qG5hENVA61nww10QlJb67eXJ897XBjMRKaI8k43L02QURrEz3Xcn7/Vuj5JFi4bJ0Bml2hiFTHYOjh3InuGrOEWk5Y+F/C56SxMwM4gad3JaX0JRIuhuOBRdv9PkyTfe/oSQyEsIJPxy+W5kOfdlYcwq4WygqdxjowwCZnTU3wOANmlaFr1pwqYNOTIR80x5R1cfkwX5LQavm5jupWxwCegQE3SeAmmQkub+MiqpYt3eZ/ICmVn/dmaxoM4h5p0Bdu6pfTrnqCzEN5NneyJK9wfDqKlZOw5C769rA7hdme3GkXzlP+DMdgsonsw7rVOJFf9FlT18pENaR6TMTmoLcG0qAPONLnDKFXED8IZd4HX01xJqdnF1BBTbq8jpTdeH+5LJD2wGJ2LSFJPcpJq2LGg0H07IF5TMD/Wo3PiXrLSKqAWpIQDFdHwpWjIMgBaIyDc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF0BAC23327.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JrTzDEOuAgWfTvN/fAsQCkfbfdx3wjk9Xt4t2GiGUSFK9gXfVqZHgtN9CD0J?=
- =?us-ascii?Q?+thXlfhmTVEtzq03U0vk2rjEzLQjMusIPMRrh53gIOxVfB4Rs7uwDZjylgTh?=
- =?us-ascii?Q?bxsxsLEnkHZC7wyZPhoPc1Ge1aDJprRsmYmu2XrnOExmMBlfY7TS0YqZvJyd?=
- =?us-ascii?Q?JKDRRI/n+SMcL8QHjBEv1J0QNt/lSwlXFJ12c9Fy5bv5g1CB2Ojvb3llOFMv?=
- =?us-ascii?Q?BeEZm961F8SLWUMqAehzYagH3U7DFUcYVWXrL/Vw3WspCsyjumU0SS2vXBRq?=
- =?us-ascii?Q?GcPTBC52YjPHgfXb8inlZFT73ppxl5XEMBrnqlCqa8MD/IcDOFle110rV423?=
- =?us-ascii?Q?XVs1tkc+qz9EfjaSb2SAbwFNB+gqqAbI7ouaj3yWZBc6LLXrlk+F2ck8d/Wa?=
- =?us-ascii?Q?5cQcUDLzSzxitugsUIuWApMEqPTh4PqCFiuSkF7Dv8hgYLM1u/EadNYObyI5?=
- =?us-ascii?Q?489roy5BBBzCItQ5hQxE3hBJoqW75hEVmSOfOqYwhx9fS2mXuMtDxf6N7cp/?=
- =?us-ascii?Q?1u6twx5O9zi+WVvmwtZGWvnuXY7VI+ghTC1RFvEGeh3jEziRxZ+FZQlpKjeK?=
- =?us-ascii?Q?8bnbZBImgBLqtxazqzlXQdt8I4oKbp25HpwLLKFwsGIn7zldBXT0Tad9R84/?=
- =?us-ascii?Q?eD1iOC5k6dZQoUMsVffm9vQaCOenpeLGsbGNnp78hHD0pKt+IEuKYnIoQchd?=
- =?us-ascii?Q?rsw9fV9EiHZHf6QdenxyO3Xi6K5Dh7y8isFWOS+yVNQhoBVSAMTdJsAFJgfd?=
- =?us-ascii?Q?hqhxnzmpZpDrMArr59jDxNSKnYOuzCFIgwmeQKQl7uUgoA4TjrUtKgiVUofi?=
- =?us-ascii?Q?NifTVMTvweaCXDDHaUYfB293eKuG/WOJ61YhmOpajkkdA9l2zl5ZzXavj95G?=
- =?us-ascii?Q?rIcRUbuSvj7hjcE0scV8AcqTCNZCNtG5uNABH0q7QqgipuIrhTcvoOuXz5dG?=
- =?us-ascii?Q?xjWfUAFJRk08o1YQ5xXn+Zihy0Yj2lIKEQeKrEr0cuCW8FuXePNJ1njhPB+H?=
- =?us-ascii?Q?3p1H43nM+Lb4f4gytMpLBgL/pbydFVMqnE+KMbylpymG0b9Iqjoy8gDfC/lV?=
- =?us-ascii?Q?Q3bsY1K/N7G9WBPTVcuRCw7XuKAhgW+1CmUJeY+m8MRg0gloGDJMSgzUE84L?=
- =?us-ascii?Q?2qmNkiOnCes8gYeOgqpo6FgGCNVoeTwmZI1eDHlmSJV7yKi7pqQPw5+w7tjM?=
- =?us-ascii?Q?CrUhycnKNkgoV29wM9PbXTN1V+fXzD/tL4FPi7Qfdvu4J9dYqbtUhdE/PPfc?=
- =?us-ascii?Q?cnZJY12wOZ1R/7Vr3ybBk1N+hQ41CfKeFo8hcPxGGVhl3RjsHD4WP+aSXDZi?=
- =?us-ascii?Q?eDpKFdMLwRs3lYSxlovMw37ARmLmn5xOFUYGdOXKlNMUMCtL6ri2wzPo7FSJ?=
- =?us-ascii?Q?sSvuYF/J7cgnmOUPYvisXAkpN3DcZBHX+OaY2PF6dwxtQl4/4VcGGMaPII7F?=
- =?us-ascii?Q?nlu5h5NUT9IcsRYOGb6GwvWUl7RjRTEpLEpcgqVQf3fIeERSHdrvrGhnDqGe?=
- =?us-ascii?Q?WsJ9SCKdWlccE17y+rF97dEVXvvQ4gFD55ScrvUzmSdf/iC8B2uAshOS3ntc?=
- =?us-ascii?Q?ec9YBZTO6QhR4l5NLEEIiZiyFrySiOAtd+X5K6X6/kBBCxDFVIlpKlj8ebmP?=
- =?us-ascii?Q?XC1NGRo3huqYQpzJw/q6+v36KGoSyeLwyLa/cz4QdowLW0z5zoV8czlZC3dF?=
- =?us-ascii?Q?1alrG/bx2Vm52f5BAZqjOOsvGF4Z5gws1KbuIbWHOarl4VA8k7ZWi9Zxw1g2?=
- =?us-ascii?Q?PIbJYo17APe2NXuCLOJod08As2CpGxg=3D?=
-X-Exchange-RoutingPolicyChecked: VH3+h68Wme3BXdRNS/BlBUB9IOSpwzjkweZdQVFGqLcuY8iUW3IXaVY+VwDZCMv0og2N6MaW338bNU+AMJKqnDr5UQ7ZSmoBvlszEa5N92hMxLwkxlS3OcNXqDSfEo2rC5IJeRWlXSmSGBJwbx5pbB1YFCKEeXtLWYYM/7xJ8za7xvfo3oTeWK+yuJjHH/uAyBnOqffyLqwnp+XHe8aQphVLojtIuwSvI2dtyRPHXwOLikGfpWAmrEM9TZE+rNBJy24fxLcSPfNQlgVmDusnZ34hAyd+hEu5jh0cz/E2H5ZiyCJGytFvCqanCD3n0PQ1O2teuIB0zLEX24edpJZTdQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8faa1fb-29b8-4831-7f66-08de8c5ab46f
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF0BAC23327.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 23:43:53.6321
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /MhREm4k7WSyjB/7MBD+qvE6OZunEZNu+k0qu1/njNo7688iJbtnVYgdgKELkMitOBspkn7BBqmjGrHcA7Sa9lJ+N5Oz1dysi3vFb0iiTUw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8254
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAE5sdEiLuFj_8m89PGJwFit0QHg1=TL6=O==Mirt39BfbrRkVA@mail.gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alison.schofield@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230737-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230736-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+]
-X-Rspamd-Queue-Id: DC2C934C8A6
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2D8A434CA89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 10:28:13PM -0700, Dan Williams wrote:
-> The following crash signature results from region destruction while an
-> endpoint decoder is staged, but not fully attached.
-> 
-> ---
->  BUG: KASAN: slab-use-after-free in __cxl_decoder_detach+0x724/0x830 [cxl_core]
->  Read of size 8 at addr ffff888265638840 by task modprobe/1287
-> 
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x68/0x90
->   print_report+0x170/0x4e2
->   kasan_report+0xc2/0x1a0
->   __cxl_decoder_detach+0x724/0x830 [cxl_core]
->   cxl_decoder_detach+0x6c/0x100 [cxl_core]
->   unregister_region+0x88/0x140 [cxl_core]
->   devres_release_all+0x172/0x230
-> ---
-> 
-> The "staged" state is established by cxl_region_attach_auto() and finalized
-> by cxl_region_attach_position(). When that is finalized a memdev removal
-> event will destroy regions before endpoint decoders. However, in the
-> interim the memdev removal will falsely assume that the endpoint decoder is
-> unattached. Later, the eventual region removal finds the stale pointer to
-> the now freed endpoint decoder.
-> 
-> Introduce CXL_DECODER_STATE_AUTO_STAGED and cxl_cancel_auto_attach() to
-> cleanup this interim state.
-> 
-> Fixes: a32320b71f08 ("cxl/region: Add region autodiscovery")
-> Cc: <stable@vger.kernel.org>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+On Fri, Mar 27, 2026 at 11:13:37AM -0700, Siddharth Chintamaneni wrote:
+>Commit 74bf749662a29 [upstream e98cda764aa9c] is backported to match
+>the function signature of tls_offload_rx_resync_async_request_cancel
+>function that is introduced in Patch 2 of this series -
+>https://lore.kernel.org/all/1760943954-909301-1-git-send-email-tariqt@nvidia.com/
+>but this break nvidia's mlx-ofa driver build which is still
+>referencing the old driver signature.
+>
+>Build environment:
+>  - mlnx-ofa_kernel-25.{07,10}
+>  - kernel: 6.12.68.1-1.azl3
+>
+>Failure
+>
+>466 |         tls_offload_rx_resync_async_request_end(priv_rx->sk,
+>cpu_to_be32(hw_seq));"
+>      |                                                 ~~~~~~~^~~~"
+>      |                                                        |"
+>      |                                                        struct sock *"
+>In file included from
+>/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/include/net/tls.h:6,"
+>                 from
+>/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h:9,"
+>                 from
+>/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h:40,"
+>                 from
+>/usr/src/azl/BUILD/mlnx-ofa_kernel-25.10/obj/default/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c:6:"
+>./include/net/tls.h:461:74: note: expected 'struct
+>tls_offload_resync_async *' but argument is of type 'struct sock *'"
+>  461 | tls_offload_rx_resync_async_request_end(struct
+>tls_offload_resync_async *resync_async,"
+>      |
+>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~"
 
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+So it looks like it broke an out of tree driver. Nothing we can do about it
+here...
 
-
+-- 
+Thanks,
+Sasha
 
