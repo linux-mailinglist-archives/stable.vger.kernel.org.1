@@ -1,174 +1,147 @@
-Return-Path: <stable+bounces-230788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDk7Fgrbx2mAdgUAu9opvQ
-	(envelope-from <stable+bounces-230788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 14:43:38 +0100
+	id ENeBMpLhx2n6eAUAu9opvQ
+	(envelope-from <stable+bounces-230789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 15:11:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23BB34E8EA
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 14:43:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B297534EA14
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 15:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0748630182AA
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 13:42:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7BE7F3006D66
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 14:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A371D3914F8;
-	Sat, 28 Mar 2026 13:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qu56AoyU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4347313272;
+	Sat, 28 Mar 2026 14:11:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [144.76.133.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6264E2F4A18;
-	Sat, 28 Mar 2026 13:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FA52FFDEA;
+	Sat, 28 Mar 2026 14:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.133.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774705377; cv=none; b=ncPxxMK3wmy4wZE/8b7EMRrF+vZPq539uKUv+tGkbamcid+FGqwelGK+run970sYNMMvYTZ/nIraNXm3UI27pT+AS7uM/1+LfpDTB/ikfRiIk0b2od/y4DUjb/vRdR7hXi98IQGZ+IhJ7DaKGJjKFa3n+bLDPWtj53grY2mAp68=
+	t=1774707083; cv=none; b=vAKvSlvpLBgrObipTgS4FbxvujMItQ9BbGrWz4EQdvNrE7dzO4pUUu6UGjyW+RrCIy61P1rOmJ6OXLje2Hf/aw82SA2dE0zdIGngYuYzbygwH29Ypk0ZtsJTIm0M62vDGkUMxxO7EjGhDXNcueKg73iT+B2aHEnRQWq3372Kb3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774705377; c=relaxed/simple;
-	bh=Zo0xwBlS33TnuFJgADBysYFie+bkoCRf9H3CXGjWLKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Al8PR3NyzSf+2Vv8jxw0MKbeq8/5qiSmyeR9HXPB7FjXm9UzNiG+ZpG+WweljeQjYWN/nLnE00rgNXFMckaiQMT6AOhcpO5e4PNDzOswoyKD3StXKpnaYIw27oBrUEFo2rG4ksL6ORS6N9wZQ77y+7BrdKZfBv1m5ZvfxYmdQFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qu56AoyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B8FC4CEF7;
-	Sat, 28 Mar 2026 13:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774705377;
-	bh=Zo0xwBlS33TnuFJgADBysYFie+bkoCRf9H3CXGjWLKA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu56AoyUrs0g1RWp65nRpAVjFwcSwH649dYJA4JKVdNyldJkRP7P9ZPOZXs1O9Yat
-	 rNQ/TDkHGI1Ts9t3nW9tlhLlAFsnnzjFXsYMzXHiUfpbec+mn6PbCFjaRWwXvRZn+P
-	 3XrIPDhDIbRkeGPoJgAimGrZ39in7mXCp07X/2hPr7MqT3r5kx5YC63ThL7mhoGAxp
-	 /KF436VCamFOd8N8t1M7OXNZW/EAcAbJypBaxrvUqU0nUelUhPenDU8vwRwmCCRJcp
-	 ggXEqXpq2BwQEJIS+DNK9bUkIBs8ZS26EjzHcgCIbeaAZ3R5kIRswiXEakZ1EM/QOb
-	 7vmamGwjOjLmA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "# 6 . 19 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH 2/2] mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp
-Date: Sat, 28 Mar 2026 06:42:55 -0700
-Message-ID: <20260328134255.9884-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260328023020.8525-1-sj@kernel.org>
-References: 
+	s=arc-20240116; t=1774707083; c=relaxed/simple;
+	bh=rGoZpzdSWZaBJQNSlTX86fArMCUueK1ZkiH6zVSRw/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qz+iTY+ra9f5ONGKv918t9JJKHIG3SnGv7xxsej6hrzAOPZKyCU8ttCfF/YGVW/m2sVc8WpshVOQWVpb0gN5i3qC79wcXfWrs0VB+kg7lBB0lsbGRaBNlSh2kWuilzC1xRnON+66hWNM1fS5nV3KeDHPrKLDOzMaXUUUmjlGKBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=144.76.133.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout3.hostsharing.net (Postfix) with ESMTPS id 79D5FC19;
+	Sat, 28 Mar 2026 15:11:11 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 3BACE6028F47; Sat, 28 Mar 2026 15:11:11 +0100 (CET)
+Date: Sat, 28 Mar 2026 15:11:11 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: bernd@bschu.de, Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	1131025@bugs.debian.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [6.12.y regression] Regression with 58130e7ce6cb ("PCI/ERR:
+ Ensure error recoverability at all times"): echo vfio-pci >driver_override
+ does not work for DVB Adapter
+Message-ID: <acfhf-odtr0yw_py@wunner.de>
+References: <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
+ <acfZrlP0Ua_5D3U4@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acfZrlP0Ua_5D3U4@eldamar.lan>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230788-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: D23BB34E8EA
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230789-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: B297534EA14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 27 Mar 2026 19:30:20 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Sat, Mar 28, 2026 at 02:37:50PM +0100, Salvatore Bonaccorso wrote:
+> Bernd Schumacher reported in Debian (report and report from bisection
+> in https://bugs.debian.org/1131025) a 6.12.y specific regression of
+> 58130e7ce6cb ("PCI/ERR: Ensure error recoverability at all times"):
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260328005412.7606-3-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit d10719045bbbd92307cf40ef0886ce0e81cb9caa
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp
-> 
-> This commit adds validation for the damos_quota_goal->nid when calculating
-> node memory cgroup usage ratios. If an invalid node ID is provided, it
-> returns 0% for used memory and 100% for free memory to prevent out-of-bounds
-> memory access during NODE_DATA() lookups.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -2273,6 +2273,13 @@ static unsigned long damos_get_node_memcg_used_bp(
-> >  	unsigned long used_pages, numerator;
-> >  	struct sysinfo i;
-> >  
-> > +	if (invalid_mem_node(goal->nid)) {
-> > +		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
-> > +			return 0;
-> > +		else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
-> 
-> This isn't a bug, but there is a typo in the comment here. It says
-> DAMOS_QUOTA_NODE_MEM_FREE_BP instead of DAMOS_QUOTA_NODE_MEMCG_FREE_BP.
+Thanks for the report and sorry for the breakage.
 
-Good catch, I will fix this in the next spin.
+According to the Debian bug report, the issue only occurs on
+v6.12-stable.  It does not affect v6.18 and v6.19.
 
-> 
-> > +			return 10000;
-> > +	}
-> > +
-> 
-> [ ... ]
-> 
-> >  	si_meminfo_node(&i, goal->nid);
-> >  	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
-> >  		numerator = used_pages;
-> >  	else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
-> >  		numerator = i.totalram - used_pages;
-> >  	return mult_frac(numerator, 10000, i.totalram);
-> >  }
-> 
-> Does this code safely handle nodes with zero managed pages?
-> 
-> While the new invalid_mem_node() check ensures the node has N_MEMORY set, a
-> node could still have zero managed pages if all its memory is reserved, or
-> if a concurrent hot-remove event drops the pages to zero just before
-> si_meminfo_node() runs. If i.totalram evaluates to 0, mult_frac() will
-> cause a divide-by-zero kernel panic.
-> 
-> Can this calculation also silently overflow on 32-bit architectures?
-> 
-> Both used_pages and i.totalram are unsigned long. Since numerator <=
-> i.totalram, mult_frac() bypasses the initial integer division and computes
-> numerator * 10000 directly.
+I note that v6.12-stable commit 58130e7ce6cb differs from upstream
+commit a2f1e22390ac in that the call to pci_save_state() is at the
+top of pci_bus_add_device(), not in the middle of the function after
+pci_bridge_d3_update().
 
-To my understanding, mult_frac() doesn't do such bypass.  Correct me if I'm
-wrong.
+@Bernd, could you test whether moving the call to pci_save_state()
+as in the small patch below resolves the issue on v6.12-stable?
 
-> If the memory cgroup uses more than ~1.7GB
-> (about 429,496 4KB pages), numerator * 10000 will exceed the maximum
-> 32-bit unsigned long value, resulting in an incorrect ratio.
+If it does, then the upstream commit was backported to v6.12 in an
+incorrect manner.  If it does not, I need to dig deeper.
 
-So this concern from sashiko is wrong.
+Thanks!
 
+Lukas
 
-Thanks,
-SJ
+-- >8 --
 
-[...]
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index 429c0c8ce93d..bdb3e10f947a 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -331,9 +331,6 @@ void pci_bus_add_device(struct pci_dev *dev)
+ 	struct device_node *dn = dev->dev.of_node;
+ 	int retval;
+ 
+-	/* Save config space for error recoverability */
+-	pci_save_state(dev);
+-
+ 	/*
+ 	 * Can not put in pci_device_add yet because resources
+ 	 * are not assigned yet for some devices.
+@@ -346,6 +343,9 @@ void pci_bus_add_device(struct pci_dev *dev)
+ 	pci_proc_attach_device(dev);
+ 	pci_bridge_d3_update(dev);
+ 
++	/* Save config space for error recoverability */
++	pci_save_state(dev);
++
+ 	dev->match_driver = !dn || of_device_is_available(dn);
+ 	retval = device_attach(&dev->dev);
+ 	if (retval < 0 && retval != -EPROBE_DEFER)
 
