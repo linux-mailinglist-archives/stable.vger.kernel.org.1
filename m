@@ -1,178 +1,276 @@
-Return-Path: <stable+bounces-230770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMUzJvGXx2mFZgUAu9opvQ
-	(envelope-from <stable+bounces-230770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 09:57:21 +0100
+	id 2KIwMbqdx2l4ZwUAu9opvQ
+	(envelope-from <stable+bounces-230771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 10:22:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5926F34DE0A
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 09:57:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2538734DE59
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 10:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76E6B303B5EC
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 08:57:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E7063037449
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 09:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0763F361DC8;
-	Sat, 28 Mar 2026 08:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC6131715A;
+	Sat, 28 Mar 2026 09:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="XtmmmnhZ"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="bXaG96qj"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazolkn19011057.outbound.protection.outlook.com [52.103.72.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4342036E9;
-	Sat, 28 Mar 2026 08:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774688235; cv=none; b=cOjVJxGuD6b6KZWgLB7YvxEd+mqRjiahszw54IekI2UwowrnX693p8BQT9C6niBxCWjFywkzwVn+pTJtaywX6++Hzaiq0SshMMrxVc10YSPEagsTmqlXk7+ega9IEsT2EqgLNvaknapPXPBGuEW6PupP8eApWCwBI0DLRNOo5Ww=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774688235; c=relaxed/simple;
-	bh=ds8PC2h0Rg1zfoGUZk8kOBd5/jJuEBt+G3kqJ0lwdcA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dqI1Ohn8wrIPHaeDUQqFa+e7qRmPCcfk9LHr263OnnI86/L4MLqjJar8Pq1Wivl4us+khgp/4g7IsakQrEVjZ8gfaa1yNLgi2pH/+3ZIbgU7mFxjrt2xfNPXM4MJUyxPdUooI2v9nvuOmQmL1Rq3nAOFmuxculM4waDHX1DFjm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=XtmmmnhZ; arc=none smtp.client-ip=188.68.61.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fjWNp42rCz8B5H;
-	Sat, 28 Mar 2026 09:47:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1774687658;
-	bh=ds8PC2h0Rg1zfoGUZk8kOBd5/jJuEBt+G3kqJ0lwdcA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XtmmmnhZRqzEcCW8rjoDVtAHUX/6fu8P+/B8kIVC8Y8T3/2wScN3GOxQJaVb0XWAD
-	 ADgOoXhyLBPiqnTx2RLkFddwaDRNBqGCOrliz1eci4Vk+ap4Y6PzaKWP1c9MbllWAK
-	 Jr3jMm4ZRcNpsoVE8/VrlUNViVicj1qvCMJr+KU/2bWF4ewKjlJN5RqCyTbuBS+4K6
-	 8ThG2QWDaXXcz9SbwqK2CLiZcl63AaeBjY5YO52mccFIAyu7kmufHVWz6pvOs/i6MQ
-	 6KMokaXWIwB2RPOpYaRhYfK1irQoEAe7K76XQcEnRSAVZ65Vs7rSq7eH8MkN+HCfWi
-	 2VjTamx9/4kyA==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fjWN403QRz84qk;
-	Sat, 28 Mar 2026 09:47:00 +0100 (CET)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fjWN331L1z8sbs;
-	Sat, 28 Mar 2026 09:46:59 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id C9DFA61741;
-	Sat, 28 Mar 2026 09:46:58 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <5fb8c589-60cd-4ab6-a305-abefc6e5c043@leemhuis.info>
-Date: Sat, 28 Mar 2026 09:46:56 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71F8258EE0;
+	Sat, 28 Mar 2026 09:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774689716; cv=fail; b=tpFoKQH0uJpDuljViCxk6Cj/Q2jtdmlyqPo0mmQXmtrBbEvw1mx4hDq6itic2JDCDUxA/gI9VOjD5VfXC89/3TcOYfnWFQS2j0ljoLp1Otrbhy1PMeIstq4vFemhkzDxRceIbPZa2W5WoDdLhsg9O+MZTFRai0kVrZmDE/0d5w4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774689716; c=relaxed/simple;
+	bh=oZ9klmshUV7q+ctX3JY4fg9ctQI3+BOn/jIjcOqEHbQ=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=lbd2hZLrTsMZkNyAjdQ3ZXiXUVoURCRcwPKNo9OfkIrgMyMAmNJf2fA06t+2mgkueO/M6dQsG8G/CTqi/ATsgYcgj7nUTZeAZbH+XHpjTFR/Jj0c2AzGagis+P0/8URy97hkHl9WrhTG35hw5hHf0ejxobTasLXWUA01YlAUKIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=bXaG96qj; arc=fail smtp.client-ip=52.103.72.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wl4d1Tj8NwuiMwzsxhsvTaB656M1zKg4x/1Y5oq/YT+bLoiHJQB3Cwr4PwBhdoetHs4wpb2N44QMtPvpSUMslK0pu+KwYF0C4J9wA25Anj6UlKgH0lvem1mT2FuMwjW1IbVLAaQvsVl1znsRvwDdLo2/ogei6wTzM6rNTSzJ7hNjDR7Fpsjnx11xcA4i7p2Tt2oE7N6ozXZYusyyC47nwqXB3F12VjaK64nHzuENEG3fZ3WyeKxqQKO5n0lFzV7qzcYq0XAfPWo4ATCGujm7V3es+6ue9HcOLYHTfqmjB3kfEnMuGNF8IBOPI0Vfilaxp6p0Kngiq9LZL+xmDq9Hbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QDWNapwJI4kQu+sxIsbb3J9FSQx3y+CiIG0Y2kwAkUc=;
+ b=CZ0UCcRjRuk2SdUIrTHkSEsBp8AfEyAOAUwvcOp4DiDkDaG+FBE0JU3SSbCRlyxePLZwN/AzPiU98QMOLLWDKFfGXQY1Oe5XKs79aTU1+d+rumo6y+WY0+xASZZ+gKWQf7MxVXt8gekClzNDscvYsA6GkEV++xVr0R4yc1U2QmanLmTrRGDn3jl2HxXVygjxljbQ5FQPshSiM+JBceVhV0saO26BWhQJjAXGM5hIZTCrKCD5lbMSiWfgA2CMgOd39B4qBjr8DmnHxJDRH/bBxLhozE21zIp4DR8zkmMxf+YoAA1hG9lnQ5pkhg7o/BUGXQhvljCONcCBs/Bw6YW0LA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QDWNapwJI4kQu+sxIsbb3J9FSQx3y+CiIG0Y2kwAkUc=;
+ b=bXaG96qj/3c93PnKUWQY37zdBGfvy8Nxs5Zbo9r/48PqN4aW6fhzUo5M5ZHrvhsPitc3vOZ4uvf/pa92Y3sbw2dCvbJv0EcXNQSlt6kd6NnAmxs+3aX77Jc8ECB8ahBowyCGHa3MKHUN15u6S+BH/0NeL/PHwfwZtkzS/i3pDlQrVMu2kiVqUsz6Knh4YQLFv9fP7455K6jYWdLLSxZLKzfdSEJEL5sZk1zYJjYwmlq3VzD2O60oJpYIAsqwTwBGtlhRLOHfxM5tdrdMHfvlRw0Pigr35eI+5mulTU4C+Ma3tRsCqYspr0jjRNm2+Je9RnKFNHiCv75XyvjhaxXOnA==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by MEWPR01MB9024.ausprd01.prod.outlook.com (2603:10c6:220:1fa::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.24; Sat, 28 Mar
+ 2026 09:21:47 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9745.024; Sat, 28 Mar 2026
+ 09:21:47 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Sat, 28 Mar 2026 17:18:45 +0800
+Subject: [PATCH v2] Drivers: hv: mshv: fix integer overflow in memory
+ region overlap check
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB788138A30BC69B0F5C3316E5AF54A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIAPScx2kC/x3KQQqAIBBA0avIrBNsJKmuEi0yp5qNhYIE4t0bW
+ j7+r5ApMWWYVYVEhTPfUdB3CvZriydpDmJAg85YHPXBL2VtcHLkbfB+QJD3SfQHWRcoCGtrH8r
+ fPVZbAAAA
+X-Change-ID: 20260328-fixes-0296eb3dbb52
+To: "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+ Nuno Das Neves <nunodasneves@linux.microsoft.com>, 
+ Anirudh Rayabharam <anrayabh@linux.microsoft.com>, 
+ Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>, 
+ Mukesh Rathor <mrathor@linux.microsoft.com>
+Cc: Muminul Islam <muislam@microsoft.com>, 
+ Praveen K Paladugu <prapal@linux.microsoft.com>, 
+ Jinank Jain <jinankjain@microsoft.com>, linux-hyperv@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
+ Roman Kisel <romank@linux.microsoft.com>, stable@vger.kernel.org, 
+ Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2355;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=oZ9klmshUV7q+ctX3JY4fg9ctQI3+BOn/jIjcOqEHbQ=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGzONzvjhZXo+7Z/r8756+vL+sr6L6PBrE+pNPmH1jF
+ 5n1dWK3zYGOUhYGMS4GWTFFluMFl75Z+G7R3eKzJRlmDisTyBAGLk4BmEh1GyPDor5zM9J7zFdO
+ jM5m+sESleYQeEbz4/EH575eP2BYvTktmJHh8PNPE7Lr69LSfzx/cW25pczcSTytFj+z2vskPk8
+ SUZjJDQBRN0/b
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+X-ClientProxiedBy: TY4PR01CA0033.jpnprd01.prod.outlook.com
+ (2603:1096:405:2bd::14) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260328-fixes-v1-1-247450b36cb5@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] amdgpu with Thunderbolt eGPU bracket fails since new
- bridge window alignment calculation code
-To: =?UTF-8?Q?Jonas_H=C3=B6glund?= <firefly@firefly.nu>
-Cc: linux-pci@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org
-References: <a5f23340-2b84-4734-be11-f5a97c188195@app.fastmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <a5f23340-2b84-4734-be11-f5a97c188195@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177468761908.2518298.1045275361796132583@mxe9fb.netcup.net>
-X-NC-CID: b6swR56vKjt4tnHxZTapnlFYUapxOva9kjO74UmGY08QWqrrs/E=
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|MEWPR01MB9024:EE_
+X-MS-Office365-Filtering-Correlation-Id: 224795ab-8e24-4d8c-57d9-08de8cab6f8f
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|24121999003|22091999003|15080799012|19110799012|5062599005|6090799003|8060799015|12121999013|41001999006|23021999003|51005399006|5072599009|461199028|1602099012|40105399003|440099028|3412199025|4302099013|10035399007|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MktCZnBRalRhYUFsQ29NcDBGRlFyTGUrbGN1ZmdnaTVlbU1yYUJ4eUt3SUJ6?=
+ =?utf-8?B?QmZzeW5HWHFZSFRHM0VsM2ZneS92YXRkK3VIcTY2K3BNYTJXOFM5V2JoV3Ju?=
+ =?utf-8?B?OUJzbVMreHA5OXpvbFVENW55TUdoZ3VTTHBCeXhOK2xVV0NBUHhHWkk5R0c1?=
+ =?utf-8?B?K3UwcjdmaGEzSXpuakc0T0ZhelByMGg4NlJLSEYyNXdnMXpLcjdRVnhMcXRJ?=
+ =?utf-8?B?NTY1YkZGYS9aU2dMejh1RVVoMmdlZlhFcHpLMlpUOVBPd3VhZUpickVpTDdV?=
+ =?utf-8?B?MUJXd2hGenJtMVFkN204bVc2UzcyekZtQTJGbVdsRitBL01lV0Q2WmNXVzNi?=
+ =?utf-8?B?YU1wZUowM0dobVR4dlZOa1Z3Z24vYjk5R0tacjF0UTN5RllVQmhXK3RoVnZG?=
+ =?utf-8?B?QStGZ3JZdDIybGJDTFhlZy9DM2cxdTNGdDhCUTZ5bi9kaEdrTFlOTHl0cXhu?=
+ =?utf-8?B?eFc4NFRBTHMrdHhLTDZqcmNRQ2JSdlVBaG51UnNlblNyUkdRdS9KSWNKaEhz?=
+ =?utf-8?B?c2dtOWI1Mm05dHcrWTgwSzJMaE9SMlQ3WVdhOElYOUdhcW8yVS8rWTNXZnZ2?=
+ =?utf-8?B?OGJPWFpGaE5rVkZZZ2lIeWZPK3puM0p4TGxSdzBGMEFOb2xodlVoQjd1T0RK?=
+ =?utf-8?B?RWlycEtxM3pGVUY5Q3FpL0htb2QxK1ZjVXFGcmI5dU1pN2UxWkxnZmI0UERj?=
+ =?utf-8?B?Y1VYbGpBNmswRXJWc0Z6azg3QVY5NXVqZG1PbkJmTnAzbkhRNmhjZHp3RllW?=
+ =?utf-8?B?N2Fsd2hnRDBXbldwOTFRNzhMa01YWWpobXZOaUlBNVJ3elNNQjhQQWhkaC9Z?=
+ =?utf-8?B?emdHNzRodGJCclJHYzVPenJkZ0lTNnBMMERZVEQ1eGxLZ0ZVeS81UHZNUWVP?=
+ =?utf-8?B?RlpFTEQyZUx1TW16bVU4ZlliUFc5eEhmelJZallnblVhR3Zrbkg4K2cwSFlG?=
+ =?utf-8?B?TmliMmNtSGlpNW91aUMzN2dON1IzOXk2UHRpMUc3cEF2aW0yelVmU3Z5ZFl3?=
+ =?utf-8?B?TWcreDN5U25XbDRRdGlzdDdOM3lMd3QvNjJtSEN2bmlxQkhvNTlMUXB6NnhI?=
+ =?utf-8?B?R09zTzB1OVc5OEgzenhaT3YyejNBV0l4RWtmZGgvZnpWbXhtZkttdWlQeFBK?=
+ =?utf-8?B?aGZEZmI3M2I4UTczdFhKejBVN25vU2h2R3U5S0FNd0Rid0sxSEpGWk9mWEtk?=
+ =?utf-8?B?a2xuaVljTXZoRVBwYlljaXo2U0JleW5tNTBOSUJrRDhtZk15ajBCK2IwdEZa?=
+ =?utf-8?B?aHNWK3Z6RDlzOTk2NS9QODcxNms0aU5WR0JreDVlZjlYNzFLNVFRTnNwUWcw?=
+ =?utf-8?B?VHRvUk9pd0t5V1BDU2FNN1ptSXlpaVJCYmdFQ2tpMmJEcVduTjhYRW9CSTZI?=
+ =?utf-8?B?SjA3UnkwREkvOGV2VjlWNWpsNUNTNFdFZ1hBWG5aOEQxS2lCUDNiZUFUQ1hO?=
+ =?utf-8?B?azgxbGx3QVNvWXFLTTNJdEJBbVJKUXU1K1dGOUx2VkJWSStpaHI0cmZBM0tj?=
+ =?utf-8?B?ZVJQdmdudmtnd1gvWThnVWVwVzJsQUJmaTZweGRZQjV1WnRrU3pkSlZFUVZF?=
+ =?utf-8?B?RDdFTmFnVnBLSmVrMU42cFBGdFh5cE5JQ2c4R2ZtTlA5Z3VHWGRMaTJyVEVC?=
+ =?utf-8?B?czIyTUtFa1VQMEljNXFNOWdPc3VWY0J6eENIVEhNdWF2NWJ5RS9pVWt1MUli?=
+ =?utf-8?Q?1KK8d2RafkDVFqU5LsOd?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bHZrVzgvam9rbUtweXBWYU02d3Z4MDg0ZjIwOGF6dkhLNGVhK1JIZVlHcXpS?=
+ =?utf-8?B?VE00OGFWSDhUbkdqMDg0SndseTY5OWxNSlhyWnVKVSs5UTMxWXM0RnhUZmgv?=
+ =?utf-8?B?bnBxT0UxbkUxSUFzL0JFNUJybk5OM0VmVXZqd0krcjhZQWhpempXSzlsQ092?=
+ =?utf-8?B?TUhJVkFoeXU3dzJYcFhwMjlzbEh1RkJMeHNGYTg0d0FnYWpsVTBFZzNHK1hr?=
+ =?utf-8?B?dDBFNFJsa3kySHg4aUd4Q3IwVVdCYXlFY3ljNW5SbW9QbXF6S3U5dEl3RXg0?=
+ =?utf-8?B?TG9mbm5MVGxuRVFIWVF4cGVSWE5BbmdzVW1SMkNMTmx4czErRmNOdGpuWFIv?=
+ =?utf-8?B?WFFWbWZCRHJTaFJkVVNJSGU5SHdBSzJtMmZGYWdkNmRCWHVYdjlmYjAvY256?=
+ =?utf-8?B?aU1ETjN5WE15QU1SMHo4V2cyT3JMZzh3dE9RNnE2djBNZFlOdHoyWWgrd3NI?=
+ =?utf-8?B?S2lVTWpZMjdldzdZZ3h3VXVaVkFBSk1jUmNhYk9Penp0Tm1CRlozdGVlOENh?=
+ =?utf-8?B?bkNNTTUzV3pYZUo3NFVXSHVjYVh2aUNLNkV5RnZGVUtCWE5JVDZjdlVmNkln?=
+ =?utf-8?B?SkNTUnJQM3FzdUhmei9TK2swUTIzSEVkYXhuM2xURFJsMURjNmd4cE1DT1N0?=
+ =?utf-8?B?NndxR1VmN3oyMTU3ZFdBdUhEODlNZ3Y2ZlNjWEk0RHh6MitVWEZPUGhPQWdl?=
+ =?utf-8?B?K2lVZ0ovSWtVYXRhT1pMWmxXU2preGJYS00zWG9YY0JFeTVCLzdLQk5pdVVC?=
+ =?utf-8?B?VVFRVkplSjM0NERiNEpESGNXZ2lQYlBTY1h5anNLdGdET1pvdDJoelFoQS9h?=
+ =?utf-8?B?c3ZIbUJjTENURC9USTVmS3FFMng5QlNxR0ZQN2h4UzhFNTcwM01mK09vaGZ0?=
+ =?utf-8?B?VXFCa3ZhUU9XbWJnRDFSdzVaVEdRenUwNWxyb2ZZRXpjdzY3ak41YUI1d085?=
+ =?utf-8?B?NVF4aGJSQlBmazJnbXA2SWxVWllsallEckc4c1l0ZytON2QwL0trTitaY3NG?=
+ =?utf-8?B?TUNJZVE5MzZyY0xLRklrNE9Gb2tVSEYwTHo2YmpEeEN1YzRRaW9zUnQ5YUJH?=
+ =?utf-8?B?cFZiNjlsRW5YSDloaFpjaytzM1JrTUdYQkF6RS9NMlRNVnlUaEhHUFl0VGlx?=
+ =?utf-8?B?T3NHTTBWWXFwL293UzE2UklqdVMrY0g1cXFlY3NDRENzd0N2bG51QWdsZVlF?=
+ =?utf-8?B?bTNGeGVjUi93cWVBOW5XUHpSbFkzL1pRZjVpeDNuRllEUStadVgzTGFTamdT?=
+ =?utf-8?B?QjJXVkJINk9GY1JxZlFuSVV5RnEvMUhKV1VLRy9icENMR2dWbUVTN3J6RnI5?=
+ =?utf-8?B?NVY1Yk5IRG9kZXZwWG9Jd2s3Q1YyRmx3WHN3SGFYQUdaN2FLazlubzVGeW1a?=
+ =?utf-8?B?MlQ2ME5ERk9FVSs4QWF2Q3ljMmFEWCtaMkg1YXNLczd3aWZCOXRsaGx3dm1R?=
+ =?utf-8?B?TEI0Slh6U1Z2MW9KeEFDWEpvQmpwNDdYOGRXNTl1Y003bDA5ZXNiZHdoT3JL?=
+ =?utf-8?B?TENGRGtycDkxREJCa1F4VDNTdi95V2lWUjdlMEJoSFdpNzBDSzdFdS8xV1Ay?=
+ =?utf-8?B?bE1tTGZTOUFJUG56RGVrazhwMGUrcXNyMERIOThCUVR2czh5M0prQ1c1aTNW?=
+ =?utf-8?B?MnBSc3k0aHlKQXNPYXMxVTFmdkFwdUJhNXlwNG5RU080ZHpNZFlvNjhGaU5s?=
+ =?utf-8?B?SDRoYVg2WGhSaEZCWm91RWs3TzdXWThIaHdLY1BxL05PQzFJdnlRRkU5dFN0?=
+ =?utf-8?B?ZHJSVW1SUndlL3NPL3NhRGpYazVmUU9NTVNKTUNXQVJnLzRkZ1BuS0lyOENw?=
+ =?utf-8?B?enkvU24xbTQyeHF1Zm4raE80VGZyeXlOaEZEZ1d0djRlNjdpb1ZwOFVOS09D?=
+ =?utf-8?B?QmlQSEJGL0ZKK1B4VUNMbFJDZTArbTFsbjMvTXhUUnlhU1E9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 224795ab-8e24-4d8c-57d9-08de8cab6f8f
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2026 09:21:47.5981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MEWPR01MB9024
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TAGGED_FROM(0.00)[bounces-230770-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lkml.org:url];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[microsoft.com,linux.microsoft.com,vger.kernel.org,gmail.com,outlook.com];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[outlook.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 5926F34DE0A
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2538734DE59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/28/26 00:02, Jonas Höglund wrote:
-> 
-> I have an AMD GPU in an external Thunderbolt enclosure that recently
-> stopped working with the latest longterm kernel release.  The GPU in
-> question is an AMD RX 6750 XT.
+mshv_partition_create_region() computes mem->guest_pfn + nr_pages to
+check for overlapping regions without verifying u64 wraparound. A
+sufficiently large guest_pfn can cause the addition to overflow,
+bypassing the overlap check and allowing creation of regions that wrap
+around the address space.
 
-Thx for the report. One important information is missing afaics: Does
-the problem happen with latest mainline (say 7.0-rc5) as well? The
-answer determines how this will be dealt with.
+Fix by using check_add_overflow() to reject such regions early, and
+validate that the region end does not exceed MAX_PHYSMEM_BITS. These
+checks also protect downstream callers that compute start_gfn +
+nr_pages on stored regions without overflow guards.
 
-Ciao, Thorsten
+Fixes: 621191d709b1 ("Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Suggested-by: Roman Kisel <romank@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+---
+Changes in v2:
+- Add a maximum check suggested by Roman Kisel
+- Link to v1: https://lore.kernel.org/all/SYBPR01MB7881689C0F58149DD986A6D1AF49A@SYBPR01MB7881.ausprd01.prod.outlook.com/
+---
+ drivers/hv/mshv_root_main.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
->     [...]
->     amdgpu 0000:3e:00.0: amdgpu: vm size is 262144 GB, 4 levels, block size is 9-bit, fragment size is 9-bit
->     amdgpu 0000:3e:00.0: BAR 2 [mem 0x74200000-0x743fffff 64bit pref]: releasing
->     amdgpu 0000:3e:00.0: amdgpu: Problem resizing BAR0 (-16).
->     amdgpu 0000:3e:00.0: BAR 2 [mem 0x74200000-0x743fffff 64bit pref]: assigned
->     amdgpu 0000:3e:00.0: amdgpu: VRAM: 12272M 0x0000008000000000 - 0x00000082FEFFFFFF (12272M used)
->     amdgpu 0000:3e:00.0: amdgpu: GART: 512M 0x0000000000000000 - 0x000000001FFFFFFF
->     resource: resource sanity check: requesting [mem 0x0000000000000000-0xffffffffffffffff], which spans more than PCI Bus 0000:00 [mem 0x000a0000-0x000bffff window]
->     ------------[ cut here ]------------
->     WARNING: CPU: 7 PID: 2260 at arch/x86/mm/pat/memtype.c:720 memtype_reserve_io+0xfd/0x110
->     [...]
-> 
-> Searching for the issue I found this very similar report from last year:
-> https://lkml.org/lkml/2025/6/9/88
-> 
-> so I suppose this might be a re-regression of the same issue(?).
-> 
-> 
-> I checked out latest longterm (v6.18.20) and bisected, which took me to
-> commit b855d99 (upstream commit 3958bf16), which is
-> "PCI: Stop over-estimating bridge window size".
-> 
-> 
-> After the bisect I tried reverting the commit on top of v6.18.20 (going
-> back to the old way of calculating alignment), and this is sufficient
-> for the eGPU to dock properly again.
-> 
-> I've attached a longer excerpt of the kernel logs from a failing boot
-> (let me know if a full dmesg would be helpful and I can find somewhere
-> to upload it).  I've also attached an excerpt when connecting the eGPU
-> in a "good" case, since I figured the memory adress ranges could be
-> useful.
-> 
-> 
-> Hardware:
->   Machine: Dell XPS 13 9310 (0991)
->   GPU: AMD RX 6750 XT
->   Dock: EXP GDC TH3P4G3
-> 
-> Distribution: NixOS
-> Architecture: x86-64
-> 
-> #regzbot introduced: b855d99
-> 
-> Let me know if any additional information would be helpful.
-> 
-> Thanks,
-> Jonas
+diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
+index 6f42423f7faa..32826247dbce 100644
+--- a/drivers/hv/mshv_root_main.c
++++ b/drivers/hv/mshv_root_main.c
+@@ -1174,11 +1174,20 @@ static int mshv_partition_create_region(struct mshv_partition *partition,
+ {
+ 	struct mshv_mem_region *rg;
+ 	u64 nr_pages = HVPFN_DOWN(mem->size);
++	u64 new_region_end;
++
++	/* Reject regions whose end address would wrap around */
++	if (check_add_overflow(mem->guest_pfn, nr_pages, &new_region_end))
++		return -EOVERFLOW;
++
++	/* Reject regions beyond the maximum physical address */
++	if (new_region_end > HVPFN_DOWN(1ULL << MAX_PHYSMEM_BITS))
++		return -EINVAL;
+ 
+ 	/* Reject overlapping regions */
+ 	spin_lock(&partition->pt_mem_regions_lock);
+ 	hlist_for_each_entry(rg, &partition->pt_mem_regions, hnode) {
+-		if (mem->guest_pfn + nr_pages <= rg->start_gfn ||
++		if (new_region_end <= rg->start_gfn ||
+ 		    rg->start_gfn + rg->nr_pages <= mem->guest_pfn)
+ 			continue;
+ 		spin_unlock(&partition->pt_mem_regions_lock);
+
+---
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+change-id: 20260328-fixes-0296eb3dbb52
+
+Best regards,
+-- 
+Junrui Luo <moonafterrain@outlook.com>
 
 
