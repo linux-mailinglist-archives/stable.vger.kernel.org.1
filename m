@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id fCuaDFxYx2kjVwUAu9opvQ
-	(envelope-from <stable+bounces-230762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:26:04 +0100
+	id 2JMMLW5Yx2kjVwUAu9opvQ
+	(envelope-from <stable+bounces-230763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:26:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5D834D434
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:26:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B7B34D43C
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F24E304B8C7
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:25:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 574A7304300E
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787A83385A7;
-	Sat, 28 Mar 2026 04:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B372133A005;
+	Sat, 28 Mar 2026 04:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2PzSyEiB"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zA6BIe56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9C433557B;
-	Sat, 28 Mar 2026 04:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772D122B584;
+	Sat, 28 Mar 2026 04:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774671922; cv=none; b=ILTkhubK8FizFx4neoA1qWKcKGPhJJiTCxKus5ZmhUEC/dUD/GYXqvnHc+YvK49xiwY2sVJdK8wg2W8OvEnbPQkbZfrtEK6oLdQuIKb+7oKETM5pWtT1Fa02IQ1h8aA+3cPNUwTo9A4JdKq6mpmSWccIyK5VJ+gtscDrN8HZMlI=
+	t=1774671938; cv=none; b=oyJ6nhxfwpGfyeOCW0aY8/S/VDNBsXIvznfRQs+n7pBsGTnfJWRPtnEliPsAWbPvf/sX3JNOhuqwLBvhONCzEzLbWtQ6TqCsLYBSqb2xCnkR95kJNX3O7O2BLIZGIJly10jqqEsez2G2oZ987n+Alj65IjZNZkxWKJxA2Xa9PiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774671922; c=relaxed/simple;
-	bh=8FPl9/q8zv53IgGIRA/JD2ZGMSCaF1t5e0LsHHVCG+c=;
-	h=Date:To:From:Subject:Message-Id; b=Xc2YZI2NPGAmn6RVqMM+tUu3tSh/7oAyNOLk6JKH3yxi8Gj93XVGSXAMU0S9a19p20r1XBzNDdCHroEWUPuE7hrPLEYnusFg2e5HYO3tUDUxIvIqSWRhLS/97oqCERdKhFTYu5KM+FffBtTmd7vO9VeG2fqU4jpNZMTsIxQxacc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2PzSyEiB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CC7C4CEF7;
-	Sat, 28 Mar 2026 04:25:21 +0000 (UTC)
+	s=arc-20240116; t=1774671938; c=relaxed/simple;
+	bh=SlCuBuHDC/zKAJvacDmF/zTzx1G5Jg3AziCrqIMrOwg=;
+	h=Date:To:From:Subject:Message-Id; b=F0Cz1DgZ1Yk43lYnbzQ0YNb5UFkclSNrO1PLYfppmn2ymTbfnRAL0B4RW/Ql6CEXxQcLV9mV6arLFlGP3ASLlH3LcCzfzKJ1daQbtYRzqTpZ5cB12gSHMObpsLaIzvoTPRzuJcBvaSi+ohFLa0+U6hHVnLePpCrFFVfH8dN49zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zA6BIe56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBBAC4CEF7;
+	Sat, 28 Mar 2026 04:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774671922;
-	bh=8FPl9/q8zv53IgGIRA/JD2ZGMSCaF1t5e0LsHHVCG+c=;
+	s=korg; t=1774671938;
+	bh=SlCuBuHDC/zKAJvacDmF/zTzx1G5Jg3AziCrqIMrOwg=;
 	h=Date:To:From:Subject:From;
-	b=2PzSyEiBrHW6uyPHzlr11BODdwHLb+5fsxgrF1n29trCf/KeQxaGwRcG5xuGgmCZ0
-	 5/twDkpLUp1SUgXJZT0mDq6NhH5bVv5fOhug8FK2gnbiSbekir2sEOA6fUpPnGLwvn
-	 Vbw5Oe9oA1rg0DywrILUSnxFAWXYb3zocK9YdcIM=
-Date: Fri, 27 Mar 2026 21:25:21 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,johannes.berg@intel.com,jan.kiszka@siemens.com,iii@linux.ibm.com,benjamin.berg@intel.com,akpm@linux-foundation.org
+	b=zA6BIe56+RKgdOyCFX8SjBldVIHd6m44hZz0BCd2We2E44r1liY5RlxTqAsVpI86B
+	 Cl3MiCwsug7xQPfDqOE1CPhwICYQBE+SSk4G1g/VYsvsTWZTF5vt+11OXdVBwGhq00
+	 RbVoz3/cT48/XDVoHQA4kp2dX+RWkYlDbF6w74/c=
+Date: Fri, 27 Mar 2026 21:25:37 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,jiangqi903@gmail.com,heming.zhao@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] scripts-gdb-symbols-handle-module-path-parameters.patch removed from -mm tree
-Message-Id: <20260328042522.02CC7C4CEF7@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] ocfs2-fix-possible-deadlock-between-unlink-and-dio_end_io_write.patch removed from -mm tree
+Message-Id: <20260328042538.4EBBAC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,82 +53,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-230762-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230763-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,evilplan.org,gmail.com,suse.com,live.cn,linux.alibaba.com,linux-foundation.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,intel.com:email,linux-foundation.org:dkim,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 7D5D834D434
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 15B7B34D43C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: scripts/gdb/symbols: handle module path parameters
+     Subject: ocfs2: fix possible deadlock between unlink and dio_end_io_write
 has been removed from the -mm tree.  Its filename was
-     scripts-gdb-symbols-handle-module-path-parameters.patch
+     ocfs2-fix-possible-deadlock-between-unlink-and-dio_end_io_write.patch
 
 This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Benjamin Berg <benjamin.berg@intel.com>
-Subject: scripts/gdb/symbols: handle module path parameters
-Date: Wed, 4 Mar 2026 12:06:43 +0100
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: ocfs2: fix possible deadlock between unlink and dio_end_io_write
+Date: Fri, 6 Mar 2026 11:22:11 +0800
 
-commit 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available
-to GDB") added support to make BPF debug information available to GDB. 
-However, the argument handling loop was slightly broken, causing it to
-fail if further modules were passed.  Fix it to append these passed
-modules to the instance variable after expansion.
+ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
+while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
+This creates an ABBA lock ordering violation on lock classes
+ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
+ocfs2_file_ip_alloc_sem_key.
 
-Link: https://lkml.kernel.org/r/20260304110642.2020614-2-benjamin@sipsolutions.net
-Fixes: 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available to GDB")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
+Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
+ocfs2_unlink
+  ocfs2_prepare_orphan_dir
+    ocfs2_lookup_lock_orphan_dir
+      inode_lock(orphan_dir_inode) <- lock A
+    __ocfs2_prepare_orphan_dir
+      ocfs2_prepare_dir_for_insert
+        ocfs2_extend_dir
+	  ocfs2_expand_inline_dir
+	    down_write(&oi->ip_alloc_sem) <- Lock B
+
+Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
+ocfs2_dio_end_io_write
+  down_write(&oi->ip_alloc_sem) <- Lock B
+  ocfs2_del_inode_from_orphan()
+    inode_lock(orphan_dir_inode) <- Lock A
+
+Deadlock Scenario:
+  CPU0 (unlink)                     CPU1 (dio_end_io_write)
+  ------                            ------
+  inode_lock(orphan_dir_inode)
+                                    down_write(ip_alloc_sem)
+  down_write(ip_alloc_sem)
+                                    inode_lock(orphan_dir_inode)
+
+Since ip_alloc_sem is to protect allocation changes, which is unrelated
+with operations in ocfs2_del_inode_from_orphan.  So move
+ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
+
+Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
+Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
+Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/gdb/linux/symbols.py |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/aops.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/scripts/gdb/linux/symbols.py~scripts-gdb-symbols-handle-module-path-parameters
-+++ a/scripts/gdb/linux/symbols.py
-@@ -298,7 +298,7 @@ are loaded as well."""
-             if p == "-bpf":
-                 monitor_bpf = True
-             else:
--                p.append(os.path.abspath(os.path.expanduser(p)))
-+                self.module_paths.append(os.path.abspath(os.path.expanduser(p)))
-         self.module_paths.append(os.getcwd())
+--- a/fs/ocfs2/aops.c~ocfs2-fix-possible-deadlock-between-unlink-and-dio_end_io_write
++++ a/fs/ocfs2/aops.c
+@@ -2294,8 +2294,6 @@ static int ocfs2_dio_end_io_write(struct
+ 		goto out;
+ 	}
  
-         if self.breakpoint is not None:
+-	down_write(&oi->ip_alloc_sem);
+-
+ 	/* Delete orphan before acquire i_rwsem. */
+ 	if (dwc->dw_orphaned) {
+ 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
+@@ -2308,6 +2306,7 @@ static int ocfs2_dio_end_io_write(struct
+ 			mlog_errno(ret);
+ 	}
+ 
++	down_write(&oi->ip_alloc_sem);
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 
+ 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
 _
 
-Patches currently in -mm which might be from benjamin.berg@intel.com are
+Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
 
 
 
