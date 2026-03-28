@@ -1,176 +1,142 @@
-Return-Path: <stable+bounces-230782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMOKM73Bx2mebwUAu9opvQ
-	(envelope-from <stable+bounces-230782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 12:55:41 +0100
+	id XC9qMAXFx2mTcAUAu9opvQ
+	(envelope-from <stable+bounces-230783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 13:09:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BF834E48F
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 12:55:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DDF34E518
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 13:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71BD73029E72
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 11:55:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5FC76301326B
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 12:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1982D3890ED;
-	Sat, 28 Mar 2026 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B7733436A;
+	Sat, 28 Mar 2026 12:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="TS4CMPb8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/r4m/ue"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983203064A9;
-	Sat, 28 Mar 2026 11:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1412C35CB91;
+	Sat, 28 Mar 2026 12:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774698934; cv=none; b=esVz1TW+EEjaHB/VLCI1gPmt9xo5N8HRi+kS9eknDbiDaFFMBKGzBX7WrrboC7FPkZPZnmXY5vjOkyWpWJ20pCzukP0fYiqhSEKlXUoG3sHB4t4h7PgrDHa5TW8FTZd466ualm2T9TPApK9Ko1H+c74568W47NgGOWpjJyMVN/g=
+	t=1774699778; cv=none; b=KdeUaq05wmAV10mcoBI+CLcJaip7qHXeq6v6U3BK/vMuk1ptR7wGbvm1JrVzrmkTiwn6CY886VhbooSLIJUd4pmDpk/xWK7KEDWLu8PIx1fPuoIjcu8fzc+FpiNa+CjnnaVWTUrf0P6LqvyrAl7OwQxLmv/Cyk0ahZeALIiYCPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774698934; c=relaxed/simple;
-	bh=klZ2SzkCb0n5jxiB/B0foHVKhb8SkmZtAYYj+wa0zvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ar79/7XdtVhHs3wYgsaEFgm8qb/nESwUBrTAhJvaQsKyK68WeDAN26zo7ZG2v53YfQ4rMTWicFAKCZpN5k/hrFbB56lV+RrnIvfjQliu0yHzTJwnMDeqn5Jo/nltS4Y5vsR5S9DBx0tVVAv18CXOyKwCzwEaBhavAQAX4UKgM4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TS4CMPb8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from ideasonboard.com (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6881B63D;
-	Sat, 28 Mar 2026 12:54:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774698848;
-	bh=klZ2SzkCb0n5jxiB/B0foHVKhb8SkmZtAYYj+wa0zvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TS4CMPb8w0IlXqQu+iBjRGl3mzIMt9uT4FQVWMgVvw6KI9shNc8s9lrBAWd9iU5ti
-	 AdicS9wPLKiUff1mthUxNVxSQGhTgYX+4Mddbs/oAoSV73kIIRN073zaANWkvHIVh/
-	 t86AWo+XXYUXm0b4EAXu9MJMzAayyRBSQAjs0Hy8=
-Date: Sat, 28 Mar 2026 12:55:25 +0100
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Hans Verkuil <hverkuil+cisco@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
-	Daniel Scally <dan.scally@ideasonboard.com>, =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, 
-	Daniel Scally <dan.scally+renesas@ideasonboard.com>
-Subject: Re: [PATCH 00/14] media: rzg2l-cru: Rework slot programming for
- V2H/G3E
-Message-ID: <acfBaMdKDThNhfcX@zed>
-References: <20260327-b4-cru-rework-v1-0-3b7d0430f538@ideasonboard.com>
- <CA+V-a8tGfAzMdFgY7U+pLitDXbnj3xD8-RzXjbkOQ-iH4mtkug@mail.gmail.com>
+	s=arc-20240116; t=1774699778; c=relaxed/simple;
+	bh=aj2WoZSD4Ghz0WN0CvxQLhesl3mrrJl9JZMEkXD6iJs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AT15ZKjW4ycEjNEMZygP7LA9H9XzUAOw1xB02WcXK+uoqmQ+xL1OJNqdUyDRrKFIoA0Wmm5cuogPbBQ6eeugT/3i2FGkhkHTFljoiZd0Q1ZwQNrrzAn9PJtLh1814Iu6Hf9QGcQ1Iwdz8P2xT5fjoChwVKHnx9OATGKkSOtbOcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/r4m/ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100CAC4CEF7;
+	Sat, 28 Mar 2026 12:09:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774699777;
+	bh=aj2WoZSD4Ghz0WN0CvxQLhesl3mrrJl9JZMEkXD6iJs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k/r4m/ueX4BHo3KpJu/EnzGu9hUWVECJ9zT43JbN/vOCG9z6Gnjl/MCj9KDym5wY7
+	 neYO7SvL/1stOEBVXgVmmwlml7aAlX2WSW/IAPRNjXJPUFxhfnwk5xCehkqjQf7RDS
+	 K1vNH4lR04IJWfDU+t/Betv8YLU8kJ4jUAQrTVP6vEZmNvQr1NHeH+vG6x99PokfiG
+	 1P/ZhIc23nYpHyF33u6y5nhbBXp/hDkea3hwiGNz4EtbkgdjJOXtmm7ZgiNrmc7HuO
+	 XWEtUeMRudf3FCXBvPIWjBPud2IEgBzp7fV6VgRWxoGkVbS8wy3w1q5ACAfXM9RS+Q
+	 8HWkcVP97AgeQ==
+Message-ID: <7d1b7aa6-aaa8-4116-abc2-382511823a9c@kernel.org>
+Date: Sat, 28 Mar 2026 13:09:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] soc: fsl: qe: panic on ioremap() failure in qe_reset()
+To: Wang Jun <1742789905@qq.com>, Qiang Zhao <qiang.zhao@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, gszhai@bjtu.edu.cn, 25125332@bjtu.edu.cn,
+ 25125283@bjtu.edu.cn, 23120469@bjtu.edu.cn, stable@vger.kernel.org
+References: <780c1ba3-6639-478e-896f-e35ec059b58c@kernel.org>
+ <tencent_FED49CF5331CC0C7910618883332A08E2606@qq.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <tencent_FED49CF5331CC0C7910618883332A08E2606@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+V-a8tGfAzMdFgY7U+pLitDXbnj3xD8-RzXjbkOQ-iH4mtkug@mail.gmail.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230783-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230782-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[qq.com,nxp.com,lists.ozlabs.org,lists.infradead.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[ideasonboard.com,kernel.org,bp.renesas.com,linux.intel.com,protonmail.com,vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 32BF834E48F
+	REDIRECTOR_URL(0.00)[aka.ms];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qq.com:email,aka.ms:url]
+X-Rspamd-Queue-Id: 58DDF34E518
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Prabhakar
 
-On Fri, Mar 27, 2026 at 05:25:30PM +0000, Lad, Prabhakar wrote:
-> Hi Jacopo,
->
-> Thank you for the patches.
->
-> On Fri, Mar 27, 2026 at 5:19 PM Jacopo Mondi
-> <jacopo.mondi@ideasonboard.com> wrote:
-> >
-> > This patch series starts by collecting a patch sent from Dan in the past
-> > which improves the HW slot programming on V2H(P) to avoid losing frames
-> > under heavy system load conditions.
-> >
-> > Tommaso also sent a series a few months ago for the CRU from which I
-> > collected the first two patches.
-> >
-> > Around it, I've reworked a bit the locking in the driver which is a bit
-> > coarse and causes lost of frames under heavy system load conditions.
-> >
-> > Along with these, bit of drive-by cometic changes here and there to
-> > modernize the driver code.
-> >
-> > I've tested on V2H(P) but I've also modified the G2L IRQ handler, so if
-> > anyone could test on G2L and G3E it would be great!
-> >
-> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > ---
-> > Daniel Scally (1):
-> >       media: rzg2l-cru: Rework rzg2l_cru_fill_hw_slot()
-> >
-> > Jacopo Mondi (11):
-> >       media: rzg2l-cru: Modernize spin_lock usage with cleanup.h
-> >       media: rzg2l-cru: Use proper guard() in irq handler
-> >       media: rzg2l-cru: Remove locking from start/stop routines
-> >       media: rzg2l-cru: Do not use irqsave when not needed
-> >       media: rzg2l-cru: Remove wrong locking comment
-> >       media: rz2gl-cru: Introduce a spinlock for hw operations
-> >       media: rzg2l-cru: Split hw locking from buffers
-> >       media: rzg2l-cru: Manually track active slot number
-> You beat me to it, I had a similar patch internally.
 
-Oh that's great, I wasn't sure how this was going to be received!
+Le 27/03/2026 à 01:12, Wang Jun a écrit :
+> [Vous ne recevez pas souvent de courriers de 1742789905@qq.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> When ioremap() fails in qe_reset(), the global pointer qe_immr remains
+> NULL, leading to a subsequent NULL pointer dereference when the pointer
+> is accessed. Since this happens early in the boot process, a failure to
+> map a few bytes of I/O memory indicates a fatal error from which the
+> system cannot recover.
+> 
+> Follow the same pattern as qe_sdma_init() and panic immediately when
+> ioremap() fails. This avoids a silent NULL pointer dereference later
+> and makes the error explicit.
+> 
+> Fixes: 986585385131 ("[POWERPC] Add QUICC Engine (QE) infrastructure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wang Jun <1742789905@qq.com>
+> ---
+>   drivers/soc/fsl/qe/qe.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+> index 70b6eddb867b..9f6223043ee3 100644
+> --- a/drivers/soc/fsl/qe/qe.c
+> +++ b/drivers/soc/fsl/qe/qe.c
+> @@ -86,8 +86,12 @@ static phys_addr_t get_qe_base(void)
+> 
+>   void qe_reset(void)
+>   {
+> -       if (qe_immr == NULL)
+> +       if (qe_immr == NULL) {
+>                  qe_immr = ioremap(get_qe_base(), QE_IMMAP_SIZE);
+> +               if (qe_immr == NULL) {
+> +                       panic("QE:ioremap failed!");
+> +               }
+> +       }
+> 
+>          qe_snums_init();
+> 
 
->
-> >       media: rz2gl-cru: Return pending buffers in order
-> >       media: rzg2l-cru: Remove the 'state' variable
-> >       media: rzg2l-cru: Simplify irq return value handling
-> >
-> > Tommaso Merciai (2):
-> >       media: rzg2l-cru: Skip ICnMC configuration when ICnSVC is used
-> >       media: rzg2l-cru: Use only frame end interrupts
-> >
-> >  .../platform/renesas/rzg2l-cru/rzg2l-cru-regs.h    |   2 +
-> >  .../media/platform/renesas/rzg2l-cru/rzg2l-cru.h   |  28 +-
-> >  .../media/platform/renesas/rzg2l-cru/rzg2l-video.c | 328 ++++++++-------------
-> >  3 files changed, 140 insertions(+), 218 deletions(-)
->
-> I'll test these patches with ISP enabled next week.
-
-My testing platform is v2h with the ISP, if you have a G2L could you
-maybe give it a spin there as I don't have any board with that SoC ?
-
-Thanks
-   j
-
->
-> Cheers,
-> Prabhakar
+Applied, thanks.
 
