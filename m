@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-230805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMGKMVERyGnDggUAu9opvQ
-	(envelope-from <stable+bounces-230805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:35:13 +0100
+	id qIUWJY4UyGksgwUAu9opvQ
+	(envelope-from <stable+bounces-230806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:49:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C1F34F649
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:35:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFA334F73B
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D65073020850
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:35:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A10B302D13F
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAA1378830;
-	Sat, 28 Mar 2026 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A58344D90;
+	Sat, 28 Mar 2026 17:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOGGzvOo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSnA9ZUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD061F8691;
-	Sat, 28 Mar 2026 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC2F2F6160;
+	Sat, 28 Mar 2026 17:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774719306; cv=none; b=l+4s2p45zO/b/58t/Af8sChJ2D6eke40se5MLdPUct5GtilarSHl+mvInf/QeCOLzm578p7DX+zq0LvtDTnwza4l2hP3y/Bi8qzhpDJ4MOeDCRUTn9I5CPnWfcV80chfwlso8dchGLXG4Y2MLoccNt+twoRRP3lLKSZhJKVGkRw=
+	t=1774720134; cv=none; b=K66UFyTtNcIBAOA+p2boiZMKcmr7V2x+vxvdzLZlOdS+bTjQru+U9pCwW/vKENS9HarikBO3GJHyClyjflIFUQ4zCahWmZg+7TyWQ5hM4USppr2Li1tZGYAAbWytcXr18X9qMPIfmBqnZi3l7zzeZOu+AabXEHhvudGQWEqi4l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774719306; c=relaxed/simple;
-	bh=biVWiq4oiHUokf5prmGi2zOm6O46A0l0CX4IkwN2tRc=;
+	s=arc-20240116; t=1774720134; c=relaxed/simple;
+	bh=Sg6x97ANd8tIFA08/jJ7hgyZ6IOOblhEz9ehxsJhHE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUfi2wABOBpll0UEcDVxssvoLBz7Mf/Iii6lhtpSQVsKEyU+VFUfH6nW0ECDT+vY0G6shqCLMWubV1sVE7mRFno1dOK75Jp3Jc+Aa4D3IyBoF+5w3QFw/rKq2wGxOwL0nRTbCzZfOT2nuLmWAbD5dkezdUhbPlB4n4ju74I8/L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOGGzvOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A52C4CEF7;
-	Sat, 28 Mar 2026 17:35:05 +0000 (UTC)
+	 MIME-Version; b=LuFC5qCAiqbiWYOvZMYXFuFih10eEyuQLYVJvmY8/HsvOw8eGhWFdxYgl3oX8nkblFgb/72K6ECbEKqEEV5ltacQ9mLrMGrAcnnAn9Q5sxRw4SsW25VZBoMtiJrp0zOJRFb8fQlvFRdNlDaMtN5xcdZ2fiFDCDSPg7Y/PR0Kws0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSnA9ZUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C1CC4CEF7;
+	Sat, 28 Mar 2026 17:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774719306;
-	bh=biVWiq4oiHUokf5prmGi2zOm6O46A0l0CX4IkwN2tRc=;
+	s=k20201202; t=1774720133;
+	bh=Sg6x97ANd8tIFA08/jJ7hgyZ6IOOblhEz9ehxsJhHE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOGGzvOo8hbG6EbtYhDMaVUFzGmyJ6JWXrCoc3aaQOQFqf9X9qHT6HgXFG/VNAsaT
-	 1DvUIsGr1Z+d+S883n6XOxsp1EkeSXiqNt9X13Qf2fHHxD2fzDAoJFaxkCXAG9taNT
-	 CIBGwDULN+McIOhrhfzQ4lcnsRMecirlhxJOwnYgBgfRPLpVsfSRNc8MjC3PeNxTrY
-	 HbZqzTlUm43lsUuJyeg9wdgKQTAkbizl78h+OsPD2THijoHZZc3s/EKT7Wi6opVNJB
-	 FnTCf3Z7hbA7Qbu1/zLspDkVkY8rl1YOnmMmxYuxsmkPLnQp+N62RjpSLAa1DoIEzH
-	 xr3KrbbxZ7uCw==
+	b=CSnA9ZUkXUKgtI3r1nzkCgxnw3E+Ro571tGR8EixYrLYzvCdHdVOhSDusXh0Qwl8N
+	 o9peR2Fib9N7nsvBHy9XjVrzsQOBkbSoK0hPExVvWMR36AzLy/F7hxfKRItBe4om5w
+	 D0wr8BgX7DJcDwmENuxCtrZOdpdxw9deOOTykhvYA0o06mnA8Wj5m8lcNvWG5Gn7D2
+	 aEsEYvhFcGmQvriiHQeW6oxRpXJTf3TTqO6icqJCdzSpz4SyJWvLJPdikz5WXHOczt
+	 zzsNO/T+hQBePKxLMs0xHrnvmLngBxNEZdp6XKwhERI6mnoWrCLMUbay7uvDEBQ5qx
+	 oNeXUHXD49PmQ==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"# 6 . 0 . x" <stable@vger.kernel.org>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -60,12 +60,13 @@ Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	damon@lists.linux.dev,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH 2/2] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
-Date: Sat, 28 Mar 2026 10:35:04 -0700
-Message-ID: <20260328173504.53129-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: Re: (sashiko review) [RFC PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
+Date: Sat, 28 Mar 2026 10:48:51 -0700
+Message-ID: <20260328174852.53338-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260328172415.49940-3-sj@kernel.org>
+In-Reply-To: <20260328173446.53021-1-sj@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,86 +80,108 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230805-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,linux-foundation.org,kernel.org,lwn.net,suse.com,linuxfoundation.org,google.com,lists.linux.dev,kvack.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-230806-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 45C1F34F649
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
+X-Rspamd-Queue-Id: 3AFA334F73B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Forwarding Sashiko review for doing discussions via mails.
+On Sat, 28 Mar 2026 10:34:45 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-# review url: https://sashiko.dev/#/patchset/20260328172415.49940-3-sj@kernel.org
-# start of sashiko.dev inline review
-commit 0a9a055d4225a92c337c76fef97bfcdca5d9508f
-Author: SeongJae Park <sj@kernel.org>
-Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
+> Forwarding Sashiko review for doing discussions via mails.
+> 
+> # review url: https://sashiko.dev/#/patchset/20260328172415.49940-2-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 8b189801fc104c5ecc412454a3d8db6a3faf27d6
+> Author: SeongJae Park <sj@kernel.org>
+>     
+> Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
+> 
+> This commit adds documentation warning users not to write to module
+> parameters while commit_inputs is in progress. This warning is intended to
+> help users avoid a race condition that can cause undefined kernel behavior.
+> 
+> Link: https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org
+> 
+> > diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+> > --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> > +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+> > @@ -71,6 +71,10 @@ of parametrs except ``enabled`` again.  Once the re-reading is done, this
+> >  parameter is set as ``N``.  If invalid parameters are found while the
+> >  re-reading, DAMON_RECLAIM will be disabled.
+> >  
+> > +Once ``Y`` is written to this parametr, the user must not write to any
+> 
+> This isn't a bug, but there is a typo ("parametr") in this line.
 
-This patch adds documentation warning users about a data race in DAMON_LRU_SORT
-when modifying module parameters while the kdamond thread is reading them. It
-states that violating this rule can cause undefined behavior in the kernel.
+Good eye, I will fix this in the next revision.
 
-Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org
+> 
+> > +parameters until reading ``commit_inputs`` again returns ``N``.  If users
+> > +violate this rule, the kernel can do undefined behaviors.
+> 
+> Is it acceptable to document a race condition that leads to undefined
+> behavior instead of fixing it?
+> 
+> Even if the module parameter interface is restricted to root, user space
+> shouldn't be able to trigger kernel undefined behavior (which could lead to
+> memory corruption or crashes) simply by writing to module parameters
+> concurrently.
+> 
+> Should the underlying race condition in DAMON_RECLAIM be fixed with proper
+> synchronization rather than relying on userspace adherence to a documentation
+> warning?
 
-> diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-> index a7dea7c75a9b..3eaa3786c8ab 100644
-> --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-> +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-> @@ -79,6 +79,10 @@ of parametrs except ``enabled`` again.  Once the re-reading is done, this
->  parameter is set as ``N``.  If invalid parameters are found while the
->  re-reading, DAMON_LRU_SORT will be disabled.
->  
-> +Once ``Y`` is written to this parametr, the user must not write to any
-                                  ^^^^^^^^
+Good callout.  In short, I agree for mainline kernel, but I'd argue this may be
+enough for stable kernels.
 
-This isn't a bug, but there is a typo here (parametr).
+That is, I was also thinking in a way similar to sashiko.  But, from the work I
+realized the amount of changes for fixing those in stable-backporting-easy way
+is not small.  Also, given the age of the broken commits (5.19!), I don't think
+this is urgent.  And again arguably, as long as it is well documented, letting
+users break kernel when they want (e.g., sysrq-trigger) is ok...?  Let me know
+if other humans have different opinion, though.
 
-> +parameters until reading ``commit_inputs`` again returns ``N``.  If users
-> +violate this rule, the kernel can do undefined behaviors.
-                                        ^^^^^^^^^^^^^^^^^^^
+But for future (mainline), surely this have to be fixed in the code.  And
+Liew's patch [1] was initially started not for exactly this patch, but will fix
+this together.  Cc-ing Liew.
 
-Should this data race be fixed in the kernel code itself rather than just
-documented?
+So, I'm suggesting to add this documentation for stable kernels, and continue
+helping Liew's patch for cleanly removing this awkward behavior in the mianline
+and future kernels.
 
-The kernel generally should not exhibit undefined behavior, memory corruption,
-or crashes due to concurrent sysfs or module parameter writes, even if those
-writes are restricted to root users. Could the underlying code be updated
-with proper synchronization to safely handle concurrent updates instead?
+> 
+> This isn't a bug, but the phrasing "can do undefined behaviors" is slightly
+> awkward. Rephrasing to "may exhibit undefined behavior" might be more natural.
 
-> +
->  active_mem_bp
->  -------------
->  
+Good catch.  I will update so in the next version.
+
+[1] https://lore.kernel.org/20260328084524.5451-1-aethernet65535@gmail.com
 
 
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260328172415.49940-3-sj@kernel.org
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260328172415.49940-3-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
+Thanks,
+SJ
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+[...]
 
