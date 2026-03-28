@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBHeMU8jx2lATgUAu9opvQ
-	(envelope-from <stable+bounces-230747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:39:43 +0100
+	id kBc8DUUjx2lATgUAu9opvQ
+	(envelope-from <stable+bounces-230748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:39:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B9E34CBE6
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:39:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43BF34CBDC
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 01:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B851F303429A
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:39:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5758B3035A5D
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 00:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDF31E8826;
-	Sat, 28 Mar 2026 00:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856311EEA54;
+	Sat, 28 Mar 2026 00:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ytFFcPVV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jJqJwMQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C689443;
-	Sat, 28 Mar 2026 00:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489569443;
+	Sat, 28 Mar 2026 00:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774658363; cv=none; b=kc6CAGVkws2JUb3y0Mx9X+GhEQGa3xHAh5fcoCHDgGZORrBIaF8HJSXo8LvH9jF1zxBmvMarvACAA8zB2J1rTTfKb4wKnX0XOBzMsGoeJdCEVUz69DIGQQFjDi5jiOL56gdBVK6lljAiR3+tgHX6Sgek6AtYtWPJThCTzpjOPOo=
+	t=1774658366; cv=none; b=sDGpZxmhzMn2vftIBLs8aWRammxrtUQgRQrwOLEeNZLosgOGLxxoOyeRRc2U//CWqv9zI7fnfqGnj6+BEn4sNKASBEh0i6ADJqeHhFSqPgvRQI2V+6+9W66JUe1pmB/FagIoeBvBa03YFjIpo7mnjRFMED9zNQY54iEXWSaZQIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774658363; c=relaxed/simple;
-	bh=dmikLBa0CZ75SlkL+xtKjn0h1A+xvRJA1L4pb4PRwVQ=;
-	h=Date:To:From:Subject:Message-Id; b=jRdHJWbE4dl2svCC1rDTvY74kkvDn24vPKknBP0aKqOQrkPjWc4FV2qE9+O5oiAWgcOeM6Uo7MJ8W6fSMwhrGICm0mPyafKyZ0dTkIAQB7B4LRedvfrNE2Fm5LmnBS/tRlHM07iK5bnUOUz3slE7npGv0gsALjma2BENt1KEdBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ytFFcPVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B8AC19423;
-	Sat, 28 Mar 2026 00:39:23 +0000 (UTC)
+	s=arc-20240116; t=1774658366; c=relaxed/simple;
+	bh=hjaC45aoFSTNT+nVIKvbEjhcT4oR4lb9+uV5SI0ho6U=;
+	h=Date:To:From:Subject:Message-Id; b=PpuSy+BeK5QOh9RBNOfB7P5+Uqy8zNtsEXxrI89jlr3bS518jzgcw34bHb+4dy7pvwj+TFP+nc997B/Xym6jaZ4BO4ebtqspCC3LS5iF7XyPYwNXBNhmj76JSujZYqldMzWxnwqU413VFVrPoaHZgCWD5g6ucMzK4hIRYirbc+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jJqJwMQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222F2C19423;
+	Sat, 28 Mar 2026 00:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774658363;
-	bh=dmikLBa0CZ75SlkL+xtKjn0h1A+xvRJA1L4pb4PRwVQ=;
+	s=korg; t=1774658366;
+	bh=hjaC45aoFSTNT+nVIKvbEjhcT4oR4lb9+uV5SI0ho6U=;
 	h=Date:To:From:Subject:From;
-	b=ytFFcPVVRZQjz5lv65Qj3/HjEpv5hd6/H4bAvbHv+TYTtLlS/OKyzw8IRnFABZIh7
-	 2ZrdBgbkacraNzcntCeHD07ZZRfo0m+sM3Dcx9jmNgaCEKfua2Br3lsTWsZm+DD3vo
-	 uCzq/VMDIeBW0oS0QqfVm8ZQfw0XuQe5KLue3cZc=
-Date: Fri, 27 Mar 2026 17:39:22 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam.howlett@oracle.com,david@kernel.org,mboone@akamai.com,akpm@linux-foundation.org
+	b=jJqJwMQ5ggssR97m1IpZHyP/nqRDGFt7XpEBZZrVpC97qNrOvuiD4PdBoXhXvBmXd
+	 EcfCPkqHw4Iz+w0T7E4lR8YD1lCqwZrkS2L0/qGRj5Y8gKqZAeVobFaBker+ninVLb
+	 dyMw7PiEby69FgK4+2BLG1WV4vcmiXlV8DefoNl8=
+Date: Fri, 27 Mar 2026 17:39:25 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,pfalcato@suse.de,liam.howlett@oracle.com,jeffxu@chromium.org,jannh@google.com,david@kernel.org,antonius@bluedragonsec.com,ljs@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch removed from -mm tree
-Message-Id: <20260328003923.35B8AC19423@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-mseal-update-vma-end-correctly-on-merge.patch removed from -mm tree
+Message-Id: <20260328003926.222F2C19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -61,7 +61,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-230747-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230748-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
@@ -71,175 +71,165 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,oracle.com:email,suse.com:email]
-X-Rspamd-Queue-Id: B1B9E34CBE6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,suse.de:email,oracle.com:email]
+X-Rspamd-Queue-Id: E43BF34CBDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/pagewalk: fix race between concurrent split and refault
+     Subject: mm/mseal: update VMA end correctly on merge
 has been removed from the -mm tree.  Its filename was
-     mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
+     mm-mseal-update-vma-end-correctly-on-merge.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Max Boone <mboone@akamai.com>
-Subject: mm/pagewalk: fix race between concurrent split and refault
-Date: Wed, 25 Mar 2026 10:59:16 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Subject: mm/mseal: update VMA end correctly on merge
+Date: Fri, 27 Mar 2026 17:31:04 +0000
 
-The splitting of a PUD entry in walk_pud_range() can race with a
-concurrent thread refaulting the PUD leaf entry causing it to try walking
-a PMD range that has disappeared.
+Previously we stored the end of the current VMA in curr_end, and then upon
+iterating to the next VMA updated curr_start to curr_end to advance to the
+next VMA.
 
-An example and reproduction of this is to try reading numa_maps of a
-process while VFIO-PCI is setting up DMA (specifically the
-vfio_pin_pages_remote call) on a large BAR for that process.
+However, this doesn't take into account the fact that a VMA might be
+updated due to a merge by vma_modify_flags(), which can result in curr_end
+being stale and thus, upon setting curr_start to curr_end, ending up with
+an incorrect curr_start on the next iteration.
 
-This will trigger a kernel BUG:
-vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-BUG: unable to handle page fault for address: ffffa23980000000
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-...
-RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
-   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- __walk_page_range+0x195/0x1b0
- walk_page_vma+0x62/0xc0
- show_numa_map+0x12b/0x3b0
- seq_read_iter+0x297/0x440
- seq_read+0x11d/0x140
- vfs_read+0xc2/0x340
- ksys_read+0x5f/0xe0
- do_syscall_64+0x68/0x130
- ? get_page_from_freelist+0x5c2/0x17e0
- ? mas_store_prealloc+0x17e/0x360
- ? vma_set_page_prot+0x4c/0xa0
- ? __alloc_pages_noprof+0x14e/0x2d0
- ? __mod_memcg_lruvec_state+0x8d/0x140
- ? __lruvec_stat_mod_folio+0x76/0xb0
- ? __folio_mod_stat+0x26/0x80
- ? do_anonymous_page+0x705/0x900
- ? __handle_mm_fault+0xa8d/0x1000
- ? __count_memcg_events+0x53/0xf0
- ? handle_mm_fault+0xa5/0x360
- ? do_user_addr_fault+0x342/0x640
- ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
- ? irqentry_exit_to_user_mode+0x24/0x100
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe88464f47e
-Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
-   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
+Resolve the issue by setting curr_end to vma->vm_end unconditionally to
+ensure this value remains updated should this occur.
 
-Fix this by validating the PUD entry in walk_pmd_range() using a stable
-snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
-walk via ACTION_AGAIN instead of descending further.  This mirrors the
-retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
-PTE is not being got by pte_offset_map_lock().
+While we're here, eliminate this entire class of bug by simply setting
+const curr_[start/end] to be clamped to the input range and VMAs, which
+also happens to simplify the logic.
 
-Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
-Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Max Boone <mboone@akamai.com>
+Link: https://lkml.kernel.org/r/20260327173104.322405-1-ljs@kernel.org
+Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Reported-by: Antonius <antonius@bluedragonsec.com>
+Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
+Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
 Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/pagewalk.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ mm/mseal.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/pagewalk.c~mm-pagewalk-fix-race-between-concurrent-split-and-refault
-+++ a/mm/pagewalk.c
-@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
+--- a/mm/mseal.c~mm-mseal-update-vma-end-correctly-on-merge
++++ a/mm/mseal.c
+@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct
+ 		unsigned long start, unsigned long end)
  {
-+	pud_t pudval = pudp_get(pud);
- 	pmd_t *pmd;
- 	unsigned long next;
- 	const struct mm_walk_ops *ops = walk->ops;
-@@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, un
- 	int err = 0;
- 	int depth = real_depth(3);
+ 	struct vm_area_struct *vma, *prev;
+-	unsigned long curr_start = start;
+ 	VMA_ITERATOR(vmi, mm, start);
  
-+	/*
-+	 * For PTE handling, pte_offset_map_lock() takes care of checking
-+	 * whether there actually is a page table. But it also has to be
-+	 * very careful about concurrent page table reclaim.
-+	 *
-+	 * Similarly, we have to be careful here - a PUD entry that points
-+	 * to a PMD table cannot go away, so we can just walk it. But if
-+	 * it's something else, we need to ensure we didn't race something,
-+	 * so need to retry.
-+	 *
-+	 * A pertinent example of this is a PUD refault after PUD split -
-+	 * we will need to split again or risk accessing invalid memory.
-+	 */
-+	if (!pud_present(pudval) || pud_leaf(pudval)) {
-+		walk->action = ACTION_AGAIN;
-+		return 0;
-+	}
-+
- 	pmd = pmd_offset(pud, addr);
- 	do {
- again:
-@@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, un
- 		else if (pud_leaf(*pud) || !pud_present(*pud))
- 			continue; /* Nothing to do. */
+ 	/* We know there are no gaps so this will be non-NULL. */
+@@ -66,6 +65,7 @@ static int mseal_apply(struct mm_struct
+ 		prev = vma;
  
--		if (pud_none(*pud))
--			goto again;
--
- 		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
-+
-+		if (walk->action == ACTION_AGAIN)
-+			goto again;
- 	} while (pud++, addr = next, addr != end);
+ 	for_each_vma_range(vmi, vma, end) {
++		const unsigned long curr_start = MAX(vma->vm_start, start);
+ 		const unsigned long curr_end = MIN(vma->vm_end, end);
  
- 	return err;
+ 		if (!(vma->vm_flags & VM_SEALED)) {
+@@ -79,7 +79,6 @@ static int mseal_apply(struct mm_struct
+ 		}
+ 
+ 		prev = vma;
+-		curr_start = curr_end;
+ 	}
+ 
+ 	return 0;
 _
 
-Patches currently in -mm which might be from mboone@akamai.com are
+Patches currently in -mm which might be from ljs@kernel.org are
 
+mm-rename-vma-flag-helpers-to-be-more-readable.patch
+mm-add-vma_desc_test_all-and-use-it.patch
+mm-always-inline-__mk_vma_flags-and-invoked-functions.patch
+mm-reintroduce-vma_flags_test-as-a-singular-flag-test.patch
+mm-reintroduce-vma_desc_test-as-a-singular-flag-test.patch
+tools-testing-vma-add-test-for-vma_flags_test-vma_desc_test.patch
+mm-mremap-correct-invalid-map-count-check.patch
+mm-abstract-reading-sysctl_max_map_count-and-read_once.patch
+mm-mremap-check-map-count-under-mmap-write-lock-and-abstract.patch
+mm-vma-add-vma_flags_empty-vma_flags_and-vma_flags_diff_pair.patch
+tools-testing-vma-add-unit-tests-flag-empty-diff_pair-and.patch
+mm-vma-add-further-vma_flags_t-unions.patch
+tools-testing-vma-convert-bulk-of-test-code-to-vma_flags_t.patch
+mm-vma-use-new-vma-flags-for-sticky-flags-logic.patch
+tools-testing-vma-fix-vma-flag-tests.patch
+mm-vma-add-append_vma_flags-helper.patch
+tools-testing-vma-add-simple-test-for-append_vma_flags.patch
+mm-unexport-vm_brk_flags-and-eliminate-vm_flags-parameter.patch
+mm-vma-introduce-vma_flags_same.patch
+mm-vma-introduce-_to_-helpers.patch
+tools-testing-vma-test-that-legacy-flag-helpers-work-correctly.patch
+mm-vma-introduce-vma_test-and-make-inlining-consistent.patch
+tools-testing-vma-update-vma-flag-tests-to-test-vma_test.patch
+mm-introduce-vma_flags_count-and-vma_test_single_mask.patch
+tools-testing-vma-test-vma_flags_countvma_test_single_mask.patch
+mm-convert-do_brk_flags-to-use-vma_flags_t.patch
+mm-update-vma_supports_mlock-to-use-new-vma-flags.patch
+mm-vma-introduce-vma_clear_flags.patch
+tools-testing-vma-update-vma-tests-to-test-vma_clear_flags.patch
+mm-vma-convert-as-much-as-we-can-in-mm-vmac-to-vma_flags_t.patch
+tools-bitmap-add-missing-bitmap_copy-implementation.patch
+mm-vma-convert-vma_modify_flags-to-use-vma_flags_t.patch
+mm-vma-convert-__mmap_region-to-use-vma_flags_t.patch
+mm-simplify-vma-flag-tests-of-excluded-flags.patch
+mm-various-small-mmap_prepare-cleanups.patch
+mm-add-documentation-for-the-mmap_prepare-file-operation-callback.patch
+mm-document-vm_operations_struct-open-the-same-as-close.patch
+mm-avoid-deadlock-when-holding-rmap-on-mmap_prepare-error.patch
+mm-switch-the-rmap-lock-held-option-off-in-compat-layer.patch
+mm-vma-remove-superfluous-map-hold_file_rmap_lock.patch
+mm-have-mmap_action_complete-handle-the-rmap-lock-and-unmap.patch
+mm-add-vm_ops-mapped-hook.patch
+fs-afs-revert-mmap_prepare-change.patch
+fs-afs-restore-mmap_prepare-implementation.patch
+mm-add-mmap_action_simple_ioremap.patch
+misc-open-dice-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+hpet-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+mtdchar-replace-deprecated-mmap-hook-with-mmap_prepare-clean-up.patch
+stm-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+staging-vme_user-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+mm-allow-handling-of-stacked-mmap_prepare-hooks-in-more-drivers.patch
+drivers-hv-vmbus-replace-deprecated-mmap-hook-with-mmap_prepare.patch
+uio-replace-deprecated-mmap-hook-with-mmap_prepare-in-uio_info.patch
+mm-add-mmap_action_map_kernel_pages.patch
+mm-on-remap-assert-that-input-range-within-the-proposed-vma.patch
+mm-huge_memory-simplify-vma_is_specal_huge.patch
+mm-huge-avoid-big-else-branch-in-zap_huge_pmd.patch
+mm-huge_memory-have-zap_huge_pmd-return-a-boolean-add-kdoc.patch
+mm-huge_memory-handle-buggy-pmd-entry-in-zap_huge_pmd.patch
+mm-huge_memory-add-a-common-exit-path-to-zap_huge_pmd.patch
+mm-huge_memory-remove-unnecessary-vm_bug_on_page.patch
+mm-huge_memory-deduplicate-zap-deposited-table-call.patch
+mm-huge_memory-remove-unnecessary-sanity-checks.patch
+mm-huge_memory-use-mm-instead-of-tlb-mm.patch
+mm-huge_memory-separate-out-the-folio-part-of-zap_huge_pmd.patch
+mm-add-softleaf_is_valid_pmd_entry-pmd_to_softleaf_folio.patch
+mm-huge_memory-add-and-use-normal_or_softleaf_folio_pmd.patch
+mm-huge_memory-add-and-use-normal_or_softleaf_folio_pmd-fix.patch
+mm-huge_memory-add-and-use-has_deposited_pgtable.patch
+mm-huge_memory-add-and-use-has_deposited_pgtable-fix.patch
+maintainers-update-mglru-entry-to-reflect-current-status.patch
 
 
