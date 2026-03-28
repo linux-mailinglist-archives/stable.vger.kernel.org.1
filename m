@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-230797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAkfF0sEyGkQgQUAu9opvQ
-	(envelope-from <stable+bounces-230797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:39:39 +0100
+	id yncYNx0JyGnMgQUAu9opvQ
+	(envelope-from <stable+bounces-230798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:00:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA82334F32B
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:39:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F75F34F3C9
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 18:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B8D3300DF41
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 16:39:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02792301441A
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 17:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCF531A576;
-	Sat, 28 Mar 2026 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2403A5429;
+	Sat, 28 Mar 2026 17:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIYNftcv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDd9S5Ou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818C523EAAB;
-	Sat, 28 Mar 2026 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3E63A4F59;
+	Sat, 28 Mar 2026 17:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774715974; cv=none; b=bjq5S1FLAYRfdPEw+dpAhHLN9DQdv5idNo9EdPgAbu7lu+PjidaFMcBM+5f3Ml84zujpztsltglSyaoCJA1S35dBgFGqcH+jPTJeKfshgPeOuhQfBcQzT2J+fDRdV3H4bAkud5nuV148j/kr1HI+W3DBenysHjw1E31Qzu3ZllU=
+	t=1774717210; cv=none; b=HZLEzTBtqPfJLYg+ytzxZ1NQlGUnk0VvI8lpmlzLyeHh7uPDn23M3OCxpOxBtiV7LDgTLYpHbO9R8dSbx4WgpcLagtAUtVeplSXdzzx8btA+GTjzk2se38JZj8yjrFVBcJgBu/2+yT6AdzhDj8da/3neEgyvRQ5M0EwqXbUmedM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774715974; c=relaxed/simple;
-	bh=0PwI1SI+BDoBCXPBrRWqvfcXP+Y8eEc47YaiUYRUruI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bZUk2Qo2Ny6NL9AWPPzchOkz4fRbHA3mDk2yPCfSk6Spjky3koOodrBj/PvwtRJXTVmNzavr2mYP0nh/Kw2prFq0kdesnGYKMMLOHIkY/IHnNOvGLgXJRY9vrKpaNQL7wDs+oQq/NusbeE1pGKul0cKHTiJGnbHbpiL5A6ZHVGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIYNftcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B971C4CEF7;
-	Sat, 28 Mar 2026 16:39:33 +0000 (UTC)
+	s=arc-20240116; t=1774717210; c=relaxed/simple;
+	bh=s68sSmfGQcwxwE2rGybfBstgYbqH0EAa4djt29SiEG8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FKX+5YmzBzVOZhASm0emY9DcgI+RNwmA5JD+11/e+0mhihK5RJeFoUi1uZOKad3eY3soUq6PiphcDRp96biigMdycfkohHJUu3UiSPqihNEwhKr6H0gwOgjijjKJCifK5Y3JUf2PFfFV/9oey2QrhfPE+1Yn3zLLST5qC5mxlqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDd9S5Ou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489B6C4CEF7;
+	Sat, 28 Mar 2026 17:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774715974;
-	bh=0PwI1SI+BDoBCXPBrRWqvfcXP+Y8eEc47YaiUYRUruI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eIYNftcvj4/Ctr6vTYsINJDWwdgeG9ARYoqiCYAqw8w/O9OPck+HDa45FAtD4/anz
-	 lyebe3WhNSw2Ujhm7UXdF9RzgPWL0a5kmTnEcSazr3lVtFXjAinHX5EpQEe8GlIZO6
-	 5vC9eGR8AD2KUgPOeRMHjWTi1Dn9mXos4Z2nEPdRoTMx8cF8RcNclfHjjHpPvySU+x
-	 NNCruFzN7VoBcW5MUelbNo6jvAsSq8swN5wqXGpN1GobwyRF53R7GFkXeqKeib4h87
-	 uoK3DTxzcigI7DUq4Dm2VINyxUJ0boLq2ujjhSG84sPLidKL+NmYjaluOPjdWNlTnm
-	 dsVBAcrgemEHw==
+	s=k20201202; t=1774717210;
+	bh=s68sSmfGQcwxwE2rGybfBstgYbqH0EAa4djt29SiEG8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TDd9S5OuJ+XrVdbfEldX/D5gVlsDPXciDaB1qqqwyNrhejtaEG/W63bYL7YREGfc6
+	 x9EdpA1Z5El9Ry9v58C9/tUiM2LYjGAHcHCGzf11Z7CPel/bNsFSZV/GtftxE6gJ0p
+	 dtanvwnVTu82ChFGI0CpFcq+LOdntane5xR+FPSXAMTOJgu5ZVtOtpT5ZNqHo0nrHK
+	 wV999tiuK0kEtoJFAxoByRTmVCWi2Gae/fjqQw3BYDTx5XeDsW/F+jgLSU0tWxRfb1
+	 lcwufXWgJ7wvW18xAlOVsh9S70s5JMDIHehLEZAMNW2iYljQEXNh3dRq76MhcZw5x5
+	 bV1ywA0yA8yfw==
 From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 16 . x" <stable@vger.kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 5 . 16 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/core: use time_in_range() for damos quota window start
-Date: Sat, 28 Mar 2026 09:39:29 -0700
-Message-ID: <20260328163930.47096-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH] mm/damon/core: use time_in_range() for damos quota window start
+Date: Sat, 28 Mar 2026 10:00:08 -0700
+Message-ID: <20260328170008.48144-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260328163930.47096-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,18 +69,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230797-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230798-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
@@ -88,59 +90,69 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA82334F32B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
+X-Rspamd-Queue-Id: 3F75F34F3C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-damos_adjust_quota() uses time_after_eq() to show if it is time to start
-a new quota charge window, comparing the current jiffies and the
-scheduled next charge window start time.  If it is, the next charge
-window start time is updated and the new charge window starts.
+Forwarding Sashiko review for doing discussions via mails.
 
-The time check and next window start time update is skipped while the
-scheme is deactivated by the watermarks.  Let's suppose the deactivation
-is kept more than LONG_MAX jiffies (assuming CONFIG_HZ of 250, more than
-99 days in 32 bit systems and more than one billion years in 64 bit
-systems), resulting in having the jiffies larger than the next charge
-window start time + LONG_MAX.  Then, the time_after_eq() call can return
-false until another LONG_MAX jiffies are passed.
+# review url: https://sashiko.dev/#/patchset/20260328163930.47096-1-sj@kernel.org
+# start of sashiko.dev inline review
+commit 2ee07f5a4fcf25b39aeac61c6b88fe3fdfd0c9b6
+Author: SeongJae Park <sj@kernel.org>
 
-This means the scheme can continue working after being reactivated by
-the watermarks.  But, soon, the quota will be exceeded and the scheme
-will again effectively stop working until the next charge window starts.
-Because the current charge window is extended to up to LONG_MAX jiffies,
-however, it will look like it stopped unexpectedly and indefinitely,
-from the user's perspective.
+mm/damon/core: use time_in_range() for damos quota window start
 
-Fix this by using !time_in_range() instead.
+This commit attempts to fix a stall in DAMOS quota charge windows when
+a scheme is deactivated for more than LONG_MAX jiffies. It replaces
+time_after_eq() with !time_in_range() to properly handle the extended
+time wrap-around.
 
-The issue was discovered [1] by sashiko.
+Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org
 
-[1] https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index db6c67e52d2b..8e47183473d3 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2452,7 +2452,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+>  	}
+>  
+>  	/* New charge window starts */
+> -	if (time_after_eq(jiffies, quota->charged_from +
+> +	if (!time_in_range(jiffies, quota->charged_from, quota->charged_from +
+>  				msecs_to_jiffies(quota->reset_interval))) {
 
-Fixes: ee801b7dd782 ("mm/damon/schemes: activate schemes based on a watermarks mechanism")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Does this introduce an off-by-one regression that extends every quota charge
+window by 1 jiffy?
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3298ee8d8f64..19ae388ff1e0 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2449,7 +2449,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	}
- 
- 	/* New charge window starts */
--	if (time_after_eq(jiffies, quota->charged_from +
-+	if (!time_in_range(jiffies, quota->charged_from, quota->charged_from +
- 				msecs_to_jiffies(quota->reset_interval))) {
- 		if (damos_quota_is_set(quota) &&
- 				quota->charged_sz >= quota->esz)
+time_in_range(a, b, c) evaluates the inclusive interval [b, c], which means
+it returns true when jiffies exactly equals the end of the interval. The
+original code used time_after_eq(), which correctly triggered the new
+charge window exactly on that jiffy.
 
-base-commit: f16846f15feb80ea9553b860bd0f70d9072101aa
--- 
-2.47.3
+By replacing it with !time_in_range(), the reset evaluates to false on that
+exact jiffy and is delayed until the next jiffy. For small reset_interval
+configurations or low CONFIG_HZ values, this 1-jiffy delay might alter the
+effective quota replenishment rate.
+
+Would using !time_in_range_open() preserve the exact original timing
+semantics while still fixing the wrap-around stall issue?
+
+>  		if (damos_quota_is_set(quota) &&
+>  				quota->charged_sz >= quota->esz)
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260328163930.47096-1-sj@kernel.org
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260328163930.47096-1-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
