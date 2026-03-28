@@ -1,178 +1,190 @@
-Return-Path: <stable+bounces-230816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id PT/ILnA9yGkgiwUAu9opvQ
-	(envelope-from <stable+bounces-230816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 21:43:28 +0100
+	id oDjwBIVKyGlVjgUAu9opvQ
+	(envelope-from <stable+bounces-230817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 22:39:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E3534FF0C
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 21:43:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CEAF3500CF
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 22:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A7F53015D31
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 20:43:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5B2873007AD6
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 21:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73513590A8;
-	Sat, 28 Mar 2026 20:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30B9346AC2;
+	Sat, 28 Mar 2026 21:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8DRqWk1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rsHohfFC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422C43491C4
-	for <stable@vger.kernel.org>; Sat, 28 Mar 2026 20:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF82372B28
+	for <stable@vger.kernel.org>; Sat, 28 Mar 2026 21:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774730604; cv=none; b=kOiWNH94uYdoL6yn7/bnX4iSBPTFsD/xA0TPAmLJKtxVYfqpF9JjWAJvR10gcO3JVvmEvDbfLZonmgUn0q0khH0RLoOjLlReY+CIbz7M0kGDMEjaJv0b0u6KLOOIzNQRrVLtnPzKd5Xxx9HMwuzgM+IJBCTJAYu9NqEUz7MxG8s=
+	t=1774733949; cv=none; b=bqw7dh7Bu+zX+kElxWUMV62YQe6aojbYnevokxIt/rjETzxlScfb5r53PS9ljDGtJX+aEX4bGIi8KzYiSjrw4iKFpvGw59klhTVQQTrDOeHbjE5PRIpfZUAuVwf6y8ix+B50opfYp+Vzd7MWIAmbtHlYPyGcLDBlT8/XXNH9WlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774730604; c=relaxed/simple;
-	bh=+EX5095f1L67iD8d4OUekG+X9JM3DOBgBP6fl+h7c8E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P+YjG3SJXsMjUo0ozLLehjzXYqq3EulgwbQKxcHUzr+f3dtNc9ygOzrOH1pXgufGo9tEqu7X9WxsTgM9AA4RHtZt9tk35ER0BL8eTs1xJ1r6rE1k4RAEwu3XhFcjRv9hi7CDujaCBwgR3ZR+T6EtInpTtEfECasEKPf1Ke4q4Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8DRqWk1; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1774733949; c=relaxed/simple;
+	bh=dp9y0LIhxasR0QYSeNO5w2A1c812RSBkpgALIhb9o+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EE27ioKoI+nbnFV8soObsfOqgd/fENQKtcYOgNmkF/3VlapU/pWM4yO+1LyWQ/hjwuFdKsiDbgmS2QIwnGseecFcqv1SOZS7vl5mKCDdYNhnyHf29P8IvTaysMLZPmooEc1i7al+UUllYjQmmw/S5eIVrezhLoxuL2tGtUPJ1Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rsHohfFC; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48538c5956bso31619595e9.0
-        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 13:43:23 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-66b1019bb55so3007324a12.1
+        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 14:39:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774730602; x=1775335402; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKX+S1We1s3caipzPcYGWRj3v8GHW7uxnmBU1rD2O0M=;
-        b=T8DRqWk1KPib1f0c8WrM6HRacctIXr+jlZlotmaptfspY1eUWhTDSbGJJmAeEF9Awt
-         0sypFZZDl/fW5isEJV2jxaI2G8xchUEICMzBWeWqsGxGaLWcGdD+c5y2954DozgMrPe3
-         HdXYw50Klo4lWvmTJpv2ifS1oj2/xEY2bQQsoDbGLLmgWClA+F+4I0WrCB6BQRl1vaX8
-         S4pVn6JMvsBKK7244YH53v2tT4G21so3faMg/pVFuDnq/dPWPsPm/Qon8v767Ou/m7gl
-         YkC14fQsQElHL40l72VJUChy4m/gwTixipe/o4KNVAP0Hs8Dj/MGqEA8AkuK2nvc11/Y
-         Cacg==
+        d=gmail.com; s=20251104; t=1774733945; x=1775338745; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kXnSrL1nik3JfElYjJrrOZj+38qywDMZ4t7LJjjm5fU=;
+        b=rsHohfFCttC34o5YegC+wSoHVzJtDKP3DfZIp3VEgtQxDtysq8OJ542r+micPrxcjv
+         8Mq+AFRrKPhkXw01G+rWjAZp6l/lzMDMsYryQebv5Uq/aBKyULWbqHagwDeLbQc4/GHR
+         NiaCviOPVj+qyF0dSM6nqhJDRej/wb7vYY63mz9xldcQ7XOgkpCcZb7wWvCbjEt9x1L0
+         hMDSzNEigsja6X841QuHlcNo8zdewFRhN73Jib+hmRqEdSXJAVS5m5qHMRWZnoVxzV87
+         ovZfEJz1lHekeYcoonlfd5RI5kZSis3olDXqiUdUOiw0OQUsOcL/JXbkeeuZUB8Q48vX
+         G80w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774730602; x=1775335402;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774733945; x=1775338745;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HKX+S1We1s3caipzPcYGWRj3v8GHW7uxnmBU1rD2O0M=;
-        b=HB1yYAujdh+AeAJM/7k4sM55jZKk1PbPMdNAVtKNYDZ/nZlwofR4M1lz9y6+mh7bvY
-         tflCIQTFM/czyfq6InEfGk4KncOaaUT1l7UYo8HDTTNLD+saWK2xtyFr4TF2U2uA2O18
-         tR7Eiqt0s+1SpNYI6+K54FCV5MGUytQ1nL9+5dhHvOlEWvk2h9Lnasf4rOqF0Q0sVAzS
-         0+1pXHBPG3DeOHiLRTNlFlspbHSyyys6Ne7wbM/6+FD5ht3wyn6voOcaR1pxPLT2m+Cd
-         uSk628uJo2iHPbO5LtTexDmwqMkuzMj4y6AI02q0QLkszlWX7QKWPaBc00eV85X3dW9c
-         RufA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyQZcpHksodWBci/UOf6bgXkpb4cDEx5s9a3SGgo9Z9KrzDkH4ba2EjF2GaTWJHJP9BaRcQFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaJ9co3rBm2jJ7Sb7U1r6bwXpjE7zAsvjnmjkkBlLMfSARfCnC
-	8c8d+7Takp4y1edSbd3w5N9sEhgNEP4d4jRlUy3Qg9sX3MfeEtbMpQEH
-X-Gm-Gg: ATEYQzyk+RfwuKlP4+hpcZJ14Uk+WA8zoUtzZQOjYdrdDz2i+N0dOa/WZgrZ/SE0G/w
-	Dm76YJnci6qjBFCMrFGw1IjfuOG8wbuPQtfCL7aOlVcQKVkMQ4B+RE3jVTJvs3tf3P+51amOnjO
-	cWvazr14G5Ts5TOLHveFLx2CRdFFWipVT3CyX9d+ELBOQUAxqy6+MxPbssVxQZ56Ljwiae3VrJQ
-	qM+BVyn9wcnh5rjR3+MJIuOf1Fgd9KRYoofAT1WnlynVkEvj6DWydfZQRZ4N1zk4E6qtivOKuD9
-	hezdxCwB7/MA88tKqLVASNhtfH/oB1ibLJ3qh44FQiyN3dh+ZN57gHdT57oPYxGrDIf9g1QPdFs
-	DYpUCkcPO8vPPMefvzHIHL3EF5egbZQRU8Wu0nI3CfiaV5b+jKW1glHcqSpJFf04oayGSg8xbiw
-	sVKlKmaMujIjVA6PeNIKYCww/b9LJBMULG3hH7C/5zLfEutzSTHJv8tRsFpspsDQe1O+wVKxEtl
-	KDhK8TMNI3Prh568uPd4G7WMw==
-X-Received: by 2002:a05:600c:4e0b:b0:485:fbd2:f72 with SMTP id 5b1f17b1804b1-487290a9254mr102394915e9.1.1774730601395;
-        Sat, 28 Mar 2026 13:43:21 -0700 (PDT)
-Received: from [127.0.1.1] (93-140-187-240.adsl.net.t-com.hr. [93.140.187.240])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48730628efasm109519825e9.5.2026.03.28.13.43.19
+        bh=kXnSrL1nik3JfElYjJrrOZj+38qywDMZ4t7LJjjm5fU=;
+        b=NYWaMjbv6/YHEaOhdvVYNSsbOZdLJawc/DdBM+N0jkbUnWjKf7aE+zp9qJs3kw4ONX
+         OFgcPuAXpeejYOQquODCeHB1+MIcxQDN0sPxPRuMfhPp1FrKroXW8XaUnw+dBvt2LVSW
+         l2aBFEWnmNVlNEwCA/dFfVdefwxPOicwI47rkh6z0pACfhLKFVKhCf2+wU3ZfaDoam8x
+         jBamvWBYqh5YbecK5r6oMvj3mZgTP354+xUxbQrI5fUxRIIS2Pwe2a0kF+n9+Sb5WAKa
+         G1ku1L0urjr7B7U2PD3jS0CezbbHdzddvAYJ1f4+v/hqvWxB+6xOwrvRkrJdrDhcePjs
+         xWXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUz/HeQ0RfMZQ5gUsREdDN3YWTjZE07x8HNDT3omKTyLjpZCl6QQpA1x5//9A9yd84JVC1Sz5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGAeSPy1xNuovW0QDN2jS/Ly/19xeVlV/2qXnN9sfba5j0tKPF
+	hfhL8ej/48HB+PUJMmgtaEZVYQPiMfucgJ0RKg42piGBDHOQrOYH3DTu
+X-Gm-Gg: ATEYQzzRObWaWmRX37JhsSYs+W7ubdlK8ueWYRfvQ0ZxPmNPjqR+dEU/+h6wIAqRccx
+	V9QNbqGvbW5g8TKNrmJg77ayvSdmclRqrBKIXOY70RqrlbihJANC2C0qUZTzk9+e2XTemz/W9vv
+	U1CfAIOTGxkkPbqc7w8UdH+Ne+pdPNTQAw05Pgv2WxACs1Q7sVv6q09kiUprHuFydsucwzOeWWA
+	skYK97Bty02YBCgluJk9o1gfv/nC+mKlzSMqdK/8jQy9IuUqPfAyRr21W++ZFr3C87+s3KCFXKe
+	Op8+mUqbk1wXOUiXKHVPmf43x+5h/rr5iIikQqNZBIcrE41m/wNB7+DqEge5fGvICQxRi6RdamV
+	JDx5GRh3QJVWyOBTn/zn2c6DqGZnmQwX+GyvJJIr/OWs9i15Bs///rXW4/a3iEOr09IjqHKw6bn
+	jbOOHEr7USFrBZy5d0lM8I+r9RHNMgbz4k
+X-Received: by 2002:a05:6402:4618:b0:665:e9f:9021 with SMTP id 4fb4d7f45d1cf-66b2855f8d5mr3612343a12.9.1774733945154;
+        Sat, 28 Mar 2026 14:39:05 -0700 (PDT)
+Received: from localhost ([178.214.243.78])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66b75f84708sm909093a12.21.2026.03.28.14.39.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 13:43:20 -0700 (PDT)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Date: Sat, 28 Mar 2026 21:42:16 +0100
-Subject: [PATCH] backlight: ktd2801: enable BL_CORE_SUSPENDRESUME
+        Sat, 28 Mar 2026 14:39:04 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Eric Huang <jinhuieric.huang@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH] drm/amdgpu: fix sleeping allocation under spinlock in PASID IDR
+Date: Sun, 29 Mar 2026 02:39:00 +0500
+Message-ID: <20260328213900.19255-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260328-ktd2801-pm-fix-v1-1-007cb103faeb@dujemihanovic.xyz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDY0MT3eySFCMLA0PdglzdtMwKXUPzVAtzQ9M0i2RjcyWgpoKiVKAw2MD
- o2NpaAFlB42dgAAAA
-X-Change-ID: 20260314-ktd2801-pm-fix-17e8715f8c37
-To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
-Cc: Karel Balej <balejk@matfyz.cz>, dri-devel@lists.freedesktop.org, 
- linux-fbdev@vger.kernel.org, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1056;
- i=duje@dujemihanovic.xyz; s=20260328; h=from:subject:message-id;
- bh=ZxchMbxwniYIWnT9R7/2Td04/zp5hTI04KiKc8j4Q4g=;
- b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGDJP2KbHtWVJlUzc/WPZVv0I27N23+16d3Wnzf39bl7+j
- oXvMxyyO0pZGMS4GGTFFFmYl8pd4ksNn+hQZJsEM4eVCWQIAxenAEzkQATDX5FW8dMPdCXrznXM
- nLJB0ap+xqH2987aWyZUy7s4d+8MS2dkmPQxZZOGwjfGGCXuy282TzVXupY8dWbx9jULg9O4epL
- nMAEA
-X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
- fpr=9BD463017690089DAA8DC266275F544B3B1B4792
-X-Spamd-Result: default: False [-1.54 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.63)[subject];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230816-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,gmx.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230817-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[dujemihanovic32@gmail.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,dujemihanovic.xyz:email,dujemihanovic.xyz:mid]
-X-Rspamd-Queue-Id: 27E3534FF0C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1CEAF3500CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Duje Mihanović <duje@dujemihanovic.xyz>
+Commit 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case")
+switched from ida to idr_alloc_cyclic() protected by a spinlock, but
+passes GFP_KERNEL to the allocator.  idr_alloc_cyclic() may need to
+allocate radix-tree nodes, which with GFP_KERNEL can sleep — illegal
+under a spinlock that disables preemption.  With CONFIG_PREEMPT or
+lockdep enabled this triggers:
 
-Boards using this backlight chip do not power the backlight off on
-suspend. Enable BL_CORE_SUSPENDRESUME so the chip gets powered off by
-the backlight core on suspend.
+  BUG: sleeping function called from invalid context at
+       ./include/linux/sched/mm.h:323
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 570
+  ...
+  #1: ffffffffc2cd24f8 (amdgpu_pasid_idr_lock){+.+.}-{3:3},
+      at: amdgpu_pasid_alloc+0x24/0x210 [amdgpu]
+  ...
+  kmem_cache_alloc_noprof+0x41d/0x780
+  radix_tree_node_alloc.constprop.0+0x56/0x3a0
+  idr_get_free+0x330/0x830
+  idr_alloc_u32+0x14a/0x2e0
+  idr_alloc_cyclic+0xd3/0x1d0
+  amdgpu_pasid_alloc+0x51/0x210 [amdgpu]
 
-Tested on samsung,coreprimevelte.
+A mutex is not an option because amdgpu_pasid_free() is reachable from
+dma-fence callbacks (amdgpu_pasid_free_cb) which may run in IRQ context.
 
-Cc: stable@vger.kernel.org # v6.19
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+Use idr_preload(GFP_KERNEL) before taking the spinlock to pre-allocate
+radix-tree nodes, then pass GFP_NOWAIT inside the critical section so
+the allocator draws from the preloaded pool and never sleeps.  This is
+the standard kernel pattern for IDR allocation under a spinlock.
+
+Fixes: 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 ---
- drivers/video/backlight/ktd2801-backlight.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/ktd2801-backlight.c b/drivers/video/backlight/ktd2801-backlight.c
-index 17eac1b3bce4..1b1307e03b20 100644
---- a/drivers/video/backlight/ktd2801-backlight.c
-+++ b/drivers/video/backlight/ktd2801-backlight.c
-@@ -53,6 +53,7 @@ static int ktd2801_update_status(struct backlight_device *bd)
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+index d88523568b62..515775eab2ef 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -67,10 +67,12 @@ int amdgpu_pasid_alloc(unsigned int bits)
+ 	if (bits == 0)
+ 		return -EINVAL;
  
- static const struct backlight_ops ktd2801_backlight_ops = {
-+	.options = BL_CORE_SUSPENDRESUME,
- 	.update_status = ktd2801_update_status,
- };
++	idr_preload(GFP_KERNEL);
+ 	spin_lock(&amdgpu_pasid_idr_lock);
+ 	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
+-				 1U << bits, GFP_KERNEL);
++				 1U << bits, GFP_NOWAIT);
+ 	spin_unlock(&amdgpu_pasid_idr_lock);
++	idr_preload_end();
  
-
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260314-ktd2801-pm-fix-17e8715f8c37
-
-Best regards,
---  
-Duje Mihanović <duje@dujemihanovic.xyz>
+ 	if (pasid >= 0)
+ 		trace_amdgpu_pasid_allocated(pasid);
+-- 
+2.53.0
 
 
