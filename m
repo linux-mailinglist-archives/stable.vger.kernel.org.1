@@ -1,199 +1,246 @@
-Return-Path: <stable+bounces-230760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PZyEd5Rx2nCVQUAu9opvQ
-	(envelope-from <stable+bounces-230760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:58:22 +0100
+	id oN36HbFSx2nfVQUAu9opvQ
+	(envelope-from <stable+bounces-230761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:01:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373CC34D34E
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:58:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF8234D395
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 05:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0ADB13024ED5
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 03:58:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B946B302BBAE
+	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 04:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0191831715C;
-	Sat, 28 Mar 2026 03:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3255D1F30BB;
+	Sat, 28 Mar 2026 04:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M/4rJ1OW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cYsj/zhn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89613175A94
-	for <stable@vger.kernel.org>; Sat, 28 Mar 2026 03:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF93EC2FD;
+	Sat, 28 Mar 2026 04:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774670296; cv=none; b=TxBbRssbkUTeCfe3xSuT4EasyhxcYMe9Go2VxTx62ayGBEe+bAvMfQwBe7hpYpF0pMnxOEwfWRUWX7bITRrrWW2XEIeoD8fSl5aCx8Zv6Sm374/4JVDTjgLP1T8tCkLKioA0pFURPhVHFSJnoBxBHlXTKaf8Crz92BMLwne+dnE=
+	t=1774670509; cv=none; b=tsMjIm7fzIYnCYFyB/UPhFVdd8NgNvc4jO6rZ6IBIXKd9ByYPFtdUpixqxyWlvN2LVqAh6AVT89OootNbovl+WhGXsqhaOFtIq5dJ0bD+j2LAGpstYVKKCAZBg+TGmnzOGl5+fvyz2mIeq/EQaQlAfQwl8nj8arqCHDmjkAdKfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774670296; c=relaxed/simple;
-	bh=mSy4RoaBT39xTSvc+8yUlqjxtU8HoyAOY5FwrcPr75Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mr30hl+yJAWlw6cwTAMLuz8lDQWS/cFiP88691yHIG+bh1/Zr79VZRogvavXBE56oAK8hk11fCDi+T3pbQjpgAfWCXMXOicxChT34llqFqyE9x0P4sBnI9sHQYVNYZn2c0SgddP51iqabDDHaJh0tA/n0nuirs3js+kgdsmkIEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M/4rJ1OW; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8cfc1aced74so474152985a.2
-        for <stable@vger.kernel.org>; Fri, 27 Mar 2026 20:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774670294; x=1775275094; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DBblOHPwIcVybXPXeTa1HXY+6r7rBi60EfIfdS+sSzY=;
-        b=M/4rJ1OWtFZPA0PHYOeZiFQEguoQP8Koy1ONfG2NZoucbMz/f1gKdoHHd61CnCWPr8
-         bKjlFJKRDeLPtcrO1PKGZfalNBvIbFeJS1/i1ukZ561+PJkAC5g2cAJdC0HmM65ii9/m
-         SaJqPRItB+4pEluHjfJQVyNUBElEuWolCVUk3YHTS/EGQtaem+wKYOVGEmenfWyZWaTW
-         gPvgEQIACmVhCydY09KqqngptN06JVqi08bBvw+abSbgsZjBA6MUG60gxjvA4d4S05z6
-         a6ocedyz4SA8DVmHy7MZV0y9mtHls2sTxBz+RthOoQSZ6Y+mCzC0vGcRueS9ScjUPnHj
-         9mhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774670294; x=1775275094;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DBblOHPwIcVybXPXeTa1HXY+6r7rBi60EfIfdS+sSzY=;
-        b=oQuO8AQZ5vIhNCgG+2Ph/VNKSBdkYxa+0mqI3u+b/NDqN2LRdW2wNVm1VbyNMBtTpX
-         8UzRW6v17F0PiXeQ2VBYqV1hDTULL3C06oWYkKfdMB4TDDfclG46Y4IXUA0y1Y6trgWZ
-         2014lKpxa3hrNV/BnC3nrEcgA7pQY+hqI5BDH/J7ZeB38SsWNkIH7tZFv9SnPc3ZFzUH
-         /JjPEkKdrLlH9liDvL3YEM1SZkODLdxEx6qbpky5s3F/nz/miMNc/jqmz+QRdpxIDGf6
-         stF2aUdWcl3h9NNEcyJGylKgUr2q5cQXEnJII5xGuTRA4zuqzmtCpjT0que610X3rImQ
-         yOlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCjRko0UHNaFO3e5412LagoOMbps+btIISkgnvC0KRIQKZC+MasSSTdBih6rgf8CBGsoHjUuY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsefDVX5ex9wvTIbik5ElCk359NYGdu1r22s6pzZAhP5DIFHmP
-	55wRDzNjoiaffp3wnWgrT3/xCVayHe08ogAfL5Cw7TuSoPOUdoLMIn7V
-X-Gm-Gg: ATEYQzyyjNayJIj1VO3Wi8Q0EUUIzE4sgEFVi2qbxbWbIuffV022U+xdDzxs5VtCHSb
-	uxTXTShUp1nnuyBApozHoS1oY74Fol166we0O8ID3g4sDW7T07iB2SadA1PrJo6CQp9JAF0LXK6
-	sMyh5vU/anKO3yp0VNNAfyrmwC1uiSxdkxdJaIk0+Bdf6EEIOzrC7q8luM1+saQlz7tGOmgHgkA
-	GTN9l5gy3ct25FZkoZ09Kj9AXctlDkJyp0X/Nc5Qtuzf3t4p9JMIRdbiee26jg+6N/WREtpND4L
-	+lejIiUEQVd3kdj/eaIBBGxYhoD8EkeMlne7wkJQj+zx5Yi9dy9syiiKWUPbNMdPIw5y1YnvvFJ
-	9LI4O9RJQcF6htC+7QYCidnzLZ4ykpK2AoXZh8zpUfT9PtnmwrLG0lXxjPfNZK9aLpLOZCt50mv
-	5KOgxJD7o4NKWLMVErL2nJ22uLDyYY/9SWFWABXLa3UvnrXw8aEJqr2fgXhbWbvwcyri6EBP7na
-	24MqHRUT6dyQTbpls/OaQ==
-X-Received: by 2002:a05:620a:4625:b0:8cf:bbf0:ff52 with SMTP id af79cd13be357-8d01c7d86eemr698785385a.63.1774670294490;
-        Fri, 27 Mar 2026 20:58:14 -0700 (PDT)
-Received: from mango-teamkim.. ([129.170.197.108])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d028044bdcsm84452585a.28.2026.03.27.20.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 20:58:14 -0700 (PDT)
-From: Nathan Rebello <nathan.c.rebello@gmail.com>
-To: linux-bluetooth@vger.kernel.org
-Cc: luiz.dentz@gmail.com,
-	marcel@holtmann.org,
-	stable@vger.kernel.org,
-	kyungtae.kim@dartmouth.edu,
-	Nathan Rebello <nathan.c.rebello@gmail.com>
-Subject: [PATCH] Bluetooth: ISO: fix NULL deref in iso_recv() ISO_END handling
-Date: Fri, 27 Mar 2026 23:58:13 -0400
-Message-ID: <20260328035813.296410-1-nathan.c.rebello@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1774670509; c=relaxed/simple;
+	bh=xYdBGSuKe/2Uz+P/xMdEru42IC0I9uypbpuiMNDXlsU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CCY/H61gu/ge5Ksoqe0//mCeCvPmHaTn5v8KUEx8LmgFMqCo0IBXexrwFlQfrnFe3M0+lViZBamSxQd05E3PaEyce8SHUR/wUSHKOWwfIyPoGrNKqpCaUDdcHC8Lj/JZN/GBrCqopAESnlss6mZ3krrGSxrbW8X0XTFdXv7K9vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cYsj/zhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19095C4CEF7;
+	Sat, 28 Mar 2026 04:01:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774670508;
+	bh=xYdBGSuKe/2Uz+P/xMdEru42IC0I9uypbpuiMNDXlsU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cYsj/zhnC9B2FaRI8QVi2AIF8xWhVBKJQGhE/YIDeDtOpKYitKlOsfPIeeIrpw1vq
+	 QK+TMSc6Pk8gh1SjO2NjDYDu0OoOZ3K6eLPzDPLIDtDlYlzodRg3wnVoV7tKk01SG5
+	 1hBJ8jKMNYpy09nc/dImYa6CN8mdYeIUzCdcuses=
+Date: Fri, 27 Mar 2026 21:01:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: mm-commits@vger.kernel.org, xiangzao@linux.alibaba.com,
+ willy@infradead.org, stable@vger.kernel.org, p.raghav@samsung.com,
+ mcgrof@kernel.org, ljs@kernel.org, kas@kernel.org, hare@suse.de,
+ djwong@kernel.org, dhowells@redhat.com, dchinner@redhat.com,
+ david@kernel.org, da.gomez@samsung.com, brauner@kernel.org
+Subject: Re: [merged mm-hotfixes-stable]
+ mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages.patch
+ removed from -mm tree
+Message-Id: <20260327210147.b481ba4e68a652f4936dc260@linux-foundation.org>
+In-Reply-To: <011665ea-ebde-4c5e-9eb9-b9adffff056f@linux.alibaba.com>
+References: <20260328003911.5D84BC19423@smtp.kernel.org>
+	<011665ea-ebde-4c5e-9eb9-b9adffff056f@linux.alibaba.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-230760-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,holtmann.org,vger.kernel.org,dartmouth.edu];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathancrebello@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-230761-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 373CC34D34E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,samsung.com:email,infradead.org:email]
+X-Rspamd-Queue-Id: CEF8234D395
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The ISO_CONT case in iso_recv() properly checks for unexpected
-continuation frames (!conn->rx_len) and oversized fragments
-(skb->len > conn->rx_len) before accessing conn->rx_skb. The
-ISO_END case lacks both checks.
+On Sat, 28 Mar 2026 10:02:09 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-When an ISO_END packet arrives without a preceding ISO_START:
-  - conn->rx_skb is NULL (never allocated)
-  - skb_put(conn->rx_skb, ...) dereferences NULL -> kernel crash
+> What happened to this fix patch? The commit message doesn't belong to my 
+> original patch.
 
-When an ISO_END fragment is larger than the remaining expected
-length:
-  - skb_put() extends past conn->rx_skb->end
-  - triggers skb_over_panic -> kernel BUG
+Crap, thanks for noticing.  At some point I must have pasted in the
+changelog text from "mm/huge_memory: fix folio isn't locked in
+softleaf_to_folio()".  Redone as below:
 
-KASAN confirmed the NULL-deref on kernel 7.0.0-rc5 via VHCI:
 
-  general protection fault, probably for non-canonical address 0xdffffc0000000018
-  KASAN: null-ptr-deref in range [0x00000000000000c0-0x00000000000000c7]
-  CPU: 0 UID: 0 PID: 72 Comm: kworker/u9:0 Not tainted 7.0.0-rc5
-  Workqueue: hci0 hci_rx_work
-  RIP: 0010:skb_put+0x27/0x1a0
-  Call Trace:
-   <TASK>
-   iso_recv+0x5e0/0xee0
-   hci_rx_work+0x226/0x730
-   process_one_work+0x633/0x1060
-   worker_thread+0x45b/0xd10
-   kthread+0x2c6/0x3b0
-   ret_from_fork+0x38d/0x5c0
-   </TASK>
-  Kernel panic - not syncing: Fatal exception
 
-Fix by adding the same validation that ISO_CONT already has:
-reject unexpected end frames and oversized fragments.
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
+Date: Tue, 17 Mar 2026 17:29:55 +0800
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add ISO Socket")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
+encountered some very strange crash issues showing up as "Bad page state":
+
+"
+[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+[  734.496442] page dumped because: nonzero mapcount
+"
+
+After analyzing this page’s state, it is hard to understand why the
+mapcount is not 0 while the refcount is 0, since this page is not where
+the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
+reproduce the crash as well and captured the first warning where the issue
+appears:
+
+"
+[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  734.469315] memcg:ffff000807a8ec00
+[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+......
+[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+[  734.469390] ------------[ cut here ]------------
+[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+CPU#90: stress-ng-mlock/9430
+[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+[  734.469555]  set_pte_range+0xd8/0x2f8
+[  734.469566]  filemap_map_folio_range+0x190/0x400
+[  734.469579]  filemap_map_pages+0x348/0x638
+[  734.469583]  do_fault_around+0x140/0x198
+......
+[  734.469640]  el0t_64_sync+0x184/0x188
+"
+
+The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
+nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
+tried to map beyond the large folio’s size.
+
+By adding more debug information, I found that 'nr_pages' had overflowed
+in filemap_map_pages(), causing set_pte_range() to establish mappings for
+a range exceeding the folio size, potentially corrupting fields of pages
+that do not belong to this folio (e.g., page->_mapcount).
+
+After above analysis, I think the possible race is as follows:
+
+CPU 0                                                  CPU 1
+filemap_map_pages()                                   ext4_setattr()
+   //get and lock folio with old inode->i_size
+   next_uptodate_folio()
+
+                                                          .......
+                                                          //shrink the inode->i_size
+                                                          i_size_write(inode, attr->ia_size);
+
+   //calculate the end_pgoff with the new inode->i_size
+   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+   end_pgoff = min(end_pgoff, file_end);
+
+   ......
+   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+   end = folio_next_index(folio) - 1;
+   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+
+   ......
+   //map large folio
+   filemap_map_folio_range()
+                                                          ......
+                                                          //truncate folios
+                                                          truncate_pagecache(inode, inode->i_size);
+
+To fix this issue, move the 'end_pgoff' calculation before
+next_uptodate_folio(), so the retrieved folio stays consistent with the
+file end to avoid 'nr_pages' calculation overflow.  After this patch, the
+crash issue is gone.
+
+Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
+Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <dchinner@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/bluetooth/iso.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index be145e273..97b5fc9da 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -2587,6 +2587,20 @@ int iso_recv(struct hci_dev *hdev, u16 handle, struct sk_buff *skb, u16 flags)
- 		break;
+ mm/filemap.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+--- a/mm/filemap.c~mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages
++++ a/mm/filemap.c
+@@ -3883,14 +3883,19 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned int nr_pages = 0, folio_type;
+ 	unsigned short mmap_miss = 0, mmap_miss_saved;
  
- 	case ISO_END:
-+		if (!conn->rx_len) {
-+			BT_ERR("Unexpected end frame (len %d)", skb->len);
-+			goto drop;
-+		}
++	/*
++	 * Recalculate end_pgoff based on file_end before calling
++	 * next_uptodate_folio() to avoid races with concurrent
++	 * truncation.
++	 */
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
 +
-+		if (skb->len > conn->rx_len) {
-+			BT_ERR("End fragment is too long (len %d, expected %d)",
-+			       skb->len, conn->rx_len);
-+			kfree_skb(conn->rx_skb);
-+			conn->rx_skb = NULL;
-+			conn->rx_len = 0;
-+			goto drop;
-+		}
-+
- 		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
- 					  skb->len);
- 		conn->rx_len -= skb->len;
--- 
-2.43.0
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	end_pgoff = min(end_pgoff, file_end);
+-
+ 	/*
+ 	 * Do not allow to map with PMD across i_size to preserve
+ 	 * SIGBUS semantics.
+_
 
 
