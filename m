@@ -1,224 +1,185 @@
-Return-Path: <stable+bounces-230869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CPLAPzTyGlTrQUAu9opvQ
-	(envelope-from <stable+bounces-230869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:25:48 +0200
+	id EITOJHvdyGkorwUAu9opvQ
+	(envelope-from <stable+bounces-230872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 10:06:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F713510CD
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:25:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93103512FB
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 10:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 584F3301DADB
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 07:25:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DEF1302E935
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 08:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606CD2D3A93;
-	Sun, 29 Mar 2026 07:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652B2D0605;
+	Sun, 29 Mar 2026 08:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siYtw5Ae"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="PWpA5CPi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic310-23.consmr.mail.ne1.yahoo.com (sonic310-23.consmr.mail.ne1.yahoo.com [66.163.186.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186622D3733
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 07:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC724B28
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 08:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774769137; cv=none; b=PgVAFZPLJW5TWmBW8P16vXoAuxAyXm74rS8XUTxv0XTn4h0heX16q+pKWaOV+MOOdNUfl+C1vBTOQdZxoSZ8nuJumqwCrKlKGUvGUgcsMNr5eDhs9cjFd9xXU55sRd65qJxbzEeJWh5wNW94sGpR92CBEp2H32rtjqCyKka8d+4=
+	t=1774771496; cv=none; b=ETxouC+yEHCgrcWeo9jlq+M/dguHqI8C9cDSq64s843zQttSN/Qe1xqa6TAqLpKiM2yq0OesGrWfom6iRoeBaxkoddqKitB2dZDKXfo1sD7lLGxXH3j1WiGDAbSRBNJX1X35VFNkZTiqv+Sh9DyhOXHBGZcOW8YyvqsA0di3s8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774769137; c=relaxed/simple;
-	bh=8FvN+lWYG1QNQYpfOsCP1+lcXDqsOKA87qImLDcs1Cw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FMwEzgbHy/aSXU1SLb7SVKHSYiRDtxXaURfXh5fKd/6Bo80gCDNhLdWH/W2DleYOqiakAWWg6i+JfV/1HxLqI9lwcw9fVFipojgTbqVcLBh4kftA5mcuPyBp1KaWacpeWTeFtk6jyqgndX/I6P8pMa+olsa7N38fyAtQn9jtVg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siYtw5Ae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24616C116C6;
-	Sun, 29 Mar 2026 07:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774769136;
-	bh=8FvN+lWYG1QNQYpfOsCP1+lcXDqsOKA87qImLDcs1Cw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=siYtw5AedMeMi+GDY9brRgUIqrYJjkATjv9EqY5HvzuS5MXQclrkLriYvL3KhPRLK
-	 hTDQ0ro9kaAPFWZvoNee6YKGmBV9qQ5ypOwdGFjQED340gT1Fsrfl5l5sXKv92A6eq
-	 Oe0Xd4N6kr3bV/3Yi2n007mjJiDY4gmekDjPwOCg=
-Subject: FAILED: patch "[PATCH] mm/damon/core: avoid use of half-online-committed context" failed to apply to 6.18-stable tree
-To: sj@kernel.org,akpm@linux-foundation.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 09:25:25 +0200
-Message-ID: <2026032925-frosted-jogger-2ba0@gregkh>
+	s=arc-20240116; t=1774771496; c=relaxed/simple;
+	bh=YScehe1vJIcsKixSOZ63sCbEVIMnAUiEXY8jtT16Lto=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=BpjTh0EE/6Csm6acB+TRBncOtbOusExDpwlOlhZU7Y8vmwNK0L98b3rGdF5ADxHrFeup45b018Zzl6PplPSIXC1pAvPiNfyW9OPiGItR5F++CJhQOX7B9QWmeXOp7zLrxj1UMr3Yt/KFVR6ZNuDoKhrZhzw1iuVVgtEH9wT41y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=PWpA5CPi; arc=none smtp.client-ip=66.163.186.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1774771494; bh=V7Fe5j5YmQNWtMWv+HiettIuHXaF9B12nKExBxT8Hk4=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=PWpA5CPiMp38tjogfRBs9lNEHqoTL8z2STOuBcdqJ0la9vwsA+D4cJGauaV3Rex03FAdY5z0uC36QWLIgn05X/HBkSCERNFgUWwXRQH90CPxlnt0n0qNpUIdNRR7Yamyf8dhKg0ZytB0qKwqo21zUKudVNTafafhzWWogsEKUN6Mug3e6npo5bc35Ey4kPQ6TvIULDv5sd4H+wCuq60KFkUHosvSAN+v0/MggLao+S9sZTr+I2XVJqF1HKOznWbnt1TSHeRgqnwObDCK7htx8o0DlEDhWc4vWlbnhgGCPUa0IoF8vwEkea6BmcX/02G60W5dimPiXnBpisdrs/3keQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1774771494; bh=1+z5vy6gK0wDuf9FPy7rUdU6Y6V/oR7G4MrQTOx6gol=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=QIlLYoW/D5XVHBMkv2043zmQjK4h0wEluinv57RhMKlrirsvYqusrLQp2xuqc0n5gr3SMPNQz7wm6LHk0XpLVR5X2qgoKzLD9c1GbUT50nqkKkkpwHixecS2cHQB1nHvNPY15WvN5iEiO0ZsG45qGQ3T0Fdxh6D9EduuGw9jneRROx0xCvgL9Q/H4g3O6XYc/UX+a7dBImZhr78XSQQLPVB7zYttrNFAqc4Aqr/pWUtXSC8e7lD7N5m6zwuAUsqx4pfaRo3eDolD5+M3J0WLn60LTsbza8SUU6/osbT0azon/9kOXhnnA6MnNqW7SXTDh2BrxYhlCgKLVr2YfN60lg==
+X-YMail-OSG: wiG56L0VM1lXOrMO7zYN_3EBKtFe6gaNfbn4VxGauCW_4zaeyWLtTSFI_K4VXlU
+ EVq8lBrotN1UgbHOZtnlDPQtCZnzwdeQq5fctod.kzCbXw1him0Zzw_LJHlmbyidWFdxuGh2lpbm
+ GEqj6M2ivlm91NkusoqEyoxIVifZWYrpMMVkQMkYLnLfPVlFyDCVFTKYzGWflhEcCwMaJE30RdDe
+ l2YwVBDRT7LL6V0K40EdXRM8FhDV3s4HydYtec4LFR6sTPGfLB70hayBvC2DcPlZBUh.BlkEfqhg
+ tZVQ4eL6MXghcWc3Q3d2xo7Z.uokBG0LmIxtTbbuQSdSgdu950Brs__nd6be_YohY_aQOal_KLgH
+ d2n8AemC3GRr0_40zbQ2oU6wypwy.wTxX583wUV_XeCUe3DoQvtrmQVAthC.sNFoag_BGDcaSrLx
+ Gzvtbf0qiVPQzHDzlHGRRRobYP0DR5h7SlCiqfHUNUhiEAXT1zV5pb4FsQZoO_39LKKRQyRnzXuS
+ acsF6FLJDCI8YYLgMcFnetc7EK8Z4EbYSzdiet9uiao0rq5Qg6d.eei.sqvsy1klaJZfaQp_86cm
+ 1LM7Yxg8PSpm3mm.mE3awxBGpUUmF9Rm8fUsBPd.cDWxZhjN5HnFYRJOYafM7GS8qWPqF8CwQorL
+ 11_O3z15NbcRyKFEFkM4vHWjVqqmTvnPCVRZBFTlWM5sYT13hrIs6BaKDnJ9glSyTfxvvDCOx.p_
+ k80eS7_8X2QeTOyokKXtxBvgv7RJNwxLtDmXCzL3nKklnqq6JyRK8AUkGoT5OAB5nRlaX2OZIqJu
+ pEKB8hoHCvvnh.XkkqDNNjdVL3T8yoYsAxWgvibjD69SqGyMh95pKKKWUmYLV2uYvb8OZiGYh38x
+ fEns0XbT.gVObyxX8fTZ1Ut0660FdBmndzuKt9k.bKGucvKw_yqKpcC.juPY4DOsM85jQhQMUsIK
+ giY2PsvUjpSSbXnhhu6HGEbeZ_rCfg6GEY5q2pm4d1o_7YVNCh7OmDef.WeyGfhyqrYKoZEuTeAW
+ pWzPx2F3kTH.5Ocuis1tl9qSccArVf2U6AftT4.px8d2pGfQ.ZPZfJyyxj3E2aIT.e.9ibPnowRe
+ YQ5rWY32ReBbmrVRkhR29oB5pAWHBH9_1eKaNukLYfxSokHfU9IvTeUgl99JZ04K.tR3axRf_V2Q
+ nSqtdBlqEqIV9UHZWIGXpKJuzrF2XKKsLUqU1GR_6LhaTAlpbmGkEQBV9b9ydBdXzwy2Bcf98M9.
+ BUKFznTlvaTTpokaDDvKqPCsAds3HPYeSYe043X40DEpY93YafL3svwtg648ZnSKBakeRsau9Lj2
+ ZrU6N0.reRDtIIYpnclmXLKSuhY75ineJD5rSme.L_LkOiCDWYnY_63.JBSEtmKyxZ9O455osAjM
+ 4rgtRgrIsmBOe7m77troeCD_2IIUuwx7AIQn0fb8D6rXqwAbHAYtaMMFzggWU0Gsst0yJDjAxWIi
+ A8iECGs5bTmfQkGIScICpPEYicR0o1ed5.cUappYW9m8hIqNmIKXEK0LdKam1nb.mOSU7MBqp6Ux
+ GnXFtuTaU0vpNCW_4z2rdVj65QDEC6MxeqBIUnCum2WEk6He1RWRc4h.oB4kio19n4YyBwxj3h4I
+ 0zABzRNZkNm_VNZhfXbFiJjEUJj5h8giBRJ49ExhfbQQS9GcBJnUoxHRsUF_eubvdqNHUCMRuZpq
+ KielRewyByp7LO2vzenPi893zm.aBkyO6dUBkFH_BmoX2svPw7rGc_3XoHCrM8aYp4GLwJ7TfSql
+ ATgdC5xqahwiLJE9McDL.ZqwFmu64ugmrrLuldui3IzoGt2F1sNo1dypHKoS3bWw4MTQtgByiruv
+ lgeFG.NJJ3IpUku1mAHGo3w.RHs9lIXFNpBxxWi7ZkzfYvXn4y.doqz5YO4DaUnbDohsOzO.vm1D
+ eV24BnIw7FqC8qBxzCL61lfSujwEqpKLMFCIs1tG0cMh1VLvQ12Tg.8FO5enJxfD19PGZmw6.rgW
+ Huwpb5tOMUqUMmlh0mBQTo_Bzmm3LlF6rdbKMovPRUseU70lcCNN1DblylyCFzcUYJ3ByqUTKP19
+ emvDcICj68Be9HMLGZuYfAVo_bG.y8p3ixPbSol5zVWmpItFelmqPTnBcdOseO7V6oFz.vx.nsPg
+ SgFKlzBX2kliio.pOEnUQfYbil4WKUoeqtl_XDQQyAIBVEPkj0ti86l3XqXRwHG.4PJMFI.H5ju7
+ 2mKzfWo0LhvOpCnkxQck9WyS8mjbGZ4PxNt73vuSeeDPwnakpkrAF9GTytqbn7714YtFZrU4MjeP
+ QPc8E2g9KzgVvp0tSRNcxQwQgUcnQp4.Bvsom
+X-Sonic-MF: <abhishek_sts8@yahoo.com>
+X-Sonic-ID: f9e14122-7cc6-405d-9192-7017615a970f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Sun, 29 Mar 2026 08:04:54 +0000
+Received: by hermes--production-sg3-6959968fbd-gj7s8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 704786d9823fd8a8253f68d6c834048e;
+          Sun, 29 Mar 2026 07:34:27 +0000 (UTC)
+From: Abhishek Kumar <abhishek_sts8@yahoo.com>
+To: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	syzbot+3fc9eecaf97147282c87@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Abhishek Kumar <abhishek_sts8@yahoo.com>
+Subject: [PATCH] drm/atomic: fix vblank event leak in complete_signaling()
+Date: Sun, 29 Mar 2026 13:04:23 +0530
+Message-ID: <20260329073423.8390-1-abhishek_sts8@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+References: <20260329073423.8390-1-abhishek_sts8.ref@yahoo.com>
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[yahoo.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[yahoo.com:s=s2048];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230869-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,syzkaller.appspotmail.com,vger.kernel.org,yahoo.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230872-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: 54F713510CD
+	DKIM_TRACE(0.00)[yahoo.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[yahoo.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[abhishek_sts8@yahoo.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,3fc9eecaf97147282c87];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D93103512FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+When prepare_signaling() creates a vblank event via create_vblank_event()
+but hits an error before the event is fully initialized (i.e. before
+drm_event_reserve_init() sets file_priv or a fence is assigned to
+event->base.fence), the subsequent call to complete_signaling() fails to
+free the event because its cleanup condition requires at least one of
+those fields to be set:
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+    if (event && (event->base.fence || event->base.file_priv))
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This happens when only fence_ptr triggers event creation but a subsequent
+allocation failure occurs before the fence is assigned to the event. The
+128-byte event object is then orphaned and reported by kmemleak.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x 26f775a054c3cda86ad465a64141894a90a9e145
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032925-frosted-jogger-2ba0@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+Fix this by adding an else-if branch that frees events which have no
+completion callback set. Events allocated by
+drm_atomic_helper_setup_commit() always have completion set, so checking
+for its absence safely identifies events that were allocated by
+prepare_signaling() but never fully set up.
 
-Possible dependencies:
+Reported-by: syzbot+3fc9eecaf97147282c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3fc9eecaf97147282c87
+Fixes: 92c715fca907 ("drm/atomic: Fix double free in drm_atomic_state_default_clear")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
+---
+ drivers/gpu/drm/drm_atomic_uapi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 26f775a054c3cda86ad465a64141894a90a9e145 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Thu, 19 Mar 2026 07:52:17 -0700
-Subject: [PATCH] mm/damon/core: avoid use of half-online-committed context
-
-One major usage of damon_call() is online DAMON parameters update.  It is
-done by calling damon_commit_ctx() inside the damon_call() callback
-function.  damon_commit_ctx() can fail for two reasons: 1) invalid
-parameters and 2) internal memory allocation failures.  In case of
-failures, the damon_ctx that attempted to be updated (commit destination)
-can be partially updated (or, corrupted from a perspective), and therefore
-shouldn't be used anymore.  The function only ensures the damon_ctx object
-can safely deallocated using damon_destroy_ctx().
-
-The API callers are, however, calling damon_commit_ctx() only after
-asserting the parameters are valid, to avoid damon_commit_ctx() fails due
-to invalid input parameters.  But it can still theoretically fail if the
-internal memory allocation fails.  In the case, DAMON may run with the
-partially updated damon_ctx.  This can result in unexpected behaviors
-including even NULL pointer dereference in case of damos_commit_dests()
-failure [1].  Such allocation failure is arguably too small to fail, so
-the real world impact would be rare.  But, given the bad consequence, this
-needs to be fixed.
-
-Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
-the damon_commit_ctx() failure on the damon_ctx object.  For this,
-introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
-when it is failed.  kdamond_call() checks if the field is set after each
-damon_call_control->fn() is executed.  If it is set, ignore remaining
-callback requests and return.  All kdamond_call() callers including
-kdamond_fn() also check the maybe_corrupted field right after
-kdamond_call() invocations.  If the field is set, break the kdamond_fn()
-main loop so that DAMON sill doesn't use the context that might be
-corrupted.
-
-[sj@kernel.org: let kdamond_call() with cancel regardless of maybe_corrupted]
-  Link: https://lkml.kernel.org/r/20260320031553.2479-1-sj@kernel.org
-  Link: https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
-Link: https://lkml.kernel.org/r/20260319145218.86197-1-sj@kernel.org
-Link: https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org [1]
-Fixes: 3301f1861d34 ("mm/damon/sysfs: handle commit command using damon_call()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index a4fea23da857..be3d198043ff 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -810,6 +810,12 @@ struct damon_ctx {
- 	struct damos_walk_control *walk_control;
- 	struct mutex walk_control_lock;
- 
-+	/*
-+	 * indicate if this may be corrupted.  Currentonly this is set only for
-+	 * damon_commit_ctx() failure.
-+	 */
-+	bool maybe_corrupted;
-+
- 	/* Working thread of the given DAMON context */
- 	struct task_struct *kdamond;
- 	/* Protects @kdamond field access */
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index c1d1091d307e..3e1890d64d06 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1252,6 +1252,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- {
- 	int err;
- 
-+	dst->maybe_corrupted = true;
- 	if (!is_power_of_2(src->min_region_sz))
- 		return -EINVAL;
- 
-@@ -1277,6 +1278,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	dst->addr_unit = src->addr_unit;
- 	dst->min_region_sz = src->min_region_sz;
- 
-+	dst->maybe_corrupted = false;
- 	return 0;
- }
- 
-@@ -2678,6 +2680,8 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
- 			complete(&control->completion);
- 		else if (control->canceled && control->dealloc_on_cancel)
- 			kfree(control);
-+		if (!cancel && ctx->maybe_corrupted)
-+			break;
+diff --git a/drivers/gpu/drm/drm_atomic_uapi.c b/drivers/gpu/drm/drm_atomic_uapi.c
+index 87de41fb4459..52a6b8436437 100644
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -1523,6 +1523,17 @@ static void complete_signaling(struct drm_device *dev,
+ 		if (event && (event->base.fence || event->base.file_priv)) {
+ 			drm_event_cancel_free(dev, &event->base);
+ 			crtc_state->event = NULL;
++		} else if (event && !event->base.completion) {
++			/*
++			 * The event was allocated by prepare_signaling()
++			 * but an error path was hit before the event got
++			 * fully set up (fence or file_priv assigned).
++			 * Events from drm_atomic_helper_setup_commit()
++			 * always have completion set, so checking for its
++			 * absence safely distinguishes our events.
++			 */
++			kfree(event);
++			crtc_state->event = NULL;
+ 		}
  	}
  
- 	mutex_lock(&ctx->call_controls_lock);
-@@ -2707,6 +2711,8 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
- 		kdamond_usleep(min_wait_time);
- 
- 		kdamond_call(ctx, false);
-+		if (ctx->maybe_corrupted)
-+			return -EINVAL;
- 		damos_walk_cancel(ctx);
- 	}
- 	return -EBUSY;
-@@ -2790,6 +2796,8 @@ static int kdamond_fn(void *data)
- 		 * kdamond_merge_regions() if possible, to reduce overhead
- 		 */
- 		kdamond_call(ctx, false);
-+		if (ctx->maybe_corrupted)
-+			break;
- 		if (!list_empty(&ctx->schemes))
- 			kdamond_apply_schemes(ctx);
- 		else
+-- 
+2.43.0
 
 
