@@ -1,107 +1,59 @@
-Return-Path: <stable+bounces-230961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OC6pMeBSyWnrxQUAu9opvQ
-	(envelope-from <stable+bounces-230961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 18:27:12 +0200
+	id 4EWOAJVSyWnrxQUAu9opvQ
+	(envelope-from <stable+bounces-230962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 18:25:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC8C352E65
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 18:27:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DDB352E37
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 18:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E1863060ADC
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 16:23:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A693730041F1
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 16:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF243803E2;
-	Sun, 29 Mar 2026 16:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502C6379999;
+	Sun, 29 Mar 2026 16:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fjZEap/Y";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="P/LU+rDn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTD73Upy"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD9537F747
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 16:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AAC35FF58
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 16:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774801389; cv=none; b=T2HBJEuhx7SZAXNMMjlSXYHC+V5AgtS/JmTbtGmSAnnYojMwrSfhk8tAA9fIuxJ8JwFKEvF0CDGG024GZ5Ga8QBMEiPDeHJ5/EmCBHwIzCrKc9anWI/4nTLyN1cwLbvhFxu9mZG1nOnPAcah0xlW93D8uwkdJQ2OvJWLdCVzEWk=
+	t=1774801552; cv=none; b=m8N/rvo/7h/rIRwCjvfQDA8rHV4RGw/RwePy86KR6c+RG6iNV8ax6e93Nt5BngOPniXgkjATppjLQdOLUOnLTy9kjunhs/Q2LcaDD105Bfuy0EmapC/S/cNh5uLtRmlkkkDkoPn7StfWv5nk6TLQ52KtdAbVJWRDWu2v67+ShxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774801389; c=relaxed/simple;
-	bh=N76Yozl72V4IJoegMuT3rhC4pUQJktWCtGKNdXGSMxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oQI/eg14cHEd6JRpNWYHSEBSsF1Q4gMk20AYusYKATFX3xonGsmHAtDueAIqbJ0D0r8K5+DPNPuM4Cj3LFW7sUp29Bh7zOg/9+/r2J9giSBlcdTT+vzgISwHncAGdcba6TxQcFays/0p5OXTT8l236gbTT/PLtFOFdwMHYTjIYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fjZEap/Y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=P/LU+rDn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774801386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=q3gvOI5QoEtskbIIavChNH8cgoYnb8U7P/1W7Nu+WAE=;
-	b=fjZEap/YiF2hxgPXypOYiA5nL8sYbwqLk/tWpHrZemgdr+4tsFjZzNqmU734Sqjp6dFPLF
-	yHt2z+ZHDkJH+Vee2plqU5wYlo7I/4uuEUS6M0qn/A37lAYQCOVTRXpcO40zMksD3lC89K
-	KK0f6O4yo/1gGDMoHYVfoXms3N/3T4M=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-ccBrM3AiNdOEt9aHoWZUsQ-1; Sun, 29 Mar 2026 12:23:04 -0400
-X-MC-Unique: ccBrM3AiNdOEt9aHoWZUsQ-1
-X-Mimecast-MFC-AGG-ID: ccBrM3AiNdOEt9aHoWZUsQ_1774801383
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4853466655dso21060595e9.3
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 09:23:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774801383; x=1775406183; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q3gvOI5QoEtskbIIavChNH8cgoYnb8U7P/1W7Nu+WAE=;
-        b=P/LU+rDnLPFMnx5Nc3IEsWmR/71wJXJdt3Q2dNuNnGz+r2slnWbdnDLlj/pj2zU88Z
-         +SBNcjsmb9SVuVT1noIM6h4HtFwuvThqNaubAOGSLERkEnzkxxCk7PSnBpFKG0LRfcgs
-         fWBVcuQW1QC5O/z515vyYoA8G/bS3lodCzE32cVv3yk3g4vg532r3ZuEC9C6eoKuYdBy
-         WDj1xSmpvqmEzt9qSvUfAYXiF+oAtjjVuelQcRHVNcgmIiXIfEmT6TAV2BDXEDjTBs8d
-         6BGl2TwG3Kq33IbAnpzyvD9JQa34DlvHsExACBZ4nuvNT//mkWhkDriSiQPs9i2suSwc
-         FCvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774801383; x=1775406183;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q3gvOI5QoEtskbIIavChNH8cgoYnb8U7P/1W7Nu+WAE=;
-        b=kjhZQx+Ym4kXsQeYRjKMqeycvZMfcTzZ390QjacyEKZ28ZuFKj7jcciAq35SmjBbmk
-         1PCty4wAeoHqa/RCn2ZllnJvO+lgA1QpMlSNmPNS0KB7KrZJOc3alOz1OCELbAF5zCIf
-         ZlfFrUtg4OxtZ5AlnGTB29SUU0LMevm+mguRYRSKIy1ciWyJ2bI05C5WhJmEy9P35vJI
-         SMoBGlo8NmMsqi0OM3LRQZvShukRFUa4LIN5bdzCutzbd+XOE7vQZEOHzttwqahaQf8e
-         mICzPWPBFjDfkQE7VGrAYhERjoLGZjGV4617FRL2mG1tPe6hQQpj7pkuz9uxxE6Ml3id
-         ArYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBsPXGFSO0F6ZiTSN3bZWjXU9I13lwIbrpAnyOs9r1cOnTwdkXe5c7KrtS/HWO2wwOW+8tY0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAlY5Gj8R2lYnqmGbcLCSLY+ro2monahwXZ5Azj2rBnopl87os
-	VVAeIutLociysQ7EW4dLDcclsnRbDdV1MraY4Os7QRJE3Msijc3i9JuXX+Q2e1PdpdYxFuoi+6A
-	qxEIEc8FXPILHaDzYdorfGc/xT9iU1WCeZffBGTUIB7SmLOGHc0XCbbg0pw==
-X-Gm-Gg: ATEYQzym4sVDZMsuY3HRoWlwWLguYQNro5NRFcdlVnovOG9ZzkxmZYAwOdsJUPh22E+
-	6GEL73Y+Sgq0yV19oRlHSAMGsjRBZiyfD/GQQRMeuRnnxyK+2hjK8Pz2SOswqNtyK+mAbVpjmTK
-	1t48vzpDevZwZXunuENDUaIQlefMasuOpPyqtBdU0TyrYOiEbDeH9rdQImy+VlBkkXWh9r3zlCZ
-	wFqfvMlLf2PVZ8OZeqJTV6HKU7ricIPNPbgkZsUl3K68uY4wwMiCbHsqNOrQdYM+0PTdzAXe2f1
-	KQZAzUKqecuNdH6ppanSeNbrEcSvBjZj1M5HwLZw7KS6oWIW3m3Q9OkvMEK3vH+rAy+WFT1foiF
-	dK02hzCTWsoGo2HUASGu1JPd+L+/CuiL6hkXrgirIAlGOgSh3rzw5tFBCu+iqBFZVl5y12T9+eo
-	VjScQ+aTcGekP/e9sLhdF5PDKtDexJA/PVSzDq4y1/Ra2zKB+cWJ5sYEGi
-X-Received: by 2002:a05:600c:41d1:b0:485:364e:934e with SMTP id 5b1f17b1804b1-48727eda4a4mr95959545e9.21.1774801383293;
-        Sun, 29 Mar 2026 09:23:03 -0700 (PDT)
-X-Received: by 2002:a05:600c:41d1:b0:485:364e:934e with SMTP id 5b1f17b1804b1-48727eda4a4mr95959255e9.21.1774801382780;
-        Sun, 29 Mar 2026 09:23:02 -0700 (PDT)
-Received: from [10.242.181.123] (93-44-53-42.ip95.fastwebnet.it. [93.44.53.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487270ea64esm77961935e9.5.2026.03.29.09.23.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 09:23:01 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE
-Date: Sun, 29 Mar 2026 18:22:57 +0200
-Message-ID: <20260329162258.106549-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1774801552; c=relaxed/simple;
+	bh=KrsXQtgiswRKv7L6/xorZZieIG6Ne7tB/xOJWQ+S/No=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rhBod3Pb7ruFIn0qOmlNQQwuSZtW9HzM5v9xxAo9Aeu1r9cjRG6Bq3HaPKQvjhzh5dTvYCzQ+KLe9QA7b+OJn14qqGllCw28/dNf5lWxwnk7JTE1QuqS4/ES0VhNSsUFT4JPbabcdCluHhbWbPeN4TQ0Hlj3B62TVOp+CjSCxiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTD73Upy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8EBC2BC9E;
+	Sun, 29 Mar 2026 16:25:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774801551;
+	bh=KrsXQtgiswRKv7L6/xorZZieIG6Ne7tB/xOJWQ+S/No=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uTD73Upy0mYgldCthafORKlbxokqf4C3brq02GD/wl18cDvuR7cYfYA/kP/fjVdjK
+	 zdb0jouC2TU5PO0bLPB1xc22SZQ85jrHOUfxToFR3HEbGBGzxdo1s7GMDcO47UE2A5
+	 YufRkhOCNj6gtsbFKCpEDSiwCtGjJ/fRQucifluKVa+knpIQERbnNr8YxJZXWgM9ff
+	 V2lIoHxg8crQe0hTeNQD9m+FNTycyVuPuSihuy/JOFdDbOzn4i0PkBypUKiOFGVCpl
+	 ezmEAUzrhMUMIbvCsuMBZSxqohTXcrqiRisT7RlJ6s2ICeEaIgkrmak0O4U4v18W4k
+	 O+PNQldYWA1mg==
+From: SeongJae Park <sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18.y] mm/damon/core: avoid use of half-online-committed context
+Date: Sun, 29 Mar 2026 09:25:49 -0700
+Message-ID: <20260329162549.58494-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026032925-frosted-jogger-2ba0@gregkh>
+References: <2026032925-frosted-jogger-2ba0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -110,88 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230961-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230962-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[redhat.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6FC8C352E65
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 93DDB352E37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+One major usage of damon_call() is online DAMON parameters update.  It is
+done by calling damon_commit_ctx() inside the damon_call() callback
+function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+parameters and 2) internal memory allocation failures.  In case of
+failures, the damon_ctx that attempted to be updated (commit destination)
+can be partially updated (or, corrupted from a perspective), and therefore
+shouldn't be used anymore.  The function only ensures the damon_ctx object
+can safely deallocated using damon_destroy_ctx().
 
-Adjust KVM's sanity check against overwriting a shadow-present SPTE with a
-another SPTE with a different target PFN to only apply to direct MMUs,
-i.e. only to MMUs without shadowed gPTEs.  While it's impossible for KVM
-to overwrite a shadow-present SPTE in response to a guest write, writes
-from outside the scope of KVM, e.g. from host userspace, aren't detected
-by KVM's write tracking and so can break KVM's shadow paging rules.
+The API callers are, however, calling damon_commit_ctx() only after
+asserting the parameters are valid, to avoid damon_commit_ctx() fails due
+to invalid input parameters.  But it can still theoretically fail if the
+internal memory allocation fails.  In the case, DAMON may run with the
+partially updated damon_ctx.  This can result in unexpected behaviors
+including even NULL pointer dereference in case of damos_commit_dests()
+failure [1].  Such allocation failure is arguably too small to fail, so
+the real world impact would be rare.  But, given the bad consequence, this
+needs to be fixed.
 
-  ------------[ cut here ]------------
-  pfn != spte_to_pfn(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:3069 at mmu_set_spte+0x1e4/0x440 [kvm], CPU#0: vmx_ept_stale_r/872
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 872 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mmu_set_spte+0x1e4/0x440 [kvm]
-  Call Trace:
-   <TASK>
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+the damon_commit_ctx() failure on the damon_ctx object.  For this,
+introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+when it is failed.  kdamond_call() checks if the field is set after each
+damon_call_control->fn() is executed.  If it is set, ignore remaining
+callback requests and return.  All kdamond_call() callers including
+kdamond_fn() also check the maybe_corrupted field right after
+kdamond_call() invocations.  If the field is set, break the kdamond_fn()
+main loop so that DAMON sill doesn't use the context that might be
+corrupted.
 
-Fixes: 11d45175111d ("KVM: x86/mmu: Warn if PFN changes on shadow-present SPTE in shadow MMU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sj@kernel.org: let kdamond_call() with cancel regardless of maybe_corrupted]
+  Link: https://lkml.kernel.org/r/20260320031553.2479-1-sj@kernel.org
+  Link: https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
+Link: https://lkml.kernel.org/r/20260319145218.86197-1-sj@kernel.org
+Link: https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org [1]
+Fixes: 3301f1861d34 ("mm/damon/sysfs: handle commit command using damon_call()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 26f775a054c3cda86ad465a64141894a90a9e145)
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- arch/x86/kvm/mmu/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/damon.h | 6 ++++++
+ mm/damon/core.c       | 8 ++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 98406d6aa2d6..dd06453d5b72 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3060,7 +3060,8 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
- 			child = spte_to_child_sp(pte);
- 			drop_parent_pte(vcpu->kvm, child, sptep);
- 			flush = true;
--		} else if (WARN_ON_ONCE(pfn != spte_to_pfn(*sptep))) {
-+		} else if (pfn != spte_to_pfn(*sptep)) {
-+			WARN_ON_ONCE(vcpu->arch.mmu->root_role.direct);
- 			drop_spte(vcpu->kvm, sptep);
- 			flush = true;
- 		} else
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index cae8c613c5fc..1a8a79d7e4e8 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -786,6 +786,12 @@ struct damon_ctx {
+ 	struct damos_walk_control *walk_control;
+ 	struct mutex walk_control_lock;
+ 
++	/*
++	 * indicate if this may be corrupted.  Currentonly this is set only for
++	 * damon_commit_ctx() failure.
++	 */
++	bool maybe_corrupted;
++
+ /* public: */
+ 	struct task_struct *kdamond;
+ 	struct mutex kdamond_lock;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index cee5320cd9a1..87b6c9c2d647 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1236,6 +1236,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	int err;
+ 
++	dst->maybe_corrupted = true;
+ 	if (!is_power_of_2(src->min_sz_region))
+ 		return -EINVAL;
+ 
+@@ -1261,6 +1262,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	dst->addr_unit = src->addr_unit;
+ 	dst->min_sz_region = src->min_sz_region;
+ 
++	dst->maybe_corrupted = false;
+ 	return 0;
+ }
+ 
+@@ -2562,6 +2564,8 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ 		} else {
+ 			list_add(&control->list, &repeat_controls);
+ 		}
++		if (!cancel && ctx->maybe_corrupted)
++			break;
+ 	}
+ 	control = list_first_entry_or_null(&repeat_controls,
+ 			struct damon_call_control, list);
+@@ -2594,6 +2598,8 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
+ 		kdamond_usleep(min_wait_time);
+ 
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			return -EINVAL;
+ 		damos_walk_cancel(ctx);
+ 	}
+ 	return -EBUSY;
+@@ -2679,6 +2685,8 @@ static int kdamond_fn(void *data)
+ 		 * kdamond_merge_regions() if possible, to reduce overhead
+ 		 */
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			break;
+ 		if (!list_empty(&ctx->schemes))
+ 			kdamond_apply_schemes(ctx);
+ 		else
 -- 
-2.53.0
+2.47.3
 
 
