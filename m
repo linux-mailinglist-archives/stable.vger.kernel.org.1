@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-230896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKQ7ItAlyWm/vAUAu9opvQ
-	(envelope-from <stable+bounces-230896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:14:56 +0200
+	id iFtvKp0myWm/vAUAu9opvQ
+	(envelope-from <stable+bounces-230898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9DD352217
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E7435227B
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3631E301373D
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:14:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1A12A3015496
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB94371871;
-	Sun, 29 Mar 2026 13:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA0627FD75;
+	Sun, 29 Mar 2026 13:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDXE65/e"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1efTGZtu"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCF636F431
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 13:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419237474A
+	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774790085; cv=none; b=Bx1X93czncsUb1TuhQnkoGsAghL0VFiWu92gCsXk5HoWQZ3xyrcXJdxJhjT1XU9odtf7MECKudKAXqmp9fD7jW9Xo79LOnET+J62K5ZuCUJetFGtfPp7iTh1c0NWViwXI/hVxImU6wGs8HRhnKPi/zO4c/pq6UXxkk5TeLGJWWw=
+	t=1774790286; cv=none; b=BxtmvgcIwG6i6LYdlzQf1Q8J2tjULv04cRx1WeU4t4/2ikM3WfCV3kG/kyMYO7+fHfY8Ihk7FxBinzQxYHcUQfLIX8710rJtXRgIg6+7UaRiRJ3Mk1z664grt79mEAUiicu7BnfjDWSwxaGeF5vMEifq0I8F6+7K3EfEtNtceYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774790085; c=relaxed/simple;
-	bh=u2uoElPnWWT5i3zmX/pdVLmP+OOhekxIvpTJ6QGd2YQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M9Cgm0zSf+QvlSo5ioz4/jpayCM6JxbW/VXqNOG85POCvYllDoXdvrqLBdTNM7uwixnTbDOR/uk+/Z+EELT9V3/R2iju8ZljJxnEm8ZTRTipfyiTvKPaXHaBPJ0DNGUVt2OpQn1oXWPGxSaYoi1kSRvyl02rzwD9bYZwCi7FlTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDXE65/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B08BC116C6;
-	Sun, 29 Mar 2026 13:14:44 +0000 (UTC)
+	s=arc-20240116; t=1774790286; c=relaxed/simple;
+	bh=MqLY/OmW7ChbcRNEEnyMddeXNq0k9wQ75+maPDPqIoE=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=rIvi3hnG/eYoFiqVRc4kz4gCwXbPqmpPUgrdLhtC+l4NpDCteTeN35YeRlCMDhH/1JaXQ0vIWmqUp4g8ZF6iw7s5jn85QU/0vgVq7UtvLLa85svSlmDDnyL2D/TIG5+8NZwjLI5O4cRBSzfFIEpbxOHwl0sUO7K22Uy2HRgyWBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1efTGZtu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E83FC116C6;
+	Sun, 29 Mar 2026 13:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774790084;
-	bh=u2uoElPnWWT5i3zmX/pdVLmP+OOhekxIvpTJ6QGd2YQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=gDXE65/eHkvvxniLryzgRpzMOluLNn5y9Z3uXEW42J24UyCU41QJy3d+XrVKlR/i1
-	 2wRb9XFqQ+t3VhhB7IvFrEWe7BpDNkAm+IbaZm8mmPfYTwT82EviqoJkndPzx3RedL
-	 pXL7BWrXRGa9KgAdKn6N3avDJWMkrMbRb09DuEkA=
-Subject: FAILED: patch "[PATCH] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable" failed to apply to 5.10-stable tree
-To: psanman@juniper.net,linux@roeck-us.net
-Cc: <stable@vger.kernel.org>
+	s=korg; t=1774790285;
+	bh=MqLY/OmW7ChbcRNEEnyMddeXNq0k9wQ75+maPDPqIoE=;
+	h=Subject:To:From:Date:From;
+	b=1efTGZtuTwV2/W2IQ9YLaNjD+XvYaDMEAujUiPd3egQh7TwyKKI3jURQHUknmUF7b
+	 dDUrYO8DM1PO89C53GWbjIM29xYiyY7RaOyMlIFUphA87W7RuJQsn426SH0QDP6ARE
+	 YPzqzmaNYjV7Jmsayg5O//5fb8DKcDh1dxP+4AIE=
+Subject: patch "iio: adc: ti-ads1119: Fix unbalanced pm reference count in" added to char-misc-linus
+To: ustc.gu@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,jpaulo.silvagoncalves@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 14:46:21 +0200
-Message-ID: <2026032921-joyride-glider-603d@gregkh>
+Date: Sun, 29 Mar 2026 14:50:07 +0200
+Message-ID: <2026032907-impound-chamomile-af15@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
@@ -64,135 +64,88 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230896-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230898-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,huawei.com,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EF9DD352217
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 25E7435227B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This is a note to let you know that I've just added the patch titled
 
-To reproduce the conflict and resubmit, you may use the following commands:
+    iio: adc: ti-ads1119: Fix unbalanced pm reference count in
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3075a3951f7708da5a8ab47b0b7d068a32f69e58
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032921-joyride-glider-603d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
 
-Possible dependencies:
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
 
 
+From 48a5c36577ebe0144f8ede70e59b59ea18b75089 Mon Sep 17 00:00:00 2001
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Sat, 28 Feb 2026 01:48:19 +0800
+Subject: iio: adc: ti-ads1119: Fix unbalanced pm reference count in
+ ds1119_single_conversion()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-thanks,
+In ads1119_single_conversion(), if pm_runtime_resume_and_get() fails,
+the code jumps to the pdown label, which calls
+pm_runtime_put_autosuspend().
 
-greg k-h
+Since pm_runtime_resume_and_get() automatically decrements the usage
+counter on failure, the subsequent call to pm_runtime_put_autosuspend()
+causes an unbalanced reference counter.
 
------------------- original commit in Linus's tree ------------------
+Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/ti-ads1119.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-From 3075a3951f7708da5a8ab47b0b7d068a32f69e58 Mon Sep 17 00:00:00 2001
-From: Sanman Pradhan <psanman@juniper.net>
-Date: Thu, 19 Mar 2026 17:31:29 +0000
-Subject: [PATCH] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable
- sysfs attributes
-
-The custom avs0_enable and avs1_enable sysfs attributes access PMBus
-registers through the exported API helpers (pmbus_read_byte_data,
-pmbus_read_word_data, pmbus_write_word_data, pmbus_update_byte_data)
-without holding the PMBus update_lock mutex. These exported helpers do
-not acquire the mutex internally, unlike the core's internal callers
-which hold the lock before invoking them.
-
-The store callback is especially vulnerable: it performs a multi-step
-read-modify-write sequence (read VOUT_COMMAND, write VOUT_COMMAND, then
-update OPERATION) where concurrent access from another thread could
-interleave and corrupt the register state.
-
-Add pmbus_lock_interruptible()/pmbus_unlock() around both the show and
-store callbacks to serialize PMBus register access with the rest of the
-driver.
-
-Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260319173055.125271-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-
-diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
-index e7dac26b5be6..3e3a887aad05 100644
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -96,7 +96,15 @@ static ssize_t isl68137_avs_enable_show_page(struct i2c_client *client,
- 					     int page,
- 					     char *buf)
- {
--	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
-+	int val;
-+
-+	val = pmbus_lock_interruptible(client);
-+	if (val)
-+		return val;
-+
-+	val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
-+
-+	pmbus_unlock(client);
+diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+index c9cedc59cdcd..4454f28b2b58 100644
+--- a/drivers/iio/adc/ti-ads1119.c
++++ b/drivers/iio/adc/ti-ads1119.c
+@@ -274,7 +274,7 @@ static int ads1119_single_conversion(struct ads1119_state *st,
  
- 	if (val < 0)
- 		return val;
-@@ -118,6 +126,10 @@ static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret)
+-		goto pdown;
++		return ret;
  
- 	op_val = result ? ISL68137_VOUT_AVS : 0;
- 
-+	rc = pmbus_lock_interruptible(client);
-+	if (rc)
-+		return rc;
-+
- 	/*
- 	 * Writes to VOUT setpoint over AVSBus will persist after the VRM is
- 	 * switched to PMBus control. Switching back to AVSBus control
-@@ -129,17 +141,20 @@ static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
- 		rc = pmbus_read_word_data(client, page, 0xff,
- 					  PMBUS_VOUT_COMMAND);
- 		if (rc < 0)
--			return rc;
-+			goto unlock;
- 
- 		rc = pmbus_write_word_data(client, page, PMBUS_VOUT_COMMAND,
- 					   rc);
- 		if (rc < 0)
--			return rc;
-+			goto unlock;
- 	}
- 
- 	rc = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
- 				    ISL68137_VOUT_AVS, op_val);
- 
-+unlock:
-+	pmbus_unlock(client);
-+
- 	return (rc < 0) ? rc : count;
- }
- 
+ 	ret = ads1119_configure_channel(st, mux, gain, datarate);
+ 	if (ret)
+-- 
+2.53.0
+
 
 
