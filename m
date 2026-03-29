@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOKxL70myWm/vAUAu9opvQ
-	(envelope-from <stable+bounces-230907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:53 +0200
+	id 0K3qBb8myWm/vAUAu9opvQ
+	(envelope-from <stable+bounces-230910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7003F3522BE
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E93F3522C5
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 23B983015D35
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:18:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DDEB43005A9E
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDAF374E47;
-	Sun, 29 Mar 2026 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7130A374722;
+	Sun, 29 Mar 2026 13:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkDt1qkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncnKUrwF"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6DA374722
-	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362043126B2
+	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774790316; cv=none; b=lM/+P2KAmsng+0zpvfjuGifq0kvvnNfhaFeOuOsOSCUYKkbRoc0A+aAr5kS4v31b7g6zGEmwju72m87VufeJhkASav1Zgh/dcUcwjdkpT7lQq+LbbnVNckeXZdIMAvuzvAC9B0vB+SpnL8pfarI1vtjJiOWks42OhxtEOOmwFxk=
+	t=1774790330; cv=none; b=FAULSoNOt/wT6kb4OjOlTP5kWl/xWFbFb1RiuqcRaO76tfBiJWka03Xm/hJDmDEKL1kjnT6qqlikUKcUn2nAkMyZSFtScI6bu0Ht8vSbiuR0t8mJVQO3XkearH5zu2UmTk/Hj5vqxJSIXWMH4RcTw6AJzSW6v3H+N/1d+jddT0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774790316; c=relaxed/simple;
-	bh=jwiCbUNmbH133CB+K6I8qTQqlGYRaU2q+uqGO7Y7L1M=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=raAg7cYK9ABnWXdqW/Nj8zleWgt/q8C0QZbpZbRwdDRwz33kpCDDvKPS+5oLvFMWJO1wx+ydoamKgbp1dhRswZV/cGMglkd7MAgCCxFCwo8sNTdgawUngFtj1hLcXbyjCEmIIze7t87mhZQgbAU8D1al7oeTaa/Kh0U/by43Ogg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkDt1qkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B59C116C6;
-	Sun, 29 Mar 2026 13:18:35 +0000 (UTC)
+	s=arc-20240116; t=1774790330; c=relaxed/simple;
+	bh=IgaaAYFjyAHiExrBs/4lOPoUrjMr2+EtBBo9h8K11CQ=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=OjKzTjKACVA70wVBVl/47koCxUH5CoDLXIq+NPFtQJpRNe7yo4EPxbeNDPZPeFpoEOQNWgQMkBIlnHL311GbD+tOBViaDVWrKCErdub1eLaw9IWPTPbXna1bIv4eZjnpIOhoIv5XJV7VvqobhicdBm8mFO7EgQ7BdyNQkr6s1oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncnKUrwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584E5C116C6;
+	Sun, 29 Mar 2026 13:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774790316;
-	bh=jwiCbUNmbH133CB+K6I8qTQqlGYRaU2q+uqGO7Y7L1M=;
+	s=korg; t=1774790329;
+	bh=IgaaAYFjyAHiExrBs/4lOPoUrjMr2+EtBBo9h8K11CQ=;
 	h=Subject:To:From:Date:From;
-	b=dkDt1qkDlcRsYikP2GzKeNAJV/Gzp2wQp9iwW8RjteHT6HCrLQnYyCeyvUXlUjryC
-	 Rjj8FkQ1PkYaNN1y/d8+2jltWZu9jyief3BlujOFTcf2phYPARNO8S7nGDElhp3nKc
-	 mNXE04Sy1w7UQqLyg/2bgk5EhLtysrwlBQDHDJ78=
-Subject: patch "iio: gyro: mpu3050: Fix irq resource leak" added to char-misc-linus
-To: ethantidmore06@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,linusw@kernel.org
+	b=ncnKUrwFd+XY3MxJ3Pn08VCtL7bVqCRPUsMX1A9u3HPEKDP1zkyZhJDOmlOhrvhe0
+	 0C/ypirG2Gzz+YSnFjEHbMCRLfBDdG6xhTe3xmT3vJp9129umla+O+AD4OCUiqEkdO
+	 mmBX+hG+H2si0TZpV4FtW4DwC7gsVlrTkp0cWE60=
+Subject: patch "iio: gyro: mpu3050: Fix out-of-sequence free_irq()" added to char-misc-linus
+To: ethantidmore06@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org,linusw@kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 14:50:11 +0200
-Message-ID: <2026032911-seldom-riveter-92ad@gregkh>
+Date: Sun, 29 Mar 2026 14:50:12 +0200
+Message-ID: <2026032912-unscented-gusto-7c46@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230907-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230910-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -78,18 +78,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7003F3522BE
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7E93F3522C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: gyro: mpu3050: Fix irq resource leak
+    iio: gyro: mpu3050: Fix out-of-sequence free_irq()
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -104,53 +104,44 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 4216db1043a3be72ef9c2b7b9f393d7fa72496e6 Mon Sep 17 00:00:00 2001
+From d14116f6529fa085b1a1b1f224dc9604e4d2a29c Mon Sep 17 00:00:00 2001
 From: Ethan Tidmore <ethantidmore06@gmail.com>
-Date: Tue, 24 Feb 2026 16:48:16 -0600
-Subject: iio: gyro: mpu3050: Fix irq resource leak
+Date: Tue, 24 Feb 2026 16:48:18 -0600
+Subject: iio: gyro: mpu3050: Fix out-of-sequence free_irq()
 
-The interrupt handler is setup but only a few lines down if
-iio_trigger_register() fails the function returns without properly
-releasing the handler.
+The triggered buffer is initialized before the IRQ is requested. The
+removal path currently calls iio_triggered_buffer_cleanup() before
+free_irq(). This violates the expected LIFO.
 
-Add cleanup goto to resolve resource leak.
-
-Detected by Smatch:
-drivers/iio/gyro/mpu3050-core.c:1128 mpu3050_trigger_probe() warn:
-'irq' from request_threaded_irq() not released on lines: 1124.
+Place free_irq() in the correct location relative to
+iio_triggered_buffer_cleanup().
 
 Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/gyro/mpu3050-core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iio/gyro/mpu3050-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-index 8df1f524d342..d2f0899ac46b 100644
+index 2e92daf047bd..d84e04e4b431 100644
 --- a/drivers/iio/gyro/mpu3050-core.c
 +++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1129,11 +1129,16 @@ static int mpu3050_trigger_probe(struct iio_dev *indio_dev, int irq)
- 
- 	ret = iio_trigger_register(mpu3050->trig);
- 	if (ret)
--		return ret;
-+		goto err_iio_trigger;
- 
- 	indio_dev->trig = iio_trigger_get(mpu3050->trig);
- 
- 	return 0;
-+
-+err_iio_trigger:
-+	free_irq(mpu3050->irq, mpu3050->trig);
-+
-+	return ret;
+@@ -1278,9 +1278,9 @@ void mpu3050_common_remove(struct device *dev)
+ 	pm_runtime_get_sync(dev);
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+ 	if (mpu3050->irq)
+ 		free_irq(mpu3050->irq, mpu3050->trig);
++	iio_triggered_buffer_cleanup(indio_dev);
+ 	mpu3050_power_down(mpu3050);
  }
  
- int mpu3050_common_probe(struct device *dev,
 -- 
 2.53.0
 
