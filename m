@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKmyIT12yGmsmQUAu9opvQ
-	(envelope-from <stable+bounces-230821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:45:49 +0100
+	id UH1YFoN2yGmsmQUAu9opvQ
+	(envelope-from <stable+bounces-230822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:46:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF724350600
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCB0350608
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46D2330BA7AB
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 00:41:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48A2D30D661A
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 00:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF4026F2BE;
-	Sun, 29 Mar 2026 00:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F45828150F;
+	Sun, 29 Mar 2026 00:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PtWcl7Yj"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SaPYcTHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9D9266576;
-	Sun, 29 Mar 2026 00:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038D6277CB8;
+	Sun, 29 Mar 2026 00:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774744901; cv=none; b=HlyL+KRp7pckT1PhL2wTsqm+uzK+SrOOP9h+aCA3LmQJ8rsn3V+Hq3z3gXfbcoKZI1Gdsvj3+6CPurEIjXHc8OrBXqw0CR5F91i3wJJb8ZvQBy8M358TJuomUqiCE3vkAhxzqjTVmEm0AEsOvD8e8iA6VqBVdRQ9l5m4JOyoJZg=
+	t=1774744954; cv=none; b=RIqpQcseQXsSxXK8i0NBjJYSUdmWIS6lsg80rRj/0Ix0Gnj1AXIUknqNeZw1Rd3783n30SxOUTggFt/pIl25eTfCTZ7Bu33KNxPCfmohscsXwZnMAgNz0otGI8IEWYAC1abmeIpIpdIuzDCmkS6k9COQBiOmAYGf6897DMk8SSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774744901; c=relaxed/simple;
-	bh=X4FNaUJ1Qt2Ppyb8KjUE4F3oY0k054huvDQQNwKFh7I=;
-	h=Date:To:From:Subject:Message-Id; b=aHwMKUjgRI8FS5olZ9rGZ967MVFWryaY7/UJz4rhyGIB6H2Cz+QA1bPnfgbTH5O/WH5Q0yKlna5D+CMNtp4iQFMPQiad9mfKZlw12rxTtQx4YpWERxyAVIcppsugkuY1DU6XqJmtURb+5VPBuvSlXfa4k4zDlePkVpLVX7FusfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PtWcl7Yj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB42CC4CEF7;
-	Sun, 29 Mar 2026 00:41:40 +0000 (UTC)
+	s=arc-20240116; t=1774744954; c=relaxed/simple;
+	bh=swXzs6RR6yCU+4E4xLd7ZOvaH5J7aZj39QQpncnAyEs=;
+	h=Date:To:From:Subject:Message-Id; b=iRfwM0bBuJ5k0xKPc42Wv9rvVu7W5RV7GHcKrR1ultczP1YkhNaS4CAUv2ZdYp5We/ST4ujhPkcPd62n4dTMfy1PeGzbRioH5jOymleXQbEFyD7DIrI6CEft4+tSuW6xfiaLTYoVwuPQkn0HJgiPOsHEOj23B4WyXvW2xtZ/Ryc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SaPYcTHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF588C4CEF7;
+	Sun, 29 Mar 2026 00:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774744901;
-	bh=X4FNaUJ1Qt2Ppyb8KjUE4F3oY0k054huvDQQNwKFh7I=;
+	s=korg; t=1774744953;
+	bh=swXzs6RR6yCU+4E4xLd7ZOvaH5J7aZj39QQpncnAyEs=;
 	h=Date:To:From:Subject:From;
-	b=PtWcl7YjAhrUzkbzXnwp+ypquZxe7vJPNOHbF5K1dtP1/1i2nxIMU45KTuslrYuId
-	 VyMmlDz42TDKMR/QplZJ8mhxshnaezxN9f2nl2vNtF/7sZSPIMib8tjPmP21gDnyTv
-	 nf/rud8sDnbf8DViKXvVprFqU/khFtlXXsy6zd5A=
-Date: Sat, 28 Mar 2026 17:41:40 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,sidhartha.kumar@oracle.com,rppt@kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,JonasZhou@zhaoxin.com,jane.chu@oracle.com,hughd@google.com,david@kernel.org,aarcange@redhat.com,jianhuizzzzz@gmail.com,akpm@linux-foundation.org
+	b=SaPYcTHn8vbdCWn4Hf017hM/wmog95P3wB85XhBm/3m7bC90Kmu/MkdmP+rRMIAOQ
+	 aPNeWz2f9JmX8TysPF6Lygw6a3Xef050Ku/jwVlPdJXCUDPFZSzt+MPWehBVm0hNII
+	 R61ZCPbUuWtOciwhBW81FgrWHtQHeUcRcvTSFv6g=
+Date: Sat, 28 Mar 2026 17:42:33 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,mark-pk.tsai@mediatek.com,syoshida@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch removed from -mm tree
-Message-Id: <20260329004140.EB42CC4CEF7@smtp.kernel.org>
+Subject: [merged mm-stable] mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate.patch removed from -mm tree
+Message-Id: <20260329004233.CF588C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,127 +53,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230821-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,oracle.com,redhat.com,suse.de,linux.dev,zhaoxin.com,google.com,gmail.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-230822-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DF724350600
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,chromium.org:email,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: ABCB0350608
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+     Subject: mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
 has been removed from the -mm tree.  Its filename was
-     mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+     mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Tue, 10 Mar 2026 19:05:26 +0800
+From: Shigeru Yoshida <syoshida@redhat.com>
+Subject: mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
+Date: Sat, 21 Mar 2026 22:29:11 +0900
 
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units.  This mismatch means that different
-addresses within the same huge page can produce different hash values,
-leading to the use of different mutexes for the same huge page.  This can
-cause races between faulting threads, which can corrupt the reservation
-map and trigger the BUG_ON in resv_map_release().
+zs_page_migrate() uses copy_page() to copy the contents of a zspage page
+during migration.  However, copy_page() is not instrumented by KMSAN, so
+the shadow and origin metadata of the destination page are not updated.
 
-Fix this by introducing hugetlb_linear_page_index(), which returns the
-page index in huge page granularity, and using it in place of
-linear_page_index().
+As a result, subsequent accesses to the migrated page are reported as
+use-after-free by KMSAN, despite the data being correctly copied.
 
-Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: JonasZhou <JonasZhou@zhaoxin.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Add a kmsan_copy_page_meta() call after copy_page() to propagate the KMSAN
+metadata to the new page, matching what copy_highpage() does internally.
+
+Link: https://lkml.kernel.org/r/20260321132912.93434-1-syoshida@redhat.com
+Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Cc: Minchan Kim <minchan@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/hugetlb.h |   17 +++++++++++++++++
- mm/userfaultfd.c        |    2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ mm/zsmalloc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/include/linux/hugetlb.h
-@@ -792,6 +792,23 @@ static inline unsigned huge_page_shift(s
- 	return h->order + PAGE_SHIFT;
- }
+--- a/mm/zsmalloc.c~mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate
++++ a/mm/zsmalloc.c
+@@ -1753,6 +1753,7 @@ static int zs_page_migrate(struct page *
+ 	 */
+ 	d_addr = kmap_local_zpdesc(newzpdesc);
+ 	copy_page(d_addr, s_addr);
++	kmsan_copy_page_meta(zpdesc_page(newzpdesc), zpdesc_page(zpdesc));
+ 	kunmap_local(d_addr);
  
-+/**
-+ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-+ *				 page size granularity.
-+ * @vma: the hugetlb VMA
-+ * @address: the virtual address within the VMA
-+ *
-+ * Return: the page offset within the mapping in huge page units.
-+ */
-+static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	struct hstate *h = hstate_vma(vma);
-+
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
---- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/mm/userfaultfd.c
-@@ -573,7 +573,7 @@ retry:
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 	for (addr = s_addr + offset; addr < s_addr + PAGE_SIZE;
 _
 
-Patches currently in -mm which might be from jianhuizzzzz@gmail.com are
+Patches currently in -mm which might be from syoshida@redhat.com are
 
 
 
