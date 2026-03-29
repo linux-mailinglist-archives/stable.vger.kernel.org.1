@@ -1,173 +1,191 @@
-Return-Path: <stable+bounces-230832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK4ANXOtyGmvogUAu9opvQ
-	(envelope-from <stable+bounces-230832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:41:23 +0200
+	id SKhZAROvyGlRowUAu9opvQ
+	(envelope-from <stable+bounces-230833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:48:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98082350A7A
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C97F350AA2
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A34FD3028022
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 04:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AA5A3023369
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 04:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48589274B28;
-	Sun, 29 Mar 2026 04:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BE4282F16;
+	Sun, 29 Mar 2026 04:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pYA0/G8i"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tHi3mCX0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FE826F2B9
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 04:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1915A26ED33
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 04:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774759228; cv=none; b=TwrElwOG+MDVHOTDiF0Jz3kZAHxpJzKOC0OmTUjhsSI1t+YBjFX4w+0vB7Ky6mbbPJjPD48zID270t2k1Hrfyanb49a2lClVIxFUx35W2fYA8j4lOqHlhfQKRLoBZZJPs4JfC5mUOzWSDasgNuYv7kITzEXMPZYo12aA5oAkOaQ=
+	t=1774759690; cv=none; b=rR//+pmi18rS37ZmSDY+Vsak2WZPIXEZdzBuEgLu1NT/2zN6uDgRDlEZvYQIGFLQdXTGZW2Ng3BK+j6Zn6aoIOT2y7UMPM5SJutqmZMtlZm/AyMNPUvQL/NkDZjnuO8Ai4YZ77SvSIkrTQ5eyDCVz0Mb6f9smwPSvmIXazovHt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774759228; c=relaxed/simple;
-	bh=jeIQTsqHgli2d9S6SJ7cxt+ur8s/ujcxps2GVpWXLlI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsCRLvYZxNo0RSHT8cMoZR33E/T/vyrki8qb+LNMI7PyRQ3BYYsuWgsOemYQxMQfE5bIcHmdxp2b7YOmGq+qfaLb0upPmAD452YoE8R4kdUtjaRAXUowfcoXfTisgG63MYqaNvyNq2iK1eFAZT5QtKSWT8dbBSE5XQpDIAHtYhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pYA0/G8i; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1774759690; c=relaxed/simple;
+	bh=f6G2WzAX3URkZuJNybDd0oFR9WsBJIh/VoQ78JaFB9M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=U8EYDF/ys41NuvK+vljWgin3hXW7jAiEZI8EUXJ8YnFhuShrSAbSE0x37BZu/NjWAqHW9oGSlmHIwlD6DxpmsL82nYCe2dqmSuG/gU/VWUe+6PhvWS09lwL6N4Qb8UU7A40lLGLBukx+sHqOAIy2ZGo/FGMj4xqcpn0UnqQWwLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tHi3mCX0; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a142464316so3623726e87.1
-        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 21:40:26 -0700 (PDT)
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35d95017a68so433005a91.3
+        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 21:48:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774759225; x=1775364025; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=reR9BnQPkWjZy1ztn6tX7OBCu0iHKhMxp0dC8tGeiNU=;
-        b=pYA0/G8iv0u4EXcUXk9Jenx3Su46W682LPJV7UDcfqjc3/3jlmRFUNCi4kjag6Q2Q0
-         uuITVj9q5jMRC4F2anQ5C5wOkKSO0YRaoavhJbCV7bTJkCV63d9hIOntEyE7Rh6NiHWr
-         psxv+3gV7mjhU4tXDlOpp2FbrRKcqIr+8iABBt8wSLJZIwqRyRUOeCpLBOsQYVpw/pwn
-         iR2rY9wOW7U5JLhLpVzpP5bUcKVAWz+aQubtruYRumIeuLRItafHYaRKP0nanmGgBX90
-         RcrwTnCzWliY8HQMtyZedP3XRIj4wN+z6BMX2DFL3Hl4ndEwvpI9QXFYFIxKU7CDkzKt
-         pNuA==
+        d=gmail.com; s=20251104; t=1774759688; x=1775364488; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xx2r6QIRxbtt4fGLDrALPMrVxytOCTyVK9i7G8L9agk=;
+        b=tHi3mCX0nrFGzYvtMOl9okz0ng5gptQSpHWSjaQEgsgM0aKYqEAn8qWCdCS3K1Rahi
+         kJwZ2Z4e1AZHzKM45VwCdrG6CJXrzAO9DhOopYr5xFObn/6yvwW8BPXt+kSgQ0LqD8fc
+         odEb3wvVpkB79J95+m8/fUMPZnEdyaSuFHCGZY7iG1VGT+JxOh7hCAXtEwc/BgDAzl5c
+         +LM6ZPnYR+H6UdoHPA04vqt8rCb9o2iHHcRlHDIu0vhmfHe57/kOmn61Y9cXKbIZAwTm
+         b6SNe9by8B51LjCOm2eEhG5VeHU30cXO9xN4mK9F1bskqJbic5wAmuAAdxabH0f8eunF
+         lBNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774759225; x=1775364025;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=reR9BnQPkWjZy1ztn6tX7OBCu0iHKhMxp0dC8tGeiNU=;
-        b=gn2o+d/eXWz0Lde0TWZzaRxTy+AmBkiM85lqc3zUi/z2mWEqy+hqWhxLqiyJFXyFqb
-         RY9fIDPcQyP66yQNG0qO1suwOJnXkI9etJZFQG6+qQum2Fgra6QnovnH13zLJx3f0sTj
-         yRYl13IT6r371yRySCi06at144wktozX/8Y6rxE1jq6xl4wV82S1j/sjWVG9FuXqRMWR
-         w53KJb8tW2U1C89ioSKCLbMTJezHoIUiLZcuYMqIvd9DqPwU16hKqiFe3eoOMi4NBVff
-         babS6rkqgxX7oIbvR00+ZkFpNXACtK44RO7QSh4Cae8CnUcBRAwoYN+A7HUnVQsQXWnU
-         Q8YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEQZCFRAdzGv6GcO5Z0Cu7yelTt4PvUIkDDfgvnyPnv4Coq7bdvDzWcVox5pTOJhwXV2iGCmg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9cKjDQ7qyo3s2dHtqWKKC3Aw+1mTtxHuZrE0W557k0u2v/krP
-	aHfo3mKe7TZ9hUPpzqI/YW3tLpy4i9C1gkDEuucYMXcpxgXB8XrzcEY3IXrVEHY=
-X-Gm-Gg: ATEYQzxfrjKiCH1LS3j74SXnt2ZozhEWFpm3Qwo0DDQZfb4AJIMPOq0IZncVSbxThuM
-	FhgTkOVUQxfNnDP2h+QOkqwXv+8fYgbvLy3EVgSkyL6Murg5zguRBMy+qHAR1uaigydRp2OcoGG
-	lWYW/wy6IjTPCacgVOQB0zcre40t8bnuaFW8nI6v+LqPcPNFjD79f3Xjgl4H4UWz8dnb94WvOTR
-	zwCB2TGrT7tpg8UWFOoSRK+Y0Uq7Bb2tkbVRGqTiLJwCPgZ1/go6Ucr3Vic9fPFm6/faNcpAQYP
-	MZ7Ju1F6VeG/H4E43AQzbWoXJ7BKAdMYXe1hWIiJbHyPHry1oiXYOlnpph9JzHyyjkwyWLjq9XT
-	Cw6Nn9JItmXwfzYOysUkxzoSV4iPhPNLXosEZ99swWV125MlOQjeH63U7SnKN7zQWxEMDeQ/2qV
-	5oh7b2Q7nkwcVfnEALgidsPjfQlC8kl14BXvDvgQ==
-X-Received: by 2002:a05:6512:118e:b0:5a1:53d1:d741 with SMTP id 2adb3069b0e04-5a2ab7e8ddfmr2791606e87.4.1774759224666;
-        Sat, 28 Mar 2026 21:40:24 -0700 (PDT)
-Received: from fedora.localdomain ([2a11:3805:0:93::1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b145772fsm836212e87.71.2026.03.28.21.40.23
+        d=1e100.net; s=20251104; t=1774759688; x=1775364488;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xx2r6QIRxbtt4fGLDrALPMrVxytOCTyVK9i7G8L9agk=;
+        b=JA0+W8AMazOkw8pT10e4eSEEVDU28yFCMAZ4RuUaCGu7bQ9rm0lv5rC4dMuRc1fVTd
+         ddjtvlFr8whWHEbdNUsBi7CeMddvsreJGPOT/Wf4wfwUOo8J/iiQ1K4CjomyYfpua6PT
+         TgYrbCUb28ugq/PpFSKcZ9QOB5HNTu+PAxMgN6YbyQO3yrY2LdmwyQARtEkqW37VfBLv
+         YDiIbwx3cYezn+qkKamM8umzI2++cemPjomuZ2SVPHPoLRZXCcGXF8ZsfQvsivlZjms2
+         WBswg2s6sabXNeYfoLe4na92xiCy6Zh6+oJNXrajfm9r/Lq6LFKAT+aJa7MGLRy7ks1l
+         wb7w==
+X-Forwarded-Encrypted: i=1; AJvYcCV1umPP2bOKNCEoxzCRy3EZHiJqXWRRKg+3qqYo5HVV4pdUbKYF5VVB5NRj9DJtGHZ/nn/liN0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcgJYHg6q19dLpPCwuul5mAN7bMRO0hhiy6iWdnE0sLL5L38tJ
+	7ubFuGH82gDBMUQ0XcZzK+NpKBifnWGwfg58Y1h8iPla+xSpTXhXR4o1
+X-Gm-Gg: ATEYQzzOc07sWuZHcCHrEAxOLK3p/l440grtAl8YcYe+71oZ4ZD1ymTt/da1vHTBv0C
+	FBZStvMnAUHgyi6MnBpI1LKDiYQMWgnlFIG0OOZxHb18aUt4gwB+Mtmc6tp+XJMB5nWCSsT+qxJ
+	reiTifVV8GLmbrj1y6rkRZsxFuolxSS30FuHy1ggG17yAZP5o5KI3hgeW1fGd94U4FihW9wxG47
+	xdSaxPkYajwbUbUqZ1pOIOtOADEFf9Mt02PF47SRcta2v4j6KvEBU8aF6nAKyOvQdifUe564fQs
+	KvwWB44Wd9rKB390PnelTeofuMS64bnTlYhpUk2TJWu+QJTpsHQMkyIa1C57Lllbb5gZIkEhDPc
+	ZFOzKcbmLGK4rQSEvEM2obK3V0Djp8WcWgzH9h7U9fbkretzwsOEF23fIyvm/tsOIl2SVeQedKn
+	GsXj9KFMDRfsVmSZeMhkf0VuB6S7ki
+X-Received: by 2002:a17:90b:568b:b0:35b:929f:7e8d with SMTP id 98e67ed59e1d1-35c2ffb71c6mr8601810a91.14.1774759688136;
+        Sat, 28 Mar 2026 21:48:08 -0700 (PDT)
+Received: from [192.168.0.101] ([43.226.29.240])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c769179e31asm2899739a12.17.2026.03.28.21.48.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 21:40:24 -0700 (PDT)
-From: Sbenazar <voroninan95ton@gmail.com>
-To: amd-gfx@lists.freedesktop.org
-Cc: harry.wentland@amd.com,
-	Sbenazar <voroninan95ton@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 4/4] drm/amd/display: add timestamp guard to vblank_control_worker for Replay
-Date: Sun, 29 Mar 2026 07:40:08 +0300
-Message-ID: <20260329044014.30276-5-voroninan95ton@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260329035830.21953-1-voroninan95ton@gmail.com>
-References: <20260329035830.21953-1-voroninan95ton@gmail.com>
- <20260329044014.30276-1-voroninan95ton@gmail.com>
+        Sat, 28 Mar 2026 21:48:07 -0700 (PDT)
+From: Biswapriyo Nath <nathbappai@gmail.com>
+Subject: [PATCH v2 0/7] Add vibrator, IR transmitter and USB-C handling in
+ xiaomi-ginkgo
+Date: Sun, 29 Mar 2026 04:47:55 +0000
+Message-Id: <20260329-ginkgo-add-usb-ir-vib-v2-0-870e0745e55e@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQ6CMBBGr2Jm7RiopVFX3sOw6M9QRoWaFhoN4
+ e4CHsDlS973vgkSRaYEl90EkTInDv0CYr8D2+reE7JbGEQhVHEUFXruHz6gdg7HZJAjZjYodVU
+ ad24aJQ0s21ekht9b91b/OI3mTnZYY6vRchpC/GzHuVy9fx+5xAKlVFbRSVXaqavvND8PNnRQz
+ /P8Bb9+ZlvMAAAA
+X-Change-ID: 20260325-ginkgo-add-usb-ir-vib-4a51bd9ff64b
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Sean Young <sean@mess.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Martin Botka <martin.botka@somainline.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, stable@vger.kernel.org, 
+ Biswapriyo Nath <nathbappai@gmail.com>, kernel test robot <lkp@intel.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774759680; l=1503;
+ i=nathbappai@gmail.com; s=20260118; h=from:subject:message-id;
+ bh=f6G2WzAX3URkZuJNybDd0oFR9WsBJIh/VoQ78JaFB9M=;
+ b=d9YzlJl/hSsImV6OyJqHuobkqxYz7w7c6plyfLZZLB1c9PyIG1VTX20nB2+mxVAKD7WGucFCZ
+ CzIXOF3cnG/AN8wGovKMCREi8EE5Dx03Q93AWYMnUfz0FSU0FfnIkS3
+X-Developer-Key: i=nathbappai@gmail.com; a=ed25519;
+ pk=slmb/9yXbet+KTiT3EYLCp0p0MEOYa3EdjUXP+HXfjg=
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230833-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230832-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.sr.ht,gmail.com,intel.com,oss.qualcomm.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[voroninan95ton@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nathbappai@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 98082350A7A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5C97F350AA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-amdgpu_dm_crtc_set_panel_sr_feature() in the vblank_control_worker path
-can re-enable Panel Replay as soon as vblank is disabled and
-allow_sr_entry is true. Unlike amdgpu_dm_enable_self_refresh() in the
-commit_planes path, there is no 500ms timestamp guard here to prevent
-premature re-activation during ongoing animations.
+This patch series add support for various components in Xiaomi Redmi
+Note 8.
 
-This is a problem because the vblank worker runs asynchronously: a
-compositor may disable vblank events while a workspace animation is still
-producing commits, causing Replay to be re-enabled mid-animation and
-triggering the DMCUB firmware artifacts on affected hardware.
+Most notably:
+- IR transmitter
+- USB-C OTG
+- Vibrator
 
-Fix this by adding a 500ms guard using replay_disabled_timestamp_ns
-(introduced in patch 2) before re-enabling Replay in the vblank worker
-path. This ensures both re-enable paths have consistent timing
-protection.
+Also, fix some bindings warning as reported due to previous commits.
+These are tested with linux-next tag next-20260320.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sbenazar <voroninan95ton@gmail.com>
+Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Changes in v2:
+- Move bindings fixes to first in the series and add fixes tag.
+- Link to v1: https://patch.msgid.link/20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-index XXXXXXX..XXXXXXX 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -142,6 +142,14 @@ static void amdgpu_dm_crtc_set_panel_sr_feature(
- 	if (link->replay_settings.replay_feature_enabled && !vrr_active &&
- 		allow_sr_entry && !is_sr_active && !is_crc_window_active) {
-+		/*
-+		 * Enforce 500ms delay after replay was last disabled to prevent
-+		 * re-enabling during ongoing animations (e.g., workspace switch).
-+		 * Mirrors the guard in amdgpu_dm_enable_self_refresh().
-+		 */
-+		if ((ktime_get_ns() - link->replay_settings.replay_disabled_timestamp_ns)
-+		    <= 500000000)
-+			return;
- 		amdgpu_dm_replay_enable(vblank_work->stream, true);
- 	} else if (vblank_enabled) {
- 		if (link->psr_settings.psr_version < DC_PSR_VERSION_SU_1 && is_sr_active)
---
-2.48.1
+---
+Biswapriyo Nath (7):
+      arm64: dts: qcom: sm6125: Use 64 bit addressing
+      dt-bindings: clock: qcom, dispcc-sm6125: Add #reset-cells property
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Enable vibrator
+      arm64: dts: qcom: sm6125: Enable USB-C port handling
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add PMI632 Type-C property
+      dt-bindings: leds: irled: ir-spi-led: Add new duty-cycle value
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add IR transmitter
+
+ .../bindings/clock/qcom,dispcc-sm6125.yaml         |   3 +
+ .../devicetree/bindings/leds/irled/ir-spi-led.yaml |   2 +-
+ .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi |  56 +++++++
+ arch/arm64/boot/dts/qcom/sm6125.dtsi               | 168 +++++++++++----------
+ 4 files changed, 152 insertions(+), 77 deletions(-)
+---
+base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
+change-id: 20260325-ginkgo-add-usb-ir-vib-4a51bd9ff64b
+
+Best regards,
+--  
+Biswapriyo Nath <nathbappai@gmail.com>
 
 
