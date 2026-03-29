@@ -1,201 +1,187 @@
-Return-Path: <stable+bounces-230882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOZhIZkUyWl9uQUAu9opvQ
-	(envelope-from <stable+bounces-230882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:01:29 +0200
+	id a1MZH9cdyWlKuwUAu9opvQ
+	(envelope-from <stable+bounces-230883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:40:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07729351E01
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCCF351F62
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80F3E3011135
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 12:01:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DA98300C925
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 12:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641F1346E7B;
-	Sun, 29 Mar 2026 12:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B6631E85D;
+	Sun, 29 Mar 2026 12:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="UCoaqIqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfPlaOgx"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127F43603C8;
-	Sun, 29 Mar 2026 12:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0312DF14C
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 12:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774785680; cv=none; b=lXqslDGl5k5TQR511lNDJX3V1+0kT+wbd4lxKhvhslGkSBu6D9kTbnC0AFQoGBQCfZGQeflRxqevj9Y0dRKMSbj3exdAySYeU8RyLz6izFtxbVoS9afy1r8hQxt0XJcWzBqsCyO3CZ8QMFUgMBSZCSneUwCb6Zho5knw354GSFI=
+	t=1774788052; cv=none; b=pxDz6oE53MO0xz4LO+rqDvVtbxnyo2O3Hxks+yaXMXEfNYYwXtK7Svm71DstI7t5RpeZc2TgMVaJcbDbD5YTppAdnSVSG7JrgwT7yzwzY1CZKSYVEuJV9HIda8rlYMTsvuS6XV/tdq8BgFHqkkPP6zo7fi4UsFdOeoIfPorF0L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774785680; c=relaxed/simple;
-	bh=LUkVCH0L/7jKEKBwPJoL5TgGUxnr3z+abPLYkBGx1IE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=seL/+dgwo3X3Gk93AlmMVeT0C2sSfcCU8M+N80Hx9kvqfAug3N2d1mb+GuX553lMiCFwlCmguwutWPj1/E0k0PbGW91tEhdCDUvkaONdg1lR3J5M6MrswfOIP+EUhaEXGc1j99uqqHhn+k73Qclz81xr6KV44ec4FM/3ZCe2VD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=UCoaqIqW; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1774785647; x=1775390447; i=markus.elfring@web.de;
-	bh=LUkVCH0L/7jKEKBwPJoL5TgGUxnr3z+abPLYkBGx1IE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=UCoaqIqW2kWUJwECOKd0IXOGSIhNSRiz8Uu4SlIKZX3f/xgePzwHtviAPEJpmTxp
-	 EwH2fmEdwTkswXxyJ+zEZptl0tWyJ89P9t1jZ+ashnliksEhLwZ50tlTT26RGv0u5
-	 nEc2oc1cBxCK/G7x+7Zlph92vJ2d2hEyRRZ1k/E3gSUxI+6o1YYYRRhzglo+AsxgE
-	 Ixf9SxRgK3OHKNoJ69uVfjxmQ/OVCsH3OoXwXF8VM0tV7LhRlI+KK50ncriIsM0ON
-	 kdNRpkcDbOuAm4a0SYAnHy+4kAQwjANzR+e+wakxAuPs2NctLiVzwgRzGL1XPh1pZ
-	 8WBWMUdgVMkFM6ADQg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MumNN-1vGVTw32qx-00wXVo; Sun, 29
- Mar 2026 14:00:47 +0200
-Message-ID: <6ec68751-85de-47e7-9bdd-b0ca06099a92@web.de>
-Date: Sun, 29 Mar 2026 14:00:45 +0200
+	s=arc-20240116; t=1774788052; c=relaxed/simple;
+	bh=GifcCGWmYOIONGrLVt2ZU9F9bQj3al0KatqWDpwCrNQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xik/+QW9QtDeZWyjNcj6u7JvYYGdBBvIfTZUjN8DRMLr96l9TDBBsU0SEq20dJhhkbwbu78J9SLelc/KGBU9AYuL1T1KU5Es3htFhf9M/Wt6KSFHP4qZk8vX/ECC0JoJrfrPEhpiPBNcdQXHKzFw/u70LCK8vmgGEyQYrkffmXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfPlaOgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D91C116C6;
+	Sun, 29 Mar 2026 12:40:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774788051;
+	bh=GifcCGWmYOIONGrLVt2ZU9F9bQj3al0KatqWDpwCrNQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=EfPlaOgxPJlovPs3A6xFVyZy9OkZNLPguqoDUOBIxHxb739vRGVncQdGijik0UYR4
+	 3D4OWqZft6zPrUsjPKSOfmH/kmuVtXauEKcqEHbfbjzy5OxuB0qrb+Vq64SrKFaP0L
+	 LdI/6OJsb92Wxfz9oQvindk7uH8RqiK4NbTHEEnA=
+Subject: FAILED: patch "[PATCH] virt: tdx-guest: Fix handling of host controlled 'quote'" failed to apply to 6.12-stable tree
+To: zsm@google.com,dan.j.williams@intel.com,kas@kernel.org,sathyanarayanan.kuppuswamy@linux.intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 29 Mar 2026 14:40:48 +0200
+Message-ID: <2026032948-available-paternity-6929@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] media: tuner: check return value of I2C transfers in
- set_type()
-To: Wenyuan Li <2063309626@qq.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Andy Walls <awalls@md.metrocast.net>,
- linux-media@vger.kernel.org
-Cc: gszhai@bjtu.edu.cn, 25125332@bjtu.edu.cn, 25125283@bjtu.edu.cn,
- 23120469@bjtu.edu.cn, stable@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <tencent_46889E152DE22B7E8A0CBB3311C556F92E09@qq.com>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <tencent_46889E152DE22B7E8A0CBB3311C556F92E09@qq.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KVX+dPh3rjPn9EBONcRU8lqA9im9xNWwhLbQ1G3/sP4taTgeOUc
- AbhjkRkW4SLIdQvIGdyQ4rjmUWMM/s9RTnYMvABO9vXTDi/rHhj3R/D2AZCM/HXBIIdM55m
- fP9WIC/zzVARN9mwZLW62W0js4RC+X6xKP/tmL48KHB0pVFBBzca1zPozC1e3Xjq+cGG2IK
- kfekA2kCVt63JhsOxTFiA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:u8astQAIWnM=;j1GavJ80/lwLbmQMHT5Byo0vXZS
- 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
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[web.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[web.de:s=s29768273];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230882-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[qq.com,kernel.org,md.metrocast.net,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230883-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[web.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[web.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Markus.Elfring@web.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07729351E01
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CBCCF351F62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-=E2=80=A6
-> ---
-> v5:
-> - Reword commit message to better explain rationale
-=E2=80=A6
 
-How does does the prefix =E2=80=9C[PATCH v4]=E2=80=9D fit to such informat=
-ion?
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Regards,
-Markus
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x c3fd16c3b98ed726294feab2f94f876290bf7b61
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032948-available-paternity-6929@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c3fd16c3b98ed726294feab2f94f876290bf7b61 Mon Sep 17 00:00:00 2001
+From: Zubin Mithra <zsm@google.com>
+Date: Wed, 18 Mar 2026 13:40:13 +0000
+Subject: [PATCH] virt: tdx-guest: Fix handling of host controlled 'quote'
+ buffer length
+
+Validate host controlled value `quote_buf->out_len` that determines how
+many bytes of the quote are copied out to guest userspace. In TDX
+environments with remote attestation, quotes are not considered private,
+and can be forwarded to an attestation server.
+
+Catch scenarios where the host specifies a response length larger than
+the guest's allocation, or otherwise races modifying the response while
+the guest consumes it.
+
+This prevents contents beyond the pages allocated for `quote_buf`
+(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
+and possibly forwarded in attestation requests.
+
+Recall that some deployments want per-container configs-tsm-report
+interfaces, so the leak may cross container protection boundaries, not
+just local root.
+
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zubin Mithra <zsm@google.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 4252b147593a..7cee97559ba2 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -171,6 +171,8 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+ #define GET_QUOTE_SUCCESS		0
+ #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+ 
++#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
++
+ /* struct tdx_quote_buf: Format of Quote request buffer.
+  * @version: Quote format version, filled by TD.
+  * @status: Status code of Quote request, filled by VMM.
+@@ -269,6 +271,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+ 	u8 *buf;
+ 	struct tdx_quote_buf *quote_buf = quote_data;
+ 	struct tsm_report_desc *desc = &report->desc;
++	u32 out_len;
+ 	int ret;
+ 	u64 err;
+ 
+@@ -306,12 +309,17 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+ 		return ret;
+ 	}
+ 
+-	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
++	out_len = READ_ONCE(quote_buf->out_len);
++
++	if (out_len > TDX_QUOTE_MAX_LEN)
++		return -EFBIG;
++
++	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+ 	report->outblob = buf;
+-	report->outblob_len = quote_buf->out_len;
++	report->outblob_len = out_len;
+ 
+ 	/*
+ 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
+
 
