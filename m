@@ -1,61 +1,71 @@
-Return-Path: <stable+bounces-230950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QtGiEOtJyWntxAUAu9opvQ
-	(envelope-from <stable+bounces-230950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:48:59 +0200
+	id yMllJptKyWntxAUAu9opvQ
+	(envelope-from <stable+bounces-230951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:51:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE30D352AD8
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:48:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE22C352B28
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70DCC300F1B9
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:48:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B26703026C39
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2472D1F7B;
-	Sun, 29 Mar 2026 15:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C84221257B;
+	Sun, 29 Mar 2026 15:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JHSN4DXX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ER4wWjgc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BCF262A6;
-	Sun, 29 Mar 2026 15:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C0B30100E;
+	Sun, 29 Mar 2026 15:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774799336; cv=none; b=XIoW9zSKW6G3aEimd1ueRwBRguqbWttwL7c0zWNUAOWB9wc+bEvrk2b2G/B/8Z4IDA+p6qWM1U81xOXfCMgB4xXb+bAOsJpDU4Z9Y7NemZ9XiGoKUk6yMNgYJe+5c039yqtgx/sC+yaUwYjqSXLS8fLHg6UZJ7JQDPTMuVt4zvg=
+	t=1774799359; cv=none; b=IghMdewiEH6DMREkwyBhlx4wNoSOkQXchr7boQnZqtVrgogOF4akUrTJopTPhggTojJIpt69zhxSizG6K0eqb+IrGTmhMsJBHdG6SqF9zfimqHYGGrgHkCBx4rXI5tK3wknwzUXZvYtsPExNPd82TH0kaCKObyNz+/W4rBqT+N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774799336; c=relaxed/simple;
-	bh=uFlnHGPshtBX5FJk/XUTu+B080pyjwAI0haVlLOs8bk=;
+	s=arc-20240116; t=1774799359; c=relaxed/simple;
+	bh=6BPfdPDs7/l+xDR+dNdtis6DP9JbpaorqMtRKxNtuM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFKGo6IEfcmbzVY90cq68g4OGOzEPDH+G2PL5EpBIO9LY179JPqTnLVjYz3m/ZswpVRZT5J/TY6WnURP+zyuWeICCp9b1e4Rwmg6nnEr9KxZzoqg/fLePFZm10Q0qc97gzuhCM8pHpOkaflWQaX8D6oMVd1R04tHAAytt6qYFHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JHSN4DXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C242C116C6;
-	Sun, 29 Mar 2026 15:48:55 +0000 (UTC)
+	 MIME-Version; b=ObVFsPdiNI3ZYxReIYKkrWgZG+J5y+vLfXtoN0Gun2Mpw7nVMJua5JGDbK8DhANy8pZHK4IKmA2tAsUAUOfqOpKmeYcSw+yHsfzWlzmOr1QnnueMNLqgNXD/Hpe6e37LgFU/WalEE7rbgIZtMtSNgOPWAYzH081r/2cQ4sZ4Uzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ER4wWjgc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871D8C116C6;
+	Sun, 29 Mar 2026 15:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774799335;
-	bh=uFlnHGPshtBX5FJk/XUTu+B080pyjwAI0haVlLOs8bk=;
+	s=k20201202; t=1774799358;
+	bh=6BPfdPDs7/l+xDR+dNdtis6DP9JbpaorqMtRKxNtuM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHSN4DXX1Ydb153rJVr5YkooYmk3omfxJ38GMHeu1nGuFR+PKTrjKGUR0PJCXb9pq
-	 9aI13xBG9NHGk5FhU7ki1+sAKCC5ZYaKcBE+v0ZbrGRyxGxiXGf1sft73TN2CM5IlX
-	 bnUwkiby6AXiz4HYnKYh2bb2JbU70rfqlkKfjQUAwYjv2SlwEG8wfjKDQixV7ZJLW+
-	 OkLJp/JRs1UNnQngFV2UIpGRSExFdSKn4TSwfFs4Mh+QMeXI82zDToHqJmouaLKWv2
-	 +SuGk28kRSV4BMph7m2AxhKzbsY9SY4KQaKFtatSTWSorOaGfJlpa7w5l+8p/EZXe9
-	 IIHxVl+tt9bCw==
+	b=ER4wWjgcXPZwscYw59MA7J/+z6DhevaDOFlgQJvNWEOta4P1bYnMv80z3lJKkfVcr
+	 zL7OA+tRbt6pZKJI9fOAGLb8RP5vDFBSmqQaFMkaQRvGv/8OMLzLiPzkg5ZI1iZqon
+	 OokRBc4q3wuMS6e9nAyKX5h9wl8y0qXj7y/5/p2Z16+jEoEEROIttf6TNYIWFf1UPI
+	 FcgoFP2iBp9/HmYX3EtGfaVPCGnTYCIMuIjjJ0kXGwagSLmOoSi5cnefcJIUTynL9r
+	 WLTf8aMu9c5QA4l4RjCeZbyLDwdNsjnp9b9IVLVEHCchNBLcTWnLqTdz9eORWFmaAU
+	 VksLT5PqSd6lA==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 5 . 16 . x" <stable@vger.kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko status) [PATCH] mm/damon/core: use time_in_range_open() for damos quota window start
-Date: Sun, 29 Mar 2026 08:48:53 -0700
-Message-ID: <20260329154854.47490-1-sj@kernel.org>
+Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn commit_inputs vs other params race
+Date: Sun, 29 Mar 2026 08:49:16 -0700
+Message-ID: <20260329154917.47598-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260329152306.45796-1-sj@kernel.org>
+In-Reply-To: <20260329153052.46657-1-sj@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,18 +79,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230950-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230951-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
@@ -89,25 +99,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: AE30D352AD8
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EE22C352B28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Forwarding sashiko.dev review status for this thread.
 
-# review url: https://sashiko.dev/#/patchset/20260329152306.45796-1-sj@kernel.org
+# review url: https://sashiko.dev/#/patchset/20260329153052.46657-1-sj@kernel.org
 
-- [PATCH] mm/damon/core: use time_in_range_open() for damos quota window start
+- [PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
   - status: Reviewed
-  - review: No issues found.
+  - review: ISSUES MAY FOUND
+- [PATCH 2/2] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
+  - status: Reviewed
+  - review: ISSUES MAY FOUND
 
 # hkml [1] generated a draft of this mail.  It can be regenerated
 # using below command:
 #
 #     hkml patch sashiko_dev --thread_status --for_forwarding \
-#             20260329152306.45796-1-sj@kernel.org
+#             20260329153052.46657-1-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
