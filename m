@@ -1,175 +1,210 @@
-Return-Path: <stable+bounces-230842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ME0XIC3CyGk7qQUAu9opvQ
-	(envelope-from <stable+bounces-230842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 08:09:49 +0200
+	id 2EzaHnvCyGk7qQUAu9opvQ
+	(envelope-from <stable+bounces-230843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 08:11:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6165350E11
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 08:09:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8910350E3E
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 08:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 713D0301F1B9
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:09:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1890301C915
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC80627B347;
-	Sun, 29 Mar 2026 06:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA4A2BD5B9;
+	Sun, 29 Mar 2026 06:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="PGiUGnN6"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="LBkcIay9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LLJMRPZ+"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3142494F0;
-	Sun, 29 Mar 2026 06:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8322494F0;
+	Sun, 29 Mar 2026 06:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774764552; cv=none; b=AARnxjAVu/lToW0O79GoSqE2v2xO1WgIZtOxwZuFz6DFXcEPr9UIYdVxfvJ0Q/hc+Zf+vFMnODKkYxUidt7rHYznivnbUMa7Ba0XBYvZA04QliD9sI4LLUZfeG60aSl01vIJEAhY9v13vrtc43nXEnMmVRk16PAJZRBVz3HhiCw=
+	t=1774764661; cv=none; b=M5L4d1GNYI3/mfzf/vludHx+Gl8pox49Q/p602StWbxTeJHVTw9gwSmnymVyAbZAQO9t+MmyNorGd0mn9DD4Dk4zmtI+6QFeGh2CIX7IVzRHdwUGQbyoHigkveBtfgnmlf7A4aGbGd+UbCmnLIxu45SHu3gaR7i7yAA/a6IUPos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774764552; c=relaxed/simple;
-	bh=akt1j5RLgcI6S5n71SnrJlqgPQMbm3JiASV7nH6wEB0=;
-	h=Message-ID:From:To:CC:Subject:Date:Content-Type:MIME-Version; b=eOS3vmvIvEglZWewmwDFTa1IBAAvpwi3edIRhg++2Cw6swTQeWwV6HSFaJ+UkyLyZ95EPLhYoF2+EVl6N7/FjkZ41mOyE2k/Nq7AQm6w9ONI/Zq4YdCh9L4Dsfm3FdnxCWpvS+iGGnb1YWAZg+CWkazDkdNMqqVen3SV7o32JoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=PGiUGnN6; arc=none smtp.client-ip=162.62.58.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1774764545; bh=akt1j5RLgcI6S5n71SnrJlqgPQMbm3JiASV7nH6wEB0=;
-	h=From:To:CC:Subject:Date;
-	b=PGiUGnN6u3WWcDVzSvV8us0xoC3RPEMeuh7KUgy7nS4lrC1e7Z8ImAczWf+fHp5Zt
-	 e4+KWVtwlaqLQjcrS+Rv/qN9IZkWcPO6/eEdhjbfIQHF1MiZpN2VTsLLf2uorC3dzC
-	 Z4yNx858yQRjBS22G1ciU7Bp06ijYvW/lh1QEmEc=
-Received: from SG2PR02MB5841.apcprd02.prod.outlook.com ([2603:1046:c01:910::5])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 2431A2BC; Sun, 29 Mar 2026 14:09:03 +0800
-X-QQ-mid: xmsmtpt1774764543tx780ugc4
-Message-ID: <tencent_20BE792225EC3654239D0B90001A911DE909@qq.com>
-X-QQ-XMAILINFO: MfXlhb1xJpsO4OzEkdm/SKx2GC0hKL9YVhRh8Ud32LhMeGXvxwZYmLWboXwuFU
-	 RFug0CAy7/kjG4nJjdbi2/GfkPS2ptmX+EYNOXU4krooZuv5wn9BIG7ErAj4P5kpYb355dLNnefr
-	 023TP1dz4LiCMdqlfjLLMIQS0rqgtgsChqCMvrSoO3nNAWvRwfH5QJZ4pvPmWxxsdqkN050M0/V/
-	 cwNQQTqVJI4opUN55eYClHprgw3ESqxHa8T+KNrjSNgqid+LCv/MXojs4KdxMa0yvly5H+ktymIL
-	 CO7O6qVHBmSvp2f7X0YG1qw984iO44dqKqe2ErmlHy8RomwPjx8S/ypP0f18k2pMIpFcqs3Dt7yR
-	 A4Jps3Luw76TshC7dUvqAx+NI5mxh9VOuRWazt5hojgdAZzgGnndMfBupZvzKRySMdsivbs9D1Cq
-	 FnZiUxWw3l7Y7K/6/CNkCXNEvCnZ0A61/vJgA7qWzuc7Gb3APpzykD9vra56vYFOXt4e+cxW7++P
-	 0fbLz6UMpIIqXteD3zmQmS/Z1imL+iLD1ZJmEFMoh4Xh7wAWxADfm/97CT04b4dl36kmbvlb7JBk
-	 UHBrJQJybSAc4UcmKW1w4XKuXSg74QVIDFkzGe0mnPjAeC094eyEe4bN3HpeUSWn7UuoeF9jIhz3
-	 tllWPqjwai2/YthqSENucvB5YkbNtUDOj+ZqC8Xd1mi/cF93xu+hmSoUjnq6iMWTbWU4ng76ksNS
-	 bqUGYN+0Z3F60abAewvxvodYr8yNq2/o6gYyCUTvKUyDxk4m5DtAffBk42tRJjnZUN62k1Yqi0gD
-	 O6m5IpDtVjLyXsle19WwPVdfpNZjYmWTArdKh9t1vuyAg4OzCFKng+dkmVIVZUiTb9eJhsl6rV3S
-	 orw6l8SW3OeT5Bzg4hwYifvMxrehPxciWxKz8K4KtGv+GB33hNJtai0f59fU+eEUFb4+0Ej09UJG
-	 e1iFw0JzXiDNxzMnIM4HfUDROnQHBtgSNmsAigUNMuhSWIFnvr1cO6ANem0P7UAQ80R8kzLEElsR
-	 H+473D5n+x82ixq09IL04Zj9sIE5LEvo6i7eQo6yY/XXDubSKV+rNxoh6AxD8yC37VT9ylz/p8iq
-	 CVW+i1
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: "driz2t@qq.com" <driz2t@qq.com>
-To: stable <stable@vger.kernel.org>
-CC: "syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com"
-	<syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com>, joseph.qi
-	<joseph.qi@linux.alibaba.com>, mark <mark@fasheh.com>, jlbec
-	<jlbec@evilplan.org>, linux-kernel <linux-kernel@vger.kernel.org>
-Subject:  [PATCH 6.6.y] kernel BUG in ocfs2_remove_extent
-Thread-Topic:  [PATCH 6.6.y] kernel BUG in ocfs2_remove_extent
-Thread-Index: AQHcv0E22BYwVZUP7U+He/0ovMIvoA==
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date: Sun, 29 Mar 2026 06:09:02 +0000
-X-OQ-MSGID:
-	<SG2PR02MB5841E2BB56938506FFBF0D33F255A@SG2PR02MB5841.apcprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator:
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-msip_labels:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1774764661; c=relaxed/simple;
+	bh=MfmOLigdWE8bsU7XHgwedxVC8vvi1919XD9DgZjdwi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bTHCjNoajfLhIJGn+hq+xcywTFUu67J6TsF5VfXpgGysPqnNCEXGEeLJQdOrFOJjDc7c5MO57wDd44tf8RQ7i5SmGtVCO4CsdQMa/qyPo8c92pLqRTviZBdB5YV7l0vhUYP6AE8Mw7t68FRPUEnbdE+yp5RQouWAoAwD+bQ0y4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=LBkcIay9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LLJMRPZ+; arc=none smtp.client-ip=103.168.172.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 7CB0013803E4;
+	Sun, 29 Mar 2026 02:10:58 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sun, 29 Mar 2026 02:10:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1774764658; x=1774771858; bh=Me/2NNLQWh
+	li5jt5GB39ENZZ9ju/MKEHh68QaDIIrS0=; b=LBkcIay900en4TEqk60VRxH4gY
+	rYv5r0SS8ewN7IvSN8OSajdMlpXaIjvKrdhRLaCECGUn5abbidHNaTx2lP4SfJk6
+	js0XaYC7tTVAvmfBvXOxq32qjQmdA+mKayyis1J8bkSo9QysCRRp/OeatL5tH+pe
+	rgSHbALLc3187vQkdVGd6ZS2h9oqSr2tmBU7bDfecpOdmuNFpViqHvtMZxXgEuQw
+	st5kaBsF4FdIUIpKAIS7hHp/luQyaZtQplY9X10tKYqbvVySg66LnvqfyAfNkpVV
+	aUEdjyf2woXlZF6ZiV8W8ilKktKyIj3VgzNOZzUZLa8LKhWj1cHwONXzzSZQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774764658; x=1774771858; bh=Me/2NNLQWhli5jt5GB39ENZZ9ju/MKEHh68
+	QaDIIrS0=; b=LLJMRPZ+yz+yNImgvl6SMQYDwauyGtQNR5Ym38EZGOowfCbUoZm
+	6zvOJX627XnoqxEqRSjVnWr/ucTWm/E2nX7q+Dkf34FX2X1RTP9ZyeTeT+xqlIID
+	dx1ZoHxAdPIvXUQtHVS5hvi4R6Jrv6eHfzqcS1cR4XOEbKTWwh9QsdkF2Zh5DYFF
+	RWXkJG15ZF9Mi7MlTMiQ96laoJiWFuBsWas18+0dNMp5J0enMRySMftULzbzsN1d
+	DzulrViTjLOXnrwjj45WCuv1OnYNLDPXCetflmq56MzCyn6dhhl+NsBxIfuycV/N
+	ogChP+yQcTH3fVPu782Tr1nfeHsYMnUQMkA==
+X-ME-Sender: <xms:ccLIae9ZIl-PvaFBq0ftyPIPtbJ0cJ7m88zg6b5itoOQtgm3qEwZhA>
+    <xme:ccLIafgo3XsYuGWUPEovPJ26cSRyWG33R7Ee9yxBQsZ28pOK5tMNor1gpcO_wp31i
+    iIpGUmcKeg4aWjqU4Jtk6O-m9PvOSBc0XGFy3Lqu1G-bHV5>
+X-ME-Received: <xmr:ccLIaSmC4epcOvkxbkau1qRne3h-nypTIHtN6hg5m2ssPpComy99fYT9xaTtyPjECN19XO21XM8h-St0o-jFjzM4B7DrZGL31vSLVN0F3hk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeehfedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepueegledvgf
+    euffetffehfffgkeegtddtudejudeiiedvuedtteelleejvddtgfefnecuffhomhgrihhn
+    pehmshhgihgurdhlihhnkhdpkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhn
+    sggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgrth
+    hhsggrphhprghisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnuggvrhhsshhonhes
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhonhhrrgguhigstghioheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodguth
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgvvgeskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrvhgvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgvrghnse
+    hmvghsshdrohhrgh
+X-ME-Proxy: <xmx:ccLIacRtSpq2hxfQN7N1HKjjGZs7UCoAiw_SCXb6QJGaH8iWm2CUIA>
+    <xmx:ccLIaeW1M8ZW696sfK9rjzo_t_HBeXq9CGb65POQUfQmkO-wuL_t2Q>
+    <xmx:ccLIaVshc5UWMaSgc98765Q-8rKO4s4jb5o7LAhgEF85m9Tki_jBmQ>
+    <xmx:ccLIacslVZOv_OBX_RcxzbRY4KmR_etruzRz6-HXCGpY6ZaBSv-5KA>
+    <xmx:csLIaRaBug03GqzpcrWhiNOAe6GeymvzonHKblRxaUznLYFQJQ70648i>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 29 Mar 2026 02:10:56 -0400 (EDT)
+Date: Sun, 29 Mar 2026 08:10:54 +0200
+From: Greg KH <greg@kroah.com>
+To: Biswapriyo Nath <nathbappai@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Sean Young <sean@mess.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Martin Botka <martin.botka@somainline.org>,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/7] Add vibrator, IR transmitter and USB-C handling
+ in xiaomi-ginkgo
+Message-ID: <2026032949-vice-ashen-e0c5@gregkh>
+References: <20260329-ginkgo-add-usb-ir-vib-v2-0-870e0745e55e@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [0.44 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260329-ginkgo-add-usb-ir-vib-v2-0-870e0745e55e@gmail.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	FROM_DN_EQ_ADDR(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[driz2t@qq.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[qq.com];
+	TAGGED_FROM(0.00)[bounces-230843-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230842-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[qq.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,1dd53396e7124586dca9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D6165350E11
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kroah.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D8910350E3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-VGhpcyBpcyBhIGJhY2twb3J0IGZvciA2LjYueS4KClsgVXBzdHJlYW0gY29tbWl0IGUxYzcwNTA1
-ZWU4MTU4YzExMDgzNDBkOWNkNjcxODJhZGU5M2FmNGEgXQoKb2NmczI6IGFkZCBleHRyYSBjb25z
-aXN0ZW5jeSBjaGVja3MgZm9yIGNoYWluIGFsbG9jYXRvciBkaW5vZGVzCgpXaGVuIHZhbGlkYXRp
-bmcgY2hhaW4gYWxsb2NhdG9yIGRpbm9kZSBpbiAnb2NmczJfdmFsaWRhdGVfaW5vZGVfYmxvY2so
-KScsCmFkZCBhbiBleHRyYSBjaGVja3Mgd2hldGhlciBhKSB0aGUgbWF4aW11bSBhbW91bnQgb2Yg
-Y2hhaW4gcmVjb3JkcyBpbgonc3RydWN0IG9jZnMyX2NoYWluX2xpc3QnIG1hdGNoZXMgdGhlIHZh
-bHVlIGNhbGN1bGF0ZWQgYmFzZWQgb24gdGhlCmZpbGVzeXN0ZW0gYmxvY2sgc2l6ZSwgYW5kIGIp
-IHRoZSBuZXh0IGZyZWUgc2xvdCBpbmRleCBpcyB3aXRoaW4gdGhlIHZhbGlkCnJhbmdlLgoKTGlu
-azogaHR0cHM6Ly9sa21sLmtlcm5lbC5vcmcvci8yMDI1MTAzMDE1MzAwMy4xOTM0NTg1LTEtZG1h
-bnRpcG92QHlhbmRleC5ydQpTaWduZWQtb2ZmLWJ5OiBEbWl0cnkgQW50aXBvdiA8ZG1hbnRpcG92
-QHlhbmRleC5ydT4KUmVwb3J0ZWQtYnk6IHN5emJvdCs3NzAyNjU2NDUzMGRiYzI5Yjg1NEBzeXpr
-YWxsZXIuYXBwc3BvdG1haWwuY29tCkNsb3NlczogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5j
-b20vYnVnP2V4dGlkPTc3MDI2NTY0NTMwZGJjMjliODU0ClJlcG9ydGVkLWJ5OiBzeXpib3QrNTA1
-NDQ3M2EzMWY3OGY3MzU0MTZAc3l6a2FsbGVyLmFwcHNwb3RtYWlsLmNvbQpDbG9zZXM6IGh0dHBz
-Oi8vc3l6a2FsbGVyLmFwcHNwb3QuY29tL2J1Zz9leHRpZD01MDU0NDczYTMxZjc4ZjczNTQxNgpT
-dWdnZXN0ZWQtYnk6IEpvc2VwaCBRaSA8am9zZXBoLnFpQGxpbnV4LmFsaWJhYmEuY29tPgpSZXZp
-ZXdlZC1ieTogSm9zZXBoIFFpIDxqb3NlcGgucWlAbGludXguYWxpYmFiYS5jb20+ClRlc3RlZC1i
-eTogc3l6Ym90KzFkZDUzMzk2ZTcxMjQ1ODZkY2E5QHN5emthbGxlci5hcHBzcG90bWFpbC5jb20K
-U2lnbmVkLW9mZi1ieTogQ2hhbmdqaWFuIExpdSA8ZHJpejJ0QHFxLmNvbT4KLS0tCsKgZnMvb2Nm
-czIvaW5vZGUuYyB8IDE3ICsrKysrKysrKysrKysrKysrCsKgMSBmaWxlIGNoYW5nZWQsIDE3IGlu
-c2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9mcy9vY2ZzMi9pbm9kZS5jIGIvZnMvb2NmczIvaW5v
-ZGUuYwppbmRleCBjNTYxYThhNjQ5M2UuLjdjOTlmNDM2MDM3YiAxMDA2NDQKLS0tIGEvZnMvb2Nm
-czIvaW5vZGUuYworKysgYi9mcy9vY2ZzMi9pbm9kZS5jCkBAIC0xNDE5LDYgKzE0MTksMjMgQEAg
-aW50IG9jZnMyX3ZhbGlkYXRlX2lub2RlX2Jsb2NrKHN0cnVjdCBzdXBlcl9ibG9jayAqc2IsCsKg
-4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCZ290byBiYWlsOwrCoOKAguKAguKAguKA
-guKAgn0KwqAKK+KAguKAguKAguKAguKAgmlmIChsZTMyX3RvX2NwdShkaS0+aV9mbGFncykgJiBP
-Q0ZTMl9DSEFJTl9GTCkgewor4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCc3RydWN0
-IG9jZnMyX2NoYWluX2xpc3QgKmNsID0gJmRpLT5pZDIuaV9jaGFpbjsKKwor4oCC4oCC4oCC4oCC
-4oCC4oCC4oCC4oCC4oCC4oCC4oCCaWYgKGxlMTZfdG9fY3B1KGNsLT5jbF9jb3VudCkgIT0gb2Nm
-czJfY2hhaW5fcmVjc19wZXJfaW5vZGUoc2IpKSB7CivigILigILigILigILigILigILigILigILi
-gILigILigILigILigILigILigILigILigIJyYyA9IG9jZnMyX2Vycm9yKHNiLCAiSW52YWxpZCBk
-aW5vZGUgJWxsdTogY2hhaW4gbGlzdCBjb3VudCAldVxuIiwKK+KAguKAguKAguKAguKAguKAguKA
-guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
-guKAguKAguKAgiAodW5zaWduZWQgbG9uZyBsb25nKWJoLT5iX2Jsb2NrbnIsCivigILigILigILi
-gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
-gILigILigILigILigILigILigIIgbGUxNl90b19jcHUoY2wtPmNsX2NvdW50KSk7CivigILigILi
-gILigILigILigILigILigILigILigILigILigILigILigILigILigILigIJnb3RvIGJhaWw7Civi
-gILigILigILigILigILigILigILigILigILigILigIJ9CivigILigILigILigILigILigILigILi
-gILigILigILigIJpZiAobGUxNl90b19jcHUoY2wtPmNsX25leHRfZnJlZV9yZWMpID4gbGUxNl90
-b19jcHUoY2wtPmNsX2NvdW50KSkgewor4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
-4oCC4oCC4oCC4oCC4oCC4oCCcmMgPSBvY2ZzMl9lcnJvcihzYiwgIkludmFsaWQgZGlub2RlICVs
-bHU6IGNoYWluIGxpc3QgaW5kZXggJXVcbiIsCivigILigILigILigILigILigILigILigILigILi
-gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
-gIIgKHVuc2lnbmVkIGxvbmcgbG9uZyliaC0+Yl9ibG9ja25yLAor4oCC4oCC4oCC4oCC4oCC4oCC
-4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
-4oCC4oCC4oCC4oCCIGxlMTZfdG9fY3B1KGNsLT5jbF9uZXh0X2ZyZWVfcmVjKSk7CivigILigILi
-gILigILigILigILigILigILigILigILigILigILigILigILigILigILigIJnb3RvIGJhaWw7Civi
-gILigILigILigILigILigILigILigILigILigILigIJ9CivigILigILigILigILigIJ9CisKwqDi
-gILigILigILigILigIJyYyA9IDA7CsKgCsKgYmFpbDoKLS0KMi40My4wCg==
+On Sun, Mar 29, 2026 at 04:47:55AM +0000, Biswapriyo Nath wrote:
+> This patch series add support for various components in Xiaomi Redmi
+> Note 8.
+> 
+> Most notably:
+> - IR transmitter
+> - USB-C OTG
+> - Vibrator
+> 
+> Also, fix some bindings warning as reported due to previous commits.
+> These are tested with linux-next tag next-20260320.
+> 
+> Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
+> ---
+> Changes in v2:
+> - Move bindings fixes to first in the series and add fixes tag.
+> - Link to v1: https://patch.msgid.link/20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com
+> 
+> ---
+> Biswapriyo Nath (7):
+>       arm64: dts: qcom: sm6125: Use 64 bit addressing
+>       dt-bindings: clock: qcom, dispcc-sm6125: Add #reset-cells property
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Enable vibrator
+>       arm64: dts: qcom: sm6125: Enable USB-C port handling
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add PMI632 Type-C property
+>       dt-bindings: leds: irled: ir-spi-led: Add new duty-cycle value
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add IR transmitter
+> 
+>  .../bindings/clock/qcom,dispcc-sm6125.yaml         |   3 +
+>  .../devicetree/bindings/leds/irled/ir-spi-led.yaml |   2 +-
+>  .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi |  56 +++++++
+>  arch/arm64/boot/dts/qcom/sm6125.dtsi               | 168 +++++++++++----------
+>  4 files changed, 152 insertions(+), 77 deletions(-)
+> ---
+> base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
+> change-id: 20260325-ginkgo-add-usb-ir-vib-4a51bd9ff64b
+> 
+> Best regards,
+> --  
+> Biswapriyo Nath <nathbappai@gmail.com>
+> 
+> 
 
+<formletter>
+
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
 
