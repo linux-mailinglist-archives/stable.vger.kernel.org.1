@@ -1,187 +1,195 @@
-Return-Path: <stable+bounces-230883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id a1MZH9cdyWlKuwUAu9opvQ
-	(envelope-from <stable+bounces-230883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:40:55 +0200
+	id IFReBRAeyWlKuwUAu9opvQ
+	(envelope-from <stable+bounces-230884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:41:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCCF351F62
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:40:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341AB351F6A
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 14:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DA98300C925
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 12:40:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F95F300B57D
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 12:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B6631E85D;
-	Sun, 29 Mar 2026 12:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF1D36D4EF;
+	Sun, 29 Mar 2026 12:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfPlaOgx"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="nos5uN1w"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0312DF14C
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 12:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050D83093DF;
+	Sun, 29 Mar 2026 12:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774788052; cv=none; b=pxDz6oE53MO0xz4LO+rqDvVtbxnyo2O3Hxks+yaXMXEfNYYwXtK7Svm71DstI7t5RpeZc2TgMVaJcbDbD5YTppAdnSVSG7JrgwT7yzwzY1CZKSYVEuJV9HIda8rlYMTsvuS6XV/tdq8BgFHqkkPP6zo7fi4UsFdOeoIfPorF0L0=
+	t=1774788108; cv=none; b=OZxp6S2vcZCpXvTsM1lCE9zNie4dDFp11/lgwr1Cp5uHykLt8cHXOtMad0xSlEl0vVQdMrc8we8ugqRqgg2/Hoz2kzYNkTGATtiLh4q+M+1xrdAE7POjT7pcLNzWgwnkX4S/dxtB9o0cGsoWTTk2/LbwzJa4LIymXeqcpVs1rGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774788052; c=relaxed/simple;
-	bh=GifcCGWmYOIONGrLVt2ZU9F9bQj3al0KatqWDpwCrNQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xik/+QW9QtDeZWyjNcj6u7JvYYGdBBvIfTZUjN8DRMLr96l9TDBBsU0SEq20dJhhkbwbu78J9SLelc/KGBU9AYuL1T1KU5Es3htFhf9M/Wt6KSFHP4qZk8vX/ECC0JoJrfrPEhpiPBNcdQXHKzFw/u70LCK8vmgGEyQYrkffmXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfPlaOgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D91C116C6;
-	Sun, 29 Mar 2026 12:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774788051;
-	bh=GifcCGWmYOIONGrLVt2ZU9F9bQj3al0KatqWDpwCrNQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=EfPlaOgxPJlovPs3A6xFVyZy9OkZNLPguqoDUOBIxHxb739vRGVncQdGijik0UYR4
-	 3D4OWqZft6zPrUsjPKSOfmH/kmuVtXauEKcqEHbfbjzy5OxuB0qrb+Vq64SrKFaP0L
-	 LdI/6OJsb92Wxfz9oQvindk7uH8RqiK4NbTHEEnA=
-Subject: FAILED: patch "[PATCH] virt: tdx-guest: Fix handling of host controlled 'quote'" failed to apply to 6.12-stable tree
-To: zsm@google.com,dan.j.williams@intel.com,kas@kernel.org,sathyanarayanan.kuppuswamy@linux.intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 14:40:48 +0200
-Message-ID: <2026032948-available-paternity-6929@gregkh>
+	s=arc-20240116; t=1774788108; c=relaxed/simple;
+	bh=E9fb0EnIc9p/YuYSpWEa5VL+fofa3gSVxNR+CROncC8=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=PDabGRzxnAc70ocHVRdNqTVSfaQ3JMOsYj80tYmdH9Zl/ESH8f6Xc5kBBJS/756fIRpU+UNEzyYSwHTYTETiAVePlSA5l6CKqIY7S5vNR4FU17g/NOt4GJTrqL58q8nFxh/zJsei/Y27amKS5Fe8JtcBkGr3ho2IFVLbaErBjUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=nos5uN1w; arc=none smtp.client-ip=203.205.221.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774788094; bh=KRmC2zby+2bOT4GpdhG24sV/DNEBY41ZP4WcP7AHs48=;
+	h=From:To:Cc:Subject:Date;
+	b=nos5uN1wrYMPNJqYn0k8u9aWySf7tgQAIYUN2ocdgGaWH26UTEEi7M+Raof2bHTlw
+	 kN3oj7h8OCWlooqAfA39msM1IyLAjbAgTpMqxIP/q6P4I053Df4OD3BLCy0iePa6Tn
+	 Bs3Xt9si5Yfsh2bPS6khOYHZqJ5q7hPU5OMOqpKg=
+Received: from LAPTOP-KQCD4QBN.localdomain ([123.121.145.48])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id A5E8D08C; Sun, 29 Mar 2026 20:41:30 +0800
+X-QQ-mid: xmsmtpt1774788090tj6d323ds
+Message-ID: <tencent_820AAE865CAC3FB7596055F016FD7503210A@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JuSj1wGuaxjrEpgmHejHAaD/YXyQzW+v1e1oUEQMVbOh9mfOpEhw
+	 rqYgARecSIIEerpVeme4NvQSyYHzcjUlxliVtQw+Bh1cHJY/GigYvaVxRU8eFHNFYwN8Vb/LYujU
+	 IfptXd4SiY/ut9t2f6h6WlJHTmLgMQ/d5niyfhTgivMqLTeNUiGfgvnmek1ouCWFTRa1Vdh9PuNB
+	 QlmvgWjaU9Jn5ATyozC1bXThCBykAffMBf50/o9XkO/8qyJfXrF5eCKLlEoDQuSvk7MUxJQwWFLQ
+	 gETZS1+6Xy1GVD9TNeuJQ1iwlMjsZnBbbDpSqNHV0qJsnOXAkCEhfVWGuf0xBgG+xzvLGu6ZfQ/6
+	 ypfw218MYoKs5wBzF0gNtveLD9SU0kJtuoOGLw5i9Wa/1ly61ysEi0zOkorQs5wGYrRKVeUiDN9V
+	 AsnFWgF+xmZuThLNBeT7xOIxj8b1xNFcBmO8gqo3JEKrsIU/9fr9GtWC+SmvCWtQRrLM5l8dxR/4
+	 tECN1nNZLk1/utWdurIxpPFaj18/rjcvRaUkm+gsVj4zPw0TEi8PHVXdycjpVOCje7ytOJgNzB6I
+	 Xly2Dw7uRdlfFN/qM+N7/j4DQcGJFsZH6v3hEdBwPYyjQamkQUZ5hpDES+xFyuNNFwVy3BNVPeQj
+	 x4bPhWe+ksqPE5OTTmfrnt2KjLc0Y43S4OZE5s0lrkH3EYACwuwn/LI9AWf0yXXjBWzUYKxGS+o/
+	 I/bJeak4nH+jNGilgJ4Z6hBQ2X5dCWihECjhKAFuTekMCHIHShFemBrIO3zLvZZFLecsjBlipGss
+	 1iiN962Xm8IPuksXBDLkIIoRVnVaaSYUyP4zIg7lnnrmkkDOV5Z015vAvix9fs2AH97hJz68tsYC
+	 g8h6I+8186wEilUabfnvb7+5BYVpodE37OWrhX9jbbVBEvlqHKyr7aWwhFy5P0WaBWRSzO9kuvhs
+	 5tH7NYJ80BYRkOtCacnymwmH1nqjidqYLo3/FOKmQSEcaUB9/KGhlsogyUdl71t79rQCn+EaNDlo
+	 LEbydZ4nYFKiZUnYKnNDdVjxQa4St7u1G5VQyB+vq1UMnY+m8l99deSqUwiXcM60nyx2ExRg==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Wenyuan Li <2063309626@qq.com>
+To: Andy Walls <awalls@md.metrocast.net>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Markus Elfring <Markus.Elfring@web.de>,
+	gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	Wenyuan Li <2063309626@qq.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] media: ivtv: ir-i2c: check I2C transfer errors in get_key_adaptec()
+Date: Sun, 29 Mar 2026 20:41:28 +0800
+X-OQ-MSGID: <20260329124129.1726-1-2063309626@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230883-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,bjtu.edu.cn,qq.com];
+	TAGGED_FROM(0.00)[bounces-230884-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CBCCF351F62
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid]
+X-Rspamd-Queue-Id: 341AB351F6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+In get_key_adaptec(), a command byte (0x00) is sent via
+i2c_master_send() to initiate a key read, but the return value is not
+checked.
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+If the transfer fails, the IR chip may not receive the command and the
+subsequent i2c_master_recv() may return stale or invalid data. In this
+case, the driver silently reports "no key", making such failures hard
+to diagnose.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Check the return values of both i2c_master_send() and
+i2c_master_recv(), and log errors using dev_err_ratelimited().
+Short transfers are converted to -EIO while preserving existing
+kernel error codes.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x c3fd16c3b98ed726294feab2f94f876290bf7b61
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032948-available-paternity-6929@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+On error, still return 0 to keep the current behavior (no key
+reported), but emit a diagnostic message to aid debugging.
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c3fd16c3b98ed726294feab2f94f876290bf7b61 Mon Sep 17 00:00:00 2001
-From: Zubin Mithra <zsm@google.com>
-Date: Wed, 18 Mar 2026 13:40:13 +0000
-Subject: [PATCH] virt: tdx-guest: Fix handling of host controlled 'quote'
- buffer length
-
-Validate host controlled value `quote_buf->out_len` that determines how
-many bytes of the quote are copied out to guest userspace. In TDX
-environments with remote attestation, quotes are not considered private,
-and can be forwarded to an attestation server.
-
-Catch scenarios where the host specifies a response length larger than
-the guest's allocation, or otherwise races modifying the response while
-the guest consumes it.
-
-This prevents contents beyond the pages allocated for `quote_buf`
-(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
-and possibly forwarded in attestation requests.
-
-Recall that some deployments want per-container configs-tsm-report
-interfaces, so the leak may cross container protection boundaries, not
-just local root.
-
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Fixes: e1e2c5756563 ("[media] ivtv: Add Adaptec Remote Controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zubin Mithra <zsm@google.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
 
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 4252b147593a..7cee97559ba2 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -171,6 +171,8 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
- #define GET_QUOTE_SUCCESS		0
- #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+---
+v4:
+- Reword commit message to improve clarity and rationale
+- No functional changes
+
+v3:
+- Add correct Fixes tag
+- No functional changes
+
+v2:
+- Add error handling for i2c_master_send()
+- Extend checking to i2c_master_recv()
+- Use dev_err_ratelimited()
+- Clarify error handling behavior
+---
+ drivers/media/pci/ivtv/ivtv-i2c.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/pci/ivtv/ivtv-i2c.c b/drivers/media/pci/ivtv/ivtv-i2c.c
+index 28cb22d6a892..c011f2246add 100644
+--- a/drivers/media/pci/ivtv/ivtv-i2c.c
++++ b/drivers/media/pci/ivtv/ivtv-i2c.c
+@@ -138,11 +138,28 @@ static int get_key_adaptec(struct IR_i2c *ir, enum rc_proto *protocol,
+ 			   u32 *scancode, u8 *toggle)
+ {
+ 	unsigned char keybuf[4];
++	int ret;
  
-+#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
+ 	keybuf[0] = 0x00;
+-	i2c_master_send(ir->c, keybuf, 1);
 +
- /* struct tdx_quote_buf: Format of Quote request buffer.
-  * @version: Quote format version, filled by TD.
-  * @status: Status code of Quote request, filled by VMM.
-@@ -269,6 +271,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
- 	u8 *buf;
- 	struct tdx_quote_buf *quote_buf = quote_data;
- 	struct tsm_report_desc *desc = &report->desc;
-+	u32 out_len;
- 	int ret;
- 	u64 err;
- 
-@@ -306,12 +309,17 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
- 		return ret;
++	ret = i2c_master_send(ir->c, keybuf, 1);
++	if (ret != 1) {
++		int err = ret < 0 ? ret : -EIO;
++
++		dev_err_ratelimited(&ir->c->dev, "i2c_master_send failed: %pe\n", ERR_PTR(err));
++
++		/* Preserve existing behavior: treat error as no key */
++		return 0;
++	}
++
+ 	/* poll IR chip */
+-	if (i2c_master_recv(ir->c, keybuf, sizeof(keybuf)) != sizeof(keybuf)) {
++	ret = i2c_master_recv(ir->c, keybuf, sizeof(keybuf));
++	if (ret != sizeof(keybuf)) {
++		int err = ret < 0 ? ret : -EIO;
++
++		dev_err_ratelimited(&ir->c->dev, "i2c_master_recv failed: %pe\n", ERR_PTR(err));
++
++		/* Preserve existing behavior */
+ 		return 0;
  	}
  
--	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
-+	out_len = READ_ONCE(quote_buf->out_len);
-+
-+	if (out_len > TDX_QUOTE_MAX_LEN)
-+		return -EFBIG;
-+
-+	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
- 	report->outblob = buf;
--	report->outblob_len = quote_buf->out_len;
-+	report->outblob_len = out_len;
- 
- 	/*
- 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
+-- 
+2.43.0
 
 
