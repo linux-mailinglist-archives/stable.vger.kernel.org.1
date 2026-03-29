@@ -1,164 +1,152 @@
-Return-Path: <stable+bounces-230947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EPAH5VHyWkAxAUAu9opvQ
-	(envelope-from <stable+bounces-230947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:39:01 +0200
+	id WCqtApVIyWl9xAUAu9opvQ
+	(envelope-from <stable+bounces-230948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:43:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D876F352A7E
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:39:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4212352ABC
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85C28300D162
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:36:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2313F301E3C4
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E95A37DE99;
-	Sun, 29 Mar 2026 15:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6646537C90C;
+	Sun, 29 Mar 2026 15:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqmzShbM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ArmjnmeB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC7437998F;
-	Sun, 29 Mar 2026 15:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E916431CA4E
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 15:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774798610; cv=none; b=a2ZvD66CtXsLLaB3FW1xFlgYswHYVOfV5O6TsKWy5+GxDkKeoFvAHO37ZDl5l3yA5HuCN4IXk4LTlSIZEXlZ+F0Lpftkki5n9/z3aFAfkRJ8ACSadkcSoPaAveZubY+J545GtAAUhMtPLkBrsAMBNLssNy0bXzLM6OifcXXJiJQ=
+	t=1774798830; cv=none; b=LYNJ5rXtESIEv9n0Q5pIupZuYcCtRozz/YUvkozHEzQLqKSGkrQhgDF/4RunQCMu+IWS3CBH54SDHzGSJLS77jOyVozgqNX4lotT/ZEj5cwH5uMaMmtRcNxljc5AlYUl0S0PvYfj7Qp6q7AoxCr3ZZJMSgAgfPEzK/Qdq48j3HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774798610; c=relaxed/simple;
-	bh=wUEVhZoXsCyGZdr2zQUUKoIVCQrmq8kfzrwZor4bN08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6aiZ/493+GYR/w6V1vfr9MfiBY0kPWNTAc7ekjdgfYGgCZn8srkH9xmj20I61QQyseIVOmaK9ehdXgpqtbP/BKAmB3yG9oYIADJt7Q3/bnLBITaPhpn5TX6qaGb/vDDtDa4TStsvmYpqsaiTGjizfPQNedRaA8EQkpzhCrttq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqmzShbM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A735CC116C6;
-	Sun, 29 Mar 2026 15:36:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774798609;
-	bh=wUEVhZoXsCyGZdr2zQUUKoIVCQrmq8kfzrwZor4bN08=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqmzShbM7Qn6aXcqe5+c6k2E0aMzkgs5OaKlOYuCnEhRM/jUzgAiaapNguG2bJzVJ
-	 LBxBoxQZLFWwyxHpC69+nTenFfwmxYsU9MOPRTZMH9Ev4YbIeWxa1IIg3tWWTSrOfY
-	 +GvHaKnvsNdHUCyxUCtm7bQRdkWoSihjfKq2thLNCFM+aq2bNLdRWrfeIqr89J78Ce
-	 TW//quEpKV/nGz2qrTGRcmTyROr0qhpBPdXc/jQJhQQXv5+zTQcfudzxIvJd6ce2GO
-	 j95JxJSq0RKVHEmG7j7o61GGTf39ea24fUBFhabhUile9ikDzHhuUNhZe/Fq3eIO47
-	 JQ2jFIEowUJ2w==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 16 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH 1/2] mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
-Date: Sun, 29 Mar 2026 08:36:47 -0700
-Message-ID: <20260329153648.47235-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260329153407.46989-1-sj@kernel.org>
-References: 
+	s=arc-20240116; t=1774798830; c=relaxed/simple;
+	bh=8apU0B3fbaHM+K49pJhbNmwWZqpX90u0ey0dDQIekJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mXP5zSDZCFxsNIhuNq766asAQb/TsNTddH2HAa8g0uhxPl9JbM2nyeL5qCawlury+ysEghwjvpChgfIlhe3bS26FVZa5s6mcwFtGTzDOp1RFdg1PrI5gEBtXRVB+8pcq9MAy4E8nfruhESFwJitwnxydXQNbSbOydpI9Jr1hjAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArmjnmeB; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-66132b22182so5239999a12.2
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 08:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774798827; x=1775403627; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jO7SbHDenYF2z2Mmy1AKtMlG0wX0LKgJ7wQHanxgzJo=;
+        b=ArmjnmeBROTpOCowAVnKISrVXa0DMwcpoxKvblXTYsFOUxBp3sP0BEDB0lBerQMnLf
+         RusaPu0DUjHAEXCV4nQpuejRR5/orM1MYI68ANpjkD+St460cNVj6FFN5OF02wHKiTvx
+         X//mMBs+qSbvgUlIJGBZ2OYxs21s65zy5GKA99agedugIf5vDsePjgblaOpxS/iwJXX8
+         RK4NugGV6h/N8cwfgImsuMdbHPlhXbaaWR5jL7lTOVjnn2Yc5OIMBvl8/nJ4PEK811ao
+         3/RchuFe9OrwWu6fuJO0H6BwgSqK8VeGPKgE3AzS7Hv3JxbqHZny8sV6HGbjXRpWil7p
+         Oxmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774798827; x=1775403627;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jO7SbHDenYF2z2Mmy1AKtMlG0wX0LKgJ7wQHanxgzJo=;
+        b=JJK5ulSzOikhCWYjzcoAWyuHWNoymJvDlVPbZx+ICpuLtSM44bnteRQC2TdMf+svXs
+         insm84IdfUrfs1Ug7k/MrjqWoZ5xZJg3DUcgXjUu7Z+ahM8Usr2D8IhyJ6vXkd7WrL29
+         MTu38SG58GfWOq/MgRlK5g6nZ4syQ2A8pl7HNBHYwPd7yvoSoZi8g4wv4Z/zVdNOfOon
+         xOjuFXwcZhHrIjP5Dn5WTb/pGEahMPGz+A27LrpP0enZh5bQJbN/NTZhlaYaZ532WuGi
+         LeuG15wOKVxgmIdmYqPK2do303egOl9XtmwGl9atNOpTNNDmEK6Mran355N+80r9c55P
+         oHtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPptyOtD/aiPOAHhbOnhZzoaoygwrwLyn7ALWNLoIhm9/B6zNacmcK9+H2LgmqtU8xXP3kIgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu/qNwj0sY04hDSyAfKP1Yq4GRc6rViW4Zb8WD6ZmkMWtu0cqx
+	jzJ4OwmYGbeNcs/9AjpX6CsOSDw1GG9Gzhv9UNbAjxCC1yxf5o9OmOJl
+X-Gm-Gg: ATEYQzyjz/fG52WoBPG6yGuWJ70lK3zeJL/t1Iv+YWupA0HGFRhOPSkFtVnE7ybWHz+
+	PMtY4uWD43VDFlBaH3m3jRbqOVLM1BdIvsCb9RdLV1ce2IF3ik6h8WxCV9wbQ97tQQ/ZE5EEAID
+	UPJEdGa3/QE1nS4JKwvrLbP8EeTsxMf1rxtA+6fPPTFY4ZOcRL3EUHJOpNXFJsmS7dCaPWzaSUZ
+	cw7mO8l3U4QkKX6qiEyEGZkOyU68V5LaDDZTMja5Sf+aNI0/hhMoKMmK+ro4s1XEnHIrvdO930u
+	ZiU6jnyy+kNs+AMwiuwnTvPcPNjzfwyAqkxDmhYMr0xU9zu3jXk4Zvqbr5Hzk0ToxT+KLKq4GUP
+	n4nx1huzxZNlNFDhb5DrMzVRb2hcSJVMTBQVgXRQ0+PiZEj1WP2NRujkbq92lc3XJsmi5sp/ZHi
+	Gr5gL8uXvQslFty739jCRa9b6fjVva9h6S
+X-Received: by 2002:a17:907:a28d:b0:b98:22e7:72b with SMTP id a640c23a62f3a-b9b507a7bf9mr533680266b.30.1774798827144;
+        Sun, 29 Mar 2026 08:40:27 -0700 (PDT)
+Received: from foxbook (bfi53.neoplus.adsl.tpnet.pl. [83.28.46.53])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b7b227393sm175930966b.63.2026.03.29.08.40.26
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 29 Mar 2026 08:40:26 -0700 (PDT)
+Date: Sun, 29 Mar 2026 17:40:22 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Jeffrey Hein <jp@jphein.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI
+ cascade failure
+Message-ID: <20260329174022.6513d797.michal.pecio@gmail.com>
+In-Reply-To: <CAD5VvzDWF7SO0Aytp3K_uXV6ZYoqEqN1dhfv7VtMAHSpHP+qTA@mail.gmail.com>
+References: <20260321223713.1219297-1-jp@jphein.com>
+	<20260322055354.03399a32.michal.pecio@gmail.com>
+	<CAD5VvzBE8Oq80EhFZnZ7kNrRC_rpoR25Ct5-Fg62yDZUHVtWzw@mail.gmail.com>
+	<20260323085845.6bf57b3b.michal.pecio@gmail.com>
+	<CAD5VvzDWF7SO0Aytp3K_uXV6ZYoqEqN1dhfv7VtMAHSpHP+qTA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230947-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-230948-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D876F352A7E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A4212352ABC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, 29 Mar 2026 08:34:06 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Sun, 29 Mar 2026 08:03:42 -0700, Jeffrey Hein wrote:
+> I have now tested on 6.17.0-19-generic (Ubuntu 25.04) with dynamic
+> debug enabled for xhci_hcd and usbcore, and without any of my proposed
+> patches or workarounds applied. No udev quirks, no LPM disable, no
+> control throttle -- completely stock kernel.
+> 
+> Results: the stress test passes 50/50 rounds with 0ms delay. On
+> 6.8.0-106-generic the same test crashed consistently around round 25.
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260329043902.46163-2-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit 8c40c45c57722526c25cf1114b386d19a693fc2d
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
-> 
-> This commit adds validation for the node ID in damos_quota_goal to prevent
-> out of bounds memory access when calling si_meminfo_node(). If an invalid
-> node ID is given, it defaults to returning 0% for used memory and 100% for
-> free memory.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> 
-> [ ... ]
-> 
-> >  static __kernel_ulong_t damos_get_node_mem_bp(
-> >  		struct damos_quota_goal *goal)
-> >  {
-> >  	struct sysinfo i;
-> >  	__kernel_ulong_t numerator;
-> >  
-> > +	if (invalid_mem_node(goal->nid)) {
-> > +		if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
-> > +			return 0;
-> > +		else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
-> > +			return 10000;
-> > +	}
-> > +
-> >  	si_meminfo_node(&i, goal->nid);
-> >  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
-> >  		numerator = i.totalram - i.freeram;
-> >  	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
-> >  		numerator = i.freeram;
-> >  	return mult_frac(numerator, 10000, i.totalram);
-> 
-> Does this code still risk a divide-by-zero kernel panic if a memory node
-> has zero managed pages?
-> 
-> Even with the new invalid_mem_node() check ensuring node_state(nid, N_MEMORY)
-> is true, a memory node can have present physical pages but zero managed pages
-> if all its memory is reserved early in boot (for example, via memblock_reserve
-> for crash kernels or firmware).
-> 
-> In this scenario, si_meminfo_node() sets i.totalram to 0. Since the
-> mult_frac() macro directly evaluates division and modulo, passing
-> i.totalram as 0 will cause a hardware divide-by-zero exception.
-> 
-> Should there be an explicit check for i.totalram == 0 before calling
-> mult_frac() here and in other similar quota functions like
-> damos_get_node_memcg_used_bp()?
+Thanks for the update, that's good to hear.
+Hopefully it will still work without dynamic debug too.
 
-As I mentioned to same previous comment, that's another bug that require
-another patch.  I will work on it with a separate patch.
+If you would want to fix the old 6.8 kernel you will need to talk with
+Ubuntu about it, because that version is no longer supported upstream.
 
-
-Thanks,
-SJ
-
-[...]
+Regards,
+Michal
 
