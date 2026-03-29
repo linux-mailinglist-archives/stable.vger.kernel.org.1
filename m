@@ -1,193 +1,179 @@
-Return-Path: <stable+bounces-230820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PH3Nih2yGmsmQUAu9opvQ
-	(envelope-from <stable+bounces-230820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:45:28 +0100
+	id yKmyIT12yGmsmQUAu9opvQ
+	(envelope-from <stable+bounces-230821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:45:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3443505F8
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:45:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF724350600
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08C6B30AD499
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 00:41:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46D2330BA7AB
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 00:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1759261B91;
-	Sun, 29 Mar 2026 00:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF4026F2BE;
+	Sun, 29 Mar 2026 00:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aZTmjcCr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PtWcl7Yj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647CC255E43;
-	Sun, 29 Mar 2026 00:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9D9266576;
+	Sun, 29 Mar 2026 00:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774744887; cv=none; b=seSYooj82O+A368nwrhSC1Cs0On0wSD3vliDqQfsM+40Mh+HfTe9Xn/a9qOOx4yJz73dcywml75LQ3G8ysxqhMJiAswWbvWJtmc3jhjutolGhB2wHAQ4/GCyBwWWSVsDTR5vVxpsNc8RAnbIyV7pv/h6FPAcT9fXTVG05sUpHQA=
+	t=1774744901; cv=none; b=HlyL+KRp7pckT1PhL2wTsqm+uzK+SrOOP9h+aCA3LmQJ8rsn3V+Hq3z3gXfbcoKZI1Gdsvj3+6CPurEIjXHc8OrBXqw0CR5F91i3wJJb8ZvQBy8M358TJuomUqiCE3vkAhxzqjTVmEm0AEsOvD8e8iA6VqBVdRQ9l5m4JOyoJZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774744887; c=relaxed/simple;
-	bh=jy26vQCZLLxEXqRJ73cfVKDi71kp2lJ4cdFZMYVTAk0=;
-	h=Date:To:From:Subject:Message-Id; b=qXJMS5TaAODk4acCjpGTmZ2s4B8iIOlvV4FrB/YO4/D8IApSeFiEVUK2sFoduwlZbiBqZkKeHpQrYlmvWFA/Ccy1V7KZYuYBR9114+NrLse4pCpQeVE+ojSptWJrhh6Gk5Wgtds63xeu4j8KxgchVrTKHQfpiG+tr4uC2GTxZ6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aZTmjcCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334D2C4CEF7;
-	Sun, 29 Mar 2026 00:41:27 +0000 (UTC)
+	s=arc-20240116; t=1774744901; c=relaxed/simple;
+	bh=X4FNaUJ1Qt2Ppyb8KjUE4F3oY0k054huvDQQNwKFh7I=;
+	h=Date:To:From:Subject:Message-Id; b=aHwMKUjgRI8FS5olZ9rGZ967MVFWryaY7/UJz4rhyGIB6H2Cz+QA1bPnfgbTH5O/WH5Q0yKlna5D+CMNtp4iQFMPQiad9mfKZlw12rxTtQx4YpWERxyAVIcppsugkuY1DU6XqJmtURb+5VPBuvSlXfa4k4zDlePkVpLVX7FusfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PtWcl7Yj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB42CC4CEF7;
+	Sun, 29 Mar 2026 00:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774744887;
-	bh=jy26vQCZLLxEXqRJ73cfVKDi71kp2lJ4cdFZMYVTAk0=;
+	s=korg; t=1774744901;
+	bh=X4FNaUJ1Qt2Ppyb8KjUE4F3oY0k054huvDQQNwKFh7I=;
 	h=Date:To:From:Subject:From;
-	b=aZTmjcCridaEWvVs6pp2MXyNsczBqjH4iZN7B//jU7oZu9SKTyVfHtWldn6LEyrPo
-	 1cPgz+X4TbyKPRfh3Vv6mbdCZ/9/zNTA0TmjvHb2VAZOcnDlicHmP9K1K6+W/6loQd
-	 LHjvRwTLFU2vbk/EnzN3fa6Ov83b+LHKr11i9z6o=
-Date: Sat, 28 Mar 2026 17:41:26 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,willy@infradead.org,stable@vger.kernel.org,sj@kernel.org,richard.weiyang@gmail.com,rakie.kim@sk.com,npache@redhat.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,hannes@cmpxchg.org,gourry@gourry.net,david@kernel.org,byungchul@sk.com,apopple@nvidia.com,usama.arif@linux.dev,akpm@linux-foundation.org
+	b=PtWcl7YjAhrUzkbzXnwp+ypquZxe7vJPNOHbF5K1dtP1/1i2nxIMU45KTuslrYuId
+	 VyMmlDz42TDKMR/QplZJ8mhxshnaezxN9f2nl2vNtF/7sZSPIMib8tjPmP21gDnyTv
+	 nf/rud8sDnbf8DViKXvVprFqU/khFtlXXsy6zd5A=
+Date: Sat, 28 Mar 2026 17:41:40 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,sidhartha.kumar@oracle.com,rppt@kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,JonasZhou@zhaoxin.com,jane.chu@oracle.com,hughd@google.com,david@kernel.org,aarcange@redhat.com,jianhuizzzzz@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-migrate-requeue-destination-folio-on-deferred-split-queue.patch removed from -mm tree
-Message-Id: <20260329004127.334D2C4CEF7@smtp.kernel.org>
+Subject: [merged mm-stable] mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch removed from -mm tree
+Message-Id: <20260329004140.EB42CC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230820-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-230821-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,infradead.org,kernel.org,gmail.com,sk.com,redhat.com,intel.com,cmpxchg.org,gourry.net,linux.dev,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,oracle.com,redhat.com,suse.de,linux.dev,zhaoxin.com,google.com,gmail.com,linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F3443505F8
+X-Rspamd-Queue-Id: DF724350600
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm: migrate: requeue destination folio on deferred split queue
+     Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
 has been removed from the -mm tree.  Its filename was
-     mm-migrate-requeue-destination-folio-on-deferred-split-queue.patch
+     mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Usama Arif <usama.arif@linux.dev>
-Subject: mm: migrate: requeue destination folio on deferred split queue
-Date: Thu, 12 Mar 2026 03:47:23 -0700
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Tue, 10 Mar 2026 19:05:26 +0800
 
-During folio migration, __folio_migrate_mapping() removes the source folio
-from the deferred split queue, but the destination folio is never
-re-queued.  This causes underutilized THPs to escape the shrinker after
-NUMA migration, since they silently drop off the deferred split list.
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units.  This mismatch means that different
+addresses within the same huge page can produce different hash values,
+leading to the use of different mutexes for the same huge page.  This can
+cause races between faulting threads, which can corrupt the reservation
+map and trigger the BUG_ON in resv_map_release().
 
-Fix this by recording whether the source folio was on the deferred split
-queue and its partially mapped state before move_to_new_folio() unqueues
-it, and re-queuing the destination folio after a successful migration if
-it was.
+Fix this by introducing hugetlb_linear_page_index(), which returns the
+page index in huge page granularity, and using it in place of
+linear_page_index().
 
-By the time migrate_folio_move() runs, partially mapped folios without a
-pin have already been split by migrate_pages_batch().  So only two cases
-remain on the deferred list at this point:
-  1. Partially mapped folios with a pin (split failed).
-  2. Fully mapped but potentially underused folios.  The recorded
-     partially_mapped state is forwarded to deferred_split_folio() so that
-     the destination folio is correctly re-queued in both cases.
-
-Because THPs are removed from the deferred_list, THP shinker cannot
-split the underutilized THPs in time.  As a result, users will show
-less free memory than before.  
-
-Link: https://lkml.kernel.org/r/20260312104723.1351321-1-usama.arif@linux.dev
-Fixes: dafff3f4c850 ("mm: split underused THPs")
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
 Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: JonasZhou <JonasZhou@zhaoxin.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/linux/hugetlb.h |   17 +++++++++++++++++
+ mm/userfaultfd.c        |    2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
---- a/mm/migrate.c~mm-migrate-requeue-destination-folio-on-deferred-split-queue
-+++ a/mm/migrate.c
-@@ -1358,6 +1358,8 @@ static int migrate_folio_move(free_folio
- 	int rc;
- 	int old_page_state = 0;
- 	struct anon_vma *anon_vma = NULL;
-+	bool src_deferred_split = false;
-+	bool src_partially_mapped = false;
- 	struct list_head *prev;
+--- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/include/linux/hugetlb.h
+@@ -792,6 +792,23 @@ static inline unsigned huge_page_shift(s
+ 	return h->order + PAGE_SHIFT;
+ }
  
- 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
-@@ -1371,6 +1373,12 @@ static int migrate_folio_move(free_folio
- 		goto out_unlock_both;
- 	}
- 
-+	if (folio_order(src) > 1 &&
-+	    !data_race(list_empty(&src->_deferred_list))) {
-+		src_deferred_split = true;
-+		src_partially_mapped = folio_test_partially_mapped(src);
-+	}
++/**
++ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
++ *				 page size granularity.
++ * @vma: the hugetlb VMA
++ * @address: the virtual address within the VMA
++ *
++ * Return: the page offset within the mapping in huge page units.
++ */
++static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
++		unsigned long address)
++{
++	struct hstate *h = hstate_vma(vma);
 +
- 	rc = move_to_new_folio(dst, src, mode);
- 	if (rc)
- 		goto out;
-@@ -1391,6 +1399,15 @@ static int migrate_folio_move(free_folio
- 	if (old_page_state & PAGE_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
- 
-+	/*
-+	 * Requeue the destination folio on the deferred split queue if
-+	 * the source was on the queue.  The source is unqueued in
-+	 * __folio_migrate_mapping(), so we recorded the state from
-+	 * before move_to_new_folio().
-+	 */
-+	if (src_deferred_split)
-+		deferred_split_folio(dst, src_partially_mapped);
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
++}
 +
- out_unlock_both:
- 	folio_unlock(dst);
- 	folio_set_owner_migrate_reason(dst, reason);
+ static inline bool order_is_gigantic(unsigned int order)
+ {
+ 	return order > MAX_PAGE_ORDER;
+--- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/mm/userfaultfd.c
+@@ -573,7 +573,7 @@ retry:
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
 _
 
-Patches currently in -mm which might be from usama.arif@linux.dev are
+Patches currently in -mm which might be from jianhuizzzzz@gmail.com are
 
 
 
