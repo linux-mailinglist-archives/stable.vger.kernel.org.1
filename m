@@ -1,96 +1,101 @@
-Return-Path: <stable+bounces-230969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mL1oLVB3yWntyAUAu9opvQ
-	(envelope-from <stable+bounces-230969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 21:02:40 +0200
+	id 4EWTFJR4yWkiyQUAu9opvQ
+	(envelope-from <stable+bounces-230970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 21:08:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9368353B4F
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 21:02:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04D5353B70
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 21:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9B71301AF62
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 19:00:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C324D3006B13
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 19:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101B938644E;
-	Sun, 29 Mar 2026 19:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DA4381B0F;
+	Sun, 29 Mar 2026 19:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="atOremrL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TH4q9LzE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24231C862F
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 19:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F101DF755
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 19:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774810854; cv=none; b=d+ipyxCN6UMOKZUMkpOE+r12QLOsQqgO0yU8Owj1CsDPKsiooD6hKoxbiBMDNSXlQ/FhE9rqTtGspAB+wmz6Tb6Y3MxYxaGnPIjej5N7bet4RkjnoV2eyqotVELib82vgMZAOXKeMG5ig4zREAgCOH9BTuzWGtVu5be4tXi8ODw=
+	t=1774811042; cv=none; b=MuC/BICkDnBpbtbkPhluZHJ1UCVtK133aD95iFjRwS89VJwB5Yh9X4JFj8vhaIOVfyHrOP1XVlRcu6au+DQIt82wX6T8Q5QTteGTXUqq5nSKM3mq1FbbD95fZeaFDnZKpzZHKZK8QDnRfpmnbqcvGlvBBMrVEi6sTxkVfmiwBGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774810854; c=relaxed/simple;
-	bh=XQCPzJhZ2kxsvNzsyz7iOaWsSty5HK6uks1lpyfPqJQ=;
+	s=arc-20240116; t=1774811042; c=relaxed/simple;
+	bh=70pqPdPbl7uQp20iWj8a4rOSRU/Egok3eSzupS/bzfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6LFWTyXvHBFTHJS6BLqWFYtDc2MSyKWwCi+5YnnjOOlhbN9HTFbJJWaOrnvbJzIkbciX2LDji6TQjHRM3c4jScLVDgUeM3EzFIuUTeaU9KtxvxAdKdD1X7wwjAd49wfV9g74cKOggMu26H1tGv7uZXWrfGengIXhVGI3f+7e3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=atOremrL; arc=none smtp.client-ip=209.85.216.54
+	 MIME-Version; b=lNkKdz4xtyP0BmIAE1OHkj+4WEEr1ELk5sBhW6AXuDzw7rKWzCbq7q+JY6H5X6apjV+r3KF8yrrrkAE898BiO91XRHYCPLx+TTbZ4M3xdKNgmjBDIvsONgk6GUYofwcTCY0Pz+81b8D0vmN02/F1Tj8XLX5QPj4wKzImI8wYy3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TH4q9LzE; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-354a18c48b5so3514131a91.1
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 12:00:53 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8296dabef74so3568243b3a.1
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 12:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774810853; x=1775415653; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774811041; x=1775415841; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/gnh0uYoTrakzMqa8ayVORbXmnsfDVgazJoZT9TbWcI=;
-        b=atOremrLMeK0mAjYLR3nrtprFY0wOrF+VQJI6VF9lBDEGbrVDJafD6GivNwlHCoSEg
-         0GdmnzKtbRfyOxSjB2T/ozjioynck3iA8oozN2LkMm1Q+VRDf4U2ZHcPXI1/oCdRm4Q0
-         +g1ZO8wlLfwnyGy0LH44e3Qw2cl5ooidCOcwinyQfkmujK1S7a2BvsMK9ljpLs11JhHS
-         nInwGkByBEsL+S/KUkunZepxddUl/UHENfKUUS1xeEVTWH6SIecXXwZ0rs7PourA3t9S
-         6lUkjh19/lPwWMYdO+TgAhtT+B2mPySv7vpMkDpVEFPRB7Sm8kI18oAQXWkMgzL2hTGY
-         gBog==
+        bh=+mU/h+l86Dxfj+U7yKBkezYMTKfac40N2oWD7yA0Gpk=;
+        b=TH4q9LzE0klnG22PCBXOp3Zx5pzMHYShhLuAit3bUOR/0fwIReGIKcGfks7mrqlVJ8
+         KKFUHyTFRcOW9lxQrJneS7ySRuNGLXUzgnJaFYJbysE6S/zcmUidQ4fH4oOrHvcFodpp
+         OC3Ityh30QM4AtwDyEQa7QDWXZbJil9xcuscOS/pgxxI2yIlET1OOi35WhPIJqDg9xIG
+         TOzjBixuDo8x9u9BOKxrGL60snxUrPW06ap1b4740zSbvA2McO748doTHpAEss9hlvsL
+         y+F+YsLeCprj+qLy0mkIF1+tvf0vDakoZpZnI/1hAUADW1Eu/O0UOdBEypUIPcnTOH5K
+         nf5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774810853; x=1775415653;
+        d=1e100.net; s=20251104; t=1774811041; x=1775415841;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/gnh0uYoTrakzMqa8ayVORbXmnsfDVgazJoZT9TbWcI=;
-        b=n59+evJZfxmPZFeHkbumT7y2BATrZ0HFEtceHY1W4r2aIbDxQ6lRm8oQWjOaef7A9M
-         DISU0u1UUTbNZujMGwDOef/xgqd0a3JXorib7PMat+UEe1mYJ/TmU5/Ol+pQTjVYizxD
-         c9wOR7mMRVrKbcLN+D4P6LFbqfQtKOKqnUaGNMDsx3qV8xZff/JAu6aJ5B/aJCm2C5b8
-         u3NkfELEIdUFIrS36vhctyqvMZzQwm2ac6cqtl8V8hQ55VOuAbqIfdiDnDpQ4DLx791S
-         plIJAtat7PVWpUaWzx4hOw9Beku6l9SO5RIDG8wkabA7BfcrbVv+IKZzbzb3MeVZkFhE
-         Qotg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxSD+QroKZWNQCFxL0QPu26om+4Ovwtn+4q6a21OEPLaw25Hbykl7ztr32RQ/dVDSx61hCyR4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRy79Rev+AzK/arKD8EUaPEndn6hKSs8Nr1fw43I0ezbkuKihz
-	TX7Mq1KCyO6WQxZ0ZoycCayJ7yK+eNOGDsZeHxx73AR+vTgb76dPS7ik
-X-Gm-Gg: ATEYQzwqOs1E61u/1n72Al+9zV6A4cIw9UdpSr1HGytdsa/LnvG2mZI05kNxJjAC0FF
-	F9oyr6VDRoxyDB4+EpZydw/pup0xDZL+bQVgqgSCCrvFxLGElLV+K7NPVeAi0aRT7RyZb0pBM8x
-	vRGEjmIEs3tp37MzoQ4rR5iAVhh39DTmW8IMpT2hS+AxkHC+TzaQjultYNJ4C1OI5RvrcDgDtgI
-	atUbXMo0gGBzBXWDvvh0WV0WVvSW1J9OaM5OwmiJ8IkVJ7KJpcBYyhYFOQP3Pe5oAu7WqcX79X7
-	/YAVafzwowMOR5z6xRcQFJCsRX1uAJPbDrQN5xoxSZDjy2R5aLF1n/N9C3sEjAfAmbA7kgzTXi2
-	21FJyelHW3JyG/Dy7Y4Ev0rEdQb4OoKM8rS6QiY7+UMraL7PRCT/+zkST9R+OdqEoUPv6YDi6sh
-	bISPX6U7jD90qtpYVdXVuhJ/lc
-X-Received: by 2002:a17:903:228e:b0:2b0:5453:1932 with SMTP id d9443c01a7336-2b0cdc263c6mr106483985ad.15.1774810853211;
-        Sun, 29 Mar 2026 12:00:53 -0700 (PDT)
-Received: from ubuntu24.. ([240e:47e:3870:786a:45b9:eb23:e7cd:d2fa])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242676e13sm57685335ad.28.2026.03.29.12.00.49
+        bh=+mU/h+l86Dxfj+U7yKBkezYMTKfac40N2oWD7yA0Gpk=;
+        b=XWjzYLE0TwNPQL+I9Qu1d66pKVdtU0ZdTvEfmgiJdyuVMHCEn07BYuSqtD6tk0rdE9
+         bQ8IJ8XiGHo/VE+KyUNZX7M/8Q+hXmEk/Tq/+Xs9LZEECmulJ7+nO+XA8ixG6Ui/0OZN
+         Ccy5PuJKt1n8uMME+6X3KoumyFOkONypyc4m3nWkErNNmN4cMqLZmACTbvG3+VmpxIxh
+         +p/ILsV3MM00oMnkmk8AV09vyZ+5ku/tqrbKgj0wHSvzxIavXHUgutoJWT8UFDrmFPEm
+         ObOxnGD79fNtsDlLoAL5W3jFSnnunZQdfwXMYR9eweSLRgj1JJdeR80n5Cx4umi+uA5j
+         6SPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWWicWj5AQ1bGh+3PABNQH80JvYn2rf0fne4nlUlsnwEvZgMiISee0hyaHzNxhs7MCbB9hhr+8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6r58XleG4uZamG17Qb3PKNMCItT0ouCvh9U+Vs6bkeLHsCEZr
+	Frd8yPxO5oK26xgoGYRkiCtq3R4AlWNqK/kCGZCqyd5i4D2w8oy2b9A3
+X-Gm-Gg: ATEYQzzjXlah2eyGJu633PXdNwEWn1od1maBObNUcJ2eWTfzCVIJhfe+hCA1s7p0LhT
+	IxXXbPKkUYAe7sdav8/z9agCWxWhqTSSjVk0YPooIXKWWmfWD2S3WeMrR+dSTmp0rl5cEngaPI/
+	GBf4RpvVoKmCeDE5ViC9LXRKr/tnNC4d1KPq1VpFjMO73w4f2V8HrEHMJ2lf3LDpqfVV3jzKhHr
+	LTJErC5hfd0AYrAzz20agXc3KUQyz4iWC8UPYH3Y25NU83JzCV6B6929yUV3qPhPrcPTPdIvUHE
+	W751V9ZwrCtii+lxsanBI33HwIrA7Eqg2oBMJ2QCcC5tx9OhqyWSIHX+QbmV2fW0eZ+/8G3WEiJ
+	lRPgyRhVv82lWTk1NApHiny31KymfAzbak9TSDDlJvENFE6SCql8p4x4UP+FJxiv9lyB89f//BT
+	+12rypdDaTifCBPVasUg==
+X-Received: by 2002:a05:6a00:1acb:b0:829:bd4d:3817 with SMTP id d2e1a72fcca58-82c95ed4749mr9205453b3a.28.1774811040776;
+        Sun, 29 Mar 2026 12:04:00 -0700 (PDT)
+Received: from kfuzz ([202.120.234.33])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca843b818sm5866178b3a.6.2026.03.29.12.03.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 12:00:52 -0700 (PDT)
-From: Yiyang Chen <cyyzero16@gmail.com>
-To: Balbir Singh <bsingharora@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Wang Yaxin <wang.yaxin@zte.com.cn>,
-	Fan Yu <fan.yu9@zte.com.cn>,
-	"Dr . Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
-	Yiyang Chen <cyyzero16@gmail.com>,
+        Sun, 29 Mar 2026 12:04:00 -0700 (PDT)
+From: Kangzheng Gu <xiaoguai0992@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kees@kernel.org,
+	thorsten.blum@linux.dev,
+	arnd@arndb.de,
+	sjur.brandeland@stericsson.com,
+	xiaoguai0992@gmail.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] taskstats: set version in TGID exit notifications
-Date: Mon, 30 Mar 2026 03:00:40 +0800
-Message-ID: <ba83d934e59edd431b693607de573eb9ca059309.1774810498.git.cyyzero16@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1774810498.git.cyyzero16@gmail.com>
-References: <cover.1774810498.git.cyyzero16@gmail.com>
+Subject: [PATCH v3] net: caif: fix stack out-of-bounds write in cfctrl_link_setup()
+Date: Sun, 29 Mar 2026 19:03:50 +0000
+Message-ID: <20260329190350.19065-1-xiaoguai0992@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CAKvcANP6ihR9ZJpm73ep6aTPqzcpVhTHsVSgGBd28HwwfdBcxw@mail.gmail.com>
+References: <CAKvcANP6ihR9ZJpm73ep6aTPqzcpVhTHsVSgGBd28HwwfdBcxw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,74 +106,78 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,zte.com.cn,uni-hamburg.de,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230969-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cyyzero16@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_FROM(0.00)[bounces-230970-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[davemloft.net,google.com,kernel.org,redhat.com,linux.dev,arndb.de,stericsson.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_NEQ_ENVFROM(0.00)[xiaoguai0992@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E9368353B4F
+X-Rspamd-Queue-Id: E04D5353B70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-delay accounting started populating taskstats records with a valid
-version field via fill_pid() and fill_tgid().
+cfctrl_link_setup() copies the RFM volume name from a received control
+packet into linkparam.u.rfm.volume until a '\0' is found. A malformed
+packet can omit the terminator and make the copy run past the 20-byte
+stack buffer.
 
-Later, commit ad4ecbcba728 ("[PATCH] delay accounting taskstats
-interface send tgid once") changed the TGID exit path to send the
-cached signal->stats aggregate directly instead of building the outgoing
-record through fill_tgid(). Unlike fill_tgid(), fill_tgid_exit() only
-accumulates accounting data and never initializes stats->version.
+Stop copying once the buffer is full and mark the frame as failed by
+setting CFCTRL_ERR_BIT so the link setup is rejected.
 
-As a result, TGID exit notifications can reach userspace with
-version == 0 even though PID exit notifications and
-TASKSTATS_CMD_GET replies carry a valid taskstats version.
-
-Set stats->version = TASKSTATS_VERSION after copying the cached TGID
-aggregate into the outgoing netlink payload so all taskstats records are
-self-describing again.
-
-Fixes: ad4ecbcba728 ("[PATCH] delay accounting taskstats interface send tgid once")
+Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
+Signed-off-by: Kangzheng Gu <xiaoguai0992@gmail.com>
 ---
- kernel/taskstats.c | 1 +
- 1 file changed, 1 insertion(+)
+ v3:
+ - remove the Reported-by.
+ - print a warn message and reject link setup by setting CFCTRL_ERR_BIT.
 
-diff --git a/kernel/taskstats.c b/kernel/taskstats.c
-index 0cd680ccc7e5..73bd6a6a7893 100644
---- a/kernel/taskstats.c
-+++ b/kernel/taskstats.c
-@@ -649,6 +649,7 @@ void taskstats_exit(struct task_struct *tsk, int group_dead)
- 		goto err;
+ net/caif/cfctrl.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
+index c6cc2bfed65d..373ab1dc67a7 100644
+--- a/net/caif/cfctrl.c
++++ b/net/caif/cfctrl.c
+@@ -416,8 +416,16 @@ static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp
+ 		cp = (u8 *) linkparam.u.rfm.volume;
+ 		for (tmp = cfpkt_extr_head_u8(pkt);
+ 		     cfpkt_more(pkt) && tmp != '\0';
+-		     tmp = cfpkt_extr_head_u8(pkt))
++		     tmp = cfpkt_extr_head_u8(pkt)) {
++			if (cp >= (u8 *)linkparam.u.rfm.volume +
++			    sizeof(linkparam.u.rfm.volume) - 1) {
++				pr_warn("Request reject, volume name length exceeds %lu\n",
++					sizeof(linkparam.u.rfm.volume));
++				cmdrsp |= CFCTRL_ERR_BIT;
++				break;
++			}
+ 			*cp++ = tmp;
++		}
+ 		*cp = '\0';
  
- 	memcpy(stats, tsk->signal->stats, sizeof(*stats));
-+	stats->version = TASKSTATS_VERSION;
- 
- send:
- 	send_cpu_listeners(rep_skb, listeners);
+ 		if (CFCTRL_ERR_BIT & cmdrsp)
 -- 
-2.43.0
+2.50.1
 
 
