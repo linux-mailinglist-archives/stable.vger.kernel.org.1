@@ -1,186 +1,197 @@
-Return-Path: <stable+bounces-230976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePVTEW2NyWm1zAUAu9opvQ
-	(envelope-from <stable+bounces-230976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 22:37:01 +0200
+	id YieNJByQyWl3zQUAu9opvQ
+	(envelope-from <stable+bounces-230977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 22:48:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74F9353FF5
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 22:37:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A6C3540ED
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 22:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BF5D3025D3E
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 20:34:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8223B300353E
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 20:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0237B3890ED;
-	Sun, 29 Mar 2026 20:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6807029B766;
+	Sun, 29 Mar 2026 20:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASRRQiFP"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cPzOBOFA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1952234964;
-	Sun, 29 Mar 2026 20:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808242BAF7
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 20:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774816438; cv=none; b=BRdFpA3yvQzdMyJnNRI6TbBpqwdSLQD0W0hc23NOLvBWnCm23I1BbJs2knPs9iZHvcNXtkoI2p6OIMqiGQLM8r6hKkiUZQUO07gyVQVWDr1araTLeSD8m0IMXjF1LbR96Yw+d3lRIRejYwoCHR8w9IzsBxgt/jWnTCCsdnnT2rA=
+	t=1774817305; cv=none; b=GaCoDtzkiVUj3J364+jo/w7pNERGPva4t6ZRw6G2sfgezJyYxZnrKeMBZDELlrDplQRwmgxE/IXi2kcEV2P/07+bGra5pCpNRVMWLbaj1hiKY35Kpge160vAHjxpbjHZjlGbpA76cljWCHbQapr9nNnnzi321bYFFdOlnOLch2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774816438; c=relaxed/simple;
-	bh=Ji9NUyyxlso0qYZ5Tet7Lm8AxeCV2zV9DEAtdXjjF9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BY8Az7HNcm77Jz7cP6IIe2W63v3BwQA0xi/6N/ugIwHcx6ocyXnNGIUht1G1/sD9mSe6h827evo4SDQL57nSqibYHQ5sDqwSVjFU1JXwuItE+WytLUQ94ZnstI/klaSQ+F9dHUDAU1tRi1i/JSvzXdt1CPjay7gbzS9pPu8IN3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASRRQiFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25EFC116C6;
-	Sun, 29 Mar 2026 20:33:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774816438;
-	bh=Ji9NUyyxlso0qYZ5Tet7Lm8AxeCV2zV9DEAtdXjjF9k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASRRQiFP3sBgJCiVLF71iGudyd/vOErpVmoUFNRFrDIPf+KuzchlzwK2/rI5wzpcY
-	 fjDhX02P7ZKpvxQwOIsgJhQgem6KiBKzca++dvlHmn27hDo1Kn1WR5Ahzz/qUts4LW
-	 m0P2oSYBGzLK+PbOkjWPMD1bkGheow6a6w636vmqRuI5ncd3/XudTr1VJfQU9NO1JT
-	 3jUPUr6CTEB8k4vpgsljTNVUXDFVb6SXlt24HegiRE1VuUdL9rCJ+UAZyz+A5zVQCY
-	 WfWuNeufshbubOBru7Nw1OQ9YGg53UznxLowxpnbc3Wvviwz0FuYq8lyoGEZ48knGP
-	 nmEzxx8MftndA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	andersson@kernel.org,
-	yimingqian591@gmail.com,
-	chris.lew@oss.qualcomm.com,
-	mani@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: qrtr: ns: Limit the maximum lookups per socket
-Date: Sun, 29 Mar 2026 13:33:56 -0700
-Message-ID: <20260329203356.2815315-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325104415.104972-3-manivannan.sadhasivam@oss.qualcomm.com>
-References: <20260325104415.104972-3-manivannan.sadhasivam@oss.qualcomm.com>
+	s=arc-20240116; t=1774817305; c=relaxed/simple;
+	bh=rGpi4bEZ9S+3wm989nG1OFcyD7k3Y34M5MmQzP2DEeo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jhnMioSzrCiBipetcrVchiuBJ3RfUYuvPAvQTTdhE4VShc7seFzGJcRvbYSRuJxv/BoLbbF1L4vw3mn1eoGmnLAL/qDF55Y4Tzin+hmbZWb/aUES9O2zUZyf2L4udNuq5Jtk33rKHf3VjygsolBdNhz1fKm/aGbA/zHR+8Ntmsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--zsm.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cPzOBOFA; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--zsm.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82ca8323edbso2485649b3a.1
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 13:48:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774817303; x=1775422103; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cfjBoYNSLOamx/UW91atzNiaxMJtbW4Jkc7q3T2fN2k=;
+        b=cPzOBOFAxR0Psl27FfO1NNSI2QgU0bFNR6iK3U+2Ug3TDzObb6lObjjj+DP8gPIR3W
+         OM5lbVAoez632bOWDc6Lk6XfyDxIqG8vnsgWmRgKtrS6oqqpDH0oAAYPj8i1r2T+2960
+         Uiqk6xu9ug9vf0YViOmaL21zk4fpYe3hp459D+oSRxJ5XZVOCkSZSt33rbxjGEHzGHXQ
+         1KrvVBkpGb1SG38jdpx4YLsA0vXdR0Ee2unZPSpErOF27m9zPP6xaKrF0gAZFf700KoC
+         ckEVsoQcpdmqDImamPz8E5JXXc3Urvz7qEBLUU60VCRDapDy34ujJJIEnlwnZ/F0gc7g
+         VI1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774817303; x=1775422103;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cfjBoYNSLOamx/UW91atzNiaxMJtbW4Jkc7q3T2fN2k=;
+        b=GSnqugSnA2XUjaMciG/silePksBkoN/3jFeeVy8KGD9ONhxTfRl+7F70Y/RCGZM9iY
+         m+BlEEMnhZqc2RpE8mCnZ434jm3f+FArRpIDqdIKm3Alw9pzLZR1GZFnvC/KBmGMiIvI
+         Uy8XER0jZV5DeEDjaQ9jTOl25Z40aXOQA9u6JbiyOCGzT09VCcemAn7hZe/q9luwXIb6
+         +ssu1pa3hfeNBwIvFbhmIwTZAvLd+cF1pHFQLI4OW51Zuz00IqR6sTGMZwcdW5tAebMD
+         tvrjgjeARMImdvA+xPs5aMYYS49YMek4WfNeSYiLKV2cIdvz51mWMidwPdDdIXJ5eHNn
+         IFFw==
+X-Gm-Message-State: AOJu0YwmOBXUEdSF+oFdgetYqJ8XzAo7bGBFEfCcyTf2AI2Fha9zht72
+	XpCn7xoXvaRTc6NgPdCeerkXOa8MlEDs4Xw0rsBIEMpWjSJIj+W5P0vaYDsy4rDw/mHkyCMtHro
+	A3NOR/X7YxfuwZMbFX88T3k4XhPAMrdLpNYZMcRYqjtx0ba033s+UTK8oh5V+RC/sqXPofvu6bk
+	2NP7AS5fd79IHEtlHULlED
+X-Received: from pfbhw2.prod.google.com ([2002:a05:6a00:8902:b0:829:9a65:4170])
+ (user=zsm job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:909e:b0:829:86a5:d30a
+ with SMTP id d2e1a72fcca58-82c95d3979fmr9018452b3a.16.1774817302486; Sun, 29
+ Mar 2026 13:48:22 -0700 (PDT)
+Date: Sun, 29 Mar 2026 20:47:22 +0000
+In-Reply-To: <2026032948-available-paternity-6929@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <2026032948-available-paternity-6929@gregkh>
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <20260329204722.141570-1-zsm@google.com>
+Subject: [PATCH 6.12.y] virt: tdx-guest: Fix handling of host controlled
+ 'quote' buffer length
+From: Zubin Mithra <zsm@google.com>
+To: stable@vger.kernel.org
+Cc: Zubin Mithra <zsm@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,davemloft.net,google.com,redhat.com,vger.kernel.org,gmail.com,oss.qualcomm.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-230976-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230977-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zsm@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D74F9353FF5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 03A6C3540ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+commit c3fd16c3b98ed726294feab2f94f876290bf7b61 upstream.
+
+Validate host controlled value `quote_buf->out_len` that determines how
+many bytes of the quote are copied out to guest userspace. In TDX
+environments with remote attestation, quotes are not considered private,
+and can be forwarded to an attestation server.
+
+Catch scenarios where the host specifies a response length larger than
+the guest's allocation, or otherwise races modifying the response while
+the guest consumes it.
+
+This prevents contents beyond the pages allocated for `quote_buf`
+(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
+and possibly forwarded in attestation requests.
+
+Recall that some deployments want per-container configs-tsm-report
+interfaces, so the leak may cross container protection boundaries, not
+just local root.
+
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zubin Mithra <zsm@google.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Zubin Mithra <zsm@google.com>
 ---
-net: qrtr: ns: Limit the maximum lookups per socket
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-This commit limits the maximum number of lookups to 64 per socket to prevent
-a malicious local client from sending a flood of NEW_LOOKUP messages over the
-same socket.
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index c4f25c173383..d7ec140fe90c 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -61,6 +61,8 @@ static u64 tdx_hcall_get_quote_wrapper(u8 *buf, size_t size)
+ #define GET_QUOTE_SUCCESS		0
+ #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+ 
++#define TDX_QUOTE_MAX_LEN              (GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
++
+ /* struct tdx_quote_buf: Format of Quote request buffer.
+  * @version: Quote format version, filled by TD.
+  * @status: Status code of Quote request, filled by VMM.
+@@ -192,6 +194,7 @@ VISIBLE_IF_KUNIT int tdx_report_new(struct tsm_report *report, void *data)
+ 	u8 *buf, *reportdata = NULL, *tdreport = NULL;
+ 	struct tdx_quote_buf *quote_buf = quote_data;
+ 	struct tsm_desc *desc = &report->desc;
++	u32 out_len;
+ 	int ret;
+ 	u64 err;
+ 
+@@ -256,14 +259,21 @@ VISIBLE_IF_KUNIT int tdx_report_new(struct tsm_report *report, void *data)
+ 		goto done;
+ 	}
+ 
+-	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
++	out_len = READ_ONCE(quote_buf->out_len);
++
++	if (out_len > TDX_QUOTE_MAX_LEN) {
++		ret = -EFBIG;
++		goto done;
++	}
++
++	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
+ 		goto done;
+ 	}
+ 
+ 	report->outblob = buf;
+-	report->outblob_len = quote_buf->out_len;
++	report->outblob_len = out_len;
+ 
+ 	/*
+ 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
+-- 
+2.53.0.1018.g2bb0e51243-goog
 
-> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> index fb4e8a2d370d..707fde809939 100644
-> --- a/net/qrtr/ns.c
-> +++ b/net/qrtr/ns.c
-
-[ ... ]
-
-> @@ -545,11 +546,24 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
->  	struct qrtr_node *node;
->  	unsigned long node_idx;
->  	unsigned long srv_idx;
-> +	u8 count = 0;
->  
->  	/* Accept only local observers */
->  	if (from->sq_node != qrtr_ns.local_node)
->  		return -EINVAL;
->  
-> +	/* Make sure the client performs only maximum allowed lookups */
-> +	list_for_each_entry(lookup, &qrtr_ns.lookups, li) {
-> +		if (lookup->sq.sq_node == from->sq_node &&
-> +		    lookup->sq.sq_port == from->sq_port)
-> +			count++;
-> +	}
-
-Does this O(N) traversal of the global qrtr_ns.lookups list create a CPU
-exhaustion issue?
-
-If a local attacker opens many sockets and registers the maximum 64 lookups
-on each, the global list could grow to tens of thousands of items.
-
-If the attacker then floods the socket with NEW_LOOKUP packets, the
-single-threaded qrtr_ns.workqueue worker would be forced to traverse all
-elements for every packet, potentially blocking all legitimate QRTR namespace
-control traffic.
-
-> +
-> +	if (count >= QRTR_NS_MAX_LOOKUPS) {
-> +		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
-> +		return -ENOSPC;
-
-Does returning -ENOSPC here defeat the ratelimiting?
-
-If the caller qrtr_ns_worker() unconditionally checks for a negative return
-value and executes an unratelimited error print, a malicious local client
-could still cause a syslog flood by sending continuous NEW_LOOKUP packets
-after hitting the limit.
-
-Should this return 0 instead to avoid the unratelimited print in the caller?
-
-> +	}
-> +
->  	lookup = kzalloc_obj(*lookup);
->  	if (!lookup)
->  		return -ENOMEM;
-
-This isn't a regression introduced by this patch, but does qrtr_ns_remove()
-contain a use-after-free during module unload?
-
-The teardown sequence appears to be:
-1. cancel_work_sync()
-2. destroy_workqueue(qrtr_ns.workqueue)
-3. sock_release(qrtr_ns.sock)
-
-If a packet arrives between destroy_workqueue() and sock_release(), the
-socket's receive path triggers qrtr_ns_data_ready(). This callback calls
-queue_work(qrtr_ns.workqueue, ...), which dereferences the already-freed
-workqueue pointer.
-
-Should the socket be shut down or the callback disabled before destroying
-the workqueue?
 
