@@ -1,236 +1,250 @@
-Return-Path: <stable+bounces-230980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDGRFdiUyWlizgUAu9opvQ
-	(envelope-from <stable+bounces-230980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 23:08:40 +0200
+	id Gho8FPafyWmN0AUAu9opvQ
+	(envelope-from <stable+bounces-230981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 23:56:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580CD3541C4
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 23:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4471F354394
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 23:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 232C43003BF8
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 21:08:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59202300291D
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 21:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3174A38A709;
-	Sun, 29 Mar 2026 21:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424C830171C;
+	Sun, 29 Mar 2026 21:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYBXuNmh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdvgA2Bk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629842C027B
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 21:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774818506; cv=none; b=OYoZXc1QboDlHws7gN8NGpjOeoX/v3lg+bvw/+ESc0ZkqGFDx7v/IpXjqItIqAcwu13VM6431tKhg8dGhR199djTZJEeHVgL4A/eH1NGXmNf9sLLH8wCEmGl3A3IqclynKoKt0jNxagPS0X9WT/EQ4gwfFlVPD0Tyb+8o3jdoRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774818506; c=relaxed/simple;
-	bh=57DrXeQnUGc6iR/CXOWyyyVZBnQ5MkHIKUWHPpAsMcI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hJoOSnKCzwaIjTqBLDFQNamSrs71HsZ5WsjaQePuL2iM6V516eT+HeVnK24Uti3MZsGh3lOU05wvcVDhBk81GRuicdLPl1BYCzMgdVGKrDhBjxgJl5Ti1QN9RK0PSp7lTdae0UlIimBpbRTErrWKtry71kBSfiH6oanxW1y+Yu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYBXuNmh; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DFA2EA16A
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 21:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774821358; cv=pass; b=ZYWUvpoXTaegqm9iU/tY6FJeafZB7WKBHYQKuCuzmI8yj1zYYGezGt6AS8iHVav40LyvqGiposBMarmzNRBOnTRdpE5mi5zzL5zyLlShp0ulvdp+jPnOfjF1wrDS/MrCOsWUjg8Ee+LrfOrqAb919/H1pHnvA2Ebyk3cl3UZyx8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774821358; c=relaxed/simple;
+	bh=Fejz6rJ4GEPFTaw06ZTFFlWOB51sqXYDKUai/Vk/JIQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YQqMnwmLl5H7HL+wnKrHBLBWp7oq8Bo0UG4AImLwQtiZuPlZ0qSgze+eGUKijjaBOPW+d+JyIscrnLCSS2rEiCWC4/5t0XM5trbtGv9QaqXoaXv2ffEJfhxfwTfpASUpQF1yF5m5q4RB//KalT2me8B5v6ZdWcfR1nP2wbcBWts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RdvgA2Bk; arc=pass smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-56b6c7c8d00so2813894e0c.3
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 14:08:23 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45f053b7b90so2110619b6e.0
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 14:55:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774821356; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EeT6a+ebADYUFK0eQxMgP2zZ5mRcoGiA/exuD7pPvH2qzRnuRgKFEANU2GV/e1TCz5
+         mUEgCsb+j2dyR2Qu+jn5DbJLA7V/FlYTHuJbLs9P4rcxMwjWQPU3fuMoBSH7cDJg0J9P
+         i9FLZHmOi/J/J92b+FiiIEdapalpB4vmb5Ka1efyF5/4RNskJ0/rch2JomgbsPW0HdnZ
+         0ocYC2c2hX2uRp6t37GDP7t9VH+7lVvHUxv0P5QtzxcEMt6iWVKAnkTGlcK2RjdVkTu+
+         J5ETdaZ+xFQwBm6nHhB4rMp5nCRN8vShstPpzgfN+sBdCUCTJwqunjiYxxqC0DWh2Ss0
+         R2tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=P8t7yw82NC0kKIhmlhLsUaimYifnA6UnB6dfoQqt+Eg=;
+        fh=ePON2cJ7pSEHyfWpJegMp9WWysIuhHYqSxskkseelsU=;
+        b=JHA8bCEYdVvHXC2oJDNDwNJdWRhataeFRA1Lnzld6bCrKWupMZxmEVFNuRL54L6v7w
+         170HVrGVmfjhfH57aifaT8aTG/ZlHsP6MD58Q4LFy0URtDpUhEJLNWT6D83rVMA/o4yF
+         hvCW6X4xcN4VHkEVe4EuLlSWXPz4zISccP8vSgN67Fl780jfU/Entf56NqytvXsHvheI
+         FplbqVM+2gK6IgU4b9pvnjqtlscT6hRu6zkvQaVkcXfqabShzoN84lOKdixZLedZaY5m
+         tC7GL6EXledDv1UAzpsYfk9AgJYaYojGUqm1x6KiedhMuyfodvjeP0ahBk5TzK2gsJiQ
+         nyHQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774818502; x=1775423302; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SVkfdJP2KulZKEM0URtofZekmehI6WAdAhgF+udGJlg=;
-        b=QYBXuNmhrEM4+ehc8nYYU3k872EhjxsEghzm5IGgtDH8NKV20q/+ZAkEn7XYXzbbQf
-         cLPbR7dLcTa1jDRMl0TfNkUY2QhmayEQobOqI1w4gxGKwKZ9Jbv1pHfX8y8vmEJWtJpH
-         omKX1lUorfbUd9PUfy95kWLGNBb72sjleNpcUs8AKGOwrIfqFLNhmQZ+IiijnKEPfib+
-         wvq7tOpr+Yvh9W8uw3Kk6jiw1uFLSSNJPdGC3/E7eCi1pEzS8bMEP0KLfyTdSGK6m5MN
-         QLOhQOV6Lu3zK6QQevbAL3jUHOo20y38HiceWSGWVMYkUrwy69ktmjC4ohTwbi8xYPh2
-         9rXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774818502; x=1775423302;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774821356; x=1775426156; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SVkfdJP2KulZKEM0URtofZekmehI6WAdAhgF+udGJlg=;
-        b=ilzDQiFmAWq0O9AYdvpXdV7RP7g3cQcxDGDGDhGiS1E3Dtw2l7SJ4JGMkFsZm3qlRc
-         DtYicxn0omySAtg3a9xPGStduCVmdJS9V+yGHbtAFvZGiu3pdkMiZ4XvcSMYmUdfFDZ1
-         cqIs2g3x5XI7obRe+SeHKgbU4+SG7iYrjeUDWJhSw3VxZMmt67MHB357zrwB4pBkR14x
-         OoSr3LGHIE26tGgmmzoA4D5CpH1VI022R0vmjfMeVCF1H9vbAw2EaYgnZp2K2+S1Pyy+
-         80gWdh7LVl284LDMO69qXce8jry/c+t4x1S5n9JfOiAD/pqOy8WkagZWIScn5H0XVZF1
-         2J+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW3kmpDc7S0nC2pTaFkuaurr2NCXieI2WXpHUeXbB9LGkNz82q3TatxnqUKCoF/HB2S0//Ngms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwThLrSf5+lVdKP3HsyGHFXPAFAQUFybmHxhPWT1DXdue5Q//f+
-	AqAeWA9gEBeUPdB8P/SCdDEuOgIh7/OYVFqYYnu47oDssUEZCel8NuQA
-X-Gm-Gg: ATEYQzxHr9iOj8mNZSh6Ke1bMDaC4onyaPZMzjLhvuQZ0JI+YLFzpXS4iN+xD+ZA3Yb
-	CfsF2CkS+I+TO14cj2+16szr+S2ph+rRlULiW9eBECo70L3i6uAPDAqIwgYtS2Duq07txs+Umc1
-	UqsBVX2SiL696U+U8/aS5UbYHyCq6m1RRK/OHB803N0CEEi+6VROMjGUKqixD5CYQ0LGsCWCxyS
-	NtW01bX802LQj8tYE1X9TFC1+B3kos0Q82vbSnpURpbWmH43VGQLwlSnWapnKLqw29GkbLd/cfO
-	uE4+/+IlKISYJoPTUf2GaI56DXOYKRazwxbhigh36FeV4SU4+lIuGOQU8y/Ofm1nbaVT4VDfLPk
-	36sbVhS28KYEGfmGWZUSPs1DNdxUjs13tO5tRSv1qZ6XIy9osAGxfXn8Sjh1F2isBxH7wwJs7FN
-	O9jwKESGC6hCFHPAewehmE7zDNz+xdM2b+IQ==
-X-Received: by 2002:a05:6122:8b1b:b0:56b:815c:961d with SMTP id 71dfb90a1353d-56d4a4d3b83mr4099294e0c.5.1774818502268;
-        Sun, 29 Mar 2026 14:08:22 -0700 (PDT)
-Received: from localhost.localdomain ([2a09:bac5:6d77:aa::11:1d6])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d58a46f4dsm6284108e0c.15.2026.03.29.14.08.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 14:08:21 -0700 (PDT)
-From: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-To: marvin24@gmx.de
-Cc: ac100@lists.launchpad.net,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Sebasti=C3=A1n=20Alba=20Vives?= <sebasjosue84@gmail.com>
-Subject: [PATCH v2] staging: nvec: validate battery response length before memcpy
-Date: Sun, 29 Mar 2026 15:08:00 -0600
-Message-ID: <20260329210800.597697-1-sebasjosue84@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=P8t7yw82NC0kKIhmlhLsUaimYifnA6UnB6dfoQqt+Eg=;
+        b=RdvgA2Bk8mp92XT9DE2NOjhvi0VMu/S2oRX2fX5Qjxdp+h9KD4KfOCIqvHjqVCk2rd
+         4uo5wQBz49u7WN4QY+8dLkjzIujOh676LEBsDhq/M4CbNDfofi7U2XxPtaNxZD0EVIpD
+         ZSZvWi6ZZPDjyEi1hdw9+Z+yLKKDLdO1YiPwd4m10PkfYiJtloSZRN4GOO/79uKBsTyo
+         xQJmA8CNkVDt3vO5ePV0KdHzYtcXTRCejV0sfxnBRuxpp+U+1+ERXv2+57roX4I6Jeag
+         YaT/LpoPlcn5g19CDmLye0wb4MZLzwMupkwAz+mDvcLh958ybyhgRojV2li+JsrQjUDA
+         /NDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774821356; x=1775426156;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=P8t7yw82NC0kKIhmlhLsUaimYifnA6UnB6dfoQqt+Eg=;
+        b=YznYpnBjy3b0lujdDqNGBw8s17MiZlvcPoyl38s2ULwItzzR5Cw157OWvkLJ9LEwda
+         pojgyt+0mPmy2ngbH7EXZzZKcAoCyUXrfsbaUNWNKV5Lo3KbUu5vSUWfJKqA37Npd3Gm
+         lbGCkqADqu0/6fhiq03DxYBPXcXHqLH7Zx6u5pLi1Qtjw4dOYrH0wzRsTUfVUXFMN/Yu
+         ze+fgJao1TfEcFtIpaBansknvLWYiJR30rinBUby3raQwGnI7BD3pcAgzP+hjxZoxsm+
+         iReFhyTm0WEMxnaai7C/7yh9ekVipduMr00t7GoobcZ8E7lHOhbZC9rn8EwMXP3PVwPW
+         yFFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXt5faukKKZN/EoCUTCFgODbIIdoNX+ncwKqH+AzmpTmNZO0bYIqlBJ3VA8bMXSZ+kCDtMsBYA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtP34+I9uHLvfxL8GLzYZb13xPU656zuvR4q2OoZPvH2SUiU8H
+	EEPTvnuiKj6DTPVWod7GEkETMPd+skk7Ugpcm+wxdwAxmJ5ZN15w/9qSxSg8USs8yWmp5ebx5kl
+	sRg9EBWVMEsMMLlMGeB2nUROXE7Rchqs=
+X-Gm-Gg: ATEYQzyIH1l5Xm94jQ6lrJnSfTn/LVVGOZ5CxKOYyNAWKOiXx2UltV0fV5V0C2+Zv5o
+	lJJ5APgvbWYIqx51sg9RMKzSNgjSctaeLzPrWqfdixoo5AS8ZvQtOMZoIW44OTXNbbmP2p3XUXF
+	96EnYYi2WhXDbuTtvzZiLe1n77y9c9jYTO488AdHgeDZ7TFiUx50z3PdPmOhPiNF8D82jiAYyu+
+	saff2V+cS5swhfE7MUbIqrRRe8gXRb7r7yfzRTBovy3wfTnPnTmpi7MNUvvG1uKQW41NBU6pmDd
+	1UIMFA==
+X-Received: by 2002:a05:6808:2388:b0:450:aba0:f006 with SMTP id
+ 5614622812f47-46a8a451ed2mr5156572b6e.17.1774821355682; Sun, 29 Mar 2026
+ 14:55:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+ <20260326013719.1662-1-fjhhz1997@gmail.com> <CA+bbHrX3CdXqW6b0GbY_C7rmte3_9Q=89TJN=A2EBCQM1xSzag@mail.gmail.com>
+In-Reply-To: <CA+bbHrX3CdXqW6b0GbY_C7rmte3_9Q=89TJN=A2EBCQM1xSzag@mail.gmail.com>
+From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
+Date: Sun, 29 Mar 2026 23:55:45 +0200
+X-Gm-Features: AQROBzBV4fYKXfmb82jpqaVIi77LDxx4s5eA8opKgtbx7U89qdegdHIbNTJnggI
+Message-ID: <CA+bbHrUkGP5bX6SFVXLS-bTyHWUiRyHaSojvMW6RGPz+T55yHg@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access
+ when deleting the virtual interface
+To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>
+Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.launchpad.net,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-230980-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230981-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 580CD3541C4
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,dropbox.com:url,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 4471F354394
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sebastián Alba Vives <sebasjosue84@gmail.com>
+Please review my latest messages in the GitHub thread.
+https://github.com/morrownr/USB-WiFi/issues/682
 
-In nvec_power_notifier(), the response length from the embedded
-controller is used directly as the size argument to memcpy() when
-copying battery manufacturer, model, and type strings. The
-destination buffers (bat_manu, bat_model, bat_type) are fixed at
-30 bytes, but res->length is a u8 that can be up to 255, allowing
-a heap buffer overflow.
+There you=E2=80=99ll even find a link to a video I recorded so you can see
+that even on bare metal with Kali Linux installed natively, it still
+doesn=E2=80=99t work. It behaves exactly the same as it does in the VM.
 
-Additionally, if res->length is less than 2, the subtraction
-res->length - 2 wraps around as an unsigned value, resulting in a
-large copy that corrupts kernel heap memory.
+Here is the link
+https://www.dropbox.com/scl/fi/i6h8xbls5xkvae0pitrbg/video_2026-03-29_23-44=
+-36.mp4?rlkey=3Djm48ly9tjwbhsi4aauml2auh9&dl=3D1
 
-Introduce NVEC_BAT_STRING_SIZE to replace the hardcoded buffer
-size, store res->length - 2 in a local copy_len variable for
-clarity, and add bounds checks before each memcpy to ensure the
-copy length does not exceed the destination buffer and that
-res->length is at least 2 to prevent unsigned integer underflow.
+Regards.
+--
+Oscar
 
-Tested-by: Marc Dietrich <marvin24@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastián Alba Vives <sebasjosue84@gmail.com>
----
-v2:
-  - Introduce NVEC_BAT_STRING_SIZE constant to replace hardcoded
-    buffer size (Marc Dietrich)
-  - Store res->length - 2 in local copy_len variable for clarity
-    (Marc Dietrich)
-  - Use NVEC_BAT_STRING_SIZE in strncmp call for consistency
- drivers/staging/nvec/nvec_power.c | 41 +++++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+OpenPGP Key: DA9C60E9 ||
+https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+--
 
-diff --git a/drivers/staging/nvec/nvec_power.c b/drivers/staging/nvec/nvec_power.c
-index 2faab9fde..7b7980127 100644
---- a/drivers/staging/nvec/nvec_power.c
-+++ b/drivers/staging/nvec/nvec_power.c
-@@ -19,6 +19,7 @@
- #include "nvec.h"
- 
- #define GET_SYSTEM_STATUS 0x00
-+#define NVEC_BAT_STRING_SIZE 30
- 
- struct nvec_power {
- 	struct notifier_block notifier;
-@@ -38,9 +39,9 @@ struct nvec_power {
- 	int bat_temperature;
- 	int bat_cap;
- 	int bat_type_enum;
--	char bat_manu[30];
--	char bat_model[30];
--	char bat_type[30];
-+	char bat_manu[NVEC_BAT_STRING_SIZE];
-+	char bat_model[NVEC_BAT_STRING_SIZE];
-+	char bat_type[NVEC_BAT_STRING_SIZE];
- };
- 
- enum {
-@@ -192,22 +193,36 @@ static int nvec_power_bat_notifier(struct notifier_block *nb,
- 	case TEMPERATURE:
- 		power->bat_temperature = res->plu - 2732;
- 		break;
--	case MANUFACTURER:
--		memcpy(power->bat_manu, &res->plc, res->length - 2);
--		power->bat_manu[res->length - 2] = '\0';
-+	case MANUFACTURER: {
-+		size_t copy_len = res->length - 2;
-+
-+		if (res->length < 2 || copy_len > NVEC_BAT_STRING_SIZE - 1)
-+			break;
-+		memcpy(power->bat_manu, &res->plc, copy_len);
-+		power->bat_manu[copy_len] = '\0';
- 		break;
--	case MODEL:
--		memcpy(power->bat_model, &res->plc, res->length - 2);
--		power->bat_model[res->length - 2] = '\0';
-+	}
-+	case MODEL: {
-+		size_t copy_len = res->length - 2;
-+
-+		if (res->length < 2 || copy_len > NVEC_BAT_STRING_SIZE - 1)
-+			break;
-+		memcpy(power->bat_model, &res->plc, copy_len);
-+		power->bat_model[copy_len] = '\0';
- 		break;
--	case TYPE:
--		memcpy(power->bat_type, &res->plc, res->length - 2);
--		power->bat_type[res->length - 2] = '\0';
-+	}
-+	case TYPE: {
-+		size_t copy_len = res->length - 2;
-+
-+		if (res->length < 2 || copy_len > NVEC_BAT_STRING_SIZE - 1)
-+			break;
-+		memcpy(power->bat_type, &res->plc, copy_len);
-+		power->bat_type[copy_len] = '\0';
- 		/*
- 		 * This differs a little from the spec fill in more if you find
- 		 * some.
- 		 */
--		if (!strncmp(power->bat_type, "Li", 30))
-+		if (!strncmp(power->bat_type, "Li", NVEC_BAT_STRING_SIZE))
- 			power->bat_type_enum = POWER_SUPPLY_TECHNOLOGY_LION;
- 		else
- 			power->bat_type_enum = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
--- 
-2.43.0
-
+El jue, 26 mar 2026 a las 13:16, =C3=93scar Alfonso D=C3=ADaz
+(<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
+>
+> Hi, in response to the three points:
+>
+> 1. VMware
+>
+> 2. This is the output of the lsusb command: "Bus 004 Device 002: ID
+> 0e8d:7961 MediaTek Inc. Wireless_Device". The adapter is very cheap,
+> it=E2=80=99s a Fenvi AX1800 (MT7921U), this one:
+> https://s.click.aliexpress.com/e/_okxhxNl . But as I said, the bug
+> also happens when using the Alfa AWUS036AXML (MT7921AUN).
+>
+> 3. I=E2=80=99m not sure about this right now. I=E2=80=99d say everything =
+dies. I=E2=80=99ll
+> test that to see if SSH is still available (I don=E2=80=99t think so, but=
+ I=E2=80=99m
+> not 100% sure at the moment).
+>
+> Give me a few days. I=E2=80=99ll test this again over the weekend. I=E2=
+=80=99ll also
+> run a test on bare metal (not in a VM). That said, like me, many
+> people use VMs for pentesting. So even if it works on bare metal,
+> which I=E2=80=99ll test this weekend, I think it would still be worth
+> investigating whether it can be fixed for VMs, since many people,
+> myself included, use them for work. If it works with other WiFi
+> adapters, it would be a big drawback if it didn=E2=80=99t work with Media=
+Tek
+> adapters.
+>
+> I=E2=80=99ll also reply with a similar message in the thread.
+>
+> Thanks and regards.
+> --
+> Oscar
+>
+> OpenPGP Key: DA9C60E9 ||
+> https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> --
+>
+> El jue, 26 mar 2026 a las 2:37, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz1997@g=
+mail.com>) escribi=C3=B3:
+> >
+> > Hi =C3=93scar,
+> >
+> > Lucid-Duck spent some time trying to reproduce your crash and wasn't ab=
+le
+> > to trigger it. Here's a summary of what was tested:
+> >
+> > - Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v2
+> >   patch applied
+> > - MT7921AU USB adapter, passthrough to VM
+> > - Full airgeddon evil twin flow: monitor VIF + hostapd AP + continuous
+> >   deauth via aireplay-ng
+> > - Also tested on bare metal Fedora 6.19.8 with the same adapter
+> >
+> > All tests were stable -- no crash, no dmesg errors, load stayed low. Th=
+e
+> > deauth frames were confirmed sending for 30+ seconds under the v2 patch
+> > without issues.
+> >
+> > The one variable that couldn't be matched was the VM hypervisor.
+> > Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kernel
+> > level (xHCI). If you're using VirtualBox or VMware, the USB passthrough
+> > path is quite different (userspace proxy), and that could potentially
+> > explain a total VM freeze that isn't a kernel panic.
+> >
+> > Could you please reply to Lucid-Duck directly on GitHub with the
+> > following information? Here's the link:
+> > https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4129198757
+> >
+> > 1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, etc.)
+> > 2. Your exact USB adapter model and ID? (0e8d:7961 covers several
+> >    MT7921 variants)
+> > 3. If possible, try SSHing into the VM from the host while the display
+> >    is frozen -- if SSH still works, the issue is at the hypervisor/disp=
+lay
+> >    level, not the kernel.
+> >
+> > Thanks,
+> > =E5=82=85=E7=BB=A7=E6=99=97
 
