@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-230850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIvBKUvSyGnprAUAu9opvQ
-	(envelope-from <stable+bounces-230850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:18:35 +0200
+	id KMEaGlnSyGnprAUAu9opvQ
+	(envelope-from <stable+bounces-230851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:18:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1218D35103D
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D59EA351045
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F785301AD0C
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 07:18:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4778301AD35
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 07:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7A629D281;
-	Sun, 29 Mar 2026 07:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6342129D281;
+	Sun, 29 Mar 2026 07:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ8HlnIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNbErJLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BEB22D4DC
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 07:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2713C22D4DC
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 07:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774768708; cv=none; b=ncWm1xZDR9GK7XF/nZHEZPV3IDZnyLb/VruTYBdQjf5e3MamaiDedyBoNSkhfEWr9uiZRR8t4mEibreOpZcjDtibNN0I95Fbf4+n/WJs78n+MRxDRwusxwQvq+4PTRNPw+gdGP9SgHr477rTjSwsqqMxsOprvOS8nBdF8VhGNKM=
+	t=1774768723; cv=none; b=U9Mn466SvBJ7orqORd7TmsPDoGsarVMjAtLZJ2M8LyXElONuQTF5RZZYp8LEKCTe/e4c8EQ6kD2C70AAowmVK+agZj0Szi75pks+iwi1GlnNfPQ8I9OdSRTjsKnEZJl0+p65/6/4vQL1U4cI/ZNWUiUCJiwRPfOvsLo0Ylnig4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774768708; c=relaxed/simple;
-	bh=XTJr/joAqHRuNIlq5VABLMOheW+feyBqER3SHd+r7NQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h0U5wqspTEELv7qQu7PWBup74Vost1OeJGlMCip3Zu+Gcy7PqjvRsra3EnVme03eC6IbNnXAUGq1Jb4IftrTfbdxoa8FsXn+MxSkFuiExu685U9h/PVsUpyk5MDnD5bjszv2X2eIbaQ/w13jG8LZfqi1QehtwqKeD6AFcuWeCgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ8HlnIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D25C116C6;
-	Sun, 29 Mar 2026 07:18:25 +0000 (UTC)
+	s=arc-20240116; t=1774768723; c=relaxed/simple;
+	bh=o1p6bp2zhFhLwY88Jy+sCirN4OoptIyjf31g7Wrb0QY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TAVysxl5rLlnUxJnpDDS/VnWekkDQ6KrM62m21SNV8y59c3oCkXlITDA12SurRO9zUCFto+bpvxE46j6jJ9eKVc9Zf2XzVN+MQjNuj57K8nn4VB3xI+nMCXFUP6E2g0JB0QbWRFaC6InDH19fotz+vWklXr+wG07pjzJGm3EkiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNbErJLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538FDC116C6;
+	Sun, 29 Mar 2026 07:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774768707;
-	bh=XTJr/joAqHRuNIlq5VABLMOheW+feyBqER3SHd+r7NQ=;
+	s=korg; t=1774768722;
+	bh=o1p6bp2zhFhLwY88Jy+sCirN4OoptIyjf31g7Wrb0QY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dJ8HlnIAVZlSRG+nwP0zErirXUOebnZd8n7woZffp6cQK2DSiXnjiPJeLMkAT/N3A
-	 aprXJdGEG0O30LuhQAyDcxvOL8lgb1qttthCt3oiItmz43L/Rs8P2I/9XtamGrTdpf
-	 7EoRTc3tHieIrZ9LtINv6M0go3qwpyYNPjkGRvco=
-Subject: FAILED: patch "[PATCH] s390/entry: Scrub r12 register on kernel entry" failed to apply to 6.6-stable tree
-To: gor@linux.ibm.com,iii@linux.ibm.com
+	b=TNbErJLcFXN9luI1+NLGTm5YRG0YgnoY6wAsPr85sramZxwVModKTo24TPXT0M6jf
+	 mvI0g11WeT3k//ApxwM29NoruKz0WouXmoplZvI7wz7hK144LBtxcvGiaES7gbs842
+	 MfDu89AFlLorwsr7UuoAvYWAQlRQzlhb3bjrWKvg=
+Subject: FAILED: patch "[PATCH] tracing: Drain deferred trigger frees if kthread creation" failed to apply to 6.18-stable tree
+To: atwellwea@gmail.com,rostedt@goodmis.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 09:18:23 +0200
-Message-ID: <2026032923-rerun-crouch-f0cc@gregkh>
+Date: Sun, 29 Mar 2026 09:18:39 +0200
+Message-ID: <2026032939-vacation-surrogate-1101@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,16 +64,17 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230850-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230851-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,goodmis.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
@@ -81,25 +82,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1218D35103D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: D59EA351045
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0738d395aab8fae3b5a3ad3fc640630c91693c27
+git cherry-pick -x 250ab25391edeeab8462b68be42e4904506c409c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032923-rerun-crouch-f0cc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032939-vacation-surrogate-1101@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,53 +112,149 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0738d395aab8fae3b5a3ad3fc640630c91693c27 Mon Sep 17 00:00:00 2001
-From: Vasily Gorbik <gor@linux.ibm.com>
-Date: Thu, 26 Mar 2026 19:50:14 +0100
-Subject: [PATCH] s390/entry: Scrub r12 register on kernel entry
+From 250ab25391edeeab8462b68be42e4904506c409c Mon Sep 17 00:00:00 2001
+From: Wesley Atwell <atwellwea@gmail.com>
+Date: Tue, 24 Mar 2026 16:13:26 -0600
+Subject: [PATCH] tracing: Drain deferred trigger frees if kthread creation
+ fails
 
-Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
-all entry handlers loaded r12 with the current task pointer
-(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
-commit removed TIF_ISOLATE_BP, dropping both the branch prediction
-macros and the r12 load, but did not add r12 to the register clearing
-sequence.
+Boot-time trigger registration can fail before the trigger-data cleanup
+kthread exists. Deferring those frees until late init is fine, but the
+post-boot fallback must still drain the deferred list if kthread
+creation never succeeds.
 
-Add the missing xgr %r12,%r12 to make the register scrub consistent
-across all entry points.
+Otherwise, boot-deferred nodes can accumulate on
+trigger_data_free_list, later frees fall back to synchronously freeing
+only the current object, and the older queued entries are leaked
+forever.
 
-Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
-Cc: stable@kernel.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+To trigger this, add the following to the kernel command line:
 
-diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-index 4873fe9d891b..689d253e1afc 100644
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -271,6 +271,7 @@ SYM_CODE_START(system_call)
- 	xgr	%r9,%r9
- 	xgr	%r10,%r10
- 	xgr	%r11,%r11
-+	xgr	%r12,%r12
- 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
- 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
- 	MBEAR	%r2,%r13
-@@ -407,6 +408,7 @@ SYM_CODE_START(\name)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
- 	MBEAR	%r11,%r13
-@@ -496,6 +498,7 @@ SYM_CODE_START(mcck_int_handler)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	stmg	%r8,%r9,__PT_PSW(%r11)
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
+  trace_event=sched_switch trace_trigger=sched_switch.traceon,sched_switch.traceon
+
+The second traceon trigger will fail and be freed. This triggers a NULL
+pointer dereference and crashes the kernel.
+
+Keep the deferred boot-time behavior, but when kthread creation fails,
+drain the whole queued list synchronously. Do the same in the late-init
+drain path so queued entries are not stranded there either.
+
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260324221326.1395799-3-atwellwea@gmail.com
+Fixes: 61d445af0a7c ("tracing: Add bulk garbage collection of freeing event_trigger_data")
+Signed-off-by: Wesley Atwell <atwellwea@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index d5230b759a2d..655db2e82513 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -22,6 +22,39 @@ static struct task_struct *trigger_kthread;
+ static struct llist_head trigger_data_free_list;
+ static DEFINE_MUTEX(trigger_data_kthread_mutex);
+ 
++static int trigger_kthread_fn(void *ignore);
++
++static void trigger_create_kthread_locked(void)
++{
++	lockdep_assert_held(&trigger_data_kthread_mutex);
++
++	if (!trigger_kthread) {
++		struct task_struct *kthread;
++
++		kthread = kthread_create(trigger_kthread_fn, NULL,
++					 "trigger_data_free");
++		if (!IS_ERR(kthread))
++			WRITE_ONCE(trigger_kthread, kthread);
++	}
++}
++
++static void trigger_data_free_queued_locked(void)
++{
++	struct event_trigger_data *data, *tmp;
++	struct llist_node *llnodes;
++
++	lockdep_assert_held(&trigger_data_kthread_mutex);
++
++	llnodes = llist_del_all(&trigger_data_free_list);
++	if (!llnodes)
++		return;
++
++	tracepoint_synchronize_unregister();
++
++	llist_for_each_entry_safe(data, tmp, llnodes, llist)
++		kfree(data);
++}
++
+ /* Bulk garbage collection of event_trigger_data elements */
+ static int trigger_kthread_fn(void *ignore)
+ {
+@@ -56,30 +89,50 @@ void trigger_data_free(struct event_trigger_data *data)
+ 	if (data->cmd_ops->set_filter)
+ 		data->cmd_ops->set_filter(NULL, data, NULL);
+ 
+-	if (unlikely(!trigger_kthread)) {
+-		guard(mutex)(&trigger_data_kthread_mutex);
+-		/* Check again after taking mutex */
+-		if (!trigger_kthread) {
+-			struct task_struct *kthread;
+-
+-			kthread = kthread_create(trigger_kthread_fn, NULL,
+-						 "trigger_data_free");
+-			if (!IS_ERR(kthread))
+-				WRITE_ONCE(trigger_kthread, kthread);
+-		}
++	/*
++	 * Boot-time trigger registration can fail before kthread creation
++	 * works. Keep the deferred-free semantics during boot and let late
++	 * init start the kthread to drain the list.
++	 */
++	if (system_state == SYSTEM_BOOTING && !trigger_kthread) {
++		llist_add(&data->llist, &trigger_data_free_list);
++		return;
+ 	}
+ 
+-	if (!trigger_kthread) {
+-		/* Do it the slow way */
+-		tracepoint_synchronize_unregister();
+-		kfree(data);
+-		return;
++	if (unlikely(!trigger_kthread)) {
++		guard(mutex)(&trigger_data_kthread_mutex);
++
++		trigger_create_kthread_locked();
++		/* Check again after taking mutex */
++		if (!trigger_kthread) {
++			llist_add(&data->llist, &trigger_data_free_list);
++			/* Drain the queued frees synchronously if creation failed. */
++			trigger_data_free_queued_locked();
++			return;
++		}
+ 	}
+ 
+ 	llist_add(&data->llist, &trigger_data_free_list);
+ 	wake_up_process(trigger_kthread);
+ }
+ 
++static int __init trigger_data_free_init(void)
++{
++	guard(mutex)(&trigger_data_kthread_mutex);
++
++	if (llist_empty(&trigger_data_free_list))
++		return 0;
++
++	trigger_create_kthread_locked();
++	if (trigger_kthread)
++		wake_up_process(trigger_kthread);
++	else
++		trigger_data_free_queued_locked();
++
++	return 0;
++}
++late_initcall(trigger_data_free_init);
++
+ static inline void data_ops_trigger(struct event_trigger_data *data,
+ 				    struct trace_buffer *buffer,  void *rec,
+ 				    struct ring_buffer_event *event)
 
 
