@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Gn7CyIkyWm/vAUAu9opvQ
-	(envelope-from <stable+bounces-230891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:07:46 +0200
+	id 8LMNF6AkyWm/vAUAu9opvQ
+	(envelope-from <stable+bounces-230892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:09:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611CA352149
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:07:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3D3352167
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24B6630104B8
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:07:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90C3C300E712
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0968135F5F5;
-	Sun, 29 Mar 2026 13:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C3D30DEB8;
+	Sun, 29 Mar 2026 13:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RL0WSnl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFZGXy6Q"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085E293B5F
-	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590C9433AD
+	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774789660; cv=none; b=BHDjoaqzif1OtE+14p/WNJVZ+HtuaCeq2Jyk4mA5PyGNBNSy0mcItg6KFq2gvw4k+H/OFOqLdYGnMDwcwRhGqoXb7ZPzI3lCKC/aC9qQ2xqfbesrZs/oNkPTfzIDyRTsswo25hWVtDqFzQP50Nz52xa46gKnVEY9vpqq3PVdjGs=
+	t=1774789673; cv=none; b=M75YEXBxt7sraYhv9mJcT3ls6bW1LT7zHqghPkoXmpC/zCf+G+8sLgW/d58dz1dzJ/QIpgDIhFbXhcy7uk2Bs/mVYZCIgMyi0m11X+X6XSKdeISd3t5v6Pi1DAqMHphv5NdPWNlBZdIG0SBqAQUqg4+dM3XSz2Os6FQmhPfFe6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774789660; c=relaxed/simple;
-	bh=sVMhl+b+FrU7DCg3Tm59PumN+PWCOtpqMEgb4kpC6dc=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=iFpqw+TViI//2uGVAMw8NVq5fJfDmLAD13o0L+P5wRB3E9T4PoVbHA4SaaUccrFJWCxxp4ycNi3e5y107sMItezFJTgcJXpaSVwikPf5gPLU0CFU1t1CvfE43W/eeGlMbhcCsOU7JJ//YwJ20fm5VqdpgD96V6tA+rthGNMsEmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RL0WSnl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0442C116C6;
-	Sun, 29 Mar 2026 13:07:39 +0000 (UTC)
+	s=arc-20240116; t=1774789673; c=relaxed/simple;
+	bh=8vKl4VALwd/EIEB3Z7Ky+d1IztGqeEFlcxHiQnOzj/k=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=JNeANWumc2gk8r2IWjQZm0NwbSMaKK+/TFafe7vYEkCrla0af1tHycRSUfyHIRNBlYe3BcJxgTNy0PeV2o3VK1CP2cdZ8VYXpBMYJ7jpJAa0AG2lXcPQkn+uUxosooWfK+ZLSVm7djpbhCtjxypgQLZHJCj8OA4ZvU3FdPTAYP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFZGXy6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5E9C116C6;
+	Sun, 29 Mar 2026 13:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774789660;
-	bh=sVMhl+b+FrU7DCg3Tm59PumN+PWCOtpqMEgb4kpC6dc=;
+	s=korg; t=1774789673;
+	bh=8vKl4VALwd/EIEB3Z7Ky+d1IztGqeEFlcxHiQnOzj/k=;
 	h=Subject:To:From:Date:From;
-	b=RL0WSnl1LyV0ragMeSJXTeAwnF7COoM9h0x6scU1WJDxjsqPMmilLVQcUcZwrEkHT
-	 lxdRt4gHpOeQ17K0xX4/F9GzzO9NE4nopowGAj7KJeR1VKC5rcG6FDE1Hd+8Silmn7
-	 FCCtULfAVBDnzBq4fRMqKqqZa7ct7SVTlqbzFB5o=
-Subject: patch "iio: adc: ad7768-1: fix one-shot mode data acquisition" added to char-misc-next
+	b=IFZGXy6QBmPYI7neO4XXaFjgK48xjsJ/9CmwRDzeG5BJyambiscwrvbFL5wn3+fwb
+	 NnSxMW5hJAUuY8hWjCl71sP30Xtt4Omb2308ZeXzFHQTGG3MRfe5fYE50KQsubRkTF
+	 fpgXPI4IdjBESaa4t/OwfHtICCB0gJL0adQBtYDU=
+Subject: patch "iio: adc: ad7768-1: remove switch to one-shot mode" added to char-misc-next
 To: Jonathan.Santos@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 14:43:47 +0200
-Message-ID: <2026032947-pediatric-enslave-e8a1@gregkh>
+Date: Sun, 29 Mar 2026 14:43:48 +0200
+Message-ID: <2026032948-traffic-boggle-556b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,12 +58,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230891-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230892-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -77,18 +77,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 611CA352149
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: 8A3D3352167
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7768-1: fix one-shot mode data acquisition
+    iio: adc: ad7768-1: remove switch to one-shot mode
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -103,54 +103,73 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 8be19e233744961db6069da9c9ab63eb085a0447 Mon Sep 17 00:00:00 2001
+From 81fdc3127d013a552465c3bf9829afbed5184406 Mon Sep 17 00:00:00 2001
 From: Jonathan Santos <Jonathan.Santos@analog.com>
-Date: Mon, 23 Feb 2026 08:59:26 -0300
-Subject: iio: adc: ad7768-1: fix one-shot mode data acquisition
+Date: Mon, 23 Feb 2026 08:59:35 -0300
+Subject: iio: adc: ad7768-1: remove switch to one-shot mode
 
-According to the datasheet, one-shot mode requires a SYNC_IN pulse to
-trigger a new sample conversion. In the current implementation, No sync
-pulse was sent after switching to one-shot mode and reinit_completion()
-was called before mode switching, creating a race condition where spurious
-interrupts during mode change could trigger completion prematurely.
+wideband low ripple FIR Filter is not available in one-shot mode. In
+order to make direct reads work for all filter options, remove the
+switch for one-shot mode and guarantee device is always in continuous
+conversion mode.
 
-Fix by sending a sync pulse after configuring one-shot mode and
-reinit_completion() to ensure it only waits for the actual conversion
-completion.
-
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Fixes: fb1d3b24ebf5 ("iio: adc: ad7768-1: add filter type and oversampling ratio attributes")
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 Reviewed-by: David Lechner <dlechner@baylibre.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7768-1.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index fcd8aea7152e..4cb63ab4768a 100644
+index 4cb63ab4768a..a927ae288fbb 100644
 --- a/drivers/iio/adc/ad7768-1.c
 +++ b/drivers/iio/adc/ad7768-1.c
-@@ -463,12 +463,17 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
+@@ -463,17 +463,8 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
  	struct ad7768_state *st = iio_priv(indio_dev);
  	int readval, ret;
  
--	reinit_completion(&st->completion);
+-	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
+-	if (ret < 0)
+-		return ret;
 -
- 	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
- 	if (ret < 0)
- 		return ret;
+ 	reinit_completion(&st->completion);
  
-+	reinit_completion(&st->completion);
-+
-+	/* One-shot mode requires a SYNC pulse to generate a new sample */
-+	ret = ad7768_send_sync_pulse(st);
-+	if (ret)
-+		return ret;
-+
+-	/* One-shot mode requires a SYNC pulse to generate a new sample */
+-	ret = ad7768_send_sync_pulse(st);
+-	if (ret)
+-		return ret;
+-
  	ret = wait_for_completion_timeout(&st->completion,
  					  msecs_to_jiffies(1000));
  	if (!ret)
+@@ -492,14 +483,6 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
+ 	if (st->oversampling_ratio == 8)
+ 		readval >>= 8;
+ 
+-	/*
+-	 * Any SPI configuration of the AD7768-1 can only be
+-	 * performed in continuous conversion mode.
+-	 */
+-	ret = ad7768_set_mode(st, AD7768_CONTINUOUS);
+-	if (ret < 0)
+-		return ret;
+-
+ 	return readval;
+ }
+ 
+@@ -1248,6 +1231,10 @@ static int ad7768_setup(struct iio_dev *indio_dev)
+ 			return ret;
+ 	}
+ 
++	ret = ad7768_set_mode(st, AD7768_CONTINUOUS);
++	if (ret)
++		return ret;
++
+ 	/* For backwards compatibility, try the adi,sync-in-gpios property */
+ 	st->gpio_sync_in = devm_gpiod_get_optional(&st->spi->dev, "adi,sync-in",
+ 						   GPIOD_OUT_LOW);
 -- 
 2.53.0
 
