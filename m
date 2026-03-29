@@ -1,181 +1,249 @@
-Return-Path: <stable+bounces-230937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBBECxcvyWm9vgUAu9opvQ
-	(envelope-from <stable+bounces-230937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:54:31 +0200
+	id qO5tHmA/yWk7wgUAu9opvQ
+	(envelope-from <stable+bounces-230938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:04:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE4F3524FE
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:54:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06D4352845
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 17:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6CD33009CDC
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:53:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D381300FEF9
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E239C379988;
-	Sun, 29 Mar 2026 13:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982D637998F;
+	Sun, 29 Mar 2026 15:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sHikV4bU"
+	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="PYJM/xmG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EAD378D8C
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 13:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1046A286D4D
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 15:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774792420; cv=pass; b=SPEI0MR6EDWHsnBeU8rPx9D+75acPF5WVLtMkVVrZyhOw/1Ld52MWgSZJp2TxHBQkJ0EekVOdEaT/d72qaE19LBhQ2gCcZCf5WDzsASorRtG85AYppW0OCmQIQwSgzwh8IYvW/MwyEoc+SDExSK0ElQYKVQFch2ymAPDzomebf4=
+	t=1774796636; cv=pass; b=FOs83jZYytFqx9kgGJVkDbtz5yJ0O1q1JS6J83a2pyco8ox/FAM1fKAcTs1stnlquFlf6NZ2B9m+qAwIBIcmkYpm/K+VTVNjnbI5uyJbCsn0RJBcx508PgUnFOc9bv78Dwp4zSpEN/YsSwLApBwxcFt2M/o+OQki0SV13Qn4t0s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774792420; c=relaxed/simple;
-	bh=ultkQriYT2Vk5PsqfDg1lhiyQN3IB5SOcSKN2cmMdHI=;
+	s=arc-20240116; t=1774796636; c=relaxed/simple;
+	bh=7fn3Z+2dnye8ym96U8WpPLIEbXEMZnKCkPCfscZBs5Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EuEXNgIQnybXi66wsSiPLoCkaKxOBw9eztlh/glvQZ4QvkVOtTWpa1+sFq42nqp+K80xBGdfbITqMTfJDyRPhfMIAQkI5qMUzqijwmcEJDrx5aGV3TgzdPKcB+4Av+hGOXHrF+uPBf9gUh5tgmZDhR+WxLqcjfDwIBQY2aITP0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sHikV4bU; arc=pass smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-66a4c6bb6ecso6395011a12.1
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 06:53:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774792418; cv=none;
+	 To:Cc:Content-Type; b=GFBNgq9UoMaXQ9+eMxrMFleGR9pYXyMOB3CCkq2d5nmZkTRt5vhivPC2w+I2NaC7N1oTRIVZRa14vC4HjULMZkAK68DhtQKZZ3cnJKl9oggfbR1Dj1xzmqT6vSgHmdZ+QhRwLCkwE+u39h5souJoOlk6ilQLKKf5yopUM+d5hzs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=PYJM/xmG; arc=pass smtp.client-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jphein.com
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-64f48a5c3d8so4943550d50.1
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 08:03:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774796634; cv=none;
         d=google.com; s=arc-20240605;
-        b=OsS/HDU9gNPsoxVth2YZMpeY02H2aaFVAKvOxE5guphSUAqQUgWUHxF35THwSWlIoR
-         /Sicikmtinqd4v5C8tgJJSTbqCTT2db+ktTKs6ycI5WY4khV7CL6cN0mPy5AiOlZHBT5
-         4UnWNbeZIpgErFQKDtgxzpH63T80/CkAf1uoFujRZoCqTYzOK1YqautORLJSwDuBYLXR
-         YZfjqeupiArUiLV/SbyCWfJAJB/P/kYU5S1g/nPHg3n14lnaZJBIakZLtyQ0tDy6qn9i
-         2g27VORdSZe4rMlDNve9AsjsWvPZUwV7rFrnRWReSYWpxZRrxsser7iOqFb8uThY7NaR
-         a7Dw==
+        b=FoiRI62UcxhOIHl+dADl38J/n2sFZW2JGnHwTsNQ2W+tGXFS5IxfLpeu5NGQRZfth2
+         NqZ+U9NJ56ZJkHdYlfs4xNUkFWsw9Rcd5oabl8cbJ9nNISn6p9s50TZzBUr5IiTQU2xX
+         0+nUtICfY+ERdE48Ig0ZwWj5ZiGDYuzICTWlWwutiGCx1wz1cOxqGwwyR1+QpEpOKB2l
+         hSj/dGl8ff+M8ZPAb7c2mdaq62asu3qFToIBUO8fmXfVZexS2CU1cLP3+vEgJAN+BI13
+         aPoWKRIuVuDEXOnM6BdZfk+G7Y/StvzdOyKM57fvPwf7QkiYhq5lM1UlvcjpdNHPIwpX
+         yZew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=e9NPpYh2vIz2hCIooGcCLPshzGEqsQsQRk7VDx7gvEU=;
-        fh=hrV0ajdgPFh1ZZgfEp0fXQqfZ/biVdDagJ066s98SYI=;
-        b=EtUTeEGexG8sYZgzVUEDys1kI9uD1MtUDps6N1UoGECDEkxlZsu3s46iSKQcLjr06s
-         P0a0i5cV0rLNsY+baOiUdupTsu+7jBTw9ARETUSSeO0C2zG8FcAHp18JiPqUuLbqtes3
-         kS20JDfGDyEDBfs8uqK6AdYpDLD0hX4ZRzyAlbwewsHqpF15tyI9ahvq3Cf0yyQmRl/7
-         8owH/uTA3BrbwnQYwMi51rlefL/KXI/hsIkdOxCVHPWr+bv4/bdTy15y+9qyB+FBIxpM
-         P/aue5LAokFPI/pjVSjFNm9a3+IlxeKvg7V+ySGrh/gvqOR7oeCh9RrPqM5Q6NVTBmjX
-         9zMw==;
+        bh=Fkpr6x8ZyyJkz5iE6Uzz9ElyoBGLMbtXkFG8ALfJ6/c=;
+        fh=RwEWWDC3rGSX1Xhw5kP/tFkiR+SJip6MZKMOQ46tIP8=;
+        b=P1CHE2H2r7piwcmpma3d1y4TVyrFZIbTV5mESRNpY8BUEZ2r6k9mK0KGmzmC9QjWMD
+         Lr6zWmsfb8Q+ZD83ibekCDh4eyCHxnLs09YLQCkBReuyzgZvyD7xcKBRrlHg4MZZ3m9w
+         3uvdyzZGSF62frsqs3tFKqCamEerd5H25s3tsFqYYQ3BbZGpldQ2+sXFWUNXkDW7vo0Z
+         G+mysekq+H3IjmYigXL+9MDfM1P+kvrcv31M1u/FeWvqVWkMjBEQRROt7wjtv++XFJ+c
+         d7cfXzqNyA8cX5aCXKdKAOf0lx9ZV0oBo9oIwYA7YYqNM5arf6w1bfE0ApDUPKGIdj1N
+         MmVQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774792418; x=1775397218; darn=vger.kernel.org;
+        d=jphein.com; s=google; t=1774796634; x=1775401434; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e9NPpYh2vIz2hCIooGcCLPshzGEqsQsQRk7VDx7gvEU=;
-        b=sHikV4bUAm+0M55BiASTxsQImObpKt28qGXp+/lfAQJiC5zJiY1te9cyzV1LXwTo48
-         Ckkqty0eCvhvz4Fus9A17c9ZwUpdxP+LdKamO0sHJKgG2wLE7avqRWb8qG6N3JZ13Nck
-         OZezWsWBQxIx2RxwKTyKJJLPiycrcSjtQuPZhB1JCgb/QmL3/JEfrpI9O2P5v30thBGO
-         BM9VYyihzgsypgPA3z71d/vf/K4sEcqqXR9q3LREa7xdrKgvkMqRz2D8ah751PVUx2Gq
-         n6GTWrTAl2GQ3TJ1VsY3euqqs5nvdYGleW+xDW5C5S1TbIUAA2o+oC1U+YVhCpBW7ym8
-         FsJA==
+        bh=Fkpr6x8ZyyJkz5iE6Uzz9ElyoBGLMbtXkFG8ALfJ6/c=;
+        b=PYJM/xmGj4WlXxJz3E7rYM16yoPekuH/t0vpGv5havGLAAuo2ANVyVZH0dGqwKF811
+         uvv4SBd1KoUdDAKyQUHplWJPyqJPzRBvMqIh96SQSb9+A3HO0hvUIfaiRR3Puxe3WJSd
+         zQEf1N1d6EM1d1BHTCCQFiTP5L5gHggivWmvrIBJta2mM5pcfen2BrPwLCxoIn1wTRYN
+         SiPaEduwkeHBadCioL3rHyF3Ua9BzIc5yuZCgHZ0skXyUjn2uRaElvHwesHIpUXBKCi+
+         USKp4nO1XPhRIIoCqVcK/o3CCYws0zx+GZKig0YnQgRjuqVNaFlX55tWeKD0asZLAwq4
+         SIKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774792418; x=1775397218;
+        d=1e100.net; s=20251104; t=1774796634; x=1775401434;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=e9NPpYh2vIz2hCIooGcCLPshzGEqsQsQRk7VDx7gvEU=;
-        b=HRX/ZR11sL5aHU3SJGSEWCxhcM3wEsBuCtTYBgNewyZYwkzA/ild42xDLuaktPL09q
-         fNiUNMMfZCEal1BE72UEq9bQxAlLhz3lTtm15Bw/qUmScn6CPzC81Hnroyq5MHWQoZQg
-         22WdCwsHOYVGfgjR1KH4SX3wqVZRZkySlkAeP8ek4/0CmQt2P4Y1SvowVHDTpi7XxASn
-         w5NbkrNUafl+eAdJy1SKEOSPhOioC/FFC+03LuENp/7jZcEebh5oO1kB7AC15UM5y6+f
-         wSUG6wUzehJrIl/uYybwpf7O9+h4e7z5i9wrkzXP2ieXs4lW9afso4f3BnIPr1l3McfH
-         r8jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYF2lvHJ2uoGN7nsrJ+JwfDi415W6aWtW7bi45L57zYjKKBmQwV7nZ2mr2hdH9LXk8x1kvAtM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo3YT3MG0uFxvlk72LOhETB51aYIkqeDMgH8W0cieuXoJsMAYa
-	hgIwsxhztcoAvfv/my/crXsCBRldhfL1120mqhitRyKwg+/Y4GCxsGMEL52GWhLs1r/9oTaZlSi
-	G4fpfUTZ8GyQF4OVgY7+V5cH97tVFyfI=
-X-Gm-Gg: ATEYQzx9OhpXIhfc4S5gChIEbBbHJSOBk3PCGD/S7MeTmuNAfrz2wS3y+ZZ1hgobw3N
-	DDXiFMasVUbLQkGn8zJ7Vr0ZaAfhS6gt3BlrNJI55ZY45D3mmde3q1Ta1CzCXDI77mVlgS08up+
-	soT6OMDRL5LxJLA1AQuDzYURZ2xEDasIVTawAnm82gqwn4E8mtEyCDvqkxP8kkmFJi4cyQt7/5m
-	IrX6lRa1suPrnqSEIWC5xy2Qyfq5PixJAzVTJVL/g5An2Nhj81imi7lCtOKz7pwNmm745esKzMm
-	SeRj4WV1
-X-Received: by 2002:a05:6402:380b:b0:668:6e22:3e10 with SMTP id
- 4fb4d7f45d1cf-66b27936177mr5060746a12.0.1774792417605; Sun, 29 Mar 2026
- 06:53:37 -0700 (PDT)
+        bh=Fkpr6x8ZyyJkz5iE6Uzz9ElyoBGLMbtXkFG8ALfJ6/c=;
+        b=SVvWr751qJWHW2sVPPZsWn6RwlYvXYYipBhowIMdP2lcpc17qVtNHhqRbgg1rmROJn
+         AeF2TcIOe5CaIFXCTdSIBal6gY3jNd5NXEOAeF5x5LcjWeozT8+udTW9EsEa86/rvKJ0
+         Qqpx3ZMlPtrlf681epMQEWGKzkJGXWbUX9r8GsjXHxMqb3VwRddKSqqH0TolIeT2yOSr
+         +ufMd4huxo3hGrS5ydNFreNuxQkm/WWWjZiblCCDznjX+i0oVlK3MvmE38teaPSHWU/W
+         HH/LCkjzNEDOF/DjHF9CHPNIbMrF6il+RjKO7T5oPpQ4eKgd+92w3OpG++GcK+f1rmHz
+         /Prw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqHmVhrZgbJ/uH3wke+cZdgMZ7/cSX6/w2ZTpWeGeVFgNaQ+5Lll1eQAVQSEUfqyj3cmhBBTo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX7MqbeizLFxgOnpOx926YI0SrnYWYnwKrS29tXZ05ggTR6RdJ
+	XdqIffXbLYWApqBSWKuHqUlUWNWNiLQqhrhLO/gE3rLWo2ba04kuYB6OHWgvBAER8fquWDNQuMH
+	zSTg0kmp5z6Bk9d21m7mOQ4C4UeYVo/Nj0ZZbW/B6
+X-Gm-Gg: ATEYQzzAtdWceJW2+HXqoxlc5I0yi8gE6y+muCBSiETjh7QUxNfP9ntF52AiqR6TPuK
+	cpxI8HYHJhPffUIaO2efU7kh1MKH+7QKe25bGuXiCzyQynYnYfPuA3NGQRFUc2o06oQgJDwcoT+
+	hh0l1nabXJMnRTv0Xw/rvt9jBE2Dd2ESM9Rg6pMfdHXTXvFrX6F21xR6i1a5lIf/lxAqnWtT+FT
+	4Orrh0ZkXxuz5Odtluq7ElK4tbHjLPx9U+UTHtBXn013GwxSq23Oz66PDMLweFlfEs7EvDOK6D2
+	8XOIN7T1XFLOL24=
+X-Received: by 2002:a05:690e:1c08:b0:64c:9ec3:d710 with SMTP id
+ 956f58d0204a3-64ff73acdb5mr9325664d50.41.1774796633749; Sun, 29 Mar 2026
+ 08:03:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260329125437.517980-1-sebasjosue84@gmail.com>
- <2026032939-salt-cod-3bc2@gregkh> <CAJD=UNf9Ax4oZ9YTj8rr3jDWaGsXr4bX8uh2A-EE+w49QwSUaQ@mail.gmail.com>
- <2026032911-unison-dehydrate-9c62@gregkh>
-In-Reply-To: <2026032911-unison-dehydrate-9c62@gregkh>
-From: =?UTF-8?Q?Sebasti=C3=A1n_Alba?= <sebasjosue84@gmail.com>
-Date: Sun, 29 Mar 2026 07:53:25 -0600
-X-Gm-Features: AQROBzA0tKwIfV0ThA1biQtRGPrgzfZejf9ZBQg9a46gemDh6YmXVr62-PZwW7Y
-Message-ID: <CAJD=UNfp2RXE7B_N0a_ux32tP2iArVdosm=Zd=uhMtsd3qqv9g@mail.gmail.com>
-Subject: Re: [SECURITY] usbip: vhci: heap buffer overflow via crafted
- number_of_packets in RET_SUBMIT
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: security@kernel.org, shuah@kernel.org, stable@vger.kernel.org
+References: <20260321223713.1219297-1-jp@jphein.com> <20260322055354.03399a32.michal.pecio@gmail.com>
+ <CAD5VvzBE8Oq80EhFZnZ7kNrRC_rpoR25Ct5-Fg62yDZUHVtWzw@mail.gmail.com> <20260323085845.6bf57b3b.michal.pecio@gmail.com>
+In-Reply-To: <20260323085845.6bf57b3b.michal.pecio@gmail.com>
+From: Jeffrey Hein <jp@jphein.com>
+Date: Sun, 29 Mar 2026 08:03:42 -0700
+X-Gm-Features: AQROBzD7GC_TrwPeTrvW3mp5jNE4JvirNKJp_EKtrLyJ9BYIvabbB9bj_SkkwFk
+Message-ID: <CAD5VvzDWF7SO0Aytp3K_uXV6ZYoqEqN1dhfv7VtMAHSpHP+qTA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI
+ cascade failure
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-media@vger.kernel.org, 
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[jphein.com,reject];
+	R_DKIM_ALLOW(-0.20)[jphein.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230937-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230938-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jp@jphein.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[jphein.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 7BE4F3524FE
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,techempower.org:url]
+X-Rspamd-Queue-Id: D06D4352845
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It was presented at Black Hat Asia 2017 by Ignat Korchagin with a full
-writeup explaining the pattern. When you audit USB/IP for similar
-issues, CVE-2016-3955 is the obvious starting point because the
-writeup literally walks through vhci_recv_ret_submit and
-usbip_recv_xbuff step by step. From there, checking if the same
-pattern exists in usbip_recv_iso and usbip_pad_iso is the natural next
-step. I imagine the others followed the same trail...
+Hi Michal,
 
-El dom, 29 mar 2026 a las 7:51, Greg KH (<gregkh@linuxfoundation.org>) escr=
-ibi=C3=B3:
+I have now tested on 6.17.0-19-generic (Ubuntu 25.04) with dynamic
+debug enabled for xhci_hcd and usbcore, and without any of my proposed
+patches or workarounds applied. No udev quirks, no LPM disable, no
+control throttle -- completely stock kernel.
+
+Results: the stress test passes 50/50 rounds with 0ms delay. On
+6.8.0-106-generic the same test crashed consistently around round 25.
+
+The xHCI error handling changes between 6.8 and 6.17 appear to have
+resolved the cascade failure. The controller no longer escalates to
+hc_died() when the device firmware stalls.
+
+The UVC probe control EPIPE (-32) still occurs at device init:
+
+    uvcvideo 2-3.4:1.1: Failed to set UVC probe control : -32 (exp. 26).
+
+And with dynamic debug enabled, the kernel logs show it dynamically
+disabling U1 LPM when the device responds slowly:
+
+    usb 2-3.4: Hub-initiated U1 disabled due to long timeout 16800us
+
+So the kernel is now handling both the LPM issues and the error
+recovery gracefully without needing the quirks I proposed.
+
+I have not tested on non-Intel hardware. The firmware is already at
+the latest version (1.5.0.1) per Razer's standalone updater.
+
+Full debug log from the stress test is available at:
+
+    https://github.com/jphein/kiyo-xhci-fix
+
+Given these results, it seems like the patch series may no longer be
+needed for current kernels. Happy to provide any additional testing or
+logs.
+
+JP
+
+
+On Mon, Mar 23, 2026 at 12:58=E2=80=AFAM Michal Pecio <michal.pecio@gmail.c=
+om> wrote:
 >
-> On Sun, Mar 29, 2026 at 07:34:22AM -0600, Sebasti=C3=A1n Alba wrote:
-> > Hi Greg, You're right...I see the patches from Kelvin and Nathan on
-> > linux-usb now. I should have checked lore before sending. No AI
-> > prompt, just manual auditing starting from CVE-2016-3955, but clearly
-> > others had the same idea this week.  Sorry for the noise, and thanks
-> > for pointing me in the right direction. I'll check linux-usb first
-> > next time.
+> On Sun, 22 Mar 2026 15:10:28 -0700, Jeffrey Hein wrote:
+> > Both failure modes are in the device firmware (version 8.21), not the
+> > kernel, so they exist on any kernel version.  On 6.8.0-106-generic
+> > (where I tested), the TRB_STOP_RING case in
+> > xhci_handle_command_timeout() goes straight to xhci_halt() +
+> > xhci_hc_died() without attempting per-device recovery.
 >
-> Curious as to _why_ 3 different people all independantly decided to look
-> at CVE-2016-3955, a 10 year old CVE entry, and decide this week to poke
-> at this on their own and come up with almost the same exact issues.
+> Command timeout is a failure of the xHCI controller, not the device,
+> and as Alan said, it's generally not supposed to happen so we are
+> curious how it happens and if it can be prevented in xhci-hcd.
 >
-> What made that specific CVE stand out in the see of tens of thousands of
-> other kernel CVEs out there?
+> Device behavior may be a contributing factor, as can be a kernel bug
+> or controller HW bug. It would be helpful if somebody tried this on
+> non-Intel hardware and on current kernels, because there were various
+> changes to xHCI error handling over the last two years.
 >
-> thanks,
+> > The stress test script is in the series repository:
+> >
+> >     https://github.com/jphein/kiyo-xhci-fix
+> >
+> > stress-test-kiyo.sh exercises UVC controls via v4l2-ctl at maximum
+> > rate -- brightness, contrast, saturation, white balance, exposure,
+> > focus, pan/tilt/zoom -- cycling through their full ranges each round.
+> > With 0ms delay between controls, the crash consistently occurs around
+> > round 25 of 50 (~5-10 seconds of sustained rapid SET_CUR).
 >
-> greg k-h
+> OK, I will see if it does anything interesting on my hardware, but it
+> may be nothing because I don't have this camera.
+>
+> Did you try it on a different camera in the same USB port?
+>
+> > That said, the firmware lockup itself is controller-independent -- the
+> > device stops responding to USB control transfers regardless of the
+> > host controller.  What varies is the host controller's response to the
+> > resulting stop-endpoint timeout.  On 6.8, xhci-hcd takes the
+> > TRB_STOP_RING timeout straight to hc_died()
+>
+> Nope, this is controller dependent because Stop Endpoint is a command
+> to the controller and it has no reason to fail. Something is broken.
+>
+> Could you boot a newer kernel (compile 7.0-rc5 yourself or at least get
+> latest release (or beta) of your distribution), enable dynamic debug
+>
+> echo 'module xhci_hcd +p' >/proc/dynamic_debug/control
+> echo 'module usbcore +p' >/proc/dynamic_debug/control
+>
+> then connect the camera, crash it again and send dmesg output?
+>
+> Regards,
+> Michal
 
 
 
 --=20
-Sebasti=C3=A1n Alba
+Jeffrey Pine Hein
+Just plain helpful.
+jphein.com =E2=98=80=EF=B8=8F techempower.org
+(530) 798-4099
 
