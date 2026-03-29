@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-230899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDlhOaAmyWm/vAUAu9opvQ
-	(envelope-from <stable+bounces-230899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:24 +0200
+	id wHNlNK0myWm/vAUAu9opvQ
+	(envelope-from <stable+bounces-230902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E997352289
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 537BD3522A1
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8A8930157ED
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:18:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E3F03016246
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13390374E55;
-	Sun, 29 Mar 2026 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9F337474A;
+	Sun, 29 Mar 2026 13:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYhrDNMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdLkBT5y"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1E92FD7D3
-	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD76374E6D
+	for <Stable@vger.kernel.org>; Sun, 29 Mar 2026 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774790292; cv=none; b=NmPmwEzK+wgXDNwqKi3vWXG1WI6Kk29I69F4x1euPT2Pa28CsPWXwv4n/Z/rJxuZvyaY8mOPi0oEq6GoVX/Csy5xB6w6RAIAjwxXy0VvlvPrtMzS32a4DwwackuRz53KxesEd7wKwXsinAJlEOY3Wl4KiCl5q/WC2PI6iw4Q+AM=
+	t=1774790300; cv=none; b=B0MEhWf/x3keqVeyv89YKROJJXyKUqMuDBZD2olQVts4tFKktd+YsyRVqmfg7BPT9Z+Oqywa9lOoAvm8AEbA6r0R9Kg/FaloDgOQWo3gsrA9eSqOdXv+KupfCkbEZWFFy/+289p7B5W4T3gGKdV0SFPxnP0rCRW3c+gonzW+wTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774790292; c=relaxed/simple;
-	bh=liWPzTaprNQJSjWElKaphY1OSPl3nHzK8kczSlYNdsM=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=IbSGyFzt6jpoNTqnSdt8Kd+IyVQBRBOVs2vNXz14qrP2aJnvKv4WgY0DThpHQW7TVvxCnomRS5A1Kvdu5cFA4ijOyiI3c+Aa7uGFjZ7wVhgT028dLRYOMcN0Dyrn6hHiiMV1+ng/OGEvfE1BvwAq7uDBDIcaAdJ9XVSsS4n9G2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYhrDNMu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465C4C116C6;
-	Sun, 29 Mar 2026 13:18:12 +0000 (UTC)
+	s=arc-20240116; t=1774790300; c=relaxed/simple;
+	bh=y2P83wKRehTdey/wXhXQhHXFV2PIJpY9vSNo4cPkzg8=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=k8fqP3H6BUrPzExgzRzVL5rH2QoafbHhciI5Nougqv9TFl2gOVCPH6lElXgxSqvHyvNOw0gL1FztWZIEgaylaG5OxAW853tJ9FDGrp/KgxnnOm2S6Ow0zd6b4NXiCqWNnWhnzWMLgK7QSjiyjUQXxId/6oXi93Mz1lsqIso/Dgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdLkBT5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEAAC2BCB1;
+	Sun, 29 Mar 2026 13:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774790292;
-	bh=liWPzTaprNQJSjWElKaphY1OSPl3nHzK8kczSlYNdsM=;
+	s=korg; t=1774790299;
+	bh=y2P83wKRehTdey/wXhXQhHXFV2PIJpY9vSNo4cPkzg8=;
 	h=Subject:To:From:Date:From;
-	b=xYhrDNMutF7p4FO63YMGEa2X8/9sK3vcH+c/FJ/dYFdt6YWtcEbCPRoM6+NprszCg
-	 1atBeHsIiyB5x0MJ9dAfit99Apb9XUwkNwCy6rgzy9oLkuwgRVDwQI1CGYMS4u26Qb
-	 FvCBALD9yIIUYTe1RRCqNg4tSkjX+6xrJTzAvGl4=
-Subject: patch "iio: accel: adxl380: fix FIFO watermark bit 8 always written as 0" added to char-misc-linus
-To: antoniu.miclaus@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=RdLkBT5yWW06i0orGMpRUy/uXPgaxgOuWglE7QmmG+X1pbpf3DW2MAqZxqTaJ7iN4
+	 fCEde0ZSKkc12VqF5GmlWTlai3aL8qCkpnQ8XaHILiVo5wjkhawye4FUMLRGuoCD9u
+	 NYmijF6CFiSZxYz6V1v2shuubRsQ+pcnP4tTso28=
+Subject: patch "iio: adc: ade9000: fix wrong return type in streaming push" added to char-misc-linus
+To: giorgitchankvetadze1997@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,antoniu.miclaus@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Mar 2026 14:50:08 +0200
-Message-ID: <2026032908-removable-swampland-19e0@gregkh>
+Date: Sun, 29 Mar 2026 14:50:09 +0200
+Message-ID: <2026032909-upload-krypton-86b7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,11 +63,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230899-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230902-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,huawei.com,vger.kernel.org,analog.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -75,20 +76,20 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,analog.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9E997352289
+X-Rspamd-Queue-Id: 537BD3522A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: accel: adxl380: fix FIFO watermark bit 8 always written as 0
+    iio: adc: ade9000: fix wrong return type in streaming push
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -103,36 +104,41 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From bd66aa1c8b8cabf459064a46d3430a5ec5138418 Mon Sep 17 00:00:00 2001
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Date: Fri, 27 Feb 2026 14:43:05 +0200
-Subject: iio: accel: adxl380: fix FIFO watermark bit 8 always written as 0
+From 57b207e38d414a27fda9fff638a0d3e7ef16b917 Mon Sep 17 00:00:00 2001
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Date: Tue, 24 Feb 2026 17:23:55 +0400
+Subject: iio: adc: ade9000: fix wrong return type in streaming push
 
-FIELD_PREP(BIT(0), fifo_samples & BIT(8)) produces either 0 or 256,
-and since FIELD_PREP masks to bit 0, 256 & 1 evaluates to 0. Use !!
-to convert the result to a proper 0-or-1 value.
+The else branch of ade9000_iio_push_streaming() incorrectly returns
+IRQ_HANDLED on regmap_write failure. This function returns int (0 on
+success, negative errno on failure), so IRQ_HANDLED (1) would be
+misinterpreted as a non-error by callers.
 
-Fixes: df36de13677a ("iio: accel: add ADXL380 driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Return ret instead, consistent with every other error path in the
+function.
+
+Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
+Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/adxl380.c | 2 +-
+ drivers/iio/adc/ade9000.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-index 8fab2fdbe147..a51d1d61c412 100644
---- a/drivers/iio/accel/adxl380.c
-+++ b/drivers/iio/accel/adxl380.c
-@@ -877,7 +877,7 @@ static int adxl380_set_fifo_samples(struct adxl380_state *st)
- 	ret = regmap_update_bits(st->regmap, ADXL380_FIFO_CONFIG_0_REG,
- 				 ADXL380_FIFO_SAMPLES_8_MSK,
- 				 FIELD_PREP(ADXL380_FIFO_SAMPLES_8_MSK,
--					    (fifo_samples & BIT(8))));
-+					    !!(fifo_samples & BIT(8))));
- 	if (ret)
- 		return ret;
+diff --git a/drivers/iio/adc/ade9000.c b/drivers/iio/adc/ade9000.c
+index 945a159e5de6..1abbfdfcd554 100644
+--- a/drivers/iio/adc/ade9000.c
++++ b/drivers/iio/adc/ade9000.c
+@@ -787,7 +787,7 @@ static int ade9000_iio_push_streaming(struct iio_dev *indio_dev)
+ 				   ADE9000_MIDDLE_PAGE_BIT);
+ 		if (ret) {
+ 			dev_err_ratelimited(dev, "IRQ0 WFB write fail");
+-			return IRQ_HANDLED;
++			return ret;
+ 		}
  
+ 		ade9000_configure_scan(indio_dev, ADE9000_REG_WF_BUFF);
 -- 
 2.53.0
 
