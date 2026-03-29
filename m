@@ -1,80 +1,55 @@
-Return-Path: <stable+bounces-230878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMuuH4EEyWmitQUAu9opvQ
-	(envelope-from <stable+bounces-230878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 12:52:49 +0200
+	id iI7+MDsKyWm5tgUAu9opvQ
+	(envelope-from <stable+bounces-230879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:17:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E7F351A6D
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 12:52:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7490B351C24
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C77363045033
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 10:51:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 99BD03005AA9
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 11:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DC2313E34;
-	Sun, 29 Mar 2026 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E93135AC3E;
+	Sun, 29 Mar 2026 11:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="uXWfwfdq"
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="vZ79p8O0"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.50])
+Received: from outbound.pv.icloud.com (p-west1-cluster4-host1-snip4-10.eps.apple.com [57.103.65.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9B731355C;
-	Sun, 29 Mar 2026 10:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA5235AC0D
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 11:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774781489; cv=none; b=PveRMcPbUA0VBp60W0mOwJ65ThQnS+id1mNILn9/qoCxWOAoGg9ooRMRJlKTHN39eykjtaNRj0lV8JvGXB9mPdisMMMlX725gEWZBtBE5AUbGyMIO3UDdg9CZ9e//gHwKRWFffmZ8p6f7X+eFXpc09vvRGnSzeW8axYoGUU4fXo=
+	t=1774783033; cv=none; b=OAfkH/2h4SBENedfeTz6p1zkPiJAl1RiUq9YCLAPjkDU/vMwxbaN0rvGHlFZl8ZuW6d5YYUxY2O0nGW8aFRWiLLp8yv2lnro2edjap/h2ZeHT4wUJRoBkAAeJ8XVZzAV7MDw4HNyYOLKeeknO7jgF3gk0VNHeT3r7u7f76ynF5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774781489; c=relaxed/simple;
-	bh=mQ/JSz+CKJtWutzkgkYxzpBGTZ9QtEkXBi6RD9kDOLE=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=ggjoqk0W5Xi/szMeNSS3U4griZ4Jfs+a7FxqOmbOA3TTv0RLGs8dywwf/vGYXvtArFuLlxkK/0pp1fZnkz6ezizDJIDtX4h4hB+JgMikI5DSO6RFdENfOGD8fWF9XvmUq9mjNlu7dOJNuW3L877jGxt50HAC54Z7cWX+Jl4Ow0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=uXWfwfdq; arc=none smtp.client-ip=43.163.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1774781477; bh=UroK1ySqjbLJQwKcb7vPgXzRaw08F6AMfh8Pj4bu2ew=;
-	h=From:To:Cc:Subject:Date;
-	b=uXWfwfdqU3ixeceRlKWhVdzv+8Irxz4HsZLI3Z5+HDPkgnDp93P6AA2yNpiAHUiNr
-	 uuWH4MxtTYRnKaeZ7Xda3bD+xfmpp2HzftTu97NY+6H6oCiEj2WFYtTH5Nq1q6ZP4H
-	 XRWwUD9Dni2C4XyCVhzSSQQD+V2D1qCQR9emtprg=
-Received: from LAPTOP-KQCD4QBN.localdomain ([123.121.145.48])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id CCE16A3A; Sun, 29 Mar 2026 18:51:14 +0800
-X-QQ-mid: xmsmtpt1774781474tmnremffy
-Message-ID: <tencent_46889E152DE22B7E8A0CBB3311C556F92E09@qq.com>
-X-QQ-XMAILINFO: NKDEJ657lpu+rscPRTJbBkFka3NDRBrIXps64I3quwvQK8anivcTuAyxuvQ8S3
-	 E8NGyFm+Ag3ydM7SUSqGSGFEP0yYhyaRxRNAsjd+0JG9ECaKC0JN680GmSzvXAarhid0M++qPYcw
-	 VCef8tNmFC8K/mWnT45nfYYlFQF58KESZUedxJn5XHtg3EBIxY8obb2TImxcMT9BdnMUOBbx98vt
-	 B1lY6WLyethfyYwFVp6AKgK6GWMzzLk1FEkC+ZDKZqldbegN3Okq0+8kQEAho8wOoGOln1kFFMz4
-	 xl9vQ/Afs9dK6qGqyWCNvF17eG2ZgK1Ny4qumvExD1d1APVyIdHZftqBKYzpaPwASXXjh6uQSqOn
-	 8wljLX2fqwH9bc8d9y+sA2jfuGezOB723Cq4j9IDBdUCPo1s8qM5QghZXyDJtJvGsOLOKdI3IpJB
-	 4oAK/7HCM/v4n0DfroITLjhNvDoIYsIUkQgS3V4plA5yCCLkLoC0vEWBc0oh5J8eU//8tklSLA+x
-	 bEElhNs8I9pxFziwKNXpSZRZCxmJ+yKYYKmxjxsSNHF9vY7p9F+6JoVJjkdH8uLElLZZesDUfwyE
-	 mxGovFHwLgSA+o86PYvHa95navzoYwm0wZ147Xe/8ym3nrfymNjZQ+c5vy8Z9wcZwLNmOYpi4aQX
-	 u9ODIDelND5+L4ySkN4c5AVbUHkLtXD2oZWDatxgF+B+YNglT+MCQzX9Ktfcvmb1Bb1FJlgEZQVW
-	 xKg5OzbssWh2RxSyQnqPTK3o4GcocPhiNA0lXEofoDIeLnUkSDDuldcHU2mHKU8a2b2kctfkT/SV
-	 uEiMYe6VcaR+slLgunsRwfYDIjtKiJoxXP4cZlQ8mQ42Yx2WaOxBm0GDsFysz/AGr0nIN2GXY2tC
-	 nXxOwPOvKmStMLI4quCGtGeLzDZDxmWLQLN5Bw571AXFclH2YtR5YANga3fFWtsar2tEu9oNWqv2
-	 tudYpYB3wx/P9kDNQLMNnAkqrEPhBNg2LV4aWXMBYyqSSqaLrKralDfRMICFYauSceE6MybTLlhL
-	 dqDBgNrnilPnxtG3pWuWTS69sYosdzO8VeH8u87S/Why/KD9LH
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: Wenyuan Li <2063309626@qq.com>
-To: Andy Walls <awalls@md.metrocast.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org,
+	s=arc-20240116; t=1774783033; c=relaxed/simple;
+	bh=HDqBz5WEHQfMLl4Nx5oP0XhP8PxMU+MNQ7aQoI83584=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=riUKCIS2LBJlh5PtIRkTztPBRQESSUNXNJb0dFLWsf7jXkHW/eccgSBIoUmCYa2I+Sb+yQIebizhPeXuSnQQYl215CDosQkF3WN/pobT7juLdB3WZYM9UfUpP//lUtr4doEaddxVGyN2s3ZOugEKS2PQsAD1OqWTBJSap0pYojI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=vZ79p8O0; arc=none smtp.client-ip=57.103.65.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-4 (Postfix) with ESMTPS id 7461C180012F;
+	Sun, 29 Mar 2026 11:17:10 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai; t=1774783031; x=1777375031; bh=P8jZfeKvtyoU7sMll426NVb+Ub63B74ie8+hAMe8W8o=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=vZ79p8O0NIuFlKrxIMzcayd46eJLRgRAErvf/czpLiKN/2FztZlrdGHVht2R1MmUYJqC/3TxsQ2d3cx7qzJ5eyEiv/qB7D+q0fpxgZxROWJe4dszG6r70vZQa15YAOcCI1lwdKa5QDSVhVgm+0YKcJ00DgQfzfjC+BTk+GlkA730at3cxQplGMqad/5kn5A9JyizCnUF34tlnOuw7z7Augd54Vnc3XYB9fMaCJSExw2//U10L014t8d9rNaCvLoEhJdwLw2p52dRY0EBlOJ9lno3dchCET9JJlunH4FMeCXxIb64lq4lKr5iDfq6i5fzqQZkIphBCbimhWaHo0D5WA==
+Received: from bimmer.. (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-4 (Postfix) with ESMTPSA id 5034D18003F2;
+	Sun, 29 Mar 2026 11:17:08 +0000 (UTC)
+From: tobgaertner <tob.gaertner@me.com>
+To: almaz.alexandrovich@paragon-software.com
+Cc: ntfs3@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Markus Elfring <Markus.Elfring@web.de>,
-	gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn,
-	25125283@bjtu.edu.cn,
-	23120469@bjtu.edu.cn,
-	Wenyuan Li <2063309626@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] media: tuner: check return value of I2C transfers in set_type()
-Date: Sun, 29 Mar 2026 18:51:12 +0800
-X-OQ-MSGID: <20260329105112.819-1-2063309626@qq.com>
+	stable@vger.kernel.org,
+	security@kernel.org,
+	Tobias Gaertner <tob.gaertner@me.com>
+Subject: [PATCH 0/2] ntfs3: fix OOB read and integer overflow in run_unpack()
+Date: Sun, 29 Mar 2026 04:17:01 -0700
+Message-ID: <20260329111704.411449-1-tob.gaertner@me.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -83,120 +58,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Authority-Info-Out: v=2.4 cv=McRhep/f c=1 sm=1 tr=0 ts=69c90a36
+ cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
+ a=azHRBMxVc17uSn+fyuI/eg==:17 a=Yq5XynenixoA:10 a=x7bEGLp0ZPQA:10
+ a=C3-SEi6G3EkA:10 a=VkNPw1HP01LnGYTKEx00:22 a=HHGDD-5mAAAA:8
+ a=wterkXhTeHrO-kwhCgEA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI5MDA4NyBTYWx0ZWRfX0mjZvIVb/78n
+ oc7PTYfWfPwUSJ8T/eQvD8QXYQWk2EwsJ0orxRWITQNGj57ZVC4s0bQz0kJpaO79fTVmkZzR1xB
+ 5HsErVZKAp8023aMhKVZ5NBWE1TiEGkB57taIQmiB2J2AzTivszje6XSh5kfRkd3pvrqSDIO14j
+ Gy5CjZu7/VIUmlQhLGJLtsvzLejsxJR8pnuw3A6+kcWTAfflLQXqdMDiCfCN5kVsJLIF/SnFqOw
+ KzXLfaNY+Gte3dPU4thH+BBefsKyk2V3cuDNQ4N4jdpKYKei2cdQZjlzLRtxIk4VSNSA4b6ZLMc
+ ZhEfeXNsiYBEH8f/c1t21OaBYMsVe6T5xa6iblNEal1yKZqa4LY2mxI8WJF71E=
+X-Proofpoint-GUID: YJHi_aX8l3JImBqmnsaizUWuuxM9ounT
+X-Proofpoint-ORIG-GUID: YJHi_aX8l3JImBqmnsaizUWuuxM9ounT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-29_03,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ clxscore=1011 mlxscore=0 mlxlogscore=952 bulkscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603290087
+X-Apple-Category-Label: Mjg5MDYwMTc4OiRjYXRlZ29yeSRfUGVyc29uYWws
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[me.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[me.com:s=1a1hai];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,bjtu.edu.cn,qq.com];
-	TAGGED_FROM(0.00)[bounces-230878-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[me.com];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,me.com];
+	TAGGED_FROM(0.00)[bounces-230879-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qq.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[qq.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[2063309626@qq.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tob.gaertner@me.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[me.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D9E7F351A6D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,me.com:dkim,me.com:email,me.com:mid]
+X-Rspamd-Queue-Id: 7490B351C24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In set_type(), several I2C transfers are performed to initialize
-specific tuners (e.g. FMD1216ME, FMD1216MEX, TD1316), but the return
-value of i2c_master_send() is not checked.
+From: Tobias Gaertner <tob.gaertner@me.com>
 
-If an I2C transfer fails, the initialization sequence may be
-incomplete, potentially leaving the tuner in an inconsistent state
-without any error being reported.
+Two bugs in run_unpack() found by fuzzing with a source-patched harness
+(LibAFL + QEMU ARM64 system-mode):
 
-Check the return value of i2c_master_send() and propagate failures
-to the attach_failed path. A small helper is introduced to reduce
-duplication and provide consistent error reporting.
+Patch 1: run_unpack() checks `run_buf < run_last` at the loop top but
+then reads size_size and offset_size bytes via run_unpack_s64() without
+verifying they fit in the remaining buffer.  A crafted NTFS image with
+truncated run data triggers a heap OOB read of up to 15 bytes on mount.
 
-This ensures that I2C communication errors during tuner
-initialization are properly detected and handled.
+Patch 2: The volume boundary check `lcn + len > sbi->used.bitmap.nbits`
+uses raw addition that can wrap for large values, bypassing the
+validation.  CVE-2025-40068 added check_add_overflow() for adjacent
+arithmetic but missed this instance.
 
-Fixes: 93df3413f1b4 ("[PATCH] v4l: 655: added support for the philips td1316 tuner")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wenyuan Li <2063309626@qq.com>
+Both bugs are present since NTFS3 was merged in 5.15.
 
----
-v5:
-- Reword commit message to better explain rationale
-- Clarify error handling approach
-- No functional changes
+Could CVE IDs be assigned for these two issues?
 
-v4:
-- Added Cc: stable@vger.kernel.org
-- Updated Fixes tag
----
- drivers/media/v4l2-core/tuner-core.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+tobgaertner (2):
+  ntfs3: add buffer boundary checks to run_unpack()
+  ntfs3: fix integer overflow in run_unpack() volume boundary check
 
-diff --git a/drivers/media/v4l2-core/tuner-core.c b/drivers/media/v4l2-core/tuner-core.c
-index 004ec4d7beea..01f28436a1f8 100644
---- a/drivers/media/v4l2-core/tuner-core.c
-+++ b/drivers/media/v4l2-core/tuner-core.c
-@@ -280,6 +280,19 @@ static const struct analog_demod_ops tuner_analog_ops = {
-  * Functions to select between radio and TV and tuner probe/remove functions
-  */
- 
-+static int tuner_i2c_send(struct i2c_client *c, u8 *buf, int len)
-+{
-+	int ret = i2c_master_send(c, buf, len);
-+
-+	if (ret != len) {
-+		int err = ret < 0 ? ret : -EIO;
-+
-+		dev_err(&c->dev, "I2C send failed: %pe\n", ERR_PTR(err));
-+		return err;
-+	}
-+	return 0;
-+}
-+
- /**
-  * set_type - Sets the tuner type for a given device
-  *
-@@ -351,11 +364,13 @@ static void set_type(struct i2c_client *c, unsigned int type,
- 		buffer[1] = 0xdc;
- 		buffer[2] = 0x9c;
- 		buffer[3] = 0x60;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		mdelay(1);
- 		buffer[2] = 0x86;
- 		buffer[3] = 0x54;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		if (!dvb_attach(simple_tuner_attach, &t->fe,
- 				t->i2c->adapter, t->i2c->addr, t->type))
- 			goto attach_failed;
-@@ -365,7 +380,8 @@ static void set_type(struct i2c_client *c, unsigned int type,
- 		buffer[1] = 0xdc;
- 		buffer[2] = 0x86;
- 		buffer[3] = 0xa4;
--		i2c_master_send(c, buffer, 4);
-+		if (tuner_i2c_send(c, buffer, 4))
-+			goto attach_failed;
- 		if (!dvb_attach(simple_tuner_attach, &t->fe,
- 				t->i2c->adapter, t->i2c->addr, t->type))
- 			goto attach_failed;
+ fs/ntfs3/run.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
 -- 
 2.43.0
 
