@@ -1,93 +1,65 @@
-Return-Path: <stable+bounces-230817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDjwBIVKyGlVjgUAu9opvQ
-	(envelope-from <stable+bounces-230817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 22:39:17 +0100
+	id 0HxfIRZwyGk9mAUAu9opvQ
+	(envelope-from <stable+bounces-230818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:19:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEAF3500CF
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 22:39:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CEF35046F
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 01:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5B2873007AD6
-	for <lists+stable@lfdr.de>; Sat, 28 Mar 2026 21:39:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55748302EE8B
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 00:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30B9346AC2;
-	Sat, 28 Mar 2026 21:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB421A6800;
+	Sun, 29 Mar 2026 00:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rsHohfFC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5IZ0/NC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF82372B28
-	for <stable@vger.kernel.org>; Sat, 28 Mar 2026 21:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20E8175A98;
+	Sun, 29 Mar 2026 00:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774733949; cv=none; b=bqw7dh7Bu+zX+kElxWUMV62YQe6aojbYnevokxIt/rjETzxlScfb5r53PS9ljDGtJX+aEX4bGIi8KzYiSjrw4iKFpvGw59klhTVQQTrDOeHbjE5PRIpfZUAuVwf6y8ix+B50opfYp+Vzd7MWIAmbtHlYPyGcLDBlT8/XXNH9WlI=
+	t=1774743538; cv=none; b=KOsfN3mHXH/XQyx/bB5NPaRq2xJwb8T9HaQUc+POb3xeHXEqkWtdRWJAUFOmeWtEeEKxzbQoQrYP7zxHKkyauYmTvJKrW5i0bnQsZyY+KjHSCCGuDmkS1+h4VX/H+gDFIUIYYVWsRT9qPwixdmvVlp8q1oRSRAKigiT5b/MojFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774733949; c=relaxed/simple;
-	bh=dp9y0LIhxasR0QYSeNO5w2A1c812RSBkpgALIhb9o+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EE27ioKoI+nbnFV8soObsfOqgd/fENQKtcYOgNmkF/3VlapU/pWM4yO+1LyWQ/hjwuFdKsiDbgmS2QIwnGseecFcqv1SOZS7vl5mKCDdYNhnyHf29P8IvTaysMLZPmooEc1i7al+UUllYjQmmw/S5eIVrezhLoxuL2tGtUPJ1Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rsHohfFC; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-66b1019bb55so3007324a12.1
-        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 14:39:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774733945; x=1775338745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kXnSrL1nik3JfElYjJrrOZj+38qywDMZ4t7LJjjm5fU=;
-        b=rsHohfFCttC34o5YegC+wSoHVzJtDKP3DfZIp3VEgtQxDtysq8OJ542r+micPrxcjv
-         8Mq+AFRrKPhkXw01G+rWjAZp6l/lzMDMsYryQebv5Uq/aBKyULWbqHagwDeLbQc4/GHR
-         NiaCviOPVj+qyF0dSM6nqhJDRej/wb7vYY63mz9xldcQ7XOgkpCcZb7wWvCbjEt9x1L0
-         hMDSzNEigsja6X841QuHlcNo8zdewFRhN73Jib+hmRqEdSXJAVS5m5qHMRWZnoVxzV87
-         ovZfEJz1lHekeYcoonlfd5RI5kZSis3olDXqiUdUOiw0OQUsOcL/JXbkeeuZUB8Q48vX
-         G80w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774733945; x=1775338745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kXnSrL1nik3JfElYjJrrOZj+38qywDMZ4t7LJjjm5fU=;
-        b=NYWaMjbv6/YHEaOhdvVYNSsbOZdLJawc/DdBM+N0jkbUnWjKf7aE+zp9qJs3kw4ONX
-         OFgcPuAXpeejYOQquODCeHB1+MIcxQDN0sPxPRuMfhPp1FrKroXW8XaUnw+dBvt2LVSW
-         l2aBFEWnmNVlNEwCA/dFfVdefwxPOicwI47rkh6z0pACfhLKFVKhCf2+wU3ZfaDoam8x
-         jBamvWBYqh5YbecK5r6oMvj3mZgTP354+xUxbQrI5fUxRIIS2Pwe2a0kF+n9+Sb5WAKa
-         G1ku1L0urjr7B7U2PD3jS0CezbbHdzddvAYJ1f4+v/hqvWxB+6xOwrvRkrJdrDhcePjs
-         xWXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUz/HeQ0RfMZQ5gUsREdDN3YWTjZE07x8HNDT3omKTyLjpZCl6QQpA1x5//9A9yd84JVC1Sz5U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGAeSPy1xNuovW0QDN2jS/Ly/19xeVlV/2qXnN9sfba5j0tKPF
-	hfhL8ej/48HB+PUJMmgtaEZVYQPiMfucgJ0RKg42piGBDHOQrOYH3DTu
-X-Gm-Gg: ATEYQzzRObWaWmRX37JhsSYs+W7ubdlK8ueWYRfvQ0ZxPmNPjqR+dEU/+h6wIAqRccx
-	V9QNbqGvbW5g8TKNrmJg77ayvSdmclRqrBKIXOY70RqrlbihJANC2C0qUZTzk9+e2XTemz/W9vv
-	U1CfAIOTGxkkPbqc7w8UdH+Ne+pdPNTQAw05Pgv2WxACs1Q7sVv6q09kiUprHuFydsucwzOeWWA
-	skYK97Bty02YBCgluJk9o1gfv/nC+mKlzSMqdK/8jQy9IuUqPfAyRr21W++ZFr3C87+s3KCFXKe
-	Op8+mUqbk1wXOUiXKHVPmf43x+5h/rr5iIikQqNZBIcrE41m/wNB7+DqEge5fGvICQxRi6RdamV
-	JDx5GRh3QJVWyOBTn/zn2c6DqGZnmQwX+GyvJJIr/OWs9i15Bs///rXW4/a3iEOr09IjqHKw6bn
-	jbOOHEr7USFrBZy5d0lM8I+r9RHNMgbz4k
-X-Received: by 2002:a05:6402:4618:b0:665:e9f:9021 with SMTP id 4fb4d7f45d1cf-66b2855f8d5mr3612343a12.9.1774733945154;
-        Sat, 28 Mar 2026 14:39:05 -0700 (PDT)
-Received: from localhost ([178.214.243.78])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66b75f84708sm909093a12.21.2026.03.28.14.39.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 14:39:04 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Eric Huang <jinhuieric.huang@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH] drm/amdgpu: fix sleeping allocation under spinlock in PASID IDR
-Date: Sun, 29 Mar 2026 02:39:00 +0500
-Message-ID: <20260328213900.19255-1-mikhail.v.gavrilov@gmail.com>
+	s=arc-20240116; t=1774743538; c=relaxed/simple;
+	bh=wXGjRwI+63KhwECJs2B7Y7XGuAqc92zvgQpVc6jxLsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TJU9wyXWAEgpqS0Vqrje7HkzxXidAawYzt9VuRnsv4ydPxz5rMvWmC/I5gIBTi8PLRWVVIqS9yzrFIZjlxgZYhbC0WdtvWp4HRkzSMM8KNsPOUvm6TUt4qEzPkKkAtZiDQQique3DRy5hQyEbMoCfExl45wDa/70tl0L7pOcAcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5IZ0/NC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EC7C4CEF7;
+	Sun, 29 Mar 2026 00:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774743538;
+	bh=wXGjRwI+63KhwECJs2B7Y7XGuAqc92zvgQpVc6jxLsY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A5IZ0/NCNzwd8pFOOxfElv2RhpiBTeYfDYYjjnWO9Vze04WHmTVrKxr/FgWBhdOFo
+	 QRPTeOhAPCZ0sHJYHG5OqH57RcsFluck2/fQewSVgu89XaCsGb97+tNSjwLBZhHM1D
+	 uBePViKQXJ8z7TbOJ9RUK5lF5ik1pPzc5MxGfgKZBXpXbZ9v6Vp6nmDKD19L6w1JNO
+	 yf9veW0RcTdfY266i3UsoN0lqoMSvWbSyNH0/O/jXIABYUhwHZ9zGZzCaNBTSeiXUs
+	 E1sCtxRfhG0oo6pYlZZVNOzfrN2Lc1rEg+pMhR3d60SuwWnL6o0I0vJGbVV0iR+sNm
+	 T5M/gtT+WOFvQ==
+From: Tejun Heo <tj@kernel.org>
+To: David Vernet <void@manifault.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>
+Cc: Christian Loehle <christian.loehle@arm.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	sched-ext@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] sched_ext: Fix SCX_KICK_WAIT deadlock by deferring wait to balance callback
+Date: Sat, 28 Mar 2026 14:18:55 -1000
+Message-ID: <20260329001856.835643-2-tj@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260329001856.835643-1-tj@kernel.org>
+References: <20260329001856.835643-1-tj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,94 +68,236 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-230817-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230818-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1CEAF3500CF
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+X-Rspamd-Queue-Id: E6CEF35046F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case")
-switched from ida to idr_alloc_cyclic() protected by a spinlock, but
-passes GFP_KERNEL to the allocator.  idr_alloc_cyclic() may need to
-allocate radix-tree nodes, which with GFP_KERNEL can sleep — illegal
-under a spinlock that disables preemption.  With CONFIG_PREEMPT or
-lockdep enabled this triggers:
+SCX_KICK_WAIT busy-waits in kick_cpus_irq_workfn() using
+smp_cond_load_acquire() until the target CPU's kick_sync advances. Because
+the irq_work runs in hardirq context, the waiting CPU cannot reschedule and
+its own kick_sync never advances. If multiple CPUs form a wait cycle, all
+CPUs deadlock.
 
-  BUG: sleeping function called from invalid context at
-       ./include/linux/sched/mm.h:323
-  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 570
-  ...
-  #1: ffffffffc2cd24f8 (amdgpu_pasid_idr_lock){+.+.}-{3:3},
-      at: amdgpu_pasid_alloc+0x24/0x210 [amdgpu]
-  ...
-  kmem_cache_alloc_noprof+0x41d/0x780
-  radix_tree_node_alloc.constprop.0+0x56/0x3a0
-  idr_get_free+0x330/0x830
-  idr_alloc_u32+0x14a/0x2e0
-  idr_alloc_cyclic+0xd3/0x1d0
-  amdgpu_pasid_alloc+0x51/0x210 [amdgpu]
+Replace the busy-wait in kick_cpus_irq_workfn() with resched_curr() to
+force the CPU through do_pick_task_scx(), which queues a balance callback
+to perform the wait. The balance callback drops the rq lock and enables
+IRQs following the sched_core_balance() pattern, so the CPU can process
+IPIs while waiting. The local CPU's kick_sync is advanced on entry to
+do_pick_task_scx() and continuously during the wait, ensuring any CPU that
+starts waiting for us sees the advancement and cannot form cyclic
+dependencies.
 
-A mutex is not an option because amdgpu_pasid_free() is reachable from
-dma-fence callbacks (amdgpu_pasid_free_cb) which may run in IRQ context.
-
-Use idr_preload(GFP_KERNEL) before taking the spinlock to pre-allocate
-radix-tree nodes, then pass GFP_NOWAIT inside the critical section so
-the allocator draws from the preloaded pool and never sleeps.  This is
-the standard kernel pattern for IDR allocation under a spinlock.
-
-Fixes: 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Fixes: 90e55164dad4 ("sched_ext: Implement SCX_KICK_WAIT")
+Cc: stable@vger.kernel.org # v6.12+
+Reported-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://lore.kernel.org/r/20260316100249.1651641-1-christian.loehle@arm.com
+Signed-off-by: Tejun Heo <tj@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/sched/ext.c   | 95 ++++++++++++++++++++++++++++++++------------
+ kernel/sched/sched.h |  3 ++
+ 2 files changed, 73 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-index d88523568b62..515775eab2ef 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-@@ -67,10 +67,12 @@ int amdgpu_pasid_alloc(unsigned int bits)
- 	if (bits == 0)
- 		return -EINVAL;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 26a6ac2f8826..d5bdcdb3f700 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2404,7 +2404,7 @@ static void put_prev_task_scx(struct rq *rq, struct task_struct *p,
+ {
+ 	struct scx_sched *sch = scx_root;
  
-+	idr_preload(GFP_KERNEL);
- 	spin_lock(&amdgpu_pasid_idr_lock);
- 	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
--				 1U << bits, GFP_KERNEL);
-+				 1U << bits, GFP_NOWAIT);
- 	spin_unlock(&amdgpu_pasid_idr_lock);
-+	idr_preload_end();
+-	/* see kick_cpus_irq_workfn() */
++	/* see kick_sync_wait_bal_cb() */
+ 	smp_store_release(&rq->scx.kick_sync, rq->scx.kick_sync + 1);
  
- 	if (pasid >= 0)
- 		trace_amdgpu_pasid_allocated(pasid);
+ 	update_curr_scx(rq);
+@@ -2447,6 +2447,48 @@ static void put_prev_task_scx(struct rq *rq, struct task_struct *p,
+ 		switch_class(rq, next);
+ }
+ 
++static void kick_sync_wait_bal_cb(struct rq *rq)
++{
++	struct scx_kick_syncs __rcu *ks = __this_cpu_read(scx_kick_syncs);
++	unsigned long *ksyncs = rcu_dereference_sched(ks)->syncs;
++	bool waited;
++	s32 cpu;
++
++	/*
++	 * Drop rq lock and enable IRQs while waiting. IRQs must be enabled
++	 * — a target CPU may be waiting for us to process an IPI (e.g. TLB
++	 * flush) while we wait for its kick_sync to advance.
++	 *
++	 * Also, keep advancing our own kick_sync so that new kick_sync waits
++	 * targeting us, which can start after we drop the lock, cannot form
++	 * cyclic dependencies.
++	 */
++retry:
++	waited = false;
++	for_each_cpu(cpu, rq->scx.cpus_to_sync) {
++		/*
++		 * smp_load_acquire() pairs with smp_store_release() on
++		 * kick_sync updates on the target CPUs.
++		 */
++		if (cpu == cpu_of(rq) ||
++		    smp_load_acquire(&cpu_rq(cpu)->scx.kick_sync) != ksyncs[cpu]) {
++			cpumask_clear_cpu(cpu, rq->scx.cpus_to_sync);
++			continue;
++		}
++
++		raw_spin_rq_unlock_irq(rq);
++		while (READ_ONCE(cpu_rq(cpu)->scx.kick_sync) == ksyncs[cpu]) {
++			smp_store_release(&rq->scx.kick_sync, rq->scx.kick_sync + 1);
++			cpu_relax();
++		}
++		raw_spin_rq_lock_irq(rq);
++		waited = true;
++	}
++
++	if (waited)
++		goto retry;
++}
++
+ static struct task_struct *first_local_task(struct rq *rq)
+ {
+ 	return list_first_entry_or_null(&rq->scx.local_dsq.list,
+@@ -2460,7 +2502,7 @@ do_pick_task_scx(struct rq *rq, struct rq_flags *rf, bool force_scx)
+ 	bool keep_prev;
+ 	struct task_struct *p;
+ 
+-	/* see kick_cpus_irq_workfn() */
++	/* see kick_sync_wait_bal_cb() */
+ 	smp_store_release(&rq->scx.kick_sync, rq->scx.kick_sync + 1);
+ 
+ 	rq_modified_begin(rq, &ext_sched_class);
+@@ -2470,6 +2512,17 @@ do_pick_task_scx(struct rq *rq, struct rq_flags *rf, bool force_scx)
+ 	rq_repin_lock(rq, rf);
+ 	maybe_queue_balance_callback(rq);
+ 
++	/*
++	 * Defer to a balance callback which can drop rq lock and enable
++	 * IRQs. Waiting directly in the pick path would deadlock against
++	 * CPUs sending us IPIs (e.g. TLB flushes) while we wait for them.
++	 */
++	if (unlikely(rq->scx.kick_sync_pending)) {
++		rq->scx.kick_sync_pending = false;
++		queue_balance_callback(rq, &rq->scx.kick_sync_bal_cb,
++				       kick_sync_wait_bal_cb);
++	}
++
+ 	/*
+ 	 * If any higher-priority sched class enqueued a runnable task on
+ 	 * this rq during balance_one(), abort and return RETRY_TASK, so
+@@ -4713,6 +4766,9 @@ static void scx_dump_state(struct scx_exit_info *ei, size_t dump_len)
+ 		if (!cpumask_empty(rq->scx.cpus_to_wait))
+ 			dump_line(&ns, "  cpus_to_wait   : %*pb",
+ 				  cpumask_pr_args(rq->scx.cpus_to_wait));
++		if (!cpumask_empty(rq->scx.cpus_to_sync))
++			dump_line(&ns, "  cpus_to_sync   : %*pb",
++				  cpumask_pr_args(rq->scx.cpus_to_sync));
+ 
+ 		used = seq_buf_used(&ns);
+ 		if (SCX_HAS_OP(sch, dump_cpu)) {
+@@ -5610,11 +5666,11 @@ static bool kick_one_cpu(s32 cpu, struct rq *this_rq, unsigned long *ksyncs)
+ 
+ 		if (cpumask_test_cpu(cpu, this_scx->cpus_to_wait)) {
+ 			if (cur_class == &ext_sched_class) {
++				cpumask_set_cpu(cpu, this_scx->cpus_to_sync);
+ 				ksyncs[cpu] = rq->scx.kick_sync;
+ 				should_wait = true;
+-			} else {
+-				cpumask_clear_cpu(cpu, this_scx->cpus_to_wait);
+ 			}
++			cpumask_clear_cpu(cpu, this_scx->cpus_to_wait);
+ 		}
+ 
+ 		resched_curr(rq);
+@@ -5669,27 +5725,15 @@ static void kick_cpus_irq_workfn(struct irq_work *irq_work)
+ 		cpumask_clear_cpu(cpu, this_scx->cpus_to_kick_if_idle);
+ 	}
+ 
+-	if (!should_wait)
+-		return;
+-
+-	for_each_cpu(cpu, this_scx->cpus_to_wait) {
+-		unsigned long *wait_kick_sync = &cpu_rq(cpu)->scx.kick_sync;
+-
+-		/*
+-		 * Busy-wait until the task running at the time of kicking is no
+-		 * longer running. This can be used to implement e.g. core
+-		 * scheduling.
+-		 *
+-		 * smp_cond_load_acquire() pairs with store_releases in
+-		 * pick_task_scx() and put_prev_task_scx(). The former breaks
+-		 * the wait if SCX's scheduling path is entered even if the same
+-		 * task is picked subsequently. The latter is necessary to break
+-		 * the wait when $cpu is taken by a higher sched class.
+-		 */
+-		if (cpu != cpu_of(this_rq))
+-			smp_cond_load_acquire(wait_kick_sync, VAL != ksyncs[cpu]);
+-
+-		cpumask_clear_cpu(cpu, this_scx->cpus_to_wait);
++	/*
++	 * Can't wait in hardirq — kick_sync can't advance, deadlocking if
++	 * CPUs wait for each other. Defer to kick_sync_wait_bal_cb().
++	 */
++	if (should_wait) {
++		raw_spin_rq_lock(this_rq);
++		this_scx->kick_sync_pending = true;
++		resched_curr(this_rq);
++		raw_spin_rq_unlock(this_rq);
+ 	}
+ }
+ 
+@@ -5794,6 +5838,7 @@ void __init init_sched_ext_class(void)
+ 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_kick_if_idle, GFP_KERNEL, n));
+ 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_preempt, GFP_KERNEL, n));
+ 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_wait, GFP_KERNEL, n));
++		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_sync, GFP_KERNEL, n));
+ 		rq->scx.deferred_irq_work = IRQ_WORK_INIT_HARD(deferred_irq_workfn);
+ 		rq->scx.kick_cpus_irq_work = IRQ_WORK_INIT_HARD(kick_cpus_irq_workfn);
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 43bbf0693cca..1ef9ba480f51 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -805,9 +805,12 @@ struct scx_rq {
+ 	cpumask_var_t		cpus_to_kick_if_idle;
+ 	cpumask_var_t		cpus_to_preempt;
+ 	cpumask_var_t		cpus_to_wait;
++	cpumask_var_t		cpus_to_sync;
++	bool			kick_sync_pending;
+ 	unsigned long		kick_sync;
+ 	local_t			reenq_local_deferred;
+ 	struct balance_callback	deferred_bal_cb;
++	struct balance_callback	kick_sync_bal_cb;
+ 	struct irq_work		deferred_irq_work;
+ 	struct irq_work		kick_cpus_irq_work;
+ 	struct scx_dispatch_q	bypass_dsq;
 -- 
 2.53.0
 
