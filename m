@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-230829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BcoEGetyGmvogUAu9opvQ
-	(envelope-from <stable+bounces-230829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:41:11 +0200
+	id gA2IAzytyGmvogUAu9opvQ
+	(envelope-from <stable+bounces-230830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:40:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BD2350A6C
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:41:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A52350A63
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 06:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC6113019BAA
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 04:40:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 403843019CA7
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 04:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1044A27A133;
-	Sun, 29 Mar 2026 04:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BA0278156;
+	Sun, 29 Mar 2026 04:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3mET+3/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FKvnwyaA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6664126FD97
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 04:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7256C275B1A
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 04:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774759224; cv=none; b=SasI/xS/iZWXC5EbWCrKwXN8r5e14WtSBkBXFyc3YeFvjpQxgFBW5Q/gSZ4w20PZySf+jOkdBhek/Ao0jEbJkgG+XPL/a/zp/mgedD22R+9jKe4KjWQzgBbzko97BhKB2fbAO1lwc8YZLD0WFfbHNe9V85GBYWiDszq7NDOVz04=
+	t=1774759225; cv=none; b=PI5lFiwm4CpK8mDQrPtkctqbI3nhE7jqOO1tjy4thui74BdVe8Ds1C3uVmn5kdIpYGKeDfKNYD6sxhMCFLrPXEoOFpVObsaE47UP7XVKbL6HoKQQpuRKjg9Nzi6TONmj3UL7c+HrTIzLBRgAK/pl9iptEWP7f0Ei2L45wFdnmGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774759224; c=relaxed/simple;
-	bh=48LDLkt9O2haLCuQepiOxMtVAceFCJAgEBfgH2EDxwI=;
+	s=arc-20240116; t=1774759225; c=relaxed/simple;
+	bh=oqc4QEU907PahR1xN0Cao5cuGtwoCzBD9huja4Y7Zuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eyVP6YHhYY4rcZxNQDSrHsDclaerJQvGc5VyLQ0Blcw80txoEmtdYejQWBOLw//GOhGOvWAHHioC+xgI3wzV4M7lyZJMlnc6vQyVD+gjKJ7uIdNbNO6GYZ0BnbQld/OMRcAuf3bsiUxeyAKm6gvDL4okeYO/TiWfF84o+j3WPWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3mET+3/; arc=none smtp.client-ip=209.85.208.170
+	 MIME-Version:Content-Type; b=h8LtZebQf32uSlpsPyUpAB8Ust+7cHc3b5B1hjGcpqNk0mqiCi59sdjghar+kBKD54iTrh6W/+omgey3h1ftWDuIIw+gKG9qjfjt08jYgbY1TCUlUe3V/oKCn+DQTkxotfB8kKqU1Log33WCnbFvUyXVq1rDzj5o8au47bxiI8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FKvnwyaA; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38a23dd61c1so29889821fa.1
-        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 21:40:23 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a27b5ad832so3922463e87.2
+        for <stable@vger.kernel.org>; Sat, 28 Mar 2026 21:40:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774759222; x=1775364022; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774759223; x=1775364023; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mk52gQWQ3YwbPCH+HI+PLYhISpoSwXiTg6BTfM8lBMw=;
-        b=h3mET+3/2l8/ScTQ5xuv6f0vwv/K3lPlJ00x5fTU2LJTi6Tk8oBvTXZ3v1M4BPYc5G
-         YSD4YVCYzHIoS9jpfpQw+RvSek1MgwR3C6wItq2qN1y3xz+VU8AIjQmOreEJ8l7B8sqg
-         50lD9y9vBude7Z54Y+Q6cSdiZ62LOdnrqOoWArwrIwbbhXqV6tpnY3hDiPK6bb4EtzkB
-         aR8wQF6p9QUOolQ9snn0snAS4g+blnGrKb4nmDraGjcr86Ttm/oY4h+U5GN38O2mNl6g
-         8EMHpgsmiNGVEsmhXA+OfmYO+qbZLC9thzG1AvpFsD5IShRu952XrLwSx1ijIacEPC+n
-         L2lA==
+        bh=lfxKOQy6FvJNNu8OfNtSYo3Uuobrp4S+heAsvLGL+ac=;
+        b=FKvnwyaAOO47sI5c3EPZgIttoVzSBR7XXud0r2g62gkysnBw8h5RND+BNZyedMqgPG
+         HUvZlhnKksltv4rE7Vs1LrJd8BPl+tk2tqdoPcpYVQa7U8Wos/eP+iL2cP89tRpVR0wm
+         /7Y1cNfe5Cgq5FSzcr4P2W2UUr1rL83bslbtq38JygTx21voO//FexsySXFZt8obSQGH
+         uVvcfRvUa4SHgp0xERq7fvyLtA0oIUajPZc2cBwQsGY+Rh/CR3IsayueO5XKceMtN4gN
+         rDflHN43Ve46UQ/oBL0KMjr37+YDbxehZ5+OG+wm/hca4M5JU2GyUAiTS66A0Gpio+7m
+         IHHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774759222; x=1775364022;
+        d=1e100.net; s=20251104; t=1774759223; x=1775364023;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Mk52gQWQ3YwbPCH+HI+PLYhISpoSwXiTg6BTfM8lBMw=;
-        b=JpuxWTji6I7WAcZpeUxRULkNCk86qkEDyRmMh1Hx/jqi9Pa8lEdfOEwzmUqe0uIYZH
-         /BhXXXwV2r6C8cavCWkPenRQdws8zpw9mPeMGHEqLMCu1BN7XR5kpl7XpgOXKJNxjCDZ
-         i9iYGz1sdegxm1p1UQHBhvtV19+s95u8v1kNcQU98nLIftloMOvTz/RvEvvxvby+fu1k
-         YawwIfko5OefreIXw5UrJ4mTYECfD8O/ApA9AGkU0wO0jCRr5HuQQXHLe/2cS6f7Tx++
-         A1b0MGcuuHgJhtd//7ou9zex8Xn6+qiqiG2ShvqExbAv5Ie3i1KYAS3yAbbANMrADsev
-         pmEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvfBzsC4DJW9CFn4489ufmfQuN2Mmv/RTc+AjCC0tZ64+lovZ3q2TMoB8l75ryB+C8fItWlxI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxttovWI+BG743uQPzkNAfS6jE+7gu6eX1A7H83Pvg029EjWzzR
-	ughDugxKnyBgQ6RqHMLlV8fWhc1pO1Fu515vfpltmRRatn+sXYD0Id4=
-X-Gm-Gg: ATEYQzzm4fiHaw2FBJKpAuA5DlwaaMDKA09v5zvIwmLF8//t8l3Hy7vKeVSLtUQTdHK
-	KS+T62Fklu4Z/qvMZFG5fJXuKcl7kAImK+OFPZL5FMxo39ehEg+0DpJdwE+8EK8NbefQKaC58Rg
-	APTQtXFy3FmAzevHa+vU9ghVnmZCDEIag03NFYWNv+DP1qcNmwsrfkpTfjfzIS0tsH1yDoNj+MQ
-	47IIbAMkvAZktqIS3MPwsHq+3ukEOc2SknD5W+W10s8uJinZ00oCZ3X8DG17q/vYM4Vah4UfyXr
-	cy7pYz3RWjcBXQNsTNHdurUHwj2icJOTQjqsvBLe4XDSSZWqLlkfyn0hXN3ggFFeShEIUd1M3nu
-	+AKMrB5qNyCXnnJDY5xqPJyXmQVID38eMagFjBGUKaPn+9PFiWYKpT1GGX8FB9wLXRcjhF53xVu
-	JkQOR8a0KOYsR9BoIHT6Ir50Yi6/Y=
-X-Received: by 2002:a05:6512:4022:b0:5a1:5725:6194 with SMTP id 2adb3069b0e04-5a2ab930326mr2715163e87.34.1774759221442;
-        Sat, 28 Mar 2026 21:40:21 -0700 (PDT)
+        bh=lfxKOQy6FvJNNu8OfNtSYo3Uuobrp4S+heAsvLGL+ac=;
+        b=JHU2NZHYbeQPGShb/cudXaT1J4lq13F6eZnJMXyV2zbjhj45p5B311yP6/KW/Tsf/S
+         orYuBotmyUL9Bl+c7orSulDDN0QZAlDzcSRwCAxyYQOUbIFiI905iCDhOFPCRCIbQ2SB
+         cRUN+aLD0vISj8189oROJCSrXPZCOdBtkdnaAikM8/9TN6ydxuHeYdYnYODaTEpqjS6b
+         rpv0n/W1ITUpiIqDCs6bHvw0Q0eXIS+GM4KOpNhdeejuV4nrvRLI42/1qsSNRtY6rqm/
+         qkkiII6UirtlUJPqrM3s2T86UiLK6gPBXxg/QrhPSAlXydQv+INVUzQBdj5YYx9XWxNC
+         vrKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXNvHr6lBPLRCXQ29D79YdhvBFuHkhnXscCJrrCXgyImbWiy0Ij1eVTqSdKhuEBtATnjB4LwhY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxELSaptnVD8dSoss+2bbb/j1oUcpoL5ci5UTvQgcXEG0oyRZjx
+	X8ZQmvsqYOZY3TTAB9+fhEwyV29jyK6SGjbVBe4w5DAmm+eB9GCvvlH7JmDwpl8=
+X-Gm-Gg: ATEYQzwWVK/w6krEKLV4mlugRWL98e77CUFNi3CDxL4erAs0LPdZvAZLr1fA3mUvJi5
+	pez+YV6I2hx3/cmFMRuTZF9U7QRk2cuqbF1CiiSCcJ4s1XyJAwbiQ6R9paFhTSViSiDRg6w3GVH
+	eOCgUVT6litiS446ncr5hhlqFIvTLghXhubhQWc8Ik6fhN9Jv2Mlp3KQPk2cdaLFzrFsHbWmyZo
+	k7R/N0O6NYzCqSTuB/4ioXtAvZvBt0b9IVrtteu/ul+Ppe8MqVSsYAbb+BkfBPW3gQ8iw3nJ7Y2
+	uyWHKfdNm2BRth88v7Y9w5IW4SMNzcLAQMghyFggRQsg7kQTVi/9i5sGVfq4lJn7Yw4KE768253
+	azNla/qeT7IPVPawbBH/xSzmTlbE7IuOgYjEyyjGjopYU2aCP0OPsY8mzI86jIK6TNzmsT8dTk0
+	2kkN1VHdldm1Yy3uafhFSrWP9v/+o=
+X-Received: by 2002:a05:6512:8006:20b0:5a2:abe6:7bcd with SMTP id 2adb3069b0e04-5a2abe67d29mr1866036e87.19.1774759222537;
+        Sat, 28 Mar 2026 21:40:22 -0700 (PDT)
 Received: from fedora.localdomain ([2a11:3805:0:93::1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b145772fsm836212e87.71.2026.03.28.21.40.20
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b145772fsm836212e87.71.2026.03.28.21.40.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 21:40:21 -0700 (PDT)
+        Sat, 28 Mar 2026 21:40:22 -0700 (PDT)
 From: Sbenazar <voroninan95ton@gmail.com>
 To: amd-gfx@lists.freedesktop.org
 Cc: harry.wentland@amd.com,
 	Sbenazar <voroninan95ton@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/4] drm/amd/display: reset sr_skip_count on non-fast updates
-Date: Sun, 29 Mar 2026 07:40:05 +0300
-Message-ID: <20260329044014.30276-2-voroninan95ton@gmail.com>
+Subject: [PATCH v3 2/4] drm/amd/display: add replay-specific timestamp for re-enable guard
+Date: Sun, 29 Mar 2026 07:40:06 +0300
+Message-ID: <20260329044014.30276-3-voroninan95ton@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260329035830.21953-1-voroninan95ton@gmail.com>
 References: <20260329035830.21953-1-voroninan95ton@gmail.com>
@@ -101,19 +101,20 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[amd.com,gmail.com,vger.kernel.org];
+	URIBL_MULTI_FAIL(0.00)[tor.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230829-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230830-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[voroninan95ton@gmail.com,stable@vger.kernel.org];
@@ -121,50 +122,76 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com]
-X-Rspamd-Queue-Id: B1BD2350A6C
+X-Rspamd-Queue-Id: 78A52350A63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-sr_skip_count is initialized to AMDGPU_DM_PSR_ENTRY_DELAY (5) at stream
-creation time but is never reset when a non-fast (MEDIUM/FULL) update
-occurs. After the first 5 fast commits following stream creation, the
-counter permanently stays at 0.
+amdgpu_dm_enable_self_refresh() uses psr_dirty_rects_change_timestamp_ns
+as a 500ms guard to prevent premature re-enabling of self-refresh
+features. However, this timestamp is only updated in the PSR-SU dirty
+rects path. For Panel Replay, it is never updated, so the guard always
+passes — the 500ms delay is ineffective.
 
-This means that after any full-frame update that disables Panel Replay or
-PSR (e.g., a workspace switch), the very next fast update will set
-allow_sr_entry = true (because !0 == true), allowing self-refresh to be
-re-enabled immediately — potentially in the middle of an ongoing
-animation.
+Add a dedicated replay_disabled_timestamp_ns field to struct
+replay_settings. Set it when Replay is disabled in commit_planes, and
+check it in the inner Replay re-enable condition independently of the
+PSR-SU timestamp.
 
-Fix this by resetting sr_skip_count to AMDGPU_DM_PSR_ENTRY_DELAY
-whenever a non-fast update occurs, ensuring that at least 5 fast commits
-must happen before self-refresh features are re-enabled.
+The outer if-condition still uses the PSR-SU timestamp, which is always
+stale (and therefore passes) on Replay links since PSR-SU and Replay
+are mutually exclusive per-link. The new inner check provides the actual
+500ms guard for Replay re-enable.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Sbenazar <voroninan95ton@gmail.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++++++++--
+ drivers/gpu/drm/amd/display/dc/dc_types.h          |  2 ++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index XXXXXXX..XXXXXXX 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1208,6 +1208,8 @@ struct replay_settings {
+ 	uint32_t replay_desync_error_fail_count;
+ 	/* The frame skip number dal send to DMUB */
+ 	uint16_t frame_skip_number;
++	/* Timestamp of when replay was last disabled, for re-enable delay */
++	unsigned long long replay_disabled_timestamp_ns;
+ };
+
+ #endif /* DC_TYPES_H */
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 index XXXXXXX..XXXXXXX 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9854,6 +9854,12 @@ static void amdgpu_dm_enable_self_refresh(struct amdgpu_crtc *acrtc_attach,
- 	bool vrr_active = amdgpu_dm_crtc_vrr_active(acrtc_state);
-
- 	if (acrtc_state->update_type > UPDATE_TYPE_FAST) {
-+		/*
-+		 * Reset skip count after non-fast updates to prevent
-+		 * self-refresh from being re-enabled too soon during
-+		 * ongoing animations (e.g., workspace switch).
-+		 */
-+		aconn->sr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
- 		if (pr->config.replay_supported && !pr->replay_feature_enabled)
- 			amdgpu_dm_link_setup_replay(acrtc_state->stream->link, aconn);
- 		else if (psr->psr_version != DC_PSR_VERSION_UNSUPPORTED &&
+@@ -9887,7 +9887,8 @@ static void amdgpu_dm_enable_self_refresh(struct amdgpu_crtc *acrtc_attach,
+ 		    (current_ts - psr->psr_dirty_rects_change_timestamp_ns) > 500000000) {
+-			if (pr->replay_feature_enabled && !pr->replay_allow_active)
++			if (pr->replay_feature_enabled && !pr->replay_allow_active &&
++			    (current_ts - pr->replay_disabled_timestamp_ns) > 500000000)
+ 				amdgpu_dm_replay_enable(acrtc_state->stream, true);
+ 			if (psr->psr_version == DC_PSR_VERSION_SU_1 &&
+@@ -10227,8 +10229,16 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 		mutex_lock(&dm->dc_lock);
+ 		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) || vrr_active) {
+-			if (acrtc_state->stream->link->replay_settings.replay_allow_active)
++			if (acrtc_state->stream->link->replay_settings.replay_allow_active) {
+ 				amdgpu_dm_replay_disable(acrtc_state->stream);
++				/*
++				 * Record when replay was disabled so the 500ms
++				 * re-enable guard in amdgpu_dm_enable_self_refresh()
++				 * and vblank_control_worker works correctly.
++				 */
++				acrtc_state->stream->link->replay_settings.replay_disabled_timestamp_ns =
++					ktime_get_ns();
++			}
+ 			if (acrtc_state->stream->link->psr_settings.psr_allow_active)
+ 				amdgpu_dm_psr_disable(acrtc_state->stream, true);
+ 		}
 --
 2.48.1
 
