@@ -1,177 +1,163 @@
-Return-Path: <stable+bounces-230849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AE9sEhrSyGnprAUAu9opvQ
-	(envelope-from <stable+bounces-230849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:17:46 +0200
+	id cIvBKUvSyGnprAUAu9opvQ
+	(envelope-from <stable+bounces-230850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:18:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A834235102E
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:17:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1218D35103D
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C01423032670
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 07:16:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F785301AD0C
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 07:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1F22D2397;
-	Sun, 29 Mar 2026 07:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7A629D281;
+	Sun, 29 Mar 2026 07:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F7JYfaCZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ8HlnIA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C690286409
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 07:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BEB22D4DC
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 07:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774768602; cv=none; b=nNRr8zB5VDwvVq7Vp0AMSN91nooBi8nGcKrRHaff9oX/A1LOOtPEhw3WuC2z4/osoxqOXKBqtbsBgWXFoap4H1AbluPVf2VBiUqVfrofy100Bmh8boo5izg7b1N7XinBV7qD/mLLx2ka8GTJLf4+pH/ZowuTfqA1W95/YeqRwVg=
+	t=1774768708; cv=none; b=ncWm1xZDR9GK7XF/nZHEZPV3IDZnyLb/VruTYBdQjf5e3MamaiDedyBoNSkhfEWr9uiZRR8t4mEibreOpZcjDtibNN0I95Fbf4+n/WJs78n+MRxDRwusxwQvq+4PTRNPw+gdGP9SgHr477rTjSwsqqMxsOprvOS8nBdF8VhGNKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774768602; c=relaxed/simple;
-	bh=JfFn5dD8fXSM0/s/rgq34bUOJdT1IsgTK5+GKwn9EYw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e4RXawtAuyEef3Lp1LGMY996LA90KXTWM53r2DC+zw9kwNKq7S3mDn/eeLck50Qw92hOX5xVN4zehOknnCUwuxfew98iEsNmuAjaDPO5f2uB6Wd2igVm2UN+vntMdEbbkyYY77aZVdXAtmfET0wmTxgFpZLo95o1AuIlrUrN5OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F7JYfaCZ; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-605048a9c94so588263137.0
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 00:16:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774768600; x=1775373400; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IncM+rKcgmau4uVK2sm4qPStCq75MjSeVAISYr8iaEQ=;
-        b=F7JYfaCZ40zkTyZjD4/oo9cjgt8c8bax/h81LxTNsXwIjfCJoEazRrsMgXyVgSpMiV
-         73Blt8wowCB8elOrluDcCPjsYRtYVz7pOiso/eaUtfl7pcd/zDWi9wCHrzqSyhZ5i4tN
-         CKTcwtLeIZYLDFSdZ36Kln0imkqeAXZKSWoME3+EAnXWFLczLOL1ikqr7sECibdvCYtj
-         8r7qBA5hv/MQNQIzAZO+KL0FOtiSfZkBnn0oQTHXSB1mDyVK0ymNZSHEOWgkAbndVf6P
-         BmKMcfgune/yu3zuALXgBWM2D915/oZubTB+pMGUgLfnWJhBqo1tHtlZhoNmgQtVukiw
-         d3XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774768600; x=1775373400;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IncM+rKcgmau4uVK2sm4qPStCq75MjSeVAISYr8iaEQ=;
-        b=asop9uvTLZsZb1DryN/Zb6pXn0jlcaNt3v7D1wUu/PAvxPPE7LzZeEsT/9Ao/Q5fuV
-         RXPoMNKZ/P+cUF4viaC/nsYDzl8Ie96Lqvnez0rnz0jba9o1EJu3zzTsou4TdTtG8Q/u
-         BSewbCICbkpMJv6DdrO5os7BxDADsOLmZqKVAAnTnl7mkXiCJt2T9eJxZLQNWl/mS3gh
-         4sMiVomy1OGqQrcYyZhkrXZL03rwDfDB0sfDvbj4wJUBhhXmqU3hMOnfSbqQMhZu39Sf
-         vo4Otg5EnR9MerAxl1bg26PnrNCkox62q7+a4UP4Xx6fW3bBWqJ1OorKEpzcHgMDoZ6G
-         gj3A==
-X-Forwarded-Encrypted: i=1; AJvYcCX7qBMA9vdoHi4pHLjSTO/eyGkJNcYzj6HOYbqoYx9N0ZE3e2gUnsX+jRXnf773dF8q5LrPSQ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmQI+aAQb9Fx4Lm048NfRod6LnNZnNdEP+XOJev05bNzv91LAT
-	ZJB9LIl3TEF4SQDk7vwjExKx9AVvIzYhRJTWF/A/rr7UCu2i7VEmLLXh
-X-Gm-Gg: ATEYQzwMTGJGUWFbbON6nVfwqQXqV2EF9/37xI5UjdmnzVW4oISfN9yQ4rjRb9i1QAl
-	R2BqHhUeM0D/VQP00YQUN5EmGCegmh9xOpdxLdkXBoKZy4PqcBWfVmKRxwBxJ2IW4v9W1D1CLbV
-	dnTchfRvPNL7RfmAOYr0FQo8ufUMl0EgTNTm+OR0pXZTBPeFoS2otfbj7F8I2FhjJNMhkMtHEgk
-	wHkimRIf4tb2WZpYUuBoq3kccbaL7K5KYrqsEC4QqZ1vbARRWqjvij7Zp/DbLPscpWUlUvevgnA
-	uuXLrlGOXIehNq4utwBylJNAQ9p0hQZspIfmOhtYCBJIfth7BYPlkvxk7Dhw55m4aoXm8wGvLSW
-	2pofaFjbhCysQFZwt2K+3Ax3uxOpOYDyFdN5yfZ+lm3oLH33h3WiCvnXJfViJRYfde7pTUz/eiC
-	/Zh3iwxcee/d7BSmy+vOpIcp36
-X-Received: by 2002:a05:6102:41aa:b0:5f1:b7b2:8929 with SMTP id ada2fe7eead31-604f90e520cmr2908812137.15.1774768600043;
-        Sun, 29 Mar 2026 00:16:40 -0700 (PDT)
-Received: from localhost.localdomain ([2a09:bac6:d6df:aa::11:19a])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-60512a5afa9sm4390638137.6.2026.03.29.00.16.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 00:16:39 -0700 (PDT)
-From: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	linux-staging@lists.linux.dev,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	kernel-list@raspberrypi.com,
-	=?UTF-8?q?Sebasti=C3=A1n=20Alba=20Vives?= <sebasjosue84@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] staging: vc04_services: vchiq-mmal: fix integer underflow in port_parameter_get()
-Date: Sun, 29 Mar 2026 01:15:42 -0600
-Message-ID: <20260329071616.507876-5-sebasjosue84@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260329071616.507876-1-sebasjosue84@gmail.com>
-References: <20260329062229.493430-1-sebasjosue84@gmail.com>
- <20260329071616.507876-1-sebasjosue84@gmail.com>
+	s=arc-20240116; t=1774768708; c=relaxed/simple;
+	bh=XTJr/joAqHRuNIlq5VABLMOheW+feyBqER3SHd+r7NQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h0U5wqspTEELv7qQu7PWBup74Vost1OeJGlMCip3Zu+Gcy7PqjvRsra3EnVme03eC6IbNnXAUGq1Jb4IftrTfbdxoa8FsXn+MxSkFuiExu685U9h/PVsUpyk5MDnD5bjszv2X2eIbaQ/w13jG8LZfqi1QehtwqKeD6AFcuWeCgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ8HlnIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D25C116C6;
+	Sun, 29 Mar 2026 07:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774768707;
+	bh=XTJr/joAqHRuNIlq5VABLMOheW+feyBqER3SHd+r7NQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=dJ8HlnIAVZlSRG+nwP0zErirXUOebnZd8n7woZffp6cQK2DSiXnjiPJeLMkAT/N3A
+	 aprXJdGEG0O30LuhQAyDcxvOL8lgb1qttthCt3oiItmz43L/Rs8P2I/9XtamGrTdpf
+	 7EoRTc3tHieIrZ9LtINv6M0go3qwpyYNPjkGRvco=
+Subject: FAILED: patch "[PATCH] s390/entry: Scrub r12 register on kernel entry" failed to apply to 6.6-stable tree
+To: gor@linux.ibm.com,iii@linux.ibm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 29 Mar 2026 09:18:23 +0200
+Message-ID: <2026032923-rerun-crouch-f0cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[broadcom.com,lists.linux.dev,lists.infradead.org,vger.kernel.org,raspberrypi.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-230849-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-230850-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A834235102E
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1218D35103D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sebastián Alba Vives <sebasjosue84@gmail.com>
 
-port_parameter_get() subtracts 2 * sizeof(u32) from the VideoCore
-firmware's reply size field to compute the parameter value size. If
-the firmware returns a size smaller than 8, the subtraction wraps
-around to a large value due to unsigned integer underflow.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The underflowed size is then used in a comparison that selects the
-wrong copy path and stored back to the caller via *value_size,
-propagating a bogus size to subsequent operations.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Add a minimum size check before the subtraction and return -EPROTO
-if the reply is malformed.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0738d395aab8fae3b5a3ad3fc640630c91693c27
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032923-rerun-crouch-f0cc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Cc: stable@vger.kernel.org
-Fixes: b18ee53ad297 ("staging: bcm2835: Break MMAL support out from camera")
-Signed-off-by: Sebastián Alba Vives <sebasjosue84@gmail.com>
----
- drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Possible dependencies:
 
-diff --git a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-index 18e805b92..f2bb5ce0a 100644
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -1436,6 +1436,10 @@ static int port_parameter_get(struct vchiq_mmal_instance *instance,
- 	/* port_parameter_get_reply.size includes the header,
- 	 * whilst *value_size doesn't.
- 	 */
-+	if (rmsg->u.port_parameter_get_reply.size < (2 * sizeof(u32))) {
-+		ret = -EPROTO;
-+		goto release_msg;
-+	}
- 	rmsg->u.port_parameter_get_reply.size -= (2 * sizeof(u32));
- 
- 	if (ret || rmsg->u.port_parameter_get_reply.size > *value_size) {
--- 
-2.43.0
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0738d395aab8fae3b5a3ad3fc640630c91693c27 Mon Sep 17 00:00:00 2001
+From: Vasily Gorbik <gor@linux.ibm.com>
+Date: Thu, 26 Mar 2026 19:50:14 +0100
+Subject: [PATCH] s390/entry: Scrub r12 register on kernel entry
+
+Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
+all entry handlers loaded r12 with the current task pointer
+(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
+commit removed TIF_ISOLATE_BP, dropping both the branch prediction
+macros and the r12 load, but did not add r12 to the register clearing
+sequence.
+
+Add the missing xgr %r12,%r12 to make the register scrub consistent
+across all entry points.
+
+Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
+Cc: stable@kernel.org
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+
+diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
+index 4873fe9d891b..689d253e1afc 100644
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -271,6 +271,7 @@ SYM_CODE_START(system_call)
+ 	xgr	%r9,%r9
+ 	xgr	%r10,%r10
+ 	xgr	%r11,%r11
++	xgr	%r12,%r12
+ 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
+ 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
+ 	MBEAR	%r2,%r13
+@@ -407,6 +408,7 @@ SYM_CODE_START(\name)
+ 	xgr	%r6,%r6
+ 	xgr	%r7,%r7
+ 	xgr	%r10,%r10
++	xgr	%r12,%r12
+ 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
+ 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
+ 	MBEAR	%r11,%r13
+@@ -496,6 +498,7 @@ SYM_CODE_START(mcck_int_handler)
+ 	xgr	%r6,%r6
+ 	xgr	%r7,%r7
+ 	xgr	%r10,%r10
++	xgr	%r12,%r12
+ 	stmg	%r8,%r9,__PT_PSW(%r11)
+ 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
+ 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
 
 
