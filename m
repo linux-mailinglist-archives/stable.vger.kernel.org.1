@@ -1,91 +1,84 @@
-Return-Path: <stable+bounces-230872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EITOJHvdyGkorwUAu9opvQ
-	(envelope-from <stable+bounces-230872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 10:06:19 +0200
+	id CAzILYvYyGk0rgUAu9opvQ
+	(envelope-from <stable+bounces-230870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:45:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93103512FB
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 10:06:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B039351249
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 09:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DEF1302E935
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 08:04:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0195130055C4
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 07:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652B2D0605;
-	Sun, 29 Mar 2026 08:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605B12D73AD;
+	Sun, 29 Mar 2026 07:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="PWpA5CPi"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="bbaSE6jt"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic310-23.consmr.mail.ne1.yahoo.com (sonic310-23.consmr.mail.ne1.yahoo.com [66.163.186.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC724B28
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 08:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E066F2D3EE5
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 07:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774771496; cv=none; b=ETxouC+yEHCgrcWeo9jlq+M/dguHqI8C9cDSq64s843zQttSN/Qe1xqa6TAqLpKiM2yq0OesGrWfom6iRoeBaxkoddqKitB2dZDKXfo1sD7lLGxXH3j1WiGDAbSRBNJX1X35VFNkZTiqv+Sh9DyhOXHBGZcOW8YyvqsA0di3s8c=
+	t=1774770307; cv=none; b=k+raesFr8Oh8sERHhZfY1gnwQcqHxrsTt+vvLxrumNdIsrUz4rEDGTNdF/dL9HM+1x8XynNrZJW8VaZCK2jL8iyOT7DyYAlGXuyFcL4+e2yEcxWTZwKPuq06ZPeKoInLZP2r9HUgE6VNi3kQFw7hOvA4XacQrHkJzp/14yN9j0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774771496; c=relaxed/simple;
-	bh=YScehe1vJIcsKixSOZ63sCbEVIMnAUiEXY8jtT16Lto=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=BpjTh0EE/6Csm6acB+TRBncOtbOusExDpwlOlhZU7Y8vmwNK0L98b3rGdF5ADxHrFeup45b018Zzl6PplPSIXC1pAvPiNfyW9OPiGItR5F++CJhQOX7B9QWmeXOp7zLrxj1UMr3Yt/KFVR6ZNuDoKhrZhzw1iuVVgtEH9wT41y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=PWpA5CPi; arc=none smtp.client-ip=66.163.186.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1774771494; bh=V7Fe5j5YmQNWtMWv+HiettIuHXaF9B12nKExBxT8Hk4=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=PWpA5CPiMp38tjogfRBs9lNEHqoTL8z2STOuBcdqJ0la9vwsA+D4cJGauaV3Rex03FAdY5z0uC36QWLIgn05X/HBkSCERNFgUWwXRQH90CPxlnt0n0qNpUIdNRR7Yamyf8dhKg0ZytB0qKwqo21zUKudVNTafafhzWWogsEKUN6Mug3e6npo5bc35Ey4kPQ6TvIULDv5sd4H+wCuq60KFkUHosvSAN+v0/MggLao+S9sZTr+I2XVJqF1HKOznWbnt1TSHeRgqnwObDCK7htx8o0DlEDhWc4vWlbnhgGCPUa0IoF8vwEkea6BmcX/02G60W5dimPiXnBpisdrs/3keQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1774771494; bh=1+z5vy6gK0wDuf9FPy7rUdU6Y6V/oR7G4MrQTOx6gol=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=QIlLYoW/D5XVHBMkv2043zmQjK4h0wEluinv57RhMKlrirsvYqusrLQp2xuqc0n5gr3SMPNQz7wm6LHk0XpLVR5X2qgoKzLD9c1GbUT50nqkKkkpwHixecS2cHQB1nHvNPY15WvN5iEiO0ZsG45qGQ3T0Fdxh6D9EduuGw9jneRROx0xCvgL9Q/H4g3O6XYc/UX+a7dBImZhr78XSQQLPVB7zYttrNFAqc4Aqr/pWUtXSC8e7lD7N5m6zwuAUsqx4pfaRo3eDolD5+M3J0WLn60LTsbza8SUU6/osbT0azon/9kOXhnnA6MnNqW7SXTDh2BrxYhlCgKLVr2YfN60lg==
-X-YMail-OSG: wiG56L0VM1lXOrMO7zYN_3EBKtFe6gaNfbn4VxGauCW_4zaeyWLtTSFI_K4VXlU
- EVq8lBrotN1UgbHOZtnlDPQtCZnzwdeQq5fctod.kzCbXw1him0Zzw_LJHlmbyidWFdxuGh2lpbm
- GEqj6M2ivlm91NkusoqEyoxIVifZWYrpMMVkQMkYLnLfPVlFyDCVFTKYzGWflhEcCwMaJE30RdDe
- l2YwVBDRT7LL6V0K40EdXRM8FhDV3s4HydYtec4LFR6sTPGfLB70hayBvC2DcPlZBUh.BlkEfqhg
- tZVQ4eL6MXghcWc3Q3d2xo7Z.uokBG0LmIxtTbbuQSdSgdu950Brs__nd6be_YohY_aQOal_KLgH
- d2n8AemC3GRr0_40zbQ2oU6wypwy.wTxX583wUV_XeCUe3DoQvtrmQVAthC.sNFoag_BGDcaSrLx
- Gzvtbf0qiVPQzHDzlHGRRRobYP0DR5h7SlCiqfHUNUhiEAXT1zV5pb4FsQZoO_39LKKRQyRnzXuS
- acsF6FLJDCI8YYLgMcFnetc7EK8Z4EbYSzdiet9uiao0rq5Qg6d.eei.sqvsy1klaJZfaQp_86cm
- 1LM7Yxg8PSpm3mm.mE3awxBGpUUmF9Rm8fUsBPd.cDWxZhjN5HnFYRJOYafM7GS8qWPqF8CwQorL
- 11_O3z15NbcRyKFEFkM4vHWjVqqmTvnPCVRZBFTlWM5sYT13hrIs6BaKDnJ9glSyTfxvvDCOx.p_
- k80eS7_8X2QeTOyokKXtxBvgv7RJNwxLtDmXCzL3nKklnqq6JyRK8AUkGoT5OAB5nRlaX2OZIqJu
- pEKB8hoHCvvnh.XkkqDNNjdVL3T8yoYsAxWgvibjD69SqGyMh95pKKKWUmYLV2uYvb8OZiGYh38x
- fEns0XbT.gVObyxX8fTZ1Ut0660FdBmndzuKt9k.bKGucvKw_yqKpcC.juPY4DOsM85jQhQMUsIK
- giY2PsvUjpSSbXnhhu6HGEbeZ_rCfg6GEY5q2pm4d1o_7YVNCh7OmDef.WeyGfhyqrYKoZEuTeAW
- pWzPx2F3kTH.5Ocuis1tl9qSccArVf2U6AftT4.px8d2pGfQ.ZPZfJyyxj3E2aIT.e.9ibPnowRe
- YQ5rWY32ReBbmrVRkhR29oB5pAWHBH9_1eKaNukLYfxSokHfU9IvTeUgl99JZ04K.tR3axRf_V2Q
- nSqtdBlqEqIV9UHZWIGXpKJuzrF2XKKsLUqU1GR_6LhaTAlpbmGkEQBV9b9ydBdXzwy2Bcf98M9.
- BUKFznTlvaTTpokaDDvKqPCsAds3HPYeSYe043X40DEpY93YafL3svwtg648ZnSKBakeRsau9Lj2
- ZrU6N0.reRDtIIYpnclmXLKSuhY75ineJD5rSme.L_LkOiCDWYnY_63.JBSEtmKyxZ9O455osAjM
- 4rgtRgrIsmBOe7m77troeCD_2IIUuwx7AIQn0fb8D6rXqwAbHAYtaMMFzggWU0Gsst0yJDjAxWIi
- A8iECGs5bTmfQkGIScICpPEYicR0o1ed5.cUappYW9m8hIqNmIKXEK0LdKam1nb.mOSU7MBqp6Ux
- GnXFtuTaU0vpNCW_4z2rdVj65QDEC6MxeqBIUnCum2WEk6He1RWRc4h.oB4kio19n4YyBwxj3h4I
- 0zABzRNZkNm_VNZhfXbFiJjEUJj5h8giBRJ49ExhfbQQS9GcBJnUoxHRsUF_eubvdqNHUCMRuZpq
- KielRewyByp7LO2vzenPi893zm.aBkyO6dUBkFH_BmoX2svPw7rGc_3XoHCrM8aYp4GLwJ7TfSql
- ATgdC5xqahwiLJE9McDL.ZqwFmu64ugmrrLuldui3IzoGt2F1sNo1dypHKoS3bWw4MTQtgByiruv
- lgeFG.NJJ3IpUku1mAHGo3w.RHs9lIXFNpBxxWi7ZkzfYvXn4y.doqz5YO4DaUnbDohsOzO.vm1D
- eV24BnIw7FqC8qBxzCL61lfSujwEqpKLMFCIs1tG0cMh1VLvQ12Tg.8FO5enJxfD19PGZmw6.rgW
- Huwpb5tOMUqUMmlh0mBQTo_Bzmm3LlF6rdbKMovPRUseU70lcCNN1DblylyCFzcUYJ3ByqUTKP19
- emvDcICj68Be9HMLGZuYfAVo_bG.y8p3ixPbSol5zVWmpItFelmqPTnBcdOseO7V6oFz.vx.nsPg
- SgFKlzBX2kliio.pOEnUQfYbil4WKUoeqtl_XDQQyAIBVEPkj0ti86l3XqXRwHG.4PJMFI.H5ju7
- 2mKzfWo0LhvOpCnkxQck9WyS8mjbGZ4PxNt73vuSeeDPwnakpkrAF9GTytqbn7714YtFZrU4MjeP
- QPc8E2g9KzgVvp0tSRNcxQwQgUcnQp4.Bvsom
-X-Sonic-MF: <abhishek_sts8@yahoo.com>
-X-Sonic-ID: f9e14122-7cc6-405d-9192-7017615a970f
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Sun, 29 Mar 2026 08:04:54 +0000
-Received: by hermes--production-sg3-6959968fbd-gj7s8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 704786d9823fd8a8253f68d6c834048e;
-          Sun, 29 Mar 2026 07:34:27 +0000 (UTC)
-From: Abhishek Kumar <abhishek_sts8@yahoo.com>
-To: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	syzbot+3fc9eecaf97147282c87@syzkaller.appspotmail.com,
-	stable@vger.kernel.org,
-	Abhishek Kumar <abhishek_sts8@yahoo.com>
-Subject: [PATCH] drm/atomic: fix vblank event leak in complete_signaling()
-Date: Sun, 29 Mar 2026 13:04:23 +0530
-Message-ID: <20260329073423.8390-1-abhishek_sts8@yahoo.com>
+	s=arc-20240116; t=1774770307; c=relaxed/simple;
+	bh=adlydW56b1snN02x62dy+pparjcOAWGySRNbWMdh4J8=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=kobqpbDA6huvj0zOI7qCrXEpYWW0g7FaR5MOyskgEku2CCzb80mJbFyEXymFO1YvqB9TxsWZoRzkXmzJUR4DLId4SreuQsX5r3FS5xI+ozSpMyB1SOO9YX9uKU5gbzb95RMP3RpK1OTgEAaFOA6Wos2IlB0FYNETQcBcqHF+JTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=bbaSE6jt; arc=none smtp.client-ip=162.62.57.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774770294; bh=26/AEwqSvpOKnnOhA59M4j0AcvT/CoB1DEqcq6uuMdc=;
+	h=From:To:Cc:Subject:Date;
+	b=bbaSE6jtiQLNLDcLqBN5te0bSuVF2CNJX+ZWzqvwkwIS4Jv+LtAUA9Qq/jJQGnS0n
+	 9FvnMEBDZXubmAHoPUMTxVz8I0Nw/51MU6HeifiWwC9ILmpNXj70HHyPPqLCbPO5lF
+	 HNX+gyC2TgQ9IveGqT+d/+2JEgCoX8TjcXlV8TqE=
+Received: from shy-Super-Server.. ([220.168.100.40])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id B33B2097; Sun, 29 Mar 2026 15:44:51 +0800
+X-QQ-mid: xmsmtpt1774770291tjkuqf2o4
+Message-ID: <tencent_2A43212936E23BCA7ED345CADA51A8B2390A@qq.com>
+X-QQ-XMAILINFO: MEPikTuqc1/xJ0hr2oXTY23guzu5Nqy7vYLWE9v9U7E01lBz8CQj8Yt16WGcv1
+	 cpTzdXPQFG29e3NVmPTO8+CJjs/gnaUWlIURVR1JOvkOECbyiuPsag73URaV1D54cTF5vBAX5Wrj
+	 rU8gMHexaVA75iY/CyLKi7AvqlwKLgn4N8MmJNTh6wFMY/ri4yHIavvFYbCivFszFcD+OeH9KIIP
+	 ZDE0+CbK4x4eFGQ8MFA+uwdVHMqYFuPqTmiiHuskd9zKDzyt6Gzrc94iZriFGEay5oNHbJicaHGG
+	 ykOC8po/hRa34ZHMtiHBbyMmxcXQYhbbFAUVACrgcBDVjbc3hmpkL1vr//yNjlHY5xlx3oNv4L27
+	 PW9cG1mmHTMGVk+UxLIrbWMLx2Bgiz79TjnWRBIjJNIBEbVyBikg7ewM70MkSiaV5CnkaNBBy0rF
+	 Jstg3MUlIAKAa6PfG9qjvjBQMHxWWeKFOU0dgzBulho3u7PEaJlGG9ntpTo1mmIsLvJUmhsY3e1c
+	 0Q4kzmeOweKL9ZSWvhCCwv/iJBNAW5qnCamwMLDDR6irMkLw38CVe0UPZjEZJWvK5TTgqMxacqSY
+	 ItRBGGE5cP5Umg9n6DiP/LARv0hApObRObM1wS6eRKuNbrKmconifDDorbc3R9rK8pxX0Yw/GRMO
+	 96aTsqvvG9J/Zs/EQt3VnL9IBrxt0CFOF4jm10TDHmoI1sP6aq2I9m2RXop1Y+w+rop72NV5eDhc
+	 qs1h+vrmbtOKHvLleSBP5DSpM4gnH/p5EnO/D8pkM1fPef2I1h+2XAtwlqoN1uxFHibbYZZelH3C
+	 k0MqmyE3kMRs8Rmhpy3oBYZDlSw1amJnQvbgvPhx7gJq5ae+keS0hxRntQPCWlHbmhtYlKmg8kGu
+	 RivGWBXy0Xy12lbfE+dv0DLNbwmi4txkPmYF7g1UYqBe8vw5UfUXs3/Ac19iZVjxfTw1zCSrAx8H
+	 L87naWAg+WXxdsxbt7sDIQjsl2wH1bTP7R/FfMdOBlQH83sD4KAmRwqyOUDIt1MW0PVDVIv/x436
+	 FFg298/faNXJi/tKK6uEyWEAaW8AMWPBdC6WvjIy+Dw6h6wFQFPG6IP5NGawBidjb7TRtswkkhqX
+	 1GpKHlrrBNxuk2KvNod3ZbO3uF8X1nHqcwDCWH
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: Changjian Liu <driz2t@qq.com>
+To: stable@vger.kernel.org
+Cc: syzbot+1dd53396e7124586dca9@syzkaller.appspotmail.com,
+	Changjian Liu <driz2t@qq.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+77026564530dbc29b854@syzkaller.appspotmail.com,
+	syzbot+5054473a31f78f735416@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] PATCH] This is a backport for 6.6.y.
+Date: Sun, 29 Mar 2026 15:44:22 +0800
+X-OQ-MSGID: <20260329074422.1464710-1-driz2t@qq.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -94,91 +87,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-References: <20260329073423.8390-1-abhishek_sts8.ref@yahoo.com>
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[yahoo.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[yahoo.com:s=s2048];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,syzkaller.appspotmail.com,vger.kernel.org,yahoo.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230872-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230870-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[yahoo.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[yahoo.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abhishek_sts8@yahoo.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[syzkaller.appspotmail.com,qq.com,yandex.ru,linux.alibaba.com,oracle.com,huawei.com,gmail.com,suse.com,evilplan.org,fasheh.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[driz2t@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qq.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,3fc9eecaf97147282c87];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D93103512FB
+	TAGGED_RCPT(0.00)[stable,1dd53396e7124586dca9,77026564530dbc29b854,5054473a31f78f735416];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3B039351249
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When prepare_signaling() creates a vblank event via create_vblank_event()
-but hits an error before the event is fully initialized (i.e. before
-drm_event_reserve_init() sets file_priv or a fence is assigned to
-event->base.fence), the subsequent call to complete_signaling() fails to
-free the event because its cleanup condition requires at least one of
-those fields to be set:
+[ Upstream commit e1c70505ee8158c1108340d9cd67182ade93af4a ]
 
-    if (event && (event->base.fence || event->base.file_priv))
+ocfs2: add extra consistency checks for chain allocator dinodes
 
-This happens when only fence_ptr triggers event creation but a subsequent
-allocation failure occurs before the fence is assigned to the event. The
-128-byte event object is then orphaned and reported by kmemleak.
+When validating chain allocator dinode in 'ocfs2_validate_inode_block()',
+add an extra checks whether a) the maximum amount of chain records in
+'struct ocfs2_chain_list' matches the value calculated based on the
+filesystem block size, and b) the next free slot index is within the valid
+range.
 
-Fix this by adding an else-if branch that frees events which have no
-completion callback set. Events allocated by
-drm_atomic_helper_setup_commit() always have completion set, so checking
-for its absence safely identifies events that were allocated by
-prepare_signaling() but never fully set up.
-
-Reported-by: syzbot+3fc9eecaf97147282c87@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3fc9eecaf97147282c87
-Fixes: 92c715fca907 ("drm/atomic: Fix double free in drm_atomic_state_default_clear")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
+Link: https://lkml.kernel.org/r/20251030153003.1934585-1-dmantipov@yandex.ru
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+77026564530dbc29b854@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=77026564530dbc29b854
+Reported-by: syzbot+5054473a31f78f735416@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5054473a31f78f735416
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Changjian Liu <driz2t@qq.com>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/ocfs2/inode.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_atomic_uapi.c b/drivers/gpu/drm/drm_atomic_uapi.c
-index 87de41fb4459..52a6b8436437 100644
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -1523,6 +1523,17 @@ static void complete_signaling(struct drm_device *dev,
- 		if (event && (event->base.fence || event->base.file_priv)) {
- 			drm_event_cancel_free(dev, &event->base);
- 			crtc_state->event = NULL;
-+		} else if (event && !event->base.completion) {
-+			/*
-+			 * The event was allocated by prepare_signaling()
-+			 * but an error path was hit before the event got
-+			 * fully set up (fence or file_priv assigned).
-+			 * Events from drm_atomic_helper_setup_commit()
-+			 * always have completion set, so checking for its
-+			 * absence safely distinguishes our events.
-+			 */
-+			kfree(event);
-+			crtc_state->event = NULL;
- 		}
+diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+index c561a8a6493e..7c99f436037b 100644
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1419,6 +1419,23 @@ int ocfs2_validate_inode_block(struct super_block *sb,
+ 		goto bail;
  	}
  
++	if (le32_to_cpu(di->i_flags) & OCFS2_CHAIN_FL) {
++		struct ocfs2_chain_list *cl = &di->id2.i_chain;
++
++		if (le16_to_cpu(cl->cl_count) != ocfs2_chain_recs_per_inode(sb)) {
++			rc = ocfs2_error(sb, "Invalid dinode %llu: chain list count %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le16_to_cpu(cl->cl_count));
++			goto bail;
++		}
++		if (le16_to_cpu(cl->cl_next_free_rec) > le16_to_cpu(cl->cl_count)) {
++			rc = ocfs2_error(sb, "Invalid dinode %llu: chain list index %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le16_to_cpu(cl->cl_next_free_rec));
++			goto bail;
++		}
++	}
++
+ 	rc = 0;
+ 
+ bail:
 -- 
 2.43.0
 
