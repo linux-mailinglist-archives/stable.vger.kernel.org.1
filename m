@@ -1,201 +1,195 @@
-Return-Path: <stable+bounces-230933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEmcKD0ryWknvgUAu9opvQ
-	(envelope-from <stable+bounces-230933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:38:05 +0200
+	id CBvzG3IryWknvgUAu9opvQ
+	(envelope-from <stable+bounces-230934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:38:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F067352444
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:38:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B1035245B
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 15:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B4403003D2A
-	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:38:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8D66300A7CF
+	for <lists+stable@lfdr.de>; Sun, 29 Mar 2026 13:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621EA36EAA4;
-	Sun, 29 Mar 2026 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6789137883D;
+	Sun, 29 Mar 2026 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e+/FJH0Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qCRCbxKY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F952F4A15
-	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 13:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9536EAA4
+	for <stable@vger.kernel.org>; Sun, 29 Mar 2026 13:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774791481; cv=none; b=ho7nzraoBOc74q3tcd8Ho+1PiLemQzNMyqA2lTGSL2dB4UD8bD+lX3hpG8uVvf2X5vefDT+sSQTYbNL5udAZa4nmu4sDTSe/t/qneiXb8SZxJEgIiMaYIk8D9HWx5UoRXJRkp0Y5KTQm9g93z01NuBxEOZ4UB/86+nrF+mBc5+4=
+	t=1774791535; cv=none; b=lotMJI2eZn4VLh7NQeUqQOCwShFBRG2SRPlKw7Wo6lQeG/NCrvWDpPOYKda/d6f4AK/okEbWbkFqx2v9pxf00XsQe4BGYjSZLCpHrWggmbmKVbocyxv/F/U+NERjjMAopDesFJgVMy77ayw5SSME/eqTjU+/IJHbkILecCBlkQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774791481; c=relaxed/simple;
-	bh=rErbn54l/e8Ip2+idhieGxOUk8BjhxFiRKEyIK2D3po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=amWkduylTR6gsKVUdhcr0IMXjAgHsshKZ4llK3on+pH/myR1JHJlCdsschwOkJEOykrHZ7a4Wk7WGqo4l3mOIw//EOji3dIBIxWKBla6DLxzX5S7vTw+zniWN3/fpsUVhX6CrDojcHV9F/d5xnzvpDlWrINsGcGsu9cVNh7Ei/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e+/FJH0Q; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62T90r2S2879954;
-	Sun, 29 Mar 2026 13:37:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=qbZlSTU3IUxao/NbPLY562qBloyjVU
-	FO/87sI79NkhE=; b=e+/FJH0QVIrD1S9hVuPUVHoLdM8VUTa0CMijNmlipCIvBF
-	Kar4zBsRr9U2dzu1iXkfPHhIedPNnmj5s9WbilaztmoQDFDgTww5QEwqIjK7g4D9
-	7delC85t75z971Omyu5csjN9MAUj4/1zLa+YFVXthlMRMUB+sYHm69D5hf0TRIL1
-	xiZFWpOBIaS0Ag0teI0+1hAlTBvfFQVwLLISQ0Wv01fU2dHiO+qF31Oy44tYRvYj
-	jtOwlNywM3poZeNPAzQesd5JTASCIUykRMkExxkqRL1YC/Qf1gIxFoKvU9ea7Bk7
-	T8LGmJWW2mFNa8Io2Ukjrd6hdTyW6UXCA/dO+zrg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q2uewk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 29 Mar 2026 13:37:55 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62TAF80X031034;
-	Sun, 29 Mar 2026 13:37:54 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjh8tf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 29 Mar 2026 13:37:54 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62TDboma43712928
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 29 Mar 2026 13:37:50 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD96120043;
-	Sun, 29 Mar 2026 13:37:50 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6BB8520040;
-	Sun, 29 Mar 2026 13:37:50 +0000 (GMT)
-Received: from localhost (unknown [9.111.25.211])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sun, 29 Mar 2026 13:37:50 +0000 (GMT)
-Date: Sun, 29 Mar 2026 15:37:48 +0200
-From: Vasily Gorbik <gor@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.6.y] s390/entry: Scrub r12 register on kernel entry
-Message-ID: <p01.gc8f4b9804bce.ttcnxpc@ub.hpns>
-References: <2026032923-rerun-crouch-f0cc@gregkh>
+	s=arc-20240116; t=1774791535; c=relaxed/simple;
+	bh=qWafS+rX9nxvXtbqHDoLW3WMpBkkmgZSJg+hRG7NBZg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jqZLGK8L/9U0E89vgx1mTdRIyUhW6i8FwbBWSL1jqQ5DQ4dpFFUG+sQL3BdiTSdJL+pnXh3SsY7NsJnmKxhnnyO9F7vgjxv1h8Cv+WIAOA5lszw9KRkw7O3FJxKungc5Z9EhOsJkg1zNrbA97j3yfM5n0LSb41/DBygMCvjVScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qCRCbxKY; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4853e1ce427so44073415e9.3
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 06:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774791532; x=1775396332; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=is6bs1NfbxZsQnjfbKTIDgjeronxzv4F25oTco18Foc=;
+        b=qCRCbxKYtplEyoJ/CQJN7Kk2cwxGtfOJYTBjEpeDLUR/o+2aQzGamihefQMBRT4ySb
+         2V4AuTfsfiLcFvUEVM70KivFFEzcPj0SqpXm4JwoD+93xR+4AdcB15zXjjRsxokRL7F2
+         A2AbADeZUfvS+L4/INM2mcYwClX6wi7sUzKi9aN1t/M8LEjEzllYGk8KVqfQUIE5+nz5
+         Et61cb5/1oS1Q9np6GUSw2lAd47ixCN5Ll2xpDY/PmylUKgCEaw5ChDDiDGzbf3H/bj6
+         Rug3GDGFyAvVhGcxK0tj1TIEvB9QfV8S3yjsP296TPGLxv0si5yAkBOFBGURLoaGGj5w
+         X0jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774791532; x=1775396332;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=is6bs1NfbxZsQnjfbKTIDgjeronxzv4F25oTco18Foc=;
+        b=o8NIVNqUpbMZQ3cK9Ok4J0TIfBlZkz8vLduhVaxGSjhuE+zc9qcZvSgHT3PhbQAa+8
+         2SIzMik0DVFgJpb4t82607IK+FetQsqxpbwUgE7wIoJ4e7s+lgfLY6zcrWrOja0MoO+s
+         5caqQNWsALgrKD4WBllgWmQFONPjw9N6zLFCHCQ2gTcUhEmtGYV568/Wjw6LNB+evGwW
+         sKUI3Qhpub5ibC/LGuFbqtx3kSef5SFC2f5F1RhmMzFNP9d0zmVbcG6l13q8MqSr7WZn
+         WmQ/bTuF060PyNFy7bJgERHAM0JiYwuDm1wAAR5nbrGOTM+sbO6voL0q/et8rDQJWR3r
+         Ogaw==
+X-Forwarded-Encrypted: i=1; AJvYcCViydkUGhO2Q/xfD/UKULRkDpExekJ3jKxhKbaje2gOQQXe8rlNAEkn77HmB4LrwGqMwHMyDho=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+otL2Ebsu7Xf8euuwxbaQnXVAw3wiZNfyYyGogqCyXhFmY5P/
+	ngrRs6PbdziJ7qP5yG6mxuezDgSlrbbJjsZI4i7baimChNbXrBmwj8er
+X-Gm-Gg: ATEYQzw986nIFZ9ozevkMAsisKNeOnKipyD1WBC1o231QSa69AzFV9pfpYJYd6PA1vO
+	hB1QmDf6MzNqpps3gWJizzGfr6QxZfHFrVCw7vnsKXvFcSpDCBi2s5irqAImE94DZghLzMZ9QoC
+	frZH4hQejLpoLL/ZFpRh88taPTX6oOM6/WOz1fRwbZ8mU52u/v4MnJ8LjpmA+JUvk4oUOjJ0MRT
+	8c49I+X/2ny9NuxJnpSaLuKGCJpg4TO36v7qlpYLtZ9DgjvuL7W5hXkwG5Cql7Sh8flQVBKcF8s
+	AR1iSLbqU6IIzci3RsqwGkyPVZ8SE53DfWzxUPhAlycNfUcw+tjkBJpiWcLqwcSdi9cAECllrtz
+	r42ySq08tekyTR9/ugwQ2nYILGgFvJfyR8dIabDZieyqZk+bDeyVkkyt8E5v2zFzGDuerfYLF52
+	hquDhl3Wvaz2CEr0RX8CwW+YvVtXeBi5bndhYaI17M6fucGKXslgMb8P+OKvCOZqQ/pabYFA==
+X-Received: by 2002:a05:600c:3f16:b0:486:fdba:f5db with SMTP id 5b1f17b1804b1-48727c86862mr156203735e9.0.1774791531900;
+        Sun, 29 Mar 2026 06:38:51 -0700 (PDT)
+Received: from localhost.localdomain ([176.40.241.191])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4873062ee36sm106872935e9.8.2026.03.29.06.38.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2026 06:38:51 -0700 (PDT)
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
+To: zonque@gmail.com,
+	tiwai@suse.de
+Cc: linux-sound@vger.kernel.org,
+	stable@vger.kernel.org,
+	andreyknvl@gmail.com,
+	Berk Cem Goksel <berkcgoksel@gmail.com>
+Subject: [PATCH] ALSA: caiaq: fix stack out-of-bounds read in init_card
+Date: Sun, 29 Mar 2026 16:38:25 +0300
+Message-Id: <20260329133825.581585-1-berkcgoksel@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2026032923-rerun-crouch-f0cc@gregkh>
-X-Patchwork-Bot: notify
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SEBXpis4zHIHmvKVrobh7HxwCGVkk3EE
-X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69c92b33 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=bAswlcalVcA4mDXWVpAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: SEBXpis4zHIHmvKVrobh7HxwCGVkk3EE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI5MDEwMyBTYWx0ZWRfX+GDCQyZbBZeK
- Su/pDIowZKrfgRm288EMbAXCW/H2XAjhmdkfRXppNJaO8G9qaBt7U9OUkoV6gx6bf36m+pmxIAC
- Ufe8ZjCqhg2NZrVOfFpN3TGDAwjf2t2i9722xG4bHHwppxO1Pqu0gLz9tznEbAE/MEZyC1nP0DI
- uWTf+WOfzCS5bfXxW4Zkemv55TL5IKTpeFrtOc0oLVWKC8Ay6c7ZqwQYJTXH7eONhMAUgDW8Mpr
- K5iRsh690oSBraEku0XbsOvBQkw+kU2Jms4LWmg7EWId578g4rEn8zRwGCIwxhNEVjeuZ/D9g6V
- FGf9Xo1rGaACMielrjGyOhvdzawQHjn55iUlKeVAZv+WCi7M75J5CJeBQC8r5VdFSN1AiaSmEcq
- D8RkCrTjg8+YE0rkqeYsg5trmK9yoM7qX2JifpTuANMRGJ+62nFa9Z5VJ+t04MumxDUETPqtzji
- LtJnVpTzRRXR33kzN4w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-29_03,2026-03-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1011
- lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603290103
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-230933-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ub.hpns:mid];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-230934-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gor@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,suse.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[berkcgoksel@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 4F067352444
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E4B1035245B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
-all entry handlers loaded r12 with the current task pointer
-(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
-commit removed TIF_ISOLATE_BP, dropping both the branch prediction
-macros and the r12 load, but did not add r12 to the register clearing
-sequence.
+The loop creates a whitespace-stripped copy of the card shortname
+where `len < sizeof(card->id)` is used for the bounds check. Since
+sizeof(card->id) is 16 and the local id buffer is also 16 bytes,
+writing 16 non-space characters fills the entire buffer,
+overwriting the terminating nullbyte.
 
-Add the missing xgr %r12,%r12 to make the register scrub consistent
-across all entry points.
+When this non-null-terminated string is later passed to
+snd_card_set_id() -> copy_valid_id_string(), the function scans
+forward with `while (*nid && ...)` and reads past the end of the
+stack buffer, reading the contents of the stack.
 
-Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
-Cc: stable@kernel.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+A USB device with a product name containing many non-ASCII, non-space
+characters (e.g. multibyte UTF-8) will reliably trigger this as follows:
+
+  BUG: KASAN: stack-out-of-bounds in copy_valid_id_string
+       sound/core/init.c:696 [inline]
+  BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
+       sound/core/init.c:718
+
+The off-by-one has been present since commit bafeee5b1f8d ("ALSA:
+snd_usb_caiaq: give better shortname") from June 2009 (v2.6.31-rc1),
+which first introduced this whitespace-stripping loop. The original
+code never accounted for the null terminator when bounding the copy.
+
+Fix this by changing the loop bound to `sizeof(card->id) - 1`,
+ensuring at least one byte remains as the null terminator.
+
+Fixes: bafeee5b1f8d ("ALSA: snd_usb_caiaq: give better shortname")
+Cc: stable@vger.kernel.org
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
 ---
- arch/s390/kernel/entry.S | 4 ++++
- 1 file changed, 4 insertions(+)
+Tested on 6.19.0 and 7.0.0-rc5 with KASAN enabled (arm64, dummy_hcd):
 
-diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-index 0476ce7700df..b8c5c78b0d14 100644
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -300,6 +300,7 @@ SYM_CODE_START(system_call)
- 	xgr	%r9,%r9
- 	xgr	%r10,%r10
- 	xgr	%r11,%r11
-+	xgr	%r12,%r12
- 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
- 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA_SYNC
- 	MBEAR	%r2
-@@ -378,6 +379,7 @@ SYM_CODE_START(pgm_check_handler)
- 	xgr	%r5,%r5
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
-+	xgr	%r12,%r12
- 	lgr	%r2,%r11
- 	brasl	%r14,__do_pgm_check
- 	tmhh	%r8,0x0001		# returning to user space?
-@@ -439,6 +441,7 @@ SYM_CODE_START(\name)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA_ASYNC
- 	MBEAR	%r11
-@@ -547,6 +550,7 @@ SYM_CODE_START(mcck_int_handler)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	mvc	__PT_R8(64,%r11),0(%r14)
- 	stmg	%r8,%r9,__PT_PSW(%r11)
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
--- 
-2.53.0
+[  302.559633] BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
+[  302.559663] Read of size 1 at addr ffff8000a3ff6b10 by task kworker/1:4/2208
+[  302.559701] Hardware name: linux,dummy-virt (DT)
+[  302.559709] Workqueue: usb_hub_wq hub_event
+[  302.559727] Call trace:
+[  302.559751]  dump_stack_lvl+0x138/0x1c8
+[  302.559793]  kasan_report+0xc0/0x100
+[  302.559833]  __asan_report_load1_noabort+0x20/0x2c
+[  302.559853]  snd_card_set_id_no_lock+0x698/0x74c
+[  302.559873]  snd_card_set_id+0xa0/0xe4
+[  302.559891]  snd_probe+0xc34/0xf04
+[  302.559906]  usb_probe_interface+0x2c4/0x998
+
+ sound/usb/caiaq/device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/usb/caiaq/device.c b/sound/usb/caiaq/device.c
+index dfd820483..3a71bab8a 100644
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -488,7 +488,7 @@ static int init_card(struct snd_usb_caiaqdev *cdev)
+ 		memset(id, 0, sizeof(id));
+
+ 		for (c = card->shortname, len = 0;
+-			*c && len < sizeof(card->id); c++)
++			*c && len < sizeof(card->id) - 1; c++)
+ 			if (*c != ' ')
+ 				id[len++] = *c;
+
+--
+2.34.1
 
