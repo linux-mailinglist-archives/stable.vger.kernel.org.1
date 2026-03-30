@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-231191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEq7KFxvymnG8gUAu9opvQ
-	(envelope-from <stable+bounces-231191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:41:00 +0200
+	id eMa2KAxwymnG8gUAu9opvQ
+	(envelope-from <stable+bounces-231193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:43:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185AD35B2A9
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:40:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C4335B329
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5FD33037C12
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:38:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79C0930607B8
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A8A3D1703;
-	Mon, 30 Mar 2026 12:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6653D1CB4;
+	Mon, 30 Mar 2026 12:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZmJgg+4W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHOl/jRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0023D0916;
-	Mon, 30 Mar 2026 12:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73B13D16FD;
+	Mon, 30 Mar 2026 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874334; cv=none; b=L9P4gsefnRMVSWkQUEdGgsFgES09C8ceRSLyMcDlO3YUNruFc5lR4mgUwFotyCKEW5vFvrzkeYnoOJtCRcgPxxkqWMUJcci93VkhBHRMxUITikHRXsbjoUd/GMP+xz/25ER21zSSkHiIWd2HcocV9/YVFtw5vWrH1srmuPg6UXA=
+	t=1774874335; cv=none; b=EJsQ3WlTbd/GkHw3WeQGLpCDKLsnwMQM4sBS1xPY5NsyIpmbVya5aSHD2zmx8aIyqQgIZDG31Euaq6o32HQ8gAq4pHxvsarGWDjh3B6SzPTYTLjB9/YYaxxIr385JOd6NBCGKHDw4o2SL+ueFTKXJ5szqfqfOngAeP0l2odFtwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874334; c=relaxed/simple;
-	bh=nmLuCXKilewrWUUcq5NfX5N6ZNgzQC+XTkSE2IeJSuE=;
+	s=arc-20240116; t=1774874335; c=relaxed/simple;
+	bh=oFLU5WAgDeApMYmpEY5B4JfKxFBn2/Lp+X+vKhq6MhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=myubQQcKqlkh4tqzdDJfkmWtjvSMO0RIXeiVk+nQ0XXyiXfgtNfUS/40Sie8cDlthX363IXG8T1HgZ/lFpcL5TFtpevxxUkVHE+m5RLLbzDv5C5BPoxuLfTlMlAZRfeAT1l0a3dlZb2C9RZaXfEQ5/1uKp+za7sWyeAL5JguKdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZmJgg+4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2376AC2BCB2;
-	Mon, 30 Mar 2026 12:38:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B8ovGEku5kpqj9Bs6lBSj5B4aICbM0d2DKWRQWLZAmZuw4tAE6wRECkubYGzWfsdRyKWs7T7xTL4F8JiB7YodyqyjqlpnD8pBkiXKpKScR2doC4eJALpnkWV+MX6TKqjITAHNruAs2WJyeBgDz1ya+pp7s6RUzeu5hjSDHAfsek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHOl/jRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A73C2BCB3;
+	Mon, 30 Mar 2026 12:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874332;
-	bh=nmLuCXKilewrWUUcq5NfX5N6ZNgzQC+XTkSE2IeJSuE=;
+	s=k20201202; t=1774874333;
+	bh=oFLU5WAgDeApMYmpEY5B4JfKxFBn2/Lp+X+vKhq6MhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZmJgg+4W4PSwB91QCv8wVqAISP+VYLY/5GUhGPTJZfJ4NdZArNeHQiWPX01l3btug
-	 +s2uOT6i5DLGCyuwsxaByPNaRG+POKeWIJuI1Hy9nVScSY/2frTax9TKYVZqZHJL3Z
-	 OibmsWdIZ9+J9YJGRfoGhu9QLByMk3dMJGoBKYo41ClCW+H0eKv8NdvZveaF4NrpsF
-	 l3h0MGh4yOqILqQhjVwptCKF61swoUrlXKf/iZ6RXvIFtMeUQiLRZx7rNKaZD9KG9C
-	 ADOajIR/o9TLmmBVcjTQCK6vEnj0QS/0ENewsKjqmCmFtTRYGbd2HQTbhVcwhqANWQ
-	 HPR7JUaz88GoA==
+	b=DHOl/jRo9ovT5aR3mvlIal7S3w6wbRJKbTunTOnOdNue3pKse+ATw8Z5FWjeU2OGK
+	 FBUGj776V4BJ3cCU0AA4XkroyZxIpLkF++wiBWqMZEjj29Vk3oa52hZZKwTVEH1ObT
+	 Sj4WB+IDDl5Asnnp5zSLrILxK1WRDDM/y+TtNWMCGnlKd5VY3dKMPEMFgOQ4Aott0X
+	 YRi1K6jq44mSHRkRoXW26966AXSarGk+sXQ5NHomh/0enkOEL4z3TdG4A49PHATbBq
+	 Hzfg+aMWs9sm4EoY9DOQeHgWC0W8cRp5EyfVfXK6a0PotYMy6x/RYWZcFTWwjxC21K
+	 uVpUhSz5fgtYA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Joel Fernandes <joelagnelf@nvidia.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jiangshanlai@gmail.com,
-	josh@joshtriplett.org,
-	rcu@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] srcu: Use irq_work to start GP in tiny SRCU
-Date: Mon, 30 Mar 2026 08:38:19 -0400
-Message-ID: <20260330123842.756154-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-5.10] ALSA: asihpi: avoid write overflow check warning
+Date: Mon, 30 Mar 2026 08:38:20 -0400
+Message-ID: <20260330123842.756154-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330123842.756154-1-sashal@kernel.org>
 References: <20260330123842.756154-1-sashal@kernel.org>
@@ -76,743 +75,404 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,gmail.com,joshtriplett.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-231191-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231193-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,mail-archive.com:url]
-X-Rspamd-Queue-Id: 185AD35B2A9
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,arndb.de:email]
+X-Rspamd-Queue-Id: 10C4335B329
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Joel Fernandes <joelagnelf@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a6fc88b22bc8d12ad52e8412c667ec0f5bf055af ]
+[ Upstream commit 591721223be9e28f83489a59289579493b8e3d83 ]
 
-Tiny SRCU's srcu_gp_start_if_needed() directly calls schedule_work(),
-which acquires the workqueue pool->lock.
+clang-22 rightfully warns that the memcpy() in adapter_prepare() copies
+between different structures, crossing the boundary of nested
+structures inside it:
 
-This causes a lockdep splat when call_srcu() is called with a scheduler
-lock held, due to:
+In file included from sound/pci/asihpi/hpimsgx.c:13:
+In file included from include/linux/string.h:386:
+include/linux/fortify-string.h:569:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+  569 |                         __write_overflow_field(p_size_field, size);
 
-  call_srcu() [holding pi_lock]
-    srcu_gp_start_if_needed()
-      schedule_work() -> pool->lock
+The two structures seem to refer to the same layout, despite the
+separate definitions, so the code is in fact correct.
 
-  workqueue_init() / create_worker() [holding pool->lock]
-    wake_up_process() -> try_to_wake_up() -> pi_lock
+Avoid the warning by copying the two inner structures separately.
+I see the same pattern happens in other functions in the same file,
+so there is a chance that this may come back in the future, but
+this instance is the only one that I saw in practice, hitting it
+multiple times per day in randconfig build.
 
-Also add irq_work_sync() to cleanup_srcu_struct() to prevent a
-use-after-free if a queued irq_work fires after cleanup begins.
-
-Tested with rcutorture SRCU-T and no lockdep warnings.
-
-[ Thanks to Boqun for similar fix in patch "rcu: Use an intermediate irq_work
-to start process_srcu()" ]
-
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20260318124016.3488566-1-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a comprehensive analysis. Let
-me compile the full assessment.
+Now I have all the data I need. Let me compile the full analysis.
 
 ===============================================================
-## PHASE 1: COMMIT MESSAGE FORENSICS
+PHASE 1: COMMIT MESSAGE FORENSICS
 ===============================================================
 
-### Step 1.1: PARSE THE SUBJECT LINE
-Record: [srcu] [Use] [irq_work to defer schedule_work() in Tiny SRCU
-grace-period start to avoid lockdep splat from pi_lock vs pool->lock
-ordering]
+**Step 1.1: Subject Line**
+Record: [ALSA: asihpi] [avoid] [write overflow check warning from
+clang-22 fortify-string in adapter_prepare()]
 
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Signed-off-by:** Joel Fernandes <joelagnelf@nvidia.com> (author)
-- **Reviewed-by:** Paul E. McKenney <paulmck@kernel.org> (RCU co-
-  maintainer, original Tiny SRCU author)
-- **Signed-off-by:** Boqun Feng <boqun@kernel.org> (RCU
-  maintainer/committer)
-- No `Fixes:` tag (expected — this is why we're reviewing)
-- No `Cc: stable@vger.kernel.org` (expected)
-- No `Reported-by:` tag
-- No `Link:` tag
+**Step 1.2: Tags**
+- Signed-off-by: Arnd Bergmann <arnd@arndb.de> (author)
+- Link:
+  https://patch.msgid.link/20260318124016.3488566-1-arnd@kernel.org
+- Signed-off-by: Takashi Iwai <tiwai@suse.de> (ALSA maintainer)
+- No Fixes: tag (expected for manual review candidates)
+- No Reported-by: tag
+- No Cc: stable tag
+- No Tested-by: or Reviewed-by:
 
-Record: Strong maintainer endorsement — reviewed by Paul McKenney (RCU
-authority), committed by Boqun Feng (RCU maintainer). Queued into
-`fixes.v7.0-rc4` branch (verified via mail-archive). No syzbot or
-external bug reporter.
+Record: Author is a highly trusted kernel contributor (Arnd Bergmann).
+Maintainer (Takashi Iwai) signed off. No external bug reports.
 
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-The commit describes two bugs:
+**Step 1.3: Commit Body**
+The commit describes a clang-22 `__write_overflow_field` warning from
+`include/linux/fortify-string.h:569`. The `memcpy()` in
+`adapter_prepare()` copies between `struct hpi_response` and `struct
+hpi_adapter_response`, which are different structure types with
+equivalent layouts. The author explicitly states: "the code is in fact
+correct." The warning is hit "multiple times per day in randconfig
+build." The fix splits one `memcpy` into two field-level copies.
 
-**Bug 1 (lockdep/lock ordering):** `srcu_gp_start_if_needed()` calls
-`schedule_work()`, which acquires workqueue `pool->lock`. When
-`call_srcu()` is invoked while holding the scheduler `pi_lock`, this
-creates a lock ordering inversion:
-- Path A: `call_srcu()` [holding `pi_lock`] → `schedule_work()` →
-  `pool->lock`
-- Path B: `workqueue_init()`/`create_worker()` [holding `pool->lock`] →
-  `wake_up_process()` → `try_to_wake_up()` → `pi_lock`
+Record: [Bug: build-time fortify warning, not a runtime defect]
+[Symptom: -Werror,-Wattribute-warning build failure with clang-22] [Root
+cause: FORTIFY_SOURCE cross-field memcpy detection on different struct
+types with equivalent layout]
 
-**Bug 2 (UAF prevention):** With the new irq_work mechanism,
-`irq_work_sync()` must be added to `cleanup_srcu_struct()` to prevent a
-use-after-free if a queued irq_work fires after cleanup begins.
-
-Testing: rcutorture SRCU-T with no lockdep warnings.
-
-Record: [Lock ordering inversion between pi_lock and workqueue
-pool->lock] [Lockdep splat, potential deadlock] [No specific version
-information] [Root cause: schedule_work() acquires pool->lock from
-call_srcu() context that may hold pi_lock]
-
-### Step 1.4: DETECT HIDDEN BUG FIXES
-Record: [Not hidden — explicitly describes a lockdep-detected lock
-ordering bug and a UAF risk in cleanup. The UAF aspect is specific to
-the new irq_work mechanism being introduced by the same commit.]
+**Step 1.4: Hidden Bug Fix?**
+Record: Not a hidden bug fix. The author explicitly confirms the code is
+functionally correct. This is purely a compiler warning suppression.
 
 ===============================================================
-## PHASE 2: DIFF ANALYSIS - LINE BY LINE
+PHASE 2: DIFF ANALYSIS
 ===============================================================
 
-### Step 2.1: INVENTORY THE CHANGES
-- `include/linux/srcutiny.h`: +4 lines (add `irq_work_types.h` include,
-  `struct irq_work srcu_irq_work` field, function declaration, static
-  initializer entry)
-- `kernel/rcu/srcutiny.c`: +18/-1 lines (add `irq_work.h` include,
-  `init_irq_work()` in init, `irq_work_sync()` in cleanup, new
-  `srcu_tiny_irq_work()` function, change `schedule_work()` to
-  `irq_work_queue()`)
-- Total: ~22 lines added, 1 line changed
-- Functions modified: `init_srcu_struct_fields()`,
-  `cleanup_srcu_struct()`, `srcu_gp_start_if_needed()`
-- New function: `srcu_tiny_irq_work()`
+**Step 2.1: Inventory**
+Record: [sound/pci/asihpi/hpimsgx.c: -2/+4 lines, net +2] [Function:
+adapter_prepare()] [Scope: single-file, single-function, surgical]
 
-Record: [2 files, +22/-1, single-subsystem, well-contained surgical fix]
+**Step 2.2: Code Flow Change**
+Before: One `memcpy(&rESP_HPI_ADAPTER_OPEN[adapter], &hr,
+sizeof(rESP_HPI_ADAPTER_OPEN[0]))` — copies the full struct from `hr`
+into the adapter open cache.
 
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-- **Before:** `srcu_gp_start_if_needed()` directly calls
-  `schedule_work(&ssp->srcu_work)` when `srcu_init_done`. This acquires
-  `pool->lock` synchronously in whatever context the caller is running.
-- **After:** `irq_work_queue(&ssp->srcu_irq_work)` is called instead.
-  The irq_work handler `srcu_tiny_irq_work()` later calls
-  `schedule_work()`, breaking the direct lock nesting from the
-  `call_srcu()` call site.
-- **Cleanup:** `irq_work_sync()` is added before `flush_work()` in
-  `cleanup_srcu_struct()` to ensure no deferred irq_work runs after the
-  struct begins teardown.
-- **Init:** `init_irq_work()` is added in `init_srcu_struct_fields()`.
+After: Two memcpys:
+1. `memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].h, &hr, sizeof(...h))` —
+   copies the response header
+2. `memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].a, &hr.u.ax.info,
+   sizeof(...a))` — copies the adapter info payload
 
-Record: [Normal GP-start path changed from synchronous schedule_work()
-to deferred irq_work hop. Cleanup path gets irq_work synchronization.
-Init path gets irq_work initialization.]
+This is on the normal initialization path after `HPI_ADAPTER_OPEN`.
 
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-Category: **(b) Synchronization / Lock ordering** (lockdep-detected
-circular dependency between `pi_lock` and `pool->lock`), plus **(d)
-Memory safety** — UAF prevention in the cleanup path for the newly
-introduced irq_work.
+Record: [Before: single aggregate memcpy across struct boundaries →
+After: two targeted field-level memcpys copying identical data]
 
-Record: [Lock ordering inversion (potential deadlock) detected by
-lockdep. The UAF prevention is specific to the irq_work mechanism
-introduced by this same commit, not a pre-existing UAF in old code.]
+**Step 2.3: Bug Mechanism**
+Verified struct layouts:
+- `struct hpi_response_header`: 12 bytes (u16 size + u8 type + u8
+  version + u16 object + u16 function + u16 error + u16 specific_error)
+- `struct hpi_response`: inline header fields matching
+  `hpi_response_header` + `union { ... union hpi_adapterx_res ax; ... }
+  u` at offset 12
+- `struct hpi_adapter_response` (packed): `struct hpi_response_header h`
+  (12 bytes) + `struct hpi_adapter_res a`
+- `union hpi_adapterx_res`: first member is `struct hpi_adapter_res
+  info`
 
-### Step 2.4: ASSESS THE FIX QUALITY
-- **Obviously correct:** Yes. irq_work is specifically designed for
-  deferring work from contexts where direct scheduling is unsafe. This
-  is the same pattern used in Tree RCU (referenced by the commit
-  message).
-- **Minimal/surgical:** Yes. ~22 lines, two files, all within the Tiny
-  SRCU subsystem.
-- **Regression risk:** Very low. The `irq_work` mechanism is mature. The
-  functional behavior is identical (same `schedule_work()` happens, just
-  deferred slightly). The `irq_work_sync()` + `flush_work()` ordering in
-  cleanup is a standard pattern used elsewhere in the kernel.
-- **Red flags:** None. `EXPORT_SYMBOL_GPL(srcu_tiny_irq_work)` is
-  slightly unusual for a callback but harmless (needed for module
-  builds).
+The new code copies `sizeof(hpi_response_header)` bytes from `&hr` into
+`.h`, then `sizeof(hpi_adapter_res)` bytes from `&hr.u.ax.info` into
+`.a`. This is equivalent to the original single copy because the inline
+header fields in `hpi_response` are layout-compatible with
+`hpi_response_header`, and `hr.u.ax.info` is at offset 12 (same as `.a`
+in the packed struct).
 
-Record: [Fix is obviously correct, minimal, low regression risk.
-Standard irq_work deferral pattern, well-established in RCU subsystem]
+Record: [Category: build fix — compiler warning, not runtime bug]
+[Mechanism: split memcpy to satisfy FORTIFY_SOURCE field boundary checks
+while copying identical data]
+
+**Step 2.4: Fix Quality**
+Record: [Obviously correct — verified from struct layouts] [Minimal,
+surgical] [Zero regression risk — functionally identical copy] [No API
+changes]
 
 ===============================================================
-## PHASE 3: GIT HISTORY INVESTIGATION
+PHASE 3: GIT HISTORY INVESTIGATION
 ===============================================================
 
-### Step 3.1: BLAME THE CHANGED LINES
-The direct `schedule_work(&ssp->srcu_work)` call in
-`srcu_gp_start_if_needed()` was introduced by commit `1a893c711a600`
-("srcu: Provide internal interface to start a Tiny SRCU grace period")
-by Paul E. McKenney, dated 2020-11-13. This first appeared in release
-`v5.12` (verified via `git tag --contains`, earliest non-next tag would
-be p-5.15).
+**Step 3.1: Blame**
+Verified: `git blame -L 584,586` shows the memcpy was introduced in
+commit `719f82d3987aa` by Eliot Blennerhassett on 2010-04-21 ("ALSA: Add
+support of AudioScience ASI boards"). This code has been in the kernel
+since v2.6.35 — present in all active stable trees.
 
-However, the original `call_srcu()` function called `schedule_work()`
-even before that refactor — the lock ordering issue has existed since
-Tiny SRCU was created.
+Record: [Introduced: 719f82d3987aa, v2.6.35 era (2010)] [Present in all
+stable trees]
 
-Record: [Buggy schedule_work() path introduced in 1a893c711a600 (v5.12
-era). Present in all stable trees from v5.15 onward.]
+**Step 3.2: Fixes Tag**
+Record: [N/A — no Fixes: tag present]
 
-### Step 3.2: FOLLOW THE FIXES: TAG
-N/A — no `Fixes:` tag present (expected).
+**Step 3.3: File History**
+Verified: `git log --oneline -20 -- sound/pci/asihpi/hpimsgx.c` shows
+very low activity. The only functional fix since the original import was
+`7b986c7430a6b` ("Fix potential OOB array access"). Since v5.15, only 2
+commits touched this file. Since v6.1, only 1.
 
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Recent srcutiny.c history shows:
-- `e6a43aeb71852` - Remove preempt_disable/enable() in
-  srcu_gp_start_if_needed() (recent)
-- `da2ac5623716c` - Make Tiny SRCU able to operate in preemptible
-  kernels (v6.15+, PREEMPT_LAZY)
-- `65b4a59557f6f` - Make Tiny SRCU explicitly disable preemption (v6.12)
+Record: [Very stable file, rarely changed] [No prerequisites or series]
+[Standalone patch]
 
-The PREEMPT_LAZY change (`da2ac5623716c`, first in v6.15) is
-significant: it allows Tiny SRCU to run on preemptible kernels, making
-the lock ordering issue more practically relevant than on the
-traditional non-preemptible UP configs.
+**Step 3.4: Author**
+Verified: Arnd Bergmann is a prolific kernel contributor who frequently
+submits compiler warning/build fixes across the tree. Not the asihpi
+subsystem maintainer, but a highly trusted contributor. Takashi Iwai
+(ALSA maintainer) applied the patch.
 
-No duplicate irq_work fix for Tiny SRCU was found in the tree. This is
-standalone.
+Record: [Arnd Bergmann: trusted cross-tree contributor, specializes in
+build fixes] [Takashi Iwai: ALSA maintainer, accepted patch]
 
-Record: [Related to PREEMPT_LAZY enablement. Standalone fix. No
-prerequisites beyond existing code.]
-
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Joel Fernandes is a well-known RCU contributor at NVIDIA with multiple
-RCU commits. The fix is reviewed by Paul McKenney (original Tiny SRCU
-author) and committed by Boqun Feng (RCU maintainer).
-
-Record: [Joel Fernandes is a regular RCU contributor. Fix has strong
-maintainer endorsement.]
-
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-Key backport consideration: The `#include <linux/irq_work_types.h>` in
-the header requires this file to exist. Verified that `irq_work_types.h`
-was introduced in commit `c809f081fe400` ("irqwork: Move data struct to
-a types header") and first appeared in **v6.19** only. It does NOT exist
-in v6.18, v6.15, v6.12, v6.6, v6.1, or v5.15. For older stable trees,
-the include would need to be changed to `<linux/irq_work.h>` — a trivial
-mechanical adaptation.
-
-The `__SRCU_STRUCT_INIT` macro has different argument counts across
-versions:
-- v5.15: 2 args `(name, __ignored)`
-- v6.6: 3 args `(name, __ignored, ___ignored)`
-- current: 4 args `(name, __ignored, ___ignored, ____ignored)`
-
-This means the static initializer addition `.srcu_irq_work = { .func =
-srcu_tiny_irq_work }` would need to go into the appropriate macro
-variant for each stable tree. This is a minor mechanical conflict.
-
-Record: [Standalone logically. Backport needs: 1) `irq_work_types.h` →
-`irq_work.h` for trees < v6.19, 2) minor `__SRCU_STRUCT_INIT` macro
-adaptation. These are mechanical, not logical, changes.]
+**Step 3.5: Dependencies**
+Record: [No dependencies — self-contained single memcpy split]
 
 ===============================================================
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 ===============================================================
 
-### Step 4.1: SEARCH LORE.KERNEL.ORG FOR THE PATCH DISCUSSION
-Lore was blocked (Anubis anti-bot), but the discussion was found on
-mail-archive.com at:
-https://www.mail-archive.com/linux-
-kernel@vger.kernel.org/msg2619639.html
+**Step 4.1-4.4:**
+The lore.kernel.org and patch.msgid.link URLs are not accessible due to
+anti-bot (Anubis) protection.
 
-Key findings from the discussion:
-- The patch was dated March 23, 2026
-- Boqun Feng queued it into `fixes.v7.0-rc4` branch (the RCU **fixes**
-  branch, not features)
-- Paul McKenney's `Reviewed-by` was provided in an off-list discussion
-- No NAKs, no concerns raised
-- No explicit stable nomination by reviewers in the visible thread
-
-Record: [Lore discussion found on mail-archive mirror. Queued into fixes
-branch by RCU maintainer. No objections. No explicit Cc: stable
-discussion visible.]
-
-### Step 4.2: SEARCH FOR THE BUG REPORT
-No external bug report. Found during development/testing. The lockdep
-splat is reproducible with rcutorture SRCU-T.
-
-Record: [Found during testing, reproducible with rcutorture]
-
-### Step 4.3: CHECK FOR RELATED PATCHES AND SERIES
-The commit message references Boqun Feng's similar fix "rcu: Use an
-intermediate irq_work to start process_srcu()" which applies the same
-pattern to Tree SRCU. This confirms the pattern is well-established.
-
-Record: [Companion to Boqun's Tree SRCU irq_work fix. Same pattern.]
-
-### Step 4.4: CHECK STABLE MAILING LIST HISTORY
-No stable-specific discussion found.
-
-Record: [No stable-specific discussion found]
+Record: [UNVERIFIED: lore discussion content, reviewer feedback, stable
+nominations, NAKs]
 
 ===============================================================
-## PHASE 5: CODE SEMANTIC ANALYSIS
+PHASE 5: CODE SEMANTIC ANALYSIS
 ===============================================================
 
-### Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-Modified: `init_srcu_struct_fields()`, `cleanup_srcu_struct()`,
-`srcu_gp_start_if_needed()`
-New: `srcu_tiny_irq_work()`
+**Step 5.1: Functions Modified**
+Record: [adapter_prepare()]
 
-### Step 5.2: TRACE CALLERS
-`srcu_gp_start_if_needed()` is called from:
-1. `call_srcu()` — widely used across the kernel
-2. `start_poll_synchronize_srcu()` — used by rcutorture and others
+**Step 5.2: Callers**
+Verified: `adapter_prepare()` is called from exactly one place —
+`HPIMSGX__init()` at line 719, invoked during
+`HPI_SUBSYS_CREATE_ADAPTER`. This is an adapter initialization path
+called once per adapter during probe.
 
-`call_srcu()` callers (verified via grep, 14+ call sites in .c files):
-- `virt/kvm/kvm_main.c`
-- `mm/mmu_notifier.c`
-- `block/blk-mq.c`, `block/blk-mq-tag.c`
-- `kernel/events/uprobes.c`
-- `fs/tracefs/event_inode.c`
-- `fs/dlm/midcomms.c`, `fs/dlm/lowcomms.c`
-- `drivers/gpio/gpiolib.c`
-- Plus the RCU subsystem itself
+Record: [Single call site: HPIMSGX__init() → adapter_prepare()] [Called
+during adapter creation/probe, not a hot path]
 
-**Important caveat:** On TINY_SRCU kernels, only the Tiny SRCU
-`call_srcu()` is linked. TINY_SRCU requires `TINY_RCU`, which requires
-`!SMP` (UP systems). On older stable trees (v6.12 and before), it
-additionally requires `!PREEMPTION`. On v6.15+, PREEMPT_LAZY allows Tiny
-SRCU to operate on preemptible (but still UP) kernels.
+**Step 5.3-5.4: Callees and Reachability**
+The function calls `hpi_init_message_response()`, `hw_entry_point()`,
+and `memcpy()`. The call chain is: adapter probe → `hpi_send_recv_ex()`
+→ `HPIMSGX__init()` → `adapter_prepare()`. This is reachable from the
+ioctl and kernel-side probe path for AudioScience ASI PCI sound cards.
 
-Record: [Wide caller surface for call_srcu() in general. On TINY_SRCU,
-limited to UP kernels. On v6.15+ with PREEMPT_LAZY, the lock ordering
-issue becomes more practically relevant.]
+Record: [Probe/initialization path for niche PCI sound hardware]
 
-### Step 5.3: TRACE CALLEES
-`srcu_gp_start_if_needed()` → `schedule_work()` (before) or
-`irq_work_queue()` (after)
-`srcu_tiny_irq_work()` → `schedule_work()`
-`cleanup_srcu_struct()` → `irq_work_sync()` (new) → `flush_work()`
-(existing)
+**Step 5.5: Similar Patterns**
+Verified: Similar `memcpy(&cache, &hr, sizeof(cache))` patterns exist
+for stream and mixer responses in the same file (lines 608, 621). The
+author notes these may trigger similar warnings in the future but
+currently only the adapter_prepare instance is hit.
 
-Record: [Standard irq_work deferral pattern]
-
-### Step 5.4: FOLLOW THE CALL CHAIN
-`call_srcu()` is a generic kernel API. On TINY_SRCU builds, any code
-path that invokes `call_srcu()` while holding scheduler locks (like
-`pi_lock`) can trigger the lockdep splat. The kernel's scheduler code
-does hold `pi_lock` during task wakeups, and subsystems like KVM and
-uprobes that use `call_srcu()` can be reached from those contexts.
-
-Record: [Reachable from multiple kernel subsystems. The specific
-`pi_lock` → `pool->lock` ordering is mechanically real — verified that
-`schedule_work()` → `__queue_work()` takes `pool->lock`, and
-`create_worker()` holds `pool->lock` while calling `wake_up_process()`
-which takes `pi_lock`.]
-
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-Multiple irq_work-related fixes exist in the RCU subsystem (`git log
---grep=irq_work -- kernel/rcu/`), confirming this is an established
-pattern. Examples:
-- `b41642c87716b` "rcu: Fix rcu_read_unlock() deadloop due to IRQ work"
-- `f596e2ce1c0f2` "rcu: Use IRQ_WORK_INIT_HARD() to avoid
-  rcu_read_unlock() hangs"
-- The referenced Boqun patch for Tree SRCU
-
-Record: [Well-established pattern in RCU subsystem]
+Record: [Similar patterns exist in same file for streams/mixer; only
+this one triggers with clang-22 currently]
 
 ===============================================================
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
+PHASE 6: STABLE TREE ANALYSIS
 ===============================================================
 
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-Verified directly. All stable trees from v5.15 onward contain the direct
-`schedule_work()` call in `srcu_gp_start_if_needed()`:
-- **v5.15:** YES — `schedule_work()` at line 168 (with `unsigned short`
-  idx types)
-- **v6.1:** YES — `schedule_work()` at line 168 (with `unsigned long`
-  idx types)
-- **v6.6:** YES — `schedule_work()` at line 168
-- **v6.12:** YES (would also have `preempt_disable()` from
-  `65b4a59557f6f`)
-- **v6.15+:** YES (with PREEMPT_LAZY changes)
+**Step 6.1: Code in Stable Trees?**
+Verified: The original code was introduced in v2.6.35 (commit
+`719f82d3987aa`). Since v6.1, only 1 unrelated commit touched this file.
+Since v5.15, only 2. The exact buggy memcpy line exists identically in
+all active stable trees.
 
-**Practical impact across versions:**
-- **v5.15, v6.1, v6.6:** `TINY_RCU` requires `!PREEMPTION && !SMP`. On
-  UP non-preemptible kernels, the lock ordering issue is still
-  detectable by lockdep (lockdep tracks lock classes regardless of
-  whether locks spin), but a real deadlock hang is less likely since
-  spinlocks effectively become preemption disablers on UP.
-- **v6.12:** Same as above (`!PREEMPT_RCU && !SMP`, no PREEMPT_LAZY)
-- **v6.15+:** PREEMPT_LAZY enables Tiny SRCU on preemptible UP kernels.
-  The lock ordering inversion becomes more practically concerning
-  because preemption is real.
+Record: [Present in all stable trees: v5.15+, v6.1+, v6.6+]
 
-Record: [Buggy code present in all stable trees v5.15+. Real practical
-impact increases on v6.15+ with PREEMPT_LAZY. On older trees, lockdep
-still detects the issue.]
+**Step 6.2: Backport Complications**
+Record: [Clean apply expected — file barely changed, tiny hunk with
+stable surrounding context]
 
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-Backport complications identified:
-1. `irq_work_types.h` does not exist before v6.19 — must use
-   `irq_work.h` instead
-2. `__SRCU_STRUCT_INIT` macro has different argument counts: 2 in v5.15,
-   3 in v6.6, 4 in current
-3. `srcu_gp_start_if_needed()` has `preempt_disable()/enable()` in v6.12
-   but not in v6.6 (minor context change)
-4. v5.15 uses `unsigned short` for `srcu_idx`/`srcu_idx_max` vs
-   `unsigned long` in v6.1+
-
-All of these are minor context/mechanical differences. The core logic
-change (replacing `schedule_work()` with `irq_work_queue()`) is
-identical.
-
-Record: [Expected backport difficulty: minor conflicts. Needs mechanical
-adaptation for include file and macro arguments. Core fix logic applies
-cleanly.]
-
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-No duplicate fix for this specific Tiny SRCU issue found in any stable
-tree or branch.
-
-Record: [No related fix already in stable]
+**Step 6.3: Related Fixes**
+Record: [No related fixes in stable for this warning]
 
 ===============================================================
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 ===============================================================
 
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-- **Subsystem:** `kernel/rcu` — SRCU (Sleepable Read-Copy Update), Tiny
-  variant
-- **Criticality:** CORE — RCU/SRCU is fundamental synchronization
-  infrastructure used across the entire kernel. However, the Tiny
-  variant specifically targets UP/embedded systems.
-- **User base:** Embedded/IoT systems, UP configurations, systems that
-  use `CONFIG_TINY_RCU`
+**Step 7.1: Subsystem**
+Record: [sound/pci/asihpi — AudioScience ASI professional audio PCI
+boards] [Criticality: PERIPHERAL — niche hardware]
 
-Record: [CORE subsystem (RCU). Tiny SRCU variant targets embedded/UP
-systems.]
-
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Actively maintained by Paul McKenney and Boqun Feng. Regular ongoing
-development, especially around PREEMPT_LAZY support.
-
-Record: [Active development, strong maintainer oversight]
+**Step 7.2: Activity**
+Record: [Very low activity; mature, rarely touched driver]
 
 ===============================================================
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+PHASE 8: IMPACT AND RISK ASSESSMENT
 ===============================================================
 
-### Step 8.1: DETERMINE WHO IS AFFECTED
-Systems running with `CONFIG_TINY_SRCU`, which requires
-`CONFIG_TINY_RCU`:
-- **v6.6 and older:** `!PREEMPTION && !SMP` — UP non-preemptible kernels
-  (embedded/IoT)
-- **v6.15+:** `!PREEMPT_RCU && !SMP` with PREEMPT_LAZY possible — UP
-  kernels that may be preemptible
+**Step 8.1: Who Is Affected**
+Record: [Runtime: only users of AudioScience ASI PCI cards. Build:
+anyone building CONFIG_SND_ASIHPI (or allmodconfig/randconfig) with
+clang-22 and FORTIFY_SOURCE + -Werror]
 
-Record: [Affected: embedded/UP systems using TINY_SRCU. Narrower than
-general SMP deployments, but these are real production configurations.]
+**Step 8.2: Trigger Conditions**
+Record: [Build-time only: clang-22 + CONFIG_FORTIFY_SOURCE + -Werror +
+CONFIG_SND_ASIHPI] [Not a runtime trigger]
 
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-- `call_srcu()` invoked while a scheduler lock (`pi_lock`) is held
-- This is a realistic scenario in workloads that exercise both scheduler
-  and SRCU paths
-- On PREEMPT_LAZY kernels (v6.15+), the lock ordering is more
-  practically dangerous
-- On older trees, lockdep detects the ordering even if an actual hang is
-  less likely on UP
+**Step 8.3: Failure Mode Severity**
+Record: [Failure mode: build failure/error] [Runtime severity: NONE —
+code is functionally correct] [Build severity: MEDIUM — blocks
+compilation under specific toolchain]
 
-Record: [Trigger: call_srcu() while holding scheduler locks.
-Reproducible with rcutorture SRCU-T. Realistic in production on
-PREEMPT_LAZY.]
+**Step 8.4: Risk-Benefit Ratio**
+- Benefit: Keeps an existing stable driver buildable with newer compiler
+  fortify diagnostics. The author reports hitting this "multiple times
+  per day" in randconfig builds.
+- Risk: Extremely low — two memcpys copying the same data as one memcpy;
+  functionally identical, verified from struct layouts.
 
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-- **Lockdep splat:** WARNING level — but lockdep splats in core
-  synchronization primitives are taken seriously because they indicate a
-  real lock ordering design flaw that can hide other real bugs
-- **Potential deadlock on PREEMPT_LAZY:** On v6.15+ UP preemptible
-  kernels, the lock ordering inversion represents a genuine deadlock
-  risk under the right timing conditions — MEDIUM-HIGH
-- **Note on the UAF:** The `irq_work_sync()` in cleanup prevents a UAF
-  that would exist only with the new irq_work mechanism. This is not a
-  pre-existing UAF in old stable trees — it's safety plumbing for the
-  new code introduced by this same commit.
-
-Record: [Lockdep splat (WARNING) on all affected trees + potential real
-deadlock risk on PREEMPT_LAZY (v6.15+). Severity: MEDIUM-HIGH overall]
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-**BENEFIT:**
-- Fixes lockdep-detected lock ordering inversion in a core
-  synchronization primitive
-- On v6.15+: prevents potential real deadlock
-- Queued into `fixes` branch (not features) by RCU maintainer —
-  maintainers consider this a fix
-- Eliminates lockdep noise that can mask real bugs
-
-**RISK:**
-- Very low. ~22 lines, well-understood irq_work deferral pattern
-- Reviewed by Paul McKenney, tested with rcutorture
-- Only adds one extra asynchronous hop to the GP start path
-  (functionally equivalent)
-- Needs minor mechanical adaptation for older trees (include file, macro
-  args)
-
-Record: [Benefit: fixes real lockdep ordering bug in core
-infrastructure, prevents potential deadlock on newer stables. Risk: very
-low — small, well-reviewed, well-tested.]
+Record: [Benefit: LOW-MEDIUM (build fix for newer toolchains)] [Risk:
+VERY LOW (trivially correct, behavior-preserving)] [Ratio: favorable]
 
 ===============================================================
-## PHASE 9: FINAL SYNTHESIS
+PHASE 9: FINAL SYNTHESIS
 ===============================================================
 
-### Step 9.1: COMPILE THE EVIDENCE
+**Step 9.1: Evidence**
 
-**FOR backporting:**
-- Fixes a lockdep-detected lock ordering inversion between `pi_lock` and
-  workqueue `pool->lock`
-- The lock chain is mechanically verified: `schedule_work()` →
-  `__queue_work()` → `pool->lock`, and `create_worker()` →
-  `wake_up_process()` → `pi_lock`
-- Small, surgical fix (~22 lines, 2 files, single subsystem)
-- Reviewed by Paul McKenney (RCU co-creator), committed by Boqun Feng
-  (RCU maintainer)
-- Queued into `fixes.v7.0-rc4` branch (not features) — maintainers
-  consider this a bug fix
-- Tested with rcutorture SRCU-T, no lockdep warnings
-- Well-understood irq_work deferral pattern already used in Tree RCU
-- Buggy `schedule_work()` pattern exists in all stable trees since v5.12
-- On v6.15+ with PREEMPT_LAZY, the lock ordering represents a more
-  practical deadlock risk
-- Lockdep splats in core RCU infrastructure can mask other real bugs
+FOR backporting:
+- Build fixes are explicitly listed as an allowed stable exception:
+  "Fixes for compilation errors or warnings... These are critical for
+  users who need to build the kernel"
+- Fix is tiny (+4/-2 lines), single-function, obviously correct
+- Verified struct layout compatibility confirms the change is behavior-
+  preserving
+- Author (Arnd Bergmann) is highly trusted; maintainer (Takashi Iwai)
+  signed off
+- Code exists in all stable trees and patch would apply cleanly
+- Stable trees are expected to remain buildable with current toolchains;
+  clang versions age into wider use
 
-**AGAINST backporting:**
-- On older stable trees (v5.15 through v6.12), the lock ordering is
-  detectable by lockdep but a real deadlock hang is less likely on UP
-  non-preemptible kernels
-- Needs minor mechanical backport adaptation (`irq_work_types.h` →
-  `irq_work.h`, macro argument counts)
-- No external user reports of actual deadlocks
-- The UAF prevention in the commit is for the *new* irq_work mechanism,
-  not a pre-existing bug
-- `CONFIG_TINY_SRCU` is a narrower configuration than general SMP
-  deployments
+AGAINST backporting:
+- No runtime bug — the code is functionally correct without this patch
+- Niche driver (AudioScience ASI PCI cards)
+- Only triggers with clang-22, a very recent compiler
+- No user reports, no syzbot involvement
+- Impact scope is narrow (specific config + specific toolchain)
 
-**UNRESOLVED:**
-- Could not independently fetch lore.kernel.org (Anubis) — used mail-
-  archive mirror instead
-- Whether lockdep on UP no-op spinlocks still reports this ordering
-  (likely yes, since lockdep tracks lock classes regardless)
-- No verified concrete in-tree path that hits Tiny `call_srcu()` while
-  specifically holding `pi_lock` (though the ordering conflict is
-  mechanically real)
+UNRESOLVED:
+- Lore discussion content could not be verified (anti-bot protection)
+- Whether reviewers explicitly nominated this for stable
 
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. **Obviously correct and tested?** YES — standard irq_work deferral
-   pattern, reviewed by Paul McKenney, tested with rcutorture
-2. **Fixes a real bug that affects users?** YES — lockdep-detected lock
-   ordering inversion. Lockdep warnings in core RCU are treated as
-   serious issues by maintainers. More practically dangerous on v6.15+.
-3. **Important issue?** YES for v6.15+ (potential deadlock). MEDIUM for
-   older trees (lockdep warning in core infrastructure).
-4. **Small and contained?** YES — ~22 lines, 2 files, single subsystem
-5. **No new features or APIs?** Correct — internal mechanism change only
-6. **Can apply to stable trees?** YES with minor mechanical adaptation
+**Step 9.2: Stable Rules Checklist**
+1. Obviously correct and tested? **YES** — trivially correct from layout
+   analysis; tested in randconfig
+2. Fixes a real bug that affects users? **YES (build bug)** — prevents
+   build failure with affected toolchain
+3. Important issue? **MEDIUM** — build failure, not crash/corruption,
+   but build fixes are an explicit exception
+4. Small and contained? **YES** — 4 lines changed in 1 function
+5. No new features or APIs? **YES**
+6. Can apply to stable trees? **YES** — identical code in all stable
+   trees
 
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Not an exception category. This is a standard synchronization/lock-
-ordering bug fix.
+**Step 9.3: Exception Categories**
+This falls under the **Build Fixes** exception: "Fixes for compilation
+errors or warnings, Kconfig dependency fixes, include file fixes — These
+are critical for users who need to build the kernel."
 
-### Step 9.4: MAKE YOUR DECISION
-This commit fixes a real lockdep-detected lock ordering inversion in the
-Tiny SRCU implementation — a core kernel synchronization primitive. The
-fix is small (~22 lines), well-contained (2 files, single subsystem),
-reviewed by the RCU maintainers (Paul McKenney, Boqun Feng), tested with
-rcutorture, and uses a well-established irq_work deferral pattern.
+**Step 9.4: Decision**
 
-The fact that this was queued into the RCU `fixes` branch (not features)
-by the maintainers demonstrates they consider it a bug fix, not an
-enhancement. Lockdep warnings in core RCU infrastructure are taken
-seriously because they indicate real design flaws that can cause
-problems under the right conditions and that mask other real bugs.
+This is a legitimate build fix under the stable exception rules. The
+patch is behavior-preserving (verified from struct layout analysis),
+trivially correct, and zero-risk. While the impact is narrow (clang-22 +
+niche driver), the stable tree policy explicitly allows build fixes
+because maintaining buildability with current and evolving toolchains is
+a core goal. Compiler versions age into wider use, and preventing build
+regressions on stable trees has standalone value. The near-zero
+regression risk further supports inclusion.
 
-The practical impact varies across stable trees: on v6.15+ with
-PREEMPT_LAZY, the risk is higher (potential real deadlock); on older
-trees, it's a lockdep warning that nonetheless indicates a genuine lock
-ordering problem. The regression risk is very low given the maturity of
-the irq_work mechanism and the surgical nature of the change.
-
-The minor backport adaptations needed (include file, macro arguments)
-are mechanical and well within the normal scope of stable backport
-adjustments.
-
----
-
-## Verification
-
-- [Phase 1] Parsed tags: Reviewed-by Paul E. McKenney, Signed-off-by
-  Boqun Feng (RCU maintainers). No Fixes:, no Reported-by:, no Cc:
-  stable.
-- [Phase 2] Diff analysis: +22/-1 lines across 2 files. Core change:
-  `schedule_work()` → `irq_work_queue()` in `srcu_gp_start_if_needed()`,
-  plus `irq_work_sync()` in cleanup, `init_irq_work()` in init, new
-  `srcu_tiny_irq_work()` handler.
-- [Phase 3] git blame: buggy `schedule_work()` introduced in
-  `1a893c711a600` by Paul McKenney (2020-11-13). First in release tags
-  starting around v5.12.
-- [Phase 3] git show `1a893c711a600`: confirmed it created
-  `srcu_gp_start_if_needed()` with direct `schedule_work()`.
-- [Phase 3] git tag --contains `da2ac5623716c`: PREEMPT_LAZY Tiny SRCU
-  enablement first in v6.15.
-- [Phase 3] git show v5.15/v6.1/v6.6 srcutiny.c: all contain direct
-  `schedule_work()` in `srcu_gp_start_if_needed()`.
-- [Phase 3] `irq_work_types.h` (commit `c809f081fe400`) first in v6.19
-  only — not in v6.18, v6.15, v6.12, v6.6, v6.1, v5.15. Verified via
-  `git show v6.18:include/linux/irq_work_types.h` (exit 128) and `git
-  tag --contains`.
-- [Phase 3] v5.15 `__SRCU_STRUCT_INIT` has 2 args, v6.6 has 3 args,
-  current has 4 args — verified via git show of respective headers.
-- [Phase 4] mail-archive.com: found patch discussion at
-  https://www.mail-archive.com/linux-
-  kernel@vger.kernel.org/msg2619639.html — Boqun queued into
-  `fixes.v7.0-rc4`, Paul's Reviewed-by provided off-list. No NAKs.
-- [Phase 5] Traced callers: `call_srcu()` used by KVM, mm, block, fs,
-  GPIO, uprobes — 14+ call sites in .c files.
-- [Phase 5] Verified lock chain: `schedule_work()` → `__queue_work()` →
-  `pool->lock` (48 instances of `raw_spin_lock.*pool->lock` in
-  workqueue.c). `create_worker()` → `wake_up_process()` → `pi_lock`.
-- [Phase 5] Verified irq_work APIs (`init_irq_work`, `irq_work_queue`,
-  `irq_work_sync`) exist in v5.15+ via `git show
-  v5.15:include/linux/irq_work.h`.
-- [Phase 6] Verified Kconfig: v6.6 `TINY_RCU` requires `!PREEMPTION &&
-  !SMP`; current requires `!PREEMPT_RCU && !SMP`.
-- [Phase 6] No duplicate fix found in any stable tree for this Tiny SRCU
-  issue.
-- [Phase 7] RCU is CORE subsystem, actively maintained.
-- [Phase 8] Severity: lockdep warning on all affected trees; potential
-  real deadlock on v6.15+ (PREEMPT_LAZY).
-- UNVERIFIED: Could not fetch lore.kernel.org directly (Anubis anti-
-  bot); used mail-archive mirror.
-- UNVERIFIED: Whether lockdep still reports the ordering on UP
-  configurations where spinlocks are effectively no-ops (likely yes,
-  lockdep tracks classes regardless).
-- UNVERIFIED: Specific in-tree call path where Tiny SRCU `call_srcu()`
-  is invoked while holding `pi_lock` (the ordering conflict is
-  mechanically real but no specific trigger path was traced end-to-end).
+**Verification:**
+- [Phase 1] Parsed all tags: Link, 2x Signed-off-by; no Fixes, Reported-
+  by, Cc: stable
+- [Phase 2] Diff: single memcpy replaced by two field-level memcpys in
+  adapter_prepare(); net +2 lines
+- [Phase 2] Struct layout verified: hpi_response_header (12 bytes
+  inline), hpi_response has matching inline fields + union at offset 12,
+  hpi_adapter_response is packed header.h + adapter_res.a — layouts
+  confirmed compatible
+- [Phase 3] git blame: code introduced in 719f82d3987aa (2010, v2.6.35
+  era), present in all stable trees
+- [Phase 3] git log: file barely changed; only 1 commit since v6.1, 2
+  since v5.15; no series/dependencies
+- [Phase 3] Author verified: Arnd Bergmann, prolific build-fix
+  contributor; Takashi Iwai (ALSA maintainer) applied
+- [Phase 4] UNVERIFIED: lore.kernel.org discussion blocked by anti-bot
+  protection
+- [Phase 5] Callers traced: adapter_prepare() called only from
+  HPIMSGX__init() (line 719), probe/init path
+- [Phase 5] Similar memcpy patterns exist at lines 608, 621 for streams;
+  only adapter instance triggers currently
+- [Phase 6] Code exists identically in v5.15, v6.1, v6.6; clean apply
+  expected
+- [Phase 7] Subsystem: sound/pci/asihpi — PERIPHERAL, low activity,
+  mature driver
+- [Phase 8] Impact: build-time only, clang-22 + FORTIFY_SOURCE +
+  -Werror; severity MEDIUM as build fix
+- [Phase 8] Risk: VERY LOW — functionally identical change, verified
+  from struct layouts
 
 **YES**
 
- include/linux/srcutiny.h |  4 ++++
- kernel/rcu/srcutiny.c    | 19 ++++++++++++++++++-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ sound/pci/asihpi/hpimsgx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
-index e0698024667a7..313a0e17f22fe 100644
---- a/include/linux/srcutiny.h
-+++ b/include/linux/srcutiny.h
-@@ -11,6 +11,7 @@
- #ifndef _LINUX_SRCU_TINY_H
- #define _LINUX_SRCU_TINY_H
+diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
+index b68e6bfbbfbab..ed1c7b7744361 100644
+--- a/sound/pci/asihpi/hpimsgx.c
++++ b/sound/pci/asihpi/hpimsgx.c
+@@ -581,8 +581,10 @@ static u16 adapter_prepare(u16 adapter)
+ 		HPI_ADAPTER_OPEN);
+ 	hm.adapter_index = adapter;
+ 	hw_entry_point(&hm, &hr);
+-	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter], &hr,
+-		sizeof(rESP_HPI_ADAPTER_OPEN[0]));
++	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].h, &hr,
++		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].h));
++	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].a, &hr.u.ax.info,
++		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].a));
+ 	if (hr.error)
+ 		return hr.error;
  
-+#include <linux/irq_work_types.h>
- #include <linux/swait.h>
- 
- struct srcu_struct {
-@@ -24,18 +25,21 @@ struct srcu_struct {
- 	struct rcu_head *srcu_cb_head;	/* Pending callbacks: Head. */
- 	struct rcu_head **srcu_cb_tail;	/* Pending callbacks: Tail. */
- 	struct work_struct srcu_work;	/* For driving grace periods. */
-+	struct irq_work srcu_irq_work;	/* Defer schedule_work() to irq work. */
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map dep_map;
- #endif /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
- };
- 
- void srcu_drive_gp(struct work_struct *wp);
-+void srcu_tiny_irq_work(struct irq_work *irq_work);
- 
- #define __SRCU_STRUCT_INIT(name, __ignored, ___ignored, ____ignored)	\
- {									\
- 	.srcu_wq = __SWAIT_QUEUE_HEAD_INITIALIZER(name.srcu_wq),	\
- 	.srcu_cb_tail = &name.srcu_cb_head,				\
- 	.srcu_work = __WORK_INITIALIZER(name.srcu_work, srcu_drive_gp),	\
-+	.srcu_irq_work = { .func = srcu_tiny_irq_work },		\
- 	__SRCU_DEP_MAP_INIT(name)					\
- }
- 
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index 3450c3751ef7a..a2e2d516e51b9 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -9,6 +9,7 @@
-  */
- 
- #include <linux/export.h>
-+#include <linux/irq_work.h>
- #include <linux/mutex.h>
- #include <linux/preempt.h>
- #include <linux/rcupdate_wait.h>
-@@ -41,6 +42,7 @@ static int init_srcu_struct_fields(struct srcu_struct *ssp)
- 	ssp->srcu_idx_max = 0;
- 	INIT_WORK(&ssp->srcu_work, srcu_drive_gp);
- 	INIT_LIST_HEAD(&ssp->srcu_work.entry);
-+	init_irq_work(&ssp->srcu_irq_work, srcu_tiny_irq_work);
- 	return 0;
- }
- 
-@@ -84,6 +86,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct);
- void cleanup_srcu_struct(struct srcu_struct *ssp)
- {
- 	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
-+	irq_work_sync(&ssp->srcu_irq_work);
- 	flush_work(&ssp->srcu_work);
- 	WARN_ON(ssp->srcu_gp_running);
- 	WARN_ON(ssp->srcu_gp_waiting);
-@@ -177,6 +180,20 @@ void srcu_drive_gp(struct work_struct *wp)
- }
- EXPORT_SYMBOL_GPL(srcu_drive_gp);
- 
-+/*
-+ * Use an irq_work to defer schedule_work() to avoid acquiring the workqueue
-+ * pool->lock while the caller might hold scheduler locks, causing lockdep
-+ * splats due to workqueue_init() doing a wakeup.
-+ */
-+void srcu_tiny_irq_work(struct irq_work *irq_work)
-+{
-+	struct srcu_struct *ssp;
-+
-+	ssp = container_of(irq_work, struct srcu_struct, srcu_irq_work);
-+	schedule_work(&ssp->srcu_work);
-+}
-+EXPORT_SYMBOL_GPL(srcu_tiny_irq_work);
-+
- static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
- {
- 	unsigned long cookie;
-@@ -189,7 +206,7 @@ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
- 	WRITE_ONCE(ssp->srcu_idx_max, cookie);
- 	if (!READ_ONCE(ssp->srcu_gp_running)) {
- 		if (likely(srcu_init_done))
--			schedule_work(&ssp->srcu_work);
-+			irq_work_queue(&ssp->srcu_irq_work);
- 		else if (list_empty(&ssp->srcu_work.entry))
- 			list_add(&ssp->srcu_work.entry, &srcu_boot_list);
- 	}
 -- 
 2.53.0
 
