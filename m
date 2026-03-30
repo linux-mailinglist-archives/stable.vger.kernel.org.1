@@ -1,320 +1,288 @@
-Return-Path: <stable+bounces-231251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOqIEymZymmg+QUAu9opvQ
-	(envelope-from <stable+bounces-231251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:39:21 +0200
+	id UMZ5C7Oaymmg+QUAu9opvQ
+	(envelope-from <stable+bounces-231252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:45:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3AA35E08E
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:39:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830D835E1CC
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29D813025D3C
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:33:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF7A8300A62B
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F16D364933;
-	Mon, 30 Mar 2026 15:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EFF364E84;
+	Mon, 30 Mar 2026 15:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V2KeRNxW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zo67GrZV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998B6345740;
-	Mon, 30 Mar 2026 15:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A9136308A
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774884806; cv=none; b=s486/MmbF9IfSnUP0KhU0a+gxu/HRK8WUdrOe/FLvDuN7LUcpH25+1B5KAL4HvvwxxLFMlGE27RB+qZX9I/uOmOrSeuRqntYuecjWwM3nw6C4pXk2AGH4jOlykjULZTDmAQXwHr5eeyAPgj6JTW8N03pN0WjNE23eTk/eWgeO2s=
+	t=1774885019; cv=none; b=UJBqvUJyty3SJEr+HlcimM5Gr9ykD+r2pgYcea+eWOg+RyyKvqZx1Wgrwi0PNeGHLkTdFl7A/XWP+YWxx1eMCmtjyNDNyVCJitwwhM/9liA3nN6TfyQRjT7hJIJ5sm7QJlJJdu2OMfHg2jjlIhv5R3oCASCe7OzL1W2a+ymfokQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774884806; c=relaxed/simple;
-	bh=3pCnQQyLnj2/0y2ukadpmuu1vMIl/Vsy9ZebANfKljI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=om4k/BNNoa7YMjhCfwdf3TJfgpZhcpFMVu6pkzIRv0RhM1uX+KiAbtIfHYciMKwYxqXatBZAp/Fl7SvN2DeMvqzT7V+ItJTsiIOZv/H10tcua3lAaPFEowpjdqIIp8Muuwn+2v3X61XhoXUDNR/MPU7XXcS7ZpZG2rlY5+87ut4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V2KeRNxW; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774884804; x=1806420804;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3pCnQQyLnj2/0y2ukadpmuu1vMIl/Vsy9ZebANfKljI=;
-  b=V2KeRNxWmu0Z12TmqCXD6C7eEoUyBUo89PIC7V/nqvs4auz7pfd2xtiy
-   WF0h3OGDKexlAH24JmJ6AlRMqGjHiSiDaQNbtBtQ6XvFzR/L5iMiG2QvX
-   Tp/aEdWkTxcqRSbEmaAeL/Nr3L0AJ2Ho7o8xy1eS3Zn6zVyfneclYtldv
-   pM06t3SCysmnFqQ+NwMJrwddnzN1a918RLoVxXX0xG89097s52FHo0Hky
-   dPdHyU+FeF3QObNpq/cN0Jba2rYkeEwn1qrQZ72M8ZsmQvtYcIoSiXTWV
-   1cyROo12l+JmTg+AmnwZ1GuFwxd5A0QVzZc8zlzU97pdaw7b1nSyLlMnK
-   A==;
-X-CSE-ConnectionGUID: GqG+VRfySSK8LsS/0Di2sw==
-X-CSE-MsgGUID: ipAwmyVASQutT10Je60L3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75945162"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="75945162"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 08:33:23 -0700
-X-CSE-ConnectionGUID: d3Jjvgb9RoqsAu8jeD5xTA==
-X-CSE-MsgGUID: cKHacYrpTYSxRa4lxbTN7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="256591284"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 30 Mar 2026 08:33:20 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7Ec8-000000001GX-1blC;
-	Mon, 30 Mar 2026 15:33:16 +0000
-Date: Mon, 30 Mar 2026 23:32:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kangzheng Gu <xiaoguai0992@gmail.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, kees@kernel.org, thorsten.blum@linux.dev,
-	arnd@arndb.de, sjur.brandeland@stericsson.com
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] net: caif: fix stack out-of-bounds write in
- cfctrl_link_setup()
-Message-ID: <202603302327.ZnK21mik-lkp@intel.com>
-References: <20260329190350.19065-1-xiaoguai0992@gmail.com>
+	s=arc-20240116; t=1774885019; c=relaxed/simple;
+	bh=bu7ebmUimIfKYxRtaAiu36rS7ei7eIe+dYDVb3Ft9HU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OBiCIOowvRF3D2Q9PNkW7L01DeDCbB9c+7QCCUKnyXHlkIaOTCTmT0ammoXN3entR+WcWGXxuVkJ9Hp7wuZyiWJLI1nSCDUnNZqYLUQFlCZk3OcV5j5pTRvR+6qEhZhGlGMPzOlfJMnwEldgPe6lLfZkL6uUPleMtYimNDmVm54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zo67GrZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B414C2BCB9
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:36:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774885019;
+	bh=bu7ebmUimIfKYxRtaAiu36rS7ei7eIe+dYDVb3Ft9HU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Zo67GrZVoY1r8/GPF6zkrcirHcsSbhTxlMuDof2IA4eJXz8ZQ+ttn7xRg3sbGz0m9
+	 MOJGGFC6FzdrvhYJA5QzMIA3rwHXql3FBkoU2DSh8HlAyd/r064ontT5kYMcALGwL3
+	 GtLNOfuElQL7UDFYZ2LEHDkHOxa3/OVwt1ochHzaJei6oOphLEw1kc+aiLQyZ2keh3
+	 IM0jdlXSUBuBOQCLyDW/sDhKTKgHcqB6mt3g03B2F0iSKqivhYYyhOYQp8KHRTCBB/
+	 N0HgKzTX0aNIpQ4ZCy3l0WTW6rpG0JDCPIVyyFmuSIdcMXb8Ym68keeENG4Qdu62aQ
+	 7gqM4DZgWKD1g==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-67e09232daeso2742798eaf.2
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:36:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVa8kXQLzXLM06TwEbbnjacmLBTRUIiD94+RweD2/tinKt1kfNlNSLQsbgLGJAzFQaYXDX64cA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq0BciIMVx0PHqPhJcsoVEEqDM0Q08C1WYyQZEpEpqC6ORuv/P
+	SLRg59z35t8bUvWVyi3mmI/aJ7PIt18ilO6BdQ5d1ld5ubHtqorr6kkQ7GWaivPj5ziAbe1HATV
+	JaeaE2L6wY5O5ikJBf7SREHxv6Pp5uzk=
+X-Received: by 2002:a05:6820:210a:b0:67e:3985:e110 with SMTP id
+ 006d021491bc7-67e3985e144mr827925eaf.56.1774885018139; Mon, 30 Mar 2026
+ 08:36:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260329190350.19065-1-xiaoguai0992@gmail.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+References: <20260330072839.v2.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+In-Reply-To: <20260330072839.v2.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 30 Mar 2026 17:36:46 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ha2OqzXotG033Dh+ua72xr1kaMT7fx+zsKEJgJuhFsBg@mail.gmail.com>
+X-Gm-Features: AQROBzBnkZGUjF4VcYvBDOZtcYi-LRHD2QZkvxWUiU2k6YhllRfgP-P_k7oePTM
+Message-ID: <CAJZ5v0ha2OqzXotG033Dh+ua72xr1kaMT7fx+zsKEJgJuhFsBg@mail.gmail.com>
+Subject: Re: [PATCH v2] driver core: Don't let a device probe until it's ready
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, 
+	Kay Sievers <kay.sievers@vrfy.org>, Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231251-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,davemloft.net,google.com,kernel.org,redhat.com,linux.dev,arndb.de,stericsson.com];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231252-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
-X-Rspamd-Queue-Id: AC3AA35E08E
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,android.com:url]
+X-Rspamd-Queue-Id: 830D835E1CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Kangzheng,
+On Mon, Mar 30, 2026 at 4:29=E2=80=AFPM Douglas Anderson <dianders@chromium=
+.org> wrote:
+>
+> The moment we link a "struct device" into the list of devices for the
+> bus, it's possible probe can happen. This is because another thread
+> can load the driver at any time and that can cause the device to
+> probe. This has been seen in practice with a stack crawl that looks
+> like this [1]:
+>
+>   really_probe()
+>   __driver_probe_device()
+>   driver_probe_device()
+>   __driver_attach()
+>   bus_for_each_dev()
+>   driver_attach()
+>   bus_add_driver()
+>   driver_register()
+>   __platform_driver_register()
+>   init_module() [some module]
+>   do_one_initcall()
+>   do_init_module()
+>   load_module()
+>   __arm64_sys_finit_module()
+>   invoke_syscall()
+>
+> As a result of the above, it was seen that device_links_driver_bound()
+> could be called for the device before "dev->fwnode->dev" was
+> assigned. This prevented __fw_devlink_pickup_dangling_consumers() from
+> being called which meant that other devices waiting on our driver's
+> sub-nodes were stuck deferring forever.
+>
+> It's believed that this problem is showing up suddenly for two
+> reasons:
+> 1. Android has recently (last ~1 year) implemented an optimization to
+>    the order it loads modules [2]. When devices opt-in to this faster
+>    loading, modules are loaded one-after-the-other very quickly. This
+>    is unlike how other distributions do it. The reproduction of this
+>    problem has only been seen on devices that opt-in to Android's
+>    "parallel module loading".
+> 2. Android devices typically opt-in to fw_devlink, and the most
+>    noticeable issue is the NULL "dev->fwnode->dev" in
+>    device_links_driver_bound(). fw_devlink is somewhat new code and
+>    also not in use by all Linux devices.
+>
+> Even though the specific symptom where "dev->fwnode->dev" wasn't
+> assigned could be fixed by moving that assignment higher in
+> device_add(), other parts of device_add() (like the call to
+> device_pm_add()) are also important to run before probe. Only moving
+> the "dev->fwnode->dev" assignment would likely fix the current
+> symptoms but lead to difficult-to-debug problems in the future.
+>
+> Fix the problem by preventing probe until device_add() has run far
+> enough that the device is ready to probe. If somehow we end up trying
+> to probe before we're allowed, __driver_probe_device() will return
+> -EPROBE_DEFER which will make certain the device is noticed.
+>
+> In the race condition that was seen with Android's faster module
+> loading, we will temporarily add the device to the deferred list and
+> then take it off immediately when device_add() probes the device.
+>
+> [1] Captured on a machine running a downstream 6.6 kernel
+> [2] https://cs.android.com/android/platform/superproject/main/+/main:syst=
+em/core/libmodprobe/libmodprobe.cpp?q=3DLoadModulesParallel
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 2023c610dc54 ("Driver core: add new device to bus's list before pr=
+obing")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-kernel test robot noticed the following build warnings:
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main soc/for-next linus/master v7.0-rc6 next-20260327]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Kangzheng-Gu/net-caif-fix-stack-out-of-bounds-write-in-cfctrl_link_setup/20260330-163130
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260329190350.19065-1-xiaoguai0992%40gmail.com
-patch subject: [PATCH v3] net: caif: fix stack out-of-bounds write in cfctrl_link_setup()
-config: um-randconfig-r073-20260330 (https://download.01.org/0day-ci/archive/20260330/202603302327.ZnK21mik-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-smatch: v0.5.0-9004-gb810ac53
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260330/202603302327.ZnK21mik-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603302327.ZnK21mik-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> net/caif/cfctrl.c:423:6: warning: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Wformat]
-     422 |                                 pr_warn("Request reject, volume name length exceeds %lu\n",
-         |                                                                                     ~~~
-         |                                                                                     %u
-     423 |                                         sizeof(linkparam.u.rfm.volume));
-         |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/printk.h:564:37: note: expanded from macro 'pr_warn'
-     564 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
-         |                                    ~~~     ^~~~~~~~~~~
-   include/linux/printk.h:511:60: note: expanded from macro 'printk'
-     511 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
-         |                                                     ~~~    ^~~~~~~~~~~
-   include/linux/printk.h:483:19: note: expanded from macro 'printk_index_wrap'
-     483 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                         ~~~~    ^~~~~~~~~~~
-   1 warning generated.
-
-
-vim +423 net/caif/cfctrl.c
-
-   351	
-   352	static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp)
-   353	{
-   354		u8 len;
-   355		u8 linkid = 0;
-   356		enum cfctrl_srv serv;
-   357		enum cfctrl_srv servtype;
-   358		u8 endpoint;
-   359		u8 physlinkid;
-   360		u8 prio;
-   361		u8 tmp;
-   362		u8 *cp;
-   363		int i;
-   364		struct cfctrl_link_param linkparam;
-   365		struct cfctrl_request_info rsp, *req;
-   366	
-   367		memset(&linkparam, 0, sizeof(linkparam));
-   368	
-   369		tmp = cfpkt_extr_head_u8(pkt);
-   370	
-   371		serv = tmp & CFCTRL_SRV_MASK;
-   372		linkparam.linktype = serv;
-   373	
-   374		servtype = tmp >> 4;
-   375		linkparam.chtype = servtype;
-   376	
-   377		tmp = cfpkt_extr_head_u8(pkt);
-   378		physlinkid = tmp & 0x07;
-   379		prio = tmp >> 3;
-   380	
-   381		linkparam.priority = prio;
-   382		linkparam.phyid = physlinkid;
-   383		endpoint = cfpkt_extr_head_u8(pkt);
-   384		linkparam.endpoint = endpoint & 0x03;
-   385	
-   386		switch (serv) {
-   387		case CFCTRL_SRV_VEI:
-   388		case CFCTRL_SRV_DBG:
-   389			if (CFCTRL_ERR_BIT & cmdrsp)
-   390				break;
-   391			/* Link ID */
-   392			linkid = cfpkt_extr_head_u8(pkt);
-   393			break;
-   394		case CFCTRL_SRV_VIDEO:
-   395			tmp = cfpkt_extr_head_u8(pkt);
-   396			linkparam.u.video.connid = tmp;
-   397			if (CFCTRL_ERR_BIT & cmdrsp)
-   398				break;
-   399			/* Link ID */
-   400			linkid = cfpkt_extr_head_u8(pkt);
-   401			break;
-   402	
-   403		case CFCTRL_SRV_DATAGRAM:
-   404			linkparam.u.datagram.connid = cfpkt_extr_head_u32(pkt);
-   405			if (CFCTRL_ERR_BIT & cmdrsp)
-   406				break;
-   407			/* Link ID */
-   408			linkid = cfpkt_extr_head_u8(pkt);
-   409			break;
-   410		case CFCTRL_SRV_RFM:
-   411			/* Construct a frame, convert
-   412			 * DatagramConnectionID
-   413			 * to network format long and copy it out...
-   414			 */
-   415			linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
-   416			cp = (u8 *) linkparam.u.rfm.volume;
-   417			for (tmp = cfpkt_extr_head_u8(pkt);
-   418			     cfpkt_more(pkt) && tmp != '\0';
-   419			     tmp = cfpkt_extr_head_u8(pkt)) {
-   420				if (cp >= (u8 *)linkparam.u.rfm.volume +
-   421				    sizeof(linkparam.u.rfm.volume) - 1) {
-   422					pr_warn("Request reject, volume name length exceeds %lu\n",
- > 423						sizeof(linkparam.u.rfm.volume));
-   424					cmdrsp |= CFCTRL_ERR_BIT;
-   425					break;
-   426				}
-   427				*cp++ = tmp;
-   428			}
-   429			*cp = '\0';
-   430	
-   431			if (CFCTRL_ERR_BIT & cmdrsp)
-   432				break;
-   433			/* Link ID */
-   434			linkid = cfpkt_extr_head_u8(pkt);
-   435	
-   436			break;
-   437		case CFCTRL_SRV_UTIL:
-   438			/* Construct a frame, convert
-   439			 * DatagramConnectionID
-   440			 * to network format long and copy it out...
-   441			 */
-   442			/* Fifosize KB */
-   443			linkparam.u.utility.fifosize_kb = cfpkt_extr_head_u16(pkt);
-   444			/* Fifosize bufs */
-   445			linkparam.u.utility.fifosize_bufs = cfpkt_extr_head_u16(pkt);
-   446			/* name */
-   447			cp = (u8 *) linkparam.u.utility.name;
-   448			caif_assert(sizeof(linkparam.u.utility.name)
-   449				     >= UTILITY_NAME_LENGTH);
-   450			for (i = 0; i < UTILITY_NAME_LENGTH && cfpkt_more(pkt); i++) {
-   451				tmp = cfpkt_extr_head_u8(pkt);
-   452				*cp++ = tmp;
-   453			}
-   454			/* Length */
-   455			len = cfpkt_extr_head_u8(pkt);
-   456			linkparam.u.utility.paramlen = len;
-   457			/* Param Data */
-   458			cp = linkparam.u.utility.params;
-   459			while (cfpkt_more(pkt) && len--) {
-   460				tmp = cfpkt_extr_head_u8(pkt);
-   461				*cp++ = tmp;
-   462			}
-   463			if (CFCTRL_ERR_BIT & cmdrsp)
-   464				break;
-   465			/* Link ID */
-   466			linkid = cfpkt_extr_head_u8(pkt);
-   467			/* Length */
-   468			len = cfpkt_extr_head_u8(pkt);
-   469			/* Param Data */
-   470			cfpkt_extr_head(pkt, NULL, len);
-   471			break;
-   472		default:
-   473			pr_warn("Request setup, invalid type (%d)\n", serv);
-   474			return -1;
-   475		}
-   476	
-   477		rsp.cmd = CFCTRL_CMD_LINK_SETUP;
-   478		rsp.param = linkparam;
-   479		spin_lock_bh(&cfctrl->info_list_lock);
-   480		req = cfctrl_remove_req(cfctrl, &rsp);
-   481	
-   482		if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
-   483			cfpkt_erroneous(pkt)) {
-   484			pr_err("Invalid O/E bit or parse error "
-   485					"on CAIF control channel\n");
-   486			cfctrl->res.reject_rsp(cfctrl->serv.layer.up, 0,
-   487					       req ? req->client_layer : NULL);
-   488		} else {
-   489			cfctrl->res.linksetup_rsp(cfctrl->serv.layer.up, linkid,
-   490						  serv, physlinkid,
-   491						  req ?  req->client_layer : NULL);
-   492		}
-   493	
-   494		kfree(req);
-   495	
-   496		spin_unlock_bh(&cfctrl->info_list_lock);
-   497	
-   498		return 0;
-   499	}
-   500	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+> v1: https://lore.kernel.org/r/20260320200656.RFC.1.Id750b0fbcc94f23ed04b7=
+aecabcead688d0d8c17@changeid
+>
+> This v2 feels like a very safe change. It doesn't change the ordering
+> of any steps of probe and it _just_ prevents the early probe from
+> happening.
+>
+> I ran tests where I turned the printout "Device not ready_to_probe" on
+> and I could see the printout happening, evidence of the race occurring
+> from other printouts, and things successfully being resolved.
+>
+> Changes in v2:
+> - Instead of adjusting the ordering, use "ready_to_probe" flag
+>
+>  drivers/base/core.c    | 15 +++++++++++++++
+>  drivers/base/dd.c      | 12 ++++++++++++
+>  include/linux/device.h |  3 +++
+>  3 files changed, 30 insertions(+)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 09b98f02f559..4caa3fd1ecdb 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -3688,6 +3688,21 @@ int device_add(struct device *dev)
+>                 fw_devlink_link_device(dev);
+>         }
+>
+> +       /*
+> +        * The moment the device was linked into the bus's "klist_devices=
+" in
+> +        * bus_add_device() then it's possible that probe could have been
+> +        * attempted in a different thread via userspace loading a driver
+> +        * matching the device. "ready_to_probe" being false would have b=
+locked
+> +        * those attempts. Now that all of the above initialization has
+> +        * happened, unblock probe. If probe happens through another thre=
+ad
+> +        * after this point but before bus_probe_device() runs then it's =
+fine.
+> +        * bus_probe_device() -> device_initial_probe() -> __device_attac=
+h()
+> +        * will notice (under device_lock) that the device is already bou=
+nd.
+> +        */
+> +       device_lock(dev);
+> +       dev->ready_to_probe =3D true;
+> +       device_unlock(dev);
+> +
+>         bus_probe_device(dev);
+>
+>         /*
+> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> index 37c7e54e0e4c..a1762254828f 100644
+> --- a/drivers/base/dd.c
+> +++ b/drivers/base/dd.c
+> @@ -848,6 +848,18 @@ static int __driver_probe_device(const struct device=
+_driver *drv, struct device
+>         if (dev->driver)
+>                 return -EBUSY;
+>
+> +       /*
+> +        * In device_add(), the "struct device" gets linked into the subs=
+ystem's
+> +        * list of devices and broadcast to userspace (via uevent) before=
+ we're
+> +        * quite ready to probe. Those open pathways to driver probe befo=
+re
+> +        * we've finished enough of device_add() to reliably support prob=
+e.
+> +        * Detect this and tell other pathways to try again later. device=
+_add()
+> +        * itself will also try to probe immediately after setting
+> +        * "ready_to_probe".
+> +        */
+> +       if (!dev->ready_to_probe)
+> +               return dev_err_probe(dev, -EPROBE_DEFER, "Device not read=
+y_to_probe");
+> +
+>         dev->can_match =3D true;
+>         dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
+>                 drv->bus->name, __func__, drv->name);
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index e65d564f01cd..e2f83384b627 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -553,6 +553,8 @@ struct device_physical_location {
+>   * @dma_skip_sync: DMA sync operations can be skipped for coherent buffe=
+rs.
+>   * @dma_iommu: Device is using default IOMMU implementation for DMA and
+>   *             doesn't rely on dma_ops structure.
+> + * @ready_to_probe: If set to %true then device_add() has finished enoug=
+h
+> + *             initialization that probe could be called.
+>   *
+>   * At the lowest level, every device in a Linux system is represented by=
+ an
+>   * instance of struct device. The device structure contains the informat=
+ion
+> @@ -675,6 +677,7 @@ struct device {
+>  #ifdef CONFIG_IOMMU_DMA
+>         bool                    dma_iommu:1;
+>  #endif
+> +       bool                    ready_to_probe:1;
+>  };
+>
+>  /**
+> --
+> 2.53.0.1018.g2bb0e51243-goog
+>
 
