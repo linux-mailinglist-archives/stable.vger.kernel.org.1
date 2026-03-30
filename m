@@ -1,255 +1,198 @@
-Return-Path: <stable+bounces-231286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJJYItLtymkkBQYAu9opvQ
-	(envelope-from <stable+bounces-231286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:40:34 +0200
+	id WLSWAtDwymkkBQYAu9opvQ
+	(envelope-from <stable+bounces-231287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:53:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0763A361885
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:40:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6111C361A0F
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4969B3022F68
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:38:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6758302B3B5
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A593A1A5B;
-	Mon, 30 Mar 2026 21:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FF83A6F19;
+	Mon, 30 Mar 2026 21:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfWpSTbn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CbTVCu51"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF073A3E78
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 21:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774906734; cv=pass; b=N7ToJ5mPwBd8+RWQYHhd4gwDLg+InxnJPEn4UcZMd6yptfsCZu7/0ABXpVqqQ3vAltyVAUc1da6jffIAT6YkI4/WdxZdfMNBUkhMiHEBr7EEsmGCWHQN/EaPbi3ePjkOkGfB+CUaFweiB/+EtBlMG4f8jghJj8Yco6OaohP/BQA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774906734; c=relaxed/simple;
-	bh=vAf6JRwaS0nLIvwGyADIdn5Vlj6jq+46aU6jlvEA3Gs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lrSCTIx/G3nP2/gJ/7IhTYW38A+Wo2yVWpZwS7Y8m7sofZiasdQ5DRbKUUll4iSoz0oAW6BpaYMT+jXYEVn+bVvwHlx48Wi7uAMAMTG3waNd25OXDKLdo5+NeXro0XrdoIc9DvTbX6+MuGKyxPyZCIAciVIFWB7UCcvaWHMGr+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfWpSTbn; arc=pass smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a2bb0fe3bbso258960e87.3
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 14:38:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774906728; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IHPVv5b2BcHBh5ZJgVk1beZFtoLyGFZC5SmI1NHd9AWKU+9EaGJbaXwPqe/w4hsBwV
-         Hwa9YgFQG4ld+dA1NPOh2X63AmRsEERMBpKZDoZi6PbmZELKn2kTGZIJs+mD6mAOYs1Y
-         5T55ebRaNk5LGsclJ5sU7GK9IFaKMu/11Wpsp5Z3d+eKj/hFvAh/w7JWQB+Wy42j9mmM
-         As4H6NTjJHD/DbXDi+m33DkwPdlSnrPS0T1WmmbHDUUtknbuHmT74TqnAJmw/XUzTl23
-         eM+204u/goGWbRMTfarXwyY46vXu6Z6gXL2g0ZPDjKq67ngL2eq2RbZfZNulCu/WU4el
-         be1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RyXWT6CZTRjvrBzjlgkYqR6hvQZ/LcLxcXjlYxt3yys=;
-        fh=oXAPCvUYdy7+3UE0W44cNkTC4OVu4YthK67407U77Io=;
-        b=Q+E6eVsAiK35+eoVKF5Z0xI6YHI12dPd9TU+OKcyykPE4YZbl7Cqk0hGkzGJykw7X/
-         dwsvWQwK2vMBZ/3soxblzwDLZO/81ZW02o84MAq54GtOqJKupfKKE4j6JvmPmSfnfpSS
-         b03nUdnA1jYOYle6lcqn/CE5e3mrR9Pe4TsGpTSm8qv3Lf7A1pueSt35oa/cie7WV3cp
-         pjIefKYefZwRc80/NjZdB9E7yg3hHnYjir3Iebt+uyn5K1dVBdWQF16NM+MzwNRok+av
-         3YIiK6tzesTenTG3UAmL/MRj5gv4zaiSkWG3ftFpssiz5zu7Kafukh+0XbgVnpjgbGms
-         +4dA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774906728; x=1775511528; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RyXWT6CZTRjvrBzjlgkYqR6hvQZ/LcLxcXjlYxt3yys=;
-        b=kfWpSTbnBAd2M31Uy4WVyysouPdqZ5RTUdIUfdObibAiC4WK7rMIahd0MvdT5eaYjF
-         kg3fZcPLnNqnpY1xh2QGCip+XJ+B9e8J6J5hIDS/cY6GYpraMleWE/SQ6rJmSi3oSFr4
-         tSoH3436XlCtH3b55Ssxfx4GiAX0xydW3t8F9Wj0OR7LFoJ/tFOoU/IjqTdC2rVnRtXe
-         Dqqiou86J6jQwIJRyFes4531KOgjRG1RRumFMAwD+IVQrQZXlF1RtkVSud6saGkcFZyz
-         VTvTb6souFP2svHJdz5fiq9xkdb4a9Ymm48cNAXmjoJKXzrRV11HBIR76RyxCLxoBFC4
-         xncQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774906728; x=1775511528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RyXWT6CZTRjvrBzjlgkYqR6hvQZ/LcLxcXjlYxt3yys=;
-        b=jXe9/ryoqmeEd9DriW2pO2B/c2ya+eBNHzsVonzjmxNhlmmGsBUyWaJ7QR+AaG6JHo
-         maXoX27d2X30rz+38d4E4j7VZjBWBaGjz7crOW0cN6nsosV3of41KtMLGG4QPcDG3W+f
-         y8n/S9oHzLzs+4c5i49a1BodPuzYoLsH+LwGXQuLNjPu7O926Ho08nhrwagBdT2Gaf1T
-         TGnKPOSfub2yvFdbXN0VPi01Ma0y6OwX2IoR8w3X63VLKatIXWnH4mrbKG7woGduXii/
-         MMVq28ddKlEQ64ybdzKPtR4+oMar/Y3UMVzBMEfiex0PA29FFnlBmFBpJmZ/WDHXjNRv
-         cm/g==
-X-Gm-Message-State: AOJu0Yxuq8a2p1elgfVviCIVt+IvFZIq8ykz+i8ROZwXSz2VYumEDaxK
-	jSu232HP+vG4qEaLicbQNM2D6nINCV7hLOPCWI1ajvY3c86Iq2tCvhPoVUne8C+/PvbSwKD3Orz
-	cXm0a+2vZEB+G1VJS+LasDmWZns0XgAQ=
-X-Gm-Gg: ATEYQzwYf+tYi6jo3xlhnQEoMJhciKJdEZQ6cEjDDLGZGdf00aPNNuaLAqY6pAUE0Hw
-	dBA/IfpLFIi0FclM5RlSemlpqrx4kYR+b2boYvVG/Gsc2g7RFMIttxrg/iW8XoYTXu2aJxpDUs+
-	UyY2GND6wvNLoO1fzsw3HTeFc/8dZ86fiQOqr5gTR0CwrxYfi+U/mK3baXVs8TgOqktTqpXxsR1
-	pHF4jhlbTXjsYpXRS8EAH1gKVxyq3taV8Ch4FBtRSJAhiTJY2/d3R9OtNMXJzEcKRDCCHNwd2bU
-	FBEkWWhc16QNERDqwDUkn5+kaZTBZefR/9r/qgARxdyHtIpeLaou1wYF9kYM6BPfXGfTMxCIk0t
-	qUODGrw==
-X-Received: by 2002:a05:6512:1084:b0:5a1:4473:bb44 with SMTP id
- 2adb3069b0e04-5a2ab92d9e4mr5216280e87.33.1774906727539; Mon, 30 Mar 2026
- 14:38:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F553A6EED;
+	Mon, 30 Mar 2026 21:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774907211; cv=none; b=CJlKygR7+AOYY1mv3S12qrKqTqUl02BnEWsQAdRMmRQ6KHwV4tgrS0b/ySMItY6v3hGV6fqxzvX6w0Eze7IyMHy4DZVNy9XLd3UP2kGOsFR/L6CLjSDvdmvtSPc07GMNO1ZEBvdYkMSEe1rahhNZfhY3u2FcQOfjSwSZodbVjJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774907211; c=relaxed/simple;
+	bh=xlErDBSkRR5S4gQ9GdS5wH+VFFJ88ho2cfOxWVfDsD0=;
+	h=Date:To:From:Subject:Message-Id; b=ouzsF9/bFMV/j8do5rjuwkolA5mfWxL4PljYUm5HqjwsPGMXSIv92p0B1PZMWVk/bEvJZzIpUyqAmtVYbXBaQNXNCk2hD6sdPb5oKnWUR8tq7u/E1Hm+tJGGLgxR1lgXSDON53vO8v4HgZ5C+ebFmticKWWEysJSB3olXkphDYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CbTVCu51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3FEC2BCB1;
+	Mon, 30 Mar 2026 21:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774907211;
+	bh=xlErDBSkRR5S4gQ9GdS5wH+VFFJ88ho2cfOxWVfDsD0=;
+	h=Date:To:From:Subject:From;
+	b=CbTVCu51ui8mT/h2MZGMe3Vn+Unb9Af8kPcYcovlV0HwfxNx2NTFe+so61Zt2Q2I5
+	 gpLRLBR/scGUUQ7ZdhWzTf5BkiF6S4yHuosDeTbLzjmQgN/Uxb5glpeBJORnzz4hvq
+	 LBgrWywuz35zKMo+uKqj0WonuCS/M7BsP41GYNSw=
+Date: Mon, 30 Mar 2026 14:46:50 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,vbabka@kernel.org,stable@vger.kernel.org,osalvador@suse.de,joshua.hahnjy@gmail.com,harry@kernel.org,david@kernel.org,hao.li@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260330214651.4B3FEC2BCB1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260326234716.16723-1-rosenp@gmail.com> <2312151.9o76ZdvQCi@timur-hyperion>
- <6b15401c-1fdf-4d3b-84aa-dfc47f430895@amd.com> <7351746.9J7NaK4W3v@timur-hyperion>
-In-Reply-To: <7351746.9J7NaK4W3v@timur-hyperion>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Mon, 30 Mar 2026 14:38:35 -0700
-X-Gm-Features: AQROBzClHbQKYMQEBk1N37wHNV8JfR61-qIixPaDukv245DWUjEWx7ElX5PJJLU
-Message-ID: <CAKxU2N-CRua=kMVm8gdf2AnbCFyLsLTbf=-9NZHAkhL3sJC-tw@mail.gmail.com>
-Subject: Re: [PATCH for 6.12 3/9] drm/amd/display: Disable fastboot on DCE 6 too
-To: =?UTF-8?Q?Timur_Krist=C3=B3f?= <timur.kristof@gmail.com>
-Cc: stable@vger.kernel.org, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Alex Deucher <alexander.deucher@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, 
-	David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>, 
-	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bin Lan <bin.lan.cn@windriver.com>, 
-	He Zhe <zhe.he@windriver.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>, 
-	Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>, 
-	Mario Limonciello <Mario.Limonciello@amd.com>, Ray Wu <ray.wu@amd.com>, 
-	Wayne Lin <wayne.lin@amd.com>, Roman Li <Roman.Li@amd.com>, Eric Yang <Eric.Yang2@amd.com>, 
-	Tony Cheng <Tony.Cheng@amd.com>, Mauro Rossi <issor.oruam@gmail.com>, 
-	"open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>, 
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231286-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231287-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,linux.ie,ffwll.ch,linuxfoundation.org,windriver.com,igalia.com,gmail.com,lists.freedesktop.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,suse.cz,kernel.org,suse.de,gmail.com,linux.dev,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lists.freedesktop.org:url,amd.com:email,mail.gmail.com:mid,igalia.com:email]
-X-Rspamd-Queue-Id: 0763A361885
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,suse.cz:email,suse.de:email,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: 6111C361A0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 7:21=E2=80=AFAM Timur Krist=C3=B3f <timur.kristof@g=
-mail.com> wrote:
->
-> On Monday, March 30, 2026 3:55:55=E2=80=AFPM Central European Summer Time=
- Christian
-> K=C3=B6nig wrote:
-> > On 3/30/26 15:16, Timur Krist=C3=B3f wrote:
-> > > On Friday, March 27, 2026 12:47:10=E2=80=AFAM Central European Summer=
- Time Rosen
-> > > Penev>
-> > > wrote:
-> > >> From: Timur Krist=C3=B3f <timur.kristof@gmail.com>
-> > >>
-> > >> [ Upstream commit 7495962cbceb967e095233a5673ea71f3bcdee7e ]
-> > >>
-> > >> It already didn't work on DCE 8,
-> > >> so there is no reason to assume it would on DCE 6.
-> > >>
-> > >> Signed-off-by: Timur Krist=C3=B3f <timur.kristof@gmail.com>
-> > >> Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-> > >> Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-> > >> Reviewed-by: Alex Hung <alex.hung@amd.com>
-> > >> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > >> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > >
-> > > This patch is incorrect and should not be backported.
-> > >
-> > > (Note that the error is already fixed upstream. For stable kernels IM=
-O
-> > > it's
-> > > best to drop this one.)
-> >
-> > Is there some alternative which needs to be backported or should the ol=
-d
-> > kernel just work out of the box because we never enabled some feature
-> > there?
-> >
-> > Apart from that the patch set looks good to me.
-> >
->
-> This patch had a typo and does the opposite of what it should, ie. it dis=
-ables
-> eDP fastboot on DCE10 and newer instead of disabling it on DCE8 and older=
-.
->
-> The upstream fix is here:
-> https://lists.freedesktop.org/archives/amd-gfx/2026-February/138577.html
-> which disables eDP fastboot on DCE10 and older.
-Not sure what the process is here. I make sure everything can be git
-cherry-pick ed. In that case, both should be present.
->
-> >
-> > >> ---
-> > >>
-> > >>  drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 6 ++---=
--
-> > >>  1 file changed, 2 insertions(+), 4 deletions(-)
-> > >>
-> > >> diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq=
-.c
-> > >> b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c index
-> > >> df69e0cebf78..7dc99c85b8ea 100644
-> > >> --- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-> > >> +++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-> > >> @@ -1910,10 +1910,8 @@ void dce110_enable_accelerated_mode(struct dc=
- *dc,
-> > >> struct dc_state *context)
-> > >>
-> > >>    get_edp_streams(context, edp_streams, &edp_stream_num);
-> > >>
-> > >> -  // Check fastboot support, disable on DCE8 because of blank
-> > >
-> > > screens
-> > >
-> > >> -  if (edp_num && edp_stream_num && dc->ctx->dce_version !=3D
-> > >
-> > > DCE_VERSION_8_0
-> > >
-> > >> && -                   dc->ctx->dce_version !=3D DCE_VERSION_8_1 &&
-> > >> -              dc->ctx->dce_version !=3D DCE_VERSION_8_3) {
-> > >> +  /* Check fastboot support, disable on DCE 6-8 because of blank
-> > >
-> > > screens */
-> > >
-> > >> +  if (edp_num && edp_stream_num && dc->ctx->dce_version <
-> > >
-> > > DCE_VERSION_10_0)
-> > >
-> > >> { for (i =3D 0; i < edp_num; i++) {
-> > >>
-> > >>                    edp_link =3D edp_links[i];
-> > >>                    if (edp_link !=3D edp_streams[0]->link)
->
->
->
->
+
+The patch titled
+     Subject: mm/memory_hotplug: maintain N_NORMAL_MEMORY during hotplug
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Hao Li <hao.li@linux.dev>
+Subject: mm/memory_hotplug: maintain N_NORMAL_MEMORY during hotplug
+Date: Mon, 30 Mar 2026 11:57:49 +0800
+
+N_NORMAL_MEMORY is initialized from zone population at boot, but memory
+hotplug currently only updates N_MEMORY.  As a result, a node that gains
+normal memory via hotplug can remain invisible to users iterating over
+N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
+incorrectly marked as such.
+
+Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
+offline_pages().  Set the bit when a node that currently lacks normal
+memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
+offlining removes the last present pages from zones <= ZONE_NORMAL.
+
+This restores the intended semantics without bringing back the old
+status_change_nid_normal notifier plumbing which was removed in
+8d2882a8edb8.
+
+Current users that benefit include list_lru, zswap, nfsd filecache,
+hugetlb_cgroup, and has_normal_memory sysfs reporting.
+
+Link: https://lkml.kernel.org/r/20260330035941.518186-1-hao.li@linux.dev
+Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
+Signed-off-by: Hao Li <hao.li@linux.dev>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory_hotplug.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+--- a/mm/memory_hotplug.c~mm-memory_hotplug-maintain-n_normal_memory-during-hotplug
++++ a/mm/memory_hotplug.c
+@@ -1209,6 +1209,13 @@ int online_pages(unsigned long pfn, unsi
+ 
+ 	if (node_arg.nid >= 0)
+ 		node_set_state(nid, N_MEMORY);
++	/*
++	 * Check whether we are adding normal memory to the node for the first
++	 * time.
++	 */
++	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
++		node_set_state(nid, N_NORMAL_MEMORY);
++
+ 	if (need_zonelists_rebuild)
+ 		build_all_zonelists(NULL);
+ 
+@@ -1908,6 +1915,8 @@ int offline_pages(unsigned long start_pf
+ 	unsigned long flags;
+ 	char *reason;
+ 	int ret;
++	unsigned long normal_pages = 0;
++	enum zone_type zt;
+ 
+ 	/*
+ 	 * {on,off}lining is constrained to full memory sections (or more
+@@ -2056,6 +2065,17 @@ int offline_pages(unsigned long start_pf
+ 	init_per_zone_wmark_min();
+ 
+ 	/*
++	 * Check whether this operation removes the last normal memory from
++	 * the node. We do this before clearing N_MEMORY to avoid the possible
++	 * transient "!N_MEMORY && N_NORMAL_MEMORY" state.
++	 */
++	if (zone_idx(zone) <= ZONE_NORMAL) {
++		for (zt = 0; zt <= ZONE_NORMAL; zt++)
++			normal_pages += pgdat->node_zones[zt].present_pages;
++		if (!normal_pages)
++			node_clear_state(node, N_NORMAL_MEMORY);
++	}
++	/*
+ 	 * Make sure to mark the node as memory-less before rebuilding the zone
+ 	 * list. Otherwise this node would still appear in the fallback lists.
+ 	 */
+_
+
+Patches currently in -mm which might be from hao.li@linux.dev are
+
+mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch
+
 
