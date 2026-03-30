@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-231192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJzyIhFwymnG8gUAu9opvQ
-	(envelope-from <stable+bounces-231192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:44:01 +0200
+	id CMA6Fk1wymkD9AUAu9opvQ
+	(envelope-from <stable+bounces-231194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:45:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA85C35B342
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:44:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB6635B3B7
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3E123061615
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:38:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56FFA3073F65
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0253D1CB5;
-	Mon, 30 Mar 2026 12:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82383D1CD5;
+	Mon, 30 Mar 2026 12:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXX2QQUI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RetctO0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74453D1713;
-	Mon, 30 Mar 2026 12:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8031A3D16E5;
+	Mon, 30 Mar 2026 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874335; cv=none; b=Tb3uVpe0ytQY3/Cc02R1t3XrfGVxezMuUZhO14FLSVhDf+9yoxOC30/QBtLMWOy7a8YKLHkSbT/jdXf4tQhmxhyT2jGs2Jb5gEzFyNJHfV8/+Vm2SOv3sgrJ3wihOORgz0i5k6Qqr8yUqG2JZzNuRDCxxz2To5ui+L5CAUqYiWk=
+	t=1774874338; cv=none; b=QXArrhZWLTuxPKCIhTKKmGoTVFlVT7m1nCKzxEu/bJ+Ch1UCESW2L1NEmW7XSdV0uIde40AxT0m6Q7EjqyXtMA+gq+TWpTDMUstcl0kS5Z0e9/3kOvBbY/YpASyYJrq66t7BucFzdTixWVr+CQ4GwYGcQOUFQmSGy5i8297S13E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874335; c=relaxed/simple;
-	bh=tP+lre6dq3uVg+ttZiFaRElIPoTiUazPMTJ4WyhtlvQ=;
+	s=arc-20240116; t=1774874338; c=relaxed/simple;
+	bh=lNnTyxFDuhsw1+MjDWI7JngK4wScW9vg6MGq567ugdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=knTifj1pUSo1LvYvRYRpmY2IxUgZJO0ejqGEVrK/5hnpT8uCe+QfxnQnfyS9iCeQ+EWfFAruT6npsG27b5liIUotBhOmhbUXVS/5Mdl3TaAuifFsj60Zy1S4DggRW4PIX0oaN+Fl4Ai+4aSW2NATCOTKgZuWl1Rf0qi36nX6IZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXX2QQUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC559C2BCB1;
-	Mon, 30 Mar 2026 12:38:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tSM2KMmiQeUcy6vMJXdFeoQ4g+MWzSQ6Kl9Tt5VNICVt6LsersKxF9flsGI/9IOvvbTRZPJkqgK6EboJB8FsM+m6imwXiEFBr4vkfGj4Sk8HtQBAs3vf9wn+GcBrqLAxsmzkPwmhETWIudMvvkahLVDXLFlmHnC/a2Pcjn21Ucw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RetctO0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23800C4CEF7;
+	Mon, 30 Mar 2026 12:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874334;
-	bh=tP+lre6dq3uVg+ttZiFaRElIPoTiUazPMTJ4WyhtlvQ=;
+	s=k20201202; t=1774874336;
+	bh=lNnTyxFDuhsw1+MjDWI7JngK4wScW9vg6MGq567ugdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXX2QQUIVZk+ufPUO/4wYhWhQEwJCvpliRF7mSmuIm83LqYUpSJFN0FdcmQJFeFfN
-	 GkroFQ3djVRDo/4EIN04Jrtv/dn0meNgxsQdx2yE9IPMCmYHn1bsP3GTutzMjF0xPc
-	 0ctyHbMws4R27E/ELx4F9hqWPL93aLfcvfyd8ZAOvuATDj1JluUq1V4OvrrmJiIEOx
-	 Jp969oFvF+VM5QiKpDUFsZ7e88urB6ol3ftw2bIujnOmDUMHB2/Mt9Rygt3hpryu7g
-	 9KbpCsDMoiDPNVwgBzCDQlw2CrIKBwCQN858FuzI6d4C0seCrabMQ58JNO1OsaBfAn
-	 wonZV+nRPCHLg==
+	b=RetctO0lb+4wCIK/U6HgjCAFpaGaGZmFl8uCwM6mYXnrt/2oRtCE8iQBplCiOXAxn
+	 HmtbSB2uhwB+QjKVbP/100l59pe9ZC1t9KRlkwHvnrOl9w+8NQistaZwqa20V9Njs+
+	 RSyA4mm0D54a2FLB258Rf49Lm/LCLs6s//DfJ4sXMM/kVTT0418/IHB816YYS/epwb
+	 47ciGxupouslCkT+DdQo40o/avRJpMiUDr4YYqyeqJEhju2o/nhP9gJ/OWONMpocTD
+	 MwQ2QzHbF300kw5vYLwqDOEEqUQpZ3ABQHVLVDnuiNukUw0gAWayM4JMN4qg0QBOJ5
+	 FjAAX2PxWxT/g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jiucheng Xu <jiucheng.xu@amlogic.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
+Cc: Krishna Chomal <krishna.chomal108@gmail.com>,
+	WJ Enderlava <jie7172585@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	xiang@kernel.org,
-	linux-erofs@lists.ozlabs.org,
+	hansg@kernel.org,
+	platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.1] erofs: add GFP_NOIO in the bio completion if needed
-Date: Mon, 30 Mar 2026 08:38:21 -0400
-Message-ID: <20260330123842.756154-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.18] platform/x86: hp-wmi: Add support for Omen 16-wf1xxx (8C76)
+Date: Mon, 30 Mar 2026 08:38:22 -0400
+Message-ID: <20260330123842.756154-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330123842.756154-1-sashal@kernel.org>
 References: <20260330123842.756154-1-sashal@kernel.org>
@@ -66,643 +66,413 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19.10
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231192-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,kernel.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231194-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amlogic.com:email,alibaba.com:email]
-X-Rspamd-Queue-Id: EA85C35B342
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: DAB6635B3B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-[ Upstream commit c23df30915f83e7257c8625b690a1cece94142a0 ]
+[ Upstream commit 84d29bfd1929d08f092851162a3d055a2134d043 ]
 
-The bio completion path in the process context (e.g. dm-verity)
-will directly call into decompression rather than trigger another
-workqueue context for minimal scheduling latencies, which can
-then call vm_map_ram() with GFP_KERNEL.
+The HP Omen 16-wf1xxx (board ID: 8C76) has the same WMI interface as
+other Victus S boards, but requires quirks for correctly switching
+thermal profile (similar to board 8C78).
 
-Due to insufficient memory, vm_map_ram() may generate memory
-swapping I/O, which can cause submit_bio_wait to deadlock
-in some scenarios.
+Add the DMI board name to victus_s_thermal_profile_boards[] table and
+map it to omen_v1_thermal_params.
 
-Trimmed down the call stack, as follows:
+Testing on board 8C76 confirmed that platform profile is registered
+successfully and fan RPMs are readable and controllable.
 
-f2fs_submit_read_io
-  submit_bio                      //bio_list is initialized.
-    mmc_blk_mq_recovery
-      z_erofs_endio
-        vm_map_ram
-          __pte_alloc_kernel
-            __alloc_pages_direct_reclaim
-              shrink_folio_list
-                __swap_writepage
-                  submit_bio_wait  //bio_list is non-NULL, hang!!!
-
-Use memalloc_noio_{save,restore}() to wrap up this path.
-
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Tested-by: WJ Enderlava <jie7172585@gmail.com>
+Reported-by: WJ Enderlava <jie7172585@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221149
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20260227154106.226809-1-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-All verified. Here is the complete analysis.
+Now I have all the data needed for the comprehensive analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject Line
-- **Subsystem**: erofs (Enhanced Read-Only File System, compressed I/O
-  path)
-- **Action verb**: "add" — but the body describes a deadlock fix
-- **Summary**: Adds `memalloc_noio_save/restore` scope in BIO completion
-  to prevent deadlock during direct decompression
+**Step 1.1: Subject Line**
+Record: [platform/x86: hp-wmi] [Add] [DMI board name 8C76 to Victus S
+thermal profile table, mapped to omen_v1_thermal_params]
 
-Record: [erofs] [add (really "fix")] [Wraps direct decompression in
-GFP_NOIO scope to prevent deadlock in bio completion]
+**Step 1.2: Tags**
+Record:
+- `Tested-by: WJ Enderlava <jie7172585@gmail.com>` — real user tested on
+  hardware
+- `Reported-by: WJ Enderlava <jie7172585@gmail.com>` — single reporter,
+  real hardware user
+- `Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221149` — user-
+  filed bugzilla
+- `Signed-off-by: Krishna Chomal` — author
+- `Link: https://patch.msgid.link/20260227154106.226809-1-
+  krishna.chomal108@gmail.com`
+- `Reviewed-by: Ilpo Järvinen` — subsystem maintainer reviewed
+- `Signed-off-by: Ilpo Järvinen` — maintainer committed
+- No `Fixes:` tag (expected for manual review candidates)
+- No `Cc: stable` (expected)
+- No syzbot involvement
 
-### Step 1.2: Tags
-- **Reviewed-by**: Gao Xiang <hsiangkao@linux.alibaba.com> — erofs
-  maintainer
-- **Signed-off-by**: Jiucheng Xu <jiucheng.xu@amlogic.com> — patch
-  author (Amlogic, ARM/Android platform vendor)
-- **Reviewed-by**: Chao Yu <chao@kernel.org> — regular erofs reviewer
-- **Signed-off-by**: Gao Xiang <hsiangkao@linux.alibaba.com> — committed
-  through maintainer tree
-- No `Fixes:` tag (expected for commits needing manual review)
-- No `Cc: stable@vger.kernel.org` (expected)
-- No `Reported-by:` or `Link:` tags
-- Notable: Two reviews from subsystem maintainer and key reviewer;
-  committed by maintainer
+**Step 1.3: Body Text**
+Record: Bug: Board 8C76 (HP Omen 16-wf1xxx) has the same WMI interface
+as Victus S boards but requires quirks for correct thermal profile
+switching (similar to 8C78). Symptom: without the entry, the board
+cannot register the platform profile and fan RPMs are not
+readable/controllable. Testing confirmed on real hardware that profile
+registers and fans work after the fix. Root cause: missing DMI board
+name in the quirk table.
 
-Record: Two senior reviewers (one is the subsystem maintainer). No Fixes
-tag. Author is from Amlogic (Android SoC vendor, direct user of
-erofs+dm-verity).
-
-### Step 1.3: Commit Body Text
-The commit describes a **concrete deadlock scenario** with a trimmed
-stack trace:
-1. BIO completion runs in process context (e.g., when dm-verity is
-   layered on top)
-2. EROFS directly calls decompression (not via workqueue) to minimize
-   latency
-3. Decompression calls `vm_map_ram()` with `GFP_KERNEL`
-4. Under memory pressure, `vm_map_ram()` → page allocation → direct
-   reclaim → swap writeback → `submit_bio_wait()`
-5. Since `bio_list` is already initialized from the parent `submit_bio`,
-   the new bio gets queued to `bio_list` but is never drained →
-   **deadlock/hang**
-
-Stack trace: `f2fs_submit_read_io → submit_bio → mmc_blk_mq_recovery →
-z_erofs_endio → vm_map_ram → __pte_alloc_kernel →
-__alloc_pages_direct_reclaim → shrink_folio_list → __swap_writepage →
-submit_bio_wait //hang`
-
-Record: Real deadlock in BIO completion path. Trigger: erofs on dm-
-verity under memory pressure. Symptom: system hang. Root cause:
-GFP_KERNEL allocation inside bio completion context can recurse into
-block I/O.
-
-### Step 1.4: Hidden Bug Fix Detection
-Despite the subject using "add" rather than "fix", the commit message
-describes a real deadlock and provides a concrete stack trace
-demonstrating the hang. The fix uses the standard kernel mechanism for
-preventing I/O recursion. This is absolutely a bug fix.
-
-Record: Yes, genuine bug fix disguised with "add" verb. The body clearly
-describes a deadlock.
+**Step 1.4: Hidden Bug Fix Detection**
+Record: Yes — phrased as "Add support" but this is a hardware-specific
+DMI quirk. Without this entry, the board does not get routed into the
+correct thermal handling path, meaning no platform profile registration
+and no fan control. This is functionally a bug fix for users of this
+specific hardware.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Inventory
-- **Files changed**: 1 (`fs/erofs/zdata.c`)
-- **Lines added**: 3 (1 local variable declaration + 2 API calls)
-- **Lines removed**: 0
-- **Function modified**: `z_erofs_decompress_kickoff()`
-- **Scope**: Single-file, single-function, surgical fix
+**Step 2.1: Inventory**
+Record: 1 file changed: `drivers/platform/x86/hp/hp-wmi.c`, +4 lines, 0
+removed. Single table entry added to
+`victus_s_thermal_profile_boards[]`. Scope: single-file, surgical, data-
+only change.
 
-Record: [fs/erofs/zdata.c: +3/-0 lines] [z_erofs_decompress_kickoff]
-[Surgical single-function fix]
+**Step 2.2: Code Flow Change**
+Record: Before: board "8C76" is not in
+`victus_s_thermal_profile_boards[]`, so `dmi_first_match()` in
+`setup_active_thermal_profile_params()` does not match it;
+`is_victus_s_board` stays false; thermal profile, fan, and power-source
+handling all skip the Victus S path. After: "8C76" matches,
+`driver_data` = `&omen_v1_thermal_params` (same as "8C78"), enabling the
+full Victus S / Omen v1 code path.
 
-### Step 2.2: Code Flow Change
-**Before** (line 1494 of current code): When
-`z_erofs_decompress_kickoff()` reaches the non-atomic fallthrough path,
-it calls `z_erofs_decompressqueue_work(&io->u.work)` directly with no
-memory allocation restrictions. Any `GFP_KERNEL` allocation in the call
-chain can trigger reclaim I/O.
+**Step 2.3: Bug Mechanism**
+Record: Category: Hardware workaround / DMI match table entry. Specific
+mechanism: missing board name in DMI quirk table causes incorrect
+thermal profile handling for this laptop SKU.
 
-**After**: The direct call is wrapped:
-```c
-gfp_flag = memalloc_noio_save();
-z_erofs_decompressqueue_work(&io->u.work);
-memalloc_noio_restore(gfp_flag);
-```
-This sets `PF_MEMALLOC_NOIO` on the current task's flags, causing all
-allocations in the decompression path to have `__GFP_IO` stripped,
-preventing swap/reclaim I/O.
-
-Record: Before: unrestricted GFP_KERNEL allocations during decompression
-in bio completion. After: GFP_NOIO scope prevents I/O recursion.
-
-### Step 2.3: Bug Mechanism
-**Category**: Deadlock / I/O recursion
-
-**Mechanism**: I verified the full call chain:
-- `z_erofs_endio()` (bio completion, line 1668) →
-  `z_erofs_decompress_kickoff(q, -1)` → non-atomic branch →
-  `z_erofs_decompressqueue_work()` → `z_erofs_decompress_queue()` →
-  `z_erofs_decompress_pcluster()` → multiple `GFP_KERNEL` allocations:
-  - `kvcalloc(..., GFP_KERNEL | __GFP_NOFAIL)` at lines 1300 and 1304
-    for decompressed/compressed pages
-  - `kmalloc(..., GFP_KERNEL | __GFP_NOFAIL)` at line 1161 for secondary
-    bvecs
-  - `erofs_vm_map_ram()` → `vm_map_ram()` → `vb_alloc(size, GFP_KERNEL)`
-    at `mm/vmalloc.c:3070` or `alloc_vmap_area(..., GFP_KERNEL, ...)` at
-    `mm/vmalloc.c:3078`
-
-Any of these `GFP_KERNEL` allocations can trigger direct reclaim under
-memory pressure, which can attempt swap writeback via
-`submit_bio_wait()`, and since `bio_list` is active from the parent
-`submit_bio()`, the new bio goes to the list but never drains.
-
-Record: [Deadlock] [Bio completion → direct decompression → GFP_KERNEL
-allocations (vm_map_ram, kvcalloc) → direct reclaim → swap I/O →
-submit_bio_wait hangs because bio_list is active]
-
-### Step 2.4: Fix Quality
-- **Obviously correct**: `memalloc_noio_save/restore` is the standard
-  kernel API for this exact pattern. It is used extensively in dm, md,
-  block, and filesystem layers for the same purpose.
-- **Minimal**: 3 lines added, no logic changes, no data structure
-  changes.
-- **Regression risk**: Very low. The only effect is restricting
-  allocations from triggering I/O in this scope. This could mean more
-  allocation failures under extreme pressure, but the `__GFP_NOFAIL`
-  allocations will still succeed (they just won't trigger I/O for
-  reclaim), and `vm_map_ram` already handles allocation failure
-  gracefully via retry in `erofs_vm_map_ram()`.
-- **No red flags**: No API changes, no locking changes, no new code
-  paths.
-
-Record: [Obviously correct, standard kernel pattern] [Very low
-regression risk] [Minimal scope]
+**Step 2.4: Fix Quality**
+Record: Obviously correct — identical pattern to adjacent "8C78" entry.
+Minimal and surgical (4 lines). Zero regression risk: only activates on
+exact DMI board name "8C76". No API or ABI changes.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: Blame Changed Lines
-`git blame` on lines 1458-1495 shows:
-- `z_erofs_decompress_kickoff()` function structure: commit
-  `7865827c432bf9` (Gao Xiang, 2022-01-21) — a code rearrangement
-- The direct `z_erofs_decompressqueue_work(&io->u.work)` call at line
-  1494: same commit `7865827c432bf9`
-- The direct decompression optimization was **originally introduced** by
-  commit `648f2de053a88` (Huang Jianan, 2021-03-17): "erofs: use
-  workqueue decompression for atomic contexts only"
+**Step 3.1: Blame**
+Record: `git blame -L 162,191` shows the entire
+`victus_s_thermal_profile_boards[]` table (in its `dmi_system_id` form
+with `driver_data`) was created by commit `e7cbd37292653` ("fix platform
+profile values for Omen 16-wf1xxx", Krishna Chomal, 2026-01-13). The
+table structure/`};` terminator originates from `6e4ab59b8391a` (Julien
+Robin, 2025-01-16, original Victus S support).
 
-The original `648f2de053a88` commit first appeared in tag `v5.13`. I
-verified:
-- `v5.10`: **NOT** ancestor — the buggy direct-call path does not exist
-- `v5.15`: **IS** ancestor — the buggy path exists
-- `v6.1`: **IS** ancestor
-- `v6.6`: **IS** ancestor
+**Step 3.2: Fixes: tag**
+Record: N/A — no Fixes: tag present (expected for manual review). The
+related prerequisite `e7cbd37292653` itself has `Fixes: fb146a38cb119`.
 
-Record: Direct decompression path introduced in 648f2de053a88 (v5.13).
-Present in v5.15, v6.1, v6.6, v6.12 and later. NOT present in v5.10.
+**Step 3.3: File History**
+Record: Recent `hp-wmi.c` history shows: `e7cbd37292653` (per-board
+thermal params refactor), `68779adbabdbb` (DMI ordering),
+`fa0498f804753` (Omen MAX 16-ah0xx), `fb146a38cb119` (Omen 16-wf1xxx fan
+support), `54afb047cd7eb` (Victus 16-r/s). This is a standalone single-
+patch addition, not part of a numbered series.
 
-### Step 3.2: Fixes Tag
-No `Fixes:` tag present. (Expected for commits requiring manual review.)
+**Step 3.4: Author**
+Record: Krishna Chomal has 2 prior commits in
+`drivers/platform/x86/hp/`: `fb146a38cb119` (Add Omen 16-wf1xxx fan
+support) and `e7cbd37292653` (fix platform profile values for Omen
+16-wf1xxx). Author is the original contributor for this specific
+hardware support. Reviewed and committed by subsystem maintainer Ilpo
+Järvinen.
 
-### Step 3.3: Related File History
-Related commits in the same optimization area:
-- `648f2de053a88` (v5.13): Introduced direct decompression in non-atomic
-  context
-- `7865827c432bf9` (v5.17): Rearranged function, same direct-call logic
-- `12d0a24afd9ea` (2023): "Fix detection of atomic context" — 1-line fix
-  to atomic check
-- `c99fab6e80b76` (2025): "fix atomic context detection when
-  !CONFIG_DEBUG_LOCK_ALLOC" — introduced `z_erofs_in_atomic()` helper
-
-The non-atomic direct decompression path has needed **multiple follow-up
-fixes**, establishing a pattern that this optimization area is
-correctness-sensitive.
-
-No prior `memalloc_noio` fix exists in erofs (verified: `git log
---grep='memalloc_noio' -- fs/erofs` returns empty).
-
-Record: Part of a pattern of fixes to the same direct-decompression
-optimization. Standalone fix. No prior NOIO fix in erofs.
-
-### Step 3.4: Author
-- Jiucheng Xu from Amlogic — no prior erofs commits found locally,
-  likely a first-time contributor from the platform vendor side
-- Patch was reviewed by erofs maintainer Gao Xiang and regular reviewer
-  Chao Yu, and committed through Gao Xiang's tree
-- Amlogic makes ARM SoCs used in Android devices — dm-verity + erofs is
-  standard on such platforms
-
-Record: Author is from platform vendor, fix reviewed and committed by
-erofs maintainer.
-
-### Step 3.5: Dependencies
-The fix is self-contained:
-- `memalloc_noio_save/restore` exists in `include/linux/sched/mm.h`
-  (verified: 4 occurrences of `memalloc_noio_save` in current tree)
-- These helpers have been available since well before v5.15
-- The direct decompression call path where the fix applies exists in all
-  applicable stable trees (v5.15+)
-- No code structure changes needed
-
-Record: No dependencies. Fully self-contained. Can apply standalone to
-any tree with the direct-call path.
+**Step 3.5: Dependencies**
+Record: This patch requires the `dmi_system_id` table format with
+`driver_data` pointing to `struct thermal_profile_params`, introduced by
+`e7cbd37292653`. It also requires `omen_v1_thermal_params` to be defined
+(also from `e7cbd37292653`). Verified: `e7cbd37292653` is contained in
+`v6.19.4~320`; `fb146a38cb119` is contained in `v6.18-rc7~24^2~18`.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Lore Discussion
-The related commit `12d0a24afd9ea` ("Fix detection of atomic context")
-has accessible discussion showing:
-- A concrete stack trace from `filemap_fault`/readahead through dm-
-  verity into `z_erofs_decompress_kickoff()`, proving the direct
-  decompression in bio completion context is a real-world scenario
-- The dm-verity + erofs combination is explicitly called out as the
-  trigger
-
-The commit was included in erofs rc-fixes targeting mainline, which is
-the standard path for critical fixes.
-
-Record: Related discussion confirms real-world dm-verity + erofs
-scenario. Fix submitted through maintainer's fixes branch.
-
-### Step 4.2: Bug Report
-No explicit `Reported-by:` or `Link:` tags. The stack trace in the
-commit message references a concrete scenario (f2fs + mmc + erofs/dm-
-verity), indicating real-world observation. The author being from
-Amlogic (Android SoC vendor) strongly suggests this was discovered on
-production Android devices.
-
-Record: No formal bug report link, but stack trace indicates real
-observation on Android platform.
-
-### Step 4.3: Series Context
-This is a standalone fix, not part of a dependent series.
-
-Record: Standalone fix.
-
-### Step 4.4: Stable Discussion
-No specific stable discussion found for this patch.
-
-Record: No stable-specific discussion found.
+**Step 4.1–4.4:**
+Record: WebFetch attempts to lore.kernel.org, patch.msgid.link, and
+bugzilla.kernel.org were blocked by Anubis bot protection. Could not
+independently verify the mailing list discussion or bugzilla details.
+The commit tags (Reported-by, Tested-by, Reviewed-by, Closes:) provide
+the evidence trail. UNVERIFIED: exact bugzilla content and mailing list
+discussion.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Functions Modified
-Only `z_erofs_decompress_kickoff()` is modified.
+**Step 5.1: Functions in Diff**
+Record: No function bodies modified. Data change only: one entry added
+to `victus_s_thermal_profile_boards[]`.
 
-### Step 5.2: Callers
-`z_erofs_decompress_kickoff()` is called from:
-1. **`z_erofs_endio()`** (line 1668) — BIO completion callback. This is
-   the problematic path — when bio completion runs in process context
-   (dm-verity), this is NOT atomic, and the non-atomic branch takes the
-   direct decompression path.
-2. **`z_erofs_submit_queue()`** (line 1805) — submit path, called after
-   dispatching bios.
+**Step 5.2: Callers**
+Record: Verified via grep: `victus_s_thermal_profile_boards` is consumed
+by `setup_active_thermal_profile_params()` (line 2288), which calls
+`dmi_first_match()` on this table. On match, it sets `is_victus_s_board
+= true` and `active_thermal_profile_params = id->driver_data`.
 
-### Step 5.3: Callees in the non-atomic path
-`z_erofs_decompressqueue_work()` → `z_erofs_decompress_queue()` →
-`z_erofs_decompress_pcluster()` which:
-- Allocates `decompressed_pages` via `kvcalloc(..., GFP_KERNEL |
-  __GFP_NOFAIL)` (line 1300)
-- Allocates `compressed_pages` via `kvcalloc(..., GFP_KERNEL |
-  __GFP_NOFAIL)` (line 1304)
-- Calls decompression algorithm which uses `erofs_vm_map_ram()` →
-  `vm_map_ram()` → `vb_alloc(size, GFP_KERNEL)` (mm/vmalloc.c:3070)
+**Step 5.3: Callees / Impact Surface**
+Record: `is_victus_s_thermal_profile()` (line 1634) returns
+`is_victus_s_board`. This function gates behavior in:
+- `hp_wmi_platform_profile_probe()` — platform profile registration
+  (line 1809, 2009)
+- `hp_wmi_hwmon_is_visible()` — fan sysfs visibility (line 2169)
+- `hp_wmi_hwmon_read()` — fan speed reading (line 2191)
+- `hp_wmi_hwmon_write()` — fan speed control (lines 2227, 2233)
+- `hp_wmi_init()` — power source event handler registration (line 2341)
+- `hp_wmi_exit()` — cleanup (line 2364)
 
-All of these allocations can trigger direct reclaim.
+**Step 5.4: Reachability**
+Record: Init path: `hp_wmi_init()` →
+`setup_active_thermal_profile_params()` → `platform_driver_probe()` →
+`hp_wmi_bios_setup()` → `thermal_profile_setup()`. This runs on every
+boot/module load on affected hardware. Hwmon paths are userspace-
+reachable via sysfs.
 
-### Step 5.4: Reachability
-Full verified call chain from userspace:
-- Userspace read/page fault on compressed erofs file
-- → `z_erofs_read_folio()` (line 1887) or `z_erofs_readahead()` (line
-  1910)
-- → `z_erofs_runqueue()` → `z_erofs_submit_queue()` → `submit_bio()`
-- → bio completion → `z_erofs_endio()` (line 1648)
-- → `z_erofs_decompress_kickoff(q, -1)` (line 1668)
-- → non-atomic branch → `z_erofs_decompressqueue_work()` → `GFP_KERNEL`
-  allocations → deadlock
-
-This is the **primary compressed data read path** for erofs. Any
-unprivileged user reading a file from a mounted erofs filesystem can
-trigger it.
-
-Record: Critical primary read path. Reachable from unprivileged
-userspace file reads.
-
-### Step 5.5: Similar Patterns
-`memalloc_noio_save/restore` is used extensively throughout the kernel
-(dm, md, block layer) for the same purpose. No existing usage in
-`fs/erofs/` — this is the first.
-
-Record: Standard pattern used throughout kernel. First application in
-erofs.
+**Step 5.5: Similar Patterns**
+Record: The table already contains identical patterns: "8C78" →
+`&omen_v1_thermal_params`, "8BCA" → `&omen_v1_thermal_params`, "8BCD" →
+`&omen_v1_thermal_params`. This is a routine board-ID addition.
 
 ---
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 6.1: Does the buggy code exist in stable trees?
-Verified with `git show <version>:fs/erofs/zdata.c | grep`:
-- **v5.10**: Direct-call path does **NOT** exist (648f2de053a88 not
-  ancestor) → NOT APPLICABLE
-- **v5.15**: Direct-call exists at line 802 → **AFFECTED**
-- **v6.1**: Direct-call exists at line 1195 → **AFFECTED**
-- **v6.6**: Direct-call exists at line 1435 → **AFFECTED**
-- **v6.12**: Direct-call exists at line 1373 → **AFFECTED**
+**Step 6.1: Code Existence in Stable Trees**
+Record: Verified via `git grep`:
+- **pending-6.6, pending-6.12, pending-6.14**:
+  `victus_s_thermal_profile_boards` NOT found. Not applicable.
+- **pending-6.17**: Table exists (3 references) but uses the OLD string-
+  list format. `omen_v1_thermal_params` and `struct
+  thermal_profile_params` do NOT exist. Patch cannot apply.
+- **pending-6.18**: Table exists in NEW `dmi_system_id` format.
+  `omen_v1_thermal_params` exists. "8C76" NOT yet present. Patch applies
+  cleanly.
+- **pending-6.19**: Table exists in NEW `dmi_system_id` format.
+  `omen_v1_thermal_params` exists. "8C76" NOT yet present. Patch applies
+  cleanly.
 
-Record: Bug affects all active stable trees v5.15 through v6.12. NOT
-applicable to v5.10 or older.
+**Step 6.2: Backport Complications**
+Record: Clean apply for `6.18.y` and `6.19.y`. Not standalone for
+`6.17.y` (would need the full `e7cbd37292653` refactor first). Not
+applicable to `6.14.y` and older.
 
-### Step 6.2: Backport Complications
-The function context has changed across versions:
-- v5.15: uses `bool sync` parameter, older `in_atomic() ||
-  irqs_disabled()` check
-- v6.1: same older check, some structural changes
-- v6.6: uses different atomic detection
-- v6.12: uses `z_erofs_in_atomic()` helper (from c99fab6e80b76)
-
-However, the **actual fix location** (wrapping the direct
-`z_erofs_decompressqueue_work()` call) is consistent across all
-versions. The fix should apply with minor context adjustment (fuzz) on
-older trees.
-
-`memalloc_noio_save/restore` helpers exist in all these stable baselines
-(verified in `include/linux/sched/mm.h`).
-
-Record: Minor context adjustment needed for older stable trees. Fix site
-is consistent. Helper APIs available everywhere.
-
-### Step 6.3: Related fixes in stable
-No prior `memalloc_noio` fix in erofs exists. The related atomic-context
-fixes (`12d0a24afd9ea`, `c99fab6e80b76`) may or may not be in each
-stable tree, but they are not prerequisites — they only change which
-branch is taken (atomic vs. non-atomic), not the fix itself.
-
-Record: No duplicate fix in stable. Not redundant with existing fixes.
+**Step 6.3: Related Fixes Already in Stable**
+Record: No alternate "8C76" fix found in any checked branch.
 
 ---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-### Step 7.1: Subsystem Criticality
-- **Subsystem**: `fs/erofs` — compressed read-only filesystem
-- **Criticality**: IMPORTANT
-  - Widely used on Android devices (system/vendor partition)
-  - Increasingly used in container/cloud environments (read-only layers)
-  - dm-verity + erofs is the default stack on modern Android
+**Step 7.1: Subsystem**
+Record: `drivers/platform/x86/hp/` — HP laptop WMI driver. Criticality:
+PERIPHERAL (specific HP laptop hardware). However, HP Omen/Victus is a
+popular consumer laptop line.
 
-Record: [fs/erofs] [IMPORTANT — Android, embedded, containers]
-
-### Step 7.2: Activity Level
-Recent `git log -20 -- fs/erofs/zdata.c` shows active development with
-regular fixes and improvements. Actively maintained by Gao Xiang.
-
-Record: Active subsystem with regular maintenance.
+**Step 7.2: Activity**
+Record: Actively maintained — 20 recent commits show ongoing thermal/fan
+work for various HP laptop models.
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: Affected Users
-All users of erofs with compressed data who:
-- Run erofs on dm-verity (standard on Android)
-- Or any other stacking block device where bio completion runs in
-  process context
-- AND experience memory pressure (common on memory-constrained
-  mobile/embedded devices)
+**Step 8.1: Affected Users**
+Record: Platform-specific: users of HP Omen 16-wf1xxx laptops with DMI
+board name "8C76".
 
-Record: Large user population (Android devices, embedded systems with
-dm-verity + erofs).
+**Step 8.2: Trigger Conditions**
+Record: Triggered every boot on affected hardware. DMI matching is init-
+time, and the resulting behavior affects all platform-profile and fan-
+control operations for the life of the session.
 
-### Step 8.2: Trigger Conditions
-- erofs compressed file read (ordinary `read()` or page fault)
-- BIO completion in process context (dm-verity provides this)
-- Memory pressure sufficient to trigger direct reclaim
-- Reclaim attempts swap writeback → `submit_bio_wait` with active
-  `bio_list`
+**Step 8.3: Failure Mode Severity**
+Record: Without the fix: no platform profile registration, fan RPMs not
+readable/controllable via the Victus S path, and power-source event
+handling not set up for this board. Severity: MEDIUM — hardware
+functionality (thermal management, fan control) is missing but no crash,
+corruption, or security issue.
 
-This is realistic on Android devices which frequently run under memory
-pressure. No privileges needed beyond read access to mounted filesystem.
-
-Record: [Common trigger: ordinary file reads under memory pressure on
-Android/dm-verity] [No special privileges needed]
-
-### Step 8.3: Failure Mode Severity
-**CRITICAL**: Complete system deadlock/hang. The `submit_bio_wait()`
-blocks indefinitely because the bio is queued to the active `bio_list`
-but never drained (the draining happens only after the parent bio
-completion returns, which is waiting for this one). This renders the
-system unresponsive and typically requires a hard reboot.
-
-Record: [System deadlock/hang] [Severity: CRITICAL]
-
-### Step 8.4: Risk-Benefit Ratio
-- **BENEFIT**: Very high — prevents a complete system hang on a widely-
-  deployed platform configuration
-- **RISK**: Very low — 3-line addition using a well-established kernel
-  API, no logic changes, no new code paths, no changed return values, no
-  API modifications
-- **Ratio**: Overwhelmingly favorable
-
-Record: [Benefit: Very High] [Risk: Very Low] [Ratio: Strongly
-favorable]
+**Step 8.4: Risk-Benefit Ratio**
+Record: Benefit: HIGH for affected users — restores correct thermal
+profile switching and fan control on their laptop. Risk: VERY LOW —
+4-line data-only change scoped to a single DMI board name match, cannot
+affect any other hardware. Ratio: strongly favorable.
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Compilation
+**Step 9.1: Evidence**
+FOR backporting:
+- Classic hardware quirk / DMI board ID addition (explicit stable
+  exception category)
+- Only 4 lines, data-only change, zero regression risk
+- Reported-by and Tested-by from real user on real hardware
+- Reviewed-by subsystem maintainer (Ilpo Järvinen)
+- Bugzilla bug report (221149) filed
+- Identical pattern to existing adjacent entries (8C78, 8BCA, 8BCD)
+- Prerequisites already present in pending-6.18 and pending-6.19
 
-**FOR backporting:**
-- Fixes a real deadlock (system hang) with a concrete trigger and stack
-  trace
-- Extremely small and contained fix (3 lines in 1 function in 1 file)
-- Uses the standard, well-established `memalloc_noio_save/restore`
-  kernel API
-- Reviewed by erofs maintainer (Gao Xiang) and key reviewer (Chao Yu)
-- Committed through the maintainer's fixes tree
-- Affects widely-deployed platform configuration (Android + dm-verity +
-  erofs)
-- Bug has existed since v5.13 and is present in all active stable trees
-  v5.15+
-- Multiple `GFP_KERNEL` allocation sites confirmed in the decompression
-  path (vm_map_ram, kvcalloc)
-- Primary read path for compressed erofs — not an obscure corner case
-- Pattern of earlier bugs in same optimization area (648f2de,
-  12d0a24afd9ea, c99fab6e80b76) demonstrates the area is correctness-
-  sensitive
-- No existing `memalloc_noio` protection in erofs anywhere
+AGAINST backporting:
+- Not a crash/security/corruption fix — hardware enablement for missing
+  fan/thermal control
+- Narrow impact (single laptop model)
+- Only applicable to 6.18.y and 6.19.y; 6.17.y needs prerequisite
+  refactor
 
-**AGAINST backporting:**
-- No explicit `Fixes:` tag or `Cc: stable` (expected for commits needing
-  manual review)
-- Minor context differences across stable tree versions (trivially
-  resolvable)
-- NOIO scope affects the entire decompression call, not just
-  `vm_map_ram()` (intentional and beneficial — there are multiple
-  GFP_KERNEL sites)
+UNRESOLVED:
+- Bugzilla 221149 content not fetchable (Anubis blocked)
+- Lore mailing list discussion not fetchable (Anubis blocked)
 
-**UNRESOLVED:**
-- Exact frequency of this deadlock in production (but the trigger
-  conditions are realistic)
-- Exact lore.kernel.org discussion thread for this specific patch (anti-
-  bot protections)
+**Step 9.2: Stable Rules Checklist**
+1. Obviously correct and tested? **YES** — identical pattern to existing
+   entries, Tested-by from hardware owner
+2. Fixes a real bug? **YES** — missing quirk prevents thermal/fan
+   control on real hardware
+3. Important issue? **YES** under the hardware quirk exception — enables
+   hardware functionality
+4. Small and contained? **YES** — 4 lines, single table entry, one file
+5. No new features or APIs? **YES** — extends existing quirk table with
+   a board name
+6. Can apply to stable? **YES** — cleanly on 6.18.y and 6.19.y
 
-### Step 9.2: Stable Rules Checklist
-1. **Obviously correct and tested?** YES — standard kernel pattern,
-   reviewed by maintainer
-2. **Fixes a real bug?** YES — deadlock under memory pressure
-3. **Important issue?** YES — system hang/deadlock, CRITICAL severity
-4. **Small and contained?** YES — 3 lines in 1 file, 1 function
-5. **No new features or APIs?** YES — no new features
-6. **Can apply to stable?** YES — applicable to v5.15+ with minor
-   context adjustment; `memalloc_noio_*` helpers available in all target
-   trees
+**Step 9.3: Exception Categories**
+Record: This falls squarely into **QUIRKS and WORKAROUNDS** — a DMI
+board name addition to an existing driver's quirk table. This is the
+same category as USB quirks, PCI quirks, and audio codec quirks that are
+explicitly allowed in stable.
 
-### Step 9.3: Exception Categories
-Not applicable (this is a straightforward critical bug fix).
-
-### Step 9.4: Decision
-This is a clear, surgical fix for a critical deadlock in the primary
-read path of a widely-deployed filesystem. The fix is minimal, uses a
-standard kernel API, was reviewed by the subsystem maintainer, and has
-virtually no regression risk. It meets all stable kernel criteria.
+**Step 9.4: Decision**
+This is a textbook hardware quirk addition: a 4-line DMI table entry
+that enables correct thermal profile switching and fan control for a
+specific HP laptop model, using existing driver infrastructure. It
+carries essentially zero regression risk and provides concrete benefit
+to real users of this hardware. It should be backported to stable
+branches that have the per-board thermal parameter infrastructure
+(6.18.y and 6.19.y).
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed tags: Reviewed-by Gao Xiang (erofs maintainer) and
-  Chao Yu. No Fixes: tag (expected). Signed-off-by Jiucheng Xu (Amlogic
-  author).
-- [Phase 2] Diff analysis: 3 lines added in
-  `z_erofs_decompress_kickoff()`, wrapping
-  `z_erofs_decompressqueue_work()` with `memalloc_noio_save/restore`.
-- [Phase 2] Verified `vm_map_ram()` uses `GFP_KERNEL` at
-  `mm/vmalloc.c:3070` (`vb_alloc(size, GFP_KERNEL)`) and line 3078
-  (`alloc_vmap_area(..., GFP_KERNEL, ...)`).
-- [Phase 2] Verified additional `GFP_KERNEL` allocations in
-  decompression: `kvcalloc(..., GFP_KERNEL | __GFP_NOFAIL)` at
-  `zdata.c:1300,1304` and `kmalloc(..., GFP_KERNEL | __GFP_NOFAIL)` at
-  `zdata.c:1161`.
-- [Phase 2] Verified `erofs_vm_map_ram()` at `internal.h:439-452` calls
-  `vm_map_ram()`.
-- [Phase 3] git blame: Lines 1458-1494 traced to `7865827c432bf9` (Gao
-  Xiang, 2022-01-21, rearrangement) and original logic from
-  `648f2de053a88` (Huang Jianan, 2021-03-17).
-- [Phase 3] `git tag --contains 648f2de053a88`: First appeared in v5.13.
-- [Phase 3] `git merge-base --is-ancestor 648f2de053a88 v5.10`: NOT
-  ancestor (path absent in v5.10).
-- [Phase 3] `git merge-base --is-ancestor 648f2de053a88 v5.15`: IS
-  ancestor (path present).
-- [Phase 3] `git merge-base --is-ancestor 648f2de053a88 v6.1`: IS
-  ancestor.
-- [Phase 3] `git merge-base --is-ancestor 648f2de053a88 v6.6`: IS
-  ancestor.
-- [Phase 3] Related atomic-context fixes verified: `12d0a24afd9ea` (1
-  file, 1 line), `c99fab6e80b76` (1 file, 11 lines).
-- [Phase 3] `git log --grep='memalloc_noio' -- fs/erofs`: empty — no
-  prior NOIO fix in erofs.
-- [Phase 3] `git log --author='Jiucheng Xu' -- fs/erofs`: no prior erofs
-  commits from author.
-- [Phase 4] lore.kernel.org not directly fetchable (anti-bot). Related
-  discussion for 12d0a24afd9ea confirms dm-verity + erofs scenario with
-  real stack traces.
-- [Phase 5] Callers verified: `z_erofs_decompress_kickoff()` called from
-  `z_erofs_endio()` (line 1668) and `z_erofs_submit_queue()` (line
-  1805).
-- [Phase 5] Reachability verified: `z_erofs_read_folio()` (line 1887)
-  and `z_erofs_readahead()` (line 1910) are the address_space_operations
-  (line 1944-1945).
-- [Phase 5] No existing `memalloc_noio_save` in `fs/erofs/` (grep
-  confirmed 0 matches).
-- [Phase 6] Direct-call path verified in: v5.15 (line 802), v6.1 (line
-  1195), v6.6 (line 1435), v6.12 (line 1373).
-- [Phase 6] `memalloc_noio_save` helpers exist in
-  `include/linux/sched/mm.h` (4 occurrences confirmed).
-- [Phase 8] Failure mode: System deadlock/hang in `submit_bio_wait` due
-  to bio queued to active `bio_list`, severity CRITICAL.
-- UNVERIFIED: Exact lore.kernel.org thread for this specific patch
-  (anti-bot protection blocked access).
-- UNVERIFIED: Exact real-world frequency of this deadlock in production
-  (trigger conditions are realistic based on Android + dm-verity +
-  memory pressure).
+- [Phase 1] Parsed all tags from commit message: Tested-by, Reported-by,
+  Closes (bugzilla 221149), Reviewed-by (Ilpo Järvinen), Link, Signed-
+  off-by x2
+- [Phase 2] Diff analysis: +4 lines adding single DMI entry `{
+  DMI_MATCH(DMI_BOARD_NAME, "8C76"), .driver_data = (void
+  *)&omen_v1_thermal_params }`
+- [Phase 3] `git blame -L 162,191`: confirmed table created by
+  `e7cbd37292653` (Krishna Chomal, 2026-01-13), structure from
+  `6e4ab59b8391a` (2025-01-16)
+- [Phase 3] `git show e7cbd37292653`: confirmed this is the prerequisite
+  commit that refactored the table to `dmi_system_id` format with per-
+  board `thermal_profile_params`
+- [Phase 3] `git describe --contains e7cbd37292653` → `v6.19.4~320`:
+  prerequisite is in v6.19.4
+- [Phase 3] `git describe --contains fb146a38cb119` →
+  `v6.18-rc7~24^2~18`: original Omen 16-wf1xxx support is in v6.18
+- [Phase 3] `git log --author="Krishna Chomal"`: confirmed 2 prior
+  commits to hp-wmi.c
+- [Phase 4] WebFetch to lore/bugzilla blocked by Anubis — UNVERIFIED:
+  exact discussion and bug details
+- [Phase 5] `grep` for `victus_s_thermal_profile_boards`: confirmed
+  consumed by `setup_active_thermal_profile_params()` at line 2288 via
+  `dmi_first_match()`
+- [Phase 5] `grep` for `is_victus_s_thermal_profile`: confirmed it gates
+  platform profile (lines 1809, 2009), hwmon visibility/read/write
+  (lines 2169, 2191, 2227, 2233), init power source handler (line 2341),
+  exit cleanup (line 2364)
+- [Phase 6] `git grep victus_s_thermal_profile_boards` on all pending
+  branches: NOT in 6.6/6.12/6.14; present in 6.17/6.18/6.19
+- [Phase 6] `git grep omen_v1_thermal_params` on pending-6.17: NOT FOUND
+  — old string-list format, patch cannot apply standalone
+- [Phase 6] `git grep omen_v1_thermal_params` on pending-6.18: FOUND
+  (lines 92-114, 159, 167, 179) — full infrastructure present
+- [Phase 6] `git grep omen_v1_thermal_params` on pending-6.19: FOUND
+  (lines 92-114, 167, 175, 187) — full infrastructure present
+- [Phase 6] `git grep '8C76'` on pending-6.18 and pending-6.19: NOT
+  FOUND — patch not yet applied to any stable branch
+- [Phase 8] Failure mode: missing thermal profile/fan control on
+  specific HP Omen laptop; severity MEDIUM (hardware functionality, not
+  crash/security)
+- UNVERIFIED: exact bugzilla 221149 content and severity rating
+- UNVERIFIED: exact mailing list reviewer comments beyond tags in commit
 
 **YES**
 
- fs/erofs/zdata.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/hp/hp-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index b71fcf4be484a..8ba409df1ca70 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1459,6 +1459,7 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
- 				       int bios)
- {
- 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
-+	int gfp_flag;
- 
- 	/* wake up the caller thread for sync decompression */
- 	if (io->sync) {
-@@ -1491,7 +1492,9 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
- 			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
- 		return;
- 	}
-+	gfp_flag = memalloc_noio_save();
- 	z_erofs_decompressqueue_work(&io->u.work);
-+	memalloc_noio_restore(gfp_flag);
- }
- 
- static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 24d065ddfc6ae..9c1bdf8e7b283 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -172,6 +172,10 @@ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst
+ 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BD5") },
+ 		.driver_data = (void *)&victus_s_thermal_params,
+ 	},
++	{
++		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8C76") },
++		.driver_data = (void *)&omen_v1_thermal_params,
++	},
+ 	{
+ 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8C78") },
+ 		.driver_data = (void *)&omen_v1_thermal_params,
 -- 
 2.53.0
 
