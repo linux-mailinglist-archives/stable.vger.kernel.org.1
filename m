@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-230985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GG4yM//WyWnE2wUAu9opvQ
-	(envelope-from <stable+bounces-230985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 03:50:55 +0200
+	id 2KEFEs/ZyWk73AUAu9opvQ
+	(envelope-from <stable+bounces-230986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:02:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11F0354A86
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 03:50:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65CF354ACA
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:02:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63DF3300B068
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 01:50:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE07E30068F7
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 02:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B8022A817;
-	Mon, 30 Mar 2026 01:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="d5nwJ4ET"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7287519644B;
+	Mon, 30 Mar 2026 02:02:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0C7175A94;
-	Mon, 30 Mar 2026 01:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6895640DFC8;
+	Mon, 30 Mar 2026 02:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774835451; cv=none; b=JvzYrUwl0sYkkOQA0K+NIt3YDYBN9Q+2xGoMH+b+o1Fn9+7eRpSRvkgEhsrqpG+ACwb2LNq7QPGWkObgycJoB5Xx5KwiD6cAvMbHG1c1D1SwOd8knt/fsy8eNxYx7Fla4BhUQHFHppMziPjeQ7nA+F7K0eUKYDX2N3PIWH8qqBY=
+	t=1774836171; cv=none; b=s7yMl6VU1C63in+dX4sBgxRawI7M/AM/IQAWD1SV5yDykbI9JE/NO6snkI019E6sAVVvNLEVgMEKKcKVIRAdyRpDQUukdS83ip7Uoy/W/bQWkjwZzLGdYu6dw0D+WxcJb/lhKvib9QauvtOdxGJ6IYkqTHPDeTHjMEEhhk+Tfdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774835451; c=relaxed/simple;
-	bh=ixolLrzbUpURqHptEtvef9b4lOdNhT+Rdvm7+Wzk7oI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H9fGqnnpVxIvYfwYputrgCl2vZotg9vtxHblmhI7H3fVKJU4f6c3ZchzEKtbQoGwOW5wP3P2FyQ97ChSU9IJS+BfvoZKxeFZyynBNhXOQAheTzU9uaqAyCiyYH4xe+WZWmFvxgcTCJhBO9p+PIbiIR8Q4ZO+HcBgUeGz68zaehw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=d5nwJ4ET; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=NE
-	ibGSjdedDB2R09UgpFcazFFhoARzqkN4HerJmT4qc=; b=d5nwJ4ETho8JxC7O5k
-	DZjech+vSWq+RCUoQjp88dhvQ7nEJDuSBUGNVAtSt54eRvlEspNUonPkWkfIJ9TK
-	VKlE4dEMfcRt4Lv7qzROffSECnQIEbKCFyKMeFlXMwvED5M/rHmujhGlZjYDPeqt
-	g4kotpPI7GK4rQ7iEm25bkt3I=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wBXIKzC1slpl0wrCA--.20436S2;
-	Mon, 30 Mar 2026 09:49:56 +0800 (CST)
-From: Yang Xiuwei <yangxiuwei@kylinos.cn>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org,
-	Ming Lei <ming.lei@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.g.garry@oracle.com>,
-	stable@vger.kernel.org,
-	Yang Xiuwei <yangxiuwei@kylinos.cn>
-Subject: [PATCH v3] scsi: sd: fix missing put_disk() when device_add(&disk_dev) fails
-Date: Mon, 30 Mar 2026 09:49:52 +0800
-Message-Id: <20260330014952.152776-1-yangxiuwei@kylinos.cn>
+	s=arc-20240116; t=1774836171; c=relaxed/simple;
+	bh=/bQUV4TMelBakimuZPCmUVMnc5R21gcG/1qYEC2QR/0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LJwuGg5h/jG5jemM9m5mQ84osiiCTQcjWG3GxYW7IJmAPgwDMQwli3IoH7zryol9Qf28GfLwXpXxCSWHjYQfpT2K8mWXacMg9d5/0yN168OqohaDBadWgyvrVYpXDoH4o2VPQ7bo5e7Zu57PgXbkjvDjl1JzxjLntVbuw9V0PW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-03 (Coremail) with SMTP id rQCowABngdix2clpVhhEDA--.40377S2;
+	Mon, 30 Mar 2026 10:02:26 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: tiffany.lin@mediatek.com,
+	andrew-ct.chen@mediatek.com,
+	yunfei.dong@mediatek.com,
+	mchehab@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	laurent.pinchart@ideasonboard.com,
+	hverkuil+cisco@kernel.org,
+	benjamin.gaignard@collabora.com,
+	p.zabel@pengutronix.de,
+	george.sun@mediatek.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: mediatek: vcodec: free working buf on error path in vdec_vp9_slice_setup_lat()
+Date: Mon, 30 Mar 2026 10:02:24 +0800
+Message-Id: <20260330020224.2729252-1-lihaoxiang@isrc.iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,71 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXIKzC1slpl0wrCA--.20436S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrury5KF48tFWDAFW3KF1DAwb_yoWDurX_Cw
-	1jvwn7Xr4UAr1xtF1fGr4avrWvgrnFgrWrur48tF93A3yYgr9IvFykCw1Yy3W8WwsFvF18
-	Xwn0vw4kJw4UJjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU189NPUUUUU==
-Sender: yangxiuwei2025@163.com
-X-CM-SenderInfo: p1dqw55lxzvxisqskqqrwthudrp/xtbCwgSzRGnJ1sSd2QAA3H
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-CM-TRANSID:rQCowABngdix2clpVhhEDA--.40377S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ArWktr4UXF43AFykWrW5Awb_yoW8WF15pF
+	4Y9rWUZFyjyFnFvay8JF48ua15C3ySvryxWw43u34SyFyYqr17Xr1IyFy3Ar4rCan2ya45
+	ur12qryUuFW5AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0pRHUDLUUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCQ4CE2nJxcxTOgAAsW
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230985-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-230986-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[163.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_TO(0.00)[mediatek.com,kernel.org,gmail.com,collabora.com,ideasonboard.com,pengutronix.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yangxiuwei@kylinos.cn,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,kylinos.cn:email,kylinos.cn:mid]
-X-Rspamd-Queue-Id: D11F0354A86
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A65CF354ACA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If device_add(&sdkp->disk_dev) fails, put_device() runs
-scsi_disk_release(), which frees the scsi_disk but leaves the gendisk
-referenced. The device_add_disk() error path in sd_probe() calls
-put_disk(gd); call put_disk(gd) here to mirror that cleanup.
+Add an error path label in vdec_vp9_slice_setup_lat()
+and call vdec_vp9_slice_free_working_buffer() to free
+working buffer to prevent potential memory leak.
 
-Fixes: 265dfe8ebbab ("scsi: sd: Free scsi_disk device via put_device()")
+Fixes: 5d418351ca8f ("media: mediatek: vcodec: support stateless VP9 decoding")
 Cc: stable@vger.kernel.org
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
-v2: Add Fixes: and Cc: stable; add a short note on how the issue was found.
-v3: Commit message and subject refined per review; add Reviewed-by from John Garry.
+ .../mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c    | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- drivers/scsi/sd.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 628a1d0a74ba..aba22060fcd5 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -4018,6 +4018,7 @@ static int sd_probe(struct scsi_device *sdp)
- 	error = device_add(&sdkp->disk_dev);
- 	if (error) {
- 		put_device(&sdkp->disk_dev);
-+		put_disk(gd);
- 		goto out;
- 	}
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
+index cd1935014d76..3dadb5cc8876 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
+@@ -1168,7 +1168,7 @@ static int vdec_vp9_slice_setup_lat(struct vdec_vp9_slice_instance *instance,
  
+ 	ret = vdec_vp9_slice_setup_lat_buffer(instance, vsi, bs, lat_buf);
+ 	if (ret)
+-		goto err;
++		goto alloc_err;
+ 
+ 	vdec_vp9_slice_setup_seg_buffer(instance, vsi, &instance->seg[0]);
+ 
+@@ -1176,14 +1176,16 @@ static int vdec_vp9_slice_setup_lat(struct vdec_vp9_slice_instance *instance,
+ 
+ 	ret = vdec_vp9_slice_setup_prob_buffer(instance, vsi);
+ 	if (ret)
+-		goto err;
++		goto alloc_err;
+ 
+ 	ret = vdec_vp9_slice_setup_tile_buffer(instance, vsi, bs);
+ 	if (ret)
+-		goto err;
++		goto alloc_err;
+ 
+ 	return 0;
+ 
++alloc_err:
++	vdec_vp9_slice_free_working_buffer(instance);
+ err:
+ 	return ret;
+ }
 -- 
 2.25.1
 
