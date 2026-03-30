@@ -1,137 +1,136 @@
-Return-Path: <stable+bounces-231047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFj0Ayc2ymkx6gUAu9opvQ
-	(envelope-from <stable+bounces-231047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:36:55 +0200
+	id YKq7Lw42ymkx6gUAu9opvQ
+	(envelope-from <stable+bounces-231048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:36:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6799D357475
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:36:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247E6357450
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 110673047065
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 08:30:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D1B13018760
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 08:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47CD3AE188;
-	Mon, 30 Mar 2026 08:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5673AD510;
+	Mon, 30 Mar 2026 08:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wka5z5mA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJ1tiNik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F503A7855
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F73E3AB262;
+	Mon, 30 Mar 2026 08:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774859419; cv=none; b=ry5AuPUiE2VNrTkTiLt84GZKJw+yz4fq5xeVX2fjA/ElJZqMuO8jydyFJAOeKx3NoOF45Hv8x+rjl25PVcQ+ZJbi5FR2ZL90eDboOtjth/WB5guYgQ39LUb9omc5s6ywjHO/CuSSZg0dzwEgx12pftScSOAq85gP+SU5RpYdhPs=
+	t=1774859479; cv=none; b=eN9ERSyTQsriam5CdvnX5TaJgr2dDIqJ9HhOXrXN9ZEs5NqTb9/1GiwXiDeXdnGzqYklbbrXZvIKZmssWM0FhhUePbyR7fZtzHcxdL2eeQ2eDCT7I2IhYWGohh9am8aFE33Aez2zJbmtvufqNGePGQ76yihpk6PVWrDYUq2gvOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774859419; c=relaxed/simple;
-	bh=gsBEGNHcqtbt6TEPS3qjYo/9d8yMbnMoE8MR1yPPkE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I9jbEx9nfTa6C7qgH0d0cJEot3DhHdgb8QigV7IxpKvDe8hiC25JOkIwIUHoJ5oX5Nvfmopn0z/dgrhDNA7QhjacyjBSyY5/iDhaLjbHcWd4oQA2sbOw0W4e3i4NPuFXB1MlKHs/3c4PEdSJ/R+vXevjuI7xoePByCNqtrC1sZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wka5z5mA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57ADC2BCB1
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:30:18 +0000 (UTC)
+	s=arc-20240116; t=1774859479; c=relaxed/simple;
+	bh=HqfGhJtruWwhpyu7KHQy1K6jMiLt7QNNVL8kBT6BdnA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kLJb6ZzCbEe0cP2PfFLr+gAMnXDDzKLHWKuJHlGBV3/2xmnub5r8NYKMIqQbyH9Odk0PNAQ0Wtb/CMbk9VcxT4dxyAZvvbAvBv56ksr0IUCyRVm0ms0SV3YaLAqBvfSUfl9GLyH6ke/XZItis2acqCweCXZor7OuvAjYdxNW0xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJ1tiNik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94ED1C4CEF7;
+	Mon, 30 Mar 2026 08:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774859418;
-	bh=gsBEGNHcqtbt6TEPS3qjYo/9d8yMbnMoE8MR1yPPkE0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Wka5z5mAbex5oRpHGMSbyhmo6IL6NEsdBEnASwAEy6ef/25JO4rWyz+L34JywT1eA
-	 +sFgpYF32oc22/T+EbCXzTeeiOPxRoXm3QaQFGYI199uxIdC07ehV81sejazvuFE+u
-	 v4Jt3hZ011OicuG5sJjqJNVSsXpLOdank3vlK2V/4HYIYXElEizXMuBbRDWfC0HTwE
-	 Q0Ut+eBpNq45H91ViqupNx0HOq2WsLYYheli3DMCoUecugBW1UR/XgoC/NSgGW9Us+
-	 Gz70fxXISvQF6Khm4yHIN8xFQ8p/Ku15PRj02m9WL3nBDAkfhqgAcFPyhXIwUpqRqX
-	 hplcn+coRg+Og==
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6501418152cso1811028d50.0
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 01:30:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWzgTkIZ/zsHFjXfrQwc4ZC3nHjMdgivr98NXhOUYohHvz9DlthaSL20kS9JtbZvAXNbe50SBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoO2SpmYVDaxEd94Vh+/9vFCtMJ/lJ8z84oGal36gxRYwMlRdq
-	lNW0X2/bP7JxYknEGr9r2roR+ArPnSV8gLXsK20TanCXtJhsMpgJWVJug6gucQo5fwnbUa/OLIq
-	01cd/YwqPwZEtxFVs81pBnhZUm8b+xns=
-X-Received: by 2002:a05:690c:93:b0:796:6df5:485a with SMTP id
- 00721157ae682-79bde01777bmr118018997b3.39.1774859418160; Mon, 30 Mar 2026
- 01:30:18 -0700 (PDT)
+	s=k20201202; t=1774859478;
+	bh=HqfGhJtruWwhpyu7KHQy1K6jMiLt7QNNVL8kBT6BdnA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CJ1tiNikP5Ea1ov7CoPPnZEoKxzzR1DrT32nvGnjyGU5FhWelf+neRC2f60lhGD9N
+	 Q+WPWjbtnEaaPxCgrIPXL32b6MtWm7Z/dp/F1kcCja1GHV/xd9OrQL3kpAw7xt+94p
+	 Z8MmiEE8YFdhn86ZvOTdSoqCwNNutzjhaPsqloxoPzW1avtP/pa0EVn+S5HfpnCKPL
+	 K/kFiNfEMtLIrO3gaxsAqqFn6VBrkoZlolIQdF+1kVKk0jT/aJfKYlcT2BiH91ANre
+	 X7JhGVPM99GxyGz4Hy0RoImX6l5/9X2j+v/0qsR/aYtjZt114mAJgcyV5y42ThrTmJ
+	 Ut0I0I4DZq6eg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w781k-00000006zQS-1Z0E;
+	Mon, 30 Mar 2026 08:31:16 +0000
+Date: Mon, 30 Mar 2026 09:31:16 +0100
+Message-ID: <86bjg54t2j.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	<stable-commits@vger.kernel.org>
+Subject: Re: Patch "KVM: arm64: Discard PC update state on vcpu reset" has been added to the 5.15-stable tree
+In-Reply-To: <2026032918-porthole-overshoot-bef3@gregkh>
+References: <2026032918-porthole-overshoot-bef3@gregkh>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260327171240.3222755-1-mukesh.ojha@oss.qualcomm.com>
-In-Reply-To: <20260327171240.3222755-1-mukesh.ojha@oss.qualcomm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 30 Mar 2026 10:30:07 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmSiPBhuBxzneP=6VZW4waQgAOTq=W-x-8UEWCaRv34ng@mail.gmail.com>
-X-Gm-Features: AQROBzBO1UqMnVAEdNWQczMORO8MkElarvQfd0yRFfv3ScughE9FdwH_S1g0tSY
-Message-ID: <CAD++jLmSiPBhuBxzneP=6VZW4waQgAOTq=W-x-8UEWCaRv34ng@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pinctrl: qcom: eliza: Fix interrupt target bit
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Abel Vesa <abel.vesa@oss.qualcomm.com>, 
-	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: gregkh@linuxfoundation.org, stable@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, stable-commits@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231048-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231047-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 6799D357475
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 247E6357450
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 6:13=E2=80=AFPM Mukesh Ojha
-<mukesh.ojha@oss.qualcomm.com> wrote:
+On Sun, 29 Mar 2026 13:48:18 +0100,
+<gregkh@linuxfoundation.org> wrote:
+> 
+> 
+> This is a note to let you know that I've just added the patch titled
+> 
+>     KVM: arm64: Discard PC update state on vcpu reset
+> 
+> to the 5.15-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      kvm-arm64-discard-pc-update-state-on-vcpu-reset.patch
+> and it can be found in the queue-5.15 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-> The intr_target_bit for Eliza was incorrectly set to 5, which is the
-> value used by older Qualcomm SoCs (e.g. SM8250, MSM8996, X1E80100).
-> Newer SoCs such as SM8650, SM8750, Milos, and Kaanapali all use
-> bit 8 for the interrupt target field in the TLMM interrupt configuration
-> register.
->
-> Eliza belongs to the newer generation and should use bit 8 to correctly
-> route interrupts to the KPSS (Applications Processor). Using the wrong
-> bit position means the interrupt target routing is silently misconfigured=
-,
-> which can result in GPIO interrupts not being delivered to the expected
-> processor.
->
-> Fix this by aligning Eliza with the correct value used by its peer SoCs.
->
-> Fixes: 6f26989e15fb ("pinctrl: qcom: Add Eliza pinctrl driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+This won't even compile, as the helpers required were only added in
+6.0.
 
-Patch applied.
+Please drop this from 5.10 and 5.15 stable branches.
 
-I dropped the stable tag because that is for backporting to older kernels
-and the Eliza support is in current dev... (what will become v7.1).
+Thanks,
 
-Yours,
-Linus Walleij
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
