@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-231264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKkJFiLDymmL/wUAu9opvQ
-	(envelope-from <stable+bounces-231264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:38:26 +0200
+	id kB//D0XLyml3AAYAu9opvQ
+	(envelope-from <stable+bounces-231265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:13:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D342935FCDB
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:38:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824DC36038F
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF42230292FF
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 18:38:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E1A6301E3F3
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 19:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3973A63F3;
-	Mon, 30 Mar 2026 18:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDF83DFC7B;
+	Mon, 30 Mar 2026 19:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIoP7H0C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkXqroXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E92393DD8
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 18:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA862F39CE
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 19:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774895902; cv=none; b=hpIGnxZAc+qLMgtKDsBiKw2EK3vPnKimt7fkDi7sX6jZ3LnwFuDxrIyouv7Yno6po5Yag7B0X/oomY/P0MQfZI3bFHeJa60esjF0MLTkOcVDDGBR5VS7cx7XMTFiXzxItmZ5UgDll9pblTnRdKl5tQ8JlmajQhPQ1GWl/xnsal4=
+	t=1774897840; cv=none; b=AYZQzqXmf7AzPkr+cfivC8WhwQRC0Fkze7L4OQA89QiRLgfhnGZCCdHPWcbvrZanh8wfODuC2zcgOd0gYywXG8d1fA1LMuo+3E4H90QK+hSBWDtCQfC9SLcNOyU6PZBkkvspdLc+XvW+C8HCMQNH1Paiha3qqVTh/y0P9rCstFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774895902; c=relaxed/simple;
-	bh=M80uT1gxQXQVGkZ9zW6yu7rw0HwwMGrBrWsP3/+DcrQ=;
+	s=arc-20240116; t=1774897840; c=relaxed/simple;
+	bh=C0sRzY2agXv1kvcy9rFOsc1n3rrSieU+SdmB4lXhl3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYsoI/OXgwnlqiqz2G48P1nvqCkaQFEFmOP/cAZh5nklSdwuVCQOBcyURp4ClQgLj8SLUE8hut95TvDsz5I2iBoP9VniSvZuLME2CEgmGvmu2e+rPEUVVfI9NiV2z+3ADAC5YfMrtGYZlPGyhMgiovIv5hhjPsO6sbjDI/DS8wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIoP7H0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC270C4CEF7;
-	Mon, 30 Mar 2026 18:38:20 +0000 (UTC)
+	 MIME-Version; b=MAK3/1qKyZXvWLhHctDJjqQzKsmfm5TeG7kEv8JrlTJgx0f+bMK5NqfE4bkoffA+ms0th5rqxEFThd0euS90MTDyu8PPS/lLjbZ+D9Pc2S75kNw/9vRizsIs4r6KLCemn4G3maPARkososd0IgAZAGOI+P51vHAev71o8hCjwJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkXqroXx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63941C4CEF7;
+	Mon, 30 Mar 2026 19:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774895901;
-	bh=M80uT1gxQXQVGkZ9zW6yu7rw0HwwMGrBrWsP3/+DcrQ=;
+	s=k20201202; t=1774897840;
+	bh=C0sRzY2agXv1kvcy9rFOsc1n3rrSieU+SdmB4lXhl3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BIoP7H0CJ+UQGwhZKzGB6u2zqkcd/K3s1gZiYWnoycNpvTV/dqbavKdyR2bgHygMM
-	 B1Bu6ove+croKC9NeePH07d7StZapIpSkjWhmLw69YElJ3+Ko1ooKnXb7rZVSlwJUk
-	 iIGsq+QWEhj9GAKDhJSe+cI9DnV++9WctBzRCqvfOs9Uyomyr57+l4n2j9dAONmZxo
-	 Xqek76MaWCVdJRCP8pcELqqgC1HvN0fAUBMnEiX5k8UzyEzBFiDP2FSTP3k2HXa5lU
-	 HRTtO0au5RfP57QGYF8AuhCZja07j5GgOO7uS+cHfFe/Dnwc/mTEqsctEGv2d8TO+g
-	 3Xw3Lxlg6sfSw==
+	b=fkXqroXxjHWMtenb4JbK97z5pNxy4wZpjS3IkUR2e/6+oe4kHZmXd2wrQr2o7YDVW
+	 X1QKjybMfqRnuh2zbBD+tKJ8MXP92KWputDNXwBv+JMLUfqg0qH2AhozOPVEIHKfDb
+	 vMta/QQiAKh3S8drfL4UD9fkrqyhHr6QxMUop5+VVbnkJFunMjM2dMfWnD5XMqjPgV
+	 k1ZLjwXY5Uq5jh+GKIzTWrYOGhn9JvJRbcrnrY9xubN1/9xLe8V5CDPmnOr8FPYrmu
+	 WXEEqvvNd05gu3RXz5yykZXuKQGzyq6jsFIjPsemjqfLzRSdBizjB+FaVE2kPsPCZt
+	 gn7Xm4M4gVCGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	Asim Viladi Oglu Manizada <manizada@pm.me>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
-Date: Mon, 30 Mar 2026 14:38:19 -0400
-Message-ID: <20260330183819.950934-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
+Date: Mon, 30 Mar 2026 15:10:37 -0400
+Message-ID: <20260330191037.1035485-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026032931-kilobyte-catchy-1ad2@gregkh>
-References: <2026032931-kilobyte-catchy-1ad2@gregkh>
+In-Reply-To: <2026032931-tubby-automatic-2197@gregkh>
+References: <2026032931-tubby-automatic-2197@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231264-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231265-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pm.me:email]
-X-Rspamd-Queue-Id: D342935FCDB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 824DC36038F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -120,14 +120,14 @@ Signed-off-by: Steve French <stfrench@microsoft.com>
 [ adapted variable declarations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 15 ++++++++++++++-
+ fs/ksmbd/smb2pdu.c | 15 ++++++++++++++-
  1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 65b55e824aa8b..868b797d90d44 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4598,6 +4598,8 @@ static int get_file_all_info(struct ksmbd_work *work,
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index b5ff4c855f9cb..07144891d9784 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -4564,6 +4564,8 @@ static int get_file_all_info(struct ksmbd_work *work,
  	int conv_len;
  	char *filename;
  	u64 time;
@@ -136,7 +136,7 @@ index 65b55e824aa8b..868b797d90d44 100644
  
  	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
  		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
-@@ -4609,6 +4611,16 @@ static int get_file_all_info(struct ksmbd_work *work,
+@@ -4575,6 +4577,16 @@ static int get_file_all_info(struct ksmbd_work *work,
  	if (IS_ERR(filename))
  		return PTR_ERR(filename);
  
@@ -153,7 +153,7 @@ index 65b55e824aa8b..868b797d90d44 100644
  	inode = file_inode(fp->filp);
  	generic_fillattr(file_mnt_user_ns(fp->filp), inode, &stat);
  
-@@ -4640,7 +4652,8 @@ static int get_file_all_info(struct ksmbd_work *work,
+@@ -4606,7 +4618,8 @@ static int get_file_all_info(struct ksmbd_work *work,
  	file_info->Mode = fp->coption;
  	file_info->AlignmentRequirement = 0;
  	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
