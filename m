@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEkPOAdFymm/7AUAu9opvQ
-	(envelope-from <stable+bounces-231069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:40:23 +0200
+	id IKjfAjBFymm/7AUAu9opvQ
+	(envelope-from <stable+bounces-231070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:41:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AACE35856B
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:40:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE323585A9
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30AF83009B24
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:35:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB3F7303B4C1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA73B47E0;
-	Mon, 30 Mar 2026 09:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75DF3B47E0;
+	Mon, 30 Mar 2026 09:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ2L5NP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fItIXSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4610D3AC0FE
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C03B4E8B
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774863312; cv=none; b=ccQGFgOdZriFWcpOWTGSH16WwpjQJsm8Ky0JC8OQ0f0bd7AUPL+EkGSU51OIfc2ShIYWGbioHFahU/tnkxIJSs0axe0WyVm91OiZgnoHqPd8Jy6L3JPoSx/zGtxE/ofsoPvUU/nyrRdO+qdcdN93nLuHyDl8NQfYR+3EycsBEMs=
+	t=1774863326; cv=none; b=rmosSHB0Te3fhpr1yfg1jE9V/hy3mxYZAyvK4ruEPijc3aCiVTXGq563K0GPCVVotNdpAVoXv4h0VRbB6bGCWdPXPfkHmNWjpcAb1JrexwZ16ZqwsBjqnuDFmpe5EYJYHzuaMbQLcLfTyp19xpWneHX775HpD2hy1MyALL/dozw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774863312; c=relaxed/simple;
-	bh=cwf/dxxzyveQMeQGs3ZXpRzVtaFx+HZV6YJLlkmo+zI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s1hbzZbz8tjlIQfaH1HiEsj49RW/JwAvwRx50yamqBnNNP3+z0JsRC2z3YxSVGr+0Q2Qox6BisFfJX9Ki9Tby66+hxYZgbV6BbX0GMFl6IgSbyf60hdjRFJPfBF5dhrVGSjs/rnrXsMAT+FxevKalnb3svn/I+p6MHSEn31efLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ2L5NP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739DBC4CEF7;
-	Mon, 30 Mar 2026 09:35:11 +0000 (UTC)
+	s=arc-20240116; t=1774863326; c=relaxed/simple;
+	bh=ImzQvVjA1tl3VgCNgL/gFpAxkjlmbRoWCmwde5xJUcM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c01ljSQHVRrUQIxXwWOrW2grIJOQK+CvNqck2n8VT9QkXoO7P/sVqjJoIv5a67TX2SOkyk6XG6vzqlyd45KF8K6irhXykFO6KaHni4E3fsaPhrjwYVQxo7eZXXESHP/dJxLfWQFqabEV3U9G/14d/SzY8NohWFHoKZApl+++2OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fItIXSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A7AC2BC9E;
+	Mon, 30 Mar 2026 09:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774863311;
-	bh=cwf/dxxzyveQMeQGs3ZXpRzVtaFx+HZV6YJLlkmo+zI=;
+	s=korg; t=1774863326;
+	bh=ImzQvVjA1tl3VgCNgL/gFpAxkjlmbRoWCmwde5xJUcM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xJ2L5NP3/9dwkPFJ6/kEdm2IOQiYCEzBkFZ1yGlY7jNlc0u03Rsd4qZw+tsfIvdH6
-	 Bm1Ec6G37iWZaKPD6U8Uiu7X3NEQBMLoAmdc8UpgEEDrZYr+egk1+jamVdz01klaua
-	 f90PXvqKECy+ZCHRGCq92McxbGn/ceZhRmlWtswU=
-Subject: FAILED: patch "[PATCH] x86/cpu: Enable FSGSBASE early in" failed to apply to 5.10-stable tree
-To: nikunj@amd.com,bp@alien8.de,sohil.mehta@intel.com,stable@kernel.org
+	b=2fItIXSZEkpQ51NTZLF0AFpAITo81PAA0bTAhZWfI9IV39NavgFwhUxR9mguzwQEG
+	 tjC0A8Qf/i2aRd8pl7iQ5LxAnK71x+7LxMOLrXkzJxG/s/OItYMgM8DquxYz2hXGqs
+	 uLdH3fFcW1qkj5duWSmrUixiVWsBIk0cNOfLMTWM=
+Subject: FAILED: patch "[PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests" failed to apply to 6.12-stable tree
+To: nikunj@amd.com,bp@alien8.de,stable@kernel.org,thomas.lendacky@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 11:35:08 +0200
-Message-ID: <2026033008-surfboard-squirt-5661@gregkh>
+Date: Mon, 30 Mar 2026 11:35:22 +0200
+Message-ID: <2026033022-wiry-prodigal-d8ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,18 +60,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231069-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231070-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NO_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -81,24 +81,24 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 2AACE35856B
+X-Rspamd-Queue-Id: 7CE323585A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 05243d490bb7852a8acca7b5b5658019c7797a52
+git cherry-pick -x 3645eb7e3915990a149460c151a00894cb586253
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033008-surfboard-squirt-5661@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033022-wiry-prodigal-d8ff@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,137 +110,89 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 05243d490bb7852a8acca7b5b5658019c7797a52 Mon Sep 17 00:00:00 2001
+From 3645eb7e3915990a149460c151a00894cb586253 Mon Sep 17 00:00:00 2001
 From: Nikunj A Dadhania <nikunj@amd.com>
-Date: Wed, 18 Mar 2026 07:56:52 +0000
-Subject: [PATCH] x86/cpu: Enable FSGSBASE early in
- cpu_init_exception_handling()
+Date: Wed, 18 Mar 2026 07:56:54 +0000
+Subject: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
 
-Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
-to ensure it is enabled before any exceptions can occur on both boot and
-secondary CPUs.
+FRED-enabled SEV-(ES,SNP) guests fail to boot due to the following issues
+in the early boot sequence:
 
-== Background ==
+* FRED does not have a #VC exception handler in the dispatch logic
 
-Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
-X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
-or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
+* Early FRED #VC exceptions attempt to use uninitialized per-CPU GHCBs
+  instead of boot_ghcb
 
-On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
-When the feature is available, the code is permanently patched to use
-RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
+Add X86_TRAP_VC case to fred_hwexc() with a new exc_vmm_communication()
+function that provides the unified entry point FRED requires, dispatching
+to existing user/kernel handlers based on privilege level. The function is
+already declared via DECLARE_IDTENTRY_VC().
 
-== Boot Sequence ==
+Fix early GHCB access by falling back to boot_ghcb in
+__sev_{get,put}_ghcb() when per-CPU GHCBs are not yet initialized.
 
-Boot CPU (with CR pinning enabled):
-  trap_init()
-    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
-      x2apic_setup()
-  ...
-  arch_cpu_finalize_init()
-    identify_boot_cpu()
-      identify_cpu()
-        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
-	# This becomes part of cr4_pinned_bits
-    ...
-    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
-
-Secondary CPUs (with CR pinning enabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
-                                    set implicitly via cr4_pinned_bits
-
-    cpu_init()                   <- exceptions work because FSGSBASE is
-                                    already enabled
-
-Secondary CPU (with CR pinning disabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
-    cpu_init()
-      x2apic_setup()
-        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
-          exc_vmm_communication()
-            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
-                                      (patched code)
-    ...
-    ap_starting()
-      identify_secondary_cpu()
-        identify_cpu()
-	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
-                                             too late
-
-== CR Pinning ==
-
-Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
-CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
-cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
-This works but creates an undocumented dependency between cr4_init() and the
-pinning mechanism.
-
-== Problem ==
-
-Secondary CPUs boot after alternatives have been applied globally. They
-execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
-instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
-behavior will break the implicit dependency, causing secondary CPUs to
-generate #UD.
-
-This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
-x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
-handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
-Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
-
-== Fix ==
-
-Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
-exception handlers. This makes the dependency explicit and ensures both
-boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
-executes.
-
-Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
 Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org>  # 6.12+
+Link: https://patch.msgid.link/20260318075654.1792916-4-nikunj@amd.com
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index a8ff4376c286..7840b224d6a7 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2050,12 +2050,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	setup_umip(c);
- 	setup_lass(c);
+diff --git a/arch/x86/coco/sev/noinstr.c b/arch/x86/coco/sev/noinstr.c
+index 9d94aca4a698..5afd663a1c21 100644
+--- a/arch/x86/coco/sev/noinstr.c
++++ b/arch/x86/coco/sev/noinstr.c
+@@ -121,6 +121,9 @@ noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
  
--	/* Enable FSGSBASE instructions if available. */
--	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--		cr4_set_bits(X86_CR4_FSGSBASE);
--		elf_hwcap2 |= HWCAP2_FSGSBASE;
--	}
--
- 	/*
- 	 * The vendor-specific functions might have changed features.
- 	 * Now we do "generic changes."
-@@ -2416,6 +2410,18 @@ void cpu_init_exception_handling(bool boot_cpu)
- 	/* GHCB needs to be setup to handle #VC. */
- 	setup_ghcb();
+ 	WARN_ON(!irqs_disabled());
  
-+	/*
-+	 * On CPUs with FSGSBASE support, paranoid_entry() uses
-+	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
-+	 * boot after alternatives are patched globally, so early exceptions
-+	 * execute patched code that depends on FSGSBASE. Enable the feature
-+	 * before any exceptions occur.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
-+		cr4_set_bits(X86_CR4_FSGSBASE);
-+		elf_hwcap2 |= HWCAP2_FSGSBASE;
-+	}
++	if (!sev_cfg.ghcbs_initialized)
++		return boot_ghcb;
 +
- 	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
- 		/* The boot CPU has enabled FRED during early boot */
- 		if (!boot_cpu)
+ 	data = this_cpu_read(runtime_data);
+ 	ghcb = &data->ghcb_page;
+ 
+@@ -164,6 +167,9 @@ noinstr void __sev_put_ghcb(struct ghcb_state *state)
+ 
+ 	WARN_ON(!irqs_disabled());
+ 
++	if (!sev_cfg.ghcbs_initialized)
++		return;
++
+ 	data = this_cpu_read(runtime_data);
+ 	ghcb = &data->ghcb_page;
+ 
+diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
+index 88c757ac8ccd..fbe2d10dd737 100644
+--- a/arch/x86/entry/entry_fred.c
++++ b/arch/x86/entry/entry_fred.c
+@@ -177,6 +177,16 @@ static noinstr void fred_extint(struct pt_regs *regs)
+ 	}
+ }
+ 
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++noinstr void exc_vmm_communication(struct pt_regs *regs, unsigned long error_code)
++{
++	if (user_mode(regs))
++		return user_exc_vmm_communication(regs, error_code);
++	else
++		return kernel_exc_vmm_communication(regs, error_code);
++}
++#endif
++
+ static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
+ {
+ 	/* Optimize for #PF. That's the only exception which matters performance wise */
+@@ -207,6 +217,10 @@ static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
+ #ifdef CONFIG_X86_CET
+ 	case X86_TRAP_CP: return exc_control_protection(regs, error_code);
+ #endif
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	case X86_TRAP_VC: return exc_vmm_communication(regs, error_code);
++#endif
++
+ 	default: return fred_bad_type(regs, error_code);
+ 	}
+ 
 
 
