@@ -1,179 +1,197 @@
-Return-Path: <stable+bounces-231280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K5fBgLoymkkBQYAu9opvQ
-	(envelope-from <stable+bounces-231280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:15:46 +0200
+	id 0EYiA4/oymkkBQYAu9opvQ
+	(envelope-from <stable+bounces-231281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:18:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795FA361522
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:15:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AABA361565
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7DBD302AE29
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:13:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 860523038FC9
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6EB3A0E85;
-	Mon, 30 Mar 2026 21:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5879A3A1E70;
+	Mon, 30 Mar 2026 21:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZDCyVZVQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FpM0/DH3"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C77839BFEB;
-	Mon, 30 Mar 2026 21:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2194F36EAA7;
+	Mon, 30 Mar 2026 21:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774905237; cv=none; b=VA7LciyHrNOEcGNEApqj5J/XVY0abMpnACT/0lWlrSAQXULAHN/HMd/d3b/p4T4qZ/cSHOdDps0Aiq2q1vXGsHdc7i8AW9pwDPOAxQBrBIbwtISJJqDryW/4rQqIKZdiBCpuPBOUBTOI3PDqOY1Ntm2/V6vK5HOgF2f3d6Qee2E=
+	t=1774905479; cv=none; b=li8YD3IRGnEH207tjpHpO37kqOmhjC8UHM8FCURBVjFjZBcEacVlo9HA/nPkYgO7qwMreLEmnUk5D3Ct65sDA4NuQwoQ3zDSP75aQOlI3dDzqSYyi740Cl9SW5k2LfcTuUs6+I8+YJzVRcQfPfcgjzUK3X7m0GfiXOfG6OkFD94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774905237; c=relaxed/simple;
-	bh=e5bDsRuU63UPeAFQyny/ydSS0H0T8QaYTmCmONn6e/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XLnDHe/nutOmAmtgZD+fT9lQ14MIQPxs0jYrV6imQ7W8X7dWK26KR7tW9KuK1AfARXlIE05mX5meq2VArKWaK87cE93J0+an2VNmKl0Ht8qFi2rHTaIDh/AeSFXRfVMSrIcrDatYM+hk3QoP6/gsfMcPK2WQGjna9GlU7UWtqDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZDCyVZVQ; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from skinsburskii.localdomain (unknown [20.236.10.206])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 87BF920B6F01;
-	Mon, 30 Mar 2026 14:13:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 87BF920B6F01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774905236;
-	bh=xrTOTYS8uQdEuo3u2wpQC4rGOxKLvTI/wbr3cmbeVeo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZDCyVZVQB4ivnIAesFKVYvLHdXY6ut4Y/jWpYPhDWiUwZz7jUvWG/1XLW3Di33dU7
-	 iYDQFlANbigLdVVW+pdahSzcD1PQ+1g7MRKB37ger1RWOyr71Kq//D6x8Cy02eQVER
-	 TihhL0+Sm5ptsRVZWEHBplR7v+Xk2YNb29ZPQs2c=
-Date: Mon, 30 Mar 2026 14:13:53 -0700
-From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-To: Junrui Luo <moonafterrain@outlook.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Anirudh Rayabharam <anrayabh@linux.microsoft.com>,
-	Mukesh Rathor <mrathor@linux.microsoft.com>,
-	Muminul Islam <muislam@microsoft.com>,
-	Praveen K Paladugu <prapal@linux.microsoft.com>,
-	Jinank Jain <jinankjain@microsoft.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Roman Kisel <romank@linux.microsoft.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] Drivers: hv: mshv: fix integer overflow in memory
- region overlap check
-Message-ID: <acrnkcG5_u0RCydx@skinsburskii.localdomain>
-References: <SYBPR01MB788138A30BC69B0F5C3316E5AF54A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+	s=arc-20240116; t=1774905479; c=relaxed/simple;
+	bh=Ko3oY/4SMQQ3vctYvOoRtCHmDsI7gmvMiwOZXIW0VIo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z20xNQG1kiK4sdpmYg97y69qNPXkRhL1xljRxekiGWzevwDH+IAFvH8Zb3fwV9IcvzNirCML710WKaTw+4IVNliKlYjk/2pRxBQPpwWUOG7BorZFs02DxCJmqi1LqFCx/XN+Z7BubxBcA5F7W8jACQ5w7WoFgsJbBSkDZQ1oaIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FpM0/DH3; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774905477; x=1806441477;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Ko3oY/4SMQQ3vctYvOoRtCHmDsI7gmvMiwOZXIW0VIo=;
+  b=FpM0/DH3APg4OxWSKFNcaiGZr9Mn6HHkXppMZm/bFhXfQzWwlIS23dBz
+   HQhQyeRmV2w752OIa6FussyPPeMLUmwNLV76UpSTFQi5tRB7rdILj00Hq
+   0D70jNFAVHI5IHp1+S7jOgPnrndfHpytpxHGcCQevjTVfN/4E1sE3XXyr
+   pPaEKrF1x6Jpe/+Yyj49Gsa2ZBPPNwJPSG/+Mpm0tVpZFtTXuFnRKkFup
+   rr3JX4Dbv/HcLNkH9e+cYZ1k2THFZDrf+yJ74OeG05o7T6W8MJu7nIsww
+   FipFmh7+Bxq+6roJr4Qqk9+3maHNuI9zgDUcAwLU+CKEjhUXRrYRSgNir
+   A==;
+X-CSE-ConnectionGUID: GWWk4hfpQxqSKPPZOZhggQ==
+X-CSE-MsgGUID: wq7mUFhHSlu+Vai1dXgp5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="63461217"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="63461217"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 14:17:56 -0700
+X-CSE-ConnectionGUID: 0kq6degtRP2d1e+YRNIl5Q==
+X-CSE-MsgGUID: OYuXu2cXQMuMp1jX6vzh7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="223289941"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.4]) ([10.125.111.4])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 14:17:56 -0700
+Message-ID: <9de8883d-0252-4d2c-9fe3-2d2464432334@intel.com>
+Date: Mon, 30 Mar 2026 14:17:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SYBPR01MB788138A30BC69B0F5C3316E5AF54A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] dax/hmem: Add tests for the dax_hmem takeover
+ capability
+To: "Koralahalli Channabasappa, Smita" <skoralah@amd.com>,
+ Dan Williams <dan.j.williams@intel.com>
+Cc: patches@lists.linux.dev, linux-cxl@vger.kernel.org,
+ alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
+References: <20260327052821.440749-1-dan.j.williams@intel.com>
+ <f1adf0ee-fdd2-43b8-91e1-1102643afa49@amd.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <f1adf0ee-fdd2-43b8-91e1-1102643afa49@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231280-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,linux.microsoft.com,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skinsburskii@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231281-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:dkim,outlook.com:email,skinsburskii.localdomain:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 795FA361522
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7AABA361565
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Mar 28, 2026 at 05:18:45PM +0800, Junrui Luo wrote:
-> mshv_partition_create_region() computes mem->guest_pfn + nr_pages to
-> check for overlapping regions without verifying u64 wraparound. A
-> sufficiently large guest_pfn can cause the addition to overflow,
-> bypassing the overlap check and allowing creation of regions that wrap
-> around the address space.
-> 
-> Fix by using check_add_overflow() to reject such regions early, and
-> validate that the region end does not exceed MAX_PHYSMEM_BITS. These
-> checks also protect downstream callers that compute start_gfn +
-> nr_pages on stored regions without overflow guards.
-> 
-> Fixes: 621191d709b1 ("Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Suggested-by: Roman Kisel <romank@linux.microsoft.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-> ---
-> Changes in v2:
-> - Add a maximum check suggested by Roman Kisel
-> - Link to v1: https://lore.kernel.org/all/SYBPR01MB7881689C0F58149DD986A6D1AF49A@SYBPR01MB7881.ausprd01.prod.outlook.com/
-> ---
->  drivers/hv/mshv_root_main.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
-> index 6f42423f7faa..32826247dbce 100644
-> --- a/drivers/hv/mshv_root_main.c
-> +++ b/drivers/hv/mshv_root_main.c
-> @@ -1174,11 +1174,20 @@ static int mshv_partition_create_region(struct mshv_partition *partition,
->  {
->  	struct mshv_mem_region *rg;
->  	u64 nr_pages = HVPFN_DOWN(mem->size);
-> +	u64 new_region_end;
-> +
 
-Minor nit: just "end" or even "tmp" would be sufficient, since it's only
-used for the overflow checks. "new_region_end" is a bit verbose and it's
-not really "new" per se.
 
-> +	/* Reject regions whose end address would wrap around */
-> +	if (check_add_overflow(mem->guest_pfn, nr_pages, &new_region_end))
-> +		return -EOVERFLOW;
-> +
-> +	/* Reject regions beyond the maximum physical address */
-> +	if (new_region_end > HVPFN_DOWN(1ULL << MAX_PHYSMEM_BITS))
-
-This is a PFN, so the check should be against MAX_PHYSMEM_BITS -
-PAGE_SHIFT, right?
-Or maybe it's even better to use "pfn_valid"?
-
-Thanks,
-Stanislav
-
-> +		return -EINVAL;
->  
->  	/* Reject overlapping regions */
->  	spin_lock(&partition->pt_mem_regions_lock);
->  	hlist_for_each_entry(rg, &partition->pt_mem_regions, hnode) {
-> -		if (mem->guest_pfn + nr_pages <= rg->start_gfn ||
-> +		if (new_region_end <= rg->start_gfn ||
->  		    rg->start_gfn + rg->nr_pages <= mem->guest_pfn)
->  			continue;
->  		spin_unlock(&partition->pt_mem_regions_lock);
+On 3/30/26 2:12 PM, Koralahalli Channabasappa, Smita wrote:
+> On 3/26/2026 10:28 PM, Dan Williams wrote:
+>> Given all the cross subsystem dependencies needed to make this solution
+>> work, it needs to have a unit test to keep it functional.
+>>
+>> On the path to writing that, several fixes fell out, but not to Smita's
+>> code, to mine. One use-after-free has been there since the original
+>> automatic region assembly code.
+>>
+>> Here is a preview of the core of the test I will submit to the cxl-cli project:
+>>
+>> ---
+>> modprobe cxl_mock_mem && modprobe cxl_test hmem_test=1
+>>
+>> dax=$(find_dax_cxl)
+>> [[ "$dax" == "" ]] && err $LINENO
+>> dax=$(find_dax_hmem)
+>> [[ "$dax" != "" ]] && err $LINENO
+>>
+>> unload
+>>
+>> modprobe cxl_mock_mem && modprobe cxl_test fail_autoassemble hmem_test=1
+>>
+>> dax=$(find_dax_cxl)
+>> [[ "$dax" != "" ]] && err $LINENO
+>> dax=$(find_dax_hmem)
+>> [[ "$dax" == "" ]] && err $LINENO
+>>
+>> unload
+>> ---
+>>
+>> This builds on Smita's series [1] pushed out to for-7.1/dax-hmem in
+>> cxl.git [2].
+>>
+>> [1]: http://lore.kernel.org/20260322195343.206900-1-Smita.KoralahalliChannabasappa@amd.com
+>> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-7.1/dax-hmem
+>>
+>> Dan Williams (9):
+>>    cxl/region: Fix use-after-free from auto assembly failure
+>>    dax/cxl: Fix HMEM dependencies
+>>    cxl/region: Limit visibility of cxl_region_contains_resource()
+>>    cxl/region: Constify cxl_region_resource_contains()
+>>    dax/hmem: Reduce visibility of dax_cxl coordination symbols
+>>    dax/hmem: Fix singleton confusion between dax_hmem_work and hmem
+>>      devices
+>>    dax/hmem: Parent dax_hmem devices
+>>    tools/testing/cxl: Simulate auto-assembly failure
+>>    tools/testing/cxl: Test dax_hmem takeover of CXL regions
+>>
+>>   drivers/dax/Kconfig                |   6 +-
+>>   drivers/cxl/cxl.h                  |  11 ++-
+>>   drivers/dax/bus.h                  |  15 +++-
+>>   include/cxl/cxl.h                  |  15 ----
+>>   tools/testing/cxl/test/mock.h      |   8 ++
+>>   drivers/cxl/core/region.c          |  68 +++++++++++++++--
+>>   drivers/dax/hmem/device.c          |  28 ++++---
+>>   drivers/dax/hmem/hmem.c            | 115 +++++++++++++++--------------
+>>   tools/testing/cxl/test/cxl.c       |  66 +++++++++++++++++
+>>   tools/testing/cxl/test/hmem_test.c |  47 ++++++++++++
+>>   tools/testing/cxl/test/mem.c       |   3 +
+>>   tools/testing/cxl/test/mock.c      |  50 +++++++++++++
+>>   tools/testing/cxl/Kbuild           |   7 ++
+>>   tools/testing/cxl/test/Kbuild      |   1 +
+>>   14 files changed, 344 insertions(+), 96 deletions(-)
+>>   delete mode 100644 include/cxl/cxl.h
+>>   create mode 100644 tools/testing/cxl/test/hmem_test.c
+>>
+>>
+>> base-commit: 51d2fa02c0e4b3b23c4484f2af9b6d65c35471e8
 > 
-> ---
-> base-commit: c369299895a591d96745d6492d4888259b004a9e
-> change-id: 20260328-fixes-0296eb3dbb52
+> I tested this series. Its working as expected for me. Thanks for the incremental.
+
+Hi Smita. Can you provide a tested-by tag pls?
+
 > 
-> Best regards,
-> -- 
-> Junrui Luo <moonafterrain@outlook.com>
+> Thanks
+> Smita
+> 
+
 
