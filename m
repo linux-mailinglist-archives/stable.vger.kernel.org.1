@@ -1,197 +1,294 @@
-Return-Path: <stable+bounces-231243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HENN5SPymn09gUAu9opvQ
-	(envelope-from <stable+bounces-231243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 16:58:28 +0200
+	id IC1+ILyPymn09gUAu9opvQ
+	(envelope-from <stable+bounces-231244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 16:59:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3667635D4E5
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 16:58:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5198D35D52E
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 16:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C33773075D57
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:50:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 95A22302EE96
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE5A3264CD;
-	Mon, 30 Mar 2026 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFF33254A3;
+	Mon, 30 Mar 2026 14:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="UT325jDN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qExj1jP5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904C02E091B
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 14:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6696019CCF5
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 14:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774882197; cv=none; b=sxfOuEhYhvTXnu1b8GyyfiMzSBxSuJDT53bXwkH0QvByAXCdwH9t2d3wOT1sOedjyUw7rL8rj+axRDmdL1CgIaP/j2nyjojNT88O3r2mSxSNvPjf8sVLy4cwecHG9sHy+8HZbI5zCnXGRktSptVAg9TMQmc064Nx/eU/RkcAdpM=
+	t=1774882258; cv=none; b=STSUWEavd6v4/dLiv1S8Tfv+Dc4io6a9CCvDGnaHhQqvckhwdPtq341COf0Ak1WQdFfm5GhXVcsSF+FPy0VPcYogTm9cNS17gxcP3+tnnL9sJuKiLJTu/IsntthlZVnzOhSmuJ6Kzv0RLd46wO4cL93AdqvRe5XepBgGDBD8Lx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774882197; c=relaxed/simple;
-	bh=r74CxeVQS+MaGx5qIStVX7Dkyw5eva6XeRU/qgsTVAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fn1womVE1JxiEEtrxgmlqSXsJyR8bcfcUVO2W7ojqzhgKDvapjoP9JI8FUeTrRFDfwWTd0a2BjZWwyCArbwQnLlZ6gr4Pb//MDbqhJfk0HB406aN+paJSK0kgR6Hp0VqfMc5iaXAUKQBbWQLW/sX4RowvKPAwxYDk0wwif6+nKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=UT325jDN; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50baafd6c4aso31330821cf.1
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 07:49:55 -0700 (PDT)
+	s=arc-20240116; t=1774882258; c=relaxed/simple;
+	bh=60SnPQByYHOM/RTzrzGfmR1Mc7EOtQsTFIntcfQQnlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E+dXjBYqrsJdv77JSBltedxsc2aQmSdP5TMFHeShirITLaetB4z63Y1yQ3s88Wgl+19cu5xR3zEG82BdF7WVvzxAt1GvfF4b9JHEJ8MtFIvxKEzm2sg4+R3Xx30bcKyKUxmiTBxtiSeRKSUF8B66nUX9s1d7gliHCcX14eRFiho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qExj1jP5; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b9382e59c0eso738322166b.0
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 07:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1774882194; x=1775486994; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d63VizpxJtFsSbrbeZx9OSixUi8R0KJ6qBhGjjaILvs=;
-        b=UT325jDNS4v2GildsP7RhA6j0QOPtyvGvrWchyDKsd+UkRQKj9ciPI3mHcyIVq27Nk
-         DJMk2nGYg3zklKxt9JKmNXOpivT+6gb/w1CCxktvd6aJ8QlS9MhBJ3oVxp+UbV+k+dxB
-         Hl9fZDw1CMR4ihE9OluRXDmp/K/vL7aj7yYr0pJ+J58Zk/wCI00TC8bQytMLtVUGfrEv
-         A9bT4NHzi5w+KViuV/iFHgWxwxm9J1ojc0Sj0pdJ+qybsaSG1ycL9c+WMi4YxchpXmZo
-         3CoTx9ycLfEJgl431svLXZQ/tdt4PpajFN2E64iH0P/EmulQM6kdvvdCi9zoB28JvhyH
-         A8ag==
+        d=gmail.com; s=20251104; t=1774882255; x=1775487055; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iEQgyKbT1VQKSh6QDXL908TnF5Z4/wgCTC4niu9wvmY=;
+        b=qExj1jP5PR7Q8Ogm6obtkSGPeimtPdkp80nMtxZ5Rd1lJrvrht7d0BDsEUsiL7R7gO
+         nq7RqjqnUQgcdAhlRqyWT6GBerwP7v4nlR/f646c/ELyX7WaBNB4jtji3qJUOBxQP6yz
+         d1Aq+uxlPMbd+40qDUGIMpswypvdDRtUB/5pTGelwu8tj+KCaBeWFAhRfgiRqVONGq5C
+         wuNoL510mW0MFEfHte2xCAHnUEErW3zQz//ZmrxnbE6Wy/kM+eAcTqXI84WiQekIC59A
+         J8axv8anuepDrn/J2AWsbQhUFr5V/jeHPcGjOHzTBZeDTC1naErak0VvPDrKQhbOJauA
+         2B6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774882194; x=1775486994;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d63VizpxJtFsSbrbeZx9OSixUi8R0KJ6qBhGjjaILvs=;
-        b=QSjkzjXkRbRS74dmPZih3M1rw7v2t+zV3Y70g5ouz9XhjlYy9tl7Az9COWUFvfnwOw
-         B12rGSoHLJ0C/ZTpdTxjlBtH1t7PSILqDDyBew+1vocm9a+7BAbU4M9TsGXo6aeWgAwv
-         FdFtXHmMtRN3m9cVQ6HmZaQxGKIsXUBFrE2JUhybzrRNF/xk3eYn/BSgw5H9GU3kLYSC
-         Y+ggIJye4IabTLToY2S4Wwm/WzxO+OBD0mg8606ailad4JDOd2tA3LZXhJDuFIYZhaPQ
-         jL0BU/ues7F0fxpbMZR4n+EmZ6AYw7Rcm/4Ed8m06NB3v0nRFQzBjZbhNxYcX+mcdImT
-         OLJA==
-X-Forwarded-Encrypted: i=1; AJvYcCURO8KIqsdSRzDQ/gqZXHwSXaU2UnzDeFnne09+YKtCPFducr+jjITw8Q2ZRBiRLCHYgcp6j9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2I1BeGZlQt2Lca6SJxoY8WrUX5H04YbJvlAK1ATw+zI+0wkZB
-	5105pADxgfu13m161Uu2f3pfmfmt5Q0dN3myBhaAQzLLY7CXiGjm4lvDCBihx/4bsA==
-X-Gm-Gg: ATEYQzwiRYQ4ArtVTD+Ut1cujbMo/7dVpVd/p41Jl7IsZvTDJeUFOayERgACNUVuaad
-	6mAdeFcYTvY7nvbcPDh43bsPER2mk6wTkHAm/fH3caRE0seXrB6rkO+RKB8xo+dQtIzn23RPT+b
-	sbLXzHoCThnhS549Npo0wX7fgRRYNAo1CMnCKIhEaACVPr+/qNXcuWVXotDcuCaL77k4nRJesFW
-	epaZgawTd2E7uMxRAWo1DIRjSi2CQtbwLpTcU1RFTQCqyaodSa/4JEE3uFme/FZs1LEj+HkzmAl
-	11jVmI3PdqQSzd5jze1Ap0DLEOJgPglpV9IkzWtxufmNATBdxdXkH2TSRr7urTSGypXikVfEL8B
-	9PPZNCdtcxIQxWwWFTD+2b04zzw4vpP5NuCzQ61splTv6E3rO8oVYy3JVgzmKGV/1D1FM/fKRTl
-	0MsHGe1ZR/7xPSyJ15MZWDXIKCM6lmpf6sPnwLni+7mg==
-X-Received: by 2002:a05:622a:1343:b0:50b:404a:746f with SMTP id d75a77b69052e-50ba3976e93mr171565381cf.58.1774882194276;
-        Mon, 30 Mar 2026 07:49:54 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50bb2c67fefsm63548861cf.4.2026.03.30.07.49.53
+        d=1e100.net; s=20251104; t=1774882255; x=1775487055;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iEQgyKbT1VQKSh6QDXL908TnF5Z4/wgCTC4niu9wvmY=;
+        b=OFgcHcS1KXjfT7Eyf6EnVo7DStchxNwiNTkkQPKxqzzghv38dAHNYy+5R7zkObmGPe
+         HRqlWMZH8LsTkw7Fci5neuFHKfk4A2KUkwyyhTOCM8PhqzIK1hZbjwbSirRAbomz+mSB
+         aMlX0HyOtIIN9EK6tgPrg20Nwa3imBL5H3maWfKCIWCAZuLRDUKFzMrNRc5xN4sFDZZi
+         SIiLqPMLIC6o42dpI5v4Eq2Np//Qj5OUnpxUn74f64YFD3p5CFMMWcxTHYF5jndiwt+b
+         lAjG7h1t0byB7GMut9NT4+LeKOk8JwF4Q6ZUD2JMYbLsu44DxN5wTX0JeOTD3cGkzhbx
+         xDLw==
+X-Forwarded-Encrypted: i=1; AJvYcCV89H1iDBBS3fy8AsC8KdBRQYTy6pm2M40+Z2XmCFdIja0HEUt6xFlDMioNN2dOO0CiI2lvfWM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4RH0zrSlgrxhE3hEISTvDxHiHTSlQVrnOdUwUIst43mTJtIle
+	81i3V6BvMJ6S0DtNg5y5Gv53+joJd8ca9oL8h+2xi93h8ghL8VEG4+vK
+X-Gm-Gg: ATEYQzy7yt7GA5lOiTpENxuRqQg6eMLHKC5c6ZDgZGFrx6/9Gq5pqYLaAqRe/a7oFCU
+	3QnqlOE5O+Vam6n6iPldNjHkdLdFT0kSGuYvW0+eDqGuFBjsNdpj1b2CkzX76IV/f6lEkrORbRX
+	nW9X4sv7SzrJaNRHXF7/s2FrWZsZ1xGJhlVff0qjVKMnfHTr84SicATXnd9c+yNahracyFQlp1r
+	pW9KOjJvEjjP2aBl4NyN1/6DVKZmI8+KPfgoSz6Kx9tOJ51CzrCAhjVHcLwEDElosb8OWC4/6xz
+	e87woOYercnyDlwoD84tbOuyctmdF6Tb8q+Yiwr8Gyx+ETYVU73ESX/j7MQV8dC+GCuaaQpUSnh
+	5sTKqZ5bEYGlCLWuNEz2xmRpV1SUzhYPJCGoh7F4ltuhuAqXT9zgKmzYRQ59LLOTLq2mJ5+Cduq
+	L1q7UsfhlGe0Hv8b3CPMnp8XttylywmLKLqGqc9TSC8xo=
+X-Received: by 2002:a17:907:2d8d:b0:b9b:207c:f7df with SMTP id a640c23a62f3a-b9b507a92c1mr792638966b.29.1774882254394;
+        Mon, 30 Mar 2026 07:50:54 -0700 (PDT)
+Received: from localhost ([178.214.243.78])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66b7340cae2sm2848609a12.11.2026.03.30.07.50.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 07:49:53 -0700 (PDT)
-Date: Mon, 30 Mar 2026 10:49:51 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Kay Sievers <kay.sievers@vrfy.org>,
-	Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] driver core: Don't let a device probe until it's ready
-Message-ID: <55bd10b4-4d4f-438d-9f15-9293bbe3c734@rowland.harvard.edu>
-References: <20260330072839.v2.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+        Mon, 30 Mar 2026 07:50:53 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: lijo.lazar@amd.com,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH v4] drm/amdgpu: replace PASID IDR with XArray
+Date: Mon, 30 Mar 2026 19:50:49 +0500
+Message-ID: <20260330145049.21936-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330072839.v2.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231243-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231244-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email,android.com:url,harvard.edu:email]
-X-Rspamd-Queue-Id: 3667635D4E5
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5198D35D52E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 07:28:41AM -0700, Douglas Anderson wrote:
-> The moment we link a "struct device" into the list of devices for the
-> bus, it's possible probe can happen. This is because another thread
-> can load the driver at any time and that can cause the device to
-> probe. This has been seen in practice with a stack crawl that looks
-> like this [1]:
-> 
->   really_probe()
->   __driver_probe_device()
->   driver_probe_device()
->   __driver_attach()
->   bus_for_each_dev()
->   driver_attach()
->   bus_add_driver()
->   driver_register()
->   __platform_driver_register()
->   init_module() [some module]
->   do_one_initcall()
->   do_init_module()
->   load_module()
->   __arm64_sys_finit_module()
->   invoke_syscall()
-> 
-> As a result of the above, it was seen that device_links_driver_bound()
-> could be called for the device before "dev->fwnode->dev" was
-> assigned. This prevented __fw_devlink_pickup_dangling_consumers() from
-> being called which meant that other devices waiting on our driver's
-> sub-nodes were stuck deferring forever.
-> 
-> It's believed that this problem is showing up suddenly for two
-> reasons:
-> 1. Android has recently (last ~1 year) implemented an optimization to
->    the order it loads modules [2]. When devices opt-in to this faster
->    loading, modules are loaded one-after-the-other very quickly. This
->    is unlike how other distributions do it. The reproduction of this
->    problem has only been seen on devices that opt-in to Android's
->    "parallel module loading".
-> 2. Android devices typically opt-in to fw_devlink, and the most
->    noticeable issue is the NULL "dev->fwnode->dev" in
->    device_links_driver_bound(). fw_devlink is somewhat new code and
->    also not in use by all Linux devices.
-> 
-> Even though the specific symptom where "dev->fwnode->dev" wasn't
-> assigned could be fixed by moving that assignment higher in
-> device_add(), other parts of device_add() (like the call to
-> device_pm_add()) are also important to run before probe. Only moving
-> the "dev->fwnode->dev" assignment would likely fix the current
-> symptoms but lead to difficult-to-debug problems in the future.
-> 
-> Fix the problem by preventing probe until device_add() has run far
-> enough that the device is ready to probe. If somehow we end up trying
-> to probe before we're allowed, __driver_probe_device() will return
-> -EPROBE_DEFER which will make certain the device is noticed.
-> 
-> In the race condition that was seen with Android's faster module
-> loading, we will temporarily add the device to the deferred list and
-> then take it off immediately when device_add() probes the device.
-> 
-> [1] Captured on a machine running a downstream 6.6 kernel
-> [2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libmodprobe/libmodprobe.cpp?q=LoadModulesParallel
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2023c610dc54 ("Driver core: add new device to bus's list before probing")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
+Commit 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
+converted the global PASID allocator from IDA to IDR with a spinlock
+for cyclic allocation, but introduced two locking bugs:
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+1) idr_alloc_cyclic() is called with GFP_KERNEL under spin_lock(),
+   which can sleep.
+
+2) amdgpu_pasid_free() can be called from hardirq context via the
+   fence signal path (amdgpu_pasid_free_cb), but the lock is taken
+   with plain spin_lock() in process context, creating a potential
+   deadlock:
+
+     CPU0
+     ----
+     spin_lock(&amdgpu_pasid_idr_lock)   // process context, IRQs on
+     <Interrupt>
+       spin_lock(&amdgpu_pasid_idr_lock) // deadlock
+
+   The hardirq call chain is:
+
+     sdma_v6_0_process_trap_irq
+      -> amdgpu_fence_process
+       -> dma_fence_signal
+        -> drm_sched_job_done
+         -> dma_fence_signal
+          -> amdgpu_pasid_free_cb
+           -> amdgpu_pasid_free
+
+   This was observed on an RX 7900 XTX when exiting a Vulkan game
+   running under Proton/Wine, which triggers the fence callback path
+   during VM teardown.
+
+Replace the IDR + spinlock with XArray.  xa_alloc_cyclic() handles
+GFP_KERNEL pre-allocation and IRQ-safe locking internally, and
+xa_erase() is already IRQ-safe, so no explicit locking is needed.
+This fixes both bugs in a single, cleaner conversion.
+
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+---
+
+v4: Use xa_alloc_cyclic/xa_erase directly instead of explicit
+    xa_lock_irqsave, as suggested by Lijo Lazar.
+v3: Replace IDR with XArray instead of fixing the spinlock, as
+    suggested by Lijo Lazar.
+    https://lore.kernel.org/all/20260330110346.16548-1-mikhail.v.gavrilov@gmail.com/
+v2: Added second patch fixing the {HARDIRQ-ON-W} -> {IN-HARDIRQ-W}
+    lock inconsistency (spin_lock -> spin_lock_irqsave).
+    https://lore.kernel.org/all/20260330053025.19203-1-mikhail.v.gavrilov@gmail.com/
+v1: Fixed sleeping-under-spinlock (idr_alloc_cyclic with GFP_KERNEL)
+    using idr_preload/GFP_NOWAIT.
+    https://lore.kernel.org/all/20260328213900.19255-1-mikhail.v.gavrilov@gmail.com/
+
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 43 +++++++++++--------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+index d88523568b62..2b63b54eaaa7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -22,7 +22,7 @@
+  */
+ #include "amdgpu_ids.h"
+ 
+-#include <linux/idr.h>
++#include <linux/xarray.h>
+ #include <linux/dma-fence-array.h>
+ 
+ 
+@@ -35,13 +35,13 @@
+  * PASIDs are global address space identifiers that can be shared
+  * between the GPU, an IOMMU and the driver. VMs on different devices
+  * may use the same PASID if they share the same address
+- * space. Therefore PASIDs are allocated using IDR cyclic allocator
+- * (similar to kernel PID allocation) which naturally delays reuse.
+- * VMs are looked up from the PASID per amdgpu_device.
++ * space. Therefore PASIDs are allocated using an XArray cyclic
++ * allocator (similar to kernel PID allocation) which naturally delays
++ * reuse. VMs are looked up from the PASID per amdgpu_device.
+  */
+ 
+-static DEFINE_IDR(amdgpu_pasid_idr);
+-static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
++static DEFINE_XARRAY_ALLOC(amdgpu_pasid_xa);
++static u32 amdgpu_pasid_xa_next;
+ 
+ /* Helper to free pasid from a fence callback */
+ struct amdgpu_pasid_cb {
+@@ -53,8 +53,7 @@ struct amdgpu_pasid_cb {
+  * amdgpu_pasid_alloc - Allocate a PASID
+  * @bits: Maximum width of the PASID in bits, must be at least 1
+  *
+- * Uses kernel's IDR cyclic allocator (same as PID allocation).
+- * Allocates sequentially with automatic wrap-around.
++ * Uses XArray cyclic allocator for sequential allocation with wrap-around.
+  *
+  * Returns a positive integer on success. Returns %-EINVAL if bits==0.
+  * Returns %-ENOSPC if no PASID was available. Returns %-ENOMEM on
+@@ -62,20 +61,22 @@ struct amdgpu_pasid_cb {
+  */
+ int amdgpu_pasid_alloc(unsigned int bits)
+ {
+-	int pasid;
++	u32 pasid;
++	int r;
+ 
+ 	if (bits == 0)
+ 		return -EINVAL;
+ 
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
+-				 1U << bits, GFP_KERNEL);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	r = xa_alloc_cyclic(&amdgpu_pasid_xa, &pasid, xa_mk_value(0),
++			    XA_LIMIT(1, (1U << bits) - 1),
++			    &amdgpu_pasid_xa_next, GFP_KERNEL);
+ 
+-	if (pasid >= 0)
++	if (r >= 0) {
+ 		trace_amdgpu_pasid_allocated(pasid);
++		return pasid;
++	}
+ 
+-	return pasid;
++	return r;
+ }
+ 
+ /**
+@@ -86,9 +87,7 @@ void amdgpu_pasid_free(u32 pasid)
+ {
+ 	trace_amdgpu_pasid_freed(pasid);
+ 
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	idr_remove(&amdgpu_pasid_idr, pasid);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	xa_erase(&amdgpu_pasid_xa, pasid);
+ }
+ 
+ static void amdgpu_pasid_free_cb(struct dma_fence *fence,
+@@ -625,13 +624,9 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_device *adev)
+ }
+ 
+ /**
+- * amdgpu_pasid_mgr_cleanup - cleanup PASID manager
+- *
+- * Cleanup the IDR allocator.
++ * amdgpu_pasid_mgr_cleanup - Cleanup PASID manager
+  */
+ void amdgpu_pasid_mgr_cleanup(void)
+ {
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	idr_destroy(&amdgpu_pasid_idr);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	xa_destroy(&amdgpu_pasid_xa);
+ }
+-- 
+2.53.0
+
 
