@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-231222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCWpEn57ymnk9AUAu9opvQ
-	(envelope-from <stable+bounces-231222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:32:46 +0200
+	id qGzpBlx9ymlo9QUAu9opvQ
+	(envelope-from <stable+bounces-231223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:40:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537BF35C044
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:32:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA6935C280
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72797301CAA3
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:29:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1ADC530CDC0E
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180543D333C;
-	Mon, 30 Mar 2026 13:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6D23D3D13;
+	Mon, 30 Mar 2026 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdCtZB1l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pwxvW0uV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A2C3D3CF6
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 13:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3F83876D5
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 13:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774877354; cv=none; b=ecy21cNG8GVHRlW7vnlJSqPO8HdsNhCe1IwoUPtbHa4WXw0jDGsxOArr6Ofh/h3ZVnzUk0n6Lr0TynhQPkoW/JSYm2WTeJ21t0VOo7W1UV+hDFoch3FFq3cWXEHic2eL7nCq+pp8NWJwbJdX24wodxBx5QfjakTRD6Nmi01IQBk=
+	t=1774877369; cv=none; b=DZMsYx35MzPKAGCloxiPX+4QaqKRMi9x18yWnwn4/VwXvEwGufzDP7GEXUCBtoOzy9LE/zMMKfdeCG5qYdIwgX3qrpSg6gZurnlqBqTeT290qb8th8MqAz37laKr+4mO5uHXzQGICXroYBXvVshYqwZQR1csxCBIBrq/OCkhPeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774877354; c=relaxed/simple;
-	bh=Dyg46i6NCc1WhVwi8ovx5dhpXtlJuvYJqgKq6QPv0Pc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mms/ZimUbY2KQXr6+ZpYA//pfk+MuSAZiGF9kkSDHQO4lDaMp0X48HCVR83mDEYI8UH7IEFK8QDxvkgXO5KmKmVKzMTuOyK31rf/RBHu+tTGzXXVnc6eo7RVjakvN1BJn0U32BCM0esd0SiznO+mmmUQt9pfJJL1q8yno+RAS9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RdCtZB1l; arc=none smtp.client-ip=209.85.222.41
+	s=arc-20240116; t=1774877369; c=relaxed/simple;
+	bh=HMPY83hDOtEh2uH8sesLzoJ/Zhf64/JSuRtvJ9f2po4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AQMGk5e/5RI2lbWRFSdEQ4y3M06UkyJCZ8MOMzL0X13WPOldWSinTh19V24iUb8hhWbYgX1XRyxbjh50ZEEQ1DY4PZBOdFoa8bAUdifxofxCGGtzkvYm6VeIcE+7eCSiF4EEdZkH2pESU77+HxHxvaVL3eZ5PO5pg88dO5Bo9gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pwxvW0uV; arc=none smtp.client-ip=209.85.221.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-94b07fddecbso2695069241.1
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 06:29:13 -0700 (PDT)
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-56cd71a7630so1554313e0c.2
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 06:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774877352; x=1775482152; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774877367; x=1775482167; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c/LwkGsCAcMgkIjG5Z0vM08NnZ6ybKA3EObcdXRbB+Q=;
-        b=RdCtZB1lmvHayomBPmZhNIOYXK8FPrrAx0Hw3t7CXUtQuqPKLK6Q3qxYududKUDbRq
-         oTr53S1n5qyi0xH+orfiv3/bbuQFLWFeXRmtbPytBS+xDy/7dCMHwaIAziOj7LR8hMId
-         /CV7mRCf7l6oojgYXZb6kUBU53vas+Duzw7Fxk+78KnJkMOxadHi5owHSdC7edvWcsbx
-         hsks6f/MHlOm6i03hXMAqDpmu149I9uMdP6WyAgxB6z9MRcy5uO+hLAe4u+NOHoMqJdt
-         V0gQx1LppEzv5ulhpCOWGlAfo35YJ7A1yJfcarWpbDm9C282FOQKV0QFVjg56a5sGEXo
-         MNUA==
+        bh=26QADu2V5kInSwvDprX/X5k3HI6g/YNPM7XdH9A3Fig=;
+        b=pwxvW0uVskulGYZtE7CZVzUfPj3e1yDwTiMO4bFq7V0qVX3jOkLUQYljhY6K4zwCh2
+         /ZuNPDjHVfnQMCldyDPhWKtFxM+Z/mrmQ/OoyBpGTo3SqL0k/d5AHdWQRS1rk7BltB8p
+         /RLdGilAA+f99F+QXJavlaYM5+kkUQS4FAvnkBfO+hj025/4e+n3FkZGaoNASiDNzSeA
+         nD/4g84s2oGyzTDAEt2cFdhzu59dg2t/ltggYeqlgQ/WKijNjypFnQUWxNKEpAPRtvKP
+         PCUk6khYeZ77o0RrDx4fU8jKRXFrgRFC724o+gHjuNvFJOgmcKuHh6vnJpzZ0lv1A45i
+         gMcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774877352; x=1775482152;
+        d=1e100.net; s=20251104; t=1774877367; x=1775482167;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c/LwkGsCAcMgkIjG5Z0vM08NnZ6ybKA3EObcdXRbB+Q=;
-        b=SqaA8Eo1cWeg/9CzD4Td4rTXz68ndS0nS1WVnP7l12sjk+yfD9rmoPQitFnQCAeYGo
-         wrCJTfjrmUgx/BiS43hLJoeHyhvOQwvhBsnTo7xMmQO09iwCB4YrwntpZalohPogPxQx
-         0jrKpyUTe2iFeL+KlxNLDISSUWN+FmzrJG8CrjHIXv6fR8vOzY0TtDQY/HDjGqoy8sur
-         n4G6bYHBWcR2BKertcJeWz3Fjte9gOQZqxgs2H2RI0VbpJNvp77DKUjYeiWHKa3I7bjm
-         eMbJgFL5ygMw/ZCPMCEDGFvf6pYGRgqdsORuYvzXGmGpTsel4+7TfkgIvpKSSIej/Ozf
-         2zwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXz1pY+Ssoy76SOYI5y/pNFUvuXaVFSHeydydG+GcpS9jDz173zdxwpv2z8iLz50gIZ4Zkm4jI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDb85QYeOzTDUzayl3sXB5b4XcKtUATP6Be9+YNyqeBMAd84J+
-	Sa1ZxnvK9EvzmVmYSKYG45Q7uH1VV3HMa7Gg2p18IyWTyh6K1FHenG3A
-X-Gm-Gg: ATEYQzykmL0Ptpv8SD+4mAf4ynweAYVu9bA+CrftBF9u0D1hoI6Ug94CMesPj41deW3
-	/1fxcPsyKSOrMKmIHSLM80ujWQ1uC6r9OHqTlLOy4+RDALcrZJ6jP0dcF/NI6dUY779bRCpLk4i
-	A50A3gKD1TMwgk8JEGkvHB7KSKFoGZIA9CnIWeqa6Vbr7F7maXYuNFkVmZLR30NUw63On631UtX
-	ngm95bHBeUUG1PvHTD9Dw9lw7jjNYndT48sTS1AK8AeUMbRpIz06D3Ae8NL0Ki1kAP1Z54OHkhM
-	6hSHCAgcx96/M1LpA5pzDmRDLSbiGd/IlpqY7rqzRTiWanq7iwOFBVjmvp4zuFif65xgNfICzy0
-	sRPdswxJAO+WWw3JmhWxyA9QhLEbzukV7KYMYmCqnTt2fUXJszQFYRlQFRVXK/y3N769PmXLKB9
-	CewSB8b8OU6/HY7J+Onhc86Rrfkd0=
-X-Received: by 2002:a05:6102:2009:b0:605:1f22:10f1 with SMTP id ada2fe7eead31-6051f22122cmr1995118137.13.1774877347810;
-        Mon, 30 Mar 2026 06:29:07 -0700 (PDT)
-Received: from localhost.localdomain ([2a09:bac1:76a0:1048::11:1d6])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9539e2604e4sm6998229241.1.2026.03.30.06.29.06
+        bh=26QADu2V5kInSwvDprX/X5k3HI6g/YNPM7XdH9A3Fig=;
+        b=CHlGEP42Cfywxs1A4iJr/i1hBm3VPK1WEcgC6jCVu/0zXvcxIX81B0CaSX0AFC5+Q4
+         K1mX7CzKGMhPNibL4KalZ1FzDQTEGFe7Kmd5W0QtLoYbh4bDSH1Al1BWAuM58la8nUB/
+         7Gl9eKeZxtt82oA8iCz4pmPhIfGk45l3vJf7r7YfMG7ozIsj5q+IrYaJKaJX67dBvSXt
+         Mr1jFl0hTNY8obsVcKDknGbVsjb0FOBfnBF+qIRzkjx8pwDQzVyTJAf2+2+Pk0cfl3kR
+         T+Q1ouWBlu0EWh2oLJZOige1iDkQGBOzBSF29rH9NDhLEuuEwcsb3HxHKoaYu0luiVPv
+         m6PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFfM3WLaXcSO0mDCbpw+B1cu2lW+PrSte1u3UabbAmoYJreEn5Vm77NWGfFHrrFtWjVm8m0+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7AmBqWpY9/F8oxM0pOlcGtRUZQ+wkOka7NYYsEfdELomt5FWH
+	bMmWtjm1JrzLuNlT1Rb44vWfr3vDQsyW9OpxthHym+KSMTlponQ80sSO
+X-Gm-Gg: ATEYQzz18IeIfchIGfXBHHOO77uVqXfmpKUpDKGdLEmSbMNAtVs2XzE6FloKrM7ET9c
+	I/U6H9SOLobLBhGooX+YH7oRZQ6OYfPuYZ5SDsydj2xmm91f+o4SAVELpwf+sb9nIK29qajsiyc
+	8b6L+PywdcfULfPWSrX9Hhwm83y0SM/t941E9Bah6SlYUZ6MknHZDboj2BG4MONxzhw7KNNTl5+
+	APem+t7N3GZaOv7oN9JR8YTFup183s8WufJDDZNQW/+10atEK5PCHMo1yFXO/VQ9dvdEMzYxvXH
+	WR+KetQcjveNT6d7IfoJC4makO++69ckHuVAhOtFyNhRHTDiLpUIVU6Grg8xzU7fz/ykjkplIsk
+	iZjFnhhNAEqvWhZAkQxauPjJHR44DRWX8+QyL8V+D41IOAH6qp5mU/pyaRWcd7ocPPKMFWyD2Rn
+	GIh9ocDx9uKhdMUdV+9qESXic=
+X-Received: by 2002:a05:6122:1801:b0:56a:9841:9f81 with SMTP id 71dfb90a1353d-56d4a51961cmr4233767e0c.6.1774877366946;
+        Mon, 30 Mar 2026 06:29:26 -0700 (PDT)
+Received: from localhost.localdomain ([2a09:bac6:d6d9:aa::11:1d6])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d588c4016sm8333474e0c.8.2026.03.30.06.29.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 06:29:07 -0700 (PDT)
+        Mon, 30 Mar 2026 06:29:26 -0700 (PDT)
 From: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
 To: jikos@kernel.org,
 	bentiss@kernel.org
@@ -81,9 +81,9 @@ Cc: linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-Subject: [PATCH v2] HID: ft260: validate report size and payload length in raw_event
-Date: Mon, 30 Mar 2026 07:28:44 -0600
-Message-ID: <20260330132844.827338-1-sebasjosue84@gmail.com>
+Subject: [PATCH v2] HID: mcp2221: validate report size in raw_event handler
+Date: Mon, 30 Mar 2026 07:29:22 -0600
+Message-ID: <20260330132922.827503-1-sebasjosue84@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -98,18 +98,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-231222-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231223-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
@@ -120,55 +120,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 537BF35C044
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BBA6935C280
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ft260_raw_event() casts the raw data buffer to a
-ft260_i2c_input_report struct and accesses its fields without
-validating the size parameter. Since __hid_input_report() invokes
-the driver's raw_event callback before hid_report_raw_event()
-performs its own report-size validation, a device sending a
-truncated HID report can cause out-of-bounds heap reads.
+mcp2221_raw_event() accesses the data buffer at offsets up to 55
+without validating the size parameter. Since __hid_input_report()
+invokes the driver's raw_event callback before
+hid_report_raw_event() performs its own report-size validation, a
+device sending a truncated HID report can cause out-of-bounds heap
+reads in the kernel.
 
-Additionally, even with a full-sized report, a corrupted
-xfer->length field can cause memcpy to read beyond the report
-buffer. The existing check only validates against the destination
-buffer size, not the source data available in the report.
+The most critical access is the memcpy from data[50] into
+mcp->adc_values (6 bytes) when CONFIG_IIO is reachable. Other
+unchecked accesses include data[20] and a memcpy at data[22].
+Additionally, a memcpy with device-controlled length (data[3],
+up to 60 bytes) from data[4] does not verify that size is large
+enough to cover the copy.
 
-Add two checks: reject reports shorter than FT260_REPORT_MAX_LENGTH,
-and verify that xfer->length does not exceed the actual data
-available in the report. Log warnings to aid debugging.
+MCP2221 devices use 64-byte HID reports. Add a check at the top of
+the handler to reject any report shorter than expected, and log a
+warning to aid debugging.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
 ---
- drivers/hid/hid-ft260.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/hid/hid-mcp2221.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-ft260.c b/drivers/hid/hid-ft260.c
-index 333341e80..68008a423 100644
---- a/drivers/hid/hid-ft260.c
-+++ b/drivers/hid/hid-ft260.c
-@@ -1068,6 +1068,17 @@ static int ft260_raw_event(struct hid_device *hdev, struct hid_report *report,
- 	struct ft260_device *dev = hid_get_drvdata(hdev);
- 	struct ft260_i2c_input_report *xfer = (void *)data;
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index ef3b5c77c..770c305d8 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -850,6 +850,11 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+ {
+ 	u8 *buf;
+ 	struct mcp2221 *mcp = hid_get_drvdata(hdev);
++	/* MCP2221 always sends 64-byte reports */
++	if (size < 64) {
++		hid_warn(hdev, "report too short: %d < 64\n", size);
++		return 0;
++	}
  
-+	if (size < FT260_REPORT_MAX_LENGTH) {
-+		hid_warn(hdev, "short report: %d\n", size);
-+		return 0;
-+	}
-+
-+	if (xfer->length > size - offsetof(struct ft260_i2c_input_report, data)) {
-+		hid_warn(hdev, "payload %d exceeds report size %d\n",
-+			 xfer->length, size);
-+		return 0;
-+	}
-+
- 	if (xfer->report >= FT260_I2C_REPORT_MIN &&
- 	    xfer->report <= FT260_I2C_REPORT_MAX) {
- 		ft260_dbg("i2c resp: rep %#02x len %d\n", xfer->report,
+ 	switch (data[0]) {
+ 
 -- 
 2.43.0
 
