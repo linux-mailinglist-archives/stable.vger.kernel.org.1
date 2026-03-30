@@ -1,239 +1,200 @@
-Return-Path: <stable+bounces-231295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4C6xIVkCy2k2CgYAu9opvQ
-	(envelope-from <stable+bounces-231295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:08:09 +0200
+	id GNWdBlsLy2lwDQYAu9opvQ
+	(envelope-from <stable+bounces-231296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:46:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088AB36244B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:08:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0E036267D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33F183042FF1
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:05:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A965930166EB
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ABF3B6BE8;
-	Mon, 30 Mar 2026 23:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1442726E706;
+	Mon, 30 Mar 2026 23:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKph7jeG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKBeHjIr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACAB3A8FE1;
-	Mon, 30 Mar 2026 23:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF7A3BB48
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 23:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774911956; cv=none; b=rat2EL0al3WTPf8Nm9gjzjQrWA6qsZxkYVF92xCTa9IWHqyAiFbCcpj9/t83wc8xFn+m8/hWHCywpJ4N+QNGeL0oCbTnpxdLQbPF3qOpVBROEQuuKjv5CrHNohCsg9PwV3oqzyuRgCOVM/DqUd7kc7vx8K5dBqLVhbEMXObavqs=
+	t=1774914390; cv=none; b=AvBfAHVhCwwUnR1jvd5KZgQe0PsO83EQMQ+iXVQEySZq26Cp8dAGJm5PuwS6mNM8SvwC4j1XK1keQR9VyahYJJ4U2VRXmpcReQrJBtheG1PIGSxQWwIgJtAXNnv+wNlGteo4JM28Z3DTu4DdqfcXzkCme7pxTNxDrdfKvSg3MmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774911956; c=relaxed/simple;
-	bh=bsGBeeaP7YCj4zXTIDV7UWWoZx7yvSrsM7TzxUtUiFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M3H/OLOJ4WB+PTD6/soibSu1uSPjbfBLXJ1ePwGlECaiCg1ZntVPuIoKs/7HBuEFUQdQWp+M1h0VtiPTd7WHBX4EteHunhlGWFnLoyNXqVRqE3QtMZ28daEA3EOk0x5aW1Tkpz6TyqYLL4BNq2ZFbrCIyJMg+8inXmZDIIJM8xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKph7jeG; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774911955; x=1806447955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bsGBeeaP7YCj4zXTIDV7UWWoZx7yvSrsM7TzxUtUiFc=;
-  b=PKph7jeGiWJCRWCCWWAJsRZg1+zvOw8Oiypo4dgp7LPxzrkJ81p3jpPU
-   LV6xmUmiW1Bcr5miQarkeEnxyppjN5JyVs77FcNeOw2m784/Ea+2GPL2X
-   lydTNY/AsPW4UeGsSOjl2NAQd4ZIu+7SXL+xDSijjWAWh1fmr22TKOvew
-   theazrCY4kshWDFoh4j3OosqhIKUXEI4RSp1FvE0uPo5AX+Uy+pl+i4nj
-   Y1Rh6pP0CX39C/3HSm3wsW3l5T1b47+9G6ElfkW5avRup0L4nnJJ/jKwX
-   TKcnCEhHu2uZMOx+tu+M/MYmKUcKrCwNDz+Oud2MnQZlb35Y8aIZ9i26s
-   w==;
-X-CSE-ConnectionGUID: txFSM+pMRnuwbkzyn9jlaA==
-X-CSE-MsgGUID: Le9VM9fjT/+92Fo7tKCuRw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="86608827"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="86608827"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 16:05:54 -0700
-X-CSE-ConnectionGUID: sdC6e3sJTT2WbgfgNCyD5w==
-X-CSE-MsgGUID: mw1phzs3SvycRZitSSZr0Q==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 30 Mar 2026 16:05:52 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7Lg5-000000001pV-2ImJ;
-	Mon, 30 Mar 2026 23:05:49 +0000
-Date: Tue, 31 Mar 2026 07:05:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>,
-	gregkh@linuxfoundation.org
-Cc: oe-kbuild-all@lists.linux.dev, marvin24@gmx.de,
-	linux-staging@lists.linux.dev, ac100@lists.launchpad.net,
-	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	=?iso-8859-1?Q?Sebasti=E1n?= Alba Vives <sebasjosue84@gmail.com>
-Subject: Re: [PATCH v2] staging: nvec: validate battery response length
- before memcpy
-Message-ID: <202603310649.6iHw5wAQ-lkp@intel.com>
-References: <20260330060926.751031-1-sebasjosue84@gmail.com>
+	s=arc-20240116; t=1774914390; c=relaxed/simple;
+	bh=pIHUmCfKcay6qQSUYHOFY7TIDyA9I7Z3NeTp/aLVGNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D6tF2KYAxGruzRYfJN7X7jcoDjJ3qgjODG98w+0IIZdSw6ARIDXDMAE0gS5jdPS46FTPL5ad9f1QpDp1qx5u2qOnmCvT3Guq6AgsQElGlB2pc2njQ+XZwHL43Alk2a4SuV7oOaP9IneF8VDKM+rOmaa1OrWnQ9W17cTrjlKcWAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKBeHjIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B77C4CEF7;
+	Mon, 30 Mar 2026 23:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774914390;
+	bh=pIHUmCfKcay6qQSUYHOFY7TIDyA9I7Z3NeTp/aLVGNo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EKBeHjIrsfjpT6mHigqBK5yAQ/s1U1LCDNt5IDrPAnXPNiiJsxZjYx2Ut+b4j/hyv
+	 HYonSCwbFuhJGlYoBrTercq/UEPHeJxq0ykWJQ6HW6/Aqe7uoCROuvjvCSDcd204JC
+	 FBVL9w8dhyIlshKX5vclvhTbrKA2kGM0e66iO92nLBe7CPVqFNNtiBVKn3qsDjWg39
+	 Aj8Ez2SnqV1qtLjrKhOTMeR868XveJwz885J49AFiYYDFArrqHnnPty8j77cnolKbD
+	 uK04ANIkZE9GVzHgvkhYo3wZxezztEP7Mdm72k35NCJEGRmYU6uOhH4Zbde5EOlTtT
+	 Acx8WGKkbaMOQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Eddie James <eajames@linux.ibm.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] hwmon: (pmbus/core) Add lock and unlock functions
+Date: Mon, 30 Mar 2026 19:46:27 -0400
+Message-ID: <20260330234628.1398011-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026032920-species-uncrushed-8b38@gregkh>
+References: <2026032920-species-uncrushed-8b38@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330060926.751031-1-sebasjosue84@gmail.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,gmx.de,lists.launchpad.net,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-231295-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-231296-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
-X-Rspamd-Queue-Id: 088AB36244B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email]
+X-Rspamd-Queue-Id: 6E0E036267D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sebastian,
+From: Eddie James <eajames@linux.ibm.com>
 
-kernel test robot noticed the following build warnings:
+[ Upstream commit a7ac37183ac2a0cc46d857997b2dd24997ca2754 ]
 
-[auto build test WARNING on staging/staging-testing]
+Debugfs operations may set the page number, which must be done
+atomically with the subsequent i2c operation. Lock the update_lock
+in the debugfs functions and provide a function for pmbus drivers
+to lock and unlock the update_lock.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sebastian-Josue-Alba-Vives/staging-nvec-validate-battery-response-length-before-memcpy/20260330-174322
-base:   staging/staging-testing
-patch link:    https://lore.kernel.org/r/20260330060926.751031-1-sebasjosue84%40gmail.com
-patch subject: [PATCH v2] staging: nvec: validate battery response length before memcpy
-config: arm64-randconfig-r054-20260331 (https://download.01.org/0day-ci/archive/20260331/202603310649.6iHw5wAQ-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603310649.6iHw5wAQ-lkp@intel.com/reproduce)
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230412161526.252294-2-eajames@linux.ibm.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 3075a3951f77 ("hwmon: (pmbus/isl68137) Add mutex protection for AVS enable sysfs attributes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/pmbus/pmbus.h      |  2 ++
+ drivers/hwmon/pmbus/pmbus_core.c | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603310649.6iHw5wAQ-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/staging/nvec/nvec_power.c: In function 'nvec_power_bat_notifier':
-   drivers/staging/nvec/nvec_power.c:237:12: error: invalid storage class for function 'nvec_power_get_property'
-     237 | static int nvec_power_get_property(struct power_supply *psy,
-         |            ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:253:12: error: invalid storage class for function 'nvec_battery_get_property'
-     253 | static int nvec_battery_get_property(struct power_supply *psy,
-         |            ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:344:18: error: initializer element is not constant
-     344 |  .get_property = nvec_battery_get_property,
-         |                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:344:18: note: (near initialization for 'nvec_bat_psy_desc.get_property')
-   drivers/staging/nvec/nvec_power.c:352:18: error: initializer element is not constant
-     352 |  .get_property = nvec_power_get_property,
-         |                  ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:352:18: note: (near initialization for 'nvec_psy_desc.get_property')
-   drivers/staging/nvec/nvec_power.c:363:13: error: invalid storage class for function 'nvec_power_poll'
-     363 | static void nvec_power_poll(struct work_struct *work)
-         |             ^~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:387:12: error: invalid storage class for function 'nvec_power_probe'
-     387 | static int nvec_power_probe(struct platform_device *pdev)
-         |            ^~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:434:13: error: invalid storage class for function 'nvec_power_remove'
-     434 | static void nvec_power_remove(struct platform_device *pdev)
-         |             ^~~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:450:11: error: initializer element is not constant
-     450 |  .probe = nvec_power_probe,
-         |           ^~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:450:11: note: (near initialization for 'nvec_power_driver.probe')
-   drivers/staging/nvec/nvec_power.c:451:12: error: initializer element is not constant
-     451 |  .remove = nvec_power_remove,
-         |            ^~~~~~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:451:12: note: (near initialization for 'nvec_power_driver.remove')
-   In file included from include/linux/device.h:32,
-                    from include/linux/platform_device.h:13,
-                    from drivers/staging/nvec/nvec_power.c:12:
-   drivers/staging/nvec/nvec_power.c:457:24: error: invalid storage class for function 'nvec_power_driver_init'
-     457 | module_platform_driver(nvec_power_driver);
-         |                        ^~~~~~~~~~~~~~~~~
-   include/linux/device/driver.h:267:19: note: in definition of macro 'module_driver'
-     267 | static int __init __driver##_init(void) \
-         |                   ^~~~~~~~
-   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
-     457 | module_platform_driver(nvec_power_driver);
-         | ^~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/staging/nvec/nvec_power.c:11:
-   include/linux/module.h:132:42: error: invalid storage class for function '__inittest'
-     132 |  static inline initcall_t __maybe_unused __inittest(void)  \
-         |                                          ^~~~~~~~~~
-   include/linux/device/driver.h:271:1: note: in expansion of macro 'module_init'
-     271 | module_init(__driver##_init); \
-         | ^~~~~~~~~~~
-   include/linux/platform_device.h:295:2: note: in expansion of macro 'module_driver'
-     295 |  module_driver(__platform_driver, platform_driver_register, \
-         |  ^~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
-     457 | module_platform_driver(nvec_power_driver);
-         | ^~~~~~~~~~~~~~~~~~~~~~
->> drivers/staging/nvec/nvec_power.c:457:1: warning: 'alias' attribute ignored [-Wattributes]
-   In file included from include/linux/device.h:32,
-                    from include/linux/platform_device.h:13,
-                    from drivers/staging/nvec/nvec_power.c:12:
-   drivers/staging/nvec/nvec_power.c:457:24: error: invalid storage class for function 'nvec_power_driver_exit'
-     457 | module_platform_driver(nvec_power_driver);
-         |                        ^~~~~~~~~~~~~~~~~
-   include/linux/device/driver.h:272:20: note: in definition of macro 'module_driver'
-     272 | static void __exit __driver##_exit(void) \
-         |                    ^~~~~~~~
-   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
-     457 | module_platform_driver(nvec_power_driver);
-         | ^~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/staging/nvec/nvec_power.c:11:
-   include/linux/module.h:140:42: error: invalid storage class for function '__exittest'
-     140 |  static inline exitcall_t __maybe_unused __exittest(void)  \
-         |                                          ^~~~~~~~~~
-   include/linux/device/driver.h:276:1: note: in expansion of macro 'module_exit'
-     276 | module_exit(__driver##_exit);
-         | ^~~~~~~~~~~
-   include/linux/platform_device.h:295:2: note: in expansion of macro 'module_driver'
-     295 |  module_driver(__platform_driver, platform_driver_register, \
-         |  ^~~~~~~~~~~~~
-   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
-     457 | module_platform_driver(nvec_power_driver);
-         | ^~~~~~~~~~~~~~~~~~~~~~
->> drivers/staging/nvec/nvec_power.c:457:1: warning: 'alias' attribute ignored [-Wattributes]
-   drivers/staging/nvec/nvec_power.c:462:1: error: expected declaration or statement at end of input
-     462 | MODULE_ALIAS("platform:nvec-power");
-         | ^~~~~~~~~~~~
-
-
-vim +/alias +457 drivers/staging/nvec/nvec_power.c
-
-32890b983086136 Marc Dietrich 2011-05-19  456  
-9891b1ce6276912 Marc Dietrich 2012-06-24 @457  module_platform_driver(nvec_power_driver);
-32890b983086136 Marc Dietrich 2011-05-19  458  
-
+diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
+index 0bbb8ae9341c3..19181e6e5efda 100644
+--- a/drivers/hwmon/pmbus/pmbus.h
++++ b/drivers/hwmon/pmbus/pmbus.h
+@@ -510,6 +510,8 @@ int pmbus_get_fan_rate_device(struct i2c_client *client, int page, int id,
+ 			      enum pmbus_fan_mode mode);
+ int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
+ 			      enum pmbus_fan_mode mode);
++int pmbus_lock_interruptible(struct i2c_client *client);
++void pmbus_unlock(struct i2c_client *client);
+ int pmbus_update_fan(struct i2c_client *client, int page, int id,
+ 		     u8 config, u8 mask, u16 command);
+ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client);
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 4b73c7b27e9aa..1715fafc4152f 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -3049,8 +3049,13 @@ static int pmbus_debugfs_get(void *data, u64 *val)
+ {
+ 	int rc;
+ 	struct pmbus_debugfs_entry *entry = data;
++	struct pmbus_data *pdata = i2c_get_clientdata(entry->client);
+ 
++	rc = mutex_lock_interruptible(&pdata->update_lock);
++	if (rc)
++		return rc;
+ 	rc = _pmbus_read_byte_data(entry->client, entry->page, entry->reg);
++	mutex_unlock(&pdata->update_lock);
+ 	if (rc < 0)
+ 		return rc;
+ 
+@@ -3067,7 +3072,11 @@ static int pmbus_debugfs_get_status(void *data, u64 *val)
+ 	struct pmbus_debugfs_entry *entry = data;
+ 	struct pmbus_data *pdata = i2c_get_clientdata(entry->client);
+ 
++	rc = mutex_lock_interruptible(&pdata->update_lock);
++	if (rc)
++		return rc;
+ 	rc = pdata->read_status(entry->client, entry->page);
++	mutex_unlock(&pdata->update_lock);
+ 	if (rc < 0)
+ 		return rc;
+ 
+@@ -3083,10 +3092,15 @@ static ssize_t pmbus_debugfs_mfr_read(struct file *file, char __user *buf,
+ {
+ 	int rc;
+ 	struct pmbus_debugfs_entry *entry = file->private_data;
++	struct pmbus_data *pdata = i2c_get_clientdata(entry->client);
+ 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
+ 
++	rc = mutex_lock_interruptible(&pdata->update_lock);
++	if (rc)
++		return rc;
+ 	rc = pmbus_read_block_data(entry->client, entry->page, entry->reg,
+ 				   data);
++	mutex_unlock(&pdata->update_lock);
+ 	if (rc < 0)
+ 		return rc;
+ 
+@@ -3420,6 +3434,22 @@ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client)
+ }
+ EXPORT_SYMBOL_NS_GPL(pmbus_get_debugfs_dir, PMBUS);
+ 
++int pmbus_lock_interruptible(struct i2c_client *client)
++{
++	struct pmbus_data *data = i2c_get_clientdata(client);
++
++	return mutex_lock_interruptible(&data->update_lock);
++}
++EXPORT_SYMBOL_NS_GPL(pmbus_lock_interruptible, PMBUS);
++
++void pmbus_unlock(struct i2c_client *client)
++{
++	struct pmbus_data *data = i2c_get_clientdata(client);
++
++	mutex_unlock(&data->update_lock);
++}
++EXPORT_SYMBOL_NS_GPL(pmbus_unlock, PMBUS);
++
+ static int __init pmbus_core_init(void)
+ {
+ 	pmbus_debugfs_dir = debugfs_create_dir("pmbus", NULL);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
 
