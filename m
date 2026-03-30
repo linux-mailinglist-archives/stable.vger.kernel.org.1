@@ -1,239 +1,214 @@
-Return-Path: <stable+bounces-231213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AfDENNzymlQ9AUAu9opvQ
-	(envelope-from <stable+bounces-231213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:00:03 +0200
+	id iCm0EuBzymmB9AUAu9opvQ
+	(envelope-from <stable+bounces-231214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8728735B883
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:00:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFD635B88B
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74FD2304AAEF
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:53:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CAF33005648
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E343C343F;
-	Mon, 30 Mar 2026 12:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFD33D332C;
+	Mon, 30 Mar 2026 12:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VZkCBOjc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cV84wDS9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7285530DECC
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 12:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774875186; cv=pass; b=KlsqXb+SleHBLt+9dLzpaaqn84IM85BhiOZ6RuW6d0SfcJpqOfXeGnCvpFtrNmZf8xRnpI8e0OfZxgkMvRJ1jLRloVCnpaba17B8amYMyi/moMuuNWKBllUsfVkwh5WySwS2RzgSdVB+1N5GTZByTF6AS50q5exWd4vLjRMJDz0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774875186; c=relaxed/simple;
-	bh=Xgpxd6LjVeMvdHSSdA9xJHFscqyTnj+wVUgxFWYPiWQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QMSy+1fWcXxLnk+lKBm6Dwh6TxL17oHy2jAiOHklm43KenBMS3xLfbaG8l23BHYEUubouMW7eBG/dphHc0M8JqPzQX2iRoXnRCaxnkJDkbCDFeqnkNRO1NpsWbhpUDsqtYxK+X5PN8xuUGcdm+oMZOuEsLAMQJ+AbDed5QcrHAc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VZkCBOjc; arc=pass smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-66bf6aa4858so1118329a12.2
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 05:53:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774875184; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Cn3WzEwL2Ut5jZ6VjDaXtuYN82oHCqROHTXG0u+gMBdbJPUQL9jn21b+XcN40Md4Wq
-         SYId8Ro+yH+f2I9cNGvf3prqi6fTLzh7V0rxYQ8nGT0TpJEMjcsXDZC0MZ93oFG03m4u
-         +NHB40fyNP3NkNjcG3o+XNmEbcCKh8tSXF7gMeSUqopFF3Xv4Bga9RSTt589nxP7l/aF
-         U6tjEOm7SDBXVWyu+pZ9hBQimeXO9Tn0bR3Op60d0sQLPf/X42PZmtpkarLrpsOmpOR3
-         kr7EWBajiaxCBIB1NFLb02hlD7USK59bhn5bkLy69QKKqeIhaIEEWr0nXiBZRoEqNPp6
-         i/Rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=62XzECu+t3sRPm0u5HYhE3GP4DOkf8lXqjYsf1ADUNc=;
-        fh=R6zpyIv4Ww4Seq+pDxJCycSlBigFuJ1Mi6vPS0rrwbU=;
-        b=YcUh36cVx61AKDwclJ8KdtzBP8zgMQR99T4uyc+NlJcQEiZbCF7AB2GJw5NErL9v8B
-         KCdnKB08dmMwwaVjYt/ejLVz+VM46yzzVsiPBELl5kMKKR/MuQfRju2S6oCKwGJzdOv3
-         oNlCjNASMpbn+pVlXBe9Janhu2/y71MAqdaX4JpLnIM7aQ9Lv/3IDlSNiIe5xp7C+LYt
-         I6XPhrRvyVhESXhhoYSFEmWYR4m8VdTP31gareGkJv1ZUtFCemuxJllYYwfWs/aU/rb/
-         pIpbn6vchsr6My2ANoe/K/hGsg8R3bJAWkAAQCJdUWNGsypPlNLsMJHt15iRK1jn0NfN
-         hpNw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774875184; x=1775479984; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=62XzECu+t3sRPm0u5HYhE3GP4DOkf8lXqjYsf1ADUNc=;
-        b=VZkCBOjc8k1L3Wt68hILEYfJ0x3jjwYgFOtyxQnxVgAlOAK8oKS5TE8eCJ0qcus9DB
-         UZtRIVRX6WhekTPt6tgm29mUDbnNI8NunydYcmp5TEjZbtm1JID5IeoSpOQHX+uUhbaJ
-         PLx6pKntOKdNuIFcIQo9yh4iIFwz65Wb9X22FM38Rr6TRMBgMFc+J3J3gQNfHiZ2pZD8
-         KdnZ75nY1PEFpeVAYFt8axGv0qMPqbg4iGG6UwlYqAqJC6nle1Xdw5YasAQF7B0RTn73
-         QiyS4jykXQk5fQUCAOYy384tHgHdF4mEuVbsbDQXqHCKRC19ChNHvy0xaeT8TamtfM95
-         c/iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774875184; x=1775479984;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=62XzECu+t3sRPm0u5HYhE3GP4DOkf8lXqjYsf1ADUNc=;
-        b=MwvoldjhWuWQMR044OnYrnmNWsXlaH3ni4Snkig58MLloLrxZuKgjJsocDXG2n6LlD
-         5sUtrLktQr/+5wbaz+/yOk307afPmuTxBTdxDjmWhWEzy04r/JueTG7Diz+ArnhLo4xh
-         ixEy0JzVqZCrXKw0jnFTEdQ637sYNCVGyJchA5KMo5Xm9IdpPmWesrof+Zf/9VEY+oad
-         erf4177g1JQjbOKo8PlrOwBG0zOrPolmfH1rNQgkPlfkQxJbvuyzWBrFK+1QI7GWhgyI
-         wR6H5Tiv7oQ/GJQh5d4WLWWLOhJSlL4ZLViG8qaC05esGBEE7Qa0AX+1JeqnmADK3o+S
-         7WLQ==
-X-Gm-Message-State: AOJu0YyM3ZxY+glfZ8WTAJV3By8YK7I9w58zWPGm0UJge+hvjZtmcBUo
-	vxeNb5vKqg1QKOI6hcNSvzBYx+TLw9StCqvMeESR8rq0+z6EP52hArmk9Udt9MK8974cNwmK5pU
-	HYvx6apzk1o8NSFy3+MXu0iLyd74Ez3itKZaQ
-X-Gm-Gg: ATEYQzxpL+5jzC2kH+kKg2VgG8cl3JwqWb7WjZb0NjLLJviMqiW2+3TOKv3zLdMgTlw
-	1A2+aTd0OR6ctWfWwTlqASHMV1rrkkaZuxKuK6WFz/wPiVSl7AToD4m2WC7rS7NLO5sg4tdYQfE
-	i9KJiJeAf7oiadKj5ggYbUJC4LOMaT0ovemBB+21QaWdx1nlOVKBJeOgFRGiNO3fXGKWW1GkWqN
-	wJPSDp+9AIFdYIP81hEUQGfhQkQiv9mVS0aMnwcdDf2fVN0tu57fudYbozw+EJNYNULcghn5/xJ
-	UwQrhAfnRRv73RyJcFlgOXDg4qGwbpgUMhtG427b62epVEAoeBSKXA9jquRV81iaa3UGfOWPfg=
-	=
-X-Received: by 2002:a05:6402:3496:b0:66c:1cef:71d7 with SMTP id
- 4fb4d7f45d1cf-66c1cef73ddmr354694a12.27.1774875183431; Mon, 30 Mar 2026
- 05:53:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FC83D1CA2;
+	Mon, 30 Mar 2026 12:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774875554; cv=none; b=BjOSmlG3HZn8BWQiDNJAHQphjB9fkSf0XBBGwgb4KnQQ3rMqAq5Leo8qW/TVDtEtReHYMSBnl2Levnl5CALkrdDELlnGGXPlc6nAxnHx64m03/CaHxBfti01r6aljtf8XpI5qLxeOJN3sWDZ7e7PrACJ+fTkQfl9z2aLdujz4j8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774875554; c=relaxed/simple;
+	bh=2nMZ/t93heba7Ewg6MwnlysL3ltrvhPtua6z1ntkAXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q5LPkKqbfWU4rU4rKk77aHnup0yg+pPQlVso1eDyO4Gwk/OApqLWtWpl9v+NdQYG0b4DjEiLniZBZtrDW8TKsGXS9aIHY30K4SCjKWe2Ee2WM/bcj1dQUi4EVtSUJypWiTWHV5rFcGUxpBAb9MYy9qB0aHv/LDPQWdPbpMN54H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cV84wDS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08037C4CEF7;
+	Mon, 30 Mar 2026 12:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774875553;
+	bh=2nMZ/t93heba7Ewg6MwnlysL3ltrvhPtua6z1ntkAXk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cV84wDS9qjq2QosI85WvoM+eX6kEAZLrkGtKGJmESZT9PCbZXAOpqkw0zbhXstKR/
+	 2aSfUQ+T3N0eZIiQ/ECNEeOCnhB3v4Q8/OAQNM89ehi0rQ3BjYDfmx6+z+jqP7rqMx
+	 AUCbivu0IScofz8qFq+zIAPE8fafAc+1001PpgFeOTUqWYoK6FBCldtuAv6k7u4gPL
+	 TQuQXIYlFAeozuLBFcHc0nM0ybk0IEr6wb91X9XnLVzDMgNqZ3zqPHmH0GeALQg47Q
+	 5BRknXvT2RDwRmemFOEiyoRzImWAGtQpU2T9nZPRcBAiNKzCQr+KdYKM7zx/5S/xNZ
+	 GxJt4743eppuA==
+Date: Mon, 30 Mar 2026 13:59:09 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
+Cc: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <cleger@rivosinc.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Songsong Zhang <U2FsdGVkX1@gmail.com>
+Subject: Re: [PATCH] riscv: misaligned: Make enabling delegation depend on
+ BROKEN
+Message-ID: <20260330-sensation-pronounce-98f8b14836ed@spud>
+References: <20260330-riscv-misaligned-dont-delegate-v1-1-68b089b306c3@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALynFi5UR5NUQLn8-rx66AoD72Qn0Chji_m+hVFrXL4cReNJ1A@mail.gmail.com>
- <2026033051-primate-headache-5bf9@gregkh>
-In-Reply-To: <2026033051-primate-headache-5bf9@gregkh>
-From: Kai Zen <kai.aizen.dev@gmail.com>
-Date: Mon, 30 Mar 2026 15:52:37 +0300
-X-Gm-Features: AQROBzBuUczw9DpMXCU9c7UDLfSG4ubI2YeYRzemiS3WlPndSqLNB8HDAnAoMYU
-Message-ID: <CALynFi4Vbem2rjQh9uon2Te78wULDRqV-ApQK-efC4dhOMJC1w@mail.gmail.com>
-Subject: Re: Subject: [PATCH net] tipc: fix UAF race in tipc_mon_peer_up/down/remove_peer
- vs bearer teardown
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Kai Aizen <kai@snailsploit.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iWQWbSmWWiEp/KUt"
+Content-Disposition: inline
+In-Reply-To: <20260330-riscv-misaligned-dont-delegate-v1-1-68b089b306c3@iscas.ac.cn>
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231213-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[rivosinc.com,kernel.org,dabbelt.com,ghiti.fr,lists.infradead.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-231214-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kaiaizendev@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 8728735B883
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6DFD635B88B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
 
-Thanks for the pointer. I see my mistake =E2=80=94 I submitted the patch
-directly to stable, but per the stable-kernel-rules, the patch needs
-to go through mainline first (Option 1).
+--iWQWbSmWWiEp/KUt
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'll resubmit the patch to netdev@vger.kernel.org for mainline
-inclusion. The patch already has the appropriate Cc:
-stable@vger.kernel.org and Fixes: tags, so once it's accepted upstream
-it should be automatically queued for stable backport.
+On Mon, Mar 30, 2026 at 02:47:15PM +0800, Vivian Wang wrote:
+> The unaligned access emulation code in Linux has various deficiencies.
+> For example, it doesn't emulate vector instructions [1], and doesn't
+> emulate KVM guest accesses. Therefore, requesting misaligned exception
+> delegation with SBI FWFT actually regresses userspace and KVM guest
+> behavior. Until Linux can handle it properly, guard these sbi_fwft_set()
+> calls behind RISCV_SBI_FWFT_DELEGATE_MISALIGNED, which in turn depends
+> on BROKEN.
+>=20
+> The rest of the existing code proceeds as before, except as if
+> SBI_FWFT_MISALIGNED_EXC_DELEG is not available, to handle any remaining
+> address misaligned exceptions on a best-effort basis. The KVM SBI FWFT
+> implementation is also not touched, but it is disabled if the firmware
+> emulates unaligned accesses.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: cf5a8abc6560 ("riscv: misaligned: request misaligned exception fro=
+m SBI")
+> Reported-by: Songsong Zhang <U2FsdGVkX1@gmail.com> # KVM
+> Link: https://lore.kernel.org/linux-riscv/38ce44c1-08cf-4e3f-8ade-20da224=
+f529c@iscas.ac.cn/ [1]
+> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+> ---
+> Cl=E9ment: Sorry to call what you did broken, but it really is breaking
+> on real hardware out there. I think this is the right way for now.
+> ---
+>  arch/riscv/Kconfig                   | 14 ++++++++++++++
+>  arch/riscv/kernel/traps_misaligned.c |  2 +-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 90c531e6abf5..8ad1f13c170e 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -941,6 +941,20 @@ config RISCV_VECTOR_MISALIGNED
+>  	help
+>  	  Enable detecting support for vector misaligned loads and stores.
+> =20
+> +config RISCV_SBI_FWFT_DELEGATE_MISALIGNED
+> +	bool "Request firmware delegation of unaligned access exceptions"
+> +	depends on RISCV_SBI
+> +	depends on BROKEN
 
-Apologies for the incorrect submission process.
+Making it hard to enable I think makes a lot of sense, given the issues
+you're reporting but I tacking on BROKEN will remove effectively all
+build coverage of it* and will definitely stop almost anyone using it.
+Should it be just made NONPORTABLE with the text about being incomplete
+expanded a wee bit to say what is broken so that people can make a
+decision?
 
-Best,
-Kai
+Cheers,
+Conor.
 
-On Mon, Mar 30, 2026 at 8:45=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Sun, Mar 29, 2026 at 11:23:49PM +0300, Kai Zen wrote:
-> > CVE-2025-40280 fixed tipc_mon_reinit_self() accessing monitors[] from a
-> > workqueue without RTNL.  That patch closed the workqueue path by adding
-> > rtnl_lock() around the call.
-> >
-> > However, three additional functions in the same subsystem access
-> > tipc_net->monitors[] from softirq context with no RCU protection at all=
-:
-> >
-> >   tipc_mon_peer_up()      - called from tipc_node_write_unlock()
-> >   tipc_mon_peer_down()    - called from tipc_node_write_unlock()
-> >   tipc_mon_remove_peer()  - called from tipc_node_link_down()
-> >
-> > These three are invoked from the packet receive path (tipc_rcv ->
-> > tipc_node_write_unlock / tipc_node_link_down) and hold only the per-nod=
-e
-> > rwlock, not RTNL.
-> >
-> > Concurrently, bearer_disable() -- which always holds RTNL per its own
-> > inline documentation -- calls tipc_mon_delete(), which:
-> >
-> >   1. acquires mon->lock
-> >   2. sets tn->monitors[bearer_id] =3D NULL
-> >   3. frees all peer entries
-> >   4. releases mon->lock
-> >   5. calls kfree(mon)                     <-- no synchronize_rcu()
-> >
-> > The race is structural: there is no shared lock between the data-path
-> > reader (which reads monitors[id] then acquires mon->lock) and the
-> > teardown path (which acquires mon->lock, NULLs the slot, then frees).
-> > A softirq thread can read a non-NULL mon pointer, get preempted, and
-> > resume after kfree(mon) has run on another CPU, then call
-> > write_lock_bh(&mon->lock) on freed memory:
-> >
-> >   CPU 0 (softirq / tipc_rcv)            CPU 1 (RTNL / bearer_disable)
-> >   tipc_mon_peer_up()
-> >     mon =3D tipc_monitor(net, id)
-> >     [mon is non-NULL]
-> >                                          tipc_mon_delete()
-> >                                            write_lock_bh(&mon->lock)
-> >                                            tn->monitors[id] =3D NULL
-> >                                            ...
-> >                                            write_unlock_bh(&mon->lock)
-> >                                            kfree(mon)
-> >     write_lock_bh(&mon->lock)   <-- UAF
-> >
-> > The fix mirrors the existing bearer_list[] pattern in the same module:
-> > convert monitors[] to __rcu, use rcu_assign_pointer() on creation,
-> > RCU_INIT_POINTER() + synchronize_rcu() on deletion (before the kfree),
-> > and the appropriate rcu_dereference_bh() vs rtnl_dereference() variant
-> > at each read site depending on execution context.
-> >
-> > synchronize_rcu() in tipc_mon_delete() is placed after the
-> > write_unlock_bh() and before timer_shutdown_sync() + kfree() to ensure
-> > all softirq-context readers that already observed the old pointer have
-> > completed before the memory is freed.
-> >
-> > Fixes: 35c55c9877f8 ("tipc: add neighbor monitoring framework")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
-> > ---
-> >  net/tipc/core.h    |  2 +-
-> >  net/tipc/monitor.c | 51 ++++++++++++++++++++++++++++++++--------------
-> >  2 files changed, 37 insertions(+), 16 deletions(-)
->
-> <formletter>
->
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
-ml
-> for how to do this properly.
->
-> </formletter>
+*it's like 10 lines, probably an irrelevant concern.
+
+
+> +	help
+> +	  Use SBI FWFT to request delegation of load address misaligned and
+> +	  store address misaligned exceptions, if possible, and prefer Linux
+> +	  kernel emulation of these accesses to firmware emulation.
+> +
+> +	  Since the Linux kernel's emulation is incomplete, enabling this may
+> +	  cause unexpected userspace and KVM guest crashes.
+> +
+> +	  If you don't know what to do here, say N.
+> +
+>  choice
+>  	prompt "Unaligned Accesses Support"
+>  	default RISCV_PROBE_UNALIGNED_ACCESS
+> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/tra=
+ps_misaligned.c
+> index 2a27d3ff4ac6..81b7682e6c6d 100644
+> --- a/arch/riscv/kernel/traps_misaligned.c
+> +++ b/arch/riscv/kernel/traps_misaligned.c
+> @@ -584,7 +584,7 @@ static int cpu_online_check_unaligned_access_emulated=
+(unsigned int cpu)
+> =20
+>  static bool misaligned_traps_delegated;
+> =20
+> -#ifdef CONFIG_RISCV_SBI
+> +#if defined(CONFIG_RISCV_SBI_FWFT_DELEGATE_MISALIGNED)
+> =20
+>  static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
+>  {
+>=20
+> ---
+> base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+> change-id: 20260330-riscv-misaligned-dont-delegate-3cf98c76ee08
+>=20
+> Best regards,
+> --=20
+> Vivian "dramforever" Wang
+>=20
+
+--iWQWbSmWWiEp/KUt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacpznQAKCRB4tDGHoIJi
+0hkBAQDLloJ2fsCkxVn1n0lWLGYSOeBvS86X8gtY70GiztI0rAD8CbWMLIRmoLSw
+E2fmbtPFRc4u5kgT7YeYGqXCoGiiBAE=
+=aHnI
+-----END PGP SIGNATURE-----
+
+--iWQWbSmWWiEp/KUt--
 
