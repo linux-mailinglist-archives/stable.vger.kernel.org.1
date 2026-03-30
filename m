@@ -1,358 +1,210 @@
-Return-Path: <stable+bounces-231282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BeZN87oymkkBQYAu9opvQ
-	(envelope-from <stable+bounces-231282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:19:10 +0200
+	id sCsVI2HpymkkBQYAu9opvQ
+	(envelope-from <stable+bounces-231283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:21:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22B336159F
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:19:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5318C36164D
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5652300ADAE
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:19:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9251530117FF
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DD13A1A5B;
-	Mon, 30 Mar 2026 21:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27E139BFEB;
+	Mon, 30 Mar 2026 21:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="j96iyUy8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CrCLeGET"
 X-Original-To: stable@vger.kernel.org
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013031.outbound.protection.outlook.com [40.93.201.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3822C39FCA6
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 21:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774905544; cv=fail; b=jaxi8EnzX4q5UUxRHZJ9t0OmNhdnDd7b2+WTJbH+3fgMRhhGNo3G9zhNoFiqiheihP91QVzF7FlJqgrFOMLkEkSK3CAKf/2066z3HeH3Gl9bmD5Z0xBXSEZGIKgBMXSLEOf/agvPc2P/7NpkSDmpfPLbjAIglNMP85C1CRv234M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774905544; c=relaxed/simple;
-	bh=kswC4I9KYPUIjb99nrLOUNoz/58FC3I0k5a+KeZcH40=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gWbPxUj6p+h3X3uP63RKMyXmiwxhXIPds25vn4oFrYKREkW30RzFz9wqGjqADZURCaiEl13dfYohblphCLIHwtCs55T8kD5zB71QpFpdGGRIguvG8dtlpdy/7Hrq2AQzOYU7yi4sgfQVmsDGWFBHqy7iZiqDVP9yZjt9BeaL/mY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=j96iyUy8; arc=fail smtp.client-ip=40.93.201.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=INq3BO8chEWycvo0TJ6TFVdTYXgZSsvlgN9KmYod4t3FuiPtiVH5F+8Rrdn2vIGnybVtUEvqIkH2qWVwS611xS6/Y3WJzIljlIkcK+oY7lCgHPRkMLqRoDC7/dWdrkrZ5Kv4ghOwsANfEN7xWB/OeelHrAr5OJPP2ljLcG2wDNyIDwJzUUJWZ5GpuGXEOTjhmeMgXsTD6Zp5E+7EaAsg0JBvqTukHW3Zpj4xKElFGxdg3OyrBV5xoQNiHuPmxlrMOFNUjRyaALPNg2Ul9oKincADgQmLVNprXuDlXw+UkL6Af0idJBiFevrqMjkuA3DCkwemVwj7B7wvkExMcqob9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mjO2lJ1+PRACXBie1SG6fBKqHejn1lDB5xytOPX39Vw=;
- b=PDZkDjwiVSFzrdWjV2OhavLpaslqxHgrxt/yPKYHzmzyo+IyPK514Ddjwkq1+DWZULPip8hJ6DM+xZHB7mbgdkDP3P763o6P2A8xzbakGnFW7D9G8eFO5t3MdhrWBSJFil/gAVelTCJfqNxvebtpgsGcaP3PWhQ4vclcmjiPfXqHMnPLcYJQxY11gGCoO7i7LQJI/zT1S4nk0oetzKXN0W6anDFi4vxll6vsRzWtqP+W+QuUI313kfRaC6oXARY63X3wc70HC8z6SBbbX7J97VuOpm/D1O3Usmm57mpFXvAYT53izqB0a7r0vLBYAbSLBGdMcNJoECmQXbxEKCtW8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mjO2lJ1+PRACXBie1SG6fBKqHejn1lDB5xytOPX39Vw=;
- b=j96iyUy8mMMg8zXnxc7+6dihvroMCj6GojGRiRBbreI9ExB1WKx9wCM6MefNju+I7BxpsARxMr6mzosLXbOdcH8u2QwJbSg95RF7UXWVIMzA8vwtfjET7GUgveWYkuhlmUVC/bPeu3jJcNjETs3fFGpHIcLyMjgtZV8jPSMtTvA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5336.namprd12.prod.outlook.com (2603:10b6:208:314::8)
- by CYXPR12MB9340.namprd12.prod.outlook.com (2603:10b6:930:e4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 21:19:00 +0000
-Received: from BL1PR12MB5336.namprd12.prod.outlook.com
- ([fe80::576a:69b5:929c:8640]) by BL1PR12MB5336.namprd12.prod.outlook.com
- ([fe80::576a:69b5:929c:8640%6]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
- 21:19:00 +0000
-Message-ID: <27e6fb48-51c0-4e47-ad91-c6c3092dfd09@amd.com>
-Date: Mon, 30 Mar 2026 17:18:56 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] drm/amdgpu: replace PASID IDR with XArray
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: lijo.lazar@amd.com, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20260330191120.105065-1-mikhail.v.gavrilov@gmail.com>
-Content-Language: en-US
-From: Eric Huang <jinhuieric.huang@amd.com>
-In-Reply-To: <20260330191120.105065-1-mikhail.v.gavrilov@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0356.namprd03.prod.outlook.com
- (2603:10b6:610:11a::34) To BL1PR12MB5336.namprd12.prod.outlook.com
- (2603:10b6:208:314::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C22B2DF68
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 21:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774905693; cv=none; b=oXhJUUhu2olhEPMdKZ4HqRTccgr62azsC5t6ZDfaP3YBAfuz5vXUfk5Hwo48C9kAbrwne7I7S8hn/lCvccJ22seZ5e21Vo966TEV0KuUBGrk6I82sE05p+Uil+kMs0qPfWUBgbY11jzxkrWX9t7k+Z1WhoaznQqSejoXdyVk/LQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774905693; c=relaxed/simple;
+	bh=RKgk+a2ITsqi9XukOOzHKnfiIEpr6iF2PY9x6eaZd4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tZD3E0LgrSxmDTrTgAtwMgNhXAsnRfbEvRlbMieO4swPNhDFpVCfZNqlJLA4e8GawOcu4lZwVydwabNn0J/Qv9yLRaOW5T6A2u4m13Z6n8CwGDWonmoKLtUmOqdO0PPTbgChxmJ02n4eGsJSO8JsFNKS9NV1nZblDtSCufngxtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CrCLeGET; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cfc795ca97so446476385a.0
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 14:21:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774905691; x=1775510491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QgJhP5eB3Kjlb+gJEQE6up3YZMbKoV0ITM0rqeVdqjo=;
+        b=CrCLeGETHA6FLFW4jl4qlJbnCiobOtdww/+4QNRhd84KupBBOm3VHdY2xS+XMYJsQT
+         5VLtnLeTbgYUnZiltxEmQef3xrXkhJ6sZLQ+pB/Zb5k8Co71wOf0yGfJxtIy7uE3pmOZ
+         UN12BjkBXurLGw0v5SQt3WmaphpEXH+egqNRNzcymacUliumfbMsFkgDtySGRPT8g0K7
+         wZw9WXY2AHuV7zDYHp2Bh6UUl8zuPqU6Ru025mEk0/ejPtgqMN/lsA2JWxVBku/lyrNU
+         cXgrjUxr2F8mJFyiYoln8+2wRqfloOAXs2sNtch6OQb9rD9inYlwax5Wtn9ZMCUXa81o
+         nxbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774905691; x=1775510491;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QgJhP5eB3Kjlb+gJEQE6up3YZMbKoV0ITM0rqeVdqjo=;
+        b=Z8Cbmk9iJybN6gWkibQmIgubk52vAwfVaDw2SdE12vZqet8TtgeW6OQEgdCrAPsPhn
+         Rt5v3ie/BpFuvaywwH9lpDK9RLWQHigodG+llcPJuWyJkZEw1xKRV5cq8Ckef9UkNECv
+         L8vNGOYS8Ja5N+r/fpFBy5YYkWt65sqB4FUl9UWd7/2cX9psEtBsLy3IEM8n90J31ucE
+         Thj8i38ivQwefJKOAuJWg4JulevOpmjyLharsjGiEFbdm6oBTjBDNf4sClxUNpIEXkch
+         ZR6dUV6d8P9vYezBWUUVwKYlSVIGM0R6eklh44b6o7cZvwBDkC++/D9OeGYqLVP+Lwv2
+         Xavg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeykxAsfUJKaXQCf6uysNzcWK1eS9vAncZ1eJHaKEVSq7DysWy8CHZwtub6a4ioNResblJft8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxeJN5RAKCxcHX7XPHEooPmxFKYvLLp5jlelE75rcwX6wWFMQ6
+	lvTqGbwgxYJCziGWK89tkpYPZ9MUDjz+its5XaRD3AePrC5ZoNQb1OR6
+X-Gm-Gg: ATEYQzxTjbQEaOgz8ba8MP4H/4zKsXBLqmSbsYonCFYW1XzZQdgdCMshLKc6w+AEHvS
+	/KBjKQY0dIv3Uwcawf3lTpM+585AJGfm6A0IoDcNudAbD1yP9okAyp/OhXB+r/x+qWacm7ofKHa
+	9vTYhKblTTmYjmUG1iKQvXAM6oAqBbIaLDkDTT7Iuhu7T0KAiodxDILMmDGvP7GHFCJlRNQMPLr
+	n6x3BAKkyjiMMHx7i04pHiy6Ca5Ij5MEwI3KgK+RQ76hEc2EXXwwfH9sCfzbWBHCG47nPwIAGon
+	IVZskYV2QDz4kSLtJQE8EqS8AYSiiN0o5oFYoc5nvnkxXwzDAYE3KzoZdrmjKpue5w+hGEptzLg
+	JUmLD9dHTBhWoh0K1y8qhdmv93J1ayHph8NHcRZqNVWXB38E9K5EGwmAO9a7UmZqE6SvF8IoZF9
+	K75E06tCV1CarQxKTCRyhHVDwilcKKxwp55yLY6qCFmzz34DpuVWuB3Sf/yO9t4DH89z9/mMJX1
+	LO7a/Tg+rk+u/NoHQF7AswNzVCrfQj6
+X-Received: by 2002:a05:620a:1a22:b0:8cd:8635:c031 with SMTP id af79cd13be357-8d01c60d473mr1783105485a.20.1774905690987;
+        Mon, 30 Mar 2026 14:21:30 -0700 (PDT)
+Received: from mango-teamkim.. ([129.170.197.108])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d027edb8d1sm672796685a.4.2026.03.30.14.21.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 14:21:30 -0700 (PDT)
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: luiz.dentz@gmail.com,
+	marcel@holtmann.org,
+	stable@vger.kernel.org,
+	kyungtae.kim@dartmouth.edu,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH v2] Bluetooth: ISO: fix NULL deref in iso_recv() ISO_END handling
+Date: Mon, 30 Mar 2026 17:21:29 -0400
+Message-ID: <20260330212129.319339-1-nathan.c.rebello@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260328035813.296410-1-nathan.c.rebello@gmail.com>
+References: <20260328035813.296410-1-nathan.c.rebello@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5336:EE_|CYXPR12MB9340:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65786270-0a30-4702-9b1f-08de8ea1f627
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	f9Y8+XNJOpl/A9JkQOGJ8z1t/dwz3nXpr8cTPlzHYG521oxeaFH2h09cGmSzxQ86e2RfGljsLWrCqddS2YhjDd52exNlHFBhHNSAk8n7wq5YfCbuJbQA5EMp6BqYjkaaBs46I4ofzPEZz06OdpgXjvmc4okLDK+9KgBvLkmeAWMlZno+Qcof0TUWLbn3VjzsPjy/t4CsYDtP38hDJpXuZ9PcL/geo8E4Zveva5R7XxlXOMzr5vbYZQWmvz28rLXsraIpSceviGJkaFeS8L8epBrlIlKbqaLWPCpYJpLsxHIhULgbvPman9sBO5RYlD6ghqlYDn+MuoYOtUMV93DtiNw1VipacX6dMEyimJBV87Mm5F3OTjapRfnGyMSmFjg/8UYOEBRbbps4rL+ku9De88047pASdPJ1fwksha8AaJja21BM2LaAwhqMWma1bUW/QBew3qID7w7MTh6YVTzopck3IZbvYgwbKQ8wd2bmr4D4AxJEdHSWBx1h/onD5pa7S+tfyDftXLxt85tEZFa5xLk1vPel1MfsmYlT5HahRwZ/JiyHMYsapkvL37tbFbtH+uX9KBUTkIuTVmtuB33e3S/uIX/k6KDfySCY339IsP+ORaKyvmBJgTKVu1LykeTuYGJm8VvCg8Gs1V2KLxEDpbBMRHvdgKMtRHCMzoMaVPPwR6ibJptc2LFY71en8HGPGTPG1ZKaz1+AUuROkOY4ybZyTAljaUUGTBG4JyZW+U5VNRl9+MB5L1nahbSWi1n2
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5336.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cFVvVUhYSWRSdnVCTkpOZjYwM0hXS1RGMDhGK3ZtY2RzR2xSSVZta1dHdU9o?=
- =?utf-8?B?UGZtZWs5Z0Vzcm41QUNxUWpENFBTc3g5WVhNVzAxMldQV3M5QjI2SWJvazk4?=
- =?utf-8?B?SC9nV282eXgxN1A3Y0ZhdmhPRTNiSnBVZTBPYzA5bjZ0YnJubzVVSUlYdURa?=
- =?utf-8?B?MnFLZ0plWVhHZXBYSjhKR0xvWU8yb1k5OUFneVVKKzRYN0V0ejlPVWZCU3JW?=
- =?utf-8?B?bVhidkZ6UURDbE9SdEQ4SFRwVm02Sm1KcldZNEtQMGxsMENaU0ZlbzdYek9v?=
- =?utf-8?B?YUhxeVlSTFZ4L2VSQ044Sks2dFZqVE1iRk42VDBvelI4eXNlV1VUK0Yyb201?=
- =?utf-8?B?MkFqZCtZMHNvRTFaYVl0MzlRUjFwMDJhUER5NXdnQXJBcEtYVVVKRE43cU1V?=
- =?utf-8?B?Y0wwbktSdGJRbXZwOVZMVWFNbDI0VnJWM0EvcFYvcXZuL3NoREhYUEdvSTZl?=
- =?utf-8?B?dkRWTVE2R2VaRDhYMW8rMFllWldRSHJwWVFZdEZ1ME9VV0UxUU9SbDBMVnpa?=
- =?utf-8?B?UnZScHQ1R0Iwa3gvZXl1UUJhYi84aWdzM0Y1VHliTVcrNDMyMllLTk9EclRU?=
- =?utf-8?B?SU5SeVc1ZGR1RElVWERTRThQT1h4dXhRakRJdVhWdk9Tam9rVWxvVWdudjU3?=
- =?utf-8?B?QUtiM2V5Yi9IWFR0V0ptMmJrdDRuazdDa3VXTjVZS0ZYYmFMSGpIRHVUWnBa?=
- =?utf-8?B?MzVPdWJERHNzSXNrb2dEa3VpRjJEM0s5YTdKYS9LWDY0MFh0Qnc1VnpyWFkr?=
- =?utf-8?B?a0gzbzB4TmpXRFdFMlZ3WCs3a3FDbzZkT2ZDMWxXZTZUVHJCRHhpZllrVFRH?=
- =?utf-8?B?OXh3bHlsUVJUWWNyZXhZZkVXTnRkNWJNZVZJbWZWdzEyeTVpdlhGWGtYOVhQ?=
- =?utf-8?B?QjRWRGhpSThhK2FMWkQ1RWR4KzhZVzRidVE4c2xIRDVmTndMbkd0eDhZbDlr?=
- =?utf-8?B?VzRlSTFRY2tDWGpRSFMwMno4dDZIQm4rcWJFSi9BWnQyMkRuRzFOQlFVbGVL?=
- =?utf-8?B?NEhsL2dPZ0Fvb0ZBT2hMQ0prenpQVkdNdGJRMHNPMG92YkE3UG5KcnZWYTVw?=
- =?utf-8?B?amZnK01vUHFNakZMODFIT0FuTDQvMWVUZXF1Z2cxdVJLMW4xaFZLSzRLeUVP?=
- =?utf-8?B?RnNoL0Y4N25aWWFqTE1nNjh4N0JpKyszZWRTMXdvSit6VzdHMXFBNmIyRzJp?=
- =?utf-8?B?VDhQOEJPYndMUkk4RGhreDUyd2l4MHpSMDkvTk8yb1F1WHVRN0xKWUowVjdB?=
- =?utf-8?B?emRCejdJTTNCUGxkUUZnaHRISG1Sa1hpWkhmR282VHpSd3ZLQjBMRTJvRDVJ?=
- =?utf-8?B?dDlZTmFTbThFSWwyQ2lFL2Y3SWxYaGp0akthbVNqdWdLVVRjdzFtZThuNTNI?=
- =?utf-8?B?R0htdC9HbnN6SCs4WkYwN3I5RkJXSXhoSU9oS0wweU9Qa0Y1dk96dzc4cTIv?=
- =?utf-8?B?bWYrYWxPcWNyTTdLWkhFakxlMVZzVzAzc2gxZFkvZ2xjSmNRd0IwOVRUa2FE?=
- =?utf-8?B?WnVZV1NvUjliODkyVGtBVzQ1Z2hqRnlCMnNTQXh5eUU3VTU4c0Q2RlJBM3F2?=
- =?utf-8?B?NUsyL2RzMDlEQ3JkT2JVaDJrOG9CTnU4Z2JaZGVnMzVlL2NIVUk5YlZYWjFu?=
- =?utf-8?B?ZjBvQ2poWlFTWTZJTysvanhxMGNNRlk5TEV4R1JWTEVZMDZOcXJscWlrMnJQ?=
- =?utf-8?B?bXZEQ3hGaUlWNy9Ua3JDdGJrRXlUTmRBSEVRSmp5cFo1OHpXbldkUWxvUnRR?=
- =?utf-8?B?eTJrV0syOEdydFVJdGtaei90VlFnYzRxTFNZeUJTZFc1d2N1S3Rsa1djVWhD?=
- =?utf-8?B?MW9COEh5Z2txekNXMm92M2Y3anZNMU5rVHBLdHpsalNaYmM2NFQvUnJUeXR6?=
- =?utf-8?B?TGlRMFVpV3RuUlRnS1JTaHdNODVxMlRLakhkTHJSaXJ5d0hrZGNUYXpyN05p?=
- =?utf-8?B?aDVqcnZNcUNEc3l5TUtmZVB0ZDJaMVB0UEIybGFRdlFFdUIybUFiK3d5K3hB?=
- =?utf-8?B?Y1RwNFdhY0xPNWNZRXRJZjZsY3R0dDNxOEE3TjZRbUdoNWo3RXBnbk84OUs2?=
- =?utf-8?B?Q3FRY2d0ajZ4dmFlT3lneUlNVUU0RnFuLzlmWkkyVkxRRGo3TWVVU1VnRTls?=
- =?utf-8?B?SHc3NU9IbitDYURtdFJjejFYZ0xmVkRMVEFqNldRRDB6S0JMT05UM2lDc3du?=
- =?utf-8?B?bGY3M3hMcTRKS05nSGpBc0dvMmRNT2xUd2xMamRyWlhPRHk4MHVKT1hTak0v?=
- =?utf-8?B?Uk5VSll0ck5Say93cDVmbTdxaEt4Wit6Tm9Sci82QnlQOFNzb0VFSU1QbFdt?=
- =?utf-8?B?VG1KQkxtZWVTU3A5bjFMditjTjQ1ZEFQSVpWZUtEYzdSL0NmQ2V5Zz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65786270-0a30-4702-9b1f-08de8ea1f627
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5336.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 21:19:00.6866
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2rwKAfBx4/ScI9jjBIP7ZTTqEK1JAjmJYpUuqSUJPnHC2r5xWdJHbu9PKIY7CsaSUJHPz9MvRnS+B3wESck1zg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9340
-X-Spamd-Result: default: False [1.34 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,holtmann.org,vger.kernel.org,dartmouth.edu];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,amd.com];
-	TAGGED_FROM(0.00)[bounces-231282-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231283-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathancrebello@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jinhuieric.huang@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:dkim,amd.com:email,amd.com:mid]
-X-Rspamd-Queue-Id: E22B336159F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5318C36164D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It looks good to me.
+The ISO_CONT case in iso_recv() properly checks for unexpected
+continuation frames (!conn->rx_len) and oversized fragments
+(skb->len > conn->rx_len) before accessing conn->rx_skb. The
+ISO_END case lacks both checks.
 
-Reviewed-by: Eric Huang <jinhuieric.huang@amd.com>
+When an ISO_END packet arrives without a preceding ISO_START:
+  - conn->rx_skb is NULL (never allocated)
+  - skb_put(conn->rx_skb, ...) dereferences NULL -> kernel crash
 
-On 2026-03-30 15:11, Mikhail Gavrilov wrote:
-> Commit 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
-> converted the global PASID allocator from IDA to IDR with a spinlock
-> for cyclic allocation, but introduced two locking bugs:
->
-> 1) idr_alloc_cyclic() is called with GFP_KERNEL under spin_lock(),
->     which can sleep.
->
-> 2) amdgpu_pasid_free() can be called from hardirq context via the
->     fence signal path (amdgpu_pasid_free_cb), but the lock is taken
->     with plain spin_lock() in process context, creating a potential
->     deadlock:
->
->       CPU0
->       ----
->       spin_lock(&amdgpu_pasid_idr_lock)   // process context, IRQs on
->       <Interrupt>
->         spin_lock(&amdgpu_pasid_idr_lock) // deadlock
->
->     The hardirq call chain is:
->
->       sdma_v6_0_process_trap_irq
->        -> amdgpu_fence_process
->         -> dma_fence_signal
->          -> drm_sched_job_done
->           -> dma_fence_signal
->            -> amdgpu_pasid_free_cb
->             -> amdgpu_pasid_free
->
->     This was observed on an RX 7900 XTX when exiting a Vulkan game
->     running under Proton/Wine, which triggers the fence callback path
->     during VM teardown.
->
-> Replace the IDR + spinlock with XArray.  xa_alloc_cyclic() handles
-> GFP_KERNEL pre-allocation and IRQ-safe locking internally, so it is
-> used directly in amdgpu_pasid_alloc().  For amdgpu_pasid_free(), which
-> can be called from hardirq context, use explicit xa_lock_irqsave()
-> with __xa_erase() since xa_erase() only uses plain xa_lock() which
-> is not IRQ-safe.
->
-> Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-> Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> ---
->
-> v5: Use explicit xa_lock_irqsave/__xa_erase for amdgpu_pasid_free()
->      since xa_erase() only uses plain xa_lock() which is not safe from
->      hardirq context. Keep xa_alloc_cyclic() for amdgpu_pasid_alloc()
->      as it handles locking internally. (Lijo Lazar)
-> v4: Use xa_alloc_cyclic/xa_erase directly instead of explicit
->      xa_lock_irqsave, as suggested by Lijo Lazar.
->      https://lore.kernel.org/all/20260330162038.25073-1-mikhail.v.gavrilov@gmail.com/
-> v3: Replace IDR with XArray instead of fixing the spinlock, as
->      suggested by Lijo Lazar.
->      https://lore.kernel.org/all/20260330110346.16548-1-mikhail.v.gavrilov@gmail.com/
-> v2: Added second patch fixing the {HARDIRQ-ON-W} -> {IN-HARDIRQ-W}
->      lock inconsistency (spin_lock -> spin_lock_irqsave).
->      https://lore.kernel.org/all/20260330053025.19203-1-mikhail.v.gavrilov@gmail.com/
-> v1: Fixed sleeping-under-spinlock (idr_alloc_cyclic with GFP_KERNEL)
->      using idr_preload/GFP_NOWAIT.
->      https://lore.kernel.org/all/20260328213900.19255-1-mikhail.v.gavrilov@gmail.com/
->
->   drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 47 ++++++++++++-------------
->   1 file changed, 23 insertions(+), 24 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-> index d88523568b62..3fbf631e67c7 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-> @@ -22,7 +22,7 @@
->    */
->   #include "amdgpu_ids.h"
->   
-> -#include <linux/idr.h>
-> +#include <linux/xarray.h>
->   #include <linux/dma-fence-array.h>
->   
->   
-> @@ -35,13 +35,13 @@
->    * PASIDs are global address space identifiers that can be shared
->    * between the GPU, an IOMMU and the driver. VMs on different devices
->    * may use the same PASID if they share the same address
-> - * space. Therefore PASIDs are allocated using IDR cyclic allocator
-> - * (similar to kernel PID allocation) which naturally delays reuse.
-> - * VMs are looked up from the PASID per amdgpu_device.
-> + * space. Therefore PASIDs are allocated using an XArray cyclic
-> + * allocator (similar to kernel PID allocation) which naturally delays
-> + * reuse. VMs are looked up from the PASID per amdgpu_device.
->    */
->   
-> -static DEFINE_IDR(amdgpu_pasid_idr);
-> -static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
-> +static DEFINE_XARRAY_ALLOC(amdgpu_pasid_xa);
-> +static u32 amdgpu_pasid_xa_next;
->   
->   /* Helper to free pasid from a fence callback */
->   struct amdgpu_pasid_cb {
-> @@ -53,8 +53,7 @@ struct amdgpu_pasid_cb {
->    * amdgpu_pasid_alloc - Allocate a PASID
->    * @bits: Maximum width of the PASID in bits, must be at least 1
->    *
-> - * Uses kernel's IDR cyclic allocator (same as PID allocation).
-> - * Allocates sequentially with automatic wrap-around.
-> + * Uses XArray cyclic allocator for sequential allocation with wrap-around.
->    *
->    * Returns a positive integer on success. Returns %-EINVAL if bits==0.
->    * Returns %-ENOSPC if no PASID was available. Returns %-ENOMEM on
-> @@ -62,20 +61,22 @@ struct amdgpu_pasid_cb {
->    */
->   int amdgpu_pasid_alloc(unsigned int bits)
->   {
-> -	int pasid;
-> +	u32 pasid;
-> +	int r;
->   
->   	if (bits == 0)
->   		return -EINVAL;
->   
-> -	spin_lock(&amdgpu_pasid_idr_lock);
-> -	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
-> -				 1U << bits, GFP_KERNEL);
-> -	spin_unlock(&amdgpu_pasid_idr_lock);
-> +	r = xa_alloc_cyclic(&amdgpu_pasid_xa, &pasid, xa_mk_value(0),
-> +			    XA_LIMIT(1, (1U << bits) - 1),
-> +			    &amdgpu_pasid_xa_next, GFP_KERNEL);
->   
-> -	if (pasid >= 0)
-> +	if (r >= 0) {
->   		trace_amdgpu_pasid_allocated(pasid);
-> +		return pasid;
-> +	}
->   
-> -	return pasid;
-> +	return r;
->   }
->   
->   /**
-> @@ -84,11 +85,13 @@ int amdgpu_pasid_alloc(unsigned int bits)
->    */
->   void amdgpu_pasid_free(u32 pasid)
->   {
-> +	unsigned long flags;
-> +
->   	trace_amdgpu_pasid_freed(pasid);
->   
-> -	spin_lock(&amdgpu_pasid_idr_lock);
-> -	idr_remove(&amdgpu_pasid_idr, pasid);
-> -	spin_unlock(&amdgpu_pasid_idr_lock);
-> +	xa_lock_irqsave(&amdgpu_pasid_xa, flags);
-> +	__xa_erase(&amdgpu_pasid_xa, pasid);
-> +	xa_unlock_irqrestore(&amdgpu_pasid_xa, flags);
->   }
->   
->   static void amdgpu_pasid_free_cb(struct dma_fence *fence,
-> @@ -625,13 +628,9 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_device *adev)
->   }
->   
->   /**
-> - * amdgpu_pasid_mgr_cleanup - cleanup PASID manager
-> - *
-> - * Cleanup the IDR allocator.
-> + * amdgpu_pasid_mgr_cleanup - Cleanup PASID manager
->    */
->   void amdgpu_pasid_mgr_cleanup(void)
->   {
-> -	spin_lock(&amdgpu_pasid_idr_lock);
-> -	idr_destroy(&amdgpu_pasid_idr);
-> -	spin_unlock(&amdgpu_pasid_idr_lock);
-> +	xa_destroy(&amdgpu_pasid_xa);
->   }
+When an ISO_END fragment length does not exactly match the
+remaining expected length:
+  - the reassembly is malformed and must be rejected
+
+KASAN confirmed the NULL-deref on kernel 7.0.0-rc5 via VHCI:
+
+  general protection fault, probably for non-canonical address 0xdffffc0000000018
+  KASAN: null-ptr-deref in range [0x00000000000000c0-0x00000000000000c7]
+  CPU: 0 UID: 0 PID: 72 Comm: kworker/u9:0 Not tainted 7.0.0-rc5
+  Workqueue: hci0 hci_rx_work
+  RIP: 0010:skb_put+0x27/0x1a0
+  Call Trace:
+   <TASK>
+   iso_recv+0x5e0/0xee0
+   hci_rx_work+0x226/0x730
+   process_one_work+0x633/0x1060
+   worker_thread+0x45b/0xd10
+   kthread+0x2c6/0x3b0
+   ret_from_fork+0x38d/0x5c0
+   </TASK>
+  Kernel panic - not syncing: Fatal exception
+
+Fix by adding validation to the ISO_END case: reject unexpected
+end frames when no reassembly is in progress, and reject end
+fragments whose length does not exactly complete the expected
+reassembly.
+
+Fixes: ccf74f2390d6 ("Bluetooth: Add ISO Socket")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+---
+Changes in v2:
+  - Tighten end fragment check from (skb->len > conn->rx_len) to
+    (skb->len != conn->rx_len): the end fragment must exactly
+    complete the reassembly, not merely avoid overflow.
+
+ net/bluetooth/iso.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index be145e273..ee87341a1 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -2587,6 +2587,20 @@ int iso_recv(struct hci_dev *hdev, u16 handle, struct sk_buff *skb, u16 flags)
+ 		break;
+ 
+ 	case ISO_END:
++		if (!conn->rx_len) {
++			BT_ERR("Unexpected end frame (len %d)", skb->len);
++			goto drop;
++		}
++
++		if (skb->len != conn->rx_len) {
++			BT_ERR("End fragment length mismatch (len %d, expected %d)",
++			       skb->len, conn->rx_len);
++			kfree_skb(conn->rx_skb);
++			conn->rx_skb = NULL;
++			conn->rx_len = 0;
++			goto drop;
++		}
++
+ 		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
+ 					  skb->len);
+ 		conn->rx_len -= skb->len;
+-- 
+2.43.0
 
 
