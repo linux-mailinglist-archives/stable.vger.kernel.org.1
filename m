@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-231201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMSREyVwymnG8gUAu9opvQ
-	(envelope-from <stable+bounces-231201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:44:21 +0200
+	id YP5aKEFwymnG8gUAu9opvQ
+	(envelope-from <stable+bounces-231203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:44:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB0D35B349
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:44:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1460635B3A9
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44A40306ABFD
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C3B930781BE
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B253D4101;
-	Mon, 30 Mar 2026 12:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107BF3D47A0;
+	Mon, 30 Mar 2026 12:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjcfQE6r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ma14zB0s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A03D3D3012;
-	Mon, 30 Mar 2026 12:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CD33D3314;
+	Mon, 30 Mar 2026 12:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874347; cv=none; b=EMFsuwjOyZfT6LTcRRQSueVNnvUtp1HuV/HKAH2il7x9wXx9HVoyEJgSSRFGAH4sFaQkQV05rdknqgdLXZDqNEQogrMNF4K1r5EdY5hMj5j7n9Hb0oJpmCmm1lJh8o+GIkaNz9s8x+zlzKE41NaZ8VQFQyHpOwI7iiBw7ZFHmW8=
+	t=1774874348; cv=none; b=N7PfWgznCoszbz1U1bfyyeXk8HASV+yOdON7AtUtxJ0YWwpaIj51G5jyvnYq9UVXlt8TwrfagvT3C9ehIXIeHzKaf3AICQSYQfXoybfoHnWdZs9f6N0PMx/Ayeb5htMhBTbkmJpaCHZMcQAxaLk6kGfZZQSQRhKy+ZY6MQr2asU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874347; c=relaxed/simple;
-	bh=YuWcDvAIA902/gC2iLKD4evUCXTbwoD0XkMsT0s7uyU=;
+	s=arc-20240116; t=1774874348; c=relaxed/simple;
+	bh=5wSSKEMIzIul31wUqPnRKJrbRSOh/Pgt2eb8JsZVyxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RT+ogXk9dl0WPP+YNNBCYqs3teGEmA0Lr2hD41c+l+/tuN/WLuESEvwUSomDKjS5AB66kTDbOwv/XOlFvq+nbPQlrX4Pww5iBrVMSIiwLzJSYijrezIF8g4dpjXlcZj+l86E8Jx/coVISwkexf3eebkYeyt3/YA86b0CQ3XsYp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjcfQE6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62912C2BCB1;
-	Mon, 30 Mar 2026 12:39:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gbfOoHq9w/3iFLby8WRY8cdOZu9ZUs0P53EGX4IRroxPmYYRzQdEEUuqR4ru8XIcGXDCQ7Iu+IHroHv2WlBbDeyFKNN+jszo6wjiJ3ghZnWMpH+Zua72ly8mqtysHS3akDygQyXH+cxU+imzQ+djQtSSpNPiesZXUTm724W5jmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ma14zB0s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA66FC2BCB0;
+	Mon, 30 Mar 2026 12:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874347;
-	bh=YuWcDvAIA902/gC2iLKD4evUCXTbwoD0XkMsT0s7uyU=;
+	s=k20201202; t=1774874348;
+	bh=5wSSKEMIzIul31wUqPnRKJrbRSOh/Pgt2eb8JsZVyxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjcfQE6rx0B6XN26PFvqRXklfL8uPsFKYilBOAm6l5cGGVqcWf8gIbdbn49KX3ldc
-	 RfItFIHoXUOL8mwQ9lqhQA3E520PExhvM0vq880dlBbZvNCxwCkjJbjUWE6Du/JrxE
-	 KpG6/4njysyyxt25ZLN13oFZBSfprn4mNMRfekoUDCMd3By0wRau/rZggf7Z1cS8nj
-	 GlQPyf32OSm/RFVzbTFF9+ujmBszBI00XcVahd/PYrNBd46LOBkyr1AzHh34ZCRFHS
-	 xWUPsHFn7cSSOU19IMxpiHR6GHB1XSWvWsfUerL1tpgs6xUvfMWb8Pk1s3JVe3Xoxh
-	 PZSwkdg0iFj5A==
+	b=ma14zB0s7+jkqnU5ccykj/BIbsauhPl0s00HGHBA9M7tvVepS8ncgKdYIkUI4jj7Y
+	 vlutPU5v26YwFZEMOaDxStgXehcsfr5Qveu8qZZkAYimH3AV67oHDC9MdLI3cnSIKY
+	 NnhhjtriuImDhyaZ1R/aTXZ2XJ+ESlrwxDElcJ9p2mcpXuwwpzkOsDGXSzdBKEK4d2
+	 mdiWlC4dUxe3zgLlmeA5V7FIoZLcW8ytdcBxXLkpvFeiNBwLnorhgzfXjMJ2d5p0xT
+	 sXt0wUChRfNoFXXy79dThjg0h9mQPd5t1BOmfBUpmhPWai7ho8UIWZVlbA6LtvmkVV
+	 QDlvOaMxZNE2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: =?UTF-8?q?C=C3=A9sar=20Montoya?= <sprit152009@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	linux-btrfs@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.18] btrfs: fix zero size inode with non-zero size after log replay
-Date: Mon, 30 Mar 2026 08:38:30 -0400
-Message-ID: <20260330123842.756154-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-5.10] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion 15-eg0xxx
+Date: Mon, 30 Mar 2026 08:38:31 -0400
+Message-ID: <20260330123842.756154-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330123842.756154-1-sashal@kernel.org>
 References: <20260330123842.756154-1-sashal@kernel.org>
@@ -66,30 +66,29 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19.10
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[suse.com,gmail.com,kernel.org,fb.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231201-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org,perex.cz,suse.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231203-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -97,671 +96,369 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BCB0D35B349
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 1460635B3A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
+From: César Montoya <sprit152009@gmail.com>
 
-[ Upstream commit 5254d4181add9dfaa5e3519edd71cc8f752b2f85 ]
+[ Upstream commit 2f388b4e8fdd6b0f27cafd281658daacfd85807e ]
 
-When logging that an inode exists, as part of logging a new name or
-logging new dir entries for a directory, we always set the generation of
-the logged inode item to 0. This is to signal during log replay (in
-overwrite_item()), that we should not set the i_size since we only logged
-that an inode exists, so the i_size of the inode in the subvolume tree
-must be preserved (as when we log new names or that an inode exists, we
-don't log extents).
+The HP Pavilion 15-eg0xxx with subsystem ID 0x103c87cb uses a Realtek
+ALC287 codec with a mute LED wired to GPIO pin 4 (mask 0x10). The
+existing ALC287_FIXUP_HP_GPIO_LED fixup already handles this correctly,
+but the subsystem ID was missing from the quirk table.
 
-This works fine except when we have already logged an inode in full mode
-or it's the first time we are logging an inode created in a past
-transaction, that inode has a new i_size of 0 and then we log a new name
-for the inode (due to a new hardlink or a rename), in which case we log
-an i_size of 0 for the inode and a generation of 0, which causes the log
-replay code to not update the inode's i_size to 0 (in overwrite_item()).
+GPIO pin confirmed via manual hda-verb testing:
+  hda-verb SET_GPIO_MASK 0x10
+  hda-verb SET_GPIO_DIRECTION 0x10
+  hda-verb SET_GPIO_DATA 0x10
 
-An example scenario:
-
-  mkdir /mnt/dir
-  xfs_io -f -c "pwrite 0 64K" /mnt/dir/foo
-
-  sync
-
-  xfs_io -c "truncate 0" -c "fsync" /mnt/dir/foo
-
-  ln /mnt/dir/foo /mnt/dir/bar
-
-  xfs_io -c "fsync" /mnt/dir
-
-  <power fail>
-
-After log replay the file remains with a size of 64K. This is because when
-we first log the inode, when we fsync file foo, we log its current i_size
-of 0, and then when we create a hard link we log again the inode in exists
-mode (LOG_INODE_EXISTS) but we set a generation of 0 for the inode item we
-add to the log tree, so during log replay overwrite_item() sees that the
-generation is 0 and i_size is 0 so we skip updating the inode's i_size
-from 64K to 0.
-
-Fix this by making sure at fill_inode_item() we always log the real
-generation of the inode if it was logged in the current transaction with
-the i_size we logged before. Also if an inode created in a previous
-transaction is logged in exists mode only, make sure we log the i_size
-stored in the inode item located from the commit root, so that if we log
-multiple times that the inode exists we get the correct i_size.
-
-A test case for fstests will follow soon.
-
-Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/af8c15fa-4e41-4bb2-885c-0bc4e97532a6@gmail.com/
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: César Montoya <sprit152009@gmail.com>
+Link: https://patch.msgid.link/20260321153603.12771-1-sprit152009@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
----
-
-## PHASE 1: COMMIT MESSAGE FORENSICS
-
-### Step 1.1: PARSE THE SUBJECT LINE
-Record: **[btrfs]** **[fix]** Incorrect inode `i_size` after log replay
-— a file truncated to zero appears with its old non-zero size after
-power failure and log replay, when a new name (hardlink/rename) is
-logged for the inode.
-
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Reported-by:** Vyacheslav Kovalevsky
-  \<slava.kovalevskiy.2014@gmail.com\> — a real user encountered this
-  bug
-- **Link:** https://lore.kernel.org/linux-
-  btrfs/af8c15fa-4e41-4bb2-885c-0bc4e97532a6@gmail.com/ — bug report on
-  the btrfs mailing list
-- **Signed-off-by:** Filipe Manana \<fdmanana@suse.com\> — author,
-  primary btrfs tree-log developer
-- **Signed-off-by:** David Sterba \<dsterba@suse.com\> — btrfs
-  maintainer
-- No Fixes: tag (expected — this is why the commit is under manual
-  review)
-- No Cc: stable (expected)
-- No Tested-by or Reviewed-by
-
-Record: Single user reporter, fix from subsystem's primary tree-log
-developer, accepted by maintainer.
-
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-The commit provides a concrete, reproducible scenario:
-1. `mkdir /mnt/dir && xfs_io -f -c "pwrite 0 64K" /mnt/dir/foo`
-2. `sync`
-3. `xfs_io -c "truncate 0" -c "fsync" /mnt/dir/foo` — truncates to 0,
-   fsync logs the inode with `i_size = 0`
-4. `ln /mnt/dir/foo /mnt/dir/bar` — creates a hard link, triggering
-   LOG_INODE_EXISTS logging
-5. `xfs_io -c "fsync" /mnt/dir` — syncs the directory log
-6. Power failure → after log replay, file has 64K size instead of 0
-
-**Root cause:** When logging "inode exists" (`LOG_INODE_EXISTS`),
-`fill_inode_item()` always sets generation=0. During log replay,
-`overwrite_item()` sees generation=0 and `ino_size=0` and skips updating
-the subvolume tree's `i_size`. The file retains its stale pre-truncate
-size.
-
-Record: Data integrity bug — wrong file size after crash recovery. Clear
-mechanism, reproducible, user-reported.
-
-### Step 1.4: DETECT HIDDEN BUG FIXES
-Record: Not hidden — explicitly a correctness fix for log replay data
-integrity.
+All verification is complete. Here is the full analysis.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS — LINE BY LINE
-
-### Step 2.1: INVENTORY THE CHANGES
-- **File:** `fs/btrfs/tree-log.c` only
-- **Functions modified:** `fill_inode_item()`, `logged_inode_size()` →
-  renamed to `get_inode_size_to_log()`, `btrfs_log_inode()`
-- **Scope:** ~70 lines changed across 3 hunks in a single file.
-  Surgical, well-contained.
-
-Record: Single-file fix, 3 functions modified, ~+55/-23 lines.
-
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-
-**Hunk 1 — `fill_inode_item()`:**
-- **Before:** Always `btrfs_set_inode_generation(leaf, item, 0)` when
-  `log_inode_only=true`.
-- **After:** Default `gen` to the real inode generation. Only set
-  generation to 0 if `logged_trans < trans->transid` (i.e., the inode
-  was NOT already logged in the current transaction). If it WAS
-  previously logged in this transaction, keep the real generation so
-  replay will correctly apply the logged `i_size`.
-
-**Hunk 2 — `logged_inode_size()` → `get_inode_size_to_log()`:**
-- **Before:** Always searched the log tree; if item not found,
-  `*size_ret = 0`.
-- **After:** If inode was logged in the current transaction, searches
-  the log tree (same as before). If inode is from a past transaction and
-  not yet logged, searches the **commit root** of the subvolume tree. If
-  inode was created in the current transaction and not yet logged,
-  returns 0. Added ASSERT/WARN_ON_ONCE safety checks.
-
-**Hunk 3 — `btrfs_log_inode()`:**
-- **Before:** `if (inode_only == LOG_INODE_EXISTS &&
-  ctx->logged_before)` — only fetched `logged_isize` if inode was logged
-  before.
-- **After:** `if (inode_only == LOG_INODE_EXISTS)` — always fetches the
-  inode size to log, removing the `logged_before` guard. This ensures
-  correct size even on the first exists-only log in a transaction.
-
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-**Category:** Logic/correctness fix — filesystem log replay invariant
-violation leading to data inconsistency.
-
-**Mechanism verified against `overwrite_item()` (lines 628-658 in
-current tree):**
-
-```644:658:fs/btrfs/tree-log.c
-                if (btrfs_inode_generation(wc->log_leaf, src_item) == 0)
-{
-                        const u64 ino_size =
-btrfs_inode_size(wc->log_leaf, src_item);
-                        // ...
-                        if (S_ISREG(btrfs_inode_mode(wc->log_leaf,
-src_item)) &&
-                            S_ISREG(btrfs_inode_mode(dst_eb, dst_item))
-&&
-                            ino_size != 0)
-                                btrfs_set_inode_size(dst_eb, dst_item,
-ino_size);
-                        goto no_copy;
-                }
-```
-
-When generation=0 AND `ino_size=0` (for a regular file), the size update
-is skipped entirely and execution jumps to `no_copy`. This means the
-subvolume tree's stale `i_size` (64K in the example) is preserved. The
-fix ensures that when the inode was already logged in the same
-transaction (with the truncated size), the real generation is used,
-causing replay to take the full-copy path instead of the `no_copy` path.
-
-### Step 2.4: ASSESS THE FIX QUALITY
-- **Correctness:** The logic aligns with the documented
-  `overwrite_item()` replay semantics. Using `logged_trans` to
-  distinguish first-time vs. re-logging is consistent with existing
-  patterns in `inode_logged()` (line 3744) which already uses
-  `data_race(inode->logged_trans)`.
-- **Minimality:** Well-contained to logging paths only.
-- **Regression risk:** LOW — changes only affect the LOG_INODE_EXISTS
-  code path (triggered by hard links, renames). The ASSERT and
-  WARN_ON_ONCE provide debugging safety nets. No lock changes, no API
-  changes.
-
-Record: Fix is obviously correct when cross-referenced with
-`overwrite_item()` replay code. Minimal regression risk.
-
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-### Step 3.1: BLAME THE CHANGED LINES
-Verified via `git blame -L 4612,4625 fs/btrfs/tree-log.c`:
-- The generation=0 logic was introduced by **`94edf4ae43a5f9`** (Josef
-  Bacik, 2012-09-25) — "Btrfs: don't bother committing delayed inode
-  updates when fsyncing"
-- Lines 4620-4624 last touched by **`c418a1504540c6`** (David Sterba,
-  2025-06-27) — cosmetic accessor conversion, not the logic origin.
-
-Record: The buggy generation=0 behavior has existed since **2012**
-(pre-v3.8). Present in ALL active stable trees.
-
-### Step 3.2: FOLLOW THE FIXES: TAG
-No Fixes: tag present. N/A.
-
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Verified recent related commits from the same reporter/timeframe:
-- **`953902e4fb4c3`** — "btrfs: set inode flag
-  BTRFS_INODE_COPY_EVERYTHING when logging new name" — different bug
-  (names not persisted), touches `inode.c` and `tree-log.c`
-- **`bfe3d755ef7ce`** — "btrfs: do not update last_log_commit when
-  logging inode due to a new name" — different bug (directory fsync not
-  persisting), 1-line change in `tree-log.c`
-
-These are independent fixes for different bugs, all reported by the same
-user during testing.
-
-Record: Standalone fix. Not part of a series. Independent of the two
-related commits above.
-
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Filipe Manana is the primary btrfs tree-log developer. He authored
-`logged_inode_size()` (commit `1a4bcf470c886`, v4.0) and most of the
-tree-log fsync correctness fixes. David Sterba signed off as btrfs
-maintainer.
-
-Record: Author is THE subsystem expert for this code. Highest-confidence
-authorship signal.
-
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-- Uses `logged_trans`, `data_race()`, `search_commit_root`,
-  `skip_locking` — all long-established.
-- `ctx->logged_before` was introduced by **`0f8ce49821de3`** (Filipe
-  Manana) in **v5.18-rc1**. This field exists in stable trees 6.1+ and
-  later.
-- `logged_inode_size()` was introduced by **`1a4bcf470c886`** in
-  **v4.0-rc1**.
-
-Record: Self-contained. Requires `ctx->logged_before` (v5.18+), so
-applies to stable trees 6.1+.
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1-4.4: LORE RESEARCH
-Both lore.kernel.org URLs returned Anubis bot protection (inaccessible).
-The Link: tag in the commit confirms a real bug report exists on the
-linux-btrfs mailing list from Vyacheslav Kovalevsky.
-
-Record: Lore inaccessible. Bug report confirmed to exist via Link: tag.
-UNVERIFIED: Full review discussion, any explicit stable nominations by
-reviewers, any NAKs.
-
----
-
-## PHASE 5: CODE SEMANTIC ANALYSIS
-
-### Step 5.1: KEY FUNCTIONS
-Functions modified: `fill_inode_item()`, `logged_inode_size()` →
-`get_inode_size_to_log()`, `btrfs_log_inode()`.
-
-### Step 5.2: TRACE CALLERS
-**`fill_inode_item()`** is called from:
-1. `log_inode_item()` (line 4704) — with `log_inode_only=false` (NOT
-   affected by this change)
-2. `copy_inode_items_to_log()` (line 4966) — with `log_inode_only =
-   (inode_only == LOG_INODE_EXISTS)` — **this is the affected path**
-
-**`btrfs_log_inode()`** is called during fsync and directory logging.
-The LOG_INODE_EXISTS path is triggered via `btrfs_log_new_name()`.
-
-### Step 5.4: FOLLOW THE CALL CHAIN
-Verified call chain for bug reachability:
-- `link()` / `rename()` syscall → `btrfs_link()` / `btrfs_rename()` in
-  `inode.c` → `btrfs_log_new_name()` (line 7931) → `btrfs_log_inode()`
-  with `LOG_INODE_EXISTS` (line 6293) → `logged_inode_size()` (line
-  6992) → `fill_inode_item()` (line 4966)
-
-This is a **common userspace operation** — any unprivileged user can
-trigger it with `link()` or `rename()` followed by `fsync()`.
-
-Record: Bug reachable from common syscalls (link, rename, fsync).
-Unprivileged users can trigger it.
-
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-The `data_race(inode->logged_trans)` pattern already exists at line 3744
-in `inode_logged()`. The new code follows the same established pattern.
-
-Record: Consistent with existing code patterns.
-
----
-
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
-
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-**Verified:** The pre-fix code (`logged_inode_size`, unconditional
-generation=0 in `fill_inode_item`, `ctx->logged_before` guard) is still
-present in the current tree (`v6.19.10`). `get_inode_size_to_log` does
-not exist — the fix has NOT been applied yet.
-
-- The generation=0 behavior dates to `94edf4ae43a5f9` (2012, pre-v3.8) —
-  present in ALL stable trees.
-- `logged_inode_size()` dates to `1a4bcf470c886` (v4.0) — present in all
-  active stable trees.
-- `ctx->logged_before` dates to `0f8ce49821de3` (v5.18) — present in
-  6.1+ stable trees.
-
-Record: All active stable trees (6.1+, 6.6+, 6.12+) contain the buggy
-code.
-
-### Step 6.2: BACKPORT COMPLICATIONS
-`tree-log.c` has been actively modified (5+ recent commits since v6.12).
-The patch modifies a function signature (`logged_inode_size` →
-`get_inode_size_to_log`), changes the condition in `btrfs_log_inode`,
-and restructures `fill_inode_item`. May require minor adaptation for
-older stables, but the core logic should port cleanly.
-
-Record: Expected backport difficulty: clean apply on recent stables
-(6.12+), minor conflicts possible on older (6.1, 6.6).
-
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-No evidence that a different fix for the same bug exists. The confirmed
-related commits (`953902e4fb4c3`, `bfe3d755ef7ce`) address different
-bugs.
-
-Record: No duplicate fix found.
-
----
-
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-
-### Step 7.1: IDENTIFY THE SUBSYSTEM
-**Subsystem:** fs/btrfs — filesystem layer, specifically the tree-log
-(fsync journal) subsystem.
-**Criticality:** IMPORTANT — btrfs is widely used, and crash recovery
-correctness is fundamental to filesystem integrity. Wrong file sizes
-after recovery = silent data corruption from the user's perspective.
-
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-`tree-log.c` is actively maintained with 30+ recent commits visible in
-the log. This is a mature, well-maintained subsystem.
-
-Record: Active subsystem, mature code, high importance for data
-integrity.
-
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: DETERMINE WHO IS AFFECTED
-All btrfs users who rely on fsync for data integrity and who might
-create hard links or rename files after truncating. This is a
-fundamental filesystem operation.
-
-Record: Affected population: all btrfs users (filesystem-specific but
-btrfs is widely used).
-
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-- **Trigger:** truncate file to 0 → fsync → create hard link or rename →
-  fsync directory → power failure
-- **How common:** Realistic workflow — the reporter hit it naturally
-- **Unprivileged:** Yes, any user can trigger this with normal file
-  operations
-
-Record: Realistic trigger, unprivileged, discovered by a real user.
-
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-When triggered: **File appears with wrong (old) size after crash
-recovery.** The file was truncated to 0 but shows 64K after log replay.
-This is **data integrity corruption** — the filesystem state after
-recovery does not match what was committed via fsync.
-
-Record: **Failure mode: data integrity violation (wrong file size after
-crash).** **Severity: HIGH** — silent data corruption, stale data
-visible, violates fsync durability contract.
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-- **Benefit: HIGH** — prevents data corruption after crash recovery in a
-  production filesystem. Fixes a violation of the fsync durability
-  guarantee.
-- **Risk: LOW** — ~70 lines in one file, authored by the subsystem
-  expert, changes only the LOG_INODE_EXISTS logging path. Uses
-  established patterns (`data_race(logged_trans)`). Includes
-  ASSERT/WARN_ON safety nets. No lock changes, no API changes.
-- **Net ratio: Strongly favorable for backporting.**
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-### Step 9.1: COMPILE THE EVIDENCE
-
-**FOR backporting:**
-- Fixes a real, user-reported data integrity bug (wrong file size after
-  crash recovery)
-- Concrete, reproducible scenario provided in the commit message
-- Verified against `overwrite_item()` replay code: generation=0 +
-  ino_size=0 → skips `i_size` update → stale data preserved
-- Authored by Filipe Manana, THE primary btrfs tree-log developer
-- Accepted by David Sterba, btrfs maintainer
-- Single file, ~70 lines, well-contained to logging paths
-- Buggy code exists in ALL active stable trees (since 2012)
-- Uses established patterns (`data_race(logged_trans)`)
-- Trigger is realistic and reachable from unprivileged userspace
-- Standalone fix with no dependencies beyond existing stable code
-
-**AGAINST backporting:**
-- Not trivial (not 1-5 lines) — moderate change size
-- Function renamed and restructured (`logged_inode_size` →
-  `get_inode_size_to_log`)
-- May require minor adaptation for oldest stable trees
-- Accesses commit root in a new code path (though safe and read-only)
-
-**UNRESOLVED:**
-- Lore discussion inaccessible (Anubis protection) — could not verify
-  reviewer comments or explicit stable nominations
-- Per-branch clean apply not verified
-
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. **Obviously correct and tested?** YES — logic verified against
-   `overwrite_item()` replay code; authored by subsystem expert; fstests
-   mentioned as follow-up
-2. **Fixes a real bug that affects users?** YES — user-reported,
-   reproducible, data integrity violation
-3. **Important issue?** YES — data corruption (wrong file size after
-   crash recovery) — HIGH severity
-4. **Small and contained?** YES — single file, ~70 lines, 3 functions in
-   tree-log.c
-5. **No new features or APIs?** YES — purely a bug fix
-6. **Can apply to stable trees?** YES — should apply to 6.1+ with
-   possible minor adaptation for older trees
-
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Not applicable — this is a standard data integrity bug fix, not an
-exception category.
-
-### Step 9.4: DECISION
-This is a clear **YES**. It fixes a real, user-reported data integrity
-bug where a file's size is incorrect after crash recovery. The fix is
-well-contained, authored by the subsystem's primary developer, and meets
-all stable kernel criteria. The risk-benefit ratio strongly favors
-backporting.
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
+
+**Step 1.1: PARSE THE SUBJECT LINE**
+Record: [ALSA: hda/realtek] [Add] [mute LED quirk for HP Pavilion
+15-eg0xxx — adds missing PCI subsystem ID to the Realtek ALC287 quirk
+table]
+
+**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
+Record:
+- Signed-off-by: César Montoya `<sprit152009@gmail.com>` — patch author
+  / hardware owner
+- Link: `https://patch.msgid.link/20260321153603.12771-1-
+  sprit152009@gmail.com` — submission link
+- Signed-off-by: Takashi Iwai `<tiwai@suse.de>` — ALSA/HDA subsystem
+  maintainer (applied the patch)
+- No Fixes: tag (expected — quirk additions rarely have one)
+- No Reported-by: (author IS the affected user)
+- No Cc: stable (absence expected for commits under review)
+
+**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
+Record: Bug: HP Pavilion 15-eg0xxx with subsystem ID 0x103c:0x87cb uses
+ALC287 codec with mute LED wired to GPIO pin 4 (mask 0x10). The existing
+`ALC287_FIXUP_HP_GPIO_LED` fixup already handles this correctly, but the
+subsystem ID was missing from the quirk table. Symptom: mute LED does
+not function at all. Root cause: missing SSID→fixup mapping. Evidence:
+author confirms GPIO pin via manual `hda-verb` testing (SET_GPIO_MASK,
+SET_GPIO_DIRECTION, SET_GPIO_DATA with 0x10).
+
+**Step 1.4: DETECT HIDDEN BUG FIXES**
+Record: Not a hidden bug fix — this is an explicit hardware quirk
+addition (a well-known stable exception category). The "bug" is that
+hardware doesn't work without the quirk table entry.
+
+===============================================================
+PHASE 2: DIFF ANALYSIS — LINE BY LINE
+===============================================================
+
+**Step 2.1: INVENTORY THE CHANGES**
+Record: 1 file changed: `sound/hda/codecs/realtek/alc269.c`. +1 line, -0
+lines. Function modified: none (data table `alc269_fixup_tbl[]` only).
+Scope: single-file, single table row — maximally surgical.
+
+**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
+Record: Before: subsystem ID 0x103c:0x87cb is not in
+`alc269_fixup_tbl[]`, so the HDA core finds no fixup match during codec
+probe, and the mute LED is never configured. After: the new
+`SND_PCI_QUIRK(0x103c, 0x87cb, "HP Pavilion 15-eg0xxx",
+ALC287_FIXUP_HP_GPIO_LED)` entry causes `snd_hda_pick_fixup()` to match
+and apply the GPIO LED fixup during probe.
+
+**Step 2.3: IDENTIFY THE BUG MECHANISM**
+Record: Category (h) — hardware workaround / quirk table entry. The
+added line is inserted in sorted order between 0x87c8 and 0x87cc (the
+latter is the same laptop model name using the same fixup). The fixup
+`ALC287_FIXUP_HP_GPIO_LED` is defined at line 5921 and calls
+`alc287_fixup_hp_gpio_led()`, which invokes
+`alc_fixup_hp_gpio_led(codec, action, 0x10, 0)` — GPIO mask 0x10 exactly
+matches the commit message's hda-verb testing.
+
+**Step 2.4: ASSESS THE FIX QUALITY**
+Record: Obviously correct — identical pattern to the neighboring 0x87cc
+entry for the same laptop model. Regression risk: effectively zero — the
+quirk only activates on machines with PCI subsystem ID 0x103c:0x87cb. No
+logic, no API, no code flow changes. No red flags.
+
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
+
+**Step 3.1: BLAME THE CHANGED LINES**
+Record: `git blame -L6868,6872` shows:
+- Line 6869 (0x87c8): from `aeeb85f26c3bbe` (Takashi Iwai, 2025-07-09) —
+  the mass file relocation commit
+- Line 6870 (0x87cc): from `7cd3c8cafbc050` (Takashi Iwai, 2025-07-21) —
+  merge of `9744ede7099e8` which added the 0x87cc entry
+- The 0x87cb line does not exist in this tree (this is the candidate
+  commit adding it)
+
+**Step 3.2: FOLLOW THE FIXES: TAG**
+Record: N/A — no Fixes: tag. Expected for quirk additions.
+
+**Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
+Record: The related commit `9744ede7099e8` ("ALSA: hda/realtek - Add
+mute LED support for HP Pavilion 15-eg0xxx") added the 0x87cc entry for
+the same laptop model, was written by a different author (Dawid Rezler),
+explicitly carried `Cc: <stable@vger.kernel.org>`, and went into
+`sound/pci/hda/patch_realtek.c` (pre-move path). It was tagged
+`v6.16~13^2~3`, meaning it entered in v6.16. The current commit adds a
+sibling SSID (0x87cb) for the same model. Standalone — no other patches
+needed.
+
+**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
+Record: César Montoya appears to be an end-user / first-time contributor
+fixing their own hardware. Patch was accepted and signed off by Takashi
+Iwai (ALSA maintainer), lending strong confidence.
+
+**Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
+Record: The only prerequisite is `ALC287_FIXUP_HP_GPIO_LED` and its
+implementation `alc287_fixup_hp_gpio_led()`. These were introduced long
+ago and exist in all active stable trees. No other dependencies. Fully
+standalone.
+
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
+
+**Step 4.1: SEARCH LORE.KERNEL.ORG**
+Record: The commit includes a Link to
+`patch.msgid.link/20260321153603.12771-1-sprit152009@gmail.com`. The
+patch was a single standalone submission (not a series — "12771-1" with
+no further parts). Takashi Iwai's Signed-off-by indicates direct
+application by the maintainer. No NAKs or objections are evident from
+the acceptance.
+
+**Step 4.2: SEARCH FOR BUG REPORT**
+Record: No separate bug report — the author is the affected user who
+submitted the fix directly, confirmed via hda-verb hardware testing.
+
+**Step 4.3: CHECK FOR RELATED PATCHES AND SERIES**
+Record: Standalone single patch. The sibling 0x87cc entry (commit
+`9744ede7099e8`) was a separate patch from a different author and
+already carried `Cc: stable`.
+
+**Step 4.4: CHECK STABLE MAILING LIST HISTORY**
+Record: The sibling commit `9744ede7099e8` for 0x87cc already has `Cc:
+stable@vger.kernel.org`, confirming the subsystem maintainer considers
+this class of quirk appropriate for stable backporting.
+
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
+
+**Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF**
+Record: No functions modified. Only a data table entry added to
+`alc269_fixup_tbl[]`.
+
+**Step 5.2: TRACE CALLERS**
+Record: The table is consumed by `snd_hda_pick_fixup()` during Realtek
+ALC269-family codec probe. This is a standard, well-tested code path run
+once per codec initialization.
+
+**Step 5.3: TRACE CALLEES**
+Record: When matched, the fixup definition at line 5921 invokes
+`alc287_fixup_hp_gpio_led()` (line 1360), which calls
+`alc_fixup_hp_gpio_led(codec, action, 0x10, 0)`. This configures GPIO
+pin 4 for the mute LED — a well-tested helper used by many HP models.
+
+**Step 5.4: FOLLOW THE CALL CHAIN**
+Record: Codec probe → `snd_hda_pick_fixup()` → table lookup →
+`ALC287_FIXUP_HP_GPIO_LED` → `alc287_fixup_hp_gpio_led()` →
+`alc_fixup_hp_gpio_led()`. The path is reachable on every boot for users
+with this hardware.
+
+**Step 5.5: SEARCH FOR SIMILAR PATTERNS**
+Record: `ALC287_FIXUP_HP_GPIO_LED` appears 11 times in the file. At
+least 10 other HP models use the identical fixup. This is a massively
+replicated, well-tested pattern.
+
+===============================================================
+PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
+===============================================================
+
+**Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?**
+Record: The `ALC287_FIXUP_HP_GPIO_LED` fixup and its implementation have
+been in the tree since at least v5.10-era kernels. All active stable
+trees (6.1.y, 6.6.y, 6.12.y, etc.) contain the fixup infrastructure. The
+only thing missing is this specific SSID table entry.
+
+**Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
+Record: The file was moved from `sound/pci/hda/patch_realtek.c` to
+`sound/hda/codecs/realtek/alc269.c` in commit `6014e9021b28e`
+(v6.17-rc1). Stable trees older than 6.17 need the patch applied to the
+old path. The table format is identical in both locations. The fix is a
+single line addition at a predictable sorted location — trivial to
+adjust for either path.
+
+**Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE**
+Record: The 0x87cb SSID does not appear in the current tree (confirmed
+by grep), so no related fix for this specific SSID is already present.
+
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
+
+**Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
+Record: Subsystem: sound/hda (HD-Audio, Realtek codec). Criticality:
+IMPORTANT — audio is critical for laptop users. This specific driver
+covers a very large number of consumer laptops.
+
+**Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
+Record: Extremely active — `git log` shows continuous stream of quirk
+additions. Takashi Iwai actively maintains and applies these patches.
+Quirk additions for HP laptops are the most common type of commit in
+this file.
+
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
+
+**Step 8.1: DETERMINE WHO IS AFFECTED**
+Record: Users of HP Pavilion 15-eg0xxx laptops with PCI subsystem ID
+0x103c:0x87cb and ALC287 codec. Platform-specific / driver-specific.
+
+**Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
+Record: Every boot on affected hardware. The mute LED never works
+without this quirk — it's not intermittent, it's permanent broken
+behavior for these users.
+
+**Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
+Record: Without the fix, the mute LED does not respond. Severity: LOW
+for system stability (no crash/corruption), but this is a real hardware
+defect that makes the laptop's audio indicator non-functional. This is
+exactly the class of hardware enablement quirk that stable trees
+routinely accept.
+
+**Step 8.4: CALCULATE RISK-BENEFIT RATIO**
+Record: Benefit: enables mute LED for a specific HP laptop variant —
+real hardware fix for real users. Risk: essentially zero — the
+`SND_PCI_QUIRK` entry only matches on the exact subsystem ID
+0x103c:0x87cb, and the underlying fixup is well-tested across 10+ other
+HP models. Risk-benefit ratio: very favorable.
+
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
+
+**Step 9.1: COMPILE THE EVIDENCE**
+
+Evidence FOR backporting:
+- Single-line `SND_PCI_QUIRK` table entry addition — textbook stable
+  material
+- Uses existing, well-tested fixup (`ALC287_FIXUP_HP_GPIO_LED`)
+  confirmed in 10+ other entries
+- GPIO mask 0x10 in the fixup matches the author's hda-verb hardware
+  verification
+- Neighboring entry 0x87cc for the same laptop model uses the identical
+  fixup
+- The sibling 0x87cc commit (`9744ede7099e8`) explicitly carries `Cc:
+  stable@vger.kernel.org`
+- Accepted by ALSA maintainer Takashi Iwai
+- Fixup infrastructure exists in all active stable trees (since
+  v5.10-era)
+- Zero regression risk (SSID-gated, affects only this specific hardware)
+- Matches the "AUDIO CODEC QUIRKS" exception category explicitly listed
+  in stable guidelines
+
+Evidence AGAINST backporting:
+- None
+
+Unresolved:
+- Full mailing list thread content not fetched (but maintainer
+  acceptance is confirmed via SOB)
+
+**Step 9.2: APPLY THE STABLE RULES CHECKLIST**
+1. Obviously correct and tested? **YES** — identical pattern to dozens
+   of entries; hardware-verified by author via hda-verb; accepted by
+   subsystem maintainer
+2. Fixes a real bug that affects users? **YES** — mute LED non-
+   functional on specific HP laptop
+3. Important issue? **YES under exception** — hardware quirk for audio
+   codec; same class as the explicitly allowed "SND_PCI_QUIRK entries
+   for specific laptop models"
+4. Small and contained? **YES** — 1 line, single table entry
+5. No new features or APIs? **YES** — maps an existing fixup to a new
+   SSID
+6. Can apply to stable trees? **YES** — trivially, with path adjustment
+   for trees < v6.17 (`sound/pci/hda/patch_realtek.c` instead of
+   `sound/hda/codecs/realtek/alc269.c`)
+
+**Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
+Record: Hardware quirk / audio codec quirk — explicitly listed as
+automatic YES in stable guidelines. `SND_PCI_QUIRK` entries for specific
+laptop models are called out by name.
+
+**Step 9.4: MAKE YOUR DECISION**
+This is a textbook hardware quirk addition — a single-line
+`SND_PCI_QUIRK` entry mapping a missing PCI subsystem ID to an existing,
+well-tested fixup function. It enables the mute LED on a specific HP
+laptop variant. Zero regression risk, accepted by the subsystem
+maintainer, underlying fixup exists in all active stable trees.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed tags: found Reported-by: Vyacheslav Kovalevsky,
-  Link: to lore.kernel.org bug report, Signed-off-by from Filipe Manana
-  (author) and David Sterba (maintainer)
-- **[Phase 2]** Diff analysis: ~70 lines in `fs/btrfs/tree-log.c`,
-  modifies `fill_inode_item()`, `logged_inode_size()` →
-  `get_inode_size_to_log()`, `btrfs_log_inode()`
-- **[Phase 2]** Verified `overwrite_item()` log replay logic at lines
-  644-658: generation=0 AND ino_size=0 → skips `btrfs_set_inode_size()`
-  → goto `no_copy` → stale size preserved. Confirms the described bug
-  mechanism.
-- **[Phase 3]** `git blame -L 4612,4625`: generation=0 behavior from
-  `94edf4ae43a5f9` (Josef Bacik, 2012-09-25) — present since pre-v3.8
-- **[Phase 3]** `git log -S "logged_inode_size"`: introduced by
-  `1a4bcf470c886` "Btrfs: fix fsync data loss after adding hard link to
-  inode" — `git describe`: v4.0-rc1
-- **[Phase 3]** `git log -S "ctx->logged_before"`: introduced by
-  `0f8ce49821de3` — `git describe`: v5.18-rc1 — present in stable trees
-  6.1+
-- **[Phase 3]** Verified `953902e4fb4c3` and `bfe3d755ef7ce` are
-  independent fixes for different bugs (same reporter)
-- **[Phase 3]** Confirmed Filipe Manana is the primary tree-log
-  developer (10+ recent commits in this file)
-- **[Phase 4]** Lore.kernel.org inaccessible (Anubis bot protection) —
-  UNVERIFIED: full review discussion, explicit stable nominations
-- **[Phase 5]** `fill_inode_item()` called from
-  `copy_inode_items_to_log()` at line 4966 with `log_inode_only =
-  (inode_only == LOG_INODE_EXISTS)` — verified
-- **[Phase 5]** Call chain: `link()/rename()` → `btrfs_log_new_name()`
-  (line 7931) → `btrfs_log_inode()` → LOG_INODE_EXISTS path (line
-  6978/6992) — confirmed reachable from unprivileged syscalls
-- **[Phase 5]** `data_race(inode->logged_trans)` pattern already used at
-  line 3744 in `inode_logged()` — consistent
-- **[Phase 6]** `get_inode_size_to_log` does NOT exist in current tree —
-  patch not yet applied. Pre-fix code (`logged_inode_size`,
-  generation=0, `ctx->logged_before` guard) all confirmed present.
-- **[Phase 6]** Buggy code exists in all active stable trees:
-  generation=0 since 2012, `logged_inode_size` since v4.0,
-  `ctx->logged_before` since v5.18
-- **[Phase 8]** Failure mode: data integrity violation — wrong file size
-  after crash recovery. Severity: HIGH.
-- **UNVERIFIED:** Lore review discussion content. Per-branch clean apply
-  testing. Runtime fstests validation.
+- [Phase 1] Parsed tags: Signed-off-by from author (César Montoya) and
+  maintainer (Takashi Iwai); Link to patch submission; no
+  Fixes:/Reported-by: (expected for quirk)
+- [Phase 2] Diff: exactly +1 line `SND_PCI_QUIRK(0x103c, 0x87cb, "HP
+  Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED)` in
+  `alc269_fixup_tbl[]`
+- [Phase 3] git blame -L6868,6872: confirmed 0x87cc at line 6870 from
+  `7cd3c8cafbc050`, surrounding lines from `aeeb85f26c3bbe` (file move);
+  0x87cb not present in current tree (grep returns no matches)
+- [Phase 3] git show `9744ede7099e8`: confirmed this is the sibling
+  0x87cc commit for the same laptop model, with `Cc:
+  <stable@vger.kernel.org>`, tagged `v6.16~13^2~3`
+- [Phase 3] git show `6014e9021b28e`: confirmed file moved from
+  `sound/pci/hda/patch_realtek.c` to `sound/hda/codecs/realtek/alc269.c`
+  in v6.17-rc1
+- [Phase 5] Read lines 1360-1364: `alc287_fixup_hp_gpio_led()` calls
+  `alc_fixup_hp_gpio_led(codec, action, 0x10, 0)` — GPIO mask 0x10
+  matches commit message
+- [Phase 5] Read lines 5921-5924: `ALC287_FIXUP_HP_GPIO_LED` fixup
+  definition confirmed, type `HDA_FIXUP_FUNC`
+- [Phase 5] Grep: `ALC287_FIXUP_HP_GPIO_LED` appears 11 times in
+  alc269.c (10+ other HP models)
+- [Phase 6] File path differs between mainline and stable < 6.17; table
+  format is identical — trivial backport adjustment
+- [Phase 8] Risk: zero (SSID-gated single table entry, well-tested
+  existing fixup path)
 
 **YES**
 
- fs/btrfs/tree-log.c | 98 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 65 insertions(+), 33 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 6c40f48cc194d..4cea0489f121c 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -4609,21 +4609,32 @@ static void fill_inode_item(struct btrfs_trans_handle *trans,
- 			    struct inode *inode, bool log_inode_only,
- 			    u64 logged_isize)
- {
-+	u64 gen = BTRFS_I(inode)->generation;
- 	u64 flags;
- 
- 	if (log_inode_only) {
--		/* set the generation to zero so the recover code
--		 * can tell the difference between an logging
--		 * just to say 'this inode exists' and a logging
--		 * to say 'update this inode with these values'
-+		/*
-+		 * Set the generation to zero so the recover code can tell the
-+		 * difference between a logging just to say 'this inode exists'
-+		 * and a logging to say 'update this inode with these values'.
-+		 * But only if the inode was not already logged before.
-+		 * We access ->logged_trans directly since it was already set
-+		 * up in the call chain by btrfs_log_inode(), and data_race()
-+		 * to avoid false alerts from KCSAN and since it was set already
-+		 * and one can set it to 0 since that only happens on eviction
-+		 * and we are holding a ref on the inode.
- 		 */
--		btrfs_set_inode_generation(leaf, item, 0);
-+		ASSERT(data_race(BTRFS_I(inode)->logged_trans) > 0);
-+		if (data_race(BTRFS_I(inode)->logged_trans) < trans->transid)
-+			gen = 0;
-+
- 		btrfs_set_inode_size(leaf, item, logged_isize);
- 	} else {
--		btrfs_set_inode_generation(leaf, item, BTRFS_I(inode)->generation);
- 		btrfs_set_inode_size(leaf, item, inode->i_size);
- 	}
- 
-+	btrfs_set_inode_generation(leaf, item, gen);
-+
- 	btrfs_set_inode_uid(leaf, item, i_uid_read(inode));
- 	btrfs_set_inode_gid(leaf, item, i_gid_read(inode));
- 	btrfs_set_inode_mode(leaf, item, inode->i_mode);
-@@ -5427,42 +5438,63 @@ static int btrfs_log_changed_extents(struct btrfs_trans_handle *trans,
- 	return 0;
- }
- 
--static int logged_inode_size(struct btrfs_root *log, struct btrfs_inode *inode,
--			     struct btrfs_path *path, u64 *size_ret)
-+static int get_inode_size_to_log(struct btrfs_trans_handle *trans,
-+				 struct btrfs_inode *inode,
-+				 struct btrfs_path *path, u64 *size_ret)
- {
- 	struct btrfs_key key;
-+	struct btrfs_inode_item *item;
- 	int ret;
- 
- 	key.objectid = btrfs_ino(inode);
- 	key.type = BTRFS_INODE_ITEM_KEY;
- 	key.offset = 0;
- 
--	ret = btrfs_search_slot(NULL, log, &key, path, 0, 0);
--	if (ret < 0) {
--		return ret;
--	} else if (ret > 0) {
--		*size_ret = 0;
--	} else {
--		struct btrfs_inode_item *item;
-+	/*
-+	 * Our caller called inode_logged(), so logged_trans is up to date.
-+	 * Use data_race() to silence any warning from KCSAN. Once logged_trans
-+	 * is set, it can only be reset to 0 after inode eviction.
-+	 */
-+	if (data_race(inode->logged_trans) == trans->transid) {
-+		ret = btrfs_search_slot(NULL, inode->root->log_root, &key, path, 0, 0);
-+	} else if (inode->generation < trans->transid) {
-+		path->search_commit_root = true;
-+		path->skip_locking = true;
-+		ret = btrfs_search_slot(NULL, inode->root, &key, path, 0, 0);
-+		path->search_commit_root = false;
-+		path->skip_locking = false;
- 
--		item = btrfs_item_ptr(path->nodes[0], path->slots[0],
--				      struct btrfs_inode_item);
--		*size_ret = btrfs_inode_size(path->nodes[0], item);
--		/*
--		 * If the in-memory inode's i_size is smaller then the inode
--		 * size stored in the btree, return the inode's i_size, so
--		 * that we get a correct inode size after replaying the log
--		 * when before a power failure we had a shrinking truncate
--		 * followed by addition of a new name (rename / new hard link).
--		 * Otherwise return the inode size from the btree, to avoid
--		 * data loss when replaying a log due to previously doing a
--		 * write that expands the inode's size and logging a new name
--		 * immediately after.
--		 */
--		if (*size_ret > inode->vfs_inode.i_size)
--			*size_ret = inode->vfs_inode.i_size;
-+	} else {
-+		*size_ret = 0;
-+		return 0;
- 	}
- 
-+	/*
-+	 * If the inode was logged before or is from a past transaction, then
-+	 * its inode item must exist in the log root or in the commit root.
-+	 */
-+	ASSERT(ret <= 0);
-+	if (WARN_ON_ONCE(ret > 0))
-+		ret = -ENOENT;
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	item = btrfs_item_ptr(path->nodes[0], path->slots[0],
-+			      struct btrfs_inode_item);
-+	*size_ret = btrfs_inode_size(path->nodes[0], item);
-+	/*
-+	 * If the in-memory inode's i_size is smaller then the inode size stored
-+	 * in the btree, return the inode's i_size, so that we get a correct
-+	 * inode size after replaying the log when before a power failure we had
-+	 * a shrinking truncate followed by addition of a new name (rename / new
-+	 * hard link). Otherwise return the inode size from the btree, to avoid
-+	 * data loss when replaying a log due to previously doing a write that
-+	 * expands the inode's size and logging a new name immediately after.
-+	 */
-+	if (*size_ret > inode->vfs_inode.i_size)
-+		*size_ret = inode->vfs_inode.i_size;
-+
- 	btrfs_release_path(path);
- 	return 0;
- }
-@@ -6975,7 +7007,7 @@ static int btrfs_log_inode(struct btrfs_trans_handle *trans,
- 			ret = drop_inode_items(trans, log, path, inode,
- 					       BTRFS_XATTR_ITEM_KEY);
- 	} else {
--		if (inode_only == LOG_INODE_EXISTS && ctx->logged_before) {
-+		if (inode_only == LOG_INODE_EXISTS) {
- 			/*
- 			 * Make sure the new inode item we write to the log has
- 			 * the same isize as the current one (if it exists).
-@@ -6989,7 +7021,7 @@ static int btrfs_log_inode(struct btrfs_trans_handle *trans,
- 			 * (zeroes), as if an expanding truncate happened,
- 			 * instead of getting a file of 4Kb only.
- 			 */
--			ret = logged_inode_size(log, inode, path, &logged_isize);
-+			ret = get_inode_size_to_log(trans, inode, path, &logged_isize);
- 			if (ret)
- 				goto out_unlock;
- 		}
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 75f880efdeaf1..5adc5db6fd52b 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6868,6 +6868,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87cb, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 -- 
 2.53.0
 
