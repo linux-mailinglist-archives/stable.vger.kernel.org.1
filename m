@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFzwCK9Gymnn7AUAu9opvQ
-	(envelope-from <stable+bounces-231087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:47:27 +0200
+	id SNG/HLhGymnn7AUAu9opvQ
+	(envelope-from <stable+bounces-231089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:47:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887813587AB
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 016AB3587D1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3466B302A2F0
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:38:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9A8F304D27E
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DC93A1D14;
-	Mon, 30 Mar 2026 09:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7311E243367;
+	Mon, 30 Mar 2026 09:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwudE/5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faoVZPnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D20A3B4E8B
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70202D781B
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774863528; cv=none; b=LMDpmQ8d31pMEXxhZ9EhvWwC/k6HdGtAzJfwttOXx7IWqF01/y1eqCWwkLfzEkDeGIQkDRQCEkFltz+SDxAj9UKUo926FS2CNgQy5CoJ72zSwf3QDW7SMhPUTbP5E1JAtE4TjPzOc9lIzL06ft9ARIiHkgDyjcU7M33738zvJtM=
+	t=1774863534; cv=none; b=kEZBRwik+CmibOWgVbvnu0jg1W7SXcEd4IgoOLB917EjBrBP6h5oKuUNmD5rxE5jL9ilwzJoHJoOXtETYyInwbJFkFp9smsXBpj3Lth7aM6leCf3O2JYeXhgBrvr/OwE78yqXjzVeAFkQ4YD6+RyYfF6oxbtScJpZK3SPdANb2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774863528; c=relaxed/simple;
-	bh=MK07tdRr3yWgu/zn4B1CxWhSkmlYHmaxzDmeUNV+q5I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RE0h7l5/DCmWBDGj4i1E1gXNABEIg1Wrnldte1YVPYkcQbu7mq5IbBZg5k0OiVdo/zbOpcM94FWRC0AlT/nAkRsGp3KzPMZbc9fYQ/WDE+9RWHEebkAYgujNtq37y9BVKd4q3ZTiBN3b3P0IceJChI/rphvATHiAwIx/dWewBMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwudE/5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23287C4CEF7;
-	Mon, 30 Mar 2026 09:38:46 +0000 (UTC)
+	s=arc-20240116; t=1774863534; c=relaxed/simple;
+	bh=GZ3JxsNSOBDXU1r4x3oyTZlf25kHrA0lNilg9BKasO4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ODXLUH1cH4E1Rtwfjw5iPm6lvwtOJ2NsYX4PH0aAa/VVAuMYOunA5rkCKeGjtk83r3uWK0f9YHoys7e1gaa/IanTJKnf4fBDjgPzz3eXyNO9tn3Cvn7S6WB2JRCvYGBryZdYps+dK4HYja4vou/KzNcH7gAhxOh/9UD6EvxbZes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faoVZPnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E64C4CEF7;
+	Mon, 30 Mar 2026 09:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774863527;
-	bh=MK07tdRr3yWgu/zn4B1CxWhSkmlYHmaxzDmeUNV+q5I=;
+	s=korg; t=1774863534;
+	bh=GZ3JxsNSOBDXU1r4x3oyTZlf25kHrA0lNilg9BKasO4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JwudE/5HV9nxy5+dgooqUMryKkYqsVsj3fbXHUHGrvBZ+bIp674UpmLMCUQqHL6BT
-	 GoKTHpWhBXJ2hO0wASGH/mvKf0gzy/wZh0A30xuNtDgfmqUiTG5AH6Asn1SHz6z3KM
-	 HI4kb4ifRliuHDUy+cioxdeKv7L9lzJeuLpei0pA=
-Subject: FAILED: patch "[PATCH] net: correctly handle tunneled traffic on IPV6_CSUM GSO" failed to apply to 6.1-stable tree
-To: willemb@google.com,pabeni@redhat.com,xietangxin@yeah.net
+	b=faoVZPnM9ca8GnJVoXEEYm0gmrablaqHZlYOAi3jLYzlnldLC7mM9M17oo9hlC5te
+	 vdc+Tnu4SkFXYEOrmh1vnslaeq5se5xguiJpVTKzoOqC2mdBOQUFG42QJdsuM/yN/l
+	 nTLBuaBVDBodEDNNXsHCie36zZB5H4Y5epXtgKHY=
+Subject: FAILED: patch "[PATCH] net: mana: fix use-after-free in add_adev() error path" failed to apply to 6.19-stable tree
+To: lgs201920130244@gmail.com,kuba@kernel.org,longli@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 11:38:31 +0200
-Message-ID: <2026033031-retreat-facility-1b68@gregkh>
+Date: Mon, 30 Mar 2026 11:38:40 +0200
+Message-ID: <2026033040-marauding-puma-a849@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,9 +66,9 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231087-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231089-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[google.com,redhat.com,yeah.net];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -82,25 +82,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yeah.net:email]
-X-Rspamd-Queue-Id: 887813587AB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 016AB3587D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x c4336a07eb6b2526dc2b62928b5104b41a7f81f5
+git cherry-pick -x c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033031-retreat-facility-1b68@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033040-marauding-puma-a849@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,73 +112,60 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c4336a07eb6b2526dc2b62928b5104b41a7f81f5 Mon Sep 17 00:00:00 2001
-From: Willem de Bruijn <willemb@google.com>
-Date: Fri, 20 Mar 2026 15:01:46 -0400
-Subject: [PATCH] net: correctly handle tunneled traffic on IPV6_CSUM GSO
- fallback
+From c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f Mon Sep 17 00:00:00 2001
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Tue, 24 Mar 2026 00:57:30 +0800
+Subject: [PATCH] net: mana: fix use-after-free in add_adev() error path
 
-NETIF_F_IPV6_CSUM only advertises support for checksum offload of
-packets without IPv6 extension headers. Packets with extension
-headers must fall back onto software checksumming. Since TSO
-depends on checksum offload, those must revert to GSO.
+If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
+auxiliary_device_uninit(adev).
 
-The below commit introduces that fallback. It always checks
-network header length. For tunneled packets, the inner header length
-must be checked instead. Extend the check accordingly.
+The auxiliary device has its release callback set to adev_release(),
+which frees the containing struct mana_adev. Since adev is embedded in
+struct mana_adev, the subsequent fall-through to init_fail and access
+to adev->id may result in a use-after-free.
 
-A special case is tunneled packets without inner IP protocol. Such as
-RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
-transport header either, so also must revert to the software GSO path.
+Fix this by saving the allocated auxiliary device id in a local
+variable before calling auxiliary_device_add(), and use that saved id
+in the cleanup path after auxiliary_device_uninit().
 
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
 Cc: stable@vger.kernel.org
-Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
-Reported-by: Tangxin Xie <xietangxin@yeah.net>
-Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260320190148.2409107-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260323165730.945365-1-lgs201920130244@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 14a83f2035b9..fc5557062414 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3769,6 +3769,22 @@ static netdev_features_t dflt_features_check(struct sk_buff *skb,
- 	return vlan_features_check(skb, features);
- }
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 9017e806ecda..dca62fb9a3a9 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3425,6 +3425,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	struct auxiliary_device *adev;
+ 	struct mana_adev *madev;
+ 	int ret;
++	int id;
  
-+static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
-+{
-+	if (!skb->encapsulation)
-+		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+			skb_transport_header_was_set(skb) &&
-+			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
-+	else
-+		return (!skb_inner_network_header_was_set(skb) ||
-+			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			   inner_ip_hdr(skb)->version == 6)) &&
-+			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
-+}
-+
- static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 					    struct net_device *dev,
- 					    netdev_features_t features)
-@@ -3816,11 +3832,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * so neither does TSO that depends on it.
- 	 */
- 	if (features & NETIF_F_IPV6_CSUM &&
--	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
--	    skb_transport_header_was_set(skb) &&
--	    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+	    skb_gso_has_extension_hdr(skb))
- 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
+ 	madev = kzalloc_obj(*madev);
+ 	if (!madev)
+@@ -3434,7 +3435,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	ret = mana_adev_idx_alloc();
+ 	if (ret < 0)
+ 		goto idx_fail;
+-	adev->id = ret;
++	id = ret;
++	adev->id = id;
  
- 	return features;
+ 	adev->name = name;
+ 	adev->dev.parent = gd->gdma_context->dev;
+@@ -3460,7 +3462,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	auxiliary_device_uninit(adev);
+ 
+ init_fail:
+-	mana_adev_idx_free(adev->id);
++	mana_adev_idx_free(id);
+ 
+ idx_fail:
+ 	kfree(madev);
 
 
