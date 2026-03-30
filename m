@@ -1,256 +1,162 @@
-Return-Path: <stable+bounces-231225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBp1DKuEymkW9gUAu9opvQ
-	(envelope-from <stable+bounces-231225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 16:11:55 +0200
+	id 8BrLBk2BymkI9gUAu9opvQ
+	(envelope-from <stable+bounces-231226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:57:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E77B35C9CE
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 16:11:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACDC35C6DF
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB3FE306726F
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:56:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A98283012BCA
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB69F3A4F34;
-	Mon, 30 Mar 2026 13:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5803B4EB5;
+	Mon, 30 Mar 2026 13:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xljrdhth"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WOpmp/AV"
 X-Original-To: stable@vger.kernel.org
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012059.outbound.protection.outlook.com [40.107.209.59])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF333A3802;
-	Mon, 30 Mar 2026 13:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774878971; cv=fail; b=JfhaEynt+oUemLWDGtqF7/n4VX68sZBI+AafM53iwwIE2TdieCGt+sFBQdOP6aksBeA9oZksWiPN23/D0zkGOGz0MR9TqvBCDYNp242qiX/as6tWw7XU+zk4NkyL23/XqBvqkJgc/bkdE47lXsfjO824pYlPkX9dNb51cDvC1zo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774878971; c=relaxed/simple;
-	bh=5mkwGJ1iTwp8W0pn9smSiLyyFQZ0T5jHMf7Hpu4Id08=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=iAijIPMjLBsQfGcwptd806Ma16Goi9wXi21TaZ9qFZWKgIixT572O+/PIeKBk3IYnqgqS0oY1ffaEN9aP8EGCofryGvz1ui3AOx2A0NFAOOXCQ/9WoaGwrEDNBG9OdCD408yoP5+W7CU5CsDGgRqGIbSuV2YfNtobdLWQydi014=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xljrdhth; arc=fail smtp.client-ip=40.107.209.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eBAR37slqcEigHjkAQ/0t50XIGUg6NS7toJPy0NvEUb/RXw7XCnBzHx6HNC37TGhGXlBN07H2TKl7papOzCqmkzY0wLTnG3I8ZmHJis/77hHCfKt/0OtAmCJI3ZepSgxcSVPuHxQsJ9mGSUD26CB+jWW2Ql+7WKUdQcXs0QHyAvjlglyhEA/96tzODoTk+ynD0GRy0ZyO/ySJKXICzt5UhgeiaWlIxruap5AH1m9HLtJ67L+sivfd+GnYK+hKrvnrn9gzhidw8bw2EqJtpEUXVlyogbPgfXn2M5VrghfkqmvuQBbQxcc9hx3Wj7VR1zoAY7Qj2OWnFjqWyp9k5yh6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TcrbhPP0B8T2ayc50MaAtvGloR3swwGCaCZc1y3k7cY=;
- b=zH9t4q7M0N41I/Pq5dcdqvSvHEBOS0Ef8b63xPebS5uXvQbLehqTXm+uiALI4X9OKVb4/Vbroeh+MHI/bItw99eW+m7adxPMgIP7jiM//Ncv9iPO3zpHp42qKIGT27n2/tSFxWYQnjOWqIQVWlj/pAJlDRH7Gpx662qHfTlzWatNo7fD6JJuTc+TxISAl/WlqJypswqogNGEFJyU9ddUSDGHujiMgz4SpByx8Lpx1HVHs4hczut3ysE6qGDWbl2IP5UxUPVCOa7+bcdFry8IRW/mcODX3J+IRUyxT5Qfg28tuxuRPWpxAksI3jVoEtVapnKz31F5Mp7V9rXVoLlB8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TcrbhPP0B8T2ayc50MaAtvGloR3swwGCaCZc1y3k7cY=;
- b=xljrdhthDbSyTaG409K6k25+9/aqVVlXdCJGAW4I3jSYMNYrHfif1y1VASj8blUdkHWLzZeVt8VAPakSTBRZcvfiMMKttvQwZdDvd0XUd7OCKfSvzIcxyvcBI6symgKe2yXYCD4fsPGdoDcAet7lN1Mlx8bCV2OJquNRxYBlnhY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH7PR12MB5781.namprd12.prod.outlook.com (2603:10b6:510:1d0::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 13:56:04 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
- 13:56:03 +0000
-Message-ID: <6b15401c-1fdf-4d3b-84aa-dfc47f430895@amd.com>
-Date: Mon, 30 Mar 2026 15:55:55 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for 6.12 3/9] drm/amd/display: Disable fastboot on DCE 6
- too
-To: =?UTF-8?Q?Timur_Krist=C3=B3f?= <timur.kristof@gmail.com>,
- stable@vger.kernel.org, Rosen Penev <rosenp@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>, "Pan, Xinhui"
- <Xinhui.Pan@amd.com>, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Harry Wentland <harry.wentland@amd.com>,
- Leo Li <sunpeng.li@amd.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Bin Lan <bin.lan.cn@windriver.com>,
- He Zhe <zhe.he@windriver.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>,
- Mario Limonciello <Mario.Limonciello@amd.com>, Ray Wu <ray.wu@amd.com>,
- Wayne Lin <wayne.lin@amd.com>, Roman Li <Roman.Li@amd.com>,
- Eric Yang <Eric.Yang2@amd.com>, Tony Cheng <Tony.Cheng@amd.com>,
- Mauro Rossi <issor.oruam@gmail.com>,
- "open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
- "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20260326234716.16723-1-rosenp@gmail.com>
- <20260326234716.16723-4-rosenp@gmail.com> <2312151.9o76ZdvQCi@timur-hyperion>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <2312151.9o76ZdvQCi@timur-hyperion>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0106.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9c::18) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66A43A4517;
+	Mon, 30 Mar 2026 13:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774878995; cv=none; b=U7MboNNq2xu1IllORqcebkCLV6ouKduH//zOF9hqziDb9xFSMZYIGPFZd1LqxcSwpgPUkQPAL8fwn4/UjhoBQvn/vwGHI7iTFDWl3Uz3+/Dfc7pZN4A+oG26T/nzLLLPgUnASxgvHUgs47gu0CUu4yoxmxNrImUzMa/l83Eu7W0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774878995; c=relaxed/simple;
+	bh=dOzwqrie4ZhimoQH44OSS4LuSxHdaewpDD3Eov8NQp4=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=jdoe8fazthIphtbNs88Bgd7YKvGucLjVs2LRH4eAp0IkcpMkJScrmuIXMUHPjydHVupdFwTuJm8/n2T3CHFDRJGsFePf/U8xH/iDgr/1OFeqbXWoD7SyxBSJDRMwfUAn4X0JmE5AvnUcZ/1Zu42c2Ew2TuPPEnmUdHvo39lYG3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WOpmp/AV; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774878993; x=1806414993;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=dOzwqrie4ZhimoQH44OSS4LuSxHdaewpDD3Eov8NQp4=;
+  b=WOpmp/AVgrEqaTJWkoO4VgKTvbt6O2Kej6uoNLROH8VgD6qCtFRp2kLf
+   xHPV8Gq7fnjyXVaI4cUJfDN593fpMJA6zzkSZWOEVKf3C/x3+R+ChvS3R
+   OnEoNe159jR2DALKu+6coCJ3fpZVI7f2Y4kD3E0MIYigu37hfLYUS+VcP
+   gvTsB/epr1u9/h1nwbM3CsaXsnYFeiOPtmYFAP0e7IAo9a3/JYw9RiG6q
+   ZnhJCKKABmWaaksXnZMeBcnXXcAHBW/+T1nvqaGxiR+74jhvKRVQ6F6KM
+   6rfKIn4qo5oi3KXZOEDjjuY8d0chyB5QU71MQHc3XF3XfbIQjUUvzMMT6
+   Q==;
+X-CSE-ConnectionGUID: pgxq2vVvTEKnhqMgrpLyPg==
+X-CSE-MsgGUID: vEQ/p53wRnewcsrpJLHtJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75582557"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="75582557"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 06:56:32 -0700
+X-CSE-ConnectionGUID: sZ+GrnVfTr6BuVwNQbbAnw==
+X-CSE-MsgGUID: O7alXYOkQXmiM/Kr5z6vAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="225951496"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.153])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 06:56:28 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 30 Mar 2026 16:56:24 +0300 (EEST)
+To: Bernd Schumacher <bernd@bschu.de>, Lukas Wunner <lukas@wunner.de>
+cc: Salvatore Bonaccorso <carnil@debian.org>, 
+    Bjorn Helgaas <bhelgaas@google.com>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, 
+    Mario Limonciello <mario.limonciello@amd.com>, 1131025@bugs.debian.org, 
+    regressions@lists.linux.dev, stable@vger.kernel.org, 
+    linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [6.12.y regression] Regression with 58130e7ce6cb ("PCI/ERR:
+ Ensure error recoverability at all times"): echo vfio-pci >driver_override
+ does not work for DVB Adapter
+In-Reply-To: <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
+Message-ID: <97b33e3d-1d95-5012-b599-717b95fa52e2@linux.intel.com>
+References: <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>  <acfZrlP0Ua_5D3U4@eldamar.lan> <acfhf-odtr0yw_py@wunner.de>  <74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>  <acgohjvBpVcR7HcK@wunner.de> 
+ <5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>  <aclRwznwq6KpA2qA@wunner.de> <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH7PR12MB5781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3afc57f3-8aa1-4d67-1b00-08de8e6414d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	B+iKvcUIKVfB0zyjCv6uSCnrSFQloFDSTb21oZ/j4WNFbfpCrM8hJhM8l5MT73CCZK5hcQgnRo9g9V/5QvVT59lo1zpDj5kwbAcNzW7HVift+WcoWX1e/N2lPcvAKP/1b7sgNa10KsaKZ3h9i2/i+74/pL0GQ1jnoK1rrq5xe4LvAsarF0zDTNbsHu1b8d4r9uic8L9LNsuLhq/0hJ1K6NuET7mBSCyXv1w0HpYg0HJyHAAkY4a2Ez82SJI3CNyzeZqyeXJM8BfBKTXsNU9gjOnK/jXZ01BeUrfVkBDAp/FQqpFX9+29RGyOriJ3nyxHsYR47DyTdHa3tRqyqjyeEsvNzS6OV5gL5fSIcN0dDA+iZNmrZogZpt9ROTWyW3dSsGUm+wMhKPVNlB9DThUXG/ewJ9LmDphouIYp2KHdoV+uboQzVCuYUJpw7PKOrNyPC2uuSf55qv3MBjheks/pQEypMzLZAZ4dVB970klyYwmNPM6noUKsbC51K/xVGnnANXGmfhzykZFozmnsECNhq1kJJAMnJLgivuIyUJUp/YOVtY2uVeojGK0afZkaXudw11jnrehDlS8F7Rrqqzj2bYelReIdsR9jEOfG0+MyR3jx3NHHufYWPfRdPkelrzIu2nS8n8WimIaT8Gi9Nd2aAmR803LP1sZwBTTaVIc3zWtw41qzG0UEXfgGveerp5BgIXRRAbiBxi8rSOWgRgI8cf/nWg8azAkgTw0FSkzlfs4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RXB6SEhEdzRoVkp0VkNOd1ZGRFRYcHpJcThHZnFXMXpGeXZTM2VvM0lVM2Jq?=
- =?utf-8?B?YU00eEtTM0tzM1c1SGdOV20xRDgvQ3ZRc2g2QUVlSmZOZitxNmhJVGNNTXpk?=
- =?utf-8?B?UWR3NHRIckFheWxPbFZHa2MveVlST1NSVXpvYUs0dXNFRHpiVUtZVjhoT0VQ?=
- =?utf-8?B?NFRERy92SzJTZFExYk05Q21uZmFuSmxLU3hocmlOdDhEeHYxditiSTJIUUdl?=
- =?utf-8?B?dWVWSEl4MXpIU1Z1RUR4YVF6K1BqR29SdTBVRlBCLzFocEZCK29OMTNvanQ2?=
- =?utf-8?B?bS9nQUZRTDgvRmhGUnhySWd1L2tobTJzbTJwcWdYSC9aTk1ZcnB4V3Y1MGtH?=
- =?utf-8?B?d2ZpVXpoWE9FcktRZEEwT2x1cmJzanJPcnRma2F3UHN1Tk1zbVNkbVJOOHo5?=
- =?utf-8?B?N0V5ZWM3bGhYSlV0U0ZHN2ZmbFBzVDhybGt0NUFPYW9zSWFvaU1vT2ZFdWVI?=
- =?utf-8?B?eFVOdTR5TmJOUE42aEZrYUpnVi9SaXpkWmo2ZWhkM1l2UmlaTWZWQlRuNXIx?=
- =?utf-8?B?TnF4VVF2c1lkdWV4WG1Kd09xVTNXNnhlN3JXSlZPeFM4a1FWZVN1ZWtHTXY2?=
- =?utf-8?B?SXNPdElqaW9xT2MzT2lQRnR3c1FVaGFrVU5aVDcybGRqV0dvMjQybVZvV3lP?=
- =?utf-8?B?QTdaWFVlTG9raS95emtEa1MrRm1sbWlOTmMvNXBONklRRFNyZS9jSG1ZRTZB?=
- =?utf-8?B?c0toMnh2NkVuYXhzZStmNWhmY3hhd2lHQW9VMFFlUjlOSDZkZnV2V1pvMmFy?=
- =?utf-8?B?a3ZxVlhxUEdaaG5sc2pRaHdYVDdXVXZwdkVRWFlZOU91cFV3ZUdrS2cyeE5M?=
- =?utf-8?B?c1YwMFJCWUVGVVVpS1AvSlBCV1V6bUl3VTdRZGJZUUtuaTZjZTlMdGFOL1J0?=
- =?utf-8?B?NlZkaE9YTi9kY0JjTmthOFFGMHNIMEpYR2pINVJLeXkvYmVLRjdFbkU2R1Vo?=
- =?utf-8?B?N3NQQ2EyQlhsNG5uT2p0T25oRGZzQW5PY3RxVEpINFo3WjJrL2pwMmJPMnkw?=
- =?utf-8?B?aFp2S2RtZ0I3TmpiVUNvMTF4MGdvdG1mRmQrT3dOR2xhOGFrOHZOaFRkRnpR?=
- =?utf-8?B?MzI1RUd3aC9QMy9DM3hnam1TYzBkMElrTDcwZndpUS9jRnk5ZmFKb0ltR3d2?=
- =?utf-8?B?M2twSFJlMDBUZCtycC9sOTZvNlJtOXNrSGNDTWNqMGIzbzlmUlNKZnE4Wmg4?=
- =?utf-8?B?c1ZoK1RvQWtJUXdyOTU4TGhqSVVzYnYzaDh1cE5DZ1NRSzNEamJIZlhTZGRQ?=
- =?utf-8?B?ODY5RHErelZJRmtCd3c4TmVBL2Z5TkYxOENqckdKa24rczRwWmV1Y3pZTnVN?=
- =?utf-8?B?VmJUSy9DbkVnd2dscXIyV1lVR2NValdtbXNjUEdVMkRIUzU0RFBVbVVsVjZl?=
- =?utf-8?B?RVN1c2ljdGFodlBQa2lEMWZvQXZkeUFpc21lSW9tWFB0ekROMnZMM00vQnF1?=
- =?utf-8?B?cVRVQ2VVeDBBNUl2T1ljaUJOQTlLZXF1VjUzclBtc1N3WjhZNy9BMzJ4T2xO?=
- =?utf-8?B?NWJ2VzNPNkdLNkZvWUE3ODV2TEdrRncyd1V0cTRrSklPYW1QQmJqYjlWVW9P?=
- =?utf-8?B?aXVSWDkxYUNwZ2hPeUVYNlF0SG54aysxTFdLcXJsbVdDZXlZcEsvRFo0ZlJV?=
- =?utf-8?B?blNrOHl3WnpGWkl2RHVRamQyaXgwc0o3Q3ZQT0Rya0hsdndBT2NNNEJRTWxa?=
- =?utf-8?B?Y2h3ZXhpLytYSjNQaUtHQld3T05aNXA4MXcwS0J3WGJBN2RFQ3c1UHFhaG13?=
- =?utf-8?B?eXBZNHZNc1FrNm44eEcxcVI5QnpocGRFVlZxVnVNVWF6bGNKSVM0cXFTRnpW?=
- =?utf-8?B?NjJPeTVOS0paYU1BS25RQnNwaFVLOGRkQUp4VDNjUWw1Znk1UGJWOFZzWms3?=
- =?utf-8?B?SGtSMmtSajJLcXFHNTRXRWlpMDlIUHNwMGFvMjhDTnArY2l5MzZsN0pjMTl6?=
- =?utf-8?B?NkVZSmJ4azFaSGdiMlVBZkFDNGtHYmFrNnFLakhDYStsQmwxTUxTU0lHY2JS?=
- =?utf-8?B?MXZxemZCNUdMMVhzM3IrVlVDbjhEUGFtOHhNOC9EOEVYU0oxYlhQdUZpL2Za?=
- =?utf-8?B?UXpjZFVPMGZnUUxmYzNjSXlRSDhRSmhYS1ZGb3VSVFpST3FCVW9VbloxRGZK?=
- =?utf-8?B?Y1FLRUdPWUlRd05LK1oxM0lvMU5DeVcydzQ3Zld3UHdpQzFmV0hCNGx5WUcz?=
- =?utf-8?B?c2E3ZXdEdEtpcnl2cHA2N0pybUxiNVdLTW9JTFFlSU9xTkpMZktDdWdvOWZK?=
- =?utf-8?B?enZpRmhyaHVLRlh2QkRsOHlvTWtHeE5FdWFhcXhndmVGMWpLZ0hwZWk5cC8w?=
- =?utf-8?Q?3DYj4v+NhR4HZplb/T?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3afc57f3-8aa1-4d67-1b00-08de8e6414d9
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 13:56:03.3506
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tBcfhODATSzH8taxqtJbSca5yaPf5DkOzRvnlWPaaMcSmu8vA2obvy/5iSXKy9mH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5781
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+Content-Type: multipart/mixed; boundary="8323328-467875100-1774878984=:968"
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231225-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[amd.com,linux.ie,ffwll.ch,linuxfoundation.org,windriver.com,igalia.com,gmail.com,lists.freedesktop.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231226-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4E77B35C9CE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim]
+X-Rspamd-Queue-Id: 6ACDC35C6DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/30/26 15:16, Timur Kristóf wrote:
-> On Friday, March 27, 2026 12:47:10 AM Central European Summer Time Rosen Penev 
-> wrote:
->> From: Timur Kristóf <timur.kristof@gmail.com>
->>
->> [ Upstream commit 7495962cbceb967e095233a5673ea71f3bcdee7e ]
->>
->> It already didn't work on DCE 8,
->> so there is no reason to assume it would on DCE 6.
->>
->> Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
->> Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
->> Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
->> Reviewed-by: Alex Hung <alex.hung@amd.com>
->> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
->> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> 
-> This patch is incorrect and should not be backported.
-> 
-> (Note that the error is already fixed upstream. For stable kernels IMO it's 
-> best to drop this one.)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Is there some alternative which needs to be backported or should the old kernel just work out of the box because we never enabled some feature there?
+--8323328-467875100-1774878984=:968
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Apart from that the patch set looks good to me.
+On Mon, 30 Mar 2026, Bernd Schumacher wrote:
 
-Regards,
-Christian.
+> Am Sonntag, dem 29.03.2026 um 18:22 +0200 schrieb Lukas Wunner:
+> > Could you repeat this and add log_buf_len=3D16M to the kernel command
+> > line
+> > so that the dmesg output isn't truncated?
+>=20
+> I have now added=C2=A0to /etc/default/grub:
+> GRUB_CMDLINE_LINUX=3D"\"dyndbg=3Dfile log_buf_len=3D16M drivers/pci/* +p\=
+""
+> attached is the dmesg result for 6.12.73
 
-> 
->> ---
->>  drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 6 ++----
->>  1 file changed, 2 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
->> b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c index
->> df69e0cebf78..7dc99c85b8ea 100644
->> --- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
->> +++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
->> @@ -1910,10 +1910,8 @@ void dce110_enable_accelerated_mode(struct dc *dc,
->> struct dc_state *context)
->>
->>  	get_edp_streams(context, edp_streams, &edp_stream_num);
->>
->> -	// Check fastboot support, disable on DCE8 because of blank 
-> screens
->> -	if (edp_num && edp_stream_num && dc->ctx->dce_version != 
-> DCE_VERSION_8_0
->> && -		    dc->ctx->dce_version != DCE_VERSION_8_1 &&
->> -		    dc->ctx->dce_version != DCE_VERSION_8_3) {
->> +	/* Check fastboot support, disable on DCE 6-8 because of blank 
-> screens */
->> +	if (edp_num && edp_stream_num && dc->ctx->dce_version < 
-> DCE_VERSION_10_0)
->> { for (i = 0; i < edp_num; i++) {
->>  			edp_link = edp_links[i];
->>  			if (edp_link != edp_streams[0]->link)
-> 
-> 
-> 
-> 
+Hi,
 
+This doesn't look like a resource assignment issue to me.
+
+HOWEVER,
+
+despite the assignment being successful, what is worth a note is that BAR=
+=20
+0 changes during resource fitting:
+
+pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]: =
+can't claim; no compatible bridge window
+pci 0000:07:00.0: BAR 0 [mem 0xfc500000-0xfc50ffff 64bit]: assigned
+
+That is 0xffffffff -> 0x0 for the high order bits happens to match with=20
+the change Lukas noted (I've not digged deeply into the logs beyond=20
+checking the resource fitting/assignment results from the latest log).
+
+Perhaps something on the save/restore side still holds the old value=20
+despite the resource & BAR were changed during resource fitting?
+
+--=20
+ i.
+
+--8323328-467875100-1774878984=:968--
 
