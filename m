@@ -1,156 +1,169 @@
-Return-Path: <stable+bounces-231159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKQDJmxZymn27gUAu9opvQ
-	(envelope-from <stable+bounces-231159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:07:24 +0200
+	id sCwqHD9Zymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:06:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300F4359F06
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:07:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171B3359EC1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74807304DA4E
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:00:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 665723065A98
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E137130EF75;
-	Mon, 30 Mar 2026 11:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85963C3425;
+	Mon, 30 Mar 2026 11:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITrspjta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hT4VFGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0693B47CF
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B55E3C3BE7
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868435; cv=none; b=M3wBSTyuU826wiVvO/9rWu+iteJ+fZHSEx1Djq099ljgslXx8HSQxBHKpmiGGiUahD4fNfPH26iPEFDUzy5vCck1jZW+zskkBVNJddwIn59KGR2MK94/ot8zJ69rTn5U0A8h5Cq4f7PkOB6gF2dU27LkDY0LxJgCPXO8K6qKEak=
+	t=1774868473; cv=none; b=i/HImKCNG0U8Tke8SdBcrb6DnC9CWovkRKUbyOou/ctb6j5FPcZN0EkS/8bh7OTa1cIMQ69g8cr/PxbCkVKI2g+gWn9JIZwRjHy9DoLkuttb0VtC/WE/S05/iJ8lgZBNJxfr5Xdm4dj66Jqf27ihoofos6jSbaSbxX4RArQGjuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868435; c=relaxed/simple;
-	bh=i8gED9P8Kgd2ATIuuHTh5vvZ8gM/y5KyicV5ISs3Sus=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3Y7xKJwqa7wQbLjQ202PHcimQLuIH3UsIM3gfb+oepewQYLsxMyj0ncd9kdwmPJWpPt83HQt3S/QcUJYiF1/izpi7nUA5ZRdZi57KRTGfOZRwTKPzuPlrQlVO1upw+7BzFnxtg41PdwKD+xx/0SZ7UFXkRMco6kdsMpJsjmtEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITrspjta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA08BC2BCB2
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774868435;
-	bh=i8gED9P8Kgd2ATIuuHTh5vvZ8gM/y5KyicV5ISs3Sus=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=ITrspjtalo5rKir3hGMYEzgpgGcDMd5Uab/BfrGUYeR9uuNcKBgqF33FPqPZOumI0
-	 PWMEuU4mZ3LfdgwDABq7VbpxEih+npaOwlKgYV0Nwg2T+s/+XHGNX37XAPKgXOg6rE
-	 vgJwPgxmUaX3W4HgKEJ5V0OZ/WlBTMlshQB8en3SFTjUlR/AMzlRKCnkzBgP8pOBUj
-	 jvovaIBDOvsQ/gWj81L30v+UVMko1KNnWg3suzt+uSAYugVKPCPP8ZUS/jATnZve7e
-	 5RFjNzII+D5oVBe5ZlANWA1knzhJv9SakkMoZzv31jzsHtMzDeZMP8tyi9O4InDE1M
-	 CE+GewIZhFJiQ==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.18.y] mm/mseal: update VMA end correctly on merge
-Date: Mon, 30 Mar 2026 12:00:21 +0100
-Message-ID: <20260330110021.56330-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033044-debug-embargo-40fb@gregkh>
-References: <2026033044-debug-embargo-40fb@gregkh>
+	s=arc-20240116; t=1774868473; c=relaxed/simple;
+	bh=3zZb3vyu/lE4vzacAm33p38LV/HfMdW9Z7L+FXBkYik=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hD3k0dpbAJqNCAuaKuWaDTtmazi9baGFnqVESoN3TXjT4iHaBuvnyjXORdQI8P4G4fmPeeBqzUfRX2mMMbluCpA+KbZ0fhgtDGwABSckpRAzN2Aqrx/UHhEeqQ5I7Eoje4qOTlbRVtdU3xSQ24QfmNJYc3uZfJ03ZVVSr9ThERU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hT4VFGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33652C4CEF7;
+	Mon, 30 Mar 2026 11:01:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774868472;
+	bh=3zZb3vyu/lE4vzacAm33p38LV/HfMdW9Z7L+FXBkYik=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0hT4VFGouo5AL2kTvolFn5QR9aFEFZ4yons939foImLfoCI247PwtJ3d99L2wSvPo
+	 Yxmmtur1gKZXlfw2eRiVvjJVu3qAVZECZAZqnMxoDX7wQ9JSfzOyMqLhMg9UJuaHl8
+	 V1AGlugDUmWs6SdQJfEcyrqffb0e9L0mY7u+Z4x0=
+Subject: FAILED: patch "[PATCH] ext4: fix journal credit check when setting fscrypt context" failed to apply to 5.15-stable tree
+To: simon.weber.39@gmail.com,anthonydev@fastmail.com,ebiggers@kernel.org,tytso@mit.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 30 Mar 2026 13:01:09 +0200
+Message-ID: <2026033009-saxophone-anyplace-7b27@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231159-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231160-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 300F4359F06
+	FREEMAIL_TO(0.00)[gmail.com,fastmail.com,kernel.org,mit.edu];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,linuxfoundation.org:dkim,fastmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 171B3359EC1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Previously we stored the end of the current VMA in curr_end, and then upon
-iterating to the next VMA updated curr_start to curr_end to advance to the
-next VMA.
 
-However, this doesn't take into account the fact that a VMA might be
-updated due to a merge by vma_modify_flags(), which can result in curr_end
-being stale and thus, upon setting curr_start to curr_end, ending up with
-an incorrect curr_start on the next iteration.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-ensure this value remains updated should this occur.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-While we're here, eliminate this entire class of bug by simply setting
-const curr_[start/end] to be clamped to the input range and VMAs, which
-also happens to simplify the logic.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x b1d682f1990c19fb1d5b97d13266210457092bcd
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033009-saxophone-anyplace-7b27@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
-Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-Cc: <stable@vger.kernel.org>
-(cherry picked from commit 88995f43fdc2045ff0b030ca054898483004de36)
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- mm/mseal.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Possible dependencies:
 
-diff --git a/mm/mseal.c b/mm/mseal.c
-index e5b205562d2e..c561f0ea93e8 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct *mm,
- 		unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma, *prev;
--	unsigned long curr_start = start;
- 	VMA_ITERATOR(vmi, mm, start);
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b1d682f1990c19fb1d5b97d13266210457092bcd Mon Sep 17 00:00:00 2001
+From: Simon Weber <simon.weber.39@gmail.com>
+Date: Sat, 7 Feb 2026 10:53:03 +0100
+Subject: [PATCH] ext4: fix journal credit check when setting fscrypt context
+
+Fix an issue arising when ext4 features has_journal, ea_inode, and encrypt
+are activated simultaneously, leading to ENOSPC when creating an encrypted
+file.
+
+Fix by passing XATTR_CREATE flag to xattr_set_handle function if a handle
+is specified, i.e., when the function is called in the control flow of
+creating a new inode. This aligns the number of jbd2 credits set_handle
+checks for with the number allocated for creating a new inode.
+
+ext4_set_context must not be called with a non-null handle (fs_data) if
+fscrypt context xattr is not guaranteed to not exist yet. The only other
+usage of this function currently is when handling the ioctl
+FS_IOC_SET_ENCRYPTION_POLICY, which calls it with fs_data=NULL.
+
+Fixes: c1a5d5f6ab21eb7e ("ext4: improve journal credit handling in set xattr paths")
+
+Co-developed-by: Anthony Durrer <anthonydev@fastmail.com>
+Signed-off-by: Anthony Durrer <anthonydev@fastmail.com>
+Signed-off-by: Simon Weber <simon.weber.39@gmail.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20260207100148.724275-4-simon.weber.39@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+
+diff --git a/fs/ext4/crypto.c b/fs/ext4/crypto.c
+index cf0a0970c095..f41f320f4437 100644
+--- a/fs/ext4/crypto.c
++++ b/fs/ext4/crypto.c
+@@ -163,10 +163,17 @@ static int ext4_set_context(struct inode *inode, const void *ctx, size_t len,
+ 	 */
  
- 	/* We know there are no gaps so this will be non-NULL. */
-@@ -66,7 +65,8 @@ static int mseal_apply(struct mm_struct *mm,
- 		prev = vma;
- 
- 	for_each_vma_range(vmi, vma, end) {
--		unsigned long curr_end = MIN(vma->vm_end, end);
-+		const unsigned long curr_start = MAX(vma->vm_start, start);
-+		const unsigned long curr_end = MIN(vma->vm_end, end);
- 
- 		if (!(vma->vm_flags & VM_SEALED)) {
- 			vma = vma_modify_flags(&vmi, prev, vma,
-@@ -78,7 +78,6 @@ static int mseal_apply(struct mm_struct *mm,
- 		}
- 
- 		prev = vma;
--		curr_start = curr_end;
- 	}
- 
- 	return 0;
--- 
-2.53.0
+ 	if (handle) {
++		/*
++		 * Since the inode is new it is ok to pass the
++		 * XATTR_CREATE flag. This is necessary to match the
++		 * remaining journal credits check in the set_handle
++		 * function with the credits allocated for the new
++		 * inode.
++		 */
+ 		res = ext4_xattr_set_handle(handle, inode,
+ 					    EXT4_XATTR_INDEX_ENCRYPTION,
+ 					    EXT4_XATTR_NAME_ENCRYPTION_CONTEXT,
+-					    ctx, len, 0);
++					    ctx, len, XATTR_CREATE);
+ 		if (!res) {
+ 			ext4_set_inode_flag(inode, EXT4_INODE_ENCRYPT);
+ 			ext4_clear_inode_state(inode,
 
 
