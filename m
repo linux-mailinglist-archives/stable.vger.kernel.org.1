@@ -1,140 +1,113 @@
-Return-Path: <stable+bounces-231292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKg3LF39ymk2CgYAu9opvQ
-	(envelope-from <stable+bounces-231292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:46:53 +0200
+	id sGJpEHHgymnEAwYAu9opvQ
+	(envelope-from <stable+bounces-231274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:43:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA52D362168
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:46:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BC7361131
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9283A3006036
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:42:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3422030373EB
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472C83E317E;
-	Mon, 30 Mar 2026 22:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E785396B73;
+	Mon, 30 Mar 2026 20:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aRUKVJPT"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HagsZGlw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960DE398905;
-	Mon, 30 Mar 2026 22:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44C396D35;
+	Mon, 30 Mar 2026 20:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774910530; cv=none; b=Sif8FsggQS5tR/65Yf0KAZow5Hjl+vZD6vRo3b8ma0+V4Zs2/B/+aqXFUZZ1vcq5UiTNs33aIAR5RkM245D09fMnLatEXGVTC0WoLQO+A1w1oVIngpmglBJzaOb2CWVV6Ox5P/yZa5Zd46RDZ+BVD7Pe8sowG2uxVDNuvS/0vdo=
+	t=1774903264; cv=none; b=AN/lxTU1n1xbZCLy7VkLb/CCIQ/NshoIdrHydL6RGCWfGVjvvlLAFN8vMISFRwUx1CHpPqcVK0MiToIjP+nAASj5J6k0W+CqxsitXfq3dvi4FZ3kTMggWNQJCyvZaIfOHiPydWmY4lYmpqYv/dZSsDXpy/ZPRbpyPSrDm8hOqjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774910530; c=relaxed/simple;
-	bh=0j1oRhYFEwysKKA3JjX4/RxKWluLsdCA4LtKs+rrb/o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=G/13uSv16fh7tuloUuXfNTsUrxoHHJlZE0lZ6m6Jd9CFp4clP+5sZL5UzXLBPKTkKZhXb/cdetPGK5LxtUKwAFgzH2H0OcHsgwRHjqRFiU5zb4NIWnd4GkY7aEC3Dt5q8en2DGj0mZnzjLzs0U6clfqMjMotgl6PpMKrzsqKixc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aRUKVJPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB96C4CEF7;
-	Mon, 30 Mar 2026 22:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774910529;
-	bh=0j1oRhYFEwysKKA3JjX4/RxKWluLsdCA4LtKs+rrb/o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=aRUKVJPTm1f3/chp0Az9eO8zN3hbOQSHXyaikKhDIPaRtQs5RgfUv0pSmMqkJOLdH
-	 ACaCYEKNEnp8QReCBtPFymOgH5aADg5rSoUyq0aGHIDzV9mLdmbGxKt1zlD5fJv3xO
-	 fAkHVwKGVIGRLdBDY7tu+5x0wK4xRyM8rAQTzaL8p+JcJaZc7bU63LLFbTbud8j0KL
-	 Easn2pc83nqqLHzaI6CasNxQ8a6B5upYFRMaxSSXVBl5uK2oj7PH8cRFTbq+GQkkqQ
-	 ZjxZyAbgHjMr/VNaTRjURZ/f+X/AJiHWPYU8AS/j5NXhjC1qlrpCsAMJH7oMW0J2u/
-	 6KSaoQtGtHZEA==
-From: Mark Brown <broonie@kernel.org>
-To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- miquel.raynal@bootlin.com, a-dutta@ti.com, s-vadapalli@ti.com, 
- mkorpershoek@kernel.org, khairul.anuar.romli@altera.com, 
- stable@vger.kernel.org
-In-Reply-To: <20260313135236.46642-1-ghidoliemanuele@gmail.com>
-References: <20260313135236.46642-1-ghidoliemanuele@gmail.com>
-Subject: Re: [PATCH v1] spi: cadence-qspi: Fix exec_mem_op error handling
-Message-Id: <177490289913.241608.13244384692142220199.b4-ty@b4>
-Date: Mon, 30 Mar 2026 21:34:59 +0100
+	s=arc-20240116; t=1774903264; c=relaxed/simple;
+	bh=EOWaw231OXh+OCxOVHHgKO4PsXZfxwWLnNexMXm5QQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFPbtNaODHnfaV1omDrmSNApYX7VNdsLBl2jL63M7SPHYsD3Vdsy+dY5BgB5Ef/+qdAr00pK33SIQbnz/j9mBff+7Y1u9vzY409S1FtZkQihMr/g9YiSdSId8vV1/PStie46ZxA4/NtLvgE/OyqF5gxXDAzNN+mD9/SvlpAAZBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HagsZGlw; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 30 Mar 2026 22:40:42 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774903250;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DIyuPEO9vyWDylSg0YsJe0wIWRfP6LZmQavPdsYHxNQ=;
+	b=HagsZGlws8VdmhpA4ru3LgmD73bBL6yVU3Z1fdSrTifZ9DwS7G3uBmC1NNYUdeWmjDkhUj
+	MrDF1ixdgb+eDMWtUE+8/Zhjz6Aovj1QDWabPOL4HMDub+WvV0MJjiLFhGvvO6ypfHtjx+
+	pEBwtQ0LlAhmWejfJmvp10RR4vpO8FY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Kees Cook <kees@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: hisilicon - Fix dma_unmap_single() direction
+Message-ID: <acrfym5HGJK8NfzQ@linux.dev>
+References: <20260330151937.83837-2-fourier.thomas@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev-3ac6c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1117; i=broonie@kernel.org;
- h=from:subject:message-id; bh=0j1oRhYFEwysKKA3JjX4/RxKWluLsdCA4LtKs+rrb/o=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpyvw+5dImr2b92mP+OnA+v+7P60dXsi4hEcf8j
- f9sNmYThH+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCacr8PgAKCRAk1otyXVSH
- 0EvVB/9hCV1RHY7F3Gd90MeQuefJmN9gyKodKLsHb0QzHIKgFls9h/ow3ulf79Vt2l7YE0ib+HT
- 2aq5RKocO2QuxQwOlyIeV3tIMA1s/dxK3UfIWSIdDAqYmGLk3JXp7zAGvP/4AJlxbXnfm6tQPNt
- Iqq6bLg1++TRkWcTICu/nCnGfMeKUmo6c/AOD8BJTzL6tFwPx35gASapvXFHcszbFNqE0nf6oaV
- YolYQA2SeDEhhOVqas5mo5pHSTDZP+YsLYZvcTwdDOIROIhLKU5IdaqatG0hS4vSAbJ/hgdpjJu
- aJmqUbBMFiSgYXJP97jfjyeapTV/88HeYVXP7vXdP5KvT9RL
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330151937.83837-2-fourier.thomas@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231292-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231274-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: EA52D362168
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
+X-Rspamd-Queue-Id: 14BC7361131
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 13 Mar 2026 14:52:31 +0100, Emanuele Ghidoli wrote:
-> spi: cadence-qspi: Fix exec_mem_op error handling
+On Mon, Mar 30, 2026 at 05:19:32PM +0200, Thomas Fourier wrote:
+> The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
+> unmapped with direction DMA_BIDIRECTIONAL in the error path.
+> 
+> Change the unmap to match the mapping.
+> 
+> Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 
-Applied to
+LGTM, thanks.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
-
-Thanks!
-
-[1/1] spi: cadence-qspi: Fix exec_mem_op error handling
-      https://git.kernel.org/broonie/misc/c/59e1be1278f0
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
 
