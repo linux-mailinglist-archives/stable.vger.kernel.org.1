@@ -1,143 +1,193 @@
-Return-Path: <stable+bounces-231176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDEDHyNZymn27gUAu9opvQ
-	(envelope-from <stable+bounces-231176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:06:11 +0200
+	id OHMkJidZymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:06:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243BF359E96
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:06:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA77359EA3
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 416223020002
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:06:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78B65301E205
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036E53BE17E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BDC3BBA19;
 	Mon, 30 Mar 2026 11:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWTvQxEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fs8UmJ7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45323BFE2A;
-	Mon, 30 Mar 2026 11:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B30C3BA238
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868764; cv=none; b=ACzOX65HJNI/UlIBpd9718zz07M1HWQVw2FJKlit/ELga6WZg2vUPH3+t3ZHRE2PcZjbaWdnFA3XyoQMlr2S6OlEXTnbePmt7Hp6HGiZ9rVHZNoa16A6KIVDaGXLVThe7ECzeU1KQaVywA/EIauZmtO2JCDmbTWVnUPVdcWzyT0=
+	t=1774868765; cv=none; b=Gd/uX8x/SXetKzb8WDGlU3i7IsbkvUmwsrGA+5/K/WWU8gaYBUUKFrOlNbmaOlN8UK3M9UveGbwhIJRD49KLR8tmr5T+y5RNbWqxF9k3s2WlVQIi0abSECPajYgQuaejDcwa4YtqL6tUvEZN00iHAJUIeIE5tEoIk1ctrXsyYv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868764; c=relaxed/simple;
-	bh=gm7L9Jb0a7ZqAAJZoi5Jj7/ichfQ4DlOp3LYFKERn6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kEPIN1mkO+MiHGZOi/HAp1oPzDpU/Ns0b0Bp7yMcZLczTzu1YnKMTwgFIu3N0uJV1br8hPQ/sqkY7VQo4dy5rDXtI71fIe/87TnHWAhteoeO591fnNyjU+EK5xPaPapBkmiFIg0ztviJzCZHyMx2dMpX+K9Mi1Qf5K/ymU3MdoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWTvQxEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79111C2BCB0;
-	Mon, 30 Mar 2026 11:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774868764;
-	bh=gm7L9Jb0a7ZqAAJZoi5Jj7/ichfQ4DlOp3LYFKERn6w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DWTvQxEhKt6KfFWswJEOlpWNi95djAR8/elLEzE5pzlDX2p3Lx1j/mhzzcYPAUvWj
-	 rZbbs6HrZMRVAP1Fgkei9hJ68+eWRSVL9BZf+bFxkXS3FRQerFUyzCo0c3XGJluzzf
-	 aEsSCM65f5JjUBNaJoe3txUbwGDApDwVip7gFZXGA5vnBltyIn7YbjO6vN4e1rSwhx
-	 CtDejVCj1LgW1fLw4LFhtqpSJZLOC/CGuTKz9++84PqnjA29rMVjla57/GVp3nikgx
-	 y8GbwVgyHYb6PLJ1KRy5EdGCKl1zAn8QssNKNcLArSk7QsrlEMBfSm+81CVZeEQRM1
-	 B9LX7wA1KgzkA==
-Date: Mon, 30 Mar 2026 12:05:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: =?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Paul Olaru <paul.olaru@oss.nxp.com>,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: SOF: Don't allow pointer operations on
- unconfigured streams
-Message-ID: <bf12ef77-0d28-4454-a910-59bf915b5048@sirena.org.uk>
-References: <20260326-asoc-compress-tstamp-params-v1-1-3dc735b3d599@kernel.org>
- <3cd96fe7-4575-40f9-a1f2-610fb1fac5c1@linux.intel.com>
- <aca1sW6ca1QJBN9V@sirena.co.uk>
- <e3c69a0a-5ed1-45f7-9180-9268bd671df0@linux.intel.com>
+	s=arc-20240116; t=1774868765; c=relaxed/simple;
+	bh=mWPE/a2Z8beZhjw4qHmFBhKhZobM6LgiFw5racoE/EQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Rfp4ouPZOVlRffd9UZRvIDg1aMXyOd0C7kgprtaa0AzA43bQajKh4s2C9Ea/wlt95wNAPI3vz9ckiupzJJnK6bP48RCjkmi0d1zCipXdpPMTNMcrV279CJrpbsiwfvBSNlwZFvNeucmjAIDo4rkoFSUh+ROmMHjTj/JtXK/yVLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fs8UmJ7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8051FC2BCB1;
+	Mon, 30 Mar 2026 11:06:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774868764;
+	bh=mWPE/a2Z8beZhjw4qHmFBhKhZobM6LgiFw5racoE/EQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Fs8UmJ7sYNwozwn5iSEyX16aduM+2LXtXZArSK8IvUWQ7Iq+6OuPUrnEi5SW1jGZk
+	 74oPt3HHxutJUlWk5RfmCgkwlzxCu/8oPinBerqpexYbhGFCZIyrkZoL8GlKYdYbHc
+	 xKIy8UpaHImRuCyuiXjtyJvkG47IwiIFmIA7JxVk=
+Subject: FAILED: patch "[PATCH] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths" failed to apply to 5.10-stable tree
+To: libaokun@linux.alibaba.com,jack@suse.cz,joseph.qi@linux.alibaba.com,tytso@mit.edu,yi.zhang@huawei.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 30 Mar 2026 13:06:01 +0200
+Message-ID: <2026033001-credibly-reclining-650d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EaVZ8DXArvOa0+dF"
-Content-Disposition: inline
-In-Reply-To: <e3c69a0a-5ed1-45f7-9180-9268bd671df0@linux.intel.com>
-X-Cookie: HUGH BEAUMONT died in 1982!!
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231176-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,nxp.com,linux.dev,perex.cz,suse.com,oss.nxp.com,alsa-project.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231177-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:mid]
-X-Rspamd-Queue-Id: 243BF359E96
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,alibaba.com:email,msgid.link:url,gregkh:email,huawei.com:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EDA77359EA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---EaVZ8DXArvOa0+dF
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Mon, Mar 30, 2026 at 10:01:59AM +0300, P=E9ter Ujfalusi wrote:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> Should this be fixed in core level to avoid repeating the same check in
-> every driver?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x ec0a7500d8eace5b4f305fa0c594dd148f0e8d29
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033001-credibly-reclining-650d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-I did wonder about that but wasn't sure if there might be some viable
-use case, especially for things proxying through to a DSP or something.
-We don't generally guard calls based on the state the stream is in, and
-not every implementation is going to try to do the division.
+Possible dependencies:
 
---EaVZ8DXArvOa0+dF
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnKWRUACgkQJNaLcl1U
-h9BHxgf/ZcJf9N2lYb/EcQk1zcBLD6jdEoU8c3XVDSJQDu9NI091uVRX+pk0qPaJ
-A/hpgRPK1yIh2PodRx5V2zF2xdHez3kaCShoFCHjVqrOk+Ia2lt/d4P45Y08iBHd
-xwaiLBaMBoxAuZSqghHUud7egJrDgjBEZhMMcqcVS/rZtCENgpLFmtuRH+vvojdg
-/+qP2OQ1A6ny2GEo/Z141KELFDYyFD2dPQFalSpB7gPQc/pvbH+0+nzUR8S2M3tq
-CdekvzlN93cHb4xUEe9A6dPZ9oiFsEjOK5UKamSBOswPjcumgd+OF6cqvkw/Du4X
-GuWyJxTPrHdLVa2/mTYqLy17PcJNDQ==
-=qYoT
------END PGP SIGNATURE-----
+thanks,
 
---EaVZ8DXArvOa0+dF--
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 Mon Sep 17 00:00:00 2001
+From: Baokun Li <libaokun@linux.alibaba.com>
+Date: Mon, 23 Mar 2026 14:08:36 +0800
+Subject: [PATCH] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
+
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
+
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
+
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
+
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
+
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
+
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index 6e949c21842d..2f0057e04934 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1613,19 +1613,21 @@ static int ext4_fc_replay_inode(struct super_block *sb,
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		ext4_debug("Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
+ 
+ 	/*
+@@ -1642,13 +1644,14 @@ static int ext4_fc_replay_inode(struct super_block *sb,
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
+
 
