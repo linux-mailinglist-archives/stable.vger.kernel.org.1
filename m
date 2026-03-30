@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-231142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPNRNJZKymmb7QUAu9opvQ
-	(envelope-from <stable+bounces-231142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:04:06 +0200
+	id oF6IN71Kymmb7QUAu9opvQ
+	(envelope-from <stable+bounces-231143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:04:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B127D358CC8
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:04:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F01358CE0
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6CEFF3008CAF
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:01:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3600F301220C
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF77389115;
-	Mon, 30 Mar 2026 10:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBD73B6377;
+	Mon, 30 Mar 2026 10:02:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E45274B46;
-	Mon, 30 Mar 2026 10:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A5C30171C;
+	Mon, 30 Mar 2026 10:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774864911; cv=none; b=RwMZqNstX1ecKrLqctsaTc1NfNLBYlDYoNzL5Q0eiY6bseFuIl5zuMt+CwhReO1tg25sfHpHd1LXqCqnFf6S63k2cOhn08i9YXo8uiaEzBsx6c+w+gYoLCKSPJ9E49ckYB91Ih2Z+EwH4C73jQhVyZTybUEcGymGKaL1+r+Efn8=
+	t=1774864939; cv=none; b=OfLgHRr2xKlYx7XRKXCmAEijwHnBTjqMdg8j/mvIimO8Bg0LHTAmE8OjhDjtrP2H71/p306VbztdFub9iIXuQZiukLZ6DV/6QkJl45eGFlGMlsXP/FGqqwpwu2bM4xiuCxE+SU7y8A996vfqF8QpKMMjv6PhjvTHWlKIKHeTYPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774864911; c=relaxed/simple;
-	bh=Maa/+LvJZf9P3s5n1IYEuKVEAuKb9pzQUnIVaWVvLwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=agJlkK/dwsrtHjj4vnHUAg2iuAuTJwNMsXiSop5nu3AvIfREOLM7mtjPK7TPZhdYWVmzcBzZ+KKf7Pi0KUmOTkluJFcb/vDjgRWpQhq17oBoeHEAQzsaL5S6fLCnuezxdhP7khBnedLLuhVJiDIKX8XYq/Zm+BdxHIYDPx9UPKM=
+	s=arc-20240116; t=1774864939; c=relaxed/simple;
+	bh=PT1MnQFwYg8nLEG1NpO2SdeOpVGSVxY+69ymot30nM4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nnG+H9Xe2iAHYUgEtKQhIb2qiQ04az/gMLvGTkuH1ZwBSsaj+fWAGP/toGAnvRXWQup1QhVI7owHz4gQ3xvgGAZeTL67hxeUXC0WsHgLuKlikc4Q0BHP2M6dkrpJrKh8AlHMj9jBoQQBlSW1aw9HgrBsvwHxb8uWzqfSYb2+RE0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.17])
-	by gateway (Coremail) with SMTP id _____8Ax_6kMSsppQe0fAA--.31634S3;
-	Mon, 30 Mar 2026 18:01:48 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxD6onSsppWO0fAA--.31712S3;
+	Mon, 30 Mar 2026 18:02:15 +0800 (CST)
 Received: from kernelserver (unknown [223.64.68.17])
-	by front1 (Coremail) with SMTP id qMiowJBxrsIDSsppwa9gAA--.42578S2;
-	Mon, 30 Mar 2026 18:01:47 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJCxdcAkSspp5a9gAA--.31486S2;
+	Mon, 30 Mar 2026 18:02:14 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
@@ -45,9 +45,9 @@ Cc: Xuerui Wang <kernel@xen0n.name>,
 	loongarch@lists.linux.dev,
 	Xi Ruoyao <xry111@xry111.site>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH for 6.6] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Date: Mon, 30 Mar 2026 18:01:33 +0800
-Message-ID: <20260330100133.3955364-1-chenhuacai@loongson.cn>
+Subject: [PATCH for 6.1] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+Date: Mon, 30 Mar 2026 18:02:05 +0800
+Message-ID: <20260330100205.3955389-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,11 +56,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxrsIDSsppwa9gAA--.42578S2
+X-CM-TRANSID:qMiowJCxdcAkSspp5a9gAA--.31486S2
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3WFWxXry3ZFWrKF15AFWUGFX_yoWfXr15pF
-	n8Zrs5GrZ5WFyI9ryDtw4rurZ8AFn7Gr1j9ayqka48CryYgr1xWF4vyrs0qF1kJw4kCryI
-	gF90qay5uF45AagCm3ZEXasCq-sJn29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW3WFWxXry3ZFWrKF15AFWUGFX_yoWfXr48pF
+	n8Zrn5GrZ5WFyI9ryDtw4rZrZ0yFn7Gr1j9ayqka4UCryYgr18WF4vyrs0qF1DJw4kCrWI
+	gF90qa15uF45AagCm3ZEXasCq-sJn29KB7ZKAUJUUUU_529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
 	0xBIdaVrnRJUUUBIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
@@ -69,24 +69,24 @@ X-Coremail-Antispam: 1Uk129KBj93XoW3WFWxXry3ZFWrKF15AFWUGFX_yoWfXr15pF
 	xVW8Jr0_Cr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
 	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
 	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
+	AKI48JMxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
 	6r1j6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
 	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw2
+	jxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw2
 	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0L0ePUUUUU==
+	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUeVpB3UUUUU==
 X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231142-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231143-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[loongson.cn];
@@ -99,8 +99,8 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gnu.org:url,loongson.cn:email,loongson.cn:mid,xry111.site:email]
-X-Rspamd-Queue-Id: B127D358CC8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gnu.org:url,loongson.cn:email,loongson.cn:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xry111.site:email]
+X-Rspamd-Queue-Id: 37F01358CE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -233,18 +233,18 @@ index 000000000000..109298b8d7e0
 +	struct ucontext rs_uctx;
 +};
 diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 110afd3cc8f3..10c66ec95fa1 100644
+index 548885a591ae..b0c5090fcdcb 100644
 --- a/arch/loongarch/kernel/asm-offsets.c
 +++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -15,6 +15,7 @@
+@@ -14,6 +14,7 @@
+ #include <asm/cpu-info.h>
  #include <asm/ptrace.h>
  #include <asm/processor.h>
- #include <asm/ftrace.h>
 +#include <asm/sigframe.h>
  
  void output_ptreg_defines(void)
  {
-@@ -218,6 +219,7 @@ void output_sc_defines(void)
+@@ -213,6 +214,7 @@ void output_sc_defines(void)
  	COMMENT("Linux sigcontext offsets.");
  	OFFSET(SC_REGS, sigcontext, sc_regs);
  	OFFSET(SC_PC, sigcontext, sc_pc);
@@ -253,20 +253,20 @@ index 110afd3cc8f3..10c66ec95fa1 100644
  }
  
 diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
-index 635eb1f606c5..21d2979ebf95 100644
+index 2662e5dc3828..47e405985968 100644
 --- a/arch/loongarch/kernel/signal.c
 +++ b/arch/loongarch/kernel/signal.c
-@@ -34,6 +34,7 @@
+@@ -33,6 +33,7 @@
+ #include <asm/cacheflush.h>
  #include <asm/cpu-features.h>
  #include <asm/fpu.h>
- #include <asm/lbt.h>
 +#include <asm/sigframe.h>
  #include <asm/ucontext.h>
  #include <asm/vdso.h>
  
-@@ -50,11 +51,6 @@
- #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
+@@ -46,11 +47,6 @@
+ #define lock_fpu_owner()	({ preempt_disable(); pagefault_disable(); })
+ #define unlock_fpu_owner()	({ pagefault_enable(); preempt_enable(); })
  
 -struct rt_sigframe {
 -	struct siginfo rs_info;
@@ -277,7 +277,7 @@ index 635eb1f606c5..21d2979ebf95 100644
  	struct sctx_info *addr;
  	unsigned int size;
 diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 28cfc3861215..884584d661d2 100644
+index 24d6b31f4dfa..6bafdf4780d3 100644
 --- a/arch/loongarch/vdso/Makefile
 +++ b/arch/loongarch/vdso/Makefile
 @@ -25,7 +25,7 @@ cflags-vdso := $(ccflags-vdso) \
