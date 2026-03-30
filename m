@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOnFEa1aymma8AUAu9opvQ
-	(envelope-from <stable+bounces-231166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:12:45 +0200
+	id SMJCEtlaymma8AUAu9opvQ
+	(envelope-from <stable+bounces-231167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:13:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B125035A064
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE36035A091
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD843300424F
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:04:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B6CC3072F36
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E4D3C3C00;
-	Mon, 30 Mar 2026 11:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8473BED74;
+	Mon, 30 Mar 2026 11:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wC6n0Q5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9kz3I6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1643C5537
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9233B4E9B
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868602; cv=none; b=PoSgN/cpg5EYazRrCRj63NhVopJWNGr44bqxQWPN5cJ2Rrw7+VkvAFMmbqq89LFsDG62bC3zjbR0BQHf4IZRe7Z7UtlJSTcHDWH3XjDGfJBlBkbazw/al0lT4GR7CArJOsJpXFUeJ/64Abho0mrtkWq0DJ8xZPxbd8djwZruGFk=
+	t=1774868697; cv=none; b=VqUBmwNNqDSwbG2NUNc8EmCx/ctvJMtl+jOepAdzZw9vgUKXK4uC7/v9t/UzpFW+jIiQ10/+zth3y2cax2OfXHGKTzwq0REafCLWkgftlfTA4mnCB8IDMWmxoMGnaJGE17mh6o0R3YYoj59hhBcIBfOKMMtY2FTP8hMxsV0pGyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868602; c=relaxed/simple;
-	bh=PHYcgFfNSJPoLJEhsxmxeGSzsf0SwmMogyUY04vZFB0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qAb00tXzGpFmwf2hHH8EXxstPe1EAo3vY1LGU0RkLbqQwE6vRKSv/asVWicIKzHkfKhQv+FUjy4cN75YfnTinP/9LOhNS+Jl0E+B9svJPMRsS1IYWbjBfEbvP4ow2qdvQhZwCjZzn8m2zyMmI81fgf2iAlk0h17CeNYEq5ERREU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wC6n0Q5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAB5C4CEF7;
-	Mon, 30 Mar 2026 11:03:20 +0000 (UTC)
+	s=arc-20240116; t=1774868697; c=relaxed/simple;
+	bh=DXZIQsv5LGXUYfsTCXh1EVcher5mAkWC0DT8uySCMOA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vFEg8S4uc4x4m/eTpwtqcDwDYm5JvkKiKkhu/bfy33fm0PHbQwJ3nlQS0BhmXzaqXYOvv3HMdBpVtZqWdnMhzhGcxzM8y5rYU4ejhETGQUwKuwKolNl7TyvCU4HCmhSHI65eJXHPYXvBSvR41h8ozLzsjq6wmnbZMkBXMyYTOeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9kz3I6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06202C4CEF7;
+	Mon, 30 Mar 2026 11:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774868601;
-	bh=PHYcgFfNSJPoLJEhsxmxeGSzsf0SwmMogyUY04vZFB0=;
+	s=korg; t=1774868696;
+	bh=DXZIQsv5LGXUYfsTCXh1EVcher5mAkWC0DT8uySCMOA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wC6n0Q5jWzoHBPCq9ko9vNq6fkv7jySxw3VXF8ux5fKnIwu663GFsGC5cx0VWjptL
-	 k8SxYlziCn7ck8B+52H+QReYPe0lKON1/HI8BfLdb1r8bKJuOjHm/N2iQjIpTCv60I
-	 SnYJbEV9NpzO07eWw9gTk0Qqk2seStb7UYRDtmBs=
-Subject: FAILED: patch "[PATCH] ext4: publish jinode after initialization" failed to apply to 5.10-stable tree
-To: me@linux.beauty,jack@suse.cz,tytso@mit.edu
+	b=Z9kz3I6hg3yWRaMtdIuYEO/VWXUCApUsLuAsjmnpy8SRxbvRkJ3Mi1uagGR5aTxk2
+	 JSCLnOw+xrJ3rS627wysZoeBjygcWYlZeR2TTLvxsOYRIUCjorgIAJ2CxCEXF3lwnN
+	 tFHpi3MXDyWMPdNsR5r6oX/fkYFPfjicrbaDkHbE=
+Subject: FAILED: patch "[PATCH] ext4: fix use-after-free in update_super_work when racing" failed to apply to 6.1-stable tree
+To: jiayuan.chen@shopee.com,jack@suse.cz,jiayuan.chen@linux.dev,ritesh.list@gmail.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 13:03:05 +0200
-Message-ID: <2026033005-camping-marbles-bf44@gregkh>
+Date: Mon, 30 Mar 2026 13:04:53 +0200
+Message-ID: <2026033053-amazingly-deface-0a51@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231166-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231167-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[shopee.com,suse.cz,linux.dev,gmail.com,mit.edu];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.beauty:email,msgid.link:url,gregkh:email,suse.cz:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B125035A064
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,msgid.link:url,suse.cz:email,linux.dev:email,shopee.com:email]
+X-Rspamd-Queue-Id: CE36035A091
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1aec30021edd410b986c156f195f3d23959a9d11
+git cherry-pick -x d15e4b0a418537aafa56b2cb80d44add83e83697
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033005-camping-marbles-bf44@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033053-amazingly-deface-0a51@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,145 +113,115 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1aec30021edd410b986c156f195f3d23959a9d11 Mon Sep 17 00:00:00 2001
-From: Li Chen <me@linux.beauty>
-Date: Wed, 25 Feb 2026 16:26:16 +0800
-Subject: [PATCH] ext4: publish jinode after initialization
+From d15e4b0a418537aafa56b2cb80d44add83e83697 Mon Sep 17 00:00:00 2001
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
+Date: Thu, 19 Mar 2026 20:03:35 +0800
+Subject: [PATCH] ext4: fix use-after-free in update_super_work when racing
+ with umount
 
-ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
-It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
-allowing a reader to observe a non-NULL jinode with i_vfs_inode
-still unset.
+Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
+filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
+to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
+reads during unmount. However, this introduced a use-after-free because
+update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
+accesses the kobject's kernfs_node after it has been freed by kobject_del()
+in ext4_unregister_sysfs():
 
-The fast commit flush path can then pass this jinode to
-jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
-may crash.
+  update_super_work                ext4_put_super
+  -----------------                --------------
+                                   ext4_unregister_sysfs(sb)
+                                     kobject_del(&sbi->s_kobj)
+                                       __kobject_del()
+                                         sysfs_remove_dir()
+                                           kobj->sd = NULL
+                                         sysfs_put(sd)
+                                           kernfs_put()  // RCU free
+  ext4_notify_error_sysfs(sbi)
+    sysfs_notify(&sbi->s_kobj)
+      kn = kobj->sd              // stale pointer
+      kernfs_get(kn)             // UAF on freed kernfs_node
+                                   ext4_journal_destroy()
+                                     flush_work(&sbi->s_sb_upd_work)
 
-Below is the crash I observe:
-```
-BUG: unable to handle page fault for address: 000000010beb47f4
-PGD 110e51067 P4D 110e51067 PUD 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
-RIP: 0010:xas_find_marked+0x3d/0x2e0
-Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
-RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
-RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
-RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
-RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
-R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
-R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
-FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
-<TASK>
-filemap_get_folios_tag+0x87/0x2a0
-__filemap_fdatawait_range+0x5f/0xd0
-? srso_alias_return_thunk+0x5/0xfbef5
-? __schedule+0x3e7/0x10c0
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? cap_safe_nice+0x37/0x70
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-filemap_fdatawait_range_keep_errors+0x12/0x40
-ext4_fc_commit+0x697/0x8b0
-? ext4_file_write_iter+0x64b/0x950
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? vfs_write+0x356/0x480
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-ext4_sync_file+0xf7/0x370
-do_fsync+0x3b/0x80
-? syscall_trace_enter+0x108/0x1d0
-__x64_sys_fdatasync+0x16/0x20
-do_syscall_64+0x62/0x2c0
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-...
-```
+Instead of reordering the teardown sequence, fix this by making
+ext4_notify_error_sysfs() detect that sysfs has already been torn down
+by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
+in that case. A dedicated mutex (s_error_notify_mutex) serializes
+ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
+to prevent TOCTOU races where the kobject could be deleted between the
+state_in_sysfs check and the sysfs_notify() call.
 
-Fix this by initializing the jbd2_inode first.
-Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
-initialization. Readers use READ_ONCE() to fetch the pointer.
-
-Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Chen <me@linux.beauty>
+Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
+Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index f575751f1cae..6e949c21842d 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -975,13 +975,13 @@ static int ext4_fc_flush_data(journal_t *journal)
- 	int ret = 0;
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index c579f68b3c11..7617e2d454ea 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1570,6 +1570,7 @@ struct ext4_sb_info {
+ 	struct proc_dir_entry *s_proc;
+ 	struct kobject s_kobj;
+ 	struct completion s_kobj_unregister;
++	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
+ 	struct super_block *s_sb;
+ 	struct buffer_head *s_mmp_bh;
  
- 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
--		ret = jbd2_submit_inode_data(journal, ei->jinode);
-+		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
- 		if (ret)
- 			return ret;
- 	}
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index baa067eb8cf4..cb69a9b38b7c 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5406,6 +5406,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
  
- 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
--		ret = jbd2_wait_inode_data(journal, ei->jinode);
-+		ret = jbd2_wait_inode_data(journal, READ_ONCE(ei->jinode));
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 252191632f56..ac5f3446c731 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
- static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 					      loff_t new_size)
+ 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
+ 	spin_lock_init(&sbi->s_error_lock);
++	mutex_init(&sbi->s_error_notify_mutex);
+ 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
+ 
+ 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
+diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+index b87d7bdab06a..923b375e017f 100644
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -597,7 +597,10 @@ static const struct kobj_type ext4_feat_ktype = {
+ 
+ void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
  {
-+	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
-+
- 	trace_ext4_begin_ordered_truncate(inode, new_size);
- 	/*
- 	 * If jinode is zero, then we never opened the file for
-@@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 	 * jbd2_journal_begin_ordered_truncate() since there's no
- 	 * outstanding writes we need to flush.
- 	 */
--	if (!EXT4_I(inode)->jinode)
-+	if (!jinode)
- 		return 0;
- 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
--						   EXT4_I(inode)->jinode,
-+						   jinode,
- 						   new_size);
+-	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
++	mutex_lock(&sbi->s_error_notify_mutex);
++	if (sbi->s_kobj.state_in_sysfs)
++		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
++	mutex_unlock(&sbi->s_error_notify_mutex);
  }
  
-@@ -4451,8 +4453,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
- 			spin_unlock(&inode->i_lock);
- 			return -ENOMEM;
- 		}
--		ei->jinode = jinode;
--		jbd2_journal_init_jbd_inode(ei->jinode, inode);
-+		jbd2_journal_init_jbd_inode(jinode, inode);
-+		/*
-+		 * Publish ->jinode only after it is fully initialized so that
-+		 * readers never observe a partially initialized jbd2_inode.
-+		 */
-+		smp_wmb();
-+		WRITE_ONCE(ei->jinode, jinode);
- 		jinode = NULL;
- 	}
- 	spin_unlock(&inode->i_lock);
+ static struct kobject *ext4_root;
+@@ -610,8 +613,10 @@ int ext4_register_sysfs(struct super_block *sb)
+ 	int err;
+ 
+ 	init_completion(&sbi->s_kobj_unregister);
++	mutex_lock(&sbi->s_error_notify_mutex);
+ 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
+ 				   "%s", sb->s_id);
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ 	if (err) {
+ 		kobject_put(&sbi->s_kobj);
+ 		wait_for_completion(&sbi->s_kobj_unregister);
+@@ -644,7 +649,10 @@ void ext4_unregister_sysfs(struct super_block *sb)
+ 
+ 	if (sbi->s_proc)
+ 		remove_proc_subtree(sb->s_id, ext4_proc_root);
++
++	mutex_lock(&sbi->s_error_notify_mutex);
+ 	kobject_del(&sbi->s_kobj);
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ }
+ 
+ int __init ext4_init_sysfs(void)
 
 
