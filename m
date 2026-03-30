@@ -1,325 +1,370 @@
-Return-Path: <stable+bounces-231143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oF6IN71Kymmb7QUAu9opvQ
-	(envelope-from <stable+bounces-231143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:04:45 +0200
+	id UNqpOuNLymmb7QUAu9opvQ
+	(envelope-from <stable+bounces-231144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:09:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F01358CE0
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:04:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C979358EA3
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3600F301220C
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:02:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A1A7305F4B1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBD73B6377;
-	Mon, 30 Mar 2026 10:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249763B7741;
+	Mon, 30 Mar 2026 10:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbdREO1g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A5C30171C;
-	Mon, 30 Mar 2026 10:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491813B5851
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 10:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774864939; cv=none; b=OfLgHRr2xKlYx7XRKXCmAEijwHnBTjqMdg8j/mvIimO8Bg0LHTAmE8OjhDjtrP2H71/p306VbztdFub9iIXuQZiukLZ6DV/6QkJl45eGFlGMlsXP/FGqqwpwu2bM4xiuCxE+SU7y8A996vfqF8QpKMMjv6PhjvTHWlKIKHeTYPA=
+	t=1774865006; cv=none; b=SxEoivZHJk0e6KJFQpHSu5LyAGLanntcgMa/H2QtItG8oEx+L9bBYLwHcErakXp8IhA06qdHiscaQJBQZiNQOyPg9ljyfLtIygkNZvi8J91G29LFfqeZbg5zgqk+YTJ4HtaK2/8AWg5Xn+76zuiQ6LtiQzb9Zq1KfxdhCi8oZCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774864939; c=relaxed/simple;
-	bh=PT1MnQFwYg8nLEG1NpO2SdeOpVGSVxY+69ymot30nM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nnG+H9Xe2iAHYUgEtKQhIb2qiQ04az/gMLvGTkuH1ZwBSsaj+fWAGP/toGAnvRXWQup1QhVI7owHz4gQ3xvgGAZeTL67hxeUXC0WsHgLuKlikc4Q0BHP2M6dkrpJrKh8AlHMj9jBoQQBlSW1aw9HgrBsvwHxb8uWzqfSYb2+RE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.17])
-	by gateway (Coremail) with SMTP id _____8BxD6onSsppWO0fAA--.31712S3;
-	Mon, 30 Mar 2026 18:02:15 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.17])
-	by front1 (Coremail) with SMTP id qMiowJCxdcAkSspp5a9gAA--.31486S2;
-	Mon, 30 Mar 2026 18:02:14 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH for 6.1] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Date: Mon, 30 Mar 2026 18:02:05 +0800
-Message-ID: <20260330100205.3955389-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1774865006; c=relaxed/simple;
+	bh=1HT8v8UFKLTQr2L4Cf2WRnt/uMaL7PJ8qnb0tQykwOY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Yrn/SyYs4vngc+tpd/iR6ZI8pI0y+l5wyVdN+DR2BDCNvAcUBZ+TI5cYguVgaynTzrUXo92Acoior6VoGDCd3lztZV+pGBs0MbTZXEtNVJvnUaLVjh82lqfJoJ6y8Yo3q69JsN+KrorzsHVO2YhsyLxYDpNwYH48eQcRzDC9UOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbdREO1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356B2C4CEF7;
+	Mon, 30 Mar 2026 10:03:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774865005;
+	bh=1HT8v8UFKLTQr2L4Cf2WRnt/uMaL7PJ8qnb0tQykwOY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=VbdREO1g2PiFYF2s2SxIx25mPHEyywOp8FcOkonblUTMxEMlWhrbzR1Yterpp4wZC
+	 ORZhWeuEddKLbuIdP1nh56hcTFWAZHHiVysLsbJcQ1sfPGM3Eg9CyN8/OTxTZf8/HM
+	 y8abSUwhi8v5FdxXq+ae85op8fsCOpzSfWqpJSgI=
+Subject: FAILED: patch "[PATCH] xfs: close crash window in attr dabtree inactivation" failed to apply to 6.19-stable tree
+To: leo.lilong@huawei.com,cem@kernel.org,djwong@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 30 Mar 2026 12:03:22 +0200
+Message-ID: <2026033022-mumps-pronto-1d74@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdcAkSspp5a9gAA--.31486S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3WFWxXry3ZFWrKF15AFWUGFX_yoWfXr48pF
-	n8Zrn5GrZ5WFyI9ryDtw4rZrZ0yFn7Gr1j9ayqka4UCryYgr18WF4vyrs0qF1DJw4kCrWI
-	gF90qa15uF45AagCm3ZEXasCq-sJn29KB7ZKAUJUUUU_529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUeVpB3UUUUU==
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231144-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231143-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gnu.org:url,loongson.cn:email,loongson.cn:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xry111.site:email]
-X-Rspamd-Queue-Id: 37F01358CE0
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,huawei.com:email]
+X-Rspamd-Queue-Id: 1C979358EA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Xi Ruoyao <xry111@xry111.site>
 
-commit e4878c37f6679fdea91b27a0f4e60a871f0b7bad upstream.
+The patch below does not apply to the 6.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
-of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
-empty.  This is not valid, as the current DWARF specification mandates
-the first byte of the EH frame to be the version number 1.  It causes
-some unwinders to complain, for example the ClickHouse query profiler
-spams the log with messages:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
-    version: 127 at 7ffffffb0000
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033022-mumps-pronto-1d74@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
-Here "127" is just the byte located at the p_vaddr (0, i.e. the
-beginning of the vDSO) of the empty GNU_EH_FRAME segment. Cross-
-checking with /proc/365854/maps has also proven 7ffffffb0000 is the
-start of vDSO in the process VM image.
+Possible dependencies:
 
-In LoongArch the -fno-asynchronous-unwind-tables option seems just a
-MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
-"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
-use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
-limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
-we can simply flip it over to -fasynchronous-unwind-tables and pass
---eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
-stack for statistics even if the sample point is taken when the PC is in
-the vDSO.
 
-However simply adjusting the options above would exploit an issue: when
-the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
-falled back to a machine-specific routine to match the code pattern of
-rt_sigreturn() and extract the registers saved in the sigframe if the
-code pattern is matched.  As unwinding from signal handlers is vital for
-libgcc to support pthread cancellation etc., the fall-back routine had
-been silently keeping the LoongArch Linux systems functioning since
-Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
-format, fall-back routine will no longer be used and libgcc will fail
-to unwind the sigframe, and unwinding from signal handlers will no
-longer work, causing dozens of glibc test failures.  To make it possible
-to unwind from signal handlers again, it's necessary to code the unwind
-info in __vdso_rt_sigreturn via .cfi_* directives.
 
-The offsets in the .cfi_* directives depend on the layout of struct
-sigframe, notably the offset of sigcontext in the sigframe.  To use the
-offset in the assembly file, factor out struct sigframe into a header to
-allow asm-offsets.c to output the offset for assembly.
+thanks,
 
-To work around a long-term issue in the libgcc unwinder (the pc is
-unconditionally substracted by 1: doing so is technically incorrect for
-a signal frame), a nop instruction is included with the two real
-instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
-hack has been used on x86 for a long time.
+greg k-h
 
+------------------ original commit in Linus's tree ------------------
+
+From b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61 Mon Sep 17 00:00:00 2001
+From: Long Li <leo.lilong@huawei.com>
+Date: Tue, 17 Mar 2026 09:51:55 +0800
+Subject: [PATCH] xfs: close crash window in attr dabtree inactivation
+
+When inactivating an inode with node-format extended attributes,
+xfs_attr3_node_inactive() invalidates all child leaf/node blocks via
+xfs_trans_binval(), but intentionally does not remove the corresponding
+entries from their parent node blocks.  The implicit assumption is that
+xfs_attr_inactive() will truncate the entire attr fork to zero extents
+afterwards, so log recovery will never reach the root node and follow
+those stale pointers.
+
+However, if a log shutdown occurs after the leaf/node block cancellations
+commit but before the attr bmap truncation commits, this assumption
+breaks.  Recovery replays the attr bmap intact (the inode still has
+attr fork extents), but suppresses replay of all cancelled leaf/node
+blocks, maybe leaving them as stale data on disk.  On the next mount,
+xlog_recover_process_iunlinks() retries inactivation and attempts to
+read the root node via the attr bmap. If the root node was not replayed,
+reading the unreplayed root block triggers a metadata verification
+failure immediately; if it was replayed, following its child pointers
+to unreplayed child blocks triggers the same failure:
+
+ XFS (pmem0): Metadata corruption detected at
+ xfs_da3_node_read_verify+0x53/0x220, xfs_da3_node block 0x78
+ XFS (pmem0): Unmount and run xfs_repair
+ XFS (pmem0): First 128 bytes of corrupted metadata buffer:
+ 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ XFS (pmem0): metadata I/O error in "xfs_da_read_buf+0x104/0x190" at daddr 0x78 len 8 error 117
+
+Fix this in two places:
+
+In xfs_attr3_node_inactive(), after calling xfs_trans_binval() on a
+child block, immediately remove the entry that references it from the
+parent node in the same transaction.  This eliminates the window where
+the parent holds a pointer to a cancelled block.  Once all children are
+removed, the now-empty root node is converted to a leaf block within the
+same transaction. This node-to-leaf conversion is necessary for crash
+safety. If the system shutdown after the empty node is written to the
+log but before the second-phase bmap truncation commits, log recovery
+will attempt to verify the root block on disk. xfs_da3_node_verify()
+does not permit a node block with count == 0; such a block will fail
+verification and trigger a metadata corruption shutdown. on the other
+hand, leaf blocks are allowed to have this transient state.
+
+In xfs_attr_inactive(), split the attr fork truncation into two explicit
+phases.  First, truncate all extents beyond the root block (the child
+extents whose parent references have already been removed above).
+Second, invalidate the root block and truncate the attr bmap to zero in
+a single transaction.  The two operations in the second phase must be
+atomic: as long as the attr bmap has any non-zero length, recovery can
+follow it to the root block, so the root block invalidation must commit
+together with the bmap-to-zero truncation.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/include/asm/linkage.h  | 36 +++++++++++++++++++++++++++
- arch/loongarch/include/asm/sigframe.h |  9 +++++++
- arch/loongarch/kernel/asm-offsets.c   |  2 ++
- arch/loongarch/kernel/signal.c        |  6 +----
- arch/loongarch/vdso/Makefile          |  4 +--
- arch/loongarch/vdso/sigreturn.S       |  6 ++---
- 6 files changed, 53 insertions(+), 10 deletions(-)
- create mode 100644 arch/loongarch/include/asm/sigframe.h
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 
-diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
-index e2eca1a25b4e..a1bd6a3ee03a 100644
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -41,4 +41,40 @@
- 	.cfi_endproc;					\
- 	SYM_END(name, SYM_T_NONE)
+diff --git a/fs/xfs/xfs_attr_inactive.c b/fs/xfs/xfs_attr_inactive.c
+index 92331991f9fd..a5b69c0fbfd0 100644
+--- a/fs/xfs/xfs_attr_inactive.c
++++ b/fs/xfs/xfs_attr_inactive.c
+@@ -140,7 +140,7 @@ xfs_attr3_node_inactive(
+ 	xfs_daddr_t		parent_blkno, child_blkno;
+ 	struct xfs_buf		*child_bp;
+ 	struct xfs_da3_icnode_hdr ichdr;
+-	int			error, i;
++	int			error;
  
-+/*
-+ * This is for the signal handler trampoline, which is used as the return
-+ * address of the signal handlers in userspace instead of called normally.
-+ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
-+ * nop between .cfi_startproc and the actual address of the trampoline, so
-+ * we cannot simply use SYM_FUNC_START.
-+ *
-+ * This wrapper also contains all the .cfi_* directives for recovering
-+ * the content of the GPRs and the "return address" (where the rt_sigreturn
-+ * syscall will jump to), assuming there is a struct rt_sigframe (where
-+ * a struct sigcontext containing those information we need to recover) at
-+ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
-+ * column 0 is for $zero, but it does not make too much sense to
-+ * save/restore the hardware zero register.  Repurpose this column here
-+ * for the return address (here it's not the content of $ra we cannot use
-+ * the default column 3).
-+ */
-+#define SYM_SIGFUNC_START(name)				\
-+	.cfi_startproc;					\
-+	.cfi_signal_frame;				\
-+	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
-+	.cfi_return_column 0;				\
-+	.cfi_offset 0, SC_PC;				\
-+							\
-+	.irp num, 1,  2,  3,  4,  5,  6,  7,  8, 	\
-+		  9,  10, 11, 12, 13, 14, 15, 16,	\
-+		  17, 18, 19, 20, 21, 22, 23, 24,	\
-+		  25, 26, 27, 28, 29, 30, 31;		\
-+	.cfi_offset \num, SC_REGS + \num * SZREG;	\
-+	.endr;						\
-+							\
-+	nop;						\
-+	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
-+
-+#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
-+
- #endif
-diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
-new file mode 100644
-index 000000000000..109298b8d7e0
---- /dev/null
-+++ b/arch/loongarch/include/asm/sigframe.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+
-+#include <asm/siginfo.h>
-+#include <asm/ucontext.h>
-+
-+struct rt_sigframe {
-+	struct siginfo rs_info;
-+	struct ucontext rs_uctx;
-+};
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 548885a591ae..b0c5090fcdcb 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -14,6 +14,7 @@
- #include <asm/cpu-info.h>
- #include <asm/ptrace.h>
- #include <asm/processor.h>
-+#include <asm/sigframe.h>
+ 	/*
+ 	 * Since this code is recursive (gasp!) we must protect ourselves.
+@@ -152,7 +152,7 @@ xfs_attr3_node_inactive(
+ 		return -EFSCORRUPTED;
+ 	}
  
- void output_ptreg_defines(void)
+-	xfs_da3_node_hdr_from_disk(dp->i_mount, &ichdr, bp->b_addr);
++	xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
+ 	parent_blkno = xfs_buf_daddr(bp);
+ 	if (!ichdr.count) {
+ 		xfs_trans_brelse(*trans, bp);
+@@ -167,7 +167,7 @@ xfs_attr3_node_inactive(
+ 	 * over the leaves removing all of them.  If this is higher up
+ 	 * in the tree, recurse downward.
+ 	 */
+-	for (i = 0; i < ichdr.count; i++) {
++	while (ichdr.count > 0) {
+ 		/*
+ 		 * Read the subsidiary block to see what we have to work with.
+ 		 * Don't do this in a transaction.  This is a depth-first
+@@ -218,29 +218,32 @@ xfs_attr3_node_inactive(
+ 		xfs_trans_binval(*trans, child_bp);
+ 		child_bp = NULL;
+ 
+-		/*
+-		 * If we're not done, re-read the parent to get the next
+-		 * child block number.
+-		 */
+-		if (i + 1 < ichdr.count) {
+-			struct xfs_da3_icnode_hdr phdr;
++		error = xfs_da3_node_read_mapped(*trans, dp,
++				parent_blkno, &bp, XFS_ATTR_FORK);
++		if (error)
++			return error;
+ 
+-			error = xfs_da3_node_read_mapped(*trans, dp,
+-					parent_blkno, &bp, XFS_ATTR_FORK);
++		/*
++		 * Remove entry from parent node, prevents being indexed to.
++		 */
++		xfs_attr3_node_entry_remove(*trans, dp, bp, 0);
++
++		xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
++		bp = NULL;
++
++		if (ichdr.count > 0) {
++			/*
++			 * If we're not done, get the next child block number.
++			 */
++			child_fsb = be32_to_cpu(ichdr.btree[0].before);
++
++			/*
++			 * Atomically commit the whole invalidate stuff.
++			 */
++			error = xfs_trans_roll_inode(trans, dp);
+ 			if (error)
+ 				return error;
+-			xfs_da3_node_hdr_from_disk(dp->i_mount, &phdr,
+-						  bp->b_addr);
+-			child_fsb = be32_to_cpu(phdr.btree[i + 1].before);
+-			xfs_trans_brelse(*trans, bp);
+-			bp = NULL;
+ 		}
+-		/*
+-		 * Atomically commit the whole invalidate stuff.
+-		 */
+-		error = xfs_trans_roll_inode(trans, dp);
+-		if (error)
+-			return  error;
+ 	}
+ 
+ 	return 0;
+@@ -257,10 +260,8 @@ xfs_attr3_root_inactive(
+ 	struct xfs_trans	**trans,
+ 	struct xfs_inode	*dp)
  {
-@@ -213,6 +214,7 @@ void output_sc_defines(void)
- 	COMMENT("Linux sigcontext offsets.");
- 	OFFSET(SC_REGS, sigcontext, sc_regs);
- 	OFFSET(SC_PC, sigcontext, sc_pc);
-+	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
- 	BLANK();
- }
+-	struct xfs_mount	*mp = dp->i_mount;
+ 	struct xfs_da_blkinfo	*info;
+ 	struct xfs_buf		*bp;
+-	xfs_daddr_t		blkno;
+ 	int			error;
  
-diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
-index 2662e5dc3828..47e405985968 100644
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -33,6 +33,7 @@
- #include <asm/cacheflush.h>
- #include <asm/cpu-features.h>
- #include <asm/fpu.h>
-+#include <asm/sigframe.h>
- #include <asm/ucontext.h>
- #include <asm/vdso.h>
+ 	/*
+@@ -272,7 +273,6 @@ xfs_attr3_root_inactive(
+ 	error = xfs_da3_node_read(*trans, dp, 0, &bp, XFS_ATTR_FORK);
+ 	if (error)
+ 		return error;
+-	blkno = xfs_buf_daddr(bp);
  
-@@ -46,11 +47,6 @@
- #define lock_fpu_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_fpu_owner()	({ pagefault_enable(); preempt_enable(); })
- 
--struct rt_sigframe {
--	struct siginfo rs_info;
--	struct ucontext rs_uctx;
--};
+ 	/*
+ 	 * Invalidate the tree, even if the "tree" is only a single leaf block.
+@@ -283,10 +283,26 @@ xfs_attr3_root_inactive(
+ 	case cpu_to_be16(XFS_DA_NODE_MAGIC):
+ 	case cpu_to_be16(XFS_DA3_NODE_MAGIC):
+ 		error = xfs_attr3_node_inactive(trans, dp, bp, 1);
++		/*
++		 * Empty root node block are not allowed, convert it to leaf.
++		 */
++		if (!error)
++			error = xfs_attr3_leaf_init(*trans, dp, 0);
++		if (!error)
++			error = xfs_trans_roll_inode(trans, dp);
+ 		break;
+ 	case cpu_to_be16(XFS_ATTR_LEAF_MAGIC):
+ 	case cpu_to_be16(XFS_ATTR3_LEAF_MAGIC):
+ 		error = xfs_attr3_leaf_inactive(trans, dp, bp);
++		/*
++		 * Reinit the leaf before truncating extents so that a crash
++		 * mid-truncation leaves an empty leaf rather than one with
++		 * entries that may reference freed remote value blocks.
++		 */
++		if (!error)
++			error = xfs_attr3_leaf_init(*trans, dp, 0);
++		if (!error)
++			error = xfs_trans_roll_inode(trans, dp);
+ 		break;
+ 	default:
+ 		xfs_dirattr_mark_sick(dp, XFS_ATTR_FORK);
+@@ -295,21 +311,6 @@ xfs_attr3_root_inactive(
+ 		xfs_trans_brelse(*trans, bp);
+ 		break;
+ 	}
+-	if (error)
+-		return error;
 -
- struct _ctx_layout {
- 	struct sctx_info *addr;
- 	unsigned int size;
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 24d6b31f4dfa..6bafdf4780d3 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -25,7 +25,7 @@ cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
- 	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
--	$(call cc-option, -fno-asynchronous-unwind-tables) \
-+	$(call cc-option, -fasynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
- aflags-vdso := $(ccflags-vdso) \
- 	-D__ASSEMBLY__ -Wa,-gdwarf-2
-@@ -36,7 +36,7 @@ endif
+-	/*
+-	 * Invalidate the incore copy of the root block.
+-	 */
+-	error = xfs_trans_get_buf(*trans, mp->m_ddev_targp, blkno,
+-			XFS_FSB_TO_BB(mp, mp->m_attr_geo->fsbcount), 0, &bp);
+-	if (error)
+-		return error;
+-	xfs_trans_binval(*trans, bp);	/* remove from cache */
+-	/*
+-	 * Commit the invalidate and start the next transaction.
+-	 */
+-	error = xfs_trans_roll_inode(trans, dp);
  
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
+ 	return error;
+ }
+@@ -328,6 +329,7 @@ xfs_attr_inactive(
+ {
+ 	struct xfs_trans	*trans;
+ 	struct xfs_mount	*mp;
++	struct xfs_buf          *bp;
+ 	int			lock_mode = XFS_ILOCK_SHARED;
+ 	int			error = 0;
  
- GCOV_PROFILE := n
+@@ -363,10 +365,27 @@ xfs_attr_inactive(
+ 	 * removal below.
+ 	 */
+ 	if (dp->i_af.if_nextents > 0) {
++		/*
++		 * Invalidate and truncate all blocks but leave the root block.
++		 */
+ 		error = xfs_attr3_root_inactive(&trans, dp);
+ 		if (error)
+ 			goto out_cancel;
  
-diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
-index 9cb3c58fad03..59f940d928de 100644
---- a/arch/loongarch/vdso/sigreturn.S
-+++ b/arch/loongarch/vdso/sigreturn.S
-@@ -12,13 +12,13 @@
- 
- #include <asm/regdef.h>
- #include <asm/asm.h>
-+#include <asm/asm-offsets.h>
- 
- 	.section	.text
--	.cfi_sections	.debug_frame
- 
--SYM_FUNC_START(__vdso_rt_sigreturn)
-+SYM_SIGFUNC_START(__vdso_rt_sigreturn)
- 
- 	li.w	a7, __NR_rt_sigreturn
- 	syscall	0
- 
--SYM_FUNC_END(__vdso_rt_sigreturn)
-+SYM_SIGFUNC_END(__vdso_rt_sigreturn)
--- 
-2.52.0
++		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK,
++				XFS_FSB_TO_B(mp, mp->m_attr_geo->fsbcount));
++		if (error)
++			goto out_cancel;
++
++		/*
++		 * Invalidate and truncate the root block and ensure that the
++		 * operation is completed within a single transaction.
++		 */
++		error = xfs_da_get_buf(trans, dp, 0, &bp, XFS_ATTR_FORK);
++		if (error)
++			goto out_cancel;
++
++		xfs_trans_binval(trans, bp);
+ 		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK, 0);
+ 		if (error)
+ 			goto out_cancel;
 
 
