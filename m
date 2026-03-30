@@ -1,164 +1,226 @@
-Return-Path: <stable+bounces-231040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NyMAqAxymk66QUAu9opvQ
-	(envelope-from <stable+bounces-231040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:17:36 +0200
+	id mNC8GzEyymk66QUAu9opvQ
+	(envelope-from <stable+bounces-231041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:20:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DCC8356FE1
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:17:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE79E35702D
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 360993008692
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 08:17:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 70C02300901E
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 08:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171233ACA72;
-	Mon, 30 Mar 2026 08:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827853A783B;
+	Mon, 30 Mar 2026 08:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="L1RmPXDm"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011028.outbound.protection.outlook.com [40.107.130.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7926737AA7E;
-	Mon, 30 Mar 2026 08:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774858628; cv=none; b=QrjaTHQNuTVWBF2FbMjXjKtmlVtbY4lrWzJtssv1yPwsBOdAmFGQyVx9xX0418VQwYb9fNNrjBpNQ1pKczH8y2lbpFfwc1mpXqUUBFGvHYAW4wkSqamT/rdl9CSKXd2O6FRtINeJ3anJjL5KMzSOx1di2blzazL6WZ6VDZ7+Pog=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774858628; c=relaxed/simple;
-	bh=xnHmCxhyqMWoLyIWmZZIpt61n6pgyNmI+9Yb9fyppIk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E59MBM/IBTzPYzrwGN71VmLftdVWPexHRc2DQlpcrYJUJoRPT0JCCRwMfYZcIZf5ElEVVdQskGkRI62hEKhx8N7+quVEWSFhxODuykNnwcV7os3Qr2MZyrYRmMWYRgHLRQl/dLv0m0Lt9ayYvzZwAtZi+9UfUlIORVD7dDrfA7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from ubuntu.. (unknown [202.112.113.208])
-	by APP-05 (Coremail) with SMTP id zQCowAAntwplMcppbLvrCw--.46728S2;
-	Mon, 30 Mar 2026 16:16:46 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: vz@mleia.com,
-	piotr.wojtaszczyk@timesys.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	alexandre.belloni@bootlin.com
-Cc: linux-arm-kernel@lists.infradead.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F141637FF4B;
+	Mon, 30 Mar 2026 08:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774858796; cv=fail; b=ZVArfyd52TOxgnhND8jzuPF5xXKAUVw2bBlJTm+tWtQ3DuOELXr9b3QUF+jMW9CS/MLMFifV2LmxnCZpk1JuJWVi7Fb6xgVqPK2ilbTEqTB8pHvhE7NhMHDuqxheKfMeOfCC6wknZjWqh4e4xcWQsyLRoNtE40MpmE1A8n6rB5Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774858796; c=relaxed/simple;
+	bh=BV5xTqwsrDlP4rhIIbXZ395J296/lMlT/AMpW8q/yl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EPqpNFtmgGqWDaiIoOXwF0AZYxhx0aHypKFA+DP1EYrXVypEuUuB17RhMmzp1yyoS/cAhSPZZyZ2M3vcu5oM7ia+Lj3MEfJ/B9BDBGExPf1XKfqtRcn4OE9Cfdmb7XV7gX5BQjKCJGBzcGY6GMcFiRdFp64wfdrNUt6/l/vUE8g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=L1RmPXDm; arc=fail smtp.client-ip=40.107.130.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rozGA1bvq1ny1WivPCFsx8sXpaGO6wNMegrGbJWWIsdRjE6areyVzJwBuA8qtr7ebfnYhnBuOfXg3k4n/vYkx9OjtEbiQ/KqIJ5xqM9UvGcL/uO8m+SquFNIDOmkKVL5pB7p6weGGfXUhAONO3qS5oCwFTn2KH6EhuG0+gbx5gfiIr1tq+fQQpQq3xKuOZGDX/8+ANreO1AF20gHWEJ7bEKPsQVXGVsngxltsJ/ZCRv/EF1J4zxcVwpYjFTaTnhK2+XDM7zslhLJYDwQxAg7OE7f64SlRest8NRIJ4AykzD3pD+xLOvtNM2wZKFFgzip0OEJdL/A0yttp1mTFQihpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dyWkxMU5zf2TVgwx9DXIHgz2HeG2tegQePYDZOKRrEo=;
+ b=m2boFrZpm0/2Np+mOowg/zt8TEetU1iw37f/Ow5o1zbrtNImiVvDkfKBsLpOuwwgRcKnRQv53VNPjKokUS6jKJVCLGMLVnutdedCsFe9HS9s9RvduNR5an0vMuUCLse20eYeo/xMK/8NvwD8KSTu9Wwdp1rNgBG1sYXrxyvDlFxbvXDwL/oIfJdGIAL4La5PPJz20Eina0z2t9VucyHny82P8WpUm37d5/PBlRGlmltyqZK5OCfbR2rOxsnt6YNVmeJWWZUt8xU5I7tu7mOnkajk0hoMjbSELo+b5scSwSR7GxOUmRU7U9X3ocWhXwgtVBcu5PfNd0tIwXn77EO3Fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dyWkxMU5zf2TVgwx9DXIHgz2HeG2tegQePYDZOKRrEo=;
+ b=L1RmPXDmBw/pkczfZJUcFadLH+i+iBFk35HLnjyUWkAM8vVGPdl5NNWPraxVtcYhQPVpI3OSr9UI07ZgNQqQUt2ArCfm3XpeQr9fR5xwwLOJFgqSdEkUXI/3i99Oqe0f8cb7sO2LLNXFDRu/V1Yip+QRTwNVWAOID7NjQlnBGNsXCt1+DOiKRF/dA5F5AEbjOnDd5iwzRfaP+AmHkiisQdOOLIpSeKPSzf2JQ6BGvakuoXIB+h/JnYlV2+8WHMxkpuSvi2F99f2+Lqnlnsh7lrEJTxHxzkrOCSIjaDXthpCxwSJQohnwwkDw4yljb+CSEMLnTQYg6mdgYubOudvn/A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by PAXPR04MB8880.eurprd04.prod.outlook.com (2603:10a6:102:20f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Mon, 30 Mar
+ 2026 08:19:51 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9745.027; Mon, 30 Mar 2026
+ 08:19:51 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
 	netdev@vger.kernel.org,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Rahul Sharma <black.hawk@163.com>,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: lpc_eth: Fix a possible memory leak in lpc_mii_probe()
-Date: Mon, 30 Mar 2026 16:16:36 +0800
-Message-ID: <20260330081636.2887980-1-make24@iscas.ac.cn>
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1] net: enetc: fix PF !of_device_is_available() teardown path
+Date: Mon, 30 Mar 2026 11:19:44 +0300
+Message-ID: <20260330081944.527545-1-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BE1P281CA0253.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:8b::12) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAntwplMcppbLvrCw--.46728S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7trWUAw1DXr4rZF47Jw1fZwb_yoW8ZF4xp3
-	y3CFWfGFykGr17Wwn5ZayDAFyayw4Iy3yrKFW2ya90g3WrXryrA340y34aqr45CFWkWF47
-	XrnIyFy7Za1kXF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|PAXPR04MB8880:EE_
+X-MS-Office365-Filtering-Correlation-Id: 41a59aff-573e-413e-e1ac-08de8e351d9f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|19092799006|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	RJZ1d5Yf2XFY+TdbKmPkS7VdFUIcJRrCa0kOfnvP454PPX919pSyo6AjKhpFugibYxJJoO6FtUsjQplAWphJJ5qielaFZrj2vnb9/dOL4IYpqnR0r1kXPmIsHzIzEWfAidzWnn4Kxk5JtcwmLDt4geT+M0D80FX8BjdErcs2XdFr4cw94RhZ2j0A50xvZbSEkWjlg0qB/zWXJ0Q5pBTDwfGndi+mL/sOmlcyvENjy77gcaV6pdo/kgez30eFQjHhNme5mCJTM8pJrBoqGZrJN8eR6yNCsn/sB/kpurh0bKbu/oJ7ik6JoFF55AMnxqbrR0e2lyYYGvLPyw0fNPwumEoL2S1QBJ5OP4qTCss8tLKbs7fH320ynlZchim7dzNNDbXbRa/eWWZH5ZmCREAhHPG5pJm65oYton1thlM7UKReIEo30vYSnfuC9tLJ6k3JOkA4XYz/blNJ6q7OmpwicmacppH120yKfnFEnA4X02WeEiBxc/uf2FMGQGFWnNcEkIK44CQ14LjTT5Ozo7J+3G8g7BmxjJy47alQvK304PIBmOlFn0JWH2rQ+kRyRaux0eRJdgiNOShmAaRvs8uhwaJ9xBvyeiX1xc+hrvJ/BJlkt4t5gppcvX3ETQaLnRUbsXGQ6iO/FcrKRJpaVsImJ2qnGeAbsSse+0MgWsq/wKnpTHcGlySwwGjTVIVBP7qPuMEfOpMbWxa+B7n/DuDxYFrmNsDbm30o8q3RbFPJJOLedACVgC8e2yzjVeSbScu6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(19092799006)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4DGxcjSiT+iXRvpERcUGV7mgQIxL38wECN3VCQ0/P1a2qh4Wu26SFlC6ALnP?=
+ =?us-ascii?Q?wzbLgWZ+tkgOV9ZOg5tidCMliDCrFHT5IUtvqvmzxLBmKT8EVNksv7J1ma3l?=
+ =?us-ascii?Q?eLlcEbJgZAZaeKr7Jkc/QvOilUWSaiByWsQ/ocnBFGDJ7hXYAFknxmCDR2Aj?=
+ =?us-ascii?Q?eeP+irfF6cn5//UiA5+MkgF+YUcLd/WTYKfSiCgdwbWDJWk5V2+M4Gkl9pVM?=
+ =?us-ascii?Q?hgIefWD463XhLPMk0tTC9+TcOIttElxsjqwjEcKErisJV5rbzPx6X+kxNg41?=
+ =?us-ascii?Q?GsJ9IzYHQwPiwdfp9xtZcni7yV+boVwYUcvFVqrCEpaGSwfX0BPkEEloFjhz?=
+ =?us-ascii?Q?bo7cfPAMtbV5FB8fcT9hmXwabb+hgGVDMSvLAqn6B9y0yVdDV60yEfq04tOl?=
+ =?us-ascii?Q?hAVTl9lGt4Y4zy0spa8t78v3lZcW2phKd4q4d0irWf27EAJJ0DlvJJqWyFnS?=
+ =?us-ascii?Q?b/3HRTvoeqz+OXY7oAkrTcc3/8/61VCiUZEu3NGeBLQwjRmXYREB2WFIDl6z?=
+ =?us-ascii?Q?o5RxBpX3MBfuDjOBat7loNSy/YJv2Ygty5Q5R3gSNcnqj3lneCwRRdU5XU9K?=
+ =?us-ascii?Q?rSy77NdYy8uTvYEQmInngZi8UgoLU1MWDgvX+fByOciLrGXnfrN2J7EHnGms?=
+ =?us-ascii?Q?CQxA9XoatyIvDPxpjTk5CdSY1PO9jjznasHGccUlYJgPBQzyE2FNitCbgUom?=
+ =?us-ascii?Q?ouuJWle5psh/zMy/fQIM5sTX9ZWGLtPFykEHJ+kENi3telPOMlnULLCgNw+7?=
+ =?us-ascii?Q?RCAZcukhzkwGKh1zNlrkM+n1TNawfuLYMB9f10cN2/9uQ9xiwYoejq/scJu0?=
+ =?us-ascii?Q?aGrWpN7iGP7Wit3F3471eiUv1nCsUFLZUy3tCR62K+QIyd5a3hlWMOngAUzC?=
+ =?us-ascii?Q?8DAs2aKVT/MywT+MbxSDsnqQgyRtTvxyGyMoMyfZJZlA2rUdjSWaxGYr2vRK?=
+ =?us-ascii?Q?gltVg8/1J7xayus1YSsO5e2096Aa7vdPDnLCIxFXRfJ+OmbTWTelfSDdYE+z?=
+ =?us-ascii?Q?wZ7XMjwoFRt8ofaglq3ZOMdC4qmIv0VFDSyISB+f+ThJlyzcJrSZ7sx8mzLB?=
+ =?us-ascii?Q?V9r/UKz1CDnoiZqMAo6lGBNiXJ0aT6KcFRsA7hG3qmC5BWL+4V8n3KYnqHer?=
+ =?us-ascii?Q?vG7w8flREBnVtTxLyd+cZ5yj0eJleu0vsj1O6upEfXFhzW443M9soLatYmFl?=
+ =?us-ascii?Q?6yL883hlmvXi9lIxRFETvV03Sie5xcaTFqd4PdIxFYwcSHqtoPTTdw1sMu7v?=
+ =?us-ascii?Q?qDvIZVfTcLhzZasYKmj5nqt0w9AUFbIgd2jXmATOMIw6Edxw9ubcpncy9SxP?=
+ =?us-ascii?Q?zoCigp28PgasXcOZFtVl2wIsZDNIAWICy1IixkIhlQqj02iG+lN9aoNyWc1/?=
+ =?us-ascii?Q?un6yaPJ1v0QSPY6eqYUTZ0LfnojYPcJ1KoTfskjhlXYY1VhKvwHWTzXmJLn7?=
+ =?us-ascii?Q?CuOBO6nfcfLTbD9wl36jDju+wVJQo+WysbKog5UZi0s2erzaW3ELoOE8upVl?=
+ =?us-ascii?Q?Nk/xEq1NxjmlZUy1r4eksa5NAvLF4wDTUaKoJmI6EUfEjXTJ2gVsFoqXAFQD?=
+ =?us-ascii?Q?eyeRrmIqK0L17UNbtmfVg0pBkICtS30Cc+o6U6c0hbjoyWcBlxVBaRFU9vCq?=
+ =?us-ascii?Q?SPFbjbbd9l30sPhkDjBqyVQkvtZeFef+Rrqnok9//+A5PpX+QUuQvMJgIGK0?=
+ =?us-ascii?Q?FZfxzxdgW/xXFwkDy3cfN1TdEciccr8wLj1NlyqUzz+zI4vwOXlbJlYi6PWn?=
+ =?us-ascii?Q?ZIkuxe9l8WbQanpuWznbvjFL1HD7qgO2X6wK/RrgNDwjkf6NxxmbFuOTdHpB?=
+X-MS-Exchange-AntiSpam-MessageData-1: HFnpWrIxsp8NS4Mwi8pwxjfkeOWb1st3aLQ=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41a59aff-573e-413e-e1ac-08de8e351d9f
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 08:19:51.7771
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SwQEczQNC/lbXLXnWtlnhiPtcEc9dIf+8+1OvlHzWL7svbP3mUoPq5jJEW5n1Na7/18ga86u/jd3Pcx4VV3QoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8880
+X-Spamd-Result: default: False [1.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231040-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,nxp.com,davemloft.net,google.com,kernel.org,redhat.com,163.com];
+	TAGGED_FROM(0.00)[bounces-231041-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vladimir.oltean@nxp.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: 0DCC8356FE1
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:dkim,nxp.com:email,nxp.com:mid]
+X-Rspamd-Queue-Id: DE79E35702D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
-pointer. of_phy_find_device() increments the refcount of the device.
-The current implementation does not decrement the refcount after using
-the pointer, which leads to a memory leak.
+Upstream commit e15c5506dd39 ("net: enetc: allocate vf_state during PF
+probes") was backported incorrectly to kernels where enetc_pf_probe()
+still has to manually check whether the OF node of the PCI device is
+enabled.
 
-Add phy_device_free() to balance the refcount.
+In kernels which contain commit bfce089ddd0e ("net: enetc: remove
+of_device_is_available() handling") and its dependent change, commit
+6fffbc7ae137 ("PCI: Honor firmware's device disabled status"), the
+"err_device_disabled" label has disappeared. Yet, linux-6.1.y and
+earlier still contains it.
 
-Found by code review.
+The trouble is that upstream commit e15c5506dd39 ("net: enetc: allocate
+vf_state during PF probes"), backported as 35668e29e979 in linux-6.1.y,
+introduces new code for the err_setup_mac_addresses and err_alloc_netdev
+labels which calls kfree(pf->vf_state). This code must not execute for
+the err_device_disabled label, because at that stage, the pf structure
+has not yet been allocated, and is an uninitialized pointer.
 
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Cc: stable@vger.kernel.org
-Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
+By moving the err_device_disabled label to undo just the previous
+operation, i.e. a successful enetc_psi_create() call with
+enetc_psi_destroy(), the dereference of uninitialized pf->vf_state is
+avoided.
+
+Fixes: 35668e29e979 ("net: enetc: allocate vf_state during PF probes")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/linux-patches/20260330073356.GA1017537@ax162/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
-index 8b9a3e3bba30..8ce7c9bb6dd6 100644
---- a/drivers/net/ethernet/nxp/lpc_eth.c
-+++ b/drivers/net/ethernet/nxp/lpc_eth.c
-@@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
- static int lpc_mii_probe(struct net_device *ndev)
- {
- 	struct netdata_local *pldat = netdev_priv(ndev);
--	struct phy_device *phydev;
-+	struct phy_device *phydev, *phydev_tmp;
- 
- 	/* Attach to the PHY */
- 	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
-@@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
- 		netdev_info(ndev, "using RMII interface\n");
- 
- 	if (pldat->phy_node)
--		phydev =  of_phy_find_device(pldat->phy_node);
-+		phydev_tmp =  of_phy_find_device(pldat->phy_node);
- 	else
--		phydev = phy_find_first(pldat->mii_bus);
--	if (!phydev) {
-+		phydev_tmp = phy_find_first(pldat->mii_bus);
-+	if (!phydev_tmp) {
- 		netdev_err(ndev, "no PHY found\n");
- 		return -ENODEV;
- 	}
- 
--	phydev = phy_connect(ndev, phydev_name(phydev),
-+	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
- 			     &lpc_handle_link_change,
- 			     lpc_phy_interface_mode(&pldat->pdev->dev));
-+	phy_device_free(phydev_tmp);
- 	if (IS_ERR(phydev)) {
- 		netdev_err(ndev, "Could not attach to PHY\n");
- 		return PTR_ERR(phydev);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index 99422c0b4a26..8cb4c759b165 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -1393,10 +1393,10 @@ static int enetc_pf_probe(struct pci_dev *pdev,
+ 	si->ndev = NULL;
+ 	free_netdev(ndev);
+ err_alloc_netdev:
+-err_device_disabled:
+ err_setup_mac_addresses:
+ 	kfree(pf->vf_state);
+ err_alloc_vf_state:
++err_device_disabled:
+ 	enetc_psi_destroy(pdev);
+ err_psi_create:
+ 	return err;
 -- 
 2.43.0
 
