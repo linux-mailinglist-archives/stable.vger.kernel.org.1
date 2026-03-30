@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-231263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG0JIQ3DymmL/wUAu9opvQ
-	(envelope-from <stable+bounces-231263-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:38:05 +0200
+	id oKkJFiLDymmL/wUAu9opvQ
+	(envelope-from <stable+bounces-231264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:38:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E770935FCD4
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D342935FCDB
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 20:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6888A30292E4
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 18:38:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF42230292FF
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 18:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35D237E2FE;
-	Mon, 30 Mar 2026 18:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3973A63F3;
+	Mon, 30 Mar 2026 18:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7ZIJxAd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIoP7H0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D202FD7D3
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 18:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E92393DD8
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 18:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774895880; cv=none; b=NsswbcdUBDLTNJlEbFEERw9YOyz5L6YsGQOSURYgdnnv0W6qD5KbgofWakzr1sbB2XPVRPrr/IUJt9iwKiDtf6U8dmWB5iubEevpJ4WX+hWX1KHfhywc3KGJL1xzZHpCVtI5ciuZNpaFkw/yteXD6ggG2j0QdcsMzXiZJOnOJ4Y=
+	t=1774895902; cv=none; b=hpIGnxZAc+qLMgtKDsBiKw2EK3vPnKimt7fkDi7sX6jZ3LnwFuDxrIyouv7Yno6po5Yag7B0X/oomY/P0MQfZI3bFHeJa60esjF0MLTkOcVDDGBR5VS7cx7XMTFiXzxItmZ5UgDll9pblTnRdKl5tQ8JlmajQhPQ1GWl/xnsal4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774895880; c=relaxed/simple;
-	bh=xoY5ekMSApKsdq+L3fojgVwyVzkYVjIVoc6wPSwHOcg=;
+	s=arc-20240116; t=1774895902; c=relaxed/simple;
+	bh=M80uT1gxQXQVGkZ9zW6yu7rw0HwwMGrBrWsP3/+DcrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zz2HULWqf/iIf0aFz1Bpf7Mb2hOSnZH28dfY5AXtQdL37K4mCt2FZ8nBcllbClg008G2v7a3tC7+UCcYkSuYTtcj/6OwZyZ3/5m6x/PraP2aBEG72Jv4VynlwGynCqvP5ZCxd0c2Po9fmmEgNmcLd5imdU4uVOQ/7YHu1ybVRnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7ZIJxAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC58C4CEF7;
-	Mon, 30 Mar 2026 18:37:59 +0000 (UTC)
+	 MIME-Version; b=EYsoI/OXgwnlqiqz2G48P1nvqCkaQFEFmOP/cAZh5nklSdwuVCQOBcyURp4ClQgLj8SLUE8hut95TvDsz5I2iBoP9VniSvZuLME2CEgmGvmu2e+rPEUVVfI9NiV2z+3ADAC5YfMrtGYZlPGyhMgiovIv5hhjPsO6sbjDI/DS8wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIoP7H0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC270C4CEF7;
+	Mon, 30 Mar 2026 18:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774895880;
-	bh=xoY5ekMSApKsdq+L3fojgVwyVzkYVjIVoc6wPSwHOcg=;
+	s=k20201202; t=1774895901;
+	bh=M80uT1gxQXQVGkZ9zW6yu7rw0HwwMGrBrWsP3/+DcrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7ZIJxAdGS/X6cu4TKbnYNvIEG6pjXoT+og6f1Nrtlq4wjeB1f5ywUHZhIszc1dmc
-	 UPTB0Se8oEfZVNK5B0q7R4w6crxlTM1hepTAlElM1iV8AK62lQHJS4xNPzvY02dpcp
-	 UtCLWZbhn6zS+wc7EOl/B5kxk0lCXomWsz/39Aug7B08nz4wknGXQxKHPvhO0Qe24m
-	 zXeaxZ+TC28r7agQEqigujPV3afITyBsB/LXTG7z6YFzVSj3ufpr9DwTq/VusHNHmd
-	 uNuzpcEg6l3Yc9hxTenemA/oyuxN2+Bb++2/2S6yDBRinbrp1qw8UUxKo7AZKqBlBH
-	 kdtXCWTXFE6aw==
+	b=BIoP7H0CJ+UQGwhZKzGB6u2zqkcd/K3s1gZiYWnoycNpvTV/dqbavKdyR2bgHygMM
+	 B1Bu6ove+croKC9NeePH07d7StZapIpSkjWhmLw69YElJ3+Ko1ooKnXb7rZVSlwJUk
+	 iIGsq+QWEhj9GAKDhJSe+cI9DnV++9WctBzRCqvfOs9Uyomyr57+l4n2j9dAONmZxo
+	 Xqek76MaWCVdJRCP8pcELqqgC1HvN0fAUBMnEiX5k8UzyEzBFiDP2FSTP3k2HXa5lU
+	 HRTtO0au5RfP57QGYF8AuhCZja07j5GgOO7uS+cHfFe/Dnwc/mTEqsctEGv2d8TO+g
+	 3Xw3Lxlg6sfSw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] drm/xe: always keep track of remap prev/next
-Date: Mon, 30 Mar 2026 14:37:58 -0400
-Message-ID: <20260330183758.941967-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
+Date: Mon, 30 Mar 2026 14:38:19 -0400
+Message-ID: <20260330183819.950934-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026032929-running-boots-dc07@gregkh>
-References: <2026032929-running-boots-dc07@gregkh>
+In-Reply-To: <2026032931-kilobyte-catchy-1ad2@gregkh>
+References: <2026032931-kilobyte-catchy-1ad2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231263-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231264-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,210 +89,80 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,intel.com:email]
-X-Rspamd-Queue-Id: E770935FCD4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pm.me:email]
+X-Rspamd-Queue-Id: D342935FCDB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit bfe9e314d7574d1c5c851972e7aee342733819d2 ]
+[ Upstream commit beef2634f81f1c086208191f7228bce1d366493d ]
 
-During 3D workload, user is reporting hitting:
+When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
+(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
+max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
+with PATH_MAX, causing out-of-bounds write beyond the response buffer.
+In get_file_all_info(), there was a missing validation check for
+the client-provided OutputBufferLength before copying the filename into
+FileName field of the smb2_file_all_info structure.
+If the filename length exceeds the available buffer space, it could lead to
+potential buffer overflows or memory corruption during smbConvertToUTF16
+conversion. This calculating the actual free buffer size using
+smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
+insufficient and updating smbConvertToUTF16 to use the actual filename
+length (clamped by PATH_MAX) to ensure a safe copy operation.
 
-[  413.361679] WARNING: drivers/gpu/drm/xe/xe_vm.c:1217 at vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe], CPU#7: vkd3d_queue/9925
-[  413.361944] CPU: 7 UID: 1000 PID: 9925 Comm: vkd3d_queue Kdump: loaded Not tainted 7.0.0-070000rc3-generic #202603090038 PREEMPT(lazy)
-[  413.361949] RIP: 0010:vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe]
-[  413.362074] RSP: 0018:ffffd4c25c3df930 EFLAGS: 00010282
-[  413.362077] RAX: 0000000000000000 RBX: ffff8f3ee817ed10 RCX: 0000000000000000
-[  413.362078] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[  413.362079] RBP: ffffd4c25c3df980 R08: 0000000000000000 R09: 0000000000000000
-[  413.362081] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8f41fbf99380
-[  413.362082] R13: ffff8f3ee817e968 R14: 00000000ffffffef R15: ffff8f43d00bd380
-[  413.362083] FS:  00000001040ff6c0(0000) GS:ffff8f4696d89000(0000) knlGS:00000000330b0000
-[  413.362085] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-[  413.362086] CR2: 00007ddfc4747000 CR3: 00000002e6262005 CR4: 0000000000f72ef0
-[  413.362088] PKRU: 55555554
-[  413.362089] Call Trace:
-[  413.362092]  <TASK>
-[  413.362096]  xe_vm_bind_ioctl+0xa9a/0xc60 [xe]
-
-Which seems to hint that the vma we are re-inserting for the ops unwind
-is either invalid or overlapping with something already inserted in the
-vm. It shouldn't be invalid since this is a re-insertion, so must have
-worked before. Leaving the likely culprit as something already placed
-where we want to insert the vma.
-
-Following from that, for the case where we do something like a rebind in
-the middle of a vma, and one or both mapped ends are already compatible,
-we skip doing the rebind of those vma and set next/prev to NULL. As well
-as then adjust the original unmap va range, to avoid unmapping the ends.
-However, if we trigger the unwind path, we end up with three va, with
-the two ends never being removed and the original va range in the middle
-still being the shrunken size.
-
-If this occurs, one failure mode is when another unwind op needs to
-interact with that range, which can happen with a vector of binds. For
-example, if we need to re-insert something in place of the original va.
-In this case the va is still the shrunken version, so when removing it
-and then doing a re-insert it can overlap with the ends, which were
-never removed, triggering a warning like above, plus leaving the vm in a
-bad state.
-
-With that, we need two things here:
-
- 1) Stop nuking the prev/next tracking for the skip cases. Instead
-    relying on checking for skip prev/next, where needed. That way on the
-    unwind path, we now correctly remove both ends.
-
- 2) Undo the unmap va shrinkage, on the unwind path. With the two ends
-    now removed the unmap va should expand back to the original size again,
-    before re-insertion.
-
-v2:
-  - Update the explanation in the commit message, based on an actual IGT of
-    triggering this issue, rather than conjecture.
-  - Also undo the unmap shrinkage, for the skip case. With the two ends
-    now removed, the original unmap va range should expand back to the
-    original range.
-v3:
-  - Track the old start/range separately. vma_size/start() uses the va
-    info directly.
-
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7602
-Fixes: 8f33b4f054fc ("drm/xe: Avoid doing rebinds")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260318100208.78097-2-matthew.auld@intel.com
-(cherry picked from commit aec6969f75afbf4e01fd5fb5850ed3e9c27043ac)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[ adapted function signatures ]
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted variable declarations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pt.c       | 12 ++++++------
- drivers/gpu/drm/xe/xe_vm.c       | 22 ++++++++++++++++++----
- drivers/gpu/drm/xe/xe_vm_types.h |  4 ++++
- 3 files changed, 28 insertions(+), 10 deletions(-)
+ fs/smb/server/smb2pdu.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-index fb94ff55c7361..9b8903ad6f043 100644
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -1281,9 +1281,9 @@ static int op_check_userptr(struct xe_vm *vm, struct xe_vma_op *op,
- 		err = vma_check_userptr(vm, op->map.vma, pt_update);
- 		break;
- 	case DRM_GPUVA_OP_REMAP:
--		if (op->remap.prev)
-+		if (op->remap.prev && !op->remap.skip_prev)
- 			err = vma_check_userptr(vm, op->remap.prev, pt_update);
--		if (!err && op->remap.next)
-+		if (!err && op->remap.next && !op->remap.skip_next)
- 			err = vma_check_userptr(vm, op->remap.next, pt_update);
- 		break;
- 	case DRM_GPUVA_OP_UNMAP:
-@@ -1784,12 +1784,12 @@ static int op_prepare(struct xe_vm *vm,
- 		err = unbind_op_prepare(tile, pt_update_ops,
- 					gpuva_to_vma(op->base.remap.unmap->va));
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 65b55e824aa8b..868b797d90d44 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4598,6 +4598,8 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 	int conv_len;
+ 	char *filename;
+ 	u64 time;
++	int buf_free_len, filename_len;
++	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
  
--		if (!err && op->remap.prev) {
-+		if (!err && op->remap.prev && !op->remap.skip_prev) {
- 			err = bind_op_prepare(vm, tile, pt_update_ops,
- 					      op->remap.prev);
- 			pt_update_ops->wait_vm_bookkeep = true;
- 		}
--		if (!err && op->remap.next) {
-+		if (!err && op->remap.next && !op->remap.skip_next) {
- 			err = bind_op_prepare(vm, tile, pt_update_ops,
- 					      op->remap.next);
- 			pt_update_ops->wait_vm_bookkeep = true;
-@@ -1950,10 +1950,10 @@ static void op_commit(struct xe_vm *vm,
- 				 gpuva_to_vma(op->base.remap.unmap->va), fence,
- 				 fence2);
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
+@@ -4609,6 +4611,16 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 	if (IS_ERR(filename))
+ 		return PTR_ERR(filename);
  
--		if (op->remap.prev)
-+		if (op->remap.prev && !op->remap.skip_prev)
- 			bind_op_commit(vm, tile, pt_update_ops, op->remap.prev,
- 				       fence, fence2);
--		if (op->remap.next)
-+		if (op->remap.next && !op->remap.skip_next)
- 			bind_op_commit(vm, tile, pt_update_ops, op->remap.next,
- 				       fence, fence2);
- 		break;
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 02f2b7ad8a85f..7ce6a9d4e5c10 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -2187,7 +2187,6 @@ static int xe_vma_op_commit(struct xe_vm *vm, struct xe_vma_op *op)
- 			if (!err && op->remap.skip_prev) {
- 				op->remap.prev->tile_present =
- 					tile_present;
--				op->remap.prev = NULL;
- 			}
- 		}
- 		if (op->remap.next) {
-@@ -2197,11 +2196,13 @@ static int xe_vma_op_commit(struct xe_vm *vm, struct xe_vma_op *op)
- 			if (!err && op->remap.skip_next) {
- 				op->remap.next->tile_present =
- 					tile_present;
--				op->remap.next = NULL;
- 			}
- 		}
++	filename_len = strlen(filename);
++	buf_free_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer) +
++			offsetof(struct smb2_file_all_info, FileName),
++			le32_to_cpu(req->OutputBufferLength));
++	if (buf_free_len < (filename_len + 1) * 2) {
++		kfree(filename);
++		return -EINVAL;
++	}
++
+ 	inode = file_inode(fp->filp);
+ 	generic_fillattr(file_mnt_user_ns(fp->filp), inode, &stat);
  
--		/* Adjust for partial unbind after removin VMA from VM */
-+		/*
-+		 * Adjust for partial unbind after removing VMA from VM. In case
-+		 * of unwind we might need to undo this later.
-+		 */
- 		if (!err) {
- 			op->base.remap.unmap->va->va.addr = op->remap.start;
- 			op->base.remap.unmap->va->va.range = op->remap.range;
-@@ -2273,6 +2274,8 @@ static int vm_bind_ioctl_ops_parse(struct xe_vm *vm, struct drm_gpuva_ops *ops,
- 
- 			op->remap.start = xe_vma_start(old);
- 			op->remap.range = xe_vma_size(old);
-+			op->remap.old_start = op->remap.start;
-+			op->remap.old_range = op->remap.range;
- 
- 			if (op->base.remap.prev) {
- 				flags |= op->base.remap.unmap->va->flags &
-@@ -2421,8 +2424,19 @@ static void xe_vma_op_unwind(struct xe_vm *vm, struct xe_vma_op *op,
- 			down_read(&vm->userptr.notifier_lock);
- 			vma->gpuva.flags &= ~XE_VMA_DESTROYED;
- 			up_read(&vm->userptr.notifier_lock);
--			if (post_commit)
-+			if (post_commit) {
-+				/*
-+				 * Restore the old va range, in case of the
-+				 * prev/next skip optimisation. Otherwise what
-+				 * we re-insert here could be smaller than the
-+				 * original range.
-+				 */
-+				op->base.remap.unmap->va->va.addr =
-+					op->remap.old_start;
-+				op->base.remap.unmap->va->va.range =
-+					op->remap.old_range;
- 				xe_vm_insert_vma(vm, vma);
-+			}
- 		}
- 		break;
- 	}
-diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
-index 4f95308a61b8d..b280e335c5bb4 100644
---- a/drivers/gpu/drm/xe/xe_vm_types.h
-+++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -314,6 +314,10 @@ struct xe_vma_op_remap {
- 	u64 start;
- 	/** @range: range of the VMA unmap */
- 	u64 range;
-+	/** @old_start: Original start of the VMA we unmap */
-+	u64 old_start;
-+	/** @old_range: Original range of the VMA we unmap */
-+	u64 old_range;
- 	/** @skip_prev: skip prev rebind */
- 	bool skip_prev;
- 	/** @skip_next: skip next rebind */
+@@ -4640,7 +4652,8 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 	file_info->Mode = fp->coption;
+ 	file_info->AlignmentRequirement = 0;
+ 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
+-				     PATH_MAX, conn->local_nls, 0);
++				     min(filename_len, PATH_MAX),
++				     conn->local_nls, 0);
+ 	conv_len *= 2;
+ 	file_info->FileNameLength = cpu_to_le32(conv_len);
+ 	rsp->OutputBufferLength =
 -- 
 2.53.0
 
