@@ -1,246 +1,130 @@
-Return-Path: <stable+bounces-231255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CQrOkadymmg+QUAu9opvQ
-	(envelope-from <stable+bounces-231255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:56:54 +0200
+	id 8OVfASSdymmg+QUAu9opvQ
+	(envelope-from <stable+bounces-231254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:56:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF8A35E424
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F39E35E3DE
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 387A8302B22B
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:51:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD0DC300AC2B
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9A33451B5;
-	Mon, 30 Mar 2026 15:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E35374196;
+	Mon, 30 Mar 2026 15:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EURFnuaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uD/HkKGv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107AF344DB5
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774885907; cv=pass; b=Mg4pA///WMkqlUn+oVJrmRPBuHV3qPmn/4Zm2iakmYJjvGdf2ZScaUD2p5ZS/0A5Mzc3VdfsUcsUQ+y/lCTz8z+oHuf4D21y7ak8LdSsI3OwZtg1K+LPmi7PJu264O4RXzQr3viB4hyjAnvlcge8N2cdJbnNjxKj2EbuV2mp0i0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774885907; c=relaxed/simple;
-	bh=MEXzZl9zYo7dl9SxQcq1eH2lWQCMdjTITE9iYPn2xDE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KVaT1U8HEe0xcJxgoJZmQP2KoDRIWOla5vZsng4s9qfNUTjBAo3wNriajrfGp9giNCuL6kKqXVQLgyyC1h5ctdlFiacka/CAZSUQi7oNCLNbO/bIn+tItuRwRGQ6v9tMILA9qrp42gndVLdC/3LCEIPsWkU7W2bzyQ/k3LNxQc0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EURFnuaN; arc=pass smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43b95e5b3afso2664178f8f.3
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:51:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774885903; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VlStcJcGj5N6jOG7swX9YymR4MirUePY9YgY0N6Em7/nj/hmRDcVmOcuWBeK6bby+5
-         OP3/uYrXMt0itFl9KW7t8jESh1QOZEdj3kbqGgfg3Gt80sF5ViSyr/elkxyn+uWDZTlb
-         kGvTx1YCeITAdknox9993TxvfQVSXTrlvUdixylupzahM+kHbIipE52PDvOKrYw4w8T2
-         vOsvUeaKIq1wn6wOhcMmbVWMS00Q1L8jw8DUcJfGxqpOycXAplo8SUN7EbDaqEeqoAHn
-         XTYvUhqdDQp5qkEDxR/2jD1oTlTAoNlhjtgALA0FRWhZgvpwuSlCEljg1067OXvRVOYk
-         p68Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cXaIcPsqvcDWr494pHn/UVT9pyr634NTh1L5DdSP0OA=;
-        fh=+pdaLgWFsSho/qdzYs8Rj94b6XMQ0jKmfN9fhrekESQ=;
-        b=VNhxRZJ4C1P8LgpUqpoFbGPEx+PF7y+txNi30d7FlnrwgVwk6SiaCpTJ81PqObiXod
-         NUD98pFkYhSipu6iaRLHE+cPRhNEcHahzXTGJIzMg3sw1ax6d3lbAVANFFXALWpu6n/O
-         5rpPuTsT9xnZndxyNHe6RseGy0hv+SWnJRcmwYr3G+5zGA5iTVOKzWVcf21zfA3o8s+n
-         SY/toeEaUyXfOO+hB30tJ4ZFjaWxZLO1uSnd1bUB93Fqhk721sRs6CdGiV2WLDK5kTIq
-         cqcPtWl4gbWbm5jeIi8kgFQcwUnwxLs63A/wc6jccYqGjcy1Srkni7o35n9GFaSRERtB
-         0AUA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774885903; x=1775490703; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cXaIcPsqvcDWr494pHn/UVT9pyr634NTh1L5DdSP0OA=;
-        b=EURFnuaNjsL0RRuFkdRfetcQH621KtICTlEcgGPqklzVlcMuvK+7ZWxdC+V+kqWNyN
-         GMhIMxq/M+bSLREoehDk4B9Mfz5XvH83+SS+Xoavgs54paSpanqXBfqEkeksXtot10jH
-         BVbgzDOi3LZW1xqtNXSS0D2Yznp7MUmuK3DqxlSCGXQ3/iQQoAlgAefB9fO9dmC2kOAX
-         BfcrvL1olC/xOaJR8epK/DHXdUhZjhaYjNyGHgY6DT6L46oj5w/L/ZeVAAbK1eTRhfeZ
-         qPQhseKUoVy+RLQYMAUqLa4rJ4FxIDre2JEcZ+xV3pL9pV2MarLoUgkomDZIlBtlKl1x
-         +2tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774885903; x=1775490703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cXaIcPsqvcDWr494pHn/UVT9pyr634NTh1L5DdSP0OA=;
-        b=KlGXhj3j1uAZoQyyOen8gd9Te+q9XOlWtSdUJSY+l8G0CO1jm1dOeeEbQWKX0oDZZI
-         +SguMYpiO2863uFu+V9N3x21mBiuZAAQDoIdD3UY4qumdkdJCz/rXyGm2dpmmwxPrb6I
-         yHxIaWA4OvFYbBoeGeqrcQ7nV2S2uhqN28SCzzvFO2eMDquhP1YLHPEYgatYkQvkdo9T
-         HE40c12Bxtqqi3zjce7p0rk4DfhYv3MbVru4gWfxkjdU+kBTSn3y7Evt93pvu1JGkWZB
-         bFE4OaZD+NFghBVCjtzut10KyNMqchf9RU6g0dHzsZ73JTlzyrKSaQtCclodZfLenfZF
-         V1jA==
-X-Forwarded-Encrypted: i=1; AJvYcCXP2CWJQYdzG7GhGmPywjtnXC09GvHiWBOfqyDsGY50e/ogDK5QI9UlS1qYGBgiAwQSXGzX4TU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzww1eolYPTPX40O0su63/+yJB2g7TkKGOJK+MReyLfKly7bQM7
-	Arn5NGWvzHXGOaKjB0uNMxky/Opwj3ebKqIh6nJxI37FNnBIXmGoukvvfmcARgnqIhxJSuSCZBG
-	Loi255b3PPnq/BRvTQUcyeim51SUcRVWYSsBseiR7/Q==
-X-Gm-Gg: ATEYQzzkVeobaiyGOJxikEE1UEkMBIbjbzWxy8GY8ymzmt+T4INVt6hkjHTSn/W6oEp
-	/gxJxiXuN6L1sNuquuuh3HRkOon3EU/3xRpBlUrHwyCG86r+rfsGm5a1HRxt2lpVRWkNjqOssZm
-	QSfECDwQku80PfnhE2FidqX4gd8SzqWPqoLQ2VXIQbOm0dcESlSwJ3FVrd+3puatKD9wKGK4bNz
-	heZQDzPwoF0HtopOQa2pg83BUE/00Fn3boUtqjf4Koe5tKf6a3AvN4FgMIbu5UhgU/z/04RrRKn
-	tVQmfd92cHnRNN81lh1a211pdIQdelQrrxQB9jjHTICejICIZK/inPxDegES+C5xKKoltQ==
-X-Received: by 2002:a05:6000:2f87:b0:43c:ff58:35c8 with SMTP id
- ffacd0b85a97d-43cff58375fmr8080335f8f.28.1774885903245; Mon, 30 Mar 2026
- 08:51:43 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1397344DB5;
+	Mon, 30 Mar 2026 15:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774885901; cv=none; b=Apz15DYAyJqM2AW9dyvaw3ZKnCbJIm7mSARe1HmtUvno4A3Dj0BnnO9Oiku6BlmNEYI66I47vHdD8yDKyx0kUjeZMAyyqVkL6vlWenkLtuGwX5W0P3yJH85DmBkCq5n4GRKn7lzEdtLLjAHOHN/QYtzJxdoaKkEUJNR4waJzohw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774885901; c=relaxed/simple;
+	bh=VjZpJN9SN3Cbv+q/GHgyVTPouO/S00Aq2D+4UhnLGVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fJ1ay4xiFnzPEqNyYVnG7QNgE0RKDzij9GwzNls88A2pQJplM5cujYkA4o5D8zdjA5nPxKZuSLSwpUC2+1MHqMhI4YgV4NmyuMqnsJkxyxWUDluvXEWPziTO5QoabGnCkoq9F6m3PmsGSiLdVgWjMg3JSeLio8W+09qHpNHZ8g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uD/HkKGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D81C4CEF7;
+	Mon, 30 Mar 2026 15:51:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774885901;
+	bh=VjZpJN9SN3Cbv+q/GHgyVTPouO/S00Aq2D+4UhnLGVc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uD/HkKGvpDvOk7tq5zKCA9l93yF85/7C69IQjnL5GJv2lbUkKg3LkpskN/rSvYyyZ
+	 rmMvd935vGVOB2+5simP+7qOeU5KYY+qhGnKB2/hTnRPLoRfXGwaaKWxoOZUkMAC9K
+	 SbjBGLgzAUDn+sEjprm6Zrf+Po5W5cEGQFUeFnG8=
+Date: Mon, 30 Mar 2026 17:51:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
+Cc: marvin24@gmx.de, linux-staging@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v3] staging: nvec: validate battery response length
+ before memcpy
+Message-ID: <2026033041-elf-coach-5fae@gregkh>
+References: <20260330125200.820693-1-sebasjosue84@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260327-b4-cru-rework-v1-0-3b7d0430f538@ideasonboard.com> <20260327-b4-cru-rework-v1-1-3b7d0430f538@ideasonboard.com>
-In-Reply-To: <20260327-b4-cru-rework-v1-1-3b7d0430f538@ideasonboard.com>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Mon, 30 Mar 2026 16:51:17 +0100
-X-Gm-Features: AQROBzAQZjNwjpdVDrkveGXGjVD9jBNGNwrMZvK6vhHbZvqMcgOnf3rHRqmwidE
-Message-ID: <CA+V-a8vYWH0NULkJtiLgxbeZayQ3V98JrCeeG9QYfXQ2W1jXDQ@mail.gmail.com>
-Subject: Re: [PATCH 01/14] media: rzg2l-cru: Skip ICnMC configuration when
- ICnSVC is used
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Hans Verkuil <hverkuil+cisco@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
-	Daniel Scally <dan.scally@ideasonboard.com>, =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260330125200.820693-1-sebasjosue84@gmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231255-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231254-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmx.de,lists.linux.dev,vger.kernel.org,intel.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[kernel.org,ideasonboard.com,bp.renesas.com,linux.intel.com,protonmail.com,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ideasonboard.com:email]
-X-Rspamd-Queue-Id: AEF8A35E424
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6F39E35E3DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 5:19=E2=80=AFPM Jacopo Mondi
-<jacopo.mondi@ideasonboard.com> wrote:
->
-> From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
->
-> When the CRU is configured to use ICnSVC for virtual channel mapping,
-> as on the RZ/{G3E, V2H/P} SoC, the ICnMC register must not be
-> programmed.
->
-> Return early after setting up ICnSVC to avoid overriding the ICnMC
-> register, which is not applicable in this mode.
->
-> This prevents unintended register programming when ICnSVC is enabled.
->
-> Fixes: 3c5ca0a48bb0 ("media: rzg2l-cru: Drop function pointer to configur=
-e CSI")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-> [Rework to not break image format programming]
-> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-> ---
->  .../media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h   |  1 +
->  drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c  | 17 +++++++++++=
-------
->  2 files changed, 12 insertions(+), 6 deletions(-)
->
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On Mon, Mar 30, 2026 at 06:52:00AM -0600, Sebastian Josue Alba Vives wrote:
+> From: Sebastián Alba Vives <sebasjosue84@gmail.com>
+> 
+> In nvec_power_notifier(), the response length from the embedded
+> controller is used directly as the size argument to memcpy() when
+> copying battery manufacturer, model, and type strings. The
+> destination buffers (bat_manu, bat_model, bat_type) are fixed at
+> 30 bytes, but res->length is a u8 that can be up to 255, allowing
+> a heap buffer overflow.
 
-Cheers,
-Prabhakar
+How can the embedded controller send data that is not correct?  It is
+trusted, right?
 
-> diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h b/=
-drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
-> index a5a57369ef0e..10e62f2646d0 100644
-> --- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
-> +++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
-> @@ -60,6 +60,7 @@
->  #define ICnMC_CSCTHR                   BIT(5)
->  #define ICnMC_INF(x)                   ((x) << 16)
->  #define ICnMC_VCSEL(x)                 ((x) << 22)
-> +#define ICnMC_VCSEL_MASK               GENMASK(23, 22)
->  #define ICnMC_INF_MASK                 GENMASK(21, 16)
->
->  #define ICnMS_IA                       BIT(2)
-> diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c b/dri=
-vers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-> index 162e2ace6931..6aea7c244df1 100644
-> --- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-> +++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-> @@ -262,19 +262,24 @@ static void rzg2l_cru_csi2_setup(struct rzg2l_cru_d=
-ev *cru,
->                                  u8 csi_vc)
->  {
->         const struct rzg2l_cru_info *info =3D cru->info;
-> -       u32 icnmc =3D ICnMC_INF(ip_fmt->datatype);
-> +       u32 icnmc =3D rzg2l_cru_read(cru, info->image_conv) & ~(ICnMC_INF=
-_MASK |
-> +                                                             ICnMC_VCSEL=
-_MASK);
-> +       icnmc |=3D ICnMC_INF(ip_fmt->datatype);
->
-> +       /*
-> +        * VC filtering goes through SVC register on G3E/V2H.
-> +        *
-> +        * FIXME: virtual channel filtering is likely broken and only VC=
-=3D0
-> +        * works.
-> +        */
->         if (cru->info->regs[ICnSVC]) {
->                 rzg2l_cru_write(cru, ICnSVCNUM, csi_vc);
->                 rzg2l_cru_write(cru, ICnSVC, ICnSVC_SVC0(0) | ICnSVC_SVC1=
-(1) |
->                                 ICnSVC_SVC2(2) | ICnSVC_SVC3(3));
-> +       } else {
-> +               icnmc |=3D ICnMC_VCSEL(csi_vc);
->         }
->
-> -       icnmc |=3D rzg2l_cru_read(cru, info->image_conv) & ~ICnMC_INF_MAS=
-K;
-> -
-> -       /* Set virtual channel CSI2 */
-> -       icnmc |=3D ICnMC_VCSEL(csi_vc);
-> -
->         rzg2l_cru_write(cru, info->image_conv, icnmc);
->  }
->
->
-> --
-> 2.53.0
->
->
+> Additionally, if res->length is less than 2, the subtraction
+> res->length - 2 wraps around as an unsigned value, resulting in a
+> large copy that corrupts kernel heap memory.
+> 
+> Introduce NVEC_BAT_STRING_SIZE to replace the hardcoded buffer
+> size, store res->length - 2 in a local copy_len variable for
+> clarity, and add bounds checks before each memcpy to ensure the
+> copy length does not exceed the destination buffer and that
+> res->length is at least 2 to prevent unsigned integer underflow.
+
+Is this the only data that needs to be validated from the controller?
+
+> Reported-by: kernel test robot <lkp@intel.com>
+
+The kernel test robot did not report these buffer size issues :(
+
+thanks,
+
+greg k-h
 
