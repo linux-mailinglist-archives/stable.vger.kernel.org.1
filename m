@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-231284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SN2BJqbpymkkBQYAu9opvQ
-	(envelope-from <stable+bounces-231284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:22:46 +0200
+	id MNp7ATbrymkkBQYAu9opvQ
+	(envelope-from <stable+bounces-231285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:29:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09AD5361680
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:22:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205AC361779
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 406A6302DF76
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:22:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 06FA5301071B
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384543A0B31;
-	Mon, 30 Mar 2026 21:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CD539EF1A;
+	Mon, 30 Mar 2026 21:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TlMRVBcn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IAov1hn8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CAC325704;
-	Mon, 30 Mar 2026 21:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2534823AE62;
+	Mon, 30 Mar 2026 21:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774905727; cv=none; b=oUmGZyWuibLH557+JPrQhIXa7d1SSsbbaprGSrl/Mkj0cXlyTPamcoyArlSvMG4M6Pip7LlNPx7h7QslC8ShKlEcPl82Ftie8Z8o4xZ2XH+flqc1bUrV4NRPFUegtHyaRw0mCR4lxU0MrtRUMqwzlu+PK9n9S72jXY3ZW3MSaRM=
+	t=1774906151; cv=none; b=gVSG6FcROWNCbncXzWHBV8LHB+WXd70esQli+U6Xs0kZFxIZcIvPbKTCnCX4ANVj2YsYvcEfs9VjqQNdU9z+PGqWTcve9VoSJiMXW5GwmBn+tYkcRaxXIk0Dx2pkuTVvwc+AlU3nAz4oID/rN6Zx4+8OIdHKworwcjuTt7yKT7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774905727; c=relaxed/simple;
-	bh=MEWRnboV2bNkwQiahJ5k+v6T4kmH5A38Tmwfekx5+Z8=;
+	s=arc-20240116; t=1774906151; c=relaxed/simple;
+	bh=7YXvq1MsfQHE3SrFhAi3vCgluhob3a3rWMvitZkC0fM=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=IfzcYS/C7hkPrCH2OdBNyak5QZjx7KVTTLCC7EZVJYyqEud+twHPDQ6TQ1phwz4CEq3qYxhS4134A/U7a6862s/DBaQ//Aa+p3bW6EcSNqpprzCgl1ksAP0u9IYwolDfXLO2FGo3ew8Z4SMU2WfEPk/0W9OyLqd9IIwX2hRDbkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TlMRVBcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA31FC4CEF7;
-	Mon, 30 Mar 2026 21:22:05 +0000 (UTC)
+	 Mime-Version:Content-Type; b=Ah70nXLLJL09eem0hVxcz+6hlsZtcpHVvDUEgpBr6qLjW+uIOQyNUfcc8WdzCPIvSQMiTUulQEdI9sOe4hPMI4bcC1aUFo/gxhhZkfXKPgLFP7sWsvkYKS+OSeLvKrUhBud+WktrCeYyeSTsBGtw0UqP/CmQQ0LsBB3qCqn1u8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IAov1hn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DEAC4CEF7;
+	Mon, 30 Mar 2026 21:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774905726;
-	bh=MEWRnboV2bNkwQiahJ5k+v6T4kmH5A38Tmwfekx5+Z8=;
+	s=korg; t=1774906150;
+	bh=7YXvq1MsfQHE3SrFhAi3vCgluhob3a3rWMvitZkC0fM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TlMRVBcnpychpAEroWbQz7/sAYailQgoeMk8W8f0z1h/YGHYywR6Bt3lOAXDRsq0q
-	 A0jJ/r6ZD23d96zmJTcG5wWHOjnAu4ikN297Kfk3Kc6loPxpro/ziWHHloQMnFbS/P
-	 Y00IMW9Oh84qfrPXQfXH2tjBThYn173ju1hh6ZTo=
-Date: Mon, 30 Mar 2026 14:22:05 -0700
+	b=IAov1hn81U6kG0aCTcncnSjiJRArpiMQrTaBVIw8QyU9tvjmvb/+CNfXk++EXW+D2
+	 FTG0N/F4ica+PuIMkTUCCtKPXWN0khQ49JsfEnReJMwzVjpPIuLjFU8fDL0nwG/EH5
+	 aDWhT2cuJlF3wxpdI9I+4EveV4YxYFjkVGd+L4iY=
+Date: Mon, 30 Mar 2026 14:29:09 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "# 5 . 19 . x" <stable@vger.kernel.org>, David
- Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Lorenzo
- Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
- <rppt@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Suren
- Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- damon@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Roman Gushchin
- <roman.gushchin@linux.dev>
-Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn
- commit_inputs vs other params race
-Message-Id: <20260330142205.e7c7d7b47ec15a634f6eebf4@linux-foundation.org>
-In-Reply-To: <20260329193226.59025-1-sj@kernel.org>
-References: <2026032915-library-embolism-b48c@gregkh>
-	<20260329193226.59025-1-sj@kernel.org>
+To: Yiyang Chen <cyyzero16@gmail.com>
+Cc: Balbir Singh <bsingharora@gmail.com>, linux-kernel@vger.kernel.org, Wang
+ Yaxin <wang.yaxin@zte.com.cn>, Fan Yu <fan.yu9@zte.com.cn>,
+ "Dr . Thomas Orgis" <thomas.orgis@uni-hamburg.de>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] taskstats: set version in TGID exit notifications
+Message-Id: <20260330142909.3a5fe0ce22798a8cc34a8abe@linux-foundation.org>
+In-Reply-To: <ba83d934e59edd431b693607de573eb9ca059309.1774810498.git.cyyzero16@gmail.com>
+References: <cover.1774810498.git.cyyzero16@gmail.com>
+	<ba83d934e59edd431b693607de573eb9ca059309.1774810498.git.cyyzero16@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,70 +64,77 @@ Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231285-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,zte.com.cn,uni-hamburg.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231284-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: 09AD5361680
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 205AC361779
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, 29 Mar 2026 12:32:26 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Mon, 30 Mar 2026 03:00:40 +0800 Yiyang Chen <cyyzero16@gmail.com> wrote:
 
-> On Sun, 29 Mar 2026 20:05:53 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
+> delay accounting started populating taskstats records with a valid
+> version field via fill_pid() and fill_tgid().
 > 
-> > On Sun, Mar 29, 2026 at 08:49:16AM -0700, SeongJae Park wrote:
-> > > Forwarding sashiko.dev review status for this thread.
-> > > 
-> > > # review url: https://sashiko.dev/#/patchset/20260329153052.46657-1-sj@kernel.org
-> > 
-> > Why are you doing this?  If we want to see the review, can't we just go
-> > and look at the tool itself?
+> Later, commit ad4ecbcba728 ("[PATCH] delay accounting taskstats
+> interface send tgid once") changed the TGID exit path to send the
+> cached signal->stats aggregate directly instead of building the outgoing
+> record through fill_tgid(). Unlike fill_tgid(), fill_tgid_exit() only
+> accumulates accounting data and never initializes stats->version.
 > 
-> We can.  But it is bit cumbersome to opening web browser and moving my focus to
-> there.  Reading everything on the mailing tool is easier for some people like
-> me.  Like some test bots send reports are replying to patches, or we sometimes
-> forwarding bugzilla reports to mailing lists in a form of a plain text mail.
+> As a result, TGID exit notifications can reach userspace with
+> version == 0 even though PID exit notifications and
+> TASKSTATS_CMD_GET replies carry a valid taskstats version.
 > 
-> Secondly, I have to share my opinions about the reviews, as many times AI
-> reviews need human's opinions.  There is no good way to do that on the web ui
-> of the tool (sashiko) for now, and I think this mail based flow is the best.
+> Set stats->version = TASKSTATS_VERSION after copying the cached TGID
+> aggregate into the outgoing netlink payload so all taskstats records are
+> self-describing again.
+> 
+> Fixes: ad4ecbcba728 ("[PATCH] delay accounting taskstats interface send tgid once")
 
-I do agree with Greg that it's all a bit excessive.  Thanks for your
-your diligence, but perhaps dial it back a bit?  It's OK - we're all
-trying to figure out how best to utilize this tool.
+Thanks, lol, 20 years ago.
 
-I view Sashiko as primarily an author tool.  Sometimes I call it
-checkpatch++.  In a better world, author would be able to sort out
-Sashiko issues before ever sending out the patchset.  But in this
-world, a public send is needed to obtain that review.
+Can you explain how others can trigger this?  Some combination of
+steps which results in the bad output?
 
-So what we're presently seeing is author development activity which is
-unfortunately and inappropriately being conducted on a public list.
+> Cc: stable@vger.kernel.org
 
-Personally, I pay only a little attention to author's Sashiko activity.
-Just enough to see whether I should pay more attention.  If author
-says "oops, let me redo" then fine, I'll await the next spin.  If
-author says "that was all nonsense" then fine, time to take a closer
-look.
+Is there a chance of breaking existing userspace here?  Some existing
+userspace code which is expecting 0 here and will get surprised by this
+change?
+
+> --- a/kernel/taskstats.c
+> +++ b/kernel/taskstats.c
+> @@ -649,6 +649,7 @@ void taskstats_exit(struct task_struct *tsk, int group_dead)
+>  		goto err;
+>  
+>  	memcpy(stats, tsk->signal->stats, sizeof(*stats));
+> +	stats->version = TASKSTATS_VERSION;
+>  
+>  send:
+>  	send_cpu_listeners(rep_skb, listeners);
+
 
