@@ -1,265 +1,170 @@
-Return-Path: <stable+bounces-231023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNzWIJ8nymnX5gUAu9opvQ
-	(envelope-from <stable+bounces-231023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:34:55 +0200
+	id QDskFT0pymnX5gUAu9opvQ
+	(envelope-from <stable+bounces-231024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:41:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820A53567E2
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:34:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7124356932
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA18D300AD91
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:34:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEA61301B700
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AE839E17E;
-	Mon, 30 Mar 2026 07:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifHBMOea"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA6139E164;
+	Mon, 30 Mar 2026 07:36:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF0395242;
-	Mon, 30 Mar 2026 07:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1453363CB;
+	Mon, 30 Mar 2026 07:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774856041; cv=none; b=Qso1Ta3SbJNg6G7ldiCP+7vAC9vMef2jkmdtgRiBagjxO166U9y7hyqGMvPUB+yebADn9A48v2J4vxuz+k9BZ7Q/5MPaIGITh1JeB/yG3Tnf6bHejGfYpx1n83dNnBUrTJYPePhzwi4mfZl8fEkIAbFuZAYfZGrNL+tTiAgydzw=
+	t=1774856171; cv=none; b=ngHzjLOXqxKRalOfjqCp07DwpDe0TTJCt7g3ca+8wW1aXe98BM3PFmqxwE40kEtNqATDoCEoUdjtxf2dv4D2MORK51Hu/Z+hUitn+Z41HUGr571/IRJHpiNoYuWoX8GVFXSi94Oo9rOf1Z7whE0zROcA0iObMLnYcCDvMBaDCEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774856041; c=relaxed/simple;
-	bh=7kgUQuFANCPaR5uCvT7NPfT7IH4fWzabVqEmhp/cEHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WsFbzj+OZCv6YhFwT7U5t5p2s93qV3UmeeIj2FpSYaIeUR+gG436/PGuPcQ6X9JHW4WY9Y7w9N10snZB/sT5fv1NXnhzMYsO2P6XkN43PWFyDKLC3yjOYj4UDwdjmmlWrdQkw83ZIcbC8PIfy5IKzsBspLOYBRf96+JOwaya9A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifHBMOea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004CEC19423;
-	Mon, 30 Mar 2026 07:33:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774856040;
-	bh=7kgUQuFANCPaR5uCvT7NPfT7IH4fWzabVqEmhp/cEHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ifHBMOea1qbxwQjnwUekkcAyh3AghrMj4LkZvBOhcfwXywdmiWyfNOZVth/qA700o
-	 MkKQPo6bV6Y1v7FH2BsGUpNi03IP+4wfy7JZnaxB47e1eczKOeaUBkrk0Mzuon4qz3
-	 MND6x74hP7mnxtw8Saxk6Be611YAMCWBBd3iPtcQ8j6z5kPQPW3mciNb6qMOrkPZ0y
-	 MY+78m+R/vxmC6G4uBmr+HgRahdIrU6xBzfo7opZE4Saso/iOIKXTGvXL7CucHOIwx
-	 S84TRtrFXR/nP1vEOKM+FfNrucDVzKj0/sUqrP0gkcghazAnljgQl6E4+ZzPMxnSrw
-	 hVC+vMxt/2PRg==
-Date: Mon, 30 Mar 2026 09:33:56 +0200
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>, Rahul Sharma <black.hawk@163.com>
-Subject: Re: [PATCH 6.1 379/481] net: enetc: allocate vf_state during PF
- probes
-Message-ID: <20260330073356.GA1017537@ax162>
-References: <20260323134525.256603107@linuxfoundation.org>
- <20260323134534.371230946@linuxfoundation.org>
+	s=arc-20240116; t=1774856171; c=relaxed/simple;
+	bh=BQZpotQQK3Cl/Pxr9LOqc/Dgxxytr3uIdxlMtbfR10g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=USyIa0HIvP1kkuLaXPPwUc81Wsdpw5uzqA+FqBn3BGhddboPajpJHerhb+ZYvCngfwzLy56VPXnjda6RQEIfaYzzO9UBvou58wNWG65EfzCzoYG82o16CBSjF8WgKxpAhw07hncxNQu41ODiHejetqJn4bGdoMQDG0WQ6MSoxCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-03 (Coremail) with SMTP id rQCowAD3EtrPJ8ppqg5LDA--.43334S2;
+	Mon, 30 Mar 2026 15:35:51 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: yoshihiro.shimoda.uh@renesas.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	niklas.soderlund+renesas@ragnatech.se,
+	michael.dege@renesas.com,
+	nikita.yoush@cogentembedded.com,
+	yury.norov@gmail.com,
+	geert+renesas@glider.be
+Cc: netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: renesas: rswitch: Fix memory leak in rswitch_phy_device_init()
+Date: Mon, 30 Mar 2026 15:35:41 +0800
+Message-ID: <20260330073541.2871414-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323134534.371230946@linuxfoundation.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAD3EtrPJ8ppqg5LDA--.43334S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr18Xw45Zw4ktr4rJrWxCrg_yoW8Zw13pF
+	WUGFWrJrykGr1aga18Ga1kJrWruw40kw1furyIy3WrKwn5X3s8ZryvqasxAr43CFZ7ZFy5
+	XFy7Aa4rua4DJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_GF4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoZ2-UUUU
+	U
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,nxp.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-231023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-231024-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[renesas.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,ragnatech.se,cogentembedded.com,gmail.com,glider.be];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ls1028ardb:email]
-X-Rspamd-Queue-Id: 820A53567E2
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: E7124356932
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 23, 2026 at 02:46:01PM +0100, Greg Kroah-Hartman wrote:
-> 6.1-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> [ Upstream commit e15c5506dd39885cd047f811a64240e2e8ab401b ]
-> 
-> In the previous implementation, vf_state is allocated memory only when VF
-> is enabled. However, net_device_ops::ndo_set_vf_mac() may be called before
-> VF is enabled to configure the MAC address of VF. If this is the case,
-> enetc_pf_set_vf_mac() will access vf_state, resulting in access to a null
-> pointer. The simplified error log is as follows.
-> 
-> root@ls1028ardb:~# ip link set eno0 vf 1 mac 00:0c:e7:66:77:89
-> [  173.543315] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
-> [  173.637254] pc : enetc_pf_set_vf_mac+0x3c/0x80 Message from sy
-> [  173.641973] lr : do_setlink+0x4a8/0xec8
-> [  173.732292] Call trace:
-> [  173.734740]  enetc_pf_set_vf_mac+0x3c/0x80
-> [  173.738847]  __rtnl_newlink+0x530/0x89c
-> [  173.742692]  rtnl_newlink+0x50/0x7c
-> [  173.746189]  rtnetlink_rcv_msg+0x128/0x390
-> [  173.750298]  netlink_rcv_skb+0x60/0x130
-> [  173.754145]  rtnetlink_rcv+0x18/0x24
-> [  173.757731]  netlink_unicast+0x318/0x380
-> [  173.761665]  netlink_sendmsg+0x17c/0x3c8
-> 
-> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Link: https://patch.msgid.link/20241031060247.1290941-2-wei.fang@nxp.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Rahul Sharma <black.hawk@163.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc_pf.c |   18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> @@ -683,19 +683,11 @@ static int enetc_sriov_configure(struct
->  
->  	if (!num_vfs) {
->  		enetc_msg_psi_free(pf);
-> -		kfree(pf->vf_state);
->  		pf->num_vfs = 0;
->  		pci_disable_sriov(pdev);
->  	} else {
->  		pf->num_vfs = num_vfs;
->  
-> -		pf->vf_state = kcalloc(num_vfs, sizeof(struct enetc_vf_state),
-> -				       GFP_KERNEL);
-> -		if (!pf->vf_state) {
-> -			pf->num_vfs = 0;
-> -			return -ENOMEM;
-> -		}
-> -
->  		err = enetc_msg_psi_init(pf);
->  		if (err) {
->  			dev_err(&pdev->dev, "enetc_msg_psi_init (%d)\n", err);
-> @@ -714,7 +706,6 @@ static int enetc_sriov_configure(struct
->  err_en_sriov:
->  	enetc_msg_psi_free(pf);
->  err_msg_psi:
-> -	kfree(pf->vf_state);
->  	pf->num_vfs = 0;
->  
->  	return err;
-> @@ -1322,6 +1313,12 @@ static int enetc_pf_probe(struct pci_dev
->  	pf = enetc_si_priv(si);
->  	pf->si = si;
->  	pf->total_vfs = pci_sriov_get_totalvfs(pdev);
-> +	if (pf->total_vfs) {
-> +		pf->vf_state = kcalloc(pf->total_vfs, sizeof(struct enetc_vf_state),
-> +				       GFP_KERNEL);
-> +		if (!pf->vf_state)
-> +			goto err_alloc_vf_state;
-> +	}
->  
->  	err = enetc_setup_mac_addresses(node, pf);
->  	if (err)
-> @@ -1398,6 +1395,8 @@ err_alloc_si_res:
->  err_alloc_netdev:
->  err_device_disabled:
->  err_setup_mac_addresses:
-> +	kfree(pf->vf_state);
-> +err_alloc_vf_state:
->  	enetc_psi_destroy(pdev);
->  err_psi_create:
->  	return err;
-> @@ -1424,6 +1423,7 @@ static void enetc_pf_remove(struct pci_d
->  	enetc_free_si_resources(priv);
->  
->  	free_netdev(si->ndev);
-> +	kfree(pf->vf_state);
->  
->  	enetc_psi_destroy(pdev);
->  }
+rswitch_phy_device_init() calls of_phy_find_device(), which calls
+bus_find_device() to increments the refcount of the returned device.
+The current implementation does not decrement the refcount after the
+reference is no longer needed, causing a memory leak.
 
-This results in a clang warning:
+Add phy_device_free() to release the reference via put_device() and
+balance the refcount.
 
-  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1307:6: error: variable 'pf' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-   1307 |         if (node && !of_device_is_available(node)) {
-        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1398:8: note: uninitialized use occurs here
-   1398 |         kfree(pf->vf_state);
-        |               ^~
-  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1307:2: note: remove the 'if' if its condition is always false
-   1307 |         if (node && !of_device_is_available(node)) {
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1308 |                 dev_info(&pdev->dev, "device is disabled, skipping\n");
-        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1309 |                 err = -ENODEV;
-        |                 ~~~~~~~~~~~~~~
-   1310 |                 goto err_device_disabled;
-        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~
-   1311 |         }
-        |         ~
-  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1290:21: note: initialize the variable 'pf' to silence this warning
-   1290 |         struct enetc_pf *pf;
-        |                            ^
-        |                             = NULL
+Found by code review.
 
-I see two options.
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Cc: stable@vger.kernel.org
+Fixes: 0df024d0f1d3 ("net: renesas: rswitch: Add host_interfaces setting")
+---
+ drivers/net/ethernet/renesas/rswitch_main.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-1. Backport commit bfce089ddd0e ("net: enetc: remove
-   of_device_is_available() handling") and its dependent change,
-   commit 6fffbc7ae137 ("PCI: Honor firmware's device disabled status"),
-   although I did not look to see if there are any other necessary fixes
-   or dependencies.
-
-2. Address this with a stable-only patch like:
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index 99422c0b4a26..e4c8bdff68c5 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1285,9 +1285,9 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- {
- 	struct device_node *node = pdev->dev.of_node;
- 	struct enetc_ndev_priv *priv;
-+	struct enetc_pf *pf = NULL;
- 	struct net_device *ndev;
- 	struct enetc_si *si;
--	struct enetc_pf *pf;
- 	int err;
+diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
+index 6fe964816322..126da0371a19 100644
+--- a/drivers/net/ethernet/renesas/rswitch_main.c
++++ b/drivers/net/ethernet/renesas/rswitch_main.c
+@@ -1459,7 +1459,7 @@ static void rswitch_phy_remove_link_mode(struct rswitch_device *rdev,
  
- 	err = enetc_pf_register_with_ierb(pdev);
-@@ -1395,7 +1395,8 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- err_alloc_netdev:
- err_device_disabled:
- err_setup_mac_addresses:
--	kfree(pf->vf_state);
-+	if (pf)
-+		kfree(pf->vf_state);
- err_alloc_vf_state:
- 	enetc_psi_destroy(pdev);
- err_psi_create:
---
+ static int rswitch_phy_device_init(struct rswitch_device *rdev)
+ {
+-	struct phy_device *phydev;
++	struct phy_device *phydev, *tmp_phydev;
+ 	struct device_node *phy;
+ 	int err = -ENOENT;
+ 
+@@ -1473,14 +1473,18 @@ static int rswitch_phy_device_init(struct rswitch_device *rdev)
+ 	/* Set phydev->host_interfaces before calling of_phy_connect() to
+ 	 * configure the PHY with the information of host_interfaces.
+ 	 */
+-	phydev = of_phy_find_device(phy);
+-	if (!phydev)
++	tmp_phydev = of_phy_find_device(phy);
++	if (!tmp_phydev)
+ 		goto out;
+-	__set_bit(rdev->etha->phy_interface, phydev->host_interfaces);
++	__set_bit(rdev->etha->phy_interface, tmp_phydev->host_interfaces);
+ 	phydev->mac_managed_pm = true;
+ 
+ 	phydev = of_phy_connect(rdev->ndev, phy, rswitch_adjust_link, 0,
+ 				rdev->etha->phy_interface);
++
++	/* Release the temporary reference obtained by of_phy_find_device() */
++	phy_device_free(tmp_phydev);
++
+ 	if (!phydev)
+ 		goto out;
+ 
+-- 
+2.43.0
 
-Cheers,
-Nathan
 
