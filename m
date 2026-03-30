@@ -1,186 +1,265 @@
-Return-Path: <stable+bounces-231022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFHWBz4nymnX5gUAu9opvQ
-	(envelope-from <stable+bounces-231022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:33:18 +0200
+	id QNzWIJ8nymnX5gUAu9opvQ
+	(envelope-from <stable+bounces-231023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:34:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F303567BD
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:33:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820A53567E2
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AF0BE300493F
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:33:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA18D300AD91
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35A53803D4;
-	Mon, 30 Mar 2026 07:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AE839E17E;
+	Mon, 30 Mar 2026 07:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0LxNsyOs";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1XCTLaD4";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rwWAY95O";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="x050rrf7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifHBMOea"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4327E3815FF
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 07:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF0395242;
+	Mon, 30 Mar 2026 07:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774855992; cv=none; b=uOb4thjjKB1GYRBa/NJe73f30G6TwO9aBk4WXV6IeKDwnteIEoIkJn9HmDXR7pUAG5pmZTznMEDqt5EgLN6AsoOFDOhrOHRXZd791iCmpRhGFS7VpH/0+HXIJAI33xA2VyBkBRNSFjHJCPCn26FRkvun0n3tQXP1kYEYTRbATaE=
+	t=1774856041; cv=none; b=Qso1Ta3SbJNg6G7ldiCP+7vAC9vMef2jkmdtgRiBagjxO166U9y7hyqGMvPUB+yebADn9A48v2J4vxuz+k9BZ7Q/5MPaIGITh1JeB/yG3Tnf6bHejGfYpx1n83dNnBUrTJYPePhzwi4mfZl8fEkIAbFuZAYfZGrNL+tTiAgydzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774855992; c=relaxed/simple;
-	bh=BH6P+OXYSGy1vOWXVNyV0HUiSpLwRbkoPsglKMoGEI4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YK/f11VV05PF3QS6LyKz9iOnfYy/u/UG6eflWBwZtjMgPBVPau1q2D4eXFrKRYW9uhQ7uichspwOHcdiyWtkdwRjATnK0GRhwoffhf198YiVpdZ1pCmkBNKoxDSIPUN/28pltRFkn+IL1e45dXxUF8hxwZGNQMHLVqYYsJOB0as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0LxNsyOs; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1XCTLaD4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rwWAY95O; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=x050rrf7; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9825C4D1F1;
-	Mon, 30 Mar 2026 07:33:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774855989; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CrNJgn8c8oBVTOIi6FKgPr1CbbB/KxUNcFta++4MWWc=;
-	b=0LxNsyOsRTEmlQMDaG1Umgs5LOFmZDlyLfp6dDIQR5oALN2kEtPIjNNqN4FvvlmnHdot2O
-	RQiGA1cOQJxJ0C+T3f6rrkuRMvkWp2sM3eo72wyV0lt4wxaU1faWpe3Slzoy3/vyxvoNB3
-	FSZa6ZDF9vfu919zLjkHWTJFV1x4QuY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774855989;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CrNJgn8c8oBVTOIi6FKgPr1CbbB/KxUNcFta++4MWWc=;
-	b=1XCTLaD4xcCfzsDlHq5wkqwaw6+2oYJ5z1iX7F2ADUL80WnxIJlAxNwE7YVS8vkz7l07OE
-	eWmtt47Yb+lELiCQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rwWAY95O;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x050rrf7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774855988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CrNJgn8c8oBVTOIi6FKgPr1CbbB/KxUNcFta++4MWWc=;
-	b=rwWAY95O7sYOPSxb2uaoLWW+ly3ig0+0NMt04svYTHDry1/K2soc7MXAO4LLFxMIgZ30zF
-	d17ZcuoMTmfjcUbD3M0SpgciMMnu56pI90bCNu0JnaYchjT36I+XSJH6RaJL3Ai/qn6V/e
-	F+3YrjGVvJlbWr9+AMDdi63yYj7h3KA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774855988;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CrNJgn8c8oBVTOIi6FKgPr1CbbB/KxUNcFta++4MWWc=;
-	b=x050rrf7RN4PjmgNW5NZJ6QDODva+6shqAuxP/jFPi7D/pNkqnyaAxM64G3C3kHLOcvkxU
-	JBq/hN4UtGhVzdAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 676C14A0A2;
-	Mon, 30 Mar 2026 07:33:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id P37wFzQnymkPJQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 30 Mar 2026 07:33:08 +0000
-Date: Mon, 30 Mar 2026 09:33:07 +0200
-Message-ID: <87se9hu5zg.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Berk Cem Goksel <berkcgoksel@gmail.com>
-Cc: zonque@gmail.com,
-	tiwai@suse.de,
-	linux-sound@vger.kernel.org,
-	stable@vger.kernel.org,
-	andreyknvl@gmail.com
-Subject: Re: [PATCH] ALSA: caiaq: fix stack out-of-bounds read in init_card
-In-Reply-To: <20260329133825.581585-1-berkcgoksel@gmail.com>
-References: <20260329133825.581585-1-berkcgoksel@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1774856041; c=relaxed/simple;
+	bh=7kgUQuFANCPaR5uCvT7NPfT7IH4fWzabVqEmhp/cEHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WsFbzj+OZCv6YhFwT7U5t5p2s93qV3UmeeIj2FpSYaIeUR+gG436/PGuPcQ6X9JHW4WY9Y7w9N10snZB/sT5fv1NXnhzMYsO2P6XkN43PWFyDKLC3yjOYj4UDwdjmmlWrdQkw83ZIcbC8PIfy5IKzsBspLOYBRf96+JOwaya9A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifHBMOea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004CEC19423;
+	Mon, 30 Mar 2026 07:33:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774856040;
+	bh=7kgUQuFANCPaR5uCvT7NPfT7IH4fWzabVqEmhp/cEHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ifHBMOea1qbxwQjnwUekkcAyh3AghrMj4LkZvBOhcfwXywdmiWyfNOZVth/qA700o
+	 MkKQPo6bV6Y1v7FH2BsGUpNi03IP+4wfy7JZnaxB47e1eczKOeaUBkrk0Mzuon4qz3
+	 MND6x74hP7mnxtw8Saxk6Be611YAMCWBBd3iPtcQ8j6z5kPQPW3mciNb6qMOrkPZ0y
+	 MY+78m+R/vxmC6G4uBmr+HgRahdIrU6xBzfo7opZE4Saso/iOIKXTGvXL7CucHOIwx
+	 S84TRtrFXR/nP1vEOKM+FfNrucDVzKj0/sUqrP0gkcghazAnljgQl6E4+ZzPMxnSrw
+	 hVC+vMxt/2PRg==
+Date: Mon, 30 Mar 2026 09:33:56 +0200
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>, Rahul Sharma <black.hawk@163.com>
+Subject: Re: [PATCH 6.1 379/481] net: enetc: allocate vf_state during PF
+ probes
+Message-ID: <20260330073356.GA1017537@ax162>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260323134534.371230946@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323134534.371230946@linuxfoundation.org>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231022-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,suse.de,vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,nxp.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-231023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:dkim,suse.de:mid]
-X-Rspamd-Queue-Id: 75F303567BD
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ls1028ardb:email]
+X-Rspamd-Queue-Id: 820A53567E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, 29 Mar 2026 15:38:25 +0200,
-Berk Cem Goksel wrote:
+On Mon, Mar 23, 2026 at 02:46:01PM +0100, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
 > 
-> The loop creates a whitespace-stripped copy of the card shortname
-> where `len < sizeof(card->id)` is used for the bounds check. Since
-> sizeof(card->id) is 16 and the local id buffer is also 16 bytes,
-> writing 16 non-space characters fills the entire buffer,
-> overwriting the terminating nullbyte.
+> ------------------
 > 
-> When this non-null-terminated string is later passed to
-> snd_card_set_id() -> copy_valid_id_string(), the function scans
-> forward with `while (*nid && ...)` and reads past the end of the
-> stack buffer, reading the contents of the stack.
+> From: Wei Fang <wei.fang@nxp.com>
 > 
-> A USB device with a product name containing many non-ASCII, non-space
-> characters (e.g. multibyte UTF-8) will reliably trigger this as follows:
+> [ Upstream commit e15c5506dd39885cd047f811a64240e2e8ab401b ]
 > 
->   BUG: KASAN: stack-out-of-bounds in copy_valid_id_string
->        sound/core/init.c:696 [inline]
->   BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
->        sound/core/init.c:718
+> In the previous implementation, vf_state is allocated memory only when VF
+> is enabled. However, net_device_ops::ndo_set_vf_mac() may be called before
+> VF is enabled to configure the MAC address of VF. If this is the case,
+> enetc_pf_set_vf_mac() will access vf_state, resulting in access to a null
+> pointer. The simplified error log is as follows.
 > 
-> The off-by-one has been present since commit bafeee5b1f8d ("ALSA:
-> snd_usb_caiaq: give better shortname") from June 2009 (v2.6.31-rc1),
-> which first introduced this whitespace-stripping loop. The original
-> code never accounted for the null terminator when bounding the copy.
+> root@ls1028ardb:~# ip link set eno0 vf 1 mac 00:0c:e7:66:77:89
+> [  173.543315] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
+> [  173.637254] pc : enetc_pf_set_vf_mac+0x3c/0x80 Message from sy
+> [  173.641973] lr : do_setlink+0x4a8/0xec8
+> [  173.732292] Call trace:
+> [  173.734740]  enetc_pf_set_vf_mac+0x3c/0x80
+> [  173.738847]  __rtnl_newlink+0x530/0x89c
+> [  173.742692]  rtnl_newlink+0x50/0x7c
+> [  173.746189]  rtnetlink_rcv_msg+0x128/0x390
+> [  173.750298]  netlink_rcv_skb+0x60/0x130
+> [  173.754145]  rtnetlink_rcv+0x18/0x24
+> [  173.757731]  netlink_unicast+0x318/0x380
+> [  173.761665]  netlink_sendmsg+0x17c/0x3c8
 > 
-> Fix this by changing the loop bound to `sizeof(card->id) - 1`,
-> ensuring at least one byte remains as the null terminator.
+> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Link: https://patch.msgid.link/20241031060247.1290941-2-wei.fang@nxp.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Rahul Sharma <black.hawk@163.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc_pf.c |   18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> Fixes: bafeee5b1f8d ("ALSA: snd_usb_caiaq: give better shortname")
-> Cc: stable@vger.kernel.org
-> Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> Reported-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-> Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> @@ -683,19 +683,11 @@ static int enetc_sriov_configure(struct
+>  
+>  	if (!num_vfs) {
+>  		enetc_msg_psi_free(pf);
+> -		kfree(pf->vf_state);
+>  		pf->num_vfs = 0;
+>  		pci_disable_sriov(pdev);
+>  	} else {
+>  		pf->num_vfs = num_vfs;
+>  
+> -		pf->vf_state = kcalloc(num_vfs, sizeof(struct enetc_vf_state),
+> -				       GFP_KERNEL);
+> -		if (!pf->vf_state) {
+> -			pf->num_vfs = 0;
+> -			return -ENOMEM;
+> -		}
+> -
+>  		err = enetc_msg_psi_init(pf);
+>  		if (err) {
+>  			dev_err(&pdev->dev, "enetc_msg_psi_init (%d)\n", err);
+> @@ -714,7 +706,6 @@ static int enetc_sriov_configure(struct
+>  err_en_sriov:
+>  	enetc_msg_psi_free(pf);
+>  err_msg_psi:
+> -	kfree(pf->vf_state);
+>  	pf->num_vfs = 0;
+>  
+>  	return err;
+> @@ -1322,6 +1313,12 @@ static int enetc_pf_probe(struct pci_dev
+>  	pf = enetc_si_priv(si);
+>  	pf->si = si;
+>  	pf->total_vfs = pci_sriov_get_totalvfs(pdev);
+> +	if (pf->total_vfs) {
+> +		pf->vf_state = kcalloc(pf->total_vfs, sizeof(struct enetc_vf_state),
+> +				       GFP_KERNEL);
+> +		if (!pf->vf_state)
+> +			goto err_alloc_vf_state;
+> +	}
+>  
+>  	err = enetc_setup_mac_addresses(node, pf);
+>  	if (err)
+> @@ -1398,6 +1395,8 @@ err_alloc_si_res:
+>  err_alloc_netdev:
+>  err_device_disabled:
+>  err_setup_mac_addresses:
+> +	kfree(pf->vf_state);
+> +err_alloc_vf_state:
+>  	enetc_psi_destroy(pdev);
+>  err_psi_create:
+>  	return err;
+> @@ -1424,6 +1423,7 @@ static void enetc_pf_remove(struct pci_d
+>  	enetc_free_si_resources(priv);
+>  
+>  	free_netdev(si->ndev);
+> +	kfree(pf->vf_state);
+>  
+>  	enetc_psi_destroy(pdev);
+>  }
 
-Applied now.  Thanks.
+This results in a clang warning:
 
+  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1307:6: error: variable 'pf' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
+   1307 |         if (node && !of_device_is_available(node)) {
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1398:8: note: uninitialized use occurs here
+   1398 |         kfree(pf->vf_state);
+        |               ^~
+  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1307:2: note: remove the 'if' if its condition is always false
+   1307 |         if (node && !of_device_is_available(node)) {
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1308 |                 dev_info(&pdev->dev, "device is disabled, skipping\n");
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1309 |                 err = -ENODEV;
+        |                 ~~~~~~~~~~~~~~
+   1310 |                 goto err_device_disabled;
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+   1311 |         }
+        |         ~
+  drivers/net/ethernet/freescale/enetc/enetc_pf.c:1290:21: note: initialize the variable 'pf' to silence this warning
+   1290 |         struct enetc_pf *pf;
+        |                            ^
+        |                             = NULL
 
-Takashi
+I see two options.
+
+1. Backport commit bfce089ddd0e ("net: enetc: remove
+   of_device_is_available() handling") and its dependent change,
+   commit 6fffbc7ae137 ("PCI: Honor firmware's device disabled status"),
+   although I did not look to see if there are any other necessary fixes
+   or dependencies.
+
+2. Address this with a stable-only patch like:
+
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index 99422c0b4a26..e4c8bdff68c5 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -1285,9 +1285,9 @@ static int enetc_pf_probe(struct pci_dev *pdev,
+ {
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct enetc_ndev_priv *priv;
++	struct enetc_pf *pf = NULL;
+ 	struct net_device *ndev;
+ 	struct enetc_si *si;
+-	struct enetc_pf *pf;
+ 	int err;
+ 
+ 	err = enetc_pf_register_with_ierb(pdev);
+@@ -1395,7 +1395,8 @@ static int enetc_pf_probe(struct pci_dev *pdev,
+ err_alloc_netdev:
+ err_device_disabled:
+ err_setup_mac_addresses:
+-	kfree(pf->vf_state);
++	if (pf)
++		kfree(pf->vf_state);
+ err_alloc_vf_state:
+ 	enetc_psi_destroy(pdev);
+ err_psi_create:
+--
+
+Cheers,
+Nathan
 
