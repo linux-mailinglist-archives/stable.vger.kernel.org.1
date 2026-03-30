@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-231265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB//D0XLyml3AAYAu9opvQ
-	(envelope-from <stable+bounces-231265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:13:09 +0200
+	id GHFCEdbKyml3AAYAu9opvQ
+	(envelope-from <stable+bounces-231266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:11:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824DC36038F
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:13:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CD1360342
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E1A6301E3F3
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 19:10:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A6CF3017DDF
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 19:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDF83DFC7B;
-	Mon, 30 Mar 2026 19:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882593E1209;
+	Mon, 30 Mar 2026 19:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkXqroXx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uu+Z6mbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA862F39CE
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 19:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBF03E022B
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 19:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774897840; cv=none; b=AYZQzqXmf7AzPkr+cfivC8WhwQRC0Fkze7L4OQA89QiRLgfhnGZCCdHPWcbvrZanh8wfODuC2zcgOd0gYywXG8d1fA1LMuo+3E4H90QK+hSBWDtCQfC9SLcNOyU6PZBkkvspdLc+XvW+C8HCMQNH1Paiha3qqVTh/y0P9rCstFY=
+	t=1774897871; cv=none; b=Bvz/knruoTehA7sd9GpEgu2eM8lHdGkjyPVdhTLGdUiSqDPfa5woNzJZqmOaJJOYfyalXPwj6HuCGSOEDrN+XXJzU8t+y9i/UP2cezHMFCs/8AlvDrCkmRfPd0rarb6CXibdbiC1oksOn1tofbM58VDG77o/GBeXML0MBStzdl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774897840; c=relaxed/simple;
-	bh=C0sRzY2agXv1kvcy9rFOsc1n3rrSieU+SdmB4lXhl3A=;
+	s=arc-20240116; t=1774897871; c=relaxed/simple;
+	bh=AX8pz97sGe9XE5xJiclNo/ugf4zZKoap+D78iWsjAsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAK3/1qKyZXvWLhHctDJjqQzKsmfm5TeG7kEv8JrlTJgx0f+bMK5NqfE4bkoffA+ms0th5rqxEFThd0euS90MTDyu8PPS/lLjbZ+D9Pc2S75kNw/9vRizsIs4r6KLCemn4G3maPARkososd0IgAZAGOI+P51vHAev71o8hCjwJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkXqroXx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63941C4CEF7;
-	Mon, 30 Mar 2026 19:10:39 +0000 (UTC)
+	 MIME-Version; b=qcG5Z8ZyEX5N2vZtgpqbdsjifTTZBLi2By2JSNWYJS+5PMUHMS8aG2bMmkjKcRpYNQPEu7oxh0qEtTXyAQXt8jNMRa0IOQdIl0SsJl7fxKRx/IG+JVn2aWB7evONNRCEyVGG5y1shxccwJEWK4KsCFCPdLORQrjGagSApSdUsiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uu+Z6mbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7C2C2BC9E;
+	Mon, 30 Mar 2026 19:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774897840;
-	bh=C0sRzY2agXv1kvcy9rFOsc1n3rrSieU+SdmB4lXhl3A=;
+	s=k20201202; t=1774897871;
+	bh=AX8pz97sGe9XE5xJiclNo/ugf4zZKoap+D78iWsjAsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkXqroXxjHWMtenb4JbK97z5pNxy4wZpjS3IkUR2e/6+oe4kHZmXd2wrQr2o7YDVW
-	 X1QKjybMfqRnuh2zbBD+tKJ8MXP92KWputDNXwBv+JMLUfqg0qH2AhozOPVEIHKfDb
-	 vMta/QQiAKh3S8drfL4UD9fkrqyhHr6QxMUop5+VVbnkJFunMjM2dMfWnD5XMqjPgV
-	 k1ZLjwXY5Uq5jh+GKIzTWrYOGhn9JvJRbcrnrY9xubN1/9xLe8V5CDPmnOr8FPYrmu
-	 WXEEqvvNd05gu3RXz5yykZXuKQGzyq6jsFIjPsemjqfLzRSdBizjB+FaVE2kPsPCZt
-	 gn7Xm4M4gVCGQ==
+	b=uu+Z6mblvP4kjMFAJQ1G5oz56VlBACV9L+fI21haoBhTdhUNNIwC4a6zP3RH1DINt
+	 Af8WRkwfVc8yb2b1wpxyMedSw8apV1yqKCZFGlJIdKGxzlnW4TRdOBpz4Wc9xIjtMl
+	 Va1dJBLNsObb20D4iodeTqLrpSh5J66BPQSm3DI7Ww8Bpe0bf83gHzj+eVxa0nlvb1
+	 YSuXl7wkPeUj/4Dowzph3HhmJRvnvDE5IVQ+3DUn/8q5EQxp6iz51Tdv4E/mDox+uy
+	 7EdABE0s9FWRJGEnbPWvSow97v7aCiiFaCVCM9oO9bVeAZBpHkfcS2YfFyZvfPTQ+w
+	 BUWkaZct4Qiww==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
+Cc: Werner Kasselman <werner@verivus.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
-Date: Mon, 30 Mar 2026 15:10:37 -0400
-Message-ID: <20260330191037.1035485-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] ksmbd: fix memory leaks and NULL deref in smb2_lock()
+Date: Mon, 30 Mar 2026 15:11:09 -0400
+Message-ID: <20260330191109.1038495-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026032931-tubby-automatic-2197@gregkh>
-References: <2026032931-tubby-automatic-2197@gregkh>
+In-Reply-To: <2026032951-delivery-lilly-753c@gregkh>
+References: <2026032951-delivery-lilly-753c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,18 +69,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231265-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231266-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -88,81 +89,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 824DC36038F
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email]
+X-Rspamd-Queue-Id: D4CD1360342
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Werner Kasselman <werner@verivus.com>
 
-[ Upstream commit beef2634f81f1c086208191f7228bce1d366493d ]
+[ Upstream commit 309b44ed684496ed3f9c5715d10b899338623512 ]
 
-When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
-(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
-max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
-with PATH_MAX, causing out-of-bounds write beyond the response buffer.
-In get_file_all_info(), there was a missing validation check for
-the client-provided OutputBufferLength before copying the filename into
-FileName field of the smb2_file_all_info structure.
-If the filename length exceeds the available buffer space, it could lead to
-potential buffer overflows or memory corruption during smbConvertToUTF16
-conversion. This calculating the actual free buffer size using
-smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
-insufficient and updating smbConvertToUTF16 to use the actual filename
-length (clamped by PATH_MAX) to ensure a safe copy operation.
+smb2_lock() has three error handling issues after list_del() detaches
+smb_lock from lock_list at no_check_cl:
 
+1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK
+   path, goto out leaks smb_lock and its flock because the out:
+   handler only iterates lock_list and rollback_list, neither of
+   which contains the detached smb_lock.
+
+2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out
+   leaks smb_lock and flock for the same reason.  The error code
+   returned to the dispatcher is also stale.
+
+3) In the rollback path, smb_flock_init() can return NULL on
+   allocation failure.  The result is dereferenced unconditionally,
+   causing a kernel NULL pointer dereference.  Add a NULL check to
+   prevent the crash and clean up the bookkeeping; the VFS lock
+   itself cannot be rolled back without the allocation and will be
+   released at file or connection teardown.
+
+Fix cases 1 and 2 by hoisting the locks_free_lock()/kfree() to before
+the if(!rc) check in the UNLOCK branch so all exit paths share one
+free site, and by freeing smb_lock and flock before goto out in the
+non-UNLOCK branch.  Propagate the correct error code in both cases.
+Fix case 3 by wrapping the VFS unlock in an if(rlock) guard and adding
+a NULL check for locks_free_lock(rlock) in the shared cleanup.
+
+Found via call-graph analysis using sqry.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Suggested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Werner Kasselman <werner@verivus.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted variable declarations ]
+[ adapted rlock->c.flc_type to rlock->fl_type ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2pdu.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index b5ff4c855f9cb..07144891d9784 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -4564,6 +4564,8 @@ static int get_file_all_info(struct ksmbd_work *work,
- 	int conv_len;
- 	char *filename;
- 	u64 time;
-+	int buf_free_len, filename_len;
-+	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index bdd2214c79f98..ca59badb42a73 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7515,14 +7515,15 @@ int smb2_lock(struct ksmbd_work *work)
+ 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
+ skip:
+ 		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
++			locks_free_lock(flock);
++			kfree(smb_lock);
+ 			if (!rc) {
+ 				ksmbd_debug(SMB, "File unlocked\n");
+ 			} else if (rc == -ENOENT) {
+ 				rsp->hdr.Status = STATUS_NOT_LOCKED;
++				err = rc;
+ 				goto out;
+ 			}
+-			locks_free_lock(flock);
+-			kfree(smb_lock);
+ 		} else {
+ 			if (rc == FILE_LOCK_DEFERRED) {
+ 				void **argv;
+@@ -7591,6 +7592,9 @@ int smb2_lock(struct ksmbd_work *work)
+ 				spin_unlock(&work->conn->llist_lock);
+ 				ksmbd_debug(SMB, "successful in taking lock\n");
+ 			} else {
++				locks_free_lock(flock);
++				kfree(smb_lock);
++				err = rc;
+ 				goto out;
+ 			}
+ 		}
+@@ -7621,13 +7625,17 @@ int smb2_lock(struct ksmbd_work *work)
+ 		struct file_lock *rlock = NULL;
  
- 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
- 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
-@@ -4575,6 +4577,16 @@ static int get_file_all_info(struct ksmbd_work *work,
- 	if (IS_ERR(filename))
- 		return PTR_ERR(filename);
+ 		rlock = smb_flock_init(filp);
+-		rlock->fl_type = F_UNLCK;
+-		rlock->fl_start = smb_lock->start;
+-		rlock->fl_end = smb_lock->end;
++		if (rlock) {
++			rlock->fl_type = F_UNLCK;
++			rlock->fl_start = smb_lock->start;
++			rlock->fl_end = smb_lock->end;
  
-+	filename_len = strlen(filename);
-+	buf_free_len = smb2_calc_max_out_buf_len(work,
-+			offsetof(struct smb2_query_info_rsp, Buffer) +
-+			offsetof(struct smb2_file_all_info, FileName),
-+			le32_to_cpu(req->OutputBufferLength));
-+	if (buf_free_len < (filename_len + 1) * 2) {
-+		kfree(filename);
-+		return -EINVAL;
-+	}
-+
- 	inode = file_inode(fp->filp);
- 	generic_fillattr(file_mnt_user_ns(fp->filp), inode, &stat);
+-		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
+-		if (rc)
+-			pr_err("rollback unlock fail : %d\n", rc);
++			rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
++			if (rc)
++				pr_err("rollback unlock fail : %d\n", rc);
++		} else {
++			pr_err("rollback unlock alloc failed\n");
++		}
  
-@@ -4606,7 +4618,8 @@ static int get_file_all_info(struct ksmbd_work *work,
- 	file_info->Mode = fp->coption;
- 	file_info->AlignmentRequirement = 0;
- 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
--				     PATH_MAX, conn->local_nls, 0);
-+				     min(filename_len, PATH_MAX),
-+				     conn->local_nls, 0);
- 	conv_len *= 2;
- 	file_info->FileNameLength = cpu_to_le32(conv_len);
- 	rsp->OutputBufferLength =
+ 		list_del(&smb_lock->llist);
+ 		spin_lock(&work->conn->llist_lock);
+@@ -7637,7 +7645,8 @@ int smb2_lock(struct ksmbd_work *work)
+ 		spin_unlock(&work->conn->llist_lock);
+ 
+ 		locks_free_lock(smb_lock->fl);
+-		locks_free_lock(rlock);
++		if (rlock)
++			locks_free_lock(rlock);
+ 		kfree(smb_lock);
+ 	}
+ out2:
 -- 
 2.53.0
 
