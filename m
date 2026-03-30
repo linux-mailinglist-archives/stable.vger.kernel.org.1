@@ -1,198 +1,214 @@
-Return-Path: <stable+bounces-231287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLSWAtDwymkkBQYAu9opvQ
-	(envelope-from <stable+bounces-231287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:53:20 +0200
+	id sDo5J470ymmlBwYAu9opvQ
+	(envelope-from <stable+bounces-231288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:09:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6111C361A0F
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:53:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B637361C0B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:09:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6758302B3B5
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 21:46:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA1D9303C4D8
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FF83A6F19;
-	Mon, 30 Mar 2026 21:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC43F3A783B;
+	Mon, 30 Mar 2026 22:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CbTVCu51"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T3qAk3db"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F553A6EED;
-	Mon, 30 Mar 2026 21:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CC4393DC0;
+	Mon, 30 Mar 2026 22:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774907211; cv=none; b=CJlKygR7+AOYY1mv3S12qrKqTqUl02BnEWsQAdRMmRQ6KHwV4tgrS0b/ySMItY6v3hGV6fqxzvX6w0Eze7IyMHy4DZVNy9XLd3UP2kGOsFR/L6CLjSDvdmvtSPc07GMNO1ZEBvdYkMSEe1rahhNZfhY3u2FcQOfjSwSZodbVjJE=
+	t=1774908175; cv=none; b=JZkzx7E2f0Kp8Cz4srWrVNM2FSQCh3F7LdtFV9OLQRE6k4w/GLJOhn1UOMoS8pRRUoc7sNN2j3oXH4KBHekqAbdCwpm0gWwL7pxubX3pZLThF9dzS0KHuX3BebnPbPMILOZYZcCHG8qX8jUEpt/+WNTmkNiLTc1xLFZ4Q3ojfdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774907211; c=relaxed/simple;
-	bh=xlErDBSkRR5S4gQ9GdS5wH+VFFJ88ho2cfOxWVfDsD0=;
-	h=Date:To:From:Subject:Message-Id; b=ouzsF9/bFMV/j8do5rjuwkolA5mfWxL4PljYUm5HqjwsPGMXSIv92p0B1PZMWVk/bEvJZzIpUyqAmtVYbXBaQNXNCk2hD6sdPb5oKnWUR8tq7u/E1Hm+tJGGLgxR1lgXSDON53vO8v4HgZ5C+ebFmticKWWEysJSB3olXkphDYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CbTVCu51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3FEC2BCB1;
-	Mon, 30 Mar 2026 21:46:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774907211;
-	bh=xlErDBSkRR5S4gQ9GdS5wH+VFFJ88ho2cfOxWVfDsD0=;
-	h=Date:To:From:Subject:From;
-	b=CbTVCu51ui8mT/h2MZGMe3Vn+Unb9Af8kPcYcovlV0HwfxNx2NTFe+so61Zt2Q2I5
-	 gpLRLBR/scGUUQ7ZdhWzTf5BkiF6S4yHuosDeTbLzjmQgN/Uxb5glpeBJORnzz4hvq
-	 LBgrWywuz35zKMo+uKqj0WonuCS/M7BsP41GYNSw=
-Date: Mon, 30 Mar 2026 14:46:50 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,vbabka@kernel.org,stable@vger.kernel.org,osalvador@suse.de,joshua.hahnjy@gmail.com,harry@kernel.org,david@kernel.org,hao.li@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260330214651.4B3FEC2BCB1@smtp.kernel.org>
+	s=arc-20240116; t=1774908175; c=relaxed/simple;
+	bh=0a/qTJ6Z6SLzYReYiecSbgx8In0wkAtWXm6TRVfoSvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fezGdsDI69JneeZMsK8YZm9z9nKonQ2ZcXEBvQTDzbK2/lu9cHJHMNwJlS9/qSd1O1XBE2hyE5CHMNgGnQJ8YP3/67QaeGuz3JDHMg0Y8x8+NNIEIjcJNKmj9m9XQh2OeUK5mgVrG0KNj58MIQF1I1RYRQaAJ13nhVTKEjcBsr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T3qAk3db; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774908174; x=1806444174;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0a/qTJ6Z6SLzYReYiecSbgx8In0wkAtWXm6TRVfoSvY=;
+  b=T3qAk3dbYN4z5fuR6iBhwXzLg89ylG2cJGCaXhTgi0YLpLnTv7gpEbF0
+   nlzVJT27m/QIokrc9spT2MJ7+TSUbaw/fUKgfnInNapvx8vh2fGc4sxId
+   wPgf+lKMPpqAS4TSg3f/pfs7N+RCSGl3603XI9gOGBufkrueMz42991cL
+   /LrfgVQoMAEbC0aIHMDma18hb7P6ZG4Ov0/GjHtEsSt+Y7rFRDP/Uqk3M
+   75+Xo8smwZFGPgkyo8XWxH1wutYaM/OY/1zKqqF60ASutD0geZC7tNMCf
+   PZGB6Sj0HZbAj4aGQA7lX6323IzTFuBKHpb+n8LlzN/HqO2U0zIdCvNp2
+   w==;
+X-CSE-ConnectionGUID: E25wVTJTT2W1uecRbdNsYQ==
+X-CSE-MsgGUID: uCucRZF1RJyHdRpSLawXXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="86530364"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="86530364"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 15:02:53 -0700
+X-CSE-ConnectionGUID: 4F9eCnT+T2S7Jx4SnsHesA==
+X-CSE-MsgGUID: Jp+P6fSSR+KZjuQgYb8ZkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="230980195"
+Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 30 Mar 2026 15:02:49 -0700
+Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w7Kh4-000000001ll-1KrN;
+	Mon, 30 Mar 2026 22:02:46 +0000
+Date: Tue, 31 Mar 2026 06:01:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ma Ke <make24@iscas.ac.cn>, yoshihiro.shimoda.uh@renesas.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	niklas.soderlund+renesas@ragnatech.se, michael.dege@renesas.com,
+	nikita.yoush@cogentembedded.com, yury.norov@gmail.com,
+	geert+renesas@glider.be
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: renesas: rswitch: Fix memory leak in
+ rswitch_phy_device_init()
+Message-ID: <202603310514.S572gcNU-lkp@intel.com>
+References: <20260330073541.2871414-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330073541.2871414-1-make24@iscas.ac.cn>
 X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231287-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,suse.cz,kernel.org,suse.de,gmail.com,linux.dev,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-231288-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[iscas.ac.cn,renesas.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,ragnatech.se,cogentembedded.com,gmail.com,glider.be];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,suse.cz:email,suse.de:email,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 6111C361A0F
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev,renesas];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3B637361C0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Ma,
 
-The patch titled
-     Subject: mm/memory_hotplug: maintain N_NORMAL_MEMORY during hotplug
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch
+kernel test robot noticed the following build warnings:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch
+[auto build test WARNING on net-next/main]
+[also build test WARNING on net/main linus/master v7.0-rc6 next-20260327]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/net-renesas-rswitch-Fix-memory-leak-in-rswitch_phy_device_init/20260330-214200
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260330073541.2871414-1-make24%40iscas.ac.cn
+patch subject: [PATCH] net: renesas: rswitch: Fix memory leak in rswitch_phy_device_init()
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260331/202603310514.S572gcNU-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603310514.S572gcNU-lkp@intel.com/reproduce)
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603310514.S572gcNU-lkp@intel.com/
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+All warnings (new ones prefixed by >>):
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+>> drivers/net/ethernet/renesas/rswitch_main.c:1480:2: warning: variable 'phydev' is uninitialized when used here [-Wuninitialized]
+    1480 |         phydev->mac_managed_pm = true;
+         |         ^~~~~~
+   drivers/net/ethernet/renesas/rswitch_main.c:1462:27: note: initialize the variable 'phydev' to silence this warning
+    1462 |         struct phy_device *phydev, *tmp_phydev;
+         |                                  ^
+         |                                   = NULL
+   1 warning generated.
 
-------------------------------------------------------
-From: Hao Li <hao.li@linux.dev>
-Subject: mm/memory_hotplug: maintain N_NORMAL_MEMORY during hotplug
-Date: Mon, 30 Mar 2026 11:57:49 +0800
 
-N_NORMAL_MEMORY is initialized from zone population at boot, but memory
-hotplug currently only updates N_MEMORY.  As a result, a node that gains
-normal memory via hotplug can remain invisible to users iterating over
-N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
-incorrectly marked as such.
+vim +/phydev +1480 drivers/net/ethernet/renesas/rswitch_main.c
 
-Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
-offline_pages().  Set the bit when a node that currently lacks normal
-memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
-offlining removes the last present pages from zones <= ZONE_NORMAL.
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1459  
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1460  static int rswitch_phy_device_init(struct rswitch_device *rdev)
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1461  {
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1462  	struct phy_device *phydev, *tmp_phydev;
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1463  	struct device_node *phy;
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1464  	int err = -ENOENT;
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1465  
+b46f1e5793298c drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1466  	if (!rdev->np_port)
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1467  		return -ENODEV;
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1468  
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1469  	phy = of_parse_phandle(rdev->np_port, "phy-handle", 0);
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1470  	if (!phy)
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1471  		return -ENODEV;
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1472  
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1473  	/* Set phydev->host_interfaces before calling of_phy_connect() to
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1474  	 * configure the PHY with the information of host_interfaces.
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1475  	 */
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1476  	tmp_phydev = of_phy_find_device(phy);
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1477  	if (!tmp_phydev)
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1478  		goto out;
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1479  	__set_bit(rdev->etha->phy_interface, tmp_phydev->host_interfaces);
+35b78409e1c7ff drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-10-17 @1480  	phydev->mac_managed_pm = true;
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1481  
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1482  	phydev = of_phy_connect(rdev->ndev, phy, rswitch_adjust_link, 0,
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1483  				rdev->etha->phy_interface);
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1484  
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1485  	/* Release the temporary reference obtained by of_phy_find_device() */
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1486  	phy_device_free(tmp_phydev);
+142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1487  
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1488  	if (!phydev)
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1489  		goto out;
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1490  
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1491  	phy_set_max_speed(phydev, SPEED_2500);
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1492  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1493  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1494  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1495  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1496  	rswitch_phy_remove_link_mode(rdev, phydev);
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1497  
+c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1498  	phy_attached_info(phydev);
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1499  
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1500  	err = 0;
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1501  out:
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1502  	of_node_put(phy);
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1503  
+0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1504  	return err;
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1505  }
+3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1506  
 
-This restores the intended semantics without bringing back the old
-status_change_nid_normal notifier plumbing which was removed in
-8d2882a8edb8.
-
-Current users that benefit include list_lru, zswap, nfsd filecache,
-hugetlb_cgroup, and has_normal_memory sysfs reporting.
-
-Link: https://lkml.kernel.org/r/20260330035941.518186-1-hao.li@linux.dev
-Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
-Signed-off-by: Hao Li <hao.li@linux.dev>
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory_hotplug.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
---- a/mm/memory_hotplug.c~mm-memory_hotplug-maintain-n_normal_memory-during-hotplug
-+++ a/mm/memory_hotplug.c
-@@ -1209,6 +1209,13 @@ int online_pages(unsigned long pfn, unsi
- 
- 	if (node_arg.nid >= 0)
- 		node_set_state(nid, N_MEMORY);
-+	/*
-+	 * Check whether we are adding normal memory to the node for the first
-+	 * time.
-+	 */
-+	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
-+		node_set_state(nid, N_NORMAL_MEMORY);
-+
- 	if (need_zonelists_rebuild)
- 		build_all_zonelists(NULL);
- 
-@@ -1908,6 +1915,8 @@ int offline_pages(unsigned long start_pf
- 	unsigned long flags;
- 	char *reason;
- 	int ret;
-+	unsigned long normal_pages = 0;
-+	enum zone_type zt;
- 
- 	/*
- 	 * {on,off}lining is constrained to full memory sections (or more
-@@ -2056,6 +2065,17 @@ int offline_pages(unsigned long start_pf
- 	init_per_zone_wmark_min();
- 
- 	/*
-+	 * Check whether this operation removes the last normal memory from
-+	 * the node. We do this before clearing N_MEMORY to avoid the possible
-+	 * transient "!N_MEMORY && N_NORMAL_MEMORY" state.
-+	 */
-+	if (zone_idx(zone) <= ZONE_NORMAL) {
-+		for (zt = 0; zt <= ZONE_NORMAL; zt++)
-+			normal_pages += pgdat->node_zones[zt].present_pages;
-+		if (!normal_pages)
-+			node_clear_state(node, N_NORMAL_MEMORY);
-+	}
-+	/*
- 	 * Make sure to mark the node as memory-less before rebuilding the zone
- 	 * list. Otherwise this node would still appear in the fallback lists.
- 	 */
-_
-
-Patches currently in -mm which might be from hao.li@linux.dev are
-
-mm-memory_hotplug-maintain-n_normal_memory-during-hotplug.patch
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
