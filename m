@@ -1,223 +1,221 @@
-Return-Path: <stable+bounces-230999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEmrLEn2yWl+3gUAu9opvQ
-	(envelope-from <stable+bounces-230999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 06:04:25 +0200
+	id 8FJiD4D7yWmd3wUAu9opvQ
+	(envelope-from <stable+bounces-231000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 06:26:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21930355219
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 06:04:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DCA35545F
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 06:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E5BB3034DD8
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:00:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 437933002310
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585743939D3;
-	Mon, 30 Mar 2026 04:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AAC35F615;
+	Mon, 30 Mar 2026 04:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nSA/cKKq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mjmrFreO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31B42580CF
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 04:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D511E5724
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 04:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774843245; cv=none; b=KT9Vzc9nSD2pu3qAH+mOyYDRQln7bcw8nNaqeYEoFpG5zfppHL5xSbSSdyi8ZJGU66YC9iV5msA51soIUAwlK5I7t1HxqLQfHzDVgwa8WMT8wMJz7KMogUn2iNKs453R7kODpw24qUEJynIzf+E7zI6zCj3dznfuPz80QckIk2w=
+	t=1774844795; cv=none; b=U1+Mvrcc/FiMibZWZMUj+HwlOJxqO4um4sn5t+80PC75tbxEuMK6UBLgGnhD+DVmO12N28jpAe9NrfKrqvn3tZ0Rra/mhD8SLfhu73awQgNAOJqcQI2usif2bZcORb7RuBQ3+aDAYMQDxKGdQ8m2PdiXO6dTpq7O64nDbpi7GX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774843245; c=relaxed/simple;
-	bh=PlmjxGt4JGDRqDssZg/k5xlqGZcdiyv/+rwibqyvJPk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hOVSJvFpe0Q5lSYQae3jC1qkiYTQHHZA+eBdzV/0o6I12rbDpqU49MsOHiNf1vzavTXoVwcESEpq1yGtDTeYchHD/b4vaBAfds7TLqCYs29WJU1hFTvfpYCCF3OazA8vcICg7mMjh7QJAq15ItE6UnSoIqt8kGd9Of2t2ri0aNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nSA/cKKq; arc=none smtp.client-ip=74.125.82.47
+	s=arc-20240116; t=1774844795; c=relaxed/simple;
+	bh=Q0lXIsGDXKvyVl1kKXYekFT1SW45OJBuDcA3uYRJOSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OM14sDmdsgeO3f5sfK+rd/EuioJBMYYZQRoLoPFUVoF/nWb2PmX/EPPCZiedSaaTbljH5/qecpa1Ifn07Zvvlpl8jKByTCRklWM6qKjd78OS6wo/70yogMJy+LfjqmD4IEkvYifIE1AM1jrAsTq/XPKhaGHbg6GztRp4j6EOgqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mjmrFreO; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12732165d1eso5550990c88.1
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 21:00:43 -0700 (PDT)
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35da9c0c007so394666a91.2
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 21:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774843243; x=1775448043; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2MiznXVnaOQN1Ty0L+R2YmSXm0gykn8v0J+C8W1yOKA=;
-        b=nSA/cKKqEzUOun+9QiFOdpV+7B87zgxQ4lgdCDGuOzYw382Xv5jxMiQeyzob6QsMOW
-         3fxUxAhrzXeHsqCCPbCx3m+vRpLLn+ZJWvKS46mK+/hZJVfHTlpi9JjU8k1dPptG5IIl
-         1t/jTAF4OnpJxfI61CcycuL/DBDzBAUWXrUnjYiLiEXmNpbZD3i27k6k6+uk9TWNHuta
-         zb4fNY8izJIb3574PoYey9D/JXKGlSksN2PkAUJI3VvrcyrBQqXebgg+8MVWpjeMaZ/F
-         lkW3v/phqEQmARHsbTCmtOjtfK7Z6Iey1o+wgwEUyxR6EUUZhT7kQUblFTNE7ll45RYm
-         2PDg==
+        d=gmail.com; s=20251104; t=1774844793; x=1775449593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MEFziDjY8EELmDWMIHiwj21wEphahbqJkx5694Z88mI=;
+        b=mjmrFreOzs/KKtXvpmv3SFAgzAueXOMYVtCbdwv1qCbBIvy0MP+kQvS5WZ7K3JzxMK
+         6geErfuHk15M3KNVgf6qs8PfiPgezOBa+l2cq6p5h/08A7n6fsKcIEGkfy5PkZAj6qOZ
+         fuZxhHgML35oYkYd8GTsvuw+bLS2c9r4/TCW0x5GcVFmpx/OxAABjDFZRsexjo3J0aoU
+         Gkl5jqIycvh+OH3e9WlPFgCYwK22kMg2vugj8vGwSOBsYM7rwFhI1YToHLS5x5gIQoPU
+         YCTX9BNdhSTxAmYtGqs5k77/R5ITUKWYkbYE0GJYjb5qtDWtnb+5H2Mi+NQvm/Qd/pTR
+         nRXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774843243; x=1775448043;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774844793; x=1775449593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2MiznXVnaOQN1Ty0L+R2YmSXm0gykn8v0J+C8W1yOKA=;
-        b=QmW9X3OakS89N1eX5EAkd2bW3g7awF9kTqONtH3vr0YQ7OVJxZtZBpHFRqfM5Ksee1
-         Js/StM+49O76N3WCqcphECL+eAALh1Lo1mfoPJVgdx9cJ3FsZuvnVWyh7Ha9f41NovRg
-         qcGlCSYxeanHOnHppk/C5/8+dpFHZu101AhHxkXSDNnBVz5YaJfSjJKmUXKKS6CrsQIc
-         iM82VzTf6uiJ/XjEgdF1ms69tlCMpFh8USf1jjZci//xjYsPN7rRaTuAGn+R6J7QRZNF
-         Wp5DKVzxbGUxC/PbHoNxgaX/5VhBSy5kPLdUP5waye5+10VWC1Ybxoi/ydHzw35zaLIV
-         LS+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWWh+OGOudlBrOzp3d4q5ZvguWSXbim+QAeOLJR5avrV/xNXDpQCoLxgcYfMC8wzoeHSXtjgyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB6xVqpHK01Iu/F9z7RSYowkoWBSgt5CdaexN3e9yWKP/rbLVN
-	yyxLPzQCPV3LoC+E5qLEnK6CdqxwOQrG5wfLgGUFnU9jH4N+b0yg3tql
-X-Gm-Gg: ATEYQzw0E36gJYzj696/pbWJdg1zdaNfyebDS2nKdohsAbdHkTPuOc8EwCObIVqcE/s
-	HFhVEamzcUsgS8R0/z05POBocRWHv63/7edG1p4MxgV288xzBDN6Kmf6fhEMW3bDbnHbEZ2Zp4Z
-	N5ZKqmdksrbNv4rnZD5UtCHgdL37GcimYyBRVxGSgEyl+T/NYrCrSJU9tFvUiJmH70NH+djC66H
-	3ULn4lb70KjR2MDfET4pykm8+sYnhwPGYfHuYDOBZQxPnFPikTa3OyAHZklS0ySz87z+f3HSrpc
-	Rmp9fQfznjoZCHvMXnRUQe91SbCVEIKMX3ae7G3sOtwAA+RAJx9Vuj5YsM7jNrHfOOwQKd6z1dV
-	zcaOiCVeTL1uH+V35QxyEuf//hbvPM7CGaFO1m/6Fj+6K5CakHk+rXtl7OU1wCqleqEaiWyywmC
-	4rptV3CNrZ55xD+NKEEJdvJSsfosVhcdfT2zIgLnoSn/bYUNBDs60ckelTdFXKU9mLCHpLAS9PP
-	a5KD95eJw3+4TE=
-X-Received: by 2002:a05:7022:6887:b0:12a:8ea4:24d with SMTP id a92af1059eb24-12ab28d13fcmr5818158c88.19.1774843242791;
-        Sun, 29 Mar 2026 21:00:42 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-254.user3p.v-tal.net.br. [177.4.161.254])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ab970da7fsm6715590c88.0.2026.03.29.21.00.40
+        bh=MEFziDjY8EELmDWMIHiwj21wEphahbqJkx5694Z88mI=;
+        b=mqGu2ZLts27RZEY3vSDLdodN/iT055FZFo+3R5AruuirD63x3sYpb+/itNRDWwhJoU
+         4FrmWaR44lg5lDJWYTCoRrGlHcoYKZkbYejn2ly+x53hf/wrzUickE9ew4/kDcmbWVgx
+         LDTOnnuYxIr7vHMpILbw7WhdyRvVQeGgj4dANBDUIX4ICDY47BPz//pkxiXw2C/9eUNz
+         9csHXcCMZSc5nScA/cqimzYkF8vzTVZNlhxBq87/hl56qF8V6Wi5QmG2X5ZUtQIdUbgc
+         W1YW6zBDnyIPxNALaTOIAiwztKLgN8e59xIaf7aJ5uJq6HXcsTTsADSOMv4aXcPvn6sh
+         LMyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUY16Cv12xvSbsLitqjRwDRr1T77i4ytU0k+v64EAc0d3MYPyCZ1oMxX9g+Ylrzfo2kwlDV5Cg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCVwWPW6C1crga4NqRpluCc34fZwgHVUvxuFfN4NtdId/OK+pT
+	Zwo+3qr9fw4m7CR1FXV+/XWnwqTtMVskT8UD4FJw/myE4a1si66DH9r2
+X-Gm-Gg: ATEYQzyFAHSzebq9ybFmWKidTQ7Dllxp2s1mHT7Oo2a59AM+fDVPKqq6wrTClZgBP0i
+	9uGopJa/sQ9c0nNnT3ulc43B4WkQ4o90Vdeh/kIQlY+xCjh29L8RCkAVUjPjLHPH4BFNpGyUIqu
+	Ng5q0sD+/eMgl930mQ12w8cGks6kkGoATYuOv0F+C10D6Hvxo0cdPRztIJTk3/EGKXXRgnegBvj
+	FpEtPQFXXgpJGc1EzNcNrSrkeLT//SnrJbfp3CONns1qHpCQSs8uv+vKeNUdYI8A1YgnYOyUbX5
+	C2Q2DumGThlIR7tgdC25WBz4Pzdw5BsydzuMqnCDEN6PiN3m7Ws2igPFy8m4gWi0Fs+nkEO9X0S
+	KrYRlHPE64Luib3wWT4xNZLiAjOakgHUcri6wIVyu5l81XRrgY/Rjske/RoFgwkAhkHyEsiTXcW
+	UlcKioXqOWcWFGw45Ent6qf9akndxMve1Q4GxIWMTjUR5E67CBpaoO8n8xUM9LdP1+iYwmfdqAE
+	PDwtQMpqn7KvjjZU0TcG/U=
+X-Received: by 2002:a17:90a:d410:b0:356:1db4:8fe5 with SMTP id 98e67ed59e1d1-35c30115629mr10183939a91.29.1774844793246;
+        Sun, 29 Mar 2026 21:26:33 -0700 (PDT)
+Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2eacff20sm4257584a91.3.2026.03.29.21.26.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 21:00:42 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Mon, 30 Mar 2026 01:00:34 -0300
-Subject: [PATCH] ALSA: aoa: i2sbus: fix OF node lifetime handling
+        Sun, 29 Mar 2026 21:26:32 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Xiang Mei <xmei5@asu.edu>,
+	linux-i2c@vger.kernel.org,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] i2c: smbus: reject oversized block transfers in the common path
+Date: Mon, 30 Mar 2026 12:26:22 +0800
+Message-ID: <20260330042622.2608889-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260330-aoa-i2sbus-ofnode-lifetime-v1-1-51c309f4ff06@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMywrCMBBG4Vcps3agTr1QX0W6SJM/OqKJZFoRS
- t/dqHA23+YsZCgKo1OzUMFLTXOq2G4a8leXLmAN1SStHNpOenbZsYqNs3GOKQfwXSMmfYD3Rwm
- 73qOrUR08C6K+f/Pz8LfN4w1++h5pXT/b61n9fgAAAA==
-X-Change-ID: 20260329-aoa-i2sbus-ofnode-lifetime-572d49ce3ce3
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3170;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=PlmjxGt4JGDRqDssZg/k5xlqGZcdiyv/+rwibqyvJPk=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJknv2aUvCrkz2m7q6S9zJlV0mjjbw39tPLC1LoTJw9F6
- 7Lax3F3lLIwiHExyIopsqxOWmS5p+vB1fq4FR4wc1iZQIYwcHEKwERqjzAynF77b78RV7eAssbv
- 3Xds3ddcPeUtXO93Nqqg4xfrq2WzyhkZLuyVq/7X+cN3hj5Tt3ixb1ioyod3Pg191cV6F04/2Gn
- GAwA=
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-230999-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[asu.edu,vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231000-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[bestswngs@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 21930355219
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D2DCA35545F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-i2sbus_add_dev() keeps the matched "sound" child pointer after
-for_each_child_of_node() has dropped the iterator reference. Take an
-extra reference before saving that node and drop it after the
-layout-id/device-id lookup is complete.
+The SMBus block transfer length data->block[0] is validated in
+i2c_smbus_xfer_emulated() but that check runs too late for tracepoints
+and is skipped entirely when the adapter provides a native smbus_xfer
+implementation. This allows user-controlled oversized block lengths to
+reach tracepoint memcpy calls and driver callbacks unchecked.
 
-The function also stores np in dev->sound.ofdev.dev.of_node without
-taking a reference for the embedded soundbus device. Since i2sbus
-overrides the embedded platform device release callback, balance that
-reference explicitly in the local error path and in i2sbus_release_dev().
+Add an early validation in __i2c_smbus_xfer() that rejects block
+transfers with data->block[0] > I2C_SMBUS_BLOCK_MAX before any
+tracepoint fires or driver callback runs. This is consistent with
+the existing -EINVAL convention in the emulated path and protects all
+downstream consumers at once: the smbus_write tracepoint, all native
+smbus_xfer driver implementations, and the emulated path.
 
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Two distinct bugs are fixed by this change:
+
+Bug 1: smbus_write tracepoint OOB (include/trace/events/smbus.h)
+  trace_smbus_write() fires before any validation and copies
+  data->block[0]+1 bytes into a 34-byte event buffer. With
+  block[0]=0xfe the tracepoint copies 255 bytes, overflowing by 221.
+
+ BUG: KASAN: stack-out-of-bounds in trace_event_raw_event_smbus_write+0x27c/0x530
+ Read of size 255 at addr ffff88800c8b7cd8 by task poc_smbus/86
+ Call Trace:
+  <TASK>
+  trace_event_raw_event_smbus_write+0x27c/0x530 (include/trace/events/smbus.h:23)
+  __i2c_smbus_xfer+0x43a/0xa40 (include/trace/events/smbus.h:91)
+  i2c_smbus_xfer+0x19e/0x340 (include/linux/i2c.h:835)
+  i2cdev_ioctl_smbus+0x38f/0x7f0 (drivers/i2c/i2c-dev.c:391)
+  i2cdev_ioctl+0x35e/0x680 (drivers/i2c/i2c-dev.c:478)
+  __x64_sys_ioctl+0x147/0x1e0 (fs/ioctl.c:52)
+  do_syscall_64+0xcf/0x15d0 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e (arch/x86/entry/entry_64.S:130)
+  </TASK>
+
+Bug 2: i2c-stub I2C_SMBUS_I2C_BLOCK_DATA OOB (drivers/i2c/i2c-stub.c)
+  stub_xfer() implements .smbus_xfer directly and only clamps
+  block[0] against 256-command, not I2C_SMBUS_BLOCK_MAX. With
+  block[0]=0xff and command=0 the loop accesses block[1+i] for
+  i up to 254, far past the 34-byte union.
+
+ UBSAN: array-index-out-of-bounds in drivers/i2c/i2c-stub.c:223:44
+ index 34 is out of range for type '__u8 [34]'
+ Call Trace:
+  <TASK>
+  stub_xfer+0x1971/0x198f [i2c_stub] (drivers/i2c/i2c-stub.c:223)
+  __i2c_smbus_xfer+0x306/0xa40 (drivers/i2c/i2c-core-smbus.c:607)
+  i2c_smbus_xfer+0x19e/0x340 (include/linux/i2c.h:835)
+  i2cdev_ioctl_smbus+0x38f/0x7f0 (drivers/i2c/i2c-dev.c:391)
+  i2cdev_ioctl+0x35e/0x680 (drivers/i2c/i2c-dev.c:478)
+  __x64_sys_ioctl+0x147/0x1e0 (fs/ioctl.c:52)
+  do_syscall_64+0xcf/0x15d0 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e (arch/x86/entry/entry_64.S:130)
+  </TASK>
+
+Fixes: 8a325997d95d ("i2c: Add message transfer tracepoints for SMBUS [ver #2]")
+Fixes: 4710317891e4 ("i2c-stub: Implement I2C block support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- sound/aoa/soundbus/i2sbus/core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Changes since the initial submission:
+- Moved the check from stub_xfer() into __i2c_smbus_xfer() so it
+  covers all callers, not just i2c-stub. This also fixes a separate
+  OOB in the smbus_write tracepoint that hits the same missing
+  validation from a different angle.
 
-diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
-index 22c956267f4e..833c44c0a950 100644
---- a/sound/aoa/soundbus/i2sbus/core.c
-+++ b/sound/aoa/soundbus/i2sbus/core.c
-@@ -84,6 +84,7 @@ static void i2sbus_release_dev(struct device *dev)
- 	for (i = aoa_resource_i2smmio; i <= aoa_resource_rxdbdma; i++)
- 		free_irq(i2sdev->interrupts[i], i2sdev);
- 	i2sbus_control_remove_dev(i2sdev->control, i2sdev);
-+	of_node_put(i2sdev->sound.ofdev.dev.of_node);
- 	mutex_destroy(&i2sdev->lock);
- 	kfree(i2sdev);
- }
-@@ -147,7 +148,6 @@ static int i2sbus_get_and_fixup_rsrc(struct device_node *np, int index,
- }
+ drivers/i2c/i2c-core-smbus.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
+index 71eb1ef56f0c..edb093687a4c 100644
+--- a/drivers/i2c/i2c-core-smbus.c
++++ b/drivers/i2c/i2c-core-smbus.c
+@@ -566,6 +566,15 @@ s32 __i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
+ 	if (res)
+ 		return res;
  
- /* Returns 1 if added, 0 for otherwise; don't return a negative value! */
--/* FIXME: look at device node refcounting */
- static int i2sbus_add_dev(struct macio_dev *macio,
- 			  struct i2sbus_control *control,
- 			  struct device_node *np)
-@@ -178,8 +178,9 @@ static int i2sbus_add_dev(struct macio_dev *macio,
- 	i = 0;
- 	for_each_child_of_node(np, child) {
- 		if (of_node_name_eq(child, "sound")) {
-+			of_node_put(sound);
- 			i++;
--			sound = child;
-+			sound = of_node_get(child);
- 		}
- 	}
- 	if (i == 1) {
-@@ -205,6 +206,7 @@ static int i2sbus_add_dev(struct macio_dev *macio,
- 			}
- 		}
- 	}
-+	of_node_put(sound);
- 	/* for the time being, until we can handle non-layout-id
- 	 * things in some fabric, refuse to attach if there is no
- 	 * layout-id property or we haven't been forced to attach.
-@@ -219,7 +221,7 @@ static int i2sbus_add_dev(struct macio_dev *macio,
- 	mutex_init(&dev->lock);
- 	spin_lock_init(&dev->low_lock);
- 	dev->sound.ofdev.archdata.dma_mask = macio->ofdev.archdata.dma_mask;
--	dev->sound.ofdev.dev.of_node = np;
-+	dev->sound.ofdev.dev.of_node = of_node_get(np);
- 	dev->sound.ofdev.dev.dma_mask = &dev->sound.ofdev.archdata.dma_mask;
- 	dev->sound.ofdev.dev.parent = &macio->ofdev.dev;
- 	dev->sound.ofdev.dev.release = i2sbus_release_dev;
-@@ -327,6 +329,7 @@ static int i2sbus_add_dev(struct macio_dev *macio,
- 	for (i=0;i<3;i++)
- 		release_and_free_resource(dev->allocated_resource[i]);
- 	mutex_destroy(&dev->lock);
-+	of_node_put(dev->sound.ofdev.dev.of_node);
- 	kfree(dev);
- 	return 0;
- }
-
----
-base-commit: bea8d9e445caf009ccadc17c353cc82f07885dd6
-change-id: 20260329-aoa-i2sbus-ofnode-lifetime-572d49ce3ce3
-
-Best regards,
---  
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
++	/* Reject invalid block lengths before they reach tracepoints
++	 * or native smbus_xfer implementations.
++	 */
++	if (data && (protocol == I2C_SMBUS_BLOCK_DATA ||
++		     protocol == I2C_SMBUS_BLOCK_PROC_CALL ||
++		     protocol == I2C_SMBUS_I2C_BLOCK_DATA) &&
++	    data->block[0] > I2C_SMBUS_BLOCK_MAX)
++		return -EINVAL;
++
+ 	/* If enabled, the following two tracepoints are conditional on
+ 	 * read_write and protocol.
+ 	 */
+-- 
+2.43.0
 
 
