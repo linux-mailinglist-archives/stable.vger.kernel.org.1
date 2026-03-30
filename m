@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NmYCChFymm/7AUAu9opvQ
-	(envelope-from <stable+bounces-231103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:40:56 +0200
+	id YKnYBOxGymkQ7QUAu9opvQ
+	(envelope-from <stable+bounces-231104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:48:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C75358593
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:40:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882FD358828
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB7553004F21
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:40:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2DC8E3036090
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A573A1D14;
-	Mon, 30 Mar 2026 09:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E55E388365;
+	Mon, 30 Mar 2026 09:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPavzzO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvRrsAjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB282226CF6
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C003815C0
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774863651; cv=none; b=cwaMLA4eJpRd6lLuZph/LLz0zI6JCdHripHCLKh+Xv0VhcNixH525JvTpMpslY0ccde339+xuRdHxfPjEyBl4TCHAoWtabi2qjzXHzCiv5ey/dDcvniKiR7y24tagynW0S7ZOEuNTQDzt8iN12SU86UTHBitOgTc3zO5etdXDxE=
+	t=1774863678; cv=none; b=nPPvYz0KX7oiePcO+UINSEetj7yWA7hMJBHdBjjXWInkSwbYtqz1Oc1orYlnVd7Zm6gxIgMY598EKZ2t1cG/JugiHzwmBEY/DBKWsmN39Iy+hKA6NA/ze2ib1O9qjcATOojJ8z+TKBIVJs72wBIH3mEScH/A9jqfl3VXIIMtTF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774863651; c=relaxed/simple;
-	bh=OM/lRQwQEZhKKpd0DuXYtH1BiA1ekYGYfmjWRFU47wA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aoREIRXi5LLCDXrPiePlVLeK+CKPcBFEKQKZ+FdqjzFlU0SooarxMb/7b/1/DSBT0Q63SvNfS8UAJDnc0DJhmUPAAA5inbrxkZRmeUxQyw6J+n0hkZ0RBKssf7P6B6FEyEOvcuFZ4f+WCrjOEF/FYJVk5beMLCMgrwCMKJ50IG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPavzzO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B576C4CEF7;
-	Mon, 30 Mar 2026 09:40:50 +0000 (UTC)
+	s=arc-20240116; t=1774863678; c=relaxed/simple;
+	bh=jBNvgPtDS7MLwV6mqJ28OzvNM7MK3/3dEHHLfF5yzBI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZX2wCtoQFHNDClpKgvptJS1N7sgbEl456OVByC9xMw//fNunX7uru8xwZEqQf2G0lvVA3aAcisKWX3NWRVUefoMdWDRomJUxh9ruly+AHBC9D63G3/AVnua+jOrhfZbKbHCBu8mkptUqHpHZjBpt+aa9VCGEpdbCX/LgvxF+8Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvRrsAjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691C5C4CEF7;
+	Mon, 30 Mar 2026 09:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774863651;
-	bh=OM/lRQwQEZhKKpd0DuXYtH1BiA1ekYGYfmjWRFU47wA=;
+	s=korg; t=1774863677;
+	bh=jBNvgPtDS7MLwV6mqJ28OzvNM7MK3/3dEHHLfF5yzBI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HPavzzO4P+1wW6E/rnRuhUulfkcDyTmQh5Y8vLWdnauyqHjFDG8S95AVxURO93JbY
-	 ARvhebjno2beRGSih7+s867rBpMxy/CZYUK4vLal+ulbMnTHzXEuabVchgJ8OGroIm
-	 gTDO5rhO2G9865xgGOCcD37gDHaYRaNvmZmF+Jvc=
-Subject: FAILED: patch "[PATCH] futex: Clear stale exiting pointer in futex_lock_pi() retry" failed to apply to 5.10-stable tree
-To: dave@stgolabs.net,tglx@kernel.org
+	b=pvRrsAjH/Xt9c/Yfra3Ws9CMiN4cECZ5oAFelAcG/9yt12hZ09GpfbJpVOMOBgJOB
+	 cSnnN/nxROs6xUp9v9ht24Qwb/7YYT5j51BzbNdvVI9KpPltbNQxzuxoYso2FtXwkd
+	 9FKORQ4JOk0n1/JPyfcw59XMcYlp6GdIvcTbk/uE=
+Subject: FAILED: patch "[PATCH] dmaengine: fsl-edma: fix channel parameter config for fixed" failed to apply to 6.6-stable tree
+To: joy.zou@nxp.com,Frank.Li@nxp.com,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 11:40:35 +0200
-Message-ID: <2026033035-underrate-yogurt-49bf@gregkh>
+Date: Mon, 30 Mar 2026 11:41:14 +0200
+Message-ID: <2026033014-jitters-makeshift-a3d2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,48 +57,49 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231104-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231103-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: B3C75358593
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,nxp.com:email,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 882FD358828
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 210d36d892de5195e6766c45519dfb1e65f3eb83
+git cherry-pick -x 2e7b5cf72e51c9cf9c8b75190189c757df31ddd9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033035-underrate-yogurt-49bf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033014-jitters-makeshift-a3d2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,76 +111,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 210d36d892de5195e6766c45519dfb1e65f3eb83 Mon Sep 17 00:00:00 2001
-From: Davidlohr Bueso <dave@stgolabs.net>
-Date: Wed, 25 Mar 2026 17:17:59 -0700
-Subject: [PATCH] futex: Clear stale exiting pointer in futex_lock_pi() retry
- path
+From 2e7b5cf72e51c9cf9c8b75190189c757df31ddd9 Mon Sep 17 00:00:00 2001
+From: Joy Zou <joy.zou@nxp.com>
+Date: Wed, 17 Sep 2025 17:53:42 +0800
+Subject: [PATCH] dmaengine: fsl-edma: fix channel parameter config for fixed
+ channel requests
 
-Fuzzying/stressing futexes triggered:
+Configure only the requested channel when a fixed channel is specified
+to avoid modifying other channels unintentionally.
 
-    WARNING: kernel/futex/core.c:825 at wait_for_owner_exiting+0x7a/0x80, CPU#11: futex_lock_pi_s/524
+Fix parameter configuration when a fixed DMA channel is requested on
+i.MX9 AON domain and i.MX8QM/QXP/DXL platforms. When a client requests
+a fixed channel (e.g., channel 6), the driver traverses channels 0-5
+and may unintentionally modify their configuration if they are unused.
 
-When futex_lock_pi_atomic() sees the owner is exiting, it returns -EBUSY
-and stores a refcounted task pointer in 'exiting'.
+This leads to issues such as setting the `is_multi_fifo` flag unexpectedly,
+causing memcpy tests to fail when using the dmatest tool.
 
-After wait_for_owner_exiting() consumes that reference, the local pointer
-is never reset to nil. Upon a retry, if futex_lock_pi_atomic() returns a
-different error, the bogus pointer is passed to wait_for_owner_exiting().
+Only affect edma memcpy test when the channel is fixed.
 
-  CPU0			     CPU1		       CPU2
-  futex_lock_pi(uaddr)
-  // acquires the PI futex
-  exit()
-    futex_cleanup_begin()
-      futex_state = EXITING;
-			     futex_lock_pi(uaddr)
-			       futex_lock_pi_atomic()
-				 attach_to_pi_owner()
-				   // observes EXITING
-				   *exiting = owner;  // takes ref
-				   return -EBUSY
-			       wait_for_owner_exiting(-EBUSY, owner)
-				 put_task_struct();   // drops ref
-			       // exiting still points to owner
-			       goto retry;
-			       futex_lock_pi_atomic()
-				 lock_pi_update_atomic()
-				   cmpxchg(uaddr)
-					*uaddr ^= WAITERS // whatever
-				   // value changed
-				 return -EAGAIN;
-			       wait_for_owner_exiting(-EAGAIN, exiting) // stale
-				 WARN_ON_ONCE(exiting)
-
-Fix this by resetting upon retry, essentially aligning it with requeue_pi.
-
-Fixes: 3ef240eaff36 ("futex: Prevent exit livelock")
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joy Zou <joy.zou@nxp.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260326001759.4129680-1-dave@stgolabs.net
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 
-diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
-index bc1f7e83a37e..7808068fa59e 100644
---- a/kernel/futex/pi.c
-+++ b/kernel/futex/pi.c
-@@ -918,7 +918,7 @@ int fixup_pi_owner(u32 __user *uaddr, struct futex_q *q, int locked)
- int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int trylock)
- {
- 	struct hrtimer_sleeper timeout, *to;
--	struct task_struct *exiting = NULL;
-+	struct task_struct *exiting;
- 	struct rt_mutex_waiter rt_waiter;
- 	struct futex_q q = futex_q_init;
- 	DEFINE_WAKE_Q(wake_q);
-@@ -933,6 +933,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
- 	to = futex_setup_timer(time, &timeout, flags, 0);
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index dbcdd1e68319..b596baa0a182 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -317,10 +317,8 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
+ 			return NULL;
+ 		i = fsl_chan - fsl_edma->chans;
  
- retry:
-+	exiting = NULL;
- 	ret = get_futex_key(uaddr, flags, &q.key, FUTEX_WRITE);
- 	if (unlikely(ret != 0))
- 		goto out;
+-		fsl_chan->priority = dma_spec->args[1];
+-		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
+-		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
+-		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
++		if (!b_chmux && i != dma_spec->args[0])
++			continue;
+ 
+ 		if ((dma_spec->args[2] & FSL_EDMA_EVEN_CH) && (i & 0x1))
+ 			continue;
+@@ -328,17 +326,15 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
+ 		if ((dma_spec->args[2] & FSL_EDMA_ODD_CH) && !(i & 0x1))
+ 			continue;
+ 
+-		if (!b_chmux && i == dma_spec->args[0]) {
+-			chan = dma_get_slave_channel(chan);
+-			chan->device->privatecnt++;
+-			return chan;
+-		} else if (b_chmux && !fsl_chan->srcid) {
+-			/* if controller support channel mux, choose a free channel */
+-			chan = dma_get_slave_channel(chan);
+-			chan->device->privatecnt++;
+-			fsl_chan->srcid = dma_spec->args[0];
+-			return chan;
+-		}
++		fsl_chan->srcid = dma_spec->args[0];
++		fsl_chan->priority = dma_spec->args[1];
++		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
++		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
++		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
++
++		chan = dma_get_slave_channel(chan);
++		chan->device->privatecnt++;
++		return chan;
+ 	}
+ 	return NULL;
+ }
 
 
