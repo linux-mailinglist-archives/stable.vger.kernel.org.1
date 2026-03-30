@@ -1,171 +1,246 @@
-Return-Path: <stable+bounces-231253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Jh/JH+cymmg+QUAu9opvQ
-	(envelope-from <stable+bounces-231253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:53:35 +0200
+	id 0CQrOkadymmg+QUAu9opvQ
+	(envelope-from <stable+bounces-231255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:56:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BF135E358
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:53:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF8A35E424
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77E35304CA5A
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:43:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 387A8302B22B
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2AC36DA15;
-	Mon, 30 Mar 2026 15:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9A33451B5;
+	Mon, 30 Mar 2026 15:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nn3Cm7fO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EURFnuaN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C33136C5BF
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774885411; cv=none; b=WT5mVfAFi5DAHgFffF4FxtA1qcP3sxF6uZPRSncBQBZOY62od1YCMBTtuqoruY3UDf7HJVxH8JgOtA0VKp5f/3BSzdZFZa6zh99T5C4/zHPJq7IGx9gjjojEh9lSZF4g6ECCBjQTvhmb8yUku18ClxLpbmC2EiTaqsUimtyhTS8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774885411; c=relaxed/simple;
-	bh=8AA78bo6gDi6k5n+uSlrguBGNGx2x4N4ETCxeBlmgUQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=apULrHyPkh4kCDEY3WXID/bX6YQaHuibCuh3zPnCDS1ISMpZG9K9Fb/fQAP11eyj/RaV5TXCBeNfQIbGmtHNTSofeMnQRvejyGOItXaCEEZREJC6vNOeKd+8Ba7giHgyhJm3D+zJBTjxqgGDX59PsFx9G60nr4DQnbS07rIKfxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nn3Cm7fO; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107AF344DB5
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774885907; cv=pass; b=Mg4pA///WMkqlUn+oVJrmRPBuHV3qPmn/4Zm2iakmYJjvGdf2ZScaUD2p5ZS/0A5Mzc3VdfsUcsUQ+y/lCTz8z+oHuf4D21y7ak8LdSsI3OwZtg1K+LPmi7PJu264O4RXzQr3viB4hyjAnvlcge8N2cdJbnNjxKj2EbuV2mp0i0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774885907; c=relaxed/simple;
+	bh=MEXzZl9zYo7dl9SxQcq1eH2lWQCMdjTITE9iYPn2xDE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KVaT1U8HEe0xcJxgoJZmQP2KoDRIWOla5vZsng4s9qfNUTjBAo3wNriajrfGp9giNCuL6kKqXVQLgyyC1h5ctdlFiacka/CAZSUQi7oNCLNbO/bIn+tItuRwRGQ6v9tMILA9qrp42gndVLdC/3LCEIPsWkU7W2bzyQ/k3LNxQc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EURFnuaN; arc=pass smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4853a485721so6605675e9.3
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:43:29 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43b95e5b3afso2664178f8f.3
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:51:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774885903; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VlStcJcGj5N6jOG7swX9YymR4MirUePY9YgY0N6Em7/nj/hmRDcVmOcuWBeK6bby+5
+         OP3/uYrXMt0itFl9KW7t8jESh1QOZEdj3kbqGgfg3Gt80sF5ViSyr/elkxyn+uWDZTlb
+         kGvTx1YCeITAdknox9993TxvfQVSXTrlvUdixylupzahM+kHbIipE52PDvOKrYw4w8T2
+         vOsvUeaKIq1wn6wOhcMmbVWMS00Q1L8jw8DUcJfGxqpOycXAplo8SUN7EbDaqEeqoAHn
+         XTYvUhqdDQp5qkEDxR/2jD1oTlTAoNlhjtgALA0FRWhZgvpwuSlCEljg1067OXvRVOYk
+         p68Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cXaIcPsqvcDWr494pHn/UVT9pyr634NTh1L5DdSP0OA=;
+        fh=+pdaLgWFsSho/qdzYs8Rj94b6XMQ0jKmfN9fhrekESQ=;
+        b=VNhxRZJ4C1P8LgpUqpoFbGPEx+PF7y+txNi30d7FlnrwgVwk6SiaCpTJ81PqObiXod
+         NUD98pFkYhSipu6iaRLHE+cPRhNEcHahzXTGJIzMg3sw1ax6d3lbAVANFFXALWpu6n/O
+         5rpPuTsT9xnZndxyNHe6RseGy0hv+SWnJRcmwYr3G+5zGA5iTVOKzWVcf21zfA3o8s+n
+         SY/toeEaUyXfOO+hB30tJ4ZFjaWxZLO1uSnd1bUB93Fqhk721sRs6CdGiV2WLDK5kTIq
+         cqcPtWl4gbWbm5jeIi8kgFQcwUnwxLs63A/wc6jccYqGjcy1Srkni7o35n9GFaSRERtB
+         0AUA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774885408; x=1775490208; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tO3ofX4oRPeqN1ii3JJFXpJAdRDWRpLKYddtaDkaAMM=;
-        b=nn3Cm7fOFQykfCUMbjcKv0YNiEUm6VcNj2G+WNEyR1owWwYjH3z7h7zCC4ducD9irs
-         GggNHe82eSfv+nqb+N2yV6CI21YLEiWReGzDlOtD8cbam5PX1ufNbXp6B25bE5XCTQxf
-         3kST2IhLzMayuQAcecMiV71fU/NAVlJOCHk7p84uodcjVZWWp9Wr3SZpuB0LpTA9AfTy
-         k+AmM6ki5DOqiCwxRB5/5lcTc02MaFlG8+bPonTFoTY2ZELaZtshDWPi3jNwtJ557DNw
-         8e0+sUZsl35qFqbgIrAosREe9sNVBkOO5ijUnDqArhU3TvfZFoAEtnqvF+ROBBaAaaG0
-         cDog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774885408; x=1775490208;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774885903; x=1775490703; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tO3ofX4oRPeqN1ii3JJFXpJAdRDWRpLKYddtaDkaAMM=;
-        b=lzmM6/4evyAgdNiHghKz77u4dvFZvycmxzRkImU6EatwKiJCaqElYPD65WJ+4FMMaE
-         kBdwhWbL4tiUHBSXES89i7ovBrTY0AY2A8FpL8Yb6zIbFxIqOzRHwJRqAA4VjoxD3H62
-         yJoqSAOs7PnB4v0ens+C67eww9hAmKNcQ0G+3o7E528oAZogpwhNgKbNzVzoq0oLtayv
-         FQ5+gYCbf3DORyRnkF44W+BRKjjJ6BN9Fxiisa1UW7zn8sSS1e+2v9SfZ0Eq71RNhPIy
-         9/75qqmxtmgELljJlL1audIGBmPLIIvPEGz4HMBfUru0pbcPz3uuda5Vv/EHhFV87CPj
-         +MFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfdy7AIFIX+cIo6BDp2C0Et1TGjeUjcq6J/GV6y0+3BYHpmq6ZsMq9t3nxb0dSzL5hyjMl8vc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqiwgUayIxptE2+dG54Q/e77RAkcjrmohqkI8mR2T08E/jgSNM
-	8uGce+OhVn2tDV1eSPbzJGRC3HJVO4iDWme3JOhqhpjn1lWV5IeLd52enOETItOx
-X-Gm-Gg: ATEYQzzPNd58caze8P0Co6FGQ15nJgJNDMDFv7ZkCxFBszRDQgPegbyzKhIOMewM5Jo
-	xbRAiaKvbmAgli3Z4aVdQ4v1v6FHFd3I8G17G1e7Q9Mc+SFWAS0YnGLX3ptpE42vdD3oSvrpylw
-	B/MZBaTbjSemn0nsZ5hR3e+4JCVj1SFchB7c+6gxAkceu5+id2VADwg7rKs3ZhkGhhgetndUPqZ
-	fciYfsBCAsAH6mz3t4IHDtuj0WT3jx0q2GFOQ134Jn9119xj2EflXh3fwes/IeEXrTRKI1ixEuh
-	7uvRDnDUBSYd13Nm0XVYCRu/SYTKny0NvEs1V5+L5VqtnpAzXzNQ/+4vCU8/9dhANlXha7NfRQi
-	AwpyKoWjVT6rkYr4SWn5NMMSNZkORy/KyDro7648xtIOpDEsV5MEncoLKCeshxhvBntWrGbVI+R
-	OY8jKJ3Pr8d2Zf21aMJkTvfkg2j/7f9epsv6CcTgnuiyDba+ijXjt17er/c4QKQvcvlPfcwljnM
-	PXg/sc/bIKglvh49Kd1
-X-Received: by 2002:a05:600c:524f:b0:486:fb8a:fd9 with SMTP id 5b1f17b1804b1-48727c82fa8mr113297715e9.0.1774885408204;
-        Mon, 30 Mar 2026 08:43:28 -0700 (PDT)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-82-131.paris.inria.fr. [128.93.82.131])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48722c6b4d0sm281883215e9.3.2026.03.30.08.43.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 08:43:27 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Wolfgang Grandegger <wg@grandegger.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-can@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] can: sja1000: Fix pci_iounmap() buffer
-Date: Mon, 30 Mar 2026 17:42:31 +0200
-Message-ID: <20260330154236.98665-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=cXaIcPsqvcDWr494pHn/UVT9pyr634NTh1L5DdSP0OA=;
+        b=EURFnuaNjsL0RRuFkdRfetcQH621KtICTlEcgGPqklzVlcMuvK+7ZWxdC+V+kqWNyN
+         GMhIMxq/M+bSLREoehDk4B9Mfz5XvH83+SS+Xoavgs54paSpanqXBfqEkeksXtot10jH
+         BVbgzDOi3LZW1xqtNXSS0D2Yznp7MUmuK3DqxlSCGXQ3/iQQoAlgAefB9fO9dmC2kOAX
+         BfcrvL1olC/xOaJR8epK/DHXdUhZjhaYjNyGHgY6DT6L46oj5w/L/ZeVAAbK1eTRhfeZ
+         qPQhseKUoVy+RLQYMAUqLa4rJ4FxIDre2JEcZ+xV3pL9pV2MarLoUgkomDZIlBtlKl1x
+         +2tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774885903; x=1775490703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cXaIcPsqvcDWr494pHn/UVT9pyr634NTh1L5DdSP0OA=;
+        b=KlGXhj3j1uAZoQyyOen8gd9Te+q9XOlWtSdUJSY+l8G0CO1jm1dOeeEbQWKX0oDZZI
+         +SguMYpiO2863uFu+V9N3x21mBiuZAAQDoIdD3UY4qumdkdJCz/rXyGm2dpmmwxPrb6I
+         yHxIaWA4OvFYbBoeGeqrcQ7nV2S2uhqN28SCzzvFO2eMDquhP1YLHPEYgatYkQvkdo9T
+         HE40c12Bxtqqi3zjce7p0rk4DfhYv3MbVru4gWfxkjdU+kBTSn3y7Evt93pvu1JGkWZB
+         bFE4OaZD+NFghBVCjtzut10KyNMqchf9RU6g0dHzsZ73JTlzyrKSaQtCclodZfLenfZF
+         V1jA==
+X-Forwarded-Encrypted: i=1; AJvYcCXP2CWJQYdzG7GhGmPywjtnXC09GvHiWBOfqyDsGY50e/ogDK5QI9UlS1qYGBgiAwQSXGzX4TU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzww1eolYPTPX40O0su63/+yJB2g7TkKGOJK+MReyLfKly7bQM7
+	Arn5NGWvzHXGOaKjB0uNMxky/Opwj3ebKqIh6nJxI37FNnBIXmGoukvvfmcARgnqIhxJSuSCZBG
+	Loi255b3PPnq/BRvTQUcyeim51SUcRVWYSsBseiR7/Q==
+X-Gm-Gg: ATEYQzzkVeobaiyGOJxikEE1UEkMBIbjbzWxy8GY8ymzmt+T4INVt6hkjHTSn/W6oEp
+	/gxJxiXuN6L1sNuquuuh3HRkOon3EU/3xRpBlUrHwyCG86r+rfsGm5a1HRxt2lpVRWkNjqOssZm
+	QSfECDwQku80PfnhE2FidqX4gd8SzqWPqoLQ2VXIQbOm0dcESlSwJ3FVrd+3puatKD9wKGK4bNz
+	heZQDzPwoF0HtopOQa2pg83BUE/00Fn3boUtqjf4Koe5tKf6a3AvN4FgMIbu5UhgU/z/04RrRKn
+	tVQmfd92cHnRNN81lh1a211pdIQdelQrrxQB9jjHTICejICIZK/inPxDegES+C5xKKoltQ==
+X-Received: by 2002:a05:6000:2f87:b0:43c:ff58:35c8 with SMTP id
+ ffacd0b85a97d-43cff58375fmr8080335f8f.28.1774885903245; Mon, 30 Mar 2026
+ 08:51:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+References: <20260327-b4-cru-rework-v1-0-3b7d0430f538@ideasonboard.com> <20260327-b4-cru-rework-v1-1-3b7d0430f538@ideasonboard.com>
+In-Reply-To: <20260327-b4-cru-rework-v1-1-3b7d0430f538@ideasonboard.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Mon, 30 Mar 2026 16:51:17 +0100
+X-Gm-Features: AQROBzAQZjNwjpdVDrkveGXGjVD9jBNGNwrMZvK6vhHbZvqMcgOnf3rHRqmwidE
+Message-ID: <CA+V-a8vYWH0NULkJtiLgxbeZayQ3V98JrCeeG9QYfXQ2W1jXDQ@mail.gmail.com>
+Subject: Re: [PATCH 01/14] media: rzg2l-cru: Skip ICnMC configuration when
+ ICnSVC is used
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Hans Verkuil <hverkuil+cisco@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
+	Daniel Scally <dan.scally@ideasonboard.com>, =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231255-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231253-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,pengutronix.de,kernel.org,grandegger.com,davemloft.net];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 20BF135E358
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[kernel.org,ideasonboard.com,bp.renesas.com,linux.intel.com,protonmail.com,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ideasonboard.com:email]
+X-Rspamd-Queue-Id: AEF8A35E424
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The base_addr is mapped in kvaser_pci_init_one() and the pointer is
-copied to priv->reg_base in kvaser_pci_add_chan() with offset
-channel * KVASER_PCI_PORT_BYTES but unmapped without the offset.
+On Fri, Mar 27, 2026 at 5:19=E2=80=AFPM Jacopo Mondi
+<jacopo.mondi@ideasonboard.com> wrote:
+>
+> From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+>
+> When the CRU is configured to use ICnSVC for virtual channel mapping,
+> as on the RZ/{G3E, V2H/P} SoC, the ICnMC register must not be
+> programmed.
+>
+> Return early after setting up ICnSVC to avoid overriding the ICnMC
+> register, which is not applicable in this mode.
+>
+> This prevents unintended register programming when ICnSVC is enabled.
+>
+> Fixes: 3c5ca0a48bb0 ("media: rzg2l-cru: Drop function pointer to configur=
+e CSI")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+> [Rework to not break image format programming]
+> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+> ---
+>  .../media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h   |  1 +
+>  drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c  | 17 +++++++++++=
+------
+>  2 files changed, 12 insertions(+), 6 deletions(-)
+>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Cancel the offset before calling pci_iounmap().
+Cheers,
+Prabhakar
 
-Fixes: 255a9154319d ("can: sja1000: stop misusing member base_addr of struct net_device")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/net/can/sja1000/kvaser_pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/sja1000/kvaser_pci.c b/drivers/net/can/sja1000/kvaser_pci.c
-index 95fe9ee1ce32..213fd0eb07e7 100644
---- a/drivers/net/can/sja1000/kvaser_pci.c
-+++ b/drivers/net/can/sja1000/kvaser_pci.c
-@@ -161,6 +161,7 @@ static void kvaser_pci_del_chan(struct net_device *dev)
- {
- 	struct sja1000_priv *priv;
- 	struct kvaser_pci *board;
-+	void __iomem *base_addr;
- 	int i;
- 
- 	if (!dev)
-@@ -186,7 +187,8 @@ static void kvaser_pci_del_chan(struct net_device *dev)
- 	}
- 	unregister_sja1000dev(dev);
- 
--	pci_iounmap(board->pci_dev, priv->reg_base);
-+	base_addr = priv->reg_base - board->channel * KVASER_PCI_PORT_BYTES;
-+	pci_iounmap(board->pci_dev, base_addr);
- 	pci_iounmap(board->pci_dev, board->conf_addr);
- 	pci_iounmap(board->pci_dev, board->res_addr);
- 
--- 
-2.43.0
-
+> diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h b/=
+drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
+> index a5a57369ef0e..10e62f2646d0 100644
+> --- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
+> +++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
+> @@ -60,6 +60,7 @@
+>  #define ICnMC_CSCTHR                   BIT(5)
+>  #define ICnMC_INF(x)                   ((x) << 16)
+>  #define ICnMC_VCSEL(x)                 ((x) << 22)
+> +#define ICnMC_VCSEL_MASK               GENMASK(23, 22)
+>  #define ICnMC_INF_MASK                 GENMASK(21, 16)
+>
+>  #define ICnMS_IA                       BIT(2)
+> diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c b/dri=
+vers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
+> index 162e2ace6931..6aea7c244df1 100644
+> --- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
+> +++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
+> @@ -262,19 +262,24 @@ static void rzg2l_cru_csi2_setup(struct rzg2l_cru_d=
+ev *cru,
+>                                  u8 csi_vc)
+>  {
+>         const struct rzg2l_cru_info *info =3D cru->info;
+> -       u32 icnmc =3D ICnMC_INF(ip_fmt->datatype);
+> +       u32 icnmc =3D rzg2l_cru_read(cru, info->image_conv) & ~(ICnMC_INF=
+_MASK |
+> +                                                             ICnMC_VCSEL=
+_MASK);
+> +       icnmc |=3D ICnMC_INF(ip_fmt->datatype);
+>
+> +       /*
+> +        * VC filtering goes through SVC register on G3E/V2H.
+> +        *
+> +        * FIXME: virtual channel filtering is likely broken and only VC=
+=3D0
+> +        * works.
+> +        */
+>         if (cru->info->regs[ICnSVC]) {
+>                 rzg2l_cru_write(cru, ICnSVCNUM, csi_vc);
+>                 rzg2l_cru_write(cru, ICnSVC, ICnSVC_SVC0(0) | ICnSVC_SVC1=
+(1) |
+>                                 ICnSVC_SVC2(2) | ICnSVC_SVC3(3));
+> +       } else {
+> +               icnmc |=3D ICnMC_VCSEL(csi_vc);
+>         }
+>
+> -       icnmc |=3D rzg2l_cru_read(cru, info->image_conv) & ~ICnMC_INF_MAS=
+K;
+> -
+> -       /* Set virtual channel CSI2 */
+> -       icnmc |=3D ICnMC_VCSEL(csi_vc);
+> -
+>         rzg2l_cru_write(cru, info->image_conv, icnmc);
+>  }
+>
+>
+> --
+> 2.53.0
+>
+>
 
