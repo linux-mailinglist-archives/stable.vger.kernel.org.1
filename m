@@ -1,272 +1,239 @@
-Return-Path: <stable+bounces-231294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLJbA53+ymk2CgYAu9opvQ
-	(envelope-from <stable+bounces-231294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:52:13 +0200
+	id 4C6xIVkCy2k2CgYAu9opvQ
+	(envelope-from <stable+bounces-231295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:08:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A287362243
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 088AB36244B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4ED1D301D4F2
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:51:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33F183042FF1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C2D3EAC96;
-	Mon, 30 Mar 2026 22:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ABF3B6BE8;
+	Mon, 30 Mar 2026 23:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYjHBppF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKph7jeG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E273B6BE7
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 22:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACAB3A8FE1;
+	Mon, 30 Mar 2026 23:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774911056; cv=none; b=fmB/XQZtVF/bw7MvW2vaPrfDnQamjzE91BzQtNuRUMIw7Z51n0X7OR4juVfSJNPX7RnGCYC351Js/CBZ3yztwnNXFq4+TCfsPE0LSj+++PfGaGRRLXmZDElkV5uZNzGj/QX3SHChVTe+6L+w27jjPHd6spwKLkz0w6XcmoYMI0I=
+	t=1774911956; cv=none; b=rat2EL0al3WTPf8Nm9gjzjQrWA6qsZxkYVF92xCTa9IWHqyAiFbCcpj9/t83wc8xFn+m8/hWHCywpJ4N+QNGeL0oCbTnpxdLQbPF3qOpVBROEQuuKjv5CrHNohCsg9PwV3oqzyuRgCOVM/DqUd7kc7vx8K5dBqLVhbEMXObavqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774911056; c=relaxed/simple;
-	bh=1azy0m7RwaL8GqhDxyFLtuPxNMxcNRpK2+/mZn5SRHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fr9EsUJZy7DmwlXORyT/2o3NLLDPevqlm7LZvIIP6FssqdD+FwQ4lif5GWT0gxKKaxub+toNN5paDrkYg7TTO8YQSZLyua9jznCtMQdHEJQOA8RyzB5qkus68YsGQQPJh+xz80mUacWdNaLn0XYY4xGs3cON7O2c2q/wmATYJ/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYjHBppF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314F1C4CEF7;
-	Mon, 30 Mar 2026 22:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774911055;
-	bh=1azy0m7RwaL8GqhDxyFLtuPxNMxcNRpK2+/mZn5SRHw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYjHBppFzgXQsqNPaMOSmmpswxzSSFmvtnutjvrhrwvwBSwljSSzGoimAnaI2Z5vo
-	 F7wekvTaHTGD5u1ph0+LO3xhSJuGl8R+JwnaadpDR3s/dvynuc5zqzZ2jXLzOtB3W0
-	 ZYPwtYHPW6uwyoDRFfFTzAaDF4iCag4wc7PoMpkNBLdXbpC3Po9ewss0lN3UzyqaA+
-	 lw3FtCNeOjAmQIxSdMBAA8GKZaVYnIYUFOdkmsBVy4pQjfS8yHS17ipVbNP1I3FokR
-	 gSfdhoC8BImrqe7LqfFzcH5F+zucWvXEn1OWzle8I2JRzWsYWYblUKacMK7wY+uO+G
-	 UC6AXuuidHScg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Werner Kasselman <werner@verivus.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
-Date: Mon, 30 Mar 2026 18:50:51 -0400
-Message-ID: <20260330225051.1334657-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026032917-clamor-poster-a4fd@gregkh>
-References: <2026032917-clamor-poster-a4fd@gregkh>
+	s=arc-20240116; t=1774911956; c=relaxed/simple;
+	bh=bsGBeeaP7YCj4zXTIDV7UWWoZx7yvSrsM7TzxUtUiFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M3H/OLOJ4WB+PTD6/soibSu1uSPjbfBLXJ1ePwGlECaiCg1ZntVPuIoKs/7HBuEFUQdQWp+M1h0VtiPTd7WHBX4EteHunhlGWFnLoyNXqVRqE3QtMZ28daEA3EOk0x5aW1Tkpz6TyqYLL4BNq2ZFbrCIyJMg+8inXmZDIIJM8xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKph7jeG; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774911955; x=1806447955;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bsGBeeaP7YCj4zXTIDV7UWWoZx7yvSrsM7TzxUtUiFc=;
+  b=PKph7jeGiWJCRWCCWWAJsRZg1+zvOw8Oiypo4dgp7LPxzrkJ81p3jpPU
+   LV6xmUmiW1Bcr5miQarkeEnxyppjN5JyVs77FcNeOw2m784/Ea+2GPL2X
+   lydTNY/AsPW4UeGsSOjl2NAQd4ZIu+7SXL+xDSijjWAWh1fmr22TKOvew
+   theazrCY4kshWDFoh4j3OosqhIKUXEI4RSp1FvE0uPo5AX+Uy+pl+i4nj
+   Y1Rh6pP0CX39C/3HSm3wsW3l5T1b47+9G6ElfkW5avRup0L4nnJJ/jKwX
+   TKcnCEhHu2uZMOx+tu+M/MYmKUcKrCwNDz+Oud2MnQZlb35Y8aIZ9i26s
+   w==;
+X-CSE-ConnectionGUID: txFSM+pMRnuwbkzyn9jlaA==
+X-CSE-MsgGUID: Le9VM9fjT/+92Fo7tKCuRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="86608827"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="86608827"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 16:05:54 -0700
+X-CSE-ConnectionGUID: sdC6e3sJTT2WbgfgNCyD5w==
+X-CSE-MsgGUID: mw1phzs3SvycRZitSSZr0Q==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 30 Mar 2026 16:05:52 -0700
+Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w7Lg5-000000001pV-2ImJ;
+	Mon, 30 Mar 2026 23:05:49 +0000
+Date: Tue, 31 Mar 2026 07:05:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>,
+	gregkh@linuxfoundation.org
+Cc: oe-kbuild-all@lists.linux.dev, marvin24@gmx.de,
+	linux-staging@lists.linux.dev, ac100@lists.launchpad.net,
+	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	=?iso-8859-1?Q?Sebasti=E1n?= Alba Vives <sebasjosue84@gmail.com>
+Subject: Re: [PATCH v2] staging: nvec: validate battery response length
+ before memcpy
+Message-ID: <202603310649.6iHw5wAQ-lkp@intel.com>
+References: <20260330060926.751031-1-sebasjosue84@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330060926.751031-1-sebasjosue84@gmail.com>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231294-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmx.de,lists.launchpad.net,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-231295-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: 7A287362243
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
+X-Rspamd-Queue-Id: 088AB36244B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Werner Kasselman <werner@verivus.com>
+Hi Sebastian,
 
-[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
+kernel test robot noticed the following build warnings:
 
-smb_grant_oplock() has two issues in the oplock publication sequence:
+[auto build test WARNING on staging/staging-testing]
 
-1) opinfo is linked into ci->m_op_list (via opinfo_add) before
-   add_lease_global_list() is called.  If add_lease_global_list()
-   fails (kmalloc returns NULL), the error path frees the opinfo
-   via __free_opinfo() while it is still linked in ci->m_op_list.
-   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
-   in smb_break_all_levII_oplock) dereference the freed node.
+url:    https://github.com/intel-lab-lkp/linux/commits/Sebastian-Josue-Alba-Vives/staging-nvec-validate-battery-response-length-before-memcpy/20260330-174322
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/20260330060926.751031-1-sebasjosue84%40gmail.com
+patch subject: [PATCH v2] staging: nvec: validate battery response length before memcpy
+config: arm64-randconfig-r054-20260331 (https://download.01.org/0day-ci/archive/20260331/202603310649.6iHw5wAQ-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 9.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603310649.6iHw5wAQ-lkp@intel.com/reproduce)
 
-2) opinfo->o_fp is assigned after add_lease_global_list() publishes
-   the opinfo on the global lease list.  A concurrent
-   find_same_lease_key() can walk the lease list and dereference
-   opinfo->o_fp->f_ci while o_fp is still NULL.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603310649.6iHw5wAQ-lkp@intel.com/
 
-Fix by restructuring the publication sequence to eliminate post-publish
-failure:
+All warnings (new ones prefixed by >>):
 
-- Set opinfo->o_fp before any list publication (fixes NULL deref).
-- Preallocate lease_table via alloc_lease_table() before opinfo_add()
-  so add_lease_global_list() becomes infallible after publication.
-- Keep the original m_op_list publication order (opinfo_add before
-  lease list) so concurrent opens via same_client_has_lease() and
-  opinfo_get_list() still see the in-flight grant.
-- Use opinfo_put() instead of __free_opinfo() on err_out so that
-  the RCU-deferred free path is used.
+   drivers/staging/nvec/nvec_power.c: In function 'nvec_power_bat_notifier':
+   drivers/staging/nvec/nvec_power.c:237:12: error: invalid storage class for function 'nvec_power_get_property'
+     237 | static int nvec_power_get_property(struct power_supply *psy,
+         |            ^~~~~~~~~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:253:12: error: invalid storage class for function 'nvec_battery_get_property'
+     253 | static int nvec_battery_get_property(struct power_supply *psy,
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:344:18: error: initializer element is not constant
+     344 |  .get_property = nvec_battery_get_property,
+         |                  ^~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:344:18: note: (near initialization for 'nvec_bat_psy_desc.get_property')
+   drivers/staging/nvec/nvec_power.c:352:18: error: initializer element is not constant
+     352 |  .get_property = nvec_power_get_property,
+         |                  ^~~~~~~~~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:352:18: note: (near initialization for 'nvec_psy_desc.get_property')
+   drivers/staging/nvec/nvec_power.c:363:13: error: invalid storage class for function 'nvec_power_poll'
+     363 | static void nvec_power_poll(struct work_struct *work)
+         |             ^~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:387:12: error: invalid storage class for function 'nvec_power_probe'
+     387 | static int nvec_power_probe(struct platform_device *pdev)
+         |            ^~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:434:13: error: invalid storage class for function 'nvec_power_remove'
+     434 | static void nvec_power_remove(struct platform_device *pdev)
+         |             ^~~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:450:11: error: initializer element is not constant
+     450 |  .probe = nvec_power_probe,
+         |           ^~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:450:11: note: (near initialization for 'nvec_power_driver.probe')
+   drivers/staging/nvec/nvec_power.c:451:12: error: initializer element is not constant
+     451 |  .remove = nvec_power_remove,
+         |            ^~~~~~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:451:12: note: (near initialization for 'nvec_power_driver.remove')
+   In file included from include/linux/device.h:32,
+                    from include/linux/platform_device.h:13,
+                    from drivers/staging/nvec/nvec_power.c:12:
+   drivers/staging/nvec/nvec_power.c:457:24: error: invalid storage class for function 'nvec_power_driver_init'
+     457 | module_platform_driver(nvec_power_driver);
+         |                        ^~~~~~~~~~~~~~~~~
+   include/linux/device/driver.h:267:19: note: in definition of macro 'module_driver'
+     267 | static int __init __driver##_init(void) \
+         |                   ^~~~~~~~
+   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
+     457 | module_platform_driver(nvec_power_driver);
+         | ^~~~~~~~~~~~~~~~~~~~~~
+   In file included from drivers/staging/nvec/nvec_power.c:11:
+   include/linux/module.h:132:42: error: invalid storage class for function '__inittest'
+     132 |  static inline initcall_t __maybe_unused __inittest(void)  \
+         |                                          ^~~~~~~~~~
+   include/linux/device/driver.h:271:1: note: in expansion of macro 'module_init'
+     271 | module_init(__driver##_init); \
+         | ^~~~~~~~~~~
+   include/linux/platform_device.h:295:2: note: in expansion of macro 'module_driver'
+     295 |  module_driver(__platform_driver, platform_driver_register, \
+         |  ^~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
+     457 | module_platform_driver(nvec_power_driver);
+         | ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/staging/nvec/nvec_power.c:457:1: warning: 'alias' attribute ignored [-Wattributes]
+   In file included from include/linux/device.h:32,
+                    from include/linux/platform_device.h:13,
+                    from drivers/staging/nvec/nvec_power.c:12:
+   drivers/staging/nvec/nvec_power.c:457:24: error: invalid storage class for function 'nvec_power_driver_exit'
+     457 | module_platform_driver(nvec_power_driver);
+         |                        ^~~~~~~~~~~~~~~~~
+   include/linux/device/driver.h:272:20: note: in definition of macro 'module_driver'
+     272 | static void __exit __driver##_exit(void) \
+         |                    ^~~~~~~~
+   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
+     457 | module_platform_driver(nvec_power_driver);
+         | ^~~~~~~~~~~~~~~~~~~~~~
+   In file included from drivers/staging/nvec/nvec_power.c:11:
+   include/linux/module.h:140:42: error: invalid storage class for function '__exittest'
+     140 |  static inline exitcall_t __maybe_unused __exittest(void)  \
+         |                                          ^~~~~~~~~~
+   include/linux/device/driver.h:276:1: note: in expansion of macro 'module_exit'
+     276 | module_exit(__driver##_exit);
+         | ^~~~~~~~~~~
+   include/linux/platform_device.h:295:2: note: in expansion of macro 'module_driver'
+     295 |  module_driver(__platform_driver, platform_driver_register, \
+         |  ^~~~~~~~~~~~~
+   drivers/staging/nvec/nvec_power.c:457:1: note: in expansion of macro 'module_platform_driver'
+     457 | module_platform_driver(nvec_power_driver);
+         | ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/staging/nvec/nvec_power.c:457:1: warning: 'alias' attribute ignored [-Wattributes]
+   drivers/staging/nvec/nvec_power.c:462:1: error: expected declaration or statement at end of input
+     462 | MODULE_ALIAS("platform:nvec-power");
+         | ^~~~~~~~~~~~
 
-This also requires splitting add_lease_global_list() to take a
-preallocated lease_table and changing its return type from int to void,
-since it can no longer fail.
 
-Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/server/oplock.c | 72 ++++++++++++++++++++++++++----------------
- 1 file changed, 45 insertions(+), 27 deletions(-)
+vim +/alias +457 drivers/staging/nvec/nvec_power.c
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 228166c47d8c9..590ddd31a68da 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock_info *opinfo)
- 	spin_unlock(&lb->lb_lock);
- }
- 
--static void lb_add(struct lease_table *lb)
-+static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
- {
--	write_lock(&lease_list_lock);
--	list_add(&lb->l_entry, &lease_table_list);
--	write_unlock(&lease_list_lock);
-+	struct lease_table *lb;
-+
-+	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
-+	if (!lb)
-+		return NULL;
-+
-+	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-+	       SMB2_CLIENT_GUID_SIZE);
-+	INIT_LIST_HEAD(&lb->lease_list);
-+	spin_lock_init(&lb->lb_lock);
-+	return lb;
- }
- 
- static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
-@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_info *op1, struct oplock_info *op2)
- 	lease2->version = lease1->version;
- }
- 
--static int add_lease_global_list(struct oplock_info *opinfo)
-+static void add_lease_global_list(struct oplock_info *opinfo,
-+				  struct lease_table *new_lb)
- {
- 	struct lease_table *lb;
- 
--	read_lock(&lease_list_lock);
-+	write_lock(&lease_list_lock);
- 	list_for_each_entry(lb, &lease_table_list, l_entry) {
- 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			opinfo->o_lease->l_lb = lb;
- 			lease_add_list(opinfo);
--			read_unlock(&lease_list_lock);
--			return 0;
-+			write_unlock(&lease_list_lock);
-+			kfree(new_lb);
-+			return;
- 		}
- 	}
--	read_unlock(&lease_list_lock);
- 
--	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
--	if (!lb)
--		return -ENOMEM;
--
--	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
--	       SMB2_CLIENT_GUID_SIZE);
--	INIT_LIST_HEAD(&lb->lease_list);
--	spin_lock_init(&lb->lb_lock);
--	opinfo->o_lease->l_lb = lb;
-+	opinfo->o_lease->l_lb = new_lb;
- 	lease_add_list(opinfo);
--	lb_add(lb);
--	return 0;
-+	list_add(&new_lb->l_entry, &lease_table_list);
-+	write_unlock(&lease_list_lock);
- }
- 
- static void set_oplock_level(struct oplock_info *opinfo, int level,
-@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	int err = 0;
- 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
- 	struct ksmbd_inode *ci = fp->f_ci;
-+	struct lease_table *new_lb = NULL;
- 	bool prev_op_has_lease;
- 	__le32 prev_op_state = 0;
- 
-@@ -1291,21 +1293,37 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	opinfo_count_inc(fp);
--	opinfo_add(opinfo, fp);
--
-+	/*
-+	 * Set o_fp before any publication so that concurrent readers
-+	 * (e.g. find_same_lease_key() on the lease list) that
-+	 * dereference opinfo->o_fp don't hit a NULL pointer.
-+	 *
-+	 * Keep the original publication order so concurrent opens can
-+	 * still observe the in-flight grant via ci->m_op_list, but make
-+	 * everything after opinfo_add() no-fail by preallocating any new
-+	 * lease_table first.
-+	 */
-+	opinfo->o_fp = fp;
- 	if (opinfo->is_lease) {
--		err = add_lease_global_list(opinfo);
--		if (err)
-+		new_lb = alloc_lease_table(opinfo);
-+		if (!new_lb) {
-+			err = -ENOMEM;
- 			goto err_out;
-+		}
- 	}
- 
-+	opinfo_count_inc(fp);
-+	opinfo_add(opinfo, fp);
-+
-+	if (opinfo->is_lease)
-+		add_lease_global_list(opinfo, new_lb);
-+
- 	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
- 
- 	return 0;
- err_out:
--	__free_opinfo(opinfo);
-+	kfree(new_lb);
-+	opinfo_put(opinfo);
- 	return err;
- }
- 
+32890b983086136 Marc Dietrich 2011-05-19  456  
+9891b1ce6276912 Marc Dietrich 2012-06-24 @457  module_platform_driver(nvec_power_driver);
+32890b983086136 Marc Dietrich 2011-05-19  458  
+
 -- 
-2.53.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
