@@ -1,150 +1,175 @@
-Return-Path: <stable+bounces-230988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL0XLzvcyWlm3AUAu9opvQ
-	(envelope-from <stable+bounces-230988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:13:15 +0200
+	id uLWIMfHfyWn83AUAu9opvQ
+	(envelope-from <stable+bounces-230989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:29:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247D0354B78
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3596E354CB9
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EC52300A385
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 02:13:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCF0E30180A7
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 02:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AECA344023;
-	Mon, 30 Mar 2026 02:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A74B391E7F;
+	Mon, 30 Mar 2026 02:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OhZQ9ACq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JtH8wuXn"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21207344DB5
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 02:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774836790; cv=none; b=tkSEffkomG+VI9DNvM5Eysc/s8mtf2vrmaWMn07xfm1Jf4CHyeK8EuGrmGaC3gqyI2AVM6jObkTW1GgsnjUGtq11VGFZK2rq8W5A6NfDrqcatQKJHKo8XuJ/0VlKXFkSe8vAkvf749irhWh9zY17e0cH/2S9yj4uxk2W7++C5QA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774836790; c=relaxed/simple;
-	bh=vrzSyHaslq3MSiXPuC7FSAAC4qvh97I27PRanA5teso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rWs3ZeIYjp7/XJbObAe8qE6/p77QmLeqMmNdIa9gTWq8WR9BhtobgyE+9+MUCVqarTDza/Qhie/dQca7miOEBaVoHI5HkibWExi/u/Co+kYi/E/+Ds/x0vzrXnsQLEhDvzHh8Jk511JlsfIRrvNNo4yoLpgbOrvvDhZ7l94SpjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OhZQ9ACq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774836786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GYl0Gfx1l/S4PpzJS9mjyQT83t+lS+RXkxvjtJf7FQE=;
-	b=OhZQ9ACqliH7wvA2TLQCcgJRQ0MfKA2SnpyMFuJJasZwishAoT8P2gqYRwM5YnHoTs5Ufb
-	pZGPF9vXphcyWFb8H+VdnzarfThC+oC5pyRDU/TgAjFXQy7aCnfSXrQRqb+v+OVLaHuPDe
-	0VqfhXj9ZDHPSEaNLA5Kq4nwznK5EUM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-194-y-rX6CFkOo-dZBIN4EfKeg-1; Sun,
- 29 Mar 2026 22:13:03 -0400
-X-MC-Unique: y-rX6CFkOo-dZBIN4EfKeg-1
-X-Mimecast-MFC-AGG-ID: y-rX6CFkOo-dZBIN4EfKeg_1774836782
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 72F57195608D;
-	Mon, 30 Mar 2026 02:13:01 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.5])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ED88019560AB;
-	Mon, 30 Mar 2026 02:12:56 +0000 (UTC)
-Date: Mon, 30 Mar 2026 10:12:51 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Yang Xiuwei <yangxiuwei@kylinos.cn>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.g.garry@oracle.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] scsi: sd: fix missing put_disk() when
- device_add(&disk_dev) fails
-Message-ID: <acncI-IZhtdDsmJg@fedora>
-References: <20260330014952.152776-1-yangxiuwei@kylinos.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C76F34CFCF
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 02:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774837679; cv=none; b=Fw3r7dgczMMbbXL6x4vfrRL9pysM/MBhnKpjBldyjx2L3sEIH81DlpaYpHJA37BEz+GkJATXJ4sFwXvoUw+q0k8eyTmkP1G4TkjNodsd3saezm3zj2snvs7EUrkKVsOssMG7ZZ6OXDNDiCX7fgf7k2C+m08ezzJLS4tiZZ2Vy6Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774837679; c=relaxed/simple;
+	bh=vZyq9h3vkeF5aQxGQqlBRMFtAQOkVVXTBRKDh1HO88k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=G3Ltogc5sYSUlC2ABs5wFURBnX1xLz1Ymp3WbqL7Alh8MyAyvdlhjkVzGKacKGqwVUsNpLw/5TIgHqPi4c5adrpol8m/bk+wNAGVAVyhlRVisbDQ6UGz1aKR7U1J161uYMUrd7lD4JeBbzC8VktUGHglD/j7QfsHZHRd6P1WzqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JtH8wuXn; arc=none smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2bd9a485bd6so7886172eec.1
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 19:27:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774837676; x=1775442476; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ySc265PnZwbX1P9RXTWeU43Uza4/FiDlEOhs0dGdd68=;
+        b=JtH8wuXni2mMdjU6drtXWKPdFHwyNXPyWbSMJvY/a5cOYX+RPOHzpaza0CLgGBGSVN
+         S/eSERJmJisZEkZWrEpMWN2WOPScx95vo6OaYMDQb0XLSyBX10jKo2vsuQGdh4jP7Wal
+         dSolkSPtx8UYH+9Btuw7wGwkMnYpRzC/MDLdokRH5Jv8Gi+/l6U/d++ZyxgqazkhUMJr
+         TPu7TTZFERkDXjm+rokSaXIT3hZPfqb9eYvi9Vc6rI8Wx+D0dZJ+3/AR0cePqBK8cQLc
+         FKBl8i9TbrA/pzSMlUPFvqW8XGFR85XWFD4IHqrlKd8hZJw+rIAGBFXY+LakH0QCQZaF
+         uhMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774837676; x=1775442476;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ySc265PnZwbX1P9RXTWeU43Uza4/FiDlEOhs0dGdd68=;
+        b=sxRIr79aRMsv1QbsqW4/IYnzMblTg5EvpPBhxklkY/Ycw6q+cyr3m6VH8zPXWEwkxT
+         bSbYDfrqXDB6QeVchGs7/HX1VMzhCWOBAjtlqgr8oxSMhzf4EE2/oGAk/Da5UXVCdE/a
+         9roT9TisZS9RJKFXgwsfRT//zdBxppZ/2dLVJagp7EhGlLMKYX5W2R7qZAicgop2nbkd
+         Xzxdr/15QY8zAEA7vyOvTO3Lgu7D8Rwuxg1wtpcxuvtNSL17oPFRyMis3GLZhMHl8dtb
+         JkK4hM+3ju2PavgF3Ac4J7D3YWSFrn15BUlB8en6SN8HkUgjnjAP0g9G2n/g1Pvp1fiP
+         lUTw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0JXDM593Yb6wH4eBjGG1wdErgpv5SiT/BnCRR/O5nSxVms0VLCyADfTIpNNJIAhARWy4YavA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKoSULFJoT6KdaG7iGYg4Qr2UXewf32Ws6/W2nd27vrXv3Bp2y
+	LUC98F/08arOFn1yDyRF2+p33SR95U/qbDqYcDyBJ62hJhtkqsaxd/iW
+X-Gm-Gg: ATEYQzzRxeEPONt0EiwiUI8iyNRZtNZPcWJBcgJpblAr25/zkH/CT86zg+Zf0hzXAaw
+	OTpt9MpX07x6j1eOtrH0xjDgr6sDNcyvukCGn7T4zHQpD7EwmBw/HTsftYy7mXD/c0V/44YaqI5
+	XOg7CjIOLJ0k+9cAj4igOGbxfL6F5xWyItGCuB1x1J5CPd8ok+ECptxU6QvNtDFJzIuV6MWrBZc
+	N3IgiIkakP4b/dENIrPd3zKf+77xPxZc2czqV7c2THalm+We2Rs0o5PEdi0dFVQBQEdsMVtoMAT
+	1i86Lsofwf4byB95bQFbaM9EJaOjyU3cZvnDiFcwTXFcEiihpg6GPjcO1S7fO2CdH+DzR1LPB9y
+	yPGasMaMhf5HAcY6ySKkvEoqEZ5Z4juL4+XSfmGW3gZPrizk3a9e5o/0z94yEGVRiNcwR5drCC+
+	nKqMbZmIjCGtHHMLnvSBhQHZbqlDWKxjDOW4l266qXvNGzGJTZuo7Gof2vdn43j0JFYYkqZAOu5
+	JVpngOMxBS/Y24=
+X-Received: by 2002:a05:7301:a03:b0:2c4:4276:709f with SMTP id 5a478bee46e88-2c442767647mr2600127eec.1.1774837676295;
+        Sun, 29 Mar 2026 19:27:56 -0700 (PDT)
+Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:7265:773a:8e51:c62f])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c7971d97sm6250673eec.30.2026.03.29.19.27.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2026 19:27:55 -0700 (PDT)
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH v2 0/4] Fix handling of GPIO keys and LEDs on geode
+Date: Sun, 29 Mar 2026 19:27:47 -0700
+Message-Id: <20260329-property-gpio-fix-v2-0-3cca5ba136d8@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330014952.152776-1-yangxiuwei@kylinos.cn>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKTfyWkC/22Nyw6CMBBFf4XM2jG02PpY+R+GBbbTMonQpiVEQ
+ vh3K3Hp8pzknrtCpsSU4VatkGjmzGEsIA8VmL4bPSHbwiBrqetGKIwpRErTgj5yQMdvVEJdtHH
+ OWGWh7GKiovfmoy3cc55CWvaLWXztryabP7VZYI1X8zxpUo7O1t390PHraMIA7bZtH6Nd0K6yA
+ AAA
+X-Change-ID: 20260315-property-gpio-fix-51586cffcd5d
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, Hans de Goede <hansg@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+ driver-core@lists.linux.dev, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-a6826
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230988-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-230989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,linuxfoundation.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ming.lei@redhat.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 247D0354B78
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3596E354CB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 09:49:52AM +0800, Yang Xiuwei wrote:
-> If device_add(&sdkp->disk_dev) fails, put_device() runs
-> scsi_disk_release(), which frees the scsi_disk but leaves the gendisk
-> referenced. The device_add_disk() error path in sd_probe() calls
-> put_disk(gd); call put_disk(gd) here to mirror that cleanup.
-> 
-> Fixes: 265dfe8ebbab ("scsi: sd: Free scsi_disk device via put_device()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: John Garry <john.g.garry@oracle.com>
-> Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
-> ---
-> v2: Add Fixes: and Cc: stable; add a short note on how the issue was found.
-> v3: Commit message and subject refined per review; add Reviewed-by from John Garry.
-> 
->  drivers/scsi/sd.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-> index 628a1d0a74ba..aba22060fcd5 100644
-> --- a/drivers/scsi/sd.c
-> +++ b/drivers/scsi/sd.c
-> @@ -4018,6 +4018,7 @@ static int sd_probe(struct scsi_device *sdp)
->  	error = device_add(&sdkp->disk_dev);
->  	if (error) {
->  		put_device(&sdkp->disk_dev);
-> +		put_disk(gd);
->  		goto out;
->  	}
+This series deal with breakage on geode caused by a recent conversion of
+the board to use static device properties for configuring GPIO-connected
+keys and LEDs. The issue was that PROPERTY_ENTRY_GPIO() would create a
+temporary structure on stack for GPIO properties which would later be
+discarded.
 
-Another fix is to clear `sdkp` and `goto out_put`:
+The first change patches the behavior using existing in kernel APIs so
+that the bug can easily be fixed in stable kernels, and the other 3
+improve the API and add safety checks.
 
-- clearing `sdkp` because the device is released already, and this way is `memory safe`
-- `goto out_put` can release disk centrally
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+Changes in v2:
+- added printing offending propety name in patch #3 (Andy)
+- Link to v1: https://patch.msgid.link/20260323-property-gpio-fix-v1-0-9cb46e5fe7df@gmail.com
 
+---
+Dmitry Torokhov (4):
+      x86/geode: fix on-stack property data usage
+      software node: allow passing reference args to PROPERTY_ENTRY_REF
+      software node: verify that property data is not on stack
+      x86/geode: use PROPERTY_ENTRY_REF for GPIO properties
 
+ arch/x86/platform/geode/geode-common.c | 24 ++++++++++++++++++------
+ drivers/base/swnode.c                  | 10 ++++++++++
+ include/linux/property.h               |  9 ++++++++-
+ 3 files changed, 36 insertions(+), 7 deletions(-)
+---
+base-commit: 3b058d1aeeeff27a7289529c4944291613b364e9
+change-id: 20260315-property-gpio-fix-51586cffcd5d
 
-Thanks,
-Ming
+Thanks.
+
+-- 
+Dmitry
 
 
