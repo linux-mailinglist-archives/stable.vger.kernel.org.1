@@ -1,214 +1,213 @@
-Return-Path: <stable+bounces-231288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDo5J470ymmlBwYAu9opvQ
-	(envelope-from <stable+bounces-231288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:09:18 +0200
+	id 6DEPGHT1ymmlBwYAu9opvQ
+	(envelope-from <stable+bounces-231289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:13:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B637361C0B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF672361C66
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA1D9303C4D8
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:02:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB9FE3010B9E
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 22:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC43F3A783B;
-	Mon, 30 Mar 2026 22:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7223A75B9;
+	Mon, 30 Mar 2026 22:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T3qAk3db"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dMN/ajqG"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CC4393DC0;
-	Mon, 30 Mar 2026 22:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E7C37FF55
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 22:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774908175; cv=none; b=JZkzx7E2f0Kp8Cz4srWrVNM2FSQCh3F7LdtFV9OLQRE6k4w/GLJOhn1UOMoS8pRRUoc7sNN2j3oXH4KBHekqAbdCwpm0gWwL7pxubX3pZLThF9dzS0KHuX3BebnPbPMILOZYZcCHG8qX8jUEpt/+WNTmkNiLTc1xLFZ4Q3ojfdA=
+	t=1774908619; cv=none; b=b0MQve3P6zXQZlhujtHKs6snGsAP0Vqzd9UFqOUJEmFGlfTEodhBQUWSWtJLJynfm/wcKPNl6foTORpfFmDmH1K7RJ0LpVh6lImwsydZfFFEeJaKI+z685IHbK7w+S9PpwwOEfPGyaQ+xusmK/+5HkhtJRLOkCVCzZS2AdJklLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774908175; c=relaxed/simple;
-	bh=0a/qTJ6Z6SLzYReYiecSbgx8In0wkAtWXm6TRVfoSvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fezGdsDI69JneeZMsK8YZm9z9nKonQ2ZcXEBvQTDzbK2/lu9cHJHMNwJlS9/qSd1O1XBE2hyE5CHMNgGnQJ8YP3/67QaeGuz3JDHMg0Y8x8+NNIEIjcJNKmj9m9XQh2OeUK5mgVrG0KNj58MIQF1I1RYRQaAJ13nhVTKEjcBsr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T3qAk3db; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774908174; x=1806444174;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0a/qTJ6Z6SLzYReYiecSbgx8In0wkAtWXm6TRVfoSvY=;
-  b=T3qAk3dbYN4z5fuR6iBhwXzLg89ylG2cJGCaXhTgi0YLpLnTv7gpEbF0
-   nlzVJT27m/QIokrc9spT2MJ7+TSUbaw/fUKgfnInNapvx8vh2fGc4sxId
-   wPgf+lKMPpqAS4TSg3f/pfs7N+RCSGl3603XI9gOGBufkrueMz42991cL
-   /LrfgVQoMAEbC0aIHMDma18hb7P6ZG4Ov0/GjHtEsSt+Y7rFRDP/Uqk3M
-   75+Xo8smwZFGPgkyo8XWxH1wutYaM/OY/1zKqqF60ASutD0geZC7tNMCf
-   PZGB6Sj0HZbAj4aGQA7lX6323IzTFuBKHpb+n8LlzN/HqO2U0zIdCvNp2
-   w==;
-X-CSE-ConnectionGUID: E25wVTJTT2W1uecRbdNsYQ==
-X-CSE-MsgGUID: uCucRZF1RJyHdRpSLawXXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="86530364"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="86530364"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 15:02:53 -0700
-X-CSE-ConnectionGUID: 4F9eCnT+T2S7Jx4SnsHesA==
-X-CSE-MsgGUID: Jp+P6fSSR+KZjuQgYb8ZkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="230980195"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 30 Mar 2026 15:02:49 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7Kh4-000000001ll-1KrN;
-	Mon, 30 Mar 2026 22:02:46 +0000
-Date: Tue, 31 Mar 2026 06:01:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ma Ke <make24@iscas.ac.cn>, yoshihiro.shimoda.uh@renesas.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	niklas.soderlund+renesas@ragnatech.se, michael.dege@renesas.com,
-	nikita.yoush@cogentembedded.com, yury.norov@gmail.com,
-	geert+renesas@glider.be
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: renesas: rswitch: Fix memory leak in
- rswitch_phy_device_init()
-Message-ID: <202603310514.S572gcNU-lkp@intel.com>
-References: <20260330073541.2871414-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1774908619; c=relaxed/simple;
+	bh=FDBfk2gTLu1bF0rsxtRP8sgWzUpvU/oWz/qYiDUySTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gEDj+ATeBiSQaIt8SxsuoX6H9RuLttgeg1/zLH3BYqDXXAlwJavVJVta2ntHjYNgpyyPV/9QPlDOcCWVicRhps7K1fRRJ8QJksPMWH2s5Lyw2mLI8XJCtuLcM2awE66Y8LpqXpHzwE8BS/Ljue6WRC8RghDJlVJeSbbOpRm0bTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dMN/ajqG; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8cfbbf35354so706757485a.0
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:10:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774908617; x=1775513417; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PvvCrpWMzIENV2FZlq4KX5Fhj0gALiIkbUI42JoqXcU=;
+        b=dMN/ajqGZgDB0BeeTodBZ3BYWpk0wyvyv5Bms5HCIIhrJGl9Lt622sRaTO0UwgBu2X
+         x8XtnbqCnehgFY+hOxzbBHdx9UJETg/ocYpvKZwFC98D4fsSSeotzKqgB4v9Xaki3tmP
+         BUqHweologJtWuWwl6B9y/9iWNiY8H1qtuZFI/Dsw5EPfS3L6yS5rFWgkUkaoQjomGYk
+         WiftKPRIxxT5d+tMzv9CBBTcJ5HQHPnElIpLGlGMOtD+phaI6SjZ0CNT7l5AijGGIsw6
+         AhJg3EUX66IWybd4dAKOI/7rSfEqCWygk2hbgmj+veshKiwzOtGn7vwlrVw9h8r/nZ+I
+         B7Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774908617; x=1775513417;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PvvCrpWMzIENV2FZlq4KX5Fhj0gALiIkbUI42JoqXcU=;
+        b=QOZERDfremL/Q6o8U8Ugc/WjjMZon70+e4ELxL7GZn4dJ2WoVGW+6+yop8mfPwyasz
+         ayk8jDIj8VxCeZzb06FoNWUWiwvKs+LpBA50EwoZHFkh8Se7XVzXiIeu9i88pYdSBVbs
+         1ip5VCc63e8fCvqrNfmC5tUzYUed62e6lDII7ZeLX/Pj3Ed+R7+YeVh115Q1B4hi/32z
+         gGNNoa4loTMMw8Z3x81xH9dMVcKS6WKlxwucVBoC1HGMRc5mNpMn2LHyOU+23Za8ewki
+         0VDJBQxhLVxmq/FQ5ZT/6HOhAAlNbqC80PvVdA+kJsEOqkRxQiMf7DIwbR0DzmU7zSuO
+         LReA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1gwRdq1wUjy3GNCzTluZnT5XCtDvfCi/A7TAXaknRlCNqYVpbsR/+NENBWk4cdfFrgmzteKA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxv6FhqrojBxtCEVYtulxRw5JyAgDVTwPbYZ96rzJIpdkUOZ33m
+	Y+9dF0Zn47OOf77Y9iCtxJjaZz4/bgxAOseUIEqYqTdct3bW/sNAT7Kr
+X-Gm-Gg: ATEYQzyfkLejOkY6ptMFZeQUnggczdowC02CF88/eToVChZYIOi7duvfWWblnKeChtZ
+	b6sPwMRWTvsSISOCUcgYvsdFwzNDBWoQBWAxG4WjVfFFwc7/rgJsb7K1v5v+/QyoKfCMhAx0iWi
+	OSVdhb+DTkpkBQ6xpl1SieX60k4fUO2xJYUBgmr2ewuuLCFMqsZTMophXg85g1G9GGZJqrkga9s
+	PuRigrSeblTPJk93n+OIg3VfNgFx9Hyx38tvUwZHN4sokKfmkoIjq6qjyS5XvnHti7xc9JsVz0X
+	0UlxMnX1FYLTUFAVePb6uZnnR1MGHehPAzV5/6snQf885FkHj3sue7kpOKo2P4xn/0Xv8fvSNaR
+	H7hIgRPoyTIQL5BaqssW5SjsJ+wZ0uzZYEki0zw3HmLKRrhADvSGAjR4/+K15RYyM2G+IXGn8Yi
+	1kkXaCPdlAPNpaYgNVDt7sWlIakda6+Q809q+7AtALDxSuLIbnP1qOprzrLBHKo1X23YJ2n3AVZ
+	/lDQitsIMPUDr4lWcuvdA==
+X-Received: by 2002:a05:620a:4547:b0:8c6:a8a6:e164 with SMTP id af79cd13be357-8d01c796d8emr1904826285a.45.1774908617261;
+        Mon, 30 Mar 2026 15:10:17 -0700 (PDT)
+Received: from mango-teamkim.. ([129.170.197.108])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d028095f1csm819343585a.47.2026.03.30.15.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 15:10:16 -0700 (PDT)
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: luiz.dentz@gmail.com,
+	marcel@holtmann.org,
+	stable@vger.kernel.org,
+	kyungtae.kim@dartmouth.edu,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH v3] Bluetooth: ISO: fix NULL deref in iso_recv() ISO_END handling
+Date: Mon, 30 Mar 2026 18:10:15 -0400
+Message-ID: <20260330221015.322337-1-nathan.c.rebello@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260328035813.296410-1-nathan.c.rebello@gmail.com>
+References: <20260328035813.296410-1-nathan.c.rebello@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330073541.2871414-1-make24@iscas.ac.cn>
-X-Spamd-Result: default: False [0.34 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231288-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[iscas.ac.cn,renesas.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,ragnatech.se,cogentembedded.com,gmail.com,glider.be];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,holtmann.org,vger.kernel.org,dartmouth.edu];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231289-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathancrebello@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev,renesas];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3B637361C0B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BF672361C66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Ma,
+The ISO_CONT case in iso_recv() properly checks for unexpected
+continuation frames and oversized fragments before accessing
+conn->rx_skb. The ISO_END case lacks both checks.
 
-kernel test robot noticed the following build warnings:
+When an ISO_END packet arrives without a preceding ISO_START:
+  - conn->rx_skb is NULL (never allocated)
+  - skb_put(conn->rx_skb, ...) dereferences NULL -> kernel crash
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master v7.0-rc6 next-20260327]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+When an ISO_END fragment length does not exactly match the
+remaining expected length:
+  - the reassembly is malformed and must be rejected
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/net-renesas-rswitch-Fix-memory-leak-in-rswitch_phy_device_init/20260330-214200
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260330073541.2871414-1-make24%40iscas.ac.cn
-patch subject: [PATCH] net: renesas: rswitch: Fix memory leak in rswitch_phy_device_init()
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260331/202603310514.S572gcNU-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603310514.S572gcNU-lkp@intel.com/reproduce)
+KASAN confirmed the NULL-deref on kernel 7.0.0-rc5 via VHCI:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603310514.S572gcNU-lkp@intel.com/
+  general protection fault, probably for non-canonical address 0xdffffc0000000018
+  KASAN: null-ptr-deref in range [0x00000000000000c0-0x00000000000000c7]
+  CPU: 0 UID: 0 PID: 72 Comm: kworker/u9:0 Not tainted 7.0.0-rc5
+  Workqueue: hci0 hci_rx_work
+  RIP: 0010:skb_put+0x27/0x1a0
+  Call Trace:
+   <TASK>
+   iso_recv+0x5e0/0xee0
+   hci_rx_work+0x226/0x730
+   process_one_work+0x633/0x1060
+   worker_thread+0x45b/0xd10
+   kthread+0x2c6/0x3b0
+   ret_from_fork+0x38d/0x5c0
+   </TASK>
+  Kernel panic - not syncing: Fatal exception
 
-All warnings (new ones prefixed by >>):
+Fix by adding validation to the ISO_END case: reject end frames
+when no rx_skb reassembly buffer exists, and reject end fragments
+whose length does not exactly complete the expected reassembly.
 
->> drivers/net/ethernet/renesas/rswitch_main.c:1480:2: warning: variable 'phydev' is uninitialized when used here [-Wuninitialized]
-    1480 |         phydev->mac_managed_pm = true;
-         |         ^~~~~~
-   drivers/net/ethernet/renesas/rswitch_main.c:1462:27: note: initialize the variable 'phydev' to silence this warning
-    1462 |         struct phy_device *phydev, *tmp_phydev;
-         |                                  ^
-         |                                   = NULL
-   1 warning generated.
+Fixes: ccf74f2390d6 ("Bluetooth: Add ISO Socket")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+---
+Changes in v3:
+  - Check !conn->rx_skb instead of !conn->rx_len to correctly
+    handle the case where an ISO_CONT fragment completes rx_len
+    but a valid zero-length ISO_END still follows.
 
+Changes in v2:
+  - Tighten end fragment check from (skb->len > conn->rx_len) to
+    (skb->len != conn->rx_len): the end fragment must exactly
+    complete the reassembly.
 
-vim +/phydev +1480 drivers/net/ethernet/renesas/rswitch_main.c
+ net/bluetooth/iso.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1459  
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1460  static int rswitch_phy_device_init(struct rswitch_device *rdev)
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1461  {
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1462  	struct phy_device *phydev, *tmp_phydev;
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1463  	struct device_node *phy;
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1464  	int err = -ENOENT;
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1465  
-b46f1e5793298c drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1466  	if (!rdev->np_port)
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1467  		return -ENODEV;
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1468  
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1469  	phy = of_parse_phandle(rdev->np_port, "phy-handle", 0);
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1470  	if (!phy)
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1471  		return -ENODEV;
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1472  
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1473  	/* Set phydev->host_interfaces before calling of_phy_connect() to
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1474  	 * configure the PHY with the information of host_interfaces.
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1475  	 */
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1476  	tmp_phydev = of_phy_find_device(phy);
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1477  	if (!tmp_phydev)
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1478  		goto out;
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1479  	__set_bit(rdev->etha->phy_interface, tmp_phydev->host_interfaces);
-35b78409e1c7ff drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-10-17 @1480  	phydev->mac_managed_pm = true;
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1481  
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1482  	phydev = of_phy_connect(rdev->ndev, phy, rswitch_adjust_link, 0,
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1483  				rdev->etha->phy_interface);
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1484  
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1485  	/* Release the temporary reference obtained by of_phy_find_device() */
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1486  	phy_device_free(tmp_phydev);
-142f4caaa41b9c drivers/net/ethernet/renesas/rswitch_main.c Ma Ke             2026-03-30  1487  
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1488  	if (!phydev)
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1489  		goto out;
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1490  
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1491  	phy_set_max_speed(phydev, SPEED_2500);
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1492  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1493  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1494  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1495  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1496  	rswitch_phy_remove_link_mode(rdev, phydev);
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1497  
-c16a5033f77b9e drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1498  	phy_attached_info(phydev);
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1499  
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1500  	err = 0;
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1501  out:
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1502  	of_node_put(phy);
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1503  
-0df024d0f1d3e5 drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2023-02-01  1504  	return err;
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1505  }
-3590918b5d07aa drivers/net/ethernet/renesas/rswitch.c      Yoshihiro Shimoda 2022-10-31  1506  
-
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index be145e273..7c57b1d22 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -2587,6 +2587,20 @@ int iso_recv(struct hci_dev *hdev, u16 handle, struct sk_buff *skb, u16 flags)
+ 		break;
+ 
+ 	case ISO_END:
++		if (!conn->rx_skb) {
++			BT_ERR("Unexpected end frame (len %d)", skb->len);
++			goto drop;
++		}
++
++		if (skb->len != conn->rx_len) {
++			BT_ERR("End fragment length mismatch (len %d, expected %d)",
++			       skb->len, conn->rx_len);
++			kfree_skb(conn->rx_skb);
++			conn->rx_skb = NULL;
++			conn->rx_len = 0;
++			goto drop;
++		}
++
+ 		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
+ 					  skb->len);
+ 		conn->rx_len -= skb->len;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
