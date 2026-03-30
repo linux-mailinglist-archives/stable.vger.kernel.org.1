@@ -1,125 +1,123 @@
-Return-Path: <stable+bounces-230992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHjlGS3lyWlC3QUAu9opvQ
-	(envelope-from <stable+bounces-230992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:51:25 +0200
+	id wEl0CSvmyWlC3QUAu9opvQ
+	(envelope-from <stable+bounces-230993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:55:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774C9354E41
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:51:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E421354ED7
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 04:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A5E9F3002518
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 02:51:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07A5B30398BD
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 02:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E901D3815F9;
-	Mon, 30 Mar 2026 02:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3546939151B;
+	Mon, 30 Mar 2026 02:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qwTzhzBI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YXaEvoXX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7178B3624AD
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 02:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17BB34CFCF
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 02:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774839077; cv=pass; b=ToMsej4wx0ITN6PG8wWyNVTFkajqV7O2TRmAuVfreEhs8oK/kxQbzGf+X4XljMsm5DqCEk2YI9ISC4D17YakCZKPY8IQFQ4iNWiP6GQnxRnNQbHXskik9hkwHD56SdYaFqSJOgtPAyQbLZWVhfI9cYmlLcS0V8vKVGU4WwcW+eo=
+	t=1774839165; cv=pass; b=KyoVyQXi4wvx4O2sdo/XveNN1GTB/MmkFlD4HLmIr03pLwa9rxBJ5KCol7Wrd8kW1R6kDwKoIULMPF1aEv9FFI6U1tcQZL93aV40hAW5f1dyUIbyc8uDW8dSuM6DonpVPVDqPEGGbmAsoGo0nr0YjScIiIyjlATfzeBuXP2JL8k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774839077; c=relaxed/simple;
-	bh=RNK/vnKu/pgZEBtVMkMLbuqixs2u1SksMaUAltp2QDM=;
+	s=arc-20240116; t=1774839165; c=relaxed/simple;
+	bh=SfrGjdlcRjT4L4uWuViBvdklEQoncEmijAAgKf1l1bI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=auUKxnVQ4F/h62OFQZREfnnZui/JzQX86sxaQT15FJDoTzqts9QjftSvkyy1qRhPHDIRUOCa8NS/uyVM3Vz25CrYBRU5UcsjmQrrI6pBerac9PBLhbrMnxP86ryrRS5TGgwURTJqxKYAFe/cJsQA92OVUKYQe0Hh5XEaDjq4CCg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qwTzhzBI; arc=pass smtp.client-ip=74.125.224.41
+	 To:Cc:Content-Type; b=GsTDswUK1P50DIcYKloS5vZzRIN8jSu8Z7k2LMbt5WzYBQaSCEY+BWpYvsCzIc9pG6vhsGu8MVUodFMgeETJiXCBQF9EIyu0AulW7oyn3Wm/m/A4OAIRo8pszgwNzb0MVu7PJ/JRolvNM3NdeBXKPqz1/K88FzZYwZF6yOtmv8U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YXaEvoXX; arc=pass smtp.client-ip=74.125.224.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6501d32b04bso460193d50.2
-        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 19:51:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774839075; cv=none;
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6500040f128so3050435d50.0
+        for <stable@vger.kernel.org>; Sun, 29 Mar 2026 19:52:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774839163; cv=none;
         d=google.com; s=arc-20240605;
-        b=OLI4iO4SwY0R1YpwM7L10enQmTCVPfgDyBNvaoIwDqsN2yxwTG4fmizVzlupnigUgx
-         beBiyzTWQ3fcGgLXPEFO/jhAqD+YCUNHnKnQOlnxtCl+KkHhKek2hF4ZuTldxeZgR7F/
-         bCPrXtovfPJl7gAUIXR1znahsGIr6h338wcIsk3kvMOm4VdnztfQOaEqUQFwD+DKCamU
-         LGGzYcIt+3OEJN3LnCHS7Ffe9qWILGdZ4LTBvyPQBoBYqHc4Vb5eek0SDtDZjxnhuVNo
-         X7TNG6ad0g2UT0RvdyaV5IoWvEj60dB2xiK0LsIG6Yr2Vf+PwnuGVILRCfMNpo8QpGEn
-         W1xg==
+        b=Gxur4ycNhCxlnIFdVTOixlJ3sISimjJe2qGkwMiNDxNgslsBpJbAMVMa82cqAjcDtf
+         oQRWKl6H0VoOhN+gpclu6rLnDnVZiyt4OgutRz+5i3syuIrHkLaO3F/9haqR/ED/Nczw
+         k5iXrx0U1lYnbelCftyNVOwgtqV7zMyo92YTrFkjY3SO5i0JlYAvF2z0AN/k35Go9VmN
+         Q0ScOOFStSX9WvEvlRwsCnXsIAnTwaSLci93xz/YxxxCFxLdB5hVCdJgkgp/NB7QU6gD
+         EwhVe4YeGjzWlahAgf+PF1qUcWtznzW6t4TLq+3g8UGtAmSftMXsSchXSolDrMJiPuco
+         qxJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=L/pm9TpXLcvckJFncspSQ2WQQxlL1sYTEpU9KK49x3w=;
-        fh=JPI7IMLC3vx0QD4Zrm1UXXKD89CCY1wGJfjwaGEfN80=;
-        b=jYJp/KrerAAWzz9ArReRP01Wzp8r59duCfdoUdJSuPNVa5A2TxaKcj0dE22Ph/Yysp
-         SYpFD71gLUgbmBno28FXu9b5KN6ACPiysu9nlPRBnqSTA4GmC+UeOJaxdGW4DWlM5Eyd
-         SOHNIFvXgIy7DJ4tppf6wgRmmFZOjbJ06ilWPg3+a7UJ8/2QkuILL84RzLaVmzzyBc4H
-         bxMxJFqPATaVZ6Dd1upWIZrb7Nv3N7Cnh0W1GLjR9OXSKNrhxQFXLqr5O5xO/qFMQU6y
-         dPY/UdsB5Omz10PaT8vU5l+OmnFoT+fRKth3X8rZCDAzTMJuruT8MyVvUb/MQSljB47R
-         QTYg==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=lrXg6QpqOaU442980eJaCWaSPNp0oMwMQIp4gID6wto=;
+        fh=tLnlX5/QOFdg2bWfglq/VAeklsJUMGfTV8B4l7dV3e8=;
+        b=S4B3Nwzv57VFrze9VVhKvjDaXJczBh6mMHl+ONs/BjgE/OXOtwYYpVeA4YSIyT4gi0
+         ngIAWYn6e0L/JlCshmtPrM1pATIR0qoaJjh10uYBl3yXUoKFszwxeyaQitE4OJHUHz7R
+         ds9sQLar1qWDaEhzOpUCaAWIC5CJYTKWz1mZDxjcwMlK+jUkLzAoKODHKWafqd25M08v
+         bb4JOk6UkphpU5wesFHbds43BuIHuMxbyX9QbAEiy+n8VlKKAyauHSPb/rHElnrAiJwd
+         NLmmseDPXOwR7WNPQss9dThxOBwKfM+50xzF3kICo9Pcf0n8UYpuSvGJbLFlYpfwoaWF
+         7jsg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774839075; x=1775443875; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L/pm9TpXLcvckJFncspSQ2WQQxlL1sYTEpU9KK49x3w=;
-        b=qwTzhzBICL0Muxb/f1s6PRi1tTWLc3aZ2kDwQR96UeR06WONd8UCSLo7j6+a6IggnC
-         VveKGUipDYbN+Iel1SatJAHd3Fr3XoconQc15au0LIvyCrva6qHx5XX2pr9QRvDTndck
-         qn1A7x47xNce7tibKXM3SkKl3QSZoO8TulrVrVICBCdFPdSU5s75r4VwBD/iFw8ZK/55
-         DuCZPJ+gJ0svbAwQlclejOYX5NInUOADxbMZsp92yjnaGr1Bbw9iAZnoV34jKS0JDDFz
-         6iaGc7aC7PwYfEtCPxP/XWfcVUl6YKrfp/QxXgUkg4m0G3SmOx1qrhE7DYBhWADg2400
-         4xQg==
+        d=gmail.com; s=20251104; t=1774839163; x=1775443963; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lrXg6QpqOaU442980eJaCWaSPNp0oMwMQIp4gID6wto=;
+        b=YXaEvoXXMGg/3CCAHgSmBegPGDEncGe0pQwhca1mnQE+0r/x3eRtxtHIvhw0RwUW3Q
+         ukoynh96PEO4+n58HY9IEN+jUcixPyGAfhz+MzJ8U33f45R3NIFCK96XHJetJSKm368J
+         2kyp1CkOnzqslt/f455H0nXu/HNHlO8Bei7I6HSOzsrBCEP/83bmFPWc/2reB/WmvuII
+         9ROX1faVug//Qf7morf/T5q7td3BU8UYoPDmKSnU59/sFcZP//l8nxQXiPZ3xlZnNqbE
+         KY1XTb9kP/QaXdzqBImbgeTKw6W9zCBkzRTWR3KDpQSopZbrdcNg8+CY3jxbznB4n6Ab
+         Wvhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774839075; x=1775443875;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=L/pm9TpXLcvckJFncspSQ2WQQxlL1sYTEpU9KK49x3w=;
-        b=hOvx4JGYDypYxVNZGAEFQmCuxE3dVcmIqIVfq2dCf5Hf+yGp0PkrpRR8cZiueemqmr
-         Ry0M8HdfbIzjZ6VvzzQ/C0gNqDxxe+Dyfvjml91Jn1KNdb+flXGB8xMltwi31p6oNzVR
-         +sW6KflbT1dIgN5EiGlMRM+gl628P41U0drwVa/4YiBHsl+h6xvaw4qITWNrHemNJDKb
-         1p/E5uPszHIvX3NNCrZsG3jCmo584K49Pr0xLCyiQ3MIP2ihwIIv5XwF33NBCoShG9rG
-         KiL14LFDcQoICEkKr1dn+iyxEOIfYVTDbq56yvBzOiaWvCKjgOrgZLHM8gHQTgMgMDlf
-         xlQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlJyqw/SP5Uwu5chslURqPza9KEkH6RvHOIsAYEK0KEGO7Y0ULLQ4RzF7jmvkQLo2yvyr2b6M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3efVZTqN9TMQcUlbdK5es0inZxSc3iOA2mp2dcOIeeA3wK+ss
-	uD07AQ6IEpS17vOk+gQHZ4JXYW9ozzs+9waXoWyqtfLaDkTNw7HQkUQDetK4T/BfSHrzfFuiKlu
-	BQql4CK9QCGsdS7XzZUrJ59L0mxwdbbM=
-X-Gm-Gg: ATEYQzxujJ8kJApP7IwVCiPjWZXdeja2kgouAL/kUYepAo8lTXmnVU69TOiF0CDYFrt
-	J7BfXgrO+o0/NsYk5eZDzZ5YtO03MuBueTG7caXH4ORNYzBommSyqAP95Lv6/eLoK03bz5o4IXh
-	srpHrRPCCYZeJ10CKYfxBxZ0S1jE0D18OIXQa9fXzSjHNwNxpFM/X60dedg8VAv8p16gkQmak53
-	kQKlz6E7PrhnLejE+to8r/0J1Qu0vHeX3UR/ks+hWH+vWliE0sjCt+XaEhBmdJPkrqvqocQxUuc
-	3Ht3qeCFf7Tk4TclkohM
-X-Received: by 2002:a05:690c:e092:b0:79b:d56a:a7c2 with SMTP id
- 00721157ae682-79bde06b035mr114098427b3.48.1774839075368; Sun, 29 Mar 2026
- 19:51:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774839163; x=1775443963;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lrXg6QpqOaU442980eJaCWaSPNp0oMwMQIp4gID6wto=;
+        b=dYUYiXjffxTSZPS6kNB/cJDIcIWhlSkApFEre3aH5N9G/eFo1FLZI6Qsr4XLdUfcxF
+         l/HvhjF1rz8QGnvGgyzQ9qLrwg2gaXgFxKlgGLRIfWLVl5E5m/2ZLe0sk6KsnXH9+vk1
+         FNb/PULgdz9lTOnGWDR5T97bl+8q7io/rokhhBYqZ7Hv5JZm3CGf1dqPvjRAF6myCFzi
+         lkFwIe7nM1MbCXyLQpSl6RZBJnHs/5pRRsJgEzK0hPqsYyiW3EizAwYNwIZRey/m7Hd0
+         gxvIbO2ZCnlKIXhqxX22alimlSC0RPQgzyKdcEYSek//FIiNDIe2OjbNGYrG67uGuUA/
+         fQ6w==
+X-Forwarded-Encrypted: i=1; AJvYcCXBTMBooW6zueQJQU5OCL/+pJjtlH4P16iXTtHwgpN91gBmWDYZhNtMNChv3akKOM557HxGFdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHZzB3VSUA0rAVyQ7xessxo9rVcXeyLiwp9uy0NfS6mtML9pJI
+	uzsXOlxLz5EeifpUL3/RZ0wlUtn6TswNn/TUGQ9u/xqjBrP9d6e/q43MQ9CiSezBw3vzRLuAHad
+	pAX8hgB6wXU61irBpSWw+Y/XE/uQL6VQ=
+X-Gm-Gg: ATEYQzwFjUbAzCLHxJhVSWsU1OS+mbWswCLQstd4BL7rz5WugfTJKmP60qBzJ05FKzj
+	cYiyr+iyP6F9xcdcs7+OdwzHgEL30BrbGuDCmM8EIirrgpvVLi3hC1faE31C2PnvoBTt5HkBHLz
+	EPTx8XiwSfBQAhmoJrZGnx6fUeKaol/BsNbYVOq1mwSDm6aStMKS/kSDT+2I5mhKHmlA3d0TJZr
+	uubvHETsO8g2O4dAppblrjnuc36/YZRcGvdf+um7qwyMKml/r9JLpIW1INFg2w5v8rlSUdT3E8u
+	3xcR0w4ocw==
+X-Received: by 2002:a05:690c:f13:b0:79a:b879:bdf0 with SMTP id
+ 00721157ae682-79bde0fa2bbmr109572217b3.46.1774839162876; Sun, 29 Mar 2026
+ 19:52:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260327131448.156177-1-zzzccc427@gmail.com> <acnS4iOihfWL4ay5@dread>
-In-Reply-To: <acnS4iOihfWL4ay5@dread>
+References: <20260327131152.155617-1-zzzccc427@gmail.com> <acnJMhFpp42bdW93@dread>
+In-Reply-To: <acnJMhFpp42bdW93@dread>
 From: Cen Zhang <zzzccc427@gmail.com>
-Date: Mon, 30 Mar 2026 10:51:03 +0800
-X-Gm-Features: AQROBzD8lyNwGbcqekKHhTmk0Q4gpgVmHnWhnWcQE3GVt6kS1rEIV4i0Mce3u4g
-Message-ID: <CAFRLqsXeK6Y_C8=afkxJoMmxtGn8p5HaSy5g5VYpa+gcA3RKiQ@mail.gmail.com>
-Subject: Re: [PATCH] xfs: annotate lockless bli_flags access in buf item paths
+Date: Mon, 30 Mar 2026 10:52:31 +0800
+X-Gm-Features: AQROBzDgkko_b5X2k_jPUm3cQ0Tz68mTMbkE5KDOr-P3gm_XEs-Ju4vtpIrupOk
+Message-ID: <CAFRLqsXH3dBk_s8HmvLMaineikWneZpE1PHsH_oJzAfLxyvmOA@mail.gmail.com>
+Subject: Re: [PATCH] xfs: annotate lockless b_flags read in xfs_buf_lock
 To: Dave Chinner <dgc@kernel.org>
 Cc: cem@kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	baijiaju1990@gmail.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230992-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-230993-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
@@ -135,96 +133,37 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[zzzccc427@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 774C9354E41
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 8E421354ED7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi Dave,
 
-> When XFS_BLI_STALE is set in unpin, then by definition the buffer
-> must be locked and the BLI referenced. [...]
-> Hence we only care about the bli_flags when unpin has the only
-> remaining reference to the bli, and in that case the read cannot be
-> racing with anything else changing it's state.
+> No. READ_ONCE should not be used to annotate a benign data access
+> race. data_race() should be used because all it does is turn off
+> KASAN for that access, and unlike READ_ONCE(), there is no code
+> change when KASAN is not enabled.
 
-Thank you for the detailed walkthrough.  You're right about several
-things: READ_ONCE()/WRITE_ONCE() was the wrong tool here, the
-WRITE_ONCE in xfs_buf_item_release() is useless since it's under
-the buffer lock, and the tracepoint change doesn't matter.  I'm
-dropping those.
+Thank you for the review.  You're right -- data_race() is the correct
+annotation for a known-benign race.  READ_ONCE() adds an unnecessary
+compiler barrier and, without a paired WRITE_ONCE() on the write side,
+is not the right pattern here.
 
-However, I want to share the actual concurrent access evidence
-before we decide on the remaining two reads:
+> But, in reality, the race condition here is more than just the
+> b_flags access.  There is a big comment above the function explaining what
+> the check does, and that the buffer pinned check that precedes the
+> b_flags check can race with journal completion, too.
 
-  (1) xfs_buf_item_unpin:510 reads bli_flags
-  (2) xfs_buf_item_committed:803 reads bli_flags
+Agreed.  The atomic_read() on b_pin_count is already KCSAN-safe, so
+only the b_flags access needs a data_race() annotation to suppress
+the KCSAN report.  The commit message in v2 now acknowledges that the
+entire pre-semaphore check is racy by design.
 
-Both race with two different write paths:
-
-  Write A: xfs_trans_dirty_buf:532  (bli_flags |=3D DIRTY|LOGGED)
-           via new transaction on the same buffer
-  Write B: xfs_buf_item_release:713 (bli_flags &=3D ~LOGGED|HOLD|ORDERED)
-           via iop_committing on xlog_cil_commit path
-
-The concurrent paths are:
-  CPU 0: old checkpoint completing on workqueue
-         =E2=86=92 xlog_cil_committed =E2=86=92 iop_committed / iop_unpin
-  CPU 1: new transaction with the same buffer committing
-         =E2=86=92 xlog_cil_commit =E2=86=92 iop_committing =E2=86=92 iop_r=
-elease
-         (or xfs_trans_dirty_buf during the transaction)
-
-The comment at xlog_cil.c:1856 even acknowledges this:
-  "the CIL checkpoint can race with us and we can run checkpoint
-   completion before we've updated and unlocked the log items"
-
-> IOWs, using READ_ONCE to indicate a data access race is -incorrect-
-> in the cases where we actually use the result of the read.
-
-Agreed.  For xfs_buf_item_unpin(), you're right that stale is
-only consumed on the last-reference path where no concurrent writer
-exists.  But the read at line 510 happens unconditionally _before_
-atomic_dec_and_test(), so on the non-last-reference path it does
-race with the writes listed above.  The value is discarded in that
-case, so there's no semantic issue.
-
-Rather than annotating a race whose result is unused, a cleaner fix
-is to move the stale read to after the freed check, so the read
-only occurs when we actually need the value -- at which point there
-is no race:
-
-    freed =3D atomic_dec_and_test(&bip->bli_refcount);
-    ...
-    if (!freed) { xfs_buf_rele(bp); return; }
-  + stale =3D bip->bli_flags & XFS_BLI_STALE;
-
-This eliminates the concurrent access entirely with no behavior
-change.
-
-> There is no consequential race here, either. Once an BLI is marked
-> as an XFS_BLI_INODE_ALLOC_BUF under the buffer lock [...] that
-> flag never gets cleared from bip->bli_flags.
-
-Correct -- the bit being read (INODE_ALLOC_BUF) is never modified
-by the concurrent writers, so the result is always correct.  But
-the concurrent writes to other bits in the same word (Write A and
-Write B above) do constitute a data access race on that memory
-location.  Since the race is confirmed
-benign, data_race() is the right annotation.
-
-  - if ((bip->bli_flags & XFS_BLI_INODE_ALLOC_BUF) && ...)
-  + if ((data_race(bip->bli_flags) & XFS_BLI_INODE_ALLOC_BUF) && ...)
-
-So the v2 would be:
-  - Move stale read in xfs_buf_item_unpin() after freed check
-  - data_race() in xfs_buf_item_committed()
-  - Drop everything else (WRITE_ONCE, tracepoint, release-side)
-
-Does this sound reasonable?
+I'll send a v2 using data_race().
 
 Thanks,
 Cen
