@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJM/HuZYymn27gUAu9opvQ
-	(envelope-from <stable+bounces-231168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:05:10 +0200
+	id EHhOEPZYymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:05:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2C5359E53
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:05:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 976E8359E6A
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23A33301BC1E
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:05:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52B7B301C885
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362693AB27C;
-	Mon, 30 Mar 2026 11:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD32435F5F2;
+	Mon, 30 Mar 2026 11:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRmh9SlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TolHBF81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20DA311958
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0FF3BE632
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868706; cv=none; b=JI9dkxXwapij/7HGKD+N2rknFL1DyrxFT0lIQ0rJF61kpD3gfvMCqKJAXz+FNUeE3zybIcExpZYCVXcuQmEDBDUYrluReUNuhR40qClC6ZrTwutXmrgSJGUNlaHWv//e7BNDcautb7+PnLErRbLcF/LIP9x94tOm0CauMZCuZjE=
+	t=1774868720; cv=none; b=Vgrfz8Cd8EfY/U+cljkjEbGtxixL7WwXsbWfw027kbzeL/vqMFPgLgtjdYCgwUbJ8XMxRXqS17DIA/0sHOWETdeaQLfCYPCxaUeF16Nc6ovA87zQvzHtm3AL6qH2u3EiDVwJzbBVVoqUVAe0CS0QgGWhMtdiwgCc1ENHFlcFYNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868706; c=relaxed/simple;
-	bh=YeQI/x8ACE1sAOKBq6e+H+SO1k5nW9UfXJGA4kCQX5g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M0GlFoQDNnHm0+OqZcx12+OJ1U6VcFUR+aVbQ/6UAdo3hrEeUIlY8ylIXY79FMK8hjeC56WPI86CWTSv4/kRc4Jnw8Cx9KRks+jfceG7XgZJmG6E/DNstGIPyRwu0rRvxfqSTs/ITQjcfYCUgAZefPMDr6+o8bmsCqcrWSTO8uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRmh9SlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6929C4CEF7;
-	Mon, 30 Mar 2026 11:05:04 +0000 (UTC)
+	s=arc-20240116; t=1774868720; c=relaxed/simple;
+	bh=ALiQ60wg3UzlnBvFjbqIUueYGDKHs7ad//q8SYju7XY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=E8y0EN+RyrEII+L6schL4W98wwVoWEpMGQJ8jSe4zJin54rhKQcnGoYh+/wGNkAA0YRWNWH6DsI8xn3n5lv6rHs40PrW96IbduHymZlGhuNl6AISZ/S/AjmidRjUCRFaIMNSoP8ofNjsTBBzie6iP9uHPnzAPzVNnrwbbsrlRKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TolHBF81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E85AC4CEF7;
+	Mon, 30 Mar 2026 11:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774868705;
-	bh=YeQI/x8ACE1sAOKBq6e+H+SO1k5nW9UfXJGA4kCQX5g=;
+	s=korg; t=1774868719;
+	bh=ALiQ60wg3UzlnBvFjbqIUueYGDKHs7ad//q8SYju7XY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hRmh9SlQPrWOgIsrdNndq35rmgzkOh+WUwzjlMlIziASxl7hND9VSMOoxM16BzCZ9
-	 yIhMimHfqb59xAnyrds6bbip1a95U7WvKVifgva9l3N+ZS6F6AH5mpjha8TmgsUGY+
-	 NiHZMge1gSARLNaEKAGjmezEggosw+2p8rus9dTI=
-Subject: FAILED: patch "[PATCH] ext4: fix use-after-free in update_super_work when racing" failed to apply to 5.10-stable tree
-To: jiayuan.chen@shopee.com,jack@suse.cz,jiayuan.chen@linux.dev,ritesh.list@gmail.com,tytso@mit.edu
+	b=TolHBF81dsAsjVsCcchX53EkjAqZnRofbbOaeQfriEEHVk49mwdiwS4JwOXmtb6HX
+	 Z8Fs/nW0up/HD13crcNWfbBju27Z+MbkOlVCYBbCZ3x2P+qiFbMIQy7y8YZmWUGrWD
+	 XbIGg/B3JZBBUZBQfJVXlQeyxe+ls5W2oi06tQ44=
+Subject: FAILED: patch "[PATCH] ext4: fix the might_sleep() warnings in kvfree()" failed to apply to 6.1-stable tree
+To: qiang.zhang@linux.dev,libaokun@linux.alibaba.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 13:04:54 +0200
-Message-ID: <2026033054-royal-direction-3a5d@gregkh>
+Date: Mon, 30 Mar 2026 13:05:16 +0200
+Message-ID: <2026033016-eagle-gangrene-7fc7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,54 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231168-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[shopee.com,suse.cz,linux.dev,gmail.com,mit.edu];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231170-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linux.dev:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,suse.cz:email,shopee.com:email]
-X-Rspamd-Queue-Id: BD2C5359E53
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linux.dev:email,msgid.link:url,gregkh:email]
+X-Rspamd-Queue-Id: 976E8359E6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d15e4b0a418537aafa56b2cb80d44add83e83697
+git cherry-pick -x 496bb99b7e66f48b178126626f47e9ba79e2d0fa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033054-royal-direction-3a5d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033016-eagle-gangrene-7fc7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,115 +111,168 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d15e4b0a418537aafa56b2cb80d44add83e83697 Mon Sep 17 00:00:00 2001
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
-Date: Thu, 19 Mar 2026 20:03:35 +0800
-Subject: [PATCH] ext4: fix use-after-free in update_super_work when racing
- with umount
+From 496bb99b7e66f48b178126626f47e9ba79e2d0fa Mon Sep 17 00:00:00 2001
+From: Zqiang <qiang.zhang@linux.dev>
+Date: Thu, 19 Mar 2026 17:45:45 +0800
+Subject: [PATCH] ext4: fix the might_sleep() warnings in kvfree()
 
-Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
-filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
-to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
-reads during unmount. However, this introduced a use-after-free because
-update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
-accesses the kobject's kernfs_node after it has been freed by kobject_del()
-in ext4_unregister_sysfs():
+Use the kvfree() in the RCU read critical section can trigger
+the following warnings:
 
-  update_super_work                ext4_put_super
-  -----------------                --------------
-                                   ext4_unregister_sysfs(sb)
-                                     kobject_del(&sbi->s_kobj)
-                                       __kobject_del()
-                                         sysfs_remove_dir()
-                                           kobj->sd = NULL
-                                         sysfs_put(sd)
-                                           kernfs_put()  // RCU free
-  ext4_notify_error_sysfs(sbi)
-    sysfs_notify(&sbi->s_kobj)
-      kn = kobj->sd              // stale pointer
-      kernfs_get(kn)             // UAF on freed kernfs_node
-                                   ext4_journal_destroy()
-                                     flush_work(&sbi->s_sb_upd_work)
+EXT4-fs (vdb): unmounting filesystem cd983e5b-3c83-4f5a-a136-17b00eb9d018.
 
-Instead of reordering the teardown sequence, fix this by making
-ext4_notify_error_sysfs() detect that sysfs has already been torn down
-by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
-in that case. A dedicated mutex (s_error_notify_mutex) serializes
-ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
-to prevent TOCTOU races where the kobject could be deleted between the
-state_in_sysfs check and the sysfs_notify() call.
+WARNING: suspicious RCU usage
 
-Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
+./include/linux/rcupdate.h:409 Illegal context switch in RCU read-side critical section!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbb/0xd0
+ dump_stack+0x14/0x20
+ lockdep_rcu_suspicious+0x15a/0x1b0
+ __might_resched+0x375/0x4d0
+ ? put_object.part.0+0x2c/0x50
+ __might_sleep+0x108/0x160
+ vfree+0x58/0x910
+ ? ext4_group_desc_free+0x27/0x270
+ kvfree+0x23/0x40
+ ext4_group_desc_free+0x111/0x270
+ ext4_put_super+0x3c8/0xd40
+ generic_shutdown_super+0x14c/0x4a0
+ ? __pfx_shrinker_free+0x10/0x10
+ kill_block_super+0x40/0x90
+ ext4_kill_sb+0x6d/0xb0
+ deactivate_locked_super+0xb4/0x180
+ deactivate_super+0x7e/0xa0
+ cleanup_mnt+0x296/0x3e0
+ __cleanup_mnt+0x16/0x20
+ task_work_run+0x157/0x250
+ ? __pfx_task_work_run+0x10/0x10
+ ? exit_to_user_mode_loop+0x6a/0x550
+ exit_to_user_mode_loop+0x102/0x550
+ do_syscall_64+0x44a/0x500
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+BUG: sleeping function called from invalid context at mm/vmalloc.c:3441
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556, name: umount
+preempt_count: 1, expected: 0
+CPU: 3 UID: 0 PID: 556 Comm: umount
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbb/0xd0
+ dump_stack+0x14/0x20
+ __might_resched+0x275/0x4d0
+ ? put_object.part.0+0x2c/0x50
+ __might_sleep+0x108/0x160
+ vfree+0x58/0x910
+ ? ext4_group_desc_free+0x27/0x270
+ kvfree+0x23/0x40
+ ext4_group_desc_free+0x111/0x270
+ ext4_put_super+0x3c8/0xd40
+ generic_shutdown_super+0x14c/0x4a0
+ ? __pfx_shrinker_free+0x10/0x10
+ kill_block_super+0x40/0x90
+ ext4_kill_sb+0x6d/0xb0
+ deactivate_locked_super+0xb4/0x180
+ deactivate_super+0x7e/0xa0
+ cleanup_mnt+0x296/0x3e0
+ __cleanup_mnt+0x16/0x20
+ task_work_run+0x157/0x250
+ ? __pfx_task_work_run+0x10/0x10
+ ? exit_to_user_mode_loop+0x6a/0x550
+ exit_to_user_mode_loop+0x102/0x550
+ do_syscall_64+0x44a/0x500
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The above scenarios occur in initialization failures and teardown
+paths, there are no parallel operations on the resources released
+by kvfree(), this commit therefore remove rcu_read_lock/unlock() and
+use rcu_access_pointer() instead of rcu_dereference() operations.
+
+Fixes: 7c990728b99e ("ext4: fix potential race between s_flex_groups online resizing and access")
+Fixes: df3da4ea5a0f ("ext4: fix potential race between s_group_info online resizing and access")
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Link: https://patch.msgid.link/20260319094545.19291-1-qiang.zhang@linux.dev
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index c579f68b3c11..7617e2d454ea 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1570,6 +1570,7 @@ struct ext4_sb_info {
- 	struct proc_dir_entry *s_proc;
- 	struct kobject s_kobj;
- 	struct completion s_kobj_unregister;
-+	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
- 	struct super_block *s_sb;
- 	struct buffer_head *s_mmp_bh;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 93d37f6cf9c3..bb6faebf9b6d 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3584,9 +3584,7 @@ static int ext4_mb_init_backend(struct super_block *sb)
+ 	rcu_read_unlock();
+ 	iput(sbi->s_buddy_cache);
+ err_freesgi:
+-	rcu_read_lock();
+-	kvfree(rcu_dereference(sbi->s_group_info));
+-	rcu_read_unlock();
++	kvfree(rcu_access_pointer(sbi->s_group_info));
+ 	return -ENOMEM;
+ }
  
+@@ -3901,7 +3899,8 @@ void ext4_mb_release(struct super_block *sb)
+ 		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+ 	}
+ 
+-	if (sbi->s_group_info) {
++	group_info = rcu_access_pointer(sbi->s_group_info);
++	if (group_info) {
+ 		for (i = 0; i < ngroups; i++) {
+ 			cond_resched();
+ 			grinfo = ext4_get_group_info(sb, i);
+@@ -3919,12 +3918,9 @@ void ext4_mb_release(struct super_block *sb)
+ 		num_meta_group_infos = (ngroups +
+ 				EXT4_DESC_PER_BLOCK(sb) - 1) >>
+ 			EXT4_DESC_PER_BLOCK_BITS(sb);
+-		rcu_read_lock();
+-		group_info = rcu_dereference(sbi->s_group_info);
+ 		for (i = 0; i < num_meta_group_infos; i++)
+ 			kfree(group_info[i]);
+ 		kvfree(group_info);
+-		rcu_read_unlock();
+ 	}
+ 	ext4_mb_avg_fragment_size_destroy(sbi);
+ 	ext4_mb_largest_free_orders_destroy(sbi);
 diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index baa067eb8cf4..cb69a9b38b7c 100644
+index 152c58fe8e01..baa067eb8cf4 100644
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -5406,6 +5406,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+@@ -1254,12 +1254,10 @@ static void ext4_group_desc_free(struct ext4_sb_info *sbi)
+ 	struct buffer_head **group_desc;
+ 	int i;
  
- 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
- 	spin_lock_init(&sbi->s_error_lock);
-+	mutex_init(&sbi->s_error_notify_mutex);
- 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
- 
- 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index b87d7bdab06a..923b375e017f 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -597,7 +597,10 @@ static const struct kobj_type ext4_feat_ktype = {
- 
- void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
- {
--	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_lock(&sbi->s_error_notify_mutex);
-+	if (sbi->s_kobj.state_in_sysfs)
-+		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_unlock(&sbi->s_error_notify_mutex);
+-	rcu_read_lock();
+-	group_desc = rcu_dereference(sbi->s_group_desc);
++	group_desc = rcu_access_pointer(sbi->s_group_desc);
+ 	for (i = 0; i < sbi->s_gdb_count; i++)
+ 		brelse(group_desc[i]);
+ 	kvfree(group_desc);
+-	rcu_read_unlock();
  }
  
- static struct kobject *ext4_root;
-@@ -610,8 +613,10 @@ int ext4_register_sysfs(struct super_block *sb)
- 	int err;
+ static void ext4_flex_groups_free(struct ext4_sb_info *sbi)
+@@ -1267,14 +1265,12 @@ static void ext4_flex_groups_free(struct ext4_sb_info *sbi)
+ 	struct flex_groups **flex_groups;
+ 	int i;
  
- 	init_completion(&sbi->s_kobj_unregister);
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
- 				   "%s", sb->s_id);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- 	if (err) {
- 		kobject_put(&sbi->s_kobj);
- 		wait_for_completion(&sbi->s_kobj_unregister);
-@@ -644,7 +649,10 @@ void ext4_unregister_sysfs(struct super_block *sb)
- 
- 	if (sbi->s_proc)
- 		remove_proc_subtree(sb->s_id, ext4_proc_root);
-+
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	kobject_del(&sbi->s_kobj);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
+-	rcu_read_lock();
+-	flex_groups = rcu_dereference(sbi->s_flex_groups);
++	flex_groups = rcu_access_pointer(sbi->s_flex_groups);
+ 	if (flex_groups) {
+ 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
+ 			kvfree(flex_groups[i]);
+ 		kvfree(flex_groups);
+ 	}
+-	rcu_read_unlock();
  }
  
- int __init ext4_init_sysfs(void)
+ static void ext4_put_super(struct super_block *sb)
 
 
