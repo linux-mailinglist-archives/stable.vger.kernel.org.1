@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-231194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMA6Fk1wymkD9AUAu9opvQ
-	(envelope-from <stable+bounces-231194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:45:01 +0200
+	id eGoCEZJvymnG8gUAu9opvQ
+	(envelope-from <stable+bounces-231196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:41:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB6635B3B7
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:45:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA0B35B2CE
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56FFA3073F65
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 890D03023D9D
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82383D1CD5;
-	Mon, 30 Mar 2026 12:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95743D301D;
+	Mon, 30 Mar 2026 12:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RetctO0l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8J7vLab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8031A3D16E5;
-	Mon, 30 Mar 2026 12:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D413D16F9;
+	Mon, 30 Mar 2026 12:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874338; cv=none; b=QXArrhZWLTuxPKCIhTKKmGoTVFlVT7m1nCKzxEu/bJ+Ch1UCESW2L1NEmW7XSdV0uIde40AxT0m6Q7EjqyXtMA+gq+TWpTDMUstcl0kS5Z0e9/3kOvBbY/YpASyYJrq66t7BucFzdTixWVr+CQ4GwYGcQOUFQmSGy5i8297S13E=
+	t=1774874339; cv=none; b=M8qnUp21I7okXRj2KJPZFboEvAFiVW/50EjzKtvH1a/xF8keENjyu/YUoFoY9dBq9BaZdHS7fmLfNVZl2GAkoinPMBED/86uAK5U5Fl4aJgkLYVS0jwsIyF+0eMFY1h0N4qJFsNEuf8+YfqAJvyDsEPmJvjtHHnE8LnE7XaYZA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874338; c=relaxed/simple;
-	bh=lNnTyxFDuhsw1+MjDWI7JngK4wScW9vg6MGq567ugdc=;
+	s=arc-20240116; t=1774874339; c=relaxed/simple;
+	bh=DTgQ3ZVL3YQNnCCvLHu6gPbakMl8yNJQZvukj6+F8W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tSM2KMmiQeUcy6vMJXdFeoQ4g+MWzSQ6Kl9Tt5VNICVt6LsersKxF9flsGI/9IOvvbTRZPJkqgK6EboJB8FsM+m6imwXiEFBr4vkfGj4Sk8HtQBAs3vf9wn+GcBrqLAxsmzkPwmhETWIudMvvkahLVDXLFlmHnC/a2Pcjn21Ucw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RetctO0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23800C4CEF7;
-	Mon, 30 Mar 2026 12:38:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n/eD9aNiCFBYE+aKHURcCWYcpnMJdQPtSIOsNan2GCqLNv6BUjUN0j0OchqYXLeTCI2tMNQlIRlIyG4qd6YXr8LdDPWpqFKxrPfOyivsoBbN5dW7CXCTpXd9anmfJi8bNIDnfZVVfTNlY7DNhZs034QP3+vBDDsDBf3XQrycRMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8J7vLab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691FCC2BCB0;
+	Mon, 30 Mar 2026 12:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874336;
-	bh=lNnTyxFDuhsw1+MjDWI7JngK4wScW9vg6MGq567ugdc=;
+	s=k20201202; t=1774874337;
+	bh=DTgQ3ZVL3YQNnCCvLHu6gPbakMl8yNJQZvukj6+F8W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RetctO0lb+4wCIK/U6HgjCAFpaGaGZmFl8uCwM6mYXnrt/2oRtCE8iQBplCiOXAxn
-	 HmtbSB2uhwB+QjKVbP/100l59pe9ZC1t9KRlkwHvnrOl9w+8NQistaZwqa20V9Njs+
-	 RSyA4mm0D54a2FLB258Rf49Lm/LCLs6s//DfJ4sXMM/kVTT0418/IHB816YYS/epwb
-	 47ciGxupouslCkT+DdQo40o/avRJpMiUDr4YYqyeqJEhju2o/nhP9gJ/OWONMpocTD
-	 MwQ2QzHbF300kw5vYLwqDOEEqUQpZ3ABQHVLVDnuiNukUw0gAWayM4JMN4qg0QBOJ5
-	 FjAAX2PxWxT/g==
+	b=L8J7vLab4uBV+gbZmJLTQkz1dzsrjJEOUXGT9IMdfSZCmdgpOP2J5RTDr/uSQJE/o
+	 DDsZ+iZjSdgXvGAsJJ5YxK8hagpPwSb/KDfIcEAZDsG+YFEyJMaA8pcW+eAGxfSM2L
+	 Kewxf3wmxrn5BkqVLbX99J7Yl6N2oahkB/PjpsqPfpCj0ELgXXMKrCB0PJ+w3VQnwO
+	 DeP0zfX8/ImK4L9Cc1qxmFR6KaVc96hkEjHI9P5ENG/9cJkXWEy0QsOgcPv+x92fyD
+	 4QMY8htoxv5Ip6g3ZqOhx15X3vNlY1RgH2JABYQragddOz4IrUgScXjKbHE4Sz/2FY
+	 Srzquvoa8c2eg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Krishna Chomal <krishna.chomal108@gmail.com>,
-	WJ Enderlava <jie7172585@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Frank Zhang <rmxpzlb@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	hansg@kernel.org,
-	platform-driver-x86@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.18] platform/x86: hp-wmi: Add support for Omen 16-wf1xxx (8C76)
-Date: Mon, 30 Mar 2026 08:38:22 -0400
-Message-ID: <20260330123842.756154-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.18] ALSA:usb:qcom: add AUXILIARY_BUS to Kconfig dependencies
+Date: Mon, 30 Mar 2026 08:38:23 -0400
+Message-ID: <20260330123842.756154-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330123842.756154-1-sashal@kernel.org>
 References: <20260330123842.756154-1-sashal@kernel.org>
@@ -66,30 +66,29 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19.10
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,kernel.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231194-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org,perex.cz,suse.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231196-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -97,382 +96,360 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: DAB6635B3B7
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: 2EA0B35B2CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Krishna Chomal <krishna.chomal108@gmail.com>
+From: Frank Zhang <rmxpzlb@gmail.com>
 
-[ Upstream commit 84d29bfd1929d08f092851162a3d055a2134d043 ]
+[ Upstream commit b8bee48e38f2ddbdba5e58bc54ef54bb7d8d341b ]
 
-The HP Omen 16-wf1xxx (board ID: 8C76) has the same WMI interface as
-other Victus S boards, but requires quirks for correctly switching
-thermal profile (similar to board 8C78).
+The build can fail with:
 
-Add the DMI board name to victus_s_thermal_profile_boards[] table and
-map it to omen_v1_thermal_params.
+ERROR: modpost: "__auxiliary_driver_register"
+[sound/usb/qcom/snd-usb-audio-qmi.ko] undefined!
+ERROR: modpost: "auxiliary_driver_unregister"
+[sound/usb/qcom/snd-usb-audio-qmi.ko] undefined!
 
-Testing on board 8C76 confirmed that platform profile is registered
-successfully and fan RPMs are readable and controllable.
+Select AUXILIARY_BUS when SND_USB_AUDIO_QMI is enabled.
 
-Tested-by: WJ Enderlava <jie7172585@gmail.com>
-Reported-by: WJ Enderlava <jie7172585@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221149
-Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
-Link: https://patch.msgid.link/20260227154106.226809-1-krishna.chomal108@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
+Link: https://patch.msgid.link/20260317102527.556248-1-rmxpzlb@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the data needed for the comprehensive analysis.
+Now I have all the technical verification I need. Let me produce the
+final answer.
 
 ---
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+## Phase 1: Commit Message Forensics
 
 **Step 1.1: Subject Line**
-Record: [platform/x86: hp-wmi] [Add] [DMI board name 8C76 to Victus S
-thermal profile table, mapped to omen_v1_thermal_params]
+Record: [ALSA:usb:qcom] [add] [Add missing AUXILIARY_BUS Kconfig
+dependency to fix modpost build failure]
 
 **Step 1.2: Tags**
-Record:
-- `Tested-by: WJ Enderlava <jie7172585@gmail.com>` — real user tested on
-  hardware
-- `Reported-by: WJ Enderlava <jie7172585@gmail.com>` — single reporter,
-  real hardware user
-- `Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221149` — user-
-  filed bugzilla
-- `Signed-off-by: Krishna Chomal` — author
-- `Link: https://patch.msgid.link/20260227154106.226809-1-
-  krishna.chomal108@gmail.com`
-- `Reviewed-by: Ilpo Järvinen` — subsystem maintainer reviewed
-- `Signed-off-by: Ilpo Järvinen` — maintainer committed
-- No `Fixes:` tag (expected for manual review candidates)
-- No `Cc: stable` (expected)
-- No syzbot involvement
+- `Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>` — patch author
+- `Link:
+  https://patch.msgid.link/20260317102527.556248-1-rmxpzlb@gmail.com` —
+  patch submission
+- `Signed-off-by: Takashi Iwai <tiwai@suse.de>` — ALSA subsystem
+  maintainer accepted the patch
+- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-
+  by:`, or `Cc: stable` (expected for candidates under manual review)
 
-**Step 1.3: Body Text**
-Record: Bug: Board 8C76 (HP Omen 16-wf1xxx) has the same WMI interface
-as Victus S boards but requires quirks for correct thermal profile
-switching (similar to 8C78). Symptom: without the entry, the board
-cannot register the platform profile and fan RPMs are not
-readable/controllable. Testing confirmed on real hardware that profile
-registers and fans work after the fix. Root cause: missing DMI board
-name in the quirk table.
+Record: Accepted by subsystem maintainer Takashi Iwai. Standalone patch
+(not part of a series).
 
-**Step 1.4: Hidden Bug Fix Detection**
-Record: Yes — phrased as "Add support" but this is a hardware-specific
-DMI quirk. Without this entry, the board does not get routed into the
-correct thermal handling path, meaning no platform profile registration
-and no fan control. This is functionally a bug fix for users of this
-specific hardware.
+**Step 1.3: Commit Body**
+Record: Bug: Enabling `SND_USB_AUDIO_QMI` without `AUXILIARY_BUS` causes
+modpost failures: `__auxiliary_driver_register` and
+`auxiliary_driver_unregister` are undefined in `snd-usb-audio-qmi.ko`.
+Symptom: hard build failure. Root cause: the Kconfig entry for
+`SND_USB_AUDIO_QMI` omits the required `select AUXILIARY_BUS`.
+
+**Step 1.4: Hidden Bug Fix?**
+Record: Not really hidden — the commit message explicitly describes a
+build failure. The word "add" in the subject could be misleading, but
+the body makes the bug fix intent clear.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 2: Diff Analysis
 
 **Step 2.1: Inventory**
-Record: 1 file changed: `drivers/platform/x86/hp/hp-wmi.c`, +4 lines, 0
-removed. Single table entry added to
-`victus_s_thermal_profile_boards[]`. Scope: single-file, surgical, data-
-only change.
+Record: 1 file changed (`sound/usb/Kconfig`), +1 line added (`select
+AUXILIARY_BUS`), 0 lines removed. No functions modified (Kconfig only).
+Scope: single-line surgical build fix.
 
 **Step 2.2: Code Flow Change**
-Record: Before: board "8C76" is not in
-`victus_s_thermal_profile_boards[]`, so `dmi_first_match()` in
-`setup_active_thermal_profile_params()` does not match it;
-`is_victus_s_board` stays false; thermal profile, fan, and power-source
-handling all skip the Victus S path. After: "8C76" matches,
-`driver_data` = `&omen_v1_thermal_params` (same as "8C78"), enabling the
-full Victus S / Omen v1 code path.
+Record: Before: `SND_USB_AUDIO_QMI` could be enabled without
+`CONFIG_AUXILIARY_BUS`, causing the auxiliary bus object files not to be
+compiled, leaving
+`__auxiliary_driver_register`/`auxiliary_driver_unregister` unresolved
+at link time. After: enabling `SND_USB_AUDIO_QMI` forces
+`AUXILIARY_BUS=y`, guaranteeing the symbols are available.
 
 **Step 2.3: Bug Mechanism**
-Record: Category: Hardware workaround / DMI match table entry. Specific
-mechanism: missing board name in DMI quirk table causes incorrect
-thermal profile handling for this laptop SKU.
+Record: Category: build fix / Kconfig dependency bug. The driver's
+source (`qc_audio_offload.c` line 1990) uses
+`module_auxiliary_driver()`, which expands to
+`auxiliary_driver_register`/`auxiliary_driver_unregister` (declared in
+`include/linux/auxiliary_bus.h`). These are implemented in
+`drivers/base/auxiliary.o`, which is only built when
+`CONFIG_AUXILIARY_BUS` is enabled. Without the `select`, the symbols may
+not exist.
 
 **Step 2.4: Fix Quality**
-Record: Obviously correct — identical pattern to adjacent "8C78" entry.
-Minimal and surgical (4 lines). Zero regression risk: only activates on
-exact DMI board name "8C76". No API or ABI changes.
+Record: Obviously correct — the driver uses auxiliary bus APIs, so it
+must depend on the auxiliary bus. Minimal (1 line). Matches the
+established tree-wide pattern (50+ other Kconfig entries use `select
+AUXILIARY_BUS`). Regression risk: effectively zero — it only ensures a
+core infrastructure module is built.
 
 ---
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## Phase 3: Git History Investigation
 
 **Step 3.1: Blame**
-Record: `git blame -L 162,191` shows the entire
-`victus_s_thermal_profile_boards[]` table (in its `dmi_system_id` form
-with `driver_data`) was created by commit `e7cbd37292653` ("fix platform
-profile values for Omen 16-wf1xxx", Krishna Chomal, 2026-01-13). The
-table structure/`};` terminator originates from `6e4ab59b8391a` (Julien
-Robin, 2025-01-16, original Victus S support).
+Record: `git blame` confirms the `SND_USB_AUDIO_QMI` block was
+introduced in commit `326bbc348298a` ("ALSA: usb-audio: qcom: Introduce
+QC USB SND offloading support", Wesley Cheng, 2025-04-09). The `depends
+on USB_XHCI_HCD && USB_XHCI_SIDEBAND` line was later added by
+`882826f58b2c4` (Arnd Bergmann, 2025-05-21) — another build fix for the
+same driver. No `select AUXILIARY_BUS` exists in the current tree.
 
-**Step 3.2: Fixes: tag**
-Record: N/A — no Fixes: tag present (expected for manual review). The
-related prerequisite `e7cbd37292653` itself has `Fixes: fb146a38cb119`.
+**Step 3.2: Fixes Tag**
+Record: N/A — no `Fixes:` tag. However, the implied fix target is
+`326bbc348298a` which introduced the driver without the AUXILIARY_BUS
+dependency.
 
 **Step 3.3: File History**
-Record: Recent `hp-wmi.c` history shows: `e7cbd37292653` (per-board
-thermal params refactor), `68779adbabdbb` (DMI ordering),
-`fa0498f804753` (Omen MAX 16-ah0xx), `fb146a38cb119` (Omen 16-wf1xxx fan
-support), `54afb047cd7eb` (Victus 16-r/s). This is a standalone single-
-patch addition, not part of a numbered series.
+Record: `git log --oneline -20 -- sound/usb/Kconfig` shows the
+SND_USB_AUDIO_QMI entry and the prior Kconfig build fix
+(`882826f58b2c4`). This is the **second** Kconfig dependency fix for the
+same new driver — a pattern consistent with a recently-introduced driver
+stabilizing its build dependencies. This patch is standalone; no multi-
+patch series dependency.
 
 **Step 3.4: Author**
-Record: Krishna Chomal has 2 prior commits in
-`drivers/platform/x86/hp/`: `fb146a38cb119` (Add Omen 16-wf1xxx fan
-support) and `e7cbd37292653` (fix platform profile values for Omen
-16-wf1xxx). Author is the original contributor for this specific
-hardware support. Reviewed and committed by subsystem maintainer Ilpo
-Järvinen.
+Record: Frank Zhang has no other commits under `sound/usb/` in this
+tree. However, the patch was accepted by Takashi Iwai, the ALSA
+subsystem maintainer, providing quality assurance.
 
 **Step 3.5: Dependencies**
-Record: This patch requires the `dmi_system_id` table format with
-`driver_data` pointing to `struct thermal_profile_params`, introduced by
-`e7cbd37292653`. It also requires `omen_v1_thermal_params` to be defined
-(also from `e7cbd37292653`). Verified: `e7cbd37292653` is contained in
-`v6.19.4~320`; `fb146a38cb119` is contained in `v6.18-rc7~24^2~18`.
+Record: No prerequisites needed. The patch is self-contained: it only
+requires the `SND_USB_AUDIO_QMI` Kconfig block to already exist in the
+tree.
 
 ---
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## Phase 4: Mailing List and External Research
 
 **Step 4.1–4.4:**
-Record: WebFetch attempts to lore.kernel.org, patch.msgid.link, and
-bugzilla.kernel.org were blocked by Anubis bot protection. Could not
-independently verify the mailing list discussion or bugzilla details.
-The commit tags (Reported-by, Tested-by, Reviewed-by, Closes:) provide
-the evidence trail. UNVERIFIED: exact bugzilla content and mailing list
-discussion.
+Record: Lore access was blocked by Anubis anti-bot protection. The patch
+link
+(`https://patch.msgid.link/20260317102527.556248-1-rmxpzlb@gmail.com`)
+and lore search URLs could not be fetched. Reviewer comments, explicit
+stable nominations, or NAKs remain unverified. However, the maintainer
+sign-off from Takashi Iwai confirms acceptance through the standard
+review process.
 
 ---
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+## Phase 5: Code Semantic Analysis
 
-**Step 5.1: Functions in Diff**
-Record: No function bodies modified. Data change only: one entry added
-to `victus_s_thermal_profile_boards[]`.
+**Step 5.1: Key Functions**
+Record: N/A for C functions — this is a Kconfig-only change. The
+relevant code reference is
+`module_auxiliary_driver(qc_usb_audio_offload_drv)` at
+`sound/usb/qcom/qc_audio_offload.c:1990`.
 
-**Step 5.2: Callers**
-Record: Verified via grep: `victus_s_thermal_profile_boards` is consumed
-by `setup_active_thermal_profile_params()` (line 2288), which calls
-`dmi_first_match()` on this table. On match, it sets `is_victus_s_board
-= true` and `active_thermal_profile_params = id->driver_data`.
-
-**Step 5.3: Callees / Impact Surface**
-Record: `is_victus_s_thermal_profile()` (line 1634) returns
-`is_victus_s_board`. This function gates behavior in:
-- `hp_wmi_platform_profile_probe()` — platform profile registration
-  (line 1809, 2009)
-- `hp_wmi_hwmon_is_visible()` — fan sysfs visibility (line 2169)
-- `hp_wmi_hwmon_read()` — fan speed reading (line 2191)
-- `hp_wmi_hwmon_write()` — fan speed control (lines 2227, 2233)
-- `hp_wmi_init()` — power source event handler registration (line 2341)
-- `hp_wmi_exit()` — cleanup (line 2364)
-
-**Step 5.4: Reachability**
-Record: Init path: `hp_wmi_init()` →
-`setup_active_thermal_profile_params()` → `platform_driver_probe()` →
-`hp_wmi_bios_setup()` → `thermal_profile_setup()`. This runs on every
-boot/module load on affected hardware. Hwmon paths are userspace-
-reachable via sysfs.
+**Step 5.2–5.4: Code Tracing**
+Record: Verified the dependency chain:
+1. `sound/usb/qcom/qc_audio_offload.c` line 6: `#include
+   <linux/auxiliary_bus.h>`
+2. `sound/usb/qcom/qc_audio_offload.c` line 1990:
+   `module_auxiliary_driver(qc_usb_audio_offload_drv)`
+3. `include/linux/auxiliary_bus.h` defines `module_auxiliary_driver()`
+   expanding to
+   `auxiliary_driver_register`/`auxiliary_driver_unregister`
+4. `drivers/base/Kconfig` line 4-5: `config AUXILIARY_BUS` is a
+   promptless `bool` (cannot be enabled by the user directly — must be
+   selected by a consumer)
+5. Without `select AUXILIARY_BUS`, if no other enabled config selects
+   it, the symbols are unavailable → modpost failure
 
 **Step 5.5: Similar Patterns**
-Record: The table already contains identical patterns: "8C78" →
-`&omen_v1_thermal_params`, "8BCA" → `&omen_v1_thermal_params`, "8BCD" →
-`&omen_v1_thermal_params`. This is a routine board-ID addition.
+Record: `select AUXILIARY_BUS` appears in 50+ Kconfig files across the
+tree (drivers/gpu, drivers/net, drivers/clk, drivers/reset, sound/soc,
+etc.). This is the standard established pattern for auxiliary bus
+consumers. The fix is entirely consistent with tree-wide convention.
 
 ---
 
-## PHASE 6: STABLE TREE ANALYSIS
+## Phase 6: Stable Tree Analysis
 
-**Step 6.1: Code Existence in Stable Trees**
-Record: Verified via `git grep`:
-- **pending-6.6, pending-6.12, pending-6.14**:
-  `victus_s_thermal_profile_boards` NOT found. Not applicable.
-- **pending-6.17**: Table exists (3 references) but uses the OLD string-
-  list format. `omen_v1_thermal_params` and `struct
-  thermal_profile_params` do NOT exist. Patch cannot apply.
-- **pending-6.18**: Table exists in NEW `dmi_system_id` format.
-  `omen_v1_thermal_params` exists. "8C76" NOT yet present. Patch applies
-  cleanly.
-- **pending-6.19**: Table exists in NEW `dmi_system_id` format.
-  `omen_v1_thermal_params` exists. "8C76" NOT yet present. Patch applies
-  cleanly.
+**Step 6.1: Does the buggy code exist in stable trees?**
+Record: Verified via `git show <tag>:sound/usb/Kconfig`:
+- `v6.6` — `SND_USB_AUDIO_QMI` does NOT exist (grep returns 0 matches)
+- `v6.12` — does NOT exist (0 matches)
+- `v6.16` — EXISTS, missing `select AUXILIARY_BUS` (confirmed)
+- `v6.19` — EXISTS, missing `select AUXILIARY_BUS` (confirmed)
 
-**Step 6.2: Backport Complications**
-Record: Clean apply for `6.18.y` and `6.19.y`. Not standalone for
-`6.17.y` (would need the full `e7cbd37292653` refactor first). Not
-applicable to `6.14.y` and older.
+The introducing commit `326bbc348298a` first appears in `v6.16` and all
+subsequent releases. Older LTS branches (6.6.y, 6.12.y, 6.1.y) are
+unaffected — the driver does not exist there.
 
-**Step 6.3: Related Fixes Already in Stable**
-Record: No alternate "8C76" fix found in any checked branch.
+**Step 6.2: Backport complications**
+Record: Clean apply expected. The `SND_USB_AUDIO_QMI` Kconfig block is
+materially identical across affected tags. One-line insertion should
+apply without conflicts.
+
+**Step 6.3: Related fixes in stable**
+Record: No `AUXILIARY_BUS` fix found in any of the affected stable tags.
+The prior related build fix (`882826f58b2c4` for USB_XHCI_HCD) is
+already present in v6.19 but addresses a different missing dependency.
 
 ---
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+## Phase 7: Subsystem and Maintainer Context
 
 **Step 7.1: Subsystem**
-Record: `drivers/platform/x86/hp/` — HP laptop WMI driver. Criticality:
-PERIPHERAL (specific HP laptop hardware). However, HP Omen/Victus is a
-popular consumer laptop line.
+Record: `sound/usb` — ALSA USB audio, Qualcomm offload driver.
+Criticality: PERIPHERAL (hardware- and config-specific). However, build
+fixes are explicitly listed as stable-appropriate regardless of
+subsystem criticality.
 
 **Step 7.2: Activity**
-Record: Actively maintained — 20 recent commits show ongoing thermal/fan
-work for various HP laptop models.
+Record: Active development — multiple follow-up fixes since the driver's
+introduction in v6.16, indicating a young subsystem still being
+stabilized.
 
 ---
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+## Phase 8: Impact and Risk Assessment
 
-**Step 8.1: Affected Users**
-Record: Platform-specific: users of HP Omen 16-wf1xxx laptops with DMI
-board name "8C76".
+**Step 8.1: Who is affected**
+Record: Anyone building a kernel with `CONFIG_SND_USB_AUDIO_QMI` enabled
+in a configuration where `AUXILIARY_BUS` is not otherwise selected by
+another driver. Primarily Qualcomm SoC users and distributions enabling
+this driver.
 
-**Step 8.2: Trigger Conditions**
-Record: Triggered every boot on affected hardware. DMI matching is init-
-time, and the resulting behavior affects all platform-profile and fan-
-control operations for the life of the session.
+**Step 8.2: Trigger conditions**
+Record: Build-time trigger, not runtime. 100% reproducible when the
+Kconfig condition is met. Note: the upstream arm64 defconfig
+incidentally enables `AUXILIARY_BUS` through `QCOM_PMIC_GLINK`, which
+masks the bug in that specific configuration. However, non-default
+configs can easily trigger it.
 
-**Step 8.3: Failure Mode Severity**
-Record: Without the fix: no platform profile registration, fan RPMs not
-readable/controllable via the Victus S path, and power-source event
-handling not set up for this board. Severity: MEDIUM — hardware
-functionality (thermal management, fan control) is missing but no crash,
-corruption, or security issue.
+**Step 8.3: Severity**
+Record: Build failure at modpost stage — HIGH for affected
+configurations (impossible to build the module). Not a runtime crash,
+but prevents kernel builds entirely for this config.
 
-**Step 8.4: Risk-Benefit Ratio**
-Record: Benefit: HIGH for affected users — restores correct thermal
-profile switching and fan control on their laptop. Risk: VERY LOW —
-4-line data-only change scoped to a single DMI board name match, cannot
-affect any other hardware. Ratio: strongly favorable.
+**Step 8.4: Risk-benefit ratio**
+Record: BENEFIT: High — fixes a hard build break for a supported in-tree
+driver. RISK: Effectively zero — one-line Kconfig `select` addition with
+no runtime behavior change, matching an established tree-wide pattern.
+Ratio: Very strongly favorable.
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 9: Final Synthesis
 
 **Step 9.1: Evidence**
 FOR backporting:
-- Classic hardware quirk / DMI board ID addition (explicit stable
-  exception category)
-- Only 4 lines, data-only change, zero regression risk
-- Reported-by and Tested-by from real user on real hardware
-- Reviewed-by subsystem maintainer (Ilpo Järvinen)
-- Bugzilla bug report (221149) filed
-- Identical pattern to existing adjacent entries (8C78, 8BCA, 8BCD)
-- Prerequisites already present in pending-6.18 and pending-6.19
+- Real build failure (modpost undefined symbols) — documented with exact
+  error messages
+- Single-line, obviously correct Kconfig fix
+- Matches established tree-wide pattern (`select AUXILIARY_BUS` used in
+  50+ other Kconfig entries)
+- Code path verified: driver uses `module_auxiliary_driver()` → needs
+  `AUXILIARY_BUS`
+- `AUXILIARY_BUS` is a promptless bool — must be selected, not user-
+  enabled
+- Zero runtime regression risk
+- Accepted by ALSA subsystem maintainer (Takashi Iwai)
+- Second build fix for the same driver (pattern of missing deps from
+  initial introduction — `882826f58b2c4` was the first)
+- Bug confirmed present in all affected stable tags (6.16.y through
+  6.19.y)
 
 AGAINST backporting:
-- Not a crash/security/corruption fix — hardware enablement for missing
-  fan/thermal control
-- Narrow impact (single laptop model)
-- Only applicable to 6.18.y and 6.19.y; 6.17.y needs prerequisite
-  refactor
+- Not relevant to stable trees older than v6.16 (driver does not exist
+  there)
+- Narrow audience (Qualcomm USB audio offload users)
 
 UNRESOLVED:
-- Bugzilla 221149 content not fetchable (Anubis blocked)
-- Lore mailing list discussion not fetchable (Anubis blocked)
+- Lore discussion not accessible (Anubis anti-bot)
 
 **Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? **YES** — identical pattern to existing
-   entries, Tested-by from hardware owner
-2. Fixes a real bug? **YES** — missing quirk prevents thermal/fan
-   control on real hardware
-3. Important issue? **YES** under the hardware quirk exception — enables
-   hardware functionality
-4. Small and contained? **YES** — 4 lines, single table entry, one file
-5. No new features or APIs? **YES** — extends existing quirk table with
-   a board name
-6. Can apply to stable? **YES** — cleanly on 6.18.y and 6.19.y
+1. Obviously correct and tested? **YES** — driver uses auxiliary bus
+   API, must depend on it
+2. Fixes a real bug? **YES** — modpost build failure
+3. Important issue? **YES** — prevents compilation of a supported driver
+4. Small and contained? **YES** — 1 line, 1 file
+5. No new features or APIs? **YES** — only adds missing build dependency
+6. Can apply to stable? **YES** — clean apply on v6.16+ branches
 
 **Step 9.3: Exception Categories**
-Record: This falls squarely into **QUIRKS and WORKAROUNDS** — a DMI
-board name addition to an existing driver's quirk table. This is the
-same category as USB quirks, PCI quirks, and audio codec quirks that are
-explicitly allowed in stable.
+Record: **Build fix** — explicitly listed as an exception category that
+is automatically YES for stable.
 
 **Step 9.4: Decision**
-This is a textbook hardware quirk addition: a 4-line DMI table entry
-that enables correct thermal profile switching and fan control for a
-specific HP laptop model, using existing driver infrastructure. It
-carries essentially zero regression risk and provides concrete benefit
-to real users of this hardware. It should be backported to stable
-branches that have the per-board thermal parameter infrastructure
-(6.18.y and 6.19.y).
+This is a textbook build fix: a single-line Kconfig `select` addition
+that fixes a real modpost link failure for a supported in-tree driver.
+It should be backported to stable trees that contain `SND_USB_AUDIO_QMI`
+(v6.16.y and newer). It is not applicable to older LTS branches
+(v6.12.y, v6.6.y, v6.1.y) where the driver does not exist.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed all tags from commit message: Tested-by, Reported-by,
-  Closes (bugzilla 221149), Reviewed-by (Ilpo Järvinen), Link, Signed-
-  off-by x2
-- [Phase 2] Diff analysis: +4 lines adding single DMI entry `{
-  DMI_MATCH(DMI_BOARD_NAME, "8C76"), .driver_data = (void
-  *)&omen_v1_thermal_params }`
-- [Phase 3] `git blame -L 162,191`: confirmed table created by
-  `e7cbd37292653` (Krishna Chomal, 2026-01-13), structure from
-  `6e4ab59b8391a` (2025-01-16)
-- [Phase 3] `git show e7cbd37292653`: confirmed this is the prerequisite
-  commit that refactored the table to `dmi_system_id` format with per-
-  board `thermal_profile_params`
-- [Phase 3] `git describe --contains e7cbd37292653` → `v6.19.4~320`:
-  prerequisite is in v6.19.4
-- [Phase 3] `git describe --contains fb146a38cb119` →
-  `v6.18-rc7~24^2~18`: original Omen 16-wf1xxx support is in v6.18
-- [Phase 3] `git log --author="Krishna Chomal"`: confirmed 2 prior
-  commits to hp-wmi.c
-- [Phase 4] WebFetch to lore/bugzilla blocked by Anubis — UNVERIFIED:
-  exact discussion and bug details
-- [Phase 5] `grep` for `victus_s_thermal_profile_boards`: confirmed
-  consumed by `setup_active_thermal_profile_params()` at line 2288 via
-  `dmi_first_match()`
-- [Phase 5] `grep` for `is_victus_s_thermal_profile`: confirmed it gates
-  platform profile (lines 1809, 2009), hwmon visibility/read/write
-  (lines 2169, 2191, 2227, 2233), init power source handler (line 2341),
-  exit cleanup (line 2364)
-- [Phase 6] `git grep victus_s_thermal_profile_boards` on all pending
-  branches: NOT in 6.6/6.12/6.14; present in 6.17/6.18/6.19
-- [Phase 6] `git grep omen_v1_thermal_params` on pending-6.17: NOT FOUND
-  — old string-list format, patch cannot apply standalone
-- [Phase 6] `git grep omen_v1_thermal_params` on pending-6.18: FOUND
-  (lines 92-114, 159, 167, 179) — full infrastructure present
-- [Phase 6] `git grep omen_v1_thermal_params` on pending-6.19: FOUND
-  (lines 92-114, 167, 175, 187) — full infrastructure present
-- [Phase 6] `git grep '8C76'` on pending-6.18 and pending-6.19: NOT
-  FOUND — patch not yet applied to any stable branch
-- [Phase 8] Failure mode: missing thermal profile/fan control on
-  specific HP Omen laptop; severity MEDIUM (hardware functionality, not
-  crash/security)
-- UNVERIFIED: exact bugzilla 221149 content and severity rating
-- UNVERIFIED: exact mailing list reviewer comments beyond tags in commit
+- [Phase 1] Parsed commit message and tags directly: `Link:` and two
+  `Signed-off-by:` tags present; no `Fixes:`, `Reported-by:`, `Tested-
+  by:`, or `Cc: stable`
+- [Phase 2] Diff: confirmed single `+     select AUXILIARY_BUS` line
+  added under `SND_USB_AUDIO_QMI` in `sound/usb/Kconfig`
+- [Phase 3] `git blame -L 191,205 -- sound/usb/Kconfig`: confirmed
+  `SND_USB_AUDIO_QMI` introduced by `326bbc348298a` (Wesley Cheng,
+  2025-04-09); deps line touched by `882826f58b2c4` (Arnd Bergmann,
+  2025-05-21)
+- [Phase 3] `git show 882826f58b2c4`: confirmed this was a prior Kconfig
+  build fix for the same driver (missing `USB_XHCI_HCD` dependency),
+  also with `Fixes: 326bbc348298` tag
+- [Phase 3] `git log --oneline -20 -- sound/usb/Kconfig`: confirmed
+  recent history, no existing `AUXILIARY_BUS` fix
+- [Phase 4] WebFetch to lore/patch.msgid.link: blocked by Anubis anti-
+  bot — UNVERIFIED: mailing list discussion details
+- [Phase 5] Grep `sound/usb/qcom/`: confirmed `#include
+  <linux/auxiliary_bus.h>` at line 6 and
+  `module_auxiliary_driver(qc_usb_audio_offload_drv)` at line 1990 of
+  `qc_audio_offload.c`
+- [Phase 5] Read `drivers/base/Kconfig` lines 4-5: confirmed
+  `AUXILIARY_BUS` is a promptless `bool` — must be selected by consumers
+- [Phase 5] Grep `select AUXILIARY_BUS` across Kconfig files: confirmed
+  50+ other consumers use this pattern
+- [Phase 6] `git show v6.6:sound/usb/Kconfig | grep SND_USB_AUDIO_QMI`:
+  0 matches — driver does not exist in v6.6
+- [Phase 6] `git show v6.12:sound/usb/Kconfig | grep SND_USB_AUDIO_QMI`:
+  0 matches — driver does not exist in v6.12
+- [Phase 6] `git show v6.16:sound/usb/Kconfig`: confirmed
+  `SND_USB_AUDIO_QMI` exists, `select AUXILIARY_BUS` missing
+- [Phase 6] `git show v6.19:sound/usb/Kconfig`: confirmed
+  `SND_USB_AUDIO_QMI` exists, `select AUXILIARY_BUS` missing
+- [Phase 6] `git tag --contains 326bbc348298a`: confirmed first
+  appearance at v6.16; present through v6.19.x
+- [Phase 8] Failure mode: modpost undefined symbol error — build
+  failure, severity HIGH for affected configs
+- UNVERIFIED: lore.kernel.org discussion details (anti-bot protection
+  blocked access)
 
 **YES**
 
- drivers/platform/x86/hp/hp-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index 24d065ddfc6ae..9c1bdf8e7b283 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -172,6 +172,10 @@ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst
- 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BD5") },
- 		.driver_data = (void *)&victus_s_thermal_params,
- 	},
-+	{
-+		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8C76") },
-+		.driver_data = (void *)&omen_v1_thermal_params,
-+	},
- 	{
- 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8C78") },
- 		.driver_data = (void *)&omen_v1_thermal_params,
+diff --git a/sound/usb/Kconfig b/sound/usb/Kconfig
+index 9b890abd96d34..b4588915efa11 100644
+--- a/sound/usb/Kconfig
++++ b/sound/usb/Kconfig
+@@ -192,6 +192,7 @@ config SND_USB_AUDIO_QMI
+ 	tristate "Qualcomm Audio Offload driver"
+ 	depends on QCOM_QMI_HELPERS && SND_USB_AUDIO && SND_SOC_USB
+ 	depends on USB_XHCI_HCD && USB_XHCI_SIDEBAND
++	select AUXILIARY_BUS
+ 	help
+ 	  Say Y here to enable the Qualcomm USB audio offloading feature.
+ 
 -- 
 2.53.0
 
