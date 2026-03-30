@@ -1,116 +1,161 @@
-Return-Path: <stable+bounces-231247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDiuKzOVymkR+QUAu9opvQ
-	(envelope-from <stable+bounces-231247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:22:27 +0200
+	id QIweM5GXymla+QUAu9opvQ
+	(envelope-from <stable+bounces-231249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:32:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E7335DB75
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:22:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE9935DE7D
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 17:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 41242307E695
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:10:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CC3C3086CF0
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 15:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B7133ADA4;
-	Mon, 30 Mar 2026 15:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3521734028F;
+	Mon, 30 Mar 2026 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIqlF6uH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kdfF/Qnq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1266D33344A;
-	Mon, 30 Mar 2026 15:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B271833FE27
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 15:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774883425; cv=none; b=tGXw64XxMFatfSQPJbQq0tQA4dZWs50yIb37TGe0kChgnPLvHVMB5+LrPk+caPgacHvzKm8fDaFboyt0dfVpMvDpHWuQeJVeyCJCp/QXkDbWtJuo6b9ifhK0TzQw2KNDlVb6RGRxoJM5PW5SIgQtW5fGlKRB1YVn4UdLYWAogcQ=
+	t=1774884031; cv=none; b=BjX2mDy1jduhxM/Yj6poiooa+4Xf/wf8g2i9bmyynt+8bKRIi1E4u3cLDVZ3ywIy6gYMrB7l3hpWDu4XCmMYuUbhc9/jGJzNwML8wSXxTcGbmi8rWgbH3LsMAjgTtze0jM9tGYBRTLv8sOHyehxlibm4uIxuDNcudPBWS80Nmy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774883425; c=relaxed/simple;
-	bh=Nd4MyiAB+HC8PV4nITunLv3it81T+8xr/zQ+qcjkw44=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=g7EfHTzmYACLmLN9472Z1TrwCnMdoFrsWKYMt62uQ+86FKXiZpYhMZZUuqeHaE3fRShXP/P8jFkM3Xf+FK+h6WKZlqjVXLlRpZtKkAko3ujBNvZ4Pl+jR1lylXwRwAhPTq/1ocBQ09Et5SYXDtQGpwlJjSGFjlZKKcsGvs9EGn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIqlF6uH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2962BC2BCB1;
-	Mon, 30 Mar 2026 15:10:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774883424;
-	bh=Nd4MyiAB+HC8PV4nITunLv3it81T+8xr/zQ+qcjkw44=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=SIqlF6uHJ7H9SOQY2WvV+w0Tq3CKio0Gd+nRs3pbseqtrSGkUapvuZ0RMobMoY2fm
-	 wByyfrgE5u6QFfMZ4s0pdVR6yPGeJ1qY0gNsbdZr9whuPHMTgHvyRFPS/2bXM3774w
-	 zyxtbwnRmF/YyveNkI9nlGd5Z8G0ZUMGbDYlBpQ5L/38W4dS8OD3jtE1ZNQY9MnqO4
-	 LFEitvAQzmoR6HcAPW/A6Z8WJ3RC9akiTmblXOKHmidN9/uJyNFyy7jC8FzKoHR7O3
-	 qBM/cl/xqKDDA/RfevbZ7s8TDrrWT6TDoX9cz1plbA1fcQsv2WbuFuTdomJ4VcQ9+V
-	 /telNuYXb6QJw==
-From: Carlos Maiolino <cem@kernel.org>
-To: Hans Holmberg <hans.holmberg@wdc.com>
-Cc: Dave Chinner <david@fromorbit.com>, 
- "Darrick J . Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>, 
- Damien Le Moal <dlemoal@kernel.org>, linux-xfs@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260325124312.26349-1-hans.holmberg@wdc.com>
-References: <20260325124312.26349-1-hans.holmberg@wdc.com>
-Subject: Re: [PATCH v2] xfs: start gc on zonegc_low_space attribute updates
-Message-Id: <177488342287.47445.1575593681467138399.b4-ty@kernel.org>
-Date: Mon, 30 Mar 2026 17:10:22 +0200
+	s=arc-20240116; t=1774884031; c=relaxed/simple;
+	bh=zaYZzXfNb5Yh8uDxRqRlNV+NT11MzWt0MOXKtvGWU2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rWjth/II1106T13R5UMQQjzanc0vdCXlLfZkafBJ2tO4DaC7eZYeetlOW7vQpcZwJCsnMATbvvpLC5/oz08SpmFlOamAJbU0X2VYJj+m5vBGdA+iSje+UvMOBZs48FoYAAaKJ6u6uuVTanTB0dN4rjBFw/jfSAIMccTfg6La0+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kdfF/Qnq; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4853a5ffc05so9846385e9.0
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 08:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774884028; x=1775488828; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sDvERDZoAlGyHoO/AmLOjRnD9UlryXe2PNrEtyg6T8E=;
+        b=kdfF/QnqU1ROaamS1piMLKusCEuszMSB0Gji+sPdcN9y9r5ZSEz2/RAS750gKsmUte
+         hwDakI0sD3MNcfR9c3VHQ5o5kjjCyGILxBGhfLNu+jyriu/bK+amjO6HbLQFfVek7/Ew
+         VBRMUYFmR0zLWGxYcrxQDHPI1CPi1tH5a1757jBfFiieMYVkYCN3V5R5YWKbFPAmWvLv
+         OpjFDn/zGWmZBfVFP7Eb0pGCbuLxS6+GZUbrUVKbdtV064fc5CPP28ZYze/TaA+ga832
+         iouKK1SlA0p9GxIXRFWI+fZRyGB68nMxGoj99JJ2MIhzbU5SWZR33TOwVxjfkmd4Z3BU
+         GHvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774884028; x=1775488828;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sDvERDZoAlGyHoO/AmLOjRnD9UlryXe2PNrEtyg6T8E=;
+        b=FPSCu0GrSsw+zHKjhy7uPiSYrSaeBTfqu8E8m/OFu5BXQ6uAQOs7O80O8u6ORhR+vF
+         TQH+JOH/hYOI+WXNOyHVMmz4ewOMlBNW6I43lfs4lg8UuECaLvwYr+NEiWA2mvB9eD7z
+         kY2UnBbB0GVcdLsxThTKpi8EJvJxvUFfCVuCSHi1zPw71ds4KRqhXyRreyAWcQavounH
+         OVhUuer+5jvnqQ8cby5LJMix93bonmm0D5iOU2OhNRv9/ooBE2EhhZ5Kis9fZYRwZpbN
+         yfZ8ickVnkZEiW84u1r+t24hsh2kUmlDe4vQ0LQA2U7G0rVSxdy4aEjcNLXSSTRfdg06
+         Xk+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVmL8YeMjPD5dFF9sJbsf63/uPlpzOR/7AVo+AuVnU35s3mNFi0gW8DnzOeVb/q4yh5Ox2PeMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi3cvMQ2aWsgzVbquP/Vky+o+imjq8h33e2rOBg+KpbX20Bt19
+	Nq3J9xg/F3IjpDu1CMhr9AQSOShn0xxM5ZoaYTUw6P7rDZTVrMin9Yip
+X-Gm-Gg: ATEYQzwGH6zCQXfj0LLlxazriT+qGGHQ14vSST2dsgZtehVLcAlEeeDJkaxyt2CGxt2
+	wRTNZ6KCXOXvviNXg3gyKBa/AJ7ubA5fJrIYmx2sOLBlCs07EXXvHESfSXCQwibLk5yPkEMg781
+	iid1WANYty9DzFp7dwdbpP4AqP7BLG3AgdR1rQ6euaIAtobE35p4JCEuH/9Bg2t63NZl38Tdm47
+	8UoG78gelbQPDobzHgDjOnaJ4Xy99YoJA+rPpBPq3KtuCQASEVemEAsmiUyVdKtSfQNifTAurpq
+	ThQsKf0NaZ1SFmCGp9Sd38Uxdax1aHs3jBHdFqU2/Oh91RD2glcqo0r26yhdABgIOaa8rDDFyAs
+	lgsV57XABKjE3VWaumvYEZjqgFzQiNQ7D0JseqUr7lz1/Jcseie0kfaXZlnwrn0Ks2LybaN4YMJ
+	CKIySLgXPk12+uL21mYsI9YJgE9utJFPppw0fPydr4g9TR8S2kfHKSkWXCyZOunZShQQ4v3vUSy
+	vaxgoWqStOSXzc0JnFp
+X-Received: by 2002:a05:600c:c493:b0:486:ff8e:1911 with SMTP id 5b1f17b1804b1-48727ef0319mr107582435e9.5.1774884027689;
+        Mon, 30 Mar 2026 08:20:27 -0700 (PDT)
+Received: from thomas-precision3591.paris.inria.fr (wifi-pro-82-131.paris.inria.fr. [128.93.82.131])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48722be608bsm430820075e9.0.2026.03.30.08.20.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 08:20:27 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Kees Cook <kees@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: hisilicon - Fix dma_unmap_single() direction
+Date: Mon, 30 Mar 2026 17:19:32 +0200
+Message-ID: <20260330151937.83837-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231247-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231249-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,gondor.apana.org.au,davemloft.net,kernel.org,huawei.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cem@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 82E7335DB75
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3CE9935DE7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 25 Mar 2026 13:43:12 +0100, Hans Holmberg wrote:
-> Start gc if the agressiveness of zone garbage collection is changed
-> by the user (if the file system is not read only).
-> 
-> Without this change, the new setting will not be taken into account
-> until the gc thread is woken up by e.g. a write.
-> 
-> 
-> [...]
+The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
+unmapped with direction DMA_BIDIRECTIONAL in the error path.
 
-Applied to for-next, thanks!
+Change the unmap to match the mapping.
 
-[1/1] xfs: start gc on zonegc_low_space attribute updates
-      commit: 181ea4e2de422aa0a66f355bd59bccccdd169826
+Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/crypto/hisilicon/sec/sec_algs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
+diff --git a/drivers/crypto/hisilicon/sec/sec_algs.c b/drivers/crypto/hisilicon/sec/sec_algs.c
+index 54e24fd7b9be..85eecbb40e7e 100644
+--- a/drivers/crypto/hisilicon/sec/sec_algs.c
++++ b/drivers/crypto/hisilicon/sec/sec_algs.c
+@@ -844,7 +844,7 @@ static int sec_alg_skcipher_crypto(struct skcipher_request *skreq,
+ 	if (crypto_skcipher_ivsize(atfm))
+ 		dma_unmap_single(info->dev, sec_req->dma_iv,
+ 				 crypto_skcipher_ivsize(atfm),
+-				 DMA_BIDIRECTIONAL);
++				 DMA_TO_DEVICE);
+ err_unmap_out_sg:
+ 	if (split)
+ 		sec_unmap_sg_on_err(skreq->dst, steps, splits_out,
 -- 
-Carlos Maiolino <cem@kernel.org>
+2.43.0
 
 
