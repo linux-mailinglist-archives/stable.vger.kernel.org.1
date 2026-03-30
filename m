@@ -1,54 +1,65 @@
-Return-Path: <stable+bounces-231006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCkBMnYOymmL4gUAu9opvQ
-	(envelope-from <stable+bounces-231006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:47:34 +0200
+	id YHSOOP8OymmL4gUAu9opvQ
+	(envelope-from <stable+bounces-231007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:49:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25AC7355B12
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579AB355B79
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 07:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B5CE3010145
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 05:45:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 468CF3019805
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 05:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06815382F32;
-	Mon, 30 Mar 2026 05:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767A83845C9;
+	Mon, 30 Mar 2026 05:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHJvGTbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6CxoxH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFB03822B7
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 05:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3069D131E49;
+	Mon, 30 Mar 2026 05:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774849504; cv=none; b=LvmllJgUFEnZDrVjF69kwVFehgKmrZcejHPMofL8CVESA+qmQjbWwrLeUDlfq/EoD8buainh9nnY6BiWiuzIuzPN14d6YWJ7W7CP8PlCyizb/XXVYjCWL284lU0Lv8VzdDQvLEBcJYbp87LGU0EBBiC2mQ3hBiDiFs9ZqWRCE/Q=
+	t=1774849678; cv=none; b=gEEGvS+01GpYyAxGw4ETVJ0hhDVhUj9KJZ5OnEFeAiPbZvGgIt93XJkNQ2pqV8RjbYIaKWV2mZDS8VFartWRmaukJn7U+sWGnopwU7dH6EcFxSz7+R27Of+PF+FZamjAi1giJiZ9KvYs0b8IlPADJ+WzVqXNfUigNu7WiIQXTn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774849504; c=relaxed/simple;
-	bh=7CsbheAqXZdCKr8ORK4lf7tuQ/x3D8IpJmB75IGdgMw=;
+	s=arc-20240116; t=1774849678; c=relaxed/simple;
+	bh=qyDqUEOyuGKVWNwH/c11TUyv3guz+h7W/2xYEx83qdg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KWq3aILxQ4a8Vc6JfFJ5D0r9YjaqTnaT5pP/IEiARX5XSq5onag+DTI/+h6v58vtOnSrg1+dweUeSQmjvFoo1MOZHDxdbg8nZcm4xWjQKmPhnF7MIHuUTLI+XpZRsH/zPruu01qL135WX96Wwk4n1lWxEybQnlLeg/AZ8HSZ8Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHJvGTbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95BEC4CEF7;
-	Mon, 30 Mar 2026 05:45:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=A7TLM+Kapzail2d1H7Cc6K00SYbfzlIxf+j2wkZUguj2nc2a0EPvsMg9XeN/Uh7odbPE/zfO/0wfa/DyaFDHHkjmQ2uZBR+I41VsvdNl7mBtEEu3qTBxtDMSKekpI4TndEVUCRJacCrPOADpViGJVk1mu1ZVLcDY6MfnnJe/bQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6CxoxH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F97C4CEF7;
+	Mon, 30 Mar 2026 05:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774849504;
-	bh=7CsbheAqXZdCKr8ORK4lf7tuQ/x3D8IpJmB75IGdgMw=;
+	s=korg; t=1774849678;
+	bh=qyDqUEOyuGKVWNwH/c11TUyv3guz+h7W/2xYEx83qdg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uHJvGTbkmE9anytYn6QzQRVi4jwX5B2MKyva4FKfjWdnuHgkcPBSYO94kzJgMBs/+
-	 fS7wXx7zBey4f+HOEg3cSh8vL18QCGtu277FrcbowMN3wEUfCPMlN5W02Du3bBh9jY
-	 GnQqs6wXO/CieHT0QzdPlteJ6ctnxF1M9SQj0u0Q=
-Date: Mon, 30 Mar 2026 07:45:00 +0200
+	b=s6CxoxH0HeeGjkoRHRYMsUCMx1bmeebfIP/QXjBDYhu3WBZcQ3seFDg7iH3ojeAsx
+	 NwHNs5oe8IiLJHe8it1Exk6k4SJArLYUlsGy9Lap4JOq4U0kUr1qApjqCXRPo0fClg
+	 /PzekReHjwvzt9G5P1YnFoF9TSvZqY3xrNKx1id0=
+Date: Mon, 30 Mar 2026 07:47:54 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Kai Zen <kai.aizen.dev@gmail.com>
-Cc: stable@vger.kernel.org, Kai Aizen <kai@snailsploit.com>
-Subject: Re: Subject: [PATCH net] tipc: fix UAF race in
- tipc_mon_peer_up/down/remove_peer vs bearer teardown
-Message-ID: <2026033051-primate-headache-5bf9@gregkh>
-References: <CALynFi5UR5NUQLn8-rx66AoD72Qn0Chji_m+hVFrXL4cReNJ1A@mail.gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn
+ commit_inputs vs other params race
+Message-ID: <2026033013-drainage-stylized-43d6@gregkh>
+References: <2026032915-library-embolism-b48c@gregkh>
+ <20260329193226.59025-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,108 +68,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALynFi5UR5NUQLn8-rx66AoD72Qn0Chji_m+hVFrXL4cReNJ1A@mail.gmail.com>
+In-Reply-To: <20260329193226.59025-1-sj@kernel.org>
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231006-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231007-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 25AC7355B12
+X-Rspamd-Queue-Id: 579AB355B79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 29, 2026 at 11:23:49PM +0300, Kai Zen wrote:
-> CVE-2025-40280 fixed tipc_mon_reinit_self() accessing monitors[] from a
-> workqueue without RTNL.  That patch closed the workqueue path by adding
-> rtnl_lock() around the call.
+On Sun, Mar 29, 2026 at 12:32:26PM -0700, SeongJae Park wrote:
+> + Roman for a case he has any opinion about my sashiko usage.
 > 
-> However, three additional functions in the same subsystem access
-> tipc_net->monitors[] from softirq context with no RCU protection at all:
+> Hello Greg,
 > 
->   tipc_mon_peer_up()      - called from tipc_node_write_unlock()
->   tipc_mon_peer_down()    - called from tipc_node_write_unlock()
->   tipc_mon_remove_peer()  - called from tipc_node_link_down()
+> On Sun, 29 Mar 2026 20:05:53 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
 > 
-> These three are invoked from the packet receive path (tipc_rcv ->
-> tipc_node_write_unlock / tipc_node_link_down) and hold only the per-node
-> rwlock, not RTNL.
+> > On Sun, Mar 29, 2026 at 08:49:16AM -0700, SeongJae Park wrote:
+> > > Forwarding sashiko.dev review status for this thread.
+> > > 
+> > > # review url: https://sashiko.dev/#/patchset/20260329153052.46657-1-sj@kernel.org
+> > 
+> > Why are you doing this?  If we want to see the review, can't we just go
+> > and look at the tool itself?
 > 
-> Concurrently, bearer_disable() -- which always holds RTNL per its own
-> inline documentation -- calls tipc_mon_delete(), which:
-> 
->   1. acquires mon->lock
->   2. sets tn->monitors[bearer_id] = NULL
->   3. frees all peer entries
->   4. releases mon->lock
->   5. calls kfree(mon)                     <-- no synchronize_rcu()
-> 
-> The race is structural: there is no shared lock between the data-path
-> reader (which reads monitors[id] then acquires mon->lock) and the
-> teardown path (which acquires mon->lock, NULLs the slot, then frees).
-> A softirq thread can read a non-NULL mon pointer, get preempted, and
-> resume after kfree(mon) has run on another CPU, then call
-> write_lock_bh(&mon->lock) on freed memory:
-> 
->   CPU 0 (softirq / tipc_rcv)            CPU 1 (RTNL / bearer_disable)
->   tipc_mon_peer_up()
->     mon = tipc_monitor(net, id)
->     [mon is non-NULL]
->                                          tipc_mon_delete()
->                                            write_lock_bh(&mon->lock)
->                                            tn->monitors[id] = NULL
->                                            ...
->                                            write_unlock_bh(&mon->lock)
->                                            kfree(mon)
->     write_lock_bh(&mon->lock)   <-- UAF
-> 
-> The fix mirrors the existing bearer_list[] pattern in the same module:
-> convert monitors[] to __rcu, use rcu_assign_pointer() on creation,
-> RCU_INIT_POINTER() + synchronize_rcu() on deletion (before the kfree),
-> and the appropriate rcu_dereference_bh() vs rtnl_dereference() variant
-> at each read site depending on execution context.
-> 
-> synchronize_rcu() in tipc_mon_delete() is placed after the
-> write_unlock_bh() and before timer_shutdown_sync() + kfree() to ensure
-> all softirq-context readers that already observed the old pointer have
-> completed before the memory is freed.
-> 
-> Fixes: 35c55c9877f8 ("tipc: add neighbor monitoring framework")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
-> ---
->  net/tipc/core.h    |  2 +-
->  net/tipc/monitor.c | 51 ++++++++++++++++++++++++++++++++--------------
->  2 files changed, 37 insertions(+), 16 deletions(-)
+> We can.  But it is bit cumbersome to opening web browser and moving my focus to
+> there.  Reading everything on the mailing tool is easier for some people like
+> me.  Like some test bots send reports are replying to patches, or we sometimes
+> forwarding bugzilla reports to mailing lists in a form of a plain text mail.
 
-<formletter>
+Sure, but are you going to now forward all random tool reviews that are
+run on your subsystem to all of these lists (your distribution cc: is
+quite large here)?
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+> Secondly, I have to share my opinions about the reviews, as many times AI
+> reviews need human's opinions.  There is no good way to do that on the web ui
+> of the tool (sashiko) for now, and I think this mail based flow is the best.
 
-</formletter>
+That is assuming that you can fix up the AI reviews, is that happening
+here?
+
+> And anyway I'm supposed to share at least my review of AI reviews, in mm
+> community.  If I ignore, I will only make Andrew have to reply asking that.
+> 
+> I used to share only my review of the AI reviews as replies, instead of
+> forwarding AI reviews and then replies to those.  But it was
+> 1. cumbersome for me (should summarize AI review and then my review; feeling
+>    doing work twice), and
+> 2. feeling not optimal at sharing all concerning comments with others.  My
+>    summary might miss some points of AI review but other reviewers might just
+>    believe me and don't read the full review due to the additional web browser
+>    opening work.  Also some other reivewers might kindly review AI reviews
+>    before I do, and save my (or their) time.
+> 
+> Hence I ended up to do this bit odd workflow:  Forwarding the full AI review on
+> the mailing list first, then reply my responses.
+> 
+> > sending it back to all of us feels odd,
+> 
+> If this is polluting your inbox and/or distract you, I'm so sorry for that.
+> Please let me know if this is distracting you.  Maybe I can filtering people
+> who don't want this kind of replies out of the recipients for the forwarding
+> mails.  Or, if you have a suggestion about what need to be changed, please let
+> me know.
+
+It just seemed odd, and might get crazy over time if this happens for
+all random AI tools that happen to be popping up now, right?  If this is
+the "official" one for -mm, that's fine, but consider the distribution
+and intended audience a bit please.
+
+thanks,
+
+greg k-h
 
