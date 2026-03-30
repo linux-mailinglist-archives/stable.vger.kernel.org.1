@@ -1,370 +1,193 @@
-Return-Path: <stable+bounces-231145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJbIAQ9Lymmy7QUAu9opvQ
-	(envelope-from <stable+bounces-231145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:06:07 +0200
+	id EEdCAlxLymmb7QUAu9opvQ
+	(envelope-from <stable+bounces-231146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:07:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01749358D90
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:06:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0885C358DCB
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 79F443008085
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:03:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 359D53015EE0
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437A03AE6E1;
-	Mon, 30 Mar 2026 10:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FBE3B6BF6;
+	Mon, 30 Mar 2026 10:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep1DWcFO"
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="SQyUQ7R3";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="SQyUQ7R3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56363B6BF6
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 10:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556F1382362;
+	Mon, 30 Mar 2026 10:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774865015; cv=none; b=pIfSxHdo21cpNTEDGZgIESuvjr8lMvfGST9OnWy0/89PqA0bTeM2PTo4+M5wcgXeTSI25At14jS5cLUPgpw5Xt5rRR+ATMAMyZrt0yT6DHBlE/LUnFAZVMH+AMhIKGHTfI7HvTwF8RnwY6QLo/G2RvTc5EMMGaXee/DzhpwfhT4=
+	t=1774865076; cv=none; b=YP/Lp8lKjp7jD1xgyw5hiH8kSFfeFCB9/twfkzRd4ziVz5ACjZF/3wyos22Jr9FTxBEC1qfDeCn2tJpgCkAmOKT5cD5M/E0NUHB1jz8O4CVgZOLP7SFhgZHobI6zY+UfjquA1LKaer6w3OQ4PIo891l0eptkFAJJcfkDQfbU3AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774865015; c=relaxed/simple;
-	bh=T29gxojs+n2y2iAEDOZNIJchl5mhNqHvVmPIoH11TmM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RKEgRquo5oFIzV+SEi/5/XsTNRPLMvEq47C/4cHJcQYixlnRT0SMThO2a3+X9f4ZAIziktCZNFt0KsplquUtDMQbOk3ym79KL3tRhqd2Uu2QCddRWa0H8MbVk/6uXiBlZEfgs/oTYx2RgmaiYEBj8gxwfaAzqC4ixwR0ovxi54M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep1DWcFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B163AC4CEF7;
-	Mon, 30 Mar 2026 10:03:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774865015;
-	bh=T29gxojs+n2y2iAEDOZNIJchl5mhNqHvVmPIoH11TmM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ep1DWcFONqBlvnE8zkj5hAbDnyCdSiFxEp/p+jgnkgOqhhb2g5QhC9EM9RfIQna8j
-	 /Jxu/5KiOQfbEK4hUroTJFPwSj+bXXbmCzd+XqUhB3/AY/WJccExW9B6/NCG57Hay4
-	 nraZg3yk2d56k8ZeEJYy/2whpngsyNZW+4OT4q/A=
-Subject: FAILED: patch "[PATCH] xfs: close crash window in attr dabtree inactivation" failed to apply to 6.18-stable tree
-To: leo.lilong@huawei.com,cem@kernel.org,djwong@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 12:03:24 +0200
-Message-ID: <2026033024-poach-sequester-14e1@gregkh>
+	s=arc-20240116; t=1774865076; c=relaxed/simple;
+	bh=+CtOxgKYxsJ3uTzGDmi74E4tq7U00KOjS3BRbExPvD4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dYpr3LTeVP1vvO6gefhYDVphpx9+ixsJiQ5rLtEhmoKNzlyCilrrMINBLuL8iS0swQBW7XiwvFzXjE9cSvItaYmspIwM89AzDDoHSPL/1OKQLAqiQT8ez3nPt7t6bAjfbFpFxQVWjwJc2G3xXyyga0TopK1vghifnl+50GHTnNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=SQyUQ7R3; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=SQyUQ7R3; arc=none smtp.client-ip=178.79.152.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1774865067; bh=+CtOxgKYxsJ3uTzGDmi74E4tq7U00KOjS3BRbExPvD4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SQyUQ7R3zzQDzXjjIJOxZss+2xKc1KGE4CQW6JMZP/xiKxWsHoa49NihFXTJMA6sf
+	 fABwKN+s9kx2jcS9htIN7fKtHfNGyI3Th+MjUPsY7fhNFVIMqsLOHzVnTA4RMZ4Le+
+	 uogz39NptGA3koolo4pNRRQVB8YmG7JrI9B7LvNfHhdqU+AbcNkY9xL7isSPf6BFFh
+	 FHCtnTlkOzsPw7eOTBsFbFyYXIYxIjwMlo8mlDF4mQY3YWwuMavxXvIDbnu86S5owy
+	 XyQ1BY3QAmohyiSvE5s0eS7xPij8jYgz7sCC7OUVADWcoSu2odKcfsqOe8xnb9FgDP
+	 XV7O47RJfeneA==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id 784D9380C00;
+	Mon, 30 Mar 2026 10:04:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1774865067; bh=+CtOxgKYxsJ3uTzGDmi74E4tq7U00KOjS3BRbExPvD4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SQyUQ7R3zzQDzXjjIJOxZss+2xKc1KGE4CQW6JMZP/xiKxWsHoa49NihFXTJMA6sf
+	 fABwKN+s9kx2jcS9htIN7fKtHfNGyI3Th+MjUPsY7fhNFVIMqsLOHzVnTA4RMZ4Le+
+	 uogz39NptGA3koolo4pNRRQVB8YmG7JrI9B7LvNfHhdqU+AbcNkY9xL7isSPf6BFFh
+	 FHCtnTlkOzsPw7eOTBsFbFyYXIYxIjwMlo8mlDF4mQY3YWwuMavxXvIDbnu86S5owy
+	 XyQ1BY3QAmohyiSvE5s0eS7xPij8jYgz7sCC7OUVADWcoSu2odKcfsqOe8xnb9FgDP
+	 XV7O47RJfeneA==
+Message-ID: <b44db9e6-f820-439d-a7ed-c1e2514579a8@mleia.com>
+Date: Mon, 30 Mar 2026 13:04:25 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: lpc_eth: Fix a possible memory leak in
+ lpc_mii_probe()
+To: Ma Ke <make24@iscas.ac.cn>, piotr.wojtaszczyk@timesys.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alexandre.belloni@bootlin.com
+Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260330081636.2887980-1-make24@iscas.ac.cn>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <20260330081636.2887980-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20260330_100427_510496_A481DC0B 
+X-CRM114-Status: GOOD (  20.58  )
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[mleia.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231145-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[mleia.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231146-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 01749358D90
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vz@mleia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mleia.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mleia.com:dkim,mleia.com:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 0885C358DCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello Ma Ke,
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 3/30/26 11:16, Ma Ke wrote:
+> lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
+> pointer. of_phy_find_device() increments the refcount of the device.
+> The current implementation does not decrement the refcount after using
+> the pointer, which leads to a memory leak.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+this is correct, there is an actual detected bug.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033024-poach-sequester-14e1@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+> 
+> Add phy_device_free() to balance the refcount.
 
-Possible dependencies:
+But this does not sound right, you shoud use of_node_put(pldat->phy_node).
 
+> 
+> Found by code review.
+> 
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Cc: stable@vger.kernel.org
+> Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
+> ---
+>   drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
+> index 8b9a3e3bba30..8ce7c9bb6dd6 100644
+> --- a/drivers/net/ethernet/nxp/lpc_eth.c
+> +++ b/drivers/net/ethernet/nxp/lpc_eth.c
+> @@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
+>   static int lpc_mii_probe(struct net_device *ndev)
+>   {
+>   	struct netdata_local *pldat = netdev_priv(ndev);
+> -	struct phy_device *phydev;
+> +	struct phy_device *phydev, *phydev_tmp;
+>   
+>   	/* Attach to the PHY */
+>   	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
+> @@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
+>   		netdev_info(ndev, "using RMII interface\n");
+>   
+>   	if (pldat->phy_node)
+> -		phydev =  of_phy_find_device(pldat->phy_node);
+> +		phydev_tmp =  of_phy_find_device(pldat->phy_node);
+>   	else
+> -		phydev = phy_find_first(pldat->mii_bus);
+> -	if (!phydev) {
+> +		phydev_tmp = phy_find_first(pldat->mii_bus);
+> +	if (!phydev_tmp) {
 
+I didn't get it, why the new phydev_tmp is needed above, please
+restore the original code above.
 
-thanks,
+>   		netdev_err(ndev, "no PHY found\n");
+>   		return -ENODEV;
+>   	}
+>   
+> -	phydev = phy_connect(ndev, phydev_name(phydev),
+> +	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
+>   			     &lpc_handle_link_change,
+>   			     lpc_phy_interface_mode(&pldat->pdev->dev));
+> +	phy_device_free(phydev_tmp);
 
-greg k-h
+This is plainly wrong and has to be dropped or changed to
 
------------------- original commit in Linus's tree ------------------
+	if (pldat->phy_node)
+		of_node_put(pldat->phy_node);
 
-From b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61 Mon Sep 17 00:00:00 2001
-From: Long Li <leo.lilong@huawei.com>
-Date: Tue, 17 Mar 2026 09:51:55 +0800
-Subject: [PATCH] xfs: close crash window in attr dabtree inactivation
+>   	if (IS_ERR(phydev)) {
+>   		netdev_err(ndev, "Could not attach to PHY\n");
+>   		return PTR_ERR(phydev);
 
-When inactivating an inode with node-format extended attributes,
-xfs_attr3_node_inactive() invalidates all child leaf/node blocks via
-xfs_trans_binval(), but intentionally does not remove the corresponding
-entries from their parent node blocks.  The implicit assumption is that
-xfs_attr_inactive() will truncate the entire attr fork to zero extents
-afterwards, so log recovery will never reach the root node and follow
-those stale pointers.
+Is it AI generated fix or what?.. The change looks bad, it introduces
+more severe issues than it fixes.
 
-However, if a log shutdown occurs after the leaf/node block cancellations
-commit but before the attr bmap truncation commits, this assumption
-breaks.  Recovery replays the attr bmap intact (the inode still has
-attr fork extents), but suppresses replay of all cancelled leaf/node
-blocks, maybe leaving them as stale data on disk.  On the next mount,
-xlog_recover_process_iunlinks() retries inactivation and attempts to
-read the root node via the attr bmap. If the root node was not replayed,
-reading the unreplayed root block triggers a metadata verification
-failure immediately; if it was replayed, following its child pointers
-to unreplayed child blocks triggers the same failure:
+If you think you cannot create a proper change, let me know.
 
- XFS (pmem0): Metadata corruption detected at
- xfs_da3_node_read_verify+0x53/0x220, xfs_da3_node block 0x78
- XFS (pmem0): Unmount and run xfs_repair
- XFS (pmem0): First 128 bytes of corrupted metadata buffer:
- 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- XFS (pmem0): metadata I/O error in "xfs_da_read_buf+0x104/0x190" at daddr 0x78 len 8 error 117
-
-Fix this in two places:
-
-In xfs_attr3_node_inactive(), after calling xfs_trans_binval() on a
-child block, immediately remove the entry that references it from the
-parent node in the same transaction.  This eliminates the window where
-the parent holds a pointer to a cancelled block.  Once all children are
-removed, the now-empty root node is converted to a leaf block within the
-same transaction. This node-to-leaf conversion is necessary for crash
-safety. If the system shutdown after the empty node is written to the
-log but before the second-phase bmap truncation commits, log recovery
-will attempt to verify the root block on disk. xfs_da3_node_verify()
-does not permit a node block with count == 0; such a block will fail
-verification and trigger a metadata corruption shutdown. on the other
-hand, leaf blocks are allowed to have this transient state.
-
-In xfs_attr_inactive(), split the attr fork truncation into two explicit
-phases.  First, truncate all extents beyond the root block (the child
-extents whose parent references have already been removed above).
-Second, invalidate the root block and truncate the attr bmap to zero in
-a single transaction.  The two operations in the second phase must be
-atomic: as long as the attr bmap has any non-zero length, recovery can
-follow it to the root block, so the root block invalidation must commit
-together with the bmap-to-zero truncation.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-
-diff --git a/fs/xfs/xfs_attr_inactive.c b/fs/xfs/xfs_attr_inactive.c
-index 92331991f9fd..a5b69c0fbfd0 100644
---- a/fs/xfs/xfs_attr_inactive.c
-+++ b/fs/xfs/xfs_attr_inactive.c
-@@ -140,7 +140,7 @@ xfs_attr3_node_inactive(
- 	xfs_daddr_t		parent_blkno, child_blkno;
- 	struct xfs_buf		*child_bp;
- 	struct xfs_da3_icnode_hdr ichdr;
--	int			error, i;
-+	int			error;
- 
- 	/*
- 	 * Since this code is recursive (gasp!) we must protect ourselves.
-@@ -152,7 +152,7 @@ xfs_attr3_node_inactive(
- 		return -EFSCORRUPTED;
- 	}
- 
--	xfs_da3_node_hdr_from_disk(dp->i_mount, &ichdr, bp->b_addr);
-+	xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
- 	parent_blkno = xfs_buf_daddr(bp);
- 	if (!ichdr.count) {
- 		xfs_trans_brelse(*trans, bp);
-@@ -167,7 +167,7 @@ xfs_attr3_node_inactive(
- 	 * over the leaves removing all of them.  If this is higher up
- 	 * in the tree, recurse downward.
- 	 */
--	for (i = 0; i < ichdr.count; i++) {
-+	while (ichdr.count > 0) {
- 		/*
- 		 * Read the subsidiary block to see what we have to work with.
- 		 * Don't do this in a transaction.  This is a depth-first
-@@ -218,29 +218,32 @@ xfs_attr3_node_inactive(
- 		xfs_trans_binval(*trans, child_bp);
- 		child_bp = NULL;
- 
--		/*
--		 * If we're not done, re-read the parent to get the next
--		 * child block number.
--		 */
--		if (i + 1 < ichdr.count) {
--			struct xfs_da3_icnode_hdr phdr;
-+		error = xfs_da3_node_read_mapped(*trans, dp,
-+				parent_blkno, &bp, XFS_ATTR_FORK);
-+		if (error)
-+			return error;
- 
--			error = xfs_da3_node_read_mapped(*trans, dp,
--					parent_blkno, &bp, XFS_ATTR_FORK);
-+		/*
-+		 * Remove entry from parent node, prevents being indexed to.
-+		 */
-+		xfs_attr3_node_entry_remove(*trans, dp, bp, 0);
-+
-+		xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
-+		bp = NULL;
-+
-+		if (ichdr.count > 0) {
-+			/*
-+			 * If we're not done, get the next child block number.
-+			 */
-+			child_fsb = be32_to_cpu(ichdr.btree[0].before);
-+
-+			/*
-+			 * Atomically commit the whole invalidate stuff.
-+			 */
-+			error = xfs_trans_roll_inode(trans, dp);
- 			if (error)
- 				return error;
--			xfs_da3_node_hdr_from_disk(dp->i_mount, &phdr,
--						  bp->b_addr);
--			child_fsb = be32_to_cpu(phdr.btree[i + 1].before);
--			xfs_trans_brelse(*trans, bp);
--			bp = NULL;
- 		}
--		/*
--		 * Atomically commit the whole invalidate stuff.
--		 */
--		error = xfs_trans_roll_inode(trans, dp);
--		if (error)
--			return  error;
- 	}
- 
- 	return 0;
-@@ -257,10 +260,8 @@ xfs_attr3_root_inactive(
- 	struct xfs_trans	**trans,
- 	struct xfs_inode	*dp)
- {
--	struct xfs_mount	*mp = dp->i_mount;
- 	struct xfs_da_blkinfo	*info;
- 	struct xfs_buf		*bp;
--	xfs_daddr_t		blkno;
- 	int			error;
- 
- 	/*
-@@ -272,7 +273,6 @@ xfs_attr3_root_inactive(
- 	error = xfs_da3_node_read(*trans, dp, 0, &bp, XFS_ATTR_FORK);
- 	if (error)
- 		return error;
--	blkno = xfs_buf_daddr(bp);
- 
- 	/*
- 	 * Invalidate the tree, even if the "tree" is only a single leaf block.
-@@ -283,10 +283,26 @@ xfs_attr3_root_inactive(
- 	case cpu_to_be16(XFS_DA_NODE_MAGIC):
- 	case cpu_to_be16(XFS_DA3_NODE_MAGIC):
- 		error = xfs_attr3_node_inactive(trans, dp, bp, 1);
-+		/*
-+		 * Empty root node block are not allowed, convert it to leaf.
-+		 */
-+		if (!error)
-+			error = xfs_attr3_leaf_init(*trans, dp, 0);
-+		if (!error)
-+			error = xfs_trans_roll_inode(trans, dp);
- 		break;
- 	case cpu_to_be16(XFS_ATTR_LEAF_MAGIC):
- 	case cpu_to_be16(XFS_ATTR3_LEAF_MAGIC):
- 		error = xfs_attr3_leaf_inactive(trans, dp, bp);
-+		/*
-+		 * Reinit the leaf before truncating extents so that a crash
-+		 * mid-truncation leaves an empty leaf rather than one with
-+		 * entries that may reference freed remote value blocks.
-+		 */
-+		if (!error)
-+			error = xfs_attr3_leaf_init(*trans, dp, 0);
-+		if (!error)
-+			error = xfs_trans_roll_inode(trans, dp);
- 		break;
- 	default:
- 		xfs_dirattr_mark_sick(dp, XFS_ATTR_FORK);
-@@ -295,21 +311,6 @@ xfs_attr3_root_inactive(
- 		xfs_trans_brelse(*trans, bp);
- 		break;
- 	}
--	if (error)
--		return error;
--
--	/*
--	 * Invalidate the incore copy of the root block.
--	 */
--	error = xfs_trans_get_buf(*trans, mp->m_ddev_targp, blkno,
--			XFS_FSB_TO_BB(mp, mp->m_attr_geo->fsbcount), 0, &bp);
--	if (error)
--		return error;
--	xfs_trans_binval(*trans, bp);	/* remove from cache */
--	/*
--	 * Commit the invalidate and start the next transaction.
--	 */
--	error = xfs_trans_roll_inode(trans, dp);
- 
- 	return error;
- }
-@@ -328,6 +329,7 @@ xfs_attr_inactive(
- {
- 	struct xfs_trans	*trans;
- 	struct xfs_mount	*mp;
-+	struct xfs_buf          *bp;
- 	int			lock_mode = XFS_ILOCK_SHARED;
- 	int			error = 0;
- 
-@@ -363,10 +365,27 @@ xfs_attr_inactive(
- 	 * removal below.
- 	 */
- 	if (dp->i_af.if_nextents > 0) {
-+		/*
-+		 * Invalidate and truncate all blocks but leave the root block.
-+		 */
- 		error = xfs_attr3_root_inactive(&trans, dp);
- 		if (error)
- 			goto out_cancel;
- 
-+		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK,
-+				XFS_FSB_TO_B(mp, mp->m_attr_geo->fsbcount));
-+		if (error)
-+			goto out_cancel;
-+
-+		/*
-+		 * Invalidate and truncate the root block and ensure that the
-+		 * operation is completed within a single transaction.
-+		 */
-+		error = xfs_da_get_buf(trans, dp, 0, &bp, XFS_ATTR_FORK);
-+		if (error)
-+			goto out_cancel;
-+
-+		xfs_trans_binval(trans, bp);
- 		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK, 0);
- 		if (error)
- 			goto out_cancel;
-
+-- 
+Best wishes,
+Vladimir
 
