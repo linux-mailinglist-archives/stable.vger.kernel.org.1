@@ -1,159 +1,116 @@
-Return-Path: <stable+bounces-231180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAVRHaFkymn27gUAu9opvQ
-	(envelope-from <stable+bounces-231180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:55:13 +0200
+	id 2OU7Fc9kymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:55:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06F135AA97
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:55:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45E735AAAD
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EBF7300AB3D
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:47:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFC92300BDA1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08A13CA488;
-	Mon, 30 Mar 2026 11:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA833BED77;
+	Mon, 30 Mar 2026 11:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z40VBc3L";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/6ifK3ft";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z40VBc3L";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/6ifK3ft"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rtbF+CjU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EEB3C9452
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DD93C2E;
+	Mon, 30 Mar 2026 11:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774871248; cv=none; b=M0+rUKLJgRFGFlWmuKc2q6jDh6GE7JNx4fftZLcCdC+W9xvvsBeeUaAJLUBMTKKvNI8xzOMk9J4Qn97p9oB/r64NVeny9NLrcjoFJAz2rGt9yZfs/B6Uc7mMe4IVcaVlyL1gq3a1x+XvLdpp2eT+qtqwoTPkW2XxhIOIwR3LIPc=
+	t=1774871329; cv=none; b=JOn/9TWm/AWPoP1RweLPK7oiQKhJX5mE18venD3zTOp2DGDsWlJfvEbxwHMwkRXTp4vDgAK4+m3xjedRHdvzFu2rBnwviL2rUkpEFauz/FGGO5YYpTvatuGMs5ipxKyZwDHeZMu5UGen06SarnmoKx6QTzYxT9W5b72Hfev/Lxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774871248; c=relaxed/simple;
-	bh=e1SZeR/5FcqTiIeQPnwssueomtYyGOfL7VZKRujztsw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KYj4HwcaNt/3mMmdRr3ETfLVrhVGq4ZGPWG3HhVP84ncxZAo60QoL13yZjh7/2QVd6ij32pXcLTjD4MKF+akRupv5Ur6zwCkHHtepgHLiin3x/cAviL9qS2eBsw1GFc609HY9z/aU9m9iTVL+CUzm82iy9JXxGHZMqn1OwN5r1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z40VBc3L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/6ifK3ft; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z40VBc3L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/6ifK3ft; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A16685BD39;
-	Mon, 30 Mar 2026 11:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774871245; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WGkNKNx6/57YqNRE5ARl4bzqmmM1DrRENKndswg/PP8=;
-	b=Z40VBc3LJJIcCosT0W0NM2p7HSFdC46+lojJCbEL+kx7tsB9d2YY2KjmbARwqWV82joLle
-	VrWBhT5OPOYtVAgk/YlsxKqKU+WHO8Uj9rQ4wCukeEBQ7zqWoCmfNvhfk0LxS2eQ8JStHb
-	Rg+aFojNRnM5hnAQIqs1xf9K1wCrdQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774871245;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WGkNKNx6/57YqNRE5ARl4bzqmmM1DrRENKndswg/PP8=;
-	b=/6ifK3ft9tgmrFrxIN/HJUl+ryG2NknQZgUOKs06IUzE+HU5vu4Lwk4Ix0toMHuzmW0rGt
-	zFVImJNXJ9x/vJBw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z40VBc3L;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/6ifK3ft"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774871245; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WGkNKNx6/57YqNRE5ARl4bzqmmM1DrRENKndswg/PP8=;
-	b=Z40VBc3LJJIcCosT0W0NM2p7HSFdC46+lojJCbEL+kx7tsB9d2YY2KjmbARwqWV82joLle
-	VrWBhT5OPOYtVAgk/YlsxKqKU+WHO8Uj9rQ4wCukeEBQ7zqWoCmfNvhfk0LxS2eQ8JStHb
-	Rg+aFojNRnM5hnAQIqs1xf9K1wCrdQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774871245;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WGkNKNx6/57YqNRE5ARl4bzqmmM1DrRENKndswg/PP8=;
-	b=/6ifK3ft9tgmrFrxIN/HJUl+ryG2NknQZgUOKs06IUzE+HU5vu4Lwk4Ix0toMHuzmW0rGt
-	zFVImJNXJ9x/vJBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 74A204A0A2;
-	Mon, 30 Mar 2026 11:47:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /UM6G81iymmeMgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 30 Mar 2026 11:47:25 +0000
-Date: Mon, 30 Mar 2026 13:47:25 +0200
-Message-ID: <874ilxv8s2.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Zhang Heng <zhangheng@kylinos.cn>
-Cc: tiwai@suse.com,
-	perex@perex.cz,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] ALSA: hda/realtek: Add quirk for ASUS ROG Strix SCAR 15
-In-Reply-To: <20260330075334.50962-2-zhangheng@kylinos.cn>
-References: <20260330075334.50962-1-zhangheng@kylinos.cn>
-	<20260330075334.50962-2-zhangheng@kylinos.cn>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1774871329; c=relaxed/simple;
+	bh=i32uvfOSfPk98MwjTMpN1fmYt3V+WqF2yQynG7Q618o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qx7iGdjTEYeAkf4+WcR0/aQozr9zw7PUc5yuWpavxaaQyMUR87cNU1cg7zTX+IjPsM9Q5Xz+OXUGlJzqR3Qtyv1Hj9LabyW/7CxPxmDfCgloriM8UIRkKH8ZQ/I6Hce31Vvkh60Qpu54q3GRhpc18FM8WrGdvKLCae74t2X3nQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rtbF+CjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29472C2BCB0;
+	Mon, 30 Mar 2026 11:48:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774871329;
+	bh=i32uvfOSfPk98MwjTMpN1fmYt3V+WqF2yQynG7Q618o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rtbF+CjUivAnB+YYaz8x8PurDE91w/8gLqK9vRPaVpB0i1RwdahLtAkujbbDtzNKU
+	 mDA6onLM9gAEGni0dS5pjHv8H+q96EdZtu1aGgbw7A2H0u3f8yQM76Q3vdvg78Vpin
+	 fFmuhQBUjekvJYfTIpO5kq8Z+6rJCTsxzm8oMAcNEG/tMofEP70OZeNoP7CwBs+x9/
+	 JoEMfBosW/u9CpsO6HLnJuo9jLpR695pSaBMVFFZxK3r7/ioxO4n5ZrbhtViflX1cm
+	 jdS0QeziLzhQdV5XgbwSVfMK9L5QbJ8WH0HWh/4dQZToQ7EyV9NCRbBS7MWXOnHtmH
+	 8Ez5orQpLEwiA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w7B6s-00000007211-4BRu;
+	Mon, 30 Mar 2026 13:48:47 +0200
+Date: Mon, 30 Mar 2026 13:48:46 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Dave Penkler <dpenkler@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] gpib: lpvo_usb: fix memory leak on disconnect
+Message-ID: <acpjHoARQcsHwuFq@hovoldconsulting.com>
+References: <20260310105127.17538-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310105127.17538-1-johan@kernel.org>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231180-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231181-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:dkim,suse.de:mid]
-X-Rspamd-Queue-Id: D06F135AA97
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hovoldconsulting.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A45E735AAAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 30 Mar 2026 09:53:34 +0200,
-Zhang Heng wrote:
+On Tue, Mar 10, 2026 at 11:51:27AM +0100, Johan Hovold wrote:
+> The driver iterates over the registered USB interfaces during GPIB
+> attach and takes a reference to their USB devices until a match is
+> found. These references are never released which leads to a memory leak
+> when devices are disconnected.
 > 
-> ASUS ROG Strix SCAR 15, like the Strix G15, requires the
-> ALC285_FIXUP_ASUS_G533Z_PINS quirk to work properly.
+> Fix the leak by dropping the unnecessary references.
 > 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=221247
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+> Fixes: fce79512a96a ("staging: gpib: Add LPVO DIY USB GPIB driver")
+> Cc: stable@vger.kernel.org	# 6.13
+> Cc: Dave Penkler <dpenkler@gmail.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
 
-Applied this one for now.  Thanks.
+Can this one be picked up for 7.1?
 
-
-Takashi
+Johan
 
