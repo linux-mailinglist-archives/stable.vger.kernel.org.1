@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCMEMj5IymkQ7QUAu9opvQ
-	(envelope-from <stable+bounces-231108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:54:06 +0200
+	id OL5cJfBIymkQ7QUAu9opvQ
+	(envelope-from <stable+bounces-231109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:57:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A214358A1B
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA61C358ADF
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BEA8300F104
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:46:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EC13304CCC2
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4049313E36;
-	Mon, 30 Mar 2026 09:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8373B19A5;
+	Mon, 30 Mar 2026 09:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyPG75TA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSsHBeak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DA22E3397
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3FD3A75A6
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774864007; cv=none; b=lTd9ouysFh7hLHmEpBpADAE3PpioLibqQ5hcaOUQxBcQ+1fd5XMNYYSz6bVJEmIwLqktLkL+uIopYcnW8Q3qpIn7tj+ifKQ5BSCE2qNT6u87DOEhwqJHux7WsCwZRnMFPluIr+b2cxW56JYHPWL91yk6Ha26XH0EAE+o0zsXIRc=
+	t=1774864129; cv=none; b=YlB0L49rhXTMenOkx1iKn801pau7v4OqqoKNQo4CFit027I3L94RgbIS8WzhtQ20xBXBZWpFaSkSRMevEXmM+0A5YBboqfDEecwwXzduu0uxV7mcTp+su1/Eh9uQAChwslsKlDdzMeNXoqZrcHENAJ4iG+7uNhXsHtEnI2ATih0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774864007; c=relaxed/simple;
-	bh=lzRkNtnXIFhGYEikyS2K+6FK2FnThI2n1Zadk1t2kwc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fT/nc5wrSwlM7IzXvoRSdIFJrfC2GHv4/dDSk4AuS5Anh0qE8HFBfGf4EnuoKYqUTGhYekjUc3WW5DYpN4ioOytu+NV0Vj4gE2/AeUG7nU6qI/s5HHKQChEPuDOPlXP+0/tQ4/C4QsdW9PFq28czgDESvP3cDy1jPhaVwFaWC9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyPG75TA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CC6C4CEF7;
-	Mon, 30 Mar 2026 09:46:46 +0000 (UTC)
+	s=arc-20240116; t=1774864129; c=relaxed/simple;
+	bh=ydOoOVdJz9ITkfSAxODc2xMibd2hqj+xJepj+hsZphg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jk3TtHRNsDWwN7SIDpcULusZeoJiFZzuJYKRNwOeYKUua075sI1/2M9FFHQBXHCW9pFK1Ea3qE+wUqsiZ8x3O9uWzvDHC9OV/LhlPs6857eyt2mS71cdbNjNsqTjcajhzSIsWd+5VU/R/B7EnpnFG0+/4MKzylcYEYvADPNG6e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSsHBeak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD42C4CEF7;
+	Mon, 30 Mar 2026 09:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774864007;
-	bh=lzRkNtnXIFhGYEikyS2K+6FK2FnThI2n1Zadk1t2kwc=;
+	s=korg; t=1774864128;
+	bh=ydOoOVdJz9ITkfSAxODc2xMibd2hqj+xJepj+hsZphg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GyPG75TAKFwA1s66hckxUmPkQq9wxEn0p6codNHnCC8Q85zrM2TOqnw0C5iqyFy6T
-	 XQt1PDAN1VGbW7sKqwrnhGF5FWbZJnbvBvqh8JibV5G/I4guZ+ZPORj3Y/4LMReGgt
-	 2z17b8JCglq2KZZlbdwmsePg/4mecyZgvufhHaW8=
-Subject: FAILED: patch "[PATCH] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock" failed to apply to 5.15-stable tree
-To: claudiu.beznea@tuxon.dev,Frank.Li@nxp.com,biju.das.jz@bp.renesas.com,claudiu.beznea.uj@bp.renesas.com,vkoul@kernel.org
+	b=NSsHBeako+0LXL60ummYjhAE+MW+yYNWDGTQhG90IsgKHXez4JcIjvMDH1gJpWBzA
+	 70i/HqCfsCreTVqW9T9utfwdVVtHVR6BSllEHPc4Nef0LdjRG2Odnz+JJKDPnmzqnI
+	 /O2f9OCB89W+uNjYqk00bWqEMXBsZ0PQ8gd2Ec8s=
+Subject: FAILED: patch "[PATCH] LoongArch: vDSO: Emit GNU_EH_FRAME correctly" failed to apply to 6.12-stable tree
+To: xry111@xry111.site,chenhuacai@loongson.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 11:46:44 +0200
-Message-ID: <2026033044-applause-erased-d411@gregkh>
+Date: Mon, 30 Mar 2026 11:48:45 +0200
+Message-ID: <2026033044-kilometer-hefty-7423@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,16 +59,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231108-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231109-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -76,30 +76,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,gregkh:email,renesas.com:email,tuxon.dev:email]
-X-Rspamd-Queue-Id: 2A214358A1B
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xry111.site:email,gnu.org:url,loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: EA61C358ADF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 89a8567d84bde88cb7cdbbac2ab2299c4f991490
+git cherry-pick -x e4878c37f6679fdea91b27a0f4e60a871f0b7bad
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033044-applause-erased-d411@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033044-kilometer-hefty-7423@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,66 +111,212 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 89a8567d84bde88cb7cdbbac2ab2299c4f991490 Mon Sep 17 00:00:00 2001
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Date: Mon, 16 Mar 2026 15:32:46 +0200
-Subject: [PATCH] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
+From e4878c37f6679fdea91b27a0f4e60a871f0b7bad Mon Sep 17 00:00:00 2001
+From: Xi Ruoyao <xry111@xry111.site>
+Date: Thu, 26 Mar 2026 14:29:09 +0800
+Subject: [PATCH] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
 
-Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
-CHCTRL register. To avoid concurrency issues when configuring
-functionalities exposed by this registers, take the virtual channel lock.
-All other CHCTRL updates were already protected by the same lock.
+With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+empty.  This is not valid, as the current DWARF specification mandates
+the first byte of the EH frame to be the version number 1.  It causes
+some unwinders to complain, for example the ClickHouse query profiler
+spams the log with messages:
 
-Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
-accessing CHCTRL registers but this does not ensure race-free access.
-Remove the local IRQ disable/enable code as well.
+    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
+    version: 127 at 7ffffffb0000
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Here "127" is just the byte located at the p_vaddr (0, i.e. the
+beginning of the vDSO) of the empty GNU_EH_FRAME segment. Cross-
+checking with /proc/365854/maps has also proven 7ffffffb0000 is the
+start of vDSO in the process VM image.
+
+In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
+"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
+limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
+we can simply flip it over to -fasynchronous-unwind-tables and pass
+--eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
+stack for statistics even if the sample point is taken when the PC is in
+the vDSO.
+
+However simply adjusting the options above would exploit an issue: when
+the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+falled back to a machine-specific routine to match the code pattern of
+rt_sigreturn() and extract the registers saved in the sigframe if the
+code pattern is matched.  As unwinding from signal handlers is vital for
+libgcc to support pthread cancellation etc., the fall-back routine had
+been silently keeping the LoongArch Linux systems functioning since
+Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
+format, fall-back routine will no longer be used and libgcc will fail
+to unwind the sigframe, and unwinding from signal handlers will no
+longer work, causing dozens of glibc test failures.  To make it possible
+to unwind from signal handlers again, it's necessary to code the unwind
+info in __vdso_rt_sigreturn via .cfi_* directives.
+
+The offsets in the .cfi_* directives depend on the layout of struct
+sigframe, notably the offset of sigcontext in the sigframe.  To use the
+offset in the assembly file, factor out struct sigframe into a header to
+allow asm-offsets.c to output the offset for assembly.
+
+To work around a long-term issue in the libgcc unwinder (the pc is
+unconditionally substracted by 1: doing so is technically incorrect for
+a signal frame), a nop instruction is included with the two real
+instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
+hack has been used on x86 for a long time.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
-diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
-index 089e1ab29159..f30bdf69c740 100644
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -297,13 +297,10 @@ static void rz_dmac_disable_hw(struct rz_dmac_chan *channel)
- {
- 	struct dma_chan *chan = &channel->vc.chan;
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
--	unsigned long flags;
+diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
+index e2eca1a25b4e..a1bd6a3ee03a 100644
+--- a/arch/loongarch/include/asm/linkage.h
++++ b/arch/loongarch/include/asm/linkage.h
+@@ -41,4 +41,40 @@
+ 	.cfi_endproc;					\
+ 	SYM_END(name, SYM_T_NONE)
  
- 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
++/*
++ * This is for the signal handler trampoline, which is used as the return
++ * address of the signal handlers in userspace instead of called normally.
++ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
++ * nop between .cfi_startproc and the actual address of the trampoline, so
++ * we cannot simply use SYM_FUNC_START.
++ *
++ * This wrapper also contains all the .cfi_* directives for recovering
++ * the content of the GPRs and the "return address" (where the rt_sigreturn
++ * syscall will jump to), assuming there is a struct rt_sigframe (where
++ * a struct sigcontext containing those information we need to recover) at
++ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
++ * column 0 is for $zero, but it does not make too much sense to
++ * save/restore the hardware zero register.  Repurpose this column here
++ * for the return address (here it's not the content of $ra we cannot use
++ * the default column 3).
++ */
++#define SYM_SIGFUNC_START(name)				\
++	.cfi_startproc;					\
++	.cfi_signal_frame;				\
++	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
++	.cfi_return_column 0;				\
++	.cfi_offset 0, SC_PC;				\
++							\
++	.irp num, 1,  2,  3,  4,  5,  6,  7,  8, 	\
++		  9,  10, 11, 12, 13, 14, 15, 16,	\
++		  17, 18, 19, 20, 21, 22, 23, 24,	\
++		  25, 26, 27, 28, 29, 30, 31;		\
++	.cfi_offset \num, SC_REGS + \num * SZREG;	\
++	.endr;						\
++							\
++	nop;						\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
++
++#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
++
+ #endif
+diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
+new file mode 100644
+index 000000000000..109298b8d7e0
+--- /dev/null
++++ b/arch/loongarch/include/asm/sigframe.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++
++#include <asm/siginfo.h>
++#include <asm/ucontext.h>
++
++struct rt_sigframe {
++	struct siginfo rs_info;
++	struct ucontext rs_uctx;
++};
+diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
+index 3017c7157600..2cc953f113ac 100644
+--- a/arch/loongarch/kernel/asm-offsets.c
++++ b/arch/loongarch/kernel/asm-offsets.c
+@@ -16,6 +16,7 @@
+ #include <asm/ptrace.h>
+ #include <asm/processor.h>
+ #include <asm/ftrace.h>
++#include <asm/sigframe.h>
+ #include <vdso/datapage.h>
  
--	local_irq_save(flags);
- 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
--	local_irq_restore(flags);
+ static void __used output_ptreg_defines(void)
+@@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
+ 	COMMENT("Linux sigcontext offsets.");
+ 	OFFSET(SC_REGS, sigcontext, sc_regs);
+ 	OFFSET(SC_PC, sigcontext, sc_pc);
++	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
+ 	BLANK();
  }
  
- static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
-@@ -568,8 +565,8 @@ static int rz_dmac_terminate_all(struct dma_chan *chan)
- 	unsigned int i;
- 	LIST_HEAD(head);
+diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
+index c9f7ca778364..d4151d2fb82e 100644
+--- a/arch/loongarch/kernel/signal.c
++++ b/arch/loongarch/kernel/signal.c
+@@ -35,6 +35,7 @@
+ #include <asm/cpu-features.h>
+ #include <asm/fpu.h>
+ #include <asm/lbt.h>
++#include <asm/sigframe.h>
+ #include <asm/ucontext.h>
+ #include <asm/vdso.h>
  
--	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	rz_dmac_disable_hw(channel);
- 	for (i = 0; i < DMAC_NR_LMDESC; i++)
- 		lmdesc[i].header = 0;
+@@ -51,11 +52,6 @@
+ #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
+ #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
  
-@@ -706,7 +703,9 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
- 	if (chstat & CHSTAT_ER) {
- 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
- 			channel->index, chstat);
--		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
-+
-+		scoped_guard(spinlock_irqsave, &channel->vc.lock)
-+			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
- 		goto done;
- 	}
+-struct rt_sigframe {
+-	struct siginfo rs_info;
+-	struct ucontext rs_uctx;
+-};
+-
+ struct _ctx_layout {
+ 	struct sctx_info *addr;
+ 	unsigned int size;
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index 520f1513f07d..294c16b9517f 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -26,7 +26,7 @@ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+ 	-std=gnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+-	$(call cc-option, -fno-asynchronous-unwind-tables) \
++	$(call cc-option, -fasynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
+ aflags-vdso := $(ccflags-vdso) \
+ 	-D__ASSEMBLY__ -Wa,-gdwarf-2
+@@ -41,7 +41,7 @@ endif
  
+ # VDSO linker flags.
+ ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
+-	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
++	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
+ 
+ #
+ # Shared build commands.
+diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
+index 9cb3c58fad03..59f940d928de 100644
+--- a/arch/loongarch/vdso/sigreturn.S
++++ b/arch/loongarch/vdso/sigreturn.S
+@@ -12,13 +12,13 @@
+ 
+ #include <asm/regdef.h>
+ #include <asm/asm.h>
++#include <asm/asm-offsets.h>
+ 
+ 	.section	.text
+-	.cfi_sections	.debug_frame
+ 
+-SYM_FUNC_START(__vdso_rt_sigreturn)
++SYM_SIGFUNC_START(__vdso_rt_sigreturn)
+ 
+ 	li.w	a7, __NR_rt_sigreturn
+ 	syscall	0
+ 
+-SYM_FUNC_END(__vdso_rt_sigreturn)
++SYM_SIGFUNC_END(__vdso_rt_sigreturn)
 
 
