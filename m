@@ -1,155 +1,161 @@
-Return-Path: <stable+bounces-231149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LO4FHtPymlr7gUAu9opvQ
-	(envelope-from <stable+bounces-231149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:24:59 +0200
+	id qBBdEipTymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:40:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B20359284
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:24:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793BE35989C
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82DBE3068EC6
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:21:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DEFFC30334F9
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734243BE15F;
-	Mon, 30 Mar 2026 10:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6B13B637E;
+	Mon, 30 Mar 2026 10:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUFoVZC8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GWuRtQ+N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334173BAD84;
-	Mon, 30 Mar 2026 10:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A984E3B5851
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 10:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774865940; cv=none; b=PjdF9FeL8Jaqo8vO6sqBh3w6DL520ZOX1Y6OZiaw0cFmhL3sgn2jnTkFDbSGiaSf9T/Ajux6b2AzpD0z8tbk2YWHXLXEZ1i5y7EXZTCgWwfGeHItGQk7w+KsQxkCNpPMd/Qz5guooqpR1/m4L1QBXhwJNWTHOkP0w3O+Vs9UvNw=
+	t=1774866194; cv=none; b=sqp6z3t0gccxHk48XYOjGwsIyDgdAKEQHb5aFAlmVKGLcHFZaGqOdAJebtVNidknP4rlUS2OKbUkjZeVjGI7YE4ByJ3LnuKUrpTVjP4eORVZVUl7bdkVTJJcpDb2525G46NDoCk0csfQu+Z44OrhcOKpjslR/C5nrjIw2xWhjm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774865940; c=relaxed/simple;
-	bh=zkPIFYlcvlNBwRpjkVxQHKinU444u5TIQ3o5lO3cjw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jQLt/KVYnGZ0+Nf2HFZWinytp//pyZ3AdooOTqrTTsBD78IZWBV8BOvDCo619KK9h9AsOtAEbHHYEH2hrHFX99RbNKEZj7n1t+fmppZNfnr/v81bxg5kWc4h9jcnve1xJXp434jyqDsFypKUlku+0DVYO4ssTrgCOjuuGGLV4Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUFoVZC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7C5C4CEF7;
-	Mon, 30 Mar 2026 10:18:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774865940;
-	bh=zkPIFYlcvlNBwRpjkVxQHKinU444u5TIQ3o5lO3cjw4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mUFoVZC8BT1abPQSVnwCo6KS/5EN1PEfjba+c1Plp7X8QHOibbkg4xN9DTDdknSPj
-	 TPpYZ+91NJut/Gv5uOiDwUSvKqC27NJdvQhVewydS3Y2FM9s8xlLFVd5UFAjJZdL+6
-	 BYgrQpculCEb85wKPXecIjQvOieHuFBruJz8jyRbW+sUrlbMqwhAwXqKvn3RlXT62S
-	 5l78j+fxjTqNRDLlFsa5GzNaCobxmacRLJ8HuScxl1OsVBE2G0cw7wYt3hBr8CMoA6
-	 TYqUq8KJagKnoL/Q5W05nSgNtBj7ogoC1TJ6AdVvJ/HYdaUsLHUcYg+8jrNpsthpEz
-	 /Gm+wjW1iKHCw==
-Date: Mon, 30 Mar 2026 15:48:51 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	Qiang Yu <qiang.yu@oss.qualcomm.com>
-Subject: Re: [PATCH v2] PCI: imx6: Don't remove MSI capability For
- i.MX7D/i.MX8M
-Message-ID: <5nom7wnhrr57jvb6komumg3fjkbavsq5ecz2pd43rc5tsmnqev@ag6ld453s2lu>
-References: <20260319091823.446030-1-hongxing.zhu@nxp.com>
- <kqv3x4qocp7rkas5oedlpzd43h3ez7dg26hqnfgubbjdhhxlwe@rfnsicbv7qba>
- <AS8PR04MB8833AE3B8D106CE446EF89E58C52A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1774866194; c=relaxed/simple;
+	bh=2OLJ94HJlikgcrXqeZIl7OisNTmViXdEeC5UBZ+pjOk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Wvc4cCzeM+53cjsJV0YZni7w8Qk3qtT6WcmtYAc0Zem+KVIx6Xe7T4Be/AznMXUMmKRWZ3c1OxVLGvwkc5WKot4O2KgHC9R8HEkynRtINth7eY3Xsz2GbexCzQJEa71D0KlFJZCROWXnpZj+6FSfpwceamim4QIWNDfIYobST7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GWuRtQ+N; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8297e0b27e5so2165462b3a.1
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 03:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774866192; x=1775470992; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2/SA3PxxzFOYvhnPnfnyUd8N6LpFu9KYx7x1Q4uLkmQ=;
+        b=GWuRtQ+N3/ZHQYDY1SRg/nhWJVMV5pcvEmkEgMwldT1nHgfgoe7BtDEqn03L/SXX2i
+         TJSfwLsJrhKscuQBzG4El48F+ISBbER58NvOHRXthScCVw3k0fKcwQu4pvy61YUPwF54
+         RbgGJvTMwW+rK/z9IDgvWHOBcOsg1X8A2nDLOhP8aCKiw0gD0S2X5hegl2Agaf8a6VhU
+         LgG2fnkC/eKroP9IU2T58/F5m9xcBEBPSAnkLQLIsNRXeHGtMtSJtPTB6YHCbOjSDEbG
+         Ihy6QEGVli1vxCe+8ThxxUIYnsVtM4TN1sqgwMVwRzyMsNwNId58Y1YEMxtFsu3CZgfs
+         WLWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774866192; x=1775470992;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2/SA3PxxzFOYvhnPnfnyUd8N6LpFu9KYx7x1Q4uLkmQ=;
+        b=gKt6OQaPdw5IiEqVYYkjWR0szpjcQkwt6Y5U0QsjwX8GUMH2LiHJqMnyGRI9Oh4sKb
+         vAp5wtnrr4ip3Lat2h08zskiv+uWZVZOQAyr2/up3HvdnC2oPIwhdXFEWRdH9ddhzqKN
+         HeYVM/oztVP55qwLU/sDzWlVGDNNUFeKYFI8W5gMYv1eVQtm9kBihidIfjsNrHCIKS6r
+         F2LwB0R7oS3yyw1s+jupaylriGwdSczjYWnWiDcJSa/I5J8reyU/sdlyZSyjJT7Hy3fp
+         GWUvWsdiNIx1kINHdKQjAc/vO+qBd28YhomnudVHtWNq98FiEddvTjiF+zV+lfZ9ZQlo
+         H/YA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkkPse6WIIXiaPjvbFwcN+fOQOOa2cri+V/hTB8Q98E4hB0kP2JzX/XBBjFRbwGXMiv/UzqHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxThSb7ik0tkQ6RIDLbXu5SuZlcd4nQLZ50O3vkwavRCkPk3gb4
+	T7mHyt5MYzssv4bTK4Ozh7u3q/H2q1l7RmomwmwL2iFlQDzN2AjDYTEK
+X-Gm-Gg: ATEYQzzOS8Mas23tMLiyrv1a3q9Gp0jizeaqBUWmp8AzB6tKav95vRUWEnC7i2FYpKC
+	HYPkiFWj/an/ydxUSzTyYsycFfxVq6qOWBPRgQwuTuIcjsc4bLHxET5iGFHr807b9fV8qaVFubv
+	l1HIsrQ+zuq55z12lrQc8hhvXS7JbBCTg60LwPLFFstQcImAcBz+vwekmcOhrchVvk0+AVAZ3SL
+	M3XmGw/fD/k9FPy82gVdtGoH6jvPDbc4Dpwk00OxYq7jekG9SS4ectGufzxrqav2dkDw6MQqSIf
+	EGlpCUsjEYTqZJaA31COKDNAm3WEJ2mQG38eWPJBIGy4QOLPFeVkf7IWxCQT9l7kKquVMtdlyNH
+	kuX34iPIIW+HlIMNgVDeIUbDxepYmIgn0p/wXOm57FD/cIJJBZUjPNGmPY1zEluCPKkaH3wHo6C
+	zVVA6CkSRF3KN+huMFLgeMpFB5xvhJAvk=
+X-Received: by 2002:a05:6a00:b4d:b0:82c:9266:624b with SMTP id d2e1a72fcca58-82c960a3472mr11682638b3a.47.1774866192040;
+        Mon, 30 Mar 2026 03:23:12 -0700 (PDT)
+Received: from ArchLinux ([43.226.29.240])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82ca85fc72asm6948403b3a.48.2026.03.30.03.23.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 03:23:11 -0700 (PDT)
+From: Biswapriyo Nath <nathbappai@gmail.com>
+To: Biswapriyo Nath <nathbappai@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Sean Young <sean@mess.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Martin Botka <martin.botka@somainline.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/7] Add vibrator, IR transmitter and USB-C handling in xiaomi-ginkgo
+Date: Mon, 30 Mar 2026 10:22:55 +0000
+Message-ID: <20260330102256.17631-1-nathbappai@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260329-ginkgo-add-usb-ir-vib-v2-0-870e0745e55e@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8833AE3B8D106CE446EF89E58C52A@AS8PR04MB8833.eurprd04.prod.outlook.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231149-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,pengutronix.de,kernel.org,google.com,gmail.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,oss.qualcomm.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231150-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: B2B20359284
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathbappai@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,dt];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 793BE35989C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 09:02:57AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <mani@kernel.org>
-> > Sent: 2026年3月30日 15:23
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kwilczynski@kernel.org; robh@kernel.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org; stable@vger.kernel.org;
-> > Qiang Yu <qiang.yu@oss.qualcomm.com>
-> > Subject: Re: [PATCH v2] PCI: imx6: Don't remove MSI capability For
-> > i.MX7D/i.MX8M
-> > 
-> > + Qiang
-> > 
-> > On Thu, Mar 19, 2026 at 05:18:23PM +0800, Richard Zhu wrote:
-> > > The MSI trigger mechanism for endpoint devices connected to i.MX7D,
-> > > i.MX8MM, and i.MX8MQ PCIe root complex ports depends on the MSI
-> > > capability register settings in the root complex. Removing the MSI
-> > > capability breaks MSI functionality for these endpoints.
-> > >
-> > 
-> > What is the relation between Root Port MSI and endpoint MSI? Endpoint MSIs
-> > should be routed to the platform MSI controller (DWC i.MSI-RX or External like
-> > GIC-ITS) independent of the Root Port MSI state.
-> Hi Mani:
-> Thank for your kindly concern.
-> The MSI controller (DWC i.MSI-RX) on i.MX7D, i.MX8MM, and i.MX8MQ platforms
-> requires the RC's MSI capability to remain enabled. Removing it breaks MSI
-> routing from endpoints to the platform MSI controller.
+On Sun, 29 Mar 2026 04:47:55 +0000 Biswapriyo Nath <nathbappai@gmail.com> wrote:
+
+> This patch series add support for various components in Xiaomi Redmi
+> Note 8.
 > 
 
-I understand that MSI is broken on your hardware, but I was trying to understand
-'why' specifically. Because, Root Port MSI capability doesn't have anything to
-do with the endpoint MSIs. And since you mentioned that this issue happens only
-on one platform, could be that the hardware designers have mistakenly wired the
-Root Port's 'MSI Enable' to iMSI-RX's enable signal or something similar?
+v3 of this patch series was sent here[1].
 
-If so, we can introduce a flag 'dw_pcie_rp::keep_rp_msi_en' or something
-similar, set it for affected SoCs and skip the capability removal in
-pcie-designware-host.c
+[1]: https://lore.kernel.org/linux-arm-msm/20260330-ginkgo-add-usb-ir-vib-v3-0-c4b778b0d7f8@gmail.com/
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
 
