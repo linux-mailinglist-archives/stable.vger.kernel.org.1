@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-231161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +B/VA2NZymn27gUAu9opvQ
-	(envelope-from <stable+bounces-231161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:07:15 +0200
+	id qG2AFNBbymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:17:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A128C359EFF
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:07:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1C535A153
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B1F353070021
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:02:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 178D3305FE26
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09DB3C3433;
-	Mon, 30 Mar 2026 11:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2F73C552D;
+	Mon, 30 Mar 2026 11:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjLjmQqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVjmBwD+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0722FFF81
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91E33B7B72
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 11:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868481; cv=none; b=snOv6NFbMxwFy/PIbjJHudY2f/7d7O2R147jE2wJaniXQteCAHaSt+5h7G4VYIh6jhbz8EqhyhNl/dBq4WTIGsLlWVVNxwhXAh+TP9gKuqOOppQnya3FYsex2ecR2SBKmbcdmkDMHxBak2tfK6j6cmd42r6OYx1nOYZN/tHA0KE=
+	t=1774868584; cv=none; b=khMyGfBhMce6iKQ6Gqvye/xTxyidRaDn9cFGUEg4mQT8K8OopOUy22VwPZJu0uY6p4g9YrNEG/K5POF36XKjaulP2nqfHblSqcQN6lE4mkBKs/8D7vld0SP4FpG+iZUVrsO+8F1R+LaHmpEsoFGUDqjMP+0IQDDoMXufqPfYH6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868481; c=relaxed/simple;
-	bh=3WLh0JbGlgpDkjWx/2eeoE0eNvp0bbIkdjVzln65tCY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XvxLyMZ+cJOtUZiTLZmKN6V7blW8ASWAdWPhmW1IWEGS+MAb6DPF2fnP6Ue4NaGGCHQK0AdiqzXpH56CBvqqF9xIGz+Jtwj247UKeyHJYG7V6HG/X6RNChtoJkOrFTDFIEE9oo1FWGSKs4u9Piee0eYV4CgFTvPwpdpo4Ou5x3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjLjmQqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637C3C4CEF7;
-	Mon, 30 Mar 2026 11:01:20 +0000 (UTC)
+	s=arc-20240116; t=1774868584; c=relaxed/simple;
+	bh=vYmkp0igk016zPXhFRXgw9VNO0SEDwfBTpzFdZMaYYI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qlUSu3Wor8TUINhi7x5oQkTZrdgTW14U+kZokXtbpEtP9Qj/VaViay0cBH//cPJrGBgVJjZWq39ilfu9nyOy01W7GsHGJxA6L7blPmrUbfsuhGJtLH9ECde1eFqmR5ziu+ogp9eG3ZctpzqQnLy+xrI9t6n2Z7GAsk/A1QLRL5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVjmBwD+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8367C4CEF7;
+	Mon, 30 Mar 2026 11:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774868480;
-	bh=3WLh0JbGlgpDkjWx/2eeoE0eNvp0bbIkdjVzln65tCY=;
+	s=korg; t=1774868584;
+	bh=vYmkp0igk016zPXhFRXgw9VNO0SEDwfBTpzFdZMaYYI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LjLjmQqRkz5Yuh01Kpd8y99veA9UBZ8z07JaTEXeu5r4tg0wIPkCPSP2JV8hIMmdV
-	 QRwnSFHUooJQuXYH6b4NoIdQIN4T2W6R83SPTXWmWjbmCi5MNl8uWqjpIXZuj1dSLm
-	 s7fL4NIh5VF4KB5noM6RD5JarLTjee0vHY3r9UN4=
-Subject: FAILED: patch "[PATCH] ext4: fix journal credit check when setting fscrypt context" failed to apply to 5.10-stable tree
-To: simon.weber.39@gmail.com,anthonydev@fastmail.com,ebiggers@kernel.org,tytso@mit.edu
+	b=uVjmBwD+N5e9XnluKwTBhenFrqEapeVto4TWJN91R9UzOIPH5rqce+jKCtrgqd/PK
+	 qxVSZwR7ABqS2hPX98/jnTZWG7jCYiLrRfyDTX2+mgUHVy0LlbWTREv2EaGN3P5yOG
+	 y3TDqqDcVt6KksvgY44Pm105miVy7GK8a0cgOE0Y=
+Subject: FAILED: patch "[PATCH] ext4: publish jinode after initialization" failed to apply to 6.12-stable tree
+To: me@linux.beauty,jack@suse.cz,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 13:01:09 +0200
-Message-ID: <2026033009-straw-negate-ff79@gregkh>
+Date: Mon, 30 Mar 2026 13:03:01 +0200
+Message-ID: <2026033001-abstract-hangup-400d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,54 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231161-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,fastmail.com,kernel.org,mit.edu];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231162-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fastmail.com:email,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A128C359EFF
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.beauty:email,linuxfoundation.org:dkim,suse.cz:email,msgid.link:url,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4C1C535A153
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x b1d682f1990c19fb1d5b97d13266210457092bcd
+git cherry-pick -x 1aec30021edd410b986c156f195f3d23959a9d11
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033009-straw-negate-ff79@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033001-abstract-hangup-400d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,57 +111,145 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b1d682f1990c19fb1d5b97d13266210457092bcd Mon Sep 17 00:00:00 2001
-From: Simon Weber <simon.weber.39@gmail.com>
-Date: Sat, 7 Feb 2026 10:53:03 +0100
-Subject: [PATCH] ext4: fix journal credit check when setting fscrypt context
+From 1aec30021edd410b986c156f195f3d23959a9d11 Mon Sep 17 00:00:00 2001
+From: Li Chen <me@linux.beauty>
+Date: Wed, 25 Feb 2026 16:26:16 +0800
+Subject: [PATCH] ext4: publish jinode after initialization
 
-Fix an issue arising when ext4 features has_journal, ea_inode, and encrypt
-are activated simultaneously, leading to ENOSPC when creating an encrypted
-file.
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
 
-Fix by passing XATTR_CREATE flag to xattr_set_handle function if a handle
-is specified, i.e., when the function is called in the control flow of
-creating a new inode. This aligns the number of jbd2 credits set_handle
-checks for with the number allocated for creating a new inode.
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
 
-ext4_set_context must not be called with a non-null handle (fs_data) if
-fscrypt context xattr is not guaranteed to not exist yet. The only other
-usage of this function currently is when handling the ioctl
-FS_IOC_SET_ENCRYPTION_POLICY, which calls it with fs_data=NULL.
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
 
-Fixes: c1a5d5f6ab21eb7e ("ext4: improve journal credit handling in set xattr paths")
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
 
-Co-developed-by: Anthony Durrer <anthonydev@fastmail.com>
-Signed-off-by: Anthony Durrer <anthonydev@fastmail.com>
-Signed-off-by: Simon Weber <simon.weber.39@gmail.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20260207100148.724275-4-simon.weber.39@gmail.com
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <me@linux.beauty>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 
-diff --git a/fs/ext4/crypto.c b/fs/ext4/crypto.c
-index cf0a0970c095..f41f320f4437 100644
---- a/fs/ext4/crypto.c
-+++ b/fs/ext4/crypto.c
-@@ -163,10 +163,17 @@ static int ext4_set_context(struct inode *inode, const void *ctx, size_t len,
- 	 */
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index f575751f1cae..6e949c21842d 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -975,13 +975,13 @@ static int ext4_fc_flush_data(journal_t *journal)
+ 	int ret = 0;
  
- 	if (handle) {
+ 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+-		ret = jbd2_submit_inode_data(journal, ei->jinode);
++		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+-		ret = jbd2_wait_inode_data(journal, ei->jinode);
++		ret = jbd2_wait_inode_data(journal, READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 252191632f56..ac5f3446c731 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
++
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
+ }
+ 
+@@ -4451,8 +4453,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
+ 		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
 +		/*
-+		 * Since the inode is new it is ok to pass the
-+		 * XATTR_CREATE flag. This is necessary to match the
-+		 * remaining journal credits check in the set_handle
-+		 * function with the credits allocated for the new
-+		 * inode.
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
 +		 */
- 		res = ext4_xattr_set_handle(handle, inode,
- 					    EXT4_XATTR_INDEX_ENCRYPTION,
- 					    EXT4_XATTR_NAME_ENCRYPTION_CONTEXT,
--					    ctx, len, 0);
-+					    ctx, len, XATTR_CREATE);
- 		if (!res) {
- 			ext4_set_inode_flag(inode, EXT4_INODE_ENCRYPT);
- 			ext4_clear_inode_state(inode,
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
+ 	}
+ 	spin_unlock(&inode->i_lock);
 
 
