@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-231195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAjXGllwymnG8gUAu9opvQ
-	(envelope-from <stable+bounces-231195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:45:13 +0200
+	id iJgQC41wymnG8gUAu9opvQ
+	(envelope-from <stable+bounces-231197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:46:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6CB135B3CC
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:45:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B2D35B3E8
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A3DD3076349
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91B43308D3C4
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D4A3D16E0;
-	Mon, 30 Mar 2026 12:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A801C3D0914;
+	Mon, 30 Mar 2026 12:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7AzdZfu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ha+b4JnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EC63D2FE0;
-	Mon, 30 Mar 2026 12:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520423D330E;
+	Mon, 30 Mar 2026 12:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874339; cv=none; b=Nw68tA4pNe+TH5lj5OX5Qd5VsdgfN3pMi+2+uUL/SknWYrVvVY7CTP5h5eCNKQCIIZKxlDgvsJ8vRq9XuI1/lLMH0Z61ykG07oH10t0qYgLi5Z1R6cK8JUJVvSV+BMjUkeeU0SB85rENZ4Dc+EXbDikmF7uJhn/f57uIV5uHr+A=
+	t=1774874340; cv=none; b=TlGT7cpA29AF9uw8ZNN65wkgMekVqQlchsh4yFdpKgDSv/Lr6EeMSb5eOBEpHI9VOy8rpCwbGvnctpn/R+531LZq64HPfl+i1wqh9SJssdGf7+J8zykS9GWXqgdHppeGWkBI2h/koQpUPtXfGmH8c2cnBpnzUHmYZGrQMLMlbR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874339; c=relaxed/simple;
-	bh=tESJMBX27oDt5eJWNgWE3wG/L/mnZJEOjFSFMeL4a98=;
+	s=arc-20240116; t=1774874340; c=relaxed/simple;
+	bh=mFjDYXZl9BeZFXuOwZWSoXRnp/QSrvsyZ9O2eaEN23A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sl8w7pvHJTyOEjo6AuYMWPCo1lkFcmc+G6FN5CioJbm7q6M0cpUBhsfBofVJcrMAuxYbWmzGiFUpxDaVrfKtqvSmFfI/H9lm2t3I+yO4yQNI6FILw3AA156aml9FPLWVYfVva3KIEXv4pIvAJkfGD44hpS+kHpeWoR7hfV+6gA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7AzdZfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1524C2BCB1;
-	Mon, 30 Mar 2026 12:38:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pl/ZpF645HeEkAzz/BuKTYWPkF1wvlWgupD6hBY6yptAi2gkXST73+pBIoaihRRjxxRZkfgfmTjR6yKSR/IRpu5+o6csIEkVIXVwNrC90mu1JQewBGvzTXV6uyopcn4wIpyqZ2+hZKHz0Fp7TgqHlYloWdoWx2C8ynfnZbmHUYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ha+b4JnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD65C2BCB8;
+	Mon, 30 Mar 2026 12:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874338;
-	bh=tESJMBX27oDt5eJWNgWE3wG/L/mnZJEOjFSFMeL4a98=;
+	s=k20201202; t=1774874340;
+	bh=mFjDYXZl9BeZFXuOwZWSoXRnp/QSrvsyZ9O2eaEN23A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7AzdZfuQmDknOzoc4x1z6C3t6dWPdWV4BgGSEnF7kXZBcB8pCuqKjuw8WarYXK19
-	 OJUKYmQHTxrpaUURWYuW1VQ5duoqD9urK847adXfti5F+x5bM2hNfhUTJ9XQI6/Jcp
-	 jgR512qMN1PRISgl4UQkOuFnFCAr3awLqsRfO7rVeAMffeGs7244BgSZYQitI6HhFh
-	 lnebSu2036NBmix2BEIxuehrkqv05Cdr9tueAzWssLk0s/LaWIFBKb0AHytscX/YKC
-	 wShFzdbWk6h+lKTHBcN56tcyTm42Ql9CT4pGMEMH3Dm27f8XDYW+b/tjjIXjFR1hB9
-	 2G1hx0edkb3Hg==
+	b=ha+b4JnGvQh50fhsdNXjDgTKVhAQtotwMSxv+2QI/5q8XSazhN/0n0SOs/2kAOeF1
+	 sPdrx6+niqV0B4V7KVMrO8UVTqNmZ5zCNK+CmhXbMBzKMwVjlIb4CWjkMmBoV7rfF8
+	 M41m3fiBQHiiEO5YqjVvjRyceGPgTnnwDvMyHi4443pFNcfsSQCaV9hMoPTu4zGRQl
+	 a6LSsv+3NFZurDKg7C37MoFJoVO+kSrkDjBpWFFbhfqrdlhpK1EH3w0iuVerR/vQcY
+	 RqegiKIMxHWsAxMBhcCw5F4rMgvhcNRas6CQlHsSvXWPn74esxvnmEDEvRj08+yzI+
+	 FvZlV7ffThPfA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Donet Tom <donettom@linux.ibm.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Andrii Kovalchuk <coderpy4@proton.me>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.12] drm/amdgpu: Handle GPU page faults correctly on non-4K page systems
-Date: Mon, 30 Mar 2026 08:38:24 -0400
-Message-ID: <20260330123842.756154-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.1] ALSA: hda/realtek: Add HP ENVY Laptop 13-ba0xxx quirk
+Date: Mon, 30 Mar 2026 08:38:25 -0400
+Message-ID: <20260330123842.756154-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330123842.756154-1-sashal@kernel.org>
 References: <20260330123842.756154-1-sashal@kernel.org>
@@ -68,478 +66,387 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19.10
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linux.ibm.com,amd.com,kernel.org,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-231195-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231197-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: C6CB135B3CC
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,proton.me:email,suse.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 99B2D35B3E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Andrii Kovalchuk <coderpy4@proton.me>
 
-[ Upstream commit 4e9597f22a3cb8600c72fc266eaac57981d834c8 ]
+[ Upstream commit 793b008cd39516385791a1d1d223d817e947a471 ]
 
-During a GPU page fault, the driver restores the SVM range and then maps it
-into the GPU page tables. The current implementation passes a GPU-page-size
-(4K-based) PFN to svm_range_restore_pages() to restore the range.
+Add a PCI quirk for HP ENVY Laptop 13-ba0xxx (PCI device ID 0x8756)
+to enable proper mute LED and mic mute behavior using the
+ALC245_FIXUP_HP_X360_MUTE_LEDS fixup.
 
-SVM ranges are tracked using system-page-size PFNs. On systems where the
-system page size is larger than 4K, using GPU-page-size PFNs to restore the
-range causes two problems:
-
-Range lookup fails:
-Because the restore function receives PFNs in GPU (4K) units, the SVM
-range lookup does not find the existing range. This will result in a
-duplicate SVM range being created.
-
-VMA lookup failure:
-The restore function also tries to locate the VMA for the faulting address.
-It converts the GPU-page-size PFN into an address using the system page
-size, which results in an incorrect address on non-4K page-size systems.
-As a result, the VMA lookup fails with the message: "address 0xxxx VMA is
-removed".
-
-This patch passes the system-page-size PFN to svm_range_restore_pages() so
-that the SVM range is restored correctly on non-4K page systems.
-
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 074fe395fb13247b057f60004c7ebcca9f38ef46)
+Signed-off-by: Andrii Kovalchuk <coderpy4@proton.me>
+Link: https://patch.msgid.link/u0s-uRVegF9BN0t-4JnOUwsIAR-mVc4U4FJfJHdEHX7ro_laErHD9y35NebWybcN16gVaVHPJo1ap3AoJ1a2gqJImPvThgeNt_SYVY1KaDw=@proton.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-All key facts verified. Here is the complete analysis.
+Now I have all the verified facts I need. Let me compile the final
+analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: Subject Line**
-Record: [drm/amdgpu] [Handle correctly] [Fix PFN unit conversion for SVM
-range restore on non-4K page systems]
+Record: [ALSA: hda/realtek] [Add] [Add HP ENVY Laptop 13-ba0xxx quirk
+for mute LED / mic mute behavior]
 
 **Step 1.2: Tags**
-- Acked-by: Christian König (verified AMDGPU co-maintainer via
-  MAINTAINERS)
-- Signed-off-by: Donet Tom <donettom@linux.ibm.com> (author, IBM — Power
-  systems with 64K pages)
-- Signed-off-by: Alex Deucher (verified AMDGPU co-maintainer via
-  MAINTAINERS)
-- Cherry-picked from: 074fe395fb13247b057f60004c7ebcca9f38ef46 (pipeline
-  marker, ignored)
-- No Fixes:, Reported-by:, Link:, Cc: stable, Tested-by: tags (expected
-  for candidates)
-
-Record: [Acked-by from subsystem co-maintainer; author from IBM; merged
-by subsystem co-maintainer. No reporter or explicit stable nomination.]
+Record:
+- Signed-off-by: Andrii Kovalchuk `<coderpy4@proton.me>` (author)
+- Link: `https://patch.msgid.link/...` (patch submission)
+- Signed-off-by: Takashi Iwai `<tiwai@suse.de>` (ALSA subsystem
+  maintainer)
+- No Fixes: tag (expected for a quirk addition)
+- No Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, or Cc: stable
 
 **Step 1.3: Commit Body**
-Two concrete bugs described:
-1. **SVM Range lookup failure**: `svm_range_restore_pages()` receives
-   PFNs in GPU (4K) units, but the SVM interval tree is indexed by
-   system-page PFNs. On non-4K systems, the lookup fails and a
-   **duplicate SVM range** is created.
-2. **VMA lookup failure**: The restore function does `vma_lookup(mm,
-   addr << PAGE_SHIFT)`, which reconstructs the byte address from a
-   system-page PFN. When given a GPU-page PFN instead, the computed
-   address is wrong, producing `"address 0xxxx VMA is removed"`.
-
-Record: [Bug: wrong PFN unit passed to SVM restore] [Symptoms: duplicate
-SVM range + false VMA removal] [Root cause: addr /= AMDGPU_GPU_PAGE_SIZE
-gives GPU-page PFN where system-page PFN is expected] [No version info
-in message]
+Record: Bug: On HP ENVY Laptop 13-ba0xxx (PCI SSID 0x103c:0x8756), the
+mute LED and mic-mute LED do not function correctly because the driver
+lacks a quirk entry mapping this SSID to the appropriate fixup. Symptom:
+incorrect mute LED and mic-mute behavior. Root cause: missing PCI quirk
+table entry. No stack traces, crash descriptions, or version ranges
+mentioned.
 
 **Step 1.4: Hidden Bug Fix Detection**
-Record: [Explicit bug fix — "Handle ... correctly" is standard bug-fix
-language with concrete failure modes described]
+Record: Not a hidden bug fix — this is an explicit hardware quirk
+addition. It fixes a real user-visible hardware issue (broken LED
+indicators) but is presented straightforwardly as a quirk addition.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: Inventory**
-Record: [1 file: `amdgpu_vm.c`, ~3 logical lines changed] [Function:
-`amdgpu_vm_handle_fault()`] [Scope: single-file, single-function
-surgical fix]
+Record: `sound/hda/codecs/realtek/alc269.c`: +1 line, -0 lines. Single
+`SND_PCI_QUIRK()` entry added to `alc269_fixup_tbl[]`. Scope: single-
+file, single-line, table-only surgical addition.
 
 **Step 2.2: Code Flow Change**
-
-Before:
-
-```2976:2982:drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-        addr /= AMDGPU_GPU_PAGE_SIZE;
-
-        if (is_compute_context && !svm_range_restore_pages(adev, pasid,
-vmid,
-            node_id, addr, ts, write_fault)) {
-                amdgpu_bo_unref(&root);
-                return true;
-        }
-```
-
-After (from the diff): `addr >> PAGE_SHIFT` is passed to
-`svm_range_restore_pages()`, and `addr /= AMDGPU_GPU_PAGE_SIZE` is moved
-to after the SVM call for the GPU page-table update path.
-
-Record: [Before: one conversion (GPU-page PFN) was reused for both SVM
-restore and GPU PTE update. After: SVM restore gets system-page PFN; GPU
-PTE path still gets GPU-page PFN.]
+Record: Before: PCI SSID 0x103c:0x8756 has no match in
+`alc269_fixup_tbl[]`, so `snd_hda_pick_fixup()` does not select any
+fixup for this laptop — default generic behavior, LEDs non-functional.
+After: SSID matches `ALC245_FIXUP_HP_X360_MUTE_LEDS`, which calls
+existing `alc245_fixup_hp_mute_led_coefbit` chained to
+`ALC245_FIXUP_HP_GPIO_LED`.
 
 **Step 2.3: Bug Mechanism**
-Category: Logic/correctness — address unit mismatch.
-
-Verified from `kfd_svm.c`:
-- `svm_range_from_addr()` documentation says `@addr: address to search
-  range interval tree, in pages` (system pages)
-- `vma_lookup(mm, addr << PAGE_SHIFT)` at line 3136 converts back to
-  byte address using system page shift
-
-`AMDGPU_GPU_PAGE_SIZE` is confirmed as `4096` in `amdgpu_gart.h:35`.
-
-On 4K systems: `addr >> PAGE_SHIFT == addr / 4096` — identical, bug
-invisible.
-On 64K systems: `addr / 4096` gives a value 16x too large compared to
-`addr >> 16`.
-
-Record: [Logic/correctness bug. GPU-page PFN vs system-page PFN mismatch
-breaks SVM range and VMA lookups on non-4K systems.]
+Record: Category: hardware workaround / quirk table entry. Mechanism:
+Missing PCI SSID in quirk table prevents selection of already-
+implemented fixup for one specific HP laptop model.
 
 **Step 2.4: Fix Quality**
-Record: [Obviously correct — callee contract verified in code. Minimal —
-~3 lines. No regression risk on 4K systems (mathematically identical).
-Very low risk overall.]
+Record: Obviously correct — follows the identical pattern of hundreds of
+other entries in the same table. Minimal (1 line). Regression risk is
+essentially zero: `snd_hda_pick_fixup()` matches by exact PCI SSID, so
+only device 0x103c:0x8756 is affected. No API changes, no locking
+changes, no logic changes.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 **Step 3.1: Blame**
-Verified via `git blame`: The buggy `addr /= AMDGPU_GPU_PAGE_SIZE`
-before the SVM call was introduced by `ea53af8a59c89b` ("drm/amdkfd: SVM
-API call to restore page tables") by Alex Sierra (2020-05-11). First
-appeared in `v5.14-rc1`.
+Record: The neighboring quirk lines in `alc269_fixup_tbl[]` trace to the
+July 2025 Realtek driver split (file moved from
+`sound/pci/hda/patch_realtek.c` to `sound/hda/codecs/realtek/alc269.c`).
+The quirk infrastructure and the fixup `ALC245_FIXUP_HP_X360_MUTE_LEDS`
+are long-standing.
 
-Record: [Buggy code introduced in ea53af8a59c89b, first in v5.14-rc1.
-Present in all stable trees 5.15+.]
-
-**Step 3.2: Fixes Tag**
-Record: [No Fixes: tag — expected for candidates under review.]
+**Step 3.2: Fixes: tag**
+Record: N/A — no Fixes: tag present, which is expected for a quirk
+addition.
 
 **Step 3.3: File History**
-Verified via `git log -20`: Recent `amdgpu_vm.c` changes are TLB/VM
-maintenance and unrelated. No conflicting fix for this PFN issue exists.
-
-Record: [No related prior fix found. Standalone change.]
+Record: `git log --oneline -20 -- sound/hda/codecs/realtek/alc269.c`
+shows many similar quirk additions (HP, Samsung, Acer, Lenovo, etc.).
+This is the standard maintenance pattern for the Realtek HDA driver.
+This commit is standalone — not part of a numbered series.
 
 **Step 3.4: Author**
-Donet Tom (IBM) has 2 AMD-tree commits in local history, including
-`daea2e81c1804` ("drm/amdkfd: Fix GART PTE for non-4K pagesize in
-svm_migrate_gart_map()") — a closely related non-4K fix. Acked by
-Christian König and merged by Alex Deucher, both confirmed as listed
-AMDGPU maintainers in `MAINTAINERS`.
-
-Record: [Author is domain expert for non-4K page issues. Fix endorsed by
-both subsystem maintainers.]
+Record: `git log --author='Andrii Kovalchuk' -10 -- sound/` returned no
+results — first-time contributor. However, the patch was accepted and
+signed off by Takashi Iwai (ALSA subsystem maintainer), which is a
+strong quality signal.
 
 **Step 3.5: Dependencies**
-Record: [No dependencies. Only reorders unit conversions within one
-function. Standalone fix.]
+Record: The only prerequisite is that `ALC245_FIXUP_HP_X360_MUTE_LEDS`
+must exist in the target tree. Verified:
+- **v6.6**: Present (3 occurrences in `sound/pci/hda/patch_realtek.c`) ✓
+- **v6.12**: Present (6 occurrences) ✓
+- **v6.1**: **NOT present** (0 occurrences) ✗
+- **v5.15**: **NOT present** (0 occurrences) ✗
+
+This commit is standalone for v6.6+ trees but **cannot** be backported
+to v6.1 or v5.15 without first backporting the prerequisite fixup.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-**Step 4.1-4.4**: Lore.kernel.org was inaccessible due to Anubis bot
-protection. The commit has strong maintainer endorsement (Acked-by +
-Signed-off-by from both AMDGPU co-maintainers). The related patch series
-context (non-4K page support for AMDGPU on Power10/MI210 platforms) is
-documented in public archives.
+**Step 4.1: Patch Discussion**
+Record: Direct lore.kernel.org and patch.msgid.link fetches were blocked
+by anti-bot protection. Via an alternative readable mirror, the thread
+shows a standalone [PATCH] submission. Takashi Iwai's only feedback was
+about email formatting — no technical objections. He manually corrected
+and applied the patch. No reviewer suggested Cc: stable. No NAKs.
 
-Record: [Lore inaccessible. Maintainer ack and signoff confirmed from
-tags. UNVERIFIED: detailed reply-thread discussion on lore.]
+**Step 4.2: Bug Report**
+Record: No separate public bug report found. No Reported-by: tag. The
+patch thread itself serves as the primary evidence of the user-visible
+issue.
+
+**Step 4.3: Related Patches**
+Record: This is a standalone one-line patch, not part of a series.
+Similar quirks exist for other HP ENVY models using the same fixup
+(0x876e for 13-ay0xxx, 0x888a for 15-eu0xxx, etc.).
+
+**Step 4.4: Stable Discussion**
+Record: No stable-specific discussion found for this commit. However,
+analogous HP ENVY quirk additions have historically carried `Cc:
+stable@vger.kernel.org`, demonstrating this pattern is routinely
+considered for stable.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
 **Step 5.1: Functions Modified**
-Record: [`amdgpu_vm_handle_fault()`]
+Record: No functions modified. Only a static data table entry added to
+`alc269_fixup_tbl[]`.
 
 **Step 5.2: Callers**
-Verified callers in: `gmc_v9_0.c`, `gmc_v10_0.c`, `gmc_v11_0.c`,
-`gmc_v12_0.c` — GPU page fault interrupt handlers for all AMD GPU
-generations 9+.
-
-Confirmed in `gmc_v10_0.c:114`: `addr = (u64)entry->src_data[0] << 12` —
-the fault address is constructed as a **byte address** from hardware
-interrupt data.
-
-Record: [Called from GPU page fault interrupt handlers. addr is byte
-address from hardware.]
+Record: The quirk table is consumed by `snd_hda_pick_fixup(codec,
+alc269_fixup_models, alc269_fixup_tbl, alc269_fixups)` called from
+`alc269_probe()` at line 8572-8573 of `alc269.c`. The codec driver
+registers `.probe = alc269_probe` via
+`module_hda_codec_driver(alc269_driver)`.
 
 **Step 5.3: Callees**
-`svm_range_restore_pages()` (verified at `kfd_svm.c:3000`) calls:
-- `svm_range_from_addr()` — interval tree lookup using system-page PFN
-- `vma_lookup(mm, addr << PAGE_SHIFT)` at line 3136 — reconstructs byte
-  address from system-page PFN
+Record: The fixup `ALC245_FIXUP_HP_X360_MUTE_LEDS` (line 6401-6406)
+calls `.v.func = alc245_fixup_hp_mute_led_coefbit` and chains to
+`ALC245_FIXUP_HP_GPIO_LED`. All existing, well-tested code.
 
-Record: [Both callees confirmed to expect system-page PFNs.]
-
-**Step 5.4: Call Chain**
-GPU fault interrupt → `gmc_v*_process_interrupt()` →
-`amdgpu_vm_handle_fault()` → `svm_range_restore_pages()`. Triggered by
-any GPU memory access fault in compute contexts (ROCm/HSA workloads).
-
-Record: [Reachable from normal GPU compute workloads. Not theoretical —
-triggered by SVM retry faults.]
+**Step 5.4: Reachability**
+Record: Call chain: `module_hda_codec_driver` → `alc269_probe` →
+`snd_hda_pick_fixup()` → match PCI SSID against table. Triggered during
+codec probe on every boot/module-load on the affected laptop. Real and
+reachable.
 
 **Step 5.5: Similar Patterns**
-Record: [Related non-4K fix exists: `daea2e81c1804` by the same author.
-No duplicate of this exact wrong-unit call found.]
+Record: Verified 4 other devices already use this exact fixup in the
+same table:
+- 0x876e (HP ENVY x360 Convertible 13-ay0xxx)
+- 0x888a (HP ENVY x360 Convertible 15-eu0xxx)
+- 0x8c21 (HP Pavilion Plus Laptop 14-ey0XXX)
+- 0x8cbd (HP Pavilion Aero Laptop 13-bg0xxx)
 
 ---
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Bug Existence in Stable Trees**
-Verified the identical bug pattern (`addr /= AMDGPU_GPU_PAGE_SIZE`
-before `svm_range_restore_pages()`) exists in:
-- **v5.15**: line 3376 (`svm_range_restore_pages(adev, pasid, addr,
-  write_fault)`)
-- **v6.1**: line 2476 (same pattern, 4-param signature)
-- **v6.6**: line 2574 (`svm_range_restore_pages(adev, pasid, vmid,
-  node_id, addr, write_fault)`)
-
-Record: [Bug confirmed in v5.15, v6.1, v6.6 stable trees. All share the
-same `addr /= AMDGPU_GPU_PAGE_SIZE` before SVM call.]
+**Step 6.1: Code Existence in Stable**
+Record: Verified via `git show`:
+- **v6.6**: `ALC245_FIXUP_HP_X360_MUTE_LEDS` exists in
+  `sound/pci/hda/patch_realtek.c` (3 matches). SSID 0x8756 is NOT
+  present — the bug exists here. **Applicable.**
+- **v6.12**: Fixup present (6 matches). **Applicable.**
+- **v6.1**: Fixup does NOT exist. **Not applicable without
+  prerequisite.**
+- **v5.15**: Fixup does NOT exist. **Not applicable without
+  prerequisite.**
 
 **Step 6.2: Backport Complications**
-Function signatures differ across versions:
-- v5.15/v6.1: `svm_range_restore_pages(adev, pasid, addr, write_fault)`
-  — 4 params
-- v6.6: `svm_range_restore_pages(adev, pasid, vmid, node_id, addr,
-  write_fault)` — 6 params
-- v6.12+: `svm_range_restore_pages(adev, pasid, vmid, node_id, addr, ts,
-  write_fault)` — 7 params
+Record: For v6.6.y: trivial backport — the one-line entry goes into
+`sound/pci/hda/patch_realtek.c` (pre-split file path) instead of
+`sound/hda/codecs/realtek/alc269.c`. Context lines for the adjacent
+entries (0x8736, 0x8760) should be present. Minor context adjustment
+needed.
 
-The core fix (move `addr /= AMDGPU_GPU_PAGE_SIZE` after SVM call, pass
-`addr >> PAGE_SHIFT`) applies identically, but the SVM call arguments
-differ.
-
-Record: [Clean apply on v6.12+. Minor trivial context adaptation needed
-for v6.6 and v5.15/v6.1. Fix concept is identical across all versions.]
-
-**Step 6.3: Related Fixes in Stable**
-Record: [No alternative fix for this specific issue found in any stable
-tree.]
+**Step 6.3: Related Fixes Already in Stable**
+Record: No existing fix for SSID 0x8756 found in v6.6.
 
 ---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
 **Step 7.1: Subsystem**
-Record: [`drivers/gpu/drm/amd/amdgpu` — AMD GPU VM fault handling / KFD
-SVM. Criticality: IMPORTANT (common GPU driver, compute/AI workloads)]
+Record: sound/hda (HDA audio, Realtek codec driver). Criticality:
+IMPORTANT — laptop audio is user-facing and widely used, though this
+specific fix affects one hardware model.
 
 **Step 7.2: Activity**
-Record: [Highly active subsystem with 20+ recent commits.]
+Record: Very active subsystem — recent history shows continuous stream
+of quirk additions for various laptop models. Mature, well-maintained
+driver with established patterns.
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 **Step 8.1: Affected Users**
-Users of AMD GPUs on systems with non-4K page sizes:
-- Power (ppc64le) with 64K pages — common in HPC/AI (IBM systems with
-  AMD Instinct GPUs)
-- ARM64 systems configured with 16K or 64K pages
-- Not x86_64 (always 4K pages)
-
-Record: [Platform-specific: Power and ARM64 with non-4K pages using
-AMDGPU compute (SVM/XNACK)]
+Record: Hardware-specific: owners of HP ENVY Laptop 13-ba0xxx (PCI SSID
+0x103c:0x8756). This is a consumer laptop — potentially many users.
 
 **Step 8.2: Trigger Conditions**
-Any GPU page fault during compute (ROCm/KFD) workloads on non-4K page
-systems.
-
-Record: [Triggered during normal GPU compute workloads on affected
-platforms. Common for those users.]
+Record: Every boot. The mute/mic-mute LEDs simply don't work correctly
+without this quirk. No special configuration needed.
 
 **Step 8.3: Failure Mode Severity**
-- SVM range lookup fails → duplicate range created (memory
-  corruption/inconsistency in GPU VM state)
-- VMA lookup fails → fault recovery does not happen, workload broken
-  with "VMA is removed" error
-- This is functional breakage: GPU compute workloads are broken on
-  affected platforms
-
-Record: [Severity: HIGH — GPU compute fault recovery is broken on non-4K
-page systems, leading to functional failure]
+Record: MEDIUM — Mute/mic-mute LED indicators don't function correctly.
+This is a usability and privacy concern (users can't visually confirm
+mic state), but not a crash, data corruption, or security vulnerability.
 
 **Step 8.4: Risk-Benefit Ratio**
-- **Benefit**: HIGH for affected platforms — fixes completely broken SVM
-  fault recovery
-- **Risk**: VERY LOW — ~3 lines, no behavior change on 4K systems
-  (mathematically identical), obviously correct unit conversion
-- **Ratio**: Extremely favorable
-
-Record: [Benefit: HIGH. Risk: VERY LOW. Extremely favorable.]
+Record:
+- Benefit: Moderate — fixes broken hardware functionality for real
+  laptop users
+- Risk: Very low — 1 line, device-specific (only SSID 0x103c:0x8756),
+  uses proven fixup used by 4+ other devices
+- Ratio: Strongly favorable for backporting
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Step 9.1: Evidence Compilation**
+**Step 9.1: Evidence**
 
 FOR backporting:
-- Verified wrong-unit bug in code: `svm_range_from_addr` expects system-
-  page PFN ("in pages" in documentation), `vma_lookup(mm, addr <<
-  PAGE_SHIFT)` expects system-page PFN
-- Callers pass byte addresses from hardware; fix correctly separates
-  system-page and GPU-page conversions
-- Small, surgical fix (~3 lines in 1 file, 1 function)
-- On 4K systems behavior is mathematically identical (no regression
-  risk)
-- Acked by Christian König, merged by Alex Deucher (both verified AMDGPU
-  maintainers)
-- Bug introduced in v5.14-rc1, confirmed present in v5.15, v6.1, v6.6
-- Related non-4K fix by same author already in tree
-- No dependencies; standalone fix
+- Single-line hardware quirk addition (1 line added)
+- Uses existing, well-tested fixup (`ALC245_FIXUP_HP_X360_MUTE_LEDS`)
+  already used by 4 other HP devices
+- Zero regression risk — only activates on PCI SSID 0x103c:0x8756
+- Accepted by ALSA subsystem maintainer Takashi Iwai with no technical
+  objections
+- Fixes real user-visible hardware issue on a consumer laptop
+- Prerequisite fixup verified present in v6.6+
+- Falls squarely under the "audio codec quirk" stable exception
 
 AGAINST backporting:
-- Affects only non-4K page platforms (niche but real user base: Power +
-  ARM64 with non-4K pages)
-- Minor signature adaptation needed for older stable trees
-- No Reported-by or syzbot report (expected; this is platform-specific,
-  not fuzzable)
+- Not a crash, security issue, or data corruption — "only" a
+  usability/hardware fix
+- Not applicable to v6.1 or v5.15 without prerequisite backport
 
 UNRESOLVED:
-- Could not access lore.kernel.org discussion threads
+- No independent public bug report found (patch thread is the only
+  evidence)
+- Did not verify every active stable branch newer than v6.6
 
 **Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? **YES** — verified by code inspection;
-   Acked by subsystem maintainer
-2. Fixes a real bug? **YES** — SVM fault recovery broken on non-4K
-   systems
-3. Important issue? **YES** — functional failure (GPU compute broken) on
-   affected platforms
-4. Small and contained? **YES** — ~3 lines in 1 file
-5. No new features or APIs? **YES** — pure correctness fix
-6. Can apply to stable? **YES** — with trivial adaptation for older call
-   signatures
+1. Obviously correct and tested? **YES** — standard `SND_PCI_QUIRK`
+   table entry, maintainer-accepted
+2. Fixes a real bug? **YES** — mute/mic-mute LEDs non-functional on this
+   hardware
+3. Important issue? **YES under quirk exception** — hardware enablement
+   for a consumer laptop
+4. Small and contained? **YES** — 1 line in 1 file
+5. No new features or APIs? **YES** — uses existing fixup mechanism
+6. Can apply to stable? **YES** for v6.6+ (with file path adjustment);
+   NO for v6.1/v5.15 as standalone
 
 **Step 9.3: Exception Categories**
-Record: [Not applicable — standard bug fix]
+Record: **Audio codec quirk** (`SND_PCI_QUIRK` entry in Realtek HDA
+driver) — explicitly listed as a stable-appropriate exception.
 
 **Step 9.4: Decision**
-This is a clear, small, obviously correct bug fix that resolves a real
-functional failure on non-4K page systems. The fix gives
-`svm_range_restore_pages()` a system-page PFN (which it expects) instead
-of a GPU-page PFN (which it cannot use correctly on non-4K page
-systems). It has no behavior change on the dominant 4K-page x86_64
-platforms, and is endorsed by both AMDGPU subsystem maintainers. The bug
-exists in all active stable trees from v5.15 onward. This meets all
-stable kernel criteria with an extremely favorable risk-benefit ratio.
+This is a textbook stable-worthy hardware quirk. One line, zero
+regression risk, fixes real hardware for real users, uses an existing
+well-tested fixup. Good stable material for branches that already
+contain `ALC245_FIXUP_HP_X360_MUTE_LEDS` (v6.6+). Should not be taken as
+a standalone patch into older trees (v6.1, v5.15) without the
+prerequisite fixup.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed tags from supplied commit: Acked-by Christian König,
-  SOB Donet Tom (IBM), SOB Alex Deucher
-- [Phase 2] Read current `amdgpu_vm.c` lines 2976-2982: confirmed `addr
-  /= AMDGPU_GPU_PAGE_SIZE` before `svm_range_restore_pages()` (pre-fix
-  code)
-- [Phase 2] Read `kfd_svm.c` line 2657: confirmed `svm_range_from_addr`
-  documents `@addr` as "in pages" (system pages)
-- [Phase 2] Grep on `kfd_svm.c`: confirmed `vma_lookup(mm, addr <<
-  PAGE_SHIFT)` at line 3136
-- [Phase 2] Grep on `amdgpu_gart.h:35`: confirmed `AMDGPU_GPU_PAGE_SIZE`
-  is `4096`
-- [Phase 3] `git blame -L 2976,2982`: confirmed buggy conversion
-  introduced by `ea53af8a59c89b` (Alex Sierra, 2020-05-11)
-- [Phase 3] `git describe --contains ea53af8a59c89b`: confirmed first in
-  `v5.14-rc1`
-- [Phase 3] `git log --author='Donet Tom' -- drivers/gpu/drm/amd/`:
-  found related `daea2e81c1804` non-4K fix
-- [Phase 3] Verified Christian König and Alex Deucher are listed AMDGPU
-  maintainers in `MAINTAINERS`
-- [Phase 5] Grep confirmed callers in `gmc_v9_0.c`, `gmc_v10_0.c`,
-  `gmc_v11_0.c`, `gmc_v12_0.c`
-- [Phase 5] Grep on `gmc_v10_0.c:114`: confirmed `addr =
-  (u64)entry->src_data[0] << 12` (byte address from HW)
-- [Phase 5] Read `kfd_svm.c:3000-3003`: confirmed
-  `svm_range_restore_pages()` signature with `uint64_t addr`
-- [Phase 6] `git show v5.15:amdgpu_vm.c`: confirmed same `addr /=
-  AMDGPU_GPU_PAGE_SIZE` before SVM call at line 3376
-- [Phase 6] `git show v6.1:amdgpu_vm.c`: confirmed same bug pattern at
-  line 2476
-- [Phase 6] `git show v6.6:amdgpu_vm.c`: confirmed same bug pattern at
-  lines 2574-2577 (with 6-param signature)
-- [Phase 6] Confirmed function signatures differ: v5.15/v6.1 use 4
-  params, v6.6 uses 6 params, mainline uses 7 params
-- UNVERIFIED: Could not access lore.kernel.org mailing list discussion
-  (Anubis bot protection)
+- [Phase 1] Parsed commit message: Add quirk for 0x103c:0x8756 using
+  `ALC245_FIXUP_HP_X360_MUTE_LEDS`; tags: SOB ×2, Link
+- [Phase 2] Diff: +1 `SND_PCI_QUIRK` line in `alc269_fixup_tbl[]` in
+  `sound/hda/codecs/realtek/alc269.c`
+- [Phase 3] Verified `ALC245_FIXUP_HP_X360_MUTE_LEDS` definition at
+  lines 6401-6406: `.v.func = alc245_fixup_hp_mute_led_coefbit`, chained
+  to `ALC245_FIXUP_HP_GPIO_LED`
+- [Phase 3] Verified `snd_hda_pick_fixup()` call at lines 8572-8573 in
+  `alc269_probe()`
+- [Phase 3] Verified 4 other SSIDs use the same fixup: 0x876e, 0x888a,
+  0x8c21, 0x8cbd
+- [Phase 3] `git log --author='Andrii Kovalchuk'`: no prior commits
+  found — first-time contributor
+- [Phase 4] Lore/patch.msgid blocked by anti-bot; alternative mirror
+  confirmed standalone patch, maintainer feedback was formatting-only,
+  no technical objections
+- [Phase 5] No functions modified — data-only change
+- [Phase 6] `git show v6.6:sound/pci/hda/patch_realtek.c | grep -c
+  'ALC245_FIXUP_HP_X360_MUTE_LEDS'`: **3** — fixup present in v6.6
+- [Phase 6] `git show v6.12:sound/pci/hda/patch_realtek.c | grep -c
+  ...`: **6** — fixup present in v6.12
+- [Phase 6] `git show v6.1:sound/pci/hda/patch_realtek.c | grep -c ...`:
+  **0** — fixup NOT in v6.1
+- [Phase 6] `git show v5.15:sound/pci/hda/patch_realtek.c | grep -c
+  ...`: **0** — fixup NOT in v5.15
+- [Phase 6] `git show v6.6:... | grep '0x8756'`: empty — SSID not
+  already in v6.6, confirming the bug exists there
+- [Phase 8] Risk: very low (1 line, SSID-specific). Benefit: fixes
+  broken mute LEDs on consumer laptop
+- UNVERIFIED: No independent public bug report found for this exact
+  laptop model
+- UNVERIFIED: Did not inspect every active stable branch newer than v6.6
 
 **YES**
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index da25ba1578b4a..1194326e66f5d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2973,14 +2973,14 @@ bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
- 	if (!root)
- 		return false;
- 
--	addr /= AMDGPU_GPU_PAGE_SIZE;
--
- 	if (is_compute_context && !svm_range_restore_pages(adev, pasid, vmid,
--	    node_id, addr, ts, write_fault)) {
-+	    node_id, addr >> PAGE_SHIFT, ts, write_fault)) {
- 		amdgpu_bo_unref(&root);
- 		return true;
- 	}
- 
-+	addr /= AMDGPU_GPU_PAGE_SIZE;
-+
- 	r = amdgpu_bo_reserve(root, true);
- 	if (r)
- 		goto error_unref;
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 4c49f1195e1bc..39a57d9238497 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6854,6 +6854,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8730, "HP ProBook 445 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
++	SND_PCI_QUIRK(0x103c, 0x8756, "HP ENVY Laptop 13-ba0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x8760, "HP EliteBook 8{4,5}5 G7", ALC285_FIXUP_HP_BEEP_MICMUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
 -- 
 2.53.0
 
