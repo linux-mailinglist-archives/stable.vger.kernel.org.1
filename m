@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-231200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PsVDwFwymnG8gUAu9opvQ
-	(envelope-from <stable+bounces-231200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:43:45 +0200
+	id YKBrDONwymnG8gUAu9opvQ
+	(envelope-from <stable+bounces-231202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:47:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E1935B321
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:43:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E1D35B426
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 14:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A046D305DD15
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE875303164D
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68A23D3D03;
-	Mon, 30 Mar 2026 12:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85D23D4105;
+	Mon, 30 Mar 2026 12:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIzeFtSp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1C1whvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D223D16EA;
-	Mon, 30 Mar 2026 12:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679533D2FFB;
+	Mon, 30 Mar 2026 12:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874344; cv=none; b=NBycWUNUZm9Ace+R2rlttZG+F9s/COX5vNQe1D2hrVZzTEOPKVgS1oEDLOry07t9RUm/ymycmYQA7rnxBvgCKbpf5ZG+VHvTT+IsKFCc3pgug4mS1Eu+xshSWc4FsaZ2oqynfATYQufl94lBjvGvgfPEt4oyW3ehL5uqJWltmmg=
+	t=1774874347; cv=none; b=eb8G8aQd79JLBHwEbx1+tBLIXIEm1ypbboF5MzzjikIK0AQ9ODAi4wsiX+AdRw7GWuC7XMe1jfKWU1xATNm2sS4V8eMX4z53xDqH46Mil0m0b526FWTR13yDdAmPsqy4Q1LKmJ5MSyZR6OoMZqt2sFd5JsMIenhcRXLgZ2OHbk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874344; c=relaxed/simple;
-	bh=EifYl5ooDv3bof21+ilebvS8jNVcPPMvbz5bU0NFJ+c=;
+	s=arc-20240116; t=1774874347; c=relaxed/simple;
+	bh=tYLoT/g8g+dfmbwXtdG4UEMxcZCoHibY3HsepB2r7ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d9PAbn44rZ/t4Lp7+OeqEv3//oJm4e1Kl+URtEqeZYnx8pTYxZKYKXz+qx8ioGCRGHhNFCCKnyQFOpmr69rRGiYU2vlLwUIVWF3txwHin/zTF8O7ucGF+v0pjmq/+XrVKFB8IOGG9LhhbKPPZTQ8oEQUn5DqV27Fn5BduNFj2Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIzeFtSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B78C4CEF7;
-	Mon, 30 Mar 2026 12:39:03 +0000 (UTC)
+	 MIME-Version; b=HcK8CcVP95Dw5WZX2SVOZRs93mUa6MEI13k9mqh4/kYPNFacJ3kqvAV2/fiZ3mA+XY7LCgMCJ2yN4wa83PnIdqKEGeX85osOLuDcauZqbst92HqySuK9XxwM3I9SIIJo54UDiZFD/Sy/1V3SlIPrNseJUxVEU0bk5EYWbyvZbSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1C1whvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58E9C2BCB3;
+	Mon, 30 Mar 2026 12:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874344;
-	bh=EifYl5ooDv3bof21+ilebvS8jNVcPPMvbz5bU0NFJ+c=;
+	s=k20201202; t=1774874346;
+	bh=tYLoT/g8g+dfmbwXtdG4UEMxcZCoHibY3HsepB2r7ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIzeFtSpw4QUJyYtqXTRtO3p/9KFeR/OfGMbROeUkmBHe9fJkePbP2AJzqjiBTHSc
-	 tshL67iwdTSrAwkB4ngi/C4wZPOa7TBnnBLzgnkg7ARQcceWdmZHDyljQSZ23ChpRl
-	 TOeHbdXlpu8PT1b+vEDZu+NutYTNiF9+KJsebySlJ8o5vgG083zhZ+j9+tBMkOOCEh
-	 bY5LBG0Gl4aJfdwItjMJ9L73Hywk3hjqu7TsdYlIpqb596UrYN0y8ZhorVSnsQ4YTC
-	 xMm9mVcRmk9Sh77wjrSfq6FITljw1pQDAsYLcJzm0qAuU3rId68kaPMxyHsQlR5+ZZ
-	 oC6SNa1qnPKWg==
+	b=U1C1whvWscUqwdUkp8dn8nX5SSgHCB3WnUbS365myRExoALjniyy61zIL44hP87J4
+	 WaHvp7hfWBy06Mn8m6J6Udv2th+6bLVPJ+VQYwaslNIfKtbNLqOVFpueCzB/dgAs79
+	 d88EHwljLTefh9ilCdJnKvXldllaim+8BEAr06UzKwQeye1Uj6m/AFbNrN4gW1t775
+	 FAPB0u1QwrvZsIBVQPTooMsmNYgavu4k5d+G44oNo2ucGfPG9O4lg5W8q3pfm7/gJ8
+	 UmD4BOeSyb36gbN+iA4MX91ctywJGA9RltPLMP8O9BRZmaStDz6P6Mjpl3lRTnVnhS
+	 OTrBMbSdwnhrQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Zhang Heng <zhangheng@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Vijendar.Mukunda@amd.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
+	detlev.casanova@collabora.com,
+	ezequiel@vanguardiasur.com.ar,
+	mchehab@kernel.org,
+	heiko@sntech.de,
+	linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.1] ASoC: amd: yc: Add DMI quirk for Thin A15 B7VF
-Date: Mon, 30 Mar 2026 08:38:28 -0400
-Message-ID: <20260330123842.756154-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.1] media: rkvdec: reduce stack usage in rkvdec_init_v4l2_vp9_count_tbl()
+Date: Mon, 30 Mar 2026 08:38:29 -0400
+Message-ID: <20260330123842.756154-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330123842.756154-1-sashal@kernel.org>
 References: <20260330123842.756154-1-sashal@kernel.org>
@@ -71,386 +74,374 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19.10
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kylinos.cn,kernel.org,amd.com,gmail.com,perex.cz,suse.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-231200-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-231202-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A8E1935B321
+	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,collabora.com:email]
+X-Rspamd-Queue-Id: 25E1D35B426
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 1f182ec9d7084db7dfdb2372d453c28f0e5c3f0a ]
+[ Upstream commit c03b7dec3c4ddc97872fa12bfca75bae9cb46510 ]
 
-Add a DMI quirk for the Thin A15 B7VF fixing the issue where
-the internal microphone was not detected.
+The deeply nested loop in rkvdec_init_v4l2_vp9_count_tbl() needs a lot
+of registers, so when the clang register allocator runs out, it ends up
+spilling countless temporaries to the stack:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220833
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260316080218.2931304-1-zhangheng@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c:966:12: error: stack frame size (1472) exceeds limit (1280) in 'rkvdec_vp9_start' [-Werror,-Wframe-larger-than]
+
+Marking this function as noinline_for_stack keeps it out of
+rkvdec_vp9_start(), giving the compiler more room for optimization.
+
+The resulting code is good enough that both the total stack usage
+and the loop get enough better to stay under the warning limit,
+though it's still slow, and would need a larger rework if this
+function ends up being called in a fast path.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the evidence needed for a comprehensive analysis.
+No existing stack fix in stable 6.6.y for this file. All the
+investigation is complete. Let me now compile the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: Subject Line**
-Record: [ASoC: amd: yc] [Add] [DMI quirk for MSI Thin A15 B7VF — enables
-internal mic on this laptop model]
+Record: [media: rkvdec:] [reduce] [reduce stack usage in
+rkvdec_init_v4l2_vp9_count_tbl() to fix Clang build failure with
+-Wframe-larger-than]
 
 **Step 1.2: Tags**
 Record:
-- Link: `https://bugzilla.kernel.org/show_bug.cgi?id=220833` — user-
-  filed bug report
-- Signed-off-by: Zhang Heng <zhangheng@kylinos.cn> — patch author
-- Link: `https://patch.msgid.link/20260316080218.2931304-1-
-  zhangheng@kylinos.cn` — mailing list submission
-- Signed-off-by: Mark Brown <broonie@kernel.org> — ASoC subsystem
-  maintainer (strong endorsement)
-- No Fixes:, Cc: stable, Reported-by, Tested-by, or Reviewed-by —
-  expected for this type of change
-- Notable: Mark Brown is the ASoC maintainer, so his SOB indicates
-  direct maintainer acceptance
+- Signed-off-by: Arnd Bergmann (author, well-known kernel build-fix
+  expert)
+- Reviewed-by: Nicolas Dufresne (Collabora, rkvdec contributor)
+- Signed-off-by: Nicolas Dufresne (subsystem co-maintainer)
+- Signed-off-by: Mauro Carvalho Chehab (media subsystem top-level
+  maintainer)
+- No Fixes:, Reported-by:, Tested-by:, Acked-by:, Link:, or Cc: stable
+  (absence expected for this pipeline)
 
-**Step 1.3: Body Text**
-Record: Bug: internal microphone not detected on MSI Thin A15 laptop.
-Symptom: mic hardware present but invisible to the audio subsystem. No
-version information provided. Root cause: DMI quirk table missing an
-entry for this model.
+**Step 1.3: Commit Body**
+Record: Bug: The deeply nested 5-level loop in
+`rkvdec_init_v4l2_vp9_count_tbl()` uses many registers. When Clang
+inlines it into `rkvdec_vp9_start()`, the combined stack frame reaches
+1472 bytes, exceeding the 1280-byte `-Wframe-larger-than` limit.
+Symptom: Build failure with `-Werror,-Wframe-larger-than`. Fix: Mark the
+function `noinline_for_stack` to prevent inlining. Author notes the
+resulting code is "good enough" and the function is not on a fast path.
 
 **Step 1.4: Hidden Bug Fix Detection**
-Record: Not hidden — this is explicitly a hardware quirk to enable an
-existing audio path on a specific laptop. Without it, the internal
-microphone is completely non-functional.
-
-**Important discrepancy noted:** Subject says "Thin A15 B7VF" but the
-code adds `DMI_MATCH(DMI_PRODUCT_NAME, "Thin A15 B7VE")`. Investigated
-below.
+Record: This is an explicit build fix, not a disguised runtime fix. The
+commit message is transparent about the problem and solution.
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: Inventory**
-Record: Single file: `sound/soc/amd/yc/acp6x-mach.c`. +7 lines added
-(one new DMI table entry). Zero lines removed. Scope: single-file,
-table-only change. No function bodies modified.
+Record: 1 file changed (`drivers/media/platform/rockchip/rkvdec/rkvdec-
+vp9.c`), ~2 lines modified (function signature only: `static void` ->
+`static noinline_for_stack void` split across 2 lines). Function
+modified: `rkvdec_init_v4l2_vp9_count_tbl()`. Scope: single-file,
+absolutely surgical.
 
 **Step 2.2: Code Flow Change**
-Record: Before: `dmi_first_match(yc_acp_quirk_table)` in `acp6x_probe()`
-has no entry matching this MSI model → probe returns `-ENODEV` or mic
-card not registered → internal mic silent. After: DMI matches →
-`platform_set_drvdata(pdev, dmi_id->driver_data)` sets `acp6x_card` →
-`devm_snd_soc_register_card()` registers the audio card → internal mic
-works.
+Record: Before: `rkvdec_init_v4l2_vp9_count_tbl()` was a plain `static
+void` function eligible for inlining into `rkvdec_vp9_start()`. After:
+The `noinline_for_stack` attribute prevents inlining, so the function
+gets its own stack frame. No logic, data flow, or error path changes
+whatsoever.
 
 **Step 2.3: Bug Mechanism**
-Record: Category: Hardware workaround (DMI quirk table entry). The AMD
-Yellow Carp DMIC driver requires either an ACPI property
-(`AcpDmicConnected`) or a DMI quirk to enable the microphone. Many
-laptops lack the ACPI property, so DMI matching is the fallback path.
-This model needs that DMI entry.
+Record: Category: build fix / compiler stack-usage mitigation. The
+deeply nested loop (5 levels: `i`, `j`, `k`, `l`, `m`) with 6 pointer
+dereference assignments per iteration exhausts Clang's register
+allocator when inlined, causing heavy stack spilling that pushes the
+caller's frame past the warning limit.
 
 **Step 2.4: Fix Quality**
-Record: Obviously correct — identical pattern to 90+ other entries in
-the same table. Minimal/surgical: 7 lines in a static const table.
-Regression risk: zero — the new DMI entry only matches systems with both
-`DMI_BOARD_VENDOR = "Micro-Star International Co., Ltd."` AND
-`DMI_PRODUCT_NAME` containing `"Thin A15 B7VE"`. Cannot affect any other
-hardware.
-
-**B7VF vs B7VE discrepancy analysis:** MSI Thin A15 B7VE (RTX 4050,
-Ryzen 5 7535HS) and B7VF (RTX 4060, Ryzen 7 7735HS) are confirmed to be
-**distinct laptop models** per MSI's own specification sheets.
-`DMI_MATCH()` uses `strstr()` (substring matching), verified in
-`drivers/firmware/dmi_scan.c:865`. Since "Thin A15 B7VE" is NOT a
-substring of "Thin A15 B7VF", the code targets only the B7VE model. The
-commit subject's "B7VF" is almost certainly a typo — the author would
-have used `dmidecode` output from their actual hardware to construct the
-DMI match string, making the code correct for the B7VE model. The
-maintainer (Mark Brown) accepted the patch, indicating the code was
-tested.
+Record: Obviously correct. `noinline_for_stack` is a well-established,
+documented kernel pattern (`include/linux/compiler_types.h` line
+276-278: `#define noinline_for_stack noinline`). Zero regression risk --
+the only effect is preventing inlining of a function called once during
+VP9 decoder initialization, which is not a hot path. No API or
+behavioral changes.
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 **Step 3.1: Blame**
-Record: The DMI quirk table traces back to `fa991481b8b22` (v5.16 cycle,
-Vijendar Mukunda). Recent entries from Zhang Heng (`355aab1aaf77d` —
-PM1503CDA), and many others. The mechanism is long-standing.
+Record: `git blame` shows the entire function body traces to commit
+`f25709c4ff151f` ("media: rkvdec: Add the VP9 backend") by Andrzej
+Pietrasiewicz, dated 2021-11-17. This was included in
+`v5.17-rc1~171^2~201`, so the code has been present since v5.17. The
+same deeply nested loop and all 5 loop variables have been there since
+introduction.
 
 **Step 3.2: Fixes Tag**
-Record: N/A — no Fixes: tag present (expected for hardware quirk
-additions).
+Record: No Fixes: tag present (expected for commits under manual
+review).
 
 **Step 3.3: File History**
-Record: `git log --oneline -25` shows continuous DMI quirk additions:
-PM1503CDA, BM1503CDA, HP 200 G2a 16, Acer TravelMate, Honor MagicBook,
-HP Laptop 17, MSI Bravo 17 D7VF, etc. This is the same well-established
-pattern.
+Record: On current tree, only 2 mainline commits modified `rkvdec-vp9.c`
+in the non-staging path: the unstaging move (`d968e50b5c266`) and a QoS
+disable (`664b42898db79`). The staging path has a few more minor
+changes. No existing stack-usage or noinline fix for this file anywhere
+in the history. The candidate is standalone.
 
-**Step 3.4: Author**
-Record: Zhang Heng has 2 prior commits in this subsystem
-(`355aab1aaf77d` — ASUS PM1503CDA, `9502b7df5a3c7` — Acer TravelMate
-P216-41-TCO). Regular contributor to this DMI quirk table.
+**Step 3.4: Author Context**
+Record: Arnd Bergmann is a prolific kernel contributor especially well-
+known for build fixes, cross-compilation, architecture portability, and
+stack-usage reduction patches. His media subsystem commits include
+multiple similar `noinline_for_stack` fixes (e.g., `5954ad7d1af92` for
+st-delta, `8b55f8818900c` for mediatek VP9). This is his core expertise.
 
 **Step 3.5: Dependencies**
-Record: None. The entry uses existing `acp6x_card` driver_data present
-since the file's creation. Entirely self-contained.
+Record: No dependencies. `noinline_for_stack` is defined as `#define
+noinline_for_stack noinline` in `include/linux/compiler_types.h` and has
+existed since at least v4.x. The function signature is identical in all
+stable trees (6.1.y, 6.6.y, 6.12.y) -- verified via `git show` on each
+stable branch.
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## PHASE 4: MAILING LIST RESEARCH
 
-**Step 4.1: Lore**
-Record: Lore and patch.msgid.link blocked by Anubis bot protection.
-Could not verify review discussion directly.
-
-**Step 4.2: Bug Report**
-Record: Bugzilla 220833 inaccessible (Anubis protection). However, the
-bug report's existence is confirmed by the URL. Web search confirmed MSI
-Thin A15 B7VE is a real laptop with RTX 4050/Ryzen 5 7535HS and B7VF is
-a separate model with RTX 4060/Ryzen 7 7735HS.
-
-**Step 4.3: Series Context**
-Record: Single-patch submission (no "patch X/Y" indicator). Standalone
-fix.
-
-**Step 4.4: Stable List**
-Record: Could not verify due to Anubis blocking. No existing `Thin A15`
-entry found in git history (`git log --oneline --grep='Thin A15'`
-returned empty).
+Record: Direct WebFetch to lore.kernel.org was blocked by Anubis proof-
+of-work. However, the commit has proper review/signoff chain (Reviewed-
+by from Nicolas Dufresne, Signed-off-by from both Nicolas Dufresne and
+Mauro Carvalho Chehab), confirming it went through standard review.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1: Key Symbols**
-Record: `yc_acp_quirk_table[]` (data table), consumed by `acp6x_probe()`
-via `dmi_first_match()`.
+**Step 5.1: Functions**
+Record: Only `rkvdec_init_v4l2_vp9_count_tbl()` modified (signature
+only).
 
 **Step 5.2: Callers**
-Record: Table used only from `acp6x_probe()` at the `check_dmi_entry`
-label (line 763). Driver is `module_platform_driver(acp6x_mach_driver)`
-— runs at platform device probe.
+Record: Called exactly once from `rkvdec_vp9_start()` at line 1034.
+Verified in all stable trees (6.1.y line 1031, 6.6.y/6.12.y line 1030).
 
 **Step 5.3: Callees**
-Record: `acp6x_probe()` calls `ACPI_COMPANION()`,
-`acpi_dev_get_property()`, `acpi_evaluate_integer()`,
-`dmi_first_match()`, `platform_set_drvdata()`, and
-`devm_snd_soc_register_card()`.
+Record: The function sets up pointer tables and runs a 5-level nested
+loop (`INNERMOST_LOOP` macro) performing array pointer assignments. No
+dynamic allocations, no locks, no side effects beyond pointer setup.
 
 **Step 5.4: Call Chain**
-Record: PCI ACP device probe (`snd_acp6x_probe()` in `pci-acp6x.c`) →
-registers `acp_yc_mach` platform device → `acp6x_probe()` → DMI match →
-card registration. Reachable automatically at boot on matching hardware.
+Record: `rkvdec_vp9_fmt_ops.start` -> `rkvdec_vp9_start()` ->
+`rkvdec_init_v4l2_vp9_count_tbl()`. Called during VP9 streaming setup,
+not per-frame. The author explicitly notes it is not a fast path.
 
 **Step 5.5: Similar Patterns**
-Record: 5 existing MSI ("Micro-Star International") entries already in
-the current tree: Bravo 15 B7ED, Bravo 15 C7VF, Bravo 17 D7VEK, Bravo 17
-D7VF, Bravo 15 C7UCX. Identical pattern.
+Record: `noinline_for_stack` is used in 7+ files under `drivers/media/`
+for the same class of issue. The nearly identical mediatek VP9 commit
+(`8b55f8818900c`) by the same author is the closest precedent.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Buggy Code in Stable?**
-Record: File exists in v6.1 (270 lines), v6.6 (438 lines), v6.12 (586
-lines). Does NOT exist in v5.15. The missing quirk affects all stable
-trees that ship this driver (v6.1+).
+**Step 6.1: Code Existence**
+Record: The file exists in all active stable trees:
+- 6.1.y: `drivers/staging/media/rkvdec/rkvdec-vp9.c` (verified, function
+  at line 927)
+- 6.6.y: `drivers/staging/media/rkvdec/rkvdec-vp9.c` (verified, function
+  at line 926)
+- 6.12.y: `drivers/staging/media/rkvdec/rkvdec-vp9.c` (verified,
+  function at line 926)
+The function signature and the deeply nested loop are identical in all
+branches.
 
 **Step 6.2: Backport Complications**
-Record: Expected clean apply or trivial context adjustment. The patch
-appends one entry before the `{}` table terminator. The exact preceding
-entries differ per stable tree, but this is a trivial context shift —
-just place the new entry before `{}`.
+Record: The file path differs in stable trees (staging vs non-staging),
+requiring a trivial path adjustment. The actual code is functionally
+identical -- the patch applies cleanly with a path change.
 
-**Step 6.3: Related Fixes in Stable**
-Record: No existing `Thin A15` fix found in any tree.
+**Step 6.3: Precedent -- Critical Finding**
+Record: The nearly identical mediatek VP9 `noinline_for_stack` commit by
+the same author (`8b55f8818900c`) **was backported to all three stable
+trees**:
+- 6.1.y: `89e1132bbf713`
+- 6.6.y: `fa43166f2e8ba`
+- 6.12.y: `f87626a55c215`
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+This is extremely strong precedent. The rkvdec fix is the same type of
+change (same author, same compiler issue, same annotation, same VP9
+decoder context).
+
+## PHASE 7: SUBSYSTEM CONTEXT
 
 **Step 7.1: Subsystem**
-Record: ASoC / `sound/soc/amd/yc` — IMPORTANT for AMD laptop users.
-Audio is a fundamental laptop feature.
+Record: `drivers/media/platform/rockchip/rkvdec/` -- Video decoder
+driver for Rockchip SoCs. Criticality: PERIPHERAL (hardware-specific),
+but Rockchip platforms are widely deployed in Chromebooks, single-board
+computers, and embedded systems.
 
 **Step 7.2: Activity**
-Record: Extremely active — 25+ recent commits, almost all DMI quirk
-additions. One of the most frequently updated quirk tables in the
-kernel.
+Record: Low-moderate activity. The driver is mature. Recent changes are
+minor (QoS fix, unstaging move).
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1: Affected Users**
-Record: Owners of MSI Thin A15 B7VE laptops running Linux with
-`CONFIG_SND_SOC_AMD_YC_MACH` enabled.
+**Step 8.1: Who is Affected**
+Record: Anyone building the kernel with Clang (especially with KASAN
+enabled, based on the mediatek precedent) who enables
+`CONFIG_VIDEO_ROCKCHIP_VDEC` or `COMPILE_TEST`. This includes CI
+systems, distribution kernel builds, and embedded/Chromebook builders.
 
-**Step 8.2: Trigger**
-Record: Every boot on matching hardware. No special configuration or
-privilege needed. The microphone is always broken without this quirk.
+**Step 8.2: Trigger Conditions**
+Record: Triggered at compile time with Clang + `-Wframe-larger-than` +
+`-Werror`. Deterministic build failure. The specific Clang version and
+configuration matter (KASAN amplifies the issue per the mediatek
+precedent), but the fix is purely defensive and safe regardless.
 
 **Step 8.3: Failure Mode**
-Record: Internal microphone completely non-functional. Severity: MEDIUM-
-HIGH for affected users — a laptop with no working microphone is
-significantly impaired for video calls, recording, accessibility.
+Record: Build failure -- kernel cannot be compiled. For anyone who needs
+this driver, it is a hard blocker. Severity: MEDIUM-HIGH (build failure,
+not runtime crash, but prevents compilation entirely).
 
 **Step 8.4: Risk-Benefit Ratio**
-Record:
-- BENEFIT: High — restores fundamental hardware functionality for
-  affected users
-- RISK: Essentially zero — 7 lines in a static table, only matches one
-  specific hardware model, cannot affect any other system
-- Ratio: Extremely favorable
+Record: BENEFIT: Fixes a real build failure for Clang users with common
+warning configurations. The identical class of fix was already deemed
+worthy of backport for the mediatek VP9 driver. RISK: Essentially zero.
+Adding `noinline_for_stack` has no behavioral effect; it only affects
+compiler inlining decisions. The function is called exactly once during
+initialization. Ratio: Very favorable.
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Step 9.1: Evidence Compiled**
+**Step 9.1: Evidence**
 
 FOR backporting:
-- Hardware quirk/workaround — explicit exception category (always
-  appropriate for stable)
-- Fixes real user-reported bug (bugzilla 220833) — internal mic non-
-  functional
-- Minimal change: +7 lines in a static DMI table
-- Zero regression risk (DMI match is hardware-specific)
-- Accepted by ASoC maintainer Mark Brown
-- Identical pattern to 90+ other entries in the same table
-- 5 existing MSI entries use the exact same pattern
-- Driver exists in all active stable trees (v6.1+)
-- No dependencies, fully self-contained
+- Fixes a documented Clang `-Werror,-Wframe-larger-than` build failure
+- Build fixes are an explicit exception category for stable backporting
+- Extremely minimal change: single attribute annotation, no logic change
+- Zero runtime regression risk
+- Well-established kernel pattern (`noinline_for_stack`)
+- Author is the recognized expert for this type of fix (Arnd Bergmann)
+- Reviewed by subsystem co-maintainer, signed off by media subsystem
+  top-level maintainer
+- **Strong precedent**: nearly identical fix by same author for mediatek
+  VP9 was backported to 6.1.y, 6.6.y, and 6.12.y
+- Code exists in all active stable trees with identical function
+  signature
+- `noinline_for_stack` macro exists in all stable trees
 
 AGAINST backporting:
-- Subject says "B7VF" but code targets "B7VE" — these are different MSI
-  models. However, this is almost certainly a typo in the commit
-  subject, not a code error. The author used the actual `dmidecode`
-  output from their machine to construct the `DMI_MATCH` string.
-
-UNRESOLVED:
-- Could not access bugzilla 220833 or lore discussion to confirm the
-  reporter's exact DMI strings
-- The B7VF/B7VE discrepancy cannot be 100% resolved without the bug
-  report
+- File path differs in stable (staging vs non-staging) -- requires
+  trivial path adjustment
+- Only affects Clang builds with specific configurations (not all build
+  environments)
+- The exact compiler version/config triggering the issue may vary
 
 **Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? **YES** — trivial table entry following
-   established pattern; maintainer accepted
-2. Fixes a real bug? **YES** — internal microphone not detected
-3. Important issue? **YES** — hardware completely non-functional
-4. Small and contained? **YES** — 7 lines, single static table
-5. No new features or APIs? **YES** — extends existing quirk table only
-6. Applies to stable? **YES** — driver present in v6.1+, trivial context
-   adjustment at most
+1. Obviously correct and tested? **YES** -- trivially correct, reviewed
+   by maintainers
+2. Fixes a real bug? **YES** -- build failure with Clang
+3. Important issue? **YES** -- build failure prevents compilation
+4. Small and contained? **YES** -- 2-line signature change
+5. No new features or APIs? **YES** -- no new features
+6. Can apply to stable? **YES** -- with path adjustment for staging
+   directory
 
 **Step 9.3: Exception Category**
-Record: **Hardware quirk/workaround** (DMI-based) — explicitly listed as
-appropriate for stable backporting.
+Record: **BUILD FIX** -- explicitly listed as a valid stable exception
+in the rules.
 
 **Step 9.4: Decision**
-The B7VF/B7VE naming discrepancy is a cosmetic issue in the commit
-message subject line, not a code correctness issue. The author would
-have derived the DMI match string from their actual hardware's
-`dmidecode` output — meaning the code targets the correct machine
-(B7VE). The subject typo does not change the fact that this is a
-standard, minimal, zero-risk hardware quirk addition that restores
-microphone functionality on a specific laptop. Mark Brown (ASoC
-maintainer) signed off on it. The patch follows the exact same pattern
-as dozens of previously-backported quirk additions in the same file.
-Even in the worst case (wrong DMI string), the patch is a harmless no-op
-— it cannot cause any regression on any system.
+This is a clear YES. It is a minimal, obviously correct build fix that
+follows a well-established kernel pattern, was created by the foremost
+expert in this area, and has direct precedent: the nearly identical
+mediatek VP9 `noinline_for_stack` fix by the same author was already
+backported to all active stable trees.
 
 ## Verification
 
-- [Phase 1] Parsed all tags from commit message: Link to bugzilla
-  220833, author Zhang Heng, maintainer Mark Brown SOB
-- [Phase 2] Diff: +7 lines adding one `struct dmi_system_id` entry to
-  `yc_acp_quirk_table[]` for MSI "Thin A15 B7VE"
-- [Phase 2] Verified `DMI_MATCH()` macro in
-  `include/linux/mod_devicetable.h:601`: stores `.substr = b`
-- [Phase 2] Verified `dmi_matches()` in
-  `drivers/firmware/dmi_scan.c:865`: uses `strstr()` for non-exact
-  matches
-- [Phase 2] Therefore "Thin A15 B7VE" is NOT a substring of "Thin A15
-  B7VF" — these target different hardware
-- [Phase 2] Web search confirmed B7VE (RTX 4050) and B7VF (RTX 4060) are
-  distinct MSI laptop models
-- [Phase 3] `git log --oneline -25 -- sound/soc/amd/yc/acp6x-mach.c`:
-  confirmed continuous DMI quirk addition pattern
-- [Phase 3] `git log --author="Zhang Heng" -10 -- sound/soc/amd/yc/`: 2
-  prior commits in subsystem
-- [Phase 3] `git log --grep='Thin A15' --
-  sound/soc/amd/yc/acp6x-mach.c`: no existing Thin A15 entry
-- [Phase 4] Bugzilla/lore inaccessible due to Anubis bot protection
-- [Phase 5] Read `acp6x_probe()`: confirmed
-  `dmi_first_match(yc_acp_quirk_table)` at line 763, sets
-  `platform_set_drvdata` from `driver_data`
-- [Phase 5] grep for "Micro-Star": 5 existing MSI entries in the table
-  already
-- [Phase 6] File verified present in v6.1 (270 lines), v6.6 (438 lines),
-  v6.12 (586 lines)
-- [Phase 6] File does NOT exist in v5.15 (`fatal: path ... does not
-  exist in 'v5.15'`)
-- [Phase 6] MSI entries: 0 in v6.1, 1 in v6.6 — table framework exists
-  in both
-- [Phase 8] Failure mode: internal microphone completely non-functional
-  on affected hardware
-- [Phase 8] Risk: zero for non-matching hardware; worst case for
-  matching hardware is a no-op
-- UNVERIFIED: Exact contents of bugzilla 220833 (blocked by Anubis)
-- UNVERIFIED: Exact lore discussion thread (blocked by Anubis)
-- UNVERIFIED: Whether the reporter's machine is truly a B7VE or B7VF
-  (most likely B7VE given the code)
-
-This is a textbook stable backport candidate: a hardware quirk addition
-to an existing driver's DMI table, fixing a real user-reported bug (non-
-working internal microphone), with zero regression risk, accepted by the
-subsystem maintainer.
+- [Phase 1] Parsed subject: "media: rkvdec: reduce stack usage" -- build
+  fix for Clang -Wframe-larger-than
+- [Phase 1] Parsed tags: Reviewed-by Nicolas Dufresne, SOBs from
+  subsystem and top-level maintainers, no Fixes/Reported-by (expected)
+- [Phase 2] Diff analysis: 2-line change adding `noinline_for_stack` to
+  `rkvdec_init_v4l2_vp9_count_tbl()` signature; no logic change
+- [Phase 3] git blame: function introduced by `f25709c4ff151f` ("media:
+  rkvdec: Add the VP9 backend", 2021-11-17), included since v5.17-rc1
+- [Phase 3] git describe --contains f25709c4ff151f: confirmed
+  `v5.17-rc1~171^2~201`
+- [Phase 3] Verified `noinline_for_stack` defined in
+  `include/linux/compiler_types.h` line 278 as `#define
+  noinline_for_stack noinline`
+- [Phase 3] Author check: Arnd Bergmann has multiple similar
+  `noinline_for_stack` commits in drivers/media/
+- [Phase 5] grep: `rkvdec_init_v4l2_vp9_count_tbl` called from exactly 1
+  place: `rkvdec_vp9_start()` at line 1034
+- [Phase 5] Read: confirmed 5-level nested loop (lines 973-997) with
+  INNERMOST_LOOP macro causing heavy register pressure
+- [Phase 6] git cat-file -e: verified file exists in 6.1.y, 6.6.y,
+  6.12.y at staging path
+- [Phase 6] git show on stable branches: verified function signature
+  `static void rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)`
+  is identical in 6.1.y (line 927), 6.6.y (line 926), 6.12.y (line 926)
+  -- no `noinline_for_stack` present
+- [Phase 6] Verified call site in 6.6.y stable at line 1030
+- [Phase 6] **Critical precedent**: mediatek VP9 `noinline_for_stack`
+  commit `8b55f8818900c` by same author backported to 6.1.y
+  (`89e1132bbf713`), 6.6.y (`fa43166f2e8ba`), 6.12.y (`f87626a55c215`)
+- [Phase 6] No existing stack-usage fix for rkvdec-vp9.c in any stable
+  branch (verified via git log --grep="stack" on 6.6.y)
+- [Phase 4] lore.kernel.org inaccessible (Anubis protection); review
+  chain verified from commit tags
+- UNVERIFIED: Mailing list discussion details beyond the commit tags
+- UNVERIFIED: Exact Clang version/config that triggers the failure;
+  however, the fix is defensive and safe regardless
 
 **YES**
 
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index c536de1bb94ad..6f1c105ca77e3 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -724,6 +724,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "BM1403CDA"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Thin A15 B7VE"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c b/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c
+index b4bf01e839eff..8fb6a1624a14f 100644
+--- a/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c
++++ b/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c
+@@ -927,7 +927,8 @@ static void rkvdec_vp9_done(struct rkvdec_ctx *ctx,
+ 	update_ctx_last_info(vp9_ctx);
+ }
  
+-static void rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
++static noinline_for_stack void
++rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
+ {
+ 	struct rkvdec_vp9_ctx *vp9_ctx = ctx->priv;
+ 	struct rkvdec_vp9_intra_frame_symbol_counts *intra_cnts = vp9_ctx->count_tbl.cpu;
 -- 
 2.53.0
 
