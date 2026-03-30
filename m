@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-231097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qE2YA9xEymm/7AUAu9opvQ
-	(envelope-from <stable+bounces-231097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:39:40 +0200
+	id 0F+XFetGymkQ7QUAu9opvQ
+	(envelope-from <stable+bounces-231098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:48:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D17D358540
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:39:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2A0358821
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 11:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 780253004602
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:39:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63629302D5CB
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 09:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F653B5304;
-	Mon, 30 Mar 2026 09:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4214B3AB29D;
+	Mon, 30 Mar 2026 09:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRt7vPk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CL4Pel5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2853B4E8B
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D883B47CF
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 09:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774863558; cv=none; b=tUFnREB3rOWrEyPJ/ZrirocmQefkXx9nXKyHz1Pbise0cDR7DI+r2D6khrqYeqKbYWHNsbfTrGBAu9i7F6kfmkGfKwgbFH8+Q/rzwUGukj0op3D57hOh5nhSyymkDiy6KTg3jgi2y2ke8ofQkwYiHbjVxVvHIkYVjDlbU793H9o=
+	t=1774863582; cv=none; b=P/kP1xlforn2t/AQW/9GIwXAu4YNaLMUAUT1gkt/XN9fkdUcKD4UOOxTbuFCxkDiFS1RWTvRKyJVXQTVpluBq0g52OTkVg0HqEkNzipVeK0UaoQxE6X7M60pvQiXoXPrnJgRBc2vAMMjnvDTjkd3E9dhBxgEmOjwjUFNJvcHgUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774863558; c=relaxed/simple;
-	bh=fl9ciOT2nUTAg1JN+Q+E99Z9HyDKs/RTIoEXfvfXfYc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nFyqJMKZvh4m+O3WKQbJWpDJ5O+TaQzSvEn7lfmNpbtJIuhN+1sbTRdrwZ+LpQWOttmJbJk/mAUh3nJsaTuiC9YqakF01fN4ltiyWe2NJLlCaTigqV93eU8rJpezHGKhML8/dxver9oFZvgwBX/VP9x9lul+D+FHdWlOQsHfra4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRt7vPk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55875C4CEF7;
-	Mon, 30 Mar 2026 09:39:17 +0000 (UTC)
+	s=arc-20240116; t=1774863582; c=relaxed/simple;
+	bh=kniCZzCiFjSh9Zv/542ujbCU0vCRdxl/WQNUrC0xTR4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JPLsX4VyBpJO6gFrKgkuQ2HtqtYIBNvJgfgZOq5peRAUuFqZm+4vA/c6ryYXsLYr4PUt8XQbaX5OZ1PC0V7ZbB1Kq4i36ozxTb+IQY2eeaHuEIRXHRyWEEu1WRmNiTvX4u6fnOZ5xYb95r8OcwabNpbJZ7w+Px2qIebWpQJy2DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CL4Pel5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9384BC4CEF7;
+	Mon, 30 Mar 2026 09:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774863557;
-	bh=fl9ciOT2nUTAg1JN+Q+E99Z9HyDKs/RTIoEXfvfXfYc=;
+	s=korg; t=1774863582;
+	bh=kniCZzCiFjSh9Zv/542ujbCU0vCRdxl/WQNUrC0xTR4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fRt7vPk/6jVgNRNy2/66bVPri7gYSF5bguMRAD5pLWzojapyKFoLcPHDa+Y9dforw
-	 +SJ9rTqQjh97/3QL8ccTU9hAShoHYIgHBXnnMdoKXFEPQYY61kPDmyCSNQw5CnxQrd
-	 MWpyLaQstsx6e8eblD+kS7wZh6qyBoviBR3q4o8Q=
-Subject: FAILED: patch "[PATCH] net: macb: Move devm_{free,request}_irq() out of spin lock" failed to apply to 5.10-stable tree
-To: haokexin@gmail.com,kuba@kernel.org,theo.lebrun@bootlin.com
+	b=CL4Pel5trY13dOYc31xSGEzlFp/o2rGE9mJz9lXQPnRCWsJmbluqBz483A3OC+2gx
+	 YWEEdrpUWUAZACc12QFjxPpLkMXgPgFLCJO+HE3Um28yN+QSnQ8aTB3gFvnCRvLp6z
+	 ZRshZ3jEa6drNGfW7+nu+m2oTBGKklbszlvrxF2o=
+Subject: FAILED: patch "[PATCH] KVM: x86/mmu: Drop/zap existing present SPTE even when" failed to apply to 5.15-stable tree
+To: seanjc@google.com,bkov@amazon.com,fgriffo@amazon.co.uk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 11:39:03 +0200
-Message-ID: <2026033003-suave-robin-ae0e@gregkh>
+Date: Mon, 30 Mar 2026 11:39:38 +0200
+Message-ID: <2026033038-rebate-reclusive-6171@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231097-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231098-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,bootlin.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -78,28 +78,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 2D17D358540
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.co.uk:email,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: BC2A0358821
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 317e49358ebbf6390fa439ef3c142f9239dd25fb
+git cherry-pick -x aad885e774966e97b675dfe928da164214a71605
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033003-suave-robin-ae0e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026033038-rebate-reclusive-6171@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,144 +111,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 317e49358ebbf6390fa439ef3c142f9239dd25fb Mon Sep 17 00:00:00 2001
-From: Kevin Hao <haokexin@gmail.com>
-Date: Wed, 18 Mar 2026 14:36:58 +0800
-Subject: [PATCH] net: macb: Move devm_{free,request}_irq() out of spin lock
- area
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From aad885e774966e97b675dfe928da164214a71605 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Thu, 5 Mar 2026 17:28:04 -0800
+Subject: [PATCH] KVM: x86/mmu: Drop/zap existing present SPTE even when
+ creating an MMIO SPTE
 
-The devm_free_irq() and devm_request_irq() functions should not be
-executed in an atomic context.
+When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
+existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
+right about it being impossible to convert a shadow-present SPTE to an
+MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
+memory that are outside the scope of KVM.
 
-During device suspend, all userspace processes and most kernel threads
-are frozen. Additionally, we flush all tx/rx status, disable all macb
-interrupts, and halt rx operations. Therefore, it is safe to split the
-region protected by bp->lock into two independent sections, allowing
-devm_free_irq() and devm_request_irq() to run in a non-atomic context.
-This modification resolves the following lockdep warning:
-  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
-  preempt_count: 1, expected: 0
-  RCU nest depth: 1, expected: 0
-  7 locks held by rtcwake/501:
-   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
-   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
-   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
-   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
-   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
-   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
-   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
-  irq event stamp: 8682
-  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
-  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
-  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
-  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
-  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
-  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
-  Call trace:
-   show_stack+0x24/0x38 (C)
-   __dump_stack+0x28/0x38
-   dump_stack_lvl+0x64/0x88
-   dump_stack+0x18/0x24
-   __might_resched+0x200/0x218
-   __might_sleep+0x38/0x98
-   __mutex_lock_common+0x7c/0x1378
-   mutex_lock_nested+0x38/0x50
-   free_irq+0x68/0x2b0
-   devm_irq_release+0x24/0x38
-   devres_release+0x40/0x80
-   devm_free_irq+0x48/0x88
-   macb_suspend+0x298/0x558
-   device_suspend+0x218/0x4f0
-   dpm_suspend+0x244/0x3a0
-   dpm_suspend_start+0x50/0x78
-   suspend_devices_and_enter+0xec/0x560
-   pm_suspend+0x194/0x290
-   state_store+0x110/0x158
-   kobj_attr_store+0x1c/0x30
-   sysfs_kf_write+0xa8/0xd0
-   kernfs_fop_write_iter+0x11c/0x1c8
-   vfs_write+0x248/0x368
-   ksys_write+0x7c/0xf8
-   __arm64_sys_write+0x28/0x40
-   invoke_syscall+0x4c/0xe8
-   el0_svc_common+0x98/0xf0
-   do_el0_svc+0x28/0x40
-   el0_svc+0x54/0x1e0
-   el0t_64_sync_handler+0x84/0x130
-   el0t_64_sync+0x198/0x1a0
+E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
+to emulted MMIO and then the guest hits a relevant page fault, KVM will
+install the MMIO SPTE without first zapping the shadow-present SPTE.
 
-Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+  ------------[ cut here ]------------
+  is_shadow_present_pte(*sptep)
+  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
+  Call Trace:
+   <TASK>
+   mmu_set_spte+0x237/0x440 [kvm]
+   ept_page_fault+0x535/0x7f0 [kvm]
+   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
+   kvm_mmu_page_fault+0x8d/0x620 [kvm]
+   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb5/0x730
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x47fa3f
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Debugged-by: Alexander Bulekov <bkov@amazon.com>
+Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
 Cc: stable@vger.kernel.org
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c16ac9c76aa3..1b95226ae696 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5835,6 +5835,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 			/* write IP address into register */
- 			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
- 		}
-+		spin_unlock_irqrestore(&bp->lock, flags);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index b922a8b00057..98406d6aa2d6 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3044,12 +3044,6 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 	bool prefetch = !fault || fault->prefetch;
+ 	bool write_fault = fault && fault->write;
  
- 		/* Change interrupt handler and
- 		 * Enable WoL IRQ on queue 0
-@@ -5847,11 +5848,12 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 				dev_err(dev,
- 					"Unable to request IRQ %d (error %d)\n",
- 					bp->queues[0].irq, err);
--				spin_unlock_irqrestore(&bp->lock, flags);
- 				return err;
- 			}
-+			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
- 			gem_writel(bp, WOL, tmp);
-+			spin_unlock_irqrestore(&bp->lock, flags);
- 		} else {
- 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
- 					       IRQF_SHARED, netdev->name, bp->queues);
-@@ -5859,13 +5861,13 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 				dev_err(dev,
- 					"Unable to request IRQ %d (error %d)\n",
- 					bp->queues[0].irq, err);
--				spin_unlock_irqrestore(&bp->lock, flags);
- 				return err;
- 			}
-+			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
- 			macb_writel(bp, WOL, tmp);
-+			spin_unlock_irqrestore(&bp->lock, flags);
- 		}
--		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		enable_irq_wake(bp->queues[0].irq);
+-	if (unlikely(is_noslot_pfn(pfn))) {
+-		vcpu->stat.pf_mmio_spte_created++;
+-		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
+-		return RET_PF_EMULATE;
+-	}
+-
+ 	if (is_shadow_present_pte(*sptep)) {
+ 		if (prefetch && is_last_spte(*sptep, level) &&
+ 		    pfn == spte_to_pfn(*sptep))
+@@ -3073,6 +3067,14 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 			was_rmapped = 1;
  	}
-@@ -5932,6 +5934,8 @@ static int __maybe_unused macb_resume(struct device *dev)
- 		queue_readl(bp->queues, ISR);
- 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 			queue_writel(bp->queues, ISR, -1);
-+		spin_unlock_irqrestore(&bp->lock, flags);
-+
- 		/* Replace interrupt handler on queue 0 */
- 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
- 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
-@@ -5940,10 +5944,8 @@ static int __maybe_unused macb_resume(struct device *dev)
- 			dev_err(dev,
- 				"Unable to request IRQ %d (error %d)\n",
- 				bp->queues[0].irq, err);
--			spin_unlock_irqrestore(&bp->lock, flags);
- 			return err;
- 		}
--		spin_unlock_irqrestore(&bp->lock, flags);
  
- 		disable_irq_wake(bp->queues[0].irq);
++	if (unlikely(is_noslot_pfn(pfn))) {
++		vcpu->stat.pf_mmio_spte_created++;
++		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
++		if (flush)
++			kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
++		return RET_PF_EMULATE;
++	}
++
+ 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
+ 			   false, host_writable, &spte);
  
 
 
