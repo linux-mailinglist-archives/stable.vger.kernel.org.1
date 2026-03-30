@@ -1,105 +1,92 @@
-Return-Path: <stable+bounces-231157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A0rGelVymn27gUAu9opvQ
-	(envelope-from <stable+bounces-231157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:52:25 +0200
+	id 6H46JzBYymn27gUAu9opvQ
+	(envelope-from <stable+bounces-231158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:02:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97E9359B5B
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 12:52:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433C0359DB1
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 13:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06BB030721B6
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:45:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 473B730B444D
+	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 10:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431533BFE50;
-	Mon, 30 Mar 2026 10:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317433C2773;
+	Mon, 30 Mar 2026 10:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nxQSqMop"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="KWLNfZyT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB53A3BE622
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 10:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6913C2768
+	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 10:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774867498; cv=none; b=EvlOABlxh3vP5WxV3vHZUZlXPajvILP6lEGlZG6zodIz+O7+DfTbGV02iV7ZOFkNaVnfdQaZYx3M/EHWZubF6EvwESEQfXUmp1BWlzHBvsEijQD6dw6AWXbk62HV5OsTe+GIKL1JXGayQFEgrSnTMtDHpz1/1HzZcZ3az+DzLKs=
+	t=1774868161; cv=none; b=F7bHNr+9B4XdUsJ3R3c92mLJnzBeeJ6KaqBK9VnFdGnsCPj3IeWbnWSQQrKXyivc0xixXlruk8nEYUP+W4Dj+CRPEw8Nhlc2/OQqjkD7+o2MUMHQ4nol4wjlQ0kc/VI6A3/rV25SdmUlojyXl1cX8NjUvOUca4Q25Hb/Y+/Bfcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774867498; c=relaxed/simple;
-	bh=MzOtZWP/O2N5LKw24jYYRCeYIdMx+g3OLyY1254aW1c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StGlBIBRG/CtgrwqhgtxNWXtwpCWmLbi3tiJUdRwp46szSvKL4+AOSvqKN+Er6hy4CXn1OHez0vJ6QT0pG5RoCvAZTSxRyxPHLw4kGjt4/1ux1gR00Sflz/8dYepxx3ptWu1KiFEZuMBOsZv8nxgEt6O4iw7g6K53Ottj7crooU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nxQSqMop; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-486fe2024a9so30753575e9.0
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 03:44:55 -0700 (PDT)
+	s=arc-20240116; t=1774868161; c=relaxed/simple;
+	bh=ztpxb9hQu5tkAcfN8a3ttcSKgHCqdHEOgG+ht9Crucs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syPjoQJ1r7WsCQriapRV6/h1WVgxUK36LiwjaeN2D2Zd/svgqamnJXyRW9cAG0uxfWCzgRiB9YfH8OhgkbR4TX723Hvpgij9WUgSNtJO3QifljUSrNteR07nc/RtXdISwZb0mzb8G0zFSAeojtpcI40Zag2Z5mWCBPjPDC28bZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=KWLNfZyT; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cf906b007so738441f8f.0
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 03:55:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774867494; x=1775472294; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3uX914YhuYkTgoe0kk9VM5sxxzK+tc1qOdfmAktq/XU=;
-        b=nxQSqMop1lplLs2GCTkNuAgopKzghYV6BZjs4RpKPM1vwYuEnPDhbVgfaacUmBHplo
-         rvJokCvw1pVf/k/lflO38Nx2+jtnKkRLZSkcgFhzD+iBi6Lff098uRUdYyHfVZQH+bfP
-         fV0P9Bx55A3CUW630x9gQwPHhc+sa72SmGFScJuiSipL2Dw5t8fKkr3ZrW0jv5D3MbFd
-         JcvcIvYMQmlr8icnO/JCIhdBuGSqKrndX8arf6uNNuo11CY1QjTHHdErpqipiEf9yfWF
-         wniW8Aw3f8DeDYye7/rtZBPXBJ5Q+ekuCi6tVhYSiAzjyKJq985xdhCuI5C2kGo99v7L
-         wDOQ==
+        d=ionos.com; s=google; t=1774868156; x=1775472956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RqgOUnrTeGkoKfySHKsNvdoK2i879eNBFvf4HV8oBRY=;
+        b=KWLNfZyTUDew5pKHGEzu5wIh8obf9BqzptRNC3vIFgpX3OGXUGiEEKsVgsQVNq0bWq
+         ecgW4Y8M03OHJ91GnxGf0Mrp/dVNNioYYp1O4NW7URegBp0Jj0cMgcYVqDMBL33Zgfs5
+         MJ+Lcwnq5+f7V+ui6zg+u62bqhsgJ2RJNNIebiTHBsSeEEZ309V7YzaMjEbJiLU7qkne
+         fO/99ktPPRcJkKp8M8XHjDWqApGCdxFfY3sa6oN4RCf977JN+XdZrdqKDG58xp3jVHZE
+         y/Su+JlXEehLWODdC5h6kO/jteqKofiihGyztQ86NY55YWNZHugoMeo26AOxbVALqHzX
+         FQ0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774867494; x=1775472294;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3uX914YhuYkTgoe0kk9VM5sxxzK+tc1qOdfmAktq/XU=;
-        b=JKrasACH9vF5W+n2u/5w+rZm6ZmznKEy+XYZQFEml6v6BHL8WLPEuOHlRJOwB2Kkoi
-         vL/7CzKyvOyKkDqcqk124TIvolubZXUBK050HIgjJ4nm/cdyNi14n49vPamapQfnvOi3
-         q7WwvAm/hL9gActxbCKfgzSQkQo/TB+Rp6S3xbVIkpUoohRwzOhKVWdeI7IEUa2WaA6N
-         ZLv5kPYN/VhxvSO/OcP2JewcdREedJSZd7ax1XTY8TbeFwdH/QCjPUDIX1Uf3VqYzuKR
-         fJKAj6K2P+T3n78AYZPFL2FIt3QCPkTRw4Wtki2awRO9tdHfMhY1Yu5CukcMGfLAYtPi
-         oLOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqEUKU6izkX/nV5135BmmlUvaJwDyU3bU3/YjwwWeCq8wix0697vX0comlKgs+UmtwXxEHEeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrMI18TKwIjdhYxAt67eoe+EEZnZaLDm1WjDTAQI+ekE1y+Irk
-	q32v729jFrnxKsouBe16HVXktHhqKWN4gS1AY1R8Pbra62ybGBn6YlBU
-X-Gm-Gg: ATEYQzzltb/3unhbqQR904Fbk5brNxE7d9sbFELVEuIPam2uY8xQNx8bEYuCCKDKtoQ
-	BrlzxJisSWZRjfYSmbZJ0/+rMkQOx/1yjqxyiQXgLIbVjxWZKebe5Xj0stcemieuDOVbHk+P10d
-	cyZgKP4rc9Jy7edCoEImWn4crME+tSSyAjy92+h428NNGppb3oQ7FYgQYz4E9tcflk54RSTrQDf
-	oENfUomZhKsEUSN8X2ccSoVvbod+fAJOGqWLB8Z4MhaXG8N8EFcO/+/862NPKBAoWN3P0+et+Ab
-	ZxHgmcY5AtQ0F15gU5h8qtR5PhDhnKhe/zqz5/vA+/MBumzHiUf8q2jDXar6Rcc2NhZpdZIFhx4
-	ZHRAu41OdCjyyYq+BN686LW0ETH4BDkRoJjDucKa1RdAdinj0eAzyYHaWSFc7Hw0Fz9N2vujnV8
-	pWAkb8HPGKDF/rWYvce+nfdygz2NopMg==
-X-Received: by 2002:a05:600c:3504:b0:485:3e20:4013 with SMTP id 5b1f17b1804b1-48727f0b109mr170977975e9.28.1774867494040;
-        Mon, 30 Mar 2026 03:44:54 -0700 (PDT)
-Received: from biju.lan ([2a00:23c4:a758:8a01:e60:2c8a:54bb:d692])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48727bfc5ecsm185842685e9.1.2026.03.30.03.44.53
+        d=1e100.net; s=20251104; t=1774868156; x=1775472956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RqgOUnrTeGkoKfySHKsNvdoK2i879eNBFvf4HV8oBRY=;
+        b=K+YBOdHJf/jL+lmqhGwHHnYg0jHxD9mPpnvLsJGv7+SFIjRKobqrwpXmLP0y1RFTy1
+         p+womZvCgSl36qe2CIJFEf8NcPz+wLIIAXnF9xvM4oCIiqyz4zEcC2xj0buBf0bdbMkZ
+         SWoqAZEuBwLRTmomayq0u66dexqe8bwf9jP2Jw/LRMyPlXk+0rYFQRyFGK0hLO8D5jJ8
+         1XkJZH86tD/V3Hp6Mh/eEUbU12RBR16qGfXfewfVY3qQHyRXMtY3Fpk30/uufUxg2JPV
+         4mvtk5oEeI/y1WZfnsNaxWQ+Vu0H7a6KFb1iHrDbIhIhxs6aP+yoRgmSuEnkFjqmZDqZ
+         zwrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUklaRhrwEG+KngyUL8kCCLFR73WMZByKNoMsNkDHSjBTy9ykY+vZ5zVmFZz7mxTk9KEmpbP6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJf58neBWkntQXpDVkThY/4h4pZLbrTmFGNr4l6W0zpUcI7vMA
+	0+BOy0Ppy7Sjljhpjoo4Rk4ScrFU+U9rNGZJc85ik181XppHoXfZqBxRCHkwHY97JHs=
+X-Gm-Gg: ATEYQzxLHnVajwKOVE+tA7BSycnG72M6KDkpVXqJhQE3kIotZJXBcIDLc1s/dks9F/g
+	rByZSe4rj5WDUckPY365xbvfMssJa0WR5KH46DujYvZXS5BUTmVxsxkbNy7bzjQUV4ODTR8JayE
+	Q/xSIO89IPWBVKbbfLXBSynxORoSenoggLmD9Dl08wPCP0KnJKupiDxa0+p5g6dcCSG/3DvYjNS
+	Cj9t08lS3Dp2TMpdZBWGhiOuyZEhTd3UnadbsUEsl09Q6MZvYoUD8w50HYOZRppBy0NtJlwZ+o7
+	0ikBhO1s5Ym3auv81WDwr8PcpgmOY8GFC+PmYfIUcqlvwqu4gUcSRVvT6VukXn3fjN3/Ylmpav/
+	SB+XPeoPD//gbk4Sfm0OPnIyZj8DHjdR1hA1+IGLB0+qtMgjofRVw3zybGiVvG1AvjjdmnDGkQK
+	rc+znH2v56Nrs86f3YrkSwkZoWACD/29yzksE1uyBHBJB99DPfGzXOsxX75RaZ2cL7bgf0YnjzO
+	PW2IG/DH+KH85iv54GSD2iO5I9O6HdTQAeMaA==
+X-Received: by 2002:a5d:5308:0:b0:43c:ef4f:79de with SMTP id ffacd0b85a97d-43cef4f7b6amr11247379f8f.16.1774868156221;
+        Mon, 30 Mar 2026 03:55:56 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f2b4400023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2b:4400:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf330872asm16371655f8f.17.2026.03.30.03.55.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 03:44:53 -0700 (PDT)
-From: Biju <biju.das.au@gmail.com>
-X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: Chris Brandt <chris.brandt@renesas.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.au@gmail.com>,
+        Mon, 30 Mar 2026 03:55:55 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: dhowells@redhat.com,
+	pc@manguebit.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/3] drm: renesas: rzg2l_mipi_dsi: Increase reset deassertion delay
-Date: Mon, 30 Mar 2026 11:44:45 +0100
-Message-ID: <20260330104450.128512-3-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260330104450.128512-1-biju.das.jz@bp.renesas.com>
-References: <20260330104450.128512-1-biju.das.jz@bp.renesas.com>
+Subject: [PATCH] netfs: add missing folio_end_private_2() to netfs_pgpriv2_copy_folio()
+Date: Mon, 30 Mar 2026 12:55:48 +0200
+Message-ID: <20260330105548.1371339-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,76 +94,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_TO(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ionos.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[ionos.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231157-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[bp.renesas.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ionos.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[renesas.com,ideasonboard.com,ravnborg.org,lists.freedesktop.org,vger.kernel.org,glider.be,bp.renesas.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-231158-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bijudasau@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[max.kellermann@ionos.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bp.renesas.com:mid,renesas.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A97E9359B5B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 433C0359DB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+This deprecated PG_private_2 copy-to-cache path can leak folio private
+state on rolling-buffer allocation failure.
 
-The RZ/G2L hardware manual (Rev. 1.50, May 2025), Section 34.4.2.1,
-requires waiting at least 1 msec after deasserting the CMN_RSTB signal
-before the DSI-Tx module is ready. Increase the delay from 1 usec to
-1 msec by replacing udelay(1) with fsleep(1000) for RZ/G2L SoCs.
+netfs_pgpriv2_copy_to_cache() sets PG_private_2 first, then
+netfs_pgpriv2_copy_folio() tries to append the folio to the tracking
+buffer.  If that append fails, it just returns without calling
+folio_end_private_2().  The folio is then no longer tracked for copy
+completion, but later invalidate/release paths still block on that bit
+in netfs_invalidate_folio() and netfs_release_folio(), so the folio
+can become permanently stuck/unreclaimable.
 
-Fixes: 7a043f978ed1 ("drm: rcar-du: Add RZ/G2L DSI driver")
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Cc: stable@vger.kernel.org
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
-v2->v3:
- * Moved the patch from patch#4 to patch#2.
- * Added fixes tag.
- * Updated commit description.
-v1->v2:
- * Updated commit header and description.
----
- drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/read_pgpriv2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-index ff95cb9a7de5..9d9f77d8f949 100644
---- a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-+++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-@@ -528,7 +528,7 @@ static int rzg2l_mipi_dsi_dphy_init(struct rzg2l_mipi_dsi *dsi,
- 	if (ret < 0)
- 		return ret;
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index a1489aa29f78..ab73fa62378b 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -55,6 +55,7 @@ static void netfs_pgpriv2_copy_folio(struct netfs_io_request *creq, struct folio
+ 	/* Attach the folio to the rolling buffer. */
+ 	if (rolling_buffer_append(&creq->buffer, folio, 0) < 0) {
+ 		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &creq->flags);
++		folio_end_private_2(folio);
+ 		return;
+ 	}
  
--	udelay(1);
-+	fsleep(1000);
- 
- 	return 0;
- }
 -- 
-2.43.0
+2.47.3
 
 
