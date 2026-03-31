@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oC0WOuD4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:00 +0200
+	id 2AtkMBD8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886AB36CECA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C84936D570
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6ADBF30E9332
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 473D030CEB01
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A142423A80;
-	Tue, 31 Mar 2026 16:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AA6423146;
+	Tue, 31 Mar 2026 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR6huje0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlxyBvL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCD9423A70;
-	Tue, 31 Mar 2026 16:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2BB33E372;
+	Tue, 31 Mar 2026 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974651; cv=none; b=SnXf20KOyZDtCChLz9AIXj9ecMvykNVz1Fikv0LYbG/lZoBWC9LKse7N5YArRPl2UHTXAJB41JZxLUrbndnhW/EsFepjk4ksp8Ufxk2tilabevmQ2d62nRQbFl8bLRuKkjCc4GwuBmimX7QsIbfFOUFNmuuOJM1OiZeG7UwzdvI=
+	t=1774975495; cv=none; b=F5DSmn+EbOskyVCjjft/FaDHadBUfVcm81yssQqMTPVw72SWsE5TyaXG4JDCn5uPhEoSugWkwt+GEbP0jcWlq+TkQhGHH6lXoJZjkG/dXTqmViANRRdHn6fjiL7YeOK6MV0VzLuspOFlUY77YJXAe/oZ0z+9MqlaUxvOKQF5YcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974651; c=relaxed/simple;
-	bh=peN9r6y0i7lhXtCKxQ/ZPtw+cwgKUyJ9+74W9qH2XSg=;
+	s=arc-20240116; t=1774975495; c=relaxed/simple;
+	bh=12eDt66OUjnvm+frkEYHjz4jt/theeMsKqo0RdjxJvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEZ3htTqA6KO9mGXYNwYBMNYeMLc8DA8KJbIH3068+qTELNwZlazdemQZxTA0FNCbX1A7QBliKasNt73e9I18nQFtjCwic509FQhZY0IiiqhWle0fPaib+qPOfky2kPOnWMfWcDja5O7hASYoKkCxeyZr1u8SsA6+VRH164ckDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JR6huje0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CE5C2BCB1;
-	Tue, 31 Mar 2026 16:30:51 +0000 (UTC)
+	 MIME-Version; b=V+O8JfUyfVncUfxI2ZuboFHfVBXmwzNM4iCf8088Jg+9bxP1OAKTylYsu0zVn+H+6mX1Zmp+2bGCqiyEJS+uq1wLfNlWmlqbVo84LTUCjScJtpJAkYbW/GBGE0yLVFgRUKs5pJKRNZMHjgOQnpm+PYtTcrZrtKKCkW3KYYJ93KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlxyBvL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21444C19423;
+	Tue, 31 Mar 2026 16:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974651;
-	bh=peN9r6y0i7lhXtCKxQ/ZPtw+cwgKUyJ9+74W9qH2XSg=;
+	s=korg; t=1774975495;
+	bh=12eDt66OUjnvm+frkEYHjz4jt/theeMsKqo0RdjxJvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JR6huje0+EcgNTHhMvNGnB1mZ+uJ3irMy/9kvG8l7F3j4r02Y+4zqSKWvmWebCP3h
-	 whhrPNax552C8G9CO0zBOm/lrCDFI6pCUcKiTVr7ioPnUEnKo2HxVmZ/tsH+PdXR75
-	 El5TZhRwZknjrXmwHulb7IGdRMQ28yZldrpevQAY=
+	b=UlxyBvL8R5mMbWo+2m6tNwCmo68yO7RFmGsmwuQjE01DJkFBBLxrCdSknaPUupXHA
+	 O2fzJ6UM4X8uYBX/mVL5Tbsta1pdqLeyph9Ji4NCemkeZrJuo5Ki4DbOSDSTie9pUZ
+	 Q+2rqjiYkKLK/9tAiEPjIE1CvSbnRkuoP9U8MPCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/175] dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
+Subject: [PATCH 6.19 318/342] dmaengine: idxd: Fix leaking event log memory
 Date: Tue, 31 Mar 2026 18:22:31 +0200
-Message-ID: <20260331161735.932802945@linuxfoundation.org>
+Message-ID: <20260331161810.619438719@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231954-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231626-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 886AB36CECA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3C84936D570
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
+[ Upstream commit ee66bc29578391c9b48523dc9119af67bd5c7c0f ]
 
-The segment .control and .status fields both contain top bits which are
-not part of the buffer size, the buffer size is located only in the bottom
-max_buffer_len bits. To avoid interference from those top bits, mask out
-the size using max_buffer_len first, and only then subtract the values.
+During the device remove process, the device is reset, causing the
+configuration registers to go back to their default state, which is
+zero. As the driver is checking if the event log support was enabled
+before deallocating, it will fail if a reset happened before.
 
-Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
+Do not check if the support was enabled, the check for 'idxd->evl'
+being valid (only allocated if the HW capability is available) is
+enough.
+
+Fixes: 244da66cda35 ("dmaengine: idxd: setup event log configuration")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-10-7ed70658a9d1@intel.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/dma/idxd/device.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 17c424e650d2f..89583d6c4de46 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -994,16 +994,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					      struct xilinx_cdma_tx_segment,
- 					      node);
- 			cdma_hw = &cdma_seg->hw;
--			residue += (cdma_hw->control - cdma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
-+			           (cdma_hw->status & chan->xdev->max_buffer_len);
- 		} else if (chan->xdev->dma_config->dmatype ==
- 			   XDMA_TYPE_AXIDMA) {
- 			axidma_seg = list_entry(entry,
- 						struct xilinx_axidma_tx_segment,
- 						node);
- 			axidma_hw = &axidma_seg->hw;
--			residue += (axidma_hw->control - axidma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
-+			           (axidma_hw->status & chan->xdev->max_buffer_len);
- 		} else {
- 			aximcdma_seg =
- 				list_entry(entry,
-@@ -1011,8 +1011,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					   node);
- 			aximcdma_hw = &aximcdma_seg->hw;
- 			residue +=
--				(aximcdma_hw->control - aximcdma_hw->status) &
--				chan->xdev->max_buffer_len;
-+				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
-+				(aximcdma_hw->status & chan->xdev->max_buffer_len);
- 		}
- 	}
+diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
+index a7ecc17442354..4013f970cb3b2 100644
+--- a/drivers/dma/idxd/device.c
++++ b/drivers/dma/idxd/device.c
+@@ -833,10 +833,6 @@ static void idxd_device_evl_free(struct idxd_device *idxd)
+ 	if (!evl)
+ 		return;
  
+-	gencfg.bits = ioread32(idxd->reg_base + IDXD_GENCFG_OFFSET);
+-	if (!gencfg.evl_en)
+-		return;
+-
+ 	mutex_lock(&evl->lock);
+ 	gencfg.evl_en = 0;
+ 	iowrite32(gencfg.bits, idxd->reg_base + IDXD_GENCFG_OFFSET);
 -- 
 2.53.0
 
