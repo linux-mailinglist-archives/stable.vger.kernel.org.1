@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNEsO7b9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:38 +0200
+	id gHWxHHMGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E4836DA2B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F6C36F076
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F78831314AC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8252A304AEE5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCAE423A99;
-	Tue, 31 Mar 2026 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89BB2D8771;
+	Tue, 31 Mar 2026 17:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8yQqUgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuQHeDYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309FF4218AF;
-	Tue, 31 Mar 2026 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE242D73AD;
+	Tue, 31 Mar 2026 17:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975707; cv=none; b=NaxjfZo+CSv7VU+heSzL2RPiHRTh42N3fiIr7MiKSDmrXfnFxtlMrlPXCzMzY5zyn70j/gnp3juBEjGSHiMsWiIwYtfewN0mZ1laKKJJRlvHMesQNgbxY80RLR8s7SDNMSz2YuE95Z6xgm4wGyBQdUik6AkFu14uowcos3wBmcY=
+	t=1774976461; cv=none; b=fi7Gwkxwv3p0MBPJ3K10NI6EMXI10F4QxVpb6Gmqk9q8bTYj0F10bdmqpuRowrIK0xJ5xf7xE3hm3Cp5vNNnYiCey8yyF8L/5gLQzEO4vp3i/nS+5IzgC1boJ9ZhBY/1K42r1MQMx9Pj9q5e8DY3ZRARTukBV30NYx7oAY8gw6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975707; c=relaxed/simple;
-	bh=eU5dUlagvH6Y+Q/NPbM7xblN7GVCLdhW7imvJ178EVs=;
+	s=arc-20240116; t=1774976461; c=relaxed/simple;
+	bh=fSgOWKpvljbrfLBu50YiU7RDOO828yILsr0VfchxCYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfH8znhyJbZHpVYXtKHwWLqOiCJ2rNTsmm2NIAAQ3TjRpKjdyciRNbvhiY2X8aMM52R/Y+gmNciR3fvsZadMLuobwDZXC3rX5kSo5IDTpHWCdvk9MAvmTUrO8wd2zoRG+Bi/8p7bpLOj/tTZDmE1NMrhr8R8Vz92P+bQpjzJJ80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8yQqUgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC843C19423;
-	Tue, 31 Mar 2026 16:48:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=grpyIvv/5J0NhcCBdgDfKlUy0DlCnFvn801uYNbUYotlQE5QClSc6zMwfX+IICxm9amnei6EyTi/enin0r5zW22w8C0MRscSQjy7fmD+VJGxEJU5Eo/VwoX3GCkxQHb0Lq4+pDRbNlgH1blUWLpxY2Cyauo5OUjNtyRfxSt5gQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuQHeDYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3083EC19423;
+	Tue, 31 Mar 2026 17:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975707;
-	bh=eU5dUlagvH6Y+Q/NPbM7xblN7GVCLdhW7imvJ178EVs=;
+	s=korg; t=1774976461;
+	bh=fSgOWKpvljbrfLBu50YiU7RDOO828yILsr0VfchxCYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8yQqUgtSOZ/xZUo0xqM8rVsZtqk8PuYUSIeJ56goLxHRLEH68rAeUDfujf68z7xo
-	 iCpRDcbKR5wckrgoGDzE2tF7D5uaUyguq5oMRpa9NJV2niNTsxHYUxIz7T8Y9ot+QP
-	 aDGqHoUJ4BKtiPK/tVpS0jtqcWJ4U03V0fUT221c=
+	b=vuQHeDYuN1FWI/JqGhm3LTKk3MSZ03Ma9M4P+H+sOJnabelvjQX2QP7B27JhtAlgp
+	 QoGUeNFO4BFPivFl4qykbQZLGIAHtH7qyi85tLZUDMSY8VNkKbAaAIzrkEs3zcRqFI
+	 BejDtMkMe6GiXQGDqVMxdZMZtu7NOfdvx2SbnLYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/244] dma: swiotlb: add KMSAN annotations to swiotlb_bounce()
+Subject: [PATCH 6.18 102/309] platform/olpc: olpc-xo175-ec: Fix overflow error message to print inlen
 Date: Tue, 31 Mar 2026 18:20:05 +0200
-Message-ID: <20260331161743.725894896@linuxfoundation.org>
+Message-ID: <20260331161757.242176029@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +65,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232035-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232326-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 93E4836DA2B
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,infradead.org:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,v3.sk:email]
+X-Rspamd-Queue-Id: 73F6C36F076
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 6f770b73d0311a5b099277653199bb6421c4fed2 ]
+[ Upstream commit 2061f7b042f88d372cca79615f8425f3564c0b40 ]
 
-When a device performs DMA to a bounce buffer, KMSAN is unaware of
-the write and does not mark the data as initialized.  When
-swiotlb_bounce() later copies the bounce buffer back to the original
-buffer, memcpy propagates the uninitialized shadow to the original
-buffer, causing false positive uninit-value reports.
+The command length check validates inlen (> 5), but the error message
+incorrectly printed resp_len. Print inlen so the log reflects the
+actual command length.
 
-Fix this by calling kmsan_unpoison_memory() on the bounce buffer
-before copying it back in the DMA_FROM_DEVICE path, so that memcpy
-naturally propagates initialized shadow to the destination.
-
-Suggested-by: Alexander Potapenko <glider@google.com>
-Link: https://lore.kernel.org/CAG_fn=WUGta-paG1BgsGRoAR+fmuCgh3xo=R3XdzOt_-DqSdHw@mail.gmail.com/
-Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260315082750.2375581-1-syoshida@redhat.com
+Fixes: 0c3d931b3ab9e ("Platform: OLPC: Add XO-1.75 EC driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260310130138.700687-1-alok.a.tiwari@oracle.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/platform/olpc/olpc-xo175-ec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index abcf3fa63a569..e2445b3af7468 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -30,6 +30,7 @@
- #include <linux/gfp.h>
- #include <linux/highmem.h>
- #include <linux/io.h>
-+#include <linux/kmsan-checks.h>
- #include <linux/iommu-helper.h>
- #include <linux/init.h>
- #include <linux/memblock.h>
-@@ -903,10 +904,19 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
+diff --git a/drivers/platform/olpc/olpc-xo175-ec.c b/drivers/platform/olpc/olpc-xo175-ec.c
+index fa7b3bda688a6..bee271a4fda1a 100644
+--- a/drivers/platform/olpc/olpc-xo175-ec.c
++++ b/drivers/platform/olpc/olpc-xo175-ec.c
+@@ -482,7 +482,7 @@ static int olpc_xo175_ec_cmd(u8 cmd, u8 *inbuf, size_t inlen, u8 *resp,
+ 	dev_dbg(dev, "CMD %x, %zd bytes expected\n", cmd, resp_len);
  
- 			local_irq_save(flags);
- 			page = pfn_to_page(pfn);
--			if (dir == DMA_TO_DEVICE)
-+			if (dir == DMA_TO_DEVICE) {
-+				/*
-+				 * Ideally, kmsan_check_highmem_page()
-+				 * could be used here to detect infoleaks,
-+				 * but callers may map uninitialized buffers
-+				 * that will be written by the device,
-+				 * causing false positives.
-+				 */
- 				memcpy_from_page(vaddr, page, offset, sz);
--			else
-+			} else {
-+				kmsan_unpoison_memory(vaddr, sz);
- 				memcpy_to_page(page, offset, vaddr, sz);
-+			}
- 			local_irq_restore(flags);
- 
- 			size -= sz;
-@@ -915,8 +925,15 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
- 			offset = 0;
- 		}
- 	} else if (dir == DMA_TO_DEVICE) {
-+		/*
-+		 * Ideally, kmsan_check_memory() could be used here to detect
-+		 * infoleaks (uninitialized data being sent to device), but
-+		 * callers may map uninitialized buffers that will be written
-+		 * by the device, causing false positives.
-+		 */
- 		memcpy(vaddr, phys_to_virt(orig_addr), size);
- 	} else {
-+		kmsan_unpoison_memory(vaddr, size);
- 		memcpy(phys_to_virt(orig_addr), vaddr, size);
+ 	if (inlen > 5) {
+-		dev_err(dev, "command len %zd too big!\n", resp_len);
++		dev_err(dev, "command len %zd too big!\n", inlen);
+ 		return -EOVERFLOW;
  	}
- }
+ 
 -- 
 2.51.0
 
