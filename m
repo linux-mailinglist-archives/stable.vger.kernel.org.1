@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-232418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GP0XN0MHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:23 +0200
+	id IFnVM0QHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D5536F222
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA68E36F225
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8151230754F5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67A47307BAC2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9163002A9;
-	Tue, 31 Mar 2026 17:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB202FE042;
+	Tue, 31 Mar 2026 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOm2/ORP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHsKojIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64B22FE042;
-	Tue, 31 Mar 2026 17:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2085C2C21F2;
+	Tue, 31 Mar 2026 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976696; cv=none; b=F1YkB+pt/y1BJ5r/ETdSIiBb/Ogbez7bMKaKeeB/hOXh6gkt2n4Or+EPIsLXNq6z2ObOcyrJMgH+M04ggPfpws/ouOjLoGBx3DEbPkdvCvt6/2yRxeelD0I4fKJhnvqZ8PeSUrVAwd9480PDpc4YVOcmx/iE1Elww+5FYmixEmg=
+	t=1774976701; cv=none; b=RuenIRyv8t1jphPC/M9dzT+kNH/fVVajUhPbAlVB0Jcna94Uaw4ELJuJkv4UuJS2hFt1QdqAASkantAv6dk6XEKi5b1zGUZK8nXMOnj8SLDpSpdqd8Qm7LgywBC/1WfDKWhhREHvXZktox22bw5OGzSL0mGjMI7sAjNmXQslxak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976696; c=relaxed/simple;
-	bh=qD6CKMYxdq3rOQCjQg35OUzPGmH6UQLg1pQiWbCqkPY=;
+	s=arc-20240116; t=1774976701; c=relaxed/simple;
+	bh=JN6QPtOB8K8aTtMmBQe2eSD1BMOLDrYM4P780HYmVkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWlr5oIqSsuW1EwhAPly4ng3JLA+SURmOVya5E1JEuV4jdIGo4/IBar94EFMDyQ7obotaoQgut95IU8tvwL9w+Vv1znEzoacRy4JZs5XYWvzP57L8lMXwD66tOYVkz0g/5wPxIhRkVoM6ioCYiAd7zgG+QiY2xvsckczEVXuJlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOm2/ORP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE48C19423;
-	Tue, 31 Mar 2026 17:04:55 +0000 (UTC)
+	 MIME-Version; b=mJkU4zHIVYS5p2EKitKxkmmEdNhvdcK2211bnM4E/cbyP9GVHSRSDlEHlBMq+JsB4KKu6UUnC8IIPSiq5K5Dw5dKPlz26pd6peK9Oqv5DLHDAS3j2xkjtqJ0LGeYWcJxnjqnfx0WP+zO+AU4tOlOooupJjRsoPGKWTpk4euX7Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHsKojIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E68C19423;
+	Tue, 31 Mar 2026 17:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976695;
-	bh=qD6CKMYxdq3rOQCjQg35OUzPGmH6UQLg1pQiWbCqkPY=;
+	s=korg; t=1774976701;
+	bh=JN6QPtOB8K8aTtMmBQe2eSD1BMOLDrYM4P780HYmVkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOm2/ORPKpCSnSYsZl7zP26tlkJct8tyrM5d9n2P4hQ7kaVXzOjNO7/iPmSkPeMRh
-	 vXGKevqJphhqRF5VXyz9A47ZJ0RgA1e1vAuay4gVIDnzgZAmjaMKPqiyOfC8k01Idh
-	 h9ifsPEyV2sgOoactdTRCsdLatDaC5ztvyB62fAw=
+	b=wHsKojIn5Ty0qbX9cYI713+JLFMOvksiQlGcPmX+ONZk68T9ieK/uhXXvVSlH5sG8
+	 Mt7eWc79AtsCGPJqDD/j/JLSUOifOS3ocRLyIOeoAr1QKQw3ZC2Zb03M99F3g66by/
+	 68fGPXfcyf/9amjyZDR+FEqYXQh/DoWvjuO4VnAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.18 192/309] can: netlink: can_changelink(): add missing error handling to call can_ctrlmode_changelink()
-Date: Tue, 31 Mar 2026 18:21:35 +0200
-Message-ID: <20260331161800.523828106@linuxfoundation.org>
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.18 193/309] cpufreq: conservative: Reset requested_freq on limits change
+Date: Tue, 31 Mar 2026 18:21:36 +0200
+Message-ID: <20260331161800.559723656@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
 References: <20260331161753.468533260@linuxfoundation.org>
@@ -71,25 +74,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232418-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232420-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pengutronix.de:email]
-X-Rspamd-Queue-Id: E9D5536F222
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,intel.com:email,qualcomm.com:email,linaro.org:email,cs_governor.gov:url]
+X-Rspamd-Queue-Id: EA68E36F225
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,40 +100,96 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit cadf6019231b614ebbd9ec2a16e5997ecbd8d016 upstream.
+commit 6a28fb8cb28b9eb39a392e531d938a889eacafc5 upstream.
 
-In commit e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()") the
-CAN Control Mode (IFLA_CAN_CTRLMODE) handling was factored out into the
-can_ctrlmode_changelink() function. But the call to
-can_ctrlmode_changelink() is missing the error handling.
+A recently reported issue highlighted that the cached requested_freq
+is not guaranteed to stay in sync with policy->cur. If the platform
+changes the actual CPU frequency after the governor sets one (e.g.
+due to platform-specific frequency scaling) and a re-sync occurs
+later, policy->cur may diverge from requested_freq.
 
-Add the missing error handling and propagation to the call
-can_ctrlmode_changelink().
+This can lead to incorrect behavior in the conservative governor.
+For example, the governor may assume the CPU is already running at
+the maximum frequency and skip further increases even though there
+is still headroom.
 
-Cc: stable@vger.kernel.org
-Fixes: e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()")
-Link: https://patch.msgid.link/20260310-can_ctrlmode_changelink-add-error-handling-v1-1-0daf63d85922@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Avoid this by resetting the cached requested_freq to policy->cur on
+detecting a change in policy limits.
+
+Reported-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Tested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/all/20260210115458.3493646-1-zhenglifeng1@huawei.com/
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/d846a141a98ac0482f20560fcd7525c0f0ec2f30.1773999467.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/dev/netlink.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq_conservative.c |   12 ++++++++++++
+ drivers/cpufreq/cpufreq_governor.c     |    3 +++
+ drivers/cpufreq/cpufreq_governor.h     |    1 +
+ 3 files changed, 16 insertions(+)
 
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -407,7 +407,9 @@ static int can_changelink(struct net_dev
- 	/* We need synchronization with dev->stop() */
- 	ASSERT_RTNL();
+--- a/drivers/cpufreq/cpufreq_conservative.c
++++ b/drivers/cpufreq/cpufreq_conservative.c
+@@ -313,6 +313,17 @@ static void cs_start(struct cpufreq_poli
+ 	dbs_info->requested_freq = policy->cur;
+ }
  
--	can_ctrlmode_changelink(dev, data, extack);
-+	err = can_ctrlmode_changelink(dev, data, extack);
-+	if (err)
-+		return err;
++static void cs_limits(struct cpufreq_policy *policy)
++{
++	struct cs_policy_dbs_info *dbs_info = to_dbs_info(policy->governor_data);
++
++	/*
++	 * The limits have changed, so may have the current frequency. Reset
++	 * requested_freq to avoid any unintended outcomes due to the mismatch.
++	 */
++	dbs_info->requested_freq = policy->cur;
++}
++
+ static struct dbs_governor cs_governor = {
+ 	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
+ 	.kobj_type = { .default_groups = cs_groups },
+@@ -322,6 +333,7 @@ static struct dbs_governor cs_governor =
+ 	.init = cs_init,
+ 	.exit = cs_exit,
+ 	.start = cs_start,
++	.limits = cs_limits,
+ };
  
- 	if (data[IFLA_CAN_BITTIMING]) {
- 		struct can_bittiming bt;
+ #define CPU_FREQ_GOV_CONSERVATIVE	(cs_governor.gov)
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -563,6 +563,7 @@ EXPORT_SYMBOL_GPL(cpufreq_dbs_governor_s
+ 
+ void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy)
+ {
++	struct dbs_governor *gov = dbs_governor_of(policy);
+ 	struct policy_dbs_info *policy_dbs;
+ 
+ 	/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
+@@ -574,6 +575,8 @@ void cpufreq_dbs_governor_limits(struct
+ 	mutex_lock(&policy_dbs->update_mutex);
+ 	cpufreq_policy_apply_limits(policy);
+ 	gov_update_sample_delay(policy_dbs, 0);
++	if (gov->limits)
++		gov->limits(policy);
+ 	mutex_unlock(&policy_dbs->update_mutex);
+ 
+ out:
+--- a/drivers/cpufreq/cpufreq_governor.h
++++ b/drivers/cpufreq/cpufreq_governor.h
+@@ -138,6 +138,7 @@ struct dbs_governor {
+ 	int (*init)(struct dbs_data *dbs_data);
+ 	void (*exit)(struct dbs_data *dbs_data);
+ 	void (*start)(struct cpufreq_policy *policy);
++	void (*limits)(struct cpufreq_policy *policy);
+ };
+ 
+ static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy)
 
 
 
