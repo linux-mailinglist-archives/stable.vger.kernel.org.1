@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MILtKCT9y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:12 +0200
+	id mCYCHL0CzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1016336D8C1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8386E36E8FE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93055322F854
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E4C333158A6E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD0C426693;
-	Tue, 31 Mar 2026 16:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB59A42669C;
+	Tue, 31 Mar 2026 16:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7rWKZPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0TU4L73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF92423A82;
-	Tue, 31 Mar 2026 16:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD0C3FADEE;
+	Tue, 31 Mar 2026 16:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975355; cv=none; b=Nb1gfi4V6/6Cq7nWJQeWTl6T2UvFNkgDLYGWLppUVTgHoshI6Pqu0fEZW9/UMh5cYxrtV0d1N85OWHprX2Xfj58xYUvSdd15al7LU8xuGCXACijfchFgb2xh/pBHJOdwSwsNnhsDpuXTmMBy0cNKXAtgrLybrkxx8hnlh0Xnwao=
+	t=1774976021; cv=none; b=aBm+4pWl6Ha2afWxcs/dKiFXzfi2f6qa47tYaHZe5n4dOuDHgqUP2if7CYeSiktHgMlmAwmYmTmFybP/KJ6gSWq5CXwyDhp0qLj6s+Gg39pkEQjBwJpYmz5/XkV47Hna7TiWBr8zGJVAHe1SNCE4HsgnHA4w5Mn2WWxN2adl04M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975355; c=relaxed/simple;
-	bh=riYoh1BXQ8cNS43ppDflNWpHC1rXC3Ly26YWOWsk7XU=;
+	s=arc-20240116; t=1774976021; c=relaxed/simple;
+	bh=PPmyuWpnRq1gdJVTg7csNz0GmldBEjsy3zeg5XAxA3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ppx+5tJuk5KLi4tr2uluHhoQPIOh7h3dea1U6xg7PNLt5t31JuvtUjCXwYZkrPkEfKr56+/xhb0qAYRdBEdbcQrCl48GdwHNVbaFS3piZ+Zcz37yftNobVY3QfQ5Jz10ECA6PDtokbTnbUYHCCddN+1LmbaWx3X8FYa0hlwMyUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7rWKZPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C359C19423;
-	Tue, 31 Mar 2026 16:42:34 +0000 (UTC)
+	 MIME-Version; b=HJ873lfaUHVDV2wQMjo8cWKeRYoeG2hCV3y+/oAWQ1hbQQ/q+6xuBKuEYaSx5zrc46QLYk80ylSu9BsQsS4vlRiOKpQSpLtbs2+KaYLZsQ9zTVIXPQeO/foJC6DK8PSRI/5rR0ojQVslKDjZnxWgQ+V85hrrw7eFdKXL5L4s2B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0TU4L73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D56C19423;
+	Tue, 31 Mar 2026 16:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975354;
-	bh=riYoh1BXQ8cNS43ppDflNWpHC1rXC3Ly26YWOWsk7XU=;
+	s=korg; t=1774976021;
+	bh=PPmyuWpnRq1gdJVTg7csNz0GmldBEjsy3zeg5XAxA3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7rWKZPB7mKwthvKkA6eoiB7ji+k3qk64zmf8a4H3b/g6wFn4BvKnJzXl6rkbtzsq
-	 AH0My404g+6KuVU0PeKCKX01m5Ptfk0h7ec5E2iWTrrUelOU8wkJzRBp/95SIbNgpw
-	 /P7ti1Yd3t2id/E79nifMWzu8XZcFD86oaiNICrU=
+	b=V0TU4L73o1zxVKPhdaQE+j2Rp/fl0noONgXDR1MTclC6754LLzuKgvmo8psdIl/cb
+	 BuxPnjbqruUNZwv0Tv0hLdkkgsyObMLUiEPl0U8VCjEjOljsY5Iqrfa5oeInFc9sCR
+	 3Ya8QP5xgPn2sJyJR24bCpWl/1TraSoZLlAF0jCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.19 261/342] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 144/244] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
 Date: Tue, 31 Mar 2026 18:21:34 +0200
-Message-ID: <20260331161808.557558328@linuxfoundation.org>
+Message-ID: <20260331161747.085810163@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,99 +68,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231899-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232156-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1016336D8C1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,pengutronix.de:email,hartkopp.net:email,keysight.com:email]
+X-Rspamd-Queue-Id: 8386E36E8FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
-commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 upstream.
+commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
 
-Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
-CHCTRL register. To avoid concurrency issues when configuring
-functionalities exposed by this registers, take the virtual channel lock.
-All other CHCTRL updates were already protected by the same lock.
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
-accessing CHCTRL registers but this does not ensure race-free access.
-Remove the local IRQ disable/enable code as well.
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+    if (from < 0 || to < 0 || res < 0)
+        return;
+
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
+
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
+
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
+
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
+
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
+
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
 Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/rz-dmac.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/can/gw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -298,13 +298,10 @@ static void rz_dmac_disable_hw(struct rz
- {
- 	struct dma_chan *chan = &channel->vc.chan;
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
--	unsigned long flags;
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
+ 		return;
  
- 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
- 
--	local_irq_save(flags);
- 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
--	local_irq_restore(flags);
- }
- 
- static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
-@@ -569,8 +566,8 @@ static int rz_dmac_terminate_all(struct
- 	unsigned int i;
- 	LIST_HEAD(head);
- 
--	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	rz_dmac_disable_hw(channel);
- 	for (i = 0; i < DMAC_NR_LMDESC; i++)
- 		lmdesc[i].header = 0;
- 
-@@ -707,7 +704,9 @@ static void rz_dmac_irq_handle_channel(s
- 	if (chstat & CHSTAT_ER) {
- 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
- 			channel->index, chstat);
--		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
-+
-+		scoped_guard(spinlock_irqsave, &channel->vc.lock)
-+			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
- 		goto done;
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
  	}
  
+@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
+ 		break;
+ 	}
+ 
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
+ }
+ 
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
 
 
 
