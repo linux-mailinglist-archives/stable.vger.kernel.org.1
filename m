@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-232274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOQfLu//y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:07 +0200
+	id cIUjBQYBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C87536E0D1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDDC36E483
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BB7B3052D6D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 327A130B9188
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B84C425CC4;
-	Tue, 31 Mar 2026 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503E1423A63;
+	Tue, 31 Mar 2026 16:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOy2yHfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqNiggT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E466423A9B;
-	Tue, 31 Mar 2026 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1387133E372;
+	Tue, 31 Mar 2026 16:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976326; cv=none; b=BZE9eOFBxgQaqJNsTKP5VdliPUr1FlXfkQC2mKOf/NfJjWRnmIAQD7U8lxN7QWQFCi1lQBYyftJXREC4nAh1vRyOgCsYVqPy8siVAmdaW0qJChWmVo2TcLwlAuc9JgW7T46u/Y7/sNHUZBLYbiQLJ5tzhzbh7Do0khtoesz6N7Q=
+	t=1774975614; cv=none; b=QioMbmSdkq6okEZUZImCksqOp/J4t9zWXPyEl2DPp0FdVrQSQzKZPUWWaHcABQ2xvLNrcGZchSpwxwZzQfElv9Aa9VbFeRLxhyMV2o2ViwCUVd9r++Ufq6BArzEBXScqq3ql2LvS2U5dfNIaMjl/AP0jhqlWIrsCErDCrTAfmMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976326; c=relaxed/simple;
-	bh=JaE21dqU/hQYTD4r+bYZfRWd6Ua+6Rny9gzpXzdg9cs=;
+	s=arc-20240116; t=1774975614; c=relaxed/simple;
+	bh=skEjKgxRRLpQhJ8VMUkQGrA1TLpU9JAbiG7PXiUy9nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=St5qWqcCuS9yR21xUsMAWVLCtJeoMXX6bI196eoN7KhZ2Y8M1n+JjehZSxgkg/RVAua6lo6uQkf8t/vSYnV85FPISzzzeF/RBhqqx29hA2PH7AefWyOnUzJbqjJJQDLYZN+c6gmL/TgqHRnsrm4yPq+s7zQTbooW6Q3AZm7cMAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOy2yHfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A936FC19423;
-	Tue, 31 Mar 2026 16:58:45 +0000 (UTC)
+	 MIME-Version; b=u2ixSZKRbXwULg6QvQQqnv890KXLq3eDp/Tr4Fkdb3bxHe6OR3YSR3SiXT3ktS9Yy9/EV+ofTnGHBGR6i0/RhOg0y4+IRj36TGQAZgwsVd5wpk1AfFDZy68PnCcsFv04ggZouyZpxEyM8s+kQpAnDk7wOklhjZFvJ/m/b/JnrCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqNiggT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4777AC19423;
+	Tue, 31 Mar 2026 16:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976326;
-	bh=JaE21dqU/hQYTD4r+bYZfRWd6Ua+6Rny9gzpXzdg9cs=;
+	s=korg; t=1774975613;
+	bh=skEjKgxRRLpQhJ8VMUkQGrA1TLpU9JAbiG7PXiUy9nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOy2yHfctKJisskg19V0fvmayO9zZggvkLQjWUb4rBX3iIqFJZXlVj9yFjPXzLbS8
-	 z593bCBygKXbjPy/phB5BHZCnoX3wqEGEZRygJVjj/shlMrgWFXz4TTccuF+ZGlsNN
-	 z7kx3Xc5OYkgqTHI5E+7UhJoIE8hmfFSVuT+v/ok=
+	b=uqNiggT3WGKV5FGSPZ2gukkfRjacbLeUd2jR8Wo5nvwTw8HWegycwNcE1v451Qv+I
+	 F+jGuCEJfRmYXUJhc62XNg7c25nzrAAk2J3Ngr7yDAtsezY7scogEk/d9E1xgyyqGD
+	 c1srrZjQd+NykKNHI+GNx3kpLEIIoqE3NXedzWKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Sachin Kumar <xcyfun@protonmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 049/309] block: break pcpu_alloc_mutex dependency on freeze_lock
+Subject: [PATCH 6.12 002/244] bpf: Fix constant blinding for PROBE_MEM32 stores
 Date: Tue, 31 Mar 2026 18:19:12 +0200
-Message-ID: <20260331161755.291414238@linuxfoundation.org>
+Message-ID: <20260331161741.747449344@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,158 +71,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,etsalapatis.com,protonmail.com,iogearbox.net];
+	TAGGED_FROM(0.00)[bounces-231999-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232274-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fnnas.com:email,kernel.dk:email]
-X-Rspamd-Queue-Id: 7C87536E0D1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iogearbox.net:email,etsalapatis.com:email]
+X-Rspamd-Queue-Id: 3CDDC36E483
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Sachin Kumar <xcyfun@protonmail.com>
 
-[ Upstream commit 539d1b47e935e8384977dd7e5cec370c08b7a644 ]
+[ Upstream commit 2321a9596d2260310267622e0ad8fbfa6f95378f ]
 
-While nr_hw_update allocates tagset tags it acquires ->pcpu_alloc_mutex
-after ->freeze_lock is acquired or queue is frozen. This potentially
-creates a circular dependency involving ->fs_reclaim if reclaim is
-triggered simultaneously in a code path which first acquires ->pcpu_
-alloc_mutex. As the queue is already frozen while nr_hw_queue update
-allocates tagsets, the reclaim can't forward progress and thus it could
-cause a potential deadlock as reported in lockdep splat[1].
+BPF_ST | BPF_PROBE_MEM32 immediate stores are not handled by
+bpf_jit_blind_insn(), allowing user-controlled 32-bit immediates to
+survive unblinded into JIT-compiled native code when bpf_jit_harden >= 1.
 
-Fix this by pre-allocating tagset tags before we freeze queue during
-nr_hw_queue update. Later the allocated tagset tags could be safely
-installed and used after queue is frozen.
+The root cause is that convert_ctx_accesses() rewrites BPF_ST|BPF_MEM
+to BPF_ST|BPF_PROBE_MEM32 for arena pointer stores during verification,
+before bpf_jit_blind_constants() runs during JIT compilation. The
+blinding switch only matches BPF_ST|BPF_MEM (mode 0x60), not
+BPF_ST|BPF_PROBE_MEM32 (mode 0xa0). The instruction falls through
+unblinded.
 
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/CAHj4cs8F=OV9s3La2kEQ34YndgfZP-B5PHS4Z8_b9euKG6J4mw@mail.gmail.com/ [1]
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-[axboe: fix brace style issue]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add BPF_ST|BPF_PROBE_MEM32 cases to bpf_jit_blind_insn() alongside the
+existing BPF_ST|BPF_MEM cases. The blinding transformation is identical:
+load the blinded immediate into BPF_REG_AX via mov+xor, then convert
+the immediate store to a register store (BPF_STX).
+
+The rewritten STX instruction must preserve the BPF_PROBE_MEM32 mode so
+the architecture JIT emits the correct arena addressing (R12-based on
+x86-64). Cannot use the BPF_STX_MEM() macro here because it hardcodes
+BPF_MEM mode; construct the instruction directly instead.
+
+Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Sachin Kumar <xcyfun@protonmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/Y6IT5VvNRchPBLI5D7JZHBzZrU9rb0ycRJPJzJSXGj7kJlX8RJwZFSM2YZjcDxoQKABkxt1T8Os2gi23PYyFuQe6KkZGWVyfz8K5afdy9ak=@protonmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 45 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 30 insertions(+), 15 deletions(-)
+ kernel/bpf/core.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index a03f52ab87d64..4ebb92014eae1 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4747,38 +4747,45 @@ static void blk_mq_update_queue_map(struct blk_mq_tag_set *set)
- 	}
- }
- 
--static int blk_mq_realloc_tag_set_tags(struct blk_mq_tag_set *set,
--				       int new_nr_hw_queues)
-+static struct blk_mq_tags **blk_mq_prealloc_tag_set_tags(
-+				struct blk_mq_tag_set *set,
-+				int new_nr_hw_queues)
- {
- 	struct blk_mq_tags **new_tags;
- 	int i;
- 
- 	if (set->nr_hw_queues >= new_nr_hw_queues)
--		goto done;
-+		return NULL;
- 
- 	new_tags = kcalloc_node(new_nr_hw_queues, sizeof(struct blk_mq_tags *),
- 				GFP_KERNEL, set->numa_node);
- 	if (!new_tags)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	if (set->tags)
- 		memcpy(new_tags, set->tags, set->nr_hw_queues *
- 		       sizeof(*set->tags));
--	kfree(set->tags);
--	set->tags = new_tags;
- 
- 	for (i = set->nr_hw_queues; i < new_nr_hw_queues; i++) {
--		if (!__blk_mq_alloc_map_and_rqs(set, i)) {
--			while (--i >= set->nr_hw_queues)
--				__blk_mq_free_map_and_rqs(set, i);
--			return -ENOMEM;
-+		if (blk_mq_is_shared_tags(set->flags)) {
-+			new_tags[i] = set->shared_tags;
-+		} else {
-+			new_tags[i] = blk_mq_alloc_map_and_rqs(set, i,
-+					set->queue_depth);
-+			if (!new_tags[i])
-+				goto out_unwind;
- 		}
- 		cond_resched();
- 	}
- 
--done:
--	set->nr_hw_queues = new_nr_hw_queues;
--	return 0;
-+	return new_tags;
-+out_unwind:
-+	while (--i >= set->nr_hw_queues) {
-+		if (!blk_mq_is_shared_tags(set->flags))
-+			blk_mq_free_map_and_rqs(set, new_tags[i], i);
-+	}
-+	kfree(new_tags);
-+	return ERR_PTR(-ENOMEM);
- }
- 
- /*
-@@ -5062,6 +5069,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 	unsigned int memflags;
- 	int i;
- 	struct xarray elv_tbl;
-+	struct blk_mq_tags **new_tags;
- 	bool queues_frozen = false;
- 
- 	lockdep_assert_held(&set->tag_list_lock);
-@@ -5096,11 +5104,18 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 		if (blk_mq_elv_switch_none(q, &elv_tbl))
- 			goto switch_back;
- 
-+	new_tags = blk_mq_prealloc_tag_set_tags(set, nr_hw_queues);
-+	if (IS_ERR(new_tags))
-+		goto switch_back;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 76dfa9ab43a5d..fbd5d292d8bf9 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1424,6 +1424,27 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
+ 		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+ 		*to++ = BPF_STX_MEM(from->code, from->dst_reg, BPF_REG_AX, from->off);
+ 		break;
 +
- 	list_for_each_entry(q, &set->tag_list, tag_set_list)
- 		blk_mq_freeze_queue_nomemsave(q);
- 	queues_frozen = true;
--	if (blk_mq_realloc_tag_set_tags(set, nr_hw_queues) < 0)
--		goto switch_back;
-+	if (new_tags) {
-+		kfree(set->tags);
-+		set->tags = new_tags;
-+	}
-+	set->nr_hw_queues = nr_hw_queues;
- 
- fallback:
- 	blk_mq_update_queue_map(set);
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
++		*to++ = BPF_ALU64_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^
++				      from->imm);
++		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
++		/*
++		 * Cannot use BPF_STX_MEM() macro here as it
++		 * hardcodes BPF_MEM mode, losing PROBE_MEM32
++		 * and breaking arena addressing in the JIT.
++		 */
++		*to++ = (struct bpf_insn) {
++			.code  = BPF_STX | BPF_PROBE_MEM32 |
++				 BPF_SIZE(from->code),
++			.dst_reg = from->dst_reg,
++			.src_reg = BPF_REG_AX,
++			.off   = from->off,
++		};
++		break;
+ 	}
+ out:
+ 	return to - to_buff;
 -- 
 2.51.0
 
