@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMIHJ8oCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:18 +0200
+	id mANxB1H9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B347536E916
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C836D949
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7EBE5315C614
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC68B30FB49B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB80423A8A;
-	Tue, 31 Mar 2026 16:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414C8423A8B;
+	Tue, 31 Mar 2026 16:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xv99A3HO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRtVmXHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E0E421EE4;
-	Tue, 31 Mar 2026 16:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0458F33120E;
+	Tue, 31 Mar 2026 16:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976042; cv=none; b=SLsAs7Ld7tTiwe+Ojgbizsek7BvgyuVyhh1AD1z2IGOXJ2Mx3VLoXykD1Vz/uMSYouiu5bh5SInYsAQbvB4sPClyZaBQLMbzdWxocoeoiw6V59YhZ4an9+7VnYIQdY3aWqetGFzOJCftoilG6mv/x6bufOIDhNNQtNHrcrSKFno=
+	t=1774975570; cv=none; b=aFfx6JKLyLhw+3/AdRdkkZs8tm7sgGW10ffogHtzQbJ20n06n4UsQccw2y3V0TnvF9VicHqlutaGYOIeRxaWXXfjLmqwTXqA6H8w6S3l5SIjnpfiXSzletO7vocb4EEPGyRWIrvheHCHBnwLyIBMORcXK8tV0KinuUGaUSwa8MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976042; c=relaxed/simple;
-	bh=4/AzRwB9JQTvyJxF2prIUJFg4bKK/cZIcvlAmpta+V0=;
+	s=arc-20240116; t=1774975570; c=relaxed/simple;
+	bh=59vFYsnCx9uN0btH6i5makyLh2Snl1SF4BfxTtHcRWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/n9BNLJh4k4buhxfFyj3uMTnPCMQa9YMj5ASGL23aUbpA9ClleuTOARu3Nwt7FBKBCyc7c9py32f6Xlbx9HCmc7dCHRNfqFRgwku2KK6DmlPGNG/wNl03Z8hrYTupCDIHh3iTiR4IvjIjXHpbAMI5zsvWiTFGJQK0sPBGnLGSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xv99A3HO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC989C19423;
-	Tue, 31 Mar 2026 16:54:01 +0000 (UTC)
+	 MIME-Version; b=E0kqs8aVzTePIwIEQ+b077nfcn9y/0WAwR8bXaPmqvgel4/0eAG1od2wegCYYoVHuFZD+DHYoZ6IjC8dFYM7gEhUQYU8/JqzzkGKnoVC5QTgZpHVaDPdspMkoEYjfo8hY3pNfZMI+xwI7GOg96VoT/Tmf8qzLfL+zFhwhxXg1wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRtVmXHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9496AC19423;
+	Tue, 31 Mar 2026 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976042;
-	bh=4/AzRwB9JQTvyJxF2prIUJFg4bKK/cZIcvlAmpta+V0=;
+	s=korg; t=1774975569;
+	bh=59vFYsnCx9uN0btH6i5makyLh2Snl1SF4BfxTtHcRWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xv99A3HOiOPk3fU4EinffXeIP5NBR7WHh/6BGYMAYz62e+cOt4bQ8TmAOabS+7B3Z
-	 gesPTlkoMmQyId3l0U4MQ70pwz1FOP0CVerKjh2sLvArFTOwLMncSaIHzYTiHXtYQs
-	 AeWql8uqbir+J+x8QGTc5Z/pywuzZVz0H0doxPK0=
+	b=JRtVmXHBBVvjABIuzzXcoBqjxaW4jghd5umFw1NJ4CMcq6Uc1b8q4u4bjcZBA1/OM
+	 mhYnOkiFgPtllIIk2pC2kjFzfaoU8h/VzBOISJ/72mRQnTKBQz/SKYa6C4kuL37Sm+
+	 eDQlWDq2WF2Dz7r+DJx8DwYD+9vNTxPXuDU71sSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Yang <gerald.yang@canonical.com>,
-	Jan Kara <jack@suse.cz>,
+	Helen Koike <koike@igalia.com>,
 	Theodore Tso <tytso@mit.edu>,
+	syzbot+b73703b873a33d8eb8f6@syzkaller.appspotmail.com,
 	stable@kernel.org
-Subject: [PATCH 6.12 185/244] ext4: fix stale xarray tags after writeback
+Subject: [PATCH 6.19 302/342] ext4: reject mount if bigalloc with s_first_data_block != 0
 Date: Tue, 31 Mar 2026 18:22:15 +0200
-Message-ID: <20260331161748.589034347@linuxfoundation.org>
+Message-ID: <20260331161810.040934544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232164-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231982-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,canonical.com:email]
-X-Rspamd-Queue-Id: B347536E916
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,b73703b873a33d8eb8f6];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,igalia.com:email]
+X-Rspamd-Queue-Id: 7D6C836D949
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Helen Koike <koike@igalia.com>
 
-commit f4a2b42e78914ff15630e71289adc589c3a8eb45 upstream.
+commit 3822743dc20386d9897e999dbb990befa3a5b3f8 upstream.
 
-There are cases where ext4_bio_write_page() gets called for a page which
-has no buffers to submit. This happens e.g. when the part of the file is
-actually a hole, when we cannot allocate blocks due to being called from
-jbd2, or in data=journal mode when checkpointing writes the buffers
-earlier. In these cases we just return from ext4_bio_write_page()
-however if the page didn't need redirtying, we will leave stale DIRTY
-and/or TOWRITE tags in xarray because those get cleared only in
-__folio_start_writeback(). As a result we can leave these tags set in
-mappings even after a final sync on filesystem that's getting remounted
-read-only or that's being frozen. Various assertions can then get upset
-when writeback is started on such filesystems (Gerald reported assertion
-in ext4_journal_check_start() firing).
+bigalloc with s_first_data_block != 0 is not supported, reject mounting
+it.
 
-Fix the problem by cycling the page through writeback state even if we
-decide nothing needs to be written for it so that xarray tags get
-properly updated. This is slightly silly (we could update the xarray
-tags directly) but I don't think a special helper messing with xarray
-tags is really worth it in this relatively rare corner case.
-
-Reported-by: Gerald Yang <gerald.yang@canonical.com>
-Link: https://lore.kernel.org/all/20260128074515.2028982-1-gerald.yang@canonical.com
-Fixes: dff4ac75eeee ("ext4: move keep_towrite handling to ext4_bio_write_page()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260205092223.21287-2-jack@suse.cz
+Signed-off-by: Helen Koike <koike@igalia.com>
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: syzbot+b73703b873a33d8eb8f6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b73703b873a33d8eb8f6
+Link: https://patch.msgid.link/20260317142325.135074-1-koike@igalia.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/page-io.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/ext4/super.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ext4/page-io.c
-+++ b/fs/ext4/page-io.c
-@@ -506,9 +506,15 @@ int ext4_bio_write_folio(struct ext4_io_
- 		nr_to_submit++;
- 	} while ((bh = bh->b_this_page) != head);
- 
--	/* Nothing to submit? Just unlock the folio... */
--	if (!nr_to_submit)
-+	if (!nr_to_submit) {
-+		/*
-+		 * We have nothing to submit. Just cycle the folio through
-+		 * writeback state to properly update xarray tags.
-+		 */
-+		__folio_start_writeback(folio, keep_towrite);
-+		folio_end_writeback(folio);
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3625,6 +3625,13 @@ int ext4_feature_set_ok(struct super_blo
+ 			 "extents feature\n");
  		return 0;
+ 	}
++	if (ext4_has_feature_bigalloc(sb) &&
++	    le32_to_cpu(EXT4_SB(sb)->s_es->s_first_data_block)) {
++		ext4_msg(sb, KERN_WARNING,
++			 "bad geometry: bigalloc file system with non-zero "
++			 "first_data_block\n");
++		return 0;
 +	}
  
- 	bh = head = folio_buffers(folio);
- 
+ #if !IS_ENABLED(CONFIG_QUOTA) || !IS_ENABLED(CONFIG_QFMT_V2)
+ 	if (!readonly && (ext4_has_feature_quota(sb) ||
 
 
 
