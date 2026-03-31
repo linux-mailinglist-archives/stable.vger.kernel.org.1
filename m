@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eN4lAQoBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:50 +0200
+	id OMdkGUT9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CF136E492
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E09236D93A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2919304ACDF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:08:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B9D7C306E535
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDADF30B51A;
-	Tue, 31 Mar 2026 17:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8241733E367;
+	Tue, 31 Mar 2026 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp9nZc/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc6BePZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DF622578D;
-	Tue, 31 Mar 2026 17:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462D831714F;
+	Tue, 31 Mar 2026 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976882; cv=none; b=CGkmw9FAj/ThqpfGKeAb+iNoALogx8niZmm7n5Vj67kdwHVSYxL7hw/7M8PGonzkIU4LTUJOmuCE3dgIxFTSFHSO+92hn5Hld9g8vG56AafVQmjD3oaH6KTH//rp/DXpwiG/wfp7jle3vjw14opfQtznQwhlEEVCK8+9AeHMT1U=
+	t=1774975557; cv=none; b=Rb1+LSB+XQ9Dj7i6nCPfFpRO5zzfGnieFrcy0cg8NKGgCQrMpnGQpUVH5/RTrhDu3SkY1p9KFuep/QPY+6pB3aQuDZtGYZcV1nVc7o6rcVFz/v9caAauVDoXcyMePJo52DCyYOCoT+FhD/SnK9qw+lpXFEl3e4QI6Vud/bN1Hi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976882; c=relaxed/simple;
-	bh=b/iXBvdXiHpcbSmIQBMruaqR5gOjDoDckO4PAxyYnc4=;
+	s=arc-20240116; t=1774975557; c=relaxed/simple;
+	bh=Ef5MujG0t1g1nGwRsfqRferhB83hzFsnK69YRgtvjuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F+A0nDM0u/2ulpOv7bWiXLtAbLUm9hn8uK7wE7N1yr2OuonCvMj9NmofTCie5Sddh9cWCuZqI47SOprmKxo++AxsBSBsk/glYnzy+rlxW+gqOSHvU8FwuikaWT/wNIHRUtRC/TDP774THngPtJurAsq+bE54l9quXSmJYi73yyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp9nZc/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2745DC19423;
-	Tue, 31 Mar 2026 17:08:01 +0000 (UTC)
+	 MIME-Version; b=GYF5qzQw4BbBytw4zaax9Y/Saqc6djdyYJfYEzNvJ+HOHxCRBwT/pokISDjtcUyCnjN7p0A3D7Fn7HnLBrfiaWJuuAkbZPbo0aijmL0mlatyDc9TLScUaaM4Y6FYzf+kecv0mgJlZ79QspZw8cFJeje9RJwW487Qn6LQxflumC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc6BePZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E11C19423;
+	Tue, 31 Mar 2026 16:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976882;
-	bh=b/iXBvdXiHpcbSmIQBMruaqR5gOjDoDckO4PAxyYnc4=;
+	s=korg; t=1774975557;
+	bh=Ef5MujG0t1g1nGwRsfqRferhB83hzFsnK69YRgtvjuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mp9nZc/1P8frL/rBZUt/V6m4iojuXN+M5SKBOSjP7LezEuMeJDyMLbmzxIwPtDWP4
-	 rcDYqsiEUqOoeRrvHN9HJL8XUt13rkefwy9ToPgtgaOt/kTPqhCklzWYmlryAxqZT2
-	 KxbYIHmihuf4RiviZWbXc7I7mSftXub3Xk7dZEI4=
+	b=Pc6BePZ4/hiNYk15LynGaXdX1Twl/Uc2i/NySmh2LmGQWJ5QrCGEaUiLHz6YeKZ3E
+	 /zDwwXntiFzIUjt7Q7o9VECtCwHgeA/RhdRVNx4pnKoNEENXdnKdpTi6m5yKHTR1lS
+	 o0NW3D3sSNo4TIQHd6VPlhJD8BN+OEcTDOWIoGBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khaled Almahallawy <khaled.almahallawy@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Uma Shankar <uma.shankar@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.18 237/309] drm/i915: Unlink NV12 planes earlier
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.19 307/342] ext4: always drain queued discard work in ext4_mb_release()
 Date: Tue, 31 Mar 2026 18:22:20 +0200
-Message-ID: <20260331161802.300820170@linuxfoundation.org>
+Message-ID: <20260331161810.221839942@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232490-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231977-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B8CF136E492
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url]
+X-Rspamd-Queue-Id: 5E09236D93A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit bfa71b7a9dc6b5b8af157686e03308291141d00c upstream.
+commit 9ee29d20aab228adfb02ca93f87fb53c56c2f3af upstream.
 
-unlink_nv12_plane() will clobber parts of the plane state
-potentially already set up by plane_atomic_check(), so we
-must make sure not to call the two in the wrong order.
-The problem happens when a plane previously selected as
-a Y plane is now configured as a normal plane by user space.
-plane_atomic_check() will first compute the proper plane
-state based on the userspace request, and unlink_nv12_plane()
-later clears some of the state.
+While reviewing recent ext4 patch[1], Sashiko raised the following
+concern[2]:
 
-This used to work on account of unlink_nv12_plane() skipping
-the state clearing based on the plane visibility. But I removed
-that check, thinking it was an impossible situation. Now when
-that situation happens unlink_nv12_plane() will just WARN
-and proceed to clobber the state.
+> If the filesystem is initially mounted with the discard option,
+> deleting files will populate sbi->s_discard_list and queue
+> s_discard_work. If it is then remounted with nodiscard, the
+> EXT4_MOUNT_DISCARD flag is cleared, but the pending s_discard_work is
+> neither cancelled nor flushed.
 
-Rather than reverting to the old way of doing things, I think
-it's more clear if we unlink the NV12 planes before we even
-compute the new plane state.
+[1] https://lore.kernel.org/r/20260319094545.19291-1-qiang.zhang@linux.dev/
+[2] https://sashiko.dev/#/patchset/20260319094545.19291-1-qiang.zhang%40linux.dev
 
-Cc: stable@vger.kernel.org
-Reported-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Closes: https://lore.kernel.org/intel-gfx/20260212004852.1920270-1-khaled.almahallawy@intel.com/
-Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Fixes: 6a01df2f1b2a ("drm/i915: Remove pointless visible check in unlink_nv12_plane()")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260316163953.12905-2-ville.syrjala@linux.intel.com
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-(cherry picked from commit 017ecd04985573eeeb0745fa2c23896fb22ee0cc)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+The concern was valid, but it had nothing to do with the patch[1].
+One of the problems with Sashiko in its current (early) form is that
+it will detect pre-existing issues and report it as a problem with the
+patch that it is reviewing.
+
+In practice, it would be hard to hit deliberately (unless you are a
+malicious syzkaller fuzzer), since it would involve mounting the file
+system with -o discard, and then deleting a large number of files,
+remounting the file system with -o nodiscard, and then immediately
+unmounting the file system before the queued discard work has a change
+to drain on its own.
+
+Fix it because it's a real bug, and to avoid Sashiko from raising this
+concern when analyzing future patches to mballoc.c.
+
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 55cdd0af2bc5 ("ext4: get discard out of jbd2 commit kthread contex")
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_plane.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_plane.c
-+++ b/drivers/gpu/drm/i915/display/intel_plane.c
-@@ -421,11 +421,16 @@ void intel_plane_copy_hw_state(struct in
- 		drm_framebuffer_get(plane_state->hw.fb);
- }
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3895,13 +3895,11 @@ void ext4_mb_release(struct super_block
+ 	struct kmem_cache *cachep = get_groupinfo_cache(sb->s_blocksize_bits);
+ 	int count;
  
-+static void unlink_nv12_plane(struct intel_crtc_state *crtc_state,
-+			      struct intel_plane_state *plane_state);
-+
- void intel_plane_set_invisible(struct intel_crtc_state *crtc_state,
- 			       struct intel_plane_state *plane_state)
- {
- 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+-	if (test_opt(sb, DISCARD)) {
+-		/*
+-		 * wait the discard work to drain all of ext4_free_data
+-		 */
+-		flush_work(&sbi->s_discard_work);
+-		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+-	}
++	/*
++	 * wait the discard work to drain all of ext4_free_data
++	 */
++	flush_work(&sbi->s_discard_work);
++	WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
  
-+	unlink_nv12_plane(crtc_state, plane_state);
-+
- 	crtc_state->active_planes &= ~BIT(plane->id);
- 	crtc_state->scaled_planes &= ~BIT(plane->id);
- 	crtc_state->nv12_planes &= ~BIT(plane->id);
-@@ -1498,6 +1503,9 @@ static void unlink_nv12_plane(struct int
- 	struct intel_display *display = to_intel_display(plane_state);
- 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
- 
-+	if (!plane_state->planar_linked_plane)
-+		return;
-+
- 	plane_state->planar_linked_plane = NULL;
- 
- 	if (!plane_state->is_y_plane)
-@@ -1535,8 +1543,7 @@ static int icl_check_nv12_planes(struct
- 		if (plane->pipe != crtc->pipe)
- 			continue;
- 
--		if (plane_state->planar_linked_plane)
--			unlink_nv12_plane(crtc_state, plane_state);
-+		unlink_nv12_plane(crtc_state, plane_state);
- 	}
- 
- 	if (!crtc_state->nv12_planes)
+ 	group_info = rcu_access_pointer(sbi->s_group_info);
+ 	if (group_info) {
 
 
 
