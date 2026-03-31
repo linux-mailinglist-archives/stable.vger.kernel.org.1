@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-232226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MwCEAwFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:56 +0200
+	id YHLvGgsIzGlaNgYAu9opvQ
+	(envelope-from <stable+bounces-232487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:44:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EEA36EE25
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9368136F3E2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C33F932AA063
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D73E30E5065
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28B413258;
-	Tue, 31 Mar 2026 16:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F4630C372;
+	Tue, 31 Mar 2026 17:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoQarikA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boin2WDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC2B29DB8F;
-	Tue, 31 Mar 2026 16:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D010A2D7DEF;
+	Tue, 31 Mar 2026 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976202; cv=none; b=nFIYj498gzXkVJHAk5oRzckF4f/hyR+9pxLZ9iiFqJoIXpM0bEaxRIS+rjWU+celjINC5gOymDZK4w6lz5R5UKCJlVHvl2UIaETIUGZWJl1MIGILw+JqKnNaJ7jhUcSJUZlwwvq/6xH/6gDx0BKlkZx21cLMNhiddM2yg8yqagg=
+	t=1774976874; cv=none; b=bmYHbOqGo/fJKFY9GpUBKrPQN47DGos6KYxyOPKLQkRhjJDMIG7mkcHNbJ1T4p1dugakxLAESp7Cg/8xgOvq6vDz0Tm5QJqD/+UFLwCdG+TeLd0h4YiQZY0NO2miWPIyYjrWmcBextoIH5/eJshX0nuHFQfuYpQ5hWO5dVKtr/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976202; c=relaxed/simple;
-	bh=+m96hJuEj69HnCpllmcp6MvtVLPC0zGkOzimT+VjNIs=;
+	s=arc-20240116; t=1774976874; c=relaxed/simple;
+	bh=6BIB0Bi/ElGEXUdNuMVt0s+FGgrQYIt4fajXGujVstg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYyFElpKlCIC8tS6fhhQ4CM0xHw2+MUaTrmoQYwYmce5NM5i6JkMT82NxLOLSYqqT3ZQ/PF4yJ+/OPwAbFY58SUvBhaNjlJJHQlTo06qCN38Baz3nEU94+LF6I/oUDUrRjf5jiJSj97H50vOAfQNRFhFufXDgPGsPXxNpeDW2wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoQarikA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA19EC19424;
-	Tue, 31 Mar 2026 16:56:41 +0000 (UTC)
+	 MIME-Version; b=NLaT1nzqHZYvdx2NUHybP6aNXTZDsJpYcq+lfDFV/MmFov6MWTJuNjWWI+cA9pJXe0fii6gT3/Lz1thGjzfJZCsvvgs4KdrcZ8clQDpGXKT0XxYfYO7tE55kwQ0kdDkJrhcFwscb5EE91T/aEpF01s6fZXBXCfTwkaVaSC7aecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boin2WDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66767C2BCB1;
+	Tue, 31 Mar 2026 17:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976202;
-	bh=+m96hJuEj69HnCpllmcp6MvtVLPC0zGkOzimT+VjNIs=;
+	s=korg; t=1774976874;
+	bh=6BIB0Bi/ElGEXUdNuMVt0s+FGgrQYIt4fajXGujVstg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RoQarikAONEV195IY6c/T4pj8L0VncFc5T511Rhxy2taRf0Sm0HHzsHIkmD9WCOEP
-	 sOUGrSY4hTfN4sq26zBNVc7EOknnWByv6HUB9/mC1MudOjxXFkU1COkploxyXJRUHe
-	 NCJP+2ThQQauoIsu3o5JCqGREcy7mWatHXd5gdGo=
+	b=boin2WDVj2juM8Ared5Amc7zLbmcxEAeLj7+ogOFcjX4rWi2w22rl16F3V5PCnmKz
+	 9RDs6o8xMw7jFxPnkoxnCViS6iLo8Zt4rgkUT86JGKSI9StCqGfw1x6t8pwcuYaaMr
+	 5K5rPLpBsS7V9jBcVSmxTXiLsOOWgeIQBMq+9RXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	XiaoHua Wang <561399680@139.com>
-Subject: [PATCH 6.12 214/244] net: add proper RCU protection to /proc/net/ptype
+	Li Chen <me@linux.beauty>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 261/309] ext4: publish jinode after initialization
 Date: Tue, 31 Mar 2026 18:22:44 +0200
-Message-ID: <20260331161749.662382030@linuxfoundation.org>
+Message-ID: <20260331161803.174554768@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,218 +69,177 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,huawei.com,google.com,kernel.org,139.com];
-	TAGGED_FROM(0.00)[bounces-232226-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232487-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,139.com:email,huawei.com:email,alibaba.com:email,ptype_all.next:url]
-X-Rspamd-Queue-Id: A4EEA36EE25
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9368136F3E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Li Chen <me@linux.beauty>
 
-[ Upstream commit f613e8b4afea0cd17c7168e8b00e25bc8d33175d ]
+commit 1aec30021edd410b986c156f195f3d23959a9d11 upstream.
 
-Yin Fengwei reported an RCU stall in ptype_seq_show() and provided
-a patch.
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
 
-Real issue is that ptype_seq_next() and ptype_seq_show() violate
-RCU rules.
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
 
-ptype_seq_show() runs under rcu_read_lock(), and reads pt->dev
-to get device name without any barrier.
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
 
-At the same time, concurrent writers can remove a packet_type structure
-(which is correctly freed after an RCU grace period) and clear pt->dev
-without an RCU grace period.
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
 
-Define ptype_iter_state to carry a dev pointer along seq_net_private:
-
-struct ptype_iter_state {
-	struct seq_net_private	p;
-	struct net_device	*dev; // added in this patch
-};
-
-We need to record the device pointer in ptype_get_idx() and
-ptype_seq_next() so that ptype_seq_show() is safe against
-concurrent pt->dev changes.
-
-We also need to add full RCU protection in ptype_seq_next().
-(Missing READ_ONCE() when reading list.next values)
-
-Many thanks to Dong Chenchen for providing a repro.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1d10f8a1f40b ("net-procfs: show net devices bound packet types")
-Fixes: c353e8983e0d ("net: introduce per netns packet chains")
-Reported-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Reported-by: Dong Chenchen <dongchenchen2@huawei.com>
-Closes: https://lore.kernel.org/netdev/CANn89iKRRKPnWjJmb-_3a=sq+9h6DvTQM4DBZHT5ZRGPMzQaiA@mail.gmail.com/T/#m7b80b9fc9b9267f90e0b7aad557595f686f9c50d
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Tested-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Link: https://patch.msgid.link/20260202205217.2881198-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Some adjustments have been made. ]
-Signed-off-by: XiaoHua Wang <561399680@139.com>
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <me@linux.beauty>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/net-procfs.c |   49 +++++++++++++++++++++++++++++++++----------------
- 1 file changed, 33 insertions(+), 16 deletions(-)
+ fs/ext4/fast_commit.c |    4 ++--
+ fs/ext4/inode.c       |   15 +++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/net/core/net-procfs.c
-+++ b/net/core/net-procfs.c
-@@ -168,8 +168,14 @@ static const struct seq_operations softn
- 	.show  = softnet_seq_show,
- };
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -975,13 +975,13 @@ static int ext4_fc_flush_data(journal_t
+ 	int ret = 0;
  
-+struct ptype_iter_state {
-+	struct seq_net_private	p;
-+	struct net_device	*dev;
-+};
+ 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+-		ret = jbd2_submit_inode_data(journal, ei->jinode);
++		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+-		ret = jbd2_wait_inode_data(journal, ei->jinode);
++		ret = jbd2_wait_inode_data(journal, READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 	}
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -126,6 +126,8 @@ void ext4_inode_csum_set(struct inode *i
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
 +
- static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
- {
-+	struct ptype_iter_state *iter = seq->private;
- 	struct list_head *ptype_list = NULL;
- 	struct packet_type *pt = NULL;
- 	struct net_device *dev;
-@@ -179,12 +185,16 @@ static void *ptype_get_idx(struct seq_fi
- 	for_each_netdev_rcu(seq_file_net(seq), dev) {
- 		ptype_list = &dev->ptype_all;
- 		list_for_each_entry_rcu(pt, ptype_list, list) {
--			if (i == pos)
-+			if (i == pos) {
-+				iter->dev = dev;
- 				return pt;
-+			}
- 			++i;
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -133,10 +135,10 @@ static inline int ext4_begin_ordered_tru
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
+ }
+ 
+@@ -4501,8 +4503,13 @@ int ext4_inode_attach_jinode(struct inod
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
  		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
++		/*
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
++		 */
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
  	}
- 
-+	iter->dev = NULL;
-+
- 	list_for_each_entry_rcu(pt, &net_hotdata.ptype_all, list) {
- 		if (i == pos)
- 			return pt;
-@@ -210,6 +220,7 @@ static void *ptype_seq_start(struct seq_
- 
- static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- {
-+	struct ptype_iter_state *iter = seq->private;
- 	struct net_device *dev;
- 	struct packet_type *pt;
- 	struct list_head *nxt;
-@@ -220,20 +231,21 @@ static void *ptype_seq_next(struct seq_f
- 		return ptype_get_idx(seq, 0);
- 
- 	pt = v;
--	nxt = pt->list.next;
--	if (pt->dev) {
--		if (nxt != &pt->dev->ptype_all)
-+	nxt = READ_ONCE(pt->list.next);
-+	dev = iter->dev;
-+	if (dev) {
-+		if (nxt != &dev->ptype_all)
- 			goto found;
- 
--		dev = pt->dev;
- 		for_each_netdev_continue_rcu(seq_file_net(seq), dev) {
--			if (!list_empty(&dev->ptype_all)) {
--				nxt = dev->ptype_all.next;
-+			nxt = READ_ONCE(dev->ptype_all.next);
-+			if (nxt != &dev->ptype_all) {
-+				iter->dev = dev;
- 				goto found;
- 			}
- 		}
--
--		nxt = net_hotdata.ptype_all.next;
-+		iter->dev = NULL;
-+		nxt = READ_ONCE(net_hotdata.ptype_all.next);
- 		goto ptype_all;
- 	}
- 
-@@ -242,14 +254,14 @@ ptype_all:
- 		if (nxt != &net_hotdata.ptype_all)
- 			goto found;
- 		hash = 0;
--		nxt = ptype_base[0].next;
-+		nxt = READ_ONCE(ptype_base[0].next);
- 	} else
- 		hash = ntohs(pt->type) & PTYPE_HASH_MASK;
- 
- 	while (nxt == &ptype_base[hash]) {
- 		if (++hash >= PTYPE_HASH_SIZE)
- 			return NULL;
--		nxt = ptype_base[hash].next;
-+		nxt = READ_ONCE(ptype_base[hash].next);
- 	}
- found:
- 	return list_entry(nxt, struct packet_type, list);
-@@ -263,19 +275,24 @@ static void ptype_seq_stop(struct seq_fi
- 
- static int ptype_seq_show(struct seq_file *seq, void *v)
- {
-+	struct ptype_iter_state *iter = seq->private;
- 	struct packet_type *pt = v;
-+	struct net_device *dev;
- 
--	if (v == SEQ_START_TOKEN)
-+	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq, "Type Device      Function\n");
--	else if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
--		 (!pt->dev || net_eq(dev_net(pt->dev), seq_file_net(seq)))) {
-+		return 0;
-+	}
-+	dev = iter->dev;
-+	if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
-+		 (!dev || net_eq(dev_net(dev), seq_file_net(seq)))) {
- 		if (pt->type == htons(ETH_P_ALL))
- 			seq_puts(seq, "ALL ");
- 		else
- 			seq_printf(seq, "%04x", ntohs(pt->type));
- 
- 		seq_printf(seq, " %-8s %ps\n",
--			   pt->dev ? pt->dev->name : "", pt->func);
-+			   dev ? dev->name : "", pt->func);
- 	}
- 
- 	return 0;
-@@ -299,7 +316,7 @@ static int __net_init dev_proc_net_init(
- 			 &softnet_seq_ops))
- 		goto out_dev;
- 	if (!proc_create_net("ptype", 0444, net->proc_net, &ptype_seq_ops,
--			sizeof(struct seq_net_private)))
-+			sizeof(struct ptype_iter_state)))
- 		goto out_softnet;
- 
- 	if (wext_proc_init(net))
+ 	spin_unlock(&inode->i_lock);
 
 
 
