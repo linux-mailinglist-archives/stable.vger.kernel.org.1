@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOPhHTT7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:56 +0200
+	id QB7xBfv8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5548536D367
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9883336D7EB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1FB7E30331F2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B705F3122897
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C522426EB4;
-	Tue, 31 Mar 2026 16:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7F4423A99;
+	Tue, 31 Mar 2026 16:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpTZEPOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWnwElc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36E8426EAA;
-	Tue, 31 Mar 2026 16:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9054A423A63;
+	Tue, 31 Mar 2026 16:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975110; cv=none; b=DSKuAOd9kmuL8VL1f3rAygzFjqJfgmXNkE2Ell3zQ3V5HikqClkcHn174TaVGn5SVOHTZ09MvHgIyLcNJUMZEH+H/xbhAqcf4ImgR4zEzexFwQaexk+K4y8UeW1/mF+Sef84G/al39cpPqDY3OLnfY2uvde6I5dTVxD6pd83b3E=
+	t=1774975673; cv=none; b=gXAb/rLABwHcLtpAeuxA4FGHNSufgKkPykWK4dqUBsJlTvxMPvshOTXbmRuAN9cN0ZUJuXgBEqpf331gq/c26N4K5PwO85QeoOiji/qubN+DEnnDE3xsZCV5uVwdUaqLoVqgOdRtodiG7MMovuJYjoyQiCkhoTeontME0V3Rop4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975110; c=relaxed/simple;
-	bh=q8nlOxF/g/D+rVbQXoFX7DuHdm1+e76VVkgvokv1QzI=;
+	s=arc-20240116; t=1774975673; c=relaxed/simple;
+	bh=MOBHLhtWexEy+fSKk3GFvfnkyBa+FP1Yw51UPCyMVkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZVRrWAENjLTWpo78MIW5l59XcKUOrHFv3Eboc8VwsBxBEDAFi5pv2QhDUpHUdNS0naCDhwAY5brigB/TqTEop9uBq25+3jJ95HT87t3k0NDW8Ba9pY2URaacfbwo5uDwn2YXXTMrWqCME4WlLuQ9phORM1SBTxQNPkncYr1v5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpTZEPOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1A4C19423;
-	Tue, 31 Mar 2026 16:38:29 +0000 (UTC)
+	 MIME-Version; b=aQBBv+KpCwPOtQCZdBdWn3VYyKfkrSvh2eEwqW9+vQK2G6qtKw1NldNRMIgrUrYqnlzEMVAmN2BhBVSvOpjCfHjBK4+6+FtIFaBtqm0Zu+7lBT+v8588SIVEr3CfdDufUL3udWgkB1s5Kr1OLQTBVWLNAJiwRMH3rZD482K/qV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWnwElc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263A0C19423;
+	Tue, 31 Mar 2026 16:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975109;
-	bh=q8nlOxF/g/D+rVbQXoFX7DuHdm1+e76VVkgvokv1QzI=;
+	s=korg; t=1774975673;
+	bh=MOBHLhtWexEy+fSKk3GFvfnkyBa+FP1Yw51UPCyMVkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpTZEPOtPUcU5m8irvNuI9XJy+h463bFcoCQaIJPneL73HAi/zgR2QQffXWWgIYSB
-	 f1lAJzfivOEK889HO4YYgJ3XsXpIPvtB3JlZyDMuJgWxM0Urh/Me8ReeUwmuCntpc3
-	 k76aP/M5NUpZQn4xoQaOqriLMIvbotRODozMHzqk=
+	b=FWnwElc5LRT6dbHdT/AuG24h6rgZEPVn4Mje95N/qfNRcXVxmtL8BryGcFWEu9SML
+	 f9OlvctR1YcKt+KZkbCWp05PCOb269SOASpX0MkVxnlhCqWF87wNlK9lef7NQ50yer
+	 zBAAR3XeS7VmzMmkHsZ9gSxU+2qKMQFJ2jmF1Wzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jie Deng <dengjie03@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 160/342] RDMA/irdma: Remove reset check from irdma_modify_qp_to_err()
+Subject: [PATCH 6.12 043/244] usb: core: new quirk to handle devices with zero configurations
 Date: Tue, 31 Mar 2026 18:19:53 +0200
-Message-ID: <20260331161804.898264974@linuxfoundation.org>
+Message-ID: <20260331161743.289091660@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,59 +77,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231803-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232022-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5548536D367
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9883336D7EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Jie Deng <dengjie03@kylinos.cn>
 
-[ Upstream commit c45c6ebd693b944f1ffe429fdfb6cc1674c237be ]
+[ Upstream commit 9f6a983cfa22ac662c86e60816d3a357d4b551e9 ]
 
-During reset, irdma_modify_qp() to error should be called to disconnect
-the QP. Without this fix, if not preceded by irdma_modify_qp() to error, the
-API call irdma_destroy_qp() gets stuck waiting for the QP refcount to go
-to zero, because the cm_node associated with this QP isn't disconnected.
+Some USB devices incorrectly report bNumConfigurations as 0 in their
+device descriptor, which causes the USB core to reject them during
+enumeration.
+logs:
+usb 1-2: device descriptor read/64, error -71
+usb 1-2: no configurations
+usb 1-2: can't read configurations, error -22
 
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+However, these devices actually work correctly when
+treated as having a single configuration.
+
+Add a new quirk USB_QUIRK_FORCE_ONE_CONFIG to handle such devices.
+When this quirk is set, assume the device has 1 configuration instead
+of failing with -EINVAL.
+
+This quirk is applied to the device with VID:PID 5131:2007 which
+exhibits this behavior.
+
+Signed-off-by: Jie Deng <dengjie03@kylinos.cn>
+Link: https://patch.msgid.link/20260227084931.1527461-1-dengjie03@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/utils.c | 2 --
- 1 file changed, 2 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 3 +++
+ drivers/usb/core/config.c                       | 6 +++++-
+ drivers/usb/core/quirks.c                       | 5 +++++
+ include/linux/usb/quirks.h                      | 3 +++
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index 13d7499131d48..89c4fe05763e4 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -2321,8 +2321,6 @@ void irdma_modify_qp_to_err(struct irdma_sc_qp *sc_qp)
- 	struct irdma_qp *qp = sc_qp->qp_uk.back_qp;
- 	struct ib_qp_attr attr;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e88505e945d52..811345669be4e 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7249,6 +7249,9 @@
+ 				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
+ 					(Reduce timeout of the SET_ADDRESS
+ 					request from 5000 ms to 500 ms);
++				q = USB_QUIRK_FORCE_ONE_CONFIG (Device
++					claims zero configurations,
++					forcing to 1);
+ 			Example: quirks=0781:5580:bk,0a5c:5834:gij
  
--	if (qp->iwdev->rf->reset)
--		return;
- 	attr.qp_state = IB_QPS_ERR;
+ 	usbhid.mousepoll=
+diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
+index bbc3cb1ba7b5c..0baecdd342c7a 100644
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -891,7 +891,11 @@ int usb_get_configuration(struct usb_device *dev)
+ 		dev->descriptor.bNumConfigurations = ncfg = USB_MAXCONFIG;
+ 	}
  
- 	if (rdma_protocol_roce(qp->ibqp.device, 1))
+-	if (ncfg < 1) {
++	if (ncfg < 1 && dev->quirks & USB_QUIRK_FORCE_ONE_CONFIG) {
++		dev_info(ddev, "Device claims zero configurations, forcing to 1\n");
++		dev->descriptor.bNumConfigurations = 1;
++		ncfg = 1;
++	} else if (ncfg < 1) {
+ 		dev_err(ddev, "no configurations\n");
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index c12942a533ce2..53b08d6cf7824 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -141,6 +141,8 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
+ 			case 'p':
+ 				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
+ 				break;
++			case 'q':
++				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
+ 			/* Ignore unrecognized flag characters */
+ 			}
+ 		}
+@@ -594,6 +596,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	/* VCOM device */
+ 	{ USB_DEVICE(0x4296, 0x7570), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
+ 
++	/* Noji-MCS SmartCard Reader */
++	{ USB_DEVICE(0x5131, 0x2007), .driver_info = USB_QUIRK_FORCE_ONE_CONFIG },
++
+ 	/* INTEL VALUE SSD */
+ 	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
+diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
+index 2f7bd2fdc6164..b3cc7beab4a3c 100644
+--- a/include/linux/usb/quirks.h
++++ b/include/linux/usb/quirks.h
+@@ -78,4 +78,7 @@
+ /* skip BOS descriptor request */
+ #define USB_QUIRK_NO_BOS			BIT(17)
+ 
++/* Device claims zero configurations, forcing to 1 */
++#define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
++
+ #endif /* __LINUX_USB_QUIRKS_H */
 -- 
-2.53.0
+2.51.0
 
 
 
