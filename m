@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NH1CekCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:49 +0200
+	id iJa1NSz9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F9536E948
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CB336D8CA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C0E3931A7F30
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1EFC30C7B8B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE9E413225;
-	Tue, 31 Mar 2026 16:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C968A423A7C;
+	Tue, 31 Mar 2026 16:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6p7mCuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv5UPzE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBE03F7867;
-	Tue, 31 Mar 2026 16:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8241A423149;
+	Tue, 31 Mar 2026 16:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976107; cv=none; b=Q3EyuVsqz/1s+4x07T7Go2eGTygZt0hz4sCqEFzEL0lAiNQnro1DmTZfgwi+7UPgXWHdFMMd1hp5dH40DfEb54EPSa3EqpLPDZCRCnKJXrh82+8F/WJ4ZckmnEzYQVP+92zdhDodYKSsrYRwWq7Br9KDUKSFgxt5qvso5NOHGwE=
+	t=1774975516; cv=none; b=UKaXPmtkdMRU1oyhRoVeReWTnPyhdyw5njgd8OrFHc/1AnM78Ih65LqYVoTm/C4R0Vn2H4XYYmildC42agTLEUXERn1uJvQrbEUBXTKCA3IzSfTFUQXQoHbMfRw8b0vk20iVK2Y9yE0mFI4ubrFmylPs7qSNbIakBWsL+z3Hn/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976107; c=relaxed/simple;
-	bh=MAehULrpugo1tRvlGQnzCjc6QqFwfu1NK+rU8IBIqGk=;
+	s=arc-20240116; t=1774975516; c=relaxed/simple;
+	bh=4Mexmz7EY5q5ZvxZTRy34BnoMqOxlV8htLzNHFDXXc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsxICe90bnRkxp+accnvF873XGhLpxNHzo49jl91cQ3K36ioDXZXoMDBXOiwS0kveaevqApdzxVX75C+mcjraEtNzWmyDtOqPn9MUxtI1gnt1QIa+C/87xk6Zlc6K9h+zF0Izc2GGizhsQ3Db/gAi3cvAfRtS9E6w4eA8R5VivU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6p7mCuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86336C19423;
-	Tue, 31 Mar 2026 16:55:06 +0000 (UTC)
+	 MIME-Version; b=Dfh2YVyEuZ/UusgrvsOLszlaU2FrkUJV96eIwIpQuBkY6sswfLlKNLjRhlDNXCzyti/q9EyI8oIYxfSyIMse7ND1JPYxoEL7M845jIr/JQW73Qf/vUeBKCr4yemVrEMgYP6XMjtlVR5tg9p7sQp3pJRn+o/Yng0VGmIASpywMFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv5UPzE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EFDC19423;
+	Tue, 31 Mar 2026 16:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976106;
-	bh=MAehULrpugo1tRvlGQnzCjc6QqFwfu1NK+rU8IBIqGk=;
+	s=korg; t=1774975516;
+	bh=4Mexmz7EY5q5ZvxZTRy34BnoMqOxlV8htLzNHFDXXc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6p7mCucTwwrwXwS5249JckU194oJfJ6TeEnaYxHvFTslrUc4y9ffTn1t+VqzB4jB
-	 I16WIVOHO+VBZ1LKcrt81o/cFLP1VCvW/LP2UIbDovVt4cCbAfzspNeGMfETd8Ktis
-	 CqvYRXuhRPNAGKI+ngLXqFatwiHEgUtQQ871jv+U=
+	b=cv5UPzE/SEbb6nLAHyfnPQ47nmAukrC/grI9p0kYOogzqlO29nbAnK7p4tJq+csOH
+	 edM2XutsbERdfEZrAEWhx04OFSkwfSQxgh/hy7Klz/2yJS0mxEt6lFS69kOO193c1Q
+	 QZxu7R3N6fFQ6o0DPnorcyjwMw4sH7b8dGAsGqcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>
-Subject: [PATCH 6.12 208/244] rust: pin-init: add references to previously initialized fields
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 325/342] dmaengine: xilinx: xilinx_dma: Fix dma_device directions
 Date: Tue, 31 Mar 2026 18:22:38 +0200
-Message-ID: <20260331161749.436709449@linuxfoundation.org>
+Message-ID: <20260331161810.870772894@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,241 +78,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232189-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231962-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 24F9536E948
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nabladev.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 14CB336D8CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benno Lossin <lossin@kernel.org>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 42415d163e5df6db799c7de6262d707e402c2c7e upstream.
+[ Upstream commit e9cc95397bb7da13fe8a5b53a2f23cfaf9018ade ]
 
-After initializing a field in an initializer macro, create a variable
-holding a reference that points at that field. The type is either
-`Pin<&mut T>` or `&mut T` depending on the field's structural pinning
-kind.
+Unlike chan->direction , struct dma_device .directions field is a
+bitfield. Turn chan->direction into a bitfield to make it compatible
+with struct dma_device .directions .
 
-[ Applied fixes to devres and rust_driver_pci sample - Benno]
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-[ Removed the devres changes, because devres is not present in 6.12.y and
-  earlier. Also adjusted paths in the macro to account for the fact that
-  pin-init is part of the kernel crate in 6.12.y and earlier. - Benno ]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e01511443c3 ("dmaengine: xilinx_dma: Set dma_device directions")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221728.160139-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/init/macros.rs |  149 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 115 insertions(+), 34 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -985,38 +985,56 @@ macro_rules! __pin_data {
-         @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
-         @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
-     ) => {
--        // For every field, we create a projection function according to its projection type. If a
--        // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
--        // structurally pinned, then it can be initialized via `Init`.
--        //
--        // The functions are `unsafe` to prevent accidentally calling them.
--        #[allow(dead_code)]
--        #[expect(clippy::missing_safety_doc)]
--        impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
--        where $($whr)*
--        {
--            $(
--                $(#[$($p_attr)*])*
--                $pvis unsafe fn $p_field<E>(
--                    self,
--                    slot: *mut $p_type,
--                    init: impl $crate::init::PinInit<$p_type, E>,
--                ) -> ::core::result::Result<(), E> {
--                    // SAFETY: TODO.
--                    unsafe { $crate::init::PinInit::__pinned_init(init, slot) }
--                }
--            )*
--            $(
--                $(#[$($attr)*])*
--                $fvis unsafe fn $field<E>(
--                    self,
--                    slot: *mut $type,
--                    init: impl $crate::init::Init<$type, E>,
--                ) -> ::core::result::Result<(), E> {
--                    // SAFETY: TODO.
--                    unsafe { $crate::init::Init::__init(init, slot) }
--                }
--            )*
-+        $crate::macros::paste! {
-+            // For every field, we create a projection function according to its projection type. If a
-+            // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
-+            // structurally pinned, then it can be initialized via `Init`.
-+            //
-+            // The functions are `unsafe` to prevent accidentally calling them.
-+            #[allow(dead_code, non_snake_case)]
-+            #[expect(clippy::missing_safety_doc)]
-+            impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
-+            where $($whr)*
-+            {
-+                $(
-+                    $(#[$($p_attr)*])*
-+                    $pvis unsafe fn $p_field<E>(
-+                        self,
-+                        slot: *mut $p_type,
-+                        init: impl $crate::init::PinInit<$p_type, E>,
-+                    ) -> ::core::result::Result<(), E> {
-+                        // SAFETY: TODO.
-+                        unsafe { $crate::init::PinInit::__pinned_init(init, slot) }
-+                    }
-+
-+                    $(#[$($p_attr)*])*
-+                    $pvis unsafe fn [<__project_ $p_field>]<'__slot>(
-+                        self,
-+                        slot: &'__slot mut $p_type,
-+                    ) -> ::core::pin::Pin<&'__slot mut $p_type> {
-+                        unsafe { ::core::pin::Pin::new_unchecked(slot) }
-+                    }
-+                )*
-+                $(
-+                    $(#[$($attr)*])*
-+                    $fvis unsafe fn $field<E>(
-+                        self,
-+                        slot: *mut $type,
-+                        init: impl $crate::init::Init<$type, E>,
-+                    ) -> ::core::result::Result<(), E> {
-+                        // SAFETY: TODO.
-+                        unsafe { $crate::init::Init::__init(init, slot) }
-+                    }
-+
-+                    $(#[$($attr)*])*
-+                    $fvis unsafe fn [<__project_ $field>]<'__slot>(
-+                        self,
-+                        slot: &'__slot mut $type,
-+                    ) -> &'__slot mut $type {
-+                        slot
-+                    }
-+                )*
-+            }
-         }
-     };
- }
-@@ -1213,6 +1231,13 @@ macro_rules! __init_internal {
-         // return when an error/panic occurs.
-         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
-         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
-+        // SAFETY:
-+        // - the project function does the correct field projection,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        #[allow(unused_variables, unused_assignments)]
-+        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
-+
-         // Create the drop guard:
-         //
-         // We rely on macro hygiene to make it impossible for users to access this local variable.
-@@ -1244,6 +1269,14 @@ macro_rules! __init_internal {
-         // SAFETY: `slot` is valid, because we are inside of an initializer closure, we
-         // return when an error/panic occurs.
-         unsafe { $crate::init::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
-+
-+        // SAFETY:
-+        // - the field is not structurally pinned, since the line above must compile,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        #[allow(unused_variables, unused_assignments)]
-+        let $field = unsafe { &mut (*$slot).$field };
-+
-         // Create the drop guard:
-         //
-         // We rely on macro hygiene to make it impossible for users to access this local variable.
-@@ -1262,7 +1295,7 @@ macro_rules! __init_internal {
-             );
-         }
-     };
--    (init_slot($($use_data:ident)?):
-+    (init_slot(): // No `use_data`, so all fields are not structurally pinned
-         @data($data:ident),
-         @slot($slot:ident),
-         @guards($($guards:ident,)*),
-@@ -1276,6 +1309,15 @@ macro_rules! __init_internal {
-             // SAFETY: The memory at `slot` is uninitialized.
-             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-         }
-+
-+        #[allow(unused_variables, unused_assignments)]
-+        // SAFETY:
-+        // - the field is not structurally pinned, since no `use_data` was required to create this
-+        //   initializer,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        let $field = unsafe { &mut (*$slot).$field };
-+
-         // Create the drop guard:
-         //
-         // We rely on macro hygiene to make it impossible for users to access this local variable.
-@@ -1286,7 +1328,46 @@ macro_rules! __init_internal {
-                 $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
-             };
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 89a8254d9cdc6..e6d10079ec670 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -3003,7 +3003,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
+ 		return -EINVAL;
+ 	}
  
--            $crate::__init_internal!(init_slot($($use_data)?):
-+            $crate::__init_internal!(init_slot():
-+                @data($data),
-+                @slot($slot),
-+                @guards([< __ $field _guard >], $($guards,)*),
-+                @munch_fields($($rest)*),
-+            );
-+        }
-+    };
-+    (init_slot($use_data:ident):
-+        @data($data:ident),
-+        @slot($slot:ident),
-+        @guards($($guards:ident,)*),
-+        // Init by-value.
-+        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
-+    ) => {
-+        {
-+            $(let $field = $val;)?
-+            // Initialize the field.
-+            //
-+            // SAFETY: The memory at `slot` is uninitialized.
-+            unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-+        }
-+        // SAFETY:
-+        // - the project function does the correct field projection,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        #[allow(unused_variables, unused_assignments)]
-+        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
-+
-+        // Create the drop guard:
-+        //
-+        // We rely on macro hygiene to make it impossible for users to access this local variable.
-+        // We use `paste!` to create new hygiene for `$field`.
-+        $crate::macros::paste! {
-+            // SAFETY: We forget the guard later when initialization has succeeded.
-+            let [< __ $field _guard >] = unsafe {
-+                $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
-+            };
-+
-+            $crate::__init_internal!(init_slot($use_data):
-                 @data($data),
-                 @slot($slot),
-                 @guards([< __ $field _guard >], $($guards,)*),
+-	xdev->common.directions |= chan->direction;
++	xdev->common.directions |= BIT(chan->direction);
+ 
+ 	/* Request the interrupt */
+ 	chan->irq = of_irq_get(node, chan->tdest);
+-- 
+2.53.0
+
 
 
 
