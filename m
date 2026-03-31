@@ -1,154 +1,145 @@
-Return-Path: <stable+bounces-232565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDImA3YazGnHPgYAu9opvQ
-	(envelope-from <stable+bounces-232565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:03:18 +0200
+	id SOQxBkcpzGkmQgYAu9opvQ
+	(envelope-from <stable+bounces-232571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:06:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4DE370547
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:03:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79326370FB9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0B7A30406AE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B321F301B931
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5168E3A16B5;
-	Tue, 31 Mar 2026 19:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFFB3A3E9A;
+	Tue, 31 Mar 2026 20:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="q12YdEwn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKo24m+d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B8D37883C;
-	Tue, 31 Mar 2026 19:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3DE330662;
+	Tue, 31 Mar 2026 20:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983793; cv=none; b=QrJcOAOShy3FdpwyGT5QP7GdztnRJcdRl7lr52su376iTzjllpURziGa5iC/dCS81wYK6khPN6JakcAh/xcuiCrWBqnp2wsMKNg6RCellGZP03tWeDr5sEpWfCSsr9hw67dlIy47s2J6npS1uSq/waHq6Q84/D3pjtJxR9xBI+c=
+	t=1774987323; cv=none; b=AOQSkzNYJPHx3tgRvGU9PGqncnpt5zULllWmSyejcnU4GtPk8CvLXaOXA/KNBrW7tPUj/w/Lgaw+mmAY4CiAy7v8iPkx4o9W9JIMshBRXusQLnDxuPqaBbOyPPua8wzJ3qNeiMKMFMMZ+m1B9JZ7I/sJju8MhZPo/BeYRiI87po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983793; c=relaxed/simple;
-	bh=lHpNuvAMhCX6p3T7a7BazybaLrtSomcuIRgu8XwxmiA=;
-	h=Date:To:From:Subject:Message-Id; b=J8V4VIzAgBEsDCJQV5LWhhnjDtuYJyUrhfXk1FMn+IeoxqAJAcX8lie+Fl3JRh5YzAUNCCbMJ/YWERLr8XvP2ctmJqDMMuhFt47k5fwpIN1kdW5O8shGzRHHnp6bkJxvsXWqatJnqe4qvjASP43Z05ZkVnHO6bf3ehQ/i71F0k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=q12YdEwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923C7C19423;
-	Tue, 31 Mar 2026 19:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774983792;
-	bh=lHpNuvAMhCX6p3T7a7BazybaLrtSomcuIRgu8XwxmiA=;
-	h=Date:To:From:Subject:From;
-	b=q12YdEwnG9xZnkFna1+NhJFv+gLlZ0cjoa0+ObbOAJ32OvkJ2TrJigxMTEZJrfcrs
-	 nlQvvg/5eIlXGb8Hdicg0jqg1neri7jZJQ1nwt8Gw1MFNlez+UPeraJwpVDCfE4rVu
-	 ltKtWk42lZpkn7fLyq57D+xW1iNRXIq7+L7i/kO8=
-Date: Tue, 31 Mar 2026 12:03:12 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,joshua.hahnjy@gmail.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,apopple@nvidia.com,liuyun01@kylinos.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch added to mm-unstable branch
-Message-Id: <20260331190312.923C7C19423@smtp.kernel.org>
+	s=arc-20240116; t=1774987323; c=relaxed/simple;
+	bh=yz7Gkj/NB6A/nXg74Ru5bIaF98PkmZX1c1CyhRc6A6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+IfB6LaATKT91o0aIeXCb2Fn4xRiPdQjVWyz1MU5PD7wh9jLZYKpmLieXoJl9LecpNrJqtFeCMyVj1Janl6I9hSywNsHcPx2yR8Sg2p8UUZHZ1zepWOLd8PT+RRGl15HTPdu9FQXYnu9VVv+SD4xmnpc/M2Vayw4mTLkyck84Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKo24m+d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D902FC19423;
+	Tue, 31 Mar 2026 20:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774987323;
+	bh=yz7Gkj/NB6A/nXg74Ru5bIaF98PkmZX1c1CyhRc6A6I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TKo24m+dZz8sQzl7Wg15ZeUFtoVdD9y3IJeagghzABNFHnWXHP2y62oweCV6ezrJs
+	 DiBMbkAPOsbEnSkAdsNgOL3uFIJ3Jf37FRdH840N5pR0OyzIK9K2HuPVpBKlfLO6mV
+	 HZRG8Z9ah/SUMu1rHnBh8YHJcsiAx0VcclWJi4iofExi2goD2sNLALIYfaxgmWKu7D
+	 j4BGF1e20RiMw74yAdwaVTDB6RKr1aqxsuyfJUO1GRrY1SOYyiu5IuO14FObnctW38
+	 Hy9G1YqtksFhmOBfzCsjFrUXrkCUUOM8QYZuqqVoBoKANaE+QXgzIGghsjJMTAvf3N
+	 CmL2wNkUQ9BfA==
+Date: Tue, 31 Mar 2026 21:38:24 +0200
+From: Nicolas Schier <nsc@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] modpost: Declare extra_warn with unused attribute
+Message-ID: <acwisFwJ3eMMQLIp@levanger>
+Mail-Followup-To: Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+References: <20260325-modpost-extra_warn-unused-but-set-global-v1-1-2e84003b7e81@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325-modpost-extra_warn-unused-but-set-global-v1-1-2e84003b7e81@kernel.org>
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232565-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,gourry.net,kernel.org,sk.com,nvidia.com,kylinos.cn,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232571-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,oss.qualcomm.com,kernel.org,vger.kernel.org,lists.linux.dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,kylinos.cn:email,sk.com:email,gourry.net:email]
-X-Rspamd-Queue-Id: 7F4DE370547
+	TAGGED_RCPT(0.00)[stable,lkml];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 79326370FB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, Mar 25, 2026 at 06:20:30PM -0700, Nathan Chancellor wrote:
+> A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+> in clang under a new subwarning, -Wunused-but-set-global, points out an
+> unused static global variable in scripts/mod/modpost.c:
+> 
+>   scripts/mod/modpost.c:59:13: error: variable 'extra_warn' set but not used [-Werror,-Wunused-but-set-global]
+>      59 | static bool extra_warn;
+>         |             ^
+> 
+> This variable has been unused since commit 6c6c1fc09de3 ("modpost:
+> require a MODULE_DESCRIPTION()") but that is expected, as there are
+> currently no extra warnings at W=1 right now. Declare the variable with
+> the unused attribute to make it clear to the compiler that this variable
+> may be unused.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 6c6c1fc09de3 ("modpost: require a MODULE_DESCRIPTION()")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> I will apply this to kbuild-fixes for 7.0.
+> ---
+>  scripts/mod/modpost.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-The patch titled
-     Subject: mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch
+modpost is just used in-tree, right?  Can't we just remove the '-W' flag
+and the extra_warn variable completely?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch
+Nevertheless,
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Jackie Liu <liuyun01@kylinos.cn>
-Subject: mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
-Date: Tue, 31 Mar 2026 18:07:40 +0800
-
-Add the missing kfree(new_wi_state) when the auto mode is already set to
-the requested value.  When a user writes "false" to the auto sysfs
-interface and the current mode is already manual (mode_auto == false), the
-function returns early without freeing new_wi_state allocated at the
-beginning of the function.  This can be triggered repeatedly from
-userspace, leaking memory on each write.
-
-Link: https://lkml.kernel.org/r/20260331100740.84906-1-liu.yun@linux.dev
-Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mempolicy.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/mempolicy.c~mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store
-+++ a/mm/mempolicy.c
-@@ -3707,6 +3707,7 @@ static ssize_t weighted_interleave_auto_
- 			goto update_wi_state;
- 		if (input == old_wi_state->mode_auto) {
- 			mutex_unlock(&wi_state_lock);
-+			kfree(new_wi_state);
- 			return count;
- 		}
- 
-_
-
-Patches currently in -mm which might be from liuyun01@kylinos.cn are
-
-mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch
-
+-- 
+Nicolas
 
