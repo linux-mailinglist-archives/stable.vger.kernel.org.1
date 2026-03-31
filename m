@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJwTBJb7y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:34 +0200
+	id oDAJCCgAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0BD36D43B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA3B36E16D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AC0731E2803
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9F2C3303E3F3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FE1436345;
-	Tue, 31 Mar 2026 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC0D423A9B;
+	Tue, 31 Mar 2026 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz/Srmmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tB849qh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAFC42EEDE;
-	Tue, 31 Mar 2026 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CB0423A9D;
+	Tue, 31 Mar 2026 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975055; cv=none; b=Zf64pfy8/EFC0RWl9ReEngSo/pKnuA4JVqk7iMRH66O+0qyEjko5uXonkiSURFD54tt1yyuUc+MDM8nTzLNYrX2YT5HGyc2bMx0sjR4Gv9FvtnYIhkaqZZ3e9FI5RFLv3Rti9+OhGwsjrQo0wnsoDu4nqJc7Vc0LePSt7xqEY48=
+	t=1774976393; cv=none; b=FwXV5gC7PHtIMMDgdhia7N7Wd5gSe4DAZkAUxNIH5APk33IT1Bm7H8NhjHDSkefY89tNo7AHRYVYsaNSBwHYdHG+fDEanIbhSQegww9THTqc3qp/xlryT3NzkHDb5iN5H0aoGCkQ2KwiIi7/P+BNTxLadHF5pn6iG7RYgvEHymw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975055; c=relaxed/simple;
-	bh=x24bQL3hU0MdKg5fp41M6gqxO4IF7L+E02/PhPmNxtE=;
+	s=arc-20240116; t=1774976393; c=relaxed/simple;
+	bh=PCCKheaP7hwnUd2jKfWVHZlvhaOKp8KYqwgkd/NtYbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qv7Aa5JrqCb9Ad6r0EzDEIEccR6nW89aTlBk5LA1aoJXXZ3kkLhuXxIGXJTDqE1F2jT1thDDSOUe4Cqu4svrWKfQ5QEDxGeuO1Z1GYl3nhyocjJfrZf4jknHYRIj9NeOMIr2NWFRruUYC1ZTSBNItNbGWK/4/Y6x85JtkAkg1S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz/Srmmm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD98EC2BCB3;
-	Tue, 31 Mar 2026 16:37:34 +0000 (UTC)
+	 MIME-Version; b=LRGWXJhTYluBtoXSdJQu6hLAXA+Zna9+z0mtJ8h/f2wEXsTu8AwKs3KLEiGqrt9kRETuC7cLeKSduUNUBf8nDgDShoLh+GU2U4VPqHMnRsSP1By3u/hD/j/Uvo/+fud0zqMpL/UR8lLUgqD+a+2QDm3h6Y44Tsn2IdzRUMx/dO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tB849qh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1347C19423;
+	Tue, 31 Mar 2026 16:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975055;
-	bh=x24bQL3hU0MdKg5fp41M6gqxO4IF7L+E02/PhPmNxtE=;
+	s=korg; t=1774976393;
+	bh=PCCKheaP7hwnUd2jKfWVHZlvhaOKp8KYqwgkd/NtYbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jz/Srmmmd8fmxbDkL+FwKSSuOD0f2fgAddvlPq1ZlDDyQ4WMpwoxlA1xzK/qQSLrd
-	 1E1FXAtAeypYW3Mq7vloNktGuJ75mcyTmMvTtYQRRs5jOaFfFuf5oNJmsycbNlQ683
-	 DN6NSrk4BxeI6RBWIcZ1X14zgO08RyVVAqPJmv+A=
+	b=tB849qh1P9KZtWCBx9GRuRmXavMtSMiDtPI6V8R6upnXcU4am8Bvyuc0xUDNZ1bqJ
+	 vCpl9qjuGFcYJA2Km4X6JyKce8aSl2VMp/ETIMWxZU9cMpbWIYXQHa9qyAivf9vzZm
+	 HbaC4ghk5eUA8ezRc4+hG0UsMa3HN/f9ieBOQ5l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Valerio <pvalerio@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Minwoo Ra <raminwo0202@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 146/342] net: macb: use the current queue number for stats
+Subject: [PATCH 6.18 076/309] xfrm: prevent policy_hthresh.work from racing with netns teardown
 Date: Tue, 31 Mar 2026 18:19:39 +0200
-Message-ID: <20260331161804.377650249@linuxfoundation.org>
+Message-ID: <20260331161756.285520747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,126 +66,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232300-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231782-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7C0BD36D43B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,secunet.com:email]
+X-Rspamd-Queue-Id: BDA3B36E16D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Valerio <pvalerio@redhat.com>
+From: Minwoo Ra <raminwo0202@gmail.com>
 
-[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
+[ Upstream commit 29fe3a61bcdce398ee3955101c39f89c01a8a77e ]
 
-There's a potential mismatch between the memory reserved for statistics
-and the amount of memory written.
+A XFRM_MSG_NEWSPDINFO request can queue the per-net work item
+policy_hthresh.work onto the system workqueue.
 
-gem_get_sset_count() correctly computes the number of stats based on the
-active queues, whereas gem_get_ethtool_stats() indiscriminately copies
-data using the maximum number of queues, and in the case the number of
-active queues is less than MACB_MAX_QUEUES, this results in a OOB write
-as observed in the KASAN splat.
+The queued callback, xfrm_hash_rebuild(), retrieves the enclosing
+struct net via container_of(). If the net namespace is torn down
+before that work runs, the associated struct net may already have
+been freed, and xfrm_hash_rebuild() may then dereference stale memory.
 
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
-  [macb]
-Write of size 760 at addr ffff80008080b000 by task ethtool/1027
+xfrm_policy_fini() already flushes policy_hash_work during teardown,
+but it does not synchronize policy_hthresh.work.
 
-CPU: [...]
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
-Call trace:
- show_stack+0x20/0x38 (C)
- dump_stack_lvl+0x80/0xf8
- print_report+0x384/0x5e0
- kasan_report+0xa0/0xf0
- kasan_check_range+0xe8/0x190
- __asan_memcpy+0x54/0x98
- gem_get_ethtool_stats+0x54/0x78 [macb
-   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
- dev_ethtool+0x1220/0x38c0
- dev_ioctl+0x4ac/0xca8
- sock_do_ioctl+0x170/0x1d8
- sock_ioctl+0x484/0x5d8
- __arm64_sys_ioctl+0x12c/0x1b8
- invoke_syscall+0xd4/0x258
- el0_svc_common.constprop.0+0xb4/0x240
- do_el0_svc+0x48/0x68
- el0_svc+0x40/0xf8
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1b0/0x1b8
+Synchronize policy_hthresh.work in xfrm_policy_fini() as well, so the
+queued work cannot outlive the net namespace teardown and access a
+freed struct net.
 
-The buggy address belongs to a 1-page vmalloc region starting at
-  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000
-  index:0xffff00000a333000 pfn:0xa333
-flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
-raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
-raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                                  ^
- ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-==================================================================
-
-Fix it by making sure the copied size only considers the active number of
-queues.
-
-Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
-Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 880a6fab8f6b ("xfrm: configure policy hash table thresholds by netlink")
+Signed-off-by: Minwoo Ra <raminwo0202@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xfrm/xfrm_policy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1a46e27bfbb4a..094e04980c782 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3224,7 +3224,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
- 	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
--			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
- 	spin_unlock_irq(&bp->stats_lock);
- }
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 5428185196a1f..c32d34c441ee0 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4282,6 +4282,8 @@ static void xfrm_policy_fini(struct net *net)
+ 	unsigned int sz;
+ 	int dir;
  
++	disable_work_sync(&net->xfrm.policy_hthresh.work);
++
+ 	flush_work(&net->xfrm.policy_hash_work);
+ #ifdef CONFIG_XFRM_SUB_POLICY
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
 -- 
 2.51.0
 
