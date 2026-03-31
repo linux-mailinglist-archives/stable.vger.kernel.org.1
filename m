@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIvZDjH+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:41 +0200
+	id uDZxJ5kAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A6736DB63
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE7836E2FC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8D9730B894B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 468FB3075856
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C5E426694;
-	Tue, 31 Mar 2026 16:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EEC301471;
+	Tue, 31 Mar 2026 17:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jyps+xhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1w6VUKfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F2F425CF0;
-	Tue, 31 Mar 2026 16:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5852FE042;
+	Tue, 31 Mar 2026 17:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975881; cv=none; b=OYXS81sCFnH0JyldPbbJcXGYC2UIOCp9ntqYw70ldgION/bbu3uNoEgjhHt+/Tx9zFlSPDCvNShp1JZP3RuB+5ogoB8ARXNtEhUi1+B9ovlv1qxziqkOxIYzasdMLLgseIRslJd/YJjmVCCT/u1dHpKHHz+8CGGE5v/6+NwVKAI=
+	t=1774976721; cv=none; b=Gap6szJFlB9w/MMarAdj+XCtOeWlDgY3vf1wGwksFa6IJWKWgrtG+tuZFNM0RAb4s6RJDtAXBpBZyZ+hmlJEudnpZI+ZS72KSypXARQWPI5ZiLiy3CsqMdRC4vlTig8cc5k5gdSBsvlyOCCMzvm6gAI8Pu6EybDe7dGW0L51mPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975881; c=relaxed/simple;
-	bh=ZiV4h1TlozlSy1L2SqNNAAK5QqvnserBvE93dQSU2jY=;
+	s=arc-20240116; t=1774976721; c=relaxed/simple;
+	bh=CmN6hc+ZGiiwS1uUmhK23aoLSFiO1T88hALr7562Dp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkGcEjmckFYf2KPixePxUcKqB48dHRWoFcFXybjzAy69qXV31v9E1ehbvrs5ZXn9/JmCUfsBxUTMxQkEB18/X6XikKjH4UnvgL6fODjfC7qKlRUgSizsfAJLdsC3Y9anOP2yxF+lSaSwuFI02o2AfcWwWWy57YQDHcoSDq5AVkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jyps+xhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ED0C19423;
-	Tue, 31 Mar 2026 16:51:20 +0000 (UTC)
+	 MIME-Version; b=kaNeGoOeZPdpi4A9BRlL3If+kvd8Gzrl5D7Rz10IHzsGMalJZ9oJQxBjhGV7vNtiwsrENQeA95Z8G77Sxzy20zjFfHu0ekEqHeJ4MRKgPD9H0Tx2Rl9i3Yyg3tnxCygPhsp3GVZzi8crCJPVrfr/1f/DVvz1Yk06Vsqu+/xM7hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1w6VUKfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726D2C19423;
+	Tue, 31 Mar 2026 17:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975880;
-	bh=ZiV4h1TlozlSy1L2SqNNAAK5QqvnserBvE93dQSU2jY=;
+	s=korg; t=1774976721;
+	bh=CmN6hc+ZGiiwS1uUmhK23aoLSFiO1T88hALr7562Dp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jyps+xhzGpc8luXsmr0MWLfdQ7iRmfsU4clIwEM9s5TtfpcoZAvW8n8TyxNUvgj6s
-	 hWPWJXSn8onzr0JZhS31n83I3xxS1eMKwPQAtbM0gdioU84hsmdgS1TACXWFREdsgJ
-	 CXxhEh+t/8P4FsSjbr1tlQjxJf/xuPPUlA1E7ysc=
+	b=1w6VUKfgtB+pSIPOsZCMjLTlExy6U2Ko5jilOblQqmhiL1tEHK//QYNhWDb6EsMc2
+	 9+S1Ys9cUMDBeThIGjVx5DlbHqaKpSPb+mqQcW5mVJfkyzQ5nohErLo3L+d1wVPTCQ
+	 dlvCcsl23TjGLxT5PYpGdU3rBRctNOstZJfqRV4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yussuf Khalil <dev@pp3345.net>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/244] drm/amd/display: Do not skip unrelated mode changes in DSC validation
+Subject: [PATCH 6.18 169/309] hwmon: (pmbus/core) Protect regulator operations with mutex
 Date: Tue, 31 Mar 2026 18:21:12 +0200
-Message-ID: <20260331161746.167292884@linuxfoundation.org>
+Message-ID: <20260331161759.687315510@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,145 +73,280 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232102-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232428-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pp3345.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: D0A6736DB63
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,s.data:url,s.page:url]
+X-Rspamd-Queue-Id: 3FE7836E2FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yussuf Khalil <dev@pp3345.net>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit aed3d041ab061ec8a64f50a3edda0f4db7280025 ]
+[ Upstream commit 754bd2b4a084b90b5e7b630e1f423061a9b9b761 ]
 
-Starting with commit 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in
-atomic check"), amdgpu resets the CRTC state mode_changed flag to false when
-recomputing the DSC configuration results in no timing change for a particular
-stream.
+The regulator operations pmbus_regulator_get_voltage(),
+pmbus_regulator_set_voltage(), and pmbus_regulator_list_voltage()
+access PMBus registers and shared data but were not protected by
+the update_lock mutex. This could lead to race conditions.
 
-However, this is incorrect in scenarios where a change in MST/DSC configuration
-happens in the same KMS commit as another (unrelated) mode change. For example,
-the integrated panel of a laptop may be configured differently (e.g., HDR
-enabled/disabled) depending on whether external screens are attached. In this
-case, plugging in external DP-MST screens may result in the mode_changed flag
-being dropped incorrectly for the integrated panel if its DSC configuration
-did not change during precomputation in pre_validate_dsc().
+However, adding mutex protection directly to these functions causes
+a deadlock because pmbus_regulator_notify() (which calls
+regulator_notifier_call_chain()) is often called with the mutex
+already held (e.g., from pmbus_fault_handler()). If a regulator
+callback then calls one of the now-protected voltage functions,
+it will attempt to acquire the same mutex.
 
-At this point, however, dm_update_crtc_state() has already created new streams
-for CRTCs with DSC-independent mode changes. In turn,
-amdgpu_dm_commit_streams() will never release the old stream, resulting in a
-memory leak. amdgpu_dm_atomic_commit_tail() will never acquire a reference to
-the new stream either, which manifests as a use-after-free when the stream gets
-disabled later on:
+Rework pmbus_regulator_notify() to utilize a worker function to
+send notifications outside of the mutex protection. Events are
+stored as atomics in a per-page bitmask and processed by the worker.
 
-BUG: KASAN: use-after-free in dc_stream_release+0x25/0x90 [amdgpu]
-Write of size 4 at addr ffff88813d836524 by task kworker/9:9/29977
+Initialize the worker and its associated data during regulator
+registration, and ensure it is cancelled on device removal using
+devm_add_action_or_reset().
 
-Workqueue: events drm_mode_rmfb_work_fn
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6e/0xa0
- print_address_description.constprop.0+0x88/0x320
- ? dc_stream_release+0x25/0x90 [amdgpu]
- print_report+0xfc/0x1ff
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __virt_addr_valid+0x225/0x4e0
- ? dc_stream_release+0x25/0x90 [amdgpu]
- kasan_report+0xe1/0x180
- ? dc_stream_release+0x25/0x90 [amdgpu]
- kasan_check_range+0x125/0x200
- dc_stream_release+0x25/0x90 [amdgpu]
- dc_state_destruct+0x14d/0x5c0 [amdgpu]
- dc_state_release.part.0+0x4e/0x130 [amdgpu]
- dm_atomic_destroy_state+0x3f/0x70 [amdgpu]
- drm_atomic_state_default_clear+0x8ee/0xf30
- ? drm_mode_object_put.part.0+0xb1/0x130
- __drm_atomic_state_free+0x15c/0x2d0
- atomic_remove_fb+0x67e/0x980
+While at it, remove the unnecessary include of linux/of.h.
 
-Since there is no reliable way of figuring out whether a CRTC has unrelated
-mode changes pending at the time of DSC validation, remember the value of the
-mode_changed flag from before the point where a CRTC was marked as potentially
-affected by a change in DSC configuration. Reset the mode_changed flag to this
-earlier value instead in pre_validate_dsc().
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5004
-Fixes: 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in atomic check")
-Signed-off-by: Yussuf Khalil <dev@pp3345.net>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit cc7c7121ae082b7b82891baa7280f1ff2608f22b)
+Cc: Sanman Pradhan <psanman@juniper.net>
+Fixes: ddbb4db4ced1b ("hwmon: (pmbus) Add regulator support")
+Reviewed-by: Sanman Pradhan <psanman@juniper.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           | 5 +++++
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h           | 1 +
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 +++-
- 3 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/pmbus_core.c | 114 ++++++++++++++++++++++++-------
+ 1 file changed, 89 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index e092d2372a4e6..1ed631006e63f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11722,6 +11722,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
- 	}
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index cbc36f0ba4bf9..572be3ebc03df 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -6,6 +6,7 @@
+  * Copyright (c) 2012 Guenter Roeck
+  */
  
- 	if (dc_resource_is_dsc_encoding_supported(dc)) {
-+		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
-+			dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
-+			dm_new_crtc_state->mode_changed_independent_from_dsc = new_crtc_state->mode_changed;
++#include <linux/atomic.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/dcache.h>
+@@ -21,8 +22,8 @@
+ #include <linux/pmbus.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
+-#include <linux/of.h>
+ #include <linux/thermal.h>
++#include <linux/workqueue.h>
+ #include "pmbus.h"
+ 
+ /*
+@@ -112,6 +113,11 @@ struct pmbus_data {
+ 
+ 	struct mutex update_lock;
+ 
++#if IS_ENABLED(CONFIG_REGULATOR)
++	atomic_t regulator_events[PMBUS_PAGES];
++	struct work_struct regulator_notify_work;
++#endif
++
+ 	bool has_status_word;		/* device uses STATUS_WORD register */
+ 	int (*read_status)(struct i2c_client *client, int page);
+ 
+@@ -3228,12 +3234,19 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
+ 		.class = PSC_VOLTAGE_OUT,
+ 		.convert = true,
+ 	};
++	int ret;
+ 
++	mutex_lock(&data->update_lock);
+ 	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
+-	if (s.data < 0)
+-		return s.data;
++	if (s.data < 0) {
++		ret = s.data;
++		goto unlock;
++	}
+ 
+-	return (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
++	ret = (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
++unlock:
++	mutex_unlock(&data->update_lock);
++	return ret;
+ }
+ 
+ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
+@@ -3250,16 +3263,22 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
+ 	};
+ 	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
+ 	int low, high;
++	int ret;
+ 
+ 	*selector = 0;
+ 
++	mutex_lock(&data->update_lock);
+ 	low = pmbus_regulator_get_low_margin(client, s.page);
+-	if (low < 0)
+-		return low;
++	if (low < 0) {
++		ret = low;
++		goto unlock;
++	}
+ 
+ 	high = pmbus_regulator_get_high_margin(client, s.page);
+-	if (high < 0)
+-		return high;
++	if (high < 0) {
++		ret = high;
++		goto unlock;
++	}
+ 
+ 	/* Make sure we are within margins */
+ 	if (low > val)
+@@ -3269,7 +3288,10 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
+ 
+ 	val = pmbus_data2reg(data, &s, val);
+ 
+-	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
++	ret = _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
++unlock:
++	mutex_unlock(&data->update_lock);
++	return ret;
+ }
+ 
+ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
+@@ -3279,6 +3301,7 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
+ 	struct i2c_client *client = to_i2c_client(dev->parent);
+ 	struct pmbus_data *data = i2c_get_clientdata(client);
+ 	int val, low, high;
++	int ret;
+ 
+ 	if (data->flags & PMBUS_VOUT_PROTECTED)
+ 		return 0;
+@@ -3291,18 +3314,29 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
+ 	val = DIV_ROUND_CLOSEST(rdev->desc->min_uV +
+ 				(rdev->desc->uV_step * selector), 1000); /* convert to mV */
+ 
++	mutex_lock(&data->update_lock);
++
+ 	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
+-	if (low < 0)
+-		return low;
++	if (low < 0) {
++		ret = low;
++		goto unlock;
++	}
+ 
+ 	high = pmbus_regulator_get_high_margin(client, rdev_get_id(rdev));
+-	if (high < 0)
+-		return high;
++	if (high < 0) {
++		ret = high;
++		goto unlock;
++	}
+ 
+-	if (val >= low && val <= high)
+-		return val * 1000; /* unit is uV */
++	if (val >= low && val <= high) {
++		ret = val * 1000; /* unit is uV */
++		goto unlock;
++	}
+ 
+-	return 0;
++	ret = 0;
++unlock:
++	mutex_unlock(&data->update_lock);
++	return ret;
+ }
+ 
+ const struct regulator_ops pmbus_regulator_ops = {
+@@ -3333,12 +3367,42 @@ int pmbus_regulator_init_cb(struct regulator_dev *rdev,
+ }
+ EXPORT_SYMBOL_NS_GPL(pmbus_regulator_init_cb, "PMBUS");
+ 
++static void pmbus_regulator_notify_work_cancel(void *data)
++{
++	struct pmbus_data *pdata = data;
++
++	cancel_work_sync(&pdata->regulator_notify_work);
++}
++
++static void pmbus_regulator_notify_worker(struct work_struct *work)
++{
++	struct pmbus_data *data =
++		container_of(work, struct pmbus_data, regulator_notify_work);
++	int i, j;
++
++	for (i = 0; i < data->info->pages; i++) {
++		int event;
++
++		event = atomic_xchg(&data->regulator_events[i], 0);
++		if (!event)
++			continue;
++
++		for (j = 0; j < data->info->num_regulators; j++) {
++			if (i == rdev_get_id(data->rdevs[j])) {
++				regulator_notifier_call_chain(data->rdevs[j],
++							      event, NULL);
++				break;
++			}
 +		}
++	}
++}
 +
- 		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
- 			if (drm_atomic_crtc_needs_modeset(new_crtc_state)) {
- 				ret = add_affected_mst_dsc_crtcs(state, crtc);
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 2c0e1180706fa..9682c190e9524 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -881,6 +881,7 @@ struct dm_crtc_state {
+ static int pmbus_regulator_register(struct pmbus_data *data)
+ {
+ 	struct device *dev = data->dev;
+ 	const struct pmbus_driver_info *info = data->info;
+ 	const struct pmbus_platform_data *pdata = dev_get_platdata(dev);
+-	int i;
++	int i, ret;
  
- 	bool freesync_vrr_info_changed;
- 
-+	bool mode_changed_independent_from_dsc;
- 	bool dsc_force_changed;
- 	bool vrr_supported;
- 	struct mod_freesync_config freesync_config;
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index a2a70c1e9afdc..9a3deb26149d8 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1703,9 +1703,11 @@ int pre_validate_dsc(struct drm_atomic_state *state,
- 			int ind = find_crtc_index_in_state_by_stream(state, stream);
- 
- 			if (ind >= 0) {
-+				struct dm_crtc_state *dm_new_crtc_state = to_dm_crtc_state(state->crtcs[ind].new_state);
-+
- 				DRM_INFO_ONCE("%s:%d MST_DSC no mode changed for stream 0x%p\n",
- 						__func__, __LINE__, stream);
--				state->crtcs[ind].new_state->mode_changed = 0;
-+				dm_new_crtc_state->base.mode_changed = dm_new_crtc_state->mode_changed_independent_from_dsc;
- 			}
- 		}
+ 	data->rdevs = devm_kzalloc(dev, sizeof(struct regulator_dev *) * info->num_regulators,
+ 				   GFP_KERNEL);
+@@ -3362,19 +3426,19 @@ static int pmbus_regulator_register(struct pmbus_data *data)
+ 					     info->reg_desc[i].name);
  	}
+ 
++	INIT_WORK(&data->regulator_notify_work, pmbus_regulator_notify_worker);
++
++	ret = devm_add_action_or_reset(dev, pmbus_regulator_notify_work_cancel, data);
++	if (ret)
++		return ret;
++
+ 	return 0;
+ }
+ 
+ static void pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
+ {
+-	int j;
+-
+-	for (j = 0; j < data->info->num_regulators; j++) {
+-		if (page == rdev_get_id(data->rdevs[j])) {
+-			regulator_notifier_call_chain(data->rdevs[j], event, NULL);
+-			break;
+-		}
+-	}
++	atomic_or(event, &data->regulator_events[page]);
++	schedule_work(&data->regulator_notify_work);
+ }
+ #else
+ static int pmbus_regulator_register(struct pmbus_data *data)
 -- 
 2.53.0
 
