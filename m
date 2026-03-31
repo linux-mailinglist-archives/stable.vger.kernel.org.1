@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMxqJFQBzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:04 +0200
+	id UCs1LGACzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:20:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1597F36E586
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1512F36E844
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CCBF317EC36
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 730823250064
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DDF42669A;
-	Tue, 31 Mar 2026 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF489413225;
+	Tue, 31 Mar 2026 16:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfwCphfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xl0fghHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91681425CC4;
-	Tue, 31 Mar 2026 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B288B2C15B2;
+	Tue, 31 Mar 2026 16:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975174; cv=none; b=kuJneq39lsYsahy5pHqP7shreIhSRZnDlZsRBqXSaxFl/KbSUGA3WPTM0uLZLFq/0LK/zl+fBEWgZC4u0iQ8b/ErHQp593TJC2o/DopMO6Zl+xYTs+qT6qKcGlIo04wwIsyokiHGgkPTO6XFw7O+ueHRqf9tFRHAIU40FW8z2Ro=
+	t=1774975839; cv=none; b=vD0t00wJxD3Caq8kXkKvvCJvOrKJkDNfiaY7PTU3DBY99jpNRhaQdtwz/eTaLJu6uBhC26zqbCizGlP86mkMs1D+MwAQvm8sp8Z52j+qBxpp/uMa5jimi0yE0v0/H4lvJERSuPIkvTZCkN8P/wg0SN5ko67o4aUY3R7JDfDzJxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975174; c=relaxed/simple;
-	bh=RCH31EZWfXN5tp+efoeIAJUdIO79A5yEISDHpAoVq1M=;
+	s=arc-20240116; t=1774975839; c=relaxed/simple;
+	bh=kBLF/si8f+5kjwQhr6AikCY/Y5tHWWutIR5jupX2Z9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuCM2ENVJNGojzkfOtgIAOYZkVWK/+0uqPMBCNEhg+fINlw47HBurG3b8xUaRLMYUEkS8Tzo470QE1/EEIDfyrI3C6xj6eGZvOxtX5SxUDvT1R5Ibz6wlgzo9u5xnUlpyxIFEy+Ne/O+y9HzmiRnTLOtHFgPMHN/7ewb4gbgC/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfwCphfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294D1C19423;
-	Tue, 31 Mar 2026 16:39:34 +0000 (UTC)
+	 MIME-Version; b=bZVh5N1U6hEDlIq6+ccy9M//nZMU0KqSPWgV2pVbvwQ/DyQ+1eXGzd20nFf0VW4AxUa33xTvB+jfvZvzOQt2q6lIz14y4569oK7hdFFJc4lExbWXs8ccbku8se+eZxKHYsMjki/KmMtS9KkK7avsLieS9ikemx5q3Ev8Q49qOks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xl0fghHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37100C19423;
+	Tue, 31 Mar 2026 16:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975174;
-	bh=RCH31EZWfXN5tp+efoeIAJUdIO79A5yEISDHpAoVq1M=;
+	s=korg; t=1774975839;
+	bh=kBLF/si8f+5kjwQhr6AikCY/Y5tHWWutIR5jupX2Z9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfwCphfcuENI1tIvg3ADPJeYL0W8a3Kij7KZ7fKuvp0yDaQW2bNWhcDrEQewYq24a
-	 XAmgN7EF5Y5yM4MB39V0C7Vf5Gcynj7X+lTpyIeD61iHUK/NTSrm3aQgj6lRYg4YVo
-	 0/vkEjU2KHYfvE7KPp1IeB5X4jUrHSkiWp26S4Pk=
+	b=xl0fghHUHjP5xeC2XbRQSKsH6WGVXmwaV0XujDF83HPWrkqWrvUxFwsXEKkX/XktE
+	 Vsg1SJE9/6px+erqv9SPLA58iGLXTZQghevzRrDz4JsKzdbcCPqguDK9maCK6X29NY
+	 FE/qJ/xgKRnPzQFUo1GWbNfhsV4wYTJDURMp6lAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 191/342] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+Subject: [PATCH 6.12 074/244] net: bcm: asp2: convert to phylib managed EEE
 Date: Tue, 31 Mar 2026 18:20:24 +0200
-Message-ID: <20260331161806.025069648@linuxfoundation.org>
+Message-ID: <20260331161744.420235372@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +65,192 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231828-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232086-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1597F36E586
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,armlinux.org.uk:email,broadcom.com:email]
+X-Rspamd-Queue-Id: 1512F36E844
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
+[ Upstream commit 21f56ad1b21131eb2c9c16e11ccb28f77b5addc4 ]
 
-There is a teardown order issue in the driver. The SPI controller is
-registered using devm_spi_register_controller(), which delays
-unregistration of the SPI controller until after the fsl_lpspi_remove()
-function returns.
+Convert the Broadcom ASP2 driver to use phylib managed EEE support.
 
-As the fsl_lpspi_remove() function synchronously tears down the DMA
-channels, a running SPI transfer triggers the following NULL pointer
-dereference due to use after free:
-
-| fsl_lpspi 42550000.spi: I/O Error in DMA RX
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[...]
-| Call trace:
-|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
-|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
-|  spi_transfer_one_message+0x49c/0x7c8
-|  __spi_pump_transfer_message+0x120/0x420
-|  __spi_sync+0x2c4/0x520
-|  spi_sync+0x34/0x60
-|  spidev_message+0x20c/0x378 [spidev]
-|  spidev_ioctl+0x398/0x750 [spidev]
-[...]
-
-Switch from devm_spi_register_controller() to spi_register_controller() in
-fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
-fsl_lpspi_remove().
-
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/E1tXk81-000r4x-TS@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: cbfa5be2bf64 ("net: bcmasp: fix double free of WoL irq")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp.h   |  3 --
+ .../ethernet/broadcom/asp2/bcmasp_ethtool.c   | 31 -------------------
+ .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 19 ++++++------
+ 3 files changed, 10 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 065456aba2aea..47d372557e4f6 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -972,7 +972,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		enable_irq(irq);
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.h b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
+index f93cb3da44b0c..8fc75bcedb70f 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.h
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
+@@ -348,8 +348,6 @@ struct bcmasp_intf {
+ 	/* Used if per intf wol irq */
+ 	int				wol_irq;
+ 	unsigned int			wol_irq_enabled:1;
+-
+-	struct ethtool_keee		eee;
+ };
+ 
+ #define NUM_NET_FILTERS				32
+@@ -601,5 +599,4 @@ int bcmasp_netfilt_get_all_active(struct bcmasp_intf *intf, u32 *rule_locs,
+ 
+ void bcmasp_netfilt_suspend(struct bcmasp_intf *intf);
+ 
+-void bcmasp_eee_enable_set(struct bcmasp_intf *intf, bool enable);
+ #endif
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+index 73334ab526136..c24107baefcfd 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+@@ -348,20 +348,6 @@ static int bcmasp_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 	return err;
+ }
+ 
+-void bcmasp_eee_enable_set(struct bcmasp_intf *intf, bool enable)
+-{
+-	u32 reg;
+-
+-	reg = umac_rl(intf, UMC_EEE_CTRL);
+-	if (enable)
+-		reg |= EEE_EN;
+-	else
+-		reg &= ~EEE_EN;
+-	umac_wl(intf, reg, UMC_EEE_CTRL);
+-
+-	intf->eee.eee_enabled = enable;
+-}
+-
+ static int bcmasp_get_eee(struct net_device *dev, struct ethtool_keee *e)
+ {
+ 	if (!dev->phydev)
+@@ -372,26 +358,9 @@ static int bcmasp_get_eee(struct net_device *dev, struct ethtool_keee *e)
+ 
+ static int bcmasp_set_eee(struct net_device *dev, struct ethtool_keee *e)
+ {
+-	struct bcmasp_intf *intf = netdev_priv(dev);
+-	struct ethtool_keee *p = &intf->eee;
+-	int ret;
+-
+ 	if (!dev->phydev)
+ 		return -ENODEV;
+ 
+-	if (!p->eee_enabled) {
+-		bcmasp_eee_enable_set(intf, false);
+-	} else {
+-		ret = phy_init_eee(dev->phydev, 0);
+-		if (ret) {
+-			netif_err(intf, hw, dev,
+-				  "EEE initialization failed: %d\n", ret);
+-			return ret;
+-		}
+-
+-		bcmasp_eee_enable_set(intf, true);
+-	}
+-
+ 	return phy_ethtool_set_eee(dev->phydev, e);
+ }
+ 
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 73e704352d820..acf45789d4493 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -616,7 +616,6 @@ static void bcmasp_adj_link(struct net_device *dev)
+ 	struct phy_device *phydev = dev->phydev;
+ 	u32 cmd_bits = 0, reg;
+ 	int changed = 0;
+-	bool active;
+ 
+ 	if (intf->old_link != phydev->link) {
+ 		changed = 1;
+@@ -675,9 +674,12 @@ static void bcmasp_adj_link(struct net_device *dev)
+ 		umac_wl(intf, reg, UMC_CMD);
+ 
+ 		umac_wl(intf, phydev->eee_cfg.tx_lpi_timer, UMC_EEE_LPI_TIMER);
+-
+-		active = phy_init_eee(phydev, 0) >= 0;
+-		bcmasp_eee_enable_set(intf, active);
++		reg = umac_rl(intf, UMC_EEE_CTRL);
++		if (phydev->enable_tx_lpi)
++			reg |= EEE_EN;
++		else
++			reg &= ~EEE_EN;
++		umac_wl(intf, reg, UMC_EEE_CTRL);
  	}
  
--	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	ret = spi_register_controller(controller);
- 	if (ret < 0) {
- 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
- 		goto free_dma;
-@@ -998,6 +998,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
+ 	reg = rgmii_rl(intf, RGMII_OOB_CNTRL);
+@@ -1336,7 +1338,8 @@ static void bcmasp_suspend_to_wol(struct bcmasp_intf *intf)
+ 				     ASP_WAKEUP_INTR2_MASK_CLEAR);
+ 	}
  
-+	spi_unregister_controller(controller);
- 	fsl_lpspi_dma_exit(controller);
+-	if (intf->eee.eee_enabled && intf->parent->eee_fixup)
++	if (ndev->phydev && ndev->phydev->eee_cfg.eee_enabled &&
++	    intf->parent->eee_fixup)
+ 		intf->parent->eee_fixup(intf, true);
  
- 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
+ 	netif_dbg(intf, wol, ndev, "entered WOL mode\n");
+@@ -1378,7 +1381,8 @@ static void bcmasp_resume_from_wol(struct bcmasp_intf *intf)
+ {
+ 	u32 reg;
+ 
+-	if (intf->eee.eee_enabled && intf->parent->eee_fixup)
++	if (intf->ndev->phydev && intf->ndev->phydev->eee_cfg.eee_enabled &&
++	    intf->parent->eee_fixup)
+ 		intf->parent->eee_fixup(intf, false);
+ 
+ 	reg = umac_rl(intf, UMC_MPD_CTRL);
+@@ -1409,9 +1413,6 @@ int bcmasp_interface_resume(struct bcmasp_intf *intf)
+ 
+ 	bcmasp_resume_from_wol(intf);
+ 
+-	if (intf->eee.eee_enabled)
+-		bcmasp_eee_enable_set(intf, true);
+-
+ 	netif_device_attach(dev);
+ 
+ 	return 0;
 -- 
-2.53.0
+2.51.0
 
 
 
