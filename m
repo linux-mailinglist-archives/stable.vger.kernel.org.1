@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMmOFOz2y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:40 +0200
+	id kFXSFUQAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1133F36CB51
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B34436E1A2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C83FF3067308
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 19263317F942
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C0421EE4;
-	Tue, 31 Mar 2026 16:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EFB426698;
+	Tue, 31 Mar 2026 16:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxF97rNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIR60OaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40284410D00;
-	Tue, 31 Mar 2026 16:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0993402B9B;
+	Tue, 31 Mar 2026 16:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974431; cv=none; b=F7OE5Qy0nJ2d4aRIgQ7rCtOMFV+SV4rbMdMHP/OXWJguKAR/LIBNwZa6LntUBTEWskn6VvoCUOwlup7nw1DirrrFW/UCCrN5j2zpMAki/oncgeQCiaRZ+PrUZeDGJzGqwKscBYs7zgJIWQF0Oyq/DjJfisM0u3B8W0gydrdqzpc=
+	t=1774975368; cv=none; b=qdnbKu56FfRyXLw2geFbRQOvoxy0heFIpDHooeA1vrKcNGpXUeSpIcbLAX8Hl6zmvmB84w+LVJryGl10BwOI1U7lq/MggTF/iL1yYbZVz+SKUrXezr6cCv3hOEn/zkZ4Ljeb661Y91VaKTAgGzw9eAOvDkemMhgXM4UTFC6K5mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974431; c=relaxed/simple;
-	bh=SYpxNVNRHX2Zeia6vFfEPP8r2+ix8sOkEPJJzKBEFDc=;
+	s=arc-20240116; t=1774975368; c=relaxed/simple;
+	bh=UQrxJRCIyurfSyiinWd8wM6GvkMu2/yDthzWUDbRHg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktWa943wAeL3EixXwSlGySu9JIV40C3dQsEa0DrlPqNztF57sy3PxHaC3tWxPjmPHPOZ5+wbMLCv6oPi40USsj4//E4DoP3aXEq706JdDA4m2dm5nGOa425vOgnW15GSDx/K8nIb4ePFmKYdIURqvcWrVy+b3kUnSU1vlQcCMBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxF97rNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBE1C19423;
-	Tue, 31 Mar 2026 16:27:10 +0000 (UTC)
+	 MIME-Version; b=Wx7YWWGQykSC12kFYPIAq4JYd9DAIn8fzdHDUJu/0uiXg6xCoMid9laQT74vG1uwzu4Dmwxv8T+UbFGxqJIaAohVrOi2sOu/Pefto07TFVgaNAv1mY/LqP5YXCTpIiLtMmfIDVFWGhpOqJ/sH4G9v++fBA9m9K+gnAfGzVDaDEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIR60OaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81210C19424;
+	Tue, 31 Mar 2026 16:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974431;
-	bh=SYpxNVNRHX2Zeia6vFfEPP8r2+ix8sOkEPJJzKBEFDc=;
+	s=korg; t=1774975367;
+	bh=UQrxJRCIyurfSyiinWd8wM6GvkMu2/yDthzWUDbRHg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxF97rNs9OL18luUwv7s2K/BjHgB1VVMXZgyue0tlejA03fxoZo+T/+yHR3klHaMJ
-	 xmQCPhmMBtxJ/IrhmGQ1K4sY8EjpflSOvuIdiBoQeMjmp6ZPRy7hANxIiPlHvyDq8o
-	 lcXqJnRPc3FUOp/cJBEw8PtP6mDh4W16AC2lL0jg=
+	b=BIR60OaANHFBKP1EH7iRaRIFzKSSjffnuP3uy3VCQWhQIakK9KvLma+WQ+qiOD+ho
+	 eM3Z9zJqo+RkMwU23VNYfixBEAsIbwf0QL4eCqbXBZrJ3N8nNdVJOjRYzY/JjbFfsj
+	 US/Wfe6J3UT74vIJ9+c+EKJmy3Wr3eY06MH2nRmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/175] RDMA/irdma: Return EINVAL for invalid arp index error
-Date: Tue, 31 Mar 2026 18:21:07 +0200
-Message-ID: <20260331161732.822573552@linuxfoundation.org>
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jiucheng Xu <jiucheng.xu@amlogic.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.19 235/342] erofs: add GFP_NOIO in the bio completion if needed
+Date: Tue, 31 Mar 2026 18:21:08 +0200
+Message-ID: <20260331161807.613214482@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231539-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231904-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,97 +89,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 1133F36CB51
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amlogic.com:email]
+X-Rspamd-Queue-Id: 5B34436E1A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Jiucheng Xu <jiucheng.xu@amlogic.com>
 
-[ Upstream commit 7221f581eefa79ead06e171044f393fb7ee22f87 ]
+commit c23df30915f83e7257c8625b690a1cece94142a0 upstream.
 
-When rdma_connect() fails due to an invalid arp index, user space rdma core
-reports ENOMEM which is confusing. Modify irdma_make_cm_node() to return the
-correct error code.
+The bio completion path in the process context (e.g. dm-verity)
+will directly call into decompression rather than trigger another
+workqueue context for minimal scheduling latencies, which can
+then call vm_map_ram() with GFP_KERNEL.
 
-Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Due to insufficient memory, vm_map_ram() may generate memory
+swapping I/O, which can cause submit_bio_wait to deadlock
+in some scenarios.
+
+Trimmed down the call stack, as follows:
+
+f2fs_submit_read_io
+  submit_bio                      //bio_list is initialized.
+    mmc_blk_mq_recovery
+      z_erofs_endio
+        vm_map_ram
+          __pte_alloc_kernel
+            __alloc_pages_direct_reclaim
+              shrink_folio_list
+                __swap_writepage
+                  submit_bio_wait  //bio_list is non-NULL, hang!!!
+
+Use memalloc_noio_{save,restore}() to wrap up this path.
+
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/cm.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ fs/erofs/zdata.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
-index 00e63a46a50ee..122b4cffc8dc7 100644
---- a/drivers/infiniband/hw/irdma/cm.c
-+++ b/drivers/infiniband/hw/irdma/cm.c
-@@ -2239,11 +2239,12 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- 	int oldarpindex;
- 	int arpindex;
- 	struct net_device *netdev = iwdev->netdev;
-+	int ret;
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1459,6 +1459,7 @@ static void z_erofs_decompress_kickoff(s
+ 				       int bios)
+ {
+ 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
++	int gfp_flag;
  
- 	/* create an hte and cm_node for this instance */
- 	cm_node = kzalloc(sizeof(*cm_node), GFP_ATOMIC);
- 	if (!cm_node)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* set our node specific transport info */
- 	cm_node->ipv4 = cm_info->ipv4;
-@@ -2346,8 +2347,10 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- 			arpindex = -EINVAL;
+ 	/* wake up the caller thread for sync decompression */
+ 	if (io->sync) {
+@@ -1491,7 +1492,9 @@ static void z_erofs_decompress_kickoff(s
+ 			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+ 		return;
  	}
- 
--	if (arpindex < 0)
-+	if (arpindex < 0) {
-+		ret = -EINVAL;
- 		goto err;
-+	}
- 
- 	ether_addr_copy(cm_node->rem_mac,
- 			iwdev->rf->arp_table[arpindex].mac_addr);
-@@ -2358,7 +2361,7 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- err:
- 	kfree(cm_node);
- 
--	return NULL;
-+	return ERR_PTR(ret);
++	gfp_flag = memalloc_noio_save();
+ 	z_erofs_decompressqueue_work(&io->u.work);
++	memalloc_noio_restore(gfp_flag);
  }
  
- static void irdma_destroy_connection(struct irdma_cm_node *cm_node)
-@@ -3019,8 +3022,8 @@ static int irdma_create_cm_node(struct irdma_cm_core *cm_core,
- 
- 	/* create a CM connection node */
- 	cm_node = irdma_make_cm_node(cm_core, iwdev, cm_info, NULL);
--	if (!cm_node)
--		return -ENOMEM;
-+	if (IS_ERR(cm_node))
-+		return PTR_ERR(cm_node);
- 
- 	/* set our node side to client (active) side */
- 	cm_node->tcp_cntxt.client = 1;
-@@ -3217,9 +3220,9 @@ void irdma_receive_ilq(struct irdma_sc_vsi *vsi, struct irdma_puda_buf *rbuf)
- 		cm_info.cm_id = listener->cm_id;
- 		cm_node = irdma_make_cm_node(cm_core, iwdev, &cm_info,
- 					     listener);
--		if (!cm_node) {
-+		if (IS_ERR(cm_node)) {
- 			ibdev_dbg(&cm_core->iwdev->ibdev,
--				  "CM: allocate node failed\n");
-+				  "CM: allocate node failed ret=%ld\n", PTR_ERR(cm_node));
- 			refcount_dec(&listener->refcnt);
- 			return;
- 		}
--- 
-2.53.0
-
+ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
 
 
 
