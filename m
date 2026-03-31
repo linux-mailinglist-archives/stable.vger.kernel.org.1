@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKU1BrX9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:37 +0200
+	id kK9uOED5y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E9636DA24
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64E136CFA3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5A1D313C6C6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 16A28309672A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6B4426EBB;
-	Tue, 31 Mar 2026 16:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2F3FAE08;
+	Tue, 31 Mar 2026 16:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5S6b3N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4S8tMuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAF1425CC6;
-	Tue, 31 Mar 2026 16:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004213EF0A2;
+	Tue, 31 Mar 2026 16:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975922; cv=none; b=hnQg0VdhpTDoDlQcdXCFBjepP9ZgT9LhULRPEVepOthI0WXx7ynOQjuK2jyUbQ75iGpLFxhCT3swjXzgIhaGETEOdWDt5IoJ/x/IgAGCg3MjK+duLyhO3tF8X0cYA8TRGqHxp37jo6xUAqTMuP+oqjkTPROqmPXHLKpa/X5wyko=
+	t=1774974488; cv=none; b=PHiJwGP2P1sPl9oQRSfxbTGc0Mpr8SD3t5rNpQ/vi1YlNM/26zE23fgVitybo7m+qrHeFw8a9XpJslDDaEIeJ/Js0sV3MJ2OIs6LD6FiC1gN0l5sr6Sp+v/oaA8nDlYAkcjqrc74lru8szE13Hflfso7eusN+7rLChcTkL1qb4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975922; c=relaxed/simple;
-	bh=BxMXBBs47H7W3qPajzlwk+mpa0UpwSHfB1crGoQWDv8=;
+	s=arc-20240116; t=1774974488; c=relaxed/simple;
+	bh=H72ViErjvt1Ovd4taD6XI7lwzgpwEmkBudPZlZ3lM7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGEasCPOGn6bDK+pO9xLZZGdXBK++kHT4U5QKs3d8CU1f4dwTjhmDSR2UvI01ftp1QsBjonU691VIQlNR7uqfXwyQqPl2WCrns9NjhcoDgpUYDQSZVF/9irmO7mLmqd6420JeFu2Z2QZVnXEsD8Bqk6KupB5/M5DblGaX7QH3OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5S6b3N5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04406C19423;
-	Tue, 31 Mar 2026 16:52:01 +0000 (UTC)
+	 MIME-Version; b=kLAkKD05iJqroeZFnppts49a38ZekgiZjgxeZN1sXG2/+KKaEjTBo2FAR9oIZtwRvttwQl4uWbBAO3polIDdFDrUtLPCgU9A29XXP2YjKD4MGBECcM3O2ZhaEmNDKidyQ1nH7qBaLCYXFU06GFql8Gu8i7G6jF3chW/3ckrVutM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4S8tMuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B26DC19423;
+	Tue, 31 Mar 2026 16:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975922;
-	bh=BxMXBBs47H7W3qPajzlwk+mpa0UpwSHfB1crGoQWDv8=;
+	s=korg; t=1774974487;
+	bh=H72ViErjvt1Ovd4taD6XI7lwzgpwEmkBudPZlZ3lM7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5S6b3N591cmRtAQ8upeEkc1a3L7aPVOmnPc2QzcKhpZn5VO+WqInPnL5CdrHZxlg
-	 4+FJWB7abwt7Z5DprZvVhwloVu8a9kI5MMxYPF2u8OYp4snxmzIrBDUoc7RhujbId/
-	 cMVmAtxYeHlYdBGU+hea6kCQWtP5hloTWiFrfWfE=
+	b=W4S8tMuo9PxoFtmLyXwMhrR32gAumUDf6oADMn4pyU8oU1HrbHgrP4H1OKCRE1yxj
+	 kxQ+nBMfXC6f4m8a6Ft2fFoAMLoLYTk/Xlm7Sw07rKCMsn3lqyGbfsljBVb4LuuAT3
+	 sIiyOlDft72NwgmKZ07bcdY2Hl9Bk+KLntZ0+Rm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.12 137/244] s390/entry: Scrub r12 register on kernel entry
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 103/175] ALSA: firewire-lib: fix uninitialized local variable
 Date: Tue, 31 Mar 2026 18:21:27 +0200
-Message-ID: <20260331161746.711703870@linuxfoundation.org>
+Message-ID: <20260331161733.561962057@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,76 +77,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232118-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231561-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74E9636DA24
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email]
+X-Rspamd-Queue-Id: E64E136CFA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-commit 0738d395aab8fae3b5a3ad3fc640630c91693c27 upstream.
+commit bb120ad57def62e3f23e3d999c5fbed11f610993 upstream.
 
-Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
-all entry handlers loaded r12 with the current task pointer
-(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
-commit removed TIF_ISOLATE_BP, dropping both the branch prediction
-macros and the r12 load, but did not add r12 to the register clearing
-sequence.
+Similar to commit d8dc8720468a ("ALSA: firewire-lib: fix uninitialized
+local variable"), the local variable `curr_cycle_time` in
+process_rx_packets() is declared without initialization.
 
-Add the missing xgr %r12,%r12 to make the register scrub consistent
-across all entry points.
+When the tracepoint event is not probed, the variable may appear to be
+used without being initialized. In practice the value is only relevant
+when the tracepoint is enabled, however initializing it avoids potential
+use of an uninitialized value and improves code safety.
 
-Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
-Cc: stable@kernel.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Initialize `curr_cycle_time` to zero.
+
+Fixes: fef4e61b0b76 ("ALSA: firewire-lib: extend tracepoints event including CYCLE_TIME of 1394 OHCI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Link: https://patch.msgid.link/20260316191824.83249-1-sdl@nppct.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/entry.S |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/firewire/amdtp-stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -286,6 +286,7 @@ SYM_CODE_START(system_call)
- 	xgr	%r9,%r9
- 	xgr	%r10,%r10
- 	xgr	%r11,%r11
-+	xgr	%r12,%r12
- 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
- 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
- 	MBEAR	%r2,%r13
-@@ -431,6 +432,7 @@ SYM_CODE_START(\name)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
- 	MBEAR	%r11,%r13
-@@ -523,6 +525,7 @@ SYM_CODE_START(mcck_int_handler)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	stmg	%r8,%r9,__PT_PSW(%r11)
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -1156,7 +1156,7 @@ static void process_rx_packets(struct fw
+ 	struct pkt_desc *desc = s->packet_descs_cursor;
+ 	unsigned int pkt_header_length;
+ 	unsigned int packets;
+-	u32 curr_cycle_time;
++	u32 curr_cycle_time = 0;
+ 	bool need_hw_irq;
+ 	int i;
+ 
 
 
 
