@@ -1,175 +1,199 @@
-Return-Path: <stable+bounces-232550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOhVIJ8JzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:51:27 +0200
+	id CJNDNX4JzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:50:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C557936F674
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:51:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC20E36F651
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65BB231BCCE5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:13:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C3CDE3150ABE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915A432720D;
-	Tue, 31 Mar 2026 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4913644AF;
+	Tue, 31 Mar 2026 17:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="IJk5PdDu"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC78331D371;
-	Tue, 31 Mar 2026 17:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C585A369997;
+	Tue, 31 Mar 2026 17:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774977187; cv=none; b=MyA7DxHa+2Ax9oxdfzupKIzBs3Hv0rGM586060ge4NEaaaQcgEmZJj1pQJwDsRdlca/lECK0q/AMLr8q666evS0dRkkrkrqSsckBXOk3bVgfmCJTJAYWKdfHr3d8iI5TP+ESlaxC0ub9930xdJmk7pmnP3ToPUyiv2frEkEJReU=
+	t=1774977812; cv=none; b=O4LdrQx6/OtEJ2MS3ncSSC6MSjAl0Jm+TUVJSdim1D6/KsZGwYEjIJB9twaMzBQ0i16i9j2P/eFati36u7azkGq3KeNKFMtr/dN7jpBh5Pt5KRjlEXAnYIk7laX/IHAEsF+wvWOP5iXuHlYrYjGl58GpCCVv1jcUljn1y2k6AzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774977187; c=relaxed/simple;
-	bh=LjAqqBgNW2sWmyeSHjj7o/HH2Z1LXM/vDtlzhXMFot8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWwbOyJiFhaMJtg7qpdu48MGsrM5o5hBJMKpSZx9Ni/JTIfon/ueU7D5UX5A1+glahzd2n4nrJTAP4E7z/seOMdKHUJ1Z59ZeMfEC3KnyNXocq/mtphxCZcealE10YlatiiPAXfXFYWVWnKU3w0TIZeFomcXFZgNBcyzcybbuA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [223.166.95.230])
-	by APP-03 (Coremail) with SMTP id rQCowABnhdyRAMxpydRzDA--.42156S4;
-	Wed, 01 Apr 2026 01:12:52 +0800 (CST)
-From: Han Gao <gaohan@iscas.ac.cn>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Han Gao <gaohan@iscas.ac.cn>,
-	Zixian Zeng <sycamoremoon376@gmail.com>
-Cc: linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	sophgo@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Han Gao <rabenda.cn@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] riscv: dts: sophgo: Add dma-coherent to SG2042 PCIe controllers
-Date: Wed,  1 Apr 2026 01:12:48 +0800
-Message-ID: <20260331171248.973014-3-gaohan@iscas.ac.cn>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331171248.973014-1-gaohan@iscas.ac.cn>
-References: <20260331171248.973014-1-gaohan@iscas.ac.cn>
+	s=arc-20240116; t=1774977812; c=relaxed/simple;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g1sWIK3s/LhDjeXOuBEuVVVQ4QcabVRVSZu3pL/f10doeGQbQvUa1kI4pS6UUPD0g6mc/W6Ufo6v5O33m9UgM2OgEqO8d7Gh0MWImV6P3HTvQ29y7APwQctIlrnoCmoYU+pGkqJugDPnK2Wzz2qsWV+rYVAoff90guVIaWeay0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=IJk5PdDu; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1774977782; x=1775582582; i=rwarsow@gmx.de;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=IJk5PdDukhiM8ugTD2Kqt/CVeHVLIMt2bGOdURt5Sb7IlYBmkYQ96T6ofPtm6G/m
+	 mGR3h176TxQJTZS7NQJiLKpZ5i/xDx0tBsAANJKzLDWh7SgsM77nkJN2TX7G2EkGn
+	 oq7Dh3+TT8kKl4A/PpxO64vc93//EcmuSgHwu4GxScEvG8tn/XIs5Rt7M9apsaEaP
+	 SY5tkGMHMci2Nk4Sb8rXQZgsHedsb+T38ncaANsi+J3v/ruuyq362k9nH8x5EWizX
+	 1VsRzfsX7xS3A5cjZIHzPemHUBu4ucw0lSkd7tvHNosAfEBd2wTz3n1RoBoSLmy+q
+	 960SfZbq/ZqeqstwiQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mr9Bu-1vlGbI02Vi-00iXgj; Tue, 31
+ Mar 2026 19:23:02 +0200
+Message-ID: <a111bf2e-7c4c-4047-86a0-34590fc571ed@gmx.de>
+Date: Tue, 31 Mar 2026 19:23:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABnhdyRAMxpydRzDA--.42156S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7WrWrJFyxZFWkXry7tFyftFb_yoW8Gw45pr
-	srCF45KFyxXrZYv3W7GFy0gr43JFZYkasxKrnYk3W8W3yYvryUXrn3Aw1Ig3WDGr4jq343
-	WFs8tFyrKF1qy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQC14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxAqzxv26xkF7I0En4kS
-	14v26r4a6rW5MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2
-	IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI
-	42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIx
-	AIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2
-	jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRNiSHDUUUU
-X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiBg0DDGnL4ih7zAAAsb
-X-Spamd-Result: default: False [1.54 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260331161758.909578033@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:XtmfCsky1woUr/rpelTerwoVMpBQamPQeAL9rXjdEkdMP0KM6O3
+ z9A8wC4QElL6On05eBOEa3sE/Nn4mjV5XgAUSMkUeikqDeDF3r/fU4Oyexkc5hrwl+EEi5y
+ 5JT335LPAdscUNKoCCo5JdAHbpVQC79QWHvELmBhg99pofe034gUhwXPQgRr7ZvmEMaLzSj
+ ystMQkdPSzHgUTUVH0W9Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:yYZ3xq9H2lo=;WReig8UXA5LDWqMp4LUDW6yanJY
+ 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
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-232550-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-232551-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[google.com,kernel.org,outlook.com,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,iscas.ac.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gaohan@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,gmail.com];
-	NEURAL_HAM(-0.00)[-0.824];
-	TAGGED_RCPT(0.00)[stable,dt];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[164.249.198.128:email,164.219.66.0:email,164.237.145.128:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,164.207.13.0:email,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: C557936F674
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:dkim,gmx.de:email,gmx.de:mid]
+X-Rspamd-Queue-Id: DC20E36F651
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-SG2042's PCIe root complexes are cache-coherent with the CPU. Mark all
-four PCIe controller nodes (pcie_rc0 through pcie_rc3) as dma-coherent
-so the kernel uses coherent DMA mappings instead of non-coherent bounce
-buffering.
+Hi
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Han Gao <gaohan@iscas.ac.cn>
----
- arch/riscv/boot/dts/sophgo/sg2042.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+no regressions here on x86_64 (Intel 11th Gen. CPU)
 
-diff --git a/arch/riscv/boot/dts/sophgo/sg2042.dtsi b/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-index 9fddf3f0b3b9..3af770549742 100644
---- a/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-+++ b/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-@@ -417,6 +417,7 @@ pcie_rc0: pcie@7060000000 {
- 			vendor-id = <0x1f1c>;
- 			device-id = <0x2042>;
- 			cdns,no-bar-match-nbits = <48>;
-+			dma-coherent;
- 			msi-parent = <&msi>;
- 			status = "disabled";
- 		};
-@@ -439,6 +440,7 @@ pcie_rc1: pcie@7060800000 {
- 			vendor-id = <0x1f1c>;
- 			device-id = <0x2042>;
- 			cdns,no-bar-match-nbits = <48>;
-+			dma-coherent;
- 			msi-parent = <&msi>;
- 			status = "disabled";
- 		};
-@@ -461,6 +463,7 @@ pcie_rc2: pcie@7062000000 {
- 			vendor-id = <0x1f1c>;
- 			device-id = <0x2042>;
- 			cdns,no-bar-match-nbits = <48>;
-+			dma-coherent;
- 			msi-parent = <&msi>;
- 			status = "disabled";
- 		};
-@@ -483,6 +486,7 @@ pcie_rc3: pcie@7062800000 {
- 			vendor-id = <0x1f1c>;
- 			device-id = <0x2042>;
- 			cdns,no-bar-match-nbits = <48>;
-+			dma-coherent;
- 			msi-parent = <&msi>;
- 			status = "disabled";
- 		};
--- 
-2.47.3
+Thanks
 
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
