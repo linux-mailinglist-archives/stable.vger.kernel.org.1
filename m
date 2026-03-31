@@ -1,175 +1,191 @@
-Return-Path: <stable+bounces-232554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGuGGu8OzGnGNgYAu9opvQ
-	(envelope-from <stable+bounces-232554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:14:07 +0200
+	id wLzDCj4MzGnGNgYAu9opvQ
+	(envelope-from <stable+bounces-232556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:02:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A948836FD0F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:14:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A1B36FA39
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 29BDD306CF22
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:57:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B5253087863
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B4B449EB8;
-	Tue, 31 Mar 2026 17:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C4B44B68D;
+	Tue, 31 Mar 2026 17:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRSW3mjQ"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F83333B6E3;
-	Tue, 31 Mar 2026 17:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9211448D5;
+	Tue, 31 Mar 2026 17:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774979839; cv=none; b=CkewO/pjAxEMp3m/pR0NJt4/L6ibt/wVsfeNIEJYBMrszc6rIzbxzyP9BA+iZjVGeWk01zaYDseBea6BWHMT1dwmNa/kdkZ9s82yynK4fqzM0VuJKARKVo6cQ1tc1coCL2CPgnMIlt4CgA42V7eMNxtDMdTfbVUn3BxTM1iCKyc=
+	t=1774979863; cv=none; b=QwTYj52ZkvZ3pHarR3z9mp6ucR8Yes2Yf1SqpcTYRrEANXLt8Uopg/5nkJTWAPHVTnbciQMNJb2jVnsLmnM0sYifiOD2fY6jGGccabEcp/lkH5D298b/kiAbtpTnWe4H+IOMVK5CF/zuNNLJcQb8sYzDwcWsGH8g6dqlWIMi2bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774979839; c=relaxed/simple;
-	bh=0dXOCc2EyLPPDQsyb8K7thSsKu2KeZEGb65KV4d/SRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlXHzIZO0/EwASvfCvIMBY3cwXlSC2I7uU6C8T3iGqA2vV+mAV+++6wcnKw4KQpLe3iHuT31TrqS5rfWd8aA0KffF6YMvDq5T+M9utoQhfjnOu5mIP7m8cCjVZPfpDUt1p8JxHlaSVTJzkT2l5O0dEynmZx29S2BPHzN2pBijVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [223.166.95.230])
-	by APP-01 (Coremail) with SMTP id qwCowABH8GvrCsxpCP3GCw--.20050S4;
-	Wed, 01 Apr 2026 01:57:01 +0800 (CST)
-From: Han Gao <gaohan@iscas.ac.cn>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Han Gao <gaohan@iscas.ac.cn>,
+	s=arc-20240116; t=1774979863; c=relaxed/simple;
+	bh=jRshRvrfE1K59jC2hI9BuHoXj8it76oESI+BdTN4Kgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OqIUjx+Qii8JXHm4KmXSVhP7Yd5i/B6lP0R4NZqWPRhEJF98tow2tczNiPzzRXkkh4IuhY1MDRoeYeKvWraoHniig6I96nZiX6lTX4CRb4MMJNXfphmiveirigyE0I08d+45+B4TqbZOgiF7tlJGFMXA2N4XDBZoQCPXuxoZvZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRSW3mjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3D1C19423;
+	Tue, 31 Mar 2026 17:57:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774979863;
+	bh=jRshRvrfE1K59jC2hI9BuHoXj8it76oESI+BdTN4Kgc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pRSW3mjQ48Dt/YlOJZnRKmYJu7Y2M4fgwblouezDaGCDM0um5+fik1vNIg59W0cXj
+	 0cZvXUClUM4+UNePXX4WB0SJFTDN8iEHo9f56aJmOlDiOql3qGRKcRcMvN/mAiQOBZ
+	 VaeXT05O0+C63Whi7bzNO0ZHVmRr2euuM7MUrrStZPJd64SaT0OxUec/z+YugZWkVA
+	 77YgXyRYuSHmOf3M/WdQjfZG3fc0voAk9b1MBaMWAHYYMx8EFUO+P7800CuoUx7bkj
+	 JJ7anQ/lJlIEO6+6J8f9y9IQfLGjiF7jGcUDogoN0t6y8G+pDwaohQ0l7Xw8PAiFt6
+	 LvER2PUbeI4ug==
+Date: Tue, 31 Mar 2026 18:57:37 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Han Gao <gaohan@iscas.ac.cn>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Chen Wang <unicorn_wang@outlook.com>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Cc: linux-pci@vger.kernel.org,
-	sophgo@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Han Gao <rabenda.cn@gmail.com>,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Yao Zi <me@ziyao.cc>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] PCI: Add quirk to disable PCIe port services on Sophgo SG2042
-Date: Wed,  1 Apr 2026 01:56:58 +0800
-Message-ID: <20260331175658.1015829-3-gaohan@iscas.ac.cn>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331175658.1015829-1-gaohan@iscas.ac.cn>
-References: <20260331175658.1015829-1-gaohan@iscas.ac.cn>
+	Inochi Amaoto <inochiama@gmail.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Zixian Zeng <sycamoremoon376@gmail.com>, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, sophgo@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Han Gao <rabenda.cn@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] riscv: dts: sophgo: Add dma-coherent to SG2042 PCIe
+ controllers
+Message-ID: <20260331-outlet-molehill-939c0daacd06@spud>
+References: <20260331171248.973014-1-gaohan@iscas.ac.cn>
+ <20260331171248.973014-3-gaohan@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABH8GvrCsxpCP3GCw--.20050S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4fXw1rAr17XrykAr48tFb_yoW8uw17pF
-	s8GF9ayr4FgFyUGw4kZw1kuF9xua1vy34FkrZ3Wa9IvF1ay3s5XFsrtr9IyF47WFsrXFW5
-	Xwn8Cws8Wa4DWFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmI14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
-	IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnI
-	WIevJa73UjIFyTuYvjTRNiSHDUUUU
-X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiDAgDDGnL4tWXegAAsz
-X-Spamd-Result: default: False [1.54 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m8oXAjQqyBqcuv3C"
+Content-Disposition: inline
+In-Reply-To: <20260331171248.973014-3-gaohan@iscas.ac.cn>
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232556-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-232554-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[google.com,baylibre.com,huawei.com,wunner.de,linux.intel.com,kernel.org,iscas.ac.cn,outlook.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gaohan@iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[google.com,kernel.org,outlook.com,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,gmail.com,iscas.ac.cn,ziyao.cc];
-	NEURAL_HAM(-0.00)[-0.799];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A948836FD0F
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_PROHIBIT(0.00)[164.207.13.0:email,164.237.145.128:email];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:email,164.249.198.128:email,164.219.66.0:email]
+X-Rspamd-Queue-Id: A0A1B36FA39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-SG2042's PCIe root ports [1f1c:2042] fail to deliver MSI interrupts to
-downstream devices when native port services are enabled. Devices under
-an affected root port receive zero interrupts despite successful vector
-allocation, causing driver timeouts (e.g. amdgpu fence fallback timer
-expired on all rings).
 
-Set PCI_DEV_FLAGS_NO_PORT_SERVICES on SG2042 root ports to prevent the
-port service driver from probing, restoring correct MSI delivery.
+--m8oXAjQqyBqcuv3C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 1c72774df028 ("PCI: sg2042: Add Sophgo SG2042 PCIe driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Han Gao <gaohan@iscas.ac.cn>
----
- drivers/pci/quirks.c    | 12 ++++++++++++
- include/linux/pci_ids.h |  2 ++
- 2 files changed, 14 insertions(+)
+On Wed, Apr 01, 2026 at 01:12:48AM +0800, Han Gao wrote:
+> SG2042's PCIe root complexes are cache-coherent with the CPU. Mark all
+> four PCIe controller nodes (pcie_rc0 through pcie_rc3) as dma-coherent
+> so the kernel uses coherent DMA mappings instead of non-coherent bounce
+> buffering.
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 48946cca4be7..bbde482ff7cb 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6380,3 +6380,15 @@ static void pci_mask_replay_timer_timeout(struct pci_dev *pdev)
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9750, pci_mask_replay_timer_timeout);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9755, pci_mask_replay_timer_timeout);
- #endif
-+
-+/*
-+ * SG2042's PCIe root ports do not correctly deliver MSI interrupts to
-+ * downstream devices when native PCIe port services are enabled. All
-+ * services including bwctrl must be disabled, equivalent to pcie_ports=compat.
-+ */
-+static void quirk_sg2042_no_port_services(struct pci_dev *dev)
-+{
-+	pci_info(dev, "SG2042: disabling native PCIe port services\n");
-+	dev->dev_flags |= PCI_DEV_FLAGS_NO_PORT_SERVICES;
-+}
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SOPHGO, 0x2042, quirk_sg2042_no_port_services);
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 406abf629be2..9663be526dd0 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2630,6 +2630,8 @@
- 
- #define PCI_VENDOR_ID_CXL		0x1e98
- 
-+#define PCI_VENDOR_ID_SOPHGO		0x1f1c
-+
- #define PCI_VENDOR_ID_TEHUTI		0x1fc9
- #define PCI_DEVICE_ID_TEHUTI_3009	0x3009
- #define PCI_DEVICE_ID_TEHUTI_3010	0x3010
--- 
-2.47.3
+Worth pointing out I guess that this property is needed, despite riscv
+being coherent by default, because the whole bus is marked
+dma-noncoherent.
 
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Han Gao <gaohan@iscas.ac.cn>
+> ---
+>  arch/riscv/boot/dts/sophgo/sg2042.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/arch/riscv/boot/dts/sophgo/sg2042.dtsi b/arch/riscv/boot/dts=
+/sophgo/sg2042.dtsi
+> index 9fddf3f0b3b9..3af770549742 100644
+> --- a/arch/riscv/boot/dts/sophgo/sg2042.dtsi
+> +++ b/arch/riscv/boot/dts/sophgo/sg2042.dtsi
+> @@ -417,6 +417,7 @@ pcie_rc0: pcie@7060000000 {
+>  			vendor-id =3D <0x1f1c>;
+>  			device-id =3D <0x2042>;
+>  			cdns,no-bar-match-nbits =3D <48>;
+> +			dma-coherent;
+>  			msi-parent =3D <&msi>;
+>  			status =3D "disabled";
+>  		};
+> @@ -439,6 +440,7 @@ pcie_rc1: pcie@7060800000 {
+>  			vendor-id =3D <0x1f1c>;
+>  			device-id =3D <0x2042>;
+>  			cdns,no-bar-match-nbits =3D <48>;
+> +			dma-coherent;
+>  			msi-parent =3D <&msi>;
+>  			status =3D "disabled";
+>  		};
+> @@ -461,6 +463,7 @@ pcie_rc2: pcie@7062000000 {
+>  			vendor-id =3D <0x1f1c>;
+>  			device-id =3D <0x2042>;
+>  			cdns,no-bar-match-nbits =3D <48>;
+> +			dma-coherent;
+>  			msi-parent =3D <&msi>;
+>  			status =3D "disabled";
+>  		};
+> @@ -483,6 +486,7 @@ pcie_rc3: pcie@7062800000 {
+>  			vendor-id =3D <0x1f1c>;
+>  			device-id =3D <0x2042>;
+>  			cdns,no-bar-match-nbits =3D <48>;
+> +			dma-coherent;
+>  			msi-parent =3D <&msi>;
+>  			status =3D "disabled";
+>  		};
+> --=20
+> 2.47.3
+>=20
+
+--m8oXAjQqyBqcuv3C
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacwLDgAKCRB4tDGHoIJi
+0rArAP4jBTmKxYWxfFJLKueDpo+mSl4SPqf6k8s8stuypnj0hgD+KEB3KaSC2+G8
+0eWLoouJWr9QngLJgCKU1PJoXs9bvA8=
+=eHvS
+-----END PGP SIGNATURE-----
+
+--m8oXAjQqyBqcuv3C--
 
