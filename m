@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFqiBcD/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:20 +0200
+	id gIF+OU/6y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E14936E00F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8248836D199
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3453F30F0AEF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1092308BD0B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A522D7DD7;
-	Tue, 31 Mar 2026 17:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236DF423149;
+	Tue, 31 Mar 2026 16:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQjxq7Hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+/3MMU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A3F2D595D;
-	Tue, 31 Mar 2026 17:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CEF4266A2;
+	Tue, 31 Mar 2026 16:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976451; cv=none; b=qboEZoea3TZx1i4HdSnlMotQiLu3Wnt3ghMj4YZn5KUCjPgRZX3whD9uohSbyeCt9o9uFiVMv1wv/OM8mln9ujOEZTw1yssyIQ0yhR/WGzXumLtsmO62ymNjvws934RnC4pVqKYqgsgZ3RFUnKkY8PKlYTvQCdqC+VH1cSV0bPI=
+	t=1774975023; cv=none; b=T5YF5isld1R9Gk3dSvqsW2TYuMZ8ajd/Nla3oo/h3i/aRTpACCS0vFGGcCqhn0XsNsaMcDqST99xtho39oM+5r/A2kB+4ib8pCxPi4cnjoE3UF4xsb8cEiO/m3BbtbUrvlRt0nlrkZ1Z0iOnRSMY+4paJ6Ri7OaUNl6cfC5Kwm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976451; c=relaxed/simple;
-	bh=7QqOCLOvMTH+Dm24T88tVL6c+5iW3XkBj3xoRuas+YA=;
+	s=arc-20240116; t=1774975023; c=relaxed/simple;
+	bh=wX07zwctiEYOALgpMvbW+rqzyiytxIDMShxdHHFFC1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrmYB/K4GtNlw+1Kb71GqwmsM1zMPh/4w3vb15WZy3Fb3ZDLB8LR73gk83sI3/jIqS0bxT5KnDq1ugrWPq7PimWuvOK2chtMcsg/oXRDuqpsM1GUgajYqywjUHeILAMZpEEMTsRASxL2jrSUnLH7IaU2R1Ekj8MUabNt+a2BSBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQjxq7Hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66A8C19423;
-	Tue, 31 Mar 2026 17:00:50 +0000 (UTC)
+	 MIME-Version; b=rj/A7In7HZW7/3zjayjjZKAf2eK/anBLR0K+cGelhdN85vGplhKLFl6y2K4TfJWtC5bybtf8JFPUo7rjJmLhsFbNtN4JsbPZt43dAINwJr6YvFURW1J4rrV/Kz8KZQgKLUiv7KZWItLfBG3Hm0DM1wLNOHD30Ql//XNk3Xvo+5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+/3MMU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8DDC19424;
+	Tue, 31 Mar 2026 16:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976451;
-	bh=7QqOCLOvMTH+Dm24T88tVL6c+5iW3XkBj3xoRuas+YA=;
+	s=korg; t=1774975023;
+	bh=wX07zwctiEYOALgpMvbW+rqzyiytxIDMShxdHHFFC1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQjxq7HjWt1+5AslFW74B5fdOvf3+IZnklq2iEikGdiBdmt9ql1gnH+vtBH2bujNY
-	 IIZIIXmCuOTyb9bcyy5tKVJaV41e4n0AuiiSS328xFSPJfi44zecMM5Rek17YaeBRh
-	 7tPKkSJCscaXHEkMbQFVTarmVCbR+FahMLS9xcpQ=
+	b=B+/3MMU2TBuUYCoinfHRNbPZNsO7TgWOrtwTV0XRrmOOjaO8loVuzTJXkjUJ6Iv5/
+	 jfdbudJF5spbU72Y5Up03acMq5WD5jIl1Rbb4Cx8RRPBZ5OcapdM2WSrjcJK1p7vf8
+	 qaTWtXwN+sDjCYjE4sotdTkEkJnZxVIEFbhYlS8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 065/309] spi: intel-pci: Add support for Nova Lake mobile SPI flash
+Subject: [PATCH 6.19 135/342] Bluetooth: L2CAP: Fix not tracking outstanding TX ident
 Date: Tue, 31 Mar 2026 18:19:28 +0200
-Message-ID: <20260331161755.880808687@linuxfoundation.org>
+Message-ID: <20260331161803.976233934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,65 +68,179 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232322-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231770-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 9E14936E00F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 8248836D199
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 85b731ad4bbf6eb3fedf267ab00be3596f148432 ]
+[ Upstream commit 6c3ea155e5ee3e56606233acde8309afda66d483 ]
 
-Add Intel Nova Lake PCD-H SPI serial flash PCI ID to the list of
-supported devices.
+This attempts to proper track outstanding request by using struct ida
+and allocating from it in l2cap_get_ident using ida_alloc_range which
+would reuse ids as they are free, then upon completion release
+the id using ida_free.
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260309153703.74282-1-alan.borzeszkowski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This fixes the qualification test case L2CAP/COS/CED/BI-29-C which
+attempts to check if the host stack is able to work after 256 attempts
+to connect which requires Ident field to use the full range of possible
+values in order to pass the test.
+
+Link: https://github.com/bluez/bluez/issues/1829
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Stable-dep-of: 00fdebbbc557 ("Bluetooth: L2CAP: Fix deadlock in l2cap_conn_del()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-intel-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/bluetooth/l2cap.h |  3 +--
+ net/bluetooth/l2cap_core.c    | 46 ++++++++++++++++++++++++-----------
+ 2 files changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index bce3d149bea18..d8ef8f89330ac 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -96,6 +96,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa823), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0xd323), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xe323), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xe423), (unsigned long)&cnl_info },
- 	{ },
+diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
+index f08ed93bb6fa3..010f1a8fd15f8 100644
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -657,8 +657,7 @@ struct l2cap_conn {
+ 
+ 	struct sk_buff		*rx_skb;
+ 	__u32			rx_len;
+-	__u8			tx_ident;
+-	struct mutex		ident_lock;
++	struct ida		tx_ida;
+ 
+ 	struct sk_buff_head	pending_rx;
+ 	struct work_struct	pending_rx_work;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index b5e393e4f3eb1..5bd5561a8dbf5 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -924,26 +924,18 @@ int l2cap_chan_check_security(struct l2cap_chan *chan, bool initiator)
+ 				 initiator);
+ }
+ 
+-static u8 l2cap_get_ident(struct l2cap_conn *conn)
++static int l2cap_get_ident(struct l2cap_conn *conn)
+ {
+-	u8 id;
++	/* LE link does not support tools like l2ping so use the full range */
++	if (conn->hcon->type == LE_LINK)
++		return ida_alloc_range(&conn->tx_ida, 1, 255, GFP_ATOMIC);
+ 
+ 	/* Get next available identificator.
+ 	 *    1 - 128 are used by kernel.
+ 	 *  129 - 199 are reserved.
+ 	 *  200 - 254 are used by utilities like l2ping, etc.
+ 	 */
+-
+-	mutex_lock(&conn->ident_lock);
+-
+-	if (++conn->tx_ident > 128)
+-		conn->tx_ident = 1;
+-
+-	id = conn->tx_ident;
+-
+-	mutex_unlock(&conn->ident_lock);
+-
+-	return id;
++	return ida_alloc_range(&conn->tx_ida, 1, 128, GFP_ATOMIC);
+ }
+ 
+ static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
+@@ -1769,6 +1761,8 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 	if (work_pending(&conn->pending_rx_work))
+ 		cancel_work_sync(&conn->pending_rx_work);
+ 
++	ida_destroy(&conn->tx_ida);
++
+ 	cancel_delayed_work_sync(&conn->id_addr_timer);
+ 
+ 	l2cap_unregister_all_users(conn);
+@@ -4780,12 +4774,34 @@ static int l2cap_le_connect_rsp(struct l2cap_conn *conn,
+ 	return err;
+ }
+ 
++static void l2cap_put_ident(struct l2cap_conn *conn, u8 code, u8 id)
++{
++	switch (code) {
++	case L2CAP_COMMAND_REJ:
++	case L2CAP_CONN_RSP:
++	case L2CAP_CONF_RSP:
++	case L2CAP_DISCONN_RSP:
++	case L2CAP_ECHO_RSP:
++	case L2CAP_INFO_RSP:
++	case L2CAP_CONN_PARAM_UPDATE_RSP:
++	case L2CAP_ECRED_CONN_RSP:
++	case L2CAP_ECRED_RECONF_RSP:
++		/* First do a lookup since the remote may send bogus ids that
++		 * would make ida_free to generate warnings.
++		 */
++		if (ida_find_first_range(&conn->tx_ida, id, id) >= 0)
++			ida_free(&conn->tx_ida, id);
++	}
++}
++
+ static inline int l2cap_bredr_sig_cmd(struct l2cap_conn *conn,
+ 				      struct l2cap_cmd_hdr *cmd, u16 cmd_len,
+ 				      u8 *data)
+ {
+ 	int err = 0;
+ 
++	l2cap_put_ident(conn, cmd->code, cmd->ident);
++
+ 	switch (cmd->code) {
+ 	case L2CAP_COMMAND_REJ:
+ 		l2cap_command_rej(conn, cmd, cmd_len, data);
+@@ -5470,6 +5486,8 @@ static inline int l2cap_le_sig_cmd(struct l2cap_conn *conn,
+ {
+ 	int err = 0;
+ 
++	l2cap_put_ident(conn, cmd->code, cmd->ident);
++
+ 	switch (cmd->code) {
+ 	case L2CAP_COMMAND_REJ:
+ 		l2cap_le_command_rej(conn, cmd, cmd_len, data);
+@@ -6972,13 +6990,13 @@ static struct l2cap_conn *l2cap_conn_add(struct hci_conn *hcon)
+ 	     hci_dev_test_flag(hcon->hdev, HCI_FORCE_BREDR_SMP)))
+ 		conn->local_fixed_chan |= L2CAP_FC_SMP_BREDR;
+ 
+-	mutex_init(&conn->ident_lock);
+ 	mutex_init(&conn->lock);
+ 
+ 	INIT_LIST_HEAD(&conn->chan_l);
+ 	INIT_LIST_HEAD(&conn->users);
+ 
+ 	INIT_DELAYED_WORK(&conn->info_timer, l2cap_info_timeout);
++	ida_init(&conn->tx_ida);
+ 
+ 	skb_queue_head_init(&conn->pending_rx);
+ 	INIT_WORK(&conn->pending_rx_work, process_pending_rx);
 -- 
 2.51.0
 
