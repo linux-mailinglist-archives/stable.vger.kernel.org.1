@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JqnG6EHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:57 +0200
+	id sFfdOEb5y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FA836F2EA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A66536CFBF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EB2230CC633
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4FE5D30946DC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6FF2E11A6;
-	Tue, 31 Mar 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E624B3FF8A7;
+	Tue, 31 Mar 2026 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPKaJmCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UchR/4eu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A62FF669;
-	Tue, 31 Mar 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BAD3F9F5E;
+	Tue, 31 Mar 2026 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976665; cv=none; b=K62+60zzgywaydheDh7E3w7n5jFPY2HkCYg74Jn3Jyp+1iECiry4lohm52d1qHtSmkLkizG6i1YCTHZGQXNBEI0v+G35rFkIHldSG8QwNjsFih91xzAGkghwhlaTR3gPOVpOQq2MAqiBEgkTUHSS2yFtJRPeVICYKI4JnL7ZyW4=
+	t=1774974477; cv=none; b=bZZPVtEoilg51eJZXSlPmEBZdayEGjaGmWbPnG1WK/TTsAoOoj5QPXoj2LQngzpBmQYfAiOvag3Q7yaUm4OPsz+x82xjyc8n6DYq59oB4ExPOv1nWMKJlfm26BPw0RudT/2b1Ue19xxAbFcH1jV7JZg9izpRa20kyLTxlUxavvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976665; c=relaxed/simple;
-	bh=viL+NNgB9lFQgtg+jYMq2Zoefo2eVgRgQ1XICp5BjOs=;
+	s=arc-20240116; t=1774974477; c=relaxed/simple;
+	bh=cI7tYfNCZ4zHPDP1jy2PplgkKuwK4Fh2OlyQJkV+ckQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acVhhRS/lzhvCMiXocZxF4Wsw2qwimX5/gLKTB+ijf1dAXQrJ0wFAfFQtzxO8HUvF0+iAH1Cwq+B1uYwHJ/oogg9VFyGgaC/tUG4oAA93NkAG0AJxuRglRizoctiZMbly6mHynoaiT6GarUiidQ5ilNKura48cccNq2ebFLbNLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPKaJmCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7C8C19423;
-	Tue, 31 Mar 2026 17:04:24 +0000 (UTC)
+	 MIME-Version; b=TKApW8y3ryZKb6wj8dmJDpSp/eHlaEUHKypfd0wql3b0WsqWLZEJRywjz3SKSaQW/mYpeZf5M1vOlfz8w8296YrU8EldYZcQsYnWSzVtbGt+43lvIp5XQn6Jj4xn78zQJ6lutw+9w0V+H99+iWLTK6FJj3zjkE0eezqmOJrR7wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UchR/4eu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3F5C19423;
+	Tue, 31 Mar 2026 16:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976664;
-	bh=viL+NNgB9lFQgtg+jYMq2Zoefo2eVgRgQ1XICp5BjOs=;
+	s=korg; t=1774974477;
+	bh=cI7tYfNCZ4zHPDP1jy2PplgkKuwK4Fh2OlyQJkV+ckQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SPKaJmCc2MOpFywwFp2N/xPE+mntvfqncjgkm5MDR7TGmB/wbaCctKaoXkeOmAYfV
-	 +PN2LylY7rOFmnn/Y1kd4hIjMhVSt+ismOmI7HpUmzCo9fG9e0jTrnr00H1/W/j2uo
-	 Q3XeS1NUX422lsXCsKFiD3AJWSfmCY6JPs8/zew4=
+	b=UchR/4eunP78irdH6KtHJckhtpyYHwJkwOGVzSFMPx+WeoZNUJegQBqWx5thwHjEO
+	 mTz0qJUo94DABdXRvNTtoGE0T8wdb1QDv4u4zVMHrnmn/7kI0bUman3cHzfKx9NL2E
+	 dLLgUsH93ZVtDoHYYR8YuxsWXzcvnPm5DT1fsMOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 181/309] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
+Subject: [PATCH 6.6 100/175] ksmbd: replace hardcoded hdr2_len with offsetof() in smb2_calc_max_out_buf_len()
 Date: Tue, 31 Mar 2026 18:21:24 +0200
-Message-ID: <20260331161800.126903348@linuxfoundation.org>
+Message-ID: <20260331161733.452757532@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232406-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231557-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,85 +86,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
-X-Rspamd-Queue-Id: F1FA836F2EA
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3A66536CFBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit beef2634f81f1c086208191f7228bce1d366493d upstream.
+commit 0e55f63dd08f09651d39e1b709a91705a8a0ddcb upstream.
 
-When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
-(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
-max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
-with PATH_MAX, causing out-of-bounds write beyond the response buffer.
-In get_file_all_info(), there was a missing validation check for
-the client-provided OutputBufferLength before copying the filename into
-FileName field of the smb2_file_all_info structure.
-If the filename length exceeds the available buffer space, it could lead to
-potential buffer overflows or memory corruption during smbConvertToUTF16
-conversion. This calculating the actual free buffer size using
-smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
-insufficient and updating smbConvertToUTF16 to use the actual filename
-length (clamped by PATH_MAX) to ensure a safe copy operation.
+After this commit (e2b76ab8b5c9 "ksmbd: add support for read compound"),
+response buffer management was changed to use dynamic iov array.
+In the new design, smb2_calc_max_out_buf_len() expects the second
+argument (hdr2_len) to be the offset of ->Buffer field in the
+response structure, not a hardcoded magic number.
+Fix the remaining call sites to use the correct offsetof() value.
 
 Cc: stable@vger.kernel.org
 Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -4943,7 +4943,8 @@ static int get_file_all_info(struct ksmb
- 	int conv_len;
- 	char *filename;
- 	u64 time;
--	int ret;
-+	int ret, buf_free_len, filename_len;
-+	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
+@@ -4436,8 +4436,9 @@ int smb2_query_dir(struct ksmbd_work *wo
+ 	d_info.wptr = (char *)rsp->Buffer;
+ 	d_info.rptr = (char *)rsp->Buffer;
+ 	d_info.out_buf_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_directory_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (d_info.out_buf_len < 0) {
+ 		rc = -EINVAL;
+ 		goto err_out;
+@@ -4704,8 +4705,9 @@ static int smb2_get_ea(struct ksmbd_work
+ 	}
  
- 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
- 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
-@@ -4955,6 +4956,16 @@ static int get_file_all_info(struct ksmb
- 	if (IS_ERR(filename))
- 		return PTR_ERR(filename);
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		return -EINVAL;
  
-+	filename_len = strlen(filename);
-+	buf_free_len = smb2_calc_max_out_buf_len(work,
-+			offsetof(struct smb2_query_info_rsp, Buffer) +
-+			offsetof(struct smb2_file_all_info, FileName),
-+			le32_to_cpu(req->OutputBufferLength));
-+	if (buf_free_len < (filename_len + 1) * 2) {
-+		kfree(filename);
-+		return -EINVAL;
-+	}
-+
- 	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
- 			  AT_STATX_SYNC_AS_STAT);
- 	if (ret) {
-@@ -4998,7 +5009,8 @@ static int get_file_all_info(struct ksmb
- 	file_info->Mode = fp->coption;
- 	file_info->AlignmentRequirement = 0;
- 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
--				     PATH_MAX, conn->local_nls, 0);
-+				     min(filename_len, PATH_MAX),
-+				     conn->local_nls, 0);
- 	conv_len *= 2;
- 	file_info->FileNameLength = cpu_to_le32(conv_len);
- 	rsp->OutputBufferLength =
+@@ -5018,8 +5020,9 @@ static int get_file_stream_info(struct k
+ 	file_info = (struct smb2_file_stream_info *)rsp->Buffer;
+ 
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		goto out;
+ 
+@@ -8119,8 +8122,9 @@ int smb2_ioctl(struct ksmbd_work *work)
+ 	buffer = (char *)req + le32_to_cpu(req->InputOffset);
+ 
+ 	cnt_code = le32_to_cpu(req->CtlCode);
+-	ret = smb2_calc_max_out_buf_len(work, 48,
+-					le32_to_cpu(req->MaxOutputResponse));
++	ret = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_ioctl_rsp, Buffer),
++			le32_to_cpu(req->MaxOutputResponse));
+ 	if (ret < 0) {
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		goto out;
 
 
 
