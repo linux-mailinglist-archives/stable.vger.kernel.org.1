@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-231928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MBSA/P7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:07 +0200
+	id QBpLBV34y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F1836D526
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A2136CDFC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2B28030C4C48
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B1B931828CB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FC43E3C5C;
-	Tue, 31 Mar 2026 16:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737863E3D82;
+	Tue, 31 Mar 2026 16:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAGAjefx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gifb6z2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B910262A6;
-	Tue, 31 Mar 2026 16:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315E03D75B3;
+	Tue, 31 Mar 2026 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975429; cv=none; b=kFY/Xe0SLMvGeIC8lYPFd6ei4LOH9457FlZpxWZIafG8t11PzZWVFmcBUxwR9PJZKz9645rBgrE8lCi9LE6ngJEnlLm/O4u0Kj9xzHM8bqcjE6LyEU4MzeYFAopq5oB7LHuCUGIzFWGtlj927vMfG/hhGODKPTgGeLcY/O6r6zA=
+	t=1774974584; cv=none; b=PXGuY5BX7H/cICXj43MkrqEaw8SoOzKTWIGVmSCBaN5waqltckYqK1MiJJx+13EHE0fFjYsrpsamDRW3yUEBcI70EPM9XOI4s0Vu6cSbqNvikRC/cVt5ns5+M/J4e5NNg6DETTEedLGhM/fTkRzsOdbetf3zD+Ypbx0IzdVP90M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975429; c=relaxed/simple;
-	bh=Vgq7sLFBqp1oHBpvw0EOaBFoKtayGjTSmxrA4PJUbII=;
+	s=arc-20240116; t=1774974584; c=relaxed/simple;
+	bh=jgpBOI791hZKPhfPn26fg028ammvLrk7WKy10RFtPUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lpcx6J0XM+Lsd4isPshQD9hgec2X84SkuHGwa5415lWUxmlfCK/xrbxJhOUKkXzXCGe/LCUSQsA6SIzg1MPcv15a2EtztL3OmC8/E6/sK3mp59KFeKP4oXH4lLH5NLFaRR8NLGhubAJ/SVWC2Ir+OBFRmkczqqxtJ8EobXv8gag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAGAjefx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E73C19423;
-	Tue, 31 Mar 2026 16:43:48 +0000 (UTC)
+	 MIME-Version; b=a2oua+GbNMbQifrzkK/ek1sOMYrIWb52QmATi4z2IamZPiagyaKPFkk+J72BtNwj39b+fsJfGXnf9NIkPRqzWg4Zb8CBGY5ILsvBVsAnHPdzkBhRNbIjyXfw1CFVgn95AQ32XrLAt60vS8K/E3VhPEq/v0+T1klhEo1bHnEd00c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gifb6z2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C101C19423;
+	Tue, 31 Mar 2026 16:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975429;
-	bh=Vgq7sLFBqp1oHBpvw0EOaBFoKtayGjTSmxrA4PJUbII=;
+	s=korg; t=1774974583;
+	bh=jgpBOI791hZKPhfPn26fg028ammvLrk7WKy10RFtPUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAGAjefxaymmVWjzhQdCUhouL0MJcV5D2+P1+Dx8hwsv9GRpUdZTsdc+QfWc63SSQ
-	 lUNJlgYK9bAq8ckcQ/qQa+/NqGXKYGlIm8GhwxpmfsTyPHl8HkVZ5ogAUPWhXHXOfS
-	 tfDBAkwhPe4GNfrdr/0LDIKNtn8sShZtuQW+LUgI=
+	b=gifb6z2or5jFTZ9LG01ZPHxWnD3/Eb8HSzuQVEMgB4NVk2aWjj83KZiXbGykluNkq
+	 OZTNUQLxd7qZ+YwQOwLmzot1BIXAPCUBG74oySNw6u6cSAoOshGGIx3wF+F8f9rwpp
+	 +UbI8/tsGJWRHmz9bdLpMvj4AD5IKmOX9leBHsis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.19 291/342] ext4: convert inline data to extents when truncate exceeds inline size
+Subject: [PATCH 6.6 140/175] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
 Date: Tue, 31 Mar 2026 18:22:04 +0200
-Message-ID: <20260331161809.648130432@linuxfoundation.org>
+Message-ID: <20260331161734.928665640@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +67,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231928-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7de5fe447862fc37576f];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231598-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A1F1836D526
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 52A2136CDFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-commit ed9356a30e59c7cc3198e7fc46cfedf3767b9b17 upstream.
+commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
 
-Add a check in ext4_setattr() to convert files from inline data storage
-to extent-based storage when truncate() grows the file size beyond the
-inline capacity. This prevents the filesystem from entering an
-inconsistent state where the inline data flag is set but the file size
-exceeds what can be stored inline.
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
 
-Without this fix, the following sequence causes a kernel BUG_ON():
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
 
-1. Mount filesystem with inode that has inline flag set and small size
-2. truncate(file, 50MB) - grows size but inline flag remains set
-3. sendfile() attempts to write data
-4. ext4_write_inline_data() hits BUG_ON(write_size > inline_capacity)
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
 
-The crash occurs because ext4_write_inline_data() expects inline storage
-to accommodate the write, but the actual inline capacity (~60 bytes for
-i_block + ~96 bytes for xattrs) is far smaller than the file size and
-write request.
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
 
-The fix checks if the new size from setattr exceeds the inode's actual
-inline capacity (EXT4_I(inode)->i_inline_size) and converts the file to
-extent-based storage before proceeding with the size change.
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
 
-This addresses the root cause by ensuring the inline data flag and file
-size remain consistent during truncate operations.
-
-Reported-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7de5fe447862fc37576f
-Tested-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260207043607.1175976-1-kartikey406@gmail.com
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/ext4/fast_commit.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5901,6 +5901,18 @@ int ext4_setattr(struct mnt_idmap *idmap
- 		if (attr->ia_size == inode->i_size)
- 			inc_ivers = false;
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1601,19 +1601,21 @@ static int ext4_fc_replay_inode(struct s
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
  
-+		/*
-+		 * If file has inline data but new size exceeds inline capacity,
-+		 * convert to extent-based storage first to prevent inconsistent
-+		 * state (inline flag set but size exceeds inline capacity).
-+		 */
-+		if (ext4_has_inline_data(inode) &&
-+		    attr->ia_size > EXT4_I(inode)->i_inline_size) {
-+			error = ext4_convert_inline_data(inode);
-+			if (error)
-+				goto err_out;
-+		}
-+
- 		if (shrink) {
- 			if (ext4_should_order_data(inode)) {
- 				error = ext4_begin_ordered_truncate(inode,
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		ext4_debug("Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
+ 
+ 	/*
+@@ -1630,13 +1632,14 @@ static int ext4_fc_replay_inode(struct s
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 
 
 
