@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-231566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGqEIBv4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:43 +0200
+	id qPVjHIAAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B6B36CD1E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3132936E2B9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2172B3155043
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 190DD304FA2E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEA93E3D82;
-	Tue, 31 Mar 2026 16:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A02A2FE042;
+	Tue, 31 Mar 2026 17:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zG8uXSsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EisY+8c3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253483FF8A7;
-	Tue, 31 Mar 2026 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D2C2C21F2;
+	Tue, 31 Mar 2026 17:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974501; cv=none; b=dxlFJMVSwhVhYCubarDmguBhzZFuSp10vRVFD08dxMVOUlhHpO9PNT/bmKmeikWZVKHLVlN2SluzBRCD0F5fsVUHCTICiaxgJUM0X0ROywTsgbc5qXlyKYZul/VFPUvAvXrjVE3uuD3FvXLKPHxZ2Iwe85ZQu6A74j9hroEd+i0=
+	t=1774976690; cv=none; b=UmRu2oS8O7mOZeOJ+zdtlepwh9XYzVGDnTThPUYqpvFP7bRUQmBAWCfktrLmbk1vy4HKpYIZO9VqxL1GizcBfGALDDqlXV5LdCRhURFHnaaQJ2VAzAswr/XpVpxXcmLTVgZf3OXbc6RN1R4NB4MRccBPFrY8maz4HUrSNrPnjrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974501; c=relaxed/simple;
-	bh=yf0aIvuNxwi9WN0WfrQXYMr+RXFLTcn+nd4kqY08I6I=;
+	s=arc-20240116; t=1774976690; c=relaxed/simple;
+	bh=Erhgl/7VNbnpsyIx6/6IpxjvzQC9LpVZfI3JdWC8Hmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BSBuxNe7UDK/bEQP7ZHG5kkx2fquDxyBpUgza0jRm3cjAgjnrKGRuRqPOtAhtmFL7AdRrGxh3U+vkyDRzJs5h/qf7dEp47MJyhdr6Kej7zTOeQ44xaWEDKgQEMQz+dpZxrvSrW3Ib36o18eeIwxEWnDtf7OJX5Q5v3axHmWwbRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zG8uXSsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AF6C19423;
-	Tue, 31 Mar 2026 16:28:20 +0000 (UTC)
+	 MIME-Version; b=ruUaq76MMkpfO7eESPo5fQZed2LqE6alQkW9OwZWaX8XKjVsI9RkzovvN6DiFXXbV6GHEynnrp6d8DmpgU25fTJxb0eXdQI7PeHGRue7U/W/7plpQ2KFt89o5lzT2/BQFzXkPNpcqiolJ9rYK8a5Ju9UocsxSBQ1KHpoBH26vFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EisY+8c3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DC0C19423;
+	Tue, 31 Mar 2026 17:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974500;
-	bh=yf0aIvuNxwi9WN0WfrQXYMr+RXFLTcn+nd4kqY08I6I=;
+	s=korg; t=1774976690;
+	bh=Erhgl/7VNbnpsyIx6/6IpxjvzQC9LpVZfI3JdWC8Hmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zG8uXSspoyUDahhq1JSv0EekuhZknFkmU60vR1WjJ7JS0VSRsx4N/N2HaHzQ/1SAW
-	 RXPb6fwwYwzgvx4KtfpGK6pAPPToTVIDuxl8hT4C3wbthTqlc6aOX/VVmit5eyDbTx
-	 PhYjscAw+3/1QStRzFsEJQiJBmE2i2HG3nDdFVNQ=
+	b=EisY+8c3xkq6tKJKcnMy0KF2r0S6JvJSutmYvX7cendlwIB3ePBx3+dHGidLYt7FC
+	 RggMJ3avsAs7ju8iIXGPDT9OaUC9nMUuBibaCPd2FHt1lIEjKldtPBLhRtiS1yNj70
+	 kOyUYv0hENRTSYTS+xoe8EmSxhqQx3KwXdVbE4R4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 108/175] platform/x86: ISST: Correct locked bit width
-Date: Tue, 31 Mar 2026 18:21:32 +0200
-Message-ID: <20260331161733.748390863@linuxfoundation.org>
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.18 190/309] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
+Date: Tue, 31 Mar 2026 18:21:33 +0200
+Message-ID: <20260331161800.452158945@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231566-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232416-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D4B6B36CD1E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pengutronix.de:email,keysight.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,hartkopp.net:email]
+X-Rspamd-Queue-Id: 3132936E2B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
-commit fbddf68d7b4e1e6da7a78dd7fbd8ec376536584a upstream.
+commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
 
-SST-PP locked bit width is set to three bits. It should be only one bit.
-Use SST_PP_LOCK_WIDTH define instead of SST_PP_LEVEL_WIDTH.
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-Fixes: ea009e4769fa ("platform/x86: ISST: Add SST-PP support via TPMI")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
+
+    if (from < 0 || to < 0 || res < 0)
+        return;
+
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
+
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
+
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
+
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
+
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
+
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260323153635.3263828-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/gw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -709,7 +709,7 @@ static int isst_if_get_perf_level(void _
- 	_read_pp_info("current_level", perf_level.current_level, SST_PP_STATUS_OFFSET,
- 		      SST_PP_LEVEL_START, SST_PP_LEVEL_WIDTH, SST_MUL_FACTOR_NONE)
- 	_read_pp_info("locked", perf_level.locked, SST_PP_STATUS_OFFSET,
--		      SST_PP_LOCK_START, SST_PP_LEVEL_WIDTH, SST_MUL_FACTOR_NONE)
-+		      SST_PP_LOCK_START, SST_PP_LOCK_WIDTH, SST_MUL_FACTOR_NONE)
- 	_read_pp_info("feature_state", perf_level.feature_state, SST_PP_STATUS_OFFSET,
- 		      SST_PP_FEATURE_STATE_START, SST_PP_FEATURE_STATE_WIDTH, SST_MUL_FACTOR_NONE)
- 	perf_level.enabled = !!(power_domain_info->sst_header.cap_mask & BIT(1));
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
+ 		return;
+ 
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	}
+ 
+@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
+ 		break;
+ 	}
+ 
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
+ }
+ 
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
 
 
 
