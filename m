@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MojFFsFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:33:15 +0200
+	id QPAZOD4CzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F12F36EE84
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:33:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFF636E7FC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 02107317291A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9553030E87EC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA4040710B;
-	Tue, 31 Mar 2026 16:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563D830C637;
+	Tue, 31 Mar 2026 17:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMw9wV+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auLLQTdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1173EF0A2;
-	Tue, 31 Mar 2026 16:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186A130F523;
+	Tue, 31 Mar 2026 17:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976161; cv=none; b=D0kFiRtpK8o+L9yjN9GvYFrtXN2boctEW9TyBYXNiipSaQNPYBNHR5SZtcOqPe3dGMOibt7BP+YxORaQmZavpNbPJVK0p+Qw4483qxx1fZwhc3O1dS6INgXXK1ajrYZM92Pxz97z70kpT91uDZhbn38ptKoCJTQKOgBQcpWGEIw=
+	t=1774977002; cv=none; b=aZsw6Tjdjkui9I1aD4BUl5nWOfcnWUsxuYDfJGL9hJGR9Ykl2R41XbVSee4CtOuNsFie8b6hwRsQIhjJEEa30AthK76dD/bWkyns5+Sxh8gU90rjA2wBh3IsuCwjNbQrmNaQp82IrUeb5ZGuOWJCntZZWPPHQ0a0nSyxJGOcOsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976161; c=relaxed/simple;
-	bh=SJ/B5N/lNVJRuhynw3JNcxTf/R//6EFyfLGtMK5EuyU=;
+	s=arc-20240116; t=1774977002; c=relaxed/simple;
+	bh=KMm/VXkD0QUPTJGA9a+jNjEcENb+Vi6HO8hSBF57r8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okfcTbsK4WN23ZWK31krf+QNIeU0KsxzO1hNv7jWqo++UBtOjt5NgIIYof/Ux+tNhAhdWg4YdG90IX0I72AR47hY3vPceF8foLup0qPPEc/wf4zv4DxY7ChljyOpEBb362xEDtzXTEn3+b+WyBQcsoSv5EG3bYvVxY1aWR9datc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMw9wV+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F8DC19423;
-	Tue, 31 Mar 2026 16:56:00 +0000 (UTC)
+	 MIME-Version; b=p5xXknIqlNR92kfaUqRUIot9JJXs8YEW9ydZ+333kG1IPQZ8WYOPRfFQZTACKhF6plEiqYC1JKEPmK4B/R5KpJHfwDGGALVotRHNHENC9g1lXJ0538nEjtm8/EFdxyBfnQl1s8ddb6N3Lu/i/esXEHGuFLbWrnpNNC4Nyf9Za/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auLLQTdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CB3C19424;
+	Tue, 31 Mar 2026 17:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976160;
-	bh=SJ/B5N/lNVJRuhynw3JNcxTf/R//6EFyfLGtMK5EuyU=;
+	s=korg; t=1774977001;
+	bh=KMm/VXkD0QUPTJGA9a+jNjEcENb+Vi6HO8hSBF57r8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMw9wV+ChtHxANKuwXAmyAoPgePSJlehRHFV/ywNQSmXl1nHe15gZL5kohTf+XiWE
-	 acLFd+7siECijJWA0iFm2N6VIJql7VoXC0pz0Y+Z0d+WCuM2TEG24dRID3UvfhXUjX
-	 YZ4bhqKflWJtE7W/dnfFQXAPI2+J8zihvst0LBDM=
+	b=auLLQTdAmPJF+/vgFIrIvp4MNnB7TDZa4sJQRInQMem7bgmSoFeaLRnTaSEJamenF
+	 P88urDrw5WgGUsPeVys0kDbMo5pv/Hr4vLSgFn76qopOO7jitxPKytLFJ0ThRY+2K9
+	 QhuK+0et3Bju3Mdl4Esk+9QFlBu+Dtpe8mLiz3jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/244] netfs: Fix kernel BUG in netfs_limit_iter() for ITER_KVEC iterators
-Date: Tue, 31 Mar 2026 18:23:00 +0200
-Message-ID: <20260331161750.258569128@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 278/309] mm/damon/core: avoid use of half-online-committed context
+Date: Tue, 31 Mar 2026 18:23:01 +0200
+Message-ID: <20260331161803.795241676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +63,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232210-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,9c058f0d63475adc97fd];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232538-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: 4F12F36EE84
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8CFF636E7FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 67e467a11f62ff64ad219dc6aa5459e132c79d14 ]
+commit 26f775a054c3cda86ad465a64141894a90a9e145 upstream.
 
-When a process crashes and the kernel writes a core dump to a 9P
-filesystem, __kernel_write() creates an ITER_KVEC iterator. This
-iterator reaches netfs_limit_iter() via netfs_unbuffered_write(), which
-only handles ITER_FOLIOQ, ITER_BVEC and ITER_XARRAY iterator types,
-hitting the BUG() for any other type.
+One major usage of damon_call() is online DAMON parameters update.  It is
+done by calling damon_commit_ctx() inside the damon_call() callback
+function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+parameters and 2) internal memory allocation failures.  In case of
+failures, the damon_ctx that attempted to be updated (commit destination)
+can be partially updated (or, corrupted from a perspective), and therefore
+shouldn't be used anymore.  The function only ensures the damon_ctx object
+can safely deallocated using damon_destroy_ctx().
 
-Fix this by adding netfs_limit_kvec() following the same pattern as
-netfs_limit_bvec(), since both kvec and bvec are simple segment arrays
-with pointer and length fields. Dispatch it from netfs_limit_iter() when
-the iterator type is ITER_KVEC.
+The API callers are, however, calling damon_commit_ctx() only after
+asserting the parameters are valid, to avoid damon_commit_ctx() fails due
+to invalid input parameters.  But it can still theoretically fail if the
+internal memory allocation fails.  In the case, DAMON may run with the
+partially updated damon_ctx.  This can result in unexpected behaviors
+including even NULL pointer dereference in case of damos_commit_dests()
+failure [1].  Such allocation failure is arguably too small to fail, so
+the real world impact would be rare.  But, given the bad consequence, this
+needs to be fixed.
 
-Fixes: cae932d3aee5 ("netfs: Add func to calculate pagecount/size-limited span of an iterator")
-Reported-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9c058f0d63475adc97fd
-Tested-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260307090041.359870-1-kartikey406@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+the damon_commit_ctx() failure on the damon_ctx object.  For this,
+introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+when it is failed.  kdamond_call() checks if the field is set after each
+damon_call_control->fn() is executed.  If it is set, ignore remaining
+callback requests and return.  All kdamond_call() callers including
+kdamond_fn() also check the maybe_corrupted field right after
+kdamond_call() invocations.  If the field is set, break the kdamond_fn()
+main loop so that DAMON sill doesn't use the context that might be
+corrupted.
+
+[sj@kernel.org: let kdamond_call() with cancel regardless of maybe_corrupted]
+  Link: https://lkml.kernel.org/r/20260320031553.2479-1-sj@kernel.org
+  Link: https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
+Link: https://lkml.kernel.org/r/20260319145218.86197-1-sj@kernel.org
+Link: https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org [1]
+Fixes: 3301f1861d34 ("mm/damon/sysfs: handle commit command using damon_call()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/iterator.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ include/linux/damon.h |    6 ++++++
+ mm/damon/core.c       |    8 ++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 72a435e5fc6da..154a14bb2d7f7 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -142,6 +142,47 @@ static size_t netfs_limit_bvec(const struct iov_iter *iter, size_t start_offset,
- 	return min(span, max_size);
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -786,6 +786,12 @@ struct damon_ctx {
+ 	struct damos_walk_control *walk_control;
+ 	struct mutex walk_control_lock;
+ 
++	/*
++	 * indicate if this may be corrupted.  Currentonly this is set only for
++	 * damon_commit_ctx() failure.
++	 */
++	bool maybe_corrupted;
++
+ /* public: */
+ 	struct task_struct *kdamond;
+ 	struct mutex kdamond_lock;
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1236,6 +1236,7 @@ int damon_commit_ctx(struct damon_ctx *d
+ {
+ 	int err;
+ 
++	dst->maybe_corrupted = true;
+ 	if (!is_power_of_2(src->min_sz_region))
+ 		return -EINVAL;
+ 
+@@ -1261,6 +1262,7 @@ int damon_commit_ctx(struct damon_ctx *d
+ 	dst->addr_unit = src->addr_unit;
+ 	dst->min_sz_region = src->min_sz_region;
+ 
++	dst->maybe_corrupted = false;
+ 	return 0;
  }
  
-+/*
-+ * Select the span of a kvec iterator we're going to use.  Limit it by both
-+ * maximum size and maximum number of segments.  Returns the size of the span
-+ * in bytes.
-+ */
-+static size_t netfs_limit_kvec(const struct iov_iter *iter, size_t start_offset,
-+			       size_t max_size, size_t max_segs)
-+{
-+	const struct kvec *kvecs = iter->kvec;
-+	unsigned int nkv = iter->nr_segs, ix = 0, nsegs = 0;
-+	size_t len, span = 0, n = iter->count;
-+	size_t skip = iter->iov_offset + start_offset;
-+
-+	if (WARN_ON(!iov_iter_is_kvec(iter)) ||
-+	    WARN_ON(start_offset > n) ||
-+	    n == 0)
-+		return 0;
-+
-+	while (n && ix < nkv && skip) {
-+		len = kvecs[ix].iov_len;
-+		if (skip < len)
+@@ -2562,6 +2564,8 @@ static void kdamond_call(struct damon_ct
+ 		} else {
+ 			list_add(&control->list, &repeat_controls);
+ 		}
++		if (!cancel && ctx->maybe_corrupted)
 +			break;
-+		skip -= len;
-+		n -= len;
-+		ix++;
-+	}
-+
-+	while (n && ix < nkv) {
-+		len = min3(n, kvecs[ix].iov_len - skip, max_size);
-+		span += len;
-+		nsegs++;
-+		ix++;
-+		if (span >= max_size || nsegs >= max_segs)
+ 	}
+ 	control = list_first_entry_or_null(&repeat_controls,
+ 			struct damon_call_control, list);
+@@ -2594,6 +2598,8 @@ static int kdamond_wait_activation(struc
+ 		kdamond_usleep(min_wait_time);
+ 
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			return -EINVAL;
+ 		damos_walk_cancel(ctx);
+ 	}
+ 	return -EBUSY;
+@@ -2679,6 +2685,8 @@ static int kdamond_fn(void *data)
+ 		 * kdamond_merge_regions() if possible, to reduce overhead
+ 		 */
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
 +			break;
-+		skip = 0;
-+		n -= len;
-+	}
-+
-+	return min(span, max_size);
-+}
-+
- /*
-  * Select the span of an xarray iterator we're going to use.  Limit it by both
-  * maximum size and maximum number of segments.  It is assumed that segments
-@@ -245,6 +286,8 @@ size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
- 		return netfs_limit_bvec(iter, start_offset, max_size, max_segs);
- 	if (iov_iter_is_xarray(iter))
- 		return netfs_limit_xarray(iter, start_offset, max_size, max_segs);
-+	if (iov_iter_is_kvec(iter))
-+		return netfs_limit_kvec(iter, start_offset, max_size, max_segs);
- 	BUG();
- }
- EXPORT_SYMBOL(netfs_limit_iter);
--- 
-2.53.0
-
+ 		if (!list_empty(&ctx->schemes))
+ 			kdamond_apply_schemes(ctx);
+ 		else
 
 
 
