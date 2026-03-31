@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-232321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEPVLLz/y2koNQYAu9opvQ
-	(envelope-from <stable+bounces-232321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:16 +0200
+	id 0JNGKGv9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C5736E005
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38DF36D99E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1438230F0522
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5613630D4006
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8BF2D8DC3;
-	Tue, 31 Mar 2026 17:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FD7423A99;
+	Tue, 31 Mar 2026 16:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQsVH148"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGmCKUD6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0042D4B40;
-	Tue, 31 Mar 2026 17:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2B533E372;
+	Tue, 31 Mar 2026 16:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976448; cv=none; b=erJf98o/Lmg+xm9yPC1+3KeLuclQFmmm9FPaUTb8QdyJJCusFvzIGbnapSwbc3qm3Uhu7iCJula7ndc/R00amil6l+xH0ZDUSX9rFtwBSmEub73mSWYomd5sb/eNk4n/p7FCgGh4TbV2PVIglGTxuxoImVowjOGckuJkYKHwgU4=
+	t=1774975605; cv=none; b=Pau0uDadAI2KxD7ZT9Kr8SBrGv1dSwms/misXhf1rIneW8OS8cUokjzHfJmMdZVHetxYQ8poZ/xOkG9dpz+zpyyUtZG82DuBUvid6ATHfBHHhmN6WhL/lw4O7NesW4J6rwKgiZtQx2FGbJPOUcrUmwkV5NSldp/IdTsu45Oaiso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976448; c=relaxed/simple;
-	bh=ehoDJNFLT35jGSj12vKNBqSLZTHNFKTz1Byk5B6rmvk=;
+	s=arc-20240116; t=1774975605; c=relaxed/simple;
+	bh=oIxUOP5OKeRdjapomK0QjW071UQLLoE5B6iPBtUhVJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2+XzsL5MG2MlEGYdlZqUHsLZj3Nvt8znOj2OlibKcSoTB0MegQWby5atRIpru6QunkmLOnZdAXWB11uYZEPUOMmV9FZbyfBxBQOVr0FJF2FxQzYg8vKaKV3f19xM4qt7EKgp69Z66pwXjlv81cTIoqB4m+V0J5TGo1JbUf7e4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQsVH148; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ECDC19423;
-	Tue, 31 Mar 2026 17:00:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L3TRTirPhGYIQRPclFzmrW/KM4FXfrCuWHPxd++zoQ1gPVAggi3q5jU4bNCcqfk45Jy65DexwBa8s7MYzkh6h3hCnGIkOiUJlzEfgH5XxzKK3QrfG713DotTl+5PvcoJlTgsZX7qW3XB+SouTH1QCInHkUJd+6hrIDHT8hGPl/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGmCKUD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EFFC19423;
+	Tue, 31 Mar 2026 16:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976448;
-	bh=ehoDJNFLT35jGSj12vKNBqSLZTHNFKTz1Byk5B6rmvk=;
+	s=korg; t=1774975605;
+	bh=oIxUOP5OKeRdjapomK0QjW071UQLLoE5B6iPBtUhVJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQsVH1487hVzSjYEKcjKbDthfVg0PLDXHuLFE9a7DaG1MvfN0Wp7WL8gE5vDTv8eJ
-	 zY03FmlAxlbiITCMEh87Z4MVYehSvMsHJ/flP0PP5snVx0VYhSb+lYWkvsvkiyYT63
-	 4V5xQNQtrjZ+v30CblZhA7GxZ4SBqVB4HOmWVwZU=
+	b=VGmCKUD6l8HYPodRNJZSnVLEExE4umxaUxkf/goSVMODXwZX6A7drd13o4qcwaIVw
+	 6K3h1jV/hNL+SOtl0Q/SJ4BAM2OU0Kww1sX3DlrGY6TgaxWmAhkIwJqwon0UPT/zJn
+	 MAMmijET43TA54R2k+m0GUMvNIxi0825umG09hl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Deng <dengjie03@kylinos.cn>,
+	Yajat Kumar <yajatapps3@gmail.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 064/309] usb: core: new quirk to handle devices with zero configurations
+Subject: [PATCH 6.12 017/244] platform/x86: touchscreen_dmi: Add quirk for y-inverted Goodix touchscreen on SUPI S10
 Date: Tue, 31 Mar 2026 18:19:27 +0200
-Message-ID: <20260331161755.844415464@linuxfoundation.org>
+Message-ID: <20260331161742.341225904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linux.intel.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232321-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_FROM(0.00)[bounces-231996-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 57C5736E005
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: C38DF36D99E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Deng <dengjie03@kylinos.cn>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit 9f6a983cfa22ac662c86e60816d3a357d4b551e9 ]
+[ Upstream commit 7d87ed70fc95482c12edf9493c249b6413be485e ]
 
-Some USB devices incorrectly report bNumConfigurations as 0 in their
-device descriptor, which causes the USB core to reject them during
-enumeration.
-logs:
-usb 1-2: device descriptor read/64, error -71
-usb 1-2: no configurations
-usb 1-2: can't read configurations, error -22
+The touchscreen on the SUPI S10 tablet reports inverted Y coordinates,
+causing touch input to be mirrored vertically relative to the display.
 
-However, these devices actually work correctly when
-treated as having a single configuration.
+Add a quirk to set the "touchscreen-inverted-y" boolean device-property
+on the touchscreen device, so that the goodix_ts driver will fixup
+the coordinates.
 
-Add a new quirk USB_QUIRK_FORCE_ONE_CONFIG to handle such devices.
-When this quirk is set, assume the device has 1 configuration instead
-of failing with -EINVAL.
-
-This quirk is applied to the device with VID:PID 5131:2007 which
-exhibits this behavior.
-
-Signed-off-by: Jie Deng <dengjie03@kylinos.cn>
-Link: https://patch.msgid.link/20260227084931.1527461-1-dengjie03@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yajat Kumar <yajatapps3@gmail.com>
+Closes: https://lore.kernel.org/linux-input/20251230221639.582406-1-yajatapps3@gmail.com/
+Tested-by: Yajat Kumar <yajatapps3@gmail.com>
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260217132346.34535-1-johannes.goede@oss.qualcomm.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 3 +++
- drivers/usb/core/config.c                       | 6 +++++-
- drivers/usb/core/quirks.c                       | 5 +++++
- include/linux/usb/quirks.h                      | 3 +++
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/platform/x86/touchscreen_dmi.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 6c42061ca20e5..ab4e03f91e744 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7925,6 +7925,9 @@
- 				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
- 					(Reduce timeout of the SET_ADDRESS
- 					request from 5000 ms to 500 ms);
-+				q = USB_QUIRK_FORCE_ONE_CONFIG (Device
-+					claims zero configurations,
-+					forcing to 1);
- 			Example: quirks=0781:5580:bk,0a5c:5834:gij
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 0a39f68c641d1..02b0bb8af80a9 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -410,6 +410,16 @@ static const struct ts_dmi_data gdix1002_upside_down_data = {
+ 	.properties	= gdix1001_upside_down_props,
+ };
  
- 	usbhid.mousepoll=
-diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
-index 2bb1ceb9d621a..3067e18ec4d8a 100644
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -927,7 +927,11 @@ int usb_get_configuration(struct usb_device *dev)
- 		dev->descriptor.bNumConfigurations = ncfg = USB_MAXCONFIG;
- 	}
- 
--	if (ncfg < 1) {
-+	if (ncfg < 1 && dev->quirks & USB_QUIRK_FORCE_ONE_CONFIG) {
-+		dev_info(ddev, "Device claims zero configurations, forcing to 1\n");
-+		dev->descriptor.bNumConfigurations = 1;
-+		ncfg = 1;
-+	} else if (ncfg < 1) {
- 		dev_err(ddev, "no configurations\n");
- 		return -EINVAL;
- 	}
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index 9fef2f4d604a5..65168eb89295c 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -141,6 +141,8 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
- 			case 'p':
- 				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
- 				break;
-+			case 'q':
-+				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
- 			/* Ignore unrecognized flag characters */
- 			}
- 		}
-@@ -597,6 +599,9 @@ static const struct usb_device_id usb_quirk_list[] = {
- 	/* VCOM device */
- 	{ USB_DEVICE(0x4296, 0x7570), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
- 
-+	/* Noji-MCS SmartCard Reader */
-+	{ USB_DEVICE(0x5131, 0x2007), .driver_info = USB_QUIRK_FORCE_ONE_CONFIG },
++static const struct property_entry gdix1001_y_inverted_props[] = {
++	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
++	{ }
++};
 +
- 	/* INTEL VALUE SSD */
- 	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
- 
-diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
-index 2f7bd2fdc6164..b3cc7beab4a3c 100644
---- a/include/linux/usb/quirks.h
-+++ b/include/linux/usb/quirks.h
-@@ -78,4 +78,7 @@
- /* skip BOS descriptor request */
- #define USB_QUIRK_NO_BOS			BIT(17)
- 
-+/* Device claims zero configurations, forcing to 1 */
-+#define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
++static const struct ts_dmi_data gdix1001_y_inverted_data = {
++	.acpi_name	= "GDIX1001",
++	.properties	= gdix1001_y_inverted_props,
++};
 +
- #endif /* __LINUX_USB_QUIRKS_H */
+ static const struct property_entry gp_electronic_t701_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 960),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 640),
+@@ -1632,6 +1642,14 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_SKU, "PN20170413488"),
+ 		},
+ 	},
++	{
++		/* SUPI S10 */
++		.driver_data = (void *)&gdix1001_y_inverted_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "SUPI"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "S10"),
++		},
++	},
+ 	{
+ 		/* Techbite Arc 11.6 */
+ 		.driver_data = (void *)&techbite_arc_11_6_data,
 -- 
 2.51.0
 
