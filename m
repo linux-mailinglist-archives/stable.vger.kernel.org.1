@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEl6IPH1y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:29 +0200
+	id OFr7MEMDzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D693F36C9A3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538EA36EA0E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 755AE30459CC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F94D31BB730
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983EF3E92A5;
-	Tue, 31 Mar 2026 16:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEAF425CD5;
+	Tue, 31 Mar 2026 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA8WU46u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPKxW6kq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B81F30E0DC;
-	Tue, 31 Mar 2026 16:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778F4423A8E;
+	Tue, 31 Mar 2026 16:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974302; cv=none; b=pbCBLCmSvo7i6BxBsdiylzJpYTZRtDkE4MeLlemNj0Fk1wzxH0Qbfe8tuJNN7D77apE0egPuiRQKHQCxaLs+/q0lUoLkpuWjoPuEehbyBzaFfJNxuS+vUYvGshVj4u2wVV7XwsEYgQthevHak2aM4kDk1YQ3YV8dbIOJqxfOpJc=
+	t=1774975738; cv=none; b=KyF7Sd6ynQlwpVnadlJo9SIRUqrx6SnvbeyJKO2zVenexmes1SAVJEm0mjTcbS5+KAQmO6d2q5V1cFmZ7jt7NmW6HLEXD8mA2NE4LIYy6wVF+WF1ADElOEzCiDk9Sf6Dww5NChzjZnLwAniOJBWXIY628xe5jPpLzI74mp9iCDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974302; c=relaxed/simple;
-	bh=xR4cnQOvAbK0/wqG2t4wLZcIA5exNZNmKycVfmsIlbI=;
+	s=arc-20240116; t=1774975738; c=relaxed/simple;
+	bh=oyrW6eTnO8D23pG9vlYq5eVKZRiyekVzDsgsmea4Y3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cogvEHYu1iUTEByta+JmsYTrApJU4ut3WCspO3WMU6+WN3CGovKC1aSpOTXeW0qECJbMGqeB16yS+IDHhLwzZWxYMOehYU1AXWJdDtwsZiMBrJGxqRFdH0t+T3xzy8dnIuQXGcRn42zA0NfK4qqbdihN94hrS2TlKSfip+YBV8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA8WU46u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA7CC19423;
-	Tue, 31 Mar 2026 16:25:01 +0000 (UTC)
+	 MIME-Version; b=gHY8/j1dz30rHoKHIpDKwVyNKOVwjiwtn1wIo8RwaHjaIUP7Z6UbwCcglPg3LwO71BIMVunDHDQurbboEDjl5Yl+5QoJVxhgMzoPCs2Ekf/BNggW1E6YyaLOobis+haKv2H8ySOsLkbsRnyU3VH8pE8YrrTZ+H/WLY1BH/qStl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPKxW6kq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA036C19423;
+	Tue, 31 Mar 2026 16:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974301;
-	bh=xR4cnQOvAbK0/wqG2t4wLZcIA5exNZNmKycVfmsIlbI=;
+	s=korg; t=1774975738;
+	bh=oyrW6eTnO8D23pG9vlYq5eVKZRiyekVzDsgsmea4Y3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lA8WU46uWD67Cs9CujhdFOmUMcHnHjay5ZrOlxeWJuvCjHP+dCeCf7jhv6YlXIVL9
-	 JH1iQcri7YpIjwu4aPHPz9twQSOtcTzzUgl1M2v2uua28VvRyyoZH9mxDZgvLd/l8K
-	 iZNe8AJs86LkIGXZe25kSt9sz+WxcE/x7M76idEg=
+	b=LPKxW6kqqNIB0GiIwwHS5u4K/Xl2cq0m6+I3G50e2qgvDKgqdW0jTQSLktfTkx2zU
+	 HCmHdhaPYaXao9GliXEMUfrgsce3BfPtqA22AqHR/IHwV0WIuugwRgHLN5jm0cUAqC
+	 UUHLizlyt/TBDBsy0yFS7+iVQCYWg0lYp833qpEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/175] spi: intel-pci: Add support for Nova Lake mobile SPI flash
+Subject: [PATCH 6.12 066/244] nfc: nci: fix circular locking dependency in nci_close_device
 Date: Tue, 31 Mar 2026 18:20:16 +0200
-Message-ID: <20260331161730.966478605@linuxfoundation.org>
+Message-ID: <20260331161744.124894637@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,60 +73,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231488-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232047-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: D693F36C9A3
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gehealthcare.com:email]
+X-Rspamd-Queue-Id: 538EA36EA0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 85b731ad4bbf6eb3fedf267ab00be3596f148432 ]
+[ Upstream commit 4527025d440ce84bf56e75ce1df2e84cb8178616 ]
 
-Add Intel Nova Lake PCD-H SPI serial flash PCI ID to the list of
-supported devices.
+nci_close_device() flushes rx_wq and tx_wq while holding req_lock.
+This causes a circular locking dependency because nci_rx_work()
+running on rx_wq can end up taking req_lock too:
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260309153703.74282-1-alan.borzeszkowski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  nci_rx_work -> nci_rx_data_packet -> nci_data_exchange_complete
+    -> __sk_destruct -> rawsock_destruct -> nfc_deactivate_target
+    -> nci_deactivate_target -> nci_request -> mutex_lock(&ndev->req_lock)
+
+Move the flush of rx_wq after req_lock has been released.
+This should safe (I think) because NCI_UP has already been cleared
+and the transport is closed, so the work will see it and return
+-ENETDOWN.
+
+NIPA has been hitting this running the nci selftest with a debug
+kernel on roughly 4% of the runs.
+
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reviewed-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260317193334.988609-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-intel-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/nfc/nci/core.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index 5c0dec90eec1d..43692315ea305 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -86,6 +86,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa823), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0xd323), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xe323), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xe423), (unsigned long)&cnl_info },
- 	{ },
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 18ff1c23769ae..d10e2c81131ad 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -575,8 +575,7 @@ static int nci_close_device(struct nci_dev *ndev)
+ 	skb_queue_purge(&ndev->rx_q);
+ 	skb_queue_purge(&ndev->tx_q);
+ 
+-	/* Flush RX and TX wq */
+-	flush_workqueue(ndev->rx_wq);
++	/* Flush TX wq, RX wq flush can't be under the lock */
+ 	flush_workqueue(ndev->tx_wq);
+ 
+ 	/* Reset device */
+@@ -588,13 +587,13 @@ static int nci_close_device(struct nci_dev *ndev)
+ 		      msecs_to_jiffies(NCI_RESET_TIMEOUT));
+ 
+ 	/* After this point our queues are empty
+-	 * and no works are scheduled.
++	 * rx work may be running but will see that NCI_UP was cleared
+ 	 */
+ 	ndev->ops->close(ndev);
+ 
+ 	clear_bit(NCI_INIT, &ndev->flags);
+ 
+-	/* Flush cmd wq */
++	/* Flush cmd and tx wq */
+ 	flush_workqueue(ndev->cmd_wq);
+ 
+ 	del_timer_sync(&ndev->cmd_timer);
+@@ -604,6 +603,9 @@ static int nci_close_device(struct nci_dev *ndev)
+ 
+ 	mutex_unlock(&ndev->req_lock);
+ 
++	/* rx_work may take req_lock via nci_deactivate_target */
++	flush_workqueue(ndev->rx_wq);
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
