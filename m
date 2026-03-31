@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-231722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLuEHfr5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:42 +0200
+	id CD5uCv35y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C939736D10F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B08536D116
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EDDF3187706
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 494E031ADE6C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDC73FA5E6;
-	Tue, 31 Mar 2026 16:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261F93E559E;
+	Tue, 31 Mar 2026 16:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzmsG4fu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkYWs+8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555A440710B;
-	Tue, 31 Mar 2026 16:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDF93DFC7D;
+	Tue, 31 Mar 2026 16:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974897; cv=none; b=Vkj/UPW2fjtH4x1GAco9xl25QZ8YJTOiOZU473cAAfi5rReI8bIITvOcZrDwaN2JXt/W9uAiPVt9XZxKmPNs80DNQTrMSFCJByTXPlfHvAi2AJxQnDGMiNSA09i0rjLQOL9ttKu0QjM8sRkIaFNSeEJRUf1hhmPLBjb+EJwM61w=
+	t=1774974899; cv=none; b=HE4vfwuz9HLIZ96Pu8iVocH94Uou8X45fpglJ45/qupM8j10g6yvB279h0G31RD8GCzBuJsNRMsPKdun9Kqls83rGB+AMKbSdby4oU0dBVjUvJ3zwFD4AyroiUiuEoYT+EO2BA//PxfNmkUfqS3L4PWxby4wFbQIKWXIKEwGs4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974897; c=relaxed/simple;
-	bh=NG1vemvHmBSETMml7JrL+jsaHVzw9QCT0Osc2YBLjGc=;
+	s=arc-20240116; t=1774974899; c=relaxed/simple;
+	bh=iezaEJNXceF08QeCsWj4hffWewsyvmgWPOEW87Bn9WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEZ2q5hcce/a7MXUv/WcDYE8o87dvtYKb2nyzRPGewO8MvnPp/DBnLjNm5N2K/hs/6q5ZES3NSMpANeIU5mGzUAt/PYgLNBM48y+VDN07FQeLfGQWMXNH5nvG43FC7wJ9vzWG0fOm/tEzQYqtLvT4TvfKDXpqH/qWhvguuNAF8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzmsG4fu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE352C19423;
-	Tue, 31 Mar 2026 16:34:56 +0000 (UTC)
+	 MIME-Version; b=l5gd9Pg0mfXbmJFjU+Eli+SulzzECGO+FbPsnBxI4yvVoaiKYHUll4pIFOzG3WEDzV2DSHXcqqB+bi0ZzHjABETgvA1/jO424RQDg9dWfbrRcbKBmxFyNfvntXWlnGxJ7oR+5Bl0ryYOThNws/M5SzluGVLZNLMeO0Om3xlGAJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkYWs+8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7413FC19423;
+	Tue, 31 Mar 2026 16:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974897;
-	bh=NG1vemvHmBSETMml7JrL+jsaHVzw9QCT0Osc2YBLjGc=;
+	s=korg; t=1774974899;
+	bh=iezaEJNXceF08QeCsWj4hffWewsyvmgWPOEW87Bn9WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JzmsG4fuY0e7JeQ8sQIEInhNjH90TgOf6uEgY9vvlUhEyTn0u8Srnb33qcD+Zzuny
-	 MHMZEw57zf2O5lwXNMoDZD/Jmr9FM/dm0ekEy6ByM1RyI19WADdEx5sByXVSFLzF4X
-	 twkn9jqGvzmjSkQe8glL+BpDvOToxD7FgrHsEDVk=
+	b=KkYWs+8X1UlJw7OR0aI2+epDdMKf+CXkWouyui3MgjnCoCX6GFUGKRZlFaWHd6u6v
+	 k9NcWX2X7T+UbhEU2Nlo+8eA7bZ/MY7bIQM4PDIH4ey4aQxsFGDnf1KUkNzzLuYYyB
+	 +jp6WL4r+DrsJ6WLjJbTvboM2VQcd+AmCTyq2aJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 085/342] pinctrl: renesas: rza1: Normalize return value of gpio_get()
-Date: Tue, 31 Mar 2026 18:18:38 +0200
-Message-ID: <20260331161802.150219997@linuxfoundation.org>
+Subject: [PATCH 6.19 086/342] xfrm: Fix work re-schedule after cancel in xfrm_nat_keepalive_net_fini()
+Date: Tue, 31 Mar 2026 18:18:39 +0200
+Message-ID: <20260331161802.186642202@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -67,36 +65,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231722-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,oss.qualcomm.com,kernel.org,glider.be];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,secunet.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231723-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,glider.be:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C939736D10F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,queasysnail.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8B08536D116
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,40 +101,67 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit fb22bb9701d48c4b0e81fe204c2f96a37a520568 ]
+[ Upstream commit daf8e3b253aa760ff9e96c7768a464bc1d6b3c90 ]
 
-The GPIO .get() callback is expected to return 0 or 1 (or a negative
-error code).  Ensure that the value returned by rza1_gpio_get() is
-normalized to the [0, 1] range.
+After cancel_delayed_work_sync() is called from
+xfrm_nat_keepalive_net_fini(), xfrm_state_fini() flushes remaining
+states via __xfrm_state_delete(), which calls
+xfrm_nat_keepalive_state_updated() to re-schedule nat_keepalive_work.
 
-Fixes: 86ef402d805d606a ("gpiolib: sanitize the return value of gpio_chip::get()")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/aZYnyl-Nf4S1U2yj@google.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+The following is a simple race scenario:
+
+           cpu0                             cpu1
+
+cleanup_net() [Round 1]
+  ops_undo_list()
+    xfrm_net_exit()
+      xfrm_nat_keepalive_net_fini()
+        cancel_delayed_work_sync(nat_keepalive_work);
+      xfrm_state_fini()
+        xfrm_state_flush()
+          xfrm_state_delete(x)
+            __xfrm_state_delete(x)
+              xfrm_nat_keepalive_state_updated(x)
+                schedule_delayed_work(nat_keepalive_work);
+  rcu_barrier();
+  net_complete_free();
+  net_passive_dec(net);
+    llist_add(&net->defer_free_list, &defer_free_list);
+
+cleanup_net() [Round 2]
+  rcu_barrier();
+  net_complete_free()
+    kmem_cache_free(net_cachep, net);
+                                     nat_keepalive_work()
+                                       // on freed net
+
+To prevent this, cancel_delayed_work_sync() is replaced with
+disable_delayed_work_sync().
+
+Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rza1.c | 2 +-
+ net/xfrm/xfrm_nat_keepalive.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rza1.c b/drivers/pinctrl/renesas/pinctrl-rza1.c
-index 3cfa4c8be80ea..d83c7d8ee82c4 100644
---- a/drivers/pinctrl/renesas/pinctrl-rza1.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rza1.c
-@@ -589,7 +589,7 @@ static inline unsigned int rza1_get_bit(struct rza1_port *port,
- {
- 	void __iomem *mem = RZA1_ADDR(port->base, reg, port->id);
+diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
+index ebf95d48e86c1..1856beee0149b 100644
+--- a/net/xfrm/xfrm_nat_keepalive.c
++++ b/net/xfrm/xfrm_nat_keepalive.c
+@@ -261,7 +261,7 @@ int __net_init xfrm_nat_keepalive_net_init(struct net *net)
  
--	return ioread16(mem) & BIT(bit);
-+	return !!(ioread16(mem) & BIT(bit));
+ int xfrm_nat_keepalive_net_fini(struct net *net)
+ {
+-	cancel_delayed_work_sync(&net->xfrm.nat_keepalive_work);
++	disable_delayed_work_sync(&net->xfrm.nat_keepalive_work);
+ 	return 0;
  }
  
- /**
 -- 
 2.51.0
 
