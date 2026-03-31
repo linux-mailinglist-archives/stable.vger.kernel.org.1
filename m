@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFY6HzD9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:24 +0200
+	id YCe2MNUGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C13536D8D2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33AB36F15F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D226306E2F8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EC0423052591
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2767A413225;
-	Tue, 31 Mar 2026 16:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36763016F5;
+	Tue, 31 Mar 2026 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDJEjIie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iu3J2hn8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9CC346E7F;
-	Tue, 31 Mar 2026 16:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964592F5491;
+	Tue, 31 Mar 2026 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975805; cv=none; b=gItCHgQgVd+uZlSVd+tx0l7M0yKrykdyNGJ4aQUh6zZ4Rx+brRlwErAL3ZlYJLwfZMOOW1Sn/liZSRdo/4hVYmLaOEWusc6UTSMdfxgB9DNeMf5i/fHAAI4E0Nxdnell1qnTk6v0g1oav3ZukrGUJZQXBISJCWDHcal+PbqQJ6I=
+	t=1774976559; cv=none; b=TQWn4w9HkcpabC/8tsx8kpNSxHSWrYiBWxlq4LlzY8p2G77G59xKcbiL8Ik8JteLTVUTVkpJcMGDhub1NVVqQsdryqfDuFGWdVzLRu3WJXqI5gdFSUjbF7kHlF87VsVq20VKA7K0IvfBbTI+sn3PWgOT3aCNjVU9WO215PibB/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975805; c=relaxed/simple;
-	bh=SYqOShVyo3m7OrLbTfeHjMUVY82BLIKigfcekDAqhoM=;
+	s=arc-20240116; t=1774976559; c=relaxed/simple;
+	bh=kZTNqkl7fFTTc3OEB3TVVYO9vAGU8iLtFhy7lGoVu94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKF6YpuE86HwHVBziUtW8sjOXh2ol8uqrhGDAKc/s0SD/rx+Tsm3QnajhXTVij/91H6F8cUmGNfRNQAIYcZMR7QBSP5ain41mIT/n8q0M+yXG9LXR7U8opVB8q3nWDqI59rQox8eFPfJD/MdqVta3yddJhqLGANmYUaDuelXL8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDJEjIie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74606C19423;
-	Tue, 31 Mar 2026 16:50:05 +0000 (UTC)
+	 MIME-Version; b=qYypAyCN3LzdL7+GNki+DxTuBza8mufPYMsGJyOBCmuV5BqarkxG5YTJRF1ZMcCxuPemc7cw+n2HkWtz+B4/r/iL5zvVUVIwZmMK+8rKz4wO7wrO7CNB+7RHPbJncoWe7jkM5kpawPI1tI8BzrD/StM9Mt+U87KnaPxOXsp6/3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu3J2hn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297E9C19423;
+	Tue, 31 Mar 2026 17:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975805;
-	bh=SYqOShVyo3m7OrLbTfeHjMUVY82BLIKigfcekDAqhoM=;
+	s=korg; t=1774976559;
+	bh=kZTNqkl7fFTTc3OEB3TVVYO9vAGU8iLtFhy7lGoVu94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDJEjIie0aSBT8KpYu5jIg/grqec2zrolDzo2bcPnLEhhA9phlU8fraVcqluV9E5A
-	 OaVI0m7cUkEtqiqu2m7bzuKCsvtwsglUU+l9QGSeZT8V6KFF8I0yhhtZHw3fvVeNWJ
-	 bWUh74AF85zUbwzk5u0RcBgRcRaOQ5xJwjCRpjIY=
+	b=Iu3J2hn8sHN9+5+AX7QYEsLkZxD5I0PcX7MfEW+VSkmbu7vJzGexUnS7TXu3t4Acz
+	 u2H1Ec6SFfT2im9GhgcmPyIvMtepe8h5UF1NnhaRaK6OAqUCFaxPYPTEY7KEklSjRp
+	 NoVntaWBaCXfbqnP0H7ivXACaDt8juesK57kTBWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/244] dma-mapping: add missing `inline` for `dma_free_attrs`
+Subject: [PATCH 6.18 140/309] ALSA: usb-audio: Exclude Scarlett 2i2 1st Gen from SKIP_IFACE_SETUP
 Date: Tue, 31 Mar 2026 18:20:43 +0200
-Message-ID: <20260331161745.110957567@linuxfoundation.org>
+Message-ID: <20260331161758.628261221@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232365-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,65 +89,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2C13536D8D2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D33AB36F15F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 2cdaff22ed26f1e619aa2b43f27bb84f2c6ef8f8 ]
+[ Upstream commit 8780f561f6717dec52351251881bff79e960eb46 ]
 
-Under an UML build for an upcoming series [1], I got `-Wstatic-in-inline`
-for `dma_free_attrs`:
+The Focusrite Scarlett 2i2 1st Gen (1235:8006) produces
+distorted/silent audio when QUIRK_FLAG_SKIP_IFACE_SETUP is active, as
+that flag causes the feedback format to be detected as 17.15 instead
+of 16.16.
 
-      BINDGEN rust/bindings/bindings_generated.rs - due to target missing
-    In file included from rust/helpers/helpers.c:59:
-    rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
-       17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
-          |         ^
-    rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
-       12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
-          | ^
-          | static
+Add a DEVICE_FLG entry for this device before the Focusrite VENDOR_FLG
+entry so that it gets no quirk flags, overriding the vendor-wide
+SKIP_IFACE_SETUP. This device doesn't have the internal mixer, Air, or
+Safe modes that the quirk was designed to protect.
 
-The issue is that `dma_free_attrs` was not marked `inline` when it was
-introduced alongside the rest of the stubs.
-
-Thus mark it.
-
-Fixes: ed6ccf10f24b ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA")
-Closes: https://lore.kernel.org/rust-for-linux/20260322194616.89847-1-ojeda@kernel.org/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260325015548.70912-1-ojeda@kernel.org
+Fixes: 38c322068a26 ("ALSA: usb-audio: Add QUIRK_FLAG_SKIP_IFACE_SETUP")
+Reported-by: pairomaniac [https://github.com/geoffreybennett/linux-fcp/issues/54]
+Tested-by: pairomaniac [https://github.com/geoffreybennett/linux-fcp/issues/54]
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/abmsTjKmQMKbhYtK@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 22b9099927fad..ac7803e3fa613 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -195,8 +195,8 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
- {
- 	return NULL;
- }
--static void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
--		dma_addr_t dma_handle, unsigned long attrs)
-+static inline void dma_free_attrs(struct device *dev, size_t size,
-+		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
- {
- }
- static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index fd50bf7c381d6..11823549900f1 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2422,6 +2422,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_CTL_MSG_DELAY | QUIRK_FLAG_IFACE_DELAY),
+ 	VENDOR_FLG(0x07fd, /* MOTU */
+ 		   QUIRK_FLAG_VALIDATE_RATES),
++	DEVICE_FLG(0x1235, 0x8006, 0), /* Focusrite Scarlett 2i2 1st Gen */
+ 	VENDOR_FLG(0x1235, /* Focusrite Novation */
+ 		   QUIRK_FLAG_SKIP_IFACE_SETUP),
+ 	VENDOR_FLG(0x1511, /* AURALiC */
 -- 
-2.51.0
+2.53.0
 
 
 
