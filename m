@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOToISH5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:05 +0200
+	id CIwZFjIAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F2436CF53
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC01C36E183
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 58225308E97C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06A1E31143BD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30043EE1DD;
-	Tue, 31 Mar 2026 16:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF9D2FD681;
+	Tue, 31 Mar 2026 17:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESiVXruu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2y1l3Zn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660A530E0DC;
-	Tue, 31 Mar 2026 16:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C192FB632;
+	Tue, 31 Mar 2026 17:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974410; cv=none; b=feAAd2EwQKtP5N1HLtGZRuINGX8/pBvN5ZqkqnkmB8KkBVavpBGz6Ef965jZZekxqoKUlL9tVSv4qsz8lQyd+6WpOxpKf8RfCwfCT12oK3OtuqWyhPB6W7dkJuuMWkWTlzsc5C5KI7EWBPauPb19GMGK/wvIdxwguFRsGm19RB8=
+	t=1774976524; cv=none; b=qNLtaU/5PeUKWnaRMFI939ATO+mEhAJTz0n+X9tlhbqaVHKBVQ4n85TRZnksnPAy76wL6dC8r7FySHzw33/wHyKbe7sekgj7+RFezUV2CNrb6P0qAtL6B1g3Ph8IeELFOaQVBI3eyxpVQanLfhPdga2HQQhN2ajh4NDq5mc0aD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974410; c=relaxed/simple;
-	bh=CFz220xVR05Q5i3Sw4Ftfkz8FdsCM0Y4A7rzWEfFTLU=;
+	s=arc-20240116; t=1774976524; c=relaxed/simple;
+	bh=U02h65fJvGC52D5m2L0XISAmjT3f0e/YpMRbEpZNd+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwE30disoaTCCVrB9fH8e+o3NWUExuPT2WBuRvLBZd+DkJXMw7MzXlfHbVCLsnmpccLxkffci+ec/wiMW9yYu6OC3FtsWIeNzaNLxGsCUkdf/MzFsPN9KN4K+5tEvOC4EyOJhYn+lWR7SRZY5n9j3OL5ztEQkv+DfWThA2orO88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESiVXruu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE1C19423;
-	Tue, 31 Mar 2026 16:26:49 +0000 (UTC)
+	 MIME-Version; b=Fd5oO8lX41iSz/aYEdkedOEp8HaEZKeH9cigNCCXB5vZkrnNq4M9YPNz4J7edphieE2qC6frIBcO7yib/gvTpAt/s3lN8AjebZoi7ou7f+nxZMIymuVtKIoM38LmOF78U3jps0CpzY9FoBVcb7OfWjRdeefPbs/JFe19Kd+mQyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2y1l3Zn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480E1C19424;
+	Tue, 31 Mar 2026 17:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974410;
-	bh=CFz220xVR05Q5i3Sw4Ftfkz8FdsCM0Y4A7rzWEfFTLU=;
+	s=korg; t=1774976523;
+	bh=U02h65fJvGC52D5m2L0XISAmjT3f0e/YpMRbEpZNd+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESiVXruuv4O5x90yMRSfXj56BHxb3KmXOCP933T/CpgN0kSdaZfX5cARcX4m6MSXG
-	 o1ozK0xHrcbTxHJn+EHb+11N254HWDp/b1cc+zgRFkgqAxd0bpFfjLE51qR99Nzx+t
-	 u4aikRCczDHI4tB+Nd3nNJtt0XFc68ZG1uoiz4SI=
+	b=x2y1l3ZnD+ZqdAZxclYNV/kJttcVBxuUFzFVhbj1plxNWTsw8myxx/1gufflHaenf
+	 0fWCgVkFMSJ9YZHr6V8ggDk0YyXIbMDets5nS95TJ9/5E6UQAsCOsu5wrqlNtzFOn4
+	 87u2WG5rbsl6QoZN/i7zWQ/dMEO1XRGkcd5vjB8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helen Koike <koike@igalia.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/175] Bluetooth: L2CAP: Fix null-ptr-deref on l2cap_sock_ready_cb
-Date: Tue, 31 Mar 2026 18:20:26 +0200
-Message-ID: <20260331161731.331658328@linuxfoundation.org>
+Subject: [PATCH 6.18 124/309] Bluetooth: btusb: clamp SCO altsetting table indices
+Date: Tue, 31 Mar 2026 18:20:27 +0200
+Message-ID: <20260331161758.045417716@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231531-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232350-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,113 +89,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B5F2436CF53
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC01C36E183
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helen Koike <koike@igalia.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit b6552e0503973daf6f23bd6ed9273ef131ee364f ]
+[ Upstream commit 129fa608b6ad08b8ab7178eeb2ec272c993aaccc ]
 
-Before using sk pointer, check if it is null.
+btusb_work() maps the number of active SCO links to USB alternate
+settings through a three-entry lookup table when CVSD traffic uses
+transparent voice settings. The lookup currently indexes alts[] with
+data->sco_num - 1 without first constraining sco_num to the number of
+available table entries.
 
-Fix the following:
+While the table only defines alternate settings for up to three SCO
+links, data->sco_num comes from hci_conn_num() and is used directly.
+Cap the lookup to the last table entry before indexing it so the
+driver keeps selecting the highest supported alternate setting without
+reading past alts[].
 
- KASAN: null-ptr-deref in range [0x0000000000000260-0x0000000000000267]
- CPU: 0 UID: 0 PID: 5985 Comm: kworker/0:5 Not tainted 7.0.0-rc4-00029-ga989fde763f4 #1 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-9.fc43 06/10/2025
- Workqueue: events l2cap_info_timeout
- RIP: 0010:kasan_byte_accessible+0x12/0x30
- Code: 79 ff ff ff 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 48 c1 ef 03 48 b8 00 00 00 00 00 fc ff df <0f> b6 04 07 3c 08 0f 92 c0 c3 cc cce
- veth0_macvtap: entered promiscuous mode
- RSP: 0018:ffffc90006e0f808 EFLAGS: 00010202
- RAX: dffffc0000000000 RBX: ffffffff89746018 RCX: 0000000080000001
- RDX: 0000000000000000 RSI: ffffffff89746018 RDI: 000000000000004c
- RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
- R10: dffffc0000000000 R11: ffffffff8aae3e70 R12: 0000000000000000
- R13: 0000000000000260 R14: 0000000000000260 R15: 0000000000000001
- FS:  0000000000000000(0000) GS:ffff8880983c2000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005582615a5008 CR3: 000000007007e000 CR4: 0000000000752ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  __kasan_check_byte+0x12/0x40
-  lock_acquire+0x79/0x2e0
-  lock_sock_nested+0x48/0x100
-  ? l2cap_sock_ready_cb+0x46/0x160
-  l2cap_sock_ready_cb+0x46/0x160
-  l2cap_conn_start+0x779/0xff0
-  ? __pfx_l2cap_conn_start+0x10/0x10
-  ? l2cap_info_timeout+0x60/0xa0
-  ? __pfx___mutex_lock+0x10/0x10
-  l2cap_info_timeout+0x68/0xa0
-  ? process_scheduled_works+0xa8d/0x18c0
-  process_scheduled_works+0xb6e/0x18c0
-  ? __pfx_process_scheduled_works+0x10/0x10
-  ? assign_work+0x3d5/0x5e0
-  worker_thread+0xa53/0xfc0
-  kthread+0x388/0x470
-  ? __pfx_worker_thread+0x10/0x10
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x51e/0xb90
-  ? __pfx_ret_from_fork+0x10/0x10
- veth1_macvtap: entered promiscuous mode
-  ? __switch_to+0xc7d/0x1450
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in:
- ---[ end trace 0000000000000000 ]---
- batman_adv: batadv0: Interface activated: batadv_slave_0
- batman_adv: batadv0: Interface activated: batadv_slave_1
- netdevsim netdevsim7 netdevsim0: set [1, 0] type 2 family 0 port 6081 - 0
- netdevsim netdevsim7 netdevsim1: set [1, 0] type 2 family 0 port 6081 - 0
- netdevsim netdevsim7 netdevsim2: set [1, 0] type 2 family 0 port 6081 - 0
- netdevsim netdevsim7 netdevsim3: set [1, 0] type 2 family 0 port 6081 - 0
- RIP: 0010:kasan_byte_accessible+0x12/0x30
- Code: 79 ff ff ff 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 48 c1 ef 03 48 b8 00 00 00 00 00 fc ff df <0f> b6 04 07 3c 08 0f 92 c0 c3 cc cce
- ieee80211 phy39: Selected rate control algorithm 'minstrel_ht'
- RSP: 0018:ffffc90006e0f808 EFLAGS: 00010202
- RAX: dffffc0000000000 RBX: ffffffff89746018 RCX: 0000000080000001
- RDX: 0000000000000000 RSI: ffffffff89746018 RDI: 000000000000004c
- RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
- R10: dffffc0000000000 R11: ffffffff8aae3e70 R12: 0000000000000000
- R13: 0000000000000260 R14: 0000000000000260 R15: 0000000000000001
- FS:  0000000000000000(0000) GS:ffff8880983c2000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f7e16139e9c CR3: 000000000e74e000 CR4: 0000000000752ef0
- PKRU: 55555554
- Kernel panic - not syncing: Fatal exception
-
-Fixes: 54a59aa2b562 ("Bluetooth: Add l2cap_chan->ops->ready()")
-Signed-off-by: Helen Koike <koike@igalia.com>
+Fixes: baac6276c0a9 ("Bluetooth: btusb: handle mSBC audio over USB Endpoints")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 250cc0bc552e0..1960d35b3be0a 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1665,6 +1665,9 @@ static void l2cap_sock_ready_cb(struct l2cap_chan *chan)
- 	struct sock *sk = chan->data;
- 	struct sock *parent;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 7c7955afa8e8a..40f0c3b4eee6c 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2356,8 +2356,11 @@ static void btusb_work(struct work_struct *work)
+ 		if (data->air_mode == HCI_NOTIFY_ENABLE_SCO_CVSD) {
+ 			if (hdev->voice_setting & 0x0020) {
+ 				static const int alts[3] = { 2, 4, 5 };
++				unsigned int sco_idx;
  
-+	if (!sk)
-+		return;
-+
- 	lock_sock(sk);
- 
- 	parent = bt_sk(sk)->parent;
+-				new_alts = alts[data->sco_num - 1];
++				sco_idx = min_t(unsigned int, data->sco_num - 1,
++						ARRAY_SIZE(alts) - 1);
++				new_alts = alts[sco_idx];
+ 			} else {
+ 				new_alts = data->sco_num;
+ 			}
 -- 
 2.51.0
 
