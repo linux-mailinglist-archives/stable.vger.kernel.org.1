@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHYBBRr/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:34 +0200
+	id SIqFOd34y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EAF36DE1B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6420036CEC3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4B08B30D7188
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40C2831F65AB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1825D425CE0;
-	Tue, 31 Mar 2026 16:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770E0402BA9;
+	Tue, 31 Mar 2026 16:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qozfQk4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZCn3SI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8BC423A89;
-	Tue, 31 Mar 2026 16:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C4E23507B;
+	Tue, 31 Mar 2026 16:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976083; cv=none; b=oX1xf4/iH0W6IGWVJdd2e3zM2zTABTER9ALp6ssTTHDSdb6GjYDt9c2EMa1QQ/8vBWMCD1vZgimX0jFKknTeP6k+pUmdjBZAD8hrE//Y+9SQ8BS/d0BS7rsN2kGItKNv8RC6lhSEfKC4YcSSzKf72wPbCgVdIW4++jKSBVI/wnk=
+	t=1774974649; cv=none; b=c1JyNG8S+wXMqH5mxVJtAXO4mQz+qGWHstOBMhgEHznIq1Id/0ZMzUuVN5NW4oDAXKFByL7iZQzdmQzurPPbgcC0XvQaWBUwWqfjA3HsZ6L35Wkk6RvhGlPlBF1qTRHcyalk0pteM2rgJ7jV+//92tEF4/MwV9rjG7r2vWnfjvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976083; c=relaxed/simple;
-	bh=F1qPdp6WK7HdgYw1ualLGZLWWm9RezKgv6bamZgVYCU=;
+	s=arc-20240116; t=1774974649; c=relaxed/simple;
+	bh=1r62nPaHWbo8j4085j5s9rmuw0QuTSeDOc+0sEJBq/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVF3GXGPfjghs6TbS//RqdTpDVnZa8+PxZo2nXP4P9Ok7CSEfPXjBCgz76h9iBLcDk75AWysMQdwHJBSg/KUyBkvshcMHOszAyUQEHStqzGgfleUP7p38CvfZ3syhLEXkW1EKfgUzjck0v1DWY7q2FYVQ90EK79OG1k6FkcQXco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qozfQk4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A69C19423;
-	Tue, 31 Mar 2026 16:54:42 +0000 (UTC)
+	 MIME-Version; b=uQq59sblcoD5P7hWzPuNCMmgIle6nUS9dc842tHhLQ9BeDPrez9KCtsP0eohRoB7vSuXsagvvZ7P8yE9fOu9P8kq09VX0Xzky6v1SYSkNfoDRlorLPAI8A0XsDl4hlHyG/zLWSsRkrNZoOxvH4l8tZ7rZHpTu8B6TNRN3xPYe7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZCn3SI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3422C19424;
+	Tue, 31 Mar 2026 16:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976083;
-	bh=F1qPdp6WK7HdgYw1ualLGZLWWm9RezKgv6bamZgVYCU=;
+	s=korg; t=1774974649;
+	bh=1r62nPaHWbo8j4085j5s9rmuw0QuTSeDOc+0sEJBq/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qozfQk4+iVB2nmFqLtxru5iWJR9tfCLGJHj3l1UFjmsEWxQELITfubaNJa1k3WyPX
-	 LA1MqMuB7CMqivXQSnC92y457rzzHJoyZUT91QxeQHgvp2eR8/G5d1FLXg7MRcMI3S
-	 shtVTQdEc5Qv85FvWxjk+bHMx6eKO+QWUp+2+BjM=
+	b=YZCn3SI91VxsCGhWXf9hKTneJ0UvQX1SuWqAPMpcTOsihRnbun+c+MgTt95GquPar
+	 fKVbOShcepqPdp0PPJxnRpyrUY5O3isXgezkoHDbnSmOKXIPj5YtkR0kUJPG1oV8YT
+	 d/iHFqwAhMsIguBNMGCC5xZWyvjvtUyvAdfWIm6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Kasselman <werner@verivus.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/244] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
+Subject: [PATCH 6.6 166/175] dmaengine: xilinx: xilinx_dma: Fix residue calculation for cyclic DMA
 Date: Tue, 31 Mar 2026 18:22:30 +0200
-Message-ID: <20260331161749.134631928@linuxfoundation.org>
+Message-ID: <20260331161735.895465056@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,207 +68,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232180-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231624-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,verivus.com:email]
-X-Rspamd-Queue-Id: C4EAF36DE1B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nabladev.com:email]
+X-Rspamd-Queue-Id: 6420036CEC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Kasselman <werner@verivus.com>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
+[ Upstream commit f61d145999d61948a23cd436ebbfa4c3b9ab8987 ]
 
-smb_grant_oplock() has two issues in the oplock publication sequence:
+The cyclic DMA calculation is currently entirely broken and reports
+residue only for the first segment. The problem is twofold.
 
-1) opinfo is linked into ci->m_op_list (via opinfo_add) before
-   add_lease_global_list() is called.  If add_lease_global_list()
-   fails (kmalloc returns NULL), the error path frees the opinfo
-   via __free_opinfo() while it is still linked in ci->m_op_list.
-   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
-   in smb_break_all_levII_oplock) dereference the freed node.
+First, when the first descriptor finishes, it is moved from active_list
+to done_list, but it is never returned back into the active_list. The
+xilinx_dma_tx_status() expects the descriptor to be in the active_list
+to report any meaningful residue information, which never happens after
+the first descriptor finishes. Fix this up in xilinx_dma_start_transfer()
+and if the descriptor is cyclic, lift it from done_list and place it back
+into active_list list.
 
-2) opinfo->o_fp is assigned after add_lease_global_list() publishes
-   the opinfo on the global lease list.  A concurrent
-   find_same_lease_key() can walk the lease list and dereference
-   opinfo->o_fp->f_ci while o_fp is still NULL.
+Second, the segment .status fields of the descriptor remain dirty. Once
+the DMA did one pass on the descriptor, the .status fields are populated
+with data by the DMA, but the .status fields are not cleared before reuse
+during the next cyclic DMA round. The xilinx_dma_get_residue() recognizes
+that as if the descriptor was complete and had 0 residue, which is bogus.
+Reinitialize the status field before placing the descriptor back into the
+active_list.
 
-Fix by restructuring the publication sequence to eliminate post-publish
-failure:
-
-- Set opinfo->o_fp before any list publication (fixes NULL deref).
-- Preallocate lease_table via alloc_lease_table() before opinfo_add()
-  so add_lease_global_list() becomes infallible after publication.
-- Keep the original m_op_list publication order (opinfo_add before
-  lease list) so concurrent opens via same_client_has_lease() and
-  opinfo_get_list() still see the in-flight grant.
-- Use opinfo_put() instead of __free_opinfo() on err_out so that
-  the RCU-deferred free path is used.
-
-This also requires splitting add_lease_global_list() to take a
-preallocated lease_table and changing its return type from int to void,
-since it can no longer fail.
-
-Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221943.160375-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   72 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 27 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock
- 	spin_unlock(&lb->lb_lock);
- }
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index f2006e6996220..17c424e650d2f 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1541,8 +1541,29 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 	if (chan->err)
+ 		return;
  
--static void lb_add(struct lease_table *lb)
-+static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
- {
--	write_lock(&lease_list_lock);
--	list_add(&lb->l_entry, &lease_table_list);
--	write_unlock(&lease_list_lock);
-+	struct lease_table *lb;
+-	if (list_empty(&chan->pending_list))
++	if (list_empty(&chan->pending_list)) {
++		if (chan->cyclic) {
++			struct xilinx_dma_tx_descriptor *desc;
++			struct list_head *entry;
 +
-+	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
-+	if (!lb)
-+		return NULL;
++			desc = list_last_entry(&chan->done_list,
++					       struct xilinx_dma_tx_descriptor, node);
++			list_for_each(entry, &desc->segments) {
++				struct xilinx_axidma_tx_segment *axidma_seg;
++				struct xilinx_axidma_desc_hw *axidma_hw;
++				axidma_seg = list_entry(entry,
++							struct xilinx_axidma_tx_segment,
++							node);
++				axidma_hw = &axidma_seg->hw;
++				axidma_hw->status = 0;
++			}
 +
-+	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-+	       SMB2_CLIENT_GUID_SIZE);
-+	INIT_LIST_HEAD(&lb->lease_list);
-+	spin_lock_init(&lb->lb_lock);
-+	return lb;
- }
- 
- static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
-@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_inf
- 	lease2->version = lease1->version;
- }
- 
--static int add_lease_global_list(struct oplock_info *opinfo)
-+static void add_lease_global_list(struct oplock_info *opinfo,
-+				  struct lease_table *new_lb)
- {
- 	struct lease_table *lb;
- 
--	read_lock(&lease_list_lock);
-+	write_lock(&lease_list_lock);
- 	list_for_each_entry(lb, &lease_table_list, l_entry) {
- 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			opinfo->o_lease->l_lb = lb;
- 			lease_add_list(opinfo);
--			read_unlock(&lease_list_lock);
--			return 0;
-+			write_unlock(&lease_list_lock);
-+			kfree(new_lb);
-+			return;
- 		}
- 	}
--	read_unlock(&lease_list_lock);
- 
--	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
--	if (!lb)
--		return -ENOMEM;
--
--	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
--	       SMB2_CLIENT_GUID_SIZE);
--	INIT_LIST_HEAD(&lb->lease_list);
--	spin_lock_init(&lb->lb_lock);
--	opinfo->o_lease->l_lb = lb;
-+	opinfo->o_lease->l_lb = new_lb;
- 	lease_add_list(opinfo);
--	lb_add(lb);
--	return 0;
-+	list_add(&new_lb->l_entry, &lease_table_list);
-+	write_unlock(&lease_list_lock);
- }
- 
- static void set_oplock_level(struct oplock_info *opinfo, int level,
-@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *
- 	int err = 0;
- 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
- 	struct ksmbd_inode *ci = fp->f_ci;
-+	struct lease_table *new_lb = NULL;
- 	bool prev_op_has_lease;
- 	__le32 prev_op_state = 0;
- 
-@@ -1291,21 +1293,37 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	opinfo_count_inc(fp);
--	opinfo_add(opinfo, fp);
--
-+	/*
-+	 * Set o_fp before any publication so that concurrent readers
-+	 * (e.g. find_same_lease_key() on the lease list) that
-+	 * dereference opinfo->o_fp don't hit a NULL pointer.
-+	 *
-+	 * Keep the original publication order so concurrent opens can
-+	 * still observe the in-flight grant via ci->m_op_list, but make
-+	 * everything after opinfo_add() no-fail by preallocating any new
-+	 * lease_table first.
-+	 */
-+	opinfo->o_fp = fp;
- 	if (opinfo->is_lease) {
--		err = add_lease_global_list(opinfo);
--		if (err)
-+		new_lb = alloc_lease_table(opinfo);
-+		if (!new_lb) {
-+			err = -ENOMEM;
- 			goto err_out;
++			list_splice_tail_init(&chan->done_list, &chan->active_list);
++			chan->desc_pendingcount = 0;
++			chan->idle = false;
 +		}
- 	}
+ 		return;
++	}
  
-+	opinfo_count_inc(fp);
-+	opinfo_add(opinfo, fp);
-+
-+	if (opinfo->is_lease)
-+		add_lease_global_list(opinfo, new_lb);
-+
- 	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
- 
- 	return 0;
- err_out:
--	__free_opinfo(opinfo);
-+	kfree(new_lb);
-+	opinfo_put(opinfo);
- 	return err;
- }
- 
+ 	if (!chan->idle)
+ 		return;
+-- 
+2.53.0
+
 
 
 
