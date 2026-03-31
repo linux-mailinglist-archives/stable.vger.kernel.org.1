@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHZeFBn9y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:01 +0200
+	id aC/6BJf+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCA136D89D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A7136DCAD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 234CC3197339
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F8013153888
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82E04266B9;
-	Tue, 31 Mar 2026 16:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92B7426690;
+	Tue, 31 Mar 2026 16:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOq4603B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPlkEdLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A765402BA9;
-	Tue, 31 Mar 2026 16:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC6D426684;
+	Tue, 31 Mar 2026 16:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975344; cv=none; b=FATzvOY4psutOFRi3DC+UP4Kktq3pfY03y75TLo4JXYztXN0zuiz/uC+0t4CUT3cij1x5KIZ6GmC0xHLAKWcc49ea+Y16fX/jmfoaChxTlj+uKLIsuGeVtzylyRCGXj91LbHyUluL+jgKBD+bPY58cCHbYEYCVc7s8c2hD+oM2Y=
+	t=1774974498; cv=none; b=k3BdqgY16fN/SJz1zrFZc+CSGiNsNNQ+xcyyXkOR8Q2S8v99upXQQrhj8xxm9ouZfCw8RgOAyulBOtsk0d8tXSQT0Gn1/Q59LFQWZP0+eO7NCqwxLb2BoEjmid9qmCliBWnKqoMvx2z/RS3gszhxM5z3sH/cgIyKClmIftnflZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975344; c=relaxed/simple;
-	bh=zsZ5gYxIt0lNI9kjlshpNVS+P8HOOky5AdD4qf2ASLg=;
+	s=arc-20240116; t=1774974498; c=relaxed/simple;
+	bh=C1Cu3qZaEtPS+qxMMZO2JjdL+cdMa4lj4Uvw2I7B950=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgaGH8svoGXDb3lu710GG0/YQVDsycPxYb9I1xzGuQSsoG0bfCkmA0mkVvKFejcBhC8dZWiHFJQme9LlQAr4dGQP3v7HKqgwgg58Khywyuqzh5Z/Lm4xBbj2XT/AoQhtu1sX14ShYKEnQV5Zz34JgLLfh6O2OaF5hYA1ULTS2Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOq4603B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13105C19423;
-	Tue, 31 Mar 2026 16:42:23 +0000 (UTC)
+	 MIME-Version; b=oKWGrFwPIWBlfykwrtxwJwdQq9TqZBy5s+Ab0WTXdNWwK/HxtbVCOKInxcXWADHoMGz31SRIwc1oQ4IaU9Cful5jCHdBEeXLCVDMJ/D+vaZS5BuKOOphmpz+W/zLWiuiXaQWQNH7t3yOL2PwZi2ccY75ALj950aZkJKqK0iOBBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPlkEdLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA31DC19424;
+	Tue, 31 Mar 2026 16:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975344;
-	bh=zsZ5gYxIt0lNI9kjlshpNVS+P8HOOky5AdD4qf2ASLg=;
+	s=korg; t=1774974498;
+	bh=C1Cu3qZaEtPS+qxMMZO2JjdL+cdMa4lj4Uvw2I7B950=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOq4603BhmFXn6r5gC3F5Ra4LKNm4vomKrlmPB4SKhGEuyR1iE1ztDcdc14aTWt2R
-	 MMds6/QNXTCrK6p1X4hk/UL+xYwnjx6Q8jzX9UFootXwaBOkvC2UGvq909pW0Z8DHX
-	 dHd/Ch6++O5C+M0bYWmCAY8ylZ1rY8id+xP2TnwI=
+	b=PPlkEdLFl5ojjF8wOsH6tp9Egs5gc1HQZOUeLCv8zyxa9MMkVxNiWomX5hxFGWKT8
+	 OmKq6hn05uA+d57uph7sFFtQU2dEjSSm0zZvwSmYs9gh8ldRO5XBomT2OKmFaHUheK
+	 O/M7+XzkNCiRyjG59tS+JumqwpYVUgr/uGnHt24o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.19 258/342] i2c: imx: ensure no clock is generated after last read
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 107/175] cpufreq: conservative: Reset requested_freq on limits change
 Date: Tue, 31 Mar 2026 18:21:31 +0200
-Message-ID: <20260331161808.448264029@linuxfoundation.org>
+Message-ID: <20260331161733.711722747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,158 +74,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231565-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231895-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,0.0.0.0:email]
-X-Rspamd-Queue-Id: 9FCA136D89D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,cs_governor.gov:url]
+X-Rspamd-Queue-Id: 60A7136DCAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit 13101db735bdb29c5f60e95fb578690bd178b30f upstream.
+commit 6a28fb8cb28b9eb39a392e531d938a889eacafc5 upstream.
 
-When reading from the I2DR register, right after releasing the bus by
-clearing MSTA and MTX, the I2C controller might still generate an
-additional clock cycle which can cause devices to misbehave. Ensure to
-only read from I2DR after the bus is not busy anymore. Because this
-requires polling, the read of the last byte is moved outside of the
-interrupt handler.
+A recently reported issue highlighted that the cached requested_freq
+is not guaranteed to stay in sync with policy->cur. If the platform
+changes the actual CPU frequency after the governor sets one (e.g.
+due to platform-specific frequency scaling) and a re-sync occurs
+later, policy->cur may diverge from requested_freq.
 
-An example for such a failing transfer is this:
-i2ctransfer -y -a 0 w1@0x00 0x02 r1
-Error: Sending messages failed: Connection timed out
-It does not happen with every device because not all devices react to
-the additional clock cycle.
+This can lead to incorrect behavior in the conservative governor.
+For example, the governor may assume the CPU is already running at
+the maximum frequency and skip further increases even though there
+is still headroom.
 
-Fixes: 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260218150940.131354-3-eichest@gmail.com
+Avoid this by resetting the cached requested_freq to policy->cur on
+detecting a change in policy limits.
+
+Reported-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Tested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/all/20260210115458.3493646-1-zhenglifeng1@huawei.com/
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/d846a141a98ac0482f20560fcd7525c0f0ec2f30.1773999467.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx.c |   51 ++++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 19 deletions(-)
+ drivers/cpufreq/cpufreq_conservative.c |   12 ++++++++++++
+ drivers/cpufreq/cpufreq_governor.c     |    3 +++
+ drivers/cpufreq/cpufreq_governor.h     |    1 +
+ 3 files changed, 16 insertions(+)
 
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1018,8 +1018,9 @@ static inline int i2c_imx_isr_read(struc
- 	return 0;
+--- a/drivers/cpufreq/cpufreq_conservative.c
++++ b/drivers/cpufreq/cpufreq_conservative.c
+@@ -314,6 +314,17 @@ static void cs_start(struct cpufreq_poli
+ 	dbs_info->requested_freq = policy->cur;
  }
  
--static inline void i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
-+static inline enum imx_i2c_state i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
- {
-+	enum imx_i2c_state next_state = IMX_I2C_STATE_READ_CONTINUE;
- 	unsigned int temp;
- 
- 	if ((i2c_imx->msg->len - 1) == i2c_imx->msg_buf_idx) {
-@@ -1033,18 +1034,20 @@ static inline void i2c_imx_isr_read_cont
- 				i2c_imx->stopped =  1;
- 			temp &= ~(I2CR_MSTA | I2CR_MTX);
- 			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
--		} else {
--			/*
--			 * For i2c master receiver repeat restart operation like:
--			 * read -> repeat MSTA -> read/write
--			 * The controller must set MTX before read the last byte in
--			 * the first read operation, otherwise the first read cost
--			 * one extra clock cycle.
--			 */
--			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
--			temp |= I2CR_MTX;
--			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
++static void cs_limits(struct cpufreq_policy *policy)
++{
++	struct cs_policy_dbs_info *dbs_info = to_dbs_info(policy->governor_data);
 +
-+			return IMX_I2C_STATE_DONE;
- 		}
-+		/*
-+		 * For i2c master receiver repeat restart operation like:
-+		 * read -> repeat MSTA -> read/write
-+		 * The controller must set MTX before read the last byte in
-+		 * the first read operation, otherwise the first read cost
-+		 * one extra clock cycle.
-+		 */
-+		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+		temp |= I2CR_MTX;
-+		imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-+		next_state = IMX_I2C_STATE_DONE;
- 	} else if (i2c_imx->msg_buf_idx == (i2c_imx->msg->len - 2)) {
- 		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
- 		temp |= I2CR_TXAK;
-@@ -1052,6 +1055,7 @@ static inline void i2c_imx_isr_read_cont
- 	}
++	/*
++	 * The limits have changed, so may have the current frequency. Reset
++	 * requested_freq to avoid any unintended outcomes due to the mismatch.
++	 */
++	dbs_info->requested_freq = policy->cur;
++}
++
+ static struct dbs_governor cs_governor = {
+ 	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
+ 	.kobj_type = { .default_groups = cs_groups },
+@@ -323,6 +334,7 @@ static struct dbs_governor cs_governor =
+ 	.init = cs_init,
+ 	.exit = cs_exit,
+ 	.start = cs_start,
++	.limits = cs_limits,
+ };
  
- 	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
-+	return next_state;
- }
+ #define CPU_FREQ_GOV_CONSERVATIVE	(cs_governor.gov)
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -563,6 +563,7 @@ EXPORT_SYMBOL_GPL(cpufreq_dbs_governor_s
  
- static inline void i2c_imx_isr_read_block_data_len(struct imx_i2c_struct *i2c_imx)
-@@ -1088,11 +1092,9 @@ static irqreturn_t i2c_imx_master_isr(st
- 		break;
- 
- 	case IMX_I2C_STATE_READ_CONTINUE:
--		i2c_imx_isr_read_continue(i2c_imx);
--		if (i2c_imx->msg_buf_idx == i2c_imx->msg->len) {
--			i2c_imx->state = IMX_I2C_STATE_DONE;
-+		i2c_imx->state = i2c_imx_isr_read_continue(i2c_imx);
-+		if (i2c_imx->state == IMX_I2C_STATE_DONE)
- 			wake_up(&i2c_imx->queue);
--		}
- 		break;
- 
- 	case IMX_I2C_STATE_READ_BLOCK_DATA:
-@@ -1490,6 +1492,7 @@ static int i2c_imx_read(struct imx_i2c_s
- 			bool is_lastmsg)
+ void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy)
  {
- 	int block_data = msgs->flags & I2C_M_RECV_LEN;
-+	int ret = 0;
++	struct dbs_governor *gov = dbs_governor_of(policy);
+ 	struct policy_dbs_info *policy_dbs;
  
- 	dev_dbg(&i2c_imx->adapter.dev,
- 		"<%s> write slave address: addr=0x%x\n",
-@@ -1522,10 +1525,20 @@ static int i2c_imx_read(struct imx_i2c_s
- 		dev_err(&i2c_imx->adapter.dev, "<%s> read timedout\n", __func__);
- 		return -ETIMEDOUT;
- 	}
--	if (i2c_imx->is_lastmsg && !i2c_imx->stopped)
--		return i2c_imx_bus_busy(i2c_imx, 0, false);
-+	if (i2c_imx->is_lastmsg) {
-+		if (!i2c_imx->stopped)
-+			ret = i2c_imx_bus_busy(i2c_imx, 0, false);
-+		/*
-+		 * Only read the last byte of the last message after the bus is
-+		 * not busy. Else the controller generates another clock which
-+		 * might confuse devices.
-+		 */
-+		if (!ret)
-+			i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx,
-+										     IMX_I2C_I2DR);
-+	}
+ 	/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
+@@ -574,6 +575,8 @@ void cpufreq_dbs_governor_limits(struct
+ 	mutex_lock(&policy_dbs->update_mutex);
+ 	cpufreq_policy_apply_limits(policy);
+ 	gov_update_sample_delay(policy_dbs, 0);
++	if (gov->limits)
++		gov->limits(policy);
+ 	mutex_unlock(&policy_dbs->update_mutex);
  
--	return 0;
-+	return ret;
- }
+ out:
+--- a/drivers/cpufreq/cpufreq_governor.h
++++ b/drivers/cpufreq/cpufreq_governor.h
+@@ -138,6 +138,7 @@ struct dbs_governor {
+ 	int (*init)(struct dbs_data *dbs_data);
+ 	void (*exit)(struct dbs_data *dbs_data);
+ 	void (*start)(struct cpufreq_policy *policy);
++	void (*limits)(struct cpufreq_policy *policy);
+ };
  
- static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy)
 
 
 
