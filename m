@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMHMNMP/y2koNQYAu9opvQ
-	(envelope-from <stable+bounces-232240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:23 +0200
+	id wJx1Cvf/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A583C36E033
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFB636E0F4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E931E308E972
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5DF531A0D5C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DCC41B373;
-	Tue, 31 Mar 2026 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D033F23DD;
+	Tue, 31 Mar 2026 16:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CN8SR6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDxxUGBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3AB29DB8F;
-	Tue, 31 Mar 2026 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832243DFC7D;
+	Tue, 31 Mar 2026 16:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976238; cv=none; b=Yfqu3a1Y4rfMbPz/gyJ0k/DTpabqd/9XPu/VzGztiVZjqQcXA5VuIPDAKtkTub1alQF/l7HVw/V50S4h+Ra2mqI2NU/KdTt5Ws1ydE1VKgXTsvlzsLJnup9qbKaUFTTQBq7pXRePTtCcZXpe1efaQaqqX1XlvcpqAcuSpCkf71o=
+	t=1774974902; cv=none; b=IVUQDl0CJ5vJStzCVM/r2z0ns08QgE0Of+d2eAKnLi1zjpBzA+jddvQZaLOdp29V7P1BSM3lRs4nOaRXk0r9I6TgV+R9D3au3ko1fOsAgMaB2oCkTzgdKVuS1xF4v2i9+8MltLBZigRZ7E5de1CJ26d/4JOiQOIXEmqnSoHPz4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976238; c=relaxed/simple;
-	bh=+hcW0ed9vXq2d/FcciSWiH1vhxQ+SRU+B2YbS45ie6I=;
+	s=arc-20240116; t=1774974902; c=relaxed/simple;
+	bh=c8aemaO17YGoNx/4U/xG+627YZny1hfsDMlD/JTX3kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIG+UdGPbjMnhuIKZDcqzg7r7rF5Q1laKZv0xHUwnkjD/lHxaQoLoqD9nf8H9UwSEeOcDeNcqQ9kD0/rqg0lbcRjtQF27njnb9rgAELuZxGhhWE6EckMnJN2vzj5taHuGR0RQrHTmRl+9x42wrwqoirQp8/S0fh/4sK+xCa/HPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CN8SR6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FACC19423;
-	Tue, 31 Mar 2026 16:57:17 +0000 (UTC)
+	 MIME-Version; b=giU9YxEuodXJ7aCsLQKGh5/9OlANSG/X18cqpBtTrPdvfUkNzAQPvsNw0WjgwhdoG5HjZEUsprc1XKLepYb/BEJ/WPhC8c98tKjRzPDx2V5KyV78XO/rGOunvB3AuF9IftGxUGwLfpYBC1V6/cxxCpsGfRFBB73XMMth9Q/05YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDxxUGBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14393C19424;
+	Tue, 31 Mar 2026 16:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976238;
-	bh=+hcW0ed9vXq2d/FcciSWiH1vhxQ+SRU+B2YbS45ie6I=;
+	s=korg; t=1774974902;
+	bh=c8aemaO17YGoNx/4U/xG+627YZny1hfsDMlD/JTX3kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CN8SR6VMX87qlUrXEhxzsc2PVQE74ibDEU2ZGW/MsEsOGV8h5h2zCfx6FAiuqeaE
-	 Kj/hwW3kvbis24C493JB0dsZ2emO57XtGwJtLFVYhCHgS/9Varhlltq+QaQk8rvTOE
-	 S5UwfgKcJkC5w5FXWtTAhDHsFflnf3//WTdBGQvk=
+	b=vDxxUGBzcB10U/KuPQpu3Q5FLT01L8NLa7JQcaOvp68QlpKIH3qyK2syi9eRVL3Lx
+	 YbjKUWaqdLtoggjsejrYK6NP1DDZRH//qvLATiE9XzefRwgCZSShTNBBmbTJD/knCD
+	 lp+oT8oNvm0sBGw2A7PDrDDToI4H5tkISMv6ta9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wade <danjwade95@gmail.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Minwoo Ra <raminwo0202@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 016/309] bpf: Fix unsound scalar forking in maybe_fork_scalars() for BPF_OR
-Date: Tue, 31 Mar 2026 18:18:39 +0200
-Message-ID: <20260331161754.075659547@linuxfoundation.org>
+Subject: [PATCH 6.19 087/342] xfrm: prevent policy_hthresh.work from racing with netns teardown
+Date: Tue, 31 Mar 2026 18:18:40 +0200
+Message-ID: <20260331161802.222414684@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +66,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232240-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231724-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A583C36E033
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,secunet.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ADFB636E0F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wade <danjwade95@gmail.com>
+From: Minwoo Ra <raminwo0202@gmail.com>
 
-[ Upstream commit c845894ebd6fb43226b3118d6b017942550910c5 ]
+[ Upstream commit 29fe3a61bcdce398ee3955101c39f89c01a8a77e ]
 
-maybe_fork_scalars() is called for both BPF_AND and BPF_OR when the
-source operand is a constant.  When dst has signed range [-1, 0], it
-forks the verifier state: the pushed path gets dst = 0, the current
-path gets dst = -1.
+A XFRM_MSG_NEWSPDINFO request can queue the per-net work item
+policy_hthresh.work onto the system workqueue.
 
-For BPF_AND this is correct: 0 & K == 0.
-For BPF_OR this is wrong:    0 | K == K, not 0.
+The queued callback, xfrm_hash_rebuild(), retrieves the enclosing
+struct net via container_of(). If the net namespace is torn down
+before that work runs, the associated struct net may already have
+been freed, and xfrm_hash_rebuild() may then dereference stale memory.
 
-The pushed path therefore tracks dst as 0 when the runtime value is K,
-producing an exploitable verifier/runtime divergence that allows
-out-of-bounds map access.
+xfrm_policy_fini() already flushes policy_hash_work during teardown,
+but it does not synchronize policy_hthresh.work.
 
-Fix this by passing env->insn_idx (instead of env->insn_idx + 1) to
-push_stack(), so the pushed path re-executes the ALU instruction with
-dst = 0 and naturally computes the correct result for any opcode.
+Synchronize policy_hthresh.work in xfrm_policy_fini() as well, so the
+queued work cannot outlive the net namespace teardown and access a
+freed struct net.
 
-Fixes: bffacdb80b93 ("bpf: Recognize special arithmetic shift in the verifier")
-Signed-off-by: Daniel Wade <danjwade95@gmail.com>
-Reviewed-by: Amery Hung <ameryhung@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260314021521.128361-2-danjwade95@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 880a6fab8f6b ("xfrm: configure policy hash table thresholds by netlink")
+Signed-off-by: Minwoo Ra <raminwo0202@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xfrm/xfrm_policy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index af87530450ec2..f1264972e0245 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15512,7 +15512,7 @@ static int maybe_fork_scalars(struct bpf_verifier_env *env, struct bpf_insn *ins
- 	else
- 		return 0;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 5428185196a1f..c32d34c441ee0 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4282,6 +4282,8 @@ static void xfrm_policy_fini(struct net *net)
+ 	unsigned int sz;
+ 	int dir;
  
--	branch = push_stack(env, env->insn_idx + 1, env->insn_idx, false);
-+	branch = push_stack(env, env->insn_idx, env->insn_idx, false);
- 	if (IS_ERR(branch))
- 		return PTR_ERR(branch);
- 
++	disable_work_sync(&net->xfrm.policy_hthresh.work);
++
+ 	flush_work(&net->xfrm.policy_hash_work);
+ #ifdef CONFIG_XFRM_SUB_POLICY
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
 -- 
 2.51.0
 
