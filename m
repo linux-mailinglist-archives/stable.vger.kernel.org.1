@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EP54KAr5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:42 +0200
+	id GEw4LIr8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF0B36CF19
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFB736D6C2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55E4030AF3FF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1041532C62E7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447463F7A8B;
-	Tue, 31 Mar 2026 16:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0103FA5E6;
+	Tue, 31 Mar 2026 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0Q30hHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6d0RJJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BEF30E0DC;
-	Tue, 31 Mar 2026 16:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FDF3E559E;
+	Tue, 31 Mar 2026 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974364; cv=none; b=M/sH+4WFzV7trS7QyWkTqTgtpHrbqxAgolCflHjXhuNgW8kYLDHyOg5ZQ/RkGJMuxmmiQel4NwUin9g2YA1MMHiTwo0z9NsrzRc699UXsjeoDOqfDU3OW5Y5rLYOUAJDd1PufsS9dbbv5AcxON26ssn8BSWQE2R2nWi4BjZldYc=
+	t=1774975213; cv=none; b=s582BbXp8GEXPZR08sccOADAvK1bpbjAPB9O6fbg3zsTxucCXVHzVutDXEC3XX3ve1Zzia4BH5LIP2IX/YDbciuH0133hbcU99G2qpGFwgwji3h72kkXtGoX+3/i6GrmmTO0BXoorW2qFPZueLuCbB5cfu+b5Pbf7nXw7QNk/iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974364; c=relaxed/simple;
-	bh=TH2iaBmB4ttyIcfJ0k3j0Xk+C1yxaqRWPrZu5eyPqU8=;
+	s=arc-20240116; t=1774975213; c=relaxed/simple;
+	bh=gIoKtqJQJkrIV0eMq9z8fzkstMHmgLQIjIotUsIQF3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdWZ6QjhQFlz12AvboDZiIIvSmdsNSUiolrhJ9U5DB252u2GxMlT7kjpuO/eqoUgK3AdQtPGb6uTXdIqJQ+/DemweVEJxi23AOtGPX2YaDHdAzgQF25jHzJpwRj7+BnXXwVVsJwVi8FNkMor+cM2LDrNyrlq2AMXAAclhkO7bbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0Q30hHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9716FC19424;
-	Tue, 31 Mar 2026 16:26:03 +0000 (UTC)
+	 MIME-Version; b=HM5PApaZmu12SG6c39S+sU5/uaQkdCAjDhG0bVJKRMstaMFeC+zJZ62Tzh6WJa3govv4s7cxNsriNy6FbZtsqU2hWD/58mVCMFj2XTEFl5KOomUNC7H0Be00dJj45aeX5WfZqIKwS0r002mgQ61Jdc/owSWnXoPzIAgxp4kI99k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6d0RJJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A99C19423;
+	Tue, 31 Mar 2026 16:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974363;
-	bh=TH2iaBmB4ttyIcfJ0k3j0Xk+C1yxaqRWPrZu5eyPqU8=;
+	s=korg; t=1774975213;
+	bh=gIoKtqJQJkrIV0eMq9z8fzkstMHmgLQIjIotUsIQF3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0Q30hHvXjAKu1ckNzkff/RvIfWNVbf8077cLQ/f7mmpdLQXjtPzEi1MFkkOFVTjD
-	 7py6dL07nk2jYKc7UZjX24wXbe4lFzYDtWv42oAD/ZnJGDK/5DfO7vtmb4H0xmGpuU
-	 pub9T3u2bOHuctpultVwHGzpfXw+e4Eg12S8nOdE=
+	b=g6d0RJJKcfazpirUZDLElYDnitqOdJe6Cc6Gful4ry5sVGfp1Tj99lkOUeIkpQ8ND
+	 7DNpT5qrK+2GAsbmfGzuMt9WLoxAU0uhjOdRGSbOyw74jCIK7kAUDJfAOVrEE0PpIc
+	 R70kUX5CCTxGvGnEo96/ZjISkVJi9sgNRFVsu3GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/175] tcp: Rearrange tests in inet_csk_bind_conflict().
+	"Lizhi.hou" <lizhi.hou@amd.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>
+Subject: [PATCH 6.19 208/342] accel/ivpu: Add disable clock relinquish workaround for NVL-A0
 Date: Tue, 31 Mar 2026 18:20:41 +0200
-Message-ID: <20260331161731.880919956@linuxfoundation.org>
+Message-ID: <20260331161806.634969302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +67,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231513-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231843-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2BF0B36CF19
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0CFB736D6C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
 
-[ Upstream commit 58655bc0ad7ccdd5b53319bcc091cb81b6aee7c3 ]
+commit e8ab57b56402697a9bef50b71aecc613f0d61846 upstream.
 
-The following patch adds code in the !inet_use_bhash2_on_bind(sk)
-case in inet_csk_bind_conflict().
+Turn on disable clock relinquish workaround for Nova Lake A0.
+Without this workaround NPU may not power off correctly after
+inference, leading to unexpected system behavior.
 
-To avoid adding nest and make the change cleaner, this patch
-rearranges tests in inet_csk_bind_conflict().
+Fixes: 550f4dd2cedd ("accel/ivpu: Add support for Nova Lake's NPU")
+Cc: <stable@vger.kernel.org> # v6.19+
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e537dd15d0d4 ("udp: Fix wildcard bind conflict check when using hash2")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Lizhi.hou <lizhi.hou@amd.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://patch.msgid.link/20260323095029.64613-1-karol.wachowski@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_connection_sock.c | 40 ++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 21 deletions(-)
+ drivers/accel/ivpu/ivpu_drv.h | 1 +
+ drivers/accel/ivpu/ivpu_hw.c  | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 4a53c538dcaa1..e7751bfab92bb 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -240,9 +240,10 @@ static int inet_csk_bind_conflict(const struct sock *sk,
- 				  const struct inet_bind2_bucket *tb2, /* may be null */
- 				  bool relax, bool reuseport_ok)
- {
--	bool reuseport_cb_ok;
--	struct sock_reuseport *reuseport_cb;
- 	kuid_t uid = sock_i_uid((struct sock *)sk);
-+	struct sock_reuseport *reuseport_cb;
-+	bool reuseport_cb_ok;
-+	struct sock *sk2;
+diff --git a/drivers/accel/ivpu/ivpu_drv.h b/drivers/accel/ivpu/ivpu_drv.h
+index 5b34b6f50e69..f1b6155065ff 100644
+--- a/drivers/accel/ivpu/ivpu_drv.h
++++ b/drivers/accel/ivpu/ivpu_drv.h
+@@ -35,6 +35,7 @@
+ #define IVPU_HW_IP_60XX 60
  
- 	rcu_read_lock();
- 	reuseport_cb = rcu_dereference(sk->sk_reuseport_cb);
-@@ -250,32 +251,29 @@ static int inet_csk_bind_conflict(const struct sock *sk,
- 	reuseport_cb_ok = !reuseport_cb || READ_ONCE(reuseport_cb->num_closed_socks);
- 	rcu_read_unlock();
+ #define IVPU_HW_IP_REV_LNL_B0 4
++#define IVPU_HW_IP_REV_NVL_A0 0
  
--	/*
--	 * Unlike other sk lookup places we do not check
-+	/* Conflicts with an existing IPV6_ADDR_ANY (if ipv6) or INADDR_ANY (if
-+	 * ipv4) should have been checked already. We need to do these two
-+	 * checks separately because their spinlocks have to be acquired/released
-+	 * independently of each other, to prevent possible deadlocks
-+	 */
-+	if (inet_use_bhash2_on_bind(sk))
-+		return tb2 && inet_bhash2_conflict(sk, tb2, uid, relax,
-+						   reuseport_cb_ok, reuseport_ok);
-+
-+	/* Unlike other sk lookup places we do not check
- 	 * for sk_net here, since _all_ the socks listed
- 	 * in tb->owners and tb2->owners list belong
- 	 * to the same net - the one this bucket belongs to.
- 	 */
-+	sk_for_each_bound(sk2, &tb->owners) {
-+		if (!inet_bind_conflict(sk, sk2, uid, relax, reuseport_cb_ok, reuseport_ok))
-+			continue;
+ #define IVPU_HW_BTRS_MTL 1
+ #define IVPU_HW_BTRS_LNL 2
+diff --git a/drivers/accel/ivpu/ivpu_hw.c b/drivers/accel/ivpu/ivpu_hw.c
+index d69cd0d93569..d4a9bcda4100 100644
+--- a/drivers/accel/ivpu/ivpu_hw.c
++++ b/drivers/accel/ivpu/ivpu_hw.c
+@@ -70,8 +70,10 @@ static void wa_init(struct ivpu_device *vdev)
+ 	if (ivpu_hw_btrs_gen(vdev) == IVPU_HW_BTRS_MTL)
+ 		vdev->wa.interrupt_clear_with_0 = ivpu_hw_btrs_irqs_clear_with_0_mtl(vdev);
  
--	if (!inet_use_bhash2_on_bind(sk)) {
--		struct sock *sk2;
--
--		sk_for_each_bound(sk2, &tb->owners)
--			if (inet_bind_conflict(sk, sk2, uid, relax,
--					       reuseport_cb_ok, reuseport_ok) &&
--			    inet_rcv_saddr_equal(sk, sk2, true))
--				return true;
--
--		return false;
-+		if (inet_rcv_saddr_equal(sk, sk2, true))
-+			return true;
- 	}
+-	if (ivpu_device_id(vdev) == PCI_DEVICE_ID_LNL &&
+-	    ivpu_revision(vdev) < IVPU_HW_IP_REV_LNL_B0)
++	if ((ivpu_device_id(vdev) == PCI_DEVICE_ID_LNL &&
++	     ivpu_revision(vdev) < IVPU_HW_IP_REV_LNL_B0) ||
++	    (ivpu_device_id(vdev) == PCI_DEVICE_ID_NVL &&
++	     ivpu_revision(vdev) == IVPU_HW_IP_REV_NVL_A0))
+ 		vdev->wa.disable_clock_relinquish = true;
  
--	/* Conflicts with an existing IPV6_ADDR_ANY (if ipv6) or INADDR_ANY (if
--	 * ipv4) should have been checked already. We need to do these two
--	 * checks separately because their spinlocks have to be acquired/released
--	 * independently of each other, to prevent possible deadlocks
--	 */
--	return tb2 && inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,
--					   reuseport_ok);
-+	return false;
- }
- 
- /* Determine if there is a bind conflict with an existing IPV6_ADDR_ANY (if ipv6) or
+ 	if (ivpu_test_mode & IVPU_TEST_MODE_CLK_RELINQ_ENABLE)
 -- 
-2.51.0
+2.53.0
 
 
 
