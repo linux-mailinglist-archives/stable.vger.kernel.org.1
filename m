@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFbYDrkAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:29 +0200
+	id UAufNyb+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9E736E365
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8897436DB32
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C91B73087872
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A1E930819DF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C9A302756;
-	Tue, 31 Mar 2026 17:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5998A426ECC;
+	Tue, 31 Mar 2026 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keLkKYZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYC+FLXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036FB3019D6;
-	Tue, 31 Mar 2026 17:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4B34266BA;
+	Tue, 31 Mar 2026 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976740; cv=none; b=drA5q7sayAWetmvH1OrdNMMMrwdgs4BV6FMddEbhbIqNa7qwauq9v9JbVbTkG4fjOKMchPoLUeoY4Omzx30UNLlIb3+qt3Sby05Fb7Jsr1lQ0c94IxoDEBis9jxjJ7kXrzQsNsY2SE6nAvCCaCTXzlukObYmf80+k6e3jt8AgkE=
+	t=1774975987; cv=none; b=jNQM2UoJjUOWQf3HGP8AR/K/yHYdpuHJdG/bYt5Mahpcgm8HsBfynqCyHWX6/XLOoYJ2Z+pqmlN46O3JaeJrPwrYugn2vFmxzFOx9m0Kb8gWS/tik2dCE2rMZLUwjg1NJSBWf2A4Nkyw6Nkhs2IYBz8RdK+JducjYof7+j/I/ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976740; c=relaxed/simple;
-	bh=Pd5UcdUiD1lbpfX4ezbj3ivI1WJqa9SdvlvuSlcR5Iw=;
+	s=arc-20240116; t=1774975987; c=relaxed/simple;
+	bh=s3wgKdxbfgMZ4dC0a9GFGQ65kUDt0EvPK+AgwIPHzw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJQDeaMJPwwVIEeTt5yhNoRkz8BYDnvDVfxVOlO88lxfXgN8kxDVuwCjlDNg1lJVQaOREZFlnO2uZD+KpCSiqZ1K+7Ys+49JyEFgVtdTpgDZkQQ6lDnwnQzsro5t+nDNqlFut0nN7F3ZGSpCgze5FJGt3Ql21fh/vCdW22h26Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keLkKYZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D99DC19423;
-	Tue, 31 Mar 2026 17:05:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o7ZTkH/ClW/bh3S2RuDM4vsGlD4UB7jS46AWGHr/3WzJRuXZSQA3nn/QIL0HN6rpE9ieE8o2vea6CSaZuHfUBw1rt/tbWbZQtjlqFrBaXVMni16wFdft3G8lHvQUKRjn3XITXXPG4izkb2MFjHmAb+yeEoXnHqEoBDuT8zF3TlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYC+FLXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89E6C19423;
+	Tue, 31 Mar 2026 16:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976739;
-	bh=Pd5UcdUiD1lbpfX4ezbj3ivI1WJqa9SdvlvuSlcR5Iw=;
+	s=korg; t=1774975987;
+	bh=s3wgKdxbfgMZ4dC0a9GFGQ65kUDt0EvPK+AgwIPHzw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=keLkKYZNyvKKGQDbUSPwawL65AjgNKu80m4ziDibhyvU3JMY1nuF96A5X9YmDQMdG
-	 +qn0l5nqt6nKSMzLK+VnMIJVFUkeAXf9loHQ+PDNeBzGhtsn76rlvGMYAsXXhNXnQB
-	 /R76yMSK2lJpFc8hRv/g8pFuPFVllk81dIQ3uqzY=
+	b=BYC+FLXl+TzWnQke+SZhpVp0J94JAHpoAwZRywEdntvTVINvXUsIw9YQuWiRrfL0N
+	 nrnUOolYqW8wnJRnOn6seyH/+V7JWMxurnc7JrYAjgBm328pD74wPk9wwVyYuEHXLV
+	 JKxanthdQWQn2/t5ojyjLE9I2agDjk5CJjal8OO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John <therealgraysky@proton.me>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.18 210/309] writeback: dont block sync for filesystems with no data integrity guarantees
+	Kevin Hao <haokexin@gmail.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 163/244] net: macb: Protect access to net_device::ip_ptr with RCU lock
 Date: Tue, 31 Mar 2026 18:21:53 +0200
-Message-ID: <20260331161801.177714988@linuxfoundation.org>
+Message-ID: <20260331161747.785251636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,212 +63,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,gmail.com,suse.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232435-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232143-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.976];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.cz:email,proton.me:email]
-X-Rspamd-Queue-Id: CC9E736E365
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8897436DB32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 76f9377cd2ab7a9220c25d33940d9ca20d368172 upstream.
+commit baa35a698cea26930679a20a7550bbb4c8319725 upstream.
 
-Add a SB_I_NO_DATA_INTEGRITY superblock flag for filesystems that cannot
-guarantee data persistence on sync (eg fuse). For superblocks with this
-flag set, sync kicks off writeback of dirty inodes but does not wait
-for the flusher threads to complete the writeback.
+Access to net_device::ip_ptr and its associated members must be
+protected by an RCU lock. Since we are modifying this piece of code,
+let's also move it to execute only when WAKE_ARP is enabled.
 
-This replaces the per-inode AS_NO_DATA_INTEGRITY mapping flag added in
-commit f9a49aa302a0 ("fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
-in wait_sb_inodes()"). The flag belongs at the superblock level because
-data integrity is a filesystem-wide property, not a per-inode one.
-Having this flag at the superblock level also allows us to skip having
-to iterate every dirty inode in wait_sb_inodes() only to skip each inode
-individually.
+To minimize the duration of the RCU lock, a local variable is used to
+temporarily store the IP address. This change resolves the following
+RCU check warning:
+  WARNING: suspicious RCU usage
+  7.0.0-rc3-next-20260310-yocto-standard+ #122 Not tainted
+  -----------------------------
+  drivers/net/ethernet/cadence/macb_main.c:5944 suspicious rcu_dereference_check() usage!
 
-Prior to this commit, mappings with no data integrity guarantees skipped
-waiting on writeback completion but still waited on the flusher threads
-to finish initiating the writeback. Waiting on the flusher threads is
-unnecessary. This commit kicks off writeback but does not wait on the
-flusher threads. This change properly addresses a recent report [1] for
-a suspend-to-RAM hang seen on fuse-overlayfs that was caused by waiting
-on the flusher threads to finish:
+  other info that might help us debug this:
 
-Workqueue: pm_fs_sync pm_fs_sync_work_fn
-Call Trace:
- <TASK>
- __schedule+0x457/0x1720
- schedule+0x27/0xd0
- wb_wait_for_completion+0x97/0xe0
- sync_inodes_sb+0xf8/0x2e0
- __iterate_supers+0xdc/0x160
- ksys_sync+0x43/0xb0
- pm_fs_sync_work_fn+0x17/0xa0
- process_one_work+0x193/0x350
- worker_thread+0x1a1/0x310
- kthread+0xfc/0x240
- ret_from_fork+0x243/0x280
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+  rcu_scheduler_active = 2, debug_locks = 1
+  5 locks held by rtcwake/518:
+   #0: ffff000803ab1408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008090bf088 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
 
-On fuse this is problematic because there are paths that may cause the
-flusher thread to block (eg if systemd freezes the user session cgroups
-first, which freezes the fuse daemon, before invoking the kernel
-suspend. The kernel suspend triggers ->write_node() which on fuse issues
-a synchronous setattr request, which cannot be processed since the
-daemon is frozen. Or if the daemon is buggy and cannot properly complete
-writeback, initiating writeback on a dirty folio already under writeback
-leads to writeback_get_folio() -> folio_prepare_writeback() ->
-unconditional wait on writeback to finish, which will cause a hang).
-This commit restores fuse to its prior behavior before tmp folios were
-removed, where sync was essentially a no-op.
+  stack backtrace:
+  CPU: 3 UID: 0 PID: 518 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #122 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   lockdep_rcu_suspicious+0x134/0x1d8
+   macb_suspend+0xd8/0x4c0
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
 
-[1] https://lore.kernel.org/linux-fsdevel/CAJnrk1a-asuvfrbKXbEwwDSctvemF+6zfhdnuzO65Pt8HsFSRw@mail.gmail.com/T/#m632c4648e9cafc4239299887109ebd880ac6c5c1
-
-Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-Reported-by: John <therealgraysky@proton.me>
+Fixes: 0cb8de39a776 ("net: macb: Add ARP support to WOL")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Link: https://patch.msgid.link/20260320005145.2483161-2-joannelkoong@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-2-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c       |   18 ++++++++++++------
- fs/fuse/file.c          |    4 +---
- fs/fuse/inode.c         |    1 +
- include/linux/fs.h      |    1 +
- include/linux/pagemap.h |   11 -----------
- 5 files changed, 15 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2735,13 +2735,8 @@ static void wait_sb_inodes(struct super_
- 		 * The mapping can appear untagged while still on-list since we
- 		 * do not have the mapping lock. Skip it here, wb completion
- 		 * will remove it.
--		 *
--		 * If the mapping does not have data integrity semantics,
--		 * there's no need to wait for the writeout to complete, as the
--		 * mapping cannot guarantee that data is persistently stored.
- 		 */
--		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
--		    mapping_no_data_integrity(mapping))
-+		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
- 			continue;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5352,9 +5352,9 @@ static int __maybe_unused macb_suspend(s
+ 	struct macb_queue *queue;
+ 	struct in_device *idev;
+ 	unsigned long flags;
++	u32 tmp, ifa_local;
+ 	unsigned int q;
+ 	int err;
+-	u32 tmp;
  
- 		spin_unlock_irq(&sb->s_inode_wblist_lock);
-@@ -2876,6 +2871,17 @@ void sync_inodes_sb(struct super_block *
- 	 */
- 	if (bdi == &noop_backing_dev_info)
- 		return;
+ 	if (!device_may_wakeup(&bp->dev->dev))
+ 		phy_exit(bp->sgmii_phy);
+@@ -5363,14 +5363,21 @@ static int __maybe_unused macb_suspend(s
+ 		return 0;
+ 
+ 	if (bp->wol & MACB_WOL_ENABLED) {
+-		/* Check for IP address in WOL ARP mode */
+-		idev = __in_dev_get_rcu(bp->dev);
+-		if (idev)
+-			ifa = rcu_dereference(idev->ifa_list);
+-		if ((bp->wolopts & WAKE_ARP) && !ifa) {
+-			netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\n");
+-			return -EOPNOTSUPP;
++		if (bp->wolopts & WAKE_ARP) {
++			/* Check for IP address in WOL ARP mode */
++			rcu_read_lock();
++			idev = __in_dev_get_rcu(bp->dev);
++			if (idev)
++				ifa = rcu_dereference(idev->ifa_list);
++			if (!ifa) {
++				rcu_read_unlock();
++				netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\n");
++				return -EOPNOTSUPP;
++			}
++			ifa_local = be32_to_cpu(ifa->ifa_local);
++			rcu_read_unlock();
+ 		}
 +
-+	/*
-+	 * If the superblock has SB_I_NO_DATA_INTEGRITY set, there's no need to
-+	 * wait for the writeout to complete, as the filesystem cannot guarantee
-+	 * data persistence on sync. Just kick off writeback and return.
-+	 */
-+	if (sb->s_iflags & SB_I_NO_DATA_INTEGRITY) {
-+		wakeup_flusher_threads_bdi(bdi, WB_REASON_SYNC);
-+		return;
-+	}
-+
- 	WARN_ON(!rwsem_is_locked(&sb->s_umount));
+ 		spin_lock_irqsave(&bp->lock, flags);
  
- 	/* protect against inode wb switch, see inode_switch_wbs_work_fn() */
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3146,10 +3146,8 @@ void fuse_init_file_inode(struct inode *
+ 		/* Disable Tx and Rx engines before  disabling the queues,
+@@ -5408,7 +5415,7 @@ static int __maybe_unused macb_suspend(s
+ 		if (bp->wolopts & WAKE_ARP) {
+ 			tmp |= MACB_BIT(ARP);
+ 			/* write IP address into register */
+-			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
++			tmp |= MACB_BFEXT(IP, ifa_local);
+ 		}
+ 		spin_unlock_irqrestore(&bp->lock, flags);
  
- 	inode->i_fop = &fuse_file_operations;
- 	inode->i_data.a_ops = &fuse_file_aops;
--	if (fc->writeback_cache) {
-+	if (fc->writeback_cache)
- 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
--		mapping_set_no_data_integrity(&inode->i_data);
--	}
- 
- 	INIT_LIST_HEAD(&fi->write_files);
- 	INIT_LIST_HEAD(&fi->queued_writes);
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -1706,6 +1706,7 @@ static void fuse_sb_defaults(struct supe
- 	sb->s_export_op = &fuse_export_operations;
- 	sb->s_iflags |= SB_I_IMA_UNVERIFIABLE_SIGNATURE;
- 	sb->s_iflags |= SB_I_NOIDMAP;
-+	sb->s_iflags |= SB_I_NO_DATA_INTEGRITY;
- 	if (sb->s_user_ns != &init_user_ns)
- 		sb->s_iflags |= SB_I_UNTRUSTED_MOUNTER;
- 	sb->s_flags &= ~(SB_NOSEC | SB_I_VERSION);
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1419,6 +1419,7 @@ extern int send_sigurg(struct file *file
- #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
- #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
- #define SB_I_ALLOW_HSM	0x00004000	/* Allow HSM events on this superblock */
-+#define SB_I_NO_DATA_INTEGRITY	0x00008000 /* fs cannot guarantee data persistence on sync */
- 
- /* Possible states of 'frozen' field */
- enum {
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -213,7 +213,6 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
--	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -349,16 +348,6 @@ static inline bool mapping_writeback_may
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
--static inline void mapping_set_no_data_integrity(struct address_space *mapping)
--{
--	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
--}
--
--static inline bool mapping_no_data_integrity(const struct address_space *mapping)
--{
--	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
--}
--
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
- {
- 	return mapping->gfp_mask;
 
 
 
