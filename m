@@ -1,160 +1,193 @@
-Return-Path: <stable+bounces-232558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMieM3gSzGkvOAYAu9opvQ
-	(envelope-from <stable+bounces-232558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:29:12 +0200
+	id KF3qCO0SzGkvOAYAu9opvQ
+	(envelope-from <stable+bounces-232559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:31:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333CC36FF55
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:29:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114636FFAE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 706B5308C5ED
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:17:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7E52300AB1C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CF7377542;
-	Tue, 31 Mar 2026 18:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C844237C102;
+	Tue, 31 Mar 2026 18:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rfKzOPa/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jnbHEXhh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A068331A78
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 18:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774981043; cv=none; b=fFgurjQ2IIqLhIA5aeqOyDs7o/q0ncFcZxMVjeMqIYY6S4QwTY88D7RrMelEjcFt8v/TugAFvhcePeWgGJOWZ11GAbE3W0iQcm0nnoOcFeHFlpcdL/NZQopX9uCgSnkohmrC59rXXobf31DGN9F66KglEhVJ4PbN30tSLqxDX00=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774981043; c=relaxed/simple;
-	bh=Ly67QODbGgBIWZqgOO/FYMst4z4v/VNIbOUN1sgHf5w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XkQFxocTZ9kuZ7IYoKjVEQWgL35QC5bUUGtp8tapGasHzjqIdblA3hDby4mcLHH8Qv9puWKAnC28golNIVSXHKvZH8qzETjSjz/sf0rYzn+3ClKzy0l9EI248ZT96bxUXPvpbgek7SWRh0ZXbPr0EpBVYEF32GGntYAG6z+45cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rfKzOPa/; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c646e980bso4062554b3a.0
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:17:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182A837BE6D
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 18:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774981514; cv=pass; b=N8oxOFS/kmbJCt8t3OQfWuF5MeBNOA01FFB7OFMPeOo7l1LQ81UjTV+F7TLJpKGQKXB2XjcPgfFb04FrtRvFb1i4m0CTFVCRqbsHkNkXFsCgAKS50nTnYXQBgO7233PYc+FEFj88FYhmZumJeBCGSs3uvFWxRWKcAhHlqFrpJqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774981514; c=relaxed/simple;
+	bh=vTWd/5txerNR6ocKIJ21Zh2GeUmfEADmayV6P1Cd3Os=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qEgMrL+dmHFSomcmTcr0afoDLKcCK9D8JgEUQIMDORITUPjvwkBDBG/8uEIVB0Bn0t60z7a+PDamv07DznsJKBR5iiYVkCR+E80lvBJtAgvz/TzDsZ2aCMzBETa5x12yliFOKLoutfW9kUv3vj4+sd7DHXut4TBTILm1Ku2O3K0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jnbHEXhh; arc=pass smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a0fc5e2c59so6851939e87.1
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:25:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774981511; cv=none;
+        d=google.com; s=arc-20240605;
+        b=if29eZxpGGG0p03eeAVJMANF+4W5LbkmT5azhVJiLAkYIZTuMc0/j2F4TYzGw+4xCM
+         G7EZfIDFbuEweWqS3HdgBomsWq7p76oTifmBplKRX261nTlns+tcOqPnanowDMd5JznL
+         JF4fZKeHBrLxJT0VYQgqAtnn8oE/cH/A/MRuhG+Ahxfs7+Mw8P+Hz+GO4kUPpvHyiYue
+         bpAu5ECureV48Vn7ShKxEUgxfvab4d8vVR7HsYJ1AqEssV8rTAvG+OPiDpCpcPqygiDN
+         ujEYDa7Ymn+qFslGlYEcZ3jImgZrWxWaS8W+QtKjZcoRo7g8woPgezNLDhxUxAR2/tV1
+         T13g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PntACFZQg5z9mtUa4D8HfpGNuTMnQ1Jh/pka0ARSWzk=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=fydzvBhJ2Np8Y325Pn8UgGNXyGsTZCUL56iqSZ4kDH51eX78r3nPZzCoBqSPYm7pUz
+         KyTm+jM5ayDFM+IU47Zi901Xzx3CWfjgFuOuiDbCM1fVrflynjoqLkzUekLwDGbW7PWV
+         JKMSDB2LWM8C0GT/89/8ceOZckRf4NsqmQOdrsp4wnvsuO80Pm1cP3/QPsRM3tf0jxSA
+         GtYTk1DbZndHO4Nz9lAp2zrjL4//hyPDMBwNcnsiig4oAlpn0B1f75yFlzX1uCa36Q4m
+         uPLXo0VPL2suLutorIeg62aHBT3X6V3K18byn+KYtVaxMDOipDfR6GQ/oFmMPmGiQsbh
+         Aa3A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774981042; x=1775585842; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WXUZURrZS3Jc82G6mEnvbSujfdYAVx/0v5wtIwtfir4=;
-        b=rfKzOPa/4HsAdWevstTm7L9Ykaw/mVuVPJDN1MdhF3NvKQ9Q9fk7OLtJW2oB7ftFNM
-         AtMAkQ15yyLCfSkst3EtiYE8naqfWOF/6gHnRi2809XR3koFARcbfWRhXTuRoERqn7RX
-         0aSwJNL86L9KiHnIcraSLWlPTdY83xfnp4JobTVtGYW9FPngFwwprDyJl3zWMSb7Ha58
-         I1wmWIMIm3rrVhWUsgiMd0xT4OIprAELmLjLPoA4F6dS4DcKbP5LVFZ56IipOa0frrMr
-         RZJQa2BajpD6b45uBpa7iiQbX2TQSA7hwRuC8tZTipysEvpsDVscwA3ylayA/M2dkC6N
-         WVpg==
+        d=gmail.com; s=20251104; t=1774981511; x=1775586311; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PntACFZQg5z9mtUa4D8HfpGNuTMnQ1Jh/pka0ARSWzk=;
+        b=jnbHEXhhk2mHPAyeWYMOTwHZhYRExci0TcBTK7xm40GG/vnL2qpk9SV+YQ+AVwVfvo
+         JzVTdJbpG+QRhiIRpUCH4LHb2Tz9QkuTWWl+TC/wtJrn/cCdoz7hZt/pvWn5NwoH/MUf
+         WSvpW+adn2pOEWumfxoQDOyON+XfJXgAeYsLPZyusCsTZzeYaf0IGb39p6PX+pgY8Yz5
+         u6ZlAlO8PTunhIIE/sIusdQnXRIkgMWy0puRluo49+q7p3epfyKcm4H49OEiOq/yR+3/
+         naPlZjHyU+Dz6Iuv1caBITH7i6qw0nY2ovVDk7imD044qNTICO7mr4LKt9cyPcj+7Yu5
+         YapQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774981042; x=1775585842;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WXUZURrZS3Jc82G6mEnvbSujfdYAVx/0v5wtIwtfir4=;
-        b=o/+NI8vieqUCT67kqMxAZD3RISHoP9/2q89oM+Ye88FIdTf7TkESSWliulTqazMv3c
-         kNjHn6nt8xfS07PFijKvOL0OGaCEU93855JyPEZNkVk+f3vzFlKR63aUiDQAvlm0eLsn
-         UgtEQ5ftSfFEITcdLz6JAvejy/orGxqb17U+rE90YB0f85u5Zu96+pwQPw7otpZoL5uw
-         pSnW087NxW/lxPeBgEX1Cku+EEy/LDZOFrXMpcEmd5pfOHTcJAS4n0PoY26W/SZRB47I
-         Fjqu1mqoXd5rdkSh1+1Oyi1FiQb/hsV9LiYqecpo9yalk7GCYfN/qDwqDwTo449vMfrY
-         jbwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPScIFLWtfzTIgfxwT8c9xFsrtd+j11QSuB0H8WOHiMHSq0hlyq91131OL6girjfOicQyT0mI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyDg/4JXBpngAG13jqz4/RmeYhwyLv8MWsbD6I8u8vN0aJnkAn
-	shmHtCmCRVT0hyOOa2aXgsUKdj2l3IO62OqD8Ji5lcHSf+8NdpGPxgp86dkBBoRK3kLixoQwng3
-	XnIbImA==
-X-Received: from pfbfa42.prod.google.com ([2002:a05:6a00:2d2a:b0:82a:60b4:e9e9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:448d:b0:82c:70a8:faec
- with SMTP id d2e1a72fcca58-82ce8960f03mr651000b3a.21.1774981041480; Tue, 31
- Mar 2026 11:17:21 -0700 (PDT)
-Date: Tue, 31 Mar 2026 11:17:19 -0700
-In-Reply-To: <20260323064248.1660757-1-sonam.sanju@intel.com>
+        d=1e100.net; s=20251104; t=1774981511; x=1775586311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PntACFZQg5z9mtUa4D8HfpGNuTMnQ1Jh/pka0ARSWzk=;
+        b=l90x1x3rJxjue6xAVYMzbSqNX6qsL9wU/RLLc4M6Q1NpzPNc5Pz7Vd/Cr7udK9Kf9Z
+         thNqBHdfovp1vBaCp3kMNSH//clq3qchU3QAkSgamfsNpvgrjbUjqGVETnPvJaZjR0zx
+         zT10Ljl1v0N9U644KGNkm5gE+UN68PCVAtBh4LRvrg8N9JIuTqxdryPm9cchV6XYa+Bu
+         Pi2tikyd57RTpKVTT63SFCfdBjGYVLRvNzkFrOjsvurgPyBBTvxHU0YKUBs3jmOwi8ab
+         jpn9xkMwsD56cYt9UgdWPL1BkGr4wh//eupq3swUDg9XL2CccUue5G7wUTLyyHF1j5Gf
+         cs9w==
+X-Gm-Message-State: AOJu0YzYVUD09UH339PwZ94u5tkhhZGuD5AbKNL9EsV+bTbeg+YbkLsZ
+	xMqv5AgrfOHmUGz+6e2G8VzHQyVnXbTk3KqFmD4K1Y/FasldM65eXDpLNMvDBZpuJPNkDY9242/
+	/UT8M3GtvsZApc6nXihcq63oRRPU+YbUCFOWw
+X-Gm-Gg: ATEYQzyacPD+3w5JBj+xyRAChnsJzaV/oWIzkvHzV67OgDOGatV8OMJFFqJCyCQBPkb
+	cGMDYjYWm44eFxsH3ykAeJCwlGXQtX3/14cKjZLYShM6I3szeXmNRwBKtJ7N7qWoX2yyrmasOcW
+	OO+hf59YLT6e4r362110qPPdbw3Z7CBRETzCOY0uqAOPDKAIlQ0g4s4XyHdiBm9KX5veBG0OuFJ
+	/OpYz5Ef1onLDpwgy5LVrMoKGLhD1Vy92PY8EpMm3XjSJuTnO9e4fSFfkaLJL3lqkeGUgdxo5QH
+	QQkVIKUBLkQaBRe4FAvDlZzeoZsr5wBbXJyH7yFxVg==
+X-Received: by 2002:a05:6512:3047:b0:5a1:448b:317b with SMTP id
+ 2adb3069b0e04-5a2c1f3b10cmr176273e87.42.1774981511023; Tue, 31 Mar 2026
+ 11:25:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260323053353.805336-1-sonam.sanju@intel.com> <20260323064248.1660757-1-sonam.sanju@intel.com>
-Message-ID: <acwPr_Aic9xd95_R@google.com>
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu
- out of resampler_lock
-From: Sean Christopherson <seanjc@google.com>
-To: Sonam Sanju <sonam.sanju@intel.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett <josh@joshtriplett.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Vineeth Pillai <vineeth@bitbyteword.org>, 
-	Dmitry Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, rcu@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+MIME-Version: 1.0
+References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Tue, 31 Mar 2026 23:54:59 +0530
+X-Gm-Features: AQROBzDJx3vNak3oGS7asZcNSCohTEGtmqc9XYuavS2Fe2-SJUVoo5tp3uAo77U
+Message-ID: <CAC-m1rrRUvxNs==Vzb_myMdRH_nCFU6oPqhQc7+pHcZAoSBQZQ@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232558-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[intel.com,kernel.org,gmail.com,joshtriplett.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232559-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 333CC36FF55
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dileepdebian@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 1114636FFAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-+srcu folks
+On Tue, Mar 31, 2026 at 10:17=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.19.11 release.
+> There are 342 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.19.11-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+> -------------
+Build and Boot Report for 6.19.11-rc1
 
-Please don't post subsequent versions In-Reply-To previous versions, it tends to
-muck up tooling.
+Build and boot testing was performed on version 6.19.11-rc1 using the
+default configuration on both x86_64 and arm64 architectures in
+a virtual environment. The kernel built and booted successfully,
+and no dmesg regressions were observed.
 
-On Mon, Mar 23, 2026, Sonam Sanju wrote:
-> irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
-> synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
-> This can deadlock when multiple irqfd workers run concurrently on the
-> kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
-> created and destroyed:
-> 
->   CPU A (mutex holder)               CPU B/C/D (mutex waiters)
->   irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
->    irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
->     mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
->     list_del_rcu(...)                     ...blocked...
->     synchronize_srcu_expedited()      // Waiters block workqueue,
->       // waits for SRCU grace            preventing SRCU grace
->       // period which requires            period from completing
->       // workqueue progress          --- DEADLOCK ---
-> 
-> In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
-> the else branch is called directly within the mutex.  In the if-last
-> branch, kvm_unregister_irq_ack_notifier() also calls
-> synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
-> synchronize_srcu_expedited() is called after list_add_rcu() but
-> before mutex_unlock().  All paths can block indefinitely because:
-> 
->   1. synchronize_srcu_expedited() waits for an SRCU grace period
->   2. SRCU grace period completion needs workqueue workers to run
->   3. The blocked mutex waiters occupy workqueue slots preventing progress
+kernel version: 6.19.11-rc1
+Configurations: x86_64_defconfig, defconfig
+Architectures: arm64, x86_64
+Kernel Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux=
+-stable-rc.git
+Commit: 411f8a553ae8d2f6aa5462b6dd5f1d6e9103fbac
 
-Unless I'm misunderstanding the bug, "fixing" in this in KVM is papering over an
-underlying flaw.  Essentially, this would be establishing a rule that
-synchronize_srcu_expedited() can *never* be called while holding a mutex.  That's
-not viable.
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
 
->   4. The mutex holder never releases the lock -> deadlock
+Best regards,
+Dileep Malepu
 
