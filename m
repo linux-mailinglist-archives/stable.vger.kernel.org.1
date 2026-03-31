@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-231876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DBPCtn7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:41 +0200
+	id aLSHELIBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9708636D4DD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53D336E6C5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5A773053F3D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48C8F317CFAB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402444266A0;
-	Tue, 31 Mar 2026 16:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732A8425CE5;
+	Tue, 31 Mar 2026 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwziQXQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvddURm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012AE4266A3;
-	Tue, 31 Mar 2026 16:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3578E425CE4;
+	Tue, 31 Mar 2026 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975296; cv=none; b=liuIUXHdG2aCc3dXZI4ux5qmArrSwmtb5PEw6NpKUNAEw29KhameLg5P7HEPXDPfzSI+nsEmr8fe6WMN8quMY4mXfrLdSyKxGut2Ilhea8jcTlC+yzdMEkJtpMkQD3hyN9Y/9vg+OH4gGdtZxoyWcgMm9+rCMfBXLokyr1j75PE=
+	t=1774975324; cv=none; b=sn+fRpd2GTmaNYPFufB+MqXggf3+smIshB8yKw19Mt9ggejgUVRu5HLxyH4quMnmgMJH6MVawI5DXQJ/bU3wLfTL/Zf4SgCqeKaX327BP1/xgbfFNWVLerLjN7gatgt6BD5FSQaNKMkLlhgmtu0Z+Dw/jhFRfHMnmJOC3k3TT5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975296; c=relaxed/simple;
-	bh=kJ0XO87WHYVlOTW9moxSuXdfGHh0De656HAZf1GFtFE=;
+	s=arc-20240116; t=1774975324; c=relaxed/simple;
+	bh=k5adLRXXFfoQDqDCOldrmtR6yneBnjt2P5fsgLzulnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSCsrSgADm3fIMdG0vkrLYs8jS/XmP3RPCbj923OnHQ3R7ACFO+cVMWlioTVvaw0eNyfKyibfm2Pdu0EzcVbH4oQ6/nSdUBgEQrwTc6dU9Ed1c+TbiVcq46IOk1z3aURdxK+POdR3NjUt9eoqWd0EamYwoOtbyEH+/SD/HG9A9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwziQXQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0C6C19423;
-	Tue, 31 Mar 2026 16:41:35 +0000 (UTC)
+	 MIME-Version; b=GzaThYHqkDQ+ev/TxeXWgNWAX3i9sCdxfKhWbmiQv0pv8MXhd8rbxZkDyuUQsVsoqj8hX20vfyQ0k9Cg2wRdOeDcFEaGtAOZIKBIbxolb/pimzn0zL/TCJS3ZhMLPpXoz2Qfrqpmyt4HOl/mh2d5xQAj5t6upaIgcx5cLYg4x4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvddURm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C083BC19423;
+	Tue, 31 Mar 2026 16:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975295;
-	bh=kJ0XO87WHYVlOTW9moxSuXdfGHh0De656HAZf1GFtFE=;
+	s=korg; t=1774975324;
+	bh=k5adLRXXFfoQDqDCOldrmtR6yneBnjt2P5fsgLzulnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwziQXQNRu2mHsM3FVTkgMMZ5Im27gT6QOO6StkmzgP7nrsNc7MDPKsTbjhVWw3tE
-	 /pNQFgYbkethjxhjp3goE/sGPiQdlj35Rf+9qpWxITPmvSTjA1sunCAqzQmGbLfOzO
-	 tOFldrA6k6u7BqfwhuD9HAtbar8LqI4qroqCBvZA=
+	b=vvddURm2UsDWwIpZsunX2BNEQRFefd0GLQshqpXw5AABaKwZgLA9u6FVspy98iweg
+	 X9iV+7tT4TNPzqBJm9TvEasAQehczMQY0icoUd1sUhFx4xtUCY+VDPLK6tQk6cU+0T
+	 L9GJpvWOYla7erjEbe0qTdZKhdP6XAHdTHWRa7G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zubin Mithra <zsm@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.19 232/342] virt: tdx-guest: Fix handling of host controlled quote buffer length
-Date: Tue, 31 Mar 2026 18:21:05 +0200
-Message-ID: <20260331161807.505365800@linuxfoundation.org>
+	xietangxin <xietangxin@yeah.net>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 233/342] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+Date: Tue, 31 Mar 2026 18:21:06 +0200
+Message-ID: <20260331161807.541356890@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -67,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231887-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231876-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9708636D4DD
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,alibaba.com:email,yeah.net:email]
+X-Rspamd-Queue-Id: A53D336E6C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,78 +100,91 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zubin Mithra <zsm@google.com>
+From: xietangxin <xietangxin@yeah.net>
 
-commit c3fd16c3b98ed726294feab2f94f876290bf7b61 upstream.
+commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
 
-Validate host controlled value `quote_buf->out_len` that determines how
-many bytes of the quote are copied out to guest userspace. In TDX
-environments with remote attestation, quotes are not considered private,
-and can be forwarded to an attestation server.
+A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
+and the device's IFF_XMIT_DST_RELEASE flag is cleared
+(e.g., during the configuration of tc route filter rules).
 
-Catch scenarios where the host specifies a response length larger than
-the guest's allocation, or otherwise races modifying the response while
-the guest consumes it.
+When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
+expects the driver to hold the reference to skb->dst until the packet
+is fully transmitted and freed. In virtio_net with napi_tx=N,
+skbs may remain in the virtio transmit ring for an extended period.
 
-This prevents contents beyond the pages allocated for `quote_buf`
-(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
-and possibly forwarded in attestation requests.
+If the network namespace is destroyed while these skbs are still pending,
+the corresponding dst_ops structure has freed. When a subsequent packet
+is transmitted, free_old_xmit() is triggered to clean up old skbs.
+It then calls dst_release() on the skb associated with the stale dst_entry.
+Since the dst_ops (referenced by the dst_entry) has already been freed,
+a UAF kernel paging request occurs.
 
-Recall that some deployments want per-container configs-tsm-report
-interfaces, so the leak may cross container protection boundaries, not
-just local root.
+fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+the dst reference before the skb is queued in virtio_net.
 
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Call Trace:
+ Unable to handle kernel paging request at virtual address ffff80007e150000
+ CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
+  ...
+  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+  dst_release+0xe0/0x110  net/core/dst.c:177
+  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
+  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+  ...
+
+Reproduction Steps:
+NETDEV="enp3s0"
+
+config_qdisc_route_filter() {
+    tc qdisc del dev $NETDEV root
+    tc qdisc add dev $NETDEV root handle 1: prio
+    tc filter add dev $NETDEV parent 1:0 \
+	protocol ip prio 100 route to 100 flowid 1:1
+    ip route add 192.168.1.100/32 dev $NETDEV realm 100
+}
+
+test_ns() {
+    ip netns add testns
+    ip link set $NETDEV netns testns
+    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+    ip netns exec testns ping -c 1 10.0.32.1
+    ip netns del testns
+}
+
+config_qdisc_route_filter
+
+test_ns
+sleep 2
+test_ns
+
+Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zubin Mithra <zsm@google.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: xietangxin <xietangxin@yeah.net>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
+Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virt/coco/tdx-guest/tdx-guest.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -169,6 +169,8 @@ static void tdx_mr_deinit(const struct a
- #define GET_QUOTE_SUCCESS		0
- #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
- 
-+#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
-+
- /* struct tdx_quote_buf: Format of Quote request buffer.
-  * @version: Quote format version, filled by TD.
-  * @status: Status code of Quote request, filled by VMM.
-@@ -267,6 +269,7 @@ static int tdx_report_new_locked(struct
- 	u8 *buf;
- 	struct tdx_quote_buf *quote_buf = quote_data;
- 	struct tsm_report_desc *desc = &report->desc;
-+	u32 out_len;
- 	int ret;
- 	u64 err;
- 
-@@ -304,12 +307,17 @@ static int tdx_report_new_locked(struct
- 		return ret;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3355,6 +3355,7 @@ static netdev_tx_t start_xmit(struct sk_
+ 	/* Don't wait up for transmitted skbs to be freed. */
+ 	if (!use_napi) {
+ 		skb_orphan(skb);
++		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
  	}
  
--	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
-+	out_len = READ_ONCE(quote_buf->out_len);
-+
-+	if (out_len > TDX_QUOTE_MAX_LEN)
-+		return -EFBIG;
-+
-+	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
- 	report->outblob = buf;
--	report->outblob_len = quote_buf->out_len;
-+	report->outblob_len = out_len;
- 
- 	/*
- 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
 
 
 
