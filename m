@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBLKHNP4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:47 +0200
+	id QJAqI878y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610B536CEAD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A1436D77B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E276307E10A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 078C832AAA32
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DFD421EF4;
-	Tue, 31 Mar 2026 16:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FDF426EC9;
+	Tue, 31 Mar 2026 16:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfbOh3ch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVq0aXXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681A33E316C;
-	Tue, 31 Mar 2026 16:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39678426EC8;
+	Tue, 31 Mar 2026 16:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974346; cv=none; b=tFVkEeHwT9/yrrQ8wUDl59i2CVNqzLv1WLuNSWRqZSLNd/PnBSo/SI/bmFP6o4wRE2oxFocKJueb1JMTycHWS2hfJIBMm/6S8uOk87Cs83izvRY0ZRmEC18y46wnNUnroAah2E+nUvWf3olxtsJ+i8Z39lJpBYJ9bjuYq+GgebU=
+	t=1774975283; cv=none; b=ESuCFTv/3U8e+54rYPLkyCDzX7gln0kz5CtNE8C31EN2ghlXqK+NpdvNrEkz9ZENztCCnDZdMMI0vQxv7TWCDpjFbYmd1vFS0g4p+ZIwQfHlL8vZkIXHkfm7DrLB3Cdn+HFYVyl2IWyshUwEJ3rhCheY8q/grjU7sVcYXj6P9UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974346; c=relaxed/simple;
-	bh=RV7bzO3TzajM6xhosJ165UkA1Pil0OWbkijFpTBGQ84=;
+	s=arc-20240116; t=1774975283; c=relaxed/simple;
+	bh=4Ih+mdeZNbdZE8BI8QFjc5INQINTDsjhWdeukHO5CBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8gPMP6Auhu+YexgSvCr1g/iLyzBu0vTLQ7FtTPcKRokNXA8u2u2Um14XVsLqRkrA0539YO6uj2GOHxVczkAPnMFPgQklnNaPt2Ijk5FYr0GToUANvrF8RPwTwYzBQR6z28vlpAWFqRtejZMSaLcLuv81O9ooo2MCPaFRdpPR+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfbOh3ch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9B2C19423;
-	Tue, 31 Mar 2026 16:25:45 +0000 (UTC)
+	 MIME-Version; b=j191cNEXXFm1zn14zq4XkkspbtFnimbu5DGzlYiGHEQM/KvbVeMyAb+occw2zRxUwdYFZpkFoEksgzuAHqn0TSbVfIhRxMzcoGr1SalTz0jEFYyZkTsrvrm5QX8eVu1n3Qc+Phmrz9XI5arISWGRNwGW2J4lf52vwRqZ9uVq3y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVq0aXXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2110C19423;
+	Tue, 31 Mar 2026 16:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974346;
-	bh=RV7bzO3TzajM6xhosJ165UkA1Pil0OWbkijFpTBGQ84=;
+	s=korg; t=1774975283;
+	bh=4Ih+mdeZNbdZE8BI8QFjc5INQINTDsjhWdeukHO5CBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfbOh3chxJZH9aBTKolMbRNZtw+2oBG38LFE0shbc4qTuZoAV2VUlXcFEpcj3vkim
-	 ZZ7e9kpfRLBftJ70NKchixaWV0jMIuSCrBFjl49cKoTTuNXzHb1n0rlsZhHFElc5Yg
-	 b3oCpfFsQS10zOyVBufDSQzb78tlWp7oAFE4okuo=
+	b=UVq0aXXyEC6oZmwOhItuf/wWoNteCVlCAgOKyH7KbaXBRF3NRqaAwABkrScxs2XSc
+	 xpDwS1o2cpSCXc88QscZfNLQEtbIDow44Ssav9eHefvYIEMc/GEjuwpTB9kl74/3sl
+	 kZSFg74imN0He7XeQMs0rc0fpM6eY+9NhRc7Umhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/175] rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.19 201/342] ksmbd: replace hardcoded hdr2_len with offsetof() in smb2_calc_max_out_buf_len()
 Date: Tue, 31 Mar 2026 18:20:34 +0200
-Message-ID: <20260331161731.624569849@linuxfoundation.org>
+Message-ID: <20260331161806.384424807@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +67,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231506-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231871-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,queasysnail.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 610B536CEAD
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E0A1436D77B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit ee00a12593ffb69db4dd1a1c00ecb0253376874a ]
+commit 0e55f63dd08f09651d39e1b709a91705a8a0ddcb upstream.
 
-rtnl_link_get_slave_info_data_size counts IFLA_INFO_SLAVE_DATA, but
-rtnl_link_slave_info_fill adds both IFLA_INFO_SLAVE_DATA and
-IFLA_INFO_SLAVE_KIND.
+After this commit (e2b76ab8b5c9 "ksmbd: add support for read compound"),
+response buffer management was changed to use dynamic iov array.
+In the new design, smb2_calc_max_out_buf_len() expects the second
+argument (hdr2_len) to be the offset of ->Buffer field in the
+response structure, not a hardcoded magic number.
+Fix the remaining call sites to use the correct offsetof() value.
 
-Fixes: ba7d49b1f0f8 ("rtnetlink: provide api for getting and setting slave info")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/049843b532e23cde7ddba263c0bbe35ba6f0d26d.1773919462.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 1613563132035..acb3a8e19743c 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -571,11 +571,14 @@ static size_t rtnl_link_get_slave_info_data_size(const struct net_device *dev)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4445,8 +4445,9 @@ int smb2_query_dir(struct ksmbd_work *wo
+ 	d_info.wptr = (char *)rsp->Buffer;
+ 	d_info.rptr = (char *)rsp->Buffer;
+ 	d_info.out_buf_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_directory_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (d_info.out_buf_len < 0) {
+ 		rc = -EINVAL;
+ 		goto err_out;
+@@ -4713,8 +4714,9 @@ static int smb2_get_ea(struct ksmbd_work
+ 	}
+ 
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		return -EINVAL;
+ 
+@@ -5040,8 +5042,9 @@ static int get_file_stream_info(struct k
+ 	file_info = (struct smb2_file_stream_info *)rsp->Buffer;
+ 
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
  		goto out;
  
- 	ops = master_dev->rtnl_link_ops;
--	if (!ops || !ops->get_slave_size)
-+	if (!ops)
-+		goto out;
-+	size += nla_total_size(strlen(ops->kind) + 1);  /* IFLA_INFO_SLAVE_KIND */
-+	if (!ops->get_slave_size)
- 		goto out;
- 	/* IFLA_INFO_SLAVE_DATA + nested data */
--	size = nla_total_size(sizeof(struct nlattr)) +
--	       ops->get_slave_size(master_dev, dev);
-+	size += nla_total_size(sizeof(struct nlattr)) +
-+		ops->get_slave_size(master_dev, dev);
+@@ -8190,8 +8193,9 @@ int smb2_ioctl(struct ksmbd_work *work)
+ 	buffer = (char *)req + le32_to_cpu(req->InputOffset);
  
- out:
- 	rcu_read_unlock();
--- 
-2.51.0
-
+ 	cnt_code = le32_to_cpu(req->CtlCode);
+-	ret = smb2_calc_max_out_buf_len(work, 48,
+-					le32_to_cpu(req->MaxOutputResponse));
++	ret = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_ioctl_rsp, Buffer),
++			le32_to_cpu(req->MaxOutputResponse));
+ 	if (ret < 0) {
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		goto out;
 
 
 
