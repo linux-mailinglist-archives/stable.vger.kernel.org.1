@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gE+gEo0BzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-231868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:01 +0200
+	id 8JZKH2AEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C334836E675
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C74036EC77
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAD6F31BAC6E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 36FB031917F8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A73FF8AB;
-	Tue, 31 Mar 2026 16:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4DD4279E3;
+	Tue, 31 Mar 2026 16:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLfYqnTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5Yg+ixH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C9C426692;
-	Tue, 31 Mar 2026 16:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C547426EB6;
+	Tue, 31 Mar 2026 16:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975275; cv=none; b=lUZ6fWZ7q0q36KilE9yXmeeVtJD2yCH2AtKeGoQyEVBiMZzrXu673WnJjY+3ssUfHAEXYjSuwua51SRLz9E78gOstWVIOZXSRbf4KTdaVz30dTtLSfyVqy+V+ZsoOS9yYK532bmqHSdP3Uxl8+hidbxa89+nbSVQkXbU+pY8RsM=
+	t=1774975855; cv=none; b=QeDyuoeCIjbomGy/D2ahv+T26yWS+lqqm6wwKcQ9wyrxakUQCFaphREmQ9h0tP+GGsRboMQmGcwksfkzyjKlLHwebUEBBpasphZ5mGmLNGM6l6NdDE4sjvoOl8Bhdr+notYTYDUrTZKfPmy9F2CzFTaDoq2LZEvafbiyZxCXA1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975275; c=relaxed/simple;
-	bh=tpb3rcmkZQXcjosHZGe5nBYpyiMIQi7NVDGoegxtvoE=;
+	s=arc-20240116; t=1774975855; c=relaxed/simple;
+	bh=zy4Jf9kX88NvmL94zomEnUzuzE1b1Va9zhO8g7Hk17c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQaBS45lYzNqQXiDQDjiN6owRtz3a/dDsJzbw2O1cvRymHsmIRnIdTRwm3ZR+TvJBCcmChsuUpb7DB0vWOvrb9YcRMtcAqdTSXKa1QfcZGRcDeVaYaiGABwZD8jP408l4d4RHLmljcqcn4gMU5XV623tR9hDguvMLNj6ESqGHRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLfYqnTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB60C19423;
-	Tue, 31 Mar 2026 16:41:14 +0000 (UTC)
+	 MIME-Version; b=Sv98XYoFAIZSBYL6oWR/34xI7qzFZsJKGU7eF5I5YHdkDcilDnkz3DQfQhPj2wxyBMkEiF2DeI80kUk3eJTZFEhhpYe5PUhSAg63rrxtWc3cH3vUBZ7r2832g5GZe0APDm4Ro3oLLZ+/7rqvDc791t7WQ7lIk3KaSCe0GKRH5vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5Yg+ixH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A849EC2BCB5;
+	Tue, 31 Mar 2026 16:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975275;
-	bh=tpb3rcmkZQXcjosHZGe5nBYpyiMIQi7NVDGoegxtvoE=;
+	s=korg; t=1774975855;
+	bh=zy4Jf9kX88NvmL94zomEnUzuzE1b1Va9zhO8g7Hk17c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLfYqnTr12KuXg51P+oxRGnA8jI+JXjE335NC2SfkX/EuCdZ3cCpLuxECxIT0grVg
-	 OGUFSC7TxiYaOA85nJG8naKDfjOIan1CRqCy+vTVzV3RMfVs6twaUSiIr6PtNI2sJd
-	 MgRhVaJYF2SYvyKFdPU6D9XyCRxABQ23VgcM0ZMw=
+	b=U5Yg+ixHdnmKEHOnjIQv3zgycVJ3fBUXUQjTHOiS08+LxDZZuordfP7JC3sfOhJiP
+	 dapKaaUY82exoaWCujXrEeUuTFDnUnZtaK5DN95gc9QPkIQwsQIKapZLMd9tuoh3cx
+	 iq7rsntjJRzM9LmAnApCRZIV6UUX/JMzFX4EVvH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roshan Kumar <roshaen09@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.19 230/342] xfrm: iptfs: validate inner IPv4 header length in IPTFS payload
+	Anil Samal <anil.samal@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 113/244] RDMA/irdma: Fix deadlock during netdev reset with active connections
 Date: Tue, 31 Mar 2026 18:21:03 +0200
-Message-ID: <20260331161807.431811164@linuxfoundation.org>
+Message-ID: <20260331161745.837974269@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +67,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231868-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232092-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,secunet.com:email]
-X-Rspamd-Queue-Id: C334836E675
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 8C74036EC77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roshan Kumar <roshaen09@gmail.com>
+From: Anil Samal <anil.samal@intel.com>
 
-commit 0d10393d5eac33cbd92f7a41fddca12c41d3cb7e upstream.
+[ Upstream commit 6f52370970ac07d352a7af4089e55e0e6425f827 ]
 
-Add validation of the inner IPv4 packet tot_len and ihl fields parsed
-from decrypted IPTFS payloads in __input_process_payload(). A crafted
-ESP packet containing an inner IPv4 header with tot_len=0 causes an
-infinite loop: iplen=0 leads to capturelen=min(0, remaining)=0, so the
-data offset never advances and the while(data < tail) loop never
-terminates, spinning forever in softirq context.
+Resolve deadlock that occurs when user executes netdev reset while RDMA
+applications (e.g., rping) are active. The netdev reset causes ice
+driver to remove irdma auxiliary driver, triggering device_delete and
+subsequent client removal. During client removal, uverbs_client waits
+for QP reference count to reach zero while cma_client holds the final
+reference, creating circular dependency and indefinite wait in iWARP
+mode. Skip QP reference count wait during device reset to prevent
+deadlock.
 
-Reject inner IPv4 packets where tot_len < ihl*4 or ihl*4 < sizeof(struct
-iphdr), which catches both the tot_len=0 case and malformed ihl values.
-The normal IP stack performs this validation in ip_rcv_core(), but IPTFS
-extracts and processes inner packets before they reach that layer.
-
-Reported-by: Roshan Kumar <roshaen09@gmail.com>
-Fixes: 6c82d2433671 ("xfrm: iptfs: add basic receive packet (tunnel egress) handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8f304d75f6c ("RDMA/irdma: Prevent QP use after free")
+Signed-off-by: Anil Samal <anil.samal@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_iptfs.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/irdma/verbs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -997,6 +997,11 @@ static bool __input_process_payload(stru
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 5db64fae45515..1f267dea6460e 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -536,7 +536,8 @@ static int irdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
+ 	}
  
- 			iplen = be16_to_cpu(iph->tot_len);
- 			iphlen = iph->ihl << 2;
-+			if (iplen < iphlen || iphlen < sizeof(*iph)) {
-+				XFRM_INC_STATS(net,
-+					       LINUX_MIB_XFRMINHDRERROR);
-+				goto done;
-+			}
- 			protocol = cpu_to_be16(ETH_P_IP);
- 			XFRM_MODE_SKB_CB(skbseq->root_skb)->tos = iph->tos;
- 		} else if (iph->version == 0x6) {
+ 	irdma_qp_rem_ref(&iwqp->ibqp);
+-	wait_for_completion(&iwqp->free_qp);
++	if (!iwdev->rf->reset)
++		wait_for_completion(&iwqp->free_qp);
+ 	irdma_free_lsmm_rsrc(iwqp);
+ 	irdma_cqp_qp_destroy_cmd(&iwdev->rf->sc_dev, &iwqp->sc_qp);
+ 
+-- 
+2.53.0
+
 
 
 
