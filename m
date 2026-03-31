@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBwhKjT+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:44 +0200
+	id YFGpMWcGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F1136DB6A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F17136F066
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B9A3930B4AB5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0161D329A0E7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F0A42669C;
-	Tue, 31 Mar 2026 16:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35DA30274D;
+	Tue, 31 Mar 2026 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgC0+QVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/qQk3Rp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A24E426694;
-	Tue, 31 Mar 2026 16:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E822F5491;
+	Tue, 31 Mar 2026 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975878; cv=none; b=cJyX2zHPAbr/eRfUSCgwQ/VlKLv/q404gPf2QOJ3r/T0TjiYtYrXZrLG/DeWpwPy16OdrsErTtxifwar3ODb0Ip8jcqw/ymX8eR9mi9d8cZvl/3UKIy0AGV0oYCHYwF4ATIknCkLTiCSICPRrhz+gjFQ6tubmUE3rVPE8rQ97Ss=
+	t=1774976590; cv=none; b=FTINJCL8H5jo4U1Zt8RQiUO5wyXJ5CzT13q1hFAlNrDnkiiNvBvQedPqp1mS5O46o974dNNk4s96t/b4Ry4CwavaukYA3fSVBUJ0jhAgVGJOyZWa1zSOCW9S1TFqzZkLLmSsuh5PobR1UhEOgeDwRxzES933jWDnODV4PIrvFnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975878; c=relaxed/simple;
-	bh=KjX/vkrSvleMMaF1O+go7IjmLZ4IVcLYIsJV3SgNXDI=;
+	s=arc-20240116; t=1774976590; c=relaxed/simple;
+	bh=upa1S2W0ccU/2gDEH+nvcnYWRuU3CjGWZspxRnp7I9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtA14add5KcnU60cbhOJn/Cer4hc5Cg5f3KciOSTRkXaivyAftoK1kwCFT09dIHZTHhev94mwk9qtlpsWFQXf6qwY2kxm0pqpha0EiHY9ySNCxC37jwGdlGwYxEWa3uAyz3Dnt/a9BvgWJjN1HGESjx6uNpAH8vfiQUOjTu4mcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgC0+QVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BFEC19423;
-	Tue, 31 Mar 2026 16:51:17 +0000 (UTC)
+	 MIME-Version; b=gOzTQ90bZH3XfQm9Gg0JnTCRxswXJ8ahj94Q574fcEO0Kujz4GmAndbo/9LnCxXVXUduXcs4xdw7kZ/iVf7KE0Kb1+xVmowEgVWYe4tca8eZHZ36eKYm0ZGRawZBK3jCOo4rg2NGYmyRsTjFYB3FCLEjx+mozH953Vvi/g4owwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/qQk3Rp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0913C19423;
+	Tue, 31 Mar 2026 17:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975878;
-	bh=KjX/vkrSvleMMaF1O+go7IjmLZ4IVcLYIsJV3SgNXDI=;
+	s=korg; t=1774976590;
+	bh=upa1S2W0ccU/2gDEH+nvcnYWRuU3CjGWZspxRnp7I9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgC0+QVCrQ/0f29RVyxeB4RDc2H47/Rf6VNStz65/lUS2ewuxnI0QdUGtC4g7xRdD
-	 ekV2E5DSjD9XOv1hgQLSjDEwak1H2nAdCWr+8dAAUJJLUHR1scM4ig0KIT16o16HNW
-	 sMbhlGkqkYdsuSJwb+FjFObR4ZyWw+/bK5aoNqsE=
+	b=j/qQk3RpzBk17giePvZUltib0XmHi9x271bN6nPhAbrlxdjLvq9ZFFB9ScHpkOc1e
+	 iV9fGRVa2AeYjFCiz4ep72iutm+GwAiIhj8KHIJvhKR8HarGYFYrPcJKno+1+xe5ly
+	 g61RX45ho7pm/RpaFG/7oMSOt7ry5562fUdHJ21U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Valerio <pvalerio@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/244] net: macb: use the current queue number for stats
+Subject: [PATCH 6.18 151/309] x86/efi: efi_unmap_boot_services: fix calculation of ranges_to_free size
 Date: Tue, 31 Mar 2026 18:20:54 +0200
-Message-ID: <20260331161745.512334389@linuxfoundation.org>
+Message-ID: <20260331161759.028103246@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232101-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232377-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,109 +86,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 76F1136DB6A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email]
+X-Rspamd-Queue-Id: 2F17136F066
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Valerio <pvalerio@redhat.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
+[ Upstream commit 217c0a5c177a3d4f7c8497950cbf5c36756e8bbb ]
 
-There's a potential mismatch between the memory reserved for statistics
-and the amount of memory written.
+ranges_to_free array should have enough room to store the entire EFI
+memmap plus an extra element for NULL entry.
+The calculation of this array size wrongly adds 1 to the overall size
+instead of adding 1 to the number of elements.
 
-gem_get_sset_count() correctly computes the number of stats based on the
-active queues, whereas gem_get_ethtool_stats() indiscriminately copies
-data using the maximum number of queues, and in the case the number of
-active queues is less than MACB_MAX_QUEUES, this results in a OOB write
-as observed in the KASAN splat.
+Add parentheses to properly size the array.
 
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
-  [macb]
-Write of size 760 at addr ffff80008080b000 by task ethtool/1027
-
-CPU: [...]
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
-Call trace:
- show_stack+0x20/0x38 (C)
- dump_stack_lvl+0x80/0xf8
- print_report+0x384/0x5e0
- kasan_report+0xa0/0xf0
- kasan_check_range+0xe8/0x190
- __asan_memcpy+0x54/0x98
- gem_get_ethtool_stats+0x54/0x78 [macb
-   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
- dev_ethtool+0x1220/0x38c0
- dev_ioctl+0x4ac/0xca8
- sock_do_ioctl+0x170/0x1d8
- sock_ioctl+0x484/0x5d8
- __arm64_sys_ioctl+0x12c/0x1b8
- invoke_syscall+0xd4/0x258
- el0_svc_common.constprop.0+0xb4/0x240
- do_el0_svc+0x48/0x68
- el0_svc+0x40/0xf8
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1b0/0x1b8
-
-The buggy address belongs to a 1-page vmalloc region starting at
-  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000
-  index:0xffff00000a333000 pfn:0xa333
-flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
-raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
-raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                                  ^
- ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-==================================================================
-
-Fix it by making sure the copied size only considers the active number of
-queues.
-
-Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
-Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: a4b0bf6a40f3 ("x86/efi: defer freeing of boot services memory")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ arch/x86/platform/efi/quirks.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 89aa50893d360..3fed07b452cc1 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3255,7 +3255,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
- 	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
--			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
- 	spin_unlock_irq(&bp->stats_lock);
- }
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 35caa5746115d..79f0818131e83 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -424,7 +424,7 @@ void __init efi_unmap_boot_services(void)
+ 	if (efi_enabled(EFI_DBG))
+ 		return;
  
+-	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
++	sz = sizeof(*ranges_to_free) * (efi.memmap.nr_map + 1);
+ 	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+ 	if (!ranges_to_free) {
+ 		pr_err("Failed to allocate storage for freeable EFI regions\n");
 -- 
-2.51.0
+2.53.0
 
 
 
