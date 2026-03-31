@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-231892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2K+0LBH9y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:53 +0200
+	id eGNSMQcFzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B47136D879
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219EA36EE0F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBF66311292A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C18E83087C1D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E6F426680;
-	Tue, 31 Mar 2026 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FA3423A89;
+	Tue, 31 Mar 2026 16:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cz2gDpDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EagLQaEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE253425CE0;
-	Tue, 31 Mar 2026 16:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15BE3E4C6C;
+	Tue, 31 Mar 2026 16:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975337; cv=none; b=GDjdlYlIRzwOdlkUZDq84JB3W5JDJescEcFEBuV8b8Wrvj/KGtGrUuDPuOSRxDtYBy/BA2P6n8HSrljyF9uCjeOJcSfI6husOoLIl4MlG4B4aUxvn/wJkCxwWySX9VOYbj2dWyTXsLsX6MU/7Pjw4uG7ox36AIiLYmNJILDGt0U=
+	t=1774976032; cv=none; b=X1h9WfcnZ3yN+hJsxBf/s/TNfRX9m9ObxBY8XTnWJC3RwDmkzop1PJZ5KcxplPsIRjf4tcUUbJUK1t5TmDq8NMYq3Y7Vc4Jfo3Dlm80IvfMErwEPQqNEYMzeq2+9IxSsBVJT4Pgb5g9tVKWwJMevcljlCSnjpRtW1jC7s2Mu2KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975337; c=relaxed/simple;
-	bh=96vsvhEGJgO02jChbanOi6jfvxovR4puirS5oEo0P6A=;
+	s=arc-20240116; t=1774976032; c=relaxed/simple;
+	bh=2Ur7vUJODuq48T8VQlYrQaeYaVTjQjGV/IQiIThGZ44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFZQkZ4s0Ha7gu5DkOB9sYPObQrziBhgbMBcNYF+WEISTIUqAxucUu8TWBUyPG6Fr/Je8f/CulCyHtn5wAG5U6UZLcrZWVXNopeWTbU0LVP6A2+soqYw1yUOf0HYpYBBLPghAxgdSCmOozxRLqDbiXksrbqgC9Zj52IC5NW8UP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cz2gDpDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89356C19423;
-	Tue, 31 Mar 2026 16:42:16 +0000 (UTC)
+	 MIME-Version; b=kqMn6aVsh+O2uaQttsaY6OayGjcBhSh1/HYRByyAspQJFy3oMZhJCRgZVmG2RACVetePLHk8JvrYC2BYQLpgd6zbfEQ13pNr5r25WGebLsyPHsLpB540yT06SZKSVILwbhW8v9iIJbVJeE3AcYT3CqCYmAF2N9w9UW9YIFjNQQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EagLQaEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88446C19423;
+	Tue, 31 Mar 2026 16:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975336;
-	bh=96vsvhEGJgO02jChbanOi6jfvxovR4puirS5oEo0P6A=;
+	s=korg; t=1774976031;
+	bh=2Ur7vUJODuq48T8VQlYrQaeYaVTjQjGV/IQiIThGZ44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cz2gDpDuZRR7/0lMSAs+LfvXM2q5xbH/F9kTH/S4Vu1ZTPsOoypVjCuoaGOBf2BNP
-	 W3ydu7tQp6T5XJS/221QsHAq746FTrZmEgeMQ50WA1iDs/kWRzvtTgFS/LLkx3lnN+
-	 UI9QTfyVjcdGhRy0yWZWYY8OEv9gtAb/5BVeJ3w8=
+	b=EagLQaEOXWsKCCwI0MRtUnsPELC/WkDRdttkT8WOCjLp+zbA0pQFJ1kssqDZiGWG7
+	 hUqIm9NUSlOBX0W5hPvTHfbvFLAH2Tg+1YSDt10MEGUZi8wF2RH40nk0ZEuZDXz4/0
+	 ZXPGVM/W/7fuVaWy/8Ss2d9Yz2DaKIj83Yf0CHLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Du <bin.du@amd.com>,
-	Pratap Nirujogi <pratap.nirujogi@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.19 255/342] i2c: designware: amdisp: Fix resume-probe race condition issue
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 138/244] ksmbd: replace hardcoded hdr2_len with offsetof() in smb2_calc_max_out_buf_len()
 Date: Tue, 31 Mar 2026 18:21:28 +0200
-Message-ID: <20260331161808.337979638@linuxfoundation.org>
+Message-ID: <20260331161746.747447847@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,110 +67,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231892-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232160-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3B47136D879
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 219EA36EE0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratap Nirujogi <pratap.nirujogi@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit e2f1ada8e089dd5a331bcd8b88125ae2af8d188f upstream.
+commit 0e55f63dd08f09651d39e1b709a91705a8a0ddcb upstream.
 
-Identified resume-probe race condition in kernel v7.0 with the commit
-38fa29b01a6a ("i2c: designware: Combine the init functions"),but this
-issue existed from the beginning though not detected.
+After this commit (e2b76ab8b5c9 "ksmbd: add support for read compound"),
+response buffer management was changed to use dynamic iov array.
+In the new design, smb2_calc_max_out_buf_len() expects the second
+argument (hdr2_len) to be the offset of ->Buffer field in the
+response structure, not a hardcoded magic number.
+Fix the remaining call sites to use the correct offsetof() value.
 
-The amdisp i2c device requires ISP to be in power-on state for probe
-to succeed. To meet this requirement, this device is added to genpd
-to control ISP power using runtime PM. The pm_runtime_get_sync() called
-before i2c_dw_probe() triggers PM resume, which powers on ISP and also
-invokes the amdisp i2c runtime resume before the probe completes resulting
-in this race condition and a NULL dereferencing issue in v7.0
-
-Fix this race condition by using the genpd APIs directly during probe:
-  - Call dev_pm_genpd_resume() to Power ON ISP before probe
-  - Call dev_pm_genpd_suspend() to Power OFF ISP after probe
-  - Set the device to suspended state with pm_runtime_set_suspended()
-  - Enable runtime PM only after the device is fully initialized
-
-Fixes: d6263c468a761 ("i2c: amd-isp: Add ISP i2c-designware driver")
-Co-developed-by: Bin Du <bin.du@amd.com>
-Signed-off-by: Bin Du <bin.du@amd.com>
-Signed-off-by: Pratap Nirujogi <pratap.nirujogi@amd.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260320201302.3490570-1-pratap.nirujogi@amd.com
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-amdisp.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/smb/server/smb2pdu.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/i2c/busses/i2c-designware-amdisp.c
-+++ b/drivers/i2c/busses/i2c-designware-amdisp.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
- #include <linux/soc/amd/isp4_misc.h>
- 
-@@ -82,22 +83,20 @@ static int amd_isp_dw_i2c_plat_probe(str
- 	if (isp_i2c_dev->shared_with_punit)
- 		pm_runtime_get_noresume(&pdev->dev);
- 
--	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
--
-+	dev_pm_genpd_resume(&pdev->dev);
- 	ret = i2c_dw_probe(isp_i2c_dev);
- 	if (ret) {
- 		dev_err_probe(&pdev->dev, ret, "i2c_dw_probe failed\n");
- 		goto error_release_rpm;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4458,8 +4458,9 @@ int smb2_query_dir(struct ksmbd_work *wo
+ 	d_info.wptr = (char *)rsp->Buffer;
+ 	d_info.rptr = (char *)rsp->Buffer;
+ 	d_info.out_buf_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_directory_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (d_info.out_buf_len < 0) {
+ 		rc = -EINVAL;
+ 		goto err_out;
+@@ -4726,8 +4727,9 @@ static int smb2_get_ea(struct ksmbd_work
  	}
--
--	pm_runtime_put_sync(&pdev->dev);
-+	dev_pm_genpd_suspend(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
  
- 	return 0;
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		return -EINVAL;
  
- error_release_rpm:
- 	amd_isp_dw_i2c_plat_pm_cleanup(isp_i2c_dev);
--	pm_runtime_put_sync(&pdev->dev);
- 	return ret;
- }
+@@ -5040,8 +5042,9 @@ static int get_file_stream_info(struct k
+ 	file_info = (struct smb2_file_stream_info *)rsp->Buffer;
  
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		goto out;
+ 
+@@ -8140,8 +8143,9 @@ int smb2_ioctl(struct ksmbd_work *work)
+ 	buffer = (char *)req + le32_to_cpu(req->InputOffset);
+ 
+ 	cnt_code = le32_to_cpu(req->CtlCode);
+-	ret = smb2_calc_max_out_buf_len(work, 48,
+-					le32_to_cpu(req->MaxOutputResponse));
++	ret = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_ioctl_rsp, Buffer),
++			le32_to_cpu(req->MaxOutputResponse));
+ 	if (ret < 0) {
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		goto out;
 
 
 
