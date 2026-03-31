@@ -1,71 +1,62 @@
-Return-Path: <stable+bounces-231405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEwaMR60y2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:46:38 +0200
+	id 6P5gK4Syy2kpKAYAu9opvQ
+	(envelope-from <stable+bounces-231406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:39:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137C1369064
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:46:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E7A368EAE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 897DE3078291
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:39:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CAE0430276ED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF4D3D6CC4;
-	Tue, 31 Mar 2026 11:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092D42BB13;
+	Tue, 31 Mar 2026 11:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZYa3VPH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7RG7ZDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7B6371040
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C133A2546
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774957149; cv=none; b=QcRtOaTTggCAr2p+mTBQfGwoCqw6KGxuD9Zvbfj0Scqw/R3hDZ33N+tRLxUdd4djOIZik2JflYtRg9X/gCr+AnY0d7IfyxIT43yCXHA4ajcJ/hAJeYm4AVtD8xYeQZsy98OtcD5QRqT72ItYruGF4l8JB4bkMh2bWlscDwFdnws=
+	t=1774957175; cv=none; b=c+Wx+Re2VqRfIMso5kw9jC0B2J1/TlStpr51Zm95s+3uFcdQoSSrUF71pjJm43oEJTxWSGAYUoAEWst+k9vAOFk9U7KDVyyem9jrqFzB236DW3BnaquuddtLDIEKFzThyWKeIE3Uc3Qx9z3Lbyepik3hwsdWy1HsZoGVyJObNfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774957149; c=relaxed/simple;
-	bh=9TVsGpRL6+MN3e1y5lPWhM/OGbwY7tdezVxx7EO5ug8=;
+	s=arc-20240116; t=1774957175; c=relaxed/simple;
+	bh=BSx+krgCRnNfGCVwIat2QDqDuO4KwlVjJtDJHessBvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXAB/MsbzePZB/WSGsBDvt0gGjhkM9GUy/pnEah8VQgZ7IXULotkAMhaERHONGqWGJfYzNjCrNr2PjS6Ehj+LHgFku5UhGYGFQYPk8yFkfIIbuYBD1g0+ApErlQOK3wE+MlkTtu3DmTRx7Gft6JIjTgG8WQb/MAPgn+a7zNKkR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZYa3VPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97FBC19423;
-	Tue, 31 Mar 2026 11:39:07 +0000 (UTC)
+	 MIME-Version; b=cAfMQVzQ4I7WyGuQUzjs3Earjh4RQ9EXrXmbWRsspDtNc6sbu9in+nFZ4s4vmmAdughqkNBePY9FpI4xiEBTwVmFe2wZWc0TogIBEueEXWhY8Q9/7qunUSLzu54dEd5djM/VmGH28AVQuADblx1j5oJH5fiZ1oBPRPgLZadVVfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F7RG7ZDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8BBC19423;
+	Tue, 31 Mar 2026 11:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774957149;
-	bh=9TVsGpRL6+MN3e1y5lPWhM/OGbwY7tdezVxx7EO5ug8=;
+	s=k20201202; t=1774957175;
+	bh=BSx+krgCRnNfGCVwIat2QDqDuO4KwlVjJtDJHessBvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZYa3VPHcJnsLB506fvFBfNovyHwUpJkgN/wAgVrF+W5y7/Bx5MP7OKs8wDRfN+R4
-	 E0zHJY7zdgjZi2RcpzOUKlTVEexqGxU2xEfrGMvutBaqWGxP3ZPvBH66J5QBGEtAGt
-	 kJTKTay32zJicFeWBLsdvylj6guMElpSE+ZqlZy5Lc/ZPVsqwWZnN9IwXCOBfegV3W
-	 lCvYgbHFnGGGc+Y5o3SKVH6PN3tV59oRk8V8J4Vbok6yvTtpXTpKIohebWhy9IO+Qq
-	 ETRVdAkXUFLZeNIx3fZL8YMqJM7ZU86d77jP/ZChaNqguuDbgORAunHt9gmWLpqGz2
-	 2JPAy+nBTEDNQ==
+	b=F7RG7ZDT4rx+qiH0uu3Y7mm6SKorthE++ippzcEVTQiRGu2JMGLWFPdsAxpJ5PpKq
+	 7qfh95vrckQUehvVBexBRctEGKfWSqxs7pWPRdtUKahizhbjjj2FWt6M2V+h5pNbkA
+	 3m0mt8IPJfVLWFur7znXY1RjjlGTYD7TfOEzXbP1Y/JrsKOh8iXmRR2Hq7ljxCYqZa
+	 RvAw80TU1qlxd7019bcBGSe2FfSVWbjpzuFIulNYAJA+F51UKPnMiuY4XmWZjAaVnK
+	 hCgLlfYuHCfVE5eDukvOKSdlqf/OtapujqJj7iMJ2C3WaE9T89qR0+GgX91vi1Hk+6
+	 z+w2TKVsk0RZg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jinjiang Tu <tujinjiang@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Nikunj A Dadhania <nikunj@amd.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
-Date: Tue, 31 Mar 2026 07:39:06 -0400
-Message-ID: <20260331113906.2080339-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
+Date: Tue, 31 Mar 2026 07:39:33 -0400
+Message-ID: <20260331113933.2081102-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033036-upstate-manifesto-09c1@gregkh>
-References: <2026033036-upstate-manifesto-09c1@gregkh>
+In-Reply-To: <2026033032-sprout-chapter-cbc5@gregkh>
+References: <2026033032-sprout-chapter-cbc5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,145 +69,166 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231405-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231406-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,suse.com:email,oracle.com:email]
-X-Rspamd-Queue-Id: 137C1369064
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 55E7A368EAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-[ Upstream commit 4c5e7f0fcd592801c9cc18f29f80fbee84eb8669 ]
+[ Upstream commit 05243d490bb7852a8acca7b5b5658019c7797a52 ]
 
-On arm64 server, we found folio that get from migration entry isn't locked
-in softleaf_to_folio().  This issue triggers when mTHP splitting and
-zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-in softleaf_to_folio().  The race is as follows:
+Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
+to ensure it is enabled before any exceptions can occur on both boot and
+secondary CPUs.
 
-	CPU0                                             CPU1
+== Background ==
 
-deferred_split_scan()                              zap_nonpresent_ptes()
-  lock folio
-  split_folio()
-    unmap_folio()
-      change ptes to migration entries
-    __split_folio_to_order()                         softleaf_to_folio()
-      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
-      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
-      prep_compound_page() for tail pages
+Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
+X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
+or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
 
-In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-are visible before the tail page becomes non-compound.  smp_wmb() should
-be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
-result, if zap_nonpresent_ptes() accesses migration entry that stores tail
-pfn, softleaf_to_folio() may see the updated compound_head of tail page
-before page->flags.
+On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
+When the feature is available, the code is permanently patched to use
+RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
 
-This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
-because of the race between folio split and zap_nonpresent_ptes()
-leading to a folio incorrectly undergoing modification without a folio
-lock being held.
+== Boot Sequence ==
 
-This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
-swapops predicates"), which in merged in v6.19-rc1.
+Boot CPU (with CR pinning enabled):
+  trap_init()
+    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
+      x2apic_setup()
+  ...
+  arch_cpu_finalize_init()
+    identify_boot_cpu()
+      identify_cpu()
+        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
+	# This becomes part of cr4_pinned_bits
+    ...
+    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
 
-To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-in softleaf_to_folio() and softleaf_to_page().
+Secondary CPUs (with CR pinning enabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
+                                    set implicitly via cr4_pinned_bits
 
-[tujinjiang@huawei.com: update function name and comments]
-  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
-Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ applied fix to swapops.h using old pfn_swap_entry/swp_entry_t naming ]
+    cpu_init()                   <- exceptions work because FSGSBASE is
+                                    already enabled
+
+Secondary CPU (with CR pinning disabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
+    cpu_init()
+      x2apic_setup()
+        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
+          exc_vmm_communication()
+            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
+                                      (patched code)
+    ...
+    ap_starting()
+      identify_secondary_cpu()
+        identify_cpu()
+	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
+                                             too late
+
+== CR Pinning ==
+
+Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
+CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
+cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
+This works but creates an undocumented dependency between cr4_init() and the
+pinning mechanism.
+
+== Problem ==
+
+Secondary CPUs boot after alternatives have been applied globally. They
+execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
+instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
+behavior will break the implicit dependency, causing secondary CPUs to
+generate #UD.
+
+This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
+x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
+handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
+Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
+
+== Fix ==
+
+Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
+exception handlers. This makes the dependency explicit and ensures both
+boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
+executes.
+
+Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
+[ adapted to cpu_init_exception_handling(void) lacking FRED and LASS support ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/swapops.h | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/common.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index cb468e418ea11..d988ce9516510 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -484,15 +484,29 @@ static inline int pte_none_mostly(pte_t pte)
- 	return pte_none(pte) || is_pte_marker(pte);
- }
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index cf455968f27b6..ef73ce697ec8a 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2012,12 +2012,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	setup_smap(c);
+ 	setup_umip(c);
  
--static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
-+static inline void swap_entry_migration_sync(swp_entry_t entry,
-+		struct folio *folio)
- {
--	struct page *p = pfn_to_page(swp_offset_pfn(entry));
-+	/*
-+	 * Ensure we do not race with split, which might alter tail pages into new
-+	 * folios and thus result in observing an unlocked folio.
-+	 * This matches the write barrier in __split_folio_to_order().
-+	 */
-+	smp_rmb();
- 
+-	/* Enable FSGSBASE instructions if available. */
+-	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+-		cr4_set_bits(X86_CR4_FSGSBASE);
+-		elf_hwcap2 |= HWCAP2_FSGSBASE;
+-	}
+-
  	/*
- 	 * Any use of migration entries may only occur while the
- 	 * corresponding page is locked
- 	 */
--	BUG_ON(is_migration_entry(entry) && !PageLocked(p));
-+	BUG_ON(!folio_test_locked(folio));
-+}
+ 	 * The vendor-specific functions might have changed features.
+ 	 * Now we do "generic changes."
+@@ -2349,6 +2343,18 @@ void cpu_init_exception_handling(void)
+ 	/* GHCB needs to be setup to handle #VC. */
+ 	setup_ghcb();
+ 
++	/*
++	 * On CPUs with FSGSBASE support, paranoid_entry() uses
++	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
++	 * boot after alternatives are patched globally, so early exceptions
++	 * execute patched code that depends on FSGSBASE. Enable the feature
++	 * before any exceptions occur.
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
++		cr4_set_bits(X86_CR4_FSGSBASE);
++		elf_hwcap2 |= HWCAP2_FSGSBASE;
++	}
 +
-+static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
-+{
-+	struct page *p = pfn_to_page(swp_offset_pfn(entry));
-+
-+	if (is_migration_entry(entry))
-+		swap_entry_migration_sync(entry, page_folio(p));
- 
- 	return p;
- }
-@@ -501,11 +515,8 @@ static inline struct folio *pfn_swap_entry_folio(swp_entry_t entry)
- {
- 	struct folio *folio = pfn_folio(swp_offset_pfn(entry));
- 
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding folio is locked
--	 */
--	BUG_ON(is_migration_entry(entry) && !folio_test_locked(folio));
-+	if (is_migration_entry(entry))
-+		swap_entry_migration_sync(entry, folio);
- 
- 	return folio;
+ 	/* Finally load the IDT */
+ 	load_current_idt();
  }
 -- 
 2.53.0
