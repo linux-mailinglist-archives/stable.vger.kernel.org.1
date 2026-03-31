@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJTuECwGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:44 +0200
+	id 6A+GE6X1y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B33036EFF9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B1B36C91C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2517A31FE77D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE738302351F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E9D3033CC;
-	Tue, 31 Mar 2026 17:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E16E3E3174;
+	Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWLKG69M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQxnrd19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91782F6591;
-	Tue, 31 Mar 2026 17:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50244329E4B;
+	Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976544; cv=none; b=LEt+K2vu3HYgg3KtVJa3s90T/U0N7LtZL7GEp5TJxh5xXrUGx4LhwizpoztpCp2gqs5B3FsfmOoaMQ/HAL2axtipqeeztxCqOotH804D5fe/wUc92/1Sg0lqrbpb8yNgsm0c18NoMN4srg4gQWr/R63uLyuGj56lPw7STnd/SJQ=
+	t=1774974266; cv=none; b=cpQKA3s/EJ2kxm4t0656cICdfi3yWYxrvqQfHm0Lr8CiCk60qsXFeSrP1qAEhAzcELDhlIBVZbdRpXMwpzLRqDnkfDunEQ7ifilLB/p/GL2kkxWhZlCvRUitZb8brZGvLO5lFaLkhaUrzvCMa2J5K0UV9GFe4aK3PvC9v4oq20U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976544; c=relaxed/simple;
-	bh=K986Tn8KYUih2ziC9XyyvOWHxtVh5cIUpArsQ6WcpxU=;
+	s=arc-20240116; t=1774974266; c=relaxed/simple;
+	bh=BzFMxX5x5moyxM0MUT66U9T/jj1Lv2SwjteLT3d8/Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zy7NXqhip5e2q/yhut977ltpUGdXl9GThCzGwAE/9mMxJs/nGFJpzRquggDemWTUcTMnspeVllLPnR8kGSabj0VClT5TvBJ2Y4x6ZTl8C2zVDUM2CCGyb3HuVSz0nm8k7Omxn22cQx4bBhDuv4/S8El/myU03JHLgALrPSSjJjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWLKG69M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF36DC19423;
-	Tue, 31 Mar 2026 17:02:23 +0000 (UTC)
+	 MIME-Version; b=ggGjpy29i4r2zFd0JHKpbwTLFGFU+xJqw07jEAZpHHU95ueCpIoEZY1gkDL/SCB/vkkjODyLSCqqLb7vKy+vQ059jB56ZRhYbUPtvN7KEGd7mHjhoFs/PscxKbjWYwUvt/fJKjMhIoMu3M27I9NDa2gScq2Dvl9fP5sDsvYyz1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQxnrd19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9161DC19423;
+	Tue, 31 Mar 2026 16:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976544;
-	bh=K986Tn8KYUih2ziC9XyyvOWHxtVh5cIUpArsQ6WcpxU=;
+	s=korg; t=1774974265;
+	bh=BzFMxX5x5moyxM0MUT66U9T/jj1Lv2SwjteLT3d8/Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWLKG69ML8V7tFkgqqsg8yt5gq2srFL86EmyatROwEAaNQg85sLV8LFSoJ8+5/1LW
-	 2DyzFghbf5eJHhxvK1N9cuAeCyw7bJp/Yg+YNs3V0QEW+LtKghMt4tZUqGMwvLvAhN
-	 WUQPzXNtEJG1IcYEH3AdAjcZuUPmO7iEN334efq8=
+	b=EQxnrd19IHjgkUfp3YXjmIF3PC4os2jkbaL7nfb8lbBhbZM38nLJF+WWt46w4cveu
+	 fGmtMz2bXThQwwQ3vjEUaqZ641z2+4DuDCKhNwE4j/q0MDkFAL+zcXLPWjGU8ElD/3
+	 CVG905/y+e6pLLIv3lNOCsSuRsPEs9Ja3HkEP0pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Valentin Spreckels <valentin@spreckels.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 100/309] platform/x86: ISST: Check HWP support before MSR access
+Subject: [PATCH 6.6 019/175] net: usb: r8152: add TRENDnet TUC-ET2G
 Date: Tue, 31 Mar 2026 18:20:03 +0200
-Message-ID: <20260331161757.168963574@linuxfoundation.org>
+Message-ID: <20260331161730.488587399@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232359-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231474-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9B33036EFF9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,spreckels.dev:email]
+X-Rspamd-Queue-Id: 51B1B36C91C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Valentin Spreckels <valentin@spreckels.dev>
 
-[ Upstream commit 9f11d9b15efb5f77e810b6dfbeb01b4650a79eae ]
+[ Upstream commit 15fba71533bcdfaa8eeba69a5a5a2927afdf664a ]
 
-On some systems, HWP can be explicitly disabled in the BIOS settings
-When HWP is disabled by firmware, the HWP CPUID bit is not set, and
-attempting to read MSR_PM_ENABLE will result in a General Protection
-(GP) fault.
+The TRENDnet TUC-ET2G is a RTL8156 based usb ethernet adapter. Add its
+vendor and product IDs.
 
-  unchecked MSR access error: RDMSR from 0x770 at rIP: 0xffffffffc33db92e (disable_dynamic_sst_features+0xe/0x50 [isst_tpmi_core])
-  Call Trace:
-   <TASK>
-   ? ex_handler_msr+0xf6/0x150
-   ? fixup_exception+0x1ad/0x340
-   ? gp_try_fixup_and_notify+0x1e/0xb0
-   ? exc_general_protection+0xc9/0x390
-   ? terminate_walk+0x64/0x100
-   ? asm_exc_general_protection+0x22/0x30
-   ? disable_dynamic_sst_features+0xe/0x50 [isst_tpmi_core]
-   isst_if_def_ioctl+0xece/0x1050 [isst_tpmi_core]
-   ? ioctl_has_perm.constprop.42+0xe0/0x130
-   isst_if_def_ioctl+0x10d/0x1a0 [isst_if_common]
-   __se_sys_ioctl+0x86/0xc0
-   do_syscall_64+0x8a/0x100
-   entry_SYSCALL_64_after_hwframe+0x78/0xe2
-  RIP: 0033:0x7f36eaef54a7
-
-Add a check for X86_FEATURE_HWP before accessing the MSR. If HWP is
-not available, return true safely.
-
-Fixes: 12a7d2cb811d ("platform/x86: ISST: Add SST-CP support via TPMI")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20260303074635.2218-1-lirongqing@baidu.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Valentin Spreckels <valentin@spreckels.dev>
+Link: https://patch.msgid.link/20260226195409.7891-2-valentin@spreckels.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/r8152.c   | 1 +
+ include/linux/usb/r8152.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-index 13b11c3a2ec4e..e657b88bfd36e 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -558,6 +558,9 @@ static bool disable_dynamic_sst_features(void)
- {
- 	u64 value;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index a2e3f9583def7..91cf24fb5531f 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10036,6 +10036,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
+ 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
++	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
+ 	{}
+ };
  
-+	if (!static_cpu_has(X86_FEATURE_HWP))
-+		return true;
-+
- 	rdmsrq(MSR_PM_ENABLE, value);
- 	return !(value & 0x1);
- }
+diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
+index 2ca60828f28bb..1502b2a355f98 100644
+--- a/include/linux/usb/r8152.h
++++ b/include/linux/usb/r8152.h
+@@ -32,6 +32,7 @@
+ #define VENDOR_ID_DLINK			0x2001
+ #define VENDOR_ID_DELL			0x413c
+ #define VENDOR_ID_ASUS			0x0b05
++#define VENDOR_ID_TRENDNET		0x20f4
+ 
+ #if IS_REACHABLE(CONFIG_USB_RTL8152)
+ extern u8 rtl8152_get_version(struct usb_interface *intf);
 -- 
 2.51.0
 
