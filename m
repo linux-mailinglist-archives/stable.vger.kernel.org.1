@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLx4ByD9y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-232032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:08 +0200
+	id COh0J1D4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAA436D8B3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DCB36CDED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9CEEC312FB93
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 12DE130C263F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC28C41B342;
-	Tue, 31 Mar 2026 16:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD953E3174;
+	Tue, 31 Mar 2026 16:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toZW0OWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaHnRBB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD81413225;
-	Tue, 31 Mar 2026 16:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62E53D75D9;
+	Tue, 31 Mar 2026 16:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975699; cv=none; b=lA03jtJSuVpV9sjcSVpan5naxaieojgGxB2BXMzIUfRDwM9meOtAepnC0OB/cMt7dc30qGzNnT/WfSsXbbVfamAPrypI7vCzVKn1oSrtzsEEnTqsWvpfm+W/2GP+m1U8tzpWeMq0iypJsBhSokxozJyaxH2cxZAPeRVJDCiTBA4=
+	t=1774974263; cv=none; b=ACCljngd27PCkHCi3g/IXO+U7HHf3VDnzP24bswlK8l5/kQtdpwNElj5VJKSCGtycalQMYR3fKpmslQ9t2lckxgWS0ky6dmchyePM71Ke7MrLveBB+u8HAQ4kSo8ptrEYE9xmi/gn8N6etxvL8oc8duFo6uGKOiQB91SmXiXyjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975699; c=relaxed/simple;
-	bh=4X5eFl6zEtpI1RCn9NA1XFUZ7qcxUXGAzbUpoMHKgRo=;
+	s=arc-20240116; t=1774974263; c=relaxed/simple;
+	bh=tVYGE6ZWQruoOMT32QU9x0dSbzARHehzNiXzC38V2M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqY/MZ6MlozSYtXSDVjsanfrp9aByJzQlNDw86Bc4Uah0e5KAQMgHJwtHwhivLccCN9qVYnwVFBMZHXcctVC0m/ihNUS1zsJqRdk6rQfJeMBdOlk54V2xuTv4X5v/Ex4VvZneu1FliJZOmy2lTsVkMLgIWFnVEf9pDs/sdJku+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toZW0OWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037B1C19423;
-	Tue, 31 Mar 2026 16:48:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rskx6bkPvictWluPD6onQhJKGq7r6xSagckQDa7dkTAGibDkydBKjmndXMCYrm+DaH/jUrSWwQkxJc3N6C8IDrlkfc8ehoqklrLirbzguCZgIjkYltjmJwKwMGANnkIosp8dGozM148+UtQo6PUDrHStJSyOZ8OaemBt/sWsJ7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaHnRBB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71EFC19423;
+	Tue, 31 Mar 2026 16:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975699;
-	bh=4X5eFl6zEtpI1RCn9NA1XFUZ7qcxUXGAzbUpoMHKgRo=;
+	s=korg; t=1774974263;
+	bh=tVYGE6ZWQruoOMT32QU9x0dSbzARHehzNiXzC38V2M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toZW0OWwFevoITkfEmTIus5quT/BZlrDDY4My+UFGXlZu3kVEMh71QZBoClEm/zS6
-	 vyaU0FLKJRYd1vufOO8p2G5cqXba5voNM2pcb23CU+rnOQ4lBin9irtexIAahGMXxD
-	 82FC+mWarb7Nsky6GGkk0YFmsg0ZspFHl7mzriIs=
+	b=gaHnRBB8tD2m6uHttlZzfquzr06edmYk1dkyzawcQEPFZIUveXMEf4soZNqOhP+Po
+	 6b1oQYeHocowyFYuq1kWtLg+UVkI7hWST0ZYUHhzkvZZGCMsSqfEAK++mr5yHGClk5
+	 Xwo+a97K2+SrMim2GjEDm0rAofomOVzQqoGsXq14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/244] xfrm: Fix work re-schedule after cancel in xfrm_nat_keepalive_net_fini()
+Subject: [PATCH 6.6 018/175] HID: magicmouse: avoid memory leak in magicmouse_report_fixup()
 Date: Tue, 31 Mar 2026 18:20:02 +0200
-Message-ID: <20260331161743.615838793@linuxfoundation.org>
+Message-ID: <20260331161730.452607198@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,secunet.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232032-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231473-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BBAA436D8B3
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B3DCB36CDED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Günther Noack <gnoack@google.com>
 
-[ Upstream commit daf8e3b253aa760ff9e96c7768a464bc1d6b3c90 ]
+[ Upstream commit 91e8c6e601bdc1ccdf886479b6513c01c7e51c2c ]
 
-After cancel_delayed_work_sync() is called from
-xfrm_nat_keepalive_net_fini(), xfrm_state_fini() flushes remaining
-states via __xfrm_state_delete(), which calls
-xfrm_nat_keepalive_state_updated() to re-schedule nat_keepalive_work.
+The magicmouse_report_fixup() function was returning a
+newly kmemdup()-allocated buffer, but never freeing it.
 
-The following is a simple race scenario:
+The caller of report_fixup() does not take ownership of the returned
+pointer, but it *is* permitted to return a sub-portion of the input
+rdesc, whose lifetime is managed by the caller.
 
-           cpu0                             cpu1
-
-cleanup_net() [Round 1]
-  ops_undo_list()
-    xfrm_net_exit()
-      xfrm_nat_keepalive_net_fini()
-        cancel_delayed_work_sync(nat_keepalive_work);
-      xfrm_state_fini()
-        xfrm_state_flush()
-          xfrm_state_delete(x)
-            __xfrm_state_delete(x)
-              xfrm_nat_keepalive_state_updated(x)
-                schedule_delayed_work(nat_keepalive_work);
-  rcu_barrier();
-  net_complete_free();
-  net_passive_dec(net);
-    llist_add(&net->defer_free_list, &defer_free_list);
-
-cleanup_net() [Round 2]
-  rcu_barrier();
-  net_complete_free()
-    kmem_cache_free(net_cachep, net);
-                                     nat_keepalive_work()
-                                       // on freed net
-
-To prevent this, cancel_delayed_work_sync() is replaced with
-disable_delayed_work_sync().
-
-Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Assisted-by: Gemini-CLI:Google Gemini 3
+Signed-off-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_nat_keepalive.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-magicmouse.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
-index 82f0a301683f0..8a0379c8c41c8 100644
---- a/net/xfrm/xfrm_nat_keepalive.c
-+++ b/net/xfrm/xfrm_nat_keepalive.c
-@@ -251,7 +251,7 @@ int __net_init xfrm_nat_keepalive_net_init(struct net *net)
+diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
+index bb725dfcef196..d5df2745f3da4 100644
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -967,9 +967,7 @@ static __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		hid_info(hdev,
+ 			 "fixing up magicmouse battery report descriptor\n");
+ 		*rsize = *rsize - 1;
+-		rdesc = kmemdup(rdesc + 1, *rsize, GFP_KERNEL);
+-		if (!rdesc)
+-			return NULL;
++		rdesc = rdesc + 1;
  
- int xfrm_nat_keepalive_net_fini(struct net *net)
- {
--	cancel_delayed_work_sync(&net->xfrm.nat_keepalive_work);
-+	disable_delayed_work_sync(&net->xfrm.nat_keepalive_work);
- 	return 0;
- }
- 
+ 		rdesc[0] = 0x05;
+ 		rdesc[1] = 0x01;
 -- 
 2.51.0
 
