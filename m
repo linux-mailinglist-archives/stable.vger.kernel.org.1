@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KVTHCX/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:45 +0200
+	id yJQBCzsIzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA24036DE39
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE74636F438
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AC2730EB66E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA4B9305E302
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA33423A89;
-	Tue, 31 Mar 2026 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5698130AD00;
+	Tue, 31 Mar 2026 17:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+GqgPHD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEHbUilq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6192EE262;
-	Tue, 31 Mar 2026 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB2303A07;
+	Tue, 31 Mar 2026 17:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974662; cv=none; b=BZHNWp02KU4PiRpDlaEuAgFGm9m/2ewV4adkXaPiKhkEAznAlJorjYQiFBFPEMJZuAFVwC1TlvAsjHLJiHVaHPDhw2UJh7qV/U+ja0ofa1Mvg8Nq6wFgBa8IkPNhPWAqeGBZKogAjUfDND30dkBWFE0FBe44nRhAwYGqlrDDcEg=
+	t=1774976849; cv=none; b=p2AlCWmjkRI91GwtRn75T6cz0cAr7VcXALTYkexNAVEatykmG8wXRmhAjVllwdzqplWUPq4G1fXeBLp5461Y5Pipr2+suOoh49dPEfuIOHn6S6qgo2w8BikvGur+Mf105lk+qRF00xaheBSCgAmoJqyVfg7T+/6tyY/Yh8YaO4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974662; c=relaxed/simple;
-	bh=Gb/wc2QVodlRqeQpDWDY6geFskVz+eqb4edX05Xikgc=;
+	s=arc-20240116; t=1774976849; c=relaxed/simple;
+	bh=Ps+MzcUDJscKmNNmgzAZAzw1jdLBmHq4BH3PPhoQA+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXJ+DGIbBg9kamHnsGph4Scfvg1b/Va5GdforhLV22S5CXfsw+ZwoHYX6ZPv914UDQTf6zIjhRpuMZiy0duafMhaS0ek9oK8ag5mkoledInIg4sZNaKc0/blBl/ZJ/eFEtZkMyMjzspJ4IhucE5wFII6lv0zwuWkGSo+0J97sec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+GqgPHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B829DC19423;
-	Tue, 31 Mar 2026 16:31:01 +0000 (UTC)
+	 MIME-Version; b=u31O0Kzb1nBiInZo7B+ZkLstM6PVZgvgffbaBlm1fPd1XgLIvY5gcx9rYRe7lfCNEIaq9o7BXJRscNZsh2JMhd60ruHBH8WBuxUTjFr+DpuHpSP1Gx/OsD1mVvsDqcmOmT9l1XB+4ux056rsd3c6TwVBJLbhdR6XEc4n5CXG5WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEHbUilq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0F8C19423;
+	Tue, 31 Mar 2026 17:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974662;
-	bh=Gb/wc2QVodlRqeQpDWDY6geFskVz+eqb4edX05Xikgc=;
+	s=korg; t=1774976849;
+	bh=Ps+MzcUDJscKmNNmgzAZAzw1jdLBmHq4BH3PPhoQA+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+GqgPHDgunxz2gWg4mNd2mW/Nr2OXWLgrLYNd3Nt2ISYXuLa6xZ2sjfuq9t7M0wY
-	 hkvFGn08KJSJwVyDFTjOFHguTHgCRTvz/zalUtuVnlgm68M36k9ncXBf5SxV074Obf
-	 xCWYQHaX9Mh0spyXofqOcSdgg/zlf69y9e8Xv1JA=
+	b=hEHbUilqFeQLMSkMJOFVFB4A1jPaddlwBxEZvfJ0K2aLmP6eyuEO/z0zcRyOUKutD
+	 QNXR768ETcz2wDF04enLr/cfwlGYPLlcHVRqrDWPlr1NEjwXZLKKx5NYz83yof/h7X
+	 PvIS7fOruuIuW1EfcR7n7/dz6e4AALFpcIGUtomw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/175] btrfs: fix lost error when running device stats on multiple devices fs
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Long Li <leo.lilong@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.18 252/309] xfs: dont irele after failing to iget in xfs_attri_recover_work
 Date: Tue, 31 Mar 2026 18:22:35 +0200
-Message-ID: <20260331161736.076871405@linuxfoundation.org>
+Message-ID: <20260331161802.848785912@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,74 +75,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232477-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231630-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CA24036DE39
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: AE74636F438
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
+commit 70685c291ef82269180758130394ecdc4496b52c upstream.
 
-Whenever we get an error updating the device stats item for a device in
-btrfs_run_dev_stats() we allow the loop to go to the next device, and if
-updating the stats item for the next device succeeds, we end up losing
-the error we had from the previous device.
+xlog_recovery_iget* never set @ip to a valid pointer if they return
+an error, so this irele will walk off a dangling pointer.  Fix that.
 
-Fix this by breaking out of the loop once we get an error and make sure
-it's returned to the caller. Since we are in the transaction commit path
-(and in the critical section actually), returning the error will result
-in a transaction abort.
-
-Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.10
+Fixes: ae673f534a3097 ("xfs: record inode generation in xattr update log intent items")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_attr_item.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 23756f1464013..f5e4b8f3dcb7f 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -7641,8 +7641,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
- 		smp_rmb();
- 
- 		ret = update_dev_stat_item(trans, device);
--		if (!ret)
--			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
-+		if (ret)
-+			break;
-+		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -656,7 +656,6 @@ xfs_attri_recover_work(
+ 		break;
  	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
- 
--- 
-2.53.0
-
+ 	if (error) {
+-		xfs_irele(ip);
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp, attrp,
+ 				sizeof(*attrp));
+ 		return ERR_PTR(-EFSCORRUPTED);
 
 
 
