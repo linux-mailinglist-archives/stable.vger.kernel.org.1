@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id xV+mCEL8y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:26 +0200
+	id 8K58FhoFzGnPNQYAu9opvQ
+	(envelope-from <stable+bounces-232225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:32:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6B436D5E2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A79636EE3C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 922FB30DD7B0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B761631F0BC7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551913F9F3E;
-	Tue, 31 Mar 2026 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED11413225;
+	Tue, 31 Mar 2026 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxOLsbH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfZTsxLm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173652D1F40;
-	Tue, 31 Mar 2026 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25293EF0A2;
+	Tue, 31 Mar 2026 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975527; cv=none; b=hv9r3supwBi5wB/2kUzYGC32RAf/OMDRhsXqDqzHYNGLJ49qTuSETxq0KV52E8ly8sVH8kZE4Wk8tsdFuQOPlChdt43n0lBOrJeubnLF6CwsQozi4E/j7S75agGgiI8ebw4Q0NUoYx5qY5BCTbW/PeN6pzbieufsJ80dLvsYh3k=
+	t=1774976199; cv=none; b=RVuvtfzG/FLmym6H1d+sUr6uGhd1eFFddlLlcpnmaktAvSt9VQa0SntMUmd3bIuuuXkqSjqqUSghxdrL7Cfeibi2yPoybcmAI+B2Jw8YlXI74Be/JEK6/rteArGbOGH7ENI2Amunvqio16DCu2Ve2fkYw6M69/4yUECT6i7Df4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975527; c=relaxed/simple;
-	bh=s/Cep65FNyVR7/Q6aRLC7zXx+nZsapVla7TcuHuvQ48=;
+	s=arc-20240116; t=1774976199; c=relaxed/simple;
+	bh=z2FObEen1Ipuf1YPj0BJaCfLY+bu1ZOzgevmOBxB2yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwY+WwWMI5kmfZLVUS5ZO3t28YQtdrXu09foQUpVS2PGaYO4mfsjjtil4fOkqvI/fV4Whp7vT70EViZkgwiSjIk2XsJpmN7ZhHDycgR333qsstWly5Yb3CM+PZ92OnkPaT3W6+PR95JsBHBywZDJqQgCwLY6b8uJLuz2wrR46F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxOLsbH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A5FC19423;
-	Tue, 31 Mar 2026 16:45:26 +0000 (UTC)
+	 MIME-Version; b=av3FkiA0xGHGQaEcyFvbJvlVRNNQ77r9N9xlR7GxeINKYu/iKf864RjuyNLMw368A9AxtrlWfyNZkcrhjkjFl5zAdyz7MySocvzRXXjhnUBz0vmAQkeFHgbHqR3hF6YvYLckgxsnJrr/SYb8Uai6deJ6fEQNttzAu810Rl3pVoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfZTsxLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B76C2BCB4;
+	Tue, 31 Mar 2026 16:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975527;
-	bh=s/Cep65FNyVR7/Q6aRLC7zXx+nZsapVla7TcuHuvQ48=;
+	s=korg; t=1774976199;
+	bh=z2FObEen1Ipuf1YPj0BJaCfLY+bu1ZOzgevmOBxB2yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxOLsbH8dsuF/ZoUHOox7FzZiHpGF5iX+dNc5eumDxMTBKS5dARsaAB8JMhDJlcGT
-	 JIr1m+CLSJ0GRYWLyr28K+VxK1pc4Vv41OKcgKh92jD0tCWmiC9iFeiLKlyT3ODMwQ
-	 Z5UrVMcANavMQ95EdD2FEjn3QBu2Sa8ikTtzc8Ok=
+	b=VfZTsxLmtIUWdupMMKS3L++cMg/r3x2qUPPSgWeYPQrU5latdZ4hDFpRP/RuGmGo9
+	 oaa/rGQq+DRVWkKOhIKKdZGEpqX/G9yA+M2sfMuQsMsDVsJFOXgY3QX1OOFr04NpMo
+	 9069br/DqJV8G3cTQM99ruLuqJaE00zzS3UleNcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 329/342] selftests/mount_setattr: increase tmpfs size for idmapped mount tests
-Date: Tue, 31 Mar 2026 18:22:42 +0200
-Message-ID: <20260331161811.014096556@linuxfoundation.org>
+	Zubin Mithra <zsm@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.12 213/244] virt: tdx-guest: Fix handling of host controlled quote buffer length
+Date: Tue, 31 Mar 2026 18:22:43 +0200
+Message-ID: <20260331161749.624266154@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +69,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232225-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231966-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BF6B436D5E2
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 8A79636EE3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Zubin Mithra <zsm@google.com>
 
-[ Upstream commit c465f5591aa84a6f85d66d152e28b92844a45d4f ]
+commit c3fd16c3b98ed726294feab2f94f876290bf7b61 upstream.
 
-The mount_setattr_idmapped fixture mounts a 2 MB tmpfs at /mnt and then
-creates a 2 GB sparse ext4 image at /mnt/C/ext4.img. While ftruncate()
-succeeds (sparse file), mkfs.ext4 needs to write actual metadata blocks
-(inode tables, journal, bitmaps) which easily exceeds the 2 MB tmpfs
-limit, causing ENOSPC and failing the fixture setup for all
-mount_setattr_idmapped tests.
+Validate host controlled value `quote_buf->out_len` that determines how
+many bytes of the quote are copied out to guest userspace. In TDX
+environments with remote attestation, quotes are not considered private,
+and can be forwarded to an attestation server.
 
-This was introduced by commit d37d4720c3e7 ("selftests/mount_settattr:
-ensure that ext4 filesystem can be created") which increased the image
-size from 2 MB to 2 GB but didn't adjust the tmpfs size.
+Catch scenarios where the host specifies a response length larger than
+the guest's allocation, or otherwise races modifying the response while
+the guest consumes it.
 
-Bump the tmpfs size to 256 MB which is sufficient for the ext4 metadata.
+This prevents contents beyond the pages allocated for `quote_buf`
+(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
+and possibly forwarded in attestation requests.
 
-Fixes: d37d4720c3e7 ("selftests/mount_settattr: ensure that ext4 filesystem can be created")
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Recall that some deployments want per-container configs-tsm-report
+interfaces, so the leak may cross container protection boundaries, not
+just local root.
+
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zubin Mithra <zsm@google.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Zubin Mithra <zsm@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mount_setattr/mount_setattr_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virt/coco/tdx-guest/tdx-guest.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mount_setattr/mount_setattr_test.c b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
-index 7aec3ae82a446..c6dafb3cc1163 100644
---- a/tools/testing/selftests/mount_setattr/mount_setattr_test.c
-+++ b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
-@@ -1020,7 +1020,7 @@ FIXTURE_SETUP(mount_setattr_idmapped)
- 			"size=100000,mode=700"), 0);
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -35,6 +35,8 @@
+ #define GET_QUOTE_SUCCESS		0
+ #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
  
- 	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
--			"size=2m,mode=700"), 0);
-+			"size=256m,mode=700"), 0);
++#define TDX_QUOTE_MAX_LEN              (GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
++
+ /* struct tdx_quote_buf: Format of Quote request buffer.
+  * @version: Quote format version, filled by TD.
+  * @status: Status code of Quote request, filled by VMM.
+@@ -162,6 +164,7 @@ static int tdx_report_new(struct tsm_rep
+ 	u8 *buf, *reportdata = NULL, *tdreport = NULL;
+ 	struct tdx_quote_buf *quote_buf = quote_data;
+ 	struct tsm_desc *desc = &report->desc;
++	u32 out_len;
+ 	int ret;
+ 	u64 err;
  
- 	ASSERT_EQ(mkdir("/mnt/A", 0777), 0);
+@@ -226,14 +229,21 @@ static int tdx_report_new(struct tsm_rep
+ 		goto done;
+ 	}
  
--- 
-2.53.0
-
+-	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
++	out_len = READ_ONCE(quote_buf->out_len);
++
++	if (out_len > TDX_QUOTE_MAX_LEN) {
++		ret = -EFBIG;
++		goto done;
++	}
++
++	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
+ 		goto done;
+ 	}
+ 
+ 	report->outblob = buf;
+-	report->outblob_len = quote_buf->out_len;
++	report->outblob_len = out_len;
+ 
+ 	/*
+ 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
 
 
 
