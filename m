@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPpfKlv8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:51 +0200
+	id GOJgNpcGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2533B36D630
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04F336F109
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 975B7312E65D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6DE5B30328FC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B403C42E01D;
-	Tue, 31 Mar 2026 16:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48752FDC5E;
+	Tue, 31 Mar 2026 17:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+AiF50h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOwKVz8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76354427A1B;
-	Tue, 31 Mar 2026 16:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025EB2EDD69;
+	Tue, 31 Mar 2026 17:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975156; cv=none; b=MDzy6WqTuErhOuavCJaAKYEO3PZKyiaYyitkwUzJa/JHL+VX8djccDacTXBM3JC83pJDDmtlXvkhW9eSW9MvdDbCQoNhPcudy0DyVS5pLeU/GnMKfpqmpyIl8gIidVRdJkNr8yYAXuC1bNg04Rubb2bnfCG8rMcUEj2vZPA9FaU=
+	t=1774976501; cv=none; b=gdsSisGGhp05/ke0YGljTi9KkkFl/fNjP9GhiYW0ZQygqikwGGJLibUNYzuB0x2jfBeOGr2cf4nqIXWpyWblr85z44eVSJxz6OQY5c0UgsLeQFqV1P2qsQT+6EdBxwuLGbX6wyzU6cOdjK3X9jZDe4i8kGffoWc2b8sXr7Um09A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975156; c=relaxed/simple;
-	bh=Ng+hKIuB2cs2F7uqpaCeeofNGFEE6abzavIqtlvsHlA=;
+	s=arc-20240116; t=1774976501; c=relaxed/simple;
+	bh=yzQRZJyJffikl4dVG2HNyN+aUqhafjDdW1t90jSJSz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CILH+2j/xFnX7JKib7PItDLs1/Smi1YcjnNkiHklcMvtpwxd3z4GAqIuIqgOx7hgRotZlTLhet5JWzXYUsg1TLU2ILhOfPnBc0KTVbP7dzXe03PWAtI2J0heYZyk2BRneFer+EPYjk6/YUAnMCHWks0kCNipqcyA4ELtox/DCPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+AiF50h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D438C19423;
-	Tue, 31 Mar 2026 16:39:15 +0000 (UTC)
+	 MIME-Version; b=mON9sEgRXsFzsowXWDNhEfO5HEn3TeAvZ5G457XnCpjKpTccnpRAWgmy5tJbRIec+YjI3KvlULGmwbVxejJFYsUKdH7NWNXm3UPjkqWoU9D+jnsnD8kFVeGUb+9L4XUl9HkFpSdoT2mnK+9GJh3rNyKMqYGOEQbirPBzJnkUoJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOwKVz8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2193FC19424;
+	Tue, 31 Mar 2026 17:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975156;
-	bh=Ng+hKIuB2cs2F7uqpaCeeofNGFEE6abzavIqtlvsHlA=;
+	s=korg; t=1774976500;
+	bh=yzQRZJyJffikl4dVG2HNyN+aUqhafjDdW1t90jSJSz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+AiF50h8JAmpISccNwwDQpRaG0dIvFIDVg2tVJxhUIHMZly8Iwi6hbU9VlRBqibG
-	 VgOooqQJ/5w3WhPHYK1oiX8l8M7zQJZk2utYoPEhMMM396d1yXHHCqFBV3DdK3MXiH
-	 5koJzSmNGj/Qa5pBElcjk4Cn1HWdhFFXx28qSEF0=
+	b=rOwKVz8h1DTnwSuvupCk29w5kMY9f40RyGTPgcnAyEK1qwsKU2bsEArDAHtb93EWU
+	 grXfLVFI3zCP/rYgqeZLdDgBbjMF09JWqvTGa6PwnFd4et3KpyRLk9K1891amuvQ/b
+	 d4idgenC4qZCbeLxyBE4NjoBMKLpZNrVrHurk3rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 185/342] hwmon: (pmbus) Mark lowest/average/highest/rated attributes as read-only
-Date: Tue, 31 Mar 2026 18:20:18 +0200
-Message-ID: <20260331161805.809687622@linuxfoundation.org>
+Subject: [PATCH 6.18 116/309] net: lan743x: fix duplex configuration in mac_link_up
+Date: Tue, 31 Mar 2026 18:20:19 +0200
+Message-ID: <20260331161757.753508500@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,314 +65,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231821-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232341-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2533B36D630
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,microchip.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D04F336F109
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit 805a5bd1c3f307d45ae4e9cf8915ef16d585a54a ]
+[ Upstream commit 71399707876b93240f236f48b8062f3423a5fe97 ]
 
-Writing those attributes is not supported, so mark them as read-only.
+The driver does not explicitly configure the MAC duplex mode when
+bringing the link up. As a result, the MAC may retain a stale duplex
+setting from a previous link state, leading to duplex mismatches with
+the link partner and degraded network performance.
 
-Prior to this change, attempts to write into these attributes returned
-an error.
+Update lan743x_phylink_mac_link_up() to set or clear the MAC_CR_DPX_
+bit according to the negotiated duplex mode.
 
-Mark boolean fields in struct pmbus_limit_attr and in struct
-pmbus_sensor_attr as bit fields to reduce configuration data size.
-The data is scanned only while probing, so performance is not a concern.
+This ensures the MAC configuration is consistent with the phylink
+resolved state.
 
-Fixes: 6f183d33a02e6 ("hwmon: (pmbus) Add support for peak attributes")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: a5f199a8d8a03 ("net: lan743x: Migrate phylib to phylink")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20260323065345.144915-1-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 48 ++++++++++++++++++++++++++++----
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index be6d05def1152..ecd1dddcbe0ff 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -1495,8 +1495,9 @@ static int pmbus_add_label(struct pmbus_data *data,
- struct pmbus_limit_attr {
- 	u16 reg;		/* Limit register */
- 	u16 sbit;		/* Alarm attribute status bit */
--	bool update;		/* True if register needs updates */
--	bool low;		/* True if low limit; for limits with compare functions only */
-+	bool readonly:1;	/* True if the attribute is read-only */
-+	bool update:1;		/* True if register needs updates */
-+	bool low:1;		/* True if low limit; for limits with compare functions only */
- 	const char *attr;	/* Attribute name */
- 	const char *alarm;	/* Alarm attribute name */
- };
-@@ -1511,9 +1512,9 @@ struct pmbus_sensor_attr {
- 	u8 nlimit;			/* # of limit registers */
- 	enum pmbus_sensor_classes class;/* sensor class */
- 	const char *label;		/* sensor label */
--	bool paged;			/* true if paged sensor */
--	bool update;			/* true if update needed */
--	bool compare;			/* true if compare function needed */
-+	bool paged:1;			/* true if paged sensor */
-+	bool update:1;			/* true if update needed */
-+	bool compare:1;			/* true if compare function needed */
- 	u32 func;			/* sensor mask */
- 	u32 sfunc;			/* sensor status mask */
- 	int sreg;			/* status register */
-@@ -1544,7 +1545,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
- 			curr = pmbus_add_sensor(data, name, l->attr, index,
- 						page, 0xff, l->reg, attr->class,
- 						attr->update || l->update,
--						false, true);
-+						l->readonly, true);
- 			if (!curr)
- 				return -ENOMEM;
- 			if (l->sbit && (info->func[page] & attr->sfunc)) {
-@@ -1707,23 +1708,28 @@ static const struct pmbus_limit_attr vin_limit_attrs[] = {
- 	}, {
- 		.reg = PMBUS_VIRT_READ_VIN_AVG,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_VIN_MIN,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_VIN_MAX,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VIN_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VIN_MIN,
-+		.readonly = true,
- 		.attr = "rated_min",
- 	}, {
- 		.reg = PMBUS_MFR_VIN_MAX,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -1776,23 +1782,28 @@ static const struct pmbus_limit_attr vout_limit_attrs[] = {
- 	}, {
- 		.reg = PMBUS_VIRT_READ_VOUT_AVG,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_VOUT_MIN,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_VOUT_MAX,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VOUT_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VOUT_MIN,
-+		.readonly = true,
- 		.attr = "rated_min",
- 	}, {
- 		.reg = PMBUS_MFR_VOUT_MAX,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -1852,20 +1863,24 @@ static const struct pmbus_limit_attr iin_limit_attrs[] = {
- 	}, {
- 		.reg = PMBUS_VIRT_READ_IIN_AVG,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_IIN_MIN,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_IIN_MAX,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IIN_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IIN_MAX,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -1889,20 +1904,24 @@ static const struct pmbus_limit_attr iout_limit_attrs[] = {
- 	}, {
- 		.reg = PMBUS_VIRT_READ_IOUT_AVG,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_IOUT_MIN,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_IOUT_MAX,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IOUT_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IOUT_MAX,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -1943,20 +1962,24 @@ static const struct pmbus_limit_attr pin_limit_attrs[] = {
- 	}, {
- 		.reg = PMBUS_VIRT_READ_PIN_AVG,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_PIN_MIN,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "input_lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_PIN_MAX,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_PIN_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_PIN_MAX,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -1980,20 +2003,24 @@ static const struct pmbus_limit_attr pout_limit_attrs[] = {
- 	}, {
- 		.reg = PMBUS_VIRT_READ_POUT_AVG,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_POUT_MIN,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "input_lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_POUT_MAX,
- 		.update = true,
-+		.readonly = true,
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_POUT_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_POUT_MAX,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -2049,18 +2076,22 @@ static const struct pmbus_limit_attr temp_limit_attrs[] = {
- 		.sbit = PB_TEMP_OT_FAULT,
- 	}, {
- 		.reg = PMBUS_VIRT_READ_TEMP_MIN,
-+		.readonly = true,
- 		.attr = "lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_TEMP_AVG,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_TEMP_MAX,
-+		.readonly = true,
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_1,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -2090,18 +2121,22 @@ static const struct pmbus_limit_attr temp_limit_attrs2[] = {
- 		.sbit = PB_TEMP_OT_FAULT,
- 	}, {
- 		.reg = PMBUS_VIRT_READ_TEMP2_MIN,
-+		.readonly = true,
- 		.attr = "lowest",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_TEMP2_AVG,
-+		.readonly = true,
- 		.attr = "average",
- 	}, {
- 		.reg = PMBUS_VIRT_READ_TEMP2_MAX,
-+		.readonly = true,
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP2_HISTORY,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_2,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
-@@ -2131,6 +2166,7 @@ static const struct pmbus_limit_attr temp_limit_attrs3[] = {
- 		.sbit = PB_TEMP_OT_FAULT,
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_3,
-+		.readonly = true,
- 		.attr = "rated_max",
- 	},
- };
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index e4c542fc6c2b8..09d255e78f6cd 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -3054,6 +3054,11 @@ static void lan743x_phylink_mac_link_up(struct phylink_config *config,
+ 	else if (speed == SPEED_100)
+ 		mac_cr |= MAC_CR_CFG_L_;
+ 
++	if (duplex == DUPLEX_FULL)
++		mac_cr |= MAC_CR_DPX_;
++	else
++		mac_cr &= ~MAC_CR_DPX_;
++
+ 	lan743x_csr_write(adapter, MAC_CR, mac_cr);
+ 
+ 	lan743x_ptp_update_latency(adapter, speed);
 -- 
-2.53.0
+2.51.0
 
 
 
