@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-231688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAIxGMv5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:55 +0200
+	id KEshKh36y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:45:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F315836D0A8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B91736D150
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF913311ED1C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94FF3316C55C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B72425CD1;
-	Tue, 31 Mar 2026 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE48421EF4;
+	Tue, 31 Mar 2026 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSedWPyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDV6W8+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3F423A7A;
-	Tue, 31 Mar 2026 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5A0402B9B;
+	Tue, 31 Mar 2026 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974812; cv=none; b=Q0uTCMQNUxdrOuleCzP6pe8ANnOYefmdS+UMRBPa7wE0NSdts1ETlbFlnli3WX6DHeH69GhEaoAohVG78BUKOB/F6Z1bIM7P3gJNlYCENiM82QhG+h4gx2vX1ZSVN1mgJIkHdTtDFilknv2sqSPK3tcWayL8SgKoo8fw9efLfUo=
+	t=1774974920; cv=none; b=MH2yZNiMAUUl4lL0XgloiUubNAOZ0No+XhRJKS4Wh1a2eZi9NBb7pQZnVSDgP0jv3zm9cbVBiwpYwmLkVLLDw8TGEsE4hUsGrfaZjKXAnMISjb2oNIrrZ9XHiwZDWorDn8+knTWqpkZZ1qWlCY47ntg/JTQ5TBWedrGIi6gUOvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974812; c=relaxed/simple;
-	bh=yZ50GrGZRz2lPgtFkT2/uw6aI8IjsjhMqJO1EvYQRCk=;
+	s=arc-20240116; t=1774974920; c=relaxed/simple;
+	bh=g1alI/EX3UJG35ZqCoc/IjRk/2Pa98SZpz9YsWVPj0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntiPLlOhEc6CtUYB7RtdHiss54NVRK0n5nlhAMylustpaAhZkbX5ZqY4hR+O5K8UgQb/RWFwl9jrIW/ekqThJ3TsqcCUmn35g1yxSIoi/C8Ibf3AMkGhV28IDmRsCrPDjF8LSLw6YuxARGGd7UCxU6T97hy+9aLOxFC0kF1uxSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSedWPyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93D1C19423;
-	Tue, 31 Mar 2026 16:33:31 +0000 (UTC)
+	 MIME-Version; b=LUI0gT3YFOMJO/9vzgt9pDnbFxG6bqBcR6COc5yogiPRS9SUvnlyFsxad9J24QX/H+GediW4F/5MewHdHaZwTS0cSPEExlzny6zHubbxa7gtvynDNZy9lDupF0ZqgOqlaPSchdreYiBEnAYNsFcQWLMX7sUlxlOxB8tP1f2ZDfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDV6W8+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35029C2BCB2;
+	Tue, 31 Mar 2026 16:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974812;
-	bh=yZ50GrGZRz2lPgtFkT2/uw6aI8IjsjhMqJO1EvYQRCk=;
+	s=korg; t=1774974920;
+	bh=g1alI/EX3UJG35ZqCoc/IjRk/2Pa98SZpz9YsWVPj0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSedWPyIYDzhHJoW1eqgvdeuojL6MylrTV8DnBIyQpXgXwgkw4rufb3JJvDgi5/5n
-	 wzOCZ2DqVxkkf2V6tAWlBehJYdLJQ1EwEK+RXfzc0N+fI5QP0NrSr9LEopjEsIBtt3
-	 xZU3Zc4IQW5IhF6YiDkHIzrGBc4yG8N1R8FTu18c=
+	b=FDV6W8+N9J2y+pCHJXxP6B6eRUwl0x8uOnhPLej7FMTGi/6VokrfxI2UI5SYYZLoL
+	 dKH48UNBLmNVTPBhQCnCWGeZBaTP9i1XrexrRtO7YPEzLMI5u2Lxjq/2yJJw96w33Z
+	 VrKoIeaIZ1L3CBd0E3904+O3r/mA3Lfp86zfTolo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 052/342] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_put_bits()
-Date: Tue, 31 Mar 2026 18:18:05 +0200
-Message-ID: <20260331161800.813784737@linuxfoundation.org>
+Subject: [PATCH 6.19 053/342] ASoC: cs35l56: Only patch ASP registers if the DAI is part of a DAIlink
+Date: Tue, 31 Mar 2026 18:18:06 +0200
+Message-ID: <20260331161800.850396900@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,20 +78,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231688-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231731-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F315836D0A8
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2B91736D150
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,47 +99,110 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 54a86cf48eaa6d1ab5130d756b718775e81e1748 ]
+[ Upstream commit 9351cf3fd92dc1349bb75f2f7f7324607dcf596f ]
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation fsl_easrc_iec958_put_bits() unconditionally returns
-0, causing ALSA to not generate any change events. This is detected by
-mixer-test with large numbers of messages in the form:
+Move the ASP register patches to a separate struct and apply this from the
+ASP DAI probe() function so that the registers are only patched if the DAI
+is part of a DAI link.
 
-    No event generated for Context 3 IEC958 CS5
-    Context 3 IEC958 CS5.0 orig 5224 read 5225, is_volatile 0
+Some systems use the ASP as a special-purpose interconnect and on these
+systems the ASP registers are configured by a third party (the firmware,
+the BIOS, or another device using the amp's secondary host control
+interface).
 
-Add a suitable check.
+If the machine driver does not hook up the ASP DAI then the ASP registers
+must be omitted from the patch to prevent overwriting the third party
+configuration.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-1-39d4c766918b@kernel.org
+If the machine driver includes the ASP DAI in a DAI link, this implies that
+the machine driver and higher components (such as alsa-ucm) are taking
+ownership of the ASP. In this case the ASP registers are patched to known
+defaults and the machine driver should configure the ASP.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260226110137.1664562-1-rf@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/sound/cs35l56.h           |  1 +
+ sound/soc/codecs/cs35l56-shared.c | 16 +++++++++++++++-
+ sound/soc/codecs/cs35l56.c        |  8 ++++++++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 733374121196e..6c56134c60cc8 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -52,10 +52,13 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
- 	unsigned int regval = ucontrol->value.integer.value[0];
-+	int ret;
+diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
+index 5928af539c468..d0ae1ae2ae2a0 100644
+--- a/include/sound/cs35l56.h
++++ b/include/sound/cs35l56.h
+@@ -374,6 +374,7 @@ extern const char * const cs35l56_cal_set_status_text[3];
+ extern const char * const cs35l56_tx_input_texts[CS35L56_NUM_INPUT_SRC];
+ extern const unsigned int cs35l56_tx_input_values[CS35L56_NUM_INPUT_SRC];
+ 
++int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base);
+ int cs35l56_set_patch(struct cs35l56_base *cs35l56_base);
+ int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command);
+ int cs35l56_firmware_shutdown(struct cs35l56_base *cs35l56_base);
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index 60100c8f8c952..0ec6a96e80858 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -23,7 +23,7 @@
+ 
+ #include "cs35l56.h"
+ 
+-static const struct reg_sequence cs35l56_patch[] = {
++static const struct reg_sequence cs35l56_asp_patch[] = {
+ 	/*
+ 	 * Firmware can change these to non-defaults to satisfy SDCA.
+ 	 * Ensure that they are at known defaults.
+@@ -40,6 +40,20 @@ static const struct reg_sequence cs35l56_patch[] = {
+ 	{ CS35L56_ASP1TX2_INPUT,		0x00000000 },
+ 	{ CS35L56_ASP1TX3_INPUT,		0x00000000 },
+ 	{ CS35L56_ASP1TX4_INPUT,		0x00000000 },
++};
 +
-+	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
- 
- 	easrc_priv->bps_iec958[mc->regbase] = regval;
- 
--	return 0;
-+	return ret;
++int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base)
++{
++	return regmap_register_patch(cs35l56_base->regmap, cs35l56_asp_patch,
++				     ARRAY_SIZE(cs35l56_asp_patch));
++}
++EXPORT_SYMBOL_NS_GPL(cs35l56_set_asp_patch, "SND_SOC_CS35L56_SHARED");
++
++static const struct reg_sequence cs35l56_patch[] = {
++	/*
++	 * Firmware can change these to non-defaults to satisfy SDCA.
++	 * Ensure that they are at known defaults.
++	 */
+ 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
+ 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
+ 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index 55b4d0d55712a..1c1924c6f4070 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -346,6 +346,13 @@ static int cs35l56_dsp_event(struct snd_soc_dapm_widget *w,
+ 	return wm_adsp_event(w, kcontrol, event);
  }
  
- static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
++static int cs35l56_asp_dai_probe(struct snd_soc_dai *codec_dai)
++{
++	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
++
++	return cs35l56_set_asp_patch(&cs35l56->base);
++}
++
+ static int cs35l56_asp_dai_set_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt)
+ {
+ 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
+@@ -550,6 +557,7 @@ static int cs35l56_asp_dai_set_sysclk(struct snd_soc_dai *dai,
+ }
+ 
+ static const struct snd_soc_dai_ops cs35l56_ops = {
++	.probe = cs35l56_asp_dai_probe,
+ 	.set_fmt = cs35l56_asp_dai_set_fmt,
+ 	.set_tdm_slot = cs35l56_asp_dai_set_tdm_slot,
+ 	.hw_params = cs35l56_asp_dai_hw_params,
 -- 
 2.51.0
 
