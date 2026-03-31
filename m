@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +L4yOfP2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:47 +0200
+	id uEw9Nu77y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD36636CB6A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8C436D512
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89E6B3069918
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46F5030591DD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E050F3EE1DD;
-	Tue, 31 Mar 2026 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DFB3EF0A2;
+	Tue, 31 Mar 2026 16:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDY1jm/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1bQ3qFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33DD3FADEE;
-	Tue, 31 Mar 2026 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6ACC3D8114;
+	Tue, 31 Mar 2026 16:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974446; cv=none; b=qdDKA+r/bmYLJWTCrakwu7xCtYloDJDveFBKXXVF2QAHb6qBWkpy0krMARGVPpxhovSNodgAWalzAIjBJA5K9HOF+CB55Rtrg4e79iPKnIoq5EFA057sk0+Ng1MkK0AywP7O3f3opRORe0n1FlB39Xm6AoJZVsJ4YmV2R7a+dzc=
+	t=1774975380; cv=none; b=hCh09ARHCXGs9+bhAVg74QhZ48hcmNkGTBzuRlUL7yOC3C/fBPy/81MTrCVQ0aOxA5JNXUg6KRoF03N8ATk7cLFWhQ7sjaJVaKJmZHvVDDZWqJqFzqVDGWsUL9v3ZxtCYhgTbA3MFrE+7D4CXYPiepbAEhj76N/ZsDKoi5Dbk+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974446; c=relaxed/simple;
-	bh=e5e8quDCOGs4ioD+AQSmfvzNlHOj8d56Pgnmb7eXH3Q=;
+	s=arc-20240116; t=1774975380; c=relaxed/simple;
+	bh=NXa6kHneol3oxCylksTIj9D5U9Cq84ueUgXE569TYhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJe5ncf5phBu7m7Vejd3t/XvH3MA+iXeRRGsIp7WU83wic//szV+bQdk6I/xsCQvSghHdAo/GDTLZ6CD4OVVgAYEX4u2yQLf5WAplp8ZiOqLjUPR+9pT0667mZRWt82CmByPaAXRNwK2N2qsHCyvJjSqSExRo2itHOtmnFd9yKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDY1jm/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A9AC19423;
-	Tue, 31 Mar 2026 16:27:26 +0000 (UTC)
+	 MIME-Version; b=rnjfyIF/pq690OKpu4vJbkq1fA0LO8ebuPFMgZflpzTaFIZH+/uJ14lH6r78WsCUVlJLDTYAko2rRQNKHShGGG7uUwWS4IvnMtrTTyqQlz9B7WgrLPB6ageTCja9wOQvVa9RIEgm3FaQefWRPXJjEFAcRdm6aTtw2eCXYnUBK6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1bQ3qFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B37BC19423;
+	Tue, 31 Mar 2026 16:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974446;
-	bh=e5e8quDCOGs4ioD+AQSmfvzNlHOj8d56Pgnmb7eXH3Q=;
+	s=korg; t=1774975380;
+	bh=NXa6kHneol3oxCylksTIj9D5U9Cq84ueUgXE569TYhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDY1jm/CotTDPQ3IG2aS+YGPnJpU2NMojOaq1lGuygBNlMv8sbcRRttUWiEL56Ovd
-	 DMeAfxgXNGUH1BSiyZzPsxakTt0NEgdOWhj6rloArnd+x2AWSibgQTxF/6tI0OXrx7
-	 OVyph7EKGb6gZImiVFruGgFxcOlExzl/qrnmeFLI=
+	b=G1bQ3qFSVezKeUiOT2JIITDVOct5wGsEF+HesWbSdv6HQnOXoGWgM4CDIfiGctGEK
+	 waX+SUdzztDtfGVH66ohfJQZIzPNu647BEcpOITS+9nkU7/rpaK0sNqsjtiFEmIIf8
+	 eTbv+bt7lkahEYQrLdQxwXH+TVtZOfkL9ItIidbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/175] spi: sn-f-ospi: Fix resource leak in f_ospi_probe()
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.19 240/342] x86/cpu: Remove X86_CR4_FRED from the CR4 pinned bits mask
 Date: Tue, 31 Mar 2026 18:21:13 +0200
-Message-ID: <20260331161733.041373425@linuxfoundation.org>
+Message-ID: <20260331161807.794921018@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +65,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231545-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231909-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: AD36636CB6A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,infradead.org:email,alien8.de:email]
+X-Rspamd-Queue-Id: 7D8C436D512
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit ef3d549e1deb3466c61f3b01d22fc3fe3e5efb08 ]
+commit 411df123c017169922cc767affce76282b8e6c85 upstream.
 
-In f_ospi_probe(), when num_cs validation fails, it returns without
-calling spi_controller_put() on the SPI controller, which causes a
-resource leak.
+Commit in Fixes added the FRED CR4 bit to the CR4 pinned bits mask so
+that whenever something else modifies CR4, that bit remains set. Which
+in itself is a perfectly fine idea.
 
-Use devm_spi_alloc_host() instead of spi_alloc_host() to ensure the
-SPI controller is properly freed when probe fails.
+However, there's an issue when during boot FRED is initialized: first on
+the BSP and later on the APs. Thus, there's a window in time when
+exceptions cannot be handled.
 
-Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260319-sn-f-v1-1-33a6738d2da8@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This becomes particularly nasty when running as SEV-{ES,SNP} or TDX
+guests which, when they manage to trigger exceptions during that short
+window described above, triple fault due to FRED MSRs not being set up
+yet.
+
+See Link tag below for a much more detailed explanation of the
+situation.
+
+So, as a result, the commit in that Link URL tried to address this
+shortcoming by temporarily disabling CR4 pinning when an AP is not
+online yet.
+
+However, that is a problem in itself because in this case, an attack on
+the kernel needs to only modify the online bit - a single bit in RW
+memory - and then disable CR4 pinning and then disable SM*P, leading to
+more and worse things to happen to the system.
+
+So, instead, remove the FRED bit from the CR4 pinning mask, thus
+obviating the need to temporarily disable CR4 pinning.
+
+If someone manages to disable FRED when poking at CR4, then
+idt_invalidate() would make sure the system would crash'n'burn on the
+first exception triggered, which is a much better outcome security-wise.
+
+Fixes: ff45746fbf00 ("x86/cpu: Add X86_CR4_FRED macro")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org> # 6.12+
+Link: https://lore.kernel.org/r/177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sn-f-ospi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ arch/x86/kernel/cpu/common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
-index fd8c8eb37d01d..2d6d50b6f4dc9 100644
---- a/drivers/spi/spi-sn-f-ospi.c
-+++ b/drivers/spi/spi-sn-f-ospi.c
-@@ -609,7 +609,7 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	u32 num_cs = OSPI_NUM_CS;
- 	int ret;
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -433,7 +433,7 @@ static __always_inline void setup_lass(s
  
--	ctlr = spi_alloc_host(dev, sizeof(*ospi));
-+	ctlr = devm_spi_alloc_host(dev, sizeof(*ospi));
- 	if (!ctlr)
- 		return -ENOMEM;
+ /* These bits should not change their value after CPU init is finished. */
+ static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
+-					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
++					     X86_CR4_FSGSBASE | X86_CR4_CET;
+ static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
+ static unsigned long cr4_pinned_bits __ro_after_init;
  
-@@ -632,16 +632,12 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, ospi);
- 
- 	ospi->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(ospi->base)) {
--		ret = PTR_ERR(ospi->base);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(ospi->base))
-+		return PTR_ERR(ospi->base);
- 
- 	ospi->clk = devm_clk_get_enabled(dev, NULL);
--	if (IS_ERR(ospi->clk)) {
--		ret = PTR_ERR(ospi->clk);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(ospi->clk))
-+		return PTR_ERR(ospi->clk);
- 
- 	mutex_init(&ospi->mlock);
- 
-@@ -658,9 +654,6 @@ static int f_ospi_probe(struct platform_device *pdev)
- err_destroy_mutex:
- 	mutex_destroy(&ospi->mlock);
- 
--err_put_ctlr:
--	spi_controller_put(ctlr);
--
- 	return ret;
- }
- 
--- 
-2.53.0
-
 
 
 
