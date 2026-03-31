@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-231904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFXSFUQAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:32 +0200
+	id KFa+E28AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B34436E1A2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFBC36E27C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 19263317F942
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1AACD3023F10
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EFB426698;
-	Tue, 31 Mar 2026 16:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F042FDC5E;
+	Tue, 31 Mar 2026 17:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIR60OaA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTH3Xk8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0993402B9B;
-	Tue, 31 Mar 2026 16:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C472D63E8;
+	Tue, 31 Mar 2026 17:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975368; cv=none; b=qdnbKu56FfRyXLw2geFbRQOvoxy0heFIpDHooeA1vrKcNGpXUeSpIcbLAX8Hl6zmvmB84w+LVJryGl10BwOI1U7lq/MggTF/iL1yYbZVz+SKUrXezr6cCv3hOEn/zkZ4Ljeb661Y91VaKTAgGzw9eAOvDkemMhgXM4UTFC6K5mI=
+	t=1774976670; cv=none; b=cUXUQxmhwiq1twq8besaBPmeU28ZkFpYf7JRuVjIVsG3EQ3ufNNR/xHWOKZdvsoB3kA6KAj3UYQEbWCJ/9uYXuwlnNs7RKsS0/cWD0iknh8t7A5FvzoIDW4cZl79PqUBLhS2f0KSSF+I7HjbeorkQ63Bvzc9jeW5NT6k6EE/qeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975368; c=relaxed/simple;
-	bh=UQrxJRCIyurfSyiinWd8wM6GvkMu2/yDthzWUDbRHg0=;
+	s=arc-20240116; t=1774976670; c=relaxed/simple;
+	bh=URUWnhx5e1yr0+12OShgorCxTEerUQSWWWijZ9LMkBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wx7YWWGQykSC12kFYPIAq4JYd9DAIn8fzdHDUJu/0uiXg6xCoMid9laQT74vG1uwzu4Dmwxv8T+UbFGxqJIaAohVrOi2sOu/Pefto07TFVgaNAv1mY/LqP5YXCTpIiLtMmfIDVFWGhpOqJ/sH4G9v++fBA9m9K+gnAfGzVDaDEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIR60OaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81210C19424;
-	Tue, 31 Mar 2026 16:42:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xghw+IcFTZDJDR5DSTIteM+qwSdEQHUa3d29eWRfjGyDvB2ICJXbXNf8vf4TsqqlY6TyUcnjfYwEsJ0/mlhNQSZmXSZWI9bgMpnBDN3HcrDSRALfqqB8bV5RRHr1NXAv0Ajdv+jzbAGlz5MpSduaMGDaGJ+yBefC+n0h+l7Op7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTH3Xk8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE97DC2BCB1;
+	Tue, 31 Mar 2026 17:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975367;
-	bh=UQrxJRCIyurfSyiinWd8wM6GvkMu2/yDthzWUDbRHg0=;
+	s=korg; t=1774976670;
+	bh=URUWnhx5e1yr0+12OShgorCxTEerUQSWWWijZ9LMkBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BIR60OaANHFBKP1EH7iRaRIFzKSSjffnuP3uy3VCQWhQIakK9KvLma+WQ+qiOD+ho
-	 eM3Z9zJqo+RkMwU23VNYfixBEAsIbwf0QL4eCqbXBZrJ3N8nNdVJOjRYzY/JjbFfsj
-	 US/Wfe6J3UT74vIJ9+c+EKJmy3Wr3eY06MH2nRmY=
+	b=DTH3Xk8CF44HJS3wILBL0AWVDF+satsDac9vhTZYAtzWgTdugLp+aeFhMQkFClO49
+	 yjWb0l+crw3GKK8RayoJO7kUDU2N9Z50HfcvWf+zo+99twoxdQhTfZ4jxxjdpyFGJl
+	 QsrC36joTp+vWgi1C9SriaweS3xkPFLDXNZe9B/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jiucheng Xu <jiucheng.xu@amlogic.com>,
-	Chao Yu <chao@kernel.org>
-Subject: [PATCH 6.19 235/342] erofs: add GFP_NOIO in the bio completion if needed
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 165/309] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
 Date: Tue, 31 Mar 2026 18:21:08 +0200
-Message-ID: <20260331161807.613214482@linuxfoundation.org>
+Message-ID: <20260331161759.539081477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +66,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231904-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amlogic.com:email]
-X-Rspamd-Queue-Id: 5B34436E1A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,amd.com:email]
+X-Rspamd-Queue-Id: 0EFBC36E27C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit c23df30915f83e7257c8625b690a1cece94142a0 upstream.
+[ Upstream commit 7150850146ebfa4ca998f653f264b8df6f7f85be ]
 
-The bio completion path in the process context (e.g. dm-verity)
-will directly call into decompression rather than trigger another
-workqueue context for minimal scheduling latencies, which can
-then call vm_map_ram() with GFP_KERNEL.
+amdgpu_amdkfd_submit_ib() submits a GPU job and gets a fence
+from amdgpu_ib_schedule(). This fence is used to wait for job
+completion.
 
-Due to insufficient memory, vm_map_ram() may generate memory
-swapping I/O, which can cause submit_bio_wait to deadlock
-in some scenarios.
+Currently, the code drops the fence reference using dma_fence_put()
+before calling dma_fence_wait().
 
-Trimmed down the call stack, as follows:
+If dma_fence_put() releases the last reference, the fence may be
+freed before dma_fence_wait() is called. This can lead to a
+use-after-free.
 
-f2fs_submit_read_io
-  submit_bio                      //bio_list is initialized.
-    mmc_blk_mq_recovery
-      z_erofs_endio
-        vm_map_ram
-          __pte_alloc_kernel
-            __alloc_pages_direct_reclaim
-              shrink_folio_list
-                __swap_writepage
-                  submit_bio_wait  //bio_list is non-NULL, hang!!!
+Fix this by waiting on the fence first and releasing the reference
+only after dma_fence_wait() completes.
 
-Use memalloc_noio_{save,restore}() to wrap up this path.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c:697 amdgpu_amdkfd_submit_ib() warn: passing freed memory 'f' (line 696)
 
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9ae55f030dc5 ("drm/amdgpu: Follow up change to previous drm scheduler change.")
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8b9e5259adc385b61a6590a13b82ae0ac2bd3482)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1459,6 +1459,7 @@ static void z_erofs_decompress_kickoff(s
- 				       int bios)
- {
- 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
-+	int gfp_flag;
- 
- 	/* wake up the caller thread for sync decompression */
- 	if (io->sync) {
-@@ -1491,7 +1492,9 @@ static void z_erofs_decompress_kickoff(s
- 			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
- 		return;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+index a2879d2b7c8ec..1ec26be82f30e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -687,9 +687,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
+ 		goto err_ib_sched;
  	}
-+	gfp_flag = memalloc_noio_save();
- 	z_erofs_decompressqueue_work(&io->u.work);
-+	memalloc_noio_restore(gfp_flag);
- }
  
- static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+-	/* Drop the initial kref_init count (see drm_sched_main as example) */
+-	dma_fence_put(f);
+ 	ret = dma_fence_wait(f, false);
++	/* Drop the returned fence reference after the wait completes */
++	dma_fence_put(f);
+ 
+ err_ib_sched:
+ 	amdgpu_job_free(job);
+-- 
+2.53.0
+
 
 
 
