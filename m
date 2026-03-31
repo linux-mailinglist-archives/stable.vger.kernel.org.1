@@ -1,223 +1,168 @@
-Return-Path: <stable+bounces-231342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACd4HzFzy2k3HwYAu9opvQ
-	(envelope-from <stable+bounces-231342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:09:37 +0200
+	id oFqtKtdzy2k3HwYAu9opvQ
+	(envelope-from <stable+bounces-231343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:12:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3D7364CF4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:09:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97340364DDF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91CDF3068337
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:07:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B511303AFBF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE253BC667;
-	Tue, 31 Mar 2026 07:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C9146A66;
+	Tue, 31 Mar 2026 07:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="HrVW8bH0"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="n2yKjeH8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mg152J8z"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06F2386434
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 07:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0527129E10F;
+	Tue, 31 Mar 2026 07:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774940833; cv=none; b=mt0luMxPm7LHWo3YH6O4jjJ739v8zXqVLaG3g1psVF5gu0XrtXVxpcGa3p0UXFx16O4w9Df1YVCkuiRVEp7jp4Oo+giI5pmvy7uxX7rvKEYV5RgLvMXV87m57KDybv3Z9pojWbzol1GaM7YdCIkK3bLzzK9TmwgfuLnD/K11pSE=
+	t=1774941026; cv=none; b=ZtnFhQVDR0ZXffcoNxRvnwCaxSIgTQqY2PfPDkHtwjWyMMosppQ+jhccQ14YNa9P1jPfuaxxqyBz5ysvygIrlFM0gJV8IraBfxgBL6pbwcQOAj7rPubkICKeRKD52Gi85YNUYhr7ITjSfyUXvGObDffB6zBR9VstJ2M0A+vOba4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774940833; c=relaxed/simple;
-	bh=xaO9zJykarzsl/2P/YQFTZclrK5PuYXVTcNCxEQxYTc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVCys3TN2nhKd2EMHGbmtAVVlYb5yAzoSq5Hst2++SICB8SM3IOcooKfCV04B7PRSrfHfTibpGaJkjKAzx4yTrBzI/SZYVVqSj4Pn0s24yOgG1bUizySWYNIZQ8rZv9KfhEP8IyjjQb+1fLexr9G/ZA6S8IzYE51wLQSJGheUp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=HrVW8bH0; arc=none smtp.client-ip=34.218.115.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1774940832; x=1806476832;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IUrQsLDELD9RlUpXLPVUcEMNh8kE7id6hAlSx7RjeWo=;
-  b=HrVW8bH01PKC85yTegMVZh+sjT5xxMTon6/PxFJWyobjAdk/deG+WoPj
-   rPsjNiA9mfnFitYSXPfWXky/yVkTQVWdI6zj+zwJXRX+IM6BfKNNVRatG
-   pBoqRNUGUoL/hSMlLdBxfDkRF8U/UA54ArGsf7xClWKm5ubLeOvO+I2j3
-   yKYO9JHeUEkRHT88PghFFPibcAsw8Q9Q9dEV4foR3poiOMJ8VQ9ZZG4zg
-   4+xtVVfpzH2UK0fFFNL0Ldhy0ARWvlvEkm2H9MtcyK73xGzdtBNekN9qw
-   NDsziDcvu9/2upEVbUeDanAoqfYq0NtRJoykPkhnza51rwaTONsg7quyT
-   g==;
-X-CSE-ConnectionGUID: ZQichv9jSXGKs8qYkws9Sw==
-X-CSE-MsgGUID: xyODt+O6SVeBEy5tSLmUvA==
-X-IronPort-AV: E=Sophos;i="6.23,151,1770595200"; 
-   d="scan'208";a="15996977"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:07:09 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:16930]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.176:2525] with esmtp (Farcaster)
- id 322029a6-8535-443e-83b4-306064ce9ba7; Tue, 31 Mar 2026 07:07:09 +0000 (UTC)
-X-Farcaster-Flow-ID: 322029a6-8535-443e-83b4-306064ce9ba7
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 31 Mar 2026 07:07:07 +0000
-Received: from c889f3b07a0a.amazon.com (10.106.82.29) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 31 Mar 2026 07:07:05 +0000
-From: Yuto Ohnuki <ytohnuki@amazon.com>
-To: <stable@vger.kernel.org>
-CC: <gregkh@linuxfoundation.org>, <cem@kernel.org>, <djwong@kernel.org>,
-	<dchinner@redhat.com>, Yuto Ohnuki <ytohnuki@amazon.com>,
-	<syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com>
-Subject: [PATCH 6.1.y 2/2] xfs: save ailp before dropping the AIL lock in push callbacks
-Date: Tue, 31 Mar 2026 08:06:57 +0100
-Message-ID: <20260331070656.61750-2-ytohnuki@amazon.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <2026033011-fondly-remover-82c6@gregkh>
-References: <2026033011-fondly-remover-82c6@gregkh>
+	s=arc-20240116; t=1774941026; c=relaxed/simple;
+	bh=ec/xlGvb/OQavUWdxQ0dAivWFuVfBigJZln3uRdMZbc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JIfbw9kO0OzKdw+Y1/V+Q2QEhL0jokUBrkrx/RAY0Wh9ZpDpIAYxJ9lXKMnmLHa5nM21jEIB8HTZFbM0sjldBofeDgbXoLtZAHO/5LFf6uSfBmbVZzcyfZc1tZ8NsiDgLSPtslsRP4pRsCJIBGpz8Zezm8NE1EJqbzY8aXFTMis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=n2yKjeH8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mg152J8z; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 2A43A1400076;
+	Tue, 31 Mar 2026 03:10:24 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 31 Mar 2026 03:10:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1774941024; x=1775027424; bh=esmbZsKpw1
+	HVHjembzXJErEZAoM9KmGX7HNGrJiFJW4=; b=n2yKjeH8mgs0W9ryngcdQs5zZz
+	MqczXGk7P8txtrJleotI329rVGgZAyjXVaNzqfU7mBzH+07opmm0Z6L0oHoVQc12
+	fjKt7bTlaH8cVBw9eSEPavJHdfev+hOAfVOdbOCLnCXSjraM7JrmPWM2aESBoOvV
+	pBmDK84fx9BtAfOn/pdouHmDdOedhbfW6l2hHI6Di/5AcljkVjztSVpA8lsC5ruf
+	f8a7Gs2Tok+aryjPSXwpEpYZBofplXtSB9kvfxl/gYJe2BQO9nuhPVm66EUKlSLD
+	CMVmQOTA8DiE8qLNmSp5KxOEhuN57nYQbZzRN9ydg0hMeNrDWMk6hluxk/9A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1774941024; x=1775027424; bh=esmbZsKpw1HVHjembzXJErEZAoM9KmGX7HN
+	GrJiFJW4=; b=mg152J8z0Qf64andBA0qR3mSHVEbMcr28NGIQIYltVgumXaJqm3
+	c8KQTR9W6M5xNmC2FfC7KS85Syb4npIlMRDthxXS5nRzAty/RN3i0M0Mj5G10JZh
+	gJ1WN9UpumXVYSRyLfSB0fOX3TR655O3RRaB4r/ZVNsjrafccI350K0HqZ52oERQ
+	WdDJjgbLkXscknm4Tba/eYHCzzgoO8MBvwe8uEN9YOMv2Dck2uUHFg/vO4eHRl2c
+	ypXXgBN+jN1nJqsOFt1tTYbT/xeTaAmVNOq1Et5rt5L/B3+I2nKs3m+gpivnXwil
+	Gm2S1itJPjdw7gXwlQsEC6VsK1/fRwBI9HQ==
+X-ME-Sender: <xms:X3PLad8Lo1WwDGqIwq2EoP6bQKBDKnuloNuUIt110T5A-KaS3-uLuw>
+    <xme:X3PLaYz-BQffwmhuXGq3ClbpH-5BLB_w59oS75FPsjGut-0DIqZvo2gbXPVBs8Vco
+    cgWf1MnQzIIPhH-BFoxQLx9An-l_Bv2udQiKHDUH_bWPfcU>
+X-ME-Received: <xmr:X3PLaStLGXtM-szUQIpez0ROckJnX5atIXS2bK62N2eKM0oPYL1dhkZPgJFxwyCcoKhgbjnEm2MkL0RLdhVIu16DzA8trnqOCpG_NI9LcCA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefgeduvdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepghhhrgguihdrrhgrhhhmvgestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhope
+    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsfhhrvghn
+    tghhsehsrghmsggrrdhorhhgpdhrtghpthhtohepphgtsegtjhhrrdhniidprhgtphhtth
+    hopehlshgrhhhlsggvrhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshhprhgrshgr
+    ugesmhhitghrohhsohhfthdrtghomhdprhgtphhtthhopehtohhmsehtrghlphgvhidrtg
+    homhdprhgtphhtthhopegrrghpthgvlhesshhushgvrdgtohhmpdhrtghpthhtoheplhhi
+    nhhugidqtghifhhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:X3PLaX1XAIMH2y07iW6W3DF2alnY2veLO6Yyp698bzyCGwFUp6KvJA>
+    <xmx:X3PLae6btaGtLatzSFE-UFAmp1H5SLF3jWUA1PIqoo0cwOEmX1RVaQ>
+    <xmx:X3PLaZPppMXW_AkyJm8v6e568SYZWLiw3kyYRp2uz2JEfJL35oBuvQ>
+    <xmx:X3PLaSGKxLnbNBvcPrHrfzoe2zF8rBEvlfdE_XUaTGtO93dy92KCzA>
+    <xmx:YHPLaYdYmvrpmhll_AsinPv1xMU6rrGopTbwK0aaYiS6JwKhu6oGigbs>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 31 Mar 2026 03:10:22 -0400 (EDT)
+Date: Tue, 31 Mar 2026 09:10:20 +0200
+From: Greg KH <greg@kroah.com>
+To: Ghadi Rahme <ghadi.rahme@canonical.com>
+Cc: stable@vger.kernel.org, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@cjr.nz>, Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Aurelien Aptel <aaptel@suse.com>, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: Re: [PATCH v2 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on
+ session connection failure
+Message-ID: <2026033140-endearing-handcraft-b66a@gregkh>
+References: <20260319144929.455978-1-ghadi.rahme@canonical.com>
+ <2026032339-irate-monsoon-76ce@gregkh>
+ <a7c5ecb2-d46c-4061-a70a-c7b149db56f2@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-6.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a7c5ecb2-d46c-4061-a70a-c7b149db56f2@canonical.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231342-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ytohnuki@amazon.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231343-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: EA3D7364CF4
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 97340364DDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
-is dropped to perform buffer IO. Once the cluster buffer no longer
-protects the log item from reclaim, the log item may be freed by
-background reclaim or the dquot shrinker. The subsequent spin_lock()
-call dereferences lip->li_ailp, which is a use-after-free.
+On Tue, Mar 31, 2026 at 09:59:01AM +0300, Ghadi Rahme wrote:
+> > Again, wrong git id :(
+> 
+> Thank you for reviewing this.
+> 
+> There is not direct fix to this issue upstream however upstream is no longer
+> affected by this issue.
 
-Fix this by saving the ailp pointer in a local variable while the AIL
-lock is held and the log item is guaranteed to be valid.
+Then why not backport the specific changes that caused newer kernels to
+not be affected?
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-(cherry picked from commit 394d70b86fae9fe865e7e6d9540b7696f73aa9b6)
----
- fs/xfs/xfs_dquot_item.c | 9 +++++++--
- fs/xfs/xfs_inode_item.c | 9 +++++++--
- 2 files changed, 14 insertions(+), 4 deletions(-)
+> The commit ID I referenced is the commit that indirectly resolved this issue
+> by completely refactoring the code which led to the removal of the function
+> I patched.
+> 
+> Is there a better way I can convey this in a V3 maybe?
 
-diff --git a/fs/xfs/xfs_dquot_item.c b/fs/xfs/xfs_dquot_item.c
-index 7d19091215b0..74449aec81ed 100644
---- a/fs/xfs/xfs_dquot_item.c
-+++ b/fs/xfs/xfs_dquot_item.c
-@@ -125,6 +125,7 @@ xfs_qm_dquot_logitem_push(
- {
- 	struct xfs_dquot	*dqp = DQUOT_ITEM(lip)->qli_dquot;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -153,7 +154,7 @@ xfs_qm_dquot_logitem_push(
- 		goto out_unlock;
- 	}
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	error = xfs_qm_dqflush(dqp, &bp);
- 	if (!error) {
-@@ -163,7 +164,11 @@ xfs_qm_dquot_logitem_push(
- 	} else if (error == -EAGAIN)
- 		rval = XFS_ITEM_LOCKED;
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- out_unlock:
- 	xfs_dqunlock(dqp);
- 	return rval;
-diff --git a/fs/xfs/xfs_inode_item.c b/fs/xfs/xfs_inode_item.c
-index a734ca8d8f03..36f25a138e3b 100644
---- a/fs/xfs/xfs_inode_item.c
-+++ b/fs/xfs/xfs_inode_item.c
-@@ -727,6 +727,7 @@ xfs_inode_item_push(
- 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
- 	struct xfs_inode	*ip = iip->ili_inode;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -749,7 +750,7 @@ xfs_inode_item_push(
- 	if (!xfs_buf_trylock(bp))
- 		return XFS_ITEM_LOCKED;
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	/*
- 	 * We need to hold a reference for flushing the cluster buffer as it may
-@@ -773,7 +774,11 @@ xfs_inode_item_push(
- 		rval = XFS_ITEM_LOCKED;
- 	}
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- 	return rval;
- }
- 
--- 
-2.50.1
+Backport the same changes?
 
+thanks,
 
-
-
-Amazon Web Services EMEA SARL, 38 avenue John F. Kennedy, L-1855 Luxembourg, R.C.S. Luxembourg B186284
-
-Amazon Web Services EMEA SARL, Irish Branch, One Burlington Plaza, Burlington Road, Dublin 4, Ireland, branch registration number 908705
-
-
-
+greg k-h
 
