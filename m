@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBLDCGn6y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:33 +0200
+	id SC6DLq/+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D8936D1E8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B6D36DCF0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69DE032B9796
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BBAB30974A4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32709425CC6;
-	Tue, 31 Mar 2026 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C684B425CC4;
+	Tue, 31 Mar 2026 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rx+MFVnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLtECfhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F2A3E3C5C;
-	Tue, 31 Mar 2026 16:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1E7423A89;
+	Tue, 31 Mar 2026 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974964; cv=none; b=pLiWJAnhCqG+Fs5mQZSzy7ctzgjS5QotL4CWSpVqa2c25yu21XEibeQoxp6aE53DEuiEvcyZHreLhSuPw/6OM7TeFEn5JG5nei3jg70FBDVGrT6s2J6wj69zrfWkec3jc/lruSL8f3MNnNeB6VKRXd/DrUEEr9rmLMIiDgopbtM=
+	t=1774976305; cv=none; b=aryjRvq/vGGT26rtXD+ptn1HUs/GJyU+Sta+gi2OQ+GZRsbHqA4XfodA7BOAjQkYoqsoGDa2BV/OZCjz7A1upEUW+9CxZu8jcT4ALHw2Y5JPCC/G5qQk0CN+VFe7lLMdMYsa4mMexBvbHhZ9Ho3Z2EBogwn9MShnmwi70YavIl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974964; c=relaxed/simple;
-	bh=9FAenaRN4pmnAuwk01WWsuc0HiG4ox1M0c1uaRy4X7o=;
+	s=arc-20240116; t=1774976305; c=relaxed/simple;
+	bh=dNI89v9vR+yWr7EgX061Oa9F8falEHLob9RagXk1m7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cIoM3ZfmdnQcW57wcklLEFz+T7eTOW0pTgK6D0sjW1DLoX1qfdxyaxA8/YWLO9RrjsuDl2oh3o2HxQklBengin0QeWE8TiZVCUEyvztNhR654Utrb0kxRza/hn0DVTOyH+9bau5QdiPae1d88RnHGmVqvClKQtiICsbgMvn/E9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rx+MFVnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A8BC19423;
-	Tue, 31 Mar 2026 16:36:03 +0000 (UTC)
+	 MIME-Version; b=Nl1KbS9D+6Semr4FVQPz9VVe4hZf9u5lw0U2FL1RRdzkW08frcoCVRcvE9CAnrwPlY2TYKD0gAagFG2Xby+DPi79lw8ex2aJB8vyoElR9SslLUptcNHM7QdDZC4qi4ket9sHcp74PYfTAFUyep4dlbn0lPTlBQr0rpG+hzAltiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLtECfhP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E61C19423;
+	Tue, 31 Mar 2026 16:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974963;
-	bh=9FAenaRN4pmnAuwk01WWsuc0HiG4ox1M0c1uaRy4X7o=;
+	s=korg; t=1774976305;
+	bh=dNI89v9vR+yWr7EgX061Oa9F8falEHLob9RagXk1m7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rx+MFVnKb0gpShx0qUxN6h0xHp5aBhJIjT2BlF+8yHkaabDq6fX1M85Ubw4uYWkr6
-	 EbrQx8dtwT1mMYnv/YrPhMp8jWWEEP5J+S/9NVJT2Y3y0d3Scu6lRBeuIugH9j0rAT
-	 xopbFo706uHGh82z7N9iYGAj4Fqehwj3hZizheTk=
+	b=QLtECfhPq+Eg+0yCXMMEVe2HObAWqc2gLI4vI7RXsvBCV0pUT8Klanqoiukpr0NI6
+	 W4UpXbTHR6p/LSigJPLutDggwZ4nUqQ0dfWh/46hvaRMuo6z+QJ5z2Gztw3Ii4NVoP
+	 SELt2ahQwornUZH4axgHYSBd63sPFlsJVehNulHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 111/342] platform/x86: ISST: Check HWP support before MSR access
+Subject: [PATCH 6.18 041/309] scsi: mpi3mr: Clear reset history on ready and recheck state after timeout
 Date: Tue, 31 Mar 2026 18:19:04 +0200
-Message-ID: <20260331161803.097551529@linuxfoundation.org>
+Message-ID: <20260331161754.996955252@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231747-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232266-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 76D8936D1E8
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: 61B6D36DCF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 9f11d9b15efb5f77e810b6dfbeb01b4650a79eae ]
+[ Upstream commit dbd53975ed4132d161b6a97ebe785a262380182d ]
 
-On some systems, HWP can be explicitly disabled in the BIOS settings
-When HWP is disabled by firmware, the HWP CPUID bit is not set, and
-attempting to read MSR_PM_ENABLE will result in a General Protection
-(GP) fault.
+The driver retains reset history even after the IOC has successfully
+reached the READY state. That leaves stale reset information active during
+normal operation and can mislead recovery and diagnostics.  In addition, if
+the IOC becomes READY just as the ready timeout loop exits, the driver
+still follows the failure path and may retry or report failure incorrectly.
 
-  unchecked MSR access error: RDMSR from 0x770 at rIP: 0xffffffffc33db92e (disable_dynamic_sst_features+0xe/0x50 [isst_tpmi_core])
-  Call Trace:
-   <TASK>
-   ? ex_handler_msr+0xf6/0x150
-   ? fixup_exception+0x1ad/0x340
-   ? gp_try_fixup_and_notify+0x1e/0xb0
-   ? exc_general_protection+0xc9/0x390
-   ? terminate_walk+0x64/0x100
-   ? asm_exc_general_protection+0x22/0x30
-   ? disable_dynamic_sst_features+0xe/0x50 [isst_tpmi_core]
-   isst_if_def_ioctl+0xece/0x1050 [isst_tpmi_core]
-   ? ioctl_has_perm.constprop.42+0xe0/0x130
-   isst_if_def_ioctl+0x10d/0x1a0 [isst_if_common]
-   __se_sys_ioctl+0x86/0xc0
-   do_syscall_64+0x8a/0x100
-   entry_SYSCALL_64_after_hwframe+0x78/0xe2
-  RIP: 0033:0x7f36eaef54a7
+Clear reset history once READY is confirmed so driver state matches actual
+IOC status. After the timeout loop, recheck the IOC state and treat READY
+as success instead of failing.
 
-Add a check for X86_FEATURE_HWP before accessing the MSR. If HWP is
-not available, return true safely.
-
-Fixes: 12a7d2cb811d ("platform/x86: ISST: Add SST-CP support via TPMI")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20260303074635.2218-1-lirongqing@baidu.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://patch.msgid.link/20260225082622.82588-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-index 13b11c3a2ec4e..e657b88bfd36e 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -558,6 +558,9 @@ static bool disable_dynamic_sst_features(void)
- {
- 	u64 value;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 8382afed12813..4c8d78b840fc9 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -1530,6 +1530,7 @@ static int mpi3mr_bring_ioc_ready(struct mpi3mr_ioc *mrioc)
+ 			ioc_info(mrioc,
+ 			    "successfully transitioned to %s state\n",
+ 			    mpi3mr_iocstate_name(ioc_state));
++			mpi3mr_clear_reset_history(mrioc);
+ 			return 0;
+ 		}
+ 		ioc_status = readl(&mrioc->sysif_regs->ioc_status);
+@@ -1549,6 +1550,15 @@ static int mpi3mr_bring_ioc_ready(struct mpi3mr_ioc *mrioc)
+ 		elapsed_time_sec = jiffies_to_msecs(jiffies - start_time)/1000;
+ 	} while (elapsed_time_sec < mrioc->ready_timeout);
  
-+	if (!static_cpu_has(X86_FEATURE_HWP))
-+		return true;
++	ioc_state = mpi3mr_get_iocstate(mrioc);
++	if (ioc_state == MRIOC_STATE_READY) {
++		ioc_info(mrioc,
++		    "successfully transitioned to %s state after %llu seconds\n",
++		    mpi3mr_iocstate_name(ioc_state), elapsed_time_sec);
++		mpi3mr_clear_reset_history(mrioc);
++		return 0;
++	}
 +
- 	rdmsrq(MSR_PM_ENABLE, value);
- 	return !(value & 0x1);
- }
+ out_failed:
+ 	elapsed_time_sec = jiffies_to_msecs(jiffies - start_time)/1000;
+ 	if ((retry < 2) && (elapsed_time_sec < (mrioc->ready_timeout - 60))) {
 -- 
 2.51.0
 
