@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AF8zIrUBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-231891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:41 +0200
+	id ALCsFtsAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7E336E6D5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E8A36E3F3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A341C31E2B94
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE436308CD62
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2BA425CE4;
-	Tue, 31 Mar 2026 16:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B271301471;
+	Tue, 31 Mar 2026 17:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL2Sr1L8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBPUhXkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7D21C861A;
-	Tue, 31 Mar 2026 16:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E24B2F5491;
+	Tue, 31 Mar 2026 17:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975334; cv=none; b=RtAPhuRB7umxb3Fq22mQj1iC5GuavaMRquHGdKuLrPm6kItTPnVPxn40cagihHJO6ykHArE0F8/f2m7JA91Qi37CGOh4w86dFGCGrTDOlXYQgXIdA+7IlY3faVv+0PyvZ8UEaV8GSHs+4KIPTyl+nnA81rsJ41o24qwkbZSYr80=
+	t=1774976675; cv=none; b=HU0qGJ8Mw+XzYKJBUKsH5B54ZWnjrSL9ycC+YPrhG5YlkY6uBfF3aCaNUul16fMeex4clKHyuhJxQzZwlc6bfnNUWe4BPVn0FcIxkYQ6EtVKjTfkyZwg8BgxKdiM8Y40LpuCjjIbNs4P5EQ7nwQdCJLMzW+0wi6tBOpLPuc49Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975334; c=relaxed/simple;
-	bh=hN/QO3R8uIQ0eePPb7M7vngSJjOvdvGUur7KzjBOvpY=;
+	s=arc-20240116; t=1774976675; c=relaxed/simple;
+	bh=cJd7i8Y8CrkO2y4SB6KsTw1+7PQ3aW1q4OErz5csI6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sr4mJ5BJbw+g1p9X75CJn1Kh9Ka/BVw4iGreI/wLi+X0VSd/M6LDPWVHefRprNZdQOd5alA/q20fTN7RWCD0Wf98OhrN5vBFr9uqfjzm8f4KvHwuINKPi04rB+L/dEuIjXCEEItKoHBNU3fTMEMPeg7XfiAX/3xJJu5FIJd+JG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL2Sr1L8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13387C19423;
-	Tue, 31 Mar 2026 16:42:13 +0000 (UTC)
+	 MIME-Version; b=B9CKtAPvu4PSAcqDAAkFeyL/NL0VhMq5IKcrlBpPUFbHIef55vbGZStDZHza5AFFEoGpvRY5swfYfmfRrtrhgjpcbiSvfK14XM3bXvt8U2bQNj77YmMKHiXwkLHOseWu1IQwz4b7igcoLBmd/JDt9EihsoHlzXJQSJ0O1odgO0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBPUhXkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D721DC19423;
+	Tue, 31 Mar 2026 17:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975334;
-	bh=hN/QO3R8uIQ0eePPb7M7vngSJjOvdvGUur7KzjBOvpY=;
+	s=korg; t=1774976675;
+	bh=cJd7i8Y8CrkO2y4SB6KsTw1+7PQ3aW1q4OErz5csI6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uL2Sr1L8nv8MMT4TQ08/O49ky4Gdsmh/xjk0qrpcLEVnb4pg9lPvEbWUXxvoDo14k
-	 5doITN1XywqJafssyRM65W7eC9aucDhNTsESoOilHSbSgcw7hJqd/zdYtoxAqZYLAS
-	 JAZCSinQKYo5GRLxY21IfJi8ohTlMW39Q06Mh5tQ=
+	b=vBPUhXkhvkmNofrKHh686oIyPKtfEbrfUxj/gAGygykhmis4lO5VAffD42ov7uPH1
+	 c4GeksRrHVycyw/kUuCdGgkSheWw5jq/1bobTdmLLNcpKy6nGLnI40TpjXlqDxj+55
+	 Y2v49ruqzIc6uxiZJAaTQg/MbB/d83WerZ0T8bxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.19 254/342] iomap: fix invalid folio access when i_blkbits differs from I/O granularity
+	Juhyun Song <juju6985@outlook.kr>,
+	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 184/309] Revert "ALSA: hda/intel: Add MSI X870E Tomahawk to denylist"
 Date: Tue, 31 Mar 2026 18:21:27 +0200
-Message-ID: <20260331161808.302172556@linuxfoundation.org>
+Message-ID: <20260331161800.234854005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,117 +65,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wdc.com,gmail.com,lst.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231891-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232410-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.kr,gmail.com,amd.com,suse.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,wdc.com:email]
-X-Rspamd-Queue-Id: 0B7E336E6D5
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,outlook.kr:email,suse.de:email]
+X-Rspamd-Queue-Id: D0E8A36E3F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit bd71fb3fea9945987053968f028a948997cba8cc upstream.
+commit ed4da361bf943b9041fc63e5cb6af01b3c0de978 upstream.
 
-Commit aa35dd5cbc06 ("iomap: fix invalid folio access after
-folio_end_read()") partially addressed invalid folio access for folios
-without an ifs attached, but it did not handle the case where
-1 << inode->i_blkbits matches the folio size but is different from the
-granularity used for the IO, which means IO can be submitted for less
-than the full folio for the !ifs case.
+commit 30b3211aa2416 ("ALSA: hda/intel: Add MSI X870E Tomahawk
+to denylist") was added to silence a warning, but this effectively
+reintroduced commit df42ee7e22f03 ("ALSA: hda: Add ASRock
+X670E Taichi to denylist") which was already reported to cause
+problems and reverted in commit ee8f1613596ad ("Revert "ALSA: hda:
+Add ASRock X670E Taichi to denylist"")
 
-In this case, the condition:
+Revert it yet again.
 
-  if (*bytes_submitted == folio_len)
-    ctx->cur_folio = NULL;
-
-in iomap_read_folio_iter() will not invalidate ctx->cur_folio, and
-iomap_read_end() will still be called on the folio even though the IO
-helper owns it and will finish the read on it.
-
-Fix this by unconditionally invalidating ctx->cur_folio for the !ifs
-case.
-
-Reported-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/linux-fsdevel/b3dfe271-4e3d-4922-b618-e73731242bca@wdc.com/
-Fixes: b2f35ac4146d ("iomap: add caller-provided callbacks for read and readahead")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Link: https://patch.msgid.link/20260317203935.830549-1-joannelkoong@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Juhyun Song <juju6985@outlook.kr>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221274
+Cc: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20260326190542.524515-1-mario.limonciello@amd.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ sound/hda/controllers/intel.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -506,6 +506,7 @@ static int iomap_read_folio_iter(struct
- 	loff_t length = iomap_length(iter);
- 	struct folio *folio = ctx->cur_folio;
- 	size_t folio_len = folio_size(folio);
-+	struct iomap_folio_state *ifs;
- 	size_t poff, plen;
- 	loff_t pos_diff;
- 	int ret;
-@@ -517,7 +518,7 @@ static int iomap_read_folio_iter(struct
- 		return iomap_iter_advance(iter, length);
- 	}
- 
--	ifs_alloc(iter->inode, folio, iter->flags);
-+	ifs = ifs_alloc(iter->inode, folio, iter->flags);
- 
- 	length = min_t(loff_t, length, folio_len - offset_in_folio(folio, pos));
- 	while (length) {
-@@ -548,11 +549,15 @@ static int iomap_read_folio_iter(struct
- 
- 			*bytes_submitted += plen;
- 			/*
--			 * If the entire folio has been read in by the IO
--			 * helper, then the helper owns the folio and will end
--			 * the read on it.
-+			 * Hand off folio ownership to the IO helper when:
-+			 * 1) The entire folio has been submitted for IO, or
-+			 * 2) There is no ifs attached to the folio
-+			 *
-+			 * Case (2) occurs when 1 << i_blkbits matches the folio
-+			 * size but the underlying filesystem or block device
-+			 * uses a smaller granularity for IO.
- 			 */
--			if (*bytes_submitted == folio_len)
-+			if (*bytes_submitted == folio_len || !ifs)
- 				ctx->cur_folio = NULL;
- 		}
+--- a/sound/hda/controllers/intel.c
++++ b/sound/hda/controllers/intel.c
+@@ -2077,7 +2077,6 @@ static const struct pci_device_id driver
+ 	{ PCI_DEVICE_SUB(0x1022, 0x1487, 0x1043, 0x874f) }, /* ASUS ROG Zenith II / Strix */
+ 	{ PCI_DEVICE_SUB(0x1022, 0x1487, 0x1462, 0xcb59) }, /* MSI TRX40 Creator */
+ 	{ PCI_DEVICE_SUB(0x1022, 0x1487, 0x1462, 0xcb60) }, /* MSI TRX40 */
+-	{ PCI_DEVICE_SUB(0x1022, 0x15e3, 0x1462, 0xee59) }, /* MSI X870E Tomahawk WiFi */
+ 	{}
+ };
  
 
 
