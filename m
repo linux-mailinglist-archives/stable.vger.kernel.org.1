@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232062-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFFIB8z2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:08 +0200
+	id qIbkFAz9y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-232062-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD24636CAF1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CC336D84B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8530302B07B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92FAA30224C5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FD43E3174;
-	Tue, 31 Mar 2026 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0769413225;
+	Tue, 31 Mar 2026 16:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAwUTRot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNTGM/eS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC803EE1DD;
-	Tue, 31 Mar 2026 16:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A357C2C15B2;
+	Tue, 31 Mar 2026 16:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974343; cv=none; b=Q6dlnLdjiX6fgsUDIbJ6dgH4WF32wZlmWIu1WbMFD39p9EM3FGGlYnN/dHOM2h/LgnDR3/EvuFxDydEZTkl/qEvDEnTSmGFMvGVQaVX+aWEGR+MNaOfV4f1O45kXlBuIpzoB0hB5QPw5YRQFLvCoo27ZNuVVYjc9cfwS4G2y8b8=
+	t=1774975777; cv=none; b=PRQZm/Sd/KZaXFI7/6bZAWoFRASt1lJvW0+jAXwcQ7vkUvzSeuuWqNrWUbWPTTGCJJsnUe9UyjTLQf7Tbju4driW/M8YYlw4rqckHqG/vliud0khHCPlgjX/perX8LDh6k5QpRAvplV1/EEfbRRXfMpwNLgavVJXL1lYdpx8N4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974343; c=relaxed/simple;
-	bh=BN2rsZB4qIOYqzVyOJ3fd/RXKUBDuneDKC98rgTGmxs=;
+	s=arc-20240116; t=1774975777; c=relaxed/simple;
+	bh=DUcM354bLPMx2KxbgheHEXO0/w3Zlgu4JhxNAZ+4+G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcfJgGq1WjN3x3lixjwin4135c3HYTU0irIBAq5/OxRZrqEWkSOGGGZXo9oqv2xbyBOjZC/BclrifrplKjG7xhx2eKHydK0L98rC/XQifojxnrjlqVp9zVxddzhZ1KSdZry7ZJ0JHssIVtLNle6g28d7c3f2Czsvhohf66wxc28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAwUTRot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3190FC19423;
-	Tue, 31 Mar 2026 16:25:43 +0000 (UTC)
+	 MIME-Version; b=WZPNqDgv73vmIdIOhgoG1lujbw3GOeQcqN73ZP12XqifyXPlbZlyYL8xPSOP5rVqSp/LkXXBT17XWETVuDjxzjAth0gBihojAu8eDDdGppF3/XVmkvn15SBtVGp0uJUi3us9lZ9CoymS9vRevfW0OPSIWV0r8VwVjeCvsy+33HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNTGM/eS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0323DC19423;
+	Tue, 31 Mar 2026 16:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974343;
-	bh=BN2rsZB4qIOYqzVyOJ3fd/RXKUBDuneDKC98rgTGmxs=;
+	s=korg; t=1774975777;
+	bh=DUcM354bLPMx2KxbgheHEXO0/w3Zlgu4JhxNAZ+4+G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAwUTRotP0gSqs68SuAPIWp7icwAhcR/Ehbkp8lJNwoXNjHiTDUbttyMtY519QkYK
-	 exf4CPgkvfbhy7tPzXwsvE4o3dLfw1ruahT+VEn8d2KO723RL3mF5XGTQxI+yz2y3b
-	 i4UvAmUP8TKGUcbP3LSHE7mP0mJJyXOzhi2Znedc=
+	b=cNTGM/eSLCY9JMInYg2dA9WkQvSkAIA5t5ymtWP1bvBdoWfucNEGcahv5k2G/CiBp
+	 9S4Y9+WzalQVbRGi5CKvVW9i/uM6AGf9VpNCz4B52Q6bR6mIOfbUIC7Nk0Fi1619Tq
+	 62hBW6Qh4h9BAaIwpgQT/UWSiRlLzGI495aFlwHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Patryk Holda <patryk.holda@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/175] net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
+Subject: [PATCH 6.12 083/244] ice: use ice_update_eth_stats() for representor stats
 Date: Tue, 31 Mar 2026 18:20:33 +0200
-Message-ID: <20260331161731.587654648@linuxfoundation.org>
+Message-ID: <20260331161744.747072877@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,132 +68,131 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231505-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232062-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: DD24636CAF1
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E3CC336D84B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 24dd586bb4cbba1889a50abe74143817a095c1c9 ]
+[ Upstream commit 2526e440df2725e7328d59b835a164826f179b93 ]
 
-smc_rx_splice() allocates one smc_spd_priv per pipe_buffer and stores
-the pointer in pipe_buffer.private.  The pipe_buf_operations for these
-buffers used .get = generic_pipe_buf_get, which only increments the page
-reference count when tee(2) duplicates a pipe buffer.  The smc_spd_priv
-pointer itself was not handled, so after tee() both the original and the
-cloned pipe_buffer share the same smc_spd_priv *.
+ice_repr_get_stats64() and __ice_get_ethtool_stats() call
+ice_update_vsi_stats() on the VF's src_vsi. This always returns early
+because ICE_VSI_DOWN is permanently set for VF VSIs - ice_up() is never
+called on them since queues are managed by iavf through virtchnl.
 
-When both pipes are subsequently released, smc_rx_pipe_buf_release() is
-called twice against the same object:
+In __ice_get_ethtool_stats() the original code called
+ice_update_vsi_stats() for all VSIs including representors, iterated
+over ice_gstrings_vsi_stats[] to populate the data, and then bailed out
+with an early return before the per-queue ring stats section. That early
+return was necessary because representor VSIs have no rings on the PF
+side - the rings belong to the VF driver (iavf), so accessing per-queue
+stats would be invalid.
 
-  1st call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [correct]
-  2nd call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [UAF]
+Move the representor handling to the top of __ice_get_ethtool_stats()
+and call ice_update_eth_stats() directly to read the hardware GLV_*
+counters. This matches ice_get_vf_stats() which already uses
+ice_update_eth_stats() for the same VF VSI in legacy mode. Apply the
+same fix to ice_repr_get_stats64().
 
-KASAN reports a slab-use-after-free in smc_rx_pipe_buf_release(), which
-then escalates to a NULL-pointer dereference and kernel panic via
-smc_rx_update_consumer() when it chases the freed priv->smc pointer:
+Note that ice_gstrings_vsi_stats[] contains five software ring counters
+(rx_buf_failed, rx_page_failed, tx_linearize, tx_busy, tx_restart) that
+are always zero for representors since the PF never processes packets on
+VF rings. This is pre-existing behavior unchanged by this patch.
 
-  BUG: KASAN: slab-use-after-free in smc_rx_pipe_buf_release+0x78/0x2a0
-  Read of size 8 at addr ffff888004a45740 by task smc_splice_tee_/74
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x53/0x70
-   print_report+0xce/0x650
-   kasan_report+0xc6/0x100
-   smc_rx_pipe_buf_release+0x78/0x2a0
-   free_pipe_info+0xd4/0x130
-   pipe_release+0x142/0x160
-   __fput+0x1c6/0x490
-   __x64_sys_close+0x4f/0x90
-   do_syscall_64+0xa6/0x1a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000020
-  RIP: 0010:smc_rx_update_consumer+0x8d/0x350
-  Call Trace:
-   <TASK>
-   smc_rx_pipe_buf_release+0x121/0x2a0
-   free_pipe_info+0xd4/0x130
-   pipe_release+0x142/0x160
-   __fput+0x1c6/0x490
-   __x64_sys_close+0x4f/0x90
-   do_syscall_64+0xa6/0x1a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-  Kernel panic - not syncing: Fatal exception
-
-Beyond the memory-safety problem, duplicating an SMC splice buffer is
-semantically questionable: smc_rx_update_cons() would advance the
-consumer cursor twice for the same data, corrupting receive-window
-accounting.  A refcount on smc_spd_priv could fix the double-free, but
-the cursor-accounting issue would still need to be addressed separately.
-
-The .get callback is invoked by both tee(2) and splice_pipe_to_pipe()
-for partial transfers; both will now return -EFAULT.  Users who need
-to duplicate SMC socket data must use a copy-based read path.
-
-Fixes: 9014db202cb7 ("smc: add support for splice()")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Link: https://patch.msgid.link/20260318064847.23341-1-tpluszz77@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7aae80cef7ba ("ice: add port representor ethtool ops and stats")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Patryk Holda <patryk.holda@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_rx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 14 +++++++++++---
+ drivers/net/ethernet/intel/ice/ice_repr.c    |  3 ++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-index acb14e28cad41..a48f8c93f4b63 100644
---- a/net/smc/smc_rx.c
-+++ b/net/smc/smc_rx.c
-@@ -135,9 +135,16 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
- 	sock_put(sk);
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index b2183d5670b8c..606994fa99da9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -1930,6 +1930,17 @@ __ice_get_ethtool_stats(struct net_device *netdev,
+ 	int i = 0;
+ 	char *p;
  
-+static bool smc_rx_pipe_buf_get(struct pipe_inode_info *pipe,
-+				struct pipe_buffer *buf)
-+{
-+	/* smc_spd_priv in buf->private is not shareable; disallow cloning. */
-+	return false;
-+}
++	if (ice_is_port_repr_netdev(netdev)) {
++		ice_update_eth_stats(vsi);
 +
- static const struct pipe_buf_operations smc_pipe_ops = {
- 	.release = smc_rx_pipe_buf_release,
--	.get = generic_pipe_buf_get
-+	.get	 = smc_rx_pipe_buf_get,
- };
++		for (j = 0; j < ICE_VSI_STATS_LEN; j++) {
++			p = (char *)vsi + ice_gstrings_vsi_stats[j].stat_offset;
++			data[i++] = (ice_gstrings_vsi_stats[j].sizeof_stat ==
++				     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++		}
++		return;
++	}
++
+ 	ice_update_pf_stats(pf);
+ 	ice_update_vsi_stats(vsi);
  
- static void smc_rx_spd_release(struct splice_pipe_desc *spd,
+@@ -1939,9 +1950,6 @@ __ice_get_ethtool_stats(struct net_device *netdev,
+ 			     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
+ 	}
+ 
+-	if (ice_is_port_repr_netdev(netdev))
+-		return;
+-
+ 	/* populate per queue stats */
+ 	rcu_read_lock();
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
+index 1b1288d243248..e8a9b6a5dd7ab 100644
+--- a/drivers/net/ethernet/intel/ice/ice_repr.c
++++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2019-2021, Intel Corporation. */
+ 
+ #include "ice.h"
++#include "ice_lib.h"
+ #include "ice_eswitch.h"
+ #include "devlink/devlink.h"
+ #include "devlink/devlink_port.h"
+@@ -67,7 +68,7 @@ ice_repr_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
+ 		return;
+ 	vsi = repr->src_vsi;
+ 
+-	ice_update_vsi_stats(vsi);
++	ice_update_eth_stats(vsi);
+ 	eth_stats = &vsi->eth_stats;
+ 
+ 	stats->tx_packets = eth_stats->tx_unicast + eth_stats->tx_broadcast +
 -- 
 2.51.0
 
