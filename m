@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-231582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGlrO1v3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:31 +0200
+	id mKRlCBcBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8F336CC13
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32E136E4D5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 16D51303DB20
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3DCD314BD06
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9989A423A9B;
-	Tue, 31 Mar 2026 16:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283BC30274D;
+	Tue, 31 Mar 2026 17:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AasWTXMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuxpeAj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59840423A79;
-	Tue, 31 Mar 2026 16:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00903016EE;
+	Tue, 31 Mar 2026 17:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974542; cv=none; b=QuHyqWnVjxRp3MGBxcZh8RhFaD94kNDRc3mglkHACvLQi3tuS8k7AoApMV0yJAai8bl1Yo0AgXjiKjoznjvEfjo6C5Uka6IV+Lp3jqZUPCoqRA00de2plPdCgUCgSr0nob/Kzbtyvxr69/p5N2soZ4Fp06vMEL1JKxYrAByUT9Y=
+	t=1774976818; cv=none; b=HHkT3sVnFYyKTNT5uwIiAZCZIdlp9XuHLO7yoQfuMMTtjHnCJuKgjVYT7xxrFD1kHwXLFW2nJckjZ/ZctTvh211z1g+dL7LcImz/V70YEUJyxzQc3F4cJ2xarg2yBw1uB4pYmnLmPwtxU6wkgOsnHg9y/EQox/G95lFMcrln4l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974542; c=relaxed/simple;
-	bh=lF+zLlZGrIQzvhLEGAwtt0tNqQSRaVPWTfjv1D8FQNw=;
+	s=arc-20240116; t=1774976818; c=relaxed/simple;
+	bh=EqgrvlEv7ANqvmEIxnG5HFir8WD0LTOJE8Nlc2uPlh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqXNAtr5agoDRH2nXcsHWQ9HgFiMZXNye3JkhBRvOmHpNqekt53SMMhJceLnqPnh8Dmn3Ba3XTDRVw5JeMusxqPbRHWz6swaD/GtQcff6Q9l4b6xTURgnz6kAy56S1SQLUOSqXzHjeQyEj9+Gkcdk0ewuS3zDNTiIYgkzWI8vAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AasWTXMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34B1C19423;
-	Tue, 31 Mar 2026 16:29:01 +0000 (UTC)
+	 MIME-Version; b=KbtO+VEcC3otkMmGhtTJF5P8HmXn1DYzSX4FPRiI9gGlMVwa1d+0a4kGTg9DA6jGQgv2LPCaLLyy9ehsHffJuezRFsaIj7hVIrJqoYtHwXJxaj2xkDoSix9QlgKN7B0BsDj+xLbM//jp+0PRWjtvezow2vG8z+YmZmHVC2HNOtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuxpeAj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7509CC19423;
+	Tue, 31 Mar 2026 17:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974542;
-	bh=lF+zLlZGrIQzvhLEGAwtt0tNqQSRaVPWTfjv1D8FQNw=;
+	s=korg; t=1774976817;
+	bh=EqgrvlEv7ANqvmEIxnG5HFir8WD0LTOJE8Nlc2uPlh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AasWTXMg1fIWoyc5PN+szPUe7hhTU7rAblGXih3tbJ/zeIF2BiopZrtAkAO+0XVAv
-	 b5ecNR9HYIGusrJpnUpQ2TZLq3h6nZSM4uiToy9oPNZKY6zPFx3g4nWDrUy6pmHz10
-	 D3lKJCSNaOPpcgKDX1rYz75e13T/73MsNbb2HzV0=
+	b=PuxpeAj2BCvsoLMhIhUHECXSPzJqFayLAOP91p4zGUosMWOLR4HfOevYCTTYNHI+V
+	 1fm3CEm3B+D1jUiHMnnQMRi4FQCBYOBP6r52aQkFKYqnC+mt+24T0NRZ3WENx+NYYe
+	 k1V0rt/D8LnmBsU8tBrP3o9cXhdBIxEaH8l1h+PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianhai Wu <wuqianhai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 126/175] LoongArch: Workaround LS2K/LS7A GPU DMA hang bug
+	xietangxin <xietangxin@yeah.net>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 207/309] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
 Date: Tue, 31 Mar 2026 18:21:50 +0200
-Message-ID: <20260331161734.410640998@linuxfoundation.org>
+Message-ID: <20260331161801.069794230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,165 +66,125 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232465-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231582-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8F8F336CC13
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,yeah.net:email]
+X-Rspamd-Queue-Id: B32E136E4D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: xietangxin <xietangxin@yeah.net>
 
-commit 95db0c9f526d583634cddb2e5914718570fbac87 upstream.
+commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
 
-1. Hardware limitation: GPU, DC and VPU are typically PCI device 06.0,
-06.1 and 06.2. They share some hardware resources, so when configure the
-PCI 06.0 device BAR1, DMA memory access cannot be performed through this
-BAR, otherwise it will cause hardware abnormalities.
+A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
+and the device's IFF_XMIT_DST_RELEASE flag is cleared
+(e.g., during the configuration of tc route filter rules).
 
-2. In typical scenarios of reboot or S3/S4, DC access to memory through
-BAR is not prohibited, resulting in GPU DMA hangs.
+When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
+expects the driver to hold the reference to skb->dst until the packet
+is fully transmitted and freed. In virtio_net with napi_tx=N,
+skbs may remain in the virtio transmit ring for an extended period.
 
-3. Workaround method: When configuring the 06.0 device BAR1, turn off
-the memory access of DC, GPU and VPU (via DC's CRTC registers).
+If the network namespace is destroyed while these skbs are still pending,
+the corresponding dst_ops structure has freed. When a subsequent packet
+is transmitted, free_old_xmit() is triggered to clean up old skbs.
+It then calls dst_release() on the skb associated with the stale dst_entry.
+Since the dst_ops (referenced by the dst_entry) has already been freed,
+a UAF kernel paging request occurs.
 
+fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+the dst reference before the skb is queued in virtio_net.
+
+Call Trace:
+ Unable to handle kernel paging request at virtual address ffff80007e150000
+ CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
+  ...
+  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+  dst_release+0xe0/0x110  net/core/dst.c:177
+  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
+  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+  ...
+
+Reproduction Steps:
+NETDEV="enp3s0"
+
+config_qdisc_route_filter() {
+    tc qdisc del dev $NETDEV root
+    tc qdisc add dev $NETDEV root handle 1: prio
+    tc filter add dev $NETDEV parent 1:0 \
+	protocol ip prio 100 route to 100 flowid 1:1
+    ip route add 192.168.1.100/32 dev $NETDEV realm 100
+}
+
+test_ns() {
+    ip netns add testns
+    ip link set $NETDEV netns testns
+    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+    ip netns exec testns ping -c 1 10.0.32.1
+    ip netns del testns
+}
+
+config_qdisc_route_filter
+
+test_ns
+sleep 2
+test_ns
+
+Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qianhai Wu <wuqianhai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: xietangxin <xietangxin@yeah.net>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
+Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/pci/pci.c |   80 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 80 insertions(+)
+ drivers/net/virtio_net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/loongarch/pci/pci.c
-+++ b/arch/loongarch/pci/pci.c
-@@ -6,9 +6,11 @@
- #include <linux/export.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/delay.h>
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/vgaarb.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
- #include <asm/cacheflush.h>
- #include <asm/loongson.h>
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3414,6 +3414,7 @@ static netdev_tx_t start_xmit(struct sk_
+ 	/* Don't wait up for transmitted skbs to be freed. */
+ 	if (!use_napi) {
+ 		skb_orphan(skb);
++		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
+ 	}
  
-@@ -16,6 +18,9 @@
- #define PCI_DEVICE_ID_LOONGSON_DC1      0x7a06
- #define PCI_DEVICE_ID_LOONGSON_DC2      0x7a36
- #define PCI_DEVICE_ID_LOONGSON_DC3      0x7a46
-+#define PCI_DEVICE_ID_LOONGSON_GPU1     0x7a15
-+#define PCI_DEVICE_ID_LOONGSON_GPU2     0x7a25
-+#define PCI_DEVICE_ID_LOONGSON_GPU3     0x7a35
- 
- int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
- 						int reg, int len, u32 *val)
-@@ -100,3 +105,78 @@ static void pci_fixup_vgadev(struct pci_
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC1, pci_fixup_vgadev);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC2, pci_fixup_vgadev);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC3, pci_fixup_vgadev);
-+
-+#define CRTC_NUM_MAX		2
-+#define CRTC_OUTPUT_ENABLE	0x100
-+
-+static void loongson_gpu_fixup_dma_hang(struct pci_dev *pdev, bool on)
-+{
-+	u32 i, val, count, crtc_offset, device;
-+	void __iomem *crtc_reg, *base, *regbase;
-+	static u32 crtc_status[CRTC_NUM_MAX] = { 0 };
-+
-+	base = pdev->bus->ops->map_bus(pdev->bus, pdev->devfn + 1, 0);
-+	device = readw(base + PCI_DEVICE_ID);
-+
-+	regbase = ioremap(readq(base + PCI_BASE_ADDRESS_0) & ~0xffull, SZ_64K);
-+	if (!regbase) {
-+		pci_err(pdev, "Failed to ioremap()\n");
-+		return;
-+	}
-+
-+	switch (device) {
-+	case PCI_DEVICE_ID_LOONGSON_DC2:
-+		crtc_reg = regbase + 0x1240;
-+		crtc_offset = 0x10;
-+		break;
-+	case PCI_DEVICE_ID_LOONGSON_DC3:
-+		crtc_reg = regbase;
-+		crtc_offset = 0x400;
-+		break;
-+	}
-+
-+	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
-+		val = readl(crtc_reg);
-+
-+		if (!on)
-+			crtc_status[i] = val;
-+
-+		/* No need to fixup if the status is off at startup. */
-+		if (!(crtc_status[i] & CRTC_OUTPUT_ENABLE))
-+			continue;
-+
-+		if (on)
-+			val |= CRTC_OUTPUT_ENABLE;
-+		else
-+			val &= ~CRTC_OUTPUT_ENABLE;
-+
-+		mb();
-+		writel(val, crtc_reg);
-+
-+		for (count = 0; count < 40; count++) {
-+			val = readl(crtc_reg) & CRTC_OUTPUT_ENABLE;
-+			if ((on && val) || (!on && !val))
-+				break;
-+			udelay(1000);
-+		}
-+
-+		pci_info(pdev, "DMA hang fixup at reg[0x%lx]: 0x%x\n",
-+				(unsigned long)crtc_reg & 0xffff, readl(crtc_reg));
-+	}
-+
-+	iounmap(regbase);
-+}
-+
-+static void pci_fixup_dma_hang_early(struct pci_dev *pdev)
-+{
-+	loongson_gpu_fixup_dma_hang(pdev, false);
-+}
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU2, pci_fixup_dma_hang_early);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU3, pci_fixup_dma_hang_early);
-+
-+static void pci_fixup_dma_hang_final(struct pci_dev *pdev)
-+{
-+	loongson_gpu_fixup_dma_hang(pdev, true);
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU2, pci_fixup_dma_hang_final);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU3, pci_fixup_dma_hang_final);
 
 
 
