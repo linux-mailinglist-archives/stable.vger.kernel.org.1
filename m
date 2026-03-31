@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHceNfcCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:03 +0200
+	id UADmKHr4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB4E36E960
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 726E636CE26
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A12315E227
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 56FC730C64A5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC40423149;
-	Tue, 31 Mar 2026 16:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C8A3FADEE;
+	Tue, 31 Mar 2026 16:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJUDfAFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0+CK17R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7218346E46;
-	Tue, 31 Mar 2026 16:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A967A3EE1FB;
+	Tue, 31 Mar 2026 16:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975678; cv=none; b=fnpyEkaWTKnedEp7D4mFBe/mfBkVbMENC4lyJcR2YvWIR7zOgRUyhWoxbbuWKDxrafHSImDFJQNY2iCcgWGS3/2h4G2Biss6FYL57DmQ3NSlD0EooXkEJq2zWDeYmDT3uKL33xyRcLoSWsSdY8XZ1Csa1g3v16S4V0xDei53yvc=
+	t=1774974330; cv=none; b=nNxqoHInHd+h3Nl8C8nqJT8Q9VcigWhuAGCvigdYZ9MDaSm4zkZYmYpiZBU5UKzp9gG2U3Q03eyxIrqEdF9QbbSQjBJN9SbUHYNO5xklQ3MHA+NLNJ7BbKD8sisFGz0BkvE4raQOrYO92FX+wMtrUnbPyZysdN7WF1uZnk3m4BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975678; c=relaxed/simple;
-	bh=w8SAAfmuXS/Qkbh2Agiv1QytUdz6Eo99oBHJcjdOIdg=;
+	s=arc-20240116; t=1774974330; c=relaxed/simple;
+	bh=PpGhVKCUig0oQ7EkHIyC6ikvEp8ADyD9L3ci5Ebe7d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5EjmzQQi6O9HPkbQkpDV7XQpvdyRuoVWmIpmsGZOdINiGqvmNuHiQfpOggxD8PBYr2poC8NOY8p/yIWAryuzE8imeWeaOeiwZJBSiMF+NaYjE7WjVHHoa87DbQAzAY8qkGog1PKy5unI58MwNwdDTm17bKxszh9nQzGADEpGuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJUDfAFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D832C19423;
-	Tue, 31 Mar 2026 16:47:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kF9vtFgkKpZ8IhfzjtINNqFMfBxX3BJ2kCA+VZ1zm8rnyBKRVPOCMaKe9JXFCLB5Ibyff33TSGzKYQ7BOq0yegU+QxP0wfa8/NmN0W4I35Xcb+Sohe5niUAs1XFdnPcrucj8eWVejG51rAqDPvC0ejlxshIQyTOB34TRk/m1nfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0+CK17R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A5EC19423;
+	Tue, 31 Mar 2026 16:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975678;
-	bh=w8SAAfmuXS/Qkbh2Agiv1QytUdz6Eo99oBHJcjdOIdg=;
+	s=korg; t=1774974330;
+	bh=PpGhVKCUig0oQ7EkHIyC6ikvEp8ADyD9L3ci5Ebe7d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJUDfAFM144/87WA29E60HJHwAWBMvzM+WzRyYIKH9jifAifkOuNDnQ6oHgbHpgrT
-	 /jZH69KP3smchND+U6wFn8q9KgIR1j3QV0YUw76+Th+snS6Z1elmhi2fES+XxSAlUa
-	 6swa9SSTR1gSaJ5GiaHFCoQwssauGrgKdSH09DTM=
+	b=Z0+CK17Rz9jUzRxKMDmCQH2Zfhsn8naURNhUiqf2mWjsRLySnUt0lMst1ttB6t70R
+	 APzfDb+O7/HPp1yza/JdIKrQY2mLMIKNYigoAEVkwz2g1mN20ciOn6e2SdcDAEaVqN
+	 5q3ETmTzS3Jf8I5CsNZghnBXKgXjo2Xj9ZsyNMIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peter Metz <peter.metz@unarin.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/244] ALSA: hda/realtek: add quirk for ASUS UM6702RC
+Subject: [PATCH 6.6 011/175] platform/x86: intel-hid: Add Dell 14 Plus 2-in-1 to dmi_vgbs_allow_list
 Date: Tue, 31 Mar 2026 18:19:55 +0200
-Message-ID: <20260331161743.361464455@linuxfoundation.org>
+Message-ID: <20260331161730.196556680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231500-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232024-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,suse.de:email]
-X-Rspamd-Queue-Id: 5DB4E36E960
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,unarin.com:email]
+X-Rspamd-Queue-Id: 726E636CE26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Peter Metz <peter.metz@unarin.com>
 
-[ Upstream commit 0d3429f12133c2ca47aa82ddab2342bc360c47d3 ]
+[ Upstream commit 6b3fa0615cd8432148581de62a52f83847af3d70 ]
 
-The sound card of this machine cannot adjust the volume, it can only
-be 0 or 100%. The reason is that the DAC with pin 0x17 is connected
-to 0x06. Testing found that connecting 0x02 can fix this problem.
+The Dell 14 Plus 2-in-1 (model DB04250) requires the VGBS allow list
+entry to correctly enable the tablet mode switch. Without this, the
+chassis state is not reported, and the hinge rotation only emits
+unknown scancodes.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220356
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260306123317.575346-1-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Verified on Dell 14 Plus 2-in-1 DB04250.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221090
+Signed-off-by: Peter Metz <peter.metz@unarin.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260213044627.203638-1-peter.metz@unarin.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/intel/hid.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 79bbe9894c35f..689b5510a95e8 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11234,6 +11234,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1eb3, "ASUS Ally RCLA72", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x1ed3, "ASUS HN7306W", ALC287_FIXUP_CS35L41_I2C_2),
-+	HDA_CODEC_QUIRK(0x1043, 0x1ee2, "ASUS UM6702RA/RC", ALC285_FIXUP_ASUS_I2C_SPEAKER2_TO_DAC1),
- 	SND_PCI_QUIRK(0x1043, 0x1ee2, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c52, "ASUS Zephyrus G15 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f11, "ASUS Zephyrus G14", ALC289_FIXUP_ASUS_GA401),
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index ac88119a73b84..7937ad20c2941 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -175,6 +175,12 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell 14 Plus 2-in-1 DB04250"),
++		},
++	},
+ 	{ }
+ };
+ 
 -- 
 2.51.0
 
