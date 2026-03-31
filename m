@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-232398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNp7L5IGzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:26 +0200
+	id sO9ZLvf2y2kGNAYAu9opvQ
+	(envelope-from <stable+bounces-231548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F9F36F101
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B92036CB80
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6F0F32D71C8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EEDF3069F9F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDC52FB632;
-	Tue, 31 Mar 2026 17:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65C3410D00;
+	Tue, 31 Mar 2026 16:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoogfQzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSdyE55z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440E12F5491;
-	Tue, 31 Mar 2026 17:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686C93FADEE;
+	Tue, 31 Mar 2026 16:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976644; cv=none; b=fWTDmR6xg5NOkG7C49fSquQUz9aRcKv4n+keMIyB4iNyJTetMlFFuF2I6cx3GoNPMobmnjKykNgvDrFH5QjzlKp6jmgL4mOYVqNx0I7h0F2SJNO+munL43DOCM1sqPKZUIRncdegXVpW2+eQX/8uSbRToZMTeanCk4isx0RRiLs=
+	t=1774974454; cv=none; b=hRfoI9PrgmMLYGTI+V5FFFv9A5Gn8eRmFP3+E7vGzuDHYedUCxzXICkbq6rdvvuQQUnfVvk2ATY/ewx7Wfhd2FHD7zos1CXkieL8jgf8xYt/Xlr75stEjfIDxWzJpwEnvHC2m/WrMAlnmknZo5sophKhI8VGo1shaGTgOGVzXtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976644; c=relaxed/simple;
-	bh=eYxi5crwyflC1V3vfJs97KjaV228/n8jTRthDgFX3Wo=;
+	s=arc-20240116; t=1774974454; c=relaxed/simple;
+	bh=GreHCGcvyUUbRJOwsQxTi8f4tenCevrqjbSoxwmYbBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kh1VJd1OQX3uE2z6h6rzGsGPQgYMz+zBXcfURLIkH7ELhLEG3tSEMJ/fzFiPE7aozk8A292aZBXrbCqSN3wCG8k2x+/bbYIgz5A2POhDkD5hibKsQsbBPh7e6hINpD2uH6vy/bxlCKp4z+kW53ZiHHiybs0kFGfaLT2pMBqgYxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoogfQzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB65C19423;
-	Tue, 31 Mar 2026 17:04:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t643/oaVP+GHwPwox1hl/YvuMVJW744nvvEXUG0KqIzUCjkbFm/9Hiyh6X+8g3c7fJAwr+N9z+UwOUyOSX9EgZTUrj7l+K8TZb+mQdMIFtGciaWTb7M7hlIFE/QxcolREmipiLOW/P/ZvmCWIHznlOIS5+nYqcVm8ujrVEeLaTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSdyE55z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3148C19423;
+	Tue, 31 Mar 2026 16:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976644;
-	bh=eYxi5crwyflC1V3vfJs97KjaV228/n8jTRthDgFX3Wo=;
+	s=korg; t=1774974454;
+	bh=GreHCGcvyUUbRJOwsQxTi8f4tenCevrqjbSoxwmYbBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoogfQzCqgxxdn2bNqA++bjdgCaKoe1tATW70waNjvInwxgkRVS9i/nynKpLITpaQ
-	 P5UC67Od7cT99TViopZZmjxhAxHvMIz2Yiiwb52Pkz+PCf6Vm2PX49u0n244UkyAfo
-	 j0wmH8TrZv9HWoDNVsyyHWov+bKGgY0+I55CA0G4=
+	b=pSdyE55znrirN9V+5xrk140hcWg1pf3YBwNRp87zVT4PAsidTQ2z23ZzZg3H+38Lz
+	 TxO0G8xHGz3/lql7a03InTtAiK0Gb6z6di9e/rPva6jwvxkRYNTd5oHLhsIDKYnDcq
+	 s8APFQEzuTUlDs10VzHRArxKhj0icc1jmHB89RaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 173/309] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+Subject: [PATCH 6.6 092/175] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
 Date: Tue, 31 Mar 2026 18:21:16 +0200
-Message-ID: <20260331161759.834265205@linuxfoundation.org>
+Message-ID: <20260331161733.150272401@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +66,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231548-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232398-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 27F9F36F101
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6B92036CB80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
+[ Upstream commit 7150850146ebfa4ca998f653f264b8df6f7f85be ]
 
-There is a teardown order issue in the driver. The SPI controller is
-registered using devm_spi_register_controller(), which delays
-unregistration of the SPI controller until after the fsl_lpspi_remove()
-function returns.
+amdgpu_amdkfd_submit_ib() submits a GPU job and gets a fence
+from amdgpu_ib_schedule(). This fence is used to wait for job
+completion.
 
-As the fsl_lpspi_remove() function synchronously tears down the DMA
-channels, a running SPI transfer triggers the following NULL pointer
-dereference due to use after free:
+Currently, the code drops the fence reference using dma_fence_put()
+before calling dma_fence_wait().
 
-| fsl_lpspi 42550000.spi: I/O Error in DMA RX
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[...]
-| Call trace:
-|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
-|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
-|  spi_transfer_one_message+0x49c/0x7c8
-|  __spi_pump_transfer_message+0x120/0x420
-|  __spi_sync+0x2c4/0x520
-|  spi_sync+0x34/0x60
-|  spidev_message+0x20c/0x378 [spidev]
-|  spidev_ioctl+0x398/0x750 [spidev]
-[...]
+If dma_fence_put() releases the last reference, the fence may be
+freed before dma_fence_wait() is called. This can lead to a
+use-after-free.
 
-Switch from devm_spi_register_controller() to spi_register_controller() in
-fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
-fsl_lpspi_remove().
+Fix this by waiting on the fence first and releasing the reference
+only after dma_fence_wait() completes.
 
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c:697 amdgpu_amdkfd_submit_ib() warn: passing freed memory 'f' (line 696)
+
+Fixes: 9ae55f030dc5 ("drm/amdgpu: Follow up change to previous drm scheduler change.")
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8b9e5259adc385b61a6590a13b82ae0ac2bd3482)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 065456aba2aea..47d372557e4f6 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -972,7 +972,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		enable_irq(irq);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+index fbee10927bfb6..946264a87d0e8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -670,9 +670,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
+ 		goto err_ib_sched;
  	}
  
--	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	ret = spi_register_controller(controller);
- 	if (ret < 0) {
- 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
- 		goto free_dma;
-@@ -998,6 +998,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
+-	/* Drop the initial kref_init count (see drm_sched_main as example) */
+-	dma_fence_put(f);
+ 	ret = dma_fence_wait(f, false);
++	/* Drop the returned fence reference after the wait completes */
++	dma_fence_put(f);
  
-+	spi_unregister_controller(controller);
- 	fsl_lpspi_dma_exit(controller);
- 
- 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
+ err_ib_sched:
+ 	amdgpu_job_free(job);
 -- 
 2.53.0
 
