@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIETNvP1y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:31 +0200
+	id SCUAEFYDzGmPNQYAu9opvQ
+	(envelope-from <stable+bounces-232053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2480036C9AA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A8C36EA36
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 372F330A6B09
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27E6131C5B44
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4D53FFADF;
-	Tue, 31 Mar 2026 16:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860E83F8E04;
+	Tue, 31 Mar 2026 16:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhZhFepz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqiS3QFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF3A3FADF9;
-	Tue, 31 Mar 2026 16:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AA233120E;
+	Tue, 31 Mar 2026 16:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974304; cv=none; b=YB/pN9Re4O4hjTftNYyYRvFRWq47aY+WBJo9SVpF16AjxRcl8gV4XmcBoONu3Oy8Je3V0VibrsM35wWO7mi0LUe960I1LF2PropQrvFodzne6llGNSzjuDijs532XFrmsVWOMQNBhcoTk9xx0kMgSVB8cWImALoWFoXej8HUI2w=
+	t=1774975754; cv=none; b=uQP18EkGg6tKzyXtShy7R9OU7igvirLRs2iay1xWEB3m68kx04ZejxUo/Pwo0I5JCo7hdpqip6jQVBnLZsynu07dgp96VtsoC2U0IvY34ugf3qtPfp31a/q4upKvJ06wNEoXep2NZ4u9R2+Mr95IZbeLwqnSdlX8cLNh3TMRD3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974304; c=relaxed/simple;
-	bh=SESgMhkFm7kHovOuPO9XXVUZaxtSkgVcI6WyuWQeNlg=;
+	s=arc-20240116; t=1774975754; c=relaxed/simple;
+	bh=bQYArPzY/siTpP7U3fgPGvC1BttN5s1ntOkESjt0SEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c3WX7jVE2Y/ziDUgL1m0lKHENTdkYSYOFuwEwN/uaj4kDqnxQLB4ASNZ2Apvz/pKBCd/BQ8pBNW8FBq8O9mT0rB9nTR+ZYdTK8cVKCNksBIk2bmOZPpWcPApKTSiWinh+EOjkyIrfsBYO4xjsE46wX8Z05SevH3V7iiVxXo3Y9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhZhFepz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40142C19423;
-	Tue, 31 Mar 2026 16:25:04 +0000 (UTC)
+	 MIME-Version; b=TaZKnQY6GuyCYHOqvTbFs22h6K0F7fvDxnBPLkisxdz+EvjCNXsbIhy1fSzYzmnKadMlfoJolkOWx2n+siVhNmUWRj/UsILB1qsku6HO+l0axYr36SgFPTLmrRBN8alMCOMZTIvhmYz27K+gKTkvxrWtco3sPfjNhrLBbEZOw3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqiS3QFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9846AC19423;
+	Tue, 31 Mar 2026 16:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974304;
-	bh=SESgMhkFm7kHovOuPO9XXVUZaxtSkgVcI6WyuWQeNlg=;
+	s=korg; t=1774975753;
+	bh=bQYArPzY/siTpP7U3fgPGvC1BttN5s1ntOkESjt0SEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhZhFepz9ndslVbj5E7gZ8upcaQataNvtkpU9I+YiUmZUN8Lm2S1umMbTRYFaPEyF
-	 UFW/uOfC/bL+fFmOV5KrWNgu9CvvjclmyvsaqfzIYYqCVdFUOcprGIy8UrNqdwIuLL
-	 DLq8raO9UhAu7Ipq9C+9RSiMT/e9K1Wim7TfQNaU=
+	b=BqiS3QFjKkBeNOs5rnNbDfK/Jj/qXRsY+OuBbeOi0IeoO+m7kqfshHaL/4BV6fAz4
+	 DpgqVCA56pgbdXMFgs924ZvPf65m3tloTsMIK2pUYmX9NskoQqJ4OiiQOvk/ZQfTZw
+	 O1ClKpA6DWWvLT9jwjXyGToxwVrlVUbmSjINNfuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/175] hwmon: axi-fan: dont use driver_override as IRQ name
+Subject: [PATCH 6.12 040/244] objtool: Handle Clang RSP musical chairs
 Date: Tue, 31 Mar 2026 18:19:50 +0200
-Message-ID: <20260331161730.017651713@linuxfoundation.org>
+Message-ID: <20260331161743.179407713@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231489-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232053-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,analog.com:email]
-X-Rspamd-Queue-Id: 2480036C9AA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
+X-Rspamd-Queue-Id: D6A8C36EA36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 813bbc4d33d2ca5b0da63e70ae13b60874f20d37 ]
+[ Upstream commit 7fdaa640c810cb42090a182c33f905bcc47a616a ]
 
-Do not use driver_override as IRQ name, as it is not guaranteed to point
-to a valid string; use NULL instead (which makes the devm IRQ helpers
-use dev_name()).
+For no apparent reason (possibly related to CONFIG_KMSAN), Clang can
+randomly pass the value of RSP to other registers and then back again to
+RSP.  Handle that accordingly.
 
-Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260303115720.48783-4-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes the following warnings:
+
+  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: undefined stack state
+  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: unknown CFA base reg -1
+
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/90956545-2066-46e3-b547-10c884582eb0@app.fastmail.com
+Link: https://patch.msgid.link/240e6a172cc73292499334a3724d02ccb3247fc7.1772818491.git.jpoimboe@kernel.org
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/axi-fan-control.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/arch/x86/decode.c | 62 ++++++++++++---------------------
+ tools/objtool/check.c           | 14 ++++++++
+ 2 files changed, 37 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
-index df99cad16b208..641cc06c77aff 100644
---- a/drivers/hwmon/axi-fan-control.c
-+++ b/drivers/hwmon/axi-fan-control.c
-@@ -507,7 +507,7 @@ static int axi_fan_control_probe(struct platform_device *pdev)
- 	ret = devm_request_threaded_irq(&pdev->dev, ctl->irq, NULL,
- 					axi_fan_control_irq_handler,
- 					IRQF_ONESHOT | IRQF_TRIGGER_HIGH,
--					pdev->driver_override, ctl);
-+					NULL, ctl);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "failed to request an irq\n");
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index ed6bff0e01dcd..f96b7b47babd5 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -331,52 +331,36 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 		if (!rex_w)
+ 			break;
+ 
+-		if (modrm_reg == CFI_SP) {
+-
+-			if (mod_is_reg()) {
+-				/* mov %rsp, reg */
+-				ADD_OP(op) {
+-					op->src.type = OP_SRC_REG;
+-					op->src.reg = CFI_SP;
+-					op->dest.type = OP_DEST_REG;
+-					op->dest.reg = modrm_rm;
+-				}
+-				break;
+-
+-			} else {
+-				/* skip RIP relative displacement */
+-				if (is_RIP())
+-					break;
+-
+-				/* skip nontrivial SIB */
+-				if (have_SIB()) {
+-					modrm_rm = sib_base;
+-					if (sib_index != CFI_SP)
+-						break;
+-				}
+-
+-				/* mov %rsp, disp(%reg) */
+-				ADD_OP(op) {
+-					op->src.type = OP_SRC_REG;
+-					op->src.reg = CFI_SP;
+-					op->dest.type = OP_DEST_REG_INDIRECT;
+-					op->dest.reg = modrm_rm;
+-					op->dest.offset = ins.displacement.value;
+-				}
+-				break;
++		if (mod_is_reg()) {
++			/* mov reg, reg */
++			ADD_OP(op) {
++				op->src.type = OP_SRC_REG;
++				op->src.reg = modrm_reg;
++				op->dest.type = OP_DEST_REG;
++				op->dest.reg = modrm_rm;
+ 			}
+-
+ 			break;
+ 		}
+ 
+-		if (rm_is_reg(CFI_SP)) {
++		/* skip RIP relative displacement */
++		if (is_RIP())
++			break;
+ 
+-			/* mov reg, %rsp */
++		/* skip nontrivial SIB */
++		if (have_SIB()) {
++			modrm_rm = sib_base;
++			if (sib_index != CFI_SP)
++				break;
++		}
++
++		/* mov %rsp, disp(%reg) */
++		if (modrm_reg == CFI_SP) {
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+-				op->src.reg = modrm_reg;
+-				op->dest.type = OP_DEST_REG;
+-				op->dest.reg = CFI_SP;
++				op->src.reg = CFI_SP;
++				op->dest.type = OP_DEST_REG_INDIRECT;
++				op->dest.reg = modrm_rm;
++				op->dest.offset = ins.displacement.value;
+ 			}
+ 			break;
+ 		}
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 4adb3f3d9aed8..ad83bb3197225 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3021,6 +3021,20 @@ static int update_cfi_state(struct instruction *insn,
+ 				cfi->stack_size += 8;
+ 			}
+ 
++			else if (cfi->vals[op->src.reg].base == CFI_CFA) {
++				/*
++				 * Clang RSP musical chairs:
++				 *
++				 *   mov %rsp, %rdx [handled above]
++				 *   ...
++				 *   mov %rdx, %rbx [handled here]
++				 *   ...
++				 *   mov %rbx, %rsp [handled above]
++				 */
++				cfi->vals[op->dest.reg].base = CFI_CFA;
++				cfi->vals[op->dest.reg].offset = cfi->vals[op->src.reg].offset;
++			}
++
+ 
+ 			break;
+ 
 -- 
 2.51.0
 
