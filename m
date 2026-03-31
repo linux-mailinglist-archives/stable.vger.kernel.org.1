@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-231906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHLWICn8y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:01 +0200
+	id YOPrG2wEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A9036D586
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B8736EC9B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 04E5A307FF3B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D16683103904
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD11425CC7;
-	Tue, 31 Mar 2026 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28107426693;
+	Tue, 31 Mar 2026 16:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvo/bWff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xklW3kdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E29F3D8114;
-	Tue, 31 Mar 2026 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3AC425CF0;
+	Tue, 31 Mar 2026 16:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975373; cv=none; b=rFxrgbd3TG+8f/QKLyCMfbkxkv6mCdoRkx8iMQL46t7dQ9rjWd4Comz/GXRxH13msxwO2xbjD1qDzVxRmq1fU0CPhUpA0Meps3GtPlxNFujcPKm218ql0tw9/oupZJ7tHOZpiknawKf47qTCm5i/R1fCvwDGA/qDHAKqJHbX1M8=
+	t=1774975875; cv=none; b=qt3R7ia6r2fHCKzZkHPlgBYAEZ0BQKOcaNn7S003QylYUBhZOJaBrJrkf6uWOWEm7xTVbDv9gcCHEvyr+LGaxvoQVQEEqD4p8E0Ez9CIV992A3N2AvnY4aiwiysPGUHZun3tN4zGggXhtLSX3muowadOV4tARyX/HSwNLRVn6aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975373; c=relaxed/simple;
-	bh=Tm9uJI/yByMh6fHuNQpxJigCnYOz4j50UViGSD3NrgY=;
+	s=arc-20240116; t=1774975875; c=relaxed/simple;
+	bh=eRAhFrtWvY7QCdhtLGAuYSp1GU2Er/t9asTNRrov6J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8pcDXqPT+bt6A43vkoZ3JyiRvZwqWXixdwnUJMnrbVk675rf1W68hqZEyEkUO9xvTb59QfwQU/ZyLOCIv5bFe/nR2cATTPsJYbCrZLdOVaUoUZ97rMxZt345KJcK1ppkcdLb/0L4qvPXdL7oLltSdwA/vYL22ssSaFcEazyPUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvo/bWff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824E0C19423;
-	Tue, 31 Mar 2026 16:42:52 +0000 (UTC)
+	 MIME-Version; b=fitk4UmCnjz42qlVW8Uv3pR7JrVfv4pMIigo+XfMTRUvSBs0FAFEKAmpcxtQxlJixd9p/uGQDecpg86HoBjGFwxK2+3lWhBdbB+wvU7fBBdkmhwvqW/oBXWOuvnSNZMqyHznc1J9A3l3jaUm1HRDVAw7KRZYM6u8b3hq+xkXllE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xklW3kdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DB5C19423;
+	Tue, 31 Mar 2026 16:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975373;
-	bh=Tm9uJI/yByMh6fHuNQpxJigCnYOz4j50UViGSD3NrgY=;
+	s=korg; t=1774975875;
+	bh=eRAhFrtWvY7QCdhtLGAuYSp1GU2Er/t9asTNRrov6J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvo/bWff4bIDMafWvNLXQMKihmQsol50Fa/4TEHeIy2iHlTVifHZWg0ntfWS+rl9V
-	 E+pcqsH/3OGg5PYL5ykUVfMlACmZiSbu0SDPJX+fySzCIkCneTy5E4MEOGkVTsPld7
-	 2Z7Q324JT6uHcXe/Bf501kH0rDE1bSuODorPcUZs=
+	b=xklW3kdtMDCXL0qHrucKjKepGaz7JUTyrTUUyQy2w3mMgsSqKZChf9+xpjGoCw2wc
+	 LMFJ0JftoIV/rowFCqUnXubK2wuozniCpvJX/D3TpGJevlxhCc0s7c2bAtuaJT8B1G
+	 VmzB+NMFS98tMa6RT/VQVdjKX511+x0n49FpZvRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 237/342] mm/huge_memory: fix folio isnt locked in softleaf_to_folio()
-Date: Tue, 31 Mar 2026 18:21:10 +0200
-Message-ID: <20260331161807.685915657@linuxfoundation.org>
+	Felix Gu <ustc.gu@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 121/244] spi: meson-spicc: Fix double-put in remove path
+Date: Tue, 31 Mar 2026 18:21:11 +0200
+Message-ID: <20260331161746.129842453@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,158 +65,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231906-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-232100-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.990];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,linux-foundation.org:email,suse.com:email]
-X-Rspamd-Queue-Id: 21A9036D586
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 99B8736EC9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 4c5e7f0fcd592801c9cc18f29f80fbee84eb8669 upstream.
+[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
 
-On arm64 server, we found folio that get from migration entry isn't locked
-in softleaf_to_folio().  This issue triggers when mTHP splitting and
-zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-in softleaf_to_folio().  The race is as follows:
+meson_spicc_probe() registers the controller with
+devm_spi_register_controller(), so teardown already drops the
+controller reference via devm cleanup.
 
-	CPU0                                             CPU1
+Calling spi_controller_put() again in meson_spicc_remove()
+causes a double-put.
 
-deferred_split_scan()                              zap_nonpresent_ptes()
-  lock folio
-  split_folio()
-    unmap_folio()
-      change ptes to migration entries
-    __split_folio_to_order()                         softleaf_to_folio()
-      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
-      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
-      prep_compound_page() for tail pages
-
-In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-are visible before the tail page becomes non-compound.  smp_wmb() should
-be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
-result, if zap_nonpresent_ptes() accesses migration entry that stores tail
-pfn, softleaf_to_folio() may see the updated compound_head of tail page
-before page->flags.
-
-This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
-because of the race between folio split and zap_nonpresent_ptes()
-leading to a folio incorrectly undergoing modification without a folio
-lock being held.
-
-This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
-swapops predicates"), which in merged in v6.19-rc1.
-
-To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-in softleaf_to_folio() and softleaf_to_page().
-
-[tujinjiang@huawei.com: update function name and comments]
-  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
-Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/leafops.h |   32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ drivers/spi/spi-meson-spicc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -363,6 +363,23 @@ static inline unsigned long softleaf_to_
- 	return swp_offset(entry) & SWP_PFN_MASK;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 1d05590a74346..4ba95b148b1f6 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -903,8 +903,6 @@ static void meson_spicc_remove(struct platform_device *pdev)
+ 
+ 	/* Disable SPI */
+ 	writel(0, spicc->base + SPICC_CONREG);
+-
+-	spi_controller_put(spicc->host);
  }
  
-+static inline void softleaf_migration_sync(softleaf_t entry,
-+		struct folio *folio)
-+{
-+	/*
-+	 * Ensure we do not race with split, which might alter tail pages into new
-+	 * folios and thus result in observing an unlocked folio.
-+	 * This matches the write barrier in __split_folio_to_order().
-+	 */
-+	smp_rmb();
-+
-+	/*
-+	 * Any use of migration entries may only occur while the
-+	 * corresponding page is locked
-+	 */
-+	VM_WARN_ON_ONCE(!folio_test_locked(folio));
-+}
-+
- /**
-  * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
-  * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
-@@ -374,11 +391,8 @@ static inline struct page *softleaf_to_p
- 	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
- 
- 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding page is locked
--	 */
--	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
-+	if (softleaf_is_migration(entry))
-+		softleaf_migration_sync(entry, page_folio(page));
- 
- 	return page;
- }
-@@ -394,12 +408,8 @@ static inline struct folio *softleaf_to_
- 	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
- 
- 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding folio is locked.
--	 */
--	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
--			!folio_test_locked(folio));
-+	if (softleaf_is_migration(entry))
-+		softleaf_migration_sync(entry, folio);
- 
- 	return folio;
- }
+ static const struct meson_spicc_data meson_spicc_gx_data = {
+-- 
+2.53.0
+
 
 
 
