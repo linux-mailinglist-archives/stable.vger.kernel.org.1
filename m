@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-231952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHsdCfr7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:14 +0200
+	id MPf8A7cHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA69736D542
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B58A36F328
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4588730C45BD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3DBF130C622D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0334423149;
-	Tue, 31 Mar 2026 16:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B9D306498;
+	Tue, 31 Mar 2026 17:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHXo2cJH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUk6znxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62142402435;
-	Tue, 31 Mar 2026 16:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934233016EE;
+	Tue, 31 Mar 2026 17:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975490; cv=none; b=Ijfmhc3rktc87kKcvvmQ2jbPy5QmaXiEWOtYHOXIVcyXfnpgCKSiztEgjiV8ALTcc2fZi4wXD4f8GPCo3kdAjlGU1B6ic7pLmDFwV8laFpiS4u0GSLVKv5tk75yDOrGpQFg8PpP5nMPEW9a096WfDq3X2uwWsXHYS5yp56JhRpY=
+	t=1774976833; cv=none; b=beri+GUJOTAtwW0wFsWLEXRYcicSXnLv/z7+fsG+wa9wNlHKOaponi36PzUt/BTQ4zRvdlpt8VmtGclHHJSCL0YXlsNZgcJlhnT71m4h4yW7o8lo7ps+6w6HJNAr7gIPZhGowGtwpmIvNBQBlaYBFen9UIxUIRjKVYBUsdgpj6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975490; c=relaxed/simple;
-	bh=TNFZXlzJ6zxy+UlFJ6gEdCgTXZH7yBxFVlRV1O+HceE=;
+	s=arc-20240116; t=1774976833; c=relaxed/simple;
+	bh=ABDjbdBtkeQ+B2UU0lJpHZudfRrAn7XKiAnY6QWSwU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOCCWTudJ/n8EmQyhVSLUbwXerEq5NmVikhrIc9dhYKgOlmGwNlYygl3eJmYkRts/D4sksoelJ7wu5n9sM6t6Rstxqk0TbE+pw6vmyga+h9V13q8h7nfH5MTk/6SW66LAC7wNZuFNJAVisP8PxYI/MDWRk54WoJAm/1RzcgBNLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHXo2cJH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17F4C2BCB1;
-	Tue, 31 Mar 2026 16:44:49 +0000 (UTC)
+	 MIME-Version; b=uK8Bv9mackjdBthq15yGvWElALibA1oIe7JiGcOEvyASMoOpO6tr25CHkSLoZOOO48aeMMeowp+7xrzloBdAyX6y+A6YDueS9e0PxtZS43BhXn/cbR/hD3n0y9kH+OTxYWlrqgdyxhmCUheDYYvU5He+WciHJ7oRtleipVgX9CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUk6znxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B7CC19423;
+	Tue, 31 Mar 2026 17:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975490;
-	bh=TNFZXlzJ6zxy+UlFJ6gEdCgTXZH7yBxFVlRV1O+HceE=;
+	s=korg; t=1774976833;
+	bh=ABDjbdBtkeQ+B2UU0lJpHZudfRrAn7XKiAnY6QWSwU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHXo2cJH3OT6b281Ek5bYJLSBnviz4QqfhClc4UOkg/KwIr1KcQRuuDK9r1Dzo2St
-	 TjJqyJ0LQf+i8gsqFPXsPbPuZWccWPKp+n3YfDfMfmq5pa8JO+Hj6ZjRqu8IqNFfgW
-	 WNUFDeJnWUXl08NKR/uXW7nKGwm54DJ1ZlSqAexo=
+	b=kUk6znxCv4wjAs+V7cS55PFmblsLuL99DJCtvrUhjDf/GIcctAH5GUojaPTYx5rs2
+	 nukRgNgtefxK/y4qT0g/Lf55OiIDk3EL4JP9EImuTpSsaiLSh18xlGyS26O9jb31Uk
+	 9JmyjWCFwfFCr4jTOTl3FsG53b5BUmM/vI7TYKbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 316/342] dmaengine: idxd: Fix memory leak when a wq is reset
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Max Boone <mboone@akamai.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 246/309] mm/pagewalk: fix race between concurrent split and refault
 Date: Tue, 31 Mar 2026 18:22:29 +0200
-Message-ID: <20260331161810.548876183@linuxfoundation.org>
+Message-ID: <20260331161802.625678585@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +74,183 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231952-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232471-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CA69736D542
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2B58A36F328
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Max Boone <mboone@akamai.com>
 
-[ Upstream commit d9cfb5193a047a92a4d3c0e91ea4cc87c8f7c478 ]
+commit 3b89863c3fa482912911cd65a12a3aeef662c250 upstream.
 
-idxd_wq_disable_cleanup() which is called from the reset path for a
-workqueue, sets the wq type to NONE, which for other parts of the
-driver mean that the wq is empty (all its resources were released).
+The splitting of a PUD entry in walk_pud_range() can race with a
+concurrent thread refaulting the PUD leaf entry causing it to try walking
+a PMD range that has disappeared.
 
-Only set the wq type to NONE after its resources are released.
+An example and reproduction of this is to try reading numa_maps of a
+process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
 
-Fixes: da32b28c95a7 ("dmaengine: idxd: cleanup workqueue config after disabling")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-8-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
+
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further.  This mirrors the
+retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
+PTE is not being got by pte_offset_map_lock().
+
+Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/device.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/pagewalk.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index f9e49c5545f65..a7ecc17442354 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -175,6 +175,7 @@ void idxd_wq_free_resources(struct idxd_wq *wq)
- 	free_descs(wq);
- 	dma_free_coherent(dev, wq->compls_size, wq->compls, wq->compls_addr);
- 	sbitmap_queue_free(&wq->sbq);
-+	wq->type = IDXD_WQT_NONE;
- }
- EXPORT_SYMBOL_NS_GPL(idxd_wq_free_resources, "IDXD");
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, un
+ 	int err = 0;
+ 	int depth = real_depth(3);
  
-@@ -382,7 +383,6 @@ static void idxd_wq_disable_cleanup(struct idxd_wq *wq)
- 	lockdep_assert_held(&wq->wq_lock);
- 	wq->state = IDXD_WQ_DISABLED;
- 	memset(wq->wqcfg, 0, idxd->wqcfg_size);
--	wq->type = IDXD_WQT_NONE;
- 	wq->threshold = 0;
- 	wq->priority = 0;
- 	wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
-@@ -1531,7 +1531,6 @@ void idxd_drv_disable_wq(struct idxd_wq *wq)
- 	idxd_wq_reset(wq);
- 	idxd_wq_free_resources(wq);
- 	percpu_ref_exit(&wq->wq_active);
--	wq->type = IDXD_WQT_NONE;
- 	wq->client_count = 0;
- }
- EXPORT_SYMBOL_NS_GPL(idxd_drv_disable_wq, "IDXD");
--- 
-2.53.0
-
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim.
++	 *
++	 * Similarly, we have to be careful here - a PUD entry that points
++	 * to a PMD table cannot go away, so we can just walk it. But if
++	 * it's something else, we need to ensure we didn't race something,
++	 * so need to retry.
++	 *
++	 * A pertinent example of this is a PUD refault after PUD split -
++	 * we will need to split again or risk accessing invalid memory.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
++	}
++
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, un
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
+ 
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
+ 	} while (pud++, addr = next, addr != end);
+ 
+ 	return err;
 
 
 
