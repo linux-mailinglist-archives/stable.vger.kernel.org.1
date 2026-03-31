@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ5/AkUIzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:41 +0200
+	id wK6PGgD/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBDB36F450
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAE436DDE9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 137DC3068F30
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C015231CB791
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D24330AD00;
-	Tue, 31 Mar 2026 17:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F01423A89;
+	Tue, 31 Mar 2026 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMkMA4K8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIlVMXjz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB3E303A07;
-	Tue, 31 Mar 2026 17:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B2421A1D;
+	Tue, 31 Mar 2026 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976854; cv=none; b=pKOzvnKoPpNkpOSXTKMdZxCNvhqQHbxxr/Prx1bvkuQ8157cJTygr6xfMSTqYQWOI31wfnCqgoDcaPhv3hooJHaoX/G54Z4IBh6JmxIaVuB0GwDnxU9wzHR9VGjq6Wi671ccq3My7e4bnwWjMT47S5NT+2CyfnGVGm4JyGeixGA=
+	t=1774974618; cv=none; b=GUr56ylPv9fWEmAmlm+sDy+bSQCFAfSTS+tkDmFASuNM3G+lCEToFHoOFfbpVrYfIEoisMB0S9lAOhksxPCpecVMLpzc4N9EbaHZLwEyNN827XjARgHy9BNrV2lJ/6N5pPiXo91xyt30Syady0uwp+eMRkj/lqZBomstBx4RaGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976854; c=relaxed/simple;
-	bh=vjjQHZMDGkxhKkb3z+auWZtXu7X8c6IDMgt0dVo7S4Q=;
+	s=arc-20240116; t=1774974618; c=relaxed/simple;
+	bh=e1MzedQeY1+CbM27PKkog8Obc7WLoEjABasvzOSXlZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ANwLdmcbiqURxAsU9ewGAZjM+jY1h+tF3Gw5aQCKMaCwcZCSvc8ailV5zngSbaf68kNpt2RC4UaBuKrDhTSum3Rkc9c+RzWea9pxa6h4xNyQB0KITZX5y49r2t7AuhmiuHeUrDSPLx5/DPlIT3T89HqQXVD21ov9DITm8gHOyO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMkMA4K8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A20C19423;
-	Tue, 31 Mar 2026 17:07:33 +0000 (UTC)
+	 MIME-Version; b=ViZmjKXeUAMA591nGP0JvZtLxGtTfnQeVwtTgS/B8Vo6Racl/N9UwuPjqKJShdnDZKTIx3sKp9itWRz8yj3MikgWt5sOGmnzL2MhVmBGjU9F4AKfAqW9wqkbv9RfHA58HTsVHjVaGL6/VbzOlPertV6FcyU3pO1/v94YW6dxzKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIlVMXjz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9687CC19423;
+	Tue, 31 Mar 2026 16:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976854;
-	bh=vjjQHZMDGkxhKkb3z+auWZtXu7X8c6IDMgt0dVo7S4Q=;
+	s=korg; t=1774974617;
+	bh=e1MzedQeY1+CbM27PKkog8Obc7WLoEjABasvzOSXlZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMkMA4K8kAV4Jm1KQaATunmjqiK8gZiq8022pWzwLd2lVg64/6DKlVhY9kuWWv55w
-	 vdkUnX3CSoAzL5bYFtOavr6Cd8PNuxEcoOlouDQlprTsmmbCLwUA3IIaXnmI4TMtS1
-	 NypyfpkIkbv58npZkBHfkKGZ/mk/zwDbQv4DF0KE=
+	b=QIlVMXjzg8bGMhtFuT3i+VWNHUNafytwT8oD9XVh7j8uLyHt4WOYpwOF/X1lB+u/d
+	 BVSWFqvQ0s01djnngVNsZ8RdctygfI4FEW3b1qWfg165qzt6xf4eZfQ/2nb4kmyO/N
+	 KG//jInIhQFmL1U2/ecku0tFEJmO09Q9dIcVFgpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.18 236/309] drm/i915: Order OP vs. timeout correctly in __wait_for()
+	Keith Busch <kbusch@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Li hongliang <1468888505@139.com>,
+	Yi Zhang <yi.zhang@redhat.com>
+Subject: [PATCH 6.6 155/175] nvme: fix admin queue leak on controller reset
 Date: Tue, 31 Mar 2026 18:22:19 +0200
-Message-ID: <20260331161802.264432535@linuxfoundation.org>
+Message-ID: <20260331161735.489034603@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232479-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,139.com];
+	TAGGED_FROM(0.00)[bounces-231611-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7BBDB36F450
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: ADAE436DDE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 6ad2a661ff0d3d94884947d2a593311ba46d34c2 upstream.
+[ Upstream commit b84bb7bd913d8ca2f976ee6faf4a174f91c02b8d ]
 
-Put the barrier() before the OP so that anything we read out in
-OP and check in COND will actually be read out after the timeout
-has been evaluated.
+When nvme_alloc_admin_tag_set() is called during a controller reset,
+a previous admin queue may still exist. Release it properly before
+allocating a new one to avoid orphaning the old queue.
 
-Currently the only place where we use OP is __intel_wait_for_register(),
-but the use there is precisely susceptible to this reordering, assuming
-the ktime_*() stuff itself doesn't act as a sufficient barrier:
+This fixes a regression introduced by commit 03b3bcd319b3 ("nvme: fix
+admin request_queue lifetime").
 
-__intel_wait_for_register(...)
-{
-	...
-	ret = __wait_for(reg_value = intel_uncore_read_notrace(...),
- 			 (reg_value & mask) == value, ...);
-	...
-}
-
-Cc: stable@vger.kernel.org
-Fixes: 1c3c1dc66a96 ("drm/i915: Add compiler barrier to wait_for")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260313110740.24620-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit a464bace0482aa9a83e9aa7beefbaf44cd58e6cf)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Keith Busch <kbusch@kernel.org>
+Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime").
+Reported-and-tested-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/linux-block/CAHj4cs9wv3SdPo+N01Fw2SHBYDs9tj2M_e1-GdQOkRy=DsBB1w@mail.gmail.com/
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_wait_util.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/i915/i915_wait_util.h
-+++ b/drivers/gpu/drm/i915/i915_wait_util.h
-@@ -25,9 +25,9 @@
- 	might_sleep();							\
- 	for (;;) {							\
- 		const bool expired__ = ktime_after(ktime_get_raw(), end__); \
--		OP;							\
- 		/* Guarantee COND check prior to timeout */		\
- 		barrier();						\
-+		OP;							\
- 		if (COND) {						\
- 			ret__ = 0;					\
- 			break;						\
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4287,6 +4287,13 @@ int nvme_alloc_admin_tag_set(struct nvme
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * If a previous admin queue exists (e.g., from before a reset),
++	 * put it now before allocating a new one to avoid orphaning it.
++	 */
++	if (ctrl->admin_q)
++		blk_put_queue(ctrl->admin_q);
++
+ 	ctrl->admin_q = blk_mq_init_queue(set);
+ 	if (IS_ERR(ctrl->admin_q)) {
+ 		ret = PTR_ERR(ctrl->admin_q);
 
 
 
