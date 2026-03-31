@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAf/MF78y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:54 +0200
+	id qA50KjX9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E34936D637
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBA836D8EF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9A313140CAD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D872306EA3A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0046427A1B;
-	Tue, 31 Mar 2026 16:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8754218A4;
+	Tue, 31 Mar 2026 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7TBbepJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7eDtUvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0984428473;
-	Tue, 31 Mar 2026 16:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4D53E8C50;
+	Tue, 31 Mar 2026 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975161; cv=none; b=j7O/im7JU5pTqX7paVw9dZaDQKqZoi9qtAYoYgH2IVzUujZyU6IDsNFywixbiM/9kbfF0CTDbnfqTZRPmFQoFTyaXTL4xrxJRyTYOiOeFYTBFLJ4R7StQhjMu9j8DTTJUTGjAA0SdM8YLwn5PlHx2iNqw7pQOx5QOVzPk40Lh3U=
+	t=1774975816; cv=none; b=CSsvWqRxyevQfo1YazRdz7iUPoGexXdeg1Bg90cMbtjFHpdz5Y6IgLi/LO0IlLSXCVZS4to/bklYXvQCke0/MSNe2jJW3cP/nbAtxwY4PtsgPipBXBCxXRKR0epluniznbrNtgFdKQgV2NQccbiaxwlsBCMkggRBiHcgbkdCHYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975161; c=relaxed/simple;
-	bh=AS/sjQayujSOiutLnru9hc8Et2uHGaZYI9QjFJJjZI4=;
+	s=arc-20240116; t=1774975816; c=relaxed/simple;
+	bh=Z0VkR3/1egvW2hGgD/GeIwvL6PfeCQd8uwnR7ugnksE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsUB7ybu40dOkr9Ts4NmwwKaPxTMAJv22bkCOCXXxWmp+2OpfDgc6xrh3Yg/F1HKkJR04Rgw2o0k/JGt71G7ri4aXPOCiU52QZU/+XbHxv/E/GMdemGj0yFRBhJinRqvl4VcVS/Sg13u5R4QNoH2Bp6UPZkzWt0aD5X+2nY2eeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7TBbepJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371F4C19423;
-	Tue, 31 Mar 2026 16:39:21 +0000 (UTC)
+	 MIME-Version; b=q75aaJzHZNoCE5Y227oPGE0eNwCj0Abccj5lUt4NDUCCmjs+M35WSs7GUXY241lT++rAaa3z3NNZ/5RP5B7rCEOrMrN+O6NpN4mLa/NyaTfcW27lMWTMNAcQRWnz+VgSw1IHwzEEVURBgyb6RoCm5QTJGLXKqffsAEmAzSvoSE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7eDtUvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC130C19423;
+	Tue, 31 Mar 2026 16:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975161;
-	bh=AS/sjQayujSOiutLnru9hc8Et2uHGaZYI9QjFJJjZI4=;
+	s=korg; t=1774975816;
+	bh=Z0VkR3/1egvW2hGgD/GeIwvL6PfeCQd8uwnR7ugnksE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7TBbepJv83YObQSthdG+byCGCrh3OY/yYkOK7vbs8FOtgsFHQGKaFH9wkpSUnZxs
-	 ESfbB64eUAhuDZtiPSmNaWzDSUe15bTKXq03cWqrAdQ2Sp5nq5AgVG6UZryrUB05xd
-	 j9wBvkDgw+KHImT+HSiwwrLT1QLefYENdXMSyEu8=
+	b=d7eDtUvGBSmFFCrS5hv5MUAx5goZUd8+TtQetvDe4reqHJ3tdg8MYLEmCNSpGQrrO
+	 oV8TIkEX8VaG0kFIRyNenx372vrkrOa9OfsovWAgKRW+OnNlrYHATnw0cQeL5NY4Z9
+	 u22FChYOsW6ZpBbJcjsH/z6auGfmJxLtacK3kcDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 187/342] hwmon: (pmbus/core) Protect regulator operations with mutex
+Subject: [PATCH 6.12 070/244] net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
 Date: Tue, 31 Mar 2026 18:20:20 +0200
-Message-ID: <20260331161805.882494533@linuxfoundation.org>
+Message-ID: <20260331161744.273123544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,289 +66,134 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232077-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231823-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,s.data:url,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1E34936D637
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8CBA836D8EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Qi Tang <tpluszz77@gmail.com>
 
-[ Upstream commit 754bd2b4a084b90b5e7b630e1f423061a9b9b761 ]
+[ Upstream commit 24dd586bb4cbba1889a50abe74143817a095c1c9 ]
 
-The regulator operations pmbus_regulator_get_voltage(),
-pmbus_regulator_set_voltage(), and pmbus_regulator_list_voltage()
-access PMBus registers and shared data but were not protected by
-the update_lock mutex. This could lead to race conditions.
+smc_rx_splice() allocates one smc_spd_priv per pipe_buffer and stores
+the pointer in pipe_buffer.private.  The pipe_buf_operations for these
+buffers used .get = generic_pipe_buf_get, which only increments the page
+reference count when tee(2) duplicates a pipe buffer.  The smc_spd_priv
+pointer itself was not handled, so after tee() both the original and the
+cloned pipe_buffer share the same smc_spd_priv *.
 
-However, adding mutex protection directly to these functions causes
-a deadlock because pmbus_regulator_notify() (which calls
-regulator_notifier_call_chain()) is often called with the mutex
-already held (e.g., from pmbus_fault_handler()). If a regulator
-callback then calls one of the now-protected voltage functions,
-it will attempt to acquire the same mutex.
+When both pipes are subsequently released, smc_rx_pipe_buf_release() is
+called twice against the same object:
 
-Rework pmbus_regulator_notify() to utilize a worker function to
-send notifications outside of the mutex protection. Events are
-stored as atomics in a per-page bitmask and processed by the worker.
+  1st call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [correct]
+  2nd call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [UAF]
 
-Initialize the worker and its associated data during regulator
-registration, and ensure it is cancelled on device removal using
-devm_add_action_or_reset().
+KASAN reports a slab-use-after-free in smc_rx_pipe_buf_release(), which
+then escalates to a NULL-pointer dereference and kernel panic via
+smc_rx_update_consumer() when it chases the freed priv->smc pointer:
 
-While at it, remove the unnecessary include of linux/of.h.
+  BUG: KASAN: slab-use-after-free in smc_rx_pipe_buf_release+0x78/0x2a0
+  Read of size 8 at addr ffff888004a45740 by task smc_splice_tee_/74
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x53/0x70
+   print_report+0xce/0x650
+   kasan_report+0xc6/0x100
+   smc_rx_pipe_buf_release+0x78/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-Cc: Sanman Pradhan <psanman@juniper.net>
-Fixes: ddbb4db4ced1b ("hwmon: (pmbus) Add regulator support")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+  BUG: kernel NULL pointer dereference, address: 0000000000000020
+  RIP: 0010:smc_rx_update_consumer+0x8d/0x350
+  Call Trace:
+   <TASK>
+   smc_rx_pipe_buf_release+0x121/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  Kernel panic - not syncing: Fatal exception
+
+Beyond the memory-safety problem, duplicating an SMC splice buffer is
+semantically questionable: smc_rx_update_cons() would advance the
+consumer cursor twice for the same data, corrupting receive-window
+accounting.  A refcount on smc_spd_priv could fix the double-free, but
+the cursor-accounting issue would still need to be addressed separately.
+
+The .get callback is invoked by both tee(2) and splice_pipe_to_pipe()
+for partial transfers; both will now return -EFAULT.  Users who need
+to duplicate SMC socket data must use a copy-based read path.
+
+Fixes: 9014db202cb7 ("smc: add support for splice()")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Link: https://patch.msgid.link/20260318064847.23341-1-tpluszz77@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 114 ++++++++++++++++++++++++-------
- 1 file changed, 89 insertions(+), 25 deletions(-)
+ net/smc/smc_rx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index cbc36f0ba4bf9..572be3ebc03df 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -6,6 +6,7 @@
-  * Copyright (c) 2012 Guenter Roeck
-  */
- 
-+#include <linux/atomic.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/dcache.h>
-@@ -21,8 +22,8 @@
- #include <linux/pmbus.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
--#include <linux/of.h>
- #include <linux/thermal.h>
-+#include <linux/workqueue.h>
- #include "pmbus.h"
- 
- /*
-@@ -112,6 +113,11 @@ struct pmbus_data {
- 
- 	struct mutex update_lock;
- 
-+#if IS_ENABLED(CONFIG_REGULATOR)
-+	atomic_t regulator_events[PMBUS_PAGES];
-+	struct work_struct regulator_notify_work;
-+#endif
-+
- 	bool has_status_word;		/* device uses STATUS_WORD register */
- 	int (*read_status)(struct i2c_client *client, int page);
- 
-@@ -3228,12 +3234,19 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
- 		.class = PSC_VOLTAGE_OUT,
- 		.convert = true,
- 	};
-+	int ret;
- 
-+	mutex_lock(&data->update_lock);
- 	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
--	if (s.data < 0)
--		return s.data;
-+	if (s.data < 0) {
-+		ret = s.data;
-+		goto unlock;
-+	}
- 
--	return (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+	ret = (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index 79047721df511..e7a6c2602e786 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -135,9 +135,16 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
+ 	sock_put(sk);
  }
  
- static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
-@@ -3250,16 +3263,22 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- 	};
- 	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
- 	int low, high;
-+	int ret;
- 
- 	*selector = 0;
- 
-+	mutex_lock(&data->update_lock);
- 	low = pmbus_regulator_get_low_margin(client, s.page);
--	if (low < 0)
--		return low;
-+	if (low < 0) {
-+		ret = low;
-+		goto unlock;
-+	}
- 
- 	high = pmbus_regulator_get_high_margin(client, s.page);
--	if (high < 0)
--		return high;
-+	if (high < 0) {
-+		ret = high;
-+		goto unlock;
-+	}
- 
- 	/* Make sure we are within margins */
- 	if (low > val)
-@@ -3269,7 +3288,10 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- 
- 	val = pmbus_data2reg(data, &s, val);
- 
--	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+	ret = _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
-@@ -3279,6 +3301,7 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- 	struct i2c_client *client = to_i2c_client(dev->parent);
- 	struct pmbus_data *data = i2c_get_clientdata(client);
- 	int val, low, high;
-+	int ret;
- 
- 	if (data->flags & PMBUS_VOUT_PROTECTED)
- 		return 0;
-@@ -3291,18 +3314,29 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- 	val = DIV_ROUND_CLOSEST(rdev->desc->min_uV +
- 				(rdev->desc->uV_step * selector), 1000); /* convert to mV */
- 
-+	mutex_lock(&data->update_lock);
-+
- 	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
--	if (low < 0)
--		return low;
-+	if (low < 0) {
-+		ret = low;
-+		goto unlock;
-+	}
- 
- 	high = pmbus_regulator_get_high_margin(client, rdev_get_id(rdev));
--	if (high < 0)
--		return high;
-+	if (high < 0) {
-+		ret = high;
-+		goto unlock;
-+	}
- 
--	if (val >= low && val <= high)
--		return val * 1000; /* unit is uV */
-+	if (val >= low && val <= high) {
-+		ret = val * 1000; /* unit is uV */
-+		goto unlock;
-+	}
- 
--	return 0;
-+	ret = 0;
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- const struct regulator_ops pmbus_regulator_ops = {
-@@ -3333,12 +3367,42 @@ int pmbus_regulator_init_cb(struct regulator_dev *rdev,
- }
- EXPORT_SYMBOL_NS_GPL(pmbus_regulator_init_cb, "PMBUS");
- 
-+static void pmbus_regulator_notify_work_cancel(void *data)
++static bool smc_rx_pipe_buf_get(struct pipe_inode_info *pipe,
++				struct pipe_buffer *buf)
 +{
-+	struct pmbus_data *pdata = data;
-+
-+	cancel_work_sync(&pdata->regulator_notify_work);
++	/* smc_spd_priv in buf->private is not shareable; disallow cloning. */
++	return false;
 +}
 +
-+static void pmbus_regulator_notify_worker(struct work_struct *work)
-+{
-+	struct pmbus_data *data =
-+		container_of(work, struct pmbus_data, regulator_notify_work);
-+	int i, j;
-+
-+	for (i = 0; i < data->info->pages; i++) {
-+		int event;
-+
-+		event = atomic_xchg(&data->regulator_events[i], 0);
-+		if (!event)
-+			continue;
-+
-+		for (j = 0; j < data->info->num_regulators; j++) {
-+			if (i == rdev_get_id(data->rdevs[j])) {
-+				regulator_notifier_call_chain(data->rdevs[j],
-+							      event, NULL);
-+				break;
-+			}
-+		}
-+	}
-+}
-+
- static int pmbus_regulator_register(struct pmbus_data *data)
- {
- 	struct device *dev = data->dev;
- 	const struct pmbus_driver_info *info = data->info;
- 	const struct pmbus_platform_data *pdata = dev_get_platdata(dev);
--	int i;
-+	int i, ret;
+ static const struct pipe_buf_operations smc_pipe_ops = {
+ 	.release = smc_rx_pipe_buf_release,
+-	.get = generic_pipe_buf_get
++	.get	 = smc_rx_pipe_buf_get,
+ };
  
- 	data->rdevs = devm_kzalloc(dev, sizeof(struct regulator_dev *) * info->num_regulators,
- 				   GFP_KERNEL);
-@@ -3362,19 +3426,19 @@ static int pmbus_regulator_register(struct pmbus_data *data)
- 					     info->reg_desc[i].name);
- 	}
- 
-+	INIT_WORK(&data->regulator_notify_work, pmbus_regulator_notify_worker);
-+
-+	ret = devm_add_action_or_reset(dev, pmbus_regulator_notify_work_cancel, data);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
- }
- 
- static void pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
- {
--	int j;
--
--	for (j = 0; j < data->info->num_regulators; j++) {
--		if (page == rdev_get_id(data->rdevs[j])) {
--			regulator_notifier_call_chain(data->rdevs[j], event, NULL);
--			break;
--		}
--	}
-+	atomic_or(event, &data->regulator_events[page]);
-+	schedule_work(&data->regulator_notify_work);
- }
- #else
- static int pmbus_regulator_register(struct pmbus_data *data)
+ static void smc_rx_spd_release(struct splice_pipe_desc *spd,
 -- 
-2.53.0
+2.51.0
 
 
 
