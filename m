@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-232081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IA/jECUEzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:05 +0200
+	id GImkAHABzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CF036EC15
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6211736E5D8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 007D73189114
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 094883187FA9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E723C423A9F;
-	Tue, 31 Mar 2026 16:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F156426D06;
+	Tue, 31 Mar 2026 16:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJeJAViz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxPn7RhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB364266A6;
-	Tue, 31 Mar 2026 16:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEDA425CFF;
+	Tue, 31 Mar 2026 16:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975826; cv=none; b=P+jDdcz7ocZBNu0x5Q9OPcjMEw41iNl/0CxhWvsNl90MR3d/3Ty2wIFfUyJGRTIZ0rMDyv3uDyhqt5rUsIfGhAmXdBlF7aMmyVPmLvE4/VFf1/ndVBok4bfFRCJqat8vFmSEodpN13ECIAv/0gjRux8vgiKjIG8ASsMJkvkSQvM=
+	t=1774975239; cv=none; b=sxkuZiw+fpQ2fMSWeDYeupYBS+4Yf8ThIHFQVLSjd55viW4i0HcT0BLQNISaO1/pWtEU5HzZkGHGWlyzju73Oksk5Gpdm4FZZo6CZOkbHFAoUi3WgVoK4dGdO5pUQnh9OHxYRJf8bsbHxTy//jz7Iqjoq5KF/62LxbzjtHxcyEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975826; c=relaxed/simple;
-	bh=Npy/8NZQwlBTQiDNd+vUbgvA13i2HQdVKYgkaM63e5U=;
+	s=arc-20240116; t=1774975239; c=relaxed/simple;
+	bh=cJyHQtG7UFZuPeajUCcxsp9RIeYShhE+PgVzwrWYMXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqpHiWIv+morePFclGt0Y3jhoR/a30PC8r0G6a7JMTazWuwmGuMHpqnrBQNii9UnOdLJllHWfIHIhkE/qe7dWHk5lKg8u0BsjAQDjeRccOht9dqxTGWIctMoP56FjyOsvqw3y+f2CoGhSz+rvrrpCzVO68t8W/BaDEM6i3nZz5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJeJAViz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CF3C2BCB4;
-	Tue, 31 Mar 2026 16:50:26 +0000 (UTC)
+	 MIME-Version; b=cis4fdndWNCb6lrBva6pVH6wc0tVC3kP21E9ZNjV8cr0JBomQTu3+eaBeBvjau1GqyLiEEGiWLCD16osC9JMKQ0pnNzTCtAk3hFoOaFXWK05jCEiwKxMRHz+cJQOHA6TIli7ugUZ7zbrY7+7znA/+W5SWsEp/B45/KHqfGTkGPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxPn7RhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E6CC19423;
+	Tue, 31 Mar 2026 16:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975826;
-	bh=Npy/8NZQwlBTQiDNd+vUbgvA13i2HQdVKYgkaM63e5U=;
+	s=korg; t=1774975239;
+	bh=cJyHQtG7UFZuPeajUCcxsp9RIeYShhE+PgVzwrWYMXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJeJAVizwup9ceqgGSjYJd4luhjnLMgFEyew3qUveGyP0zUi+Dp8ffwr0YTGI97/i
-	 jlEzSSJCtn4f/f6Fa9MW6vINmuf8PJT5z7iqd7QW3u03s1QUulwQSmy+6TnO6QRni+
-	 BSqiTuUL+VHgB4Z2+rIsu/U6phhRWYg6KaneajOM=
+	b=gxPn7RhD4TltMfjqHWz1HVZLMpKaY9yPeyPMmVMIUkUgJecgzIEHNs7hEmiB8Oixj
+	 TVZs9zVkAV1LpuQOmT+Dkx16oZ+VHNnfAKFxULzxiK6tF0ltOG7tni6XAyCPg8OzIV
+	 OpCG5THCou7cJeu6jy8zAo7M00keRRYcw3+ILMac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuhang Zheng <z1652074432@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/244] netfilter: ip6t_rt: reject oversized addrnr in rt_mt6_check()
+	Charles Mirabile <cmirabil@redhat.com>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.19 217/342] kbuild: Delete .builtin-dtbs.S when running make clean
 Date: Tue, 31 Mar 2026 18:20:50 +0200
-Message-ID: <20260331161745.367108901@linuxfoundation.org>
+Message-ID: <20260331161806.961922776@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232081-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231853-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,strlen.de:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
-X-Rspamd-Queue-Id: 46CF036EC15
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,o.map:url]
+X-Rspamd-Queue-Id: 6211736E5D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ren Wei <n05ec@lzu.edu.cn>
+From: Charles Mirabile <cmirabil@redhat.com>
 
-[ Upstream commit 9d3f027327c2fa265f7f85ead41294792c3296ed ]
+commit a76e30c2479ce6ffa2aa6c8a8462897afc82bc90 upstream.
 
-Reject rt match rules whose addrnr exceeds IP6T_RT_HOPS.
+The makefile tries to delete a file named ".builtin-dtb.S" but the file
+created by scripts/Makefile.vmlinux is actually called ".builtin-dtbs.S".
 
-rt_mt6() expects addrnr to stay within the bounds of rtinfo->addrs[].
-Validate addrnr during rule installation so malformed rules are rejected
-before the match logic can use an out-of-range value.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yuhang Zheng <z1652074432@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 654102df2ac2a ("kbuild: add generic support for built-in boot DTBs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20260308044338.181403-1-cmirabil@redhat.com
+[nathan: Small commit message adjustments]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/ip6t_rt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
-index 4ad8b2032f1f9..5561bd9cea818 100644
---- a/net/ipv6/netfilter/ip6t_rt.c
-+++ b/net/ipv6/netfilter/ip6t_rt.c
-@@ -157,6 +157,10 @@ static int rt_mt6_check(const struct xt_mtchk_param *par)
- 		pr_debug("unknown flags %X\n", rtinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (rtinfo->addrnr > IP6T_RT_HOPS) {
-+		pr_debug("too many addresses specified\n");
-+		return -EINVAL;
-+	}
- 	if ((rtinfo->flags & (IP6T_RT_RES | IP6T_RT_FST_MASK)) &&
- 	    (!(rtinfo->flags & IP6T_RT_TYP) ||
- 	     (rtinfo->rt_type != 0) ||
--- 
-2.51.0
-
+--- a/Makefile
++++ b/Makefile
+@@ -1622,7 +1622,7 @@ CLEAN_FILES += vmlinux.symvers modules-o
+ 	       modules.builtin.ranges vmlinux.o.map vmlinux.unstripped \
+ 	       compile_commands.json rust/test \
+ 	       rust-project.json .vmlinux.objs .vmlinux.export.c \
+-               .builtin-dtbs-list .builtin-dtb.S
++               .builtin-dtbs-list .builtin-dtbs.S
+ 
+ # Directories & files removed with 'make mrproper'
+ MRPROPER_FILES += include/config include/generated          \
 
 
 
