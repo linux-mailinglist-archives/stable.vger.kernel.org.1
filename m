@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-231344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOeKLfZ1y2k3HwYAu9opvQ
-	(envelope-from <stable+bounces-231344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:21:26 +0200
+	id MNZuJpB0y2ksIAYAu9opvQ
+	(envelope-from <stable+bounces-231345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:15:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298F1365079
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:21:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCB5364EAE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E19430CC938
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:11:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 33219302EA50
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256E93B6C11;
-	Tue, 31 Mar 2026 07:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2FB36E476;
+	Tue, 31 Mar 2026 07:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="LpO7alF6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7063B5318
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 07:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10BC19049B;
+	Tue, 31 Mar 2026 07:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774941110; cv=none; b=lpwjUO7QjBBUgA0ByZ/6SoCtBEV8nUbpGbczNKxC3scIaUDooNeU4JMvUpYwyHkRGq6GvXrr0TydGCckzWtwK/i/NylRzPpPqSyI75F9zrfG46eHJfGSuzipoX/+MOpe5jPXG8Om8lqdtb6vnKDogmqpfV8FNX0BftjC7ZDLJSw=
+	t=1774941166; cv=none; b=X9k0jQGaWi8OA9+jxTQfwJlUvSLTrsUQWOqOcvrrsACDIuars7JXFc/cSI4dENw8oFa7X4cO1Sm+3fAI8mbfGA+C8q/OxZ9NRU/UJ+dsXJfhI6hV/9I5HfiGMcjGvnDeIgQBG8MgDnqsyu3WKawYZq95x9WSYiDDLeDExLpnmlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774941110; c=relaxed/simple;
-	bh=0f3xzzz8ag9SNW7fb5jqQqPgwNvN6ZIv9z48me9iRiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TP5tLVKhjbSd/F9odBZzs97UqvCn+ANzEcfR502T79L/OFjtlFcIL7EI+TKJghdZcHRN31x452eYIcOw6BQu1DEB3UBDm0MXH7V/nClQiChmwRgS0IuJmTK3Q5UtWkFy/Ad2sjKSJNojqEEtQUnVI9cFLsQU1PSMzjnv8YyDt74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz17t1774941099t14806ba7
-X-QQ-Originating-IP: +nL0vZovCMrBp6hTi9EZPmMc8xhqeBn1iAA2s+VSSKg=
-Received: from w-MS-7E16.trustnetic.com ( [115.227.224.139])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 31 Mar 2026 15:11:16 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14711434964415801438
-EX-QQ-RecipientCnt: 13
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
+	s=arc-20240116; t=1774941166; c=relaxed/simple;
+	bh=2D4WdNTfPcZiRKss3zeGyGmEM9m4XEU75L4+0XLw77w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IoroK8rhQYYKXJ1Fzm3uldw2ymGti3Qkn2owORnZ4ck70NVN7cD6KfKfUaSOldBHmvvLeYxCeESWceu0vjg475sN2zghGVbzJjM3ftEuV8sVks4SH7NcBvgYfdur9kDGwkIQODA/444q9f/6w3l2MZ2bLgFs1L85Uj4HMgDxalY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=LpO7alF6; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=LpO7alF6D8hRGID1vONgJQxepW+F9VKh5ugbB6XsY38KsN/k+p6gkE8BmSbDcEhVZ793uXcEP0c4r
+	 MyNGanb/ndEAe3G38if4nzFLH5fl6fqmE9MEw6VCZiQkg+bSNwI1OdD3iQlvYyE4qPamUakS48cP0x
+	 8oDkDWbat3+ZccNc=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from Ubuntu24 (unknown[2409:8A00:DD3:9760:EC02:B35:F13F:3469])
+	by rmsmtp-lg-appmail-45-12076 (RichMail) with SMTP id 2f2c69cb73d6a26-00a34;
+	Tue, 31 Mar 2026 15:12:31 +0800 (CST)
+X-RM-TRANSID:2f2c69cb73d6a26-00a34
+From: XiaoHua Wang <561399680@139.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH net] net: txgbe: fix RTNL assertion warning when remove module
-Date: Tue, 31 Mar 2026 15:11:07 +0800
-Message-ID: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
+Cc: netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	XiaoHua Wang <561399680@139.com>
+Subject: [PATCH 6.12.y] net: add proper RCU protection to /proc/net/ptype
+Date: Tue, 31 Mar 2026 15:12:24 +0800
+Message-ID: <20260331071224.14601-1-561399680@139.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,185 +68,221 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Mnff/9wu0oJYBaph783tGB90hZbKcLWoBk1t4ukQ7QC3ln8zuo2BvVYX
-	Uggjt+pHJIELWO/A81i37sq2P4bHNqryOaW8l8OxogMtzlxJ5QMzBM0boeVxDaRHLl5RbvF
-	Hl1LSM6YI8A2fE/1xzxButtHrMPmSLoxS07F4VROIYWsm2TWb/rRYKIXiJS6T8uH0tJAMS+
-	62OuEkCf7csvMCfSLL4C9NuVKboMAZKDtbHnz+CHM/A2nBiyXYvV+6xhKM6kYp0/1x0LGU+
-	SUMc4Jhb4YuASsRzMgWZNfn+Do2MPMB4yQ2I1THEOw5UD4NNFUDLQ9sPVB0ln+8rBPMrLDl
-	yvOqQj63UL9e3UQNXKX7t3A8Mo/JTFFlY2A3qiI8CvE+puvO2lwaCPc3d4KXcDlR/wFer0W
-	kJZ7dOct+VfEW9Q/L0trFJ0znzM8WgKzJAebL5uorq+IEBeA2OQSQ3vKEFKhf9I7jE/G72B
-	pqbJYrPffeB9xcA+2Yjr/pAz4k5H4R2TbJ7qRUYMnxQHmWIEaAkE5XtPSuXJhNPygF4azzh
-	tQtg9xanU5OmFGktmSw0vIETCDnj0/CepuxNuASmxcGu+laFUsZ2gs0JdQIPWBEYAiGVJFD
-	gh1pbjzs0ddMhm5yL8ljowXbNAsgkYQvTdXFyp6P4kBQCZKvRCZIEcW+jIm9jAsUL19+QVR
-	xZY6Stf17d+lyzO+HiJcMbK2vUotWfYEoa/g5vdGCU8L0Dclzl52w1FdYv4URskNSWvYtnB
-	9sPgPj+nnF6f7wU0sZ9AT5oNFZoeszBkSsNA+jy0lbF9r0dwS+NYiLFkn3PBxpOr0azXNJW
-	1p0xV1xK4qM8eTHwHkPu3D9NtIyDvf7vwpLCvR7XNm9MFnY8qxYT6bjrHOah00edfo0YbQ0
-	evrClrhOvlG5RRkzdgDyYQGpzn7+mfXs4TRkJDF/ZPA2UefsJ0RYTf8tDtRH+O9twIhPGck
-	xnaXUstHYQRW3C0JRBbe6h2lyw5L6NCKZXk56hmCK8ngENAKchw7KRUqyjyYTUisSk+b5uf
-	GuR6EGN3dXSIkDaS3qRHpxB1+yNw1MxhZGabDqgIoc1IGE2aGDZp/wd4UH6Xg=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231344-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[trustnetic.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[net-swift.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,armlinux.org.uk,intel.com,gmail.com,trustnetic.com,vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-231345-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,linux.alibaba.com,huawei.com,kernel.org,139.com];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.975];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustnetic.com:email,trustnetic.com:mid]
-X-Rspamd-Queue-Id: 298F1365079
+	FROM_NEQ_ENVFROM(0.00)[561399680@139.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,ptype_all.next:url,139.com:email,139.com:mid,list.next:url]
+X-Rspamd-Queue-Id: CCCB5364EAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-For the copper NIC with external PHY, the driver called
-phylink_connect_phy() during probe and phylink_disconnect_phy() during
-remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
-upon module remove.
+From: Eric Dumazet <edumazet@google.com>
 
-To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
+[ Upstream commit f613e8b4afea0cd17c7168e8b00e25bc8d33175d ]
 
- ------------[ cut here ]------------
- RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
- WARNING: drivers/net/phy/phylink.c:2351 at
-phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
- Modules linked in: ...
- CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
- Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
-PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
- RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
- Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
-48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
-e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
- RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
- RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
- R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
- FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  txgbe_remove_phy+0xbb/0xd0 [txgbe]
-  txgbe_remove+0x4c/0xb0 [txgbe]
-  pci_device_remove+0x41/0xb0
-  device_remove+0x43/0x80
-  device_release_driver_internal+0x206/0x270
-  driver_detach+0x4a/0xa0
-  bus_remove_driver+0x83/0x120
-  driver_unregister+0x2f/0x60
-  pci_unregister_driver+0x40/0x90
-  txgbe_driver_exit+0x10/0x850 [txgbe]
-  __do_sys_delete_module.isra.0+0x1c3/0x2f0
-  __x64_sys_delete_module+0x12/0x20
-  x64_sys_call+0x20c3/0x2390
-  do_syscall_64+0x11c/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_syscall_64+0x15a/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_fault+0x312/0x580
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __handle_mm_fault+0x9d5/0x1040
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? count_memcg_events+0x101/0x1d0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? handle_mm_fault+0x1e8/0x2f0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_user_addr_fault+0x2f8/0x820
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? irqentry_exit+0xb2/0x600
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? exc_page_fault+0x92/0x1c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Yin Fengwei reported an RCU stall in ptype_seq_show() and provided
+a patch.
 
-Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Real issue is that ptype_seq_next() and ptype_seq_show() violate
+RCU rules.
+
+ptype_seq_show() runs under rcu_read_lock(), and reads pt->dev
+to get device name without any barrier.
+
+At the same time, concurrent writers can remove a packet_type structure
+(which is correctly freed after an RCU grace period) and clear pt->dev
+without an RCU grace period.
+
+Define ptype_iter_state to carry a dev pointer along seq_net_private:
+
+struct ptype_iter_state {
+	struct seq_net_private	p;
+	struct net_device	*dev; // added in this patch
+};
+
+We need to record the device pointer in ptype_get_idx() and
+ptype_seq_next() so that ptype_seq_show() is safe against
+concurrent pt->dev changes.
+
+We also need to add full RCU protection in ptype_seq_next().
+(Missing READ_ONCE() when reading list.next values)
+
+Many thanks to Dong Chenchen for providing a repro.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1d10f8a1f40b ("net-procfs: show net devices bound packet types")
+Fixes: c353e8983e0d ("net: introduce per netns packet chains")
+Reported-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Reported-by: Dong Chenchen <dongchenchen2@huawei.com>
+Closes: https://lore.kernel.org/netdev/CANn89iKRRKPnWjJmb-_3a=sq+9h6DvTQM4DBZHT5ZRGPMzQaiA@mail.gmail.com/T/#m7b80b9fc9b9267f90e0b7aad557595f686f9c50d
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Link: https://patch.msgid.link/20260202205217.2881198-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Some adjustments have been made. ]
+Signed-off-by: XiaoHua Wang <561399680@139.com>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |  8 ++++++++
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c  | 11 -----------
- 2 files changed, 8 insertions(+), 11 deletions(-)
+ net/core/net-procfs.c | 49 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 0de051450a82..b4f95b3188dd 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -474,6 +474,12 @@ static int txgbe_open(struct net_device *netdev)
- 	if (err)
- 		goto err_free_irq;
+diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
+index fa6d3969734a..e29d43fe11fa 100644
+--- a/net/core/net-procfs.c
++++ b/net/core/net-procfs.c
+@@ -168,8 +168,14 @@ static const struct seq_operations softnet_seq_ops = {
+ 	.show  = softnet_seq_show,
+ };
  
-+	if (wx->phydev) {
-+		err = phylink_connect_phy(wx->phylink, wx->phydev);
-+		if (err)
-+			goto err_free_irq;
-+	}
++struct ptype_iter_state {
++	struct seq_net_private	p;
++	struct net_device	*dev;
++};
 +
- 	wx_ptp_init(wx);
+ static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct list_head *ptype_list = NULL;
+ 	struct packet_type *pt = NULL;
+ 	struct net_device *dev;
+@@ -179,12 +185,16 @@ static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
+ 	for_each_netdev_rcu(seq_file_net(seq), dev) {
+ 		ptype_list = &dev->ptype_all;
+ 		list_for_each_entry_rcu(pt, ptype_list, list) {
+-			if (i == pos)
++			if (i == pos) {
++				iter->dev = dev;
+ 				return pt;
++			}
+ 			++i;
+ 		}
+ 	}
  
- 	txgbe_up_complete(wx);
-@@ -527,6 +533,8 @@ static int txgbe_close(struct net_device *netdev)
- 	wx_free_irq(wx);
- 	txgbe_free_misc_irq(wx->priv);
- 	wx_free_resources(wx);
-+	if (wx->phydev)
-+		phylink_disconnect_phy(wx->phylink);
- 	txgbe_fdir_filter_exit(wx);
- 	wx_control_hw(wx, false);
++	iter->dev = NULL;
++
+ 	list_for_each_entry_rcu(pt, &net_hotdata.ptype_all, list) {
+ 		if (i == pos)
+ 			return pt;
+@@ -210,6 +220,7 @@ static void *ptype_seq_start(struct seq_file *seq, loff_t *pos)
  
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 8ea7aa07ae4e..7268a0c101f3 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -294,16 +294,6 @@ static int txgbe_phylink_init(struct txgbe *txgbe)
- 	if (IS_ERR(phylink))
- 		return PTR_ERR(phylink);
+ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct net_device *dev;
+ 	struct packet_type *pt;
+ 	struct list_head *nxt;
+@@ -220,20 +231,21 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 		return ptype_get_idx(seq, 0);
  
--	if (wx->phydev) {
--		int ret;
+ 	pt = v;
+-	nxt = pt->list.next;
+-	if (pt->dev) {
+-		if (nxt != &pt->dev->ptype_all)
++	nxt = READ_ONCE(pt->list.next);
++	dev = iter->dev;
++	if (dev) {
++		if (nxt != &dev->ptype_all)
+ 			goto found;
+ 
+-		dev = pt->dev;
+ 		for_each_netdev_continue_rcu(seq_file_net(seq), dev) {
+-			if (!list_empty(&dev->ptype_all)) {
+-				nxt = dev->ptype_all.next;
++			nxt = READ_ONCE(dev->ptype_all.next);
++			if (nxt != &dev->ptype_all) {
++				iter->dev = dev;
+ 				goto found;
+ 			}
+ 		}
 -
--		ret = phylink_connect_phy(phylink, wx->phydev);
--		if (ret) {
--			phylink_destroy(phylink);
--			return ret;
--		}
--	}
--
- 	wx->phylink = phylink;
+-		nxt = net_hotdata.ptype_all.next;
++		iter->dev = NULL;
++		nxt = READ_ONCE(net_hotdata.ptype_all.next);
+ 		goto ptype_all;
+ 	}
+ 
+@@ -242,14 +254,14 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 		if (nxt != &net_hotdata.ptype_all)
+ 			goto found;
+ 		hash = 0;
+-		nxt = ptype_base[0].next;
++		nxt = READ_ONCE(ptype_base[0].next);
+ 	} else
+ 		hash = ntohs(pt->type) & PTYPE_HASH_MASK;
+ 
+ 	while (nxt == &ptype_base[hash]) {
+ 		if (++hash >= PTYPE_HASH_SIZE)
+ 			return NULL;
+-		nxt = ptype_base[hash].next;
++		nxt = READ_ONCE(ptype_base[hash].next);
+ 	}
+ found:
+ 	return list_entry(nxt, struct packet_type, list);
+@@ -263,19 +275,24 @@ static void ptype_seq_stop(struct seq_file *seq, void *v)
+ 
+ static int ptype_seq_show(struct seq_file *seq, void *v)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct packet_type *pt = v;
++	struct net_device *dev;
+ 
+-	if (v == SEQ_START_TOKEN)
++	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq, "Type Device      Function\n");
+-	else if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
+-		 (!pt->dev || net_eq(dev_net(pt->dev), seq_file_net(seq)))) {
++		return 0;
++	}
++	dev = iter->dev;
++	if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
++		 (!dev || net_eq(dev_net(dev), seq_file_net(seq)))) {
+ 		if (pt->type == htons(ETH_P_ALL))
+ 			seq_puts(seq, "ALL ");
+ 		else
+ 			seq_printf(seq, "%04x", ntohs(pt->type));
+ 
+ 		seq_printf(seq, " %-8s %ps\n",
+-			   pt->dev ? pt->dev->name : "", pt->func);
++			   dev ? dev->name : "", pt->func);
+ 	}
  
  	return 0;
-@@ -657,7 +647,6 @@ void txgbe_remove_phy(struct txgbe *txgbe)
- 		return;
- 	case wx_mac_sp:
- 		if (txgbe->wx->media_type == wx_media_copper) {
--			phylink_disconnect_phy(txgbe->wx->phylink);
- 			phylink_destroy(txgbe->wx->phylink);
- 			return;
- 		}
+@@ -299,7 +316,7 @@ static int __net_init dev_proc_net_init(struct net *net)
+ 			 &softnet_seq_ops))
+ 		goto out_dev;
+ 	if (!proc_create_net("ptype", 0444, net->proc_net, &ptype_seq_ops,
+-			sizeof(struct seq_net_private)))
++			sizeof(struct ptype_iter_state)))
+ 		goto out_softnet;
+ 
+ 	if (wext_proc_init(net))
 -- 
-2.48.1
+2.43.0
+
 
 
