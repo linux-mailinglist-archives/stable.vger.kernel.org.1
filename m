@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDAEAg79y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-232028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:50 +0200
+	id SK2cDhIGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767B436D85B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6E636EFB8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2410D31277C4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6117F319763F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CF7423A63;
-	Tue, 31 Mar 2026 16:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752702D595D;
+	Tue, 31 Mar 2026 17:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRS7bISj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFb1qakC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B237413225;
-	Tue, 31 Mar 2026 16:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378E32FD681;
+	Tue, 31 Mar 2026 17:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975689; cv=none; b=cCGG/Yni2+2nsFq61v4H4z3+wiOHWFSeIOQtiToferanxORC97gI6CgOWncrnQwEPYzQjC9jdW4zTwkQQ3z8wT1cJC2mjlodKpStLiKBse8QZpRloOfecOjyAhLtFiAskZna7PN97rvqX0fVFiJM/9vWUCoMJ2QUeNMVRKcAbGo=
+	t=1774976534; cv=none; b=GylB21d9tln8Zu++fjemto/dHje8aH/cO+VV905kBIleya8L1g+wlXxx0hzjlR7I+/GMW8zxxcNYEoDIIrShNMZA5seamIhybtkv3FLL6pFDq1Vsdqn8e+3T+JGN82/MPWm1tEH9JLL2YxFHyh0ytsOnDWNcG8Yb3QLXkBErlDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975689; c=relaxed/simple;
-	bh=mycfoH4VzeBL/TviqnpTDO1Lve0DiS0+w57ZGcCBDl8=;
+	s=arc-20240116; t=1774976534; c=relaxed/simple;
+	bh=O1UO3+hwJwR0uZTq2juVgiCg9mEO+uRpirHOgK72yvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RP6mJRc/s+/F7LykSjmkH21z+tfAbrqEW6MWWQUmQ3ON1aBWW0Mhg3t6KOymVwylrYv8DG7osBJ/K/eb2t0hcPBfdsZYWCxtZSTuY06R+hIsni9LGkAiR8rX/0CT/i9W9/UL40sCcY9L0zgCvWna27PPnZR9qt88kv11E7WdYQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRS7bISj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C5EC19423;
-	Tue, 31 Mar 2026 16:48:08 +0000 (UTC)
+	 MIME-Version; b=KoUmPQjrD6WUElNPeSUdPfyFoJnSWjxcILXKCxVjXgGcne30sLXzofW9/uuilMq18YldC4HLdajirx8kr6jVqru/2+nlyxGPU6cUKj0gV7k6PbT3BhNM83YJS8EcWjM6EnEMjypzysAg7MoJjoZTe38kN984PyuxUNujT//9aRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFb1qakC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EBDC19423;
+	Tue, 31 Mar 2026 17:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975689;
-	bh=mycfoH4VzeBL/TviqnpTDO1Lve0DiS0+w57ZGcCBDl8=;
+	s=korg; t=1774976533;
+	bh=O1UO3+hwJwR0uZTq2juVgiCg9mEO+uRpirHOgK72yvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRS7bISjZrKNuwxqN8k1wCOwp2ipQOykRhmyhEyi5CwUDQTjMZoRDIwYIk1FC85Qf
-	 WJhicUnGIx8jN1O2P1kH01xFyyR2VsMNcfegQqfV5X08vfj+nQ6Zcvb/99HUlxNdfJ
-	 8rpwExP0k+Wut4zv843whpLQZwVs7MpgmeQSTdrk=
+	b=iFb1qakCqAKeK2POkaOk2OIIFs7TjrNh1PkANXALtPnJCpsqpRUYv4PzRN6h3sReg
+	 zy2d+jR5rRdvCgVkA6ldJolHoLrbRVeWFsj+pHmKp9bVHJ6J3BIbkY8OSwanfX7Daq
+	 KoVKhBgXix4rWYHa3V8rW2xHVMn6AmgHrIabiYmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jiri Pirko <jiri@nvidia.com>,
 	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/244] xfrm: call xdo_dev_state_delete during state update
+Subject: [PATCH 6.18 096/309] rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
 Date: Tue, 31 Mar 2026 18:19:59 +0200
-Message-ID: <20260331161743.505669740@linuxfoundation.org>
+Message-ID: <20260331161757.022815883@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232028-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232354-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,55 +86,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,queasysnail.net:email,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 767B436D85B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,queasysnail.net:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7B6E636EFB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 7d2fc41f91bc69acb6e01b0fa23cd7d0109a6a23 ]
+[ Upstream commit ee00a12593ffb69db4dd1a1c00ecb0253376874a ]
 
-When we update an SA, we construct a new state and call
-xdo_dev_state_add, but never insert it. The existing state is updated,
-then we immediately destroy the new state. Since we haven't added it,
-we don't go through the standard state delete code, and we're skipping
-removing it from the device (but xdo_dev_state_free will get called
-when we destroy the temporary state).
+rtnl_link_get_slave_info_data_size counts IFLA_INFO_SLAVE_DATA, but
+rtnl_link_slave_info_fill adds both IFLA_INFO_SLAVE_DATA and
+IFLA_INFO_SLAVE_KIND.
 
-This is similar to commit c5d4d7d83165 ("xfrm: Fix deletion of
-offloaded SAs on failure.").
-
-Fixes: d77e38e612a0 ("xfrm: Add an IPsec hardware offloading API")
+Fixes: ba7d49b1f0f8 ("rtnetlink: provide api for getting and setting slave info")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Link: https://patch.msgid.link/049843b532e23cde7ddba263c0bbe35ba6f0d26d.1773919462.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/rtnetlink.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index c927560a77316..a55c88b43c339 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2180,6 +2180,7 @@ int xfrm_state_update(struct xfrm_state *x)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 1960b59961cb8..b389210d518ef 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -707,11 +707,14 @@ static size_t rtnl_link_get_slave_info_data_size(const struct net_device *dev)
+ 		goto out;
  
- 		err = 0;
- 		x->km.state = XFRM_STATE_DEAD;
-+		xfrm_dev_state_delete(x);
- 		__xfrm_state_put(x);
- 	}
+ 	ops = master_dev->rtnl_link_ops;
+-	if (!ops || !ops->get_slave_size)
++	if (!ops)
++		goto out;
++	size += nla_total_size(strlen(ops->kind) + 1);  /* IFLA_INFO_SLAVE_KIND */
++	if (!ops->get_slave_size)
+ 		goto out;
+ 	/* IFLA_INFO_SLAVE_DATA + nested data */
+-	size = nla_total_size(sizeof(struct nlattr)) +
+-	       ops->get_slave_size(master_dev, dev);
++	size += nla_total_size(sizeof(struct nlattr)) +
++		ops->get_slave_size(master_dev, dev);
  
+ out:
+ 	rcu_read_unlock();
 -- 
 2.51.0
 
