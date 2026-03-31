@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-231625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMkfDRn/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:33 +0200
+	id cJXXLGj7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B743436DE14
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B708C36D3DC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51B5831F6912
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31DE33070AE1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4EF421F1F;
-	Tue, 31 Mar 2026 16:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63128425CC5;
+	Tue, 31 Mar 2026 16:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rq8v6HqZ"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="Gxcq9tL4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C341324B
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523313F7887
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974649; cv=none; b=Uo8iLJ7xCgDZKCwEa6q/Xbo84gNvd7GT0crl6lp/bPBUbQRLSuzuvIE5BkkrPfTmFGyvaHl5GsRaS1rYEE109E2BHjeAKKv261uv91BCuWK4qluqyOMEjcWhQ0PnO+wqCLsvD8rDOoSbEtH50q5cQhmW8TgOUy7LNOE9TCDqXxw=
+	t=1774974882; cv=none; b=Ke8OR7qWvB0PSZ1Rp7cKoL97CTqZGO0NeJ4ECFwdVSCpgZBa7NCaT/cSjG8QfUnH8b4M91JWpLN2Jds/gtoFKgQBB4THfaHQWyhiOuddtCSnegJn2+AZHR9uQXmZnFE6g+dekawWnaPPawok9FoaOAjGf1G4m5QbH+YLG6Enx+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974649; c=relaxed/simple;
-	bh=MThYt0YbLnu5nihvDtVpAUkcTkmqeVhK9GJ17p/B2ng=;
+	s=arc-20240116; t=1774974882; c=relaxed/simple;
+	bh=uTgx1YF/4o/5XYuRBbgeO9ZtuiOHDFpD2nPQ47TyZyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMg5h5oLk0PAUvOiHkWTeLmB0EA10dimzv2cZkYCbvIkIJgfMhRe2FlruyoqWFp3VmynNJaOZ6L4CkCIlRoDZQAanHoNI4Bh1ymU2DKbUgc9jl5saD163PgigyFcCdsElkTUl5H+DagSyVCxmIub9BqDHkMY7d9+Ji+L1EjgIj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rq8v6HqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58B6C19423;
-	Tue, 31 Mar 2026 16:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774974649;
-	bh=MThYt0YbLnu5nihvDtVpAUkcTkmqeVhK9GJ17p/B2ng=;
+	 MIME-Version; b=YNMpFp92B1Dp3Oo6Q2rFZYtsQyeS37T38230X54PbvSM2Ub2xeEV75VjrSDCcDvTepF8y3uXm35hoxPAy8JY6YRrBKENynPY7SlqCWb0oPwRyxK4CMn0v/y3Y0FaEvaMGOycX8cCfaWQo17Mw4oUeO91dkO0KID84+MJn1XFwX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=Gxcq9tL4; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1774974879;
+	bh=JLgEURJ1neJ5ikVypQl7crShUb19xHF4LlmNljBM5q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rq8v6HqZF17H+BqGsc/tIFGMit01GRd2KDi75RRGU3BJHmODAjBGSW8XXWtH6HyUQ
-	 sYjFVni1Du4cB43sWwducUBJIOIcdG30F+6u222eYKboOEtYIBeejVHG3y4K9Ipa2g
-	 u3zre+U0zdx6Iu4YIc80nSUR7QwoEVogYF6R5LGweqUxxjF/EqaYNQFEYbaNVF/ulF
-	 /8mTK3qfLayWlrDblmla8uIWChUoNZtooY6fcXknQIjD8Ehm1IqosvG6M/xMkuH4Pf
-	 7WCj39A/sJQ/w02KUgrQbGha+ViDoho5Wh2KGvwahfwMG6+yv/fdmREc7Y9h741gDq
-	 vR7fFrn4O/szQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>,
-	Tangxin Xie <xietangxin@yeah.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
-Date: Tue, 31 Mar 2026 12:30:43 -0400
-Message-ID: <20260331163043.2733473-1-sashal@kernel.org>
+	b=Gxcq9tL4uENh/R3MNntMJcf3Yf3XMd5oMCnlfzolLf454ll2IOyCupoZqgAV/eq23
+	 LNu24jW6HixMIUmw4kHpuDSOnWKiwYOCA16F108ptm7Awt3fPvADmp+cuyW8mj1vsn
+	 +qneDAT1ewTeeHEq/Jca7B/ULOqKHIw3Lk9wytc4=
+Received: from stargazer (unknown [IPv6:2408:824e:301:df31:dd8c:c352:de37:564c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id CA47765992;
+	Tue, 31 Mar 2026 12:34:36 -0400 (EDT)
+From: Xi Ruoyao <xry111@xry111.site>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Xi Ruoyao <xry111@xry111.site>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6.y] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+Date: Wed,  1 Apr 2026 00:34:17 +0800
+Message-ID: <20260331163417.118893-1-xry111@xry111.site>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033029-given-mustang-a404@gregkh>
-References: <2026033029-given-mustang-a404@gregkh>
+In-Reply-To: <2026033143-gumball-handcraft-5656@gregkh>
+References: <2026033143-gumball-handcraft-5656@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,104 +70,248 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,yeah.net,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231625-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231716-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,yeah.net:email]
-X-Rspamd-Queue-Id: B743436DE14
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email,gnu.org:url]
+X-Rspamd-Queue-Id: B708C36D3DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Willem de Bruijn <willemb@google.com>
+With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+empty.  This is not valid, as the current DWARF specification mandates
+the first byte of the EH frame to be the version number 1.  It causes
+some unwinders to complain, for example the ClickHouse query profiler
+spams the log with messages:
 
-[ Upstream commit c4336a07eb6b2526dc2b62928b5104b41a7f81f5 ]
+    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
+    version: 127 at 7ffffffb0000
 
-NETIF_F_IPV6_CSUM only advertises support for checksum offload of
-packets without IPv6 extension headers. Packets with extension
-headers must fall back onto software checksumming. Since TSO
-depends on checksum offload, those must revert to GSO.
+Here "127" is just the byte located at the p_vaddr (0, i.e. the
+beginning of the vDSO) of the empty GNU_EH_FRAME segment. Cross-
+checking with /proc/365854/maps has also proven 7ffffffb0000 is the
+start of vDSO in the process VM image.
 
-The below commit introduces that fallback. It always checks
-network header length. For tunneled packets, the inner header length
-must be checked instead. Extend the check accordingly.
+In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
+"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
+limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
+we can simply flip it over to -fasynchronous-unwind-tables and pass
+--eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
+stack for statistics even if the sample point is taken when the PC is in
+the vDSO.
 
-A special case is tunneled packets without inner IP protocol. Such as
-RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
-transport header either, so also must revert to the software GSO path.
+However simply adjusting the options above would exploit an issue: when
+the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+falled back to a machine-specific routine to match the code pattern of
+rt_sigreturn() and extract the registers saved in the sigframe if the
+code pattern is matched.  As unwinding from signal handlers is vital for
+libgcc to support pthread cancellation etc., the fall-back routine had
+been silently keeping the LoongArch Linux systems functioning since
+Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
+format, fall-back routine will no longer be used and libgcc will fail
+to unwind the sigframe, and unwinding from signal handlers will no
+longer work, causing dozens of glibc test failures.  To make it possible
+to unwind from signal handlers again, it's necessary to code the unwind
+info in __vdso_rt_sigreturn via .cfi_* directives.
+
+The offsets in the .cfi_* directives depend on the layout of struct
+sigframe, notably the offset of sigcontext in the sigframe.  To use the
+offset in the assembly file, factor out struct sigframe into a header to
+allow asm-offsets.c to output the offset for assembly.
+
+To work around a long-term issue in the libgcc unwinder (the pc is
+unconditionally substracted by 1: doing so is technically incorrect for
+a signal frame), a nop instruction is included with the two real
+instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
+hack has been used on x86 for a long time.
 
 Cc: stable@vger.kernel.org
-Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
-Reported-by: Tangxin Xie <xietangxin@yeah.net>
-Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260320190148.2409107-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+(cherry picked from commit e4878c37f6679fdea91b27a0f4e60a871f0b7bad)
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
 ---
- net/core/dev.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ arch/loongarch/include/asm/linkage.h  | 36 +++++++++++++++++++++++++++
+ arch/loongarch/include/asm/sigframe.h |  9 +++++++
+ arch/loongarch/kernel/asm-offsets.c   |  2 ++
+ arch/loongarch/kernel/signal.c        |  6 +----
+ arch/loongarch/vdso/Makefile          |  4 +--
+ arch/loongarch/vdso/sigreturn.S       |  6 ++---
+ 6 files changed, 53 insertions(+), 10 deletions(-)
+ create mode 100644 arch/loongarch/include/asm/sigframe.h
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c8e49eef45198..26f844e25c450 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3755,6 +3755,22 @@ static netdev_features_t dflt_features_check(struct sk_buff *skb,
- 	return vlan_features_check(skb, features);
+diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
+index e2eca1a25b4e..a1bd6a3ee03a 100644
+--- a/arch/loongarch/include/asm/linkage.h
++++ b/arch/loongarch/include/asm/linkage.h
+@@ -41,4 +41,40 @@
+ 	.cfi_endproc;					\
+ 	SYM_END(name, SYM_T_NONE)
+ 
++/*
++ * This is for the signal handler trampoline, which is used as the return
++ * address of the signal handlers in userspace instead of called normally.
++ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
++ * nop between .cfi_startproc and the actual address of the trampoline, so
++ * we cannot simply use SYM_FUNC_START.
++ *
++ * This wrapper also contains all the .cfi_* directives for recovering
++ * the content of the GPRs and the "return address" (where the rt_sigreturn
++ * syscall will jump to), assuming there is a struct rt_sigframe (where
++ * a struct sigcontext containing those information we need to recover) at
++ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
++ * column 0 is for $zero, but it does not make too much sense to
++ * save/restore the hardware zero register.  Repurpose this column here
++ * for the return address (here it's not the content of $ra we cannot use
++ * the default column 3).
++ */
++#define SYM_SIGFUNC_START(name)				\
++	.cfi_startproc;					\
++	.cfi_signal_frame;				\
++	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
++	.cfi_return_column 0;				\
++	.cfi_offset 0, SC_PC;				\
++							\
++	.irp num, 1,  2,  3,  4,  5,  6,  7,  8, 	\
++		  9,  10, 11, 12, 13, 14, 15, 16,	\
++		  17, 18, 19, 20, 21, 22, 23, 24,	\
++		  25, 26, 27, 28, 29, 30, 31;		\
++	.cfi_offset \num, SC_REGS + \num * SZREG;	\
++	.endr;						\
++							\
++	nop;						\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
++
++#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
++
+ #endif
+diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
+new file mode 100644
+index 000000000000..109298b8d7e0
+--- /dev/null
++++ b/arch/loongarch/include/asm/sigframe.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++
++#include <asm/siginfo.h>
++#include <asm/ucontext.h>
++
++struct rt_sigframe {
++	struct siginfo rs_info;
++	struct ucontext rs_uctx;
++};
+diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
+index 110afd3cc8f3..10c66ec95fa1 100644
+--- a/arch/loongarch/kernel/asm-offsets.c
++++ b/arch/loongarch/kernel/asm-offsets.c
+@@ -15,6 +15,7 @@
+ #include <asm/ptrace.h>
+ #include <asm/processor.h>
+ #include <asm/ftrace.h>
++#include <asm/sigframe.h>
+ 
+ void output_ptreg_defines(void)
+ {
+@@ -218,6 +219,7 @@ void output_sc_defines(void)
+ 	COMMENT("Linux sigcontext offsets.");
+ 	OFFSET(SC_REGS, sigcontext, sc_regs);
+ 	OFFSET(SC_PC, sigcontext, sc_pc);
++	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
+ 	BLANK();
  }
  
-+static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
-+{
-+	if (!skb->encapsulation)
-+		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+			skb_transport_header_was_set(skb) &&
-+			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
-+	else
-+		return (!skb_inner_network_header_was_set(skb) ||
-+			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			   inner_ip_hdr(skb)->version == 6)) &&
-+			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
-+}
-+
- static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 					    struct net_device *dev,
- 					    netdev_features_t features)
-@@ -3802,11 +3818,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * so neither does TSO that depends on it.
- 	 */
- 	if (features & NETIF_F_IPV6_CSUM &&
--	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
--	    skb_transport_header_was_set(skb) &&
--	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+	    skb_gso_has_extension_hdr(skb) &&
- 	    !ipv6_has_hopopt_jumbo(skb))
- 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
+diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
+index 0e90cd2df0ea..c9a0fd40e8b5 100644
+--- a/arch/loongarch/kernel/signal.c
++++ b/arch/loongarch/kernel/signal.c
+@@ -34,6 +34,7 @@
+ #include <asm/cpu-features.h>
+ #include <asm/fpu.h>
+ #include <asm/lbt.h>
++#include <asm/sigframe.h>
+ #include <asm/ucontext.h>
+ #include <asm/vdso.h>
  
+@@ -71,11 +72,6 @@ extern asmlinkage int _save_ftop_context(void __user *ftop);
+ extern asmlinkage int _restore_ftop_context(void __user *ftop);
+ #endif
+ 
+-struct rt_sigframe {
+-	struct siginfo rs_info;
+-	struct ucontext rs_uctx;
+-};
+-
+ struct _ctx_layout {
+ 	struct sctx_info *addr;
+ 	unsigned int size;
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index 1a0f6ca0247b..ebf3b4d52172 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -24,7 +24,7 @@ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+ 	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+-	$(call cc-option, -fno-asynchronous-unwind-tables) \
++	$(call cc-option, -fasynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
+ aflags-vdso := $(ccflags-vdso) \
+ 	-D__ASSEMBLY__ -Wa,-gdwarf-2
+@@ -36,7 +36,7 @@ endif
+ # VDSO linker flags.
+ ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
+ 	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared \
+-	--hash-style=sysv --build-id -T
++	--hash-style=sysv --build-id --eh-frame-hdr -T
+ 
+ GCOV_PROFILE := n
+ 
+diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
+index 9cb3c58fad03..59f940d928de 100644
+--- a/arch/loongarch/vdso/sigreturn.S
++++ b/arch/loongarch/vdso/sigreturn.S
+@@ -12,13 +12,13 @@
+ 
+ #include <asm/regdef.h>
+ #include <asm/asm.h>
++#include <asm/asm-offsets.h>
+ 
+ 	.section	.text
+-	.cfi_sections	.debug_frame
+ 
+-SYM_FUNC_START(__vdso_rt_sigreturn)
++SYM_SIGFUNC_START(__vdso_rt_sigreturn)
+ 
+ 	li.w	a7, __NR_rt_sigreturn
+ 	syscall	0
+ 
+-SYM_FUNC_END(__vdso_rt_sigreturn)
++SYM_SIGFUNC_END(__vdso_rt_sigreturn)
+
+base-commit: c09fbcd31ae6d71e7c69545839bec92d8e15c13b
 -- 
 2.53.0
 
