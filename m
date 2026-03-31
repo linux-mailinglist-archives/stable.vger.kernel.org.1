@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBioCKT/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:52 +0200
+	id uOOrHPYBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0ED036DFA6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0068936E764
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B59330E7E43
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EA88314FB04
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8502D63E8;
-	Tue, 31 Mar 2026 17:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA734425CD0;
+	Tue, 31 Mar 2026 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbY8fcvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPa0Bqzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716882C21F8;
-	Tue, 31 Mar 2026 17:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A0F425CC4;
+	Tue, 31 Mar 2026 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976430; cv=none; b=YWmJPC2X5BOBvbSSx5xOmwE6fRQXdv9uV1rAUoHp6FGgD04d8yR18ow7sFjJ43EOcaEZFVxseksQ03Xtpkfz8QqfMZQrDm1VYAXT2RFWIX6CGYERVfFKrJTfDloZozPYI95BCW/1H7yeDFIkq89OMqezOdiwUUdg4FrAb9iglyY=
+	t=1774975668; cv=none; b=Xl1wb3RvFnShaqEhLN6dFZhVV5zUvsDGZ1WPe9+SmONpyoAziScmOfYODTnLMKgEnfnZqequ3ktH6SAKlz5qFi6Vqf7znJPGZg9141D1KMsskE5RQh6kdbOwZOAj7zHLJj1Xezwba022YN0Ap6GQtj0lCisYdhFQu4z/XMbfZbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976430; c=relaxed/simple;
-	bh=GfAk8gR1dAxwjH2mSyJN7Ohkt6CdXPmM8Pzcg+lVd1U=;
+	s=arc-20240116; t=1774975668; c=relaxed/simple;
+	bh=ssJMroQg5UBya26BjXtSYaoOlqBxPypeSBaB/gZUylE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OObIbbKRS0nzLswmgj2Tnd8Lp0Y9FlzjTa/cvyV+3DCOw6AtP5wQ1SJAxAGLv5DiYjVB+yIqklFm+GSSpvoLj0Sx9magmufjCReREf9IRSFxaPAfCW4KCmUiQzgq05kpFgXkQgH0oJvc2px7O2R7pMXWMdljP0FtsdSqRE9dkyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbY8fcvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BBCC19423;
-	Tue, 31 Mar 2026 17:00:29 +0000 (UTC)
+	 MIME-Version; b=lnqslqFzni4CZ58GVn2erun+yIUeSkLqHps8altJmpRQDYnHjs9aFwD+fz7Jp44k0s37NWavupTdeBUFh+bRRXTQ6ylMbSOI2zM1ht/+nw9gGZotWKlQ+nw1snWlVreEAwKswgSabFltM21fNt+w4T7waIKnLk0+DqdWxeTUgPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPa0Bqzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00360C19423;
+	Tue, 31 Mar 2026 16:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976430;
-	bh=GfAk8gR1dAxwjH2mSyJN7Ohkt6CdXPmM8Pzcg+lVd1U=;
+	s=korg; t=1774975668;
+	bh=ssJMroQg5UBya26BjXtSYaoOlqBxPypeSBaB/gZUylE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbY8fcvr8q45bKep+njSge3pKgXUzkazK0e/ZTyEgS9T3k4jSBSJNi61UgpDJpk2i
-	 7n3ax5EfbWOhN/UviialHTPSheDBaHliGJ0EMvYCAKmg9eLoQ7QDGN0ab+yIHZHllQ
-	 OelsLm8MWpIYM4MkgeGcNF9tSkV4bJAXr1osecwk=
+	b=yPa0Bqzhp+0QsaCMrUndIPELY9Of60WmtHmUA9depBdae3CXWyTSF/2SgMsBcuWGD
+	 n7JGetMpd3O0bkSqYhAeg1Cvzd48xVYcRi4OyDBYVdQjaMrsc/jK7HBkKpmrqeLMaq
+	 pzUIhGB/YUMyeh5lKxSrdpEWWpvLXBT4OnH2IRpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Leonardo Scorcia <l.scorcia@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/309] pinctrl: mediatek: common: Fix probe failure for devices without EINT
+Subject: [PATCH 6.12 041/244] nvmet: move async event work off nvmet-wq
 Date: Tue, 31 Mar 2026 18:19:51 +0200
-Message-ID: <20260331161756.728439104@linuxfoundation.org>
+Message-ID: <20260331161743.216096150@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +65,211 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232314-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232020-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email]
-X-Rspamd-Queue-Id: B0ED036DFA6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0068936E764
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Leonardo Scorcia <l.scorcia@gmail.com>
+From: Chaitanya Kulkarni <kch@nvidia.com>
 
-[ Upstream commit 8f9f64c8f90dca07d3b9f1d7ce5d34ccd246c9dd ]
+[ Upstream commit 2922e3507f6d5caa7f1d07f145e186fc6f317a4e ]
 
-Some pinctrl devices like mt6397 or mt6392 don't support EINT at all, but
-the mtk_eint_init function is always called and returns -ENODEV, which
-then bubbles up and causes probe failure.
+For target nvmet_ctrl_free() flushes ctrl->async_event_work.
+If nvmet_ctrl_free() runs on nvmet-wq, the flush re-enters workqueue
+completion for the same worker:-
 
-To address this only call mtk_eint_init if EINT pins are present.
+A. Async event work queued on nvmet-wq (prior to disconnect):
+  nvmet_execute_async_event()
+     queue_work(nvmet_wq, &ctrl->async_event_work)
 
-Tested on Xiaomi Mi Smart Clock x04g (mt6392).
+  nvmet_add_async_event()
+     queue_work(nvmet_wq, &ctrl->async_event_work)
 
-Fixes: e46df235b4e6 ("pinctrl: mediatek: refactor EINT related code for all MediaTek pinctrl can fit")
-Signed-off-by: Luca Leonardo Scorcia <l.scorcia@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+B. Full pre-work chain (RDMA CM path):
+  nvmet_rdma_cm_handler()
+     nvmet_rdma_queue_disconnect()
+       __nvmet_rdma_queue_disconnect()
+         queue_work(nvmet_wq, &queue->release_work)
+           process_one_work()
+             lock((wq_completion)nvmet-wq)  <--------- 1st
+             nvmet_rdma_release_queue_work()
+
+C. Recursive path (same worker):
+  nvmet_rdma_release_queue_work()
+     nvmet_rdma_free_queue()
+       nvmet_sq_destroy()
+         nvmet_ctrl_put()
+           nvmet_ctrl_free()
+             flush_work(&ctrl->async_event_work)
+               __flush_work()
+                 touch_wq_lockdep_map()
+                 lock((wq_completion)nvmet-wq) <--------- 2nd
+
+Lockdep splat:
+
+  ============================================
+  WARNING: possible recursive locking detected
+  6.19.0-rc3nvme+ #14 Tainted: G                 N
+  --------------------------------------------
+  kworker/u192:42/44933 is trying to acquire lock:
+  ffff888118a00948 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
+
+  but task is already holding lock:
+  ffff888118a00948 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x53e/0x660
+
+  3 locks held by kworker/u192:42/44933:
+   #0: ffff888118a00948 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x53e/0x660
+   #1: ffffc9000e6cbe28 ((work_completion)(&queue->release_work)){+.+.}-{0:0}, at: process_one_work+0x1c5/0x660
+   #2: ffffffff82d4db60 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x62/0x530
+
+  Workqueue: nvmet-wq nvmet_rdma_release_queue_work [nvmet_rdma]
+  Call Trace:
+   __flush_work+0x268/0x530
+   nvmet_ctrl_free+0x140/0x310 [nvmet]
+   nvmet_cq_put+0x74/0x90 [nvmet]
+   nvmet_rdma_free_queue+0x23/0xe0 [nvmet_rdma]
+   nvmet_rdma_release_queue_work+0x19/0x50 [nvmet_rdma]
+   process_one_work+0x206/0x660
+   worker_thread+0x184/0x320
+   kthread+0x10c/0x240
+   ret_from_fork+0x319/0x390
+
+Move async event work to a dedicated nvmet-aen-wq to avoid reentrant
+flush on nvmet-wq.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mtk-common.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/nvme/target/admin-cmd.c |  2 +-
+ drivers/nvme/target/core.c      | 14 ++++++++++++--
+ drivers/nvme/target/nvmet.h     |  1 +
+ drivers/nvme/target/rdma.c      |  1 +
+ 4 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-index d6a46fe0cda89..3f518dce6d23f 100644
---- a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-@@ -1135,9 +1135,12 @@ int mtk_pctrl_init(struct platform_device *pdev,
- 		goto chip_error;
- 	}
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index 081f0473cd9ea..72e31ef1f2f06 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -985,7 +985,7 @@ void nvmet_execute_async_event(struct nvmet_req *req)
+ 	ctrl->async_event_cmds[ctrl->nr_async_event_cmds++] = req;
+ 	mutex_unlock(&ctrl->lock);
  
--	ret = mtk_eint_init(pctl, pdev);
--	if (ret)
--		goto chip_error;
-+	/* Only initialize EINT if we have EINT pins */
-+	if (data->eint_hw.ap_num > 0) {
-+		ret = mtk_eint_init(pctl, pdev);
-+		if (ret)
-+			goto chip_error;
-+	}
+-	queue_work(nvmet_wq, &ctrl->async_event_work);
++	queue_work(nvmet_aen_wq, &ctrl->async_event_work);
+ }
  
- 	return 0;
+ void nvmet_execute_keep_alive(struct nvmet_req *req)
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index 710e74d3ec3e9..be9a7e8b547ac 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -26,6 +26,8 @@ static DEFINE_IDA(cntlid_ida);
  
+ struct workqueue_struct *nvmet_wq;
+ EXPORT_SYMBOL_GPL(nvmet_wq);
++struct workqueue_struct *nvmet_aen_wq;
++EXPORT_SYMBOL_GPL(nvmet_aen_wq);
+ 
+ /*
+  * This read/write semaphore is used to synchronize access to configuration
+@@ -205,7 +207,7 @@ void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
+ 	list_add_tail(&aen->entry, &ctrl->async_events);
+ 	mutex_unlock(&ctrl->lock);
+ 
+-	queue_work(nvmet_wq, &ctrl->async_event_work);
++	queue_work(nvmet_aen_wq, &ctrl->async_event_work);
+ }
+ 
+ static void nvmet_add_to_changed_ns_log(struct nvmet_ctrl *ctrl, __le32 nsid)
+@@ -1714,9 +1716,14 @@ static int __init nvmet_init(void)
+ 	if (!nvmet_wq)
+ 		goto out_free_buffered_work_queue;
+ 
++	nvmet_aen_wq = alloc_workqueue("nvmet-aen-wq",
++			WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
++	if (!nvmet_aen_wq)
++		goto out_free_nvmet_work_queue;
++
+ 	error = nvmet_init_debugfs();
+ 	if (error)
+-		goto out_free_nvmet_work_queue;
++		goto out_free_nvmet_aen_work_queue;
+ 
+ 	error = nvmet_init_discovery();
+ 	if (error)
+@@ -1732,6 +1739,8 @@ static int __init nvmet_init(void)
+ 	nvmet_exit_discovery();
+ out_exit_debugfs:
+ 	nvmet_exit_debugfs();
++out_free_nvmet_aen_work_queue:
++	destroy_workqueue(nvmet_aen_wq);
+ out_free_nvmet_work_queue:
+ 	destroy_workqueue(nvmet_wq);
+ out_free_buffered_work_queue:
+@@ -1749,6 +1758,7 @@ static void __exit nvmet_exit(void)
+ 	nvmet_exit_discovery();
+ 	nvmet_exit_debugfs();
+ 	ida_destroy(&cntlid_ida);
++	destroy_workqueue(nvmet_aen_wq);
+ 	destroy_workqueue(nvmet_wq);
+ 	destroy_workqueue(buffered_io_wq);
+ 	destroy_workqueue(zbd_wq);
+diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
+index 3062562c096a1..31a422a3f85b8 100644
+--- a/drivers/nvme/target/nvmet.h
++++ b/drivers/nvme/target/nvmet.h
+@@ -419,6 +419,7 @@ extern struct kmem_cache *nvmet_bvec_cache;
+ extern struct workqueue_struct *buffered_io_wq;
+ extern struct workqueue_struct *zbd_wq;
+ extern struct workqueue_struct *nvmet_wq;
++extern struct workqueue_struct *nvmet_aen_wq;
+ 
+ static inline void nvmet_set_result(struct nvmet_req *req, u32 result)
+ {
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index 2a4536ef61848..ef55a63848b4c 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -2086,6 +2086,7 @@ static void nvmet_rdma_remove_one(struct ib_device *ib_device, void *client_data
+ 	mutex_unlock(&nvmet_rdma_queue_mutex);
+ 
+ 	flush_workqueue(nvmet_wq);
++	flush_workqueue(nvmet_aen_wq);
+ }
+ 
+ static struct ib_client nvmet_rdma_ib_client = {
 -- 
 2.51.0
 
