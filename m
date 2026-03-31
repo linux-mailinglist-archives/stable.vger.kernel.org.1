@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-231813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK0YGywBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:24 +0200
+	id eK+9JN//y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-232332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A6836E522
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B15B36E0B4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AD493212215
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77F6D30F904F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4B94279ED;
-	Tue, 31 Mar 2026 16:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13F52DA74C;
+	Tue, 31 Mar 2026 17:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpNF3stU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgGy84ak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FB4279E6;
-	Tue, 31 Mar 2026 16:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731492D949B;
+	Tue, 31 Mar 2026 17:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975135; cv=none; b=RgQ2VpGlEJS0jzqau9Xd5bVqx8HPOf/FVdU/A9ZlEupe+7qK/7CDF3L+9vHXvNmJH1e5H47JteQTPZm44g1O2jC+FOSczQsvqFzvoXLnwP798tKU6O+TVouh/JbHZsipdsMAJSVH9/PrCr8AjwWlBG6KvTapkjAGlFEzUWjtX8E=
+	t=1774976477; cv=none; b=L8pEYlv5qKx8D5ENMtPdz0gBr3fGX9JHhUQ/EzKtUVUm6LKryR0J/0i/K1Ki3yf7vX9+vIoePxLWAWpQGLOfhUzYR3jPDGRGq+rLHkXeHLQqA16ivZNH6787andFedAjOlutZuTX9LLizVlHHYKnfwIix3h52mjyFi4E2jHRB0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975135; c=relaxed/simple;
-	bh=6BvXbstGLYKWzFd2HnlJbkXtJZ4EAr7vchJJ7BnzMRs=;
+	s=arc-20240116; t=1774976477; c=relaxed/simple;
+	bh=KoMkiBYYS51svbrpfxNpKUPyTuYxFP9UKOIdgxzlZWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWsOpYd6CbV9QRNYAeNbupy+Azo8rIIeteg9eodLhwHs6rnFoGZV3GyrJ5z7MYP4mK9Gdv3j2W1BjYlVbi1iR0Te35Ihitl7Ahtg49//Jdb0Yi+9EleDTDCyRUQwjI0TNvsUen8JZ6cVAkqBsSJV6hsyVQsJQmfssUx/rCkxy+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpNF3stU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B9DC2BCB1;
-	Tue, 31 Mar 2026 16:38:55 +0000 (UTC)
+	 MIME-Version; b=pRF09ZdQbXoX9XM6sGqbgjI+jAOsZNAW5SH1GOdFYLqf6Rhg952cXjLuabQKdFbVkoSO6Ofi72NIBCftcIst91fl2/egEhJxFA3nOpZzS9Zd8132V8MLXjAUGR5XOI2z/7Sp40UsHMKm9bf7lcdYP5M62myGXY8Ws92YP9ZkCJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgGy84ak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE46EC19423;
+	Tue, 31 Mar 2026 17:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975135;
-	bh=6BvXbstGLYKWzFd2HnlJbkXtJZ4EAr7vchJJ7BnzMRs=;
+	s=korg; t=1774976477;
+	bh=KoMkiBYYS51svbrpfxNpKUPyTuYxFP9UKOIdgxzlZWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpNF3stUb9Fn4NBk2u1wqtQylk4/X/Jl99EaTo104JtXMrune9esQxduNfU/XRLtQ
-	 1tqHUIyxmgVojUO/k/+TNLW/twK6DTKxmL+q7QtQSUGXSL1+uoPwWDNvmFvCEtrqeM
-	 FHT+c8bD6n24JHxntD9+00gf1ErjpoWdn/FCMX4k=
+	b=RgGy84akBW4pG4xaX+qRItYh70u0WC8jDQlBbwKFZspQVGH/wdlu0tp9BhQY7Uw2g
+	 iUEIVX7q5LFNL3DjUIBc3iq/20hCEaIUVUe4/jCBhjdl9DKo/YcdcQk1JjQyoMieQ9
+	 gX3crdavEeU77QulRWw2hCzNKzfIvV8SarY680Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 178/342] rust: regulator: do not assume that regulator_get() returns non-null
+Subject: [PATCH 6.18 108/309] ipv6: Dont remove permanent routes with exceptions from tb6_gc_hlist.
 Date: Tue, 31 Mar 2026 18:20:11 +0200
-Message-ID: <20260331161805.555743890@linuxfoundation.org>
+Message-ID: <20260331161757.461182508@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231813-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232332-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,155 +86,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email]
-X-Rspamd-Queue-Id: C3A6836E522
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1B15B36E0B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 8121353a4bf8e38afee26299419a78ec108e14a6 ]
+[ Upstream commit 4be7b99c253f0c85a255cc1db7127ba3232dfa30 ]
 
-The Rust `Regulator` abstraction uses `NonNull` to wrap the underlying
-`struct regulator` pointer. When `CONFIG_REGULATOR` is disabled, the C
-stub for `regulator_get` returns `NULL`. `from_err_ptr` does not treat
-`NULL` as an error, so it was passed to `NonNull::new_unchecked`,
-causing undefined behavior.
+The cited commit mechanically put fib6_remove_gc_list()
+just after every fib6_clean_expires() call.
 
-Fix this by using a raw pointer `*mut bindings::regulator` instead of
-`NonNull`. This allows `inner` to be `NULL` when `CONFIG_REGULATOR` is
-disabled, and leverages the C stubs which are designed to handle `NULL`
-or are no-ops.
+When a temporary route is promoted to a permanent route,
+there may already be exception routes tied to it.
 
-Fixes: 9b614ceada7c ("rust: regulator: add a bare minimum regulator abstraction")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/r/20260322193830.89324-1-ojeda@kernel.org
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Link: https://patch.msgid.link/20260324-regulator-fix-v1-1-a5244afa3c15@google.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If fib6_remove_gc_list() removes the route from tb6_gc_hlist,
+such exception routes will no longer be aged.
+
+Let's replace fib6_remove_gc_list() with a new helper
+fib6_may_remove_gc_list() and use fib6_age_exceptions() there.
+
+Note that net->ipv6 is only compiled when CONFIG_IPV6 is
+enabled, so fib6_{add,remove,may_remove}_gc_list() are guarded.
+
+Fixes: 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list of routes.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260320072317.2561779-3-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/regulator.rs | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ include/net/ip6_fib.h | 21 ++++++++++++++++++++-
+ net/ipv6/addrconf.c   |  4 ++--
+ net/ipv6/ip6_fib.c    |  6 +++---
+ net/ipv6/route.c      |  2 +-
+ 4 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-index 2c44827ad0b7e..40c7f2209867d 100644
---- a/rust/kernel/regulator.rs
-+++ b/rust/kernel/regulator.rs
-@@ -23,7 +23,10 @@ use crate::{
-     prelude::*,
- };
+diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
+index 88b0dd4d8e094..9f8b6814a96a0 100644
+--- a/include/net/ip6_fib.h
++++ b/include/net/ip6_fib.h
+@@ -507,12 +507,14 @@ void fib6_rt_update(struct net *net, struct fib6_info *rt,
+ void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
+ 		     unsigned int flags);
  
--use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
-+use core::{
-+    marker::PhantomData,
-+    mem::ManuallyDrop, //
-+};
- 
- mod private {
-     pub trait Sealed {}
-@@ -232,15 +235,17 @@ pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> Result {
- ///
- /// # Invariants
- ///
--/// - `inner` is a non-null wrapper over a pointer to a `struct
--///   regulator` obtained from [`regulator_get()`].
-+/// - `inner` is a pointer obtained from a successful call to
-+///   [`regulator_get()`]. It is treated as an opaque token that may only be
-+///   accessed using C API methods (e.g., it may be `NULL` if the C API returns
-+///   `NULL`).
- ///
- /// [`regulator_get()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_get
- pub struct Regulator<State>
- where
-     State: RegulatorState,
- {
--    inner: NonNull<bindings::regulator>,
-+    inner: *mut bindings::regulator,
-     _phantom: PhantomData<State>,
- }
- 
-@@ -252,7 +257,7 @@ impl<T: RegulatorState> Regulator<T> {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
-         to_result(unsafe {
-             bindings::regulator_set_voltage(
--                self.inner.as_ptr(),
-+                self.inner,
-                 min_voltage.as_microvolts(),
-                 max_voltage.as_microvolts(),
-             )
-@@ -262,7 +267,7 @@ impl<T: RegulatorState> Regulator<T> {
-     /// Gets the current voltage of the regulator.
-     pub fn get_voltage(&self) -> Result<Voltage> {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
-+        let voltage = unsafe { bindings::regulator_get_voltage(self.inner) };
- 
-         to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
-     }
-@@ -273,10 +278,8 @@ impl<T: RegulatorState> Regulator<T> {
-             // received from the C code.
-             from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_char_ptr()) })?;
- 
--        // SAFETY: We can safely trust `inner` to be a pointer to a valid
--        // regulator if `ERR_PTR` was not returned.
--        let inner = unsafe { NonNull::new_unchecked(inner) };
++void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
++			 unsigned long now);
+ void fib6_run_gc(unsigned long expires, struct net *net, bool force);
 -
-+        // INVARIANT: `inner` is a pointer obtained from `regulator_get()`, and
-+        // the call was successful.
-         Ok(Self {
-             inner,
-             _phantom: PhantomData,
-@@ -285,12 +288,12 @@ impl<T: RegulatorState> Regulator<T> {
+ void fib6_gc_cleanup(void);
  
-     fn enable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
-+        to_result(unsafe { bindings::regulator_enable(self.inner) })
-     }
+ int fib6_init(void);
  
-     fn disable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
-+        to_result(unsafe { bindings::regulator_disable(self.inner) })
-     }
++#if IS_ENABLED(CONFIG_IPV6)
+ /* Add the route to the gc list if it is not already there
+  *
+  * The callers should hold f6i->fib6_table->tb6_lock.
+@@ -545,6 +547,23 @@ static inline void fib6_remove_gc_list(struct fib6_info *f6i)
+ 		hlist_del_init(&f6i->gc_link);
  }
  
-@@ -352,7 +355,7 @@ impl<T: IsEnabled> Regulator<T> {
-     /// Checks if the regulator is enabled.
-     pub fn is_enabled(&self) -> bool {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        unsafe { bindings::regulator_is_enabled(self.inner.as_ptr()) != 0 }
-+        unsafe { bindings::regulator_is_enabled(self.inner) != 0 }
-     }
- }
++static inline void fib6_may_remove_gc_list(struct net *net,
++					   struct fib6_info *f6i)
++{
++	struct fib6_gc_args gc_args;
++
++	if (hlist_unhashed(&f6i->gc_link))
++		return;
++
++	gc_args.timeout = READ_ONCE(net->ipv6.sysctl.ip6_rt_gc_interval);
++	gc_args.more = 0;
++
++	rcu_read_lock();
++	fib6_age_exceptions(f6i, &gc_args, jiffies);
++	rcu_read_unlock();
++}
++#endif
++
+ struct ipv6_route_iter {
+ 	struct seq_net_private p;
+ 	struct fib6_walker w;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index cad5e4ab8c3db..4a745566b760d 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -2863,7 +2863,7 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
+ 					fib6_add_gc_list(rt);
+ 				} else {
+ 					fib6_clean_expires(rt);
+-					fib6_remove_gc_list(rt);
++					fib6_may_remove_gc_list(net, rt);
+ 				}
  
-@@ -362,11 +365,11 @@ impl<T: RegulatorState> Drop for Regulator<T> {
-             // SAFETY: By the type invariants, we know that `self` owns a
-             // reference on the enabled refcount, so it is safe to relinquish it
-             // now.
--            unsafe { bindings::regulator_disable(self.inner.as_ptr()) };
-+            unsafe { bindings::regulator_disable(self.inner) };
-         }
-         // SAFETY: By the type invariants, we know that `self` owns a reference,
-         // so it is safe to relinquish it now.
--        unsafe { bindings::regulator_put(self.inner.as_ptr()) };
-+        unsafe { bindings::regulator_put(self.inner) };
-     }
- }
+ 				spin_unlock_bh(&table->tb6_lock);
+@@ -4836,7 +4836,7 @@ static int modify_prefix_route(struct net *net, struct inet6_ifaddr *ifp,
  
+ 		if (!(flags & RTF_EXPIRES)) {
+ 			fib6_clean_expires(f6i);
+-			fib6_remove_gc_list(f6i);
++			fib6_may_remove_gc_list(net, f6i);
+ 		} else {
+ 			fib6_set_expires(f6i, expires);
+ 			fib6_add_gc_list(f6i);
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index a22af1c8f93ac..ffa7733598333 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1133,7 +1133,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 					return -EEXIST;
+ 				if (!(rt->fib6_flags & RTF_EXPIRES)) {
+ 					fib6_clean_expires(iter);
+-					fib6_remove_gc_list(iter);
++					fib6_may_remove_gc_list(info->nl_net, iter);
+ 				} else {
+ 					fib6_set_expires(iter, rt->expires);
+ 					fib6_add_gc_list(iter);
+@@ -2348,8 +2348,8 @@ static void fib6_flush_trees(struct net *net)
+ /*
+  *	Garbage collection
+  */
+-static void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
+-				unsigned long now)
++void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
++			 unsigned long now)
+ {
+ 	bool may_expire = rt->fib6_flags & RTF_EXPIRES && rt->expires;
+ 	int old_more = gc_args->more;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index e01331d965313..446f4de7d6a22 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1033,7 +1033,7 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
+ 
+ 		if (!addrconf_finite_timeout(lifetime)) {
+ 			fib6_clean_expires(rt);
+-			fib6_remove_gc_list(rt);
++			fib6_may_remove_gc_list(net, rt);
+ 		} else {
+ 			fib6_set_expires(rt, jiffies + HZ * lifetime);
+ 			fib6_add_gc_list(rt);
 -- 
-2.53.0
+2.51.0
 
 
 
