@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMCIFqP3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:43 +0200
+	id sGuZJ5IHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D977536CC6A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09A836F2D2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2904730ACF9A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2865531455E6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A583F9F5E;
-	Tue, 31 Mar 2026 16:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E162FF641;
+	Tue, 31 Mar 2026 17:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCWSFWaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLdQHcCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A873E92A5;
-	Tue, 31 Mar 2026 16:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8072FB632;
+	Tue, 31 Mar 2026 17:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974462; cv=none; b=gaoNtdreopGi+9tBJHl7eW4iAJ/ffc19t5Orq+vxNtnFJKJK6Y39/fhoOr7DN/DMhLNEmXQiuSCew9nhWd2qXLl/ZLqbePVtMNf+Fb4XKOvtAyogM+XB8lsp3zoFw82zndtMsvDFUmHbAvwe4rQjF9ewHjK9sbX0Fwr0mZr1k3c=
+	t=1774976652; cv=none; b=KJ6VtXzaBFrMYLc7pfOaMrGT8wQ3FdLk005iO3YCA/HJZPxlh8f+1Atz3x7IWxf/4T06BEm4QskS2KqCIJfDw+PJrtnpAdviirlhdJ/RV69/4QzQ+lsyowl8NVGZeHZn6qa4LiovJoQxWue7PyJt7FdTE7/2dBalrjgUqtNVUlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974462; c=relaxed/simple;
-	bh=Td4NrqaL2CcHD1DhkxXanRLMEFfLlEE0Tkfl6WoUVYE=;
+	s=arc-20240116; t=1774976652; c=relaxed/simple;
+	bh=H7ExqBNfDd8AzEiCXT5xia2CrUQ6T87dfp8hK0kRjv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eY55xcx3fU9//ZynOf3P8D2I6tlsHa3l7oUwY/KouKiyIwfXaNTH+/egzx/sY6r1LHgfDaPKQocY1MlTj3buVwAFOeo4A8nUn73xqSC9AH4BASdf732zDaZgoFwVVOdTyAYSGU1OmujZxh0xkpbFick3KkSh3mbhFG41wl8wYVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCWSFWaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE928C19423;
-	Tue, 31 Mar 2026 16:27:41 +0000 (UTC)
+	 MIME-Version; b=kpb30CAJjlhjYpRBXsfmys2OPfXbGvXSdPbYN9Vg03yyC2HvKEOvmI5xSVbdt2RAlRODxL3qZbYdKHkwJ9aNfjcdw7SR2SsvYqlyzH+sKIv0JovYQFh6FFctAn0AAgEg8qa0XhtNwFR0icOamAADXtRmtyaXtrjk7+cK+d0+oao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLdQHcCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EA2C19423;
+	Tue, 31 Mar 2026 17:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974462;
-	bh=Td4NrqaL2CcHD1DhkxXanRLMEFfLlEE0Tkfl6WoUVYE=;
+	s=korg; t=1774976651;
+	bh=H7ExqBNfDd8AzEiCXT5xia2CrUQ6T87dfp8hK0kRjv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCWSFWaU+9NlvqGLU+6ImXv6/re3CboNqgx2T0XOuba247j7gAfHUENsmRtK53Syz
-	 j2AsIXj8RS21JpQeSD28nzd6fB5zYdkes1AlcQWjJLOwBoglowL9db5Q7cTkvl3/tj
-	 da7mu5crzItunmhlqi38Y3F5SOxDAgMqwn2smQXM=
+	b=YLdQHcCuvTbsqQR9KytDTxvSKTD0KtTqIBAtcdCf/AdcZKaUrnDaJwU4es3+RrEGV
+	 lGrX6PSwAEghu25zgDMKog/9BVwyWv4BzGxh2uSuq95Onhj4ZsOmlFzBUJQai1X5Hz
+	 j/2yQ4AiuVxP+SJvyileWRNivGs0znrS/5Olw/4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Buerg <buermarc@googlemail.com>,
-	Joel Granados <joel.granados@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/175] sysctl: fix uninitialized variable in proc_do_large_bitmap
-Date: Tue, 31 Mar 2026 18:21:18 +0200
-Message-ID: <20260331161733.223747141@linuxfoundation.org>
+	stable@kernel.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.18 176/309] s390/barrier: Make array_index_mask_nospec() __always_inline
+Date: Tue, 31 Mar 2026 18:21:19 +0200
+Message-ID: <20260331161759.944138982@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +66,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231551-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232401-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D977536CC6A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F09A836F2D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Buerg <buermarc@googlemail.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-[ Upstream commit f63a9df7e3f9f842945d292a19d9938924f066f9 ]
+commit c5c0a268b38adffbb2e70e6957017537ff54c157 upstream.
 
-proc_do_large_bitmap() does not initialize variable c, which is expected
-to be set to a trailing character by proc_get_long().
+Mark array_index_mask_nospec() as __always_inline to guarantee the
+mitigation is emitted inline regardless of compiler inlining decisions.
 
-However, proc_get_long() only sets c when the input buffer contains a
-trailing character after the parsed value.
-
-If c is not initialized it may happen to contain a '-'. If this is the
-case proc_do_large_bitmap() expects to be able to parse a second part of
-the input buffer. If there is no second part an unjustified -EINVAL will
-be returned.
-
-Initialize c to 0 to prevent returning -EINVAL on valid input.
-
-Fixes: 9f977fb7ae9d ("sysctl: add proc_do_large_bitmap")
-Signed-off-by: Marc Buerg <buermarc@googlemail.com>
-Reviewed-by: Joel Granados <joel.granados@kernel.org>
-Signed-off-by: Joel Granados <joel.granados@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2dd833389cc ("s390: add optimized array_index_mask_nospec")
+Cc: stable@kernel.org
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sysctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/barrier.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 354a2d294f526..f8f07c0492388 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -1374,7 +1374,7 @@ int proc_do_large_bitmap(struct ctl_table *table, int write,
- 	unsigned long bitmap_len = table->maxlen;
- 	unsigned long *bitmap = *(unsigned long **) table->data;
- 	unsigned long *tmp_bitmap = NULL;
--	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c;
-+	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c = 0;
+--- a/arch/s390/include/asm/barrier.h
++++ b/arch/s390/include/asm/barrier.h
+@@ -62,8 +62,8 @@ do {									\
+  * @size: number of elements in array
+  */
+ #define array_index_mask_nospec array_index_mask_nospec
+-static inline unsigned long array_index_mask_nospec(unsigned long index,
+-						    unsigned long size)
++static __always_inline unsigned long array_index_mask_nospec(unsigned long index,
++							     unsigned long size)
+ {
+ 	unsigned long mask;
  
- 	if (!bitmap || !bitmap_len || !left || (*ppos && !write)) {
- 		*lenp = 0;
--- 
-2.53.0
-
 
 
 
