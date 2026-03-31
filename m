@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMQdGD3/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:09 +0200
+	id OBp+Frj8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173B736DE82
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA7F36D74A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A927B30C6328
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18A0F3091BDA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F69D425CDB;
-	Tue, 31 Mar 2026 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA52E346E46;
+	Tue, 31 Mar 2026 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4KjE06B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTgpNrh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDFC423A8E;
-	Tue, 31 Mar 2026 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA392D1F40;
+	Tue, 31 Mar 2026 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976375; cv=none; b=iDM0Lkh8AKCNGBYtnl7YkIOP/zfYLCwFmLoNmdl403Gyc/WCtuGk7PhRrPSfE/lIxT8QzvfHgSuzSbiSnhfMqI/aIKn5BtKJ3XDJ2GFQr9RrGTpAcf4H5EZpMEeXSLzDjc1frbf6GugFUL7zxkPlibF0tOpa6jWgWgMEWEnVu1M=
+	t=1774975621; cv=none; b=pavEoNFc3d0XPU281hi8uMlwYWRGT3y24PuLPM2iqSjUFZh4J67T8Tu+duUTfd5NEzjy+msWxouXnnQj9SemTRs6zKVmFRjRmGdPmaop+QpkBFn0u0hIkGbvRrdy1T6jHPTcVagf/i51uilq3op39P66+sLnVwXPXU6qHm8jz1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976375; c=relaxed/simple;
-	bh=fdjnPHH1zG7mjS29kyhOhnhrmCW2J5BRQqihrNh67bo=;
+	s=arc-20240116; t=1774975621; c=relaxed/simple;
+	bh=wN32Aw63BdisMfMpu4cdJ7lhb6tf+zYl02z8CyZodXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDP5bbat4RyBkrhepLCjKTg/bxfqimTpeK3tInWfifWpypKoQ3DqdoALwbqPFCO0jTVpnVLfqyybfCt2t6MxMEGGhrQPAe0WE0gUJr/woiI4l0vsHP3Kt1PiESltZKbdIL2XcEulZqbISflvUTp4nKJXUkgwsDFPZuCjsz6Lg74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4KjE06B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABF8C19423;
-	Tue, 31 Mar 2026 16:59:34 +0000 (UTC)
+	 MIME-Version; b=lbUe131x5Z9VYvgT62fk7xp9APh4G351fJBBbi8AR03IWbAcfJvu36/jUtJJWPFQ1bTJYQV0frNEqiF+inK64kOvJucHcmTft29MSyZV0dqOJ/44OAqKGBF6R7FsrTY2QoQa04J1X0TA9zOmM8x9UOwOZF3r+Cze1JzQW0sSxgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTgpNrh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AFAC19423;
+	Tue, 31 Mar 2026 16:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976375;
-	bh=fdjnPHH1zG7mjS29kyhOhnhrmCW2J5BRQqihrNh67bo=;
+	s=korg; t=1774975621;
+	bh=wN32Aw63BdisMfMpu4cdJ7lhb6tf+zYl02z8CyZodXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4KjE06B3P+++OUo5WEmxDpKzh5L+LMwW+nQZZXKF/+8H/04gbJPXoE5shzTHI7gu
-	 FJR5dCJ7SB/40gsd77MHrwlFq0GEUOg5Pl0SgUatVsTBXsNdGgvBlfY1Y9ZturBFJv
-	 JY8N02t+V/nfRggEbAHdsB/4/lBpM0uGEKtEprdk=
+	b=wTgpNrh2W48N/bGKeAGZ6hKU3wL3DYhqjbujVKmjdXs7vbcZNfW0sRSxZgX9kWkkM
+	 vHoodz5j57y1kE2AaHzjJGYqs1Dwy6a1qyHmKBn81yR0yp70Fg429QoE8uVrMNKtHK
+	 Og/dPm7oxz8TfEe9DrIA3sjvch+VfYLXuq7qQyno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Valentin Spreckels <valentin@spreckels.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 069/309] xfrm: fix the condition on x->pcpu_num in xfrm_sa_len
+Subject: [PATCH 6.12 022/244] net: usb: r8152: add TRENDnet TUC-ET2G
 Date: Tue, 31 Mar 2026 18:19:32 +0200
-Message-ID: <20260331161756.027707069@linuxfoundation.org>
+Message-ID: <20260331161742.523540352@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,67 +68,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232293-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232002-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 173B736DE82
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,spreckels.dev:email]
+X-Rspamd-Queue-Id: EEA7F36D74A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Valentin Spreckels <valentin@spreckels.dev>
 
-[ Upstream commit b57defcf8f109da5ba9cf59b2a736606faf3d846 ]
+[ Upstream commit 15fba71533bcdfaa8eeba69a5a5a2927afdf664a ]
 
-pcpu_num = 0 is a valid value. The marker for "unset pcpu_num" which
-makes copy_to_user_state_extra not add the XFRMA_SA_PCPU attribute is
-UINT_MAX.
+The TRENDnet TUC-ET2G is a RTL8156 based usb ethernet adapter. Add its
+vendor and product IDs.
 
-Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Valentin Spreckels <valentin@spreckels.dev>
+Link: https://patch.msgid.link/20260226195409.7891-2-valentin@spreckels.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c   | 1 +
+ include/linux/usb/r8152.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 3e6477c6082e7..4dd8341225bce 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3676,7 +3676,7 @@ static inline unsigned int xfrm_sa_len(struct xfrm_state *x)
- 	}
- 	if (x->if_id)
- 		l += nla_total_size(sizeof(x->if_id));
--	if (x->pcpu_num)
-+	if (x->pcpu_num != UINT_MAX)
- 		l += nla_total_size(sizeof(x->pcpu_num));
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index e4eb4e5425364..6ce25673e4cc8 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10090,6 +10090,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
+ 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
++	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
+ 	{}
+ };
  
- 	/* Must count x->lastused as it may become non-zero behind our back. */
+diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
+index 2ca60828f28bb..1502b2a355f98 100644
+--- a/include/linux/usb/r8152.h
++++ b/include/linux/usb/r8152.h
+@@ -32,6 +32,7 @@
+ #define VENDOR_ID_DLINK			0x2001
+ #define VENDOR_ID_DELL			0x413c
+ #define VENDOR_ID_ASUS			0x0b05
++#define VENDOR_ID_TRENDNET		0x20f4
+ 
+ #if IS_REACHABLE(CONFIG_USB_RTL8152)
+ extern u8 rtl8152_get_version(struct usb_interface *intf);
 -- 
 2.51.0
 
