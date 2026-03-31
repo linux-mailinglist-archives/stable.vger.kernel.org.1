@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGOVEQn5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:41 +0200
+	id GLJWOYQAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07B636CF12
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843A836E2CF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8692130E5515
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A28E305C333
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C199C3EF0A2;
-	Tue, 31 Mar 2026 16:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46E0301471;
+	Tue, 31 Mar 2026 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jgd5Upe5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/YGgWjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B3330E0DC;
-	Tue, 31 Mar 2026 16:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D712FE042;
+	Tue, 31 Mar 2026 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974366; cv=none; b=mMBeaRMosyfDy+UV0Nemqp0tr59zeEtmAPL14zlj1Ke8dgifxQtZ2iiybSBccCIkKLr8Wky55rPrkE5o7+m8Ckx8DI7Bs3xBULG+orznWFwLEdVCpJB9U+pB++5F75Qj3yjiyEUzPjjCANYaE+9HDLpS+hhGXtzTeSFcJn2AplA=
+	t=1774976513; cv=none; b=YXTyp2Yy02FFFX6Y8Sw0B2PRxBQ1xI8ZvA2LQkFrult7597jMYdPkpUVqeuBiKGSBXQZ+A8fpNh6XkXCbPFYoddjkcTPZVCvGlNM54wrd2E/7xLrT1xzk7lZEo2WOB/NfNv334R378094FDvwv9V4I/oEcvP+wUWthiUDTmyF5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974366; c=relaxed/simple;
-	bh=17y2iXvaiXJok5j2ux3C15Z/fLj0gvtpRkSHANnJZVc=;
+	s=arc-20240116; t=1774976513; c=relaxed/simple;
+	bh=E3NFJVPFtUI18Bb3hxpn16Ch8d86YwMjkBnbn29fupo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abPYuj0V8Iyp/BQMBQrT0jwkp/lFCLcfxCVyRclkCH+jjDJeGhVhx521sVAjGF3YbA6vrFNRYlMeCH6ZzDit1tD6Egg/+I/JeYAcV1Ie75dpjXAqq4B/pGUHI5oVdfsBMYSZS6zXOwlyTDSYTyzERHY7gzmsFq4B3p4elHcgM+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jgd5Upe5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF1FC19423;
-	Tue, 31 Mar 2026 16:26:05 +0000 (UTC)
+	 MIME-Version; b=RA/8JY+P0Eg7uG0U9E8DfrEyVRosk7+yc0GxUQ73xof+pb6yc6FKcRWqiPxnwkhLVxFsuwDfmYBTX2N3qJKBpx8TSgbXIdmIKyFUMzdvXJFNiJ8DKqMK2x36MOv1vuYBVS6HHfXL9rjxh98RAY0qVeH5iZ0h/VFnFEXV3+jHW7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/YGgWjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1095BC19423;
+	Tue, 31 Mar 2026 17:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974366;
-	bh=17y2iXvaiXJok5j2ux3C15Z/fLj0gvtpRkSHANnJZVc=;
+	s=korg; t=1774976513;
+	bh=E3NFJVPFtUI18Bb3hxpn16Ch8d86YwMjkBnbn29fupo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jgd5Upe5I6SO+OSSXMNJxa9GDZAxrf+Si+42Vjq2pCJSRAKOymcLHvhzhHthzm6EJ
-	 K94jeR95ixXTrF8rzeX3V7gdkatF7usnzJHmZf9HoWy5Art2gpzuNaI3RWn055sMfj
-	 zimOCscnUti/hyjPitb701sitK7we7gqMmtdFdfM=
+	b=e/YGgWjQbjM7gYEpGer6Y3oawcb/Q4uAiB9A+b6qjK4YR3WSmq+bP7QO33jI7vSUo
+	 Igot+e63KJSa6QJUNxbThwkNJilZgZRtQNnYpW53J6WPWMClrQXttVwBWT9957uaD8
+	 vpMiMfvl2n6rm883A8Dqn+GT14MSc0xSFpKaBqIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/175] Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold
+Subject: [PATCH 6.18 121/309] Bluetooth: L2CAP: Fix not tracking outstanding TX ident
 Date: Tue, 31 Mar 2026 18:20:24 +0200
-Message-ID: <20260331161731.258873213@linuxfoundation.org>
+Message-ID: <20260331161757.936099605@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +66,181 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231514-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232346-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D07B636CF12
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 843A836E2CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 598dbba9919c5e36c54fe1709b557d64120cb94b ]
+[ Upstream commit 6c3ea155e5ee3e56606233acde8309afda66d483 ]
 
-sco_recv_frame() reads conn->sk under sco_conn_lock() but immediately
-releases the lock without holding a reference to the socket. A concurrent
-close() can free the socket between the lock release and the subsequent
-sk->sk_state access, resulting in a use-after-free.
+This attempts to proper track outstanding request by using struct ida
+and allocating from it in l2cap_get_ident using ida_alloc_range which
+would reuse ids as they are free, then upon completion release
+the id using ida_free.
 
-Other functions in the same file (sco_sock_timeout(), sco_conn_del())
-correctly use sco_sock_hold() to safely hold a reference under the lock.
+This fixes the qualification test case L2CAP/COS/CED/BI-29-C which
+attempts to check if the host stack is able to work after 256 attempts
+to connect which requires Ident field to use the full range of possible
+values in order to pass the test.
 
-Fix by using sco_sock_hold() to take a reference before releasing the
-lock, and adding sock_put() on all exit paths.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Link: https://github.com/bluez/bluez/issues/1829
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Stable-dep-of: 00fdebbbc557 ("Bluetooth: L2CAP: Fix deadlock in l2cap_conn_del()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/sco.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/net/bluetooth/l2cap.h |  3 +--
+ net/bluetooth/l2cap_core.c    | 46 ++++++++++++++++++++++++-----------
+ 2 files changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 6635d155e360b..56a146515df9e 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -338,7 +338,7 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	struct sock *sk;
+diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
+index f08ed93bb6fa3..010f1a8fd15f8 100644
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -657,8 +657,7 @@ struct l2cap_conn {
  
- 	sco_conn_lock(conn);
--	sk = conn->sk;
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
+ 	struct sk_buff		*rx_skb;
+ 	__u32			rx_len;
+-	__u8			tx_ident;
+-	struct mutex		ident_lock;
++	struct ida		tx_ida;
  
- 	if (!sk)
-@@ -347,11 +347,15 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	BT_DBG("sk %p len %u", sk, skb->len);
- 
- 	if (sk->sk_state != BT_CONNECTED)
--		goto drop;
-+		goto drop_put;
- 
--	if (!sock_queue_rcv_skb(sk, skb))
-+	if (!sock_queue_rcv_skb(sk, skb)) {
-+		sock_put(sk);
- 		return;
-+	}
- 
-+drop_put:
-+	sock_put(sk);
- drop:
- 	kfree_skb(skb);
+ 	struct sk_buff_head	pending_rx;
+ 	struct work_struct	pending_rx_work;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index b5e393e4f3eb1..5bd5561a8dbf5 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -924,26 +924,18 @@ int l2cap_chan_check_security(struct l2cap_chan *chan, bool initiator)
+ 				 initiator);
  }
+ 
+-static u8 l2cap_get_ident(struct l2cap_conn *conn)
++static int l2cap_get_ident(struct l2cap_conn *conn)
+ {
+-	u8 id;
++	/* LE link does not support tools like l2ping so use the full range */
++	if (conn->hcon->type == LE_LINK)
++		return ida_alloc_range(&conn->tx_ida, 1, 255, GFP_ATOMIC);
+ 
+ 	/* Get next available identificator.
+ 	 *    1 - 128 are used by kernel.
+ 	 *  129 - 199 are reserved.
+ 	 *  200 - 254 are used by utilities like l2ping, etc.
+ 	 */
+-
+-	mutex_lock(&conn->ident_lock);
+-
+-	if (++conn->tx_ident > 128)
+-		conn->tx_ident = 1;
+-
+-	id = conn->tx_ident;
+-
+-	mutex_unlock(&conn->ident_lock);
+-
+-	return id;
++	return ida_alloc_range(&conn->tx_ida, 1, 128, GFP_ATOMIC);
+ }
+ 
+ static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
+@@ -1769,6 +1761,8 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 	if (work_pending(&conn->pending_rx_work))
+ 		cancel_work_sync(&conn->pending_rx_work);
+ 
++	ida_destroy(&conn->tx_ida);
++
+ 	cancel_delayed_work_sync(&conn->id_addr_timer);
+ 
+ 	l2cap_unregister_all_users(conn);
+@@ -4780,12 +4774,34 @@ static int l2cap_le_connect_rsp(struct l2cap_conn *conn,
+ 	return err;
+ }
+ 
++static void l2cap_put_ident(struct l2cap_conn *conn, u8 code, u8 id)
++{
++	switch (code) {
++	case L2CAP_COMMAND_REJ:
++	case L2CAP_CONN_RSP:
++	case L2CAP_CONF_RSP:
++	case L2CAP_DISCONN_RSP:
++	case L2CAP_ECHO_RSP:
++	case L2CAP_INFO_RSP:
++	case L2CAP_CONN_PARAM_UPDATE_RSP:
++	case L2CAP_ECRED_CONN_RSP:
++	case L2CAP_ECRED_RECONF_RSP:
++		/* First do a lookup since the remote may send bogus ids that
++		 * would make ida_free to generate warnings.
++		 */
++		if (ida_find_first_range(&conn->tx_ida, id, id) >= 0)
++			ida_free(&conn->tx_ida, id);
++	}
++}
++
+ static inline int l2cap_bredr_sig_cmd(struct l2cap_conn *conn,
+ 				      struct l2cap_cmd_hdr *cmd, u16 cmd_len,
+ 				      u8 *data)
+ {
+ 	int err = 0;
+ 
++	l2cap_put_ident(conn, cmd->code, cmd->ident);
++
+ 	switch (cmd->code) {
+ 	case L2CAP_COMMAND_REJ:
+ 		l2cap_command_rej(conn, cmd, cmd_len, data);
+@@ -5470,6 +5486,8 @@ static inline int l2cap_le_sig_cmd(struct l2cap_conn *conn,
+ {
+ 	int err = 0;
+ 
++	l2cap_put_ident(conn, cmd->code, cmd->ident);
++
+ 	switch (cmd->code) {
+ 	case L2CAP_COMMAND_REJ:
+ 		l2cap_le_command_rej(conn, cmd, cmd_len, data);
+@@ -6972,13 +6990,13 @@ static struct l2cap_conn *l2cap_conn_add(struct hci_conn *hcon)
+ 	     hci_dev_test_flag(hcon->hdev, HCI_FORCE_BREDR_SMP)))
+ 		conn->local_fixed_chan |= L2CAP_FC_SMP_BREDR;
+ 
+-	mutex_init(&conn->ident_lock);
+ 	mutex_init(&conn->lock);
+ 
+ 	INIT_LIST_HEAD(&conn->chan_l);
+ 	INIT_LIST_HEAD(&conn->users);
+ 
+ 	INIT_DELAYED_WORK(&conn->info_timer, l2cap_info_timeout);
++	ida_init(&conn->tx_ida);
+ 
+ 	skb_queue_head_init(&conn->pending_rx);
+ 	INIT_WORK(&conn->pending_rx_work, process_pending_rx);
 -- 
 2.51.0
 
