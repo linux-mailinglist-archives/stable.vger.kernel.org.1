@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KK7eJ+T+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:40 +0200
+	id qAYjFYQHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6486536DD87
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C8336F296
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1A2430A2B89
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 28B323139394
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1894266AA;
-	Tue, 31 Mar 2026 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892CC3081D6;
+	Tue, 31 Mar 2026 17:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxGd2wEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWt4/SYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7CC425CD6;
-	Tue, 31 Mar 2026 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C45C3016F5;
+	Tue, 31 Mar 2026 17:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976034; cv=none; b=bjHIGt4GPGL0j/gLeUK7fndOHPMfuVTsNzD5hNGegLmxb0JwjHxYJfrnirSkFdKRj8vEzen24H/TYy5LIEbTvzLcvWmzAI3T7pOP1v1gLCjaBq5ylAqtrjy744yWVXguDzXzuU8nyZTnii7T9MLh3SASKJqCdjCk5c9qJ/APHKc=
+	t=1774976771; cv=none; b=FQj0L4Th85pRIM1kfBxbJgxGgbnupgI6SDCrpu/SaxIZO84LjQQIotCRn3K6XsgiWWribmm+nEjcBYvgP1tjSawIJi7G4A42kJHpxHXDMjT+F0Pv01v4SeD96i+9cYzY1/6SC7J69Lt+SKhNanaPPFKY+tBrIWaYWw6E4xxyMXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976034; c=relaxed/simple;
-	bh=v7Q0uza27SMw16nOezMxJw1r4NHmhPXM2h1KzozXpzE=;
+	s=arc-20240116; t=1774976771; c=relaxed/simple;
+	bh=ENUE9xtaYb1AlewVyyQ/Z5KJhTb9x6/ogTAzrKw6woY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8PmejpHcaJdJyVYVUn2M8ne5x85xFPPIOuyvtiyOXV4e77ke1eJg/EScLTrSnGZtCMrxurJTBR1PEYcby4LXYtTtkKjnPGRDOQssK72phNovMgcC88Gw1aTuEYjBKixuG59JnYbW0nQmUY9Fhe03kVCydUic3kJW4qYM3PjOYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxGd2wEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A83C19423;
-	Tue, 31 Mar 2026 16:53:53 +0000 (UTC)
+	 MIME-Version; b=mGou0WKqs9+3h6bvjcOFiMwb7zxI/W2oK/7sN9+Gieh9hDhNlr9WAbPF8k1YNUYpZTa6Pv5oPvqaWVEbxI7OE/43kP2fY6g1mJ4sh4n1T4ffebgCMXQZQOIPoMU4qlV/viAPrvTfF9sJr95/TKFMwT1PEzGI6U3GEeMZV/KGw8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWt4/SYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55D1C19423;
+	Tue, 31 Mar 2026 17:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976034;
-	bh=v7Q0uza27SMw16nOezMxJw1r4NHmhPXM2h1KzozXpzE=;
+	s=korg; t=1774976771;
+	bh=ENUE9xtaYb1AlewVyyQ/Z5KJhTb9x6/ogTAzrKw6woY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxGd2wEu/E2EreYr4q/t2ubD2DxEUfZS90g6M4I3utE1o28DcvcWdfETnd7YA0MED
-	 N4tpdQsjpXEk5yVC9MJLiNj4rP3RVstC8Mi7IUx8NqC0s7r/mSk2FBb9vt63Y2R6sz
-	 BoxDoR36zztP5psKTK/nVIVs4bpz+ajFtGv7yLc8=
+	b=bWt4/SYSQoVO/Qk90YZrwmrKzcTE2m9wazpv0Y4Oxktyp+FJCWV8W/V6e8aljxfGH
+	 +obO0QHr3q5ykgu7+Mq9Iw+4CamGGDOw7A/ImO3qn/bKUX1SNXR//jekr8gDNd9b/4
+	 vuirlhYx8kJwQHMnbXIIj6RceNIg0UjHg2y7Vkuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Jun <lijun01@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 174/244] LoongArch: Fix missing NULL checks for kstrdup()
+	Kevin Hao <haokexin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 221/309] net: macb: Use dev_consume_skb_any() to free TX SKBs
 Date: Tue, 31 Mar 2026 18:22:04 +0200
-Message-ID: <20260331161748.184519686@linuxfoundation.org>
+Message-ID: <20260331161801.581452642@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +66,108 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232447-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232161-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,loongson.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6486536DD87
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 55C8336F296
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Jun <lijun01@kylinos.cn>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 3a28daa9b7d7c2ddf2c722e9e95d7e0928bf0cd1 upstream.
+commit 647b8a2fe474474704110db6bd07f7a139e621eb upstream.
 
-1. Replace "of_find_node_by_path("/")" with "of_root" to avoid multiple
-calls to "of_node_put()".
+The napi_consume_skb() function is not intended to be called in an IRQ
+disabled context. However, after commit 6bc8a5098bf4 ("net: macb: Fix
+tx_ptr_lock locking"), the freeing of TX SKBs is performed with IRQs
+disabled. To resolve the following call trace, use dev_consume_skb_any()
+for freeing TX SKBs:
+   WARNING: kernel/softirq.c:430 at __local_bh_enable_ip+0x174/0x188, CPU#0: ksoftirqd/0/15
+   Modules linked in:
+   CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted 7.0.0-rc4-next-20260319-yocto-standard-dirty #37 PREEMPT
+   Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+   pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+   pc : __local_bh_enable_ip+0x174/0x188
+   lr : local_bh_enable+0x24/0x38
+   sp : ffff800082b3bb10
+   x29: ffff800082b3bb10 x28: ffff0008031f3c00 x27: 000000000011ede0
+   x26: ffff000800a7ff00 x25: ffff800083937ce8 x24: 0000000000017a80
+   x23: ffff000803243a78 x22: 0000000000000040 x21: 0000000000000000
+   x20: ffff000800394c80 x19: 0000000000000200 x18: 0000000000000001
+   x17: 0000000000000001 x16: ffff000803240000 x15: 0000000000000000
+   x14: ffffffffffffffff x13: 0000000000000028 x12: ffff000800395650
+   x11: ffff8000821d1528 x10: ffff800081c2bc08 x9 : ffff800081c1e258
+   x8 : 0000000100000301 x7 : ffff8000810426ec x6 : 0000000000000000
+   x5 : 0000000000000001 x4 : 0000000000000001 x3 : 0000000000000000
+   x2 : 0000000000000008 x1 : 0000000000000200 x0 : ffff8000810428dc
+   Call trace:
+    __local_bh_enable_ip+0x174/0x188 (P)
+    local_bh_enable+0x24/0x38
+    skb_attempt_defer_free+0x190/0x1d8
+    napi_consume_skb+0x58/0x108
+    macb_tx_poll+0x1a4/0x558
+    __napi_poll+0x50/0x198
+    net_rx_action+0x1f4/0x3d8
+    handle_softirqs+0x16c/0x560
+    run_ksoftirqd+0x44/0x80
+    smpboot_thread_fn+0x1d8/0x338
+    kthread+0x120/0x150
+    ret_from_fork+0x10/0x20
+   irq event stamp: 29751
+   hardirqs last  enabled at (29750): [<ffff8000813be184>] _raw_spin_unlock_irqrestore+0x44/0x88
+   hardirqs last disabled at (29751): [<ffff8000813bdf60>] _raw_spin_lock_irqsave+0x38/0x98
+   softirqs last  enabled at (29150): [<ffff8000800f1aec>] handle_softirqs+0x504/0x560
+   softirqs last disabled at (29153): [<ffff8000800f2fec>] run_ksoftirqd+0x44/0x80
 
-2. Fix a potential kernel oops during early boot when memory allocation
-fails while parsing CPU model from device tree.
-
+Fixes: 6bc8a5098bf4 ("net: macb: Fix tx_ptr_lock locking")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Jun <lijun01@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260321-macb-tx-v1-1-b383a58dd4e6@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/env.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/env.c
-+++ b/arch/loongarch/kernel/env.c
-@@ -42,16 +42,15 @@ static int __init init_cpu_fullname(void
- 	int cpu, ret;
- 	char *cpuname;
- 	const char *model;
--	struct device_node *root;
- 
- 	/* Parsing cpuname from DTS model property */
--	root = of_find_node_by_path("/");
--	ret = of_property_read_string(root, "model", &model);
-+	ret = of_property_read_string(of_root, "model", &model);
- 	if (ret == 0) {
- 		cpuname = kstrdup(model, GFP_KERNEL);
-+		if (!cpuname)
-+			return -ENOMEM;
- 		loongson_sysconf.cpuname = strsep(&cpuname, " ");
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1108,7 +1108,7 @@ static void macb_tx_unmap(struct macb *b
  	}
--	of_node_put(root);
  
- 	if (loongson_sysconf.cpuname && !strncmp(loongson_sysconf.cpuname, "Loongson", 8)) {
- 		for (cpu = 0; cpu < NR_CPUS; cpu++)
+ 	if (tx_skb->skb) {
+-		napi_consume_skb(tx_skb->skb, budget);
++		dev_consume_skb_any(tx_skb->skb);
+ 		tx_skb->skb = NULL;
+ 	}
+ }
 
 
 
