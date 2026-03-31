@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-231533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB6JG+P2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:31 +0200
+	id oL5zI2UDzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B38F36CB2B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FF436EA7C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BAFA23064794
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5DA831D163B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBB33FAE08;
-	Tue, 31 Mar 2026 16:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B459A3F8E04;
+	Tue, 31 Mar 2026 16:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFWPKrio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/fkyYpd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9886B3F7A8B;
-	Tue, 31 Mar 2026 16:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7801D33120E;
+	Tue, 31 Mar 2026 16:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974415; cv=none; b=LcRkal83usaCpPik7vF4CQTVxwYzwYovxytas6asdIsxy6wWmWy37iXPVSD5EpvYS2syIwzmcqPkABOOB3uzZHV+o0IJroS6KASEjeWfrlyfIq1DPsYFZzfQcs4F5K92X7pLTC7sLP12ZqjX09ir88ZsfMVDLnrz2aL8p0PsQag=
+	t=1774975764; cv=none; b=qA/MAMNWSa8pFt544cFHdYf0mvBBdh563FbEPjMEpALlhiN0qR/MCJUvxRvXBza4aVgBPh0L2gicRFgimo2o+UFM5OFapyVpWX9qH1d9DhMAJyUnW1dR4IWALq8YdyzlJCOjqrWdmfsSaSjVE56L5UdQU0L83iff1OnRGSnk+QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974415; c=relaxed/simple;
-	bh=Z8a269HWWATPOX0rdjwUNg5JOAoFLedoqsNENAmCDW8=;
+	s=arc-20240116; t=1774975764; c=relaxed/simple;
+	bh=uTdxg4y8mLavFKbeFpehtz8s8dZie5JFH8sR4b3glAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlnzKVWXdsgNkeYxeo2leLMtNGkbN0L2CTjkwGL2IkD46Zrc81l2t9NGGCn5CqDZ/iJ5xwbE4/COLOLTuWehfbSsNTef4cfHEpf/egnbVtEc2O9B0wjHOMVg/Wd6kBbYC39FnV7U5G/tmORig75a4W+L8x/bgq8VUgpyCMF9BBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFWPKrio; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F05FC2BCB1;
-	Tue, 31 Mar 2026 16:26:55 +0000 (UTC)
+	 MIME-Version; b=YDbEmBcaYAdx1KVTqzHXJjlteEEr2wOKUhwAiLgYqf3rcLFQ6ncFMyg1RT+IJM/Dm+SQWijTE+HZsl1atW2InzeoRrXFuB3D8BZBu7/v5LJPDLOspQjJwCYD5KdqqDlD1J9LeEUmy8xCK4c8h7UCH2qygEqSWwZ3JkhpLmkqVg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/fkyYpd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0AFC19423;
+	Tue, 31 Mar 2026 16:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974415;
-	bh=Z8a269HWWATPOX0rdjwUNg5JOAoFLedoqsNENAmCDW8=;
+	s=korg; t=1774975764;
+	bh=uTdxg4y8mLavFKbeFpehtz8s8dZie5JFH8sR4b3glAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFWPKrioLTAY3gXI5HwvCP7aCVeJZKeF0MXHjyiZEaaAct6UqLPbSIMyAYhLOfHJ1
-	 FLhZiy5ElN8eif2ReJPhqsO2wx/lcm2YOgSbXcqyBySyuL6uvf2+OkfZbARIm0lsY2
-	 Ew6RGUHzXYtxKPrfPNRXFxIbLW9Pw5Fn9rfG39cs=
+	b=V/fkyYpd3bL7fcZgV3aHJmXkkCZh/M501w3hOgRYea3oISJRuEm3eSLMEF0B2c1xA
+	 Ssd3MMMtrAruXZhVsjdIe4AMUnfxwG7v8UNmdKpHATkfYISv9DxpFUQxaWYpb+4Hbu
+	 /UR8Y4Yd44crvr5HOAJVN2fWJZKJgnOxWGZdFQpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Brett Creeley <brett.creeley@amd.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/175] ionic: fix persistent MAC address override on PF
+Subject: [PATCH 6.12 078/244] net: bcmasp: Add support for asp-v3.0
 Date: Tue, 31 Mar 2026 18:20:28 +0200
-Message-ID: <20260331161731.405031526@linuxfoundation.org>
+Message-ID: <20260331161744.564928384@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231533-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232057-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,80 +86,470 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 0B38F36CB2B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email]
+X-Rspamd-Queue-Id: F1FF436EA7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
+[ Upstream commit e9f31435ee7d1dd350f5efaf9de7b0db3ad4bbfe ]
 
-The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
-the ionic firmware to update the LIF's identity in its persistent state.
-Since the firmware state is maintained across host warm boots and driver
-reloads, any MAC change on the Physical Function (PF) becomes "sticky.
+The asp-v3.0 is a major HW revision that reduced the number of
+channels and filters. The goal was to save cost by reducing the
+feature set.
 
-This is problematic because it causes ethtool -P to report the
-user-configured MAC as the permanent factory address, which breaks
-system management tools that rely on a stable hardware identity.
+Changes for asp-v3.0
+- Number of network filters were reduced.
+- Number of channels were reduced.
+- EDPKT stats were removed.
+- Fix a bug with csum offload.
 
-While Virtual Functions (VFs) need this hardware-level programming to
-properly handle MAC assignments in guest environments, the PF should
-maintain standard transient behavior. This patch gates the
-ionic_program_mac call using is_virtfn so that PF MAC changes remain
-local to the netdev filters and do not overwrite the firmware's
-permanent identity block.
-
-Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250422233645.1931036-8-justin.chen@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 27dfe9030acb ("net: bcmasp: fix double disable of clk")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c   | 79 +++++++++++++------
+ drivers/net/ethernet/broadcom/asp2/bcmasp.h   | 33 ++++++--
+ .../ethernet/broadcom/asp2/bcmasp_ethtool.c   | 15 +---
+ .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 13 ++-
+ 4 files changed, 92 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 1ac7a40fcc43e..a6a069ba841c8 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -1728,13 +1728,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
- 	if (ether_addr_equal(netdev->dev_addr, mac))
- 		return 0;
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 44f55eb72f174..9f2947d2d41f0 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -518,7 +518,7 @@ void bcmasp_netfilt_suspend(struct bcmasp_intf *intf)
+ 	int ret, i;
  
--	err = ionic_program_mac(lif, mac);
--	if (err < 0)
--		return err;
-+	/* Only program macs for virtual functions to avoid losing the permanent
-+	 * Mac across warm reset/reboot.
-+	 */
-+	if (lif->ionic->pdev->is_virtfn) {
-+		err = ionic_program_mac(lif, mac);
-+		if (err < 0)
-+			return err;
+ 	/* Write all filters to HW */
+-	for (i = 0; i < NUM_NET_FILTERS; i++) {
++	for (i = 0; i < priv->num_net_filters; i++) {
+ 		/* If the filter does not match the port, skip programming. */
+ 		if (!priv->net_filters[i].claimed ||
+ 		    priv->net_filters[i].port != intf->port)
+@@ -551,7 +551,7 @@ int bcmasp_netfilt_get_all_active(struct bcmasp_intf *intf, u32 *rule_locs,
+ 	struct bcmasp_priv *priv = intf->parent;
+ 	int j = 0, i;
  
--	if (err > 0)
--		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
--			   __func__);
-+		if (err > 0)
-+			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
-+				   __func__);
-+	}
+-	for (i = 0; i < NUM_NET_FILTERS; i++) {
++	for (i = 0; i < priv->num_net_filters; i++) {
+ 		if (!priv->net_filters[i].claimed ||
+ 		    priv->net_filters[i].port != intf->port)
+ 			continue;
+@@ -577,7 +577,7 @@ int bcmasp_netfilt_get_active(struct bcmasp_intf *intf)
+ 	struct bcmasp_priv *priv = intf->parent;
+ 	int cnt = 0, i;
  
- 	err = eth_prepare_mac_addr_change(netdev, addr);
- 	if (err)
+-	for (i = 0; i < NUM_NET_FILTERS; i++) {
++	for (i = 0; i < priv->num_net_filters; i++) {
+ 		if (!priv->net_filters[i].claimed ||
+ 		    priv->net_filters[i].port != intf->port)
+ 			continue;
+@@ -602,7 +602,7 @@ bool bcmasp_netfilt_check_dup(struct bcmasp_intf *intf,
+ 	size_t fs_size = 0;
+ 	int i;
+ 
+-	for (i = 0; i < NUM_NET_FILTERS; i++) {
++	for (i = 0; i < priv->num_net_filters; i++) {
+ 		if (!priv->net_filters[i].claimed ||
+ 		    priv->net_filters[i].port != intf->port)
+ 			continue;
+@@ -670,7 +670,7 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
+ 	int i, open_index = -1;
+ 
+ 	/* Check whether we exceed the filter table capacity */
+-	if (loc != RX_CLS_LOC_ANY && loc >= NUM_NET_FILTERS)
++	if (loc != RX_CLS_LOC_ANY && loc >= priv->num_net_filters)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/* If the filter location is busy (already claimed) and we are initializing
+@@ -686,7 +686,7 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
+ 	/* Initialize the loop index based on the desired location or from 0 */
+ 	i = loc == RX_CLS_LOC_ANY ? 0 : loc;
+ 
+-	for ( ; i < NUM_NET_FILTERS; i++) {
++	for ( ; i < priv->num_net_filters; i++) {
+ 		/* Found matching network filter */
+ 		if (!init &&
+ 		    priv->net_filters[i].claimed &&
+@@ -779,7 +779,7 @@ static void bcmasp_en_mda_filter(struct bcmasp_intf *intf, bool en,
+ 	priv->mda_filters[i].en = en;
+ 	priv->mda_filters[i].port = intf->port;
+ 
+-	rx_filter_core_wl(priv, ((intf->channel + 8) |
++	rx_filter_core_wl(priv, ((intf->channel + priv->tx_chan_offset) |
+ 			  (en << ASP_RX_FILTER_MDA_CFG_EN_SHIFT) |
+ 			  ASP_RX_FILTER_MDA_CFG_UMC_SEL(intf->port)),
+ 			  ASP_RX_FILTER_MDA_CFG(i));
+@@ -865,7 +865,7 @@ void bcmasp_disable_all_filters(struct bcmasp_intf *intf)
+ 	res_count = bcmasp_total_res_mda_cnt(intf->parent);
+ 
+ 	/* Disable all filters held by this port */
+-	for (i = res_count; i < NUM_MDA_FILTERS; i++) {
++	for (i = res_count; i < priv->num_mda_filters; i++) {
+ 		if (priv->mda_filters[i].en &&
+ 		    priv->mda_filters[i].port == intf->port)
+ 			bcmasp_en_mda_filter(intf, 0, i);
+@@ -909,7 +909,7 @@ int bcmasp_set_en_mda_filter(struct bcmasp_intf *intf, unsigned char *addr,
+ 
+ 	res_count = bcmasp_total_res_mda_cnt(intf->parent);
+ 
+-	for (i = res_count; i < NUM_MDA_FILTERS; i++) {
++	for (i = res_count; i < priv->num_mda_filters; i++) {
+ 		/* If filter not enabled or belongs to another port skip */
+ 		if (!priv->mda_filters[i].en ||
+ 		    priv->mda_filters[i].port != intf->port)
+@@ -924,7 +924,7 @@ int bcmasp_set_en_mda_filter(struct bcmasp_intf *intf, unsigned char *addr,
+ 	}
+ 
+ 	/* Create new filter if possible */
+-	for (i = res_count; i < NUM_MDA_FILTERS; i++) {
++	for (i = res_count; i < priv->num_mda_filters; i++) {
+ 		if (priv->mda_filters[i].en)
+ 			continue;
+ 
+@@ -944,12 +944,12 @@ static void bcmasp_core_init_filters(struct bcmasp_priv *priv)
+ 	/* Disable all filters and reset software view since the HW
+ 	 * can lose context while in deep sleep suspend states
+ 	 */
+-	for (i = 0; i < NUM_MDA_FILTERS; i++) {
++	for (i = 0; i < priv->num_mda_filters; i++) {
+ 		rx_filter_core_wl(priv, 0x0, ASP_RX_FILTER_MDA_CFG(i));
+ 		priv->mda_filters[i].en = 0;
+ 	}
+ 
+-	for (i = 0; i < NUM_NET_FILTERS; i++)
++	for (i = 0; i < priv->num_net_filters; i++)
+ 		rx_filter_core_wl(priv, 0x0, ASP_RX_FILTER_NET_CFG(i));
+ 
+ 	/* Top level filter enable bit should be enabled at all times, set
+@@ -966,18 +966,8 @@ static void bcmasp_core_init_filters(struct bcmasp_priv *priv)
+ /* ASP core initialization */
+ static void bcmasp_core_init(struct bcmasp_priv *priv)
+ {
+-	tx_analytics_core_wl(priv, 0x0, ASP_TX_ANALYTICS_CTRL);
+-	rx_analytics_core_wl(priv, 0x4, ASP_RX_ANALYTICS_CTRL);
+-
+-	rx_edpkt_core_wl(priv, (ASP_EDPKT_HDR_SZ_128 << ASP_EDPKT_HDR_SZ_SHIFT),
+-			 ASP_EDPKT_HDR_CFG);
+-	rx_edpkt_core_wl(priv,
+-			 (ASP_EDPKT_ENDI_BT_SWP_WD << ASP_EDPKT_ENDI_DESC_SHIFT),
+-			 ASP_EDPKT_ENDI);
+-
+ 	rx_edpkt_core_wl(priv, 0x1b, ASP_EDPKT_BURST_BUF_PSCAL_TOUT);
+ 	rx_edpkt_core_wl(priv, 0x3e8, ASP_EDPKT_BURST_BUF_WRITE_TOUT);
+-	rx_edpkt_core_wl(priv, 0x3e8, ASP_EDPKT_BURST_BUF_READ_TOUT);
+ 
+ 	rx_edpkt_core_wl(priv, ASP_EDPKT_ENABLE_EN, ASP_EDPKT_ENABLE);
+ 
+@@ -1020,6 +1010,18 @@ static void bcmasp_core_clock_select_one(struct bcmasp_priv *priv, bool slow)
+ 	ctrl_core_wl(priv, reg, ASP_CTRL_CORE_CLOCK_SELECT);
+ }
+ 
++static void bcmasp_core_clock_select_one_ctrl2(struct bcmasp_priv *priv, bool slow)
++{
++	u32 reg;
++
++	reg = ctrl2_core_rl(priv, ASP_CTRL2_CORE_CLOCK_SELECT);
++	if (slow)
++		reg &= ~ASP_CTRL2_CORE_CLOCK_SELECT_MAIN;
++	else
++		reg |= ASP_CTRL2_CORE_CLOCK_SELECT_MAIN;
++	ctrl2_core_wl(priv, reg, ASP_CTRL2_CORE_CLOCK_SELECT);
++}
++
+ static void bcmasp_core_clock_set_ll(struct bcmasp_priv *priv, u32 clr, u32 set)
+ {
+ 	u32 reg;
+@@ -1174,22 +1176,43 @@ static void bcmasp_eee_fixup(struct bcmasp_intf *intf, bool en)
+ 
+ static const struct bcmasp_plat_data v21_plat_data = {
+ 	.core_clock_select = bcmasp_core_clock_select_one,
++	.num_mda_filters = 32,
++	.num_net_filters = 32,
++	.tx_chan_offset = 8,
++	.rx_ctrl_offset = 0x0,
+ };
+ 
+ static const struct bcmasp_plat_data v22_plat_data = {
+ 	.core_clock_select = bcmasp_core_clock_select_many,
+ 	.eee_fixup = bcmasp_eee_fixup,
++	.num_mda_filters = 32,
++	.num_net_filters = 32,
++	.tx_chan_offset = 8,
++	.rx_ctrl_offset = 0x0,
++};
++
++static const struct bcmasp_plat_data v30_plat_data = {
++	.core_clock_select = bcmasp_core_clock_select_one_ctrl2,
++	.num_mda_filters = 20,
++	.num_net_filters = 16,
++	.tx_chan_offset = 0,
++	.rx_ctrl_offset = 0x10000,
+ };
+ 
+ static void bcmasp_set_pdata(struct bcmasp_priv *priv, const struct bcmasp_plat_data *pdata)
+ {
+ 	priv->core_clock_select = pdata->core_clock_select;
+ 	priv->eee_fixup = pdata->eee_fixup;
++	priv->num_mda_filters = pdata->num_mda_filters;
++	priv->num_net_filters = pdata->num_net_filters;
++	priv->tx_chan_offset = pdata->tx_chan_offset;
++	priv->rx_ctrl_offset = pdata->rx_ctrl_offset;
+ }
+ 
+ static const struct of_device_id bcmasp_of_match[] = {
+ 	{ .compatible = "brcm,asp-v2.1", .data = &v21_plat_data },
+ 	{ .compatible = "brcm,asp-v2.2", .data = &v22_plat_data },
++	{ .compatible = "brcm,asp-v3.0", .data = &v30_plat_data },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, bcmasp_of_match);
+@@ -1197,6 +1220,7 @@ MODULE_DEVICE_TABLE(of, bcmasp_of_match);
+ static const struct of_device_id bcmasp_mdio_of_match[] = {
+ 	{ .compatible = "brcm,asp-v2.1-mdio", },
+ 	{ .compatible = "brcm,asp-v2.2-mdio", },
++	{ .compatible = "brcm,asp-v3.0-mdio", },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, bcmasp_mdio_of_match);
+@@ -1278,6 +1302,17 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	 * how many interfaces come up.
+ 	 */
+ 	bcmasp_core_init(priv);
++
++	priv->mda_filters = devm_kcalloc(dev, priv->num_mda_filters,
++					 sizeof(*priv->mda_filters), GFP_KERNEL);
++	if (!priv->mda_filters)
++		return -ENOMEM;
++
++	priv->net_filters = devm_kcalloc(dev, priv->num_net_filters,
++					 sizeof(*priv->net_filters), GFP_KERNEL);
++	if (!priv->net_filters)
++		return -ENOMEM;
++
+ 	bcmasp_core_init_filters(priv);
+ 
+ 	bcmasp_init_wol(priv);
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.h b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
+index 6f49ebad4e99c..74adfdb50e11d 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.h
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
+@@ -363,6 +363,10 @@ struct bcmasp_mda_filter {
+ struct bcmasp_plat_data {
+ 	void (*core_clock_select)(struct bcmasp_priv *priv, bool slow);
+ 	void (*eee_fixup)(struct bcmasp_intf *priv, bool en);
++	unsigned int num_mda_filters;
++	unsigned int num_net_filters;
++	unsigned int tx_chan_offset;
++	unsigned int rx_ctrl_offset;
+ };
+ 
+ struct bcmasp_priv {
+@@ -379,12 +383,16 @@ struct bcmasp_priv {
+ 
+ 	void (*core_clock_select)(struct bcmasp_priv *priv, bool slow);
+ 	void (*eee_fixup)(struct bcmasp_intf *intf, bool en);
++	unsigned int			num_mda_filters;
++	unsigned int			num_net_filters;
++	unsigned int			tx_chan_offset;
++	unsigned int			rx_ctrl_offset;
+ 
+ 	void __iomem			*base;
+ 
+ 	struct list_head		intfs;
+ 
+-	struct bcmasp_mda_filter	mda_filters[NUM_MDA_FILTERS];
++	struct bcmasp_mda_filter	*mda_filters;
+ 
+ 	/* MAC destination address filters lock */
+ 	spinlock_t			mda_lock;
+@@ -392,7 +400,7 @@ struct bcmasp_priv {
+ 	/* Protects accesses to ASP_CTRL_CLOCK_CTRL */
+ 	spinlock_t			clk_lock;
+ 
+-	struct bcmasp_net_filter	net_filters[NUM_NET_FILTERS];
++	struct bcmasp_net_filter	*net_filters;
+ 
+ 	/* Network filter lock */
+ 	struct mutex			net_lock;
+@@ -482,8 +490,8 @@ BCMASP_FP_IO_MACRO_Q(rx_edpkt_cfg);
+ #define  PKT_OFFLOAD_EPKT_IP(x)		((x) << 21)
+ #define  PKT_OFFLOAD_EPKT_TP(x)		((x) << 19)
+ #define  PKT_OFFLOAD_EPKT_LEN(x)	((x) << 16)
+-#define  PKT_OFFLOAD_EPKT_CSUM_L3	BIT(15)
+-#define  PKT_OFFLOAD_EPKT_CSUM_L2	BIT(14)
++#define  PKT_OFFLOAD_EPKT_CSUM_L4	BIT(15)
++#define  PKT_OFFLOAD_EPKT_CSUM_L3	BIT(14)
+ #define  PKT_OFFLOAD_EPKT_ID(x)		((x) << 12)
+ #define  PKT_OFFLOAD_EPKT_SEQ(x)	((x) << 10)
+ #define  PKT_OFFLOAD_EPKT_TS(x)		((x) << 8)
+@@ -515,12 +523,27 @@ BCMASP_CORE_IO_MACRO(intr2, ASP_INTR2_OFFSET);
+ BCMASP_CORE_IO_MACRO(wakeup_intr2, ASP_WAKEUP_INTR2_OFFSET);
+ BCMASP_CORE_IO_MACRO(tx_analytics, ASP_TX_ANALYTICS_OFFSET);
+ BCMASP_CORE_IO_MACRO(rx_analytics, ASP_RX_ANALYTICS_OFFSET);
+-BCMASP_CORE_IO_MACRO(rx_ctrl, ASP_RX_CTRL_OFFSET);
+ BCMASP_CORE_IO_MACRO(rx_filter, ASP_RX_FILTER_OFFSET);
+ BCMASP_CORE_IO_MACRO(rx_edpkt, ASP_EDPKT_OFFSET);
+ BCMASP_CORE_IO_MACRO(ctrl, ASP_CTRL_OFFSET);
+ BCMASP_CORE_IO_MACRO(ctrl2, ASP_CTRL2_OFFSET);
+ 
++#define BCMASP_CORE_IO_MACRO_OFFSET(name, offset)			\
++static inline u32 name##_core_rl(struct bcmasp_priv *priv,		\
++				 u32 off)				\
++{									\
++	u32 reg = readl_relaxed(priv->base + priv->name##_offset +	\
++				(offset) + off);			\
++	return reg;							\
++}									\
++static inline void name##_core_wl(struct bcmasp_priv *priv,		\
++				  u32 val, u32 off)			\
++{									\
++	writel_relaxed(val, priv->base + priv->name##_offset +		\
++		       (offset) + off);					\
++}
++BCMASP_CORE_IO_MACRO_OFFSET(rx_ctrl, ASP_RX_CTRL_OFFSET);
++
+ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ 					    struct device_node *ndev_dn, int i);
+ 
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+index 6d537fe461cc9..b489406221e43 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+@@ -10,7 +10,6 @@
+ #include "bcmasp_intf_defs.h"
+ 
+ enum bcmasp_stat_type {
+-	BCMASP_STAT_RX_EDPKT,
+ 	BCMASP_STAT_RX_CTRL,
+ 	BCMASP_STAT_RX_CTRL_PER_INTF,
+ 	BCMASP_STAT_SOFT,
+@@ -33,8 +32,6 @@ struct bcmasp_stats {
+ 	.reg_offset = offset, \
+ }
+ 
+-#define STAT_BCMASP_RX_EDPKT(str, offset) \
+-	STAT_BCMASP_OFFSET(str, BCMASP_STAT_RX_EDPKT, offset)
+ #define STAT_BCMASP_RX_CTRL(str, offset) \
+ 	STAT_BCMASP_OFFSET(str, BCMASP_STAT_RX_CTRL, offset)
+ #define STAT_BCMASP_RX_CTRL_PER_INTF(str, offset) \
+@@ -42,11 +39,6 @@ struct bcmasp_stats {
+ 
+ /* Must match the order of struct bcmasp_mib_counters */
+ static const struct bcmasp_stats bcmasp_gstrings_stats[] = {
+-	/* EDPKT counters */
+-	STAT_BCMASP_RX_EDPKT("RX Time Stamp", ASP_EDPKT_RX_TS_COUNTER),
+-	STAT_BCMASP_RX_EDPKT("RX PKT Count", ASP_EDPKT_RX_PKT_CNT),
+-	STAT_BCMASP_RX_EDPKT("RX PKT Buffered", ASP_EDPKT_HDR_EXTR_CNT),
+-	STAT_BCMASP_RX_EDPKT("RX PKT Pushed to DRAM", ASP_EDPKT_HDR_OUT_CNT),
+ 	/* ASP RX control */
+ 	STAT_BCMASP_RX_CTRL_PER_INTF("Frames From Unimac",
+ 				     ASP_RX_CTRL_UMAC_0_FRAME_COUNT),
+@@ -113,9 +105,6 @@ static void bcmasp_update_mib_counters(struct bcmasp_intf *intf)
+ 		switch (s->type) {
+ 		case BCMASP_STAT_SOFT:
+ 			continue;
+-		case BCMASP_STAT_RX_EDPKT:
+-			val = rx_edpkt_core_rl(intf->parent, offset);
+-			break;
+ 		case BCMASP_STAT_RX_CTRL:
+ 			val = rx_ctrl_core_rl(intf->parent, offset);
+ 			break;
+@@ -272,7 +261,7 @@ static int bcmasp_flow_get(struct bcmasp_intf *intf, struct ethtool_rxnfc *cmd)
+ 
+ 	memcpy(&cmd->fs, &nfilter->fs, sizeof(nfilter->fs));
+ 
+-	cmd->data = NUM_NET_FILTERS;
++	cmd->data = intf->parent->num_net_filters;
+ 
+ 	return 0;
+ }
+@@ -319,7 +308,7 @@ static int bcmasp_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 		break;
+ 	case ETHTOOL_GRXCLSRLALL:
+ 		err = bcmasp_netfilt_get_all_active(intf, rule_locs, &cmd->rule_cnt);
+-		cmd->data = NUM_NET_FILTERS;
++		cmd->data = intf->parent->num_net_filters;
+ 		break;
+ 	default:
+ 		err = -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 3836456fcb9cf..4998b9c0357ca 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -180,14 +180,14 @@ static struct sk_buff *bcmasp_csum_offload(struct net_device *dev,
+ 	case htons(ETH_P_IP):
+ 		header |= PKT_OFFLOAD_HDR_SIZE_2((ip_hdrlen(skb) >> 8) & 0xf);
+ 		header2 |= PKT_OFFLOAD_HDR2_SIZE_2(ip_hdrlen(skb) & 0xff);
+-		epkt |= PKT_OFFLOAD_EPKT_IP(0) | PKT_OFFLOAD_EPKT_CSUM_L2;
++		epkt |= PKT_OFFLOAD_EPKT_IP(0);
+ 		ip_proto = ip_hdr(skb)->protocol;
+ 		header_cnt += 2;
+ 		break;
+ 	case htons(ETH_P_IPV6):
+ 		header |= PKT_OFFLOAD_HDR_SIZE_2((IP6_HLEN >> 8) & 0xf);
+ 		header2 |= PKT_OFFLOAD_HDR2_SIZE_2(IP6_HLEN & 0xff);
+-		epkt |= PKT_OFFLOAD_EPKT_IP(1) | PKT_OFFLOAD_EPKT_CSUM_L2;
++		epkt |= PKT_OFFLOAD_EPKT_IP(1);
+ 		ip_proto = ipv6_hdr(skb)->nexthdr;
+ 		header_cnt += 2;
+ 		break;
+@@ -198,12 +198,12 @@ static struct sk_buff *bcmasp_csum_offload(struct net_device *dev,
+ 	switch (ip_proto) {
+ 	case IPPROTO_TCP:
+ 		header2 |= PKT_OFFLOAD_HDR2_SIZE_3(tcp_hdrlen(skb));
+-		epkt |= PKT_OFFLOAD_EPKT_TP(0) | PKT_OFFLOAD_EPKT_CSUM_L3;
++		epkt |= PKT_OFFLOAD_EPKT_TP(0) | PKT_OFFLOAD_EPKT_CSUM_L4;
+ 		header_cnt++;
+ 		break;
+ 	case IPPROTO_UDP:
+ 		header2 |= PKT_OFFLOAD_HDR2_SIZE_3(UDP_HLEN);
+-		epkt |= PKT_OFFLOAD_EPKT_TP(1) | PKT_OFFLOAD_EPKT_CSUM_L3;
++		epkt |= PKT_OFFLOAD_EPKT_TP(1) | PKT_OFFLOAD_EPKT_CSUM_L4;
+ 		header_cnt++;
+ 		break;
+ 	default:
+@@ -815,9 +815,7 @@ static void bcmasp_init_tx(struct bcmasp_intf *intf)
+ 	/* Tx SPB */
+ 	tx_spb_ctrl_wl(intf, ((intf->channel + 8) << TX_SPB_CTRL_XF_BID_SHIFT),
+ 		       TX_SPB_CTRL_XF_CTRL2);
+-	tx_pause_ctrl_wl(intf, (1 << (intf->channel + 8)), TX_PAUSE_MAP_VECTOR);
+ 	tx_spb_top_wl(intf, 0x1e, TX_SPB_TOP_BLKOUT);
+-	tx_spb_top_wl(intf, 0x0, TX_SPB_TOP_SPRE_BW_CTRL);
+ 
+ 	tx_spb_dma_wq(intf, intf->tx_spb_dma_addr, TX_SPB_DMA_READ);
+ 	tx_spb_dma_wq(intf, intf->tx_spb_dma_addr, TX_SPB_DMA_BASE);
+@@ -1182,7 +1180,7 @@ static void bcmasp_map_res(struct bcmasp_priv *priv, struct bcmasp_intf *intf)
+ {
+ 	/* Per port */
+ 	intf->res.umac = priv->base + UMC_OFFSET(intf);
+-	intf->res.umac2fb = priv->base + (UMAC2FB_OFFSET +
++	intf->res.umac2fb = priv->base + (UMAC2FB_OFFSET + priv->rx_ctrl_offset +
+ 					  (intf->port * 0x4));
+ 	intf->res.rgmii = priv->base + RGMII_OFFSET(intf);
+ 
+@@ -1197,7 +1195,6 @@ static void bcmasp_map_res(struct bcmasp_priv *priv, struct bcmasp_intf *intf)
+ 	intf->rx_edpkt_cfg = priv->base + RX_EDPKT_CFG_OFFSET(intf);
+ }
+ 
+-#define MAX_IRQ_STR_LEN		64
+ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ 					    struct device_node *ndev_dn, int i)
+ {
 -- 
 2.51.0
 
