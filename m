@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPwFAz38y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:21 +0200
+	id 6IyWOk8IzGlaNgYAu9opvQ
+	(envelope-from <stable+bounces-232484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAFC36D5C2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC1636F467
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67F0930DB8B8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CD1D30D7BB2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163EC25D527;
-	Tue, 31 Mar 2026 16:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C5B30C632;
+	Tue, 31 Mar 2026 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3hOAMiE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEib8iWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF133E367;
-	Tue, 31 Mar 2026 16:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6EE2D7DEF;
+	Tue, 31 Mar 2026 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975521; cv=none; b=KjF4dTHdGLIGdButfZV5OnQBUkSfWN0IWhno33GQlPXGsUXqOKx8+FyrA2XuEjek35+JwhYXRO2UG1q3EppUEg5BcUcCoz9cATwl+v3i85sWZEJsb2kf+oHmwD9I90ymBzknQeIIHjLvbt6RB8S301SXdt6RWUuSNRPYsXMNJdo=
+	t=1774976867; cv=none; b=c1b/7VRJKzqst6T3FcdQQ++8JmKnGZ7rvTi06nQUaCCDOA9ZGxNyHml7h2gFo2WotYMtYAuTyF44yz/Z6Nv2P/O7e+vKfFNbyZOCyvU4tdCNQt1EhzPIKSWisLR+bfLsk6SPzoIic7j6thkK9qh7jupdS1V3oaeuLZjR3EERKMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975521; c=relaxed/simple;
-	bh=JqoEaRJqH2V0xsP+ifCNFW51LoM2Ecj5PdCMbs6HF9o=;
+	s=arc-20240116; t=1774976867; c=relaxed/simple;
+	bh=86eMFk4PF/QkqPcDK4LyXww8uqdKXswJo+XG7M3IM7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgoK0+7PpDaadZp6/YVoX8tQheBMQ9YNlQJnErdidNxaCKSWehFcTXlMYE2TGmVkXUlXi4M8y2OIF1FQ41GGWoNrqeBcsTWT0FAQemrc3y4rkyBnRjQleSapz+4RQPmExzd9KHBPlsth3xKFwbikQ0L1Zn4P3Lj3kbb7I0B+1Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3hOAMiE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8EFC19423;
-	Tue, 31 Mar 2026 16:45:21 +0000 (UTC)
+	 MIME-Version; b=B2sBBnyg1cRBq2krHkX0x+xMDj+wwa7ho5TcG9vzrRNSGRrSKH0bNGLrQsN1m/pX1O0KbPV5Q0b2cfVUM/OQzB8A/By1wMZ9SM9VFy0bzbeCatj1I3w5ObbT7LcmTBH8Br5m5Wl668E/AJ1polQ752lJ02zGKnn466ag54idPIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEib8iWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3659C19423;
+	Tue, 31 Mar 2026 17:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975521;
-	bh=JqoEaRJqH2V0xsP+ifCNFW51LoM2Ecj5PdCMbs6HF9o=;
+	s=korg; t=1774976867;
+	bh=86eMFk4PF/QkqPcDK4LyXww8uqdKXswJo+XG7M3IM7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3hOAMiE/nWy/A/nayc/Dy4vdgsiQyI8vjwj58f+Yrhm2TYuB2sawlTvnPaCeClvt
-	 VeJkX8q7tugclQteatmw4OaSlY35sUCE2oxtWPZ2EmMCa92iY3jjv9OfSRlMCQrwqk
-	 1YWqhFjfIh8ZNX+eRWMCYhhuPweU4WweMrqQ+Shg=
+	b=YEib8iWgI/LiPmajj2hBdICtxU4FUd3cG1E1zwgOK6M6PPXiioOAXBnZ4erUxUK4c
+	 ojc3fu0YNjqFbcJS5pEoQaMOZvKRmKZ5k7L2GxKiLfu0d5gU9oC8uf97C2f8aToXYZ
+	 viGm5ScAm5KBBkg/QFgC5dCU9wR2d9W1ai4eqPRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 327/342] dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
-Date: Tue, 31 Mar 2026 18:22:40 +0200
-Message-ID: <20260331161810.942244122@linuxfoundation.org>
+	Free Ekanayaka <free.ekanayaka@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 258/309] ext4: fix fsync(2) for nojournal mode
+Date: Tue, 31 Mar 2026 18:22:41 +0200
+Message-ID: <20260331161803.067013685@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +66,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231964-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232484-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nabladev.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AFAFC36D5C2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4EC1636F467
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
+commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
 
-The segment .control and .status fields both contain top bits which are
-not part of the buffer size, the buffer size is located only in the bottom
-max_buffer_len bits. To avoid interference from those top bits, mask out
-the size using max_buffer_len first, and only then subtract the values.
+When inode metadata is changed, we sometimes just call
+ext4_mark_inode_dirty() to track modified metadata. This copies inode
+metadata into block buffer which is enough when we are journalling
+metadata. However when we are running in nojournal mode we currently
+fail to write the dirtied inode buffer during fsync(2) because the inode
+is not marked as dirty. Use explicit ext4_write_inode() call to make
+sure the inode table buffer is written to the disk. This is a band aid
+solution but proper solution requires a much larger rewrite including
+changes in metadata bh tracking infrastructure.
 
-Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
+Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/ext4/fsync.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index ccfcc2b801f82..7b24d0a18ea53 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -997,16 +997,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					      struct xilinx_cdma_tx_segment,
- 					      node);
- 			cdma_hw = &cdma_seg->hw;
--			residue += (cdma_hw->control - cdma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
-+			           (cdma_hw->status & chan->xdev->max_buffer_len);
- 		} else if (chan->xdev->dma_config->dmatype ==
- 			   XDMA_TYPE_AXIDMA) {
- 			axidma_seg = list_entry(entry,
- 						struct xilinx_axidma_tx_segment,
- 						node);
- 			axidma_hw = &axidma_seg->hw;
--			residue += (axidma_hw->control - axidma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
-+			           (axidma_hw->status & chan->xdev->max_buffer_len);
- 		} else {
- 			aximcdma_seg =
- 				list_entry(entry,
-@@ -1014,8 +1014,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					   node);
- 			aximcdma_hw = &aximcdma_seg->hw;
- 			residue +=
--				(aximcdma_hw->control - aximcdma_hw->status) &
--				chan->xdev->max_buffer_len;
-+				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
-+				(aximcdma_hw->status & chan->xdev->max_buffer_len);
- 		}
- 	}
+--- a/fs/ext4/fsync.c
++++ b/fs/ext4/fsync.c
+@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
+ 				int datasync, bool *needs_barrier)
+ {
+ 	struct inode *inode = file->f_inode;
++	struct writeback_control wbc = {
++		.sync_mode = WB_SYNC_ALL,
++		.nr_to_write = 0,
++	};
+ 	int ret;
  
--- 
-2.53.0
-
+ 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
+-	if (!ret)
+-		ret = ext4_sync_parent(inode);
++	if (ret)
++		return ret;
++
++	/* Force writeout of inode table buffer to disk */
++	ret = ext4_write_inode(inode, &wbc);
++	if (ret)
++		return ret;
++
++	ret = ext4_sync_parent(inode);
++
+ 	if (test_opt(inode->i_sb, BARRIER))
+ 		*needs_barrier = true;
+ 
 
 
 
