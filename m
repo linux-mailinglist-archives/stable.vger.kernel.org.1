@@ -1,288 +1,223 @@
-Return-Path: <stable+bounces-231345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNZuJpB0y2ksIAYAu9opvQ
-	(envelope-from <stable+bounces-231345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:15:28 +0200
+	id 0ILJJL51y2k3HwYAu9opvQ
+	(envelope-from <stable+bounces-231346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:20:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCB5364EAE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:15:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F74365030
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 33219302EA50
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:12:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94CD9302DBBD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2FB36E476;
-	Tue, 31 Mar 2026 07:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5D33947A2;
+	Tue, 31 Mar 2026 07:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="LpO7alF6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WA0ifgdD"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10BC19049B;
-	Tue, 31 Mar 2026 07:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774941166; cv=none; b=X9k0jQGaWi8OA9+jxTQfwJlUvSLTrsUQWOqOcvrrsACDIuars7JXFc/cSI4dENw8oFa7X4cO1Sm+3fAI8mbfGA+C8q/OxZ9NRU/UJ+dsXJfhI6hV/9I5HfiGMcjGvnDeIgQBG8MgDnqsyu3WKawYZq95x9WSYiDDLeDExLpnmlI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774941166; c=relaxed/simple;
-	bh=2D4WdNTfPcZiRKss3zeGyGmEM9m4XEU75L4+0XLw77w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IoroK8rhQYYKXJ1Fzm3uldw2ymGti3Qkn2owORnZ4ck70NVN7cD6KfKfUaSOldBHmvvLeYxCeESWceu0vjg475sN2zghGVbzJjM3ftEuV8sVks4SH7NcBvgYfdur9kDGwkIQODA/444q9f/6w3l2MZ2bLgFs1L85Uj4HMgDxalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=LpO7alF6; arc=none smtp.client-ip=120.232.169.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=LpO7alF6D8hRGID1vONgJQxepW+F9VKh5ugbB6XsY38KsN/k+p6gkE8BmSbDcEhVZ793uXcEP0c4r
-	 MyNGanb/ndEAe3G38if4nzFLH5fl6fqmE9MEw6VCZiQkg+bSNwI1OdD3iQlvYyE4qPamUakS48cP0x
-	 8oDkDWbat3+ZccNc=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from Ubuntu24 (unknown[2409:8A00:DD3:9760:EC02:B35:F13F:3469])
-	by rmsmtp-lg-appmail-45-12076 (RichMail) with SMTP id 2f2c69cb73d6a26-00a34;
-	Tue, 31 Mar 2026 15:12:31 +0800 (CST)
-X-RM-TRANSID:2f2c69cb73d6a26-00a34
-From: XiaoHua Wang <561399680@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	XiaoHua Wang <561399680@139.com>
-Subject: [PATCH 6.12.y] net: add proper RCU protection to /proc/net/ptype
-Date: Tue, 31 Mar 2026 15:12:24 +0800
-Message-ID: <20260331071224.14601-1-561399680@139.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143933A3E61;
+	Tue, 31 Mar 2026 07:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774941562; cv=fail; b=d8ky7JwOQ/14bP3vEYA9BLnr155BJj8lhCBPLdTPJzUrOSGZL1KDQhWSYXKTERI5XoMvT22PcxtFM54onnw1gUDXmIdbsCjgXcrAoqRAOmprC+VwangshnX0Ngg22iwD7TZhrwm8paw1t1DE7IdxK0NltuKxc8WVoFD4HLFBJwE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774941562; c=relaxed/simple;
+	bh=I5VwrE6dU1b7hxTztyLWONnfqAS0hs1GX/yFy7Jd3Eg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XqtirxIbaXR/ZXrn04mMOOZiWceeBKfNwa5mxEL96b13axw4C8qOAO4QjBCpndw9P1U2wkmF7iHeNWOdcY7khtawQ8bHBQW98cCE/qCDWyNV2dOOjgmgLA5AVu8OHo3MqVudzZKE9JUS01sA1vzLHhiqP/b7R0j7Wo4Q+G0dwO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WA0ifgdD; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774941561; x=1806477561;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=I5VwrE6dU1b7hxTztyLWONnfqAS0hs1GX/yFy7Jd3Eg=;
+  b=WA0ifgdDzymkpkMeJ7t0SW0ikFfI0bnhL7u+26augSpk0ZGqImiJPaTJ
+   j3H7RrzjOsccnvEg06UWbpU0sxywS+YQkVWEsiAYB8eTvHubiNQJTpPfM
+   QUNGMI8E/sQmkqhg+Vuay8Mx2xnsxwcm8QlMECaT78ZpYQHMTmzi3KajJ
+   nIcdpug3Nq1IwMtUj6Gs7gAOxvg8zFo6kzbvxWuKxUwZjxYGSIBk2WMPK
+   4iehHmRK3upcqYXfNK1hK3w8dxa0iI0C/8BtKR9ppwGG78Nr0rmiTIKga
+   NxxKNHtsnMqeqmRb5aLaO+lVRwAvQZa6AvsUiPku7FsNfGc2bZJh+worS
+   Q==;
+X-CSE-ConnectionGUID: w92H3Z+dSG2iwYsgQlxhpw==
+X-CSE-MsgGUID: PBH7aS7dTYS1Vmz8/k0zbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="78537970"
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="78537970"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 00:19:14 -0700
+X-CSE-ConnectionGUID: UJrWaR2WR2GqdYGFhE3eqg==
+X-CSE-MsgGUID: XZAREZqWSmGpveUU7Vl5hA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="225454063"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 00:19:15 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 31 Mar 2026 00:19:13 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 31 Mar 2026 00:19:13 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.58) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 31 Mar 2026 00:19:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cQkV5kbbMnSr6g7n10V8oB3BtcXFrFARo5RyZp3wpRm501Z6QPVM/OzHKtVTnuwE8iCw+qlppMWO9bWoEd7bOvXg98Mfu5KGWDZ6QYIFXNp5OhuvZ3JJ8+gA8MuQuKZrTnGzCCJ4X2zXASH6kiDUiUEUY0LbWGGZ1OEpyqLt9XpUXyWTA3WRkrXtDxYd+BY8+m0TiB2fQ5Z/Kr1NgeyTEiH5JTapmj2+69lj5soEkfwIG+vl2KqF5lYC2pGpYn+E3bbIaS6iljzWIf2rrCbjOuSyy+m3Y0LIuEI2T16Mtj7+1pIYHyQ2l94b5sqJKvIUUsfZ8/BVDFa42bzoHOX4ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I5VwrE6dU1b7hxTztyLWONnfqAS0hs1GX/yFy7Jd3Eg=;
+ b=kpEGt3HIvZ6f6rdjtw42iEPU/drBONX/hWXhvpXyHfjVdvMVbSLfnl3OGiLukZJbw8alVM5gZq+wc2suRfCGT9TizSHnCkz57pNZN5OGTSd48qYIo2nQSFX/rXRv2eh66WuCAdeBtLqMnqC7qrYqMOemyj8EAYN9+4OEr3BhNqXG/Q+mdoSkOztEUunHFeb5BoJCFSgtZ3v7PrW92+XkFLT07hU5PccNTIA/uiNPGJOI1Cps2KKIs1nz2MzSIjMa1f1K0SjHm5NwzceiZp8c01KF5a126Wym6B4XGpqYoXIaf/jk0HVRO+9f1xPJDSc3RPHoW2kFccy5M53Gq9rpsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by BY1PR11MB7984.namprd11.prod.outlook.com (2603:10b6:a03:531::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
+ 2026 07:19:05 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f%5]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
+ 07:19:05 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: "dwmw2@infradead.org" <dwmw2@infradead.org>, "jgg@ziepe.ca"
+	<jgg@ziepe.ca>, "joro@8bytes.org" <joro@8bytes.org>, "will@kernel.org"
+	<will@kernel.org>, "robin.murphy@arm.com" <robin.murphy@arm.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Liu, Yi L"
+	<yi.l.liu@intel.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Joao
+ Martins <joao.m.martins@oracle.com>
+Subject: RE: [PATCH v2 1/4] iommu/vt-d: Block PASID attachment to nested
+ domain with dirty tracking
+Thread-Topic: [PATCH v2 1/4] iommu/vt-d: Block PASID attachment to nested
+ domain with dirty tracking
+Thread-Index: AQHcwC2UQg9f9Rw1S0eBHmFAfjfRSrXIPMaA
+Date: Tue, 31 Mar 2026 07:19:05 +0000
+Message-ID: <BN9PR11MB52766AFB3734BBDDC5E615F68C53A@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <20260330101108.12594-1-zhenzhong.duan@intel.com>
+ <20260330101108.12594-2-zhenzhong.duan@intel.com>
+In-Reply-To: <20260330101108.12594-2-zhenzhong.duan@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|BY1PR11MB7984:EE_
+x-ms-office365-filtering-correlation-id: d1c3f43d-0315-403b-d2c9-08de8ef5caf2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021|18002099003|56012099003|22082099003;
+x-microsoft-antispam-message-info: XJZblAlG2mbyJIjkWNgI91ul1+VOMmrozre3LLv22t3RnDbzGXiwVx39GTOObCn5WXVTIWdNTrrHBU1LoZmteJz2bvIJI6uinAjM+xyzX0H1st9mzrrRbxlXCnWcxskmISe89iMsqDz2YtzCiG37+XmfXhZG6l4T/+6mOc8T+CrOhNclKXI5aml+BUZLw0R0T1JN6r6xHGSxJ/7bNmp2G+rENiGz+KlsGyqQIQEA6NgRhyz4t/mb0pxCT3tcddyGa9gggStNc0uuDCgjh2sKb/O5hgQSQa0oM1MT5Sud6Aqeru+u5OIauuU0xe8MGvL2vtZpyCSOBmUJhZVzvtUjBd+Px5Yr11pTSdlk44rkFS93k88qEuEkiofAlnGd4Z+3rlaVCFRXV7Oy67nsSqW2n8FWO30l7uXFFQ2MyDDD3h9WqLcLQ+JeEodJuDrxo0KiXNExN+0DnQcCwkmFzgiaamPfTczBUVXr/d0QdEbHYAq/r0uc2DFdxOl45s6qx9ep2kcMn+wBtYI5y+cAOtHTjU3DO0Rrv2D4Gy21m2lQSJt/OSvjNX8AUZ5vc5XecQ5715mGWcvp3HzZ6Fhm2hs+IsxmcqQ2Ic+1nWIseLHDM/7jLp5A7rZLJjw/JRiXuO4Ba8ETpk6kOjDDLmZus8Psggs1lMxhFU6tfjSp3Ctv0MFlAA7KqHYGrkER5+3exOjTRlOGf5SP4uC1kkaIwUC0kZMXAqKGHPxOK+aeXjUvzwvPHVvRBnNmZUZmlnAVLykmYOLSOKVKtqf9Rviu9/4qrcrsgMIpcP2gjzNwA0oyc50=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TRzgH84FN1tHRSzf9GhswNrV0eScRYJLrBZIFg8u/QYgOm+oXs9f3vRbF3UG?=
+ =?us-ascii?Q?N9niDHS1KInS4KhME4Rp+bE+EX1XzeyguQ/ugORG9iG+pDRrdDt9bsv/2BmK?=
+ =?us-ascii?Q?7exuAoxZK7tq0YppQmrGb5O9t0hX9K3LWbO3j87Hx1moUKB7hMdomDetiqYE?=
+ =?us-ascii?Q?HbpwbUuZgsEtzMM43Ld85HAxs+zNX1ErQpZcJunvGlTVspkUBxLN5y7dbaUp?=
+ =?us-ascii?Q?qmemFSfmCXz7zlq+n7dTwPWz2Scx/+FjEFyOoCNvEWdft+4yP9MpZ3XYFdBp?=
+ =?us-ascii?Q?7RJAxpkkickDUBL/5uTlK75+PQHLJypZlZaaMk31jBggtt0VOmg9enRTo0Sg?=
+ =?us-ascii?Q?rdDMM+0mGWB8J8TWeDaMZoDQFVqzfuZ0/CCS0fZcD2Sv7Cz45kSnBe8BJJ/Q?=
+ =?us-ascii?Q?GcSglBUvUqGB6SHoQoRk38k77NGMHu4jdMwFxy0dyZvMxRbZW0d3s+50BAll?=
+ =?us-ascii?Q?lbdFO+k3HGRGRSXGSztS8D0pybBLhm5bvL9ATqYxaE63VWvBIJ6g/+RWjZKX?=
+ =?us-ascii?Q?AhqXCwxklPsRpIwtmS/TxMRfWhCWUmnLd9LA7WdcUxfrbEfd4Kffnw8KP+Rj?=
+ =?us-ascii?Q?f39PwAzbrTfBNOXIYjqN6IyxFmxqEgK3fhAntGO5F48qMTILtIUwgxyqWDxS?=
+ =?us-ascii?Q?4NrY6kuPLz0LaKtLaFrbrxsCuCFmNDa6jol3EITXhSUrtupKf/T5Zl+4R1K1?=
+ =?us-ascii?Q?IDOt9wQZjX/KJRw47/HwTwbHpYRD34xYciCdPq5Pgt4C99VZyPN1/cD34iNO?=
+ =?us-ascii?Q?ZTH4TRinKKkQGTMOAwF5ckUKHgTmWne7R2Nxu9nyZqZ+ogt9NmsOFOYEmVRW?=
+ =?us-ascii?Q?qdzLq9ctYF/R2o87UFdMhUi5hL3/AxK0zU0+0hNosZ2OH2hTecZqh7qOMNUz?=
+ =?us-ascii?Q?2dJJCULMNVjKA57rM/PakE4PgfEApnk8tvaVlMon5gpwbKmyQy2BrChACwoV?=
+ =?us-ascii?Q?d8fDgOflSglDhgto/KtYywOekThvohdX6z0RKQJxQlqOOH6emaMoruCZ9Dd6?=
+ =?us-ascii?Q?GlehGpfuWbPwsZbtc7+GhzphoSbO+87HxBZ/bfU1qwaFvCff4Dg1EFC8x4qv?=
+ =?us-ascii?Q?GoQp5mn2yCbjqrgTAlCfQD9owc7U5M3UoxP2f4293XAJ4GOB5ayxD3/vxnwi?=
+ =?us-ascii?Q?FtplFtCwB89tiPwtdTl3V60JI129IijOkLx+rBppTCiSiohOP+cc30PHJ2X4?=
+ =?us-ascii?Q?5Bbp3Ds/+ekVpsCSuhVooxqSZAo61KG1nXE2FLdbHOGSLC5BS/YynXNOA66x?=
+ =?us-ascii?Q?yo7QCutR8FgthdJZoYdr7NYpWCSpMQ8xOt7xCqDMgYTb/F219MOweC8BVRpH?=
+ =?us-ascii?Q?TQzjQlSWu6gy716gsbAgeID3cZ/nVwdP1x4EGBp0Z7ddsr2sHQqkYNTPMzoW?=
+ =?us-ascii?Q?I2mix2Dg6poPyQ8mZkqPQJZuF7A34qmL56EvLTkGsJZ4kM9XmqVzPADU5deN?=
+ =?us-ascii?Q?4dhJSa/5mEATdLAQR6YxN6NQ6/mplQ0uV5wU5Ab6odiqQ2lq+crrhaAv8FP3?=
+ =?us-ascii?Q?ODmYELDWo0b+XgehKoY6XxGmIdK1A9WnHv6CvJMrb5zD1HgwjM4pHiqfyx0G?=
+ =?us-ascii?Q?q0iQFYrSnbW9+PH3zdgnUVxkkY1zo3uY2n+85NREKIBsIkD1tjlkMSH4qi2q?=
+ =?us-ascii?Q?edQcWbRh/kgTi7oJxrf2dhhPeB0btSNKT+x34JecWW5ZIIzC87j0AbHA9slN?=
+ =?us-ascii?Q?gdtr2Kmx1X9/22KQ1Zw05mR3aKphO42cmmOj5Rd3luvUyj0U?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Exchange-RoutingPolicyChecked: nHQFKG0Gls0yL+KbkKtDbgJydL2GsABVpya1uQWVwH9k/mSjoBPLw1dB3xI/W/Znmot+5Ngq2JOUx0lRUcxE+2z8lxdCptZCFxNykVkg/DcvsLtaj1YQzifs4BB4iiMWTEJ2e9P89ilNo6yQb6YDl1hGa7Vu7PckjR3FyJwR73WVgHZttPhViPw/pnh+zuDmalyJyacSMm6MbWQdGlPtv0iTQJN9chlT2DFOBQpy4C/fnpZ3T4FCjkOWuDxSKG1MZdJpcHF2Cf0lRKpkZ6ho6e1Wo56EXlKHFQnH2ZXuoBj95E6gfEtlEmJg/c/IuE3PByK1kDFoQpjFHb28+RdMoQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1c3f43d-0315-403b-d2c9-08de8ef5caf2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2026 07:19:05.6073
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3yQBpaokE4bo1emKQSrwdYKxIXwgAfUcgd8zVJRYQKkCMb/5rV4MVOtVI9OssNABb5d1Umkrh1s+NvYkvfbM0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR11MB7984
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231345-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,linux.alibaba.com,huawei.com,kernel.org,139.com];
+	TAGGED_FROM(0.00)[bounces-231346-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[561399680@139.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[kevin.tian@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,ptype_all.next:url,139.com:email,139.com:mid,list.next:url]
-X-Rspamd-Queue-Id: CCCB5364EAE
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 43F74365030
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Eric Dumazet <edumazet@google.com>
+> From: Duan, Zhenzhong <zhenzhong.duan@intel.com>
+> Sent: Monday, March 30, 2026 6:11 PM
+>=20
+> Kernel lacks dirty tracking support on nested domain attached to PASID,
+> fails the attachment early if nesting parent domain is dirty tracking
+> configured, otherwise dirty pages would be lost.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: f35f22cc760e ("iommu/vt-d: Access/Dirty bit support for SS domains=
+")
+> Suggested-by: Kevin Tian <kevin.tian@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-[ Upstream commit f613e8b4afea0cd17c7168e8b00e25bc8d33175d ]
-
-Yin Fengwei reported an RCU stall in ptype_seq_show() and provided
-a patch.
-
-Real issue is that ptype_seq_next() and ptype_seq_show() violate
-RCU rules.
-
-ptype_seq_show() runs under rcu_read_lock(), and reads pt->dev
-to get device name without any barrier.
-
-At the same time, concurrent writers can remove a packet_type structure
-(which is correctly freed after an RCU grace period) and clear pt->dev
-without an RCU grace period.
-
-Define ptype_iter_state to carry a dev pointer along seq_net_private:
-
-struct ptype_iter_state {
-	struct seq_net_private	p;
-	struct net_device	*dev; // added in this patch
-};
-
-We need to record the device pointer in ptype_get_idx() and
-ptype_seq_next() so that ptype_seq_show() is safe against
-concurrent pt->dev changes.
-
-We also need to add full RCU protection in ptype_seq_next().
-(Missing READ_ONCE() when reading list.next values)
-
-Many thanks to Dong Chenchen for providing a repro.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1d10f8a1f40b ("net-procfs: show net devices bound packet types")
-Fixes: c353e8983e0d ("net: introduce per netns packet chains")
-Reported-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Reported-by: Dong Chenchen <dongchenchen2@huawei.com>
-Closes: https://lore.kernel.org/netdev/CANn89iKRRKPnWjJmb-_3a=sq+9h6DvTQM4DBZHT5ZRGPMzQaiA@mail.gmail.com/T/#m7b80b9fc9b9267f90e0b7aad557595f686f9c50d
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Tested-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Link: https://patch.msgid.link/20260202205217.2881198-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Some adjustments have been made. ]
-Signed-off-by: XiaoHua Wang <561399680@139.com>
----
- net/core/net-procfs.c | 49 +++++++++++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 16 deletions(-)
-
-diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
-index fa6d3969734a..e29d43fe11fa 100644
---- a/net/core/net-procfs.c
-+++ b/net/core/net-procfs.c
-@@ -168,8 +168,14 @@ static const struct seq_operations softnet_seq_ops = {
- 	.show  = softnet_seq_show,
- };
- 
-+struct ptype_iter_state {
-+	struct seq_net_private	p;
-+	struct net_device	*dev;
-+};
-+
- static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
- {
-+	struct ptype_iter_state *iter = seq->private;
- 	struct list_head *ptype_list = NULL;
- 	struct packet_type *pt = NULL;
- 	struct net_device *dev;
-@@ -179,12 +185,16 @@ static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
- 	for_each_netdev_rcu(seq_file_net(seq), dev) {
- 		ptype_list = &dev->ptype_all;
- 		list_for_each_entry_rcu(pt, ptype_list, list) {
--			if (i == pos)
-+			if (i == pos) {
-+				iter->dev = dev;
- 				return pt;
-+			}
- 			++i;
- 		}
- 	}
- 
-+	iter->dev = NULL;
-+
- 	list_for_each_entry_rcu(pt, &net_hotdata.ptype_all, list) {
- 		if (i == pos)
- 			return pt;
-@@ -210,6 +220,7 @@ static void *ptype_seq_start(struct seq_file *seq, loff_t *pos)
- 
- static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- {
-+	struct ptype_iter_state *iter = seq->private;
- 	struct net_device *dev;
- 	struct packet_type *pt;
- 	struct list_head *nxt;
-@@ -220,20 +231,21 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- 		return ptype_get_idx(seq, 0);
- 
- 	pt = v;
--	nxt = pt->list.next;
--	if (pt->dev) {
--		if (nxt != &pt->dev->ptype_all)
-+	nxt = READ_ONCE(pt->list.next);
-+	dev = iter->dev;
-+	if (dev) {
-+		if (nxt != &dev->ptype_all)
- 			goto found;
- 
--		dev = pt->dev;
- 		for_each_netdev_continue_rcu(seq_file_net(seq), dev) {
--			if (!list_empty(&dev->ptype_all)) {
--				nxt = dev->ptype_all.next;
-+			nxt = READ_ONCE(dev->ptype_all.next);
-+			if (nxt != &dev->ptype_all) {
-+				iter->dev = dev;
- 				goto found;
- 			}
- 		}
--
--		nxt = net_hotdata.ptype_all.next;
-+		iter->dev = NULL;
-+		nxt = READ_ONCE(net_hotdata.ptype_all.next);
- 		goto ptype_all;
- 	}
- 
-@@ -242,14 +254,14 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- 		if (nxt != &net_hotdata.ptype_all)
- 			goto found;
- 		hash = 0;
--		nxt = ptype_base[0].next;
-+		nxt = READ_ONCE(ptype_base[0].next);
- 	} else
- 		hash = ntohs(pt->type) & PTYPE_HASH_MASK;
- 
- 	while (nxt == &ptype_base[hash]) {
- 		if (++hash >= PTYPE_HASH_SIZE)
- 			return NULL;
--		nxt = ptype_base[hash].next;
-+		nxt = READ_ONCE(ptype_base[hash].next);
- 	}
- found:
- 	return list_entry(nxt, struct packet_type, list);
-@@ -263,19 +275,24 @@ static void ptype_seq_stop(struct seq_file *seq, void *v)
- 
- static int ptype_seq_show(struct seq_file *seq, void *v)
- {
-+	struct ptype_iter_state *iter = seq->private;
- 	struct packet_type *pt = v;
-+	struct net_device *dev;
- 
--	if (v == SEQ_START_TOKEN)
-+	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq, "Type Device      Function\n");
--	else if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
--		 (!pt->dev || net_eq(dev_net(pt->dev), seq_file_net(seq)))) {
-+		return 0;
-+	}
-+	dev = iter->dev;
-+	if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
-+		 (!dev || net_eq(dev_net(dev), seq_file_net(seq)))) {
- 		if (pt->type == htons(ETH_P_ALL))
- 			seq_puts(seq, "ALL ");
- 		else
- 			seq_printf(seq, "%04x", ntohs(pt->type));
- 
- 		seq_printf(seq, " %-8s %ps\n",
--			   pt->dev ? pt->dev->name : "", pt->func);
-+			   dev ? dev->name : "", pt->func);
- 	}
- 
- 	return 0;
-@@ -299,7 +316,7 @@ static int __net_init dev_proc_net_init(struct net *net)
- 			 &softnet_seq_ops))
- 		goto out_dev;
- 	if (!proc_create_net("ptype", 0444, net->proc_net, &ptype_seq_ops,
--			sizeof(struct seq_net_private)))
-+			sizeof(struct ptype_iter_state)))
- 		goto out_softnet;
- 
- 	if (wext_proc_init(net))
--- 
-2.43.0
-
-
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 
