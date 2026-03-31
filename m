@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-232330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SL3nCH0GzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:05 +0200
+	id EC3rLHP8y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF9B36F0A7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD5A36D67D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 02130305F97A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AFAA330934D3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0122D8DC3;
-	Tue, 31 Mar 2026 17:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3B9426ED6;
+	Tue, 31 Mar 2026 16:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4OoSB+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KmF9DKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1902DECDE;
-	Tue, 31 Mar 2026 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C81A426681;
+	Tue, 31 Mar 2026 16:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976472; cv=none; b=Vff9v8KJUV8913SRwV5AXI4+K/pFtj5EGI2ZslC+52Zqp3QkttVD3PRpGs+AE47T6PQVvwNPSVUjaZOP8STrlmAiWAxW9Dtm+5XXjqIOUcoB824WXtwviD7bfi3DY0MiJWR/apslLjHySADRVcliaPqTgqKeweuOb/MJen8+Q/I=
+	t=1774975130; cv=none; b=QuaOfMR0UUXx5YxYL6hI2+qE92LmkEs+xuY1zU7Z+Cqrjle5kPMIJOQ0sYQQkV+jw6ftMhtmUcu2gCXbjA4KyfTpVu7HLMDpt29InNlln/d1QXreF5Aa6lCRI1jPCymj6fJNsBhRiAnfx2CKmYM/hz/V4+VT8ICnl8UzB3FcgAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976472; c=relaxed/simple;
-	bh=yT0/oTHwnfJwY3dPobA/vVEfQrofPuVXW0T2XK2GUF8=;
+	s=arc-20240116; t=1774975130; c=relaxed/simple;
+	bh=78osZbyrLtGC5OfBiAiEvynaTmLTOY5l8BADTCoTQBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+uLCl/mmpUCNmqDEVH2jwuxdvO+iRnk+4Nwf6Bzn95iqiBvhthT2pxbkAb1QTFU6GISF4IagEZyDM9R9nex3uuW6IFn0uUsFrLrX+ypTQGmCmtrIPM23QulXaLh7avk3iXZzJ0RodJFyLIOz8xx61+2SPqgxk2jMsSD69gw0As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4OoSB+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86426C19424;
-	Tue, 31 Mar 2026 17:01:11 +0000 (UTC)
+	 MIME-Version; b=Lwce7CV9A0yGFTLq3DQAoHM3jcOkWruPITOtp6RK/fMC0MN/9aAt1a0Dgw/He+mRVtiLYTh0DjdfX+/BQ4nAfWdVLNZsdZUvDxHpiM67fKGPX7PSJDlyG7eWpEW/pZhZXIwlOj0EhrHSx1GPnWyFrcQwozGdMgibo3DK4qVVaAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KmF9DKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012A1C2BCB1;
+	Tue, 31 Mar 2026 16:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976471;
-	bh=yT0/oTHwnfJwY3dPobA/vVEfQrofPuVXW0T2XK2GUF8=;
+	s=korg; t=1774975130;
+	bh=78osZbyrLtGC5OfBiAiEvynaTmLTOY5l8BADTCoTQBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4OoSB+pkVw0kRA+4D0d6X+xx13NIw61Ra2Rwm/MOueib5PqMRf5aKk+XW1fD6rUn
-	 LTsUNk2SYMPmWgH42g30o9/n477L/7DCUdQ3q/BgNz2IdRJX3ntY2Z+jjsk5SiOx/J
-	 T68c5rsEJhN5wfj0TpqeQT/csqg86q+V4ekafmw0=
+	b=1KmF9DKobGy6/dUi7fhRZpmypuJDSr1mqobd1REeatULJ5cRbmg5OxHiPxKlnNxWy
+	 65TMZdt0fPC3gAd6cT9LqkHxEeJdbAtt6zp+SF0d4FUaLAIsmWLHXurVhkyHJN0WET
+	 8faKPc00FwIJcxbPdYwoKfC7QmVoVtWew15elf3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Yussuf Khalil <dev@pp3345.net>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 106/309] iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
+Subject: [PATCH 6.19 176/342] drm/amd/display: Do not skip unrelated mode changes in DSC validation
 Date: Tue, 31 Mar 2026 18:20:09 +0200
-Message-ID: <20260331161757.387215380@linuxfoundation.org>
+Message-ID: <20260331161805.484271706@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232330-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231811-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,171 +87,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email,intel.com:email]
-X-Rspamd-Queue-Id: 1EF9B36F0A7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pp3345.net:email]
+X-Rspamd-Queue-Id: CBD5A36D67D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Yussuf Khalil <dev@pp3345.net>
 
-[ Upstream commit fecacfc95f195b99c71c579a472120d0b4ed65fa ]
+[ Upstream commit aed3d041ab061ec8a64f50a3edda0f4db7280025 ]
 
-iavf incorrectly uses real_num_tx_queues for ETH_SS_STATS. Since the
-value could change in runtime, we should use num_tx_queues instead.
+Starting with commit 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in
+atomic check"), amdgpu resets the CRTC state mode_changed flag to false when
+recomputing the DSC configuration results in no timing change for a particular
+stream.
 
-Moreover iavf_get_ethtool_stats() uses num_active_queues while
-iavf_get_sset_count() and iavf_get_stat_strings() use
-real_num_tx_queues, which triggers out-of-bounds writes when we do
-"ethtool -L" and "ethtool -S" simultaneously [1].
+However, this is incorrect in scenarios where a change in MST/DSC configuration
+happens in the same KMS commit as another (unrelated) mode change. For example,
+the integrated panel of a laptop may be configured differently (e.g., HDR
+enabled/disabled) depending on whether external screens are attached. In this
+case, plugging in external DP-MST screens may result in the mode_changed flag
+being dropped incorrectly for the integrated panel if its DSC configuration
+did not change during precomputation in pre_validate_dsc().
 
-For example when we change channels from 1 to 8, Thread 3 could be
-scheduled before Thread 2, and out-of-bounds writes could be triggered
-in Thread 3:
+At this point, however, dm_update_crtc_state() has already created new streams
+for CRTCs with DSC-independent mode changes. In turn,
+amdgpu_dm_commit_streams() will never release the old stream, resulting in a
+memory leak. amdgpu_dm_atomic_commit_tail() will never acquire a reference to
+the new stream either, which manifests as a use-after-free when the stream gets
+disabled later on:
 
-Thread 1 (ethtool -L)       Thread 2 (work)        Thread 3 (ethtool -S)
-iavf_set_channels()
-...
-iavf_alloc_queues()
--> num_active_queues = 8
-iavf_schedule_finish_config()
-                                                   iavf_get_sset_count()
-                                                   real_num_tx_queues: 1
-                                                   -> buffer for 1 queue
-                                                   iavf_get_ethtool_stats()
-                                                   num_active_queues: 8
-                                                   -> out-of-bounds!
-                            iavf_finish_config()
-                            -> real_num_tx_queues = 8
+BUG: KASAN: use-after-free in dc_stream_release+0x25/0x90 [amdgpu]
+Write of size 4 at addr ffff88813d836524 by task kworker/9:9/29977
 
-Use immutable num_tx_queues in all related functions to avoid the issue.
+Workqueue: events drm_mode_rmfb_work_fn
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6e/0xa0
+ print_address_description.constprop.0+0x88/0x320
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ print_report+0xfc/0x1ff
+ ? srso_alias_return_thunk+0x5/0xfbef5
+ ? __virt_addr_valid+0x225/0x4e0
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ kasan_report+0xe1/0x180
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ kasan_check_range+0x125/0x200
+ dc_stream_release+0x25/0x90 [amdgpu]
+ dc_state_destruct+0x14d/0x5c0 [amdgpu]
+ dc_state_release.part.0+0x4e/0x130 [amdgpu]
+ dm_atomic_destroy_state+0x3f/0x70 [amdgpu]
+ drm_atomic_state_default_clear+0x8ee/0xf30
+ ? drm_mode_object_put.part.0+0xb1/0x130
+ __drm_atomic_state_free+0x15c/0x2d0
+ atomic_remove_fb+0x67e/0x980
 
-[1]
- BUG: KASAN: vmalloc-out-of-bounds in iavf_add_one_ethtool_stat+0x200/0x270
- Write of size 8 at addr ffffc900031c9080 by task ethtool/5800
+Since there is no reliable way of figuring out whether a CRTC has unrelated
+mode changes pending at the time of DSC validation, remember the value of the
+mode_changed flag from before the point where a CRTC was marked as potentially
+affected by a change in DSC configuration. Reset the mode_changed flag to this
+earlier value instead in pre_validate_dsc().
 
- CPU: 1 UID: 0 PID: 5800 Comm: ethtool Not tainted 6.19.0-enjuk-08403-g8137e3db7f1c #241 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6f/0xb0
-  print_report+0x170/0x4f3
-  kasan_report+0xe1/0x180
-  iavf_add_one_ethtool_stat+0x200/0x270
-  iavf_get_ethtool_stats+0x14c/0x2e0
-  __dev_ethtool+0x3d0c/0x5830
-  dev_ethtool+0x12d/0x270
-  dev_ioctl+0x53c/0xe30
-  sock_do_ioctl+0x1a9/0x270
-  sock_ioctl+0x3d4/0x5e0
-  __x64_sys_ioctl+0x137/0x1c0
-  do_syscall_64+0xf3/0x690
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7f7da0e6e36d
- ...
-  </TASK>
-
- The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900031c9000 allocated at __dev_ethtool+0x3cc9/0x5830
- The buggy address belongs to the physical page: page: refcount:1 mapcount:0 mapping:0000000000000000
- index:0xffff88813a013de0 pfn:0x13a013
- flags: 0x200000000000000(node=0|zone=2)
- raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: ffff88813a013de0 0000000000000000 00000001ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ffffc900031c8f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ffffc900031c9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffc900031c9080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                    ^
-  ffffc900031c9100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ffffc900031c9180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fixes: 64430f70ba6f ("iavf: Fix displaying queue statistics shown by ethtool")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5004
+Fixes: 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in atomic check")
+Signed-off-by: Yussuf Khalil <dev@pp3345.net>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit cc7c7121ae082b7b82891baa7280f1ff2608f22b)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 31 +++++++++----------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           | 5 +++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h           | 1 +
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 +++-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index cb3f78aab23a6..9ed1fb9432fc7 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -313,14 +313,13 @@ static int iavf_get_sset_count(struct net_device *netdev, int sset)
- {
- 	/* Report the maximum number queues, even if not every queue is
- 	 * currently configured. Since allocation of queues is in pairs,
--	 * use netdev->real_num_tx_queues * 2. The real_num_tx_queues is set
--	 * at device creation and never changes.
-+	 * use netdev->num_tx_queues * 2. The num_tx_queues is set at
-+	 * device creation and never changes.
- 	 */
- 
- 	if (sset == ETH_SS_STATS)
- 		return IAVF_STATS_LEN +
--			(IAVF_QUEUE_STATS_LEN * 2 *
--			 netdev->real_num_tx_queues);
-+		       (IAVF_QUEUE_STATS_LEN * 2 * netdev->num_tx_queues);
- 	else
- 		return -EINVAL;
- }
-@@ -345,19 +344,19 @@ static void iavf_get_ethtool_stats(struct net_device *netdev,
- 	iavf_add_ethtool_stats(&data, adapter, iavf_gstrings_stats);
- 
- 	rcu_read_lock();
--	/* As num_active_queues describe both tx and rx queues, we can use
--	 * it to iterate over rings' stats.
-+	/* Use num_tx_queues to report stats for the maximum number of queues.
-+	 * Queues beyond num_active_queues will report zero.
- 	 */
--	for (i = 0; i < adapter->num_active_queues; i++) {
--		struct iavf_ring *ring;
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
-+		struct iavf_ring *tx_ring = NULL, *rx_ring = NULL;
- 
--		/* Tx rings stats */
--		ring = &adapter->tx_rings[i];
--		iavf_add_queue_stats(&data, ring);
-+		if (i < adapter->num_active_queues) {
-+			tx_ring = &adapter->tx_rings[i];
-+			rx_ring = &adapter->rx_rings[i];
-+		}
- 
--		/* Rx rings stats */
--		ring = &adapter->rx_rings[i];
--		iavf_add_queue_stats(&data, ring);
-+		iavf_add_queue_stats(&data, tx_ring);
-+		iavf_add_queue_stats(&data, rx_ring);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 5a54d3f4a3de5..1430d18ae2c9e 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -12505,6 +12505,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
  	}
- 	rcu_read_unlock();
- }
-@@ -376,9 +375,9 @@ static void iavf_get_stat_strings(struct net_device *netdev, u8 *data)
- 	iavf_add_stat_strings(&data, iavf_gstrings_stats);
  
- 	/* Queues are always allocated in pairs, so we just use
--	 * real_num_tx_queues for both Tx and Rx queues.
-+	 * num_tx_queues for both Tx and Rx queues.
- 	 */
--	for (i = 0; i < netdev->real_num_tx_queues; i++) {
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
- 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
- 				      "tx", i);
- 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
+ 	if (dc_resource_is_dsc_encoding_supported(dc)) {
++		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
++			dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
++			dm_new_crtc_state->mode_changed_independent_from_dsc = new_crtc_state->mode_changed;
++		}
++
+ 		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
+ 			if (drm_atomic_crtc_needs_modeset(new_crtc_state)) {
+ 				ret = add_affected_mst_dsc_crtcs(state, crtc);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index beb0d04d3e682..dbc3db0d68292 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -965,6 +965,7 @@ struct dm_crtc_state {
+ 
+ 	bool freesync_vrr_info_changed;
+ 
++	bool mode_changed_independent_from_dsc;
+ 	bool dsc_force_changed;
+ 	bool vrr_supported;
+ 	struct mod_freesync_config freesync_config;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 5e92eaa67aa33..2e0895f4f9b10 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1744,9 +1744,11 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 			int ind = find_crtc_index_in_state_by_stream(state, stream);
+ 
+ 			if (ind >= 0) {
++				struct dm_crtc_state *dm_new_crtc_state = to_dm_crtc_state(state->crtcs[ind].new_state);
++
+ 				DRM_INFO_ONCE("%s:%d MST_DSC no mode changed for stream 0x%p\n",
+ 						__func__, __LINE__, stream);
+-				state->crtcs[ind].new_state->mode_changed = 0;
++				dm_new_crtc_state->base.mode_changed = dm_new_crtc_state->mode_changed_independent_from_dsc;
+ 			}
+ 		}
+ 	}
 -- 
-2.51.0
+2.53.0
 
 
 
