@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGBZMZgAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:56 +0200
+	id kM3JKF73y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4AC36E2F5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C9636CC1A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC1B4306D9D9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2588330416FF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8570E2FDC5E;
-	Tue, 31 Mar 2026 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5773FAE08;
+	Tue, 31 Mar 2026 16:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzBWWUpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypn4hkkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489502FF669;
-	Tue, 31 Mar 2026 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECEC3EE1DD;
+	Tue, 31 Mar 2026 16:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976719; cv=none; b=Je/QdD4Xi+FFR6/ggUa0yLzxrl099aqZgInp3wJasRKrPOmRllnm7OqJ1dZM86FKWUBNA0E6n3IfUK1wYPPVve3m2GXc9mQjXk4ytmk6UikPNF6kZ79ArUUx3XZeHc2zUsk0Q4ZE6QYznDqqtJ4/1dPiDFyO2x+iYCK6Q+pldEg=
+	t=1774974444; cv=none; b=unfrShkvRxF/LJCLoAfqc0+qEzJHCK/hLCEbPEINM1IbnmpDLqnI3eUlt/Vk+CREXOMGnxBDDORNRWyvr/mMc0vyPa6ne+waOXVC6QMrSBwqBRPKBO2Ud5rjC7NfTDJSAkLkdFyGzOX5Tmtbb676oqPUs9j6Viw9cXNqJpCK/6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976719; c=relaxed/simple;
-	bh=Z1DlU31qXFaILBsktKSEDW6QczejXoe/pbkPbxMyTrU=;
+	s=arc-20240116; t=1774974444; c=relaxed/simple;
+	bh=IqV27wpJtb4BxgZpg0cmK8ghGXM/MRJUIeLhbBzdp5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlz/0G3ynUD/wvDoLht7YS4WRHuhzT+gkC45EBVW0uI6WA2eynJCPpuYHmEE5CSIxv3GeEAlu+ndjyIDYinc3TOWO2FSq6XxLgKtxz0FQDK1nBir3/o7FHxL/7b4jOO1sHQbjH9Xezydl/lwIBVioqmxXedXGYNf5/a52JQ9XCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzBWWUpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20B3C19423;
-	Tue, 31 Mar 2026 17:05:18 +0000 (UTC)
+	 MIME-Version; b=AybiFvs6HgKIp6hd4C2Af3C4103aiqPzluPRXCli51sezhUDEt+KteFRJo0Gf5Q3olMM8YWl8tFJdOV9FtGVO06MFqBC1Nw53Abf52hifVMa8Y36pgQcy7nSOkZpU3WWXwkr8fwgMegtZ08hYA92PyFA7GwUKqGU+0cxaDI5x9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypn4hkkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0DDC19423;
+	Tue, 31 Mar 2026 16:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976719;
-	bh=Z1DlU31qXFaILBsktKSEDW6QczejXoe/pbkPbxMyTrU=;
+	s=korg; t=1774974443;
+	bh=IqV27wpJtb4BxgZpg0cmK8ghGXM/MRJUIeLhbBzdp5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzBWWUpnwPWz1IF1xCQG0gx9pG175HQGDMqC65w+p+0WizJ4Nnb0EkQHN4441IGzU
-	 mPh3t195ZUr+ZHZq05u5WMUTP8aDo1e76rXxyVtyYcw/M5ZRlBgoouNgVDpJ5xXKvz
-	 snBpwX7maHxgAkU+C3VO4AFQZv8VrxJSxaOgvzP0=
+	b=Ypn4hkkql4IL5TaZROGoSmMUirJ8occ7pBXp/tHkMhyaYprArX3+TIo7KojkKLntO
+	 avoY9I+d3PWbvtTLlTiQ9GgrUmmGtrldgVxvlFBptoNcPEYTHPJtuE1W7ZGuOvUwC2
+	 bJ1ewhh2oNfPvH1FMpNQZmBSeZfHGgEMiYr4F7Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Alberto Garcia <berto@igalia.com>,
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 168/309] hwmon: (pmbus) Introduce the concept of "write-only" attributes
-Date: Tue, 31 Mar 2026 18:21:11 +0200
-Message-ID: <20260331161759.650619688@linuxfoundation.org>
+Subject: [PATCH 6.6 088/175] PM: hibernate: Drain trailing zero pages on userspace restore
+Date: Tue, 31 Mar 2026 18:21:12 +0200
+Message-ID: <20260331161733.004095465@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,215 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231544-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232427-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email]
-X-Rspamd-Queue-Id: AF4AC36E2F5
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email]
+X-Rspamd-Queue-Id: 21C9636CC1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Alberto Garcia <berto@igalia.com>
 
-[ Upstream commit cd658475e7694d58e1c40dabc1dacf8431ccedb2 ]
+[ Upstream commit 734eba62cd32cb9ceffa09e57cdc03d761528525 ]
 
-Attributes intended to clear sensor history are intended to be writeable
-only. Reading those attributes today results in reporting more or less
-random values. To avoid ABI surprises, have those attributes explicitly
-return 0 when reading.
+Commit 005e8dddd497 ("PM: hibernate: don't store zero pages in the
+image file") added an optimization to skip zero-filled pages in the
+hibernation image. On restore, zero pages are handled internally by
+snapshot_write_next() in a loop that processes them without returning
+to the caller.
 
-Fixes: 787c095edaa9d ("hwmon: (pmbus/core) Add support for rated attributes")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+With the userspace restore interface, writing the last non-zero page
+to /dev/snapshot is followed by the SNAPSHOT_ATOMIC_RESTORE ioctl. At
+this point there are no more calls to snapshot_write_next() so any
+trailing zero pages are not processed, snapshot_image_loaded() fails
+because handle->cur is smaller than expected, the ioctl returns -EPERM
+and the image is not restored.
+
+The in-kernel restore path is not affected by this because the loop in
+load_image() in swap.c calls snapshot_write_next() until it returns 0.
+It is this final call that drains any trailing zero pages.
+
+Fixed by calling snapshot_write_next() in snapshot_write_finalize(),
+giving the kernel the chance to drain any trailing zero pages.
+
+Fixes: 005e8dddd497 ("PM: hibernate: don't store zero pages in the image file")
+Signed-off-by: Alberto Garcia <berto@igalia.com>
+Acked-by: Brian Geffon <bgeffon@google.com>
+Link: https://patch.msgid.link/ef5a7c5e3e3dbd17dcb20efaa0c53a47a23498bb.1773075892.git.berto@igalia.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ kernel/power/snapshot.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index ecd1dddcbe0ff..cbc36f0ba4bf9 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -1209,6 +1209,12 @@ static ssize_t pmbus_show_boolean(struct device *dev,
- 	return sysfs_emit(buf, "%d\n", val);
- }
- 
-+static ssize_t pmbus_show_zero(struct device *dev,
-+			       struct device_attribute *devattr, char *buf)
-+{
-+	return sysfs_emit(buf, "0\n");
-+}
-+
- static ssize_t pmbus_show_sensor(struct device *dev,
- 				 struct device_attribute *devattr, char *buf)
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index ea52417375a4e..c3ad93fc24e64 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2866,6 +2866,17 @@ int snapshot_write_finalize(struct snapshot_handle *handle)
  {
-@@ -1407,7 +1413,7 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
- 					     int reg,
- 					     enum pmbus_sensor_classes class,
- 					     bool update, bool readonly,
--					     bool convert)
-+					     bool writeonly, bool convert)
- {
- 	struct pmbus_sensor *sensor;
- 	struct device_attribute *a;
-@@ -1436,7 +1442,8 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
- 	sensor->data = -ENODATA;
- 	pmbus_dev_attr_init(a, sensor->name,
- 			    readonly ? 0444 : 0644,
--			    pmbus_show_sensor, pmbus_set_sensor);
-+			    writeonly ? pmbus_show_zero : pmbus_show_sensor,
-+			    pmbus_set_sensor);
+ 	int error;
  
- 	if (pmbus_add_attribute(data, &a->attr))
- 		return NULL;
-@@ -1496,6 +1503,7 @@ struct pmbus_limit_attr {
- 	u16 reg;		/* Limit register */
- 	u16 sbit;		/* Alarm attribute status bit */
- 	bool readonly:1;	/* True if the attribute is read-only */
-+	bool writeonly:1;	/* True if the attribute is write-only */
- 	bool update:1;		/* True if register needs updates */
- 	bool low:1;		/* True if low limit; for limits with compare functions only */
- 	const char *attr;	/* Attribute name */
-@@ -1545,7 +1553,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
- 			curr = pmbus_add_sensor(data, name, l->attr, index,
- 						page, 0xff, l->reg, attr->class,
- 						attr->update || l->update,
--						l->readonly, true);
-+						l->readonly, l->writeonly, true);
- 			if (!curr)
- 				return -ENOMEM;
- 			if (l->sbit && (info->func[page] & attr->sfunc)) {
-@@ -1585,7 +1593,7 @@ static int pmbus_add_sensor_attrs_one(struct i2c_client *client,
- 			return ret;
- 	}
- 	base = pmbus_add_sensor(data, name, "input", index, page, phase,
--				attr->reg, attr->class, true, true, true);
-+				attr->reg, attr->class, true, true, false, true);
- 	if (!base)
- 		return -ENOMEM;
- 	/* No limit and alarm attributes for phase specific sensors */
-@@ -1722,6 +1730,7 @@ static const struct pmbus_limit_attr vin_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VIN_MIN,
-@@ -1796,6 +1805,7 @@ static const struct pmbus_limit_attr vout_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VOUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VOUT_MIN,
-@@ -1877,6 +1887,7 @@ static const struct pmbus_limit_attr iin_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IIN_MAX,
-@@ -1918,6 +1929,7 @@ static const struct pmbus_limit_attr iout_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IOUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IOUT_MAX,
-@@ -1976,6 +1988,7 @@ static const struct pmbus_limit_attr pin_limit_attrs[] = {
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_PIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_PIN_MAX,
-@@ -2017,6 +2030,7 @@ static const struct pmbus_limit_attr pout_limit_attrs[] = {
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_POUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_POUT_MAX,
-@@ -2088,6 +2102,7 @@ static const struct pmbus_limit_attr temp_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_1,
-@@ -2133,6 +2148,7 @@ static const struct pmbus_limit_attr temp_limit_attrs2[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP2_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_2,
-@@ -2250,7 +2266,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 
- 	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
- 				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
--				  false, false, true);
-+				  false, false, false, true);
- 
- 	if (!sensor)
- 		return -ENOMEM;
-@@ -2261,14 +2277,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 
- 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
- 				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
--				  false, false, true);
-+				  false, false, false, true);
- 
- 	if (!sensor)
- 		return -ENOMEM;
- 
- 	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
- 				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
--				  true, false, false);
-+				  true, false, false, false);
- 
- 	if (!sensor)
- 		return -ENOMEM;
-@@ -2310,7 +2326,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
- 
- 			if (pmbus_add_sensor(data, "fan", "input", index,
- 					     page, 0xff, pmbus_fan_registers[f],
--					     PSC_FAN, true, true, true) == NULL)
-+					     PSC_FAN, true, true, false, true) == NULL)
- 				return -ENOMEM;
- 
- 			/* Fan control */
++	/*
++	 * Call snapshot_write_next() to drain any trailing zero pages,
++	 * but make sure we're in the data page region first.
++	 * This function can return PAGE_SIZE if the kernel was expecting
++	 * another copy page. Return -ENODATA in that situation.
++	 */
++	if (handle->cur > nr_meta_pages + 1) {
++		error = snapshot_write_next(handle);
++		if (error)
++			return error > 0 ? -ENODATA : error;
++	}
+ 	copy_last_highmem_page();
+ 	error = hibernate_restore_protect_page(handle->buffer);
+ 	/* Do that only if we have loaded the image entirely */
 -- 
 2.53.0
 
