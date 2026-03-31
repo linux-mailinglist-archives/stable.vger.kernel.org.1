@@ -1,187 +1,185 @@
-Return-Path: <stable+bounces-231411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNF4IXm5y2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:09:29 +0200
+	id IOosHo27y2kpKAYAu9opvQ
+	(envelope-from <stable+bounces-231412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:18:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2509B3694A1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5A03695D8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E34AC306C503
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:05:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B49C3040760
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F91E3E0C62;
-	Tue, 31 Mar 2026 12:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42CD3E0C77;
+	Tue, 31 Mar 2026 12:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1IJid3X"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pkQOni0K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09543AA1B3;
-	Tue, 31 Mar 2026 12:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A73D8909
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 12:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774958726; cv=none; b=FMZmgjuxwZ+xCZd0zITXfa8hWbVLnJGOsBv0LYg4QpHaGQXmr60MF/aDftylzf05DyaGF3NcU95qDpD1TDcnAcrezsGvgF+vBTrtdb9gIM9jf/jiynWSaPDF9vPot3yCPHNGSn5X3KvegUmpbYbkG8MMjWP7OZ4kQzhVPQtIPJA=
+	t=1774959224; cv=none; b=uKmm7mPOcVbAgEHyWpxWYcCEBR3Mq0MhnZZja5I8xTju5SaPYgHk5QBMDGDmO36JS6WcaYx93cTH9VjEUvMVEMj6YU2xYbWPF8kT4FhWtZVq+hIhSQOtLAmB7XXm1B/d0M0XqSTTGZKGRjhz07UE0/HUmjzgSUJ4LgxbRCLfExU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774958726; c=relaxed/simple;
-	bh=ZnYn9SXB+cSuaLtUlp0PUYQKlgEkBtGwy2wu2MkfQTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OgsR/FN54WY22K34d2lBHV4w1dvGrwxFW+Jiz1SROhidPIgk43nDJyCuKCz0lm/SWcqETnHaAPlJCCw9dxBI/arFcpe/+qFXNzxGEm9dLIUKv8Xo3SRyNCXJF89JgHCyMU9x/HCtZXyZFEc6SXvcyONmI+ZulQx++3zsjMWdZhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1IJid3X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A695FC19423;
-	Tue, 31 Mar 2026 12:05:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774958726;
-	bh=ZnYn9SXB+cSuaLtUlp0PUYQKlgEkBtGwy2wu2MkfQTg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t1IJid3Xwd0N876DcLM2okNrLAUhqms9HAdy0mUzbIY7cAxXdwrWywmDqqCH+MruW
-	 xPRJqL5uNW6PQJtUV5nMdK1d6N1kTAbGbxAQYqRVsnT8pFXLhzc+EMtJuEoCtF416/
-	 sF2aFkZ3C7JxW+nZTtvNhnX8oqOQYhvFCAlRaFH0=
-Date: Tue, 31 Mar 2026 14:05:23 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev
-Subject: Re: [PATCH for 6.6] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Message-ID: <2026033143-gumball-handcraft-5656@gregkh>
-References: <20260330100133.3955364-1-chenhuacai@loongson.cn>
- <2026033148-expletive-many-cd82@gregkh>
- <42ab19d20e572c61587728350b5f1ca900632322.camel@xry111.site>
+	s=arc-20240116; t=1774959224; c=relaxed/simple;
+	bh=0Z9faOwXUmh9qLgJhY+ZBPIJVESNk4JcKVkmsZ8jSzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OAQ9bcjh0OqCXBj71aJrazg52fvq7+7ZYzjHCrDOce2BZEn3RxRUXJu1odI7ndl5bsjc8gd5p9g26LnBkKsutEahGGAcAmQDJE2/8wnawlkMmmQ97YImkctKa2i4QKlZ4BvKof6bSbWEUT4S1+y8oCbouVOddjbM8+v/Yo1eTUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pkQOni0K; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 44E5D1A30B1;
+	Tue, 31 Mar 2026 12:13:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 125556029D;
+	Tue, 31 Mar 2026 12:13:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 501861045028C;
+	Tue, 31 Mar 2026 14:13:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1774959219; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=pQanRxNZVj5rjDHm72RB8zAUvY47FsQWhmsFM28fyzo=;
+	b=pkQOni0Kzytfp/hYUnUFM0OgsFiePcP9VFooY1yzAMtgji+zUSfFbZ3pHYJ9mG9SfsMUk4
+	axYh2j9+P+HGl9NlogKJRqZN+VnF0gRECRhMXWYtIEg2hztXzfwk+c9kdS8cDUu1n+BkKz
+	maiD0ajt3LDA70dCZZ3a7QIcJwDfNRaHaGrrWv5qGChUS0ggrAky8BWwBHAYtj28EiI5vX
+	JeYqwKSFVmNzE4kLmn+cpfw4npJf5aPnhpcv/oB0j0/zL2vJPyn9vJ5Yypcvlii5R+WKH8
+	hvk7NwCV64lXjJWkIpdObcj+cGcUvA0//e9tGCOeI6o8q6fXH5i4pZAqga2vKA==
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] iio: inkern: Avoid risky abs() usage in iio_multiply_value()
+Date: Tue, 31 Mar 2026 14:13:29 +0200
+Message-ID: <12864533.O9o76ZdvQC@fw-rgant>
+In-Reply-To: <acudGrFiD7TcAs3S@ashevche-desk.local>
+References:
+ <20260331-iio-multiply-abs-usage-v1-1-2ae8063e80e4@bootlin.com>
+ <acuT8oTnaYujC0k6@ashevche-desk.local> <acudGrFiD7TcAs3S@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <42ab19d20e572c61587728350b5f1ca900632322.camel@xry111.site>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: multipart/signed; boundary="nextPart5978803.DvuYhMxLoT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231411-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-231412-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[linuxfoundation.org:query timed out];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[romain.gantois@bootlin.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,xry111.site:email,loongson.cn:email]
-X-Rspamd-Queue-Id: 2509B3694A1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:url]
+X-Rspamd-Queue-Id: CE5A03695D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 07:58:15PM +0800, Xi Ruoyao wrote:
-> On Tue, 2026-03-31 at 13:10 +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Mar 30, 2026 at 06:01:33PM +0800, Huacai Chen wrote:
-> > > From: Xi Ruoyao <xry111@xry111.site>
-> > > 
-> > > commit e4878c37f6679fdea91b27a0f4e60a871f0b7bad upstream.
-> > > 
-> > > With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
-> > > of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
-> > > empty.  This is not valid, as the current DWARF specification mandates
-> > > the first byte of the EH frame to be the version number 1.  It causes
-> > > some unwinders to complain, for example the ClickHouse query profiler
-> > > spams the log with messages:
-> > > 
-> > >     clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
-> > >     version: 127 at 7ffffffb0000
-> > > 
-> > > Here "127" is just the byte located at the p_vaddr (0, i.e. the
-> > > beginning of the vDSO) of the empty GNU_EH_FRAME segment. Cross-
-> > > checking with /proc/365854/maps has also proven 7ffffffb0000 is the
-> > > start of vDSO in the process VM image.
-> > > 
-> > > In LoongArch the -fno-asynchronous-unwind-tables option seems just a
-> > > MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
-> > > "genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
-> > > use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
-> > > limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
-> > > we can simply flip it over to -fasynchronous-unwind-tables and pass
-> > > --eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
-> > > stack for statistics even if the sample point is taken when the PC is in
-> > > the vDSO.
-> > > 
-> > > However simply adjusting the options above would exploit an issue: when
-> > > the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
-> > > falled back to a machine-specific routine to match the code pattern of
-> > > rt_sigreturn() and extract the registers saved in the sigframe if the
-> > > code pattern is matched.  As unwinding from signal handlers is vital for
-> > > libgcc to support pthread cancellation etc., the fall-back routine had
-> > > been silently keeping the LoongArch Linux systems functioning since
-> > > Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
-> > > format, fall-back routine will no longer be used and libgcc will fail
-> > > to unwind the sigframe, and unwinding from signal handlers will no
-> > > longer work, causing dozens of glibc test failures.  To make it possible
-> > > to unwind from signal handlers again, it's necessary to code the unwind
-> > > info in __vdso_rt_sigreturn via .cfi_* directives.
-> > > 
-> > > The offsets in the .cfi_* directives depend on the layout of struct
-> > > sigframe, notably the offset of sigcontext in the sigframe.  To use the
-> > > offset in the assembly file, factor out struct sigframe into a header to
-> > > allow asm-offsets.c to output the offset for assembly.
-> > > 
-> > > To work around a long-term issue in the libgcc unwinder (the pc is
-> > > unconditionally substracted by 1: doing so is technically incorrect for
-> > > a signal frame), a nop instruction is included with the two real
-> > > instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
-> > > hack has been used on x86 for a long time.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-> > > Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> > 
-> > Does not apply cleanly on the latest 6.12.y queue :(
+--nextPart5978803.DvuYhMxLoT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Date: Tue, 31 Mar 2026 14:13:29 +0200
+Message-ID: <12864533.O9o76ZdvQC@fw-rgant>
+In-Reply-To: <acudGrFiD7TcAs3S@ashevche-desk.local>
+MIME-Version: 1.0
+
+Hello Andy,
+
+On Tuesday, 31 March 2026 12:08:26 CEST Andy Shevchenko wrote:
+> On Tue, Mar 31, 2026 at 12:29:22PM +0300, Andy Shevchenko wrote:
+> > On Tue, Mar 31, 2026 at 10:49:59AM +0200, Romain Gantois wrote:
+> ...
 > 
-> This is for 6.6.  Maybe your agent is malfunctioning?
+> > > -		*result = multiplier * abs(val);
+> > > -		*result += div_s64(multiplier * abs(val2), denominator);
+> > > +		*result = multiplier * abs((s64)val);
+> > > +		*result += div_s64(multiplier * abs((s64)val2), denominator);
+> > 
+> > Right, but here we get val and val2 from either static values from the
+> > driver (when it is SCALE channel), or when channel has PROCESSED support.
+> > In the latter one it might theoretically be possible to go till the
+> > INT_MIN, but practically I don't know how, except for the broken driver
+> > code in the first place. With that being said, I think it's better to
+> > validate somewhere the multipliers (when it's SCALE or PROCESSED
+> > channel). I also noted that for the _PROCESSED some drivers keep a
+> > garbage in val2. That probably needs to be addressed as well (exempli
+> > gratia: bmi270_read_raw() does that).
+> 
+> Actually the data in the val and val2 should be aligned with the returned
+> type, hence the potential bugs might only come from the untested drivers.
+> Which means that this patch doesn't improve the situation.
 
-Sorry, that was me malfunctioning, I meant to say this failed for 6.6.y:
+I'm a bit confused: when you say "the returned type" what returning function 
+are you referring to? Also, doesn't the patch still fix the bug for potentially 
+untested drivers which use PROCESSED?
 
-	Applying loongarch-vdso-emit-gnu_eh_frame-correctly.patch to linux-6.6.y
-	Applying patch loongarch-vdso-emit-gnu_eh_frame-correctly.patch
-	patching file arch/loongarch/include/asm/linkage.h
-	patching file arch/loongarch/include/asm/sigframe.h
-	patching file arch/loongarch/kernel/asm-offsets.c
-	patching file arch/loongarch/kernel/signal.c
-	Hunk #2 succeeded at 72 with fuzz 2 (offset 21 lines).
-	patching file arch/loongarch/vdso/Makefile
-	Hunk #1 succeeded at 24 (offset -1 lines).
-	Hunk #2 FAILED at 36.
-	1 out of 2 hunks FAILED -- rejects in file arch/loongarch/vdso/Makefile
-	patching file arch/loongarch/vdso/sigreturn.S
-	Patch loongarch-vdso-emit-gnu_eh_frame-correctly.patch does not apply (enforce with -f)
+Thanks,
 
-too many kernel branches...
+-- 
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-thanks,
+--nextPart5978803.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-greg k-h
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmnLumkACgkQKCYAIARz
+eA7EpA//QF4nYAISxA0588PT9pa0oAm6cCa8txaDLpXYs0EUVlvXnBYijbK+rWy/
+q/ooiddpwO6NfzNjvdt7SVjjOO5vH91nHTLTn7qlfa+0yLOgIMOBTItDzlLN15b3
+lJ3z58CSkAuNO4RADkPXMbt0HJ6Jws1yy2MUH1Q/t9ju5oJ1WbynVYBrZzwLKsS/
+S3ArOZfWW8yOH7emXiqkgERPoLuP+nRsl1fETWF+L3R4E+1LAk2QXBW90fcVwfbB
+mCXh/0L9UdzPEua/pTt0M4A6zVpmwQOqpGAOjluGv3Kd1Ft0JTLjOaGPGOnL3jj8
+Z0uekG4SfjSWjMzldzcj7+/z87pqTz2Wi3TrKy9Py0LWTHmLqcJhYtbUeEFDbB6/
+bPH/lmJqQ+4QxhPTc2Bm0HTFztVkM+oydcxL+y3O8aD60IMFt4YbjPhUAYZil+DQ
+yDusu/fSIV2Im88yadXjKkhiQP4BWHmqVc+j/NwY7WHeGMjRDinGSl99F0ZRt8lE
++nN+PobtLbo8+xGNXHcghA+LW3fJcMRpjbiqV/2KQJ+AErqnkq71bxuDryalWVUA
+4vvheAXsibFo+kQW3L2VgygsM8DyMW3j84hCxS/qy3p0a88KdWhmo/kHPhSQaHnI
+Lz3W+93s4JDVYqu8TvVEKF1EvEjwlL4Ej/sFHFa5kB/aJHjDaQo=
+=4kPg
+-----END PGP SIGNATURE-----
+
+--nextPart5978803.DvuYhMxLoT--
+
+
+
 
