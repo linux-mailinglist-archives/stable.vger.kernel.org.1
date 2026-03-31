@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-231690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEoGG8/5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231690-lists+stable=lfdr.de@vger.kernel.org>)
+	id ICTnLs/5y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231691-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C976C36D0AF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A3936D0B0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 125AA319E37B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC1C31D9566
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC04425CD2;
-	Tue, 31 Mar 2026 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FCD425CD6;
+	Tue, 31 Mar 2026 16:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNypu9gR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rheLnSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6200A3DFC7D;
-	Tue, 31 Mar 2026 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408E141B37F;
+	Tue, 31 Mar 2026 16:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974817; cv=none; b=idRvo9w49BS9b3U3TEqTz6lsUDHrkStAMDSV94h9EWSZBxikZyWYQuLo04bWYqsLAIL0GnJxkPCZDTIuX8MHQc5Ep1njJn/O29XoHIOO5uZFH812CNJ3u5a5b7GpP+V2NbVEKB/5uqVFZgiqymC8cMTgpRSzqBTVhz63VuE2k2A=
+	t=1774974820; cv=none; b=sJfIzRsf4knTzd6W81fJNiuWOMu+zTwLfd/hXgK8jZu0hmNQIG4bC1FJ3Ib3bYQ3AsrrQrfNrKJ4SMnbapjeBTJqMW5QbyFtLdsu1FZjWl2NdjtDH1d6aZLVRdFl6s++zSRIFJISTE5PCw3CMsucMzQ4wEpJXNV43MMj+XXn31k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974817; c=relaxed/simple;
-	bh=1fwp+LW1W+NiDXOAfXCoRtRdwEmmnxyuqkxldaKADWU=;
+	s=arc-20240116; t=1774974820; c=relaxed/simple;
+	bh=wpKgPYXZ78r8+EqD1bpJm29mr8znqFc3YC/naqv9Oko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SnudjjC1vOaFwnGllvZGPZCWFTy5rYKo/wDADdrja2nCXxeuJTXe3uSHwjZVC/xpchaABwZvsiOEyGyW09EK8k/fXos+b6wBuWkdIQ2FPFDfJ4Lw56f4IGMLOdk2iAhLDoX4rhs678gzx66ksbv3qyTtBKVXgOt7S2Ht26MpHfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNypu9gR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB13EC19423;
-	Tue, 31 Mar 2026 16:33:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J+jApgBJNgR/293OqURQ2cOKTax1lWrw43Z66p7WwwYrwblc3ipjDmqGx5m2vy1eQJFsG6vDjAP1GceMDx2QSJGl5wxFqECPkiVTWZoAEGus5dn8HphLgmYmu2H6RTu/8TsLfC7tes1vSEaTJBSkIbxDeREOc7+Dl4jy32dvPZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rheLnSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87741C19423;
+	Tue, 31 Mar 2026 16:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974817;
-	bh=1fwp+LW1W+NiDXOAfXCoRtRdwEmmnxyuqkxldaKADWU=;
+	s=korg; t=1774974819;
+	bh=wpKgPYXZ78r8+EqD1bpJm29mr8znqFc3YC/naqv9Oko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FNypu9gRh+LvDDYTshzt25wlW8DN3rSigZGjttcXihLrPkhnlup/OXFaNPunkxfaQ
-	 O+7P74MCNZ1cbySEe/rPzT3gtPNWKR1H2nUX0ppLmZwo+tELO+Hq2JOiuv4bJBAO2g
-	 6pfIwVjsD02xz/DVOv1ZIqaSCcfPAhAzgVs8qT/M=
+	b=1rheLnSrYTikch+me2/mXNgq5eFQCc86V/MPJ0D3yBw06FUbEWsfTobyNj3Tzht0u
+	 Indl3/bgB7haZYnbZje85/m5NPAUSnlOF81rwPbTfkbDaxz3tHhP1385E9pMLBZze8
+	 IHwAxeL6xflAphcID6wMgW+YAOxp0UqydU9DH+O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noah Provenzano <noahpro@gmail.com>,
-	Juan Martin Morales <juanm4morales@gmail.com>,
-	Krishna Chomal <krishna.chomal108@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 022/342] platform/x86: hp-wmi: Add Omen 16-wf0xxx fan and thermal support
-Date: Tue, 31 Mar 2026 18:17:35 +0200
-Message-ID: <20260331161759.729877424@linuxfoundation.org>
+Subject: [PATCH 6.19 023/342] HID: asus: avoid memory leak in asus_report_fixup()
+Date: Tue, 31 Mar 2026 18:17:36 +0200
+Message-ID: <20260331161759.765244878@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -67,35 +65,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231690-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231691-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C976C36D0AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 45A3936D0B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,48 +99,60 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Krishna Chomal <krishna.chomal108@gmail.com>
+From: Günther Noack <gnoack@google.com>
 
-[ Upstream commit 13fa3aaf02edaad9b41fc61d7f6326d2b6a4bf80 ]
+[ Upstream commit 2bad24c17742fc88973d6aea526ce1353f5334a3 ]
 
-The HP Omen 16-wf0xxx (board ID: 8BAB) has the same WMI interface as
-other Victus S boards, but requires quirks for correctly switching
-thermal profile (similar to HP Omen 16-wf1xxx, board ID: 8C78).
+The asus_report_fixup() function was returning a newly allocated
+kmemdup()-allocated buffer, but never freeing it.  Switch to
+devm_kzalloc() to ensure the memory is managed and freed automatically
+when the device is removed.
 
-Add the DMI board name to victus_s_thermal_profile_boards[] table and
-map it to omen_v1_thermal_params.
+The caller of report_fixup() does not take ownership of the returned
+pointer, but it is permitted to return a pointer whose lifetime is at
+least that of the input buffer.
 
-Testing on HP Omen 16-wf0xxx confirmed that platform profile is
-registered successfully and fan RPMs are readable and controllable.
+Also fix a harmless out-of-bounds read by copying only the original
+descriptor size.
 
-Suggested-by: Noah Provenzano <noahpro@gmail.com>
-Tested-by: Juan Martin Morales <juanm4morales@gmail.com>
-Reported-by: Juan Martin Morales <juanm4morales@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220639
-Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
-Link: https://patch.msgid.link/20260216072003.90151-1-krishna.chomal108@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Assisted-by: Gemini-CLI:Google Gemini 3
+Signed-off-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-asus.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index 24d065ddfc6ae..9fcc18635e4e7 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -160,6 +160,10 @@ static const char * const victus_thermal_profile_boards[] = {
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 472bca54642b9..8487332bf43b0 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1306,14 +1306,21 @@ static const __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		 */
+ 		if (*rsize == rsize_orig &&
+ 			rdesc[offs] == 0x09 && rdesc[offs + 1] == 0x76) {
+-			*rsize = rsize_orig + 1;
+-			rdesc = kmemdup(rdesc, *rsize, GFP_KERNEL);
+-			if (!rdesc)
+-				return NULL;
++			__u8 *new_rdesc;
++
++			new_rdesc = devm_kzalloc(&hdev->dev, rsize_orig + 1,
++						 GFP_KERNEL);
++			if (!new_rdesc)
++				return rdesc;
  
- /* DMI Board names of Victus 16-r and Victus 16-s laptops */
- static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst = {
-+	{
-+		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BAB") },
-+		.driver_data = (void *)&omen_v1_thermal_params,
-+	},
- 	{
- 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BBE") },
- 		.driver_data = (void *)&victus_s_thermal_params,
+ 			hid_info(hdev, "Fixing up %s keyb report descriptor\n",
+ 				drvdata->quirks & QUIRK_T100CHI ?
+ 				"T100CHI" : "T90CHI");
++
++			memcpy(new_rdesc, rdesc, rsize_orig);
++			*rsize = rsize_orig + 1;
++			rdesc = new_rdesc;
++
+ 			memmove(rdesc + offs + 4, rdesc + offs + 2, 12);
+ 			rdesc[offs] = 0x19;
+ 			rdesc[offs + 1] = 0x00;
 -- 
 2.51.0
 
