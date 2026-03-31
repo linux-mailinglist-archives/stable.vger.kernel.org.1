@@ -1,76 +1,68 @@
-Return-Path: <stable+bounces-231421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GdWFCjIy2mnLgYAu9opvQ
-	(envelope-from <stable+bounces-231421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:12:08 +0200
+	id qNN1E7XHy2mnLgYAu9opvQ
+	(envelope-from <stable+bounces-231422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:10:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AEA369FF7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:12:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B849C369FA5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D486230C1494
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:08:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73F0A3021EBC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374833E3D98;
-	Tue, 31 Mar 2026 13:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="i+xuOMXf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E750E3E51FE;
+	Tue, 31 Mar 2026 13:09:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E82A3E5EC9;
-	Tue, 31 Mar 2026 13:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984CD3D9DC0;
+	Tue, 31 Mar 2026 13:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774962478; cv=none; b=HQnTLVGC8j3ZO9lw7gzEzeytbPmf5jyBYwtPdGJlBxdudMho7P0NLmgFPVt0W65Isn//KanMScR3XnTWgGPk68JJ7+fE1SXLy2/WPrlawz3FIbNcMUzmObVJ2wNroC0zjWn6jB551sW6jBoQNUdOqh34Ob6asoCUewFB50zQRkE=
+	t=1774962586; cv=none; b=cF3MSx0n/YQ+0w757W9LWLYbmAjEotXGmI+FQCaEcfj9lX7uK6iKia3ubsBC89xW7Uhk34r5B4+bS6QguyaE9VkkKLocw/xy0eMJ0uu4qzjVjwqYlRMqw1FgbDg0j8fvJju4WJsLKKx440BPOidvUYooACNhNQepzVqna+ngykA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774962478; c=relaxed/simple;
-	bh=eosv1AZxzlSDL5rb2/xDDZuxQtW9KHKcYbpvcjA+Eb0=;
+	s=arc-20240116; t=1774962586; c=relaxed/simple;
+	bh=ZnWASK7jBKHNzr0d5EkfnKa0BgHG0PxTkNlJLlhjIrY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mZI9qWENb3j6o+PPZnRMs6gRooOplAnP8HzjRkxerQAlMsFmKwobgHO/TS0Xlr9fcqbuTzgQMUvutRXQGTmgnxXhYoMcQXOH3Gt9pdy7hnN3qTZgeHEdfWPHmIpGTfxiNArlEM/B7HYR7Pi1CG96gELKDASQpL3gPabV2ibTAEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=i+xuOMXf; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1sO/3nA/45rKDmeI79eubvzryv2xW7zUpGf4TvMjB2I=; b=i+xuOMXfN/z1pnGaVlTZDVBVej
-	+OQUKTtgErtR8OHs/RNH7L4DczjIUnF6sAqFDKbQy2KtZ4ol5qHg1GToJDrofCPjxlZyGUumF405x
-	YKMpxCq5IU5XVWjerIwF7cY6ed9qDVX/HK1Wd13hIFlHZbXOROciiFEVqMqcC3jvmkFYSs/2hdmu3
-	7AzaHWFPdMbAONzqh298d0KZf5VksL87ZTmceUBTY37hlZJatiPKTEI+5UME+17ZTvPfxUMMD2gX7
-	Aif15E+MzsYSapEUP0VexHYi1NqmHbOSJvs4FbYsczTX/HPw97hTywaM90WdbfMkTpwb9N3+OG/OB
-	pLx2gvcw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42808)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w7Yox-000000001rh-1uLR;
-	Tue, 31 Mar 2026 14:07:51 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w7Yos-000000003kB-2g58;
-	Tue, 31 Mar 2026 14:07:46 +0100
-Date: Tue, 31 Mar 2026 14:07:46 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: txgbe: fix RTNL assertion warning when remove
- module
-Message-ID: <acvHIpPd8BL_wFFU@shell.armlinux.org.uk>
-References: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+RjIIdgA9Xedpg85VU3573fPFdsnK81mgvY399XYhxqxIfXV2vbArvkf6jjvGaO4BAKsthaHxXzFsbGCELhmrlZjzymDEXZHtjCUIugbfecZItWBpQwd0SfvMuYnKwiCqHy/5IP/W9eiqMf9UztlD5EPdi4M38G9gRHlRdQYFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id 0D6E810610;
+	Tue, 31 Mar 2026 15:09:35 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id E68456015F77; Tue, 31 Mar 2026 15:09:34 +0200 (CEST)
+Date: Tue, 31 Mar 2026 15:09:34 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Bernd Schumacher <bernd@bschu.de>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	1131025@bugs.debian.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [6.12.y regression] Regression with 58130e7ce6cb ("PCI/ERR:
+ Ensure error recoverability at all times"): echo vfio-pci >driver_override
+ does not work for DVB Adapter
+Message-ID: <acvHjo8PKdyHshSE@wunner.de>
+References: <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
+ <acfZrlP0Ua_5D3U4@eldamar.lan>
+ <acfhf-odtr0yw_py@wunner.de>
+ <74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>
+ <acgohjvBpVcR7HcK@wunner.de>
+ <5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>
+ <aclRwznwq6KpA2qA@wunner.de>
+ <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,53 +71,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spamd-Result: default: False [1.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[armlinux.org.uk:s=pandora-2019];
+In-Reply-To: <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[armlinux.org.uk : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231421-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,net-swift.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,intel.com,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[armlinux.org.uk:-];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_SPAM(0.00)[0.654];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[linux@armlinux.org.uk,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_FROM(0.00)[bounces-231422-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:url,shell.armlinux.org.uk:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 03AEA369FF7
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wunner.de:mid]
+X-Rspamd-Queue-Id: B849C369FA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 03:11:07PM +0800, Jiawen Wu wrote:
-> For the copper NIC with external PHY, the driver called
-> phylink_connect_phy() during probe and phylink_disconnect_phy() during
-> remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
-> upon module remove.
-> 
-> To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
+On Mon, Mar 30, 2026 at 08:14:53AM +0200, Bernd Schumacher wrote:
+> [    0.318903] pci 0000:07:00.0: [dd01:0003] type 00 class 0x048000 PCIe Endpoint
+> [    0.318939] pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]
 
-Wouldn't it be simpler to just wrap the phylink_disconnect_phy() in the
-remove function with rtnl_lock()..rtnl_unlock() ?
+BIOS initially sets the BAR address to an incorrect value (the top 32 bits
+should be all zeroes instead of all ones)...
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> [    0.339685] pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]: can't claim; no compatible bridge window
+[...]
+> [    0.311065] pci 0000:02:03.0: [1022:57a3] type 01 class 0x060400 PCIe Switch Downstream Port
+> [    0.311107] pci 0000:02:03.0: PCI bridge to [bus 07]
+> [    0.311118] pci 0000:02:03.0:   bridge window [mem 0xfc500000-0xfc5fffff]
+
+... this doesn't fit into the window of the bridge above the DVB card,
+which has the top 32 bits set to all zeroes...
+
+> [    0.357346] pci 0000:07:00.0: BAR 0 [mem 0xfc500000-0xfc50ffff 64bit]: assigned
+
+... the kernel fixes the incorrect BAR, but it seems there's an ordering
+issue such that pci_save_state() is called beforehand.  It's weird that
+this doen't occur with newer kernels and it would be good to understand why.
+I'm not seeing the ordering issue despite staring at the code for a while.
+
+Below is a small debug patch.  Could you apply that on top of v6.12.73
+(or newer) and provide me with the resulting full dmesg output?
+
+The patch emits a stacktrace when correcting the BAR value as well as
+when saving and restoring config space of the DVB card.  This should
+give a clue where the ordering issue originates from.
+
+Please note that the log_buf_len=16M parameter needs to be put outside
+the double quotes of the dyndbg parameter, i.e.:
+
+GRUB_CMDLINE_LINUX='log_buf_len=16M dyndbg="file drivers/pci/* +p"'
+
+The dmesg output provided most recently no longer contained the dyndbg
+output, probably because log_buf_len was intermixed with the double quoted
+string.
+
+Thanks for your continued patience in helping root-cause this issue!
+
+Lukas
 
