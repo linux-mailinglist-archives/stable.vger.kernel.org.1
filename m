@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-232170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJPrBij+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:32 +0200
+	id 6E9eCsn3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7871036DB40
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF29036CCCC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E285B329849B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA5423083596
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C646426D14;
-	Tue, 31 Mar 2026 16:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEF9421A1D;
+	Tue, 31 Mar 2026 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8FExqqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRFY9jVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35384266AE;
-	Tue, 31 Mar 2026 16:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41411266581;
+	Tue, 31 Mar 2026 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976057; cv=none; b=dW/u9A3MYwiIqwPSMXwDjj0h2uQxwF7Y5XxZ7vCSOwAJKUkajd6tKcEG4tzwANpzNaiKKZvY8C64CmIGT4PDghlLKu2ZQNx+5iaz2PqU9iWb3RYo6ZpOZJL7vxnJ/GexwdHzDZQ0W/iSJq8hhayavHF5jz7abWkuQ0FVmVVfAy4=
+	t=1774974623; cv=none; b=H3mlZi+Rte8vmDD3AD1zufvzskUxKHJ2gTgvuaIIpwt6AD8lToT4lgQ8qoNoTkJmORhU2qhhBs/ERPmJxO2WvgW8AOVE1k1VNqnpFsWKNg1xgDAblU1Si3OQXzxu8gZD2m0KZThNm+2NNNTkH12zoY6ZQ/10BKhcwX8bxXsxnko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976057; c=relaxed/simple;
-	bh=ZiH8n2oJ492UwKrVjrI1lVUpPrr2Y5oDyfWpnGEUu6c=;
+	s=arc-20240116; t=1774974623; c=relaxed/simple;
+	bh=GqejvB8fYN0ZE3OvaEthHobrAZHNJkC6JztrRvp10W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtFUTaIwUB49/C9YAsY8CygYANWDlHNiCQnkWtFKDZjR3gUdqgYH1rCwm2yWevjaR1Z7cmJ85gQ2fieS2a0VoTBTpbHZxylyvzeOktwX/A9l02F1VYhEwzRRUHu226eRoG13wFQFHCMhfbhPpRr+c1ZJSeE88kydUG1Vtvg0gn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8FExqqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FE2C19423;
-	Tue, 31 Mar 2026 16:54:17 +0000 (UTC)
+	 MIME-Version; b=TuBjOJPnqfFVI+fPsmHV7TeFcN6Q5FMk6PwwxOEBo10Qc9oIu99AMpYW4Z7eneDIai+orL68gTA1TV/oWAKIE6x2veWbGzxg0LKXuPfm57ZqNLwbG6B5nLemgBj4KOSZ8D6ZsKOqBuFnhvlxd3o5Z9lOxNLd5pa2kCcpKmGoVbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRFY9jVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C183DC19423;
+	Tue, 31 Mar 2026 16:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976057;
-	bh=ZiH8n2oJ492UwKrVjrI1lVUpPrr2Y5oDyfWpnGEUu6c=;
+	s=korg; t=1774974623;
+	bh=GqejvB8fYN0ZE3OvaEthHobrAZHNJkC6JztrRvp10W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8FExqqOei4DP09r2nIEcrr6o3EDpeZKFdUTRD0j7AMOLL1GGdSan/XEgDPeFoRLy
-	 RugH+luqI4x6Wq9D36QmXhcXHWLygpfsOXUzVhx8XCCZz8ynh/3LlSG/yuVQ+MNVwB
-	 R4iwUqumso9QSTaZnvQa+890B4kh+cpZSYEovTso=
+	b=uRFY9jVHVPt0mS3V9vc3e3R6p8okw58fK14h1lKPBmQAxEDpkmeZUYtbK3CJ6e7R1
+	 RYsKHKBYmkCLpuKNXocHo/aGZJ1ANAiw8vkas9La9IyqG+n/wfTWy4DTlHdaUioDO5
+	 rP8FrM4QCMi0K2Jh2HfrzRGAmTkHAKPtqR1KkK6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.12 191/244] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.6 157/175] xfs: avoid dereferencing log items after push callbacks
 Date: Tue, 31 Mar 2026 18:22:21 +0200
-Message-ID: <20260331161748.807366177@linuxfoundation.org>
+Message-ID: <20260331161735.565346776@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,124 +71,203 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231613-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dilger.ca:email,suse.cz:email]
-X-Rspamd-Queue-Id: 7871036DB40
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AF29036CCCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
+commit 79ef34ec0554ec04bdbafafbc9836423734e1bd6 upstream.
 
-There's issue as follows:
-...
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+After xfsaild_push_item() calls iop_push(), the log item may have been
+freed if the AIL lock was dropped during the push. Background inode
+reclaim or the dquot shrinker can free the log item while the AIL lock
+is not held, and the tracepoints in the switch statement dereference
+the log item after iop_push() returns.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Fix this by capturing the log item type, flags, and LSN before calling
+xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
+event class that takes these pre-captured values and the ailp pointer
+instead of the log item pointer.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): error count since last fsck: 1
-EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
-EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
-...
-
-According to the log analysis, blocks are always requested from the
-corrupted block group. This may happen as follows:
-ext4_mb_find_by_goal
-  ext4_mb_load_buddy
-   ext4_mb_load_buddy_gfp
-     ext4_mb_init_cache
-      ext4_read_block_bitmap_nowait
-      ext4_wait_block_bitmap
-       ext4_validate_block_bitmap
-        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-         return -EFSCORRUPTED; // There's no logs.
- if (err)
-  return err;  // Will return error
-ext4_lock_group(ac->ac_sb, group);
-  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
-   goto out;
-
-After commit 9008a58e5dce ("ext4: make the bitmap read routines return
-real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
-as corrupt on block bitmap error") is no real solution for allocating
-blocks from corrupted block groups. This is because if
-'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
-'ext4_mb_load_buddy()' may return an error. This means that the block
-allocation will fail.
-Therefore, check block group if corrupted when ext4_mb_load_buddy()
-returns error.
-
-Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: stable@vger.kernel.org # v5.9
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_trace.c     |    1 +
+ fs/xfs/xfs_trace.h     |   36 ++++++++++++++++++++++++++++++++----
+ fs/xfs/xfs_trans_ail.c |   26 +++++++++++++++++++-------
+ 3 files changed, 52 insertions(+), 11 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2440,8 +2440,12 @@ int ext4_mb_find_by_goal(struct ext4_all
- 		return 0;
+--- a/fs/xfs/xfs_trace.c
++++ b/fs/xfs/xfs_trace.c
+@@ -22,6 +22,7 @@
+ #include "xfs_trans.h"
+ #include "xfs_log.h"
+ #include "xfs_log_priv.h"
++#include "xfs_trans_priv.h"
+ #include "xfs_buf_item.h"
+ #include "xfs_quota.h"
+ #include "xfs_dquot_item.h"
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -50,6 +50,7 @@
+ #include <linux/tracepoint.h>
  
- 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
--	if (err)
-+	if (err) {
-+		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
-+		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
-+			return 0;
- 		return err;
-+	}
+ struct xfs_agf;
++struct xfs_ail;
+ struct xfs_alloc_arg;
+ struct xfs_attr_list_context;
+ struct xfs_buf_log_item;
+@@ -1332,14 +1333,41 @@ TRACE_EVENT(xfs_log_force,
+ DEFINE_EVENT(xfs_log_item_class, name, \
+ 	TP_PROTO(struct xfs_log_item *lip), \
+ 	TP_ARGS(lip))
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
  
- 	ext4_lock_group(ac->ac_sb, group);
- 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++DECLARE_EVENT_CLASS(xfs_ail_push_class,
++	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
++	TP_ARGS(ailp, type, flags, lsn),
++	TP_STRUCT__entry(
++		__field(dev_t, dev)
++		__field(uint, type)
++		__field(unsigned long, flags)
++		__field(xfs_lsn_t, lsn)
++	),
++	TP_fast_assign(
++		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
++		__entry->type = type;
++		__entry->flags = flags;
++		__entry->lsn = lsn;
++	),
++	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
++		  MAJOR(__entry->dev), MINOR(__entry->dev),
++		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
++		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
++		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
++)
++
++#define DEFINE_AIL_PUSH_EVENT(name) \
++DEFINE_EVENT(xfs_ail_push_class, name, \
++	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
++	TP_ARGS(ailp, type, flags, lsn))
++DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
++
+ DECLARE_EVENT_CLASS(xfs_ail_class,
+ 	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
+ 	TP_ARGS(lip, old_lsn, new_lsn),
+--- a/fs/xfs/xfs_trans_ail.c
++++ b/fs/xfs/xfs_trans_ail.c
+@@ -389,6 +389,12 @@ xfsaild_resubmit_item(
+ 	return XFS_ITEM_SUCCESS;
+ }
+ 
++/*
++ * Push a single log item from the AIL.
++ *
++ * @lip may have been released and freed by the time this function returns,
++ * so callers must not dereference the log item afterwards.
++ */
+ static inline uint
+ xfsaild_push_item(
+ 	struct xfs_ail		*ailp,
+@@ -476,20 +482,26 @@ xfsaild_push(
+ 
+ 	lsn = lip->li_lsn;
+ 	while ((XFS_LSN_CMP(lip->li_lsn, target) <= 0)) {
+-		int	lock_result;
++		int		lock_result;
++		uint		type = lip->li_type;
++		unsigned long	flags = lip->li_flags;
++		xfs_lsn_t	item_lsn = lip->li_lsn;
+ 
+ 		/*
+ 		 * Note that iop_push may unlock and reacquire the AIL lock.  We
+ 		 * rely on the AIL cursor implementation to be able to deal with
+ 		 * the dropped lock.
++		 *
++		 * The log item may have been freed by the push, so it must not
++		 * be accessed or dereferenced below this line.
+ 		 */
+ 		lock_result = xfsaild_push_item(ailp, lip);
+ 		switch (lock_result) {
+ 		case XFS_ITEM_SUCCESS:
+ 			XFS_STATS_INC(mp, xs_push_ail_success);
+-			trace_xfs_ail_push(lip);
++			trace_xfs_ail_push(ailp, type, flags, item_lsn);
+ 
+-			ailp->ail_last_pushed_lsn = lsn;
++			ailp->ail_last_pushed_lsn = item_lsn;
+ 			break;
+ 
+ 		case XFS_ITEM_FLUSHING:
+@@ -505,22 +517,22 @@ xfsaild_push(
+ 			 * AIL is being flushed.
+ 			 */
+ 			XFS_STATS_INC(mp, xs_push_ail_flushing);
+-			trace_xfs_ail_flushing(lip);
++			trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
+ 
+ 			flushing++;
+-			ailp->ail_last_pushed_lsn = lsn;
++			ailp->ail_last_pushed_lsn = item_lsn;
+ 			break;
+ 
+ 		case XFS_ITEM_PINNED:
+ 			XFS_STATS_INC(mp, xs_push_ail_pinned);
+-			trace_xfs_ail_pinned(lip);
++			trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
+ 
+ 			stuck++;
+ 			ailp->ail_log_flush++;
+ 			break;
+ 		case XFS_ITEM_LOCKED:
+ 			XFS_STATS_INC(mp, xs_push_ail_locked);
+-			trace_xfs_ail_locked(lip);
++			trace_xfs_ail_locked(ailp, type, flags, item_lsn);
+ 
+ 			stuck++;
+ 			break;
 
 
 
