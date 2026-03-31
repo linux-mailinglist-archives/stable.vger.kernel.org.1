@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFr7MEMDzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:19 +0200
+	id GKlbLmMAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538EA36EA0E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8917436E241
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F94D31BB730
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F3C6630AE6C5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEAF425CD5;
-	Tue, 31 Mar 2026 16:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4251C2FC89C;
+	Tue, 31 Mar 2026 17:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPKxW6kq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp10pFu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778F4423A8E;
-	Tue, 31 Mar 2026 16:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E582FD7BC;
+	Tue, 31 Mar 2026 17:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975738; cv=none; b=KyF7Sd6ynQlwpVnadlJo9SIRUqrx6SnvbeyJKO2zVenexmes1SAVJEm0mjTcbS5+KAQmO6d2q5V1cFmZ7jt7NmW6HLEXD8mA2NE4LIYy6wVF+WF1ADElOEzCiDk9Sf6Dww5NChzjZnLwAniOJBWXIY628xe5jPpLzI74mp9iCDU=
+	t=1774976492; cv=none; b=ANjT+HnznaqjexDvZrUqj30bazvNCNRuNxepxf9DiJ0kcl2b4Gw9M/Un2by+YIotCBjwHqb9mpFWVEsmXu8+uwGyak7jgbFZLzexwohYt9BoP3lEjD4Vyf1bJkORGGKidaPbV+HKd/n1f2hJd9T1VMysofOdzk9JEtS5+A6DMRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975738; c=relaxed/simple;
-	bh=oyrW6eTnO8D23pG9vlYq5eVKZRiyekVzDsgsmea4Y3o=;
+	s=arc-20240116; t=1774976492; c=relaxed/simple;
+	bh=IlBUifvO/s4XKuIfZk1kYhsi11XuctpnTAQ6M0jGaUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHY8/j1dz30rHoKHIpDKwVyNKOVwjiwtn1wIo8RwaHjaIUP7Z6UbwCcglPg3LwO71BIMVunDHDQurbboEDjl5Yl+5QoJVxhgMzoPCs2Ekf/BNggW1E6YyaLOobis+haKv2H8ySOsLkbsRnyU3VH8pE8YrrTZ+H/WLY1BH/qStl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPKxW6kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA036C19423;
-	Tue, 31 Mar 2026 16:48:57 +0000 (UTC)
+	 MIME-Version; b=dtYN1RUKA+xjAxWkGmPjYLPATrGhQ12S0K8pD96upvEVQsOm5bPZpK2eGlaX3UlREf04O6cXJF01uh9GWq/nek16g0XuwLOlyqF+kBiuIW4m13j+XoWLZxo3qZyJiMn8ih1ygiBg3gXUg6eiMMaOHSTUufPl/nJ8kqUc+3zS4oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp10pFu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F9AC19423;
+	Tue, 31 Mar 2026 17:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975738;
-	bh=oyrW6eTnO8D23pG9vlYq5eVKZRiyekVzDsgsmea4Y3o=;
+	s=korg; t=1774976492;
+	bh=IlBUifvO/s4XKuIfZk1kYhsi11XuctpnTAQ6M0jGaUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPKxW6kqqNIB0GiIwwHS5u4K/Xl2cq0m6+I3G50e2qgvDKgqdW0jTQSLktfTkx2zU
-	 HCmHdhaPYaXao9GliXEMUfrgsce3BfPtqA22AqHR/IHwV0WIuugwRgHLN5jm0cUAqC
-	 UUHLizlyt/TBDBsy0yFS7+iVQCYWg0lYp833qpEM=
+	b=Tp10pFu7tpEx0is4q3GAvcc7WZujNUG1mN4pJnSbeRzpn9EVBE6UeTG2B7gBrt2TD
+	 Dwls+Dx0odnSuPzPDhGf9/ezeLR5Y8FZzjOxfR3FN4HA7zRDJuD3rCH6PIQkvhusNV
+	 2NLwwst8fOFM4iUzcj9tOhVI9XMd6+DaOdlfbmvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/244] nfc: nci: fix circular locking dependency in nci_close_device
+Subject: [PATCH 6.18 113/309] virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
 Date: Tue, 31 Mar 2026 18:20:16 +0200
-Message-ID: <20260331161744.124894637@linuxfoundation.org>
+Message-ID: <20260331161757.645439547@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,106 +69,163 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232338-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232047-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gehealthcare.com:email]
-X-Rspamd-Queue-Id: 538EA36EA0E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8917436E241
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-[ Upstream commit 4527025d440ce84bf56e75ce1df2e84cb8178616 ]
+[ Upstream commit 38ec410b99a5ee6566f75650ce3d4fd632940fd0 ]
 
-nci_close_device() flushes rx_wq and tx_wq while holding req_lock.
-This causes a circular locking dependency because nci_rx_work()
-running on rx_wq can end up taking req_lock too:
+The commit be50da3e9d4a ("net: virtio_net: implement exact header length
+guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
+feature in virtio-net.
 
-  nci_rx_work -> nci_rx_data_packet -> nci_data_exchange_complete
-    -> __sk_destruct -> rawsock_destruct -> nfc_deactivate_target
-    -> nci_deactivate_target -> nci_request -> mutex_lock(&ndev->req_lock)
+This feature requires virtio-net to set hdr_len to the actual header
+length of the packet when transmitting, the number of
+bytes from the start of the packet to the beginning of the
+transport-layer payload.
 
-Move the flush of rx_wq after req_lock has been released.
-This should safe (I think) because NCI_UP has already been cleared
-and the transport is closed, so the work will see it and return
--ENETDOWN.
+However, in practice, hdr_len was being set using skb_headlen(skb),
+which is clearly incorrect. This commit fixes that issue.
 
-NIPA has been hitting this running the nci selftest with a debug
-kernel on roughly 4% of the runs.
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reviewed-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317193334.988609-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length guest feature")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://patch.msgid.link/20260320021818.111741-2-xuanzhuo@linux.alibaba.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/tun_vnet.h     |  2 +-
+ drivers/net/virtio_net.c   |  6 +++++-
+ include/linux/virtio_net.h | 34 ++++++++++++++++++++++++++++++----
+ 3 files changed, 36 insertions(+), 6 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 18ff1c23769ae..d10e2c81131ad 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -575,8 +575,7 @@ static int nci_close_device(struct nci_dev *ndev)
- 	skb_queue_purge(&ndev->rx_q);
- 	skb_queue_purge(&ndev->tx_q);
+diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+index a5f93b6c4482c..fa5cab9d3e55c 100644
+--- a/drivers/net/tun_vnet.h
++++ b/drivers/net/tun_vnet.h
+@@ -244,7 +244,7 @@ tun_vnet_hdr_tnl_from_skb(unsigned int flags,
  
--	/* Flush RX and TX wq */
--	flush_workqueue(ndev->rx_wq);
-+	/* Flush TX wq, RX wq flush can't be under the lock */
- 	flush_workqueue(ndev->tx_wq);
+ 	if (virtio_net_hdr_tnl_from_skb(skb, tnl_hdr, has_tnl_offload,
+ 					tun_vnet_is_little_endian(flags),
+-					vlan_hlen, true)) {
++					vlan_hlen, true, false)) {
+ 		struct virtio_net_hdr_v1 *hdr = &tnl_hdr->hash_hdr.hdr;
+ 		struct skb_shared_info *sinfo = skb_shinfo(skb);
  
- 	/* Reset device */
-@@ -588,13 +587,13 @@ static int nci_close_device(struct nci_dev *ndev)
- 		      msecs_to_jiffies(NCI_RESET_TIMEOUT));
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index b67dbe346c807..9f855d196ae8f 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3326,8 +3326,12 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+ 	struct virtio_net_hdr_v1_hash_tunnel *hdr;
+ 	int num_sg;
+ 	unsigned hdr_len = vi->hdr_len;
++	bool feature_hdrlen;
+ 	bool can_push;
  
- 	/* After this point our queues are empty
--	 * and no works are scheduled.
-+	 * rx work may be running but will see that NCI_UP was cleared
- 	 */
- 	ndev->ops->close(ndev);
- 
- 	clear_bit(NCI_INIT, &ndev->flags);
- 
--	/* Flush cmd wq */
-+	/* Flush cmd and tx wq */
- 	flush_workqueue(ndev->cmd_wq);
- 
- 	del_timer_sync(&ndev->cmd_timer);
-@@ -604,6 +603,9 @@ static int nci_close_device(struct nci_dev *ndev)
- 
- 	mutex_unlock(&ndev->req_lock);
- 
-+	/* rx_work may take req_lock via nci_deactivate_target */
-+	flush_workqueue(ndev->rx_wq);
++	feature_hdrlen = virtio_has_feature(vi->vdev,
++					    VIRTIO_NET_F_GUEST_HDRLEN);
 +
- 	return 0;
+ 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
+ 
+ 	/* Make sure it's safe to cast between formats */
+@@ -3347,7 +3351,7 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+ 
+ 	if (virtio_net_hdr_tnl_from_skb(skb, hdr, vi->tx_tnl,
+ 					virtio_is_little_endian(vi->vdev), 0,
+-					false))
++					false, feature_hdrlen))
+ 		return -EPROTO;
+ 
+ 	if (vi->mergeable_rx_bufs)
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 75dabb763c650..361b60c8be680 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -207,6 +207,23 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
  }
  
++/* This function must be called after virtio_net_hdr_from_skb(). */
++static inline void __virtio_net_set_hdrlen(const struct sk_buff *skb,
++					   struct virtio_net_hdr *hdr,
++					   bool little_endian)
++{
++	u16 hdr_len;
++
++	hdr_len = skb_transport_offset(skb);
++
++	if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
++		hdr_len += sizeof(struct udphdr);
++	else
++		hdr_len += tcp_hdrlen(skb);
++
++	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
++}
++
+ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 					  struct virtio_net_hdr *hdr,
+ 					  bool little_endian,
+@@ -385,7 +402,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 			    bool tnl_hdr_negotiated,
+ 			    bool little_endian,
+ 			    int vlan_hlen,
+-			    bool has_data_valid)
++			    bool has_data_valid,
++			    bool feature_hdrlen)
+ {
+ 	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
+ 	unsigned int inner_nh, outer_th;
+@@ -394,9 +412,17 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 
+ 	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
+ 						    SKB_GSO_UDP_TUNNEL_CSUM);
+-	if (!tnl_gso_type)
+-		return virtio_net_hdr_from_skb(skb, hdr, little_endian,
+-					       has_data_valid, vlan_hlen);
++	if (!tnl_gso_type) {
++		ret = virtio_net_hdr_from_skb(skb, hdr, little_endian,
++					      has_data_valid, vlan_hlen);
++		if (ret)
++			return ret;
++
++		if (feature_hdrlen && hdr->hdr_len)
++			__virtio_net_set_hdrlen(skb, hdr, little_endian);
++
++		return ret;
++	}
+ 
+ 	/* Tunnel support not negotiated but skb ask for it. */
+ 	if (!tnl_hdr_negotiated)
 -- 
 2.51.0
 
