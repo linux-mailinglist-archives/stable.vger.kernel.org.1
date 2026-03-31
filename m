@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEjPJ/79y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:50 +0200
+	id IMh4NawHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2D836DAD4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10ED236F2FF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 586CC321EF8C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23D313080058
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F402426EAA;
-	Tue, 31 Mar 2026 16:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E538130276A;
+	Tue, 31 Mar 2026 17:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL4eBT7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DV8kX/f0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61CA4266BA;
-	Tue, 31 Mar 2026 16:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87083016EE;
+	Tue, 31 Mar 2026 17:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975982; cv=none; b=V6akIx+/9vhD0r8/uIWf6yDcu+IxshFxV4dQL1dQnWQgLBsUJJN5V3mHAmJqFnNLXLN3cgwYuAL95iD1Lv17k9IH7x4ZvFknmdpEqMiWV9C6B0fXLRCgG1AH7SDxf06zotChR74By7GubGu7kveJM2ZMDltxr96DP5Xe7dG+OPg=
+	t=1774976820; cv=none; b=VZDpYfC+W/Rfknp2dK4HmzZjKgc5JysK/g59VPLPMUTasCCV3fQnqXnO6OMOe4jJOhv42EJjXuIfzA6n2Y1KU1QxBqgT6GFhpEtOIhWJNIBbWhpFKctuNdNLBRCU5rsYGthHQVw/g35eOoKJZ4ZX/RSYzVSllzc5Fr5WpEfzZ80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975982; c=relaxed/simple;
-	bh=+Uf/wVwP0KPYurecSXtSE0zkyssinIVEfoPKg64bdyU=;
+	s=arc-20240116; t=1774976820; c=relaxed/simple;
+	bh=ewmBQ9gGBt27Fuk/U7ilyzhrU+1KmOqyPT3eqpnpdTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjQa0YxlLyREMORs8NDk2J3e4K9F9pLb+rKoc9qSkwEUCn2DpnXP7IVTMB+AhFRfP6eJ++NPeQk/n2xCW1d45XSW/7CM4+cMcPCHR0DjVd0WcBCN6btMi8MK5sBIsGkjPJZJwgx/zQnNcGR2Hkb98xDxzHqcgjjzR9GdiM0vOx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL4eBT7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4B4C19423;
-	Tue, 31 Mar 2026 16:53:01 +0000 (UTC)
+	 MIME-Version; b=Z2272J4UAfDJCyViuzCbGo7VEnopv9XH98cEOl0Fq/tyFbiFTpMm8VHvlop6bNFHUXLLDmELnKFjeC7Tz1QAnyhAvYKlLlQ9mysV97ASmO7Jejn4CFmHbQVk05P7t5bDfPg5wXQmk2vuu7cXsdjUEu3I5xJBcOExhqBqLREyEHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DV8kX/f0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BC1C19423;
+	Tue, 31 Mar 2026 17:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975981;
-	bh=+Uf/wVwP0KPYurecSXtSE0zkyssinIVEfoPKg64bdyU=;
+	s=korg; t=1774976820;
+	bh=ewmBQ9gGBt27Fuk/U7ilyzhrU+1KmOqyPT3eqpnpdTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vL4eBT7rK9sts9fat2PBwnfx94TyhQwnbq40QW+dYKQnyc2xImXnLafoAjsN3pgf5
-	 PeRFaYfM+/J9qWzbi3l2aqBnuIk8ORrvEjhAFZV/YJ8gNuqzMuOexoPe7L/QFbR6R1
-	 Kqwd9CRkUk6L8SJDTUCCZcAt33Bg9vnEu9IzYQi8=
+	b=DV8kX/f06nEY8qV5NwldEhOzx/u9P5dCws4VnvSmDauKeqaQsu2aP+GBQvkygu5Hb
+	 ueeubEGkweOQs7+TkMrnXtgECOejF8ecICj63Jtzoca2nN0wRxfL9bmqOdhjWtOLvO
+	 pmfmIVO1qtEty03U4LqpMxJlB4D8nHEi+UY2NCC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	stable <stable@kernel.org>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 6.12 161/244] scsi: ses: Handle positive SCSI error from ses_recv_diag()
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jiucheng Xu <jiucheng.xu@amlogic.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.18 208/309] erofs: add GFP_NOIO in the bio completion if needed
 Date: Tue, 31 Mar 2026 18:21:51 +0200
-Message-ID: <20260331161747.712755991@linuxfoundation.org>
+Message-ID: <20260331161801.105297713@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,68 +68,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232141-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232466-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,hansenpartnership.com:email]
-X-Rspamd-Queue-Id: CE2D836DAD4
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 10ED236F2FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jiucheng Xu <jiucheng.xu@amlogic.com>
 
-commit 7a9f448d44127217fabc4065c5ba070d4e0b5d37 upstream.
+commit c23df30915f83e7257c8625b690a1cece94142a0 upstream.
 
-ses_recv_diag() can return a positive value, which also means that an
-error happened, so do not only test for negative values.
+The bio completion path in the process context (e.g. dm-verity)
+will directly call into decompression rather than trigger another
+workqueue context for minimal scheduling latencies, which can
+then call vm_map_ram() with GFP_KERNEL.
 
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://patch.msgid.link/2026022301-bony-overstock-a07f@gregkh
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Due to insufficient memory, vm_map_ram() may generate memory
+swapping I/O, which can cause submit_bio_wait to deadlock
+in some scenarios.
+
+Trimmed down the call stack, as follows:
+
+f2fs_submit_read_io
+  submit_bio                      //bio_list is initialized.
+    mmc_blk_mq_recovery
+      z_erofs_endio
+        vm_map_ram
+          __pte_alloc_kernel
+            __alloc_pages_direct_reclaim
+              shrink_folio_list
+                __swap_writepage
+                  submit_bio_wait  //bio_list is non-NULL, hang!!!
+
+Use memalloc_noio_{save,restore}() to wrap up this path.
+
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ses.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/zdata.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/scsi/ses.c
-+++ b/drivers/scsi/ses.c
-@@ -216,7 +216,7 @@ static unsigned char *ses_get_page2_desc
- 	unsigned char *type_ptr = ses_dev->page1_types;
- 	unsigned char *desc_ptr = ses_dev->page2 + 8;
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1445,6 +1445,7 @@ static void z_erofs_decompress_kickoff(s
+ 				       int bios)
+ {
+ 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
++	int gfp_flag;
  
--	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len) < 0)
-+	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len))
- 		return NULL;
+ 	/* wake up the caller thread for sync decompression */
+ 	if (io->sync) {
+@@ -1477,7 +1478,9 @@ static void z_erofs_decompress_kickoff(s
+ 			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+ 		return;
+ 	}
++	gfp_flag = memalloc_noio_save();
+ 	z_erofs_decompressqueue_work(&io->u.work);
++	memalloc_noio_restore(gfp_flag);
+ }
  
- 	for (i = 0; i < ses_dev->page1_num_types; i++, type_ptr += 4) {
+ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
 
 
 
