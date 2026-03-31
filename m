@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAICBpP8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:47 +0200
+	id QDPMFZgDzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DBE36D6ED
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBE136EAD3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60AA1329D84B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA8BE321BC68
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D2A425CE6;
-	Tue, 31 Mar 2026 16:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950D9346E7F;
+	Tue, 31 Mar 2026 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnr6tgrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIBqB2Kv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDD942317F;
-	Tue, 31 Mar 2026 16:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E822C15B2;
+	Tue, 31 Mar 2026 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975224; cv=none; b=NSC9sPlYILhlBqwF365ykBIGYvwlLCAui1opI9pN++QfgKTYOmBl7KxYPGyAWeo9UbLlccMxH6rdb94rD83E4EJQaGcxG+PH+Fu/qK8jI5yr8AYYDhFvoG4g4ET1MyZ6McJQZv+QFJPSIKNF+U5e72/jhxprcpIh/esoeipoLGE=
+	t=1774975811; cv=none; b=IqN0pf4pv+yc1v68ArfdaYfi7xXa91r+CQS+i9V3Xs65kk6sR2/RxCFsQe/UokrZAMiAnAScwxEuaIyi0m9QJ+VWwY8bawt9jHMX8mZ4a0JIX0dSJssHaoFI+Tp8lQGThzZwngU+gsZ23YjggJHIMkQshjeI/rH8bDxgVuXr788=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975224; c=relaxed/simple;
-	bh=Yd8CxGoDcnqGF4V6dJQXm7U81bbUMcSh1EUy7zb0OFs=;
+	s=arc-20240116; t=1774975811; c=relaxed/simple;
+	bh=cakKbTh4hdXXiddk9mBx+hbJWa0oEhiUTgH8PYoLBa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfAoUyx0gGuhMlp7yS7VjeZPuAQ3qrA00L1fG01LOmlnlzQSJFGE9Ik0Cy/A0QRAfwtoUWcH7J5HF4F7CTQlMko0QZqo0bzF5M0xMeCUJI03C9j/IFx5b99A8mHUqfu5M5Ufl5FP8xR2GPcVvDSUTkq29RfheZNLUTmiq5neVE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnr6tgrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E67C19423;
-	Tue, 31 Mar 2026 16:40:23 +0000 (UTC)
+	 MIME-Version; b=XK74xBAF0VxggZhTSOVwnaJefzkOCUtNsOIRq6ulOB3kVvyT1tLV0XxjJtgnuZpDG1k/H8HZzQ8fqqFJXXyEmZF3o5RvUsUOtXoJ/pvmR6H9xv7olr2r1v246K9/U5gV5TEPfGyJ8mbUDAgwE/rXqgBpiVtodiE/ijvUhI5FPfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIBqB2Kv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990B0C19423;
+	Tue, 31 Mar 2026 16:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975223;
-	bh=Yd8CxGoDcnqGF4V6dJQXm7U81bbUMcSh1EUy7zb0OFs=;
+	s=korg; t=1774975810;
+	bh=cakKbTh4hdXXiddk9mBx+hbJWa0oEhiUTgH8PYoLBa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnr6tgrg1VDTYiESsiyHhUZxiT51cW2ucFxr4GSnF7N85cgbIHp0dXVd4wMHKuzLa
-	 o6uiVUi89MY9BkomZJDtgVSXaWO32PWSLLS7PXq+o0HxTKvv/Znqa0BIRf9MOGO2RJ
-	 9Z/lxfHmEcVZrexfkZk0ez6y3b6zFNzoEgNJyM7Y=
+	b=CIBqB2KvZjFVkHnXdCFYcPmvhJYusCpdbwUSxsUnEppxySiZKHr6ujdMRwrh8g4qt
+	 5fiDo/XgIUkczkL5tETCkzGx5KdGgnWQc5JnL5d8L8fKxa8u8+LeZZn1UU1ng17Sf+
+	 qwuhyzZeorB2mB5yXpyatBI9I5Qu1WTv7oYJgnj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.19 212/342] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
+	Cen Zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 095/244] Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock
 Date: Tue, 31 Mar 2026 18:20:45 +0200
-Message-ID: <20260331161806.780384100@linuxfoundation.org>
+Message-ID: <20260331161745.184776659@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +66,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232075-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231847-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,keysight.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hartkopp.net:email]
-X-Rspamd-Queue-Id: 96DBE36D6ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CBBE136EAD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ali Norouzi <ali.norouzi@keysight.com>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
+[ Upstream commit 94d8e6fe5d0818e9300e514e095a200bd5ff93ae ]
 
-cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
+btintel_hw_error() issues two __hci_cmd_sync() calls (HCI_OP_RESET
+and Intel exception-info retrieval) without holding
+hci_req_sync_lock().  This lets it race against
+hci_dev_do_close() -> btintel_shutdown_combined(), which also runs
+__hci_cmd_sync() under the same lock.  When both paths manipulate
+hdev->req_status/req_rsp concurrently, the close path may free the
+response skb first, and the still-running hw_error path hits a
+slab-use-after-free in kfree_skb().
 
-    int from = calc_idx(crc8->from_idx, cf->len);
-    int to   = calc_idx(crc8->to_idx,   cf->len);
-    int res  = calc_idx(crc8->result_idx, cf->len);
+Wrap the whole recovery sequence in hci_req_sync_lock/unlock so it
+is serialized with every other synchronous HCI command issuer.
 
-    if (from < 0 || to < 0 || res < 0)
-        return;
+Below is the data race report and the kasan report:
 
-However, the loop and the result write then use the raw s8 fields directly
-instead of the computed variables:
+  BUG: data-race in __hci_cmd_sync_sk / btintel_shutdown_combined
 
-    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
-    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+  read of hdev->req_rsp at net/bluetooth/hci_sync.c:199
+  by task kworker/u17:1/83:
+   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
+   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
+   btintel_hw_error+0x114/0x670 drivers/bluetooth/btintel.c:254
+   hci_error_reset+0x348/0xa30 net/bluetooth/hci_core.c:1030
 
-With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
-calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
-i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
-This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
-start of the canfd_frame on the heap.
+  write/free by task ioctl/22580:
+   btintel_shutdown_combined+0xd0/0x360
+    drivers/bluetooth/btintel.c:3648
+   hci_dev_close_sync+0x9ae/0x2c10 net/bluetooth/hci_sync.c:5246
+   hci_dev_do_close+0x232/0x460 net/bluetooth/hci_core.c:526
 
-The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
-correctly throughout; fix cgw_csum_crc8_rel() to match.
+  BUG: KASAN: slab-use-after-free in
+   sk_skb_reason_drop+0x43/0x380 net/core/skbuff.c:1202
+  Read of size 4 at addr ffff888144a738dc
+  by task kworker/u17:1/83:
+   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
+   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
+   btintel_hw_error+0x186/0x670 drivers/bluetooth/btintel.c:260
 
-Confirmed with KASAN on linux-7.0-rc2:
-  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
-  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
-
-To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
-
-Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 973bb97e5aee ("Bluetooth: btintel: Add generic function for handling hardware errors")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/gw.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btintel.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
- 		return;
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 3a4db68fc2e63..6e3e4a817e727 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -245,11 +245,13 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
  
- 	if (from <= to) {
--		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
-+		for (i = from; i <= to; i++)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	} else {
--		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
-+		for (i = from; i >= to; i--)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	bt_dev_err(hdev, "Hardware error 0x%2.2x", code);
+ 
++	hci_req_sync_lock(hdev);
++
+ 	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Reset after hardware error failed (%ld)",
+ 			   PTR_ERR(skb));
+-		return;
++		goto unlock;
+ 	}
+ 	kfree_skb(skb);
+ 
+@@ -257,18 +259,21 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
+ 	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Retrieving Intel exception info failed (%ld)",
+ 			   PTR_ERR(skb));
+-		return;
++		goto unlock;
  	}
  
-@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
- 		break;
+ 	if (skb->len != 13) {
+ 		bt_dev_err(hdev, "Exception info size mismatch");
+ 		kfree_skb(skb);
+-		return;
++		goto unlock;
  	}
  
--	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
-+	cf->data[res] = crc ^ crc8->final_xor_val;
+ 	bt_dev_err(hdev, "Exception info %s", (char *)(skb->data + 1));
+ 
+ 	kfree_skb(skb);
++
++unlock:
++	hci_req_sync_unlock(hdev);
  }
+ EXPORT_SYMBOL_GPL(btintel_hw_error);
  
- static void cgw_csum_crc8_pos(struct canfd_frame *cf,
+-- 
+2.51.0
+
 
 
 
