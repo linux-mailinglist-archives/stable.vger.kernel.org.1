@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMteMXQBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:36 +0200
+	id GLVZLuwEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AE236E5EE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC0936EDD4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D89D301BAB0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:10:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCC1232F13A2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE7314D37;
-	Tue, 31 Mar 2026 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE3A423149;
+	Tue, 31 Mar 2026 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opzR69Qb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jppMS4AI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE1530CD85;
-	Tue, 31 Mar 2026 17:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226FE3E4C6C;
+	Tue, 31 Mar 2026 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976975; cv=none; b=F6JBq55hL8ckwjyEMfOjxm6X3spYrO31eettuU04iazOs0fKuVxUSKzinnkj3PGYtqLyRq0Jm2Ks30TGmmtwwsv0Cjy+b75umalB5ufaQYoWiIbGL3+N6MwImJgKtpSsjV3iO/SaYAFv7PXO25RMKsSWJsuBNgMUFB8l3wlDKlk=
+	t=1774976148; cv=none; b=kR/CzEDx5n0kgfXx1q51d197x923O1EVs0qb3DNUJ2vIWDxnHrZaxaudPcX110xPQx0eB9h9TIItRxgJXCWbvgXdTf2HCvS94OFi/SeSZ4yV2dajdkNcjiQoSfEI3lR1qQP79EKmCV7IvD2FXTa7g+sec5+Rd/9sQDaOWi/9Hqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976975; c=relaxed/simple;
-	bh=KFSLVEDk7hOo6KsDvnZQHazMc709cv6ccLANUIZIeTk=;
+	s=arc-20240116; t=1774976148; c=relaxed/simple;
+	bh=+WyitdCjyHxjQtzt56ZmCpI1/x5LCQYTLcc0lQKdT2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLS6QV3CxxapPJrmV623t9yB2yjvHzuTOjTlf1JViXMKUynSYALJUra9KzAREQBXUU9cK/4w17zm6CCxn9M5bKu3qJiMGEpPLfmzddKBGGPd0pC/h47M7aCgUKOv+iMRPUIx5Y+llKTOfVGP0kH8uIitd9o6Rm8AH4NFtCxz7Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opzR69Qb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653B7C19423;
-	Tue, 31 Mar 2026 17:09:35 +0000 (UTC)
+	 MIME-Version; b=Q17+iBW6htHpO/YX6Sdlv7RfMalJe1yGk6BT7xRJpZcg7xV5HBLEjSMX1yixvfeHsKa3YgIb/Rz4AQ456Sbw2FlSMvmD3CWSNbetErASDjUPtQDINjI28fgtc+0e3mHjL7Yh/o3WohkfCQRVcC5j2dhYoVOnK4liSaft1m3P4t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jppMS4AI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4CAC19423;
+	Tue, 31 Mar 2026 16:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976975;
-	bh=KFSLVEDk7hOo6KsDvnZQHazMc709cv6ccLANUIZIeTk=;
+	s=korg; t=1774976148;
+	bh=+WyitdCjyHxjQtzt56ZmCpI1/x5LCQYTLcc0lQKdT2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opzR69QbNlCPja4Snkgd4bz1WqcAU6Is9PXsVwiCkOmlJFGRWfpZcxI4WfD5ZUema
-	 PvsVb8GHNqts4wLAAd6rSu+7CiSIeaUP/Y1UKsivpNye6mvarP1rgMA+IiZD00hTWj
-	 V5VHxgDLHhpysfnndcSTrX7jhp4M7VjxQnR+Yn+0=
+	b=jppMS4AIoFYs7tc0c5Gka3B719+GifkoPwD0mg6Rb8RbCIXht22t8kjwBUK7Z8j2f
+	 LnXdwBd87JQOZanVfbdFDk2gB0ghldbtU1FQwR4bLFHg/9YLeJXBcX7IzfWKNAI2fr
+	 6fN+MhTXf6ybl5vKyqspc4c5ws68zWRXYC9rTNWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.18 273/309] powerpc64/bpf: do not increment tailcall count when prog is NULL
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 226/244] dmaengine: idxd: Fix freeing the allocated ida too late
 Date: Tue, 31 Mar 2026 18:22:56 +0200
-Message-ID: <20260331161803.610489715@linuxfoundation.org>
+Message-ID: <20260331161750.113359745@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232205-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232526-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 96AE236E5EE
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4EC0936EDD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
+[ Upstream commit c311f5e9248471a950f0a524c2fd736414d98900 ]
 
-Do not increment tailcall count, if tailcall did not succeed due to
-missing BPF program.
+It can happen that when the cdev .release() is called, the driver
+already called ida_destroy(). Move ida_free() to the _del() path.
 
-Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
-Cc: stable@vger.kernel.org
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
-[ Conflict due to missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf:
-  Support tailcalls with subprogs") resolved accordingly. ]
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We see with DEBUG_KOBJECT_RELEASE enabled and forcing an early PCI
+unbind.
+
+Fixes: 04922b7445a1 ("dmaengine: idxd: fix cdev setup and free device lifetime issues")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-9-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/net/bpf_jit_comp64.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/dma/idxd/cdev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -430,27 +430,32 @@ static int bpf_jit_emit_tail_call(u32 *i
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 8b27bd545685a..8dcd2331bb1ac 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -161,11 +161,7 @@ static const struct device_type idxd_cdev_file_type = {
+ static void idxd_cdev_dev_release(struct device *dev)
+ {
+ 	struct idxd_cdev *idxd_cdev = dev_to_cdev(dev);
+-	struct idxd_cdev_context *cdev_ctx;
+-	struct idxd_wq *wq = idxd_cdev->wq;
  
- 	/*
- 	 * tail_call_cnt++;
-+	 * Writeback this updated value only if tailcall succeeds.
- 	 */
- 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
--	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
+-	cdev_ctx = &ictx[wq->idxd->data->type];
+-	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	kfree(idxd_cdev);
+ }
  
- 	/* prog = array->ptrs[index]; */
--	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
--	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
-+	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
-+	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_array, ptrs)));
+@@ -585,11 +581,15 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
  
- 	/*
- 	 * if (prog == NULL)
- 	 *   goto out;
- 	 */
--	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
-+	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
- 	PPC_BCC_SHORT(COND_EQ, out);
+ void idxd_wq_del_cdev(struct idxd_wq *wq)
+ {
++	struct idxd_cdev_context *cdev_ctx;
+ 	struct idxd_cdev *idxd_cdev;
  
- 	/* goto *(prog->bpf_func + prologue_size); */
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
--	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
--			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
--	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_prog, bpf_func)));
-+	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
-+	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
+ 	idxd_cdev = wq->idxd_cdev;
+ 	wq->idxd_cdev = NULL;
+ 	cdev_device_del(&idxd_cdev->cdev, cdev_dev(idxd_cdev));
 +
-+	/* Writeback updated tailcall count */
-+	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
++	cdev_ctx = &ictx[wq->idxd->data->type];
++	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	put_device(cdev_dev(idxd_cdev));
+ }
  
- 	/* tear down stack, restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
+-- 
+2.53.0
+
 
 
 
