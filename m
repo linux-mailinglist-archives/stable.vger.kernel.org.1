@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOHlB4cDzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:27 +0200
+	id sCLxCYT+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C19C36EAB7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF10936DC83
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5F3B318824E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4431D305B2B3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6493033CC;
-	Tue, 31 Mar 2026 17:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5965425CD2;
+	Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URYz8QTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6fIGDyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286E7301471;
-	Tue, 31 Mar 2026 17:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B24423149;
+	Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976598; cv=none; b=sNkh1pb1qnmLeNMuel8mpBvCgSdUlZbtFkYm8FszttsjPbS6esHVgkfD/izTx2NlBstftX5ujutRJhqx3nYFqx6vFbQjbSMnG2btocZgndde+Zn0LXxBdUU/OAPTGQBoBQd1O+eQ04eEgHh3Z/HR4lb4XY3h6e+GKICsjXnURo0=
+	t=1774975927; cv=none; b=oIQ6GMbnL34pRIT7PE1PLQ7H0kswM94IPnxsIIpOOlfvphb4PG1Ar7zwKjO57R8RAiCYuPoYbq1wrucNT1gAXJLMlft8ddza6NxxHzrQROrTy/rBvH5Vo2BIo4+pY9EiEYJTOepYa0SkHG6F80OBSq6lZIgDdZNtAAKhG06E4uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976598; c=relaxed/simple;
-	bh=oaR8EDExvBD5TONrSceMg1+ZANHjvVrNCfBIsYOQor0=;
+	s=arc-20240116; t=1774975927; c=relaxed/simple;
+	bh=8nz0Wo2u3FTLfpk5yOHZK8IRMG8ZqlBvyloomAadJOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NERQ91BNhaN/HlYKebkIFKhtniNuh/v0RIp7gFW1sDkJlogfDpNxv/Ju3YXRh9EVNgF7GvHD2G2yBxDxwfKJ48MhwCXxk1W3e1oOAMpoZM+Hv/MOU5t0ajqjfzD0mucmvFwckoacpNETiL0OZD/CFAYKotd0U5P8bNFu8x/BPb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URYz8QTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D94C19423;
-	Tue, 31 Mar 2026 17:03:17 +0000 (UTC)
+	 MIME-Version; b=upnUB0xLz9yOmgkTfDKkeWXUccY7HNAT/wVULwk3GAGc8kCdqQ/9PoPwqNstiRdFCY61yQLx8EJXpWNdcGbggG98/gQub1Jr7zACLJMYc1p4HS9XyNClgWTMfuiR5im0e+OKCIZoRjQ8dal/0Ks4V7tgYGTmjYTkq7tcHbRvIcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6fIGDyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E009C19423;
+	Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976597;
-	bh=oaR8EDExvBD5TONrSceMg1+ZANHjvVrNCfBIsYOQor0=;
+	s=korg; t=1774975927;
+	bh=8nz0Wo2u3FTLfpk5yOHZK8IRMG8ZqlBvyloomAadJOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URYz8QTwR2YGkDoVIgi58uFeUOpt5q6EbyXeWu4bK0kPh2MTECPQ948Xnk5Ghaf8P
-	 Ry+E6msm9dah8J24RMsQXbHmm50iOHrMan6ULqmIVQVTE9niht8BRHVmcUlD8Wb+CB
-	 Z/8Nh2BZaTVgTBEFWlbbXqcgVJ8KuAp1fDv25To0=
+	b=K6fIGDyH8M+/N3E914Snuoeio9P6scGB2t3h0W4cVX36V7EQ11KubrdWKxeljHrg2
+	 P5GGfC5ORMCiKhDK0VS5o6AbghZnr38XusRD35yWY9KOk4/NrEFLkJ0GCfQFcHpDrl
+	 Cu5yuuryqJ5GVybVpusPXJIWx47yWqN7qoBnWiZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alberto Garcia <berto@igalia.com>,
-	Brian Geffon <bgeffon@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 154/309] PM: hibernate: Drain trailing zero pages on userspace restore
+Subject: [PATCH 6.12 107/244] RDMA/rw: Fall back to direct SGE on MR pool exhaustion
 Date: Tue, 31 Mar 2026 18:20:57 +0200
-Message-ID: <20260331161759.138713866@linuxfoundation.org>
+Message-ID: <20260331161745.620241276@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232380-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232120-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,76 +86,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email]
-X-Rspamd-Queue-Id: 3C19C36EAB7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BF10936DC83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alberto Garcia <berto@igalia.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 734eba62cd32cb9ceffa09e57cdc03d761528525 ]
+[ Upstream commit 00da250c21b074ea9494c375d0117b69e5b1d0a4 ]
 
-Commit 005e8dddd497 ("PM: hibernate: don't store zero pages in the
-image file") added an optimization to skip zero-filled pages in the
-hibernation image. On restore, zero pages are handled internally by
-snapshot_write_next() in a loop that processes them without returning
-to the caller.
+When IOMMU passthrough mode is active, ib_dma_map_sgtable_attrs()
+produces no coalescing: each scatterlist page maps 1:1 to a DMA
+entry, so sgt.nents equals the raw page count. A 1 MB transfer
+yields 256 DMA entries. If that count exceeds the device's
+max_sgl_rd threshold (an optimization hint from mlx5 firmware),
+rdma_rw_io_needs_mr() steers the operation into the MR
+registration path. Each such operation consumes one or more MRs
+from a pool sized at max_rdma_ctxs -- roughly one MR per
+concurrent context. Under write-intensive workloads that issue
+many concurrent RDMA READs, the pool is rapidly exhausted,
+ib_mr_pool_get() returns NULL, and rdma_rw_init_one_mr() returns
+-EAGAIN. Upper layer protocols treat this as a fatal DMA mapping
+failure and tear down the connection.
 
-With the userspace restore interface, writing the last non-zero page
-to /dev/snapshot is followed by the SNAPSHOT_ATOMIC_RESTORE ioctl. At
-this point there are no more calls to snapshot_write_next() so any
-trailing zero pages are not processed, snapshot_image_loaded() fails
-because handle->cur is smaller than expected, the ioctl returns -EPERM
-and the image is not restored.
+The max_sgl_rd check is a performance optimization, not a
+correctness requirement: the device can handle large SGE counts
+via direct posting, just less efficiently than with MR
+registration. When the MR pool cannot satisfy a request, falling
+back to the direct SGE (map_wrs) path avoids the connection
+reset while preserving the MR optimization for the common case
+where pool resources are available.
 
-The in-kernel restore path is not affected by this because the loop in
-load_image() in swap.c calls snapshot_write_next() until it returns 0.
-It is this final call that drains any trailing zero pages.
+Add a fallback in rdma_rw_ctx_init() so that -EAGAIN from
+rdma_rw_init_mr_wrs() triggers direct SGE posting instead of
+propagating the error. iWARP devices, which mandate MR
+registration for RDMA READs, and force_mr debug mode continue
+to treat -EAGAIN as terminal.
 
-Fixed by calling snapshot_write_next() in snapshot_write_finalize(),
-giving the kernel the chance to drain any trailing zero pages.
-
-Fixes: 005e8dddd497 ("PM: hibernate: don't store zero pages in the image file")
-Signed-off-by: Alberto Garcia <berto@igalia.com>
-Acked-by: Brian Geffon <bgeffon@google.com>
-Link: https://patch.msgid.link/ef5a7c5e3e3dbd17dcb20efaa0c53a47a23498bb.1773075892.git.berto@igalia.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 00bd1439f464 ("RDMA/rw: Support threshold for registration vs scattering to local pages")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260313194201.5818-2-cel@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/snapshot.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/infiniband/core/rw.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 645f42e404789..e249e5786fbcd 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2856,6 +2856,17 @@ int snapshot_write_finalize(struct snapshot_handle *handle)
- {
- 	int error;
- 
-+	/*
-+	 * Call snapshot_write_next() to drain any trailing zero pages,
-+	 * but make sure we're in the data page region first.
-+	 * This function can return PAGE_SIZE if the kernel was expecting
-+	 * another copy page. Return -ENODATA in that situation.
-+	 */
-+	if (handle->cur > nr_meta_pages + 1) {
-+		error = snapshot_write_next(handle);
-+		if (error)
-+			return error > 0 ? -ENODATA : error;
+diff --git a/drivers/infiniband/core/rw.c b/drivers/infiniband/core/rw.c
+index 2522ff1cc462c..49fbfe1cef689 100644
+--- a/drivers/infiniband/core/rw.c
++++ b/drivers/infiniband/core/rw.c
+@@ -326,14 +326,29 @@ int rdma_rw_ctx_init(struct rdma_rw_ctx *ctx, struct ib_qp *qp, u32 port_num,
+ 	if (rdma_rw_io_needs_mr(qp->device, port_num, dir, sg_cnt)) {
+ 		ret = rdma_rw_init_mr_wrs(ctx, qp, port_num, sg, sg_cnt,
+ 				sg_offset, remote_addr, rkey, dir);
+-	} else if (sg_cnt > 1) {
++		/*
++		 * If MR init succeeded or failed for a reason other
++		 * than pool exhaustion, that result is final.
++		 *
++		 * Pool exhaustion (-EAGAIN) from the max_sgl_rd
++		 * optimization is recoverable: fall back to
++		 * direct SGE posting. iWARP and force_mr require
++		 * MRs unconditionally, so -EAGAIN is terminal.
++		 */
++		if (ret != -EAGAIN ||
++		    rdma_protocol_iwarp(qp->device, port_num) ||
++		    unlikely(rdma_rw_force_mr))
++			goto out;
 +	}
- 	copy_last_highmem_page();
- 	error = hibernate_restore_protect_page(handle->buffer);
- 	/* Do that only if we have loaded the image entirely */
++
++	if (sg_cnt > 1)
+ 		ret = rdma_rw_init_map_wrs(ctx, qp, sg, sg_cnt, sg_offset,
+ 				remote_addr, rkey, dir);
+-	} else {
++	else
+ 		ret = rdma_rw_init_single_wr(ctx, qp, sg, sg_offset,
+ 				remote_addr, rkey, dir);
+-	}
+ 
++out:
+ 	if (ret < 0)
+ 		goto out_unmap_sg;
+ 	return ret;
 -- 
 2.53.0
 
