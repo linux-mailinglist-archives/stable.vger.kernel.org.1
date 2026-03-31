@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFlCG5f/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:39 +0200
+	id oExFGdf/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9332C36DF6D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D396536E088
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 66F583093F88
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D46A230F7B2B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0B5426ED3;
-	Tue, 31 Mar 2026 16:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1B12E0914;
+	Tue, 31 Mar 2026 17:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMJ7BgYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnTGmGzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7D7426681;
-	Tue, 31 Mar 2026 16:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE64D2D73AD;
+	Tue, 31 Mar 2026 17:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975125; cv=none; b=mBHtGfjQHT7t5b/o3iKngLqOWsxpfLEUVwjqWJ0XOFzPYbZKk3VyCBEwlOCRtlCEXcRRmUgGoj3GpFx65rUAxyYe8lXLPwWXZHR+4VY7+uhFnbiciCwTaqkUfdP6ceFmKVAL6tCYRFcS2x9Pc5KEotuIfEiWp8a5YC0rdZZ51gk=
+	t=1774976469; cv=none; b=QVRDXuz8iADZEZaIlKgwRyAWt+ccVPYG1Q56j4bAqxk+8uN0RkQx3mAuSkV4YvltV8odH4vMx8EwawpjP8HaAk47XSGtZ7dQRxodkAApY+vr0zKnF75Bzm8p10TIChpSx3kQIFsW0Ey81UXah/sjREMMMi0k4Ko7drRG1ieyHkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975125; c=relaxed/simple;
-	bh=xyVmsvR1l84LPlrJeMQ4r8MVQ3iTER39VvwnSG3LcVg=;
+	s=arc-20240116; t=1774976469; c=relaxed/simple;
+	bh=QBgQGrxDiwv6BXYdtIDTPXZmya5f0ZUpOYJnOIkAF4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHBHfnq5oTV/xjNgPmUhJ5fRzPciSQBSIzOoZ5avAmKwucpPczERVPfWP2klC7NEg+Ficz02bRDZXFZupdSFt53sLKfvYBr+Is3KNvLV0eErNI6gPC/N0BK5P6XfoB3OJcF0HEoE2xSQH9KKkhLhoZxIc/q0PuiFUnvASI4HEMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMJ7BgYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B84C19423;
-	Tue, 31 Mar 2026 16:38:44 +0000 (UTC)
+	 MIME-Version; b=McBlzayOqMlE8GYgf1FRcXQtznzPQ7V4u9pZYI+hmbkqL0UxNY4B4yhOdnEwT4H8yy4yrnllZ2aS4UVKW11T+SJxUkJt7heGLjRoZ0qW2RrTKu6syPeVHVvagcIS3m4ezGeUbB58KG4D2wXKEMcUwLv1JIJlb0DPpctK8JIC25U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnTGmGzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F241CC19423;
+	Tue, 31 Mar 2026 17:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975125;
-	bh=xyVmsvR1l84LPlrJeMQ4r8MVQ3iTER39VvwnSG3LcVg=;
+	s=korg; t=1774976469;
+	bh=QBgQGrxDiwv6BXYdtIDTPXZmya5f0ZUpOYJnOIkAF4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dMJ7BgYMIiiqF+4Aq98bnbYHiKFYwAemw2re3mk32We3qISqgjJjMSAXg5VGuppNq
-	 4rjkG6tM9ftWUjkn0zvl+Y5DrDH+kTbpXEf6395+8K8YRCG23xFULjO+kaDnVN+kMy
-	 g9poZKuejrG1Ax7/nKYJF8Jlv+aib8+7f/bXHiA0=
+	b=DnTGmGzZlxhcowHKrkAuyqcR5BD4qjt7X593QE3971ic6LQW0Gq4oYkA9g4t7mjr1
+	 ONCnfyrqlZdGfUC0tBGFpkRNoRD/MGjs9osKelNlBMrcev6eZv8Q4bBKcr595YTz46
+	 RM5yilH+9NoXLuV9wTCyBezLW0dPt++C6XceEI1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Patryk Holda <patryk.holda@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 174/342] ASoC: Intel: catpt: Fix the device initialization
-Date: Tue, 31 Mar 2026 18:20:07 +0200
-Message-ID: <20260331161805.412116687@linuxfoundation.org>
+Subject: [PATCH 6.18 105/309] ice: use ice_update_eth_stats() for representor stats
+Date: Tue, 31 Mar 2026 18:20:08 +0200
+Message-ID: <20260331161757.351259552@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231809-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232329-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,77 +87,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 9332C36DF6D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: D396536E088
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 5a184f1cb43a8e035251c635f5c47da5dc3e3049 ]
+[ Upstream commit 2526e440df2725e7328d59b835a164826f179b93 ]
 
-The DMA mask shall be coerced before any buffer allocations for the
-device are done.  At the same time explain why DMA mask of 31 bits is
-used in the first place.
+ice_repr_get_stats64() and __ice_get_ethtool_stats() call
+ice_update_vsi_stats() on the VF's src_vsi. This always returns early
+because ICE_VSI_DOWN is permanently set for VF VSIs - ice_up() is never
+called on them since queues are managed by iavf through virtchnl.
 
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: 7a10b66a5df9 ("ASoC: Intel: catpt: Device driver lifecycle")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260320101217.1243688-1-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In __ice_get_ethtool_stats() the original code called
+ice_update_vsi_stats() for all VSIs including representors, iterated
+over ice_gstrings_vsi_stats[] to populate the data, and then bailed out
+with an early return before the per-queue ring stats section. That early
+return was necessary because representor VSIs have no rings on the PF
+side - the rings belong to the VF driver (iavf), so accessing per-queue
+stats would be invalid.
+
+Move the representor handling to the top of __ice_get_ethtool_stats()
+and call ice_update_eth_stats() directly to read the hardware GLV_*
+counters. This matches ice_get_vf_stats() which already uses
+ice_update_eth_stats() for the same VF VSI in legacy mode. Apply the
+same fix to ice_repr_get_stats64().
+
+Note that ice_gstrings_vsi_stats[] contains five software ring counters
+(rx_buf_failed, rx_page_failed, tx_linearize, tx_busy, tx_restart) that
+are always zero for representors since the PF never processes packets on
+VF rings. This is pre-existing behavior unchanged by this patch.
+
+Fixes: 7aae80cef7ba ("ice: add port representor ethtool ops and stats")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Patryk Holda <patryk.holda@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/catpt/device.c | 10 +++++++++-
- sound/soc/intel/catpt/dsp.c    |  3 ---
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 14 +++++++++++---
+ drivers/net/ethernet/intel/ice/ice_repr.c    |  3 ++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/intel/catpt/device.c b/sound/soc/intel/catpt/device.c
-index d13062c8e907c..fcc7a7342a4ab 100644
---- a/sound/soc/intel/catpt/device.c
-+++ b/sound/soc/intel/catpt/device.c
-@@ -281,7 +281,15 @@ static int catpt_acpi_probe(struct platform_device *pdev)
- 	if (IS_ERR(cdev->pci_ba))
- 		return PTR_ERR(cdev->pci_ba);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 5396ddd66ef75..b52fcf7b899f7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -1940,6 +1940,17 @@ __ice_get_ethtool_stats(struct net_device *netdev,
+ 	int i = 0;
+ 	char *p;
  
--	/* alloc buffer for storing DRAM context during dx transitions */
-+	/*
-+	 * As per design HOST is responsible for preserving firmware's runtime
-+	 * context during D0 -> D3 -> D0 transitions.  Addresses used for DMA
-+	 * to/from HOST memory shall be outside the reserved range of 0xFFFxxxxx.
-+	 */
-+	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
-+	if (ret)
-+		return ret;
++	if (ice_is_port_repr_netdev(netdev)) {
++		ice_update_eth_stats(vsi);
 +
- 	cdev->dxbuf_vaddr = dmam_alloc_coherent(dev, catpt_dram_size(cdev),
- 						&cdev->dxbuf_paddr, GFP_KERNEL);
- 	if (!cdev->dxbuf_vaddr)
-diff --git a/sound/soc/intel/catpt/dsp.c b/sound/soc/intel/catpt/dsp.c
-index 008a20a2acbda..677f348909c8f 100644
---- a/sound/soc/intel/catpt/dsp.c
-+++ b/sound/soc/intel/catpt/dsp.c
-@@ -125,9 +125,6 @@ int catpt_dmac_probe(struct catpt_dev *cdev)
- 	dmac->dev = cdev->dev;
- 	dmac->irq = cdev->irq;
++		for (j = 0; j < ICE_VSI_STATS_LEN; j++) {
++			p = (char *)vsi + ice_gstrings_vsi_stats[j].stat_offset;
++			data[i++] = (ice_gstrings_vsi_stats[j].sizeof_stat ==
++				     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++		}
++		return;
++	}
++
+ 	ice_update_pf_stats(pf);
+ 	ice_update_vsi_stats(vsi);
  
--	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
--	if (ret)
--		return ret;
- 	/*
- 	 * Caller is responsible for putting device in D0 to allow
- 	 * for I/O and memory access before probing DW.
+@@ -1949,9 +1960,6 @@ __ice_get_ethtool_stats(struct net_device *netdev,
+ 			     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
+ 	}
+ 
+-	if (ice_is_port_repr_netdev(netdev))
+-		return;
+-
+ 	/* populate per queue stats */
+ 	rcu_read_lock();
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
+index 2a84f65640582..f1e82ba155cff 100644
+--- a/drivers/net/ethernet/intel/ice/ice_repr.c
++++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2019-2021, Intel Corporation. */
+ 
+ #include "ice.h"
++#include "ice_lib.h"
+ #include "ice_eswitch.h"
+ #include "devlink/devlink.h"
+ #include "devlink/port.h"
+@@ -67,7 +68,7 @@ ice_repr_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
+ 		return;
+ 	vsi = repr->src_vsi;
+ 
+-	ice_update_vsi_stats(vsi);
++	ice_update_eth_stats(vsi);
+ 	eth_stats = &vsi->eth_stats;
+ 
+ 	stats->tx_packets = eth_stats->tx_unicast + eth_stats->tx_broadcast +
 -- 
-2.53.0
+2.51.0
 
 
 
