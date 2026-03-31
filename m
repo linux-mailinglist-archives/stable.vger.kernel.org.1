@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDZxJ5kAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:57 +0200
+	id IHYWFyz8y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE7836E2FC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2EE36D58D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 468FB3075856
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4BE70307FED0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EEC301471;
-	Tue, 31 Mar 2026 17:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA6233F38A;
+	Tue, 31 Mar 2026 16:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1w6VUKfg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqyqvVpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5852FE042;
-	Tue, 31 Mar 2026 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4C43D8114;
+	Tue, 31 Mar 2026 16:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976721; cv=none; b=Gap6szJFlB9w/MMarAdj+XCtOeWlDgY3vf1wGwksFa6IJWKWgrtG+tuZFNM0RAb4s6RJDtAXBpBZyZ+hmlJEudnpZI+ZS72KSypXARQWPI5ZiLiy3CsqMdRC4vlTig8cc5k5gdSBsvlyOCCMzvm6gAI8Pu6EybDe7dGW0L51mPs=
+	t=1774975378; cv=none; b=LzI+kTBfM4lsBX6+RJkokUyshvwuEQu4wFGko/A08uN9qY5thEyyxl67/hb7kuiOu/3BeVGkzjaKLZ0Tb3Qlm+oEAqhw943HQwm91fQG0Fmkkk4+IEZIvlO/pQgCg1vkiAdYQTJKuC/46s1DpWJ3DsFR/h6vNhEIlSUYDNHaoiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976721; c=relaxed/simple;
-	bh=CmN6hc+ZGiiwS1uUmhK23aoLSFiO1T88hALr7562Dp8=;
+	s=arc-20240116; t=1774975378; c=relaxed/simple;
+	bh=+x/ZfKuoJX2uOnBJ1IaL+mv6PzyeTlfl9MMzyY9Oumo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaNeGoOeZPdpi4A9BRlL3If+kvd8Gzrl5D7Rz10IHzsGMalJZ9oJQxBjhGV7vNtiwsrENQeA95Z8G77Sxzy20zjFfHu0ekEqHeJ4MRKgPD9H0Tx2Rl9i3Yyg3tnxCygPhsp3GVZzi8crCJPVrfr/1f/DVvz1Yk06Vsqu+/xM7hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1w6VUKfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726D2C19423;
-	Tue, 31 Mar 2026 17:05:21 +0000 (UTC)
+	 MIME-Version; b=IKN0C1eosvhDoYy7GRh/HvceqZvt9LOH+Lotmd8Rid0Qik/J5ULahgLqocm+1c1M9RiR/LcNlJK4k4veqZ4ZnJy1vYAm2jH5Ur+3ugh0xoUySDYY6Qenb8DtaQhX/cUQ9QxBj8tve/SYnV599FYTFm67xhtO2ZIAQu82Z5JK7Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqyqvVpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7644C19423;
+	Tue, 31 Mar 2026 16:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976721;
-	bh=CmN6hc+ZGiiwS1uUmhK23aoLSFiO1T88hALr7562Dp8=;
+	s=korg; t=1774975378;
+	bh=+x/ZfKuoJX2uOnBJ1IaL+mv6PzyeTlfl9MMzyY9Oumo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1w6VUKfgtB+pSIPOsZCMjLTlExy6U2Ko5jilOblQqmhiL1tEHK//QYNhWDb6EsMc2
-	 9+S1Ys9cUMDBeThIGjVx5DlbHqaKpSPb+mqQcW5mVJfkyzQ5nohErLo3L+d1wVPTCQ
-	 dlvCcsl23TjGLxT5PYpGdU3rBRctNOstZJfqRV4g=
+	b=aqyqvVpODRcrP4l9bLnqEEvRmyQWxYNuC7QaoKm6lTIdgls7tQbnxeumnaOagm/Cf
+	 AQmHL5t4ZjBdHf8wdGUPUMsnoWSDLeTnWpqPUJ0/iFBOLOSgjevV1HYc06w7qMIMEU
+	 /xhozy4b9zmBJrVA+4RvGPuWNRgcDuXSzsXn/hjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 169/309] hwmon: (pmbus/core) Protect regulator operations with mutex
+	Borislav Petkov <bp@alien8.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.19 239/342] x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
 Date: Tue, 31 Mar 2026 18:21:12 +0200
-Message-ID: <20260331161759.687315510@linuxfoundation.org>
+Message-ID: <20260331161807.758780179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,283 +74,164 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231908-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232428-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,s.data:url,s.page:url]
-X-Rspamd-Queue-Id: 3FE7836E2FC
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,msgid.link:url,alien8.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EE2EE36D58D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-[ Upstream commit 754bd2b4a084b90b5e7b630e1f423061a9b9b761 ]
+commit 05243d490bb7852a8acca7b5b5658019c7797a52 upstream.
 
-The regulator operations pmbus_regulator_get_voltage(),
-pmbus_regulator_set_voltage(), and pmbus_regulator_list_voltage()
-access PMBus registers and shared data but were not protected by
-the update_lock mutex. This could lead to race conditions.
+Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
+to ensure it is enabled before any exceptions can occur on both boot and
+secondary CPUs.
 
-However, adding mutex protection directly to these functions causes
-a deadlock because pmbus_regulator_notify() (which calls
-regulator_notifier_call_chain()) is often called with the mutex
-already held (e.g., from pmbus_fault_handler()). If a regulator
-callback then calls one of the now-protected voltage functions,
-it will attempt to acquire the same mutex.
+== Background ==
 
-Rework pmbus_regulator_notify() to utilize a worker function to
-send notifications outside of the mutex protection. Events are
-stored as atomics in a per-page bitmask and processed by the worker.
+Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
+X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
+or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
 
-Initialize the worker and its associated data during regulator
-registration, and ensure it is cancelled on device removal using
-devm_add_action_or_reset().
+On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
+When the feature is available, the code is permanently patched to use
+RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
 
-While at it, remove the unnecessary include of linux/of.h.
+== Boot Sequence ==
 
-Cc: Sanman Pradhan <psanman@juniper.net>
-Fixes: ddbb4db4ced1b ("hwmon: (pmbus) Add regulator support")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Boot CPU (with CR pinning enabled):
+  trap_init()
+    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
+      x2apic_setup()
+  ...
+  arch_cpu_finalize_init()
+    identify_boot_cpu()
+      identify_cpu()
+        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
+	# This becomes part of cr4_pinned_bits
+    ...
+    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
+
+Secondary CPUs (with CR pinning enabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
+                                    set implicitly via cr4_pinned_bits
+
+    cpu_init()                   <- exceptions work because FSGSBASE is
+                                    already enabled
+
+Secondary CPU (with CR pinning disabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
+    cpu_init()
+      x2apic_setup()
+        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
+          exc_vmm_communication()
+            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
+                                      (patched code)
+    ...
+    ap_starting()
+      identify_secondary_cpu()
+        identify_cpu()
+	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
+                                             too late
+
+== CR Pinning ==
+
+Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
+CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
+cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
+This works but creates an undocumented dependency between cr4_init() and the
+pinning mechanism.
+
+== Problem ==
+
+Secondary CPUs boot after alternatives have been applied globally. They
+execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
+instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
+behavior will break the implicit dependency, causing secondary CPUs to
+generate #UD.
+
+This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
+x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
+handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
+Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
+
+== Fix ==
+
+Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
+exception handlers. This makes the dependency explicit and ensures both
+boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
+executes.
+
+Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 114 ++++++++++++++++++++++++-------
- 1 file changed, 89 insertions(+), 25 deletions(-)
+ arch/x86/kernel/cpu/common.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index cbc36f0ba4bf9..572be3ebc03df 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -6,6 +6,7 @@
-  * Copyright (c) 2012 Guenter Roeck
-  */
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2042,12 +2042,6 @@ static void identify_cpu(struct cpuinfo_
+ 	setup_umip(c);
+ 	setup_lass(c);
  
-+#include <linux/atomic.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/dcache.h>
-@@ -21,8 +22,8 @@
- #include <linux/pmbus.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
--#include <linux/of.h>
- #include <linux/thermal.h>
-+#include <linux/workqueue.h>
- #include "pmbus.h"
- 
- /*
-@@ -112,6 +113,11 @@ struct pmbus_data {
- 
- 	struct mutex update_lock;
- 
-+#if IS_ENABLED(CONFIG_REGULATOR)
-+	atomic_t regulator_events[PMBUS_PAGES];
-+	struct work_struct regulator_notify_work;
-+#endif
-+
- 	bool has_status_word;		/* device uses STATUS_WORD register */
- 	int (*read_status)(struct i2c_client *client, int page);
- 
-@@ -3228,12 +3234,19 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
- 		.class = PSC_VOLTAGE_OUT,
- 		.convert = true,
- 	};
-+	int ret;
- 
-+	mutex_lock(&data->update_lock);
- 	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
--	if (s.data < 0)
--		return s.data;
-+	if (s.data < 0) {
-+		ret = s.data;
-+		goto unlock;
-+	}
- 
--	return (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+	ret = (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
-@@ -3250,16 +3263,22 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- 	};
- 	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
- 	int low, high;
-+	int ret;
- 
- 	*selector = 0;
- 
-+	mutex_lock(&data->update_lock);
- 	low = pmbus_regulator_get_low_margin(client, s.page);
--	if (low < 0)
--		return low;
-+	if (low < 0) {
-+		ret = low;
-+		goto unlock;
-+	}
- 
- 	high = pmbus_regulator_get_high_margin(client, s.page);
--	if (high < 0)
--		return high;
-+	if (high < 0) {
-+		ret = high;
-+		goto unlock;
-+	}
- 
- 	/* Make sure we are within margins */
- 	if (low > val)
-@@ -3269,7 +3288,10 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- 
- 	val = pmbus_data2reg(data, &s, val);
- 
--	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+	ret = _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
-@@ -3279,6 +3301,7 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- 	struct i2c_client *client = to_i2c_client(dev->parent);
- 	struct pmbus_data *data = i2c_get_clientdata(client);
- 	int val, low, high;
-+	int ret;
- 
- 	if (data->flags & PMBUS_VOUT_PROTECTED)
- 		return 0;
-@@ -3291,18 +3314,29 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- 	val = DIV_ROUND_CLOSEST(rdev->desc->min_uV +
- 				(rdev->desc->uV_step * selector), 1000); /* convert to mV */
- 
-+	mutex_lock(&data->update_lock);
-+
- 	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
--	if (low < 0)
--		return low;
-+	if (low < 0) {
-+		ret = low;
-+		goto unlock;
-+	}
- 
- 	high = pmbus_regulator_get_high_margin(client, rdev_get_id(rdev));
--	if (high < 0)
--		return high;
-+	if (high < 0) {
-+		ret = high;
-+		goto unlock;
-+	}
- 
--	if (val >= low && val <= high)
--		return val * 1000; /* unit is uV */
-+	if (val >= low && val <= high) {
-+		ret = val * 1000; /* unit is uV */
-+		goto unlock;
-+	}
- 
--	return 0;
-+	ret = 0;
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- const struct regulator_ops pmbus_regulator_ops = {
-@@ -3333,12 +3367,42 @@ int pmbus_regulator_init_cb(struct regulator_dev *rdev,
- }
- EXPORT_SYMBOL_NS_GPL(pmbus_regulator_init_cb, "PMBUS");
- 
-+static void pmbus_regulator_notify_work_cancel(void *data)
-+{
-+	struct pmbus_data *pdata = data;
-+
-+	cancel_work_sync(&pdata->regulator_notify_work);
-+}
-+
-+static void pmbus_regulator_notify_worker(struct work_struct *work)
-+{
-+	struct pmbus_data *data =
-+		container_of(work, struct pmbus_data, regulator_notify_work);
-+	int i, j;
-+
-+	for (i = 0; i < data->info->pages; i++) {
-+		int event;
-+
-+		event = atomic_xchg(&data->regulator_events[i], 0);
-+		if (!event)
-+			continue;
-+
-+		for (j = 0; j < data->info->num_regulators; j++) {
-+			if (i == rdev_get_id(data->rdevs[j])) {
-+				regulator_notifier_call_chain(data->rdevs[j],
-+							      event, NULL);
-+				break;
-+			}
-+		}
-+	}
-+}
-+
- static int pmbus_regulator_register(struct pmbus_data *data)
- {
- 	struct device *dev = data->dev;
- 	const struct pmbus_driver_info *info = data->info;
- 	const struct pmbus_platform_data *pdata = dev_get_platdata(dev);
--	int i;
-+	int i, ret;
- 
- 	data->rdevs = devm_kzalloc(dev, sizeof(struct regulator_dev *) * info->num_regulators,
- 				   GFP_KERNEL);
-@@ -3362,19 +3426,19 @@ static int pmbus_regulator_register(struct pmbus_data *data)
- 					     info->reg_desc[i].name);
- 	}
- 
-+	INIT_WORK(&data->regulator_notify_work, pmbus_regulator_notify_worker);
-+
-+	ret = devm_add_action_or_reset(dev, pmbus_regulator_notify_work_cancel, data);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
- }
- 
- static void pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
- {
--	int j;
--
--	for (j = 0; j < data->info->num_regulators; j++) {
--		if (page == rdev_get_id(data->rdevs[j])) {
--			regulator_notifier_call_chain(data->rdevs[j], event, NULL);
--			break;
--		}
+-	/* Enable FSGSBASE instructions if available. */
+-	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+-		cr4_set_bits(X86_CR4_FSGSBASE);
+-		elf_hwcap2 |= HWCAP2_FSGSBASE;
 -	}
-+	atomic_or(event, &data->regulator_events[page]);
-+	schedule_work(&data->regulator_notify_work);
- }
- #else
- static int pmbus_regulator_register(struct pmbus_data *data)
--- 
-2.53.0
-
+-
+ 	/*
+ 	 * The vendor-specific functions might have changed features.
+ 	 * Now we do "generic changes."
+@@ -2408,6 +2402,18 @@ void cpu_init_exception_handling(bool bo
+ 	/* GHCB needs to be setup to handle #VC. */
+ 	setup_ghcb();
+ 
++	/*
++	 * On CPUs with FSGSBASE support, paranoid_entry() uses
++	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
++	 * boot after alternatives are patched globally, so early exceptions
++	 * execute patched code that depends on FSGSBASE. Enable the feature
++	 * before any exceptions occur.
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
++		cr4_set_bits(X86_CR4_FSGSBASE);
++		elf_hwcap2 |= HWCAP2_FSGSBASE;
++	}
++
+ 	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
+ 		/* The boot CPU has enabled FRED during early boot */
+ 		if (!boot_cpu)
 
 
 
