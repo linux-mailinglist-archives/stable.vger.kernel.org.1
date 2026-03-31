@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mE2kNOb1y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:18 +0200
+	id mMinJ4z7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2296A36C993
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D0F36D426
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 997983037E78
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 413B030AF6F7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85763329E4B;
-	Tue, 31 Mar 2026 16:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3F3427A0C;
+	Tue, 31 Mar 2026 16:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXPuY1G8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6K3smyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E7C3E316C;
-	Tue, 31 Mar 2026 16:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A1B428466;
+	Tue, 31 Mar 2026 16:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974294; cv=none; b=LS3uAqEAKgR9VydbwWlKTKer1xbCSo7tRIYd3qxYluhB7AChKzrOlvASO74FXSFPlMof+aZ+35ltu1MtfWYKb+6p50tbA3troi9dPRcfnjZD2Rf59Is5u1+i2Oh2CM/0/mM5QYhNO7Sv0lEPz7X0d/Swi+qkJ0ihC0PayFFCsSU=
+	t=1774975143; cv=none; b=FwNBjyxdifcdjYoeVAzA8Ut3k48p9HdOdUTDYM/uxVxM0Tx5B0LYxS2SPWNP9OiGVL2cTA+6yv9awbnHOdk6CXkARMCWnIj6AvUtHW3i66MViVbw7FwfpUc3nPpozO14NG1gJrD35WnMQih7idpHUXGOLsrUy8BrH2/mF+RFxDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974294; c=relaxed/simple;
-	bh=pUqU9+b/jFhLcIpeodJB2fPLD3i1y3vAT4jZTTp/UE4=;
+	s=arc-20240116; t=1774975143; c=relaxed/simple;
+	bh=vCapZXgHwv5wwx4BRBkA+JBcVwVfo/c07S4YHuPpg9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYb1T3youwIeVYOLC8hP75wjN/4o6kzZhMBfCEIo1Fz6aLeFkQa15lq1yIaZbwbOyWfYBIb/l7aqC7+Wo+dG3Hpxe5gAawFxjW6WnZjSkePW8KE8v4dHL1LH6X1fytEBi1FX9wlTXdvt9elmGzQV1ggPsJnPxJi5VCViEfOobj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXPuY1G8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8725C2BCB2;
-	Tue, 31 Mar 2026 16:24:53 +0000 (UTC)
+	 MIME-Version; b=UiuFA7Ok0LxGjU12CMzG+B1OXEXzSPUq/9HWvUf3BEJpHrcP3FL+CdMlKhe6RJdJ+pjkYQssAcVX52AVYkKBCdDyxr+40tAVnLnT5UFH6F0BmRYF1/xt0PZaDbPNbizy/eJWOlFSs6T7sFrppySi+2A8uLxDjZkRlYOwa4KpbOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6K3smyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28925C19424;
+	Tue, 31 Mar 2026 16:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974294;
-	bh=pUqU9+b/jFhLcIpeodJB2fPLD3i1y3vAT4jZTTp/UE4=;
+	s=korg; t=1774975143;
+	bh=vCapZXgHwv5wwx4BRBkA+JBcVwVfo/c07S4YHuPpg9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXPuY1G83WN8roWQk603ECQMrmaPonObBseDQvRYRMWqDgfjARle+RAyGALf2GZWP
-	 p+BzX94grnAmvwrNJYYMODftdpcfE36JFdlQD3bYyHbkQD0QWC8DyuXO+mUESmVZHV
-	 LI/N3nxm64P7q2FBq3niLo5z+BGzVD7wVb0dAXAw=
+	b=n6K3smyMSaK4u0gSJNKmUEKp6k1RkeIgQxeIGyHMs5mnQlf7zYOgVmEWus53rnLEY
+	 PDGRXyeAlcjCdOAaPQTXSv6ArJwk/0ywMPbcxsyvD88uoo5EINdQ73255lGvwXBQ1R
+	 3tZqTwr6ZwZSO4yYx9ChJeUfob0VhBtdRaWGJyoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uzair Mughal <contact@uzair.is-a.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/175] ALSA: hda/realtek: Add headset jack quirk for Thinkpad X390
+Subject: [PATCH 6.19 180/342] spi: use generic driver_override infrastructure
 Date: Tue, 31 Mar 2026 18:20:13 +0200
-Message-ID: <20260331161730.857604130@linuxfoundation.org>
+Message-ID: <20260331161805.628297545@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +69,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231816-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231485-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 2296A36C993
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 38D0F36D426
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uzair Mughal <contact@uzair.is-a.dev>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 542127f6528ca7cc3cf61e1651d6ccb58495f953 ]
+[ Upstream commit cc34d77dd48708d810c12bfd6f5bf03304f6c824 ]
 
-The Lenovo ThinkPad X390 (ALC257 codec, subsystem ID 0x17aa2288)
-does not report headset button press events. Headphone insertion is
-detected (SW_HEADPHONE_INSERT), but pressing the inline microphone
-button on a headset produces no input events.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Add a SND_PCI_QUIRK entry that maps this subsystem ID to
-ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK, which enables
-headset jack button detection through alc_fixup_headset_jack()
-and ThinkPad ACPI integration. This is the same fixup used by
-similar ThinkPad models (P1 Gen 3, X1 Extreme Gen 3).
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
 
-Signed-off-by: Uzair Mughal <contact@uzair.is-a.dev>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260307012906.20093-1-contact@uzair.is-a.dev
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Also note that we do not enable the driver_override feature of struct
+bus_type, as SPI - in contrast to most other buses - passes "" to
+sysfs_emit() when the driver_override pointer is NULL. Thus, printing
+"\n" instead of "(null)\n".
+
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: 5039563e7c25 ("spi: Add driver_override SPI device attribute")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/20260324005919.2408620-12-dakr@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi.c       | 19 +++++++------------
+ include/linux/spi/spi.h |  5 -----
+ 2 files changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 908028d060c8d..1a5e2fb0c842b 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10520,6 +10520,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x224c, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x224d, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x225d, "Thinkpad T480", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x17aa, 0x2288, "Thinkpad X390", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x2292, "Thinkpad X1 Carbon 7th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22be, "Thinkpad X1 Carbon 8th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22c1, "Thinkpad P1 Gen 3", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 201b9569ce690..87d829d2a8427 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -50,7 +50,6 @@ static void spidev_release(struct device *dev)
+ 	struct spi_device	*spi = to_spi_device(dev);
+ 
+ 	spi_controller_put(spi->controller);
+-	kfree(spi->driver_override);
+ 	free_percpu(spi->pcpu_statistics);
+ 	kfree(spi);
+ }
+@@ -73,10 +72,9 @@ static ssize_t driver_override_store(struct device *dev,
+ 				     struct device_attribute *a,
+ 				     const char *buf, size_t count)
+ {
+-	struct spi_device *spi = to_spi_device(dev);
+ 	int ret;
+ 
+-	ret = driver_set_override(dev, &spi->driver_override, buf, count);
++	ret = __device_set_driver_override(dev, buf, count);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -86,13 +84,8 @@ static ssize_t driver_override_store(struct device *dev,
+ static ssize_t driver_override_show(struct device *dev,
+ 				    struct device_attribute *a, char *buf)
+ {
+-	const struct spi_device *spi = to_spi_device(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", spi->driver_override ? : "");
+-	device_unlock(dev);
+-	return len;
++	guard(spinlock)(&dev->driver_override.lock);
++	return sysfs_emit(buf, "%s\n", dev->driver_override.name ?: "");
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
+@@ -376,10 +369,12 @@ static int spi_match_device(struct device *dev, const struct device_driver *drv)
+ {
+ 	const struct spi_device	*spi = to_spi_device(dev);
+ 	const struct spi_driver	*sdrv = to_spi_driver(drv);
++	int ret;
+ 
+ 	/* Check override first, and if set, only use the named driver */
+-	if (spi->driver_override)
+-		return strcmp(spi->driver_override, drv->name) == 0;
++	ret = device_match_driver_override(dev, drv);
++	if (ret >= 0)
++		return ret;
+ 
+ 	/* Attempt an OF style match */
+ 	if (of_driver_match_device(dev, drv))
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cb2c2df310899..fe9dd430cc03a 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -156,10 +156,6 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
+  * @modalias: Name of the driver to use with this device, or an alias
+  *	for that name.  This appears in the sysfs "modalias" attribute
+  *	for driver coldplugging, and in uevents used for hotplugging
+- * @driver_override: If the name of a driver is written to this attribute, then
+- *	the device will bind to the named driver and only the named driver.
+- *	Do not set directly, because core frees it; use driver_set_override() to
+- *	set or clear it.
+  * @pcpu_statistics: statistics for the spi_device
+  * @word_delay: delay to be inserted between consecutive
+  *	words of a transfer
+@@ -217,7 +213,6 @@ struct spi_device {
+ 	void			*controller_state;
+ 	void			*controller_data;
+ 	char			modalias[SPI_NAME_SIZE];
+-	const char		*driver_override;
+ 
+ 	/* The statistics */
+ 	struct spi_statistics __percpu	*pcpu_statistics;
 -- 
-2.51.0
+2.53.0
 
 
 
