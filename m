@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IyWOk8IzGlaNgYAu9opvQ
-	(envelope-from <stable+bounces-232484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:51 +0200
+	id mDsAO4z8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC1636F467
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC7736D6C9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CD1D30D7BB2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 076D6308C507
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C5B30C632;
-	Tue, 31 Mar 2026 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F4B413258;
+	Tue, 31 Mar 2026 16:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEib8iWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpkO5syG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6EE2D7DEF;
-	Tue, 31 Mar 2026 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7539F2D1F40;
+	Tue, 31 Mar 2026 16:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976867; cv=none; b=c1b/7VRJKzqst6T3FcdQQ++8JmKnGZ7rvTi06nQUaCCDOA9ZGxNyHml7h2gFo2WotYMtYAuTyF44yz/Z6Nv2P/O7e+vKfFNbyZOCyvU4tdCNQt1EhzPIKSWisLR+bfLsk6SPzoIic7j6thkK9qh7jupdS1V3oaeuLZjR3EERKMw=
+	t=1774975524; cv=none; b=JCWJW9NUeoZXEUSyC5LRPCBM6cBAULKduGjBXWZyoNnilec7Jyw0pj4LPe2CwV0HmdOpSe8WjNJmRRBwbeyEj01b6A2AnJKhBEVIFy+1gXSouesB8EnWLsuNVZH9nxnB9X6OvyJIa+0LVGxLK2Wfdfdz3JK7k2wHhxNkTxExjvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976867; c=relaxed/simple;
-	bh=86eMFk4PF/QkqPcDK4LyXww8uqdKXswJo+XG7M3IM7I=;
+	s=arc-20240116; t=1774975524; c=relaxed/simple;
+	bh=Za8QKLZOMtUlSWZUVTQ7UeosBqrWU3UYXiIldVf20P4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2sBBnyg1cRBq2krHkX0x+xMDj+wwa7ho5TcG9vzrRNSGRrSKH0bNGLrQsN1m/pX1O0KbPV5Q0b2cfVUM/OQzB8A/By1wMZ9SM9VFy0bzbeCatj1I3w5ObbT7LcmTBH8Br5m5Wl668E/AJ1polQ752lJ02zGKnn466ag54idPIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEib8iWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3659C19423;
-	Tue, 31 Mar 2026 17:07:46 +0000 (UTC)
+	 MIME-Version; b=Px13oMWdPxOLhyxo+fespIMA3OVGJQfuJilU+hNUbZPNx83nV+51eMbakhYZpPDG+H7sHa08fpQxp0yf2rYNBV8CzzrJj1rKwGqPwPCf6OpVRbN+JrxBnz+j6QAWDY2nRw6m5hX5ap9xvMe/nbcwOHQJEuQHvYDAZB291Lj8eec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpkO5syG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1E0C19423;
+	Tue, 31 Mar 2026 16:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976867;
-	bh=86eMFk4PF/QkqPcDK4LyXww8uqdKXswJo+XG7M3IM7I=;
+	s=korg; t=1774975524;
+	bh=Za8QKLZOMtUlSWZUVTQ7UeosBqrWU3UYXiIldVf20P4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEib8iWgI/LiPmajj2hBdICtxU4FUd3cG1E1zwgOK6M6PPXiioOAXBnZ4erUxUK4c
-	 ojc3fu0YNjqFbcJS5pEoQaMOZvKRmKZ5k7L2GxKiLfu0d5gU9oC8uf97C2f8aToXYZ
-	 viGm5ScAm5KBBkg/QFgC5dCU9wR2d9W1ai4eqPRw=
+	b=KpkO5syGimHGKZl4VD7OKiYI/Ukb5Lj+C4p9LAxchF0VCMv2nWxKRTmY5Liz0zDq0
+	 WGVB0VAsPN3gUTebbrcVMUIZKcsG/d2/wLJTrw6cubd+AjtJ3g9qKL7S7sfwzXNuJJ
+	 azcr4jvDhRebDLoPhxdFZhOiAaI16oO/UnLyqBXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Free Ekanayaka <free.ekanayaka@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 258/309] ext4: fix fsync(2) for nojournal mode
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 328/342] dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA
 Date: Tue, 31 Mar 2026 18:22:41 +0200
-Message-ID: <20260331161803.067013685@linuxfoundation.org>
+Message-ID: <20260331161810.977887556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +64,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232484-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231965-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4EC1636F467
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ideasonboard.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BCC7736D6C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
+[ Upstream commit a17ce4bc6f4f9acf77ba416c36791a15602e53aa ]
 
-When inode metadata is changed, we sometimes just call
-ext4_mark_inode_dirty() to track modified metadata. This copies inode
-metadata into block buffer which is enough when we are journalling
-metadata. However when we are running in nojournal mode we currently
-fail to write the dirtied inode buffer during fsync(2) because the inode
-is not marked as dirty. Use explicit ext4_write_inode() call to make
-sure the inode table buffer is written to the disk. This is a band aid
-solution but proper solution requires a much larger rewrite including
-changes in metadata bh tracking infrastructure.
+A single AXIDMA controller can have one or two channels. When it has two
+channels, the reset for both are tied together: resetting one channel
+resets the other as well. This creates a problem where resetting one
+channel will reset the registers for both channels, including clearing
+interrupt enable bits for the other channel, which can then lead  to
+timeouts as the driver is waiting for an interrupt which never comes.
 
-Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
-Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The driver currently has a probe-time work around for this: when a
+channel is created, the driver also resets and enables the
+interrupts. With two channels the reset for the second channel will
+clear the interrupt enables for the first one. The work around in the
+driver is just to manually enable the interrupts again in
+xilinx_dma_alloc_chan_resources().
+
+This workaround only addresses the probe-time issue. When channels are
+reset at runtime (e.g., in xilinx_dma_terminate_all() or during error
+recovery), there's no corresponding mechanism to restore the other
+channel's interrupt enables. This leads to one channel having its
+interrupts disabled while the driver expects them to work, causing
+timeouts and DMA failures.
+
+A proper fix is a complicated matter, as we should not reset the other
+channel when it's operating normally. So, perhaps, there should be some
+kind of synchronization for a common reset, which is not trivial to
+implement. To add to the complexity, the driver also supports other DMA
+types, like VDMA, CDMA and MCDMA, which don't have a shared reset.
+
+However, when the two-channel AXIDMA is used in the (assumably) normal
+use case, providing DMA for a single memory-to-memory device, the common
+reset is a bit smaller issue: when something bad happens on one channel,
+or when one channel is terminated, the assumption is that we also want
+to terminate the other channel. And thus resetting both at the same time
+is "ok".
+
+With that line of thinking we can implement a bit better work around
+than just the current probe time work around: let's enable the
+AXIDMA interrupts at xilinx_dma_start_transfer() instead.
+This ensures interrupts are enabled whenever a transfer starts,
+regardless of any prior resets that may have cleared them.
+
+This approach is also more logical: enable interrupts only when needed
+for a transfer, rather than at resource allocation time, and, I think,
+all the other DMA types should also use this model, but I'm reluctant to
+do such changes as I cannot test them.
+
+The reset function still enables interrupts even though it's not needed
+for AXIDMA anymore, but it's common code for all DMA types (VDMA, CDMA,
+MCDMA), so leave it unchanged to avoid affecting other variants.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Link: https://patch.msgid.link/20260311-xilinx-dma-fix-v2-1-a725abb66e3c@ideasonboard.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fsync.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/fs/ext4/fsync.c
-+++ b/fs/ext4/fsync.c
-@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
- 				int datasync, bool *needs_barrier)
- {
- 	struct inode *inode = file->f_inode;
-+	struct writeback_control wbc = {
-+		.sync_mode = WB_SYNC_ALL,
-+		.nr_to_write = 0,
-+	};
- 	int ret;
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 7b24d0a18ea53..7dec5e6babe14 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1217,14 +1217,6 @@ static int xilinx_dma_alloc_chan_resources(struct dma_chan *dchan)
  
- 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
--	if (!ret)
--		ret = ext4_sync_parent(inode);
-+	if (ret)
-+		return ret;
-+
-+	/* Force writeout of inode table buffer to disk */
-+	ret = ext4_write_inode(inode, &wbc);
-+	if (ret)
-+		return ret;
-+
-+	ret = ext4_sync_parent(inode);
-+
- 	if (test_opt(inode->i_sb, BARRIER))
- 		*needs_barrier = true;
+ 	dma_cookie_init(dchan);
  
+-	if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
+-		/* For AXI DMA resetting once channel will reset the
+-		 * other channel as well so enable the interrupts here.
+-		 */
+-		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+-			      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
+-	}
+-
+ 	if ((chan->xdev->dma_config->dmatype == XDMA_TYPE_CDMA) && chan->has_sg)
+ 		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+ 			     XILINX_CDMA_CR_SGMODE);
+@@ -1594,6 +1586,7 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 			     head_desc->async_tx.phys);
+ 	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
+ 	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
++	reg |= XILINX_DMA_DMAXR_ALL_IRQ_MASK;
+ 	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
+ 
+ 	xilinx_dma_start(chan);
+-- 
+2.53.0
+
 
 
 
