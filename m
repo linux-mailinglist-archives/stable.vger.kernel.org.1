@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-231588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFp3AEn4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:29 +0200
+	id QPioGfD7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EA336CDA3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0734C36D51F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9E8230D67D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 13802307587A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8935421F1F;
-	Tue, 31 Mar 2026 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DCE425CCD;
+	Tue, 31 Mar 2026 16:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPS/PzwM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb0mlKk0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784A23E316C;
-	Tue, 31 Mar 2026 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CAD421F1F;
+	Tue, 31 Mar 2026 16:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974558; cv=none; b=A3Gz2Fe8rUHQgbNB/10BVam4iBKxwvaBhoZ7pe8HlAlreplI9dXyezK3SHmTx+2Uqi3idynf498jGsEvaiR9wV9KMg5JsiaVL987Av6xuF80eMufU7FvsET1oQ/AjWD0RQ+75xRI31D1bEcVh4TprJRTiaCfZQaXwBbBX2VBilY=
+	t=1774975404; cv=none; b=kojyJKivTSkqXaexiKrN+vytGF2r/a7Q5RH+3wMQplFnVSwPgcSmLEDfKJ4hJOHS8Pk4NqzfGoj5s/sbLloL88N6SXzVdLLBM+zzhFf68Zhu4vMkE8QVLxllXM+5ppttkDapgtzNw2IPW/fnPA92DbfVu5SxsTrV/7YTllm/EnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974558; c=relaxed/simple;
-	bh=UYHgcA7W0H/mr/UkUSYLUUQLAZRETFF6Uoqv1/tTbig=;
+	s=arc-20240116; t=1774975404; c=relaxed/simple;
+	bh=JkPc/aNnXUcDmpyp7gp2svpcdNGZY2JbPCDWRmqU0mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lF/F+2HJ1c7f7LrQQjEvUyMAgAwVdrlHq+hRq9p3qhlXIeLwcKj63Jr4JMbKnVWT7qVHYVVkXt48aUz9BdmwzVEOmqu53x0Wl0ELaPNRoWQqEXA1hi/bIijdYMqg7NTzwDk9QGzqtHatfTkUV903IGfGD8TSnyYlC4TJhSe0qW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPS/PzwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5259C19423;
-	Tue, 31 Mar 2026 16:29:17 +0000 (UTC)
+	 MIME-Version; b=NuJ+JCqGMapvrKHeSvGmFxhcvJo1IAlbMZGTnaR0AkgpjN35MJksn9clkU7OHCruwyzRxJB1/izq097XHxVhQOgt2/1uZj6R+jgkStCqtcyjc0zCybEBp9NkBbthcynbO7M4zZ6kHHm7St2M34yKIiLypcpjIikR5bQrg7BN/Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb0mlKk0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A5EC19423;
+	Tue, 31 Mar 2026 16:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974558;
-	bh=UYHgcA7W0H/mr/UkUSYLUUQLAZRETFF6Uoqv1/tTbig=;
+	s=korg; t=1774975403;
+	bh=JkPc/aNnXUcDmpyp7gp2svpcdNGZY2JbPCDWRmqU0mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPS/PzwM+sCHJfbsNuUmOxHING/sfkQHXydn9ouiH2pd3jVvJJ2xPrXpJ/ex/HAi8
-	 3ZXMrfHvREA82BlU0H6+PPUDO4QCot48COpQRu+LKFrXJhUPLwyt+/1sDh3y3f7lGQ
-	 QB4zAvGVuz5HboaBCMcwWfAyxaW2wzVPOFodrgRg=
+	b=Sb0mlKk0Os9kqyaXIXXRANZyzwsBCR2gBpLZJjq/gdDyOrl6SySuUViBw9Q/M/8Ok
+	 8NK/rKWmQ8mAgdwvcRc7tY2I5Lm18+8FnDjDTo/Fc+W2XIlJK+7nHFWAdQRzfz/Pjw
+	 cRWwmFbl7ac9zDcr965N/L78w35+UKwsjQ7KojyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Yang <gerald.yang@canonical.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 131/175] ext4: fix stale xarray tags after writeback
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Max Boone <mboone@akamai.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 282/342] mm/pagewalk: fix race between concurrent split and refault
 Date: Tue, 31 Mar 2026 18:21:55 +0200
-Message-ID: <20260331161734.599396082@linuxfoundation.org>
+Message-ID: <20260331161809.317071062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +74,183 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231588-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231918-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email]
-X-Rspamd-Queue-Id: 54EA336CDA3
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,linux-foundation.org:email,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,akamai.com:email]
+X-Rspamd-Queue-Id: 0734C36D51F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Max Boone <mboone@akamai.com>
 
-commit f4a2b42e78914ff15630e71289adc589c3a8eb45 upstream.
+commit 3b89863c3fa482912911cd65a12a3aeef662c250 upstream.
 
-There are cases where ext4_bio_write_page() gets called for a page which
-has no buffers to submit. This happens e.g. when the part of the file is
-actually a hole, when we cannot allocate blocks due to being called from
-jbd2, or in data=journal mode when checkpointing writes the buffers
-earlier. In these cases we just return from ext4_bio_write_page()
-however if the page didn't need redirtying, we will leave stale DIRTY
-and/or TOWRITE tags in xarray because those get cleared only in
-__folio_start_writeback(). As a result we can leave these tags set in
-mappings even after a final sync on filesystem that's getting remounted
-read-only or that's being frozen. Various assertions can then get upset
-when writeback is started on such filesystems (Gerald reported assertion
-in ext4_journal_check_start() firing).
+The splitting of a PUD entry in walk_pud_range() can race with a
+concurrent thread refaulting the PUD leaf entry causing it to try walking
+a PMD range that has disappeared.
 
-Fix the problem by cycling the page through writeback state even if we
-decide nothing needs to be written for it so that xarray tags get
-properly updated. This is slightly silly (we could update the xarray
-tags directly) but I don't think a special helper messing with xarray
-tags is really worth it in this relatively rare corner case.
+An example and reproduction of this is to try reading numa_maps of a
+process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
 
-Reported-by: Gerald Yang <gerald.yang@canonical.com>
-Link: https://lore.kernel.org/all/20260128074515.2028982-1-gerald.yang@canonical.com
-Fixes: dff4ac75eeee ("ext4: move keep_towrite handling to ext4_bio_write_page()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260205092223.21287-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
+
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further.  This mirrors the
+retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
+PTE is not being got by pte_offset_map_lock().
+
+Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/page-io.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ mm/pagewalk.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/page-io.c
-+++ b/fs/ext4/page-io.c
-@@ -506,9 +506,15 @@ int ext4_bio_write_folio(struct ext4_io_
- 		nr_to_submit++;
- 	} while ((bh = bh->b_this_page) != head);
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, un
+ 	int err = 0;
+ 	int depth = real_depth(3);
  
--	/* Nothing to submit? Just unlock the folio... */
--	if (!nr_to_submit)
-+	if (!nr_to_submit) {
-+		/*
-+		 * We have nothing to submit. Just cycle the folio through
-+		 * writeback state to properly update xarray tags.
-+		 */
-+		__folio_start_writeback(folio, keep_towrite);
-+		folio_end_writeback(folio);
- 		return 0;
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim.
++	 *
++	 * Similarly, we have to be careful here - a PUD entry that points
++	 * to a PMD table cannot go away, so we can just walk it. But if
++	 * it's something else, we need to ensure we didn't race something,
++	 * so need to retry.
++	 *
++	 * A pertinent example of this is a PUD refault after PUD split -
++	 * we will need to split again or risk accessing invalid memory.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
 +	}
++
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, un
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
  
- 	bh = head = folio_buffers(folio);
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
+ 	} while (pud++, addr = next, addr != end);
  
+ 	return err;
 
 
 
