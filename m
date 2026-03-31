@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJUJDuz+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:48 +0200
+	id cC6TFKv7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF86D36DDAE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE5B36D462
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCAA030ADD42
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 135FD30CBA21
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF7F425CC5;
-	Tue, 31 Mar 2026 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD2440710B;
+	Tue, 31 Mar 2026 16:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bj4G7Gu5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUUi/r3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732BF423A62;
-	Tue, 31 Mar 2026 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB003FA5D9;
+	Tue, 31 Mar 2026 16:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976336; cv=none; b=rGaUVvwOJqb/3OnhtR4EXHXSviyorOrF6DZqhmCwAPeEf0MxImBES9VLTuawjFF9hlz1sXKbgINk9vtWQUuKfkM+PDl0jlQL0NcKr0N979VX4f3tqVZQd/0jFhQwSh/e/A2s5tCf6MO6FhvUWrNVG6Xgj4tW+k1BA/iPZoHgsKs=
+	t=1774974995; cv=none; b=NFnSgkPQoHNS+F4CvC228aONFzUmzIDkN2OstvawHZ4PJqNZloyQtZfTUmUtpdjasQz+1oa9CgsyCwIWqlubaebpAJQs+jIQ4hZ6Zx5iI0rAKoJ+pZeG6vu1PUZ8T0mRn90tQciyy7//7wII2+7XaMEkapd8Zdt4emWczcmKSxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976336; c=relaxed/simple;
-	bh=mHRtslnXipq6TpctwuwKuKIp0gbXaYnTozzLOOl8sKA=;
+	s=arc-20240116; t=1774974995; c=relaxed/simple;
+	bh=cn8nTwxjc5acMfAtKIf0Tdwu+UMulZ7AQx/yVRb2Y/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oajKb9Asn9lE8Imu+z+D6J8KE0Q0xnGqw0oQLWnMppsSnPXY1NLHcjHo5CuPVFodMyVc2+bPn9el0IXCIxnntXVBum8lkWgVbcvlVx048sTk90ERohU1FwvIHsxKbS0ar6FddDmsxKloWRmttIVodvL2AFhHWCmao25p2HOunN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bj4G7Gu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CA3C19423;
-	Tue, 31 Mar 2026 16:58:55 +0000 (UTC)
+	 MIME-Version; b=MLetgsD4antzIziIoUcSKvWBsxwJgo9GDz+vYPBkHUyqB699Fv5NRxw0c/W088M7JWZMC5hwcQZ//JUAniorXOC5AO+fjr912Y9gxtujh+RNBxRwOgWcO1MopPwUdRHHP38EqRPhJBbbJKYXePk3gMivqk7DRG+87PhU0TkMICE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUUi/r3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BEEC19423;
+	Tue, 31 Mar 2026 16:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976336;
-	bh=mHRtslnXipq6TpctwuwKuKIp0gbXaYnTozzLOOl8sKA=;
+	s=korg; t=1774974995;
+	bh=cn8nTwxjc5acMfAtKIf0Tdwu+UMulZ7AQx/yVRb2Y/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bj4G7Gu5V2zCSrx2h1mvBLOTUg2Bcrt5Pptx0Vcqcmbi2mbl3JMeIeHAR6+GJ+SPB
-	 RMALX60j/LdpowbbD5h9WU1ANgwkUdvGaqTxShv9a/SGM07wazJIKcdJXB+JfcHc3H
-	 bzHgOwv9aEF6woEKxij8g4/UObi3d0WI6dleed68=
+	b=aUUi/r3GJaiFMRbG9AzkZCycCbTXxFTBYJtLCTJi9oHOQdFDa/sG2v2P0ia+7J4nb
+	 mItDKXaENxqplVUoRIzhbYA1Ghxi4FT4s4RmQmNt8Y/20pWUGyuPA6EDfPe9uf9KpN
+	 6RKoVbEXe+UqR8XZw97ObdpwiqWHjZyGG917Aw74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 052/309] ASoC: amd: acp: Add ACP6.3 match entries for Cirrus Logic parts
+Subject: [PATCH 6.19 122/342] net: b44: always select CONFIG_FIXED_PHY
 Date: Tue, 31 Mar 2026 18:19:15 +0200
-Message-ID: <20260331161755.401257332@linuxfoundation.org>
+Message-ID: <20260331161803.497848841@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,527 +78,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232278-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231759-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cirrus.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AF86D36DDAE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
+X-Rspamd-Queue-Id: 5AE5B36D462
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit fd13fc700e3e239826a46448bf7f01847dd26f5a ]
+[ Upstream commit 3f0f591b44b04a77ff561676ae53fcfd7532a54c ]
 
-This adds some match entries for a few system configurations:
+When CONFIG_FIXED_PHY=m but CONFIG_B44=y, the kernel fails to link:
 
-cs42l43 link 0 UID 0
-cs35l56 link 1 UID 0
-cs35l56 link 1 UID 1
-cs35l56 link 1 UID 2
-cs35l56 link 1 UID 3
+ld.lld: error: undefined symbol: fixed_phy_unregister
+>>> referenced by b44.c
+>>>               drivers/net/ethernet/broadcom/b44.o:(b44_remove_one) in archive vmlinux.a
 
-cs42l45 link 1 UID 0
-cs35l63 link 0 UID 0
-cs35l63 link 0 UID 2
-cs35l63 link 0 UID 4
-cs35l63 link 0 UID 6
+ld.lld: error: undefined symbol: fixed_phy_register_100fd
+>>> referenced by b44.c
+>>>               drivers/net/ethernet/broadcom/b44.o:(b44_register_phy_one) in archive vmlinux.a
 
-cs42l45 link 0 UID 0
-cs35l63 link 1 UID 0
-cs35l63 link 1 UID 1
+The fixed phy support is small enough that just always enabling it
+for b44 is the simplest solution, and it avoids adding ugly #ifdef
+checks.
 
-cs42l45 link 0 UID 0
-cs35l63 link 1 UID 1
-cs35l63 link 1 UID 3
-
-cs42l45 link 1 UID 0
-cs35l63 link 0 UID 0
-cs35l63 link 0 UID 1
-
-cs42l43 link 1 UID 0
-cs35l56 link 1 UID 0
-cs35l56 link 1 UID 1
-cs35l56 link 1 UID 2
-cs35l56 link 1 UID 3
-
-cs35l56 link 1 UID 0
-cs35l56 link 1 UID 1
-cs35l56 link 1 UID 2
-cs35l56 link 1 UID 3
-
-cs35l63 link 0 UID 0
-cs35l63 link 0 UID 2
-cs35l63 link 0 UID 4
-cs35l63 link 0 UID 6
-
-cs42l43 link 0 UID 1
-
-cs42l43b link 0 UID 1
-
-cs42l45 link 0 UID 0
-
-cs42l45 link 1 UID 0
-
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260224130307.526626-1-simont@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 10d2f15afba2 ("net: b44: register a fixed phy using fixed_phy_register_100fd if needed")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20260320154927.674555-1-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/amd-acp63-acpi-match.c | 413 +++++++++++++++++++++++
- 1 file changed, 413 insertions(+)
+ drivers/net/ethernet/broadcom/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/amd-acp63-acpi-match.c b/sound/soc/amd/acp/amd-acp63-acpi-match.c
-index 9b6a49c051cda..1dbbaba3c75b3 100644
---- a/sound/soc/amd/acp/amd-acp63-acpi-match.c
-+++ b/sound/soc/amd/acp/amd-acp63-acpi-match.c
-@@ -30,6 +30,20 @@ static const struct snd_soc_acpi_endpoint spk_r_endpoint = {
- 	.group_id = 1
- };
- 
-+static const struct snd_soc_acpi_endpoint spk_2_endpoint = {
-+	.num = 0,
-+	.aggregated = 1,
-+	.group_position = 2,
-+	.group_id = 1
-+};
-+
-+static const struct snd_soc_acpi_endpoint spk_3_endpoint = {
-+	.num = 0,
-+	.aggregated = 1,
-+	.group_position = 3,
-+	.group_id = 1
-+};
-+
- static const struct snd_soc_acpi_adr_device rt711_rt1316_group_adr[] = {
- 	{
- 		.adr = 0x000030025D071101ull,
-@@ -103,6 +117,345 @@ static const struct snd_soc_acpi_adr_device rt722_0_single_adr[] = {
- 	}
- };
- 
-+static const struct snd_soc_acpi_endpoint cs42l43_endpoints[] = {
-+	{ /* Jack Playback Endpoint */
-+		.num = 0,
-+		.aggregated = 0,
-+		.group_position = 0,
-+		.group_id = 0,
-+	},
-+	{ /* DMIC Capture Endpoint */
-+		.num = 1,
-+		.aggregated = 0,
-+		.group_position = 0,
-+		.group_id = 0,
-+	},
-+	{ /* Jack Capture Endpoint */
-+		.num = 2,
-+		.aggregated = 0,
-+		.group_position = 0,
-+		.group_id = 0,
-+	},
-+	{ /* Speaker Playback Endpoint */
-+		.num = 3,
-+		.aggregated = 0,
-+		.group_position = 0,
-+		.group_id = 0,
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs35l56x4_l1u3210_adr[] = {
-+	{
-+		.adr = 0x00013301FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_l_endpoint,
-+		.name_prefix = "AMP1"
-+	},
-+	{
-+		.adr = 0x00013201FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "AMP2"
-+	},
-+	{
-+		.adr = 0x00013101FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_2_endpoint,
-+		.name_prefix = "AMP3"
-+	},
-+	{
-+		.adr = 0x00013001FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_3_endpoint,
-+		.name_prefix = "AMP4"
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs35l63x2_l0u01_adr[] = {
-+	{
-+		.adr = 0x00003001FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_l_endpoint,
-+		.name_prefix = "AMP1"
-+	},
-+	{
-+		.adr = 0x00003101FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "AMP2"
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs35l63x2_l1u01_adr[] = {
-+	{
-+		.adr = 0x00013001FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_l_endpoint,
-+		.name_prefix = "AMP1"
-+	},
-+	{
-+		.adr = 0x00013101FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "AMP2"
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs35l63x2_l1u13_adr[] = {
-+	{
-+		.adr = 0x00013101FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_l_endpoint,
-+		.name_prefix = "AMP1"
-+	},
-+	{
-+		.adr = 0x00013301FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "AMP2"
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs35l63x4_l0u0246_adr[] = {
-+	{
-+		.adr = 0x00003001FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_l_endpoint,
-+		.name_prefix = "AMP1"
-+	},
-+	{
-+		.adr = 0x00003201FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "AMP2"
-+	},
-+	{
-+		.adr = 0x00003401FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_2_endpoint,
-+		.name_prefix = "AMP3"
-+	},
-+	{
-+		.adr = 0x00003601FA356301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_3_endpoint,
-+		.name_prefix = "AMP4"
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs42l43_l0u0_adr[] = {
-+	{
-+		.adr = 0x00003001FA424301ull,
-+		.num_endpoints = ARRAY_SIZE(cs42l43_endpoints),
-+		.endpoints = cs42l43_endpoints,
-+		.name_prefix = "cs42l43"
-+	}
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs42l43_l0u1_adr[] = {
-+	{
-+		.adr = 0x00003101FA424301ull,
-+		.num_endpoints = ARRAY_SIZE(cs42l43_endpoints),
-+		.endpoints = cs42l43_endpoints,
-+		.name_prefix = "cs42l43"
-+	}
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs42l43b_l0u1_adr[] = {
-+	{
-+		.adr = 0x00003101FA2A3B01ull,
-+		.num_endpoints = ARRAY_SIZE(cs42l43_endpoints),
-+		.endpoints = cs42l43_endpoints,
-+		.name_prefix = "cs42l43"
-+	}
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs42l43_l1u0_cs35l56x4_l1u0123_adr[] = {
-+	{
-+		.adr = 0x00013001FA424301ull,
-+		.num_endpoints = ARRAY_SIZE(cs42l43_endpoints),
-+		.endpoints = cs42l43_endpoints,
-+		.name_prefix = "cs42l43"
-+	},
-+	{
-+		.adr = 0x00013001FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_l_endpoint,
-+		.name_prefix = "AMP1"
-+	},
-+	{
-+		.adr = 0x00013101FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "AMP2"
-+	},
-+	{
-+		.adr = 0x00013201FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_2_endpoint,
-+		.name_prefix = "AMP3"
-+	},
-+	{
-+		.adr = 0x00013301FA355601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_3_endpoint,
-+		.name_prefix = "AMP4"
-+	},
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs42l45_l0u0_adr[] = {
-+	{
-+		.adr = 0x00003001FA424501ull,
-+		/* Re-use endpoints, but cs42l45 has no speaker */
-+		.num_endpoints = ARRAY_SIZE(cs42l43_endpoints) - 1,
-+		.endpoints = cs42l43_endpoints,
-+		.name_prefix = "cs42l45"
-+	}
-+};
-+
-+static const struct snd_soc_acpi_adr_device cs42l45_l1u0_adr[] = {
-+	{
-+		.adr = 0x00013001FA424501ull,
-+		/* Re-use endpoints, but cs42l45 has no speaker */
-+		.num_endpoints = ARRAY_SIZE(cs42l43_endpoints) - 1,
-+		.endpoints = cs42l43_endpoints,
-+		.name_prefix = "cs42l45"
-+	}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs35l56x4_l1u3210[] = {
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs35l56x4_l1u3210_adr),
-+		.adr_d = cs35l56x4_l1u3210_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs35l63x4_l0u0246[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs35l63x4_l0u0246_adr),
-+		.adr_d = cs35l63x4_l0u0246_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l43_l0u1[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs42l43_l0u1_adr),
-+		.adr_d = cs42l43_l0u1_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l43b_l0u1[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs42l43b_l0u1_adr),
-+		.adr_d = cs42l43b_l0u1_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l43_l0u0_cs35l56x4_l1u3210[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs42l43_l0u0_adr),
-+		.adr_d = cs42l43_l0u0_adr,
-+	},
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs35l56x4_l1u3210_adr),
-+		.adr_d = cs35l56x4_l1u3210_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l43_l1u0_cs35l56x4_l1u0123[] = {
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs42l43_l1u0_cs35l56x4_l1u0123_adr),
-+		.adr_d = cs42l43_l1u0_cs35l56x4_l1u0123_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l45_l0u0[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs42l45_l0u0_adr),
-+		.adr_d = cs42l45_l0u0_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l45_l0u0_cs35l63x2_l1u01[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs42l45_l0u0_adr),
-+		.adr_d = cs42l45_l0u0_adr,
-+	},
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs35l63x2_l1u01_adr),
-+		.adr_d = cs35l63x2_l1u01_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l45_l0u0_cs35l63x2_l1u13[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs42l45_l0u0_adr),
-+		.adr_d = cs42l45_l0u0_adr,
-+	},
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs35l63x2_l1u13_adr),
-+		.adr_d = cs35l63x2_l1u13_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l45_l1u0[] = {
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs42l45_l1u0_adr),
-+		.adr_d = cs42l45_l1u0_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l45_l1u0_cs35l63x2_l0u01[] = {
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs42l45_l1u0_adr),
-+		.adr_d = cs42l45_l1u0_adr,
-+	},
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs35l63x2_l0u01_adr),
-+		.adr_d = cs35l63x2_l0u01_adr,
-+	},
-+	{}
-+};
-+
-+static const struct snd_soc_acpi_link_adr acp63_cs42l45_l1u0_cs35l63x4_l0u0246[] = {
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(cs42l45_l1u0_adr),
-+		.adr_d = cs42l45_l1u0_adr,
-+	},
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(cs35l63x4_l0u0246_adr),
-+		.adr_d = cs35l63x4_l0u0246_adr,
-+	},
-+	{}
-+};
-+
- static const struct snd_soc_acpi_link_adr acp63_rt722_only[] = {
- 	{
- 		.mask = BIT(0),
-@@ -135,6 +488,66 @@ struct snd_soc_acpi_mach snd_soc_acpi_amd_acp63_sdw_machines[] = {
- 		.links = acp63_4_in_1_sdca,
- 		.drv_name = "amd_sdw",
- 	},
-+	{
-+		.link_mask = BIT(0) | BIT(1),
-+		.links = acp63_cs42l43_l0u0_cs35l56x4_l1u3210,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0) | BIT(1),
-+		.links = acp63_cs42l45_l1u0_cs35l63x4_l0u0246,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0) | BIT(1),
-+		.links = acp63_cs42l45_l0u0_cs35l63x2_l1u01,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0) | BIT(1),
-+		.links = acp63_cs42l45_l0u0_cs35l63x2_l1u13,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0) | BIT(1),
-+		.links = acp63_cs42l45_l1u0_cs35l63x2_l0u01,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(1),
-+		.links = acp63_cs42l43_l1u0_cs35l56x4_l1u0123,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(1),
-+		.links = acp63_cs35l56x4_l1u3210,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0),
-+		.links = acp63_cs35l63x4_l0u0246,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0),
-+		.links = acp63_cs42l43_l0u1,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0),
-+		.links = acp63_cs42l43b_l0u1,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(0),
-+		.links = acp63_cs42l45_l0u0,
-+		.drv_name = "amd_sdw",
-+	},
-+	{
-+		.link_mask = BIT(1),
-+		.links = acp63_cs42l45_l1u0,
-+		.drv_name = "amd_sdw",
-+	},
- 	{},
- };
- EXPORT_SYMBOL(snd_soc_acpi_amd_acp63_sdw_machines);
+diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
+index cd7dddeb91dd6..9787c1857e13b 100644
+--- a/drivers/net/ethernet/broadcom/Kconfig
++++ b/drivers/net/ethernet/broadcom/Kconfig
+@@ -25,7 +25,7 @@ config B44
+ 	select SSB
+ 	select MII
+ 	select PHYLIB
+-	select FIXED_PHY if BCM47XX
++	select FIXED_PHY
+ 	help
+ 	  If you have a network (Ethernet) controller of this type, say Y
+ 	  or M here.
 -- 
 2.51.0
 
