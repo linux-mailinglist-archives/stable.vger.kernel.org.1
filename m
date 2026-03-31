@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mG2NMNoEzGm4NQYAu9opvQ
-	(envelope-from <stable+bounces-232130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:06 +0200
+	id WPi5HT0BzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B453036ED93
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8DF36E54D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B6FA93084D4C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D3F930A2A6F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD09426D0A;
-	Tue, 31 Mar 2026 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F202FF669;
+	Tue, 31 Mar 2026 17:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrFDTP6Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlr7mLbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706BB4266B2;
-	Tue, 31 Mar 2026 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A46B2D63E8;
+	Tue, 31 Mar 2026 17:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975953; cv=none; b=uWuOd+PqmvrLy7cHAFL3LGHUBDI5NlfMPmpU5fWzDvWh6dCu1YlabUhrPlwaKsyH0k5VoUUg/56BfKu+UrSGYtPR5aW74l3AVk0kiOaQmgNUAPh8h54DwfFJZRAtaZqv+X3QFuGLimrDRu58lIYZ6r4OdlfoMoy1rpyxbItTJVE=
+	t=1774976714; cv=none; b=BPnHyud2BPbSOwGPYKqo50UI13Feamwr7xPBum9piNUmcjl/EiwCLGh1laSMbdB630DfUzrPR/z+rIof5ByNbXpPdEeD3L3qsN45inySzSFPE5iUgzr7m+XW9p0I0xJADzSHezlp1ZJfen+XA4kEDfYq0aVPRAsjomIXiDQt8eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975953; c=relaxed/simple;
-	bh=mbl6RDov6mR7F4hM/jFYH1ULxfYR7yhZoZ6V4n2gsjY=;
+	s=arc-20240116; t=1774976714; c=relaxed/simple;
+	bh=YzkgyXALyv0LYZBFyrVK4oWOfY5q/mh9McHEmVGdiLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGg0qUqKOKyLOg5RJ9VD3u4G3VcxcS+VpR+jNhSQhOK0DQiq5/fgGA398h3HtujlvGIo7T123wt5VqlluBWwTi5klKhuxAQ+zOF57IXG8oVHempZLlU5hui4kkKaGtkQLDSNfv0tyNPTRR6uVlNjKbBk1RDAf5FA59+7Fip1ccU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrFDTP6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EF2C19423;
-	Tue, 31 Mar 2026 16:52:32 +0000 (UTC)
+	 MIME-Version; b=fgQ/W4BI4beKOy0jIu7bZVYlXWMwDx6uE5O10epbrGrJfx32RhfYVZbXHE8Vb2afniDg1kCRGkBFB9EdZzPFOxF9HdrAooDL4tsgnSt9W7RgMcr+sEJviqwEQWcCCZKwGQpcZhrThHavZJ+fE8Vtcy92YfhqW1FYSI5wvXUmyLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlr7mLbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A609FC19424;
+	Tue, 31 Mar 2026 17:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975953;
-	bh=mbl6RDov6mR7F4hM/jFYH1ULxfYR7yhZoZ6V4n2gsjY=;
+	s=korg; t=1774976714;
+	bh=YzkgyXALyv0LYZBFyrVK4oWOfY5q/mh9McHEmVGdiLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrFDTP6YI8QJkuitMYDN3SeB2o3T6Vts/91vXJBo7EBbvuwprIcmwq3eBM+h4Ln0S
-	 CwEPUU89s6GAsCxMkhjH++ZkfhpX5+Gb3DRawPzpII5DQFcGzFaM7yTe6Zh8/TSY7Q
-	 Aw0y+YcGVunK5XZuCRI+d2qW/8C2TXCmUfe0i64c=
+	b=jlr7mLbtCXB+0ptKnBI8F1pcDkgAofrrVUmVnGQL2Jd0SOijwzXNEjn+ZwAjpMlVT
+	 5+9EvKfeWlckappQPoXsq+QObwLJcy+4sV1zfmyMuR3xfVEReJDmWJ4/cbVnxMClgd
+	 jXwK+pSL4LRmcZIdImuyu8e61tHpCFyO5fj4AeCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 151/244] hwmon: (peci/cputemp) Fix off-by-one in cputemp_is_visible()
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 198/309] KVM: arm64: Discard PC update state on vcpu reset
 Date: Tue, 31 Mar 2026 18:21:41 +0200
-Message-ID: <20260331161747.339973320@linuxfoundation.org>
+Message-ID: <20260331161800.743365814@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,60 +78,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232130-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232425-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,juniper.net:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: B453036ED93
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,arm.com:email]
+X-Rspamd-Queue-Id: 1B8DF36E54D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Marc Zyngier <maz@kernel.org>
 
-commit b0c9d8ae71509f25690d57f2efddebf7f4b12194 upstream.
+commit 1744a6ef48b9a48f017e3e1a0d05de0a6978396e upstream.
 
-cputemp_is_visible() validates the channel index against
-CPUTEMP_CHANNEL_NUMS, but currently uses '>' instead of '>='.
-As a result, channel == CPUTEMP_CHANNEL_NUMS is not rejected even though
-valid indices are 0 .. CPUTEMP_CHANNEL_NUMS - 1.
+Our vcpu reset suffers from a particularly interesting flaw, as it
+does not correctly deal with state that will have an effect on the
+execution flow out of reset.
 
-Fix the bounds check by using '>=' so invalid channel indices are
-rejected before indexing the core bitmap.
+Take the following completely random example, never seen in the wild
+and that never resulted in a couple of sleepless nights: /s
 
-Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+- vcpu-A issues a PSCI_CPU_OFF using the SMC conduit
+
+- SMC being a trapped instruction (as opposed to HVC which is always
+  normally executed), we annotate the vcpu as needing to skip the
+  next instruction, which is the SMC itself
+
+- vcpu-A is now safely off
+
+- vcpu-B issues a PSCI_CPU_ON for vcpu-A, providing a starting PC
+
+- vcpu-A gets reset, get the new PC, and is sent on its merry way
+
+- right at the point of entering the guest, we notice that a PC
+  increment is pending (remember the earlier SMC?)
+
+- vcpu-A skips its first instruction...
+
+What could possibly go wrong?
+
+Well, I'm glad you asked. For pKVM as a NV guest, that first instruction
+is extremely significant, as it indicates whether the CPU is booting
+or resuming. Having skipped that instruction, nothing makes any sense
+anymore, and CPU hotplugging fails.
+
+This is all caused by the decoupling of PC update from the handling
+of an exception that triggers such update, making it non-obvious
+what affects what when.
+
+Fix this train wreck by discarding all the PC-affecting state on
+vcpu reset.
+
+Fixes: f5e30680616ab ("KVM: arm64: Move __adjust_pc out of line")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260323002352.93417-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+Link: https://patch.msgid.link/20260312140850.822968-1-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/peci/cputemp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/reset.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/hwmon/peci/cputemp.c
-+++ b/drivers/hwmon/peci/cputemp.c
-@@ -339,7 +339,7 @@ static umode_t cputemp_is_visible(const
- {
- 	const struct peci_cputemp *priv = data;
+--- a/arch/arm64/kvm/reset.c
++++ b/arch/arm64/kvm/reset.c
+@@ -247,6 +247,20 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcp
+ 			kvm_vcpu_set_be(vcpu);
  
--	if (channel > CPUTEMP_CHANNEL_NUMS)
-+	if (channel >= CPUTEMP_CHANNEL_NUMS)
- 		return 0;
+ 		*vcpu_pc(vcpu) = target_pc;
++
++		/*
++		 * We may come from a state where either a PC update was
++		 * pending (SMC call resulting in PC being increpented to
++		 * skip the SMC) or a pending exception. Make sure we get
++		 * rid of all that, as this cannot be valid out of reset.
++		 *
++		 * Note that clearing the exception mask also clears PC
++		 * updates, but that's an implementation detail, and we
++		 * really want to make it explicit.
++		 */
++		vcpu_clear_flag(vcpu, PENDING_EXCEPTION);
++		vcpu_clear_flag(vcpu, EXCEPT_MASK);
++		vcpu_clear_flag(vcpu, INCREMENT_PC);
+ 		vcpu_set_reg(vcpu, 0, reset_state.r0);
+ 	}
  
- 	if (channel < channel_core)
 
 
 
