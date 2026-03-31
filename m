@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-232362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOScN5cAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:55 +0200
+	id GJBwBXEDzGmPNQYAu9opvQ
+	(envelope-from <stable+bounces-232061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F43A36E2ED
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CA936EA94
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A96803120863
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C76B31D5FCC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234E02FE042;
-	Tue, 31 Mar 2026 17:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4014035AB;
+	Tue, 31 Mar 2026 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u6+VKAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb13bU0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76A72FC89C;
-	Tue, 31 Mar 2026 17:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E41A3EF0A2;
+	Tue, 31 Mar 2026 16:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976551; cv=none; b=k+DAFsUf/aEKuQhjeVguwkEOJkWwpjkHJ1tR4NFIcNuN3qHy6Y/sTvdOTWPa1cURQAMvPIkzF+meayFmBjM25ac6q0ghEJLddhN/4WEDTszubHsB8ETvdFN/6jap1vH5+u69VYOoAdUaPRSkQ/GSxo5B9MW5/K3ORBJXSKCTspY=
+	t=1774975775; cv=none; b=Cx8Jc86n5YL2IUWKm4S/6MMdewyUsqbUBp9daiBPg+B2QBVfro5ovgGV2uYCN3P097Pvmi5ELNlhkvMgdXxLQOEZkTkevgy4KJnzuH51EOmACQQ3moQum9A5VHjVozlwm1458LQpChWhXgBscJ3FTdpp2V4KzuY3po8WCcWnyqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976551; c=relaxed/simple;
-	bh=g0lRBsQhL+dYv7OXG7wEPJQf0TtfP9MknrihQ5A/kMY=;
+	s=arc-20240116; t=1774975775; c=relaxed/simple;
+	bh=7mQGE8NoNUpuu6PoxOaqw+e7cl6Vx/A6Y6IEFH+JvAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EY46NeAf/D/z9T84qC36vZG6M2+hWfbs8/1v7hF/Yys6nrBroyBctv826vTPbF1i/bbYCbtkppYAyTxZaBpGUdpWRv9N2h8DOheWMYHUMbbTPSGsm5W9iSIIkcNkp7BG788Rb8ico6SAGI2llue/bKO/BOU608o7fw+YzSKTyGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u6+VKAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD7CC19423;
-	Tue, 31 Mar 2026 17:02:31 +0000 (UTC)
+	 MIME-Version; b=mhzd6l+ddPY3q1mMAaki2LlbvJm8DMdAy6TVt6BlSlnYIW3A3w7Qa6VtdeAPuE6x1OelUevmM+uuSx7KqTYkHBJOFUJBtmbxX4WIoIyzrHmCU1w5qSTK5rNPxKlSzYIONyWCB+SECauz1GyNpQRbXdhgEV1zuk5nkylEdUNpM2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb13bU0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D07C19423;
+	Tue, 31 Mar 2026 16:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976551;
-	bh=g0lRBsQhL+dYv7OXG7wEPJQf0TtfP9MknrihQ5A/kMY=;
+	s=korg; t=1774975774;
+	bh=7mQGE8NoNUpuu6PoxOaqw+e7cl6Vx/A6Y6IEFH+JvAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2u6+VKAhmf8cAzigqWoqgRCHTp76R0dny0DeupOGKmYfQdBGmhWo5zYfPVw+sSALV
-	 S6wdkBXnwyQczOcH3JLj4rVvqFOqeBkuNgTfWwHkHEfOKocZmAfujdF2uJrTFXx+4C
-	 FqPeI8OKt5S18pGpRBfeIOt9DZMCJOrRzrbO+JDI=
+	b=Xb13bU0YFzjfYKHI+pQMMWAVmCt91+s+Nx7hPE0zv2t9eOOv7Zg3ZSt99pqUi/Dru
+	 p1nbET+Z/t1WfbAb1IS/o0WfClN1GT5zJfZDB5cm7apkcQm6aUJCzvw5lofmJ1w5TY
+	 u3dhP/3A4Ao2iqhRQEwQlQs7CTfVvXuANPkDocoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Patryk Holda <patryk.holda@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 129/309] netfilter: nf_conntrack_expect: skip expectations in other netns via proc
+Subject: [PATCH 6.12 082/244] ice: fix inverted ready check for VF representors
 Date: Tue, 31 Mar 2026 18:20:32 +0200
-Message-ID: <20260331161758.227129070@linuxfoundation.org>
+Message-ID: <20260331161744.711048512@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +71,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232061-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232362-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5F43A36E2ED
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 78CA936EA94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
+[ Upstream commit ad85de0fc09eb3236e73df5acb2bc257625103f5 ]
 
-Skip expectations that do not reside in this netns.
+Commit 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+refactored the VF readiness check into a generic repr->ops.ready()
+callback but implemented ice_repr_ready_vf() with inverted logic:
 
-Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
-conntrack entries via proc").
+  return !ice_check_vf_ready_for_cfg(repr->vf);
 
-Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+ice_check_vf_ready_for_cfg() returns 0 on success, so the negation
+makes ready() return non-zero when the VF is ready. All callers treat
+non-zero as "not ready, skip", causing ndo_get_stats64, get_drvinfo,
+get_strings and get_ethtool_stats to always bail out in switchdev mode.
+
+Remove the erroneous negation. The SF variant ice_repr_ready_sf() is
+already correct (returns !active, i.e. non-zero when not active).
+
+Fixes: 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Patryk Holda <patryk.holda@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_expect.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_repr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index cfc2daa3fc7f3..227fb5dc39e27 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
+diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
+index 970a99a52bf18..1b1288d243248 100644
+--- a/drivers/net/ethernet/intel/ice/ice_repr.c
++++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+@@ -314,7 +314,7 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
+ 
+ static int ice_repr_ready_vf(struct ice_repr *repr)
  {
- 	struct nf_conntrack_expect *expect;
- 	struct nf_conntrack_helper *helper;
-+	struct net *net = seq_file_net(s);
- 	struct hlist_node *n = v;
- 	char *delim = "";
+-	return !ice_check_vf_ready_for_cfg(repr->vf);
++	return ice_check_vf_ready_for_cfg(repr->vf);
+ }
  
- 	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
- 
-+	if (!net_eq(nf_ct_exp_net(expect), net))
-+		return 0;
-+
- 	if (expect->timeout.function)
- 		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
- 			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
+ static int ice_repr_ready_sf(struct ice_repr *repr)
 -- 
 2.51.0
 
