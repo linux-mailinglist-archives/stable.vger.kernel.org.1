@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOtuKW36y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:37 +0200
+	id CKscJnj/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1462F36D1FE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E1A36DEFD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 917D03190F39
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 822D830470B2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AEE421A1D;
-	Tue, 31 Mar 2026 16:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E042423A9D;
+	Tue, 31 Mar 2026 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onp8dusp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBLnUyjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250B72EE262;
-	Tue, 31 Mar 2026 16:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3899423A62;
+	Tue, 31 Mar 2026 16:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974969; cv=none; b=jI7IShxcI8vcC+iwk3V5hTZSxzIPdPmxCjucImao1cvHAgXsdzcwFcxl8iDw47TAbKpEyrZKA+qQ8o1VSW0ekvlQvT3cmje0Yz2z+qeTMLog5p5nlJ1i932bOKVc/0CQJK8M1rX9mW9hq6o03kzcC76SmIGzHBxXSG3jHpsT4G4=
+	t=1774976311; cv=none; b=iagoRiJrmC9JSYHO4R6kxZIaVRK8TlNgT8Kvo3ajIHTGk2kSTUzC+pd8paoYzrAa+PxIh4ppPPFYggl6ClOjLCuDaSRAZfN1U/coyA7GyS3AmzGh1CExCRExmHfx7BJN9JHKXXviKZYXn0O7AqdNsWOgSKH0r+GMXPg+EkCQ/JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974969; c=relaxed/simple;
-	bh=oczaz6SI8EUVTfybQi9NCPsMNuntFo+r3DZvnWJg3x0=;
+	s=arc-20240116; t=1774976311; c=relaxed/simple;
+	bh=SFmPzGYxJHLMZwOyI5PjA45mY0ngOJuC0KOli78D+f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=awYkFL1qPV5Hb7ha3eqSjfW7/X8cE6Rn/D0TmT3UGlJytgrh3HhyBZkdCzCGqFURE2V82ClrEyvTKw2gBd+WRgavFPz3vM3S54CFoeboJYG/vzKZOT1mlclkeYD58DGn/ZjH1Nygjg4InnuovUvVK6/cEnvYgFrvbfMa7sAYBVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onp8dusp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF416C19423;
-	Tue, 31 Mar 2026 16:36:08 +0000 (UTC)
+	 MIME-Version; b=AbXhlzQ0q7x+4gz4dOjIua9OHKN9GoiS480ejCdBx52I/e4Mp+yJChYG0E9IWGoJoAVkQ8pzUGY5fidsDcsruZu11b4aRl6xM8+n1XbrwlZvxtbtBxXLExO72hMCz5pdXsfAU5nbbYBIqIW4YhLvKQKEYXvWVoNPVg2MNSSBfSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBLnUyjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF51C19423;
+	Tue, 31 Mar 2026 16:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974969;
-	bh=oczaz6SI8EUVTfybQi9NCPsMNuntFo+r3DZvnWJg3x0=;
+	s=korg; t=1774976310;
+	bh=SFmPzGYxJHLMZwOyI5PjA45mY0ngOJuC0KOli78D+f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onp8duspVb+y9mLGagjygSFqV/NJCwDXMBLxFDJkXRJ+tX6Lj5ewc1S7yLNSvlNof
-	 EYl2+NvyVZ0N3ArK1/9/E8nPKOt2bqBpQpcw2WeykO7FeFH6c9OS15zUnhNUMHpStY
-	 a/w/+YK259TGI2EL7zNdMZRW3g9xeTOujsT7guOI=
+	b=MBLnUyjWSUzHLunALnGLiqGBqqIavu1nU6Tf7/QLC8XjS6jmOU+6aHMUc3Pon3TUl
+	 NP/G5YnIfRZta5qxELkOWFekD68bNDEP7DK0ePzmV5r8iA14uSG2N26WYwdAPoRt9g
+	 /Ncx+W/L9faOiaMns8Gsaj9c5vW7LfclwzvurIkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Florian Fuchs <fuchsfl@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 113/342] platform/olpc: olpc-xo175-ec: Fix overflow error message to print inlen
+Subject: [PATCH 6.18 043/309] scsi: devinfo: Add BLIST_SKIP_IO_HINTS for Iomega ZIP
 Date: Tue, 31 Mar 2026 18:19:06 +0200
-Message-ID: <20260331161803.169507818@linuxfoundation.org>
+Message-ID: <20260331161755.070717479@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231749-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232268-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,infradead.org:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,v3.sk:email]
-X-Rspamd-Queue-Id: 1462F36D1FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 61E1A36DEFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Florian Fuchs <fuchsfl@gmail.com>
 
-[ Upstream commit 2061f7b042f88d372cca79615f8425f3564c0b40 ]
+[ Upstream commit 80bf3b28d32b431f84f244a8469488eb6d96afbb ]
 
-The command length check validates inlen (> 5), but the error message
-incorrectly printed resp_len. Print inlen so the log reflects the
-actual command length.
+The Iomega ZIP 100 (Z100P2) can't process IO Advice Hints Grouping mode
+page query. It immediately switches to the status phase 0xb8 after
+receiving the subpage code 0x05 of MODE_SENSE_10 command, which fails
+imm_out() and turns into DID_ERROR of this command, which leads to unusable
+device. This was tested with an Iomega ZIP 100 (Z100P2) connected with a
+StarTech PEX1P2 AX99100 PCIe parallel port card.
 
-Fixes: 0c3d931b3ab9e ("Platform: OLPC: Add XO-1.75 EC driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: Lubomir Rintel <lkundrak@v3.sk>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260310130138.700687-1-alok.a.tiwari@oracle.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Prior to this fix, Test Unit Ready fails and the drive can't be used:
+        IMM: returned SCSI status b8
+        sd 7:0:6:0: [sdh] Test Unit Ready failed: Result: hostbyte=0x01 driverbyte=DRIVER_OK
+
+Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
+Link: https://patch.msgid.link/20260227181823.892932-1-fuchsfl@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/olpc/olpc-xo175-ec.c | 2 +-
+ drivers/scsi/scsi_devinfo.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/olpc/olpc-xo175-ec.c b/drivers/platform/olpc/olpc-xo175-ec.c
-index fa7b3bda688a6..bee271a4fda1a 100644
---- a/drivers/platform/olpc/olpc-xo175-ec.c
-+++ b/drivers/platform/olpc/olpc-xo175-ec.c
-@@ -482,7 +482,7 @@ static int olpc_xo175_ec_cmd(u8 cmd, u8 *inbuf, size_t inlen, u8 *resp,
- 	dev_dbg(dev, "CMD %x, %zd bytes expected\n", cmd, resp_len);
- 
- 	if (inlen > 5) {
--		dev_err(dev, "command len %zd too big!\n", resp_len);
-+		dev_err(dev, "command len %zd too big!\n", inlen);
- 		return -EOVERFLOW;
- 	}
- 
+diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
+index 78346b2b69c91..c51146882a1fa 100644
+--- a/drivers/scsi/scsi_devinfo.c
++++ b/drivers/scsi/scsi_devinfo.c
+@@ -190,7 +190,7 @@ static struct {
+ 	{"IBM", "2076", NULL, BLIST_NO_VPD_SIZE},
+ 	{"IBM", "2105", NULL, BLIST_RETRY_HWERROR},
+ 	{"iomega", "jaz 1GB", "J.86", BLIST_NOTQ | BLIST_NOLUN},
+-	{"IOMEGA", "ZIP", NULL, BLIST_NOTQ | BLIST_NOLUN},
++	{"IOMEGA", "ZIP", NULL, BLIST_NOTQ | BLIST_NOLUN | BLIST_SKIP_IO_HINTS},
+ 	{"IOMEGA", "Io20S         *F", NULL, BLIST_KEY},
+ 	{"INSITE", "Floptical   F*8I", NULL, BLIST_KEY},
+ 	{"INSITE", "I325VM", NULL, BLIST_KEY},
 -- 
 2.51.0
 
