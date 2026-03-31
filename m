@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBOhA2EAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:01 +0200
+	id 6AHuCZj2y2kGNAYAu9opvQ
+	(envelope-from <stable+bounces-231486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8738036E22C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE65036CA9A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4DA530AA670
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0CF8D3055A27
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C202E36F8;
-	Tue, 31 Mar 2026 17:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626062EE262;
+	Tue, 31 Mar 2026 16:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s42Jm/4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpMbNUco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3632D97A6;
-	Tue, 31 Mar 2026 17:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2520D30C345;
+	Tue, 31 Mar 2026 16:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976485; cv=none; b=jHmehf5mlCIHxhU66GvzrQvNYe0bGJkQ+driEiQk7PCaGzkeES6WqUZahoOcqI7HMNAcToG0tNv12Vs6sgYSqXHs8M1xQiIE1qkmiS6PfGm4HvXgIKAn0ikOJDXAFiTa6UFMF/apeuJEsWQGprQ/AHPIL1NX6gNp9uqsG9EIEWE=
+	t=1774974297; cv=none; b=qFcwmJ2hb/E4kb+ib9mTFtqyPeL3wGmeLvgs5zGC21lI+s9HFqGU3Skhu12y0xgZVxe2FR67tNfHUv/PnhP/5XicUSZOwdykrNaigNoe8eOyjdveV3lEJR70+5XWxuf09BljUp1HE2UNETHe82C0nMTPP3MuxYLxv5kt1O9Dsfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976485; c=relaxed/simple;
-	bh=hwGBynoRjCKDTchFoVPzUEiGCSmQ+o4GWOGQup8mYI4=;
+	s=arc-20240116; t=1774974297; c=relaxed/simple;
+	bh=ez8jx2xjKK4/nFL1CC10HcnWTlvLEU4dLddSMX8Kphs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCFZmJ2HEpf6ZkHQ1Nl0fAbG7j0wV6sPZaiyXWoP2t6Av6fZpZiCX1NHnECpRqK0jh9tycQf2zl1a25+04IKl4n1vKbULSocL/1ZRVVGmKi9bxoJLKOhmnYI6JKiiyusz5cSfKUogZn3Vu79hXNRPacd/mbHANgLcEcVl4dgpUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s42Jm/4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAA3C19423;
-	Tue, 31 Mar 2026 17:01:24 +0000 (UTC)
+	 MIME-Version; b=SlEO13n0EZRkDtEPNk06OCt0o31eP5ZwqYgSztZyrvlR9PKrunsYSfdE3mDoJyKDEpz+xmZ9BDK2SYLaZlAV2VZkZ+3XQO9neCke7C5aS5J7WpnwdgUPB0QUnFHUUh4uIOFtCUyrzoc1rulpBj6qKWd+CKWoZuXLP8rZrdzsngU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpMbNUco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797F9C19423;
+	Tue, 31 Mar 2026 16:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976484;
-	bh=hwGBynoRjCKDTchFoVPzUEiGCSmQ+o4GWOGQup8mYI4=;
+	s=korg; t=1774974296;
+	bh=ez8jx2xjKK4/nFL1CC10HcnWTlvLEU4dLddSMX8Kphs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s42Jm/4wUOIgvIEqffXcz8ZJsmznd3XJbq9i9Kebo+pqJkCvtHFsx+I+2xY6FrsRC
-	 RTKM2yP5nUD31kb8OgXxl5mih0ugpoFQdYBHMHLs2jRQkXhUvnE329Y6KbpqwRHCrS
-	 V5ujLYLf4p5J+IE0r5vj6zy0xbnSsHlx9lRkQsCI=
+	b=YpMbNUco2zpv3ZGVBRInXQBzvXmxG2cKIV5MIaCcBmprcTL5J+QRM/rHbGCcUFLqs
+	 ZRYYoNzyzhHPGGWlyOVGrLRGXHCiOJ/CKlp3DlTfcv3UJmiWZ85ADxSeWkDQ3kcaTs
+	 2w8LfIASpWyaTMl0NnSf2iyLuH3m3wXLbt3xokn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Onyshchuk <oandrew@meta.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 111/309] udp: Fix wildcard bind conflict check when using hash2
+Subject: [PATCH 6.6 030/175] objtool: Handle Clang RSP musical chairs
 Date: Tue, 31 Mar 2026 18:20:14 +0200
-Message-ID: <20260331161757.571637358@linuxfoundation.org>
+Message-ID: <20260331161730.893627302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,183 +73,159 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232335-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231486-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,meta.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8738036E22C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
+X-Rspamd-Queue-Id: CE65036CA9A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit e537dd15d0d4ad989d56a1021290f0c674dd8b28 ]
+[ Upstream commit 7fdaa640c810cb42090a182c33f905bcc47a616a ]
 
-When binding a udp_sock to a local address and port, UDP uses
-two hashes (udptable->hash and udptable->hash2) for collision
-detection. The current code switches to "hash2" when
-hslot->count > 10.
+For no apparent reason (possibly related to CONFIG_KMSAN), Clang can
+randomly pass the value of RSP to other registers and then back again to
+RSP.  Handle that accordingly.
 
-"hash2" is keyed by local address and local port.
-"hash" is keyed by local port only.
+Fixes the following warnings:
 
-The issue can be shown in the following bind sequence (pseudo code):
+  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: undefined stack state
+  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: unknown CFA base reg -1
 
-bind(fd1,  "[fd00::1]:8888")
-bind(fd2,  "[fd00::2]:8888")
-bind(fd3,  "[fd00::3]:8888")
-bind(fd4,  "[fd00::4]:8888")
-bind(fd5,  "[fd00::5]:8888")
-bind(fd6,  "[fd00::6]:8888")
-bind(fd7,  "[fd00::7]:8888")
-bind(fd8,  "[fd00::8]:8888")
-bind(fd9,  "[fd00::9]:8888")
-bind(fd10, "[fd00::10]:8888")
-
-/* Correctly return -EADDRINUSE because "hash" is used
- * instead of "hash2". udp_lib_lport_inuse() detects the
- * conflict.
- */
-bind(fail_fd, "[::]:8888")
-
-/* After one more socket is bound to "[fd00::11]:8888",
- * hslot->count exceeds 10 and "hash2" is used instead.
- */
-bind(fd11, "[fd00::11]:8888")
-bind(fail_fd, "[::]:8888")      /* succeeds unexpectedly */
-
-The same issue applies to the IPv4 wildcard address "0.0.0.0"
-and the IPv4-mapped wildcard address "::ffff:0.0.0.0". For
-example, if there are existing sockets bound to
-"192.168.1.[1-11]:8888", then binding "0.0.0.0:8888" or
-"[::ffff:0.0.0.0]:8888" can also miss the conflict when
-hslot->count > 10.
-
-TCP inet_csk_get_port() already has the correct check in
-inet_use_bhash2_on_bind(). Rename it to
-inet_use_hash2_on_bind() and move it to inet_hashtables.h
-so udp.c can reuse it in this fix.
-
-Fixes: 30fff9231fad ("udp: bind() optimisation")
-Reported-by: Andrew Onyshchuk <oandrew@meta.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260319181817.1901357-1-martin.lau@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/90956545-2066-46e3-b547-10c884582eb0@app.fastmail.com
+Link: https://patch.msgid.link/240e6a172cc73292499334a3724d02ccb3247fc7.1772818491.git.jpoimboe@kernel.org
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_hashtables.h   | 14 ++++++++++++++
- net/ipv4/inet_connection_sock.c | 20 +++-----------------
- net/ipv4/udp.c                  |  2 +-
- 3 files changed, 18 insertions(+), 18 deletions(-)
+ tools/objtool/arch/x86/decode.c | 62 ++++++++++++---------------------
+ tools/objtool/check.c           | 14 ++++++++
+ 2 files changed, 37 insertions(+), 39 deletions(-)
 
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index 5a979dcab5383..6d936e9f2fd32 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -264,6 +264,20 @@ inet_bhashfn_portaddr(const struct inet_hashinfo *hinfo, const struct sock *sk,
- 	return &hinfo->bhash2[hash & (hinfo->bhash_size - 1)];
- }
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index c0f25d00181ec..40a5aa02bd831 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -325,52 +325,36 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 		if (!rex_w)
+ 			break;
  
-+static inline bool inet_use_hash2_on_bind(const struct sock *sk)
-+{
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (sk->sk_family == AF_INET6) {
-+		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
-+			return false;
-+
-+		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
-+			return true;
-+	}
-+#endif
-+	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
-+}
-+
- struct inet_bind_hashbucket *
- inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, int port);
- 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index cdd1e12aac8c0..7a2f116106e96 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -153,20 +153,6 @@ bool inet_sk_get_local_port_range(const struct sock *sk, int *low, int *high)
- }
- EXPORT_SYMBOL(inet_sk_get_local_port_range);
- 
--static bool inet_use_bhash2_on_bind(const struct sock *sk)
--{
--#if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family == AF_INET6) {
--		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
--			return false;
+-		if (modrm_reg == CFI_SP) {
 -
--		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
--			return true;
--	}
--#endif
--	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
--}
+-			if (mod_is_reg()) {
+-				/* mov %rsp, reg */
+-				ADD_OP(op) {
+-					op->src.type = OP_SRC_REG;
+-					op->src.reg = CFI_SP;
+-					op->dest.type = OP_DEST_REG;
+-					op->dest.reg = modrm_rm;
+-				}
+-				break;
 -
- static bool inet_bind_conflict(const struct sock *sk, struct sock *sk2,
- 			       kuid_t uid, bool relax,
- 			       bool reuseport_cb_ok, bool reuseport_ok)
-@@ -258,7 +244,7 @@ static int inet_csk_bind_conflict(const struct sock *sk,
- 	 * checks separately because their spinlocks have to be acquired/released
- 	 * independently of each other, to prevent possible deadlocks
- 	 */
--	if (inet_use_bhash2_on_bind(sk))
-+	if (inet_use_hash2_on_bind(sk))
- 		return tb2 && inet_bhash2_conflict(sk, tb2, uid, relax,
- 						   reuseport_cb_ok, reuseport_ok);
+-			} else {
+-				/* skip RIP relative displacement */
+-				if (is_RIP())
+-					break;
+-
+-				/* skip nontrivial SIB */
+-				if (have_SIB()) {
+-					modrm_rm = sib_base;
+-					if (sib_index != CFI_SP)
+-						break;
+-				}
+-
+-				/* mov %rsp, disp(%reg) */
+-				ADD_OP(op) {
+-					op->src.type = OP_SRC_REG;
+-					op->src.reg = CFI_SP;
+-					op->dest.type = OP_DEST_REG_INDIRECT;
+-					op->dest.reg = modrm_rm;
+-					op->dest.offset = ins.displacement.value;
+-				}
+-				break;
++		if (mod_is_reg()) {
++			/* mov reg, reg */
++			ADD_OP(op) {
++				op->src.type = OP_SRC_REG;
++				op->src.reg = modrm_reg;
++				op->dest.type = OP_DEST_REG;
++				op->dest.reg = modrm_rm;
+ 			}
+-
+ 			break;
+ 		}
  
-@@ -375,7 +361,7 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
- 		head = &hinfo->bhash[inet_bhashfn(net, port,
- 						  hinfo->bhash_size)];
- 		spin_lock_bh(&head->lock);
--		if (inet_use_bhash2_on_bind(sk)) {
-+		if (inet_use_hash2_on_bind(sk)) {
- 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, relax, false))
- 				goto next_port;
- 		}
-@@ -561,7 +547,7 @@ int inet_csk_get_port(struct sock *sk, unsigned short snum)
- 				check_bind_conflict = false;
- 		}
+-		if (rm_is_reg(CFI_SP)) {
++		/* skip RIP relative displacement */
++		if (is_RIP())
++			break;
  
--		if (check_bind_conflict && inet_use_bhash2_on_bind(sk)) {
-+		if (check_bind_conflict && inet_use_hash2_on_bind(sk)) {
- 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, true, true))
- 				goto fail_unlock;
+-			/* mov reg, %rsp */
++		/* skip nontrivial SIB */
++		if (have_SIB()) {
++			modrm_rm = sib_base;
++			if (sib_index != CFI_SP)
++				break;
++		}
++
++		/* mov %rsp, disp(%reg) */
++		if (modrm_reg == CFI_SP) {
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+-				op->src.reg = modrm_reg;
+-				op->dest.type = OP_DEST_REG;
+-				op->dest.reg = CFI_SP;
++				op->src.reg = CFI_SP;
++				op->dest.type = OP_DEST_REG_INDIRECT;
++				op->dest.reg = modrm_rm;
++				op->dest.offset = ins.displacement.value;
+ 			}
+ 			break;
  		}
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 024cb4f5978c1..de0deded74f0a 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -287,7 +287,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
- 	} else {
- 		hslot = udp_hashslot(udptable, net, snum);
- 		spin_lock_bh(&hslot->lock);
--		if (hslot->count > 10) {
-+		if (inet_use_hash2_on_bind(sk) && hslot->count > 10) {
- 			int exist;
- 			unsigned int slot2 = udp_sk(sk)->udp_portaddr_hash ^ snum;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index c021798ba8372..6497c80fd6f77 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2969,6 +2969,20 @@ static int update_cfi_state(struct instruction *insn,
+ 				cfi->stack_size += 8;
+ 			}
+ 
++			else if (cfi->vals[op->src.reg].base == CFI_CFA) {
++				/*
++				 * Clang RSP musical chairs:
++				 *
++				 *   mov %rsp, %rdx [handled above]
++				 *   ...
++				 *   mov %rdx, %rbx [handled here]
++				 *   ...
++				 *   mov %rbx, %rsp [handled above]
++				 */
++				cfi->vals[op->dest.reg].base = CFI_CFA;
++				cfi->vals[op->dest.reg].offset = cfi->vals[op->src.reg].offset;
++			}
++
+ 
+ 			break;
  
 -- 
 2.51.0
