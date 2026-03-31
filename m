@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA50KjX9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:29 +0200
+	id sPB1ESn2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CBA836D8EF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BAD36C9E5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D872306EA3A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7347730BC43A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8754218A4;
-	Tue, 31 Mar 2026 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409AA3FF8A7;
+	Tue, 31 Mar 2026 16:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7eDtUvG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S66YfEC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4D53E8C50;
-	Tue, 31 Mar 2026 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A222EE262;
+	Tue, 31 Mar 2026 16:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975816; cv=none; b=CSsvWqRxyevQfo1YazRdz7iUPoGexXdeg1Bg90cMbtjFHpdz5Y6IgLi/LO0IlLSXCVZS4to/bklYXvQCke0/MSNe2jJW3cP/nbAtxwY4PtsgPipBXBCxXRKR0epluniznbrNtgFdKQgV2NQccbiaxwlsBCMkggRBiHcgbkdCHYg=
+	t=1774974315; cv=none; b=bvzHGbz12m1YXrRBU5IZyousqGRkcf2uWPIdPaF2DOb0UpVT/8oq5DoK6t3b36D5BbxQAVbLBim6HYiP7ks9DYes4ZyqWUoHfFedAXc+uAxRcHaULVc4q+SWlk+AYASlMvX4D4cvRlGsdO+GK8XTrdsDgjXnZrx27d8f51Ix26E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975816; c=relaxed/simple;
-	bh=Z0VkR3/1egvW2hGgD/GeIwvL6PfeCQd8uwnR7ugnksE=;
+	s=arc-20240116; t=1774974315; c=relaxed/simple;
+	bh=ZkPlkJATMVuObsCBOTc2XFPCsq9z036Dt7hIjShVPhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q75aaJzHZNoCE5Y227oPGE0eNwCj0Abccj5lUt4NDUCCmjs+M35WSs7GUXY241lT++rAaa3z3NNZ/5RP5B7rCEOrMrN+O6NpN4mLa/NyaTfcW27lMWTMNAcQRWnz+VgSw1IHwzEEVURBgyb6RoCm5QTJGLXKqffsAEmAzSvoSE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7eDtUvG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC130C19423;
-	Tue, 31 Mar 2026 16:50:15 +0000 (UTC)
+	 MIME-Version; b=FRM8CgFnLVhO8iSjEgBKA3GqziOfKpK0AU2+JidVgICHpKZmhXrvE48RA63ocPq/RPRLWhqsTXb4+B60q3xKtpg7DHyPGfj/2RDST+ORs3nZKDtRnXqj6nICQCkoOrDXZxTBlaaA9IiWh3vi3h86SWjTCLi9ICpoiyrg5hkyQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S66YfEC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA65C19423;
+	Tue, 31 Mar 2026 16:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975816;
-	bh=Z0VkR3/1egvW2hGgD/GeIwvL6PfeCQd8uwnR7ugnksE=;
+	s=korg; t=1774974314;
+	bh=ZkPlkJATMVuObsCBOTc2XFPCsq9z036Dt7hIjShVPhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7eDtUvGBSmFFCrS5hv5MUAx5goZUd8+TtQetvDe4reqHJ3tdg8MYLEmCNSpGQrrO
-	 oV8TIkEX8VaG0kFIRyNenx372vrkrOa9OfsovWAgKRW+OnNlrYHATnw0cQeL5NY4Z9
-	 u22FChYOsW6ZpBbJcjsH/z6auGfmJxLtacK3kcDc=
+	b=S66YfEC3jpmBR2o8L93saY2HdAtu87SwMlV+++eyAv9ntpvibzP81QtI66av42c7o
+	 rmnJIiPlho3elryhmY6pNqNkX5xGNPC1ZGAZuSBs+hezaMPd9D1DAABxJWHP0w8uq8
+	 0xNKQNQklSlk/+2xiK20HuyQfP73NEPNHIgaNgxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/244] net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
+Subject: [PATCH 6.6 036/175] af_key: validate families in pfkey_send_migrate()
 Date: Tue, 31 Mar 2026 18:20:20 +0200
-Message-ID: <20260331161744.273123544@linuxfoundation.org>
+Message-ID: <20260331161731.111822767@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +66,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232077-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231493-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8CBA836D8EF
+	TAGGED_RCPT(0.00)[stable,b518dfc8e021988fbd55];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,secunet.com:email,apana.org.au:email]
+X-Rspamd-Queue-Id: 89BAD36C9E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 24dd586bb4cbba1889a50abe74143817a095c1c9 ]
+[ Upstream commit eb2d16a7d599dc9d4df391b5e660df9949963786 ]
 
-smc_rx_splice() allocates one smc_spd_priv per pipe_buffer and stores
-the pointer in pipe_buffer.private.  The pipe_buf_operations for these
-buffers used .get = generic_pipe_buf_get, which only increments the page
-reference count when tee(2) duplicates a pipe buffer.  The smc_spd_priv
-pointer itself was not handled, so after tee() both the original and the
-cloned pipe_buffer share the same smc_spd_priv *.
+syzbot was able to trigger a crash in skb_put() [1]
 
-When both pipes are subsequently released, smc_rx_pipe_buf_release() is
-called twice against the same object:
+Issue is that pfkey_send_migrate() does not check old/new families,
+and that set_ipsecrequest() @family argument was truncated,
+thus possibly overfilling the skb.
 
-  1st call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [correct]
-  2nd call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [UAF]
+Validate families early, do not wait set_ipsecrequest().
 
-KASAN reports a slab-use-after-free in smc_rx_pipe_buf_release(), which
-then escalates to a NULL-pointer dereference and kernel panic via
-smc_rx_update_consumer() when it chases the freed priv->smc pointer:
+[1]
 
-  BUG: KASAN: slab-use-after-free in smc_rx_pipe_buf_release+0x78/0x2a0
-  Read of size 8 at addr ffff888004a45740 by task smc_splice_tee_/74
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x53/0x70
-   print_report+0xce/0x650
-   kasan_report+0xc6/0x100
-   smc_rx_pipe_buf_release+0x78/0x2a0
-   free_pipe_info+0xd4/0x130
-   pipe_release+0x142/0x160
-   __fput+0x1c6/0x490
-   __x64_sys_close+0x4f/0x90
-   do_syscall_64+0xa6/0x1a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
+skbuff: skb_over_panic: text:ffffffff8a752120 len:392 put:16 head:ffff88802a4ad040 data:ffff88802a4ad040 tail:0x188 end:0x180 dev:<NULL>
+ kernel BUG at net/core/skbuff.c:214 !
+Call Trace:
+ <TASK>
+  skb_over_panic net/core/skbuff.c:219 [inline]
+  skb_put+0x159/0x210 net/core/skbuff.c:2655
+  skb_put_zero include/linux/skbuff.h:2788 [inline]
+  set_ipsecrequest net/key/af_key.c:3532 [inline]
+  pfkey_send_migrate+0x1270/0x2e50 net/key/af_key.c:3636
+  km_migrate+0x155/0x260 net/xfrm/xfrm_state.c:2848
+  xfrm_migrate+0x2140/0x2450 net/xfrm/xfrm_policy.c:4705
+  xfrm_do_migrate+0x8ff/0xaa0 net/xfrm/xfrm_user.c:3150
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000020
-  RIP: 0010:smc_rx_update_consumer+0x8d/0x350
-  Call Trace:
-   <TASK>
-   smc_rx_pipe_buf_release+0x121/0x2a0
-   free_pipe_info+0xd4/0x130
-   pipe_release+0x142/0x160
-   __fput+0x1c6/0x490
-   __x64_sys_close+0x4f/0x90
-   do_syscall_64+0xa6/0x1a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-  Kernel panic - not syncing: Fatal exception
-
-Beyond the memory-safety problem, duplicating an SMC splice buffer is
-semantically questionable: smc_rx_update_cons() would advance the
-consumer cursor twice for the same data, corrupting receive-window
-accounting.  A refcount on smc_spd_priv could fix the double-free, but
-the cursor-accounting issue would still need to be addressed separately.
-
-The .get callback is invoked by both tee(2) and splice_pipe_to_pipe()
-for partial transfers; both will now return -EFAULT.  Users who need
-to duplicate SMC socket data must use a copy-based read path.
-
-Fixes: 9014db202cb7 ("smc: add support for splice()")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Link: https://patch.msgid.link/20260318064847.23341-1-tpluszz77@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
+Reported-by: syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69b5933c.050a0220.248e02.00f2.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_rx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/key/af_key.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-index 79047721df511..e7a6c2602e786 100644
---- a/net/smc/smc_rx.c
-+++ b/net/smc/smc_rx.c
-@@ -135,9 +135,16 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
- 	sock_put(sk);
- }
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 6c4448908afed..4849407da86d6 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3517,7 +3517,7 @@ static int set_sadb_kmaddress(struct sk_buff *skb, const struct xfrm_kmaddress *
  
-+static bool smc_rx_pipe_buf_get(struct pipe_inode_info *pipe,
-+				struct pipe_buffer *buf)
-+{
-+	/* smc_spd_priv in buf->private is not shareable; disallow cloning. */
-+	return false;
-+}
+ static int set_ipsecrequest(struct sk_buff *skb,
+ 			    uint8_t proto, uint8_t mode, int level,
+-			    uint32_t reqid, uint8_t family,
++			    uint32_t reqid, sa_family_t family,
+ 			    const xfrm_address_t *src, const xfrm_address_t *dst)
+ {
+ 	struct sadb_x_ipsecrequest *rq;
+@@ -3582,12 +3582,17 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 
+ 	/* ipsecrequests */
+ 	for (i = 0, mp = m; i < num_bundles; i++, mp++) {
+-		/* old locator pair */
+-		size_pol += sizeof(struct sadb_x_ipsecrequest) +
+-			    pfkey_sockaddr_pair_size(mp->old_family);
+-		/* new locator pair */
+-		size_pol += sizeof(struct sadb_x_ipsecrequest) +
+-			    pfkey_sockaddr_pair_size(mp->new_family);
++		int pair_size;
 +
- static const struct pipe_buf_operations smc_pipe_ops = {
- 	.release = smc_rx_pipe_buf_release,
--	.get = generic_pipe_buf_get
-+	.get	 = smc_rx_pipe_buf_get,
- };
++		pair_size = pfkey_sockaddr_pair_size(mp->old_family);
++		if (!pair_size)
++			return -EINVAL;
++		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
++
++		pair_size = pfkey_sockaddr_pair_size(mp->new_family);
++		if (!pair_size)
++			return -EINVAL;
++		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
+ 	}
  
- static void smc_rx_spd_release(struct splice_pipe_desc *spd,
+ 	size += sizeof(struct sadb_msg) + size_pol;
 -- 
 2.51.0
 
