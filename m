@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-232465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKRlCBcBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:03 +0200
+	id uD8mFC/8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32E136E4D5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E63CA36D5A3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3DCD314BD06
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 530C3306D9E0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283BC30274D;
-	Tue, 31 Mar 2026 17:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAF0423A7C;
+	Tue, 31 Mar 2026 16:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuxpeAj2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdfI8TeN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00903016EE;
-	Tue, 31 Mar 2026 17:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAB12C15BB;
+	Tue, 31 Mar 2026 16:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976818; cv=none; b=HHkT3sVnFYyKTNT5uwIiAZCZIdlp9XuHLO7yoQfuMMTtjHnCJuKgjVYT7xxrFD1kHwXLFW2nJckjZ/ZctTvh211z1g+dL7LcImz/V70YEUJyxzQc3F4cJ2xarg2yBw1uB4pYmnLmPwtxU6wkgOsnHg9y/EQox/G95lFMcrln4l8=
+	t=1774975391; cv=none; b=eUO0Tg9tgViN3O7DMzIOezfIpD3wmap13aQ7O4iDw8UvznYPB2OnZ7G7hAam27QpRRCxAZ/QpqJcOrJ3S9JXEnORmGSI9yBBrgnwCIsVdoTT0TW7qAtGf9vSLWZu2rT4ykl6jNS09r56kn/FII7ZfVfpIM8gRuvZ6sdkuRZ7oBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976818; c=relaxed/simple;
-	bh=EqgrvlEv7ANqvmEIxnG5HFir8WD0LTOJE8Nlc2uPlh4=;
+	s=arc-20240116; t=1774975391; c=relaxed/simple;
+	bh=nSaHdSkXiSRfgAta04BdX7inYw7KaCFcEfarBC6wl4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbtO+VEcC3otkMmGhtTJF5P8HmXn1DYzSX4FPRiI9gGlMVwa1d+0a4kGTg9DA6jGQgv2LPCaLLyy9ehsHffJuezRFsaIj7hVIrJqoYtHwXJxaj2xkDoSix9QlgKN7B0BsDj+xLbM//jp+0PRWjtvezow2vG8z+YmZmHVC2HNOtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuxpeAj2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7509CC19423;
-	Tue, 31 Mar 2026 17:06:57 +0000 (UTC)
+	 MIME-Version; b=XBlpVPbLYWR5tmGZQURAu6JsEk+2X5qYGiDRPz8hlAoslDYiv8u6FMfibMXbbUIH+W7X6oa4Fope/Er60KzZL/BaABp4fq4TZusljF5Qpj0GmG8paPWw2Xxb5bMKRGXoxyab3dXf5c5FLIhkO//yl7pbVEF63i+V0iwLr2QFbDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdfI8TeN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEF7C19423;
+	Tue, 31 Mar 2026 16:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976817;
-	bh=EqgrvlEv7ANqvmEIxnG5HFir8WD0LTOJE8Nlc2uPlh4=;
+	s=korg; t=1774975390;
+	bh=nSaHdSkXiSRfgAta04BdX7inYw7KaCFcEfarBC6wl4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuxpeAj2BCvsoLMhIhUHECXSPzJqFayLAOP91p4zGUosMWOLR4HfOevYCTTYNHI+V
-	 1fm3CEm3B+D1jUiHMnnQMRi4FQCBYOBP6r52aQkFKYqnC+mt+24T0NRZ3WENx+NYYe
-	 k1V0rt/D8LnmBsU8tBrP3o9cXhdBIxEaH8l1h+PM=
+	b=UdfI8TeNXsKYlvLRDLIyYr3P4Mxo/mTlQeH1DjAfwkFL0IdgT9iAPucIG43x50XaH
+	 dg/6yPqpuo2XcIQCIP6+WnBQPZha+PG4O9SxsziQBN9WSY//twmqQhD/Da4GL5o2ML
+	 Y9GAut29wVvLEWGC0KfxMhJLz2KSvVv9zw2YihIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xietangxin <xietangxin@yeah.net>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 207/309] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 277/342] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
 Date: Tue, 31 Mar 2026 18:21:50 +0200
-Message-ID: <20260331161801.069794230@linuxfoundation.org>
+Message-ID: <20260331161809.131618589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +72,133 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232465-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231913-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,yeah.net:email]
-X-Rspamd-Queue-Id: B32E136E4D5
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E63CA36D5A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xietangxin <xietangxin@yeah.net>
+From: David Hildenbrand (Arm) <david@kernel.org>
 
-commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
+commit ffef67b93aa352b34e6aeba3d52c19a63885409a upstream.
 
-A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
-and the device's IFF_XMIT_DST_RELEASE flag is cleared
-(e.g., during the configuration of tc route filter rules).
+follow_pfnmap_start() suffers from two problems:
 
-When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
-expects the driver to hold the reference to skb->dst until the packet
-is fully transmitted and freed. In virtio_net with napi_tx=N,
-skbs may remain in the virtio transmit ring for an extended period.
+(1) We are not re-fetching the pmd/pud after taking the PTL
 
-If the network namespace is destroyed while these skbs are still pending,
-the corresponding dst_ops structure has freed. When a subsequent packet
-is transmitted, free_old_xmit() is triggered to clean up old skbs.
-It then calls dst_release() on the skb associated with the stale dst_entry.
-Since the dst_ops (referenced by the dst_entry) has already been freed,
-a UAF kernel paging request occurs.
+Therefore, we are not properly stabilizing what the lock actually
+protects.  If there is concurrent zapping, we would indicate to the
+caller that we found an entry, however, that entry might already have
+been invalidated, or contain a different PFN after taking the lock.
 
-fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
-the dst reference before the skb is queued in virtio_net.
+Properly use pmdp_get() / pudp_get() after taking the lock.
 
-Call Trace:
- Unable to handle kernel paging request at virtual address ffff80007e150000
- CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
-  ...
-  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
-  dst_release+0xe0/0x110  net/core/dst.c:177
-  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
-  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
-  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
-  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
-  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
-  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
-  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
-  ...
+(2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
 
-Reproduction Steps:
-NETDEV="enp3s0"
+pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
 
-config_qdisc_route_filter() {
-    tc qdisc del dev $NETDEV root
-    tc qdisc add dev $NETDEV root handle 1: prio
-    tc filter add dev $NETDEV parent 1:0 \
-	protocol ip prio 100 route to 100 flowid 1:1
-    ip route add 192.168.1.100/32 dev $NETDEV realm 100
-}
+There is no real guarantee that pmd_leaf()/pud_leaf() returns something
+reasonable on non-present entries.  Most architectures indeed either
+perform a present check or make it work by smart use of flags.
 
-test_ns() {
-    ip netns add testns
-    ip link set $NETDEV netns testns
-    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
-    ip netns exec testns ping -c 1 10.0.32.1
-    ip netns del testns
-}
+However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
+and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd().  Whereby
+pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not do
+that.
 
-config_qdisc_route_filter
+Let's check pmd_present()/pud_present() before assuming "the is a present
+PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page table
+handling code that traverses user page tables does.
 
-test_ns
-sleep 2
-test_ns
+Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP, (1)
+is likely more relevant than (2).  It is questionable how often (1) would
+actually trigger, but let's CC stable to be sure.
 
-Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
-Cc: stable@vger.kernel.org
-Signed-off-by: xietangxin <xietangxin@yeah.net>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
-Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org
+Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/memory.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3414,6 +3414,7 @@ static netdev_tx_t start_xmit(struct sk_
- 	/* Don't wait up for transmitted skbs to be freed. */
- 	if (!use_napi) {
- 		skb_orphan(skb);
-+		skb_dst_drop(skb);
- 		nf_reset_ct(skb);
- 	}
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6775,11 +6775,16 @@ retry:
  
+ 	pudp = pud_offset(p4dp, address);
+ 	pud = pudp_get(pudp);
+-	if (pud_none(pud))
++	if (!pud_present(pud))
+ 		goto out;
+ 	if (pud_leaf(pud)) {
+ 		lock = pud_lock(mm, pudp);
+-		if (!unlikely(pud_leaf(pud))) {
++		pud = pudp_get(pudp);
++
++		if (unlikely(!pud_present(pud))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pud_leaf(pud))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
+@@ -6791,9 +6796,16 @@ retry:
+ 
+ 	pmdp = pmd_offset(pudp, address);
+ 	pmd = pmdp_get_lockless(pmdp);
++	if (!pmd_present(pmd))
++		goto out;
+ 	if (pmd_leaf(pmd)) {
+ 		lock = pmd_lock(mm, pmdp);
+-		if (!unlikely(pmd_leaf(pmd))) {
++		pmd = pmdp_get(pmdp);
++
++		if (unlikely(!pmd_present(pmd))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pmd_leaf(pmd))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
 
 
 
