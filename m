@@ -1,163 +1,185 @@
-Return-Path: <stable+bounces-232594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFc+AoZIzGmmSAYAu9opvQ
-	(envelope-from <stable+bounces-232594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:19:50 +0200
+	id sMg6FbxIzGmmSAYAu9opvQ
+	(envelope-from <stable+bounces-232595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:20:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8233725BA
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:19:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC13E3725D8
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C8F53013AA4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:18:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46B923046E93
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDD3346AD7;
-	Tue, 31 Mar 2026 22:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494B45BD67;
+	Tue, 31 Mar 2026 22:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JnObYfhQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="esdDgrvC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F35E45BD67
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 22:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2499B346AD7;
+	Tue, 31 Mar 2026 22:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774995504; cv=none; b=gMq9JoNTTD4n9/KvMIuVRxdvHCOPU7Vlv51HIuCSkaipGoLgYKnEAYl7/zPsVsqf6FHL83Q3svbgPYOLUDwXT8DdIrpYfTg3JmBLi3fN2KkMbw+zgThxT2JGxjmaymGJ7qIgX06iN4brugc4udbfwpaPSGZzGCIwaef3j4aVDis=
+	t=1774995526; cv=none; b=RlnuqnyJ2GJBTcSFdnkiTRmXrIRdASoB4nhAB9joxovC6HyRrpzogoUkfO6JvIotAJ5QdEwem24p0ckLlc3wscm2lWck0ei9TOlorOMT6j67sdgsXGPYebBbtfPAjHEwB+H0gDWH8SkMPZLG0/DazGS+hCyc5XYHCl8pkslW0TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774995504; c=relaxed/simple;
-	bh=RqMy7hc4oJQyN/p3kXm3qtwJtVNL3ksJsayaFO/NtSg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t8KfmyTY/13plnAxmaCQqiA85Hus9836HLUye81+Csdgm7+avI8i/W/HH+MW+U1DjDvBwY++yaNRzYirzuwJce+CItp2+ApkfgqrWkDvxfxi0kRgHk/pyfGASdrt9IwOLS+dnlaqkbuCEEC6jmCX5nfiTfTN952epng+WQpQA4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JnObYfhQ; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2c7e5f38b37so1706480eec.0
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 15:18:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774995502; x=1775600302; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RB8nQ5tFjE9rzgP0R+hOL7agBJY75yKnaHcF1wxXdsk=;
-        b=JnObYfhQ+1KWJFjW3rQ7IwMZif6hxF1U2cZ5KXo2T21qCUZ2/D/+TSMF+IgozIrC/a
-         kvjBjSC7SuVTt0kGsYrMT8PXQAjnSSfz1/oPRiCcupMHmKuvNW/FAOXQJQxfq1yzviQn
-         84SP9FYKUmuyM5u1eXUX/LNlJyD/TOdaumVmaQnm+obNyZgKbUm5aR9Qw/ONaGXyYUku
-         1Y8Wm0nh9L02w4cMdY+PrLqTY2+D9OkJMg9xemNSbv0np5CguLXhvOxBzggqzAi7+k+t
-         7LXfF3eQy40LeqU5ZMWpEtql+CjYByqf8RbcfU8LTixsPhnEMOYXc1C2ls9NQr0uvCHT
-         c5XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774995502; x=1775600302;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RB8nQ5tFjE9rzgP0R+hOL7agBJY75yKnaHcF1wxXdsk=;
-        b=se+MVbEpkNBl8eet7tE/4HhPhdIf06w1/3LIqVeNWoyh0LSML7e8YQPFd09BG76Wh0
-         fQjU1PUzz5Ngu3n/rQLQ/Ku3enT0o5dj8TynYTE+8t2mpm11HQQLilMI/so73TyOE6ua
-         LeibTjUhipzuBhjDKgrVHLXDfSVMO87Ni0UyrwIo8Le6FB+6xOV+yxsN/3K1rEcJw6KA
-         6+NJxAE6R61S9cmGLGjyGNmJ7IJAH6Nz1PLB7z/YInfg7cm9/1dKPkmpsYi4WGR30RJm
-         2dk8gEMiMkOQheSDvYhV5DuNVWupXzRg4FpC/1KJyuXJYqa4ms1YHcH5mplk4Oz8mlhc
-         UIxg==
-X-Forwarded-Encrypted: i=1; AJvYcCXcYVpFl76nofYqxOv0hSWfNyI5QjA/K+uEdwNktLtjcwh95OkUrPK7O2bB3Vb/JZij52LbTNo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTF4LcwhCI+DglWGxvj6gDdOcAdrWltJ2bMs7WFDJ8a/P7sw6x
-	bI/W0Xe3Row/EsGEygG/s1CNge0NnCQTf0vFanEULcES5XyhKO9qkhVZ
-X-Gm-Gg: ATEYQzzEtdPZiFNlv5IGQl/wtnSScGvhRhRrCERp0/Xz+Gp2wCplLPe3Erj7GmuxCbn
-	DmH0JvV1c9TLxMo3AwFZv6ovdVMfBmjJ2nDRgdaYD4937vHzFyIruHj+ryjU7J/pdp9/etXqe3Q
-	Xn5x31wUeitvTo/3EFs0f1dakf2LmF87R+kdvQI2ErIrS+XehLyXzTTUaieiIiEbbIvZkOeMu1T
-	rQXT1A/fszUTcnHMzIRzgQV+IEl/8Dwl1q3RcEHmzmmnqtFnY15OH10YeJLQcIq7m6WCxcp3UXD
-	F92lDODpBXO93nUBDiRtD3gDodVXgoIKiXRHg0hwF3jqO1qv5c3bOxAL51vSheyQKzjazPi+zj0
-	zbgWL8p4dvSZMrdi1J2W4AWo3Bte2ThlLW9ZcYKsvnPjw9TGzntYxrecSiRMc3QDxXOXhCsp1LO
-	dgCWb2owUJhT5L0QdqhNSmcFCdbTH/4E0oFlzu9Jx5Cba9vgUmSA==
-X-Received: by 2002:a05:7300:7252:b0:2c1:2706:b41c with SMTP id 5a478bee46e88-2c9307905efmr590526eec.6.1774995502149;
-        Tue, 31 Mar 2026 15:18:22 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c68b2c57sm11894891eec.16.2026.03.31.15.18.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2026 15:18:21 -0700 (PDT)
-Message-ID: <200019ee-d40a-414f-9dfb-c3fcbdbed969@gmail.com>
-Date: Tue, 31 Mar 2026 15:18:19 -0700
+	s=arc-20240116; t=1774995526; c=relaxed/simple;
+	bh=wUdaIIELWJl+i7uH46Ifi81pzzNyIffVW8w36LxytFw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=D4MHjfXv1Dz5MRusVQ+5TKkZrDk1FK3iVf8+bSkTQTN9mLuR8Yd5XFqVQoLpaQnWA2e6LNjRkvV+pZcTE+Bnu2cEEn5rZYztv7AwCyo/Wysl5YkI/6QKLMekBoRBlVDndnXuty1hrDOYWw7LqKiGNHGazT6cEBv40j9gPvPt3l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=esdDgrvC; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774995525; x=1806531525;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wUdaIIELWJl+i7uH46Ifi81pzzNyIffVW8w36LxytFw=;
+  b=esdDgrvCmxvga0NPVS0jm53qJelONBCjpCSjoRI9b6pywYs84qGgXmo+
+   3JVt6aqTSArztaZr64bpk6SEDfGNK54pQTnbmSFFj/4RuvwC637Ql3zXW
+   yLjlDYoufuptKoGXh3brDvMW/7vBZjtzmonH0/zfPPBzYT4fmEllQYn07
+   rLLY/WcKSsDGQzdVPkU7xdPBFo70jsGrThoXa/un3t3VO2jXivG/mE9sx
+   dV0gCx4jqgR68DTF6VQ8ckS80beDqTYejKF+TS7SlaF5w4GJQK1HpbluH
+   Xs5Sqb8PLQ6UmuWqFwL2lVSj2LOB9A6bD4QLMAvL/g8bB66yjVpE0R4BB
+   Q==;
+X-CSE-ConnectionGUID: lMH+abpSRUCBRLgEixH7Ug==
+X-CSE-MsgGUID: 4DRMpt7XTTCOLNYD6V8oRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="87416319"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="87416319"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 15:18:44 -0700
+X-CSE-ConnectionGUID: auU7s6NqTF+xcTm0JNyBkA==
+X-CSE-MsgGUID: thBuCzoaRAiTE/lR+URFNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="225668430"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 15:18:45 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Carlos Santa <carlos.santa@intel.com>,
+	Ryan Neph <ryanneph@google.com>,
+	stable@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH] workqueue: Add pool_workqueue to pending_pwqs list when unplugging multiple inactive works
+Date: Tue, 31 Mar 2026 15:18:39 -0700
+Message-Id: <20260331221839.1033423-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260331161758.909578033@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232594-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,google.com,vger.kernel.org,kernel.org,gmail.com,redhat.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232595-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5E8233725BA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AC13E3725D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/31/26 09:17, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.11 release.
-> There are 342 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+In unplug_oldest_pwq(), the first inactive pool_workqueue is activated
+correctly. However, if multiple inactive works exist on the same
+pool_workqueue, subsequent works fail to activate because
+wq_node_nr_active.pending_pwqs is empty — the list insertion is skipped
+when the pool_workqueue is plugged.
 
-perf still fails to build for arm64 this was reported bck in 6.19.7. Can 
-you revert b56111d7a4642ea7ef776ae97ecb1dd2724a1503 ("perf jevents: 
-Handle deleted JSONS in out of source builds")?
+Fix this by checking for additional inactive works in
+unplug_oldest_pwq() and updating wq_node_nr_active.pending_pwqs
+accordingly.
 
-Thanks!
+Cc: Carlos Santa <carlos.santa@intel.com>
+Cc: Ryan Neph <ryanneph@google.com>
+Cc: stable@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: linux-kernel@vger.kernel.org
+Fixes: 4c065dbce1e8 ("workqueue: Enable unbound cpumask update on ordered workqueues")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+
+---
+
+This bug was first reported by Google, where the Xe driver appeared to
+hang due to a fencing signal not completing. We traced the issue to work
+items not being scheduled, and it can be trivially reproduced on drm-tip
+with the following commands:
+
+shell0:
+for i in {1..100}; do echo "Run $i"; xe_exec_threads --r \
+threads-rebind-bindexecqueue; done
+
+shell1:
+for i in {1..1000}; do echo "toggle $i"; echo f > \
+/sys/devices/virtual/workqueue/cpumask; echo ff > \
+/sys/devices/virtual/workqueue/cpumask; echo fff > \
+/sys/devices/virtual/workqueue/cpumask ; echo ffff > \
+/sys/devices/virtual/workqueue/cpumask; sleep .1; done
+---
+ kernel/workqueue.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index b77119d71641..b2cdb44ccb56 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -1849,8 +1849,20 @@ static void unplug_oldest_pwq(struct workqueue_struct *wq)
+ 	raw_spin_lock_irq(&pwq->pool->lock);
+ 	if (pwq->plugged) {
+ 		pwq->plugged = false;
+-		if (pwq_activate_first_inactive(pwq, true))
++		if (pwq_activate_first_inactive(pwq, true)) {
++			if (!list_empty(&pwq->inactive_works)) {
++				struct worker_pool *pool = pwq->pool;
++				struct wq_node_nr_active *nna =
++					wq_node_nr_active(wq, pool->node);
++
++				raw_spin_lock(&nna->lock);
++				if (list_empty(&pwq->pending_node))
++					list_add_tail(&pwq->pending_node,
++						      &nna->pending_pwqs);
++				raw_spin_unlock(&nna->lock);
++			}
+ 			kick_pool(pwq->pool);
++		}
+ 	}
+ 	raw_spin_unlock_irq(&pwq->pool->lock);
+ }
 -- 
-Florian
+2.34.1
+
 
