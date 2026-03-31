@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aChtNAgCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:04 +0200
+	id MNxtJqgBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-231878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D473E36E799
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E8A36E6A1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9F73F3132DC0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47F6D3096611
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028E7425CE1;
-	Tue, 31 Mar 2026 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6632D42669C;
+	Tue, 31 Mar 2026 16:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owKH6N4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR2gfASe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F593DE431;
-	Tue, 31 Mar 2026 16:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2788C4279E9;
+	Tue, 31 Mar 2026 16:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975888; cv=none; b=YrD0YvY2E5yFd5Zpkjjr2kXpvQ6FcmMP5Q/eBG81hfDVp1iA2lrMJRo1429OqlbhP/BLrQR+KWIfzPt0kI3uivgXTXupMkGqfiqfMjOZ/g3cSwdJedp4/5x+ZWak8c12Hir97B5oVLzBaGlAwUlL4ChZHUJvTvHbcsnyb2VELgo=
+	t=1774975301; cv=none; b=iyDfUKHFt3fZ953Cq/iT9eF6aS1QkgkQCzkXCDZpPPpYwjPnYIi56zISYLCMDRwF2yAl6gh0xpHgs+IgEUtYjIFYd417AiuCX/uWE+XUzcTSy0YrYb8lfmVRmm3iB1YGJl6xcXHMNCOpeP6Citqq3hDZ7IEnzGr0KNJGeHhWjkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975888; c=relaxed/simple;
-	bh=SmQCUvCc6oasanASo960njHg/hlc1H5qyxjR7hcAbbE=;
+	s=arc-20240116; t=1774975301; c=relaxed/simple;
+	bh=9hsO5NeUuW008D7X1uyVC5gDP55msVd6wErRyAWY+Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0ZSfL8f33QdtlxSL8MKQzlE+E3vu6/ttB0XQWNWtUWyK49mVKIzd3eTr+PgxZfto1GWbhbDPEO4cjRZJye64b98V7PLmM88TMVBgJEPHusiR2cuYKCBGqg8dpp/iAjOSDmY9SberSTyqEmVpfDI0NJ4GmCtmUHkOalzrQxyIkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owKH6N4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526BAC19423;
-	Tue, 31 Mar 2026 16:51:28 +0000 (UTC)
+	 MIME-Version; b=qvqGfEkbRjWjg+BtNyv2zFIM2MJuknhBEOfOLYTxML5+C8vaUkFYtwvcIuxW8pcWWX8Oi+0F91JkuapFVdZj6wPMYNYAWRwEcp6sIDZXr+5Znu95x5XLP4Vxpqrk8/hTFzujuQIfqZHaC/cshc9DewSA3dv8x01+SVf5QuQTXX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR2gfASe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AB3C19423;
+	Tue, 31 Mar 2026 16:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975888;
-	bh=SmQCUvCc6oasanASo960njHg/hlc1H5qyxjR7hcAbbE=;
+	s=korg; t=1774975301;
+	bh=9hsO5NeUuW008D7X1uyVC5gDP55msVd6wErRyAWY+Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owKH6N4Jz3iflByB6gcFzyFU9WJoZHMddSxVn2RPIEFBnZYrZjXTVq+VDBvF1+nVY
-	 F6DZ+1wKFHTBdPzJ19gjenpDMQYMGmsHxBWEjlJD5rTt9xJpxwSgPmOyuaLDTkZYM9
-	 E/gyXo+PIqILnkxptdn5BDxXshmuBzriUqKY+1t8=
+	b=rR2gfASehcVm2nLl9Ip05EAgmNI396G3OQxCiyJpxIkcTyupRh3NGupQt2ZDLEMdG
+	 PFIPogarnv1W6Lx+Uw1hY9peXCPkAGAD8i7xRdoq1qi1Y9OmHVVDJA5TEJTLyXySNC
+	 rR8Kwy/40A+x3Cy7c/LZ3nrA0jp5xqkjP8L1+Frc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/244] ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()
+	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.19 242/342] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
 Date: Tue, 31 Mar 2026 18:21:15 +0200
-Message-ID: <20260331161746.275433848@linuxfoundation.org>
+Message-ID: <20260331161807.869751182@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,116 +70,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232105-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231878-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D473E36E799
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: F0E8A36E6A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
 
-[ Upstream commit f6484cadbcaf26b5844b51bd7307a663dda48ef6 ]
+commit 81af9e40e2e4e1aa95f09fb34811760be6742c58 upstream.
 
-When ec_install_handlers() returns -EPROBE_DEFER on reduced-hardware
-platforms, it has already started the EC and installed the address
-space handler with the struct acpi_ec pointer as handler context.
-However, acpi_ec_setup() propagates the error without any cleanup.
+According to internal documentation, on SM8650, when the PHY is configured
+in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
+value as for Gear 5.
 
-The caller acpi_ec_add() then frees the struct acpi_ec for non-boot
-instances, leaving a dangling handler context in ACPICA.
+At the moment, there is no board that comes with a UFS 3.x device, so
+this issue doesn't show up, but with the new Eliza SoC, which uses the
+same init sequence as SM8650, on the MTP board, the link startup fails
+with the current Gear 4 PCS table.
 
-Any subsequent AML evaluation that accesses an EC OpRegion field
-dispatches into acpi_ec_space_handler() with the freed pointer,
-causing a use-after-free:
+So fix that by moving the entry into the PCS generic table instead,
+while keeping the value from Gear 5 configuration.
 
- BUG: KASAN: slab-use-after-free in mutex_lock (kernel/locking/mutex.c:289)
- Write of size 8 at addr ffff88800721de38 by task init/1
- Call Trace:
-  <TASK>
-  mutex_lock (kernel/locking/mutex.c:289)
-  acpi_ec_space_handler (drivers/acpi/ec.c:1362)
-  acpi_ev_address_space_dispatch (drivers/acpi/acpica/evregion.c:293)
-  acpi_ex_access_region (drivers/acpi/acpica/exfldio.c:246)
-  acpi_ex_field_datum_io (drivers/acpi/acpica/exfldio.c:509)
-  acpi_ex_extract_from_field (drivers/acpi/acpica/exfldio.c:700)
-  acpi_ex_read_data_from_field (drivers/acpi/acpica/exfield.c:327)
-  acpi_ex_resolve_node_to_value (drivers/acpi/acpica/exresolv.c:392)
-  </TASK>
-
- Allocated by task 1:
-  acpi_ec_alloc (drivers/acpi/ec.c:1424)
-  acpi_ec_add (drivers/acpi/ec.c:1692)
-
- Freed by task 1:
-  kfree (mm/slub.c:6876)
-  acpi_ec_add (drivers/acpi/ec.c:1751)
-
-The bug triggers on reduced-hardware EC platforms (ec->gpe < 0)
-when the GPIO IRQ provider defers probing. Once the stale handler
-exists, any unprivileged sysfs read that causes AML to touch an
-EC OpRegion (battery, thermal, backlight) exercises the dangling
-pointer.
-
-Fix this by calling ec_remove_handlers() in the error path of
-acpi_ec_setup() before clearing first_ec. ec_remove_handlers()
-checks each EC_FLAGS_* bit before acting, so it is safe to call
-regardless of how far ec_install_handlers() progressed:
-
-  -ENODEV  (handler not installed): only calls acpi_ec_stop()
-  -EPROBE_DEFER (handler installed): removes handler, stops EC
-
-Fixes: 03e9a0e05739 ("ACPI: EC: Consolidate event handler installation code")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260324165458.1337233-2-bestswngs@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.10
+Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
+Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Link: https://patch.msgid.link/20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/ec.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index a813bc97cf425..10bd2942c4beb 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1653,6 +1653,8 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+@@ -928,6 +928,7 @@ static const struct qmp_phy_init_tbl sm8
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
++	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
+@@ -937,13 +938,11 @@ static const struct qmp_phy_init_tbl sm8
+ };
  
- 	ret = ec_install_handlers(ec, device, call_reg);
- 	if (ret) {
-+		ec_remove_handlers(ec);
-+
- 		if (ec == first_ec)
- 			first_ec = NULL;
+ static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
+-	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
+ };
  
--- 
-2.53.0
-
+ static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
+-	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
 
 
 
