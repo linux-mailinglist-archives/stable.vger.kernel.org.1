@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NwsEvIBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:42 +0200
+	id mG5ED9z/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FF036E756
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4AF36E098
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED2313154E15
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 45B7E3172072
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781B4425CC7;
-	Tue, 31 Mar 2026 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA53425CD5;
+	Tue, 31 Mar 2026 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToewToz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YO6n3xQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5F0423A8B;
-	Tue, 31 Mar 2026 16:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3203421A1D;
+	Tue, 31 Mar 2026 16:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975671; cv=none; b=ZVKYZxpOK3sTHuEpY8MB2TsYEZ8Nts8YYn9C6m5hQRceyNe8GYyK3ib8i61N+ElWmFWuCRzxQeSQoP+ivtHYxx7HHeRyfLWJukU8HjxtzKWDKs3oneKzSAnzHuyHH31aLPCIiI3ZchY/YVMqs7Yxh6IYMZLRO1qSsivFQ9SlitA=
+	t=1774975200; cv=none; b=klBahz4YH4BBdsll4scVSL0/Jfp6i6Go73NIT5pdNYmXkz6krjPqPPLgcIfdeRSsq751EWwSq1VkJCYG8zoGJnrZq+r1aDyUN1mMO6JaRrIHc3gxqqh6evw0aGOpAVnqAPrvj8v6Kw9RA+c+SPRclrd3rwXMFQwoFWKZThmzs18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975671; c=relaxed/simple;
-	bh=hVdm5iW8tHYsj49ThAImLh5mO7K6RvI2tcdpMmr27s8=;
+	s=arc-20240116; t=1774975200; c=relaxed/simple;
+	bh=W1sxsnNmokIy4hSx2EQoKOi9vksy7E+noBB9M99ju+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GheJNswDpyjeY2/yTVERfPtX+wDTNNN5KVPNUFxE6zWiuvZs3vimrb0lci6NHEeKAh8hYGxrhQPYESLWjv1IcLUfaX2BUpg+8pY3JafMG6tnRIkeUfL96Dmi4adi5EMTkrjo7+TYVe5O8eq5qIvVdCdeQ1dKeOOg+w9V4JmKKNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToewToz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879C1C19424;
-	Tue, 31 Mar 2026 16:47:50 +0000 (UTC)
+	 MIME-Version; b=dljnqy3YV0Lt6QvG7wt+wB58LFL3omhSG7kHokR1wpW+opwqGqjF4vdUX2bGIDaRKHCexEq6heYtKowHQzM7eD+layYvvSt8LPhLlR9AmunHjklI44PEhQ48R4wpGkodp/WBJVc/OQkNWS+gcMPQNzVhWxQU+xnBggZnAqDENrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YO6n3xQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B39C19423;
+	Tue, 31 Mar 2026 16:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975670;
-	bh=hVdm5iW8tHYsj49ThAImLh5mO7K6RvI2tcdpMmr27s8=;
+	s=korg; t=1774975200;
+	bh=W1sxsnNmokIy4hSx2EQoKOi9vksy7E+noBB9M99ju+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToewToz3QGn7Zlgz6eUqU4aaqp/Au0jtuGndk5yR60t7y3Uv73jC0hDP3sXeQqs8W
-	 0/VRwBG1h6+rz0j67u4jdhs6+TESIz3iqwoPCZJ7HqyvAHa1XBEJlToRTHPcW60wt2
-	 x59Lxil0TMFqgWYY5a4pccGogE4ST0UAGSbn73nI=
+	b=YO6n3xQXns27ZZRmU0HyNeIZPg+RYMjRYqtRuYc9J8n1J0Jy0P6VPuFZSyqrsHTWQ
+	 kOZg+UzuFg/kP+bAnxxnB+KhsYMiYNJyNwhM04Z/vs4Ifh0j2sAQsMu7fg+2atsT91
+	 p0c6giLsArT8dRAUc2wj06tH0HsZUGAJ3QExXcnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ivan Barrera <ivan.d.barrera@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/244] drm/amdgpu: fix gpu idle power consumption issue for gfx v12
+Subject: [PATCH 6.19 159/342] RDMA/irdma: Clean up unnecessary dereference of event->cm_node
 Date: Tue, 31 Mar 2026 18:19:52 +0200
-Message-ID: <20260331161743.251959866@linuxfoundation.org>
+Message-ID: <20260331161804.861645419@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +69,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231838-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232021-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A3FF036E756
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 1B4AF36E098
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Ivan Barrera <ivan.d.barrera@intel.com>
 
-[ Upstream commit a6571045cf06c4aa749b4801382ae96650e2f0e1 ]
+[ Upstream commit b415399c9a024d574b65479636f0d4eb625b9abd ]
 
-Older versions of the MES firmware may cause abnormal GPU power consumption.
-When performing inference tasks on the GPU (e.g., with Ollama using ROCm),
-the GPU may show abnormal power consumption in idle state and incorrect GPU load information.
-This issue has been fixed in firmware version 0x8b and newer.
+The cm_node is available and the usage of cm_node and event->cm_node
+seems arbitrary. Clean up unnecessary dereference of event->cm_node.
 
-Closes: https://github.com/ROCm/ROCm/issues/5706
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4e22a5fe6ea6e0b057e7f246df4ac3ff8bfbc46a)
+Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
+Signed-off-by: Ivan Barrera <ivan.d.barrera@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/cm.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-index 333a31da85568..945016712157d 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -567,6 +567,9 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
- 	int i;
- 	struct amdgpu_device *adev = mes->adev;
- 	union MESAPI_SET_HW_RESOURCES mes_set_hw_res_pkt;
-+	uint32_t mes_rev = (pipe == AMDGPU_MES_SCHED_PIPE) ?
-+		(mes->sched_version & AMDGPU_MES_VERSION_MASK) :
-+		(mes->kiq_version & AMDGPU_MES_VERSION_MASK);
+diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
+index f4f4f92ba63ac..128cfcf27714d 100644
+--- a/drivers/infiniband/hw/irdma/cm.c
++++ b/drivers/infiniband/hw/irdma/cm.c
+@@ -4239,21 +4239,21 @@ static void irdma_cm_event_handler(struct work_struct *work)
+ 		irdma_cm_event_reset(event);
+ 		break;
+ 	case IRDMA_CM_EVENT_CONNECTED:
+-		if (!event->cm_node->cm_id ||
+-		    event->cm_node->state != IRDMA_CM_STATE_OFFLOADED)
++		if (!cm_node->cm_id ||
++		    cm_node->state != IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_cm_event_connected(event);
+ 		break;
+ 	case IRDMA_CM_EVENT_MPA_REJECT:
+-		if (!event->cm_node->cm_id ||
++		if (!cm_node->cm_id ||
+ 		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_send_cm_event(cm_node, cm_node->cm_id,
+ 				    IW_CM_EVENT_CONNECT_REPLY, -ECONNREFUSED);
+ 		break;
+ 	case IRDMA_CM_EVENT_ABORTED:
+-		if (!event->cm_node->cm_id ||
+-		    event->cm_node->state == IRDMA_CM_STATE_OFFLOADED)
++		if (!cm_node->cm_id ||
++		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_event_connect_error(event);
+ 		break;
+@@ -4263,7 +4263,7 @@ static void irdma_cm_event_handler(struct work_struct *work)
+ 		break;
+ 	}
  
- 	memset(&mes_set_hw_res_pkt, 0, sizeof(mes_set_hw_res_pkt));
+-	irdma_rem_ref_cm_node(event->cm_node);
++	irdma_rem_ref_cm_node(cm_node);
+ 	kfree(event);
+ }
  
-@@ -621,7 +624,7 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
- 	 * handling support, other queue will not use the oversubscribe timer.
- 	 * handling  mode - 0: disabled; 1: basic version; 2: basic+ version
- 	 */
--	mes_set_hw_res_pkt.oversubscription_timer = 50;
-+	mes_set_hw_res_pkt.oversubscription_timer = mes_rev < 0x8b ? 0 : 50;
- 	mes_set_hw_res_pkt.unmapped_doorbell_handling = 1;
- 
- 	if (amdgpu_mes_log_enable) {
 -- 
-2.51.0
+2.53.0
 
 
 
