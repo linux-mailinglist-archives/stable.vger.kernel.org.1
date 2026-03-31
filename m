@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-232407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB04AqQHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:00 +0200
+	id IK23DAn9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CABF36F2F1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7372F36D835
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE32B30CAF92
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C0513175903
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB10E3009D4;
-	Tue, 31 Mar 2026 17:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CE7426689;
+	Tue, 31 Mar 2026 16:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b4W0ryF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aehYkz8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6CB2E11A6;
-	Tue, 31 Mar 2026 17:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDB53F8E04;
+	Tue, 31 Mar 2026 16:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976667; cv=none; b=EK7SNGQBr7QpACX5uogpRQlTx9hbZU2wm9OFdVyv/CY3NFpZCZ8ANOl2GjQ24FR52QaBWklM/WXsy7KnRG1SI+IJJHgHzaL0QrqHVutuDqWPlGQwt8BIAqEjgTdStnRZfveyodXzlwU0O2dvGr2i3KrHIjDIO6XnQ2EYX1tTx2Q=
+	t=1774975329; cv=none; b=UIQ2DR0u3C/Mp8PXtvXc1mfZQMfVY4jC1zs4wrMc95KTzX5/mZXcai8d4rMu7OYhpWrFCbkY2TI3Anu5G7GF78seocxtutkm+s6Zuaqw//qpM8sKuOTNrV4AHIwst8v620/dKgvgnOV6jXnhZS3AIlUmtObh6jJXM7jfY/bXdSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976667; c=relaxed/simple;
-	bh=dza7VChuPQpyoSVaPnU/tsbnjiXEb9TnyYuNcl7h07U=;
+	s=arc-20240116; t=1774975329; c=relaxed/simple;
+	bh=Wy+opoYXVzAc0E/xL64dk/BVPT1/LtCwMxqI8XaNl90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKX35oKRsH884Hp9yC4Ombhi5SgVHJ55EuA2jm76jusjzzW1lH+4dLpvmEzhxVrSQ+aA8+IT3lXgiVsLeOX/Z+1JX7V8R7Ra7KRSFQg3vv0T9TPIrxYFOvRaoSw022twimKmqvKCj+BYObqpRppdgLNpgH198fhQK3ymj846WDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b4W0ryF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238F5C19423;
-	Tue, 31 Mar 2026 17:04:26 +0000 (UTC)
+	 MIME-Version; b=FR0HGcPgf9YmoHCZZDGo9hyRzmX1CCrEY1z9Uyc8NOUT1TwMV8nIssaSjrnqmlDueRk7LBKswC5lz7Mg3n+pZc5TdMcrDZyIUviKaWzMNcZaaVd6Abik9G6JKgqWksYiFB7ULL8ATcfwDCgwIj52VuS0i5s2zML0ExkMpHdV2cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aehYkz8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CE2C19423;
+	Tue, 31 Mar 2026 16:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976667;
-	bh=dza7VChuPQpyoSVaPnU/tsbnjiXEb9TnyYuNcl7h07U=;
+	s=korg; t=1774975329;
+	bh=Wy+opoYXVzAc0E/xL64dk/BVPT1/LtCwMxqI8XaNl90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b4W0ryFzr9o8s1KOFOP2EaNbBd7zmOOHVUzROuvGl9Oa7DaMBYkvR2ug4yYh6gNV
-	 9SVODk3QmgFjOw00Gdsut9Z4AK81qJ0YrXdUwz5dfekj3va7Erc5y8P0givIYhQS8Q
-	 0fvYo7CapaZ00zcJwACDZC8ZDKmi6nCxYgCg5/Zo=
+	b=aehYkz8vMgOK7e0xBiRMQF8kNvdDiszHDuaX5BM109b+s1OxxqesfvREfB+r6dEyl
+	 AYi1De2j+12Jb1twexkTDYPGnFA/4bEvfI3oNsIhlM0Iby1tNC2b5ks3BPuE5QeEcu
+	 DKd1xnjleIy2lCMLWxwKMb8BsF49zMkBysoPoCbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Werner Kasselman <werner@verivus.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 182/309] ksmbd: fix memory leaks and NULL deref in smb2_lock()
+	Milos Nikic <nikic.milos@gmail.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.19 252/342] jbd2: gracefully abort on checkpointing state corruptions
 Date: Tue, 31 Mar 2026 18:21:25 +0200
-Message-ID: <20260331161800.164108475@linuxfoundation.org>
+Message-ID: <20260331161808.230460332@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +68,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232407-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231889-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dilger.ca,huawei.com,linux.alibaba.com,suse.cz,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,verivus.com:email]
-X-Rspamd-Queue-Id: 7CABF36F2F1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,alibaba.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,dilger.ca:email]
+X-Rspamd-Queue-Id: 7372F36D835
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Kasselman <werner@verivus.com>
+From: Milos Nikic <nikic.milos@gmail.com>
 
-commit 309b44ed684496ed3f9c5715d10b899338623512 upstream.
+commit bac3190a8e79beff6ed221975e0c9b1b5f2a21da upstream.
 
-smb2_lock() has three error handling issues after list_del() detaches
-smb_lock from lock_list at no_check_cl:
+This patch targets two internal state machine invariants in checkpoint.c
+residing inside functions that natively return integer error codes.
 
-1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK
-   path, goto out leaks smb_lock and its flock because the out:
-   handler only iterates lock_list and rollback_list, neither of
-   which contains the detached smb_lock.
+- In jbd2_cleanup_journal_tail(): A blocknr of 0 indicates a severely
+corrupted journal superblock. Replaced the J_ASSERT with a WARN_ON_ONCE
+and a graceful journal abort, returning -EFSCORRUPTED.
 
-2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out
-   leaks smb_lock and flock for the same reason.  The error code
-   returned to the dispatcher is also stale.
+- In jbd2_log_do_checkpoint(): Replaced the J_ASSERT_BH checking for
+an unexpected buffer_jwrite state. If the warning triggers, we
+explicitly drop the just-taken get_bh() reference and call __flush_batch()
+to safely clean up any previously queued buffers in the j_chkpt_bhs array,
+preventing a memory leak before returning -EFSCORRUPTED.
 
-3) In the rollback path, smb_flock_init() can return NULL on
-   allocation failure.  The result is dereferenced unconditionally,
-   causing a kernel NULL pointer dereference.  Add a NULL check to
-   prevent the crash and clean up the bookkeeping; the VFS lock
-   itself cannot be rolled back without the allocation and will be
-   released at file or connection teardown.
-
-Fix cases 1 and 2 by hoisting the locks_free_lock()/kfree() to before
-the if(!rc) check in the UNLOCK branch so all exit paths share one
-free site, and by freeing smb_lock and flock before goto out in the
-non-UNLOCK branch.  Propagate the correct error code in both cases.
-Fix case 3 by wrapping the VFS unlock in an if(rlock) guard and adding
-a NULL check for locks_free_lock(rlock) in the shared cleanup.
-
-Found via call-graph analysis using sqry.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Suggested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Milos Nikic <nikic.milos@gmail.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260311041548.159424-1-nikic.milos@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ fs/jbd2/checkpoint.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7602,14 +7602,15 @@ retry:
- 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
- skip:
- 		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
-+			locks_free_lock(flock);
-+			kfree(smb_lock);
- 			if (!rc) {
- 				ksmbd_debug(SMB, "File unlocked\n");
- 			} else if (rc == -ENOENT) {
- 				rsp->hdr.Status = STATUS_NOT_LOCKED;
-+				err = rc;
- 				goto out;
- 			}
--			locks_free_lock(flock);
--			kfree(smb_lock);
- 		} else {
- 			if (rc == FILE_LOCK_DEFERRED) {
- 				void **argv;
-@@ -7678,6 +7679,9 @@ skip:
- 				spin_unlock(&work->conn->llist_lock);
- 				ksmbd_debug(SMB, "successful in taking lock\n");
- 			} else {
-+				locks_free_lock(flock);
-+				kfree(smb_lock);
-+				err = rc;
- 				goto out;
- 			}
- 		}
-@@ -7708,13 +7712,17 @@ out:
- 		struct file_lock *rlock = NULL;
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -267,7 +267,15 @@ restart:
+ 			 */
+ 			BUFFER_TRACE(bh, "queue");
+ 			get_bh(bh);
+-			J_ASSERT_BH(bh, !buffer_jwrite(bh));
++			if (WARN_ON_ONCE(buffer_jwrite(bh))) {
++				put_bh(bh); /* drop the ref we just took */
++				spin_unlock(&journal->j_list_lock);
++				/* Clean up any previously batched buffers */
++				if (batch_count)
++					__flush_batch(journal, &batch_count);
++				jbd2_journal_abort(journal, -EFSCORRUPTED);
++				return -EFSCORRUPTED;
++			}
+ 			journal->j_chkpt_bhs[batch_count++] = bh;
+ 			transaction->t_chp_stats.cs_written++;
+ 			transaction->t_checkpoint_list = jh->b_cpnext;
+@@ -325,7 +333,10 @@ int jbd2_cleanup_journal_tail(journal_t
  
- 		rlock = smb_flock_init(filp);
--		rlock->c.flc_type = F_UNLCK;
--		rlock->fl_start = smb_lock->start;
--		rlock->fl_end = smb_lock->end;
--
--		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
--		if (rc)
--			pr_err("rollback unlock fail : %d\n", rc);
-+		if (rlock) {
-+			rlock->c.flc_type = F_UNLCK;
-+			rlock->fl_start = smb_lock->start;
-+			rlock->fl_end = smb_lock->end;
-+
-+			rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
-+			if (rc)
-+				pr_err("rollback unlock fail : %d\n", rc);
-+		} else {
-+			pr_err("rollback unlock alloc failed\n");
-+		}
+ 	if (!jbd2_journal_get_log_tail(journal, &first_tid, &blocknr))
+ 		return 1;
+-	J_ASSERT(blocknr != 0);
++	if (WARN_ON_ONCE(blocknr == 0)) {
++		jbd2_journal_abort(journal, -EFSCORRUPTED);
++		return -EFSCORRUPTED;
++	}
  
- 		list_del(&smb_lock->llist);
- 		spin_lock(&work->conn->llist_lock);
-@@ -7724,7 +7732,8 @@ out:
- 		spin_unlock(&work->conn->llist_lock);
- 
- 		locks_free_lock(smb_lock->fl);
--		locks_free_lock(rlock);
-+		if (rlock)
-+			locks_free_lock(rlock);
- 		kfree(smb_lock);
- 	}
- out2:
+ 	/*
+ 	 * We need to make sure that any blocks that were recently written out
 
 
 
