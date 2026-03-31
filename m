@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JFqKdb2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:18 +0200
+	id aBJnBXwHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD1036CB00
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8285836F288
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0A453305FA2C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6C853137EA5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D37A3FAE08;
-	Tue, 31 Mar 2026 16:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D352FB632;
+	Tue, 31 Mar 2026 17:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ad/INyEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yv+YNRGi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009853EE1DD;
-	Tue, 31 Mar 2026 16:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790082E11A6;
+	Tue, 31 Mar 2026 17:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974362; cv=none; b=i+nnzAGaHdbn9TE+YD6U4CogPP1VS2BjgbO43gLb9ykOTahZkshQAbev+zKnLUvuH8nqPB10ovOzq6tvzt4/B4Vom76Y1Je5pKcooyQJA2kDFr73Z/iF9kGWffhkgREvFOigW5aA8ExRwPNwVM2vqbxEGUeQmaJsLupyCvls978=
+	t=1774976636; cv=none; b=Lb2S+hlTF7r148AAY6Lp8MGRjKv2IThvMzX6V/F9joY4wk1pyDU3wl76R06h2NHwJbOxECANtP41bVxDGiDku144Jen3oOQ3e6rdm+UyhN/5qGGSn6+hL9cOQrGqoU3QMI2On1N68igoOmj6WLTM+ag0/VWDUQwFeDS2SfcDyGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974362; c=relaxed/simple;
-	bh=kKUN6QV1jPtylDBtZSjrGvVl+sVpuxkqzdK88krgvxM=;
+	s=arc-20240116; t=1774976636; c=relaxed/simple;
+	bh=bqObKNGDwopKEeMVBMUmEQYN1QtLMX6SNkr60eC5aXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWHUNNJC7yqx2gDYto3NvV+f62OmoPMHR/qBfRv5aTTtaWsKBsn1IFV+F8+ovCwq0k5RssniqOcS5kutAT9Rcwiw4JfTTNTULFRETp0ATUovvMW/1lFihqx4tvCKUatxNYztCyJP/Qvo++/oVLA/PceeXkL+ybD8YtFyQdhRniM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ad/INyEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BD4C19423;
-	Tue, 31 Mar 2026 16:26:00 +0000 (UTC)
+	 MIME-Version; b=uFcHhEiMznRcFzOC2cOSPHwnLX8CAqGgVd0Mg6ja2GlO/oUGSCRzxV71g0L2izTI/uMF9/UwFfj3TgMIrJOZmZoqNICdtvvDy88Q2YOFy74ZK4siQewk9mW0lWapttIhjlX04tOucHXMmUYQc2/ClzG/QCZ+XRa1fOwj3dEoFZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yv+YNRGi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F744C19423;
+	Tue, 31 Mar 2026 17:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974361;
-	bh=kKUN6QV1jPtylDBtZSjrGvVl+sVpuxkqzdK88krgvxM=;
+	s=korg; t=1774976636;
+	bh=bqObKNGDwopKEeMVBMUmEQYN1QtLMX6SNkr60eC5aXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ad/INyEsmZf3Mx65dDYfRn8IbLr7P9Si3ZsuixRNdBgrvVrJpwneL+86UeaAqUt8U
-	 jPzjBYjciIsJh1aEePgcPi8/70F4p6PHDkirzfjaQV55oJA9mL6Js21I22rlmItqsm
-	 7OYu11OSQ0S4yYRYDpsP39zYgqDPCjk1xNawazeM=
+	b=yv+YNRGiwd+jxHyORCbBGEJDSdS5LhbBPbaRCPtcsLIqtnZwa9TOwJLTEWQmnnRYU
+	 cxlZbhwTDP7iu4kaM/7SXyCYj4CHBOIKeUkoJo+Bvg8vi99f/TgA2eK9RG3qs5kyVl
+	 9Sq3+LjaM+T6jDdGNK/WiW5aH8lY8yPzwOGUR4EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sean Rhodes <sean@starlabs.systems>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/175] tcp: Use bhash2 for v4-mapped-v6 non-wildcard address.
+Subject: [PATCH 6.18 137/309] ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter
 Date: Tue, 31 Mar 2026 18:20:40 +0200
-Message-ID: <20260331161731.843736907@linuxfoundation.org>
+Message-ID: <20260331161758.518673163@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +68,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231512-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232395-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email]
-X-Rspamd-Queue-Id: 6FD1036CB00
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,starlabs.systems:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8285836F288
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Sean Rhodes <sean@starlabs.systems>
 
-[ Upstream commit 5e07e672412bed473122813ab35d4f7d42fd9635 ]
+[ Upstream commit a6919f2a01f8fbf807b015e5b26aecae7db8117b ]
 
-While checking port availability in bind() or listen(), we used only
-bhash for all v4-mapped-v6 addresses.  But there is no good reason not
-to use bhash2 for v4-mapped-v6 non-wildcard addresses.
+The initial StarFighter quirk fixed the runtime suspend pop by muting
+speakers in the shutup callback before power-down. Further hardware
+validation showed that the speaker path is controlled directly by LINE2
+EAPD on NID 0x1b together with GPIO2 for the external amplifier.
 
-Let's do it by returning true in inet_use_bhash2_on_bind().  Then, we
-also need to add a test in inet_bind2_bucket_match_addr_any() so that
-::ffff:X.X.X.X will match with 0.0.0.0.
+Replace the shutup-delay workaround with explicit sequencing of those
+controls at playback start and stop:
+- assert LINE2 EAPD and drive GPIO2 high on PREPARE
+- deassert LINE2 EAPD and drive GPIO2 low on CLEANUP
 
-Note that sk->sk_rcv_saddr is initialised for v4-mapped-v6 sk in
-__inet6_bind().
+This avoids the runtime suspend pop without a sleep, and also fixes pops
+around G3 entry and display-manager start that the original workaround
+did not cover.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e537dd15d0d4 ("udp: Fix wildcard bind conflict check when using hash2")
+Fixes: 1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
+Tested-by: Sean Rhodes <sean@starlabs.systems>
+Signed-off-by: Sean Rhodes <sean@starlabs.systems>
+Link: https://patch.msgid.link/20260315201127.33744-1-sean@starlabs.systems
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_connection_sock.c | 7 +++++--
- net/ipv4/inet_hashtables.c      | 3 ++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 38 ++++++++++++++++++++++++++-----
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index bd032ac2376ed..4a53c538dcaa1 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -157,8 +157,11 @@ static bool inet_use_bhash2_on_bind(const struct sock *sk)
- 	if (sk->sk_family == AF_INET6) {
- 		int addr_type = ipv6_addr_type(&sk->sk_v6_rcv_saddr);
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 38fe144e6238a..b7d2c6f8f73ce 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -1017,12 +1017,30 @@ static int alc269_resume(struct hda_codec *codec)
+ 	return 0;
+ }
  
--		return addr_type != IPV6_ADDR_ANY &&
--			addr_type != IPV6_ADDR_MAPPED;
-+		if (addr_type == IPV6_ADDR_ANY)
-+			return false;
+-#define STARLABS_STARFIGHTER_SHUTUP_DELAY_MS	30
++#define ALC233_STARFIGHTER_SPK_PIN	0x1b
++#define ALC233_STARFIGHTER_GPIO2	0x04
+ 
+-static void starlabs_starfighter_shutup(struct hda_codec *codec)
++static void alc233_starfighter_update_amp(struct hda_codec *codec, bool on)
+ {
+-	if (snd_hda_gen_shutup_speakers(codec))
+-		msleep(STARLABS_STARFIGHTER_SHUTUP_DELAY_MS);
++	snd_hda_codec_write(codec, ALC233_STARFIGHTER_SPK_PIN, 0,
++			    AC_VERB_SET_EAPD_BTLENABLE,
++			    on ? AC_EAPDBTL_EAPD : 0);
++	alc_update_gpio_data(codec, ALC233_STARFIGHTER_GPIO2, on);
++}
 +
-+		if (addr_type != IPV6_ADDR_MAPPED)
-+			return true;
- 	}
- #endif
- 	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 7292f70176251..ed253aa1f5d3f 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -845,7 +845,8 @@ bool inet_bind2_bucket_match_addr_any(const struct inet_bind2_bucket *tb, const
- 			return ipv6_addr_any(&tb->v6_rcv_saddr) ||
- 				ipv6_addr_v4mapped_any(&tb->v6_rcv_saddr);
++static void alc233_starfighter_pcm_hook(struct hda_pcm_stream *hinfo,
++					struct hda_codec *codec,
++					struct snd_pcm_substream *substream,
++					int action)
++{
++	switch (action) {
++	case HDA_GEN_PCM_ACT_PREPARE:
++		alc233_starfighter_update_amp(codec, true);
++		break;
++	case HDA_GEN_PCM_ACT_CLEANUP:
++		alc233_starfighter_update_amp(codec, false);
++		break;
++	}
+ }
  
--		return false;
-+		return ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr) &&
-+			tb->rcv_saddr == 0;
- 	}
+ static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
+@@ -1031,8 +1049,16 @@ static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
+ {
+ 	struct alc_spec *spec = codec->spec;
  
- 	if (sk->sk_family == AF_INET6)
+-	if (action == HDA_FIXUP_ACT_PRE_PROBE)
+-		spec->shutup = starlabs_starfighter_shutup;
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		spec->gpio_mask |= ALC233_STARFIGHTER_GPIO2;
++		spec->gpio_dir |= ALC233_STARFIGHTER_GPIO2;
++		spec->gpio_data &= ~ALC233_STARFIGHTER_GPIO2;
++		break;
++	case HDA_FIXUP_ACT_PROBE:
++		spec->gen.pcm_playback_hook = alc233_starfighter_pcm_hook;
++		break;
++	}
+ }
+ 
+ static void alc269_fixup_pincfg_no_hp_to_lineout(struct hda_codec *codec,
 -- 
-2.51.0
+2.53.0
 
 
 
