@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-231807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAU5OI//y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:31 +0200
+	id qNEsO7b9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE80936DF47
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E4836DA2B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 65405308C563
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F78831314AC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C6B42668E;
-	Tue, 31 Mar 2026 16:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCAE423A99;
+	Tue, 31 Mar 2026 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnmsrt4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8yQqUgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC592EE262;
-	Tue, 31 Mar 2026 16:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309FF4218AF;
+	Tue, 31 Mar 2026 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975120; cv=none; b=oUsHCDQXX0JJrQbewXh6AT3NFui5ANQST/6hkAzUpUJa1c99ejYbtKUd+ZsskOWC0Ckvvw5FcSQ9QmutKM+CiMxeznpCqfxoP61ZNcX9C/+vUCggy8ZlHyBHMgBCAAXxu19YziZqAM4DXZINlo51zUYsh04+ZBqCrAZNPHzrtRM=
+	t=1774975707; cv=none; b=NaxjfZo+CSv7VU+heSzL2RPiHRTh42N3fiIr7MiKSDmrXfnFxtlMrlPXCzMzY5zyn70j/gnp3juBEjGSHiMsWiIwYtfewN0mZ1laKKJJRlvHMesQNgbxY80RLR8s7SDNMSz2YuE95Z6xgm4wGyBQdUik6AkFu14uowcos3wBmcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975120; c=relaxed/simple;
-	bh=ey7HGYH8uQBPK/59c8Tvw8a0Ek3OF2QBho9l4yaSxIE=;
+	s=arc-20240116; t=1774975707; c=relaxed/simple;
+	bh=eU5dUlagvH6Y+Q/NPbM7xblN7GVCLdhW7imvJ178EVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CP+yQvCtHt10B1uhe6+2wfTaiANSMmdpMF9FuH/0JdhCs5jU2nHdUgb1FRMCsOeRZMZZyrPEqKz7sZhk8jaAX1agrq0Y558CGcyrIO+0wBBqtCUO+9uOtiERCbMaExk79DCmVZ3oSAa5Q543gIq6cHpSHcW3SekgqQicS27JuBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnmsrt4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9537BC19423;
-	Tue, 31 Mar 2026 16:38:39 +0000 (UTC)
+	 MIME-Version; b=CfH8znhyJbZHpVYXtKHwWLqOiCJ2rNTsmm2NIAAQ3TjRpKjdyciRNbvhiY2X8aMM52R/Y+gmNciR3fvsZadMLuobwDZXC3rX5kSo5IDTpHWCdvk9MAvmTUrO8wd2zoRG+Bi/8p7bpLOj/tTZDmE1NMrhr8R8Vz92P+bQpjzJJ80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8yQqUgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC843C19423;
+	Tue, 31 Mar 2026 16:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975119;
-	bh=ey7HGYH8uQBPK/59c8Tvw8a0Ek3OF2QBho9l4yaSxIE=;
+	s=korg; t=1774975707;
+	bh=eU5dUlagvH6Y+Q/NPbM7xblN7GVCLdhW7imvJ178EVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnmsrt4i58rOnJAyJ0I45ZSILGuvpUlOM+6P0ITDD3un9wv3PB9ISELfht2ExGlOH
-	 wz2q0mv3sCglqWPC5e/KsIcZgmqHE5wYnT9vsHPndiMbGIDL0uoiGOEgTbCesWzOjY
-	 z7+M337ptI3dIeQbJUuvqGQJvlA8PAF7GDtK6M2w=
+	b=X8yQqUgtSOZ/xZUo0xqM8rVsZtqk8PuYUSIeJ56goLxHRLEH68rAeUDfujf68z7xo
+	 iCpRDcbKR5wckrgoGDzE2tF7D5uaUyguq5oMRpa9NJV2niNTsxHYUxIz7T8Y9ot+QP
+	 aDGqHoUJ4BKtiPK/tVpS0jtqcWJ4U03V0fUT221c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Sebastian=20=C3=96sterlund?= <sebastian.osterlund@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Alexander Potapenko <glider@google.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 172/342] drm/xe/pf: Fix use-after-free in migration restore
+Subject: [PATCH 6.12 055/244] dma: swiotlb: add KMSAN annotations to swiotlb_bounce()
 Date: Tue, 31 Mar 2026 18:20:05 +0200
-Message-ID: <20260331161805.339615952@linuxfoundation.org>
+Message-ID: <20260331161743.725894896@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +64,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231807-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232035-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: DE80936DF47
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 93E4836DA2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Winiarski <michal.winiarski@intel.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 87997b6c6516e049cbaf2fc6810b213d587a06b1 ]
+[ Upstream commit 6f770b73d0311a5b099277653199bb6421c4fed2 ]
 
-When an error is returned from xe_sriov_pf_migration_restore_produce(),
-the data pointer is not set to NULL, which can trigger use-after-free
-in subsequent .write() calls.
-Set the pointer to NULL upon error to fix the problem.
+When a device performs DMA to a bounce buffer, KMSAN is unaware of
+the write and does not mark the data as initialized.  When
+swiotlb_bounce() later copies the bounce buffer back to the original
+buffer, memcpy propagates the uninitialized shadow to the original
+buffer, causing false positive uninit-value reports.
 
-Fixes: 1ed30397c0b92 ("drm/xe/pf: Add support for encap/decap of bitstream to/from packet")
-Reported-by: Sebastian Österlund <sebastian.osterlund@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7230
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260217154118.176902-1-michal.winiarski@intel.com
-Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
-(cherry picked from commit 4f53d8c6d23527d734fe3531d08e15cb170a0819)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fix this by calling kmsan_unpoison_memory() on the bounce buffer
+before copying it back in the DMA_FROM_DEVICE path, so that memcpy
+naturally propagates initialized shadow to the destination.
+
+Suggested-by: Alexander Potapenko <glider@google.com>
+Link: https://lore.kernel.org/CAG_fn=WUGta-paG1BgsGRoAR+fmuCgh3xo=R3XdzOt_-DqSdHw@mail.gmail.com/
+Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260315082750.2375581-1-syoshida@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_sriov_packet.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/dma/swiotlb.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sriov_packet.c b/drivers/gpu/drm/xe/xe_sriov_packet.c
-index bab9946968964..111877b6d44cf 100644
---- a/drivers/gpu/drm/xe/xe_sriov_packet.c
-+++ b/drivers/gpu/drm/xe/xe_sriov_packet.c
-@@ -342,6 +342,8 @@ ssize_t xe_sriov_packet_write_single(struct xe_device *xe, unsigned int vfid,
- 		ret = xe_sriov_pf_migration_restore_produce(xe, vfid, *data);
- 		if (ret) {
- 			xe_sriov_packet_free(*data);
-+			*data = NULL;
-+
- 			return ret;
- 		}
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index abcf3fa63a569..e2445b3af7468 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -30,6 +30,7 @@
+ #include <linux/gfp.h>
+ #include <linux/highmem.h>
+ #include <linux/io.h>
++#include <linux/kmsan-checks.h>
+ #include <linux/iommu-helper.h>
+ #include <linux/init.h>
+ #include <linux/memblock.h>
+@@ -903,10 +904,19 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
  
+ 			local_irq_save(flags);
+ 			page = pfn_to_page(pfn);
+-			if (dir == DMA_TO_DEVICE)
++			if (dir == DMA_TO_DEVICE) {
++				/*
++				 * Ideally, kmsan_check_highmem_page()
++				 * could be used here to detect infoleaks,
++				 * but callers may map uninitialized buffers
++				 * that will be written by the device,
++				 * causing false positives.
++				 */
+ 				memcpy_from_page(vaddr, page, offset, sz);
+-			else
++			} else {
++				kmsan_unpoison_memory(vaddr, sz);
+ 				memcpy_to_page(page, offset, vaddr, sz);
++			}
+ 			local_irq_restore(flags);
+ 
+ 			size -= sz;
+@@ -915,8 +925,15 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
+ 			offset = 0;
+ 		}
+ 	} else if (dir == DMA_TO_DEVICE) {
++		/*
++		 * Ideally, kmsan_check_memory() could be used here to detect
++		 * infoleaks (uninitialized data being sent to device), but
++		 * callers may map uninitialized buffers that will be written
++		 * by the device, causing false positives.
++		 */
+ 		memcpy(vaddr, phys_to_virt(orig_addr), size);
+ 	} else {
++		kmsan_unpoison_memory(vaddr, size);
+ 		memcpy(phys_to_virt(orig_addr), vaddr, size);
+ 	}
+ }
 -- 
-2.53.0
+2.51.0
 
 
 
