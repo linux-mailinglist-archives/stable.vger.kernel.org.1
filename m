@@ -1,187 +1,174 @@
-Return-Path: <stable+bounces-231403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNVqMXiwy2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:31:04 +0200
+	id oDYrF86vy2kpKAYAu9opvQ
+	(envelope-from <stable+bounces-231404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:28:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CAE368CAF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:31:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613C0368BAB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E657311A3B1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:24:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD80F30072B4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686A23D9034;
-	Tue, 31 Mar 2026 11:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FE63D1CB3;
+	Tue, 31 Mar 2026 11:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWKMLdxx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qy80zUCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5B63D34AD;
-	Tue, 31 Mar 2026 11:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BF73C3444;
+	Tue, 31 Mar 2026 11:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774956280; cv=none; b=jHV5LG+Iq3CqEjjwOMDAKAf26hn2sErCf5idKuZn+iRBTiClWeaQauoOLFLozgsUD4accY/r71hD1OUVbk4vsC1VzkPPluYySrBtBe7z6gNrIzvzvxur7fOzdHr6QvB/ElYiGGwopPaS9dtxD1Tn3gbV0pVEzGsKlXYdTJHFR4k=
+	t=1774956346; cv=none; b=Bs0pGgreMjdiUouZlUng15w/+ZSKOD8RrGW8ES5JshAKmiH3CWVLyZ/JUgTotw1m9pPTsz+ZhAZN1iqsN8zUk2ueGt++fBpvGXmZJGC3NzQzUFurgG1wPr3z+wy5aOf/aaqsrHL6n0B+vUZ9ad2pupPqYxIA6fA+pn1Z16e75PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774956280; c=relaxed/simple;
-	bh=G+HXWzbrzqhC4JhX7Pf60aGMXBlK3busY8Njcqfv5ds=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aED2+JjTxIpW8mTA0CZrO6AK4uT0HiE4wPEvYNBwqyronxDF7qKuCxi0D7yo3ylyMW8NjeAHKYJLXQKK0cLQ3mgTNE4vLGcRmmvZ1/o+qdVl11dadFi4pS/lwIQl+VE37G8kjOojiu/8T/Q5P/KlBX9g3M9Hs9+KFRKuUKg3f64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWKMLdxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625C6C2BCB9;
-	Tue, 31 Mar 2026 11:24:39 +0000 (UTC)
+	s=arc-20240116; t=1774956346; c=relaxed/simple;
+	bh=jORSOCWX0nrMPhxbjMkeh8vtFmMEij4sze4y9DNhN80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VEV2ZSgZSX3w2vTP/hkKzWx+KlqP5rFREpFTeO2sj+NQWIAqqkcSPtk0qEjCOyYjQT/FvmYq0eALfXh1GI432BhZb9zEjY0vJg+EblhwgAlWUyFMzVH5kVcM0M8rWNt1gp+0kr4hmKjDLgp2IXYAOXn26/i96DBEDgkl35kN69U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qy80zUCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5164C19423;
+	Tue, 31 Mar 2026 11:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774956279;
-	bh=G+HXWzbrzqhC4JhX7Pf60aGMXBlK3busY8Njcqfv5ds=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWKMLdxx+WNEUvE4fmQ7IKeNyutGNlR4VXq4lIGLJDn9lBAvLsQpV9glUSt6g3FQe
-	 vsrWNe1Io1RhS2Pwl6NSeRzVj53EMelpYt4VALBJXiPrbc3sE09qEl8OnFR9NhU93f
-	 Sv1Y43Xy3HMN9zsj3kl3awo9mgY8vuw80YeSZEoHkLRipzi5X/2nti1B/wDDrtWCvp
-	 GQ/KFoo7SziXtzK2W1aKfYZ6sxW5xecyp4CAopeENYtznoHtibTUYhSl/anTu4zxe7
-	 3ehJ1+1JMQU5USFnmrRw5B7tqhTINeAlcE4ZACW3Eo/ZxXcmU+AE3l4+4hNWCVprYD
-	 GsyG3WxeYVX+Q==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 93635F40068;
-	Tue, 31 Mar 2026 07:24:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 31 Mar 2026 07:24:38 -0400
-X-ME-Sender: <xms:9q7LaegPa3KHAwzxv2Q90UbPDxxJgNCwp4_6cFC4kIo5_Q4nCOOCag>
-    <xme:9q7LaedZJ92hGKW-xwUDJlwqA03eWrKJANuDJWszJ6meTCK0HJAVxjWxDPjnc9T0u
-    M4_onQaSgMNfYQT26dJsP0tpQRCA37le6IM2_wIaN8ruxiNZaRB6js>
-X-ME-Received: <xmr:9q7LaXLWpUu1qqn5RC-W5I--LtFT8vO35tTGH7OvPfq8CZPvbwbT3OPKTe1LYw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddtjecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    fhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcuufhh
-    uhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqnecugg
-    ftrfgrthhtvghrnhephfdujeefvdegkefffedvkeehkeekueevfedtleehgeetlefgfeev
-    veeukefhtdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduiedu
-    udeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuh
-    htvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinh
-    hgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhr
-    tghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprh
-    gtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrghssehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtghpthhtoh
-    eprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtohep
-    shgrthhhhigrnhgrrhgrhigrnhgrnhdrkhhuphhpuhhsfigrmhihsehlihhnuhigrdhinh
-    htvghlrdgtohhm
-X-ME-Proxy: <xmx:9q7LabktCfVZ1VeBunq3fhpztZF3VJLbu_Z44ir1EbeBVKa25TkOXA>
-    <xmx:9q7LafcdbIkG8NpvQXpV1Sfz3a0X4ui5zWFJNzvry0nL-iIqKSQkMA>
-    <xmx:9q7Lacx7Os7aF8PHs-Wj9ixihSjPAPdM0hp_byxzbtqxYF0sZubJKQ>
-    <xmx:9q7LaYII23ypaGHpDE3SyVkMBD1uYTQZxXGJqbd8TJZ-tyHR-UtjLQ>
-    <xmx:9q7LadvKcjpkN1T2a4Rr9JCtJ19A7WCSiCzh4Ml8BhcSzy0Pyt3-zvbW>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 07:24:38 -0400 (EDT)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-Date: Tue, 31 Mar 2026 12:24:30 +0100
-Message-ID: <20260331112430.71425-3-kas@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260331112430.71425-1-kas@kernel.org>
-References: <20260331112430.71425-1-kas@kernel.org>
+	s=k20201202; t=1774956346;
+	bh=jORSOCWX0nrMPhxbjMkeh8vtFmMEij4sze4y9DNhN80=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qy80zUCyyasjlQNDqM2qHi5WI8JmbEQTrY0jptUMM3Ss46ljCJZcfOx0+N2ZX/JE/
+	 3Y9Y3P2ND794Co2DrZkW/6fVTgEUplRRFHTRLuTo9uHfVQX2daMuq/Wudhkb4X2Dt/
+	 so82QoTbdVBIBB3zU23eFlAFOmzeI2Rq3oCs6e55LoYnBSwI0h0fT5wbNBBMSukL9o
+	 0PoNmXHcYSnrUjA9ui/TtQZsF5WwUyLkH9YVc1TSR/UKVSiR512m6sap3BSCo8nQFu
+	 BZz/mcYSJTETEKoaeFE0GWEKcTkVXQWr5dHxbWUKEW7D/bA4qw14RrhSsaZX9IVFCs
+	 dm8eCrLEM61PQ==
+Date: Tue, 31 Mar 2026 12:25:41 +0100
+From: Mark Brown <broonie@kernel.org>
+To: =?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Paul Olaru <paul.olaru@oss.nxp.com>,
+	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
+	sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: SOF: Don't allow pointer operations on
+ unconfigured streams
+Message-ID: <93b8231c-3b8d-4989-9b2d-f6489cb539d0@sirena.org.uk>
+References: <20260326-asoc-compress-tstamp-params-v1-1-3dc735b3d599@kernel.org>
+ <3cd96fe7-4575-40f9-a1f2-610fb1fac5c1@linux.intel.com>
+ <aca1sW6ca1QJBN9V@sirena.co.uk>
+ <e3c69a0a-5ed1-45f7-9180-9268bd671df0@linux.intel.com>
+ <bf12ef77-0d28-4454-a910-59bf915b5048@sirena.org.uk>
+ <3672d018-d7c2-4bdf-a130-60ed76a9e543@linux.intel.com>
+ <accf8fa2-72b2-48a5-bdb7-72784b199347@sirena.org.uk>
+ <8f37f7dc-bcac-4344-9532-b59eac7e1ffd@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="61VW4jLsrmvHKl/j"
+Content-Disposition: inline
+In-Reply-To: <8f37f7dc-bcac-4344-9532-b59eac7e1ffd@linux.intel.com>
+X-Cookie: I just had a NOSE JOB!!
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,zytor.com,intel.com,linux.intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231403-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231404-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,nxp.com,linux.dev,perex.cz,suse.com,oss.nxp.com,alsa-project.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 31CAE368CAF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: 613C0368BAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-According to x86 architecture rules, 32-bit operations zero-extend the
-result to 64 bits. The current implementation of handle_in() only masks
-the lower 32 bits, which preserves the upper 32 bits of RAX when a
-32-bit port IN instruction is emulated.
 
-Update handle_in() to zero out the entire RAX register when the I/O size
-is 4 bytes to ensure correct zero-extension. For smaller sizes (1 or 2
-bytes), continue to preserve the unaffected upper bits.
+--61VW4jLsrmvHKl/j
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/x86/coco/tdx/tdx.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+On Tue, Mar 31, 2026 at 08:12:25AM +0300, P=E9ter Ujfalusi wrote:
+> On 30/03/2026 23:11, Mark Brown wrote:
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 4d7f71d50122..b9b9a2d75119 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -703,8 +703,17 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 	 */
- 	success = !__tdx_hypercall(&args);
- 
--	/* Update part of the register affected by the emulated instruction */
--	regs->ax &= ~mask;
-+	/*
-+	 * Update part of the register affected by the emulated instruction.
-+	 *
-+	 * 32-bit operands generate a 32-bit result, zero-extended to a 64-bit
-+	 * result.
-+	 */
-+	if (size < 4)
-+		regs->ax &= ~mask;
-+	else
-+		regs->ax = 0;
-+
- 	if (success)
- 		regs->ax |= args.r11 & mask;
- 
--- 
-2.51.2
+> > Actually already we have a guard preventing userspace from doing an
+> > avail() when we're unconfigured but we do it after we've called down
+> > into the driver which is less than ideal.  I think that's because we
+> > also check for XRUN and the availability check might cause us to notice
+> > that we're in a bad state for that.
 
+> I don't see how the avail path checks for XRUN and if the drivers
+> supposed to do that, I'm not even sure if XRUN is possible with compress..
+
+Yeah, I was hoping there was something in driver code there but didn't
+actually check.  You should at least be able to get a buffer overrun
+with compressed streams, and even if I'd expect most things to fill
+silence you can undderrun which would be bad for applications like music
+playback.
+
+> I did noted that the avail have the state check reversed, making it
+> ineffective.
+
+> The other point is that any return code from the driver's pointer
+> callback is ignored by the core, the return value of
+> stream->ops->pointer() is not even captured, it could be void.
+> Looks like a design choice, but I cannot say.
+
+I suppose it's easier to have the error reporting in the drivers in case
+you want it later.
+
+> fwiw, the same check should be added to sound/soc/qcom/qdsp6/q6apm-dai.c
+> as it does div with prtd->pcm_size (q6apm_dai_compr_pointer), which is
+> only initialized in set_params.
+
+Ack, I hadn't looked at any other drivers.  I was actually going to send
+out the core patch but even so some defence in depth would make me
+happier.
+
+--61VW4jLsrmvHKl/j
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnLrzQACgkQJNaLcl1U
+h9CYvwf9H0zXjZmaoJ1zuEq28CSpYjvp63hNyTMxFP9+rRvciHqjpFj3Bkn56Od1
++cAT/zU44E3avfS/pqolO1JlW9Dzz5OsR4lHnCrw5HY63h+9Jcwuwtm5Y+aABsXx
+XTkWjG8+yBzTpjJ617ZcfPaYirOavlEalRQWBQVtXvYwjinnN+ow94wbGEl/uVcx
+xiIa/9FFF+pJI6Cdn/4hWYE/N7Zt48IadCLD5VMafzIWvYK4XOjT0dkt9g5aiZTY
+Hx7vprwzBs2XniBQZOgxQ2mRy5CECvhMqIfP+RbEL2Afn9ZktUM8RAecop5W+YHW
+HZyZYjlc4/1vEYKHigK0f38mon+flA==
+=CmUO
+-----END PGP SIGNATURE-----
+
+--61VW4jLsrmvHKl/j--
 
