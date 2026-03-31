@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-231660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEPjKuv9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:31 +0200
+	id qCN7CRb7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE8A36DAA8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E134A36D314
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4D15D30E98C8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:32:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 097D23123B40
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED76B402B9B;
-	Tue, 31 Mar 2026 16:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBBF425CEF;
+	Tue, 31 Mar 2026 16:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYO7i40/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbeW880l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02003F23DD;
-	Tue, 31 Mar 2026 16:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4275D4218B4;
+	Tue, 31 Mar 2026 16:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974739; cv=none; b=dDHFmdHvP14x2l+dVnOO9q8GOOr9f8qqZVj1CxoO694ekaO58AH4ltiIPXD1EPtalKjfLOYBL50SqE0EVInLFqPH3PKJw+UOU5tmdnuVgA5MabBd7R5Pags9iNSVQ+BBzQslFkArdoEHL7VM0AiHXyYM4ZOFprut+fzjjdBglLk=
+	t=1774974768; cv=none; b=M/DkcEtTR7rchUcv/i9fXF6I7S0Ar/78au3VG1WJhzNRcWSzyo1Zhm+bAY0id8w52Tutpfais/zXEsfpLyhw/hfrPnLzZXvBd9ParD4VOoQyXJf+oXx2eR1Hp+omExJH58S53+UFmrq8WuvYceEJdjYpm92ebhW+iQohns2EhPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974739; c=relaxed/simple;
-	bh=84DTGfouUY06Thgd7U1hKj+EzUDBljr+qsaZtrFYEGI=;
+	s=arc-20240116; t=1774974768; c=relaxed/simple;
+	bh=JCaSCCxLZFgjTHcM0KQlO1PHesIcKYdf86Dna93d02I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsaVk7cWZ0vUdzNycmR2UELMJsnwyq1o/pfBe6UZ5qLGKO10/R0jqETgAeR3lz+uJcyvjD3XErlglFMLnvTQ7sxeCfsQ/aOvnB/CZwfu91wwmaeFf8fAKJfbjgdf0aE0ObIQb1jXjRAwtFu/yvbMT4Uo1jZe4ztCJM583dECbKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYO7i40/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454B4C2BCB2;
-	Tue, 31 Mar 2026 16:32:19 +0000 (UTC)
+	 MIME-Version; b=Ycdi6KRQ+PwK51mDm9ZdxPzc4I1rzx8GH7M85vrPQQY5KRUO3fWuLnUU2rv1VESYIltwI7cTl7lkI1/edF1+7USFGR2ZSmWYDfGDOgQ05WI/PB9OKFGRkI95M3mYKoc/BwfXHVjXdC+1i92iC2Mti1knbK7ShJiA5IqUQZeBcKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbeW880l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC4BC19423;
+	Tue, 31 Mar 2026 16:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974739;
-	bh=84DTGfouUY06Thgd7U1hKj+EzUDBljr+qsaZtrFYEGI=;
+	s=korg; t=1774974768;
+	bh=JCaSCCxLZFgjTHcM0KQlO1PHesIcKYdf86Dna93d02I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYO7i40/jFPXFgl8h+n5IVcziaw2dbsgULSdirLK0b9vrMvE6CQFpXGVr6SJdb0Kc
-	 7evf+D3aUbYX15Aznxpd4fCwqeGAe1fSfOxQel5s5Ch1FTzuV1GgX0bRAHGMvPfIwY
-	 6tP3rPUhdYNkJUStb0uonkKbb3a+Wuzt6ZZDTqaY=
+	b=wbeW880lqVLdjtvvo1DLWauUFXf+Iqc7+rsK/LXvGcPiitdNJ6FG42XljjS3QknoH
+	 +qcq4BxlU5l/MtPQ0FUu6B9vUigbuIKxAuknuDFGj03Dtw2ZZoZojwbU8y4nDwgfWX
+	 LVjYJdd3p+UifF7sJrUFJs4DgfTlPciTo4HCtzlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
 	Yonghong Song <yonghong.song@linux.dev>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 018/342] bpf: Fix exception exit lock checking for subprogs
-Date: Tue, 31 Mar 2026 18:17:31 +0200
-Message-ID: <20260331161759.582564163@linuxfoundation.org>
+Subject: [PATCH 6.19 019/342] bpf: Fix undefined behavior in interpreter sdiv/smod for INT_MIN
+Date: Tue, 31 Mar 2026 18:17:32 +0200
+Message-ID: <20260331161759.619343083@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -76,8 +76,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231660-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,meta.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231671-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -87,14 +87,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.994];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email]
-X-Rspamd-Queue-Id: ADE8A36DAA8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E134A36D314
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,100 +102,102 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 6c2128505f61b504c79a20b89596feba61388112 ]
+[ Upstream commit c77b30bd1dcb61f66c640ff7d2757816210c7cb0 ]
 
-process_bpf_exit_full() passes check_lock = !curframe to
-check_resource_leak(), which is false in cases when bpf_throw() is
-called from a static subprog. This makes check_resource_leak() to skip
-validation of active_rcu_locks, active_preempt_locks, and
-active_irq_id on exception exits from subprogs.
+The BPF interpreter's signed 32-bit division and modulo handlers use
+the kernel abs() macro on s32 operands. The abs() macro documentation
+(include/linux/math.h) explicitly states the result is undefined when
+the input is the type minimum. When DST contains S32_MIN (0x80000000),
+abs((s32)DST) triggers undefined behavior and returns S32_MIN unchanged
+on arm64/x86. This value is then sign-extended to u64 as
+0xFFFFFFFF80000000, causing do_div() to compute the wrong result.
 
-At runtime bpf_throw() unwinds the stack via ORC without releasing any
-user-acquired locks, which may cause various issues as the result.
+The verifier's abstract interpretation (scalar32_min_max_sdiv) computes
+the mathematically correct result for range tracking, creating a
+verifier/interpreter mismatch that can be exploited for out-of-bounds
+map value access.
 
-Fix by setting check_lock = true for exception exits regardless of
-curframe, since exceptions bypass all intermediate frame
-cleanup. Update the error message prefix to "bpf_throw" for exception
-exits to distinguish them from normal BPF_EXIT.
+Introduce abs_s32() which handles S32_MIN correctly by casting to u32
+before negating, avoiding signed overflow entirely. Replace all 8
+abs((s32)...) call sites in the interpreter's sdiv32/smod32 handlers.
 
-Fix reject_subprog_with_rcu_read_lock test which was previously
-passing for the wrong reason. Test program returned directly from the
-subprog call without closing the RCU section, so the error was
-triggered by the unclosed RCU lock on normal exit, not by
-bpf_throw. Update __msg annotations for affected tests to match the
-new "bpf_throw" error prefix.
+s32 is the only affected case -- the s64 division/modulo handlers do
+not use abs().
 
-The spin_lock case is not affected because they are already checked [1]
-at the call site in do_check_insn() before bpf_throw can run.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/bpf/verifier.c?h=v7.0-rc4#n21098
-
-Assisted-by: Claude:claude-opus-4-6
-Fixes: f18b03fabaa9 ("bpf: Implement BPF exceptions")
-Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
 Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260320000809.643798-1-ihor.solodrai@linux.dev
+Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Link: https://lore.kernel.org/r/20260311011116.2108005-2-qguanni@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                               | 3 ++-
- tools/testing/selftests/bpf/progs/exceptions_fail.c | 9 ++++++---
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ kernel/bpf/core.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index bf721a1274799..0160c6c28af1f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -20319,7 +20319,8 @@ static int process_bpf_exit_full(struct bpf_verifier_env *env,
- 	 * state when it exits.
- 	 */
- 	int err = check_resource_leak(env, exception_exit,
--				      !env->cur_state->curframe,
-+				      exception_exit || !env->cur_state->curframe,
-+				      exception_exit ? "bpf_throw" :
- 				      "BPF_EXIT instruction in main prog");
- 	if (err)
- 		return err;
-diff --git a/tools/testing/selftests/bpf/progs/exceptions_fail.c b/tools/testing/selftests/bpf/progs/exceptions_fail.c
-index 8a0fdff899271..d7f1c492e3dd3 100644
---- a/tools/testing/selftests/bpf/progs/exceptions_fail.c
-+++ b/tools/testing/selftests/bpf/progs/exceptions_fail.c
-@@ -8,6 +8,7 @@
- #include "bpf_experimental.h"
- 
- extern void bpf_rcu_read_lock(void) __ksym;
-+extern void bpf_rcu_read_unlock(void) __ksym;
- 
- #define private(name) SEC(".bss." #name) __hidden __attribute__((aligned(8)))
- 
-@@ -131,7 +132,7 @@ int reject_subprog_with_lock(void *ctx)
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 1b32333d8f8c6..5a56bc2ab900d 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1754,6 +1754,12 @@ bool bpf_opcode_in_insntable(u8 code)
  }
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_rcu_read_lock-ed region")
-+__failure __msg("bpf_throw cannot be used inside bpf_rcu_read_lock-ed region")
- int reject_with_rcu_read_lock(void *ctx)
- {
- 	bpf_rcu_read_lock();
-@@ -147,11 +148,13 @@ __noinline static int throwing_subprog(struct __sk_buff *ctx)
- }
- 
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_rcu_read_lock-ed region")
-+__failure __msg("bpf_throw cannot be used inside bpf_rcu_read_lock-ed region")
- int reject_subprog_with_rcu_read_lock(void *ctx)
- {
- 	bpf_rcu_read_lock();
--	return throwing_subprog(ctx);
-+	throwing_subprog(ctx);
-+	bpf_rcu_read_unlock();
-+	return 0;
- }
- 
- static bool rbless(struct bpf_rb_node *n1, const struct bpf_rb_node *n2)
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
++/* Absolute value of s32 without undefined behavior for S32_MIN */
++static u32 abs_s32(s32 x)
++{
++	return x >= 0 ? (u32)x : -(u32)x;
++}
++
+ /**
+  *	___bpf_prog_run - run eBPF program on a given context
+  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
+@@ -1918,8 +1924,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = do_div(AX, (u32) SRC);
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			AX = do_div(AX, abs((s32)SRC));
++			AX = abs_s32((s32)DST);
++			AX = do_div(AX, abs_s32((s32)SRC));
+ 			if ((s32)DST < 0)
+ 				DST = (u32)-AX;
+ 			else
+@@ -1946,8 +1952,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = do_div(AX, (u32) IMM);
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			AX = do_div(AX, abs((s32)IMM));
++			AX = abs_s32((s32)DST);
++			AX = do_div(AX, abs_s32((s32)IMM));
+ 			if ((s32)DST < 0)
+ 				DST = (u32)-AX;
+ 			else
+@@ -1973,8 +1979,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = (u32) AX;
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			do_div(AX, abs((s32)SRC));
++			AX = abs_s32((s32)DST);
++			do_div(AX, abs_s32((s32)SRC));
+ 			if (((s32)DST < 0) == ((s32)SRC < 0))
+ 				DST = (u32)AX;
+ 			else
+@@ -2000,8 +2006,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = (u32) AX;
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			do_div(AX, abs((s32)IMM));
++			AX = abs_s32((s32)DST);
++			do_div(AX, abs_s32((s32)IMM));
+ 			if (((s32)DST < 0) == ((s32)IMM < 0))
+ 				DST = (u32)AX;
+ 			else
 -- 
 2.51.0
 
