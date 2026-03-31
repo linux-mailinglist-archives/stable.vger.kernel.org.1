@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPm7CRn8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:45 +0200
+	id QFFyOL4HzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E77636D577
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6CE36F33D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43CA030D09B0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E8423314CA2D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DB13E9299;
-	Tue, 31 Mar 2026 16:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BA830AD00;
+	Tue, 31 Mar 2026 17:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX0igg3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5MnrC1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374B43D8114;
-	Tue, 31 Mar 2026 16:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9D5303A07;
+	Tue, 31 Mar 2026 17:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975501; cv=none; b=J1USFr9a6tCPoyG1Xw9qGufpvQkgZ3/yYot2t8PyuU+ritT/ScXegGMXv4u4zGCLeczqoIIZFhuK6j6lIDUlDpHxlFSkP91koclVhXfmXDGA4xxFaickd3L/4Qh7MViDgdVNEoKGQrs6RXIDVchVz4FGmCEeFwFLz01dq6LQF/8=
+	t=1774976843; cv=none; b=THbh0gqt1Eidh8L0kReCQmdm2Ttjo+Y/BjofV3bZA1e9vSBCzDqe1JJEzYVfQY/Id3YduKopdEqqxS9XF0CxEDoi3HU3fPBtbue0RxgGjakJEZQd3wBFXQovusxBOPOG6FXviNnKwAcqGDL70P4pBRUGq4bmK1kXhLq2uo7D9JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975501; c=relaxed/simple;
-	bh=5xsLBkY0hiTjYwY2SskTFmZfwU2SubdMFQfbl6WPddc=;
+	s=arc-20240116; t=1774976843; c=relaxed/simple;
+	bh=M6XN84OZBkXXdnpxuI7/nDZy7RQudNqIYf3R8QelJKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAcNWADLHkA77a04AKWPdQj3KPCeBUWl9QqRH+ZU1sOHxDA4JIiCbmAcdAx/uTRPP8halgnhfAAaxqjxaRAQ+TVZFoXc97Kuy2xboDyaf5442qgfKBmljOvzSBIAX0p6pBc+ycItlFog70CCCA4UyB2TKq0zen5ZQRyjNr3jFXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MX0igg3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1567C19423;
-	Tue, 31 Mar 2026 16:45:00 +0000 (UTC)
+	 MIME-Version; b=Pi0sZFuZTbdFQJ/+RuQ6PN3Ng0WEbaTKhM16PKiiSJDjq+ba/ELhMRhMxquGOG9Na0EmzUzvX1Uk604ofoyBV2Kb1Tjew7kQQowAO6LV1CkD3wRZmhYEr8s6xp1wmJ8j3RnumFE7rh6CJPQzl0Dux74mcEfKiSCFgE0jf51ZNwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5MnrC1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759FFC19423;
+	Tue, 31 Mar 2026 17:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975501;
-	bh=5xsLBkY0hiTjYwY2SskTFmZfwU2SubdMFQfbl6WPddc=;
+	s=korg; t=1774976843;
+	bh=M6XN84OZBkXXdnpxuI7/nDZy7RQudNqIYf3R8QelJKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MX0igg3+XHQ68tfJ7TUQ78uH2SIZwLS3ShHbDlXM64ufRgAQLijvD9iI+vi0H7A5X
-	 JE9P2eiIzRllzcAqiT1Mni7TSquSRuKqB46vUDAKszRmhghHrv1/J1eUQjTXw0aAMO
-	 gGb/Xk2B1SSVZHiSavv7Fk4KhlALCfosQxZfAP7k=
+	b=f5MnrC1rrzDK2RL2BEa7EByWM97Pm95OmvagayLakMyg+56GkFs4PvwefLZ/Z+qfR
+	 X37FbkM2wc/5TF+/taClz5T0I/YdjSXwKp2v4RS046YpEbjNrXYTET4cKFuj/a3vC/
+	 b5KJk4Wp4e1L9m0BAgamY7cFe4E/Vt3KNl9yCAfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LUO Haowen <luo-hw@foxmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 320/342] dmaengine: dw-edma: Fix multiple times setting of the CYCLE_STATE and CYCLE_BIT bits for HDMA.
+	hongao <hongao@uniontech.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.18 250/309] xfs: scrub: unlock dquot before early return in quota scrub
 Date: Tue, 31 Mar 2026 18:22:33 +0200
-Message-ID: <20260331161810.691431711@linuxfoundation.org>
+Message-ID: <20260331161802.775369447@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,foxmail.com,nxp.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231956-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-232475-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,foxmail.com:email,gxmicro.cn:email]
-X-Rspamd-Queue-Id: 8E77636D577
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,uniontech.com:email]
+X-Rspamd-Queue-Id: 1F6CE36F33D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LUO Haowen <luo-hw@foxmail.com>
+From: hongao <hongao@uniontech.com>
 
-[ Upstream commit 3f63297ff61a994b99d710dcb6dbde41c4003233 ]
+commit 268378b6ad20569af0d1957992de1c8b16c6e900 upstream.
 
-Others have submitted this issue (https://lore.kernel.org/dmaengine/
-20240722030405.3385-1-zhengdongxiong@gxmicro.cn/),
-but it has not been fixed yet. Therefore, more supplementary information
-is provided here.
+xchk_quota_item can return early after calling xchk_fblock_process_error.
+When that helper returns false, the function returned immediately without
+dropping dq->q_qlock, which can leave the dquot lock held and risk lock
+leaks or deadlocks in later quota operations.
 
-As mentioned in the "PCS-CCS-CB-TCB" Producer-Consumer Synchronization of
-"DesignWare Cores PCI Express Controller Databook, version 6.00a":
+Fix this by unlocking dq->q_qlock before the early return.
 
-1. The Consumer CYCLE_STATE (CCS) bit in the register only needs to be
-initialized once; the value will update automatically to be
-~CYCLE_BIT (CB) in the next chunk.
-2. The Consumer CYCLE_BIT bit in the register is loaded from the LL
-element and tested against CCS. When CB = CCS, the data transfer is
-executed. Otherwise not.
-
-The current logic sets customer (HDMA) CS and CB bits to 1 in each chunk
-while setting the producer (software) CB of odd chunks to 0 and even
-chunks to 1 in the linked list. This is leading to a mismatch between
-the producer CB and consumer CS bits.
-
-This issue can be reproduced by setting the transmission data size to
-exceed one chunk. By the way, in the EDMA using the same "PCS-CCS-CB-TCB"
-mechanism, the CS bit is only initialized once and this issue was not
-found. Refer to
-drivers/dma/dw-edma/dw-edma-v0-core.c:dw_edma_v0_core_start.
-
-So fix this issue by initializing the CYCLE_STATE and CYCLE_BIT bits
-only once.
-
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-Signed-off-by: LUO Haowen <luo-hw@foxmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/tencent_CB11AA9F3920C1911AF7477A9BD8EFE0AD05@qq.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: hongao <hongao@uniontech.com>
+Fixes: 7d1f0e167a067e ("xfs: check the ondisk space mapping behind a dquot")
+Cc: <stable@vger.kernel.org> # v6.8
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/xfs/scrub/quota.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index e3f8db4fe909a..ce8f7254bab21 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -252,10 +252,10 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 			  lower_32_bits(chunk->ll_region.paddr));
- 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
- 			  upper_32_bits(chunk->ll_region.paddr));
-+		/* Set consumer cycle */
-+		SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
-+			HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
- 	}
--	/* Set consumer cycle */
--	SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
--		  HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
+--- a/fs/xfs/scrub/quota.c
++++ b/fs/xfs/scrub/quota.c
+@@ -174,8 +174,10 @@ xchk_quota_item(
  
- 	dw_hdma_v0_sync_ll_data(chunk);
+ 	error = xchk_quota_item_bmap(sc, dq, offset);
+ 	xchk_iunlock(sc, XFS_ILOCK_SHARED);
+-	if (!xchk_fblock_process_error(sc, XFS_DATA_FORK, offset, &error))
++	if (!xchk_fblock_process_error(sc, XFS_DATA_FORK, offset, &error)) {
++		mutex_unlock(&dq->q_qlock);
+ 		return error;
++	}
  
--- 
-2.53.0
-
+ 	/*
+ 	 * Warn if the hard limits are larger than the fs.
 
 
 
