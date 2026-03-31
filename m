@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-231589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPWoBUz4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:32 +0200
+	id wD1FJuIBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-231919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB2A36CDD7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EED5436E73F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9555830D660C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8455E32B64CD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF2B421A06;
-	Tue, 31 Mar 2026 16:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B96E425CD2;
+	Tue, 31 Mar 2026 16:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKV6BKm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPYz0wTH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33793FADEE;
-	Tue, 31 Mar 2026 16:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA6F423149;
+	Tue, 31 Mar 2026 16:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974560; cv=none; b=o5Y0TCI3lmmSsrhNY+xmY3p4+13LzbwrQMcKwTWP2NKqCB6i/Yq+iwzy0EoJtGzjAcOlw346zIZic140KJqXwdjsYdf0VWRoK29b+x0JTL3YqFqjjK+UnJb6aovZaytp2UEI1ek6gKvCTvPuy7gCWBfkW/M6jWLAqnm5xXl6BDY=
+	t=1774975406; cv=none; b=aYUK7RnGH+UssbyGhZdPrN9N/X0f9Wpx15xJ9P0yJTKY3G1EVq6wAANfTgKvZ695fDhnmzMWcbX2nfZJO/XBWOTKej4Wg5oUl5Kim3wFR74SuANbtxHKO7GQuRjdEC5s8N+KmT52n2W85Ic1euNF9MtYQlsapL9US2P3698oZy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974560; c=relaxed/simple;
-	bh=3sTeN6nRTIiUBiWRXR6tZlBlf+KWQdATnVdSoe2waAk=;
+	s=arc-20240116; t=1774975406; c=relaxed/simple;
+	bh=8Wvb67knUyY9rmdupl8FfoTbFDcrgQ+FeGcDVveEtyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qf0FceyCZuwqakhFotzlbyksKmBdRKqbxrxhNCM2cRC1OVwfPFx07d/3b+o+1hiINMCicaL/YXzTX41K6MAmUeQDeUY/O9IRQ89UggBuooTeJObEp/elxr40CGOaCGBIIbeAo4xiVyLMTw3b8s1CZaMwiBTUhVySrPL/B/vIy3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKV6BKm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BD5C19423;
-	Tue, 31 Mar 2026 16:29:20 +0000 (UTC)
+	 MIME-Version; b=DBVPvs5d9cN8MrZJM3awHF7GhRyI5suC1xjWGxGML8oK19KwrIP3o2F84Kjh3rJpyPSMjDtQ0uZbpHSa//mhOVvjduHBM/LvGfG/B/aFHXlQhl8kY35DxgJVTba7h/KYxYGws8+bu+Mji+uStVqM0hQ9vZ3LuHvJVGECz/ExSgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPYz0wTH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DF9C19423;
+	Tue, 31 Mar 2026 16:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974560;
-	bh=3sTeN6nRTIiUBiWRXR6tZlBlf+KWQdATnVdSoe2waAk=;
+	s=korg; t=1774975406;
+	bh=8Wvb67knUyY9rmdupl8FfoTbFDcrgQ+FeGcDVveEtyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKV6BKm2+a8d5Sehy3cV1A03djZMidcrl73u4cT3NAhC3nZBhNPSeRBy7LTYgtgvc
-	 l98LkaMedUVUiHPnmZpXARlJC26Lm6/fgaxuXiaVtL0iVwnqX1wf334CHoxIop+F5d
-	 ZjGKV+q19QOGsm8nPOp76jd4mvwGvX9w5rVeGXBc=
+	b=yPYz0wTHyFmvbR/TnOX/Ytfn4ReyRH8rW7VGeZZUXDrh1zhBsZ5lI/t9iW2BEtvR3
+	 CJYH41veBcgGdPrgWYvknQ5Tvce+5omq+gMaPoPqhNtV+11O+EluxG2AwDx04BZQU9
+	 x1ljFTlKyhfd2wcHnCv1tUS04/cngAAkNcJXRETU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Free Ekanayaka <free.ekanayaka@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 132/175] ext4: fix fsync(2) for nojournal mode
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.19 283/342] xfs: stop reclaim before pushing AIL during unmount
 Date: Tue, 31 Mar 2026 18:21:56 +0200
-Message-ID: <20260331161734.636100548@linuxfoundation.org>
+Message-ID: <20260331161809.353030713@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,87 +76,84 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231589-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231919-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email]
-X-Rspamd-Queue-Id: 8AB2A36CDD7
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: EED5436E73F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
+commit 4f24a767e3d64a5f58c595b5c29b6063a201f1e3 upstream.
 
-When inode metadata is changed, we sometimes just call
-ext4_mark_inode_dirty() to track modified metadata. This copies inode
-metadata into block buffer which is enough when we are journalling
-metadata. However when we are running in nojournal mode we currently
-fail to write the dirtied inode buffer during fsync(2) because the inode
-is not marked as dirty. Use explicit ext4_write_inode() call to make
-sure the inode table buffer is written to the disk. This is a band aid
-solution but proper solution requires a much larger rewrite including
-changes in metadata bh tracking infrastructure.
+The unmount sequence in xfs_unmount_flush_inodes() pushed the AIL while
+background reclaim and inodegc are still running. This is broken
+independently of any use-after-free issues - background reclaim and
+inodegc should not be running while the AIL is being pushed during
+unmount, as inodegc can dirty and insert inodes into the AIL during the
+flush, and background reclaim can race to abort and free dirty inodes.
 
-Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
-Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Reorder xfs_unmount_flush_inodes() to stop inodegc and cancel background
+reclaim before pushing the AIL. Stop inodegc before cancelling
+m_reclaim_work because the inodegc worker can re-queue m_reclaim_work
+via xfs_inodegc_set_reclaimable.
+
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: stable@vger.kernel.org # v5.9
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsync.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_mount.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/fsync.c
-+++ b/fs/ext4/fsync.c
-@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
- 				int datasync, bool *needs_barrier)
- {
- 	struct inode *inode = file->f_inode;
-+	struct writeback_control wbc = {
-+		.sync_mode = WB_SYNC_ALL,
-+		.nr_to_write = 0,
-+	};
- 	int ret;
+--- a/fs/xfs/xfs_mount.c
++++ b/fs/xfs/xfs_mount.c
+@@ -607,8 +607,9 @@ xfs_unmount_check(
+  * have been retrying in the background.  This will prevent never-ending
+  * retries in AIL pushing from hanging the unmount.
+  *
+- * Finally, we can push the AIL to clean all the remaining dirty objects, then
+- * reclaim the remaining inodes that are still in memory at this point in time.
++ * Stop inodegc and background reclaim before pushing the AIL so that they
++ * are not running while the AIL is being flushed. Then push the AIL to
++ * clean all the remaining dirty objects and reclaim the remaining inodes.
+  */
+ static void
+ xfs_unmount_flush_inodes(
+@@ -620,9 +621,9 @@ xfs_unmount_flush_inodes(
  
- 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
--	if (!ret)
--		ret = ext4_sync_parent(inode);
-+	if (ret)
-+		return ret;
-+
-+	/* Force writeout of inode table buffer to disk */
-+	ret = ext4_write_inode(inode, &wbc);
-+	if (ret)
-+		return ret;
-+
-+	ret = ext4_sync_parent(inode);
-+
- 	if (test_opt(inode->i_sb, BARRIER))
- 		*needs_barrier = true;
+ 	xfs_set_unmounting(mp);
  
+-	xfs_ail_push_all_sync(mp->m_ail);
+ 	xfs_inodegc_stop(mp);
+ 	cancel_delayed_work_sync(&mp->m_reclaim_work);
++	xfs_ail_push_all_sync(mp->m_ail);
+ 	xfs_reclaim_inodes(mp);
+ 	xfs_health_unmount(mp);
+ }
 
 
 
