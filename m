@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-232256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBh2Hn/+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:59 +0200
+	id 2C/WHN75y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B5636DC6F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0641D36D0DB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C86473087E8B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D17903048CAD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BD3423A7C;
-	Tue, 31 Mar 2026 16:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF035425CC9;
+	Tue, 31 Mar 2026 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFQXsg3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWbZJ9pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0BC413225;
-	Tue, 31 Mar 2026 16:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEF9402B9B;
+	Tue, 31 Mar 2026 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976280; cv=none; b=l42fTymG/phU7SWtKMJZgRPRSEXliJ+FzWXdCBnGwNP4ZJj4jhHU8yMKQt7D6O58skIv3qygBGtZ1Nu08su/IUDmAL9Cc0LT/oXTXTkm48y85q7MLv5y52XJH7g0gD1VESPZCKjxhc3DkJ55PYVeDst+UNCuGg/bC5CM4GVJ8yY=
+	t=1774974938; cv=none; b=F2NnbT2E0hk9ZNzQ45po4jgvPE+XUJfel9ggtkFV5ejcvaeG527+5ZcRDMHgypOsyCJ3u8VUt24SWcMRysNeEq/Nu+EF46HFqzJrjQlMYb3YnrvgPK/9EdmJ9/iw63qCIixb9Hbw44UccgZJaKXmD0dPc3pOuM911BpOdLFa84Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976280; c=relaxed/simple;
-	bh=uMT6AlfBWmZDkJySJC33Mdc2sZmmD/a/VHKwijdapsM=;
+	s=arc-20240116; t=1774974938; c=relaxed/simple;
+	bh=lu3pF75Z3UmUOT/4rSSVSgr0OVbM/oDsrEjgdqPTWWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qdFIqm6LlT80erOTxh2HnOkJg2bcusp0HB4kjwkjedlCeWWfPD/fkU2RMy2DgBc2fCHZucO91aZ3tsmnQwSLA2Kz4TwlmgZe36wYxrPMJ6FuiYPFdxEp6rrr8Xws1zgelVLY3l9LtaVBKX93e/T9W8jhrTG97UgCjB5o1/LGhss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFQXsg3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6F9C19424;
-	Tue, 31 Mar 2026 16:57:59 +0000 (UTC)
+	 MIME-Version; b=mbIGYooFpOCEQp+xqMsYm32SPYJtDRA+qbC/vSxKUTeGuGsHzeRS1SSlRE+LilTxVaxFJR+BvZeF/gWbZfybaW34k5534MvXmMQ3wU9v+a0Trt8sWjU9BZYpnLfC/z2Xkv6bDUkFRsKxZfoVhPtooyyyrqXdZBslVJ6Bbp55FYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWbZJ9pv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30923C19423;
+	Tue, 31 Mar 2026 16:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976279;
-	bh=uMT6AlfBWmZDkJySJC33Mdc2sZmmD/a/VHKwijdapsM=;
+	s=korg; t=1774974938;
+	bh=lu3pF75Z3UmUOT/4rSSVSgr0OVbM/oDsrEjgdqPTWWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFQXsg3yI2JIQrCQo1V76bSUlN2oPL7Ts8idTnnJxQ87rvp87sc0BLu6RiH066Ep2
-	 +Kul93QQXLaqwc1DOn5Eaww9wh+8PsaDiOwI0y2tcOnXmciNxvfZ/+lXJYKhGMPefn
-	 SsDMxWHB8nvviP6jU3NEJSrJ9zcuxTnQQb/PUbEg=
+	b=UWbZJ9pvgz8D1ROyPOuLAhHc5Hx7+mmC5DKJD13BY+/qzQIaUjX1R8N4Hq248+qx2
+	 9im+rkVNuKVxuOqJBZ9QanXR+TOceA3czobFmKSxGOXCODMODe2q+G4lqq0N8rQ+Li
+	 0yFRhceqt66BtXBZImqvprtE68XRUIQKsbFxXOgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 032/309] platform/x86: oxpec: Add support for OneXPlayer X1z
-Date: Tue, 31 Mar 2026 18:18:55 +0200
-Message-ID: <20260331161754.664209242@linuxfoundation.org>
+Subject: [PATCH 6.19 103/342] openvswitch: defer tunnel netdev_put to RCU release
+Date: Tue, 31 Mar 2026 18:18:56 +0200
+Message-ID: <20260331161802.803415203@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +68,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232256-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231738-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,antheas.dev:email,intel.com:email]
-X-Rspamd-Queue-Id: E7B5636DC6F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,ovn.org:email,msgid.link:url,lzu.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0641D36D0DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit 4049c46edb5d44c0de045f6f504371705dd603dd ]
+[ Upstream commit 6931d21f87bc6d657f145798fad0bf077b82486c ]
 
-X1z is a variant of OneXPlayer X1 A with 8840U. It seems that only one
-user has this one. Add a quirk for it to the oxpec driver.
+ovs_netdev_tunnel_destroy() may run after NETDEV_UNREGISTER already
+detached the device. Dropping the netdev reference in destroy can race
+with concurrent readers that still observe vport->dev.
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://patch.msgid.link/20260223183004.2696892-3-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Do not release vport->dev in ovs_netdev_tunnel_destroy(). Instead, let
+vport_netdev_free() drop the reference from the RCU callback, matching
+the non-tunnel destroy path and avoiding additional synchronization
+under RTNL.
+
+Fixes: a9020fde67a6 ("openvswitch: Move tunnel destroy function to oppenvswitch module.")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260319074241.3405262-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/oxpec.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/openvswitch/vport-netdev.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/platform/x86/oxpec.c b/drivers/platform/x86/oxpec.c
-index 9511791f04d9a..bf07732776ca9 100644
---- a/drivers/platform/x86/oxpec.c
-+++ b/drivers/platform/x86/oxpec.c
-@@ -285,6 +285,13 @@ static const struct dmi_system_id dmi_table[] = {
- 		},
- 		.driver_data = (void *)oxp_mini_amd_pro,
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "ONEXPLAYER X1z"),
-+		},
-+		.driver_data = (void *)oxp_x1,
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index c688dee96503f..12055af832dc0 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -196,8 +196,6 @@ void ovs_netdev_tunnel_destroy(struct vport *vport)
+ 	 */
+ 	if (vport->dev->reg_state == NETREG_REGISTERED)
+ 		rtnl_delete_link(vport->dev, 0, NULL);
+-	netdev_put(vport->dev, &vport->dev_tracker);
+-	vport->dev = NULL;
+ 	rtnl_unlock();
+ 
+ 	call_rcu(&vport->rcu, vport_netdev_free);
 -- 
 2.51.0
 
