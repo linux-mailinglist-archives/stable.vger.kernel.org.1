@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLk/HwH7y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:05 +0200
+	id GAbmCiv5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF19C36D2EE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A59536CF61
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15315304F0A3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 939BE307A330
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6071C861A;
-	Tue, 31 Mar 2026 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED9A3E95A9;
+	Tue, 31 Mar 2026 16:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziJkcqn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTW+jrlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB2D3E3C5C;
-	Tue, 31 Mar 2026 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218DD3FADEE;
+	Tue, 31 Mar 2026 16:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975439; cv=none; b=k1FtVNb4iXyBfX3MEIn9isFdOY7YBau7TGcbApVBkRhuEaa7OwQuGPneRWYE1Z2tESSGCLwy/jrRpYa69vjfgoYRdwCkTMnlLg4hmrdJFQEEBWfgTs9xRmBBEGgsCcV2GP/ekPPrxv1ili1BY3c8Ao8D93NxAxCRh7GNB4ldbCU=
+	t=1774974693; cv=none; b=og0PFLWH4LuIUU/pMaT4dScxVJaVtqzdMR/AY7CdXXXla81nGJYllITznJPZOTbRPgBGyn/rQJr6b2FQBk60CoBrWVfKARufWQ7rnD7PyZS6acA3HikttiyZyCZfdb2op1QV4d9lLRT/be816lNzlKF0XaGIXwjudR9wJ9lMVZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975439; c=relaxed/simple;
-	bh=2xrlen+kacysmTf2bOcB3b5JbeoMg34AQ9y2x9lXoz4=;
+	s=arc-20240116; t=1774974693; c=relaxed/simple;
+	bh=rTBCrRbGrVWnR6c8MRn5/XtoRf5++J+sLjm1Mkfb0/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9hWECo5J7FU0QbY/kEtaV3/sfjdz720Zv4DRiP+cQJ05IT+O63UqWcF0NlpSBEQP59wf2CoYUWN6LkCIdjIgg1YM606Nn30vzACXGt9fJuHUZQCeMZrpG6jxwPG5cilYeUFHZERqg0+atz7bFf+KzSSf1HBC/fUNJ2jQ/kt4jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziJkcqn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3172FC19423;
-	Tue, 31 Mar 2026 16:43:59 +0000 (UTC)
+	 MIME-Version; b=JZQakOwbt/Xs42j+KifcVOdrmFaeoyB68A52cKMSS8535q6jrLhwNb2kDvZuzfkrnxXLe5jSx3S81XHDoLqZtvEGL7Xn8mfL0S3H3cn0+UB43sC/pPUqqfaYsaGErUB6CMMZqHt/LtXeKo4iNTQlppaXcXTJa+SxQOlFRyYkdzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTW+jrlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD345C19424;
+	Tue, 31 Mar 2026 16:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975439;
-	bh=2xrlen+kacysmTf2bOcB3b5JbeoMg34AQ9y2x9lXoz4=;
+	s=korg; t=1774974693;
+	bh=rTBCrRbGrVWnR6c8MRn5/XtoRf5++J+sLjm1Mkfb0/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziJkcqn8fOB3Yl75ICBErWeZVuPyoTivxkNhSPYhIkUMzJZPvz5VM435Wx+Vw68GS
-	 wRzfjG+jLAbnmxGEroH8FmvlWZRmtNHq35DcnLJitiDX6CHBm8UGyl80WvVcfR1Q9w
-	 vpzNmIDfPm2+sl8xxaEH2iRLkffMmrc5DNq0OeX8=
+	b=tTW+jrlmplN83v2FX0EXtjnG1A5fW9w0W8WDhy6cnDkngbyolSoYNcHvvxIWRiaV0
+	 0mCQ9ACJWPMdGvec1DAfKq9Absd3+nC1B5f7c298t5Uutl4r9JqYVtGTUPVLUDLizY
+	 8P0V/w3wikwaCPv1sTE6BSNH5XrVP0q0YX8u4rwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 295/342] ext4: make recently_deleted() properly work with lazy itable initialization
+	Werner Kasselman <werner@verivus.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 144/175] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
 Date: Tue, 31 Mar 2026 18:22:08 +0200
-Message-ID: <20260331161809.791306914@linuxfoundation.org>
+Message-ID: <20260331161735.076215663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231932-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231642-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,57 +87,190 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: DF19C36D2EE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6A59536CF61
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Werner Kasselman <werner@verivus.com>
 
-commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
+[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
 
-recently_deleted() checks whether inode has been used in the near past.
-However this can give false positive result when inode table is not
-initialized yet and we are in fact comparing to random garbage (or stale
-itable block of a filesystem before mkfs). Ultimately this results in
-uninitialized inodes being skipped during inode allocation and possibly
-they are never initialized and thus e2fsck complains.  Verify if the
-inode has been initialized before checking for dtime.
+smb_grant_oplock() has two issues in the oplock publication sequence:
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+1) opinfo is linked into ci->m_op_list (via opinfo_add) before
+   add_lease_global_list() is called.  If add_lease_global_list()
+   fails (kmalloc returns NULL), the error path frees the opinfo
+   via __free_opinfo() while it is still linked in ci->m_op_list.
+   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
+   in smb_break_all_levII_oplock) dereference the freed node.
+
+2) opinfo->o_fp is assigned after add_lease_global_list() publishes
+   the opinfo on the global lease list.  A concurrent
+   find_same_lease_key() can walk the lease list and dereference
+   opinfo->o_fp->f_ci while o_fp is still NULL.
+
+Fix by restructuring the publication sequence to eliminate post-publish
+failure:
+
+- Set opinfo->o_fp before any list publication (fixes NULL deref).
+- Preallocate lease_table via alloc_lease_table() before opinfo_add()
+  so add_lease_global_list() becomes infallible after publication.
+- Keep the original m_op_list publication order (opinfo_add before
+  lease list) so concurrent opens via same_client_has_lease() and
+  opinfo_get_list() still see the in-flight grant.
+- Use opinfo_put() instead of __free_opinfo() on err_out so that
+  the RCU-deferred free path is used.
+
+This also requires splitting add_lease_global_list() to take a
+preallocated lease_table and changing its return type from int to void,
+since it can no longer fail.
+
+Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Kasselman <werner@verivus.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ replaced kmalloc_obj() and KSMBD_DEFAULT_GFP with kmalloc(sizeof(), GFP_KERNEL) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ialloc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/smb/server/oplock.c |   72 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 45 insertions(+), 27 deletions(-)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -686,6 +686,12 @@ static int recently_deleted(struct super
- 	if (unlikely(!gdp))
- 		return 0;
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock
+ 	spin_unlock(&lb->lb_lock);
+ }
  
-+	/* Inode was never used in this filesystem? */
-+	if (ext4_has_group_desc_csum(sb) &&
-+	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
-+	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
-+		return 0;
+-static void lb_add(struct lease_table *lb)
++static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
+ {
+-	write_lock(&lease_list_lock);
+-	list_add(&lb->l_entry, &lease_table_list);
+-	write_unlock(&lease_list_lock);
++	struct lease_table *lb;
 +
- 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
- 		       (ino / inodes_per_block));
- 	if (!bh || !buffer_uptodate(bh))
++	lb = kmalloc(sizeof(struct lease_table), GFP_KERNEL);
++	if (!lb)
++		return NULL;
++
++	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
++	       SMB2_CLIENT_GUID_SIZE);
++	INIT_LIST_HEAD(&lb->lease_list);
++	spin_lock_init(&lb->lb_lock);
++	return lb;
+ }
+ 
+ static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
+@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_inf
+ 	lease2->version = lease1->version;
+ }
+ 
+-static int add_lease_global_list(struct oplock_info *opinfo)
++static void add_lease_global_list(struct oplock_info *opinfo,
++				  struct lease_table *new_lb)
+ {
+ 	struct lease_table *lb;
+ 
+-	read_lock(&lease_list_lock);
++	write_lock(&lease_list_lock);
+ 	list_for_each_entry(lb, &lease_table_list, l_entry) {
+ 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
+ 			    SMB2_CLIENT_GUID_SIZE)) {
+ 			opinfo->o_lease->l_lb = lb;
+ 			lease_add_list(opinfo);
+-			read_unlock(&lease_list_lock);
+-			return 0;
++			write_unlock(&lease_list_lock);
++			kfree(new_lb);
++			return;
+ 		}
+ 	}
+-	read_unlock(&lease_list_lock);
+ 
+-	lb = kmalloc(sizeof(struct lease_table), GFP_KERNEL);
+-	if (!lb)
+-		return -ENOMEM;
+-
+-	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
+-	       SMB2_CLIENT_GUID_SIZE);
+-	INIT_LIST_HEAD(&lb->lease_list);
+-	spin_lock_init(&lb->lb_lock);
+-	opinfo->o_lease->l_lb = lb;
++	opinfo->o_lease->l_lb = new_lb;
+ 	lease_add_list(opinfo);
+-	lb_add(lb);
+-	return 0;
++	list_add(&new_lb->l_entry, &lease_table_list);
++	write_unlock(&lease_list_lock);
+ }
+ 
+ static void set_oplock_level(struct oplock_info *opinfo, int level,
+@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *
+ 	int err = 0;
+ 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
+ 	struct ksmbd_inode *ci = fp->f_ci;
++	struct lease_table *new_lb = NULL;
+ 	bool prev_op_has_lease;
+ 	__le32 prev_op_state = 0;
+ 
+@@ -1291,21 +1293,37 @@ set_lev:
+ 	set_oplock_level(opinfo, req_op_level, lctx);
+ 
+ out:
+-	opinfo_count_inc(fp);
+-	opinfo_add(opinfo, fp);
+-
++	/*
++	 * Set o_fp before any publication so that concurrent readers
++	 * (e.g. find_same_lease_key() on the lease list) that
++	 * dereference opinfo->o_fp don't hit a NULL pointer.
++	 *
++	 * Keep the original publication order so concurrent opens can
++	 * still observe the in-flight grant via ci->m_op_list, but make
++	 * everything after opinfo_add() no-fail by preallocating any new
++	 * lease_table first.
++	 */
++	opinfo->o_fp = fp;
+ 	if (opinfo->is_lease) {
+-		err = add_lease_global_list(opinfo);
+-		if (err)
++		new_lb = alloc_lease_table(opinfo);
++		if (!new_lb) {
++			err = -ENOMEM;
+ 			goto err_out;
++		}
+ 	}
+ 
++	opinfo_count_inc(fp);
++	opinfo_add(opinfo, fp);
++
++	if (opinfo->is_lease)
++		add_lease_global_list(opinfo, new_lb);
++
+ 	rcu_assign_pointer(fp->f_opinfo, opinfo);
+-	opinfo->o_fp = fp;
+ 
+ 	return 0;
+ err_out:
+-	__free_opinfo(opinfo);
++	kfree(new_lb);
++	opinfo_put(opinfo);
+ 	return err;
+ }
+ 
 
 
 
