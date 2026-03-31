@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-231664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCaZOIT5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:44 +0200
+	id MCzGIwD5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E18236D001
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA7136CEF6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D96993156137
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:33:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A0F403034EE6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7E34266B5;
-	Tue, 31 Mar 2026 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB09426D25;
+	Tue, 31 Mar 2026 16:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBIi/EZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYzPUdVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0259B4266AA;
-	Tue, 31 Mar 2026 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAA6426D07;
+	Tue, 31 Mar 2026 16:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974750; cv=none; b=QFgrIuIzkEzqnJe1hUd1WFwUFaNBnB6A7SEyKH7Xhpi7QHD8LFT1tRE1KYvfOll8Lq22IYhAb0FdYgQVtShZTao7aHnc52zIMqSWRhfP62/HKcFTHPwkIjgKKW9/nfzAYZl5YxCsMzLI9UzBuAh6uX6dZEL442mGPOIY1WpbVW8=
+	t=1774974752; cv=none; b=q/hBIRBm9fBQf5JTNlU9m2zHRJ3dzHQvbOUQ9iLZnVPbOJaSFtBFzOd7Y7ooQW7VjsB8xVwIGatNFpqE2BTUGyobttXQ81fhi4NJYei21ne6trEB6uS0KfcIWJFXRz/mLyy38+QKs5ZL2841ChLz+mn4ImBcosSbkToKySTBs2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974750; c=relaxed/simple;
-	bh=Z5Ha0q3BO4W8NfHuz9B17rG/9hyDvxw+ZIRcrpiH4hI=;
+	s=arc-20240116; t=1774974752; c=relaxed/simple;
+	bh=eP3mOXvlCvJ+OYZ1G2ODnLjmZnb9131UD+fZVY5wG7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JQFCPk/sHmI1vE/DwM3D+NWGuP7/8dM+4o6mL8/G8FW0IzS4vdytB1t2ePuKAbyYLpwhvts9le/to6asFbOjPACcJ8QdXOgW9v13wENyPCWHfq1sLGJMToYZAj+72fuOgYBLoQKmyiDeHxT7UO9+LN8Xf2e2KnazDxm3pRN9q4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBIi/EZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B616C19423;
-	Tue, 31 Mar 2026 16:32:29 +0000 (UTC)
+	 MIME-Version; b=O8b/FEUjtLBRFXLD3BNwQGDZW0Y9xUKM8dtT0xCunw6Bho0EhxQiOo9O7zEyAPyIlwEcQ4SLbGoyhE876CQky8iW5deSde9YAoaTaNghZLMpFE1l1MjaE3bKUlAeLhhNOqu69HI7HhNwB99av4LolWpzOptuJ6me2sthAEy3YJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYzPUdVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21773C19423;
+	Tue, 31 Mar 2026 16:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974749;
-	bh=Z5Ha0q3BO4W8NfHuz9B17rG/9hyDvxw+ZIRcrpiH4hI=;
+	s=korg; t=1774974752;
+	bh=eP3mOXvlCvJ+OYZ1G2ODnLjmZnb9131UD+fZVY5wG7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBIi/EZfCz1h+tm7JEzUty9FllvFzup5pBL29AT74dITJb8t9hkVNckVrRjJgzKiY
-	 APYBeMVMBBLiGxRuHUnDNcGt01Rke7PQu8RhOo8Wjgbi8wY46QvTudLzzIK5wbxQe0
-	 d6ZaG+vVp9AbyiZNGyohzpEzIAf6kYl0VovY/Psw=
+	b=NYzPUdVZxXwzk+2egj1KXwQpJHhVwlpEaYIfvrJkpTMUrFgQMYRXHpez2d3Aa16sE
+	 ScWCnASjtQrvgzAXhCZwpJm1p9xnYWHvZDzNQCf3tmf8r3Z79aTINE5Bjxm4TATCye
+	 NF/lRU9wU7sYAIU9hH43TzjjlTsVDhlvPm/fljMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 030/342] platform/x86: hp-wmi: add Omen 14-fb1xxx (board 8E41) support
-Date: Tue, 31 Mar 2026 18:17:43 +0200
-Message-ID: <20260331161800.018750674@linuxfoundation.org>
+Subject: [PATCH 6.19 031/342] nvme-pci: ensure were polling a polled queue
+Date: Tue, 31 Mar 2026 18:17:44 +0200
+Message-ID: <20260331161800.054738343@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -62,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231664-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231665-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3E18236D001
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,lst.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2EA7136CEF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,38 +100,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Anton Plotnikov <plotnikovanton@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 729ffcffa73069cb066fd54a2bc7b09e5f782d48 ]
+[ Upstream commit 166e31d7dbf6aa44829b98aa446bda5c9580f12a ]
 
-Reverse engineering of the HP Omen Windows utility shows that for performance
-mode it uses the same codes listed in hp_thermal_profile_omen_v1. Therefore it
-seems sufficient to add the board model name to omen_thermal_profile_boards.
+A user can change the polled queue count at run time. There's a brief
+window during a reset where a hipri task may try to poll that queue
+before the block layer has updated the queue maps, which would race with
+the now interrupt driven queue and may cause double completions.
 
-Tested on Omen 14-fb1xxx: CPU power in performance profile reaches the Windows
-limit (65W), instead of 45W in automatic BIOS mode. Max fan speed was reached
-as well.
-
-Link: https://patch.msgid.link/20260203164832.40514-1-plotnikovanton@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index bc550da031fa1..ec87fd96686cf 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -133,6 +133,7 @@ static const char * const omen_thermal_profile_boards[] = {
- 	"8900", "8901", "8902", "8912", "8917", "8918", "8949", "894A", "89EB",
- 	"8A15", "8A42",
- 	"8BAD",
-+	"8E41",
- };
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index a5eab31c1bb7a..f6d4f5910bdbc 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1501,7 +1501,8 @@ static int nvme_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+ 	struct nvme_queue *nvmeq = hctx->driver_data;
+ 	bool found;
  
- /* DMI Board names of Omen laptops that are specifically set to be thermal
+-	if (!nvme_cqe_pending(nvmeq))
++	if (!test_bit(NVMEQ_POLLED, &nvmeq->flags) ||
++	    !nvme_cqe_pending(nvmeq))
+ 		return 0;
+ 
+ 	spin_lock(&nvmeq->cq_poll_lock);
 -- 
 2.51.0
 
