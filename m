@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YChyI9H8y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:49 +0200
+	id 4LJxKNX4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED50436D791
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C761C36CEB5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 378EC310EEB4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CFF3F3080900
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D269423A99;
-	Tue, 31 Mar 2026 16:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884CD421EF4;
+	Tue, 31 Mar 2026 16:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNcehgrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msx+adWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D7426686;
-	Tue, 31 Mar 2026 16:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA35421A1D;
+	Tue, 31 Mar 2026 16:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975288; cv=none; b=lBVR1S9dF3Ori6haZ+a2sQEcrGiHIHsH9JB5IyH7yIliFtetBn9thcvs7yGHMFS3wXtA2sRPFnbgthYY2SWV0WuTeL9BcQ6kygmsEkbXq55moLk/DARLHN5qYAbhifpnrWLB1oWCQ4cxw672cK3h9+b3uR23b21UuSDVEZ4kvkw=
+	t=1774974351; cv=none; b=rZSSJ6yrAQ6ozFLYdQo/7MOYfAY/H4G8sZQOl5B0nBywuORryN0qn93yuclGugymSFZzBV6DthxBXW537bgYytLskzf7adGOYkU/uN12xkM7pFRY73cQuBRHYmFwfKBCuiDeeoC7MXne650QIuwu2QPGJMVhOhNDR0OKgoQPxRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975288; c=relaxed/simple;
-	bh=r7MGkfJ0r64UoTF/HHCmKS9uhwUEF9/89ZONE2v39b0=;
+	s=arc-20240116; t=1774974351; c=relaxed/simple;
+	bh=KVwCAIan2hkPzQNjHen7mTTFdn1zhvrLNKMpWer6X4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3GZP8+NgZCZRlDZuZ2QYBVmkXJtMzSv/pexBaW7XOHkfFvLiH7mE+KNs8nQ5QYte2RGXDBynzDC1M6tMuqjOQJ7L6My0IKS0dg2Cwbz1jPKxDa4zfMGdNQbgUIE5eMl+KIjS6RGOVrrDAqE5Q3AFgJV8bRjomJAphAKpr+01GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNcehgrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A1EC19423;
-	Tue, 31 Mar 2026 16:41:27 +0000 (UTC)
+	 MIME-Version; b=GzbjmMP/lIiHJuel2mcztOF9Cd2YDQjH9hphu/SB0oxYdBA9r12XKMl2+PAwsrYOhha9d8j+LqTPz65kEDj7xEIdDVEGtVcoD0jH9j15+Iv/6JTmgOWocIa3Pay665vPVQw3yT2B0Z+z+L9uCStpzJhoNhkVlgrrFltdLgXa8+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msx+adWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37B6C19423;
+	Tue, 31 Mar 2026 16:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975288;
-	bh=r7MGkfJ0r64UoTF/HHCmKS9uhwUEF9/89ZONE2v39b0=;
+	s=korg; t=1774974351;
+	bh=KVwCAIan2hkPzQNjHen7mTTFdn1zhvrLNKMpWer6X4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNcehgrzkl6TmxlGmOb+OEAUXFy4b6xODX4Bd5umWqOuXR8Y5Kjv0oOLZ8STE1GDF
-	 lhPuKsX50DecM31ylkntq6OfRzadIPePQshnW+INfQ2c3zZwIjMW/pCNX4aH5McI21
-	 d9JYZgGsUQVDQS95vz2us4h1VDdZ3WBHzoMb5Jeo=
+	b=msx+adWKgXREDg95lfyEL/4obk2RlwLLeb0Xj3RWKXwGfzd9TOGwel+um+WiUv92k
+	 Lyr94WEa7J+gwyx+M7/qQZjp59OlCxGCXDjOocjrSNHR3lSNvkt2X9D5NnsArJfuqA
+	 NJys/k27SuuPIYavQalEu5KxUZVOeJ+IJLgAiay0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Werner Kasselman <werner@verivus.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 203/342] ksmbd: fix memory leaks and NULL deref in smb2_lock()
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Patryk Holda <patryk.holda@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/175] ice: use ice_update_eth_stats() for representor stats
 Date: Tue, 31 Mar 2026 18:20:36 +0200
-Message-ID: <20260331161806.456414197@linuxfoundation.org>
+Message-ID: <20260331161731.697015678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231873-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231508-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,129 +87,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: ED50436D791
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C761C36CEB5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Kasselman <werner@verivus.com>
+From: Petr Oros <poros@redhat.com>
 
-commit 309b44ed684496ed3f9c5715d10b899338623512 upstream.
+[ Upstream commit 2526e440df2725e7328d59b835a164826f179b93 ]
 
-smb2_lock() has three error handling issues after list_del() detaches
-smb_lock from lock_list at no_check_cl:
+ice_repr_get_stats64() and __ice_get_ethtool_stats() call
+ice_update_vsi_stats() on the VF's src_vsi. This always returns early
+because ICE_VSI_DOWN is permanently set for VF VSIs - ice_up() is never
+called on them since queues are managed by iavf through virtchnl.
 
-1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK
-   path, goto out leaks smb_lock and its flock because the out:
-   handler only iterates lock_list and rollback_list, neither of
-   which contains the detached smb_lock.
+In __ice_get_ethtool_stats() the original code called
+ice_update_vsi_stats() for all VSIs including representors, iterated
+over ice_gstrings_vsi_stats[] to populate the data, and then bailed out
+with an early return before the per-queue ring stats section. That early
+return was necessary because representor VSIs have no rings on the PF
+side - the rings belong to the VF driver (iavf), so accessing per-queue
+stats would be invalid.
 
-2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out
-   leaks smb_lock and flock for the same reason.  The error code
-   returned to the dispatcher is also stale.
+Move the representor handling to the top of __ice_get_ethtool_stats()
+and call ice_update_eth_stats() directly to read the hardware GLV_*
+counters. This matches ice_get_vf_stats() which already uses
+ice_update_eth_stats() for the same VF VSI in legacy mode. Apply the
+same fix to ice_repr_get_stats64().
 
-3) In the rollback path, smb_flock_init() can return NULL on
-   allocation failure.  The result is dereferenced unconditionally,
-   causing a kernel NULL pointer dereference.  Add a NULL check to
-   prevent the crash and clean up the bookkeeping; the VFS lock
-   itself cannot be rolled back without the allocation and will be
-   released at file or connection teardown.
+Note that ice_gstrings_vsi_stats[] contains five software ring counters
+(rx_buf_failed, rx_page_failed, tx_linearize, tx_busy, tx_restart) that
+are always zero for representors since the PF never processes packets on
+VF rings. This is pre-existing behavior unchanged by this patch.
 
-Fix cases 1 and 2 by hoisting the locks_free_lock()/kfree() to before
-the if(!rc) check in the UNLOCK branch so all exit paths share one
-free site, and by freeing smb_lock and flock before goto out in the
-non-UNLOCK branch.  Propagate the correct error code in both cases.
-Fix case 3 by wrapping the VFS unlock in an if(rlock) guard and adding
-a NULL check for locks_free_lock(rlock) in the shared cleanup.
-
-Found via call-graph analysis using sqry.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Suggested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7aae80cef7ba ("ice: add port representor ethtool ops and stats")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Patryk Holda <patryk.holda@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 14 +++++++++++---
+ drivers/net/ethernet/intel/ice/ice_repr.c    |  3 ++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7600,14 +7600,15 @@ retry:
- 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
- skip:
- 		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
-+			locks_free_lock(flock);
-+			kfree(smb_lock);
- 			if (!rc) {
- 				ksmbd_debug(SMB, "File unlocked\n");
- 			} else if (rc == -ENOENT) {
- 				rsp->hdr.Status = STATUS_NOT_LOCKED;
-+				err = rc;
- 				goto out;
- 			}
--			locks_free_lock(flock);
--			kfree(smb_lock);
- 		} else {
- 			if (rc == FILE_LOCK_DEFERRED) {
- 				void **argv;
-@@ -7676,6 +7677,9 @@ skip:
- 				spin_unlock(&work->conn->llist_lock);
- 				ksmbd_debug(SMB, "successful in taking lock\n");
- 			} else {
-+				locks_free_lock(flock);
-+				kfree(smb_lock);
-+				err = rc;
- 				goto out;
- 			}
- 		}
-@@ -7706,13 +7710,17 @@ out:
- 		struct file_lock *rlock = NULL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 1c91f1ba11889..448ca855df901 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -1528,6 +1528,17 @@ __ice_get_ethtool_stats(struct net_device *netdev,
+ 	int i = 0;
+ 	char *p;
  
- 		rlock = smb_flock_init(filp);
--		rlock->c.flc_type = F_UNLCK;
--		rlock->fl_start = smb_lock->start;
--		rlock->fl_end = smb_lock->end;
--
--		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
--		if (rc)
--			pr_err("rollback unlock fail : %d\n", rc);
-+		if (rlock) {
-+			rlock->c.flc_type = F_UNLCK;
-+			rlock->fl_start = smb_lock->start;
-+			rlock->fl_end = smb_lock->end;
++	if (ice_is_port_repr_netdev(netdev)) {
++		ice_update_eth_stats(vsi);
 +
-+			rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
-+			if (rc)
-+				pr_err("rollback unlock fail : %d\n", rc);
-+		} else {
-+			pr_err("rollback unlock alloc failed\n");
++		for (j = 0; j < ICE_VSI_STATS_LEN; j++) {
++			p = (char *)vsi + ice_gstrings_vsi_stats[j].stat_offset;
++			data[i++] = (ice_gstrings_vsi_stats[j].sizeof_stat ==
++				     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
 +		}
++		return;
++	}
++
+ 	ice_update_pf_stats(pf);
+ 	ice_update_vsi_stats(vsi);
  
- 		list_del(&smb_lock->llist);
- 		spin_lock(&work->conn->llist_lock);
-@@ -7722,7 +7730,8 @@ out:
- 		spin_unlock(&work->conn->llist_lock);
- 
- 		locks_free_lock(smb_lock->fl);
--		locks_free_lock(rlock);
-+		if (rlock)
-+			locks_free_lock(rlock);
- 		kfree(smb_lock);
+@@ -1537,9 +1548,6 @@ __ice_get_ethtool_stats(struct net_device *netdev,
+ 			     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
  	}
- out2:
+ 
+-	if (ice_is_port_repr_netdev(netdev))
+-		return;
+-
+ 	/* populate per queue stats */
+ 	rcu_read_lock();
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
+index c686ac0935ebe..23c243d544462 100644
+--- a/drivers/net/ethernet/intel/ice/ice_repr.c
++++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2019-2021, Intel Corporation. */
+ 
+ #include "ice.h"
++#include "ice_lib.h"
+ #include "ice_eswitch.h"
+ #include "ice_devlink.h"
+ #include "ice_sriov.h"
+@@ -57,7 +58,7 @@ ice_repr_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
+ 		return;
+ 	vsi = np->repr->src_vsi;
+ 
+-	ice_update_vsi_stats(vsi);
++	ice_update_eth_stats(vsi);
+ 	eth_stats = &vsi->eth_stats;
+ 
+ 	stats->tx_packets = eth_stats->tx_unicast + eth_stats->tx_broadcast +
+-- 
+2.51.0
+
 
 
 
