@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Fh9D0IAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:30 +0200
+	id 0NwsEvIBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1184C36E193
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FF036E756
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BBE6309D5BA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED2313154E15
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540402D77F5;
-	Tue, 31 Mar 2026 17:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781B4425CC7;
+	Tue, 31 Mar 2026 16:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Evn0q6EH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToewToz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174592D0C94;
-	Tue, 31 Mar 2026 17:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5F0423A8B;
+	Tue, 31 Mar 2026 16:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976433; cv=none; b=YJt/gDVeF82n+lN+efnbdFCdediwLLil2NwESeit3l0xcQGcijlx7yECluOnCZ/5EN3tKPcKt/2Q6IwlvMsbNWUmcwmvVlJc9oa+0Rzhax8Do9DG0RukisrWsCOWbcyhtFJ7ok22ZkGbVo+hNStHvyqUIl6bePUZyTCbPPjdi68=
+	t=1774975671; cv=none; b=ZVKYZxpOK3sTHuEpY8MB2TsYEZ8Nts8YYn9C6m5hQRceyNe8GYyK3ib8i61N+ElWmFWuCRzxQeSQoP+ivtHYxx7HHeRyfLWJukU8HjxtzKWDKs3oneKzSAnzHuyHH31aLPCIiI3ZchY/YVMqs7Yxh6IYMZLRO1qSsivFQ9SlitA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976433; c=relaxed/simple;
-	bh=7KECGkyz9KnLSN1kBwVErKHRcnu274UR4HmYaRspQsI=;
+	s=arc-20240116; t=1774975671; c=relaxed/simple;
+	bh=hVdm5iW8tHYsj49ThAImLh5mO7K6RvI2tcdpMmr27s8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2Iqz3QT0yhAhVM8Hsv698nIlaft9PI199EzMTYcRT0ZHEhKerEoa2ykMXgbyLA8a1tabpeaSGzaiGiGg+rF62xT3o8CeBx/uqpR92IzjFlpJxAS2ZsLW73JoMu0H6XUp7iaUlNqflukhYfYTwqhhfUOIqPU5mRXgCz8zRs1Fps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Evn0q6EH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC34C19423;
-	Tue, 31 Mar 2026 17:00:32 +0000 (UTC)
+	 MIME-Version; b=GheJNswDpyjeY2/yTVERfPtX+wDTNNN5KVPNUFxE6zWiuvZs3vimrb0lci6NHEeKAh8hYGxrhQPYESLWjv1IcLUfaX2BUpg+8pY3JafMG6tnRIkeUfL96Dmi4adi5EMTkrjo7+TYVe5O8eq5qIvVdCdeQ1dKeOOg+w9V4JmKKNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToewToz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879C1C19424;
+	Tue, 31 Mar 2026 16:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976433;
-	bh=7KECGkyz9KnLSN1kBwVErKHRcnu274UR4HmYaRspQsI=;
+	s=korg; t=1774975670;
+	bh=hVdm5iW8tHYsj49ThAImLh5mO7K6RvI2tcdpMmr27s8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Evn0q6EHV9JSyRB/fhf8qL8RRAx8QN9q5hSjt3L7wd4jPR4a6tNGXxweiN40mZIR+
-	 WlC7GqqTnq0ckA49zC2NzMfmpn5EcoM6k3h44HhX8tUzoRM4lmYX2lm/tLrjxpLRx1
-	 R7i5uKWOEe1bdKeH/vcojOc6FODRQ+Lgs6wgV0F8=
+	b=ToewToz3QGn7Zlgz6eUqU4aaqp/Au0jtuGndk5yR60t7y3Uv73jC0hDP3sXeQqs8W
+	 0/VRwBG1h6+rz0j67u4jdhs6+TESIz3iqwoPCZJ7HqyvAHa1XBEJlToRTHPcW60wt2
+	 x59Lxil0TMFqgWYY5a4pccGogE4ST0UAGSbn73nI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 089/309] ionic: fix persistent MAC address override on PF
+Subject: [PATCH 6.12 042/244] drm/amdgpu: fix gpu idle power consumption issue for gfx v12
 Date: Tue, 31 Mar 2026 18:19:52 +0200
-Message-ID: <20260331161756.764430342@linuxfoundation.org>
+Message-ID: <20260331161743.251959866@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,97 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232315-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232021-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 1184C36E193
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A3FF036E756
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
+[ Upstream commit a6571045cf06c4aa749b4801382ae96650e2f0e1 ]
 
-The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
-the ionic firmware to update the LIF's identity in its persistent state.
-Since the firmware state is maintained across host warm boots and driver
-reloads, any MAC change on the Physical Function (PF) becomes "sticky.
+Older versions of the MES firmware may cause abnormal GPU power consumption.
+When performing inference tasks on the GPU (e.g., with Ollama using ROCm),
+the GPU may show abnormal power consumption in idle state and incorrect GPU load information.
+This issue has been fixed in firmware version 0x8b and newer.
 
-This is problematic because it causes ethtool -P to report the
-user-configured MAC as the permanent factory address, which breaks
-system management tools that rely on a stable hardware identity.
-
-While Virtual Functions (VFs) need this hardware-level programming to
-properly handle MAC assignments in guest environments, the PF should
-maintain standard transient behavior. This patch gates the
-ionic_program_mac call using is_virtfn so that PF MAC changes remain
-local to the netdev filters and do not overwrite the firmware's
-permanent identity block.
-
-Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://github.com/ROCm/ROCm/issues/5706
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4e22a5fe6ea6e0b057e7f246df4ac3ff8bfbc46a)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index b28966ae50c22..29a8a25a3ed08 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -1719,13 +1719,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
- 	if (ether_addr_equal(netdev->dev_addr, mac))
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+index 333a31da85568..945016712157d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -567,6 +567,9 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
+ 	int i;
+ 	struct amdgpu_device *adev = mes->adev;
+ 	union MESAPI_SET_HW_RESOURCES mes_set_hw_res_pkt;
++	uint32_t mes_rev = (pipe == AMDGPU_MES_SCHED_PIPE) ?
++		(mes->sched_version & AMDGPU_MES_VERSION_MASK) :
++		(mes->kiq_version & AMDGPU_MES_VERSION_MASK);
  
--	err = ionic_program_mac(lif, mac);
--	if (err < 0)
--		return err;
-+	/* Only program macs for virtual functions to avoid losing the permanent
-+	 * Mac across warm reset/reboot.
-+	 */
-+	if (lif->ionic->pdev->is_virtfn) {
-+		err = ionic_program_mac(lif, mac);
-+		if (err < 0)
-+			return err;
+ 	memset(&mes_set_hw_res_pkt, 0, sizeof(mes_set_hw_res_pkt));
  
--	if (err > 0)
--		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
--			   __func__);
-+		if (err > 0)
-+			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
-+				   __func__);
-+	}
+@@ -621,7 +624,7 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
+ 	 * handling support, other queue will not use the oversubscribe timer.
+ 	 * handling  mode - 0: disabled; 1: basic version; 2: basic+ version
+ 	 */
+-	mes_set_hw_res_pkt.oversubscription_timer = 50;
++	mes_set_hw_res_pkt.oversubscription_timer = mes_rev < 0x8b ? 0 : 50;
+ 	mes_set_hw_res_pkt.unmapped_doorbell_handling = 1;
  
- 	err = eth_prepare_mac_addr_change(netdev, addr);
- 	if (err)
+ 	if (amdgpu_mes_log_enable) {
 -- 
 2.51.0
 
