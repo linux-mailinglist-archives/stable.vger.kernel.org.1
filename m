@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-231999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIUjBQYBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:46 +0200
+	id IJK4F1QAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDDC36E483
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5D536E1E3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 327A130B9188
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4936A314FF8C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503E1423A63;
-	Tue, 31 Mar 2026 16:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E853F99EA;
+	Tue, 31 Mar 2026 16:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqNiggT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBPBFndj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1387133E372;
-	Tue, 31 Mar 2026 16:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693062EE262;
+	Tue, 31 Mar 2026 16:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975614; cv=none; b=QioMbmSdkq6okEZUZImCksqOp/J4t9zWXPyEl2DPp0FdVrQSQzKZPUWWaHcABQ2xvLNrcGZchSpwxwZzQfElv9Aa9VbFeRLxhyMV2o2ViwCUVd9r++Ufq6BArzEBXScqq3ql2LvS2U5dfNIaMjl/AP0jhqlWIrsCErDCrTAfmMI=
+	t=1774974987; cv=none; b=LpNejpHNvd8SMNw56plYh/5jvHk6SC2i5J7itduop3ZiS6nAzbPTM235odQD0Ag/Qm11Oxxu70Lu6vMTfXjtEZO+l1hxfpGbabY5TpybYasbWm+xrv63K2C1R6U+EPnsLIWE7KvrqxM5cSTLqejEiuYBDwQUGAj009v4GW2VaaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975614; c=relaxed/simple;
-	bh=skEjKgxRRLpQhJ8VMUkQGrA1TLpU9JAbiG7PXiUy9nQ=;
+	s=arc-20240116; t=1774974987; c=relaxed/simple;
+	bh=cPjuQi3+JBJmxlg4ZLvPMlbICSlneDyfIsbUIVxGrsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2ixSZKRbXwULg6QvQQqnv890KXLq3eDp/Tr4Fkdb3bxHe6OR3YSR3SiXT3ktS9Yy9/EV+ofTnGHBGR6i0/RhOg0y4+IRj36TGQAZgwsVd5wpk1AfFDZy68PnCcsFv04ggZouyZpxEyM8s+kQpAnDk7wOklhjZFvJ/m/b/JnrCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqNiggT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4777AC19423;
-	Tue, 31 Mar 2026 16:46:53 +0000 (UTC)
+	 MIME-Version; b=fKgttyTnz2R56sB2RKBdLqmT0Jc8qvwbjRZsH8LDYhVt8GKN2HGkEyu87dXk5PJUhcPY6ESjnELGk4d+NQ/QvsreYhUcwr26atfCTqlOxdW04arsphLQoiANwc1H1jlqiWYSx8A2nT4gL5LiFrdcp8nLIrXMa1CnIyD227zvsO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBPBFndj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D86C19424;
+	Tue, 31 Mar 2026 16:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975613;
-	bh=skEjKgxRRLpQhJ8VMUkQGrA1TLpU9JAbiG7PXiUy9nQ=;
+	s=korg; t=1774974987;
+	bh=cPjuQi3+JBJmxlg4ZLvPMlbICSlneDyfIsbUIVxGrsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqNiggT3WGKV5FGSPZ2gukkfRjacbLeUd2jR8Wo5nvwTw8HWegycwNcE1v451Qv+I
-	 F+jGuCEJfRmYXUJhc62XNg7c25nzrAAk2J3Ngr7yDAtsezY7scogEk/d9E1xgyyqGD
-	 c1srrZjQd+NykKNHI+GNx3kpLEIIoqE3NXedzWKE=
+	b=RBPBFndjiBUJ6Mjqk0gYVfgwfrGvtSs64xUCAfQ94vBg57iMMm8kO9ghKoBJyJVAR
+	 Rycndqn/5OrRZ/JNdY4SAPfZ+f9nWoOCQl0v2kh3PS5aHEARcOAyMW1Vycwkf0OQWL
+	 wbBI553/E0s7NslJzO6m/l7cm8SFeQn1d3ni3fwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Sachin Kumar <xcyfun@protonmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/244] bpf: Fix constant blinding for PROBE_MEM32 stores
+Subject: [PATCH 6.19 119/342] ipv6: Dont remove permanent routes with exceptions from tb6_gc_hlist.
 Date: Tue, 31 Mar 2026 18:19:12 +0200
-Message-ID: <20260331161741.747449344@linuxfoundation.org>
+Message-ID: <20260331161803.389118910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,107 +69,172 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,etsalapatis.com,protonmail.com,iogearbox.net];
-	TAGGED_FROM(0.00)[bounces-231999-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231756-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iogearbox.net:email,etsalapatis.com:email]
-X-Rspamd-Queue-Id: 3CDDC36E483
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DD5D536E1E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sachin Kumar <xcyfun@protonmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 2321a9596d2260310267622e0ad8fbfa6f95378f ]
+[ Upstream commit 4be7b99c253f0c85a255cc1db7127ba3232dfa30 ]
 
-BPF_ST | BPF_PROBE_MEM32 immediate stores are not handled by
-bpf_jit_blind_insn(), allowing user-controlled 32-bit immediates to
-survive unblinded into JIT-compiled native code when bpf_jit_harden >= 1.
+The cited commit mechanically put fib6_remove_gc_list()
+just after every fib6_clean_expires() call.
 
-The root cause is that convert_ctx_accesses() rewrites BPF_ST|BPF_MEM
-to BPF_ST|BPF_PROBE_MEM32 for arena pointer stores during verification,
-before bpf_jit_blind_constants() runs during JIT compilation. The
-blinding switch only matches BPF_ST|BPF_MEM (mode 0x60), not
-BPF_ST|BPF_PROBE_MEM32 (mode 0xa0). The instruction falls through
-unblinded.
+When a temporary route is promoted to a permanent route,
+there may already be exception routes tied to it.
 
-Add BPF_ST|BPF_PROBE_MEM32 cases to bpf_jit_blind_insn() alongside the
-existing BPF_ST|BPF_MEM cases. The blinding transformation is identical:
-load the blinded immediate into BPF_REG_AX via mov+xor, then convert
-the immediate store to a register store (BPF_STX).
+If fib6_remove_gc_list() removes the route from tb6_gc_hlist,
+such exception routes will no longer be aged.
 
-The rewritten STX instruction must preserve the BPF_PROBE_MEM32 mode so
-the architecture JIT emits the correct arena addressing (R12-based on
-x86-64). Cannot use the BPF_STX_MEM() macro here because it hardcodes
-BPF_MEM mode; construct the instruction directly instead.
+Let's replace fib6_remove_gc_list() with a new helper
+fib6_may_remove_gc_list() and use fib6_age_exceptions() there.
 
-Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Sachin Kumar <xcyfun@protonmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/Y6IT5VvNRchPBLI5D7JZHBzZrU9rb0ycRJPJzJSXGj7kJlX8RJwZFSM2YZjcDxoQKABkxt1T8Os2gi23PYyFuQe6KkZGWVyfz8K5afdy9ak=@protonmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Note that net->ipv6 is only compiled when CONFIG_IPV6 is
+enabled, so fib6_{add,remove,may_remove}_gc_list() are guarded.
+
+Fixes: 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list of routes.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260320072317.2561779-3-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ include/net/ip6_fib.h | 21 ++++++++++++++++++++-
+ net/ipv6/addrconf.c   |  4 ++--
+ net/ipv6/ip6_fib.c    |  6 +++---
+ net/ipv6/route.c      |  2 +-
+ 4 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 76dfa9ab43a5d..fbd5d292d8bf9 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1424,6 +1424,27 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
- 		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
- 		*to++ = BPF_STX_MEM(from->code, from->dst_reg, BPF_REG_AX, from->off);
- 		break;
+diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
+index 88b0dd4d8e094..9f8b6814a96a0 100644
+--- a/include/net/ip6_fib.h
++++ b/include/net/ip6_fib.h
+@@ -507,12 +507,14 @@ void fib6_rt_update(struct net *net, struct fib6_info *rt,
+ void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
+ 		     unsigned int flags);
+ 
++void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
++			 unsigned long now);
+ void fib6_run_gc(unsigned long expires, struct net *net, bool force);
+-
+ void fib6_gc_cleanup(void);
+ 
+ int fib6_init(void);
+ 
++#if IS_ENABLED(CONFIG_IPV6)
+ /* Add the route to the gc list if it is not already there
+  *
+  * The callers should hold f6i->fib6_table->tb6_lock.
+@@ -545,6 +547,23 @@ static inline void fib6_remove_gc_list(struct fib6_info *f6i)
+ 		hlist_del_init(&f6i->gc_link);
+ }
+ 
++static inline void fib6_may_remove_gc_list(struct net *net,
++					   struct fib6_info *f6i)
++{
++	struct fib6_gc_args gc_args;
 +
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
-+		*to++ = BPF_ALU64_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^
-+				      from->imm);
-+		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
-+		/*
-+		 * Cannot use BPF_STX_MEM() macro here as it
-+		 * hardcodes BPF_MEM mode, losing PROBE_MEM32
-+		 * and breaking arena addressing in the JIT.
-+		 */
-+		*to++ = (struct bpf_insn) {
-+			.code  = BPF_STX | BPF_PROBE_MEM32 |
-+				 BPF_SIZE(from->code),
-+			.dst_reg = from->dst_reg,
-+			.src_reg = BPF_REG_AX,
-+			.off   = from->off,
-+		};
-+		break;
- 	}
- out:
- 	return to - to_buff;
++	if (hlist_unhashed(&f6i->gc_link))
++		return;
++
++	gc_args.timeout = READ_ONCE(net->ipv6.sysctl.ip6_rt_gc_interval);
++	gc_args.more = 0;
++
++	rcu_read_lock();
++	fib6_age_exceptions(f6i, &gc_args, jiffies);
++	rcu_read_unlock();
++}
++#endif
++
+ struct ipv6_route_iter {
+ 	struct seq_net_private p;
+ 	struct fib6_walker w;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 27ab9d7adc649..3dcfa4b3094a8 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -2863,7 +2863,7 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
+ 					fib6_add_gc_list(rt);
+ 				} else {
+ 					fib6_clean_expires(rt);
+-					fib6_remove_gc_list(rt);
++					fib6_may_remove_gc_list(net, rt);
+ 				}
+ 
+ 				spin_unlock_bh(&table->tb6_lock);
+@@ -4836,7 +4836,7 @@ static int modify_prefix_route(struct net *net, struct inet6_ifaddr *ifp,
+ 
+ 		if (!(flags & RTF_EXPIRES)) {
+ 			fib6_clean_expires(f6i);
+-			fib6_remove_gc_list(f6i);
++			fib6_may_remove_gc_list(net, f6i);
+ 		} else {
+ 			fib6_set_expires(f6i, expires);
+ 			fib6_add_gc_list(f6i);
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index a22af1c8f93ac..ffa7733598333 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1133,7 +1133,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 					return -EEXIST;
+ 				if (!(rt->fib6_flags & RTF_EXPIRES)) {
+ 					fib6_clean_expires(iter);
+-					fib6_remove_gc_list(iter);
++					fib6_may_remove_gc_list(info->nl_net, iter);
+ 				} else {
+ 					fib6_set_expires(iter, rt->expires);
+ 					fib6_add_gc_list(iter);
+@@ -2348,8 +2348,8 @@ static void fib6_flush_trees(struct net *net)
+ /*
+  *	Garbage collection
+  */
+-static void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
+-				unsigned long now)
++void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
++			 unsigned long now)
+ {
+ 	bool may_expire = rt->fib6_flags & RTF_EXPIRES && rt->expires;
+ 	int old_more = gc_args->more;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index e01331d965313..446f4de7d6a22 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1033,7 +1033,7 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
+ 
+ 		if (!addrconf_finite_timeout(lifetime)) {
+ 			fib6_clean_expires(rt);
+-			fib6_remove_gc_list(rt);
++			fib6_may_remove_gc_list(net, rt);
+ 		} else {
+ 			fib6_set_expires(rt, jiffies + HZ * lifetime);
+ 			fib6_add_gc_list(rt);
 -- 
 2.51.0
 
