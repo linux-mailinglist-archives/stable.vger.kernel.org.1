@@ -1,77 +1,91 @@
-Return-Path: <stable+bounces-232572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IQAF2kszGkmQgYAu9opvQ
-	(envelope-from <stable+bounces-232572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:19:53 +0200
+	id 0MlWD7YtzGkmQgYAu9opvQ
+	(envelope-from <stable+bounces-232573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:25:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA70D37119C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:19:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C317E371249
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4539B3019F3F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:19:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B70C3047AD4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874EF3D6692;
-	Tue, 31 Mar 2026 20:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D4D44E046;
+	Tue, 31 Mar 2026 20:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AA7jSMk/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VaTNlEKL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC692D46CE
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 20:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A096B44E02A
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 20:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774988390; cv=none; b=gmEi3VjmJSgYTuTaAu0IqBIGuE4vVypDihEuSX/wvCc69+JuSXeDyrneKheF0+pH5nWk6pmcTSy9zyEJmUUE7zwVhlZ4rZ/cic/CgbU6GS3OtVIClt2IkTUi1EawiGLAoPRU9e7RMeMKSwH2VZ2mZrbAek6tlKt7yfXJfCbZej4=
+	t=1774988639; cv=none; b=RLaTJzKB8PEDsBeOvCrI6iRIgBFKGu88m4B4TjFULNYJvyR9wffaz6Xb2lAAF0FTD7JAok3bp0Zt1SbrwwlaWDMVHysKQukAJSVS7/0LIrJq54V08B1RUpOoGScyoTmdtVYrcXuR6zBsmzjlzWQNtUZWhOWflVNMo23OPyAdxCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774988390; c=relaxed/simple;
-	bh=B80EtpnZK3f1gaQwFME8Vzv20eignLCQTepS0guWObo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p+22Gj3Qmq/Gnjdw/IuafnXMkLO+6uYtX+wE6w2sZihdnqYquzn6DLan7NoaOGHp8hYFNfT2oeyQCuTU9ZXrhpvCz03WYpx+3/vac5/Frd+F1Xb8FfSqp/Uo3YkZ1YeW4RxtTxUpOdbELAxxe92UrekXAFHuz0WPclIP9YDKyT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AA7jSMk/; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774988388; x=1806524388;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=B80EtpnZK3f1gaQwFME8Vzv20eignLCQTepS0guWObo=;
-  b=AA7jSMk/HoolDTj6NPBO43uZVDGpo4mwUSIVEln2ZwMWybN8c2hNfqQX
-   i0XX8YbH6QeZlclZ6XDO7GcWZtfYBS7wk3Y3Cy60viaK95FHGGMt9vyoA
-   qawlJePnqxcyBjbn5LuouoRVPZxibdCmJFHh9VuKZCZ8My0jbpgiEO6ks
-   VTcin5wS7CCTkpLRYAsTKw7+IAZq8JIfKX17BqFuHAboavhFgXg2nF4j8
-   tiexbY71sV3x65tk7f+0qhKJ5APgrpv4t/fcO0rSqA8TS/70Rs/0B2sah
-   9Y98+pMAN5NYwYNAZAGHxT40UH7QHBfN51ug4BQRnuIQF6dKYiMhbj3uT
-   g==;
-X-CSE-ConnectionGUID: x0nhSP/YQ3C9gNnfquqe2Q==
-X-CSE-MsgGUID: 3QoNDnp7TYSvoX88eLGEBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78609739"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="78609739"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 13:19:47 -0700
-X-CSE-ConnectionGUID: pdpaPXKyRAeJc6VZe2h9PQ==
-X-CSE-MsgGUID: qoOd+aldSaKOA59Y2hI2rQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="226332114"
-Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.31])
-  by orviesa009.jf.intel.com with ESMTP; 31 Mar 2026 13:19:47 -0700
-From: Jia Yao <jia.yao@intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: Jia Yao <jia.yao@intel.com>,
+	s=arc-20240116; t=1774988639; c=relaxed/simple;
+	bh=+t8ikSPRD7DfscZ218WtPN+EojX0PBKH28/1MfyKklk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BwUZo0yOiPtPcCDlijjbzfcxZ5KOEEkN9VBnqG320MO++qgdKm/up9W75+uC5lKe/8zTJOjUN7/Bo3W60saoKs5MlXiIE9dayN9hOZYsvF5EGgNdeuO648qYKAG0jogE/a6Fg5NHjG5O0U9222lOHw39oV1jTB69Oy5+Qvk7iH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VaTNlEKL; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38bd60d7a2cso58084681fa.1
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 13:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774988635; x=1775593435; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gp8MmgexMa9kZc3iHEPrKAW8s9Qb4eG8gKB+d4t8Qx0=;
+        b=VaTNlEKLnjwgivCe5NJq5TBgpbOPGyXu0oPOD3aJIeuNkP2wl626AcHc4XO2UJhyNV
+         HF3KA2mOgnRfN3jTUxUji9dbYq6/CBPFQ+1v+xyBEsJjnP5m+7TtAiFBfYZIPV40ZCDm
+         V6d240KUTif+UCw/al083cdw9tbDxcYDeONM4kmcGqV5cgTYSCueMC//Suyim8+CotKY
+         lshW3N5JkRd7sC1cwlec4MgpkmMZLpXb256+pI/AZnGlx6pR3ZQmaQidFp+tGEFcKWEg
+         HESkQKE+mO2jK+pf31yf43cpzf4zmopN3Nef7TEh1zW5eaJpNtTzinusDJ9Ts7Rfq1YI
+         vJAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774988635; x=1775593435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gp8MmgexMa9kZc3iHEPrKAW8s9Qb4eG8gKB+d4t8Qx0=;
+        b=exgabaT87qOo+ASj7Be/VbBvVg2OwqQo3VU66dxyWL5Et6Yfsn+AES59TWE2HP7R4L
+         faywDnwyDyZsMv/yaZtbf/bXG7u2MPIwgLMsnF/BdhD5dTm6sZ89Fpii9ezf3fOa+3Tl
+         g241ffoRvGbzeKUhs6L15Y4z/qdWd6lzE2/rjXVmeqbkmeq8blpsBVxttz4rg7YIL24D
+         992Wkj8qMRvoB4+x7wf3rczZpVE3rqzVqcopo1K0jgakGsRUJaq4P6hRbHRlIQFiShhp
+         i20h6zndj2meUrZlzaDc+Eo49CVsZQBNzrLVZZRX0saaHlBCrLgjsJQK88LbSfBW2ehr
+         uU1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWdpMIcIuG+uj9zSEndq3+bQtaFJIZmZ+JTgsV9+Y4AJoM3L0ciFf/Im2t4pZFskdZ3UBtH8Q4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu4HZHIL5TdbL89i6NAjYvx4UXx7N8H2POqkB/8lDLYn6oKbX6
+	bcGSFfCXZkI9pAWB5z15fzIqsur52vdA9NQ/g4toRXCrU2a7ajCF2H2T
+X-Gm-Gg: ATEYQzwOlt7myf2LlRO1e7DyEkUdg6IQTW5T8f0MRX4FI133ovar0wuJyS7bcSkEGlF
+	pHZnKVtlyyQvk8RQzIb2J9fgpA+H06UWlgGEjPYJe1UF8X8S5VlYfKBBvhz110I3omCyXbu8CLs
+	LnNYltAXltfrnImcuPsL0pVi/EhdCXCyp0az4QSLvCXZ0fES/b27mJS1I3MFry3Mk2jlgc0Rmnt
+	pyupkRESPJ8/0/PQHGn36IH681h74Hck3brF+h/qrL4fqr4CekWlHgdu6HVmfpOk264L5U9S3lY
+	Qg7XTtzw/eggPTuXnue4xSXUPrfVezVjAXclomNGqZi0y9sAnp6kb9jvz+VqH+Gk2G/giwbtGhL
+	vmjCU+7+AIx2MOJXBoABQqbWVJOakbo9UFA043STMzrs4dVpQ2i2hZ9u2CsmjBTPjqyTGPV6Sgi
+	+kNYRdCVehcs3qMA8=
+X-Received: by 2002:a05:6512:1291:b0:5a2:7a31:9194 with SMTP id 2adb3069b0e04-5a2c1ef9aa4mr263563e87.19.1774988634449;
+        Tue, 31 Mar 2026 13:23:54 -0700 (PDT)
+Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b13f4329sm2681171e87.3.2026.03.31.13.23.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 13:23:54 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
 	stable@vger.kernel.org,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH] drm/i915/dg2: Add per-context control for Wa_22013059131
-Date: Tue, 31 Mar 2026 20:19:34 +0000
-Message-ID: <20260331201935.2414108-1-jia.yao@intel.com>
-X-Mailer: git-send-email 2.43.0
+	lirongqing <lirongqing@baidu.com>
+Subject: [PATCH v3] mm/vmalloc: Use dedicated unbound workqueues for vmap drain
+Date: Tue, 31 Mar 2026 22:23:52 +0200
+Message-ID: <20260331202352.879718-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,217 +96,218 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232572-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[redhat.com,vger.kernel.org,gmail.com,baidu.com];
+	TAGGED_FROM(0.00)[bounces-232573-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[urezki@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AA70D37119C
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C317E371249
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Wa_22013059131 sets FORCE_1_SUB_MESSAGE_PER_FRAGMENT in LSC_CHICKEN_BIT_0
-at engine init, but this is known to cause GPU hangs in certain workloads.
-Add I915_CONTEXT_PARAM_WA_22013059131 so userspace that handles the
-workaround itself (e.g. by limiting SLM size) can set it to 1 to let the
-kernel know bit 15 programming is not needed for that context.
+drain_vmap_area_work() function can take >10ms to complete
+when there are many accumulated vmap areas in a system with
+high CPU count, causing workqueue watchdog warnings when run
+via schedule_work():
 
-LSC_CHICKEN_BIT_0 is not context-saved by hardware, so the kernel restores
-the correct value on every context switch via the indirect context
-batchbuffer to avoid leaking state between contexts.
+  workqueue: drain_vmap_area_work hogged CPU for >10000us
 
-Bspec: 54833
-Fixes: 645cc0b9d972 ("drm/i915/dg2: Add initial gt/ctx/engine workarounds")
+Move the top-level drain work to a dedicated WQ_UNBOUND
+workqueue so the scheduler can run this background work
+on any available CPU, improving responsiveness. Use the
+WQ_MEM_RECLAIM to ensure forward progress under memory
+pressure.
+
+Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
+workqueue. This allows drain_vmap_work to wait for helpers
+completion without creating dependency on the same rescuer
+thread and avoid a potential parent/child deadlock.
+
+Simplify purge helper scheduling by removing cpumask-based
+iteration to iterating directly over vmap nodes checking
+work_queued state.
+
 Cc: stable@vger.kernel.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Jia Yao <jia.yao@intel.com>
+Cc: lirongqing <lirongqing@baidu.com>
+Fixes: 72210662c5a2 ("mm: vmalloc: offload free_vmap_area_lock lock")
+Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_context.c   | 12 +++++++++
- drivers/gpu/drm/i915/gem/i915_gem_context.h   | 18 +++++++++++++
- .../gpu/drm/i915/gem/i915_gem_context_types.h |  1 +
- drivers/gpu/drm/i915/gt/intel_context_types.h |  1 +
- drivers/gpu/drm/i915/gt/intel_lrc.c           | 27 ++++++++++++++++++-
- include/uapi/drm/i915_drm.h                   | 10 +++++++
- 6 files changed, 68 insertions(+), 1 deletion(-)
+ mm/vmalloc.c | 79 ++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 52 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-index 6ac0f23570f3..d24e449f1eb3 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-@@ -911,6 +911,15 @@ static int set_proto_ctx_param(struct drm_i915_file_private *fpriv,
- 			ret = -EINVAL;
- 		break;
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 61caa55a4402..0fa1208a910b 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -949,6 +949,7 @@ static struct vmap_node {
+ 	struct list_head purge_list;
+ 	struct work_struct purge_work;
+ 	unsigned long nr_purged;
++	bool work_queued;
+ } single;
  
-+	case I915_CONTEXT_PARAM_WA_22013059131:
-+		if (args->size)
-+			ret = -EINVAL;
-+		else if (args->value)
-+			pc->user_flags |= BIT(UCONTEXT_WA_22013059131);
-+		else
-+			pc->user_flags &= ~BIT(UCONTEXT_WA_22013059131);
-+		break;
-+
- 	case I915_CONTEXT_PARAM_RECOVERABLE:
- 		if (args->size)
- 			ret = -EINVAL;
-@@ -1003,6 +1012,9 @@ static int intel_context_set_gem(struct intel_context *ce,
- 	if (test_bit(UCONTEXT_LOW_LATENCY, &ctx->user_flags))
- 		__set_bit(CONTEXT_LOW_LATENCY, &ce->flags);
+ /*
+@@ -1067,6 +1068,8 @@ static void reclaim_and_purge_vmap_areas(void);
+ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
++static struct workqueue_struct *drain_vmap_helpers_wq;
++static struct workqueue_struct *drain_vmap_wq;
  
-+	if (test_bit(UCONTEXT_WA_22013059131, &ctx->user_flags))
-+		__set_bit(CONTEXT_WA_22013059131, &ce->flags);
-+
- 	return ret;
+ static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+@@ -2335,6 +2338,16 @@ static void purge_vmap_node(struct work_struct *work)
+ 	reclaim_list_global(&local_list);
  }
  
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.h b/drivers/gpu/drm/i915/gem/i915_gem_context.h
-index 6e682a6a0574..831574ec6e2b 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_context.h
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context.h
-@@ -89,6 +89,24 @@ static inline void i915_gem_context_clear_persistence(struct i915_gem_context *c
- 	clear_bit(UCONTEXT_PERSISTENCE, &ctx->user_flags);
- }
- 
-+static inline bool
-+i915_gem_context_wa_22013059131_optout(const struct i915_gem_context *ctx)
++static bool
++schedule_drain_vmap_work(struct workqueue_struct *wq,
++		struct work_struct *work)
 +{
-+	return test_bit(UCONTEXT_WA_22013059131, &ctx->user_flags);
++	if (wq)
++		return queue_work(wq, work);
++
++	return false;
 +}
 +
-+static inline void
-+i915_gem_context_set_wa_22013059131_optout(struct i915_gem_context *ctx)
-+{
-+	set_bit(UCONTEXT_WA_22013059131, &ctx->user_flags);
-+}
-+
-+static inline void
-+i915_gem_context_clear_wa_22013059131_optout(struct i915_gem_context *ctx)
-+{
-+	clear_bit(UCONTEXT_WA_22013059131, &ctx->user_flags);
-+}
-+
- static inline bool
- i915_gem_context_user_engines(const struct i915_gem_context *ctx)
- {
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context_types.h b/drivers/gpu/drm/i915/gem/i915_gem_context_types.h
-index 0267c924634b..4efc0e758d3b 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_context_types.h
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context_types.h
-@@ -338,6 +338,7 @@ struct i915_gem_context {
- #define UCONTEXT_RECOVERABLE		3
- #define UCONTEXT_PERSISTENCE		4
- #define UCONTEXT_LOW_LATENCY		5
-+#define UCONTEXT_WA_22013059131		6
- 
- 	/**
- 	 * @flags: small set of booleans
-diff --git a/drivers/gpu/drm/i915/gt/intel_context_types.h b/drivers/gpu/drm/i915/gt/intel_context_types.h
-index 10070ee4d74c..84011ce7c84d 100644
---- a/drivers/gpu/drm/i915/gt/intel_context_types.h
-+++ b/drivers/gpu/drm/i915/gt/intel_context_types.h
-@@ -133,6 +133,7 @@ struct intel_context {
- #define CONTEXT_EXITING			13
- #define CONTEXT_LOW_LATENCY		14
- #define CONTEXT_OWN_STATE		15
-+#define CONTEXT_WA_22013059131		16
- 
- 	struct {
- 		u64 timeout_us;
-diff --git a/drivers/gpu/drm/i915/gt/intel_lrc.c b/drivers/gpu/drm/i915/gt/intel_lrc.c
-index d36e543e98df..8d17006f10bd 100644
---- a/drivers/gpu/drm/i915/gt/intel_lrc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
-@@ -1348,6 +1348,21 @@ gen12_invalidate_state_cache(u32 *cs)
- 	return cs;
- }
- 
-+static u32 *
-+dg2_g11_emit_wa_22013059131(const struct intel_context *ce, u32 *cs)
-+{
-+	u32 val = DISABLE_D8_D16_COASLESCE;	/* Wa_22014226127, always */
-+
-+	if (!test_bit(CONTEXT_WA_22013059131, &ce->flags))
-+		val |= FORCE_1_SUB_MESSAGE_PER_FRAGMENT;	/* Wa_22013059131 */
-+
-+	*cs++ = MI_LOAD_REGISTER_IMM(1);
-+	*cs++ = i915_mmio_reg_offset(LSC_CHICKEN_BIT_0);
-+	*cs++ = val;
-+
-+	return cs;
-+}
-+
- static u32 *
- gen12_emit_indirect_ctx_rcs(const struct intel_context *ce, u32 *cs)
- {
-@@ -1371,6 +1386,10 @@ gen12_emit_indirect_ctx_rcs(const struct intel_context *ce, u32 *cs)
- 	    IS_DG2(ce->engine->i915))
- 		cs = dg2_emit_draw_watermark_setting(cs);
- 
-+	/* Wa_22013059131:dg2 */
-+	if (IS_DG2_G11(ce->engine->i915))
-+		cs = dg2_g11_emit_wa_22013059131(ce, cs);
-+
- 	return cs;
- }
- 
-@@ -1387,7 +1406,13 @@ gen12_emit_indirect_ctx_xcs(const struct intel_context *ce, u32 *cs)
- 						    PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE,
- 						    0);
- 
--	return gen12_emit_aux_table_inv(ce->engine, cs);
-+	cs = gen12_emit_aux_table_inv(ce->engine, cs);
-+
-+	/* Wa_22013059131:dg2 */
-+	if (IS_DG2_G11(ce->engine->i915))
-+		cs = dg2_g11_emit_wa_22013059131(ce, cs);
-+
-+	return cs;
- }
- 
- static u32 *xehp_emit_fastcolor_blt_wabb(const struct intel_context *ce, u32 *cs)
-diff --git a/include/uapi/drm/i915_drm.h b/include/uapi/drm/i915_drm.h
-index 535cb68fdb5c..8a1f40ae120c 100644
---- a/include/uapi/drm/i915_drm.h
-+++ b/include/uapi/drm/i915_drm.h
-@@ -2172,6 +2172,16 @@ struct drm_i915_gem_context_param {
-  * Note that this is a debug API not available on production kernel builds.
+ /*
+  * Purges all lazily-freed vmap areas.
   */
- #define I915_CONTEXT_PARAM_CONTEXT_IMAGE	0xf
-+
-+/*
-+ * I915_CONTEXT_PARAM_WA_22013059131:
-+ *
-+ * Default value 0 means the kernel programs Wa_22013059131 for this context.
-+ * Set to 1 to inform the kernel that userspace is implementing its half of
-+ * the workaround (e.g. by limiting SLM size), so the kernel programming of
-+ * LSC_CHICKEN_BIT_0 bit 15 is not needed for this context. DG2-G11 only.
-+ */
-+#define I915_CONTEXT_PARAM_WA_22013059131	0x10
- /* Must be kept compact -- no holes and well documented */
+@@ -2342,19 +2355,12 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		bool full_pool_decay)
+ {
+ 	unsigned long nr_purged_areas = 0;
++	unsigned int nr_purge_nodes = 0;
+ 	unsigned int nr_purge_helpers;
+-	static cpumask_t purge_nodes;
+-	unsigned int nr_purge_nodes;
+ 	struct vmap_node *vn;
+-	int i;
  
- 	/** @value: Context parameter value to be set or queried */
+ 	lockdep_assert_held(&vmap_purge_lock);
+ 
+-	/*
+-	 * Use cpumask to mark which node has to be processed.
+-	 */
+-	purge_nodes = CPU_MASK_NONE;
+-
+ 	for_each_vmap_node(vn) {
+ 		INIT_LIST_HEAD(&vn->purge_list);
+ 		vn->skip_populate = full_pool_decay;
+@@ -2374,10 +2380,9 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		end = max(end, list_last_entry(&vn->purge_list,
+ 			struct vmap_area, list)->va_end);
+ 
+-		cpumask_set_cpu(node_to_id(vn), &purge_nodes);
++		nr_purge_nodes++;
+ 	}
+ 
+-	nr_purge_nodes = cpumask_weight(&purge_nodes);
+ 	if (nr_purge_nodes > 0) {
+ 		flush_tlb_kernel_range(start, end);
+ 
+@@ -2385,29 +2390,31 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+ 		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++		for_each_vmap_node(vn) {
++			vn->work_queued = false;
++
++			if (list_empty(&vn->purge_list))
++				continue;
+ 
+ 			if (nr_purge_helpers > 0) {
+ 				INIT_WORK(&vn->purge_work, purge_vmap_node);
++				vn->work_queued = schedule_drain_vmap_work(
++					READ_ONCE(drain_vmap_helpers_wq), &vn->purge_work);
+ 
+-				if (cpumask_test_cpu(i, cpu_online_mask))
+-					schedule_work_on(i, &vn->purge_work);
+-				else
+-					schedule_work(&vn->purge_work);
+-
+-				nr_purge_helpers--;
+-			} else {
+-				vn->purge_work.func = NULL;
+-				purge_vmap_node(&vn->purge_work);
+-				nr_purged_areas += vn->nr_purged;
++				if (vn->work_queued) {
++					nr_purge_helpers--;
++					continue;
++				}
+ 			}
+-		}
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++			/* Sync path. Process locally. */
++			purge_vmap_node(&vn->purge_work);
++			nr_purged_areas += vn->nr_purged;
++		}
+ 
+-			if (vn->purge_work.func) {
++		/* Wait for completion if queued any. */
++		for_each_vmap_node(vn) {
++			if (vn->work_queued) {
+ 				flush_work(&vn->purge_work);
+ 				nr_purged_areas += vn->nr_purged;
+ 			}
+@@ -2471,7 +2478,8 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ 
+ 	/* After this point, we may free va at any time */
+ 	if (unlikely(nr_lazy > nr_lazy_max))
+-		schedule_work(&drain_vmap_work);
++		schedule_drain_vmap_work(READ_ONCE(drain_vmap_wq),
++			&drain_vmap_work);
+ }
+ 
+ /*
+@@ -5483,3 +5491,20 @@ void __init vmalloc_init(void)
+ 	vmap_node_shrinker->scan_objects = vmap_node_shrink_scan;
+ 	shrinker_register(vmap_node_shrinker);
+ }
++
++static int __init vmalloc_init_workqueue(void)
++{
++	struct workqueue_struct *drain_wq, *helpers_wq;
++	unsigned int flags = WQ_UNBOUND | WQ_MEM_RECLAIM;
++
++	drain_wq = alloc_workqueue("vmap_drain", flags, 0);
++	WARN_ON_ONCE(drain_wq == NULL);
++	WRITE_ONCE(drain_vmap_wq, drain_wq);
++
++	helpers_wq = alloc_workqueue("vmap_drain_helpers", flags, 0);
++	WARN_ON_ONCE(helpers_wq == NULL);
++	WRITE_ONCE(drain_vmap_helpers_wq, helpers_wq);
++
++	return 0;
++}
++early_initcall(vmalloc_init_workqueue);
 -- 
-2.43.0
+2.47.3
 
 
