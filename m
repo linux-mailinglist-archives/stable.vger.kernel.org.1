@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGotGnYGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:58 +0200
+	id yA3FN4cBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-231864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FA636F085
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A61536E64B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76BB732B952D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27C6731C3EB1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365952FE042;
-	Tue, 31 Mar 2026 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AC9426EB4;
+	Tue, 31 Mar 2026 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCC9vN90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2Y2YbCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFC62F5491;
-	Tue, 31 Mar 2026 17:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C1A426EB1;
+	Tue, 31 Mar 2026 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976603; cv=none; b=K0+h/v+hrPwrjXi1SF+Y+PfhU7yT94mJ9kUX6fw8o4NjLkDrSxPif+h4gSLHbHeV+v3wZj2TZmETxO1wfvgAAdHp8eVO7YC7sBBhNjXf/x+8TTPrrvwoc2A9XOuq9gHf8JfAzOMVvjpolr3oNCPJkZosH3xts+qZanR2zWSUxvc=
+	t=1774975265; cv=none; b=lvIOucU690jVWZhC05kE8naiYKypkn+WYY+37cDtsK8bG9cQuocGbI4gNuJsDunmmHSMMr9Z/cyCCNzAlA8lt316bLZnKUli5gh8MKNNLIEEAILyvFbXPEp40sGUthCOL3pvkJfKjPGvXrw+WhQtHtF2CJenJwaR78O7nJv9EDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976603; c=relaxed/simple;
-	bh=6NM0M3tt7RmaJ7OKxtM8l0jIaywZHoczScFeNz/760U=;
+	s=arc-20240116; t=1774975265; c=relaxed/simple;
+	bh=C0svGNFOh0PlGhiYext1JMbrtZnt2eP7tOOjGr19etk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCu4V1G6fviZG7PjANAXh7rA0eX4qBkeW75LiDVI+fqufLBPez9MQdB0lQ6f3F3aRuIjw/rwuRzk9HHTc1S3TzaEKSzCMsGM0kXMgLS709U4zplQCwaKbPlOVoz0J0m8wQY7lAaaad6ORuTaAyUyex7+HtDFuGmtAlzpfvI38j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCC9vN90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CA2C19423;
-	Tue, 31 Mar 2026 17:03:22 +0000 (UTC)
+	 MIME-Version; b=EiN1rg4HxofbWpESZUhjmSxMsiHKEX3xAPnj0fED6DMEJF2knQ376uH9XOMntguMIriZ2ybBjBYi2CZiBGPnz2Bog2ixFDCIEuQEqkysNphG7WMQ3zsm8TMyDhdUj1t0cAVEfqadXNb5XzwtUYKAjrOZC/Qg3hYb67BGM/nYVHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2Y2YbCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C224EC2BCB1;
+	Tue, 31 Mar 2026 16:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976602;
-	bh=6NM0M3tt7RmaJ7OKxtM8l0jIaywZHoczScFeNz/760U=;
+	s=korg; t=1774975265;
+	bh=C0svGNFOh0PlGhiYext1JMbrtZnt2eP7tOOjGr19etk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCC9vN90X4XAKX/dslOAJ60snYEnCLH/620Ksgb/DEXSU7JJllYc1og7vBvhTJXNL
-	 t0J7rXBLG49hbgnukOuKD9nxxYm+hsh/YNkOUp7CDadkl2Uf7KTKjhTCAbJKFjJp6b
-	 MsM3hbAhaiEnSWE/pUhSNU3rj8E/eIEXFcdO1XZM=
+	b=A2Y2YbCeum/DW1LUk0JIMw0UMvUPQCK4TD94MX84fiALa9szJrmI/wH16uLTkewC8
+	 kNdtK8XI8N+gf9btsxLnDbSMmJ0tjgRAUp/XTIakVQEjc/dXrSesHoOhSwme1PG9NC
+	 rxaQkjKTvtnIJmddPfcYQEPUboVyzJDvVrcdPgPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 156/309] spi: sn-f-ospi: Fix resource leak in f_ospi_probe()
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.19 226/342] hwmon: (peci/cputemp) Fix crit_hyst returning delta instead of absolute temperature
 Date: Tue, 31 Mar 2026 18:20:59 +0200
-Message-ID: <20260331161759.211468046@linuxfoundation.org>
+Message-ID: <20260331161807.283771771@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +63,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232382-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231864-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.990];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 07FA636F085
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6A61536E64B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit ef3d549e1deb3466c61f3b01d22fc3fe3e5efb08 ]
+commit 0adc752b4f7d82af7bd14f7cad3091b3b5d702ba upstream.
 
-In f_ospi_probe(), when num_cs validation fails, it returns without
-calling spi_controller_put() on the SPI controller, which causes a
-resource leak.
+The hwmon sysfs ABI expects tempN_crit_hyst to report the temperature at
+which the critical condition clears, not the hysteresis delta from the
+critical limit.
 
-Use devm_spi_alloc_host() instead of spi_alloc_host() to ensure the
-SPI controller is properly freed when probe fails.
+The peci cputemp driver currently returns tjmax - tcontrol for
+crit_hyst_type, which is the hysteresis margin rather than the
+corresponding absolute temperature.
 
-Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260319-sn-f-v1-1-33a6738d2da8@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Return tcontrol directly, and update the documentation accordingly.
+
+Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260323002352.93417-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sn-f-ospi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ Documentation/hwmon/peci-cputemp.rst |   10 ++++++----
+ drivers/hwmon/peci/cputemp.c         |    2 +-
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
-index c4969f66a0ba9..84a5b327022e8 100644
---- a/drivers/spi/spi-sn-f-ospi.c
-+++ b/drivers/spi/spi-sn-f-ospi.c
-@@ -612,7 +612,7 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	u32 num_cs = OSPI_NUM_CS;
- 	int ret;
+--- a/Documentation/hwmon/peci-cputemp.rst
++++ b/Documentation/hwmon/peci-cputemp.rst
+@@ -51,8 +51,9 @@ temp1_max		Provides thermal control temp
+ temp1_crit		Provides shutdown temperature of the CPU package which
+ 			is also known as the maximum processor junction
+ 			temperature, Tjmax or Tprochot.
+-temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+-			the CPU package.
++temp1_crit_hyst		Provides the hysteresis temperature of the CPU
++			package. Returns Tcontrol, the temperature at which
++			the critical condition clears.
  
--	ctlr = spi_alloc_host(dev, sizeof(*ospi));
-+	ctlr = devm_spi_alloc_host(dev, sizeof(*ospi));
- 	if (!ctlr)
- 		return -ENOMEM;
+ temp2_label		"DTS"
+ temp2_input		Provides current temperature of the CPU package scaled
+@@ -62,8 +63,9 @@ temp2_max		Provides thermal control temp
+ temp2_crit		Provides shutdown temperature of the CPU package which
+ 			is also known as the maximum processor junction
+ 			temperature, Tjmax or Tprochot.
+-temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+-			the CPU package.
++temp2_crit_hyst		Provides the hysteresis temperature of the CPU
++			package. Returns Tcontrol, the temperature at which
++			the critical condition clears.
  
-@@ -636,16 +636,12 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, ospi);
- 
- 	ospi->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(ospi->base)) {
--		ret = PTR_ERR(ospi->base);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(ospi->base))
-+		return PTR_ERR(ospi->base);
- 
- 	ospi->clk = devm_clk_get_enabled(dev, NULL);
--	if (IS_ERR(ospi->clk)) {
--		ret = PTR_ERR(ospi->clk);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(ospi->clk))
-+		return PTR_ERR(ospi->clk);
- 
- 	mutex_init(&ospi->mlock);
- 
-@@ -662,9 +658,6 @@ static int f_ospi_probe(struct platform_device *pdev)
- err_destroy_mutex:
- 	mutex_destroy(&ospi->mlock);
- 
--err_put_ctlr:
--	spi_controller_put(ctlr);
--
- 	return ret;
- }
- 
--- 
-2.53.0
-
+ temp3_label		"Tcontrol"
+ temp3_input		Provides current Tcontrol temperature of the CPU
+--- a/drivers/hwmon/peci/cputemp.c
++++ b/drivers/hwmon/peci/cputemp.c
+@@ -131,7 +131,7 @@ static int get_temp_target(struct peci_c
+ 		*val = priv->temp.target.tjmax;
+ 		break;
+ 	case crit_hyst_type:
+-		*val = priv->temp.target.tjmax - priv->temp.target.tcontrol;
++		*val = priv->temp.target.tcontrol;
+ 		break;
+ 	default:
+ 		ret = -EOPNOTSUPP;
 
 
 
