@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKVjOm4BzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:30 +0200
+	id 0D/8DDwHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD9F36E5D0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBA936F212
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E85293187F81
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86EB73230FE6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B135423A7C;
-	Tue, 31 Mar 2026 16:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E36301471;
+	Tue, 31 Mar 2026 17:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlWc6gqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnpFknze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2453425CE5;
-	Tue, 31 Mar 2026 16:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD22C2E1C7C;
+	Tue, 31 Mar 2026 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975236; cv=none; b=tBmYWIjXqrRCfsw6eav3fZrJD4LYHgNBqfEg1uBRfmRDlqwR0ssN8B3FbVk1nuvUBxIkZbDpjZ7wo2KS7e639r73r8L/pKdihgJjZVT9wd/SzyJutyBPS7HgxdM5yURxLNH6ZAV2qv+NK6c2WuUMspYrHOOkGBKuE7V+/Y+vECI=
+	t=1774976574; cv=none; b=IpImuJKjZcDeonk8OLvavkVIvU3KbVk0WoiDv8ONY63GMlP+WiguUpLjMWB8fl/2nVMJTcuGRPUAlmeXRtozG8X4LQjUfXQfebqPPde8hjCe6EQfSQ4uWShkG7m/e0R9smbbb0ZlwRbi/YugrTqdx+opKlOHk5eI1g4uk5FAb0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975236; c=relaxed/simple;
-	bh=Reu0GdrV4O2AKWAIeez+CsX+rR93IywioFp/nXnZvhg=;
+	s=arc-20240116; t=1774976574; c=relaxed/simple;
+	bh=8Of7Vd0qWjpfJTXOkaeYLbccWI78DLHwKLVGjavMaY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpDzsWXuV3nRRtSQ5Pn4HQO3Ykuun7LwJz23SxyOuG2ogRYgiXaU6u9lFYzvMO3q/Kt7cPjf+GL63apE7u92q05Z/pmQsICfSkoxxYUNefu0+onbMMeHS4xArzZZqulAdCVw+qNxYVa+bLEn2PlZBz1SeARqIihNePcCeC3zmbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlWc6gqd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59569C19423;
-	Tue, 31 Mar 2026 16:40:36 +0000 (UTC)
+	 MIME-Version; b=G8AbUH871QW99E5aZj9VBU+pxs5C1d0dosZi8AH9MggqOSO+a2o9mqP2P/LE1tuIEsEWfdwOkApa6uS8Ydw+18npYRM+JKxiHekeKcWY9oEMLrGyvpt6nodIHUcgd7WCzql8IMvjxkV9gpd2qoDJCW055nJ1Gz0z0y7im1bKcfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnpFknze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F8BC19423;
+	Tue, 31 Mar 2026 17:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975236;
-	bh=Reu0GdrV4O2AKWAIeez+CsX+rR93IywioFp/nXnZvhg=;
+	s=korg; t=1774976574;
+	bh=8Of7Vd0qWjpfJTXOkaeYLbccWI78DLHwKLVGjavMaY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlWc6gqdeJMwaV9V1FIKQwHjhrdOMkF72G9c3QZGisyuWnsdMukUoF5ndm6xGpgir
-	 9I9q4JD3oUfG/vIBDcWMHS2JzAFKVyOJ2Aita24vZs0SlIVqzVrsCXH9NMvAlar3ix
-	 k5dcClCu09E8lusXqQUhmDmZYSDgVs9SeaMJnKEQ=
+	b=nnpFknzeP94+kf71CJ/L9ZOUUGF69ZjNhRYycat3m0QRDoTc1J60s6fnE389CdYsW
+	 jgQ+O/TbJOsI7GvDqnY1kisjVTDgE+UuRRv8FcHeqUlc0ZvOgUxtTrGTKJMqOrItnC
+	 HZsGYH2KRkMbNSJOKcrqVfns5rMkpe39webAXAH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.19 216/342] cpufreq: conservative: Reset requested_freq on limits change
+	Anil Samal <anil.samal@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 146/309] RDMA/irdma: Fix deadlock during netdev reset with active connections
 Date: Tue, 31 Mar 2026 18:20:49 +0200
-Message-ID: <20260331161806.926076185@linuxfoundation.org>
+Message-ID: <20260331161758.845991244@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231852-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232371-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,110 +86,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linaro.org:email,huawei.com:email,cs_governor.gov:url]
-X-Rspamd-Queue-Id: 4DD9F36E5D0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BEBA936F212
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Anil Samal <anil.samal@intel.com>
 
-commit 6a28fb8cb28b9eb39a392e531d938a889eacafc5 upstream.
+[ Upstream commit 6f52370970ac07d352a7af4089e55e0e6425f827 ]
 
-A recently reported issue highlighted that the cached requested_freq
-is not guaranteed to stay in sync with policy->cur. If the platform
-changes the actual CPU frequency after the governor sets one (e.g.
-due to platform-specific frequency scaling) and a re-sync occurs
-later, policy->cur may diverge from requested_freq.
+Resolve deadlock that occurs when user executes netdev reset while RDMA
+applications (e.g., rping) are active. The netdev reset causes ice
+driver to remove irdma auxiliary driver, triggering device_delete and
+subsequent client removal. During client removal, uverbs_client waits
+for QP reference count to reach zero while cma_client holds the final
+reference, creating circular dependency and indefinite wait in iWARP
+mode. Skip QP reference count wait during device reset to prevent
+deadlock.
 
-This can lead to incorrect behavior in the conservative governor.
-For example, the governor may assume the CPU is already running at
-the maximum frequency and skip further increases even though there
-is still headroom.
-
-Avoid this by resetting the cached requested_freq to policy->cur on
-detecting a change in policy limits.
-
-Reported-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Tested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/all/20260210115458.3493646-1-zhenglifeng1@huawei.com/
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/d846a141a98ac0482f20560fcd7525c0f0ec2f30.1773999467.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8f304d75f6c ("RDMA/irdma: Prevent QP use after free")
+Signed-off-by: Anil Samal <anil.samal@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq_conservative.c |   12 ++++++++++++
- drivers/cpufreq/cpufreq_governor.c     |    3 +++
- drivers/cpufreq/cpufreq_governor.h     |    1 +
- 3 files changed, 16 insertions(+)
+ drivers/infiniband/hw/irdma/verbs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq_conservative.c
-+++ b/drivers/cpufreq/cpufreq_conservative.c
-@@ -313,6 +313,17 @@ static void cs_start(struct cpufreq_poli
- 	dbs_info->requested_freq = policy->cur;
- }
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index ed2f985a35408..c77d6d0eafdec 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -558,7 +558,8 @@ static int irdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
+ 	}
  
-+static void cs_limits(struct cpufreq_policy *policy)
-+{
-+	struct cs_policy_dbs_info *dbs_info = to_dbs_info(policy->governor_data);
-+
-+	/*
-+	 * The limits have changed, so may have the current frequency. Reset
-+	 * requested_freq to avoid any unintended outcomes due to the mismatch.
-+	 */
-+	dbs_info->requested_freq = policy->cur;
-+}
-+
- static struct dbs_governor cs_governor = {
- 	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
- 	.kobj_type = { .default_groups = cs_groups },
-@@ -322,6 +333,7 @@ static struct dbs_governor cs_governor =
- 	.init = cs_init,
- 	.exit = cs_exit,
- 	.start = cs_start,
-+	.limits = cs_limits,
- };
+ 	irdma_qp_rem_ref(&iwqp->ibqp);
+-	wait_for_completion(&iwqp->free_qp);
++	if (!iwdev->rf->reset)
++		wait_for_completion(&iwqp->free_qp);
+ 	irdma_free_lsmm_rsrc(iwqp);
+ 	irdma_cqp_qp_destroy_cmd(&iwdev->rf->sc_dev, &iwqp->sc_qp);
  
- #define CPU_FREQ_GOV_CONSERVATIVE	(cs_governor.gov)
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -563,6 +563,7 @@ EXPORT_SYMBOL_GPL(cpufreq_dbs_governor_s
- 
- void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy)
- {
-+	struct dbs_governor *gov = dbs_governor_of(policy);
- 	struct policy_dbs_info *policy_dbs;
- 
- 	/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
-@@ -574,6 +575,8 @@ void cpufreq_dbs_governor_limits(struct
- 	mutex_lock(&policy_dbs->update_mutex);
- 	cpufreq_policy_apply_limits(policy);
- 	gov_update_sample_delay(policy_dbs, 0);
-+	if (gov->limits)
-+		gov->limits(policy);
- 	mutex_unlock(&policy_dbs->update_mutex);
- 
- out:
---- a/drivers/cpufreq/cpufreq_governor.h
-+++ b/drivers/cpufreq/cpufreq_governor.h
-@@ -138,6 +138,7 @@ struct dbs_governor {
- 	int (*init)(struct dbs_data *dbs_data);
- 	void (*exit)(struct dbs_data *dbs_data);
- 	void (*start)(struct cpufreq_policy *policy);
-+	void (*limits)(struct cpufreq_policy *policy);
- };
- 
- static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy)
+-- 
+2.53.0
+
 
 
 
