@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGtoCIT9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:48 +0200
+	id 8MujJ/z8y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6921836D9F6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DCF36D7F9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2875931F6F21
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6D60315C108
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28D7423A9D;
-	Tue, 31 Mar 2026 16:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEAD421A1D;
+	Tue, 31 Mar 2026 16:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQg03svt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKIGEu7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A243E95A9;
-	Tue, 31 Mar 2026 16:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60E73FA5E6;
+	Tue, 31 Mar 2026 16:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975901; cv=none; b=N0zI1HbVBVKtH5rhIpQifWcDK2NXTfAfxPPX/aD68gGAe09q3UK3V9wX3cdgRvXscuKKo4TS1irgbz9dA4AGrcA/W1H86ioZ+rHgHwrrP6SXeDOfm0tc4RusIb52bZ6UJ9shgkJFEEAyxNDINAGYiajYioG9N/1h8bn+icJL6oI=
+	t=1774975314; cv=none; b=M3Ukp65kKzPq4FNsloO/Hsu+eS2jbTekVzmqCWXZL3UEYSrYlEGAOWO3I3bEjaAT/bu4NM650FjUGSpHDBbOnAxI7uyQwfPcl+UArluvmRHk8ZAYV6BKuutaVkNM83VLBAo7p9lSTGnS0hfGrBHh7YjOltyM3NlLUEaqQafrnMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975901; c=relaxed/simple;
-	bh=ritlnYmAVfKny1KmnQQTmttXc4G2lzSGggqRisrD3Fs=;
+	s=arc-20240116; t=1774975314; c=relaxed/simple;
+	bh=eTb6K6AflYd/bg/Xv7726AJOmVq7AgP/ZJze0uDUIUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=He7mITFxYbtao7iFHjftCtof5l3BzOn10V3BOsCXXZMS+mdKJcDkwZxed6mwboCFjkzOIIC0jlrvF5NaCX+oVcAGvPZSRL8zU3zCvyYav3VN3luZiV09MmAfBkqnPP6E7g8nZlpkWA9MY6axhpZsCLTHxgbWA2ooiKBKjxVRfpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQg03svt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388D7C19423;
-	Tue, 31 Mar 2026 16:51:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n/ViULLzXCCICb0QBjCKmNnzv5F9uYGUAH9l5KyGXW31pF4YmbaHUqmKnwSzk5Km73fq93njGDXtn5gA0IkWP34VI7iTBaFTmdqLPhKytb6tmwyzL09eIQi/JwXCWj9hkSq62j3N64FYDRUlDjQl0HqR7okIT1u0qbapUR64IpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKIGEu7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E91EC19423;
+	Tue, 31 Mar 2026 16:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975901;
-	bh=ritlnYmAVfKny1KmnQQTmttXc4G2lzSGggqRisrD3Fs=;
+	s=korg; t=1774975313;
+	bh=eTb6K6AflYd/bg/Xv7726AJOmVq7AgP/ZJze0uDUIUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQg03svttJ01BtsAYHPAN2wPst0itjO+RWHuZKuKhC5fKo8j4vOg1S+ztOA0EHbMd
-	 nYyjwmjrux6U7nMohmTogJe28bJlQjGMMPcX/EhCPdSZtprOxbzYVepcd3cuFEoFt3
-	 14Mmq7cZRSl0h6cWhujPzSw98VN39gW3s39IHg30=
+	b=CKIGEu7XFWMmZF8ypSz57x2z1LN82havbO6sPD4S+E8iwbHmS0j1Lg+n6bMtJCgNo
+	 Ccuuu0SxGljf7Io6A69lwyinQ8R6avP/X1loLoecVcAgY3qx6e09rn3g5HpxeJDdmG
+	 ALRp2+4S5iZwjciNJc3mX6wsqE+3OZ4mhPGFfxGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/244] hwmon: (pmbus) Introduce the concept of "write-only" attributes
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 247/342] net: macb: Move devm_{free,request}_irq() out of spin lock area
 Date: Tue, 31 Mar 2026 18:21:20 +0200
-Message-ID: <20260331161746.456228037@linuxfoundation.org>
+Message-ID: <20260331161808.051363450@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,223 +63,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231883-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232110-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.977];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6921836D9F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email]
+X-Rspamd-Queue-Id: 31DCF36D7F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit cd658475e7694d58e1c40dabc1dacf8431ccedb2 ]
+commit 317e49358ebbf6390fa439ef3c142f9239dd25fb upstream.
 
-Attributes intended to clear sensor history are intended to be writeable
-only. Reading those attributes today results in reporting more or less
-random values. To avoid ABI surprises, have those attributes explicitly
-return 0 when reading.
+The devm_free_irq() and devm_request_irq() functions should not be
+executed in an atomic context.
 
-Fixes: 787c095edaa9d ("hwmon: (pmbus/core) Add support for rated attributes")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+During device suspend, all userspace processes and most kernel threads
+are frozen. Additionally, we flush all tx/rx status, disable all macb
+interrupts, and halt rx operations. Therefore, it is safe to split the
+region protected by bp->lock into two independent sections, allowing
+devm_free_irq() and devm_request_irq() to run in a non-atomic context.
+This modification resolves the following lockdep warning:
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
+  preempt_count: 1, expected: 0
+  RCU nest depth: 1, expected: 0
+  7 locks held by rtcwake/501:
+   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
+   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
+  irq event stamp: 8682
+  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
+  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
+  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
+  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
+  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   __might_resched+0x200/0x218
+   __might_sleep+0x38/0x98
+   __mutex_lock_common+0x7c/0x1378
+   mutex_lock_nested+0x38/0x50
+   free_irq+0x68/0x2b0
+   devm_irq_release+0x24/0x38
+   devres_release+0x40/0x80
+   devm_free_irq+0x48/0x88
+   macb_suspend+0x298/0x558
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
+
+Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index f452876287556..41c66ece5177e 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -1205,6 +1205,12 @@ static ssize_t pmbus_show_boolean(struct device *dev,
- 	return sysfs_emit(buf, "%d\n", val);
- }
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5832,6 +5832,7 @@ static int __maybe_unused macb_suspend(s
+ 			/* write IP address into register */
+ 			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
+ 		}
++		spin_unlock_irqrestore(&bp->lock, flags);
  
-+static ssize_t pmbus_show_zero(struct device *dev,
-+			       struct device_attribute *devattr, char *buf)
-+{
-+	return sysfs_emit(buf, "0\n");
-+}
-+
- static ssize_t pmbus_show_sensor(struct device *dev,
- 				 struct device_attribute *devattr, char *buf)
- {
-@@ -1403,7 +1409,7 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
- 					     int reg,
- 					     enum pmbus_sensor_classes class,
- 					     bool update, bool readonly,
--					     bool convert)
-+					     bool writeonly, bool convert)
- {
- 	struct pmbus_sensor *sensor;
- 	struct device_attribute *a;
-@@ -1432,7 +1438,8 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
- 	sensor->data = -ENODATA;
- 	pmbus_dev_attr_init(a, sensor->name,
- 			    readonly ? 0444 : 0644,
--			    pmbus_show_sensor, pmbus_set_sensor);
-+			    writeonly ? pmbus_show_zero : pmbus_show_sensor,
-+			    pmbus_set_sensor);
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+@@ -5844,11 +5845,12 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+ 			gem_writel(bp, WOL, tmp);
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		} else {
+ 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+ 					       IRQF_SHARED, netdev->name, bp->queues);
+@@ -5856,13 +5858,13 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+ 			macb_writel(bp, WOL, tmp);
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
  
- 	if (pmbus_add_attribute(data, &a->attr))
- 		return NULL;
-@@ -1493,6 +1500,7 @@ struct pmbus_limit_attr {
- 	u16 reg;		/* Limit register */
- 	u16 sbit;		/* Alarm attribute status bit */
- 	bool readonly:1;	/* True if the attribute is read-only */
-+	bool writeonly:1;	/* True if the attribute is write-only */
- 	bool update:1;		/* True if register needs updates */
- 	bool low:1;		/* True if low limit; for limits with compare functions only */
- 	const char *attr;	/* Attribute name */
-@@ -1542,7 +1550,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
- 			curr = pmbus_add_sensor(data, name, l->attr, index,
- 						page, 0xff, l->reg, attr->class,
- 						attr->update || l->update,
--						l->readonly, true);
-+						l->readonly, l->writeonly, true);
- 			if (!curr)
- 				return -ENOMEM;
- 			if (l->sbit && (info->func[page] & attr->sfunc)) {
-@@ -1582,7 +1590,7 @@ static int pmbus_add_sensor_attrs_one(struct i2c_client *client,
- 			return ret;
+ 		enable_irq_wake(bp->queues[0].irq);
  	}
- 	base = pmbus_add_sensor(data, name, "input", index, page, phase,
--				attr->reg, attr->class, true, true, true);
-+				attr->reg, attr->class, true, true, false, true);
- 	if (!base)
- 		return -ENOMEM;
- 	/* No limit and alarm attributes for phase specific sensors */
-@@ -1719,6 +1727,7 @@ static const struct pmbus_limit_attr vin_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VIN_MIN,
-@@ -1793,6 +1802,7 @@ static const struct pmbus_limit_attr vout_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VOUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VOUT_MIN,
-@@ -1874,6 +1884,7 @@ static const struct pmbus_limit_attr iin_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IIN_MAX,
-@@ -1915,6 +1926,7 @@ static const struct pmbus_limit_attr iout_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IOUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IOUT_MAX,
-@@ -1973,6 +1985,7 @@ static const struct pmbus_limit_attr pin_limit_attrs[] = {
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_PIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_PIN_MAX,
-@@ -2014,6 +2027,7 @@ static const struct pmbus_limit_attr pout_limit_attrs[] = {
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_POUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_POUT_MAX,
-@@ -2085,6 +2099,7 @@ static const struct pmbus_limit_attr temp_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_1,
-@@ -2130,6 +2145,7 @@ static const struct pmbus_limit_attr temp_limit_attrs2[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP2_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_2,
-@@ -2247,7 +2263,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+@@ -5929,6 +5931,8 @@ static int __maybe_unused macb_resume(st
+ 		queue_readl(bp->queues, ISR);
+ 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 			queue_writel(bp->queues, ISR, -1);
++		spin_unlock_irqrestore(&bp->lock, flags);
++
+ 		/* Replace interrupt handler on queue 0 */
+ 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+ 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+@@ -5937,10 +5941,8 @@ static int __maybe_unused macb_resume(st
+ 			dev_err(dev,
+ 				"Unable to request IRQ %d (error %d)\n",
+ 				bp->queues[0].irq, err);
+-			spin_unlock_irqrestore(&bp->lock, flags);
+ 			return err;
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
  
- 	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
- 				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
--				  false, false, true);
-+				  false, false, false, true);
+ 		disable_irq_wake(bp->queues[0].irq);
  
- 	if (!sensor)
- 		return -ENOMEM;
-@@ -2258,14 +2274,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 
- 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
- 				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
--				  false, false, true);
-+				  false, false, false, true);
- 
- 	if (!sensor)
- 		return -ENOMEM;
- 
- 	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
- 				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
--				  true, false, false);
-+				  true, false, false, false);
- 
- 	if (!sensor)
- 		return -ENOMEM;
-@@ -2307,7 +2323,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
- 
- 			if (pmbus_add_sensor(data, "fan", "input", index,
- 					     page, 0xff, pmbus_fan_registers[f],
--					     PSC_FAN, true, true, true) == NULL)
-+					     PSC_FAN, true, true, false, true) == NULL)
- 				return -ENOMEM;
- 
- 			/* Fan control */
--- 
-2.53.0
-
 
 
 
