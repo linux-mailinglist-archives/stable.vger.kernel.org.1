@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-232036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMy5OlwBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:12 +0200
+	id +ECcFir4y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2857536E597
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 572BF36CD4A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7186A310B3C6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A3A7D3043643
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4342A423A8B;
-	Tue, 31 Mar 2026 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320A430C345;
+	Tue, 31 Mar 2026 16:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyNsG5k5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeJbgjCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FDF4218AF;
-	Tue, 31 Mar 2026 16:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E6D3E316C;
+	Tue, 31 Mar 2026 16:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975710; cv=none; b=YR3hAg4e8x8CtHj27rb4o2tIElbpWM9TkMzwYWnJN8MjCG7IIxUFdLHgRTHGrwEsKKnSM4S3XFl05rsKBFSfPliGbz0jG6NxYwRQ9aO7ArJr1FCV8iYmt6agSs7vct1y1RpNzXo80k28CY9QTkXS4P9IJZkXdWi2iWv2+4pAf6k=
+	t=1774974274; cv=none; b=S5tfvMfSe05EMlqjdiVDa5wmrLCFUMGuBIf1p4yRJ/dG8TX6rzbnJKyDY6Bhfoga67htuI8V/XxM4zTsa6aujYKi7co4sw6qR2KkycaKC/O23ukd1zo+cqx3MTKsuBfn9pc9eb3vmWYCbUxaq4qWeZeWZKJz+nODDfEZcC8Nn+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975710; c=relaxed/simple;
-	bh=4yxndi37QZSCY5RcbYlOnLX56AEg6Z4ZJTCWjlc92D4=;
+	s=arc-20240116; t=1774974274; c=relaxed/simple;
+	bh=AGAGt/IILTDmF0A9Ntac58v7eUv+arNLYn12DGn8K7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRNhZqRme/yp46sDhopr8pHqG+dn97oT1qIhib1DkPt1Kl4nliIKYNSUULaW7bm40UU+S8/BLDAXCTlx0KzfU0LJFsN391mnmW/xfk0VBihFEwNBtDaf3ZaD2BoZNLGeWLSQ3PUrVqg9USQZ0r2BCA/3f04ly1ujKfKkZRnF3KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyNsG5k5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520C5C19423;
-	Tue, 31 Mar 2026 16:48:29 +0000 (UTC)
+	 MIME-Version; b=E6i/nxp/inCxu7960FNuZZ/21LpS8s1Z7v8j485pcN5PS7mVdsHt6jVgddFFad5xLrPQyuMuI9srQbZUj29rMX/vUPwBGFgknQjmv2e47cEVcQAn656yeumFEbyE3O1vnfKoYVFPbiBn2ybqCO2/r1+rxay7YfjTifQdg4fGvyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeJbgjCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D22FC19423;
+	Tue, 31 Mar 2026 16:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975709;
-	bh=4yxndi37QZSCY5RcbYlOnLX56AEg6Z4ZJTCWjlc92D4=;
+	s=korg; t=1774974273;
+	bh=AGAGt/IILTDmF0A9Ntac58v7eUv+arNLYn12DGn8K7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jyNsG5k5uRaycS6sqxSncyZmrnF6HN/m5XZcAsrW1NTgdH7Utg4VL3unSXTbu0Ajt
-	 YthAQFdKWRVUwUvVdwZZGoVpd1DMSm0KHBeSbtv31EZIcNnP0xMauz50CJ5mf/KYNS
-	 ntwI0TdHkpj/tDu22GMXZdbzO4Yaj9+2HXBpZnHo=
+	b=ZeJbgjCIh1cbtfT0I4xbIBTOJ3pyU23UgTEEBe9Z5X7n5Je/tAiv2qmtFazZ1pPNL
+	 0PjSFufU7fFei3Uq/nXQKXnXEO7fzpWrnXUkeZ9hTnAjWElxWI6w0utwYuIuek0Lv6
+	 0uANRu68N2fKUyzA21cwCGecDShEmfbg3ZGwx59s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenguanyou <chenguanyou@xiaomi.com>,
-	Yunlei He <heyunlei@xiaomi.com>,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/244] erofs: set fileio bio failed in short read case
+Subject: [PATCH 6.6 022/175] module: Fix kernel panic when a symbol st_shndx is out of bounds
 Date: Tue, 31 Mar 2026 18:20:06 +0200
-Message-ID: <20260331161743.761275876@linuxfoundation.org>
+Message-ID: <20260331161730.597914430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232036-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231477-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,70 +89,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email,alibaba.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2857536E597
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,samsung.com:email,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 572BF36CD4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong1@xiaomi.com>
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
 
-[ Upstream commit eade54040384f54b7fb330e4b0975c5734850b3c ]
+[ Upstream commit f9d69d5e7bde2295eb7488a56f094ac8f5383b92 ]
 
-For file-backed mount, IO requests are handled by vfs_iocb_iter_read().
-However, it can be interrupted by SIGKILL, returning the number of
-bytes actually copied. Unused folios in bio are unexpectedly marked
-as uptodate.
+The module loader doesn't check for bounds of the ELF section index in
+simplify_symbols():
 
-  vfs_read
-    filemap_read
-      filemap_get_pages
-        filemap_readahead
-          erofs_fileio_readahead
-            erofs_fileio_rq_submit
-              vfs_iocb_iter_read
-                filemap_read
-                  filemap_get_pages  <= detect signal
-              erofs_fileio_ki_complete  <= set all folios uptodate
+       for (i = 1; i < symsec->sh_size / sizeof(Elf_Sym); i++) {
+		const char *name = info->strtab + sym[i].st_name;
 
-This patch addresses this by setting short read bio with an error
-directly.
+		switch (sym[i].st_shndx) {
+		case SHN_COMMON:
 
-Fixes: bc804a8d7e86 ("erofs: handle end of filesystem properly for file-backed mounts")
-Reported-by: chenguanyou <chenguanyou@xiaomi.com>
-Signed-off-by: Yunlei He <heyunlei@xiaomi.com>
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+		[...]
+
+		default:
+			/* Divert to percpu allocation if a percpu var. */
+			if (sym[i].st_shndx == info->index.pcpu)
+				secbase = (unsigned long)mod_percpu(mod);
+			else
+  /** HERE --> **/		secbase = info->sechdrs[sym[i].st_shndx].sh_addr;
+			sym[i].st_value += secbase;
+			break;
+		}
+	}
+
+A symbol with an out-of-bounds st_shndx value, for example 0xffff
+(known as SHN_XINDEX or SHN_HIRESERVE), may cause a kernel panic:
+
+  BUG: unable to handle page fault for address: ...
+  RIP: 0010:simplify_symbols+0x2b2/0x480
+  ...
+  Kernel panic - not syncing: Fatal exception
+
+This can happen when module ELF is legitimately using SHN_XINDEX or
+when it is corrupted.
+
+Add a bounds check in simplify_symbols() to validate that st_shndx is
+within the valid range before using it.
+
+This issue was discovered due to a bug in llvm-objcopy, see relevant
+discussion for details [1].
+
+[1] https://lore.kernel.org/linux-modules/20251224005752.201911-1-ihor.solodrai@linux.dev/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/fileio.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/module/main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index 2c7f066daacdd..2c46c69f43295 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -25,10 +25,8 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
- 			container_of(iocb, struct erofs_fileio_rq, iocb);
- 	struct folio_iter fi;
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 627680e568fcc..76d90c20de674 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1424,6 +1424,13 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
+ 			break;
  
--	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size) {
--		bio_advance(&rq->bio, ret);
--		zero_fill_bio(&rq->bio);
--	}
-+	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size)
-+		ret = -EIO;
- 	if (!rq->bio.bi_end_io) {
- 		bio_for_each_folio_all(fi, &rq->bio) {
- 			DBG_BUGON(folio_test_uptodate(fi.folio));
+ 		default:
++			if (sym[i].st_shndx >= info->hdr->e_shnum) {
++				pr_err("%s: Symbol %s has an invalid section index %u (max %u)\n",
++				       mod->name, name, sym[i].st_shndx, info->hdr->e_shnum - 1);
++				ret = -ENOEXEC;
++				break;
++			}
++
+ 			/* Divert to percpu allocation if a percpu var. */
+ 			if (sym[i].st_shndx == info->index.pcpu)
+ 				secbase = (unsigned long)mod_percpu(mod);
 -- 
 2.51.0
 
