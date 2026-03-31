@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOLEIIABzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:48 +0200
+	id oBGsBv79y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3BC36E625
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D67E36DAD3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 958E1314B343
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02DFA3220915
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898282FDC5E;
-	Tue, 31 Mar 2026 17:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BD0426ECB;
+	Tue, 31 Mar 2026 16:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nkha4swV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgwOniT2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B70A3016EE;
-	Tue, 31 Mar 2026 17:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56164426EC7;
+	Tue, 31 Mar 2026 16:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976815; cv=none; b=GQuM5KByvAv3JnYWahl1+KFVgsBlkAFyzaAsDW82o1GVu5UkA4Wf/OKY32b3SfYn7ZV9dv07jF1Qp+L6x8wcWWPHmrgZrxyRfm2dWiCDThzZlM2qcwTTx4cjO3u//isBiZ+PmDyPKqmuvWaDcZcV1gITs4N04wtH820oKNWL3to=
+	t=1774975979; cv=none; b=fm32ep21NC6VTtDoD9gwemygrVy6kGGZAgi2uKhSkHGU/PgfHhV6VyfdypzFH3XJXP07zAaRn+Y7orpMRrhW4fFHkzA5Lym4ZBk2rLAt/U7yCtyoHiGhVKo7ie9BXvRkJWhU5m8LqDG5B3ZrU/QVI1ZGYZc3EksjZf0czTsY0gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976815; c=relaxed/simple;
-	bh=9DJYOPGs3iFof8TgVhpTRBzbT9XP0vs3NHAZZdpyh24=;
+	s=arc-20240116; t=1774975979; c=relaxed/simple;
+	bh=VKf9WV1IQl9az5wRuntkEDluiKBg8lXh3u0pyqj94qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxapsdiTSpNzLzM9FH6R1mIg4v6CSmofKlC1cMJzGT9dUtQeIvp5oIe+fuW1hC3qoB+NOYUwgNLGX9q05PfPyA8x1Q2fDE4t02arv/+OQVS9kyLsI9+3xcmJWFGuNYKwhVk7wKW5rLxnBxtXpEoMAKCpnraILttANiPe2+TzbLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nkha4swV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B84C19423;
-	Tue, 31 Mar 2026 17:06:54 +0000 (UTC)
+	 MIME-Version; b=GjrnWSVfZO5iP4sWBjhuNwrQcEg25WX2Hju1QS5ovwoVbj/i7uhBPPpg9euooAnQhqC6RhKX39siSOaCmu9sghYHTyT8dANLoIoIeFU97CwLtdNMPsswWZIWkpRzfRpcfuJHapKxkOkYgK48FFUEQXeQOFKX0Wo4kapUqHNPdN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgwOniT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E7C19423;
+	Tue, 31 Mar 2026 16:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976815;
-	bh=9DJYOPGs3iFof8TgVhpTRBzbT9XP0vs3NHAZZdpyh24=;
+	s=korg; t=1774975979;
+	bh=VKf9WV1IQl9az5wRuntkEDluiKBg8lXh3u0pyqj94qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nkha4swVQyRAtFs44jmCQeCt55bUuyW00SOeWC/3ghbZCI0w7qKZHswGZmKkA5Z4Q
-	 4fNfmbGwGgGuitJCIfl48aHI41k4i+OB9xI8wr1L6Yb5syfRZoFQlrxYkyJPRUnsG3
-	 sz1pyhrdOKDB2TAwVLe2GfXD+iCgEL2dkC+T0bxM=
+	b=AgwOniT2nE7nimHSY7mkfm0EmqPJ2lw9sIKbXjaG6HgIyVCT5Ic7ZzlPffX5+Ldon
+	 8b79knP9mjKuSyU2zI/BBw48KMBZWBVJX7UCh9JlaZd3YK6LAYuqQ9L+XcVb7sR8Rq
+	 9WE7rcl6Q3qrmJlcOLX9B9Az6qc+HKvAdbMvntsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zubin Mithra <zsm@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.18 206/309] virt: tdx-guest: Fix handling of host controlled quote buffer length
-Date: Tue, 31 Mar 2026 18:21:49 +0200
-Message-ID: <20260331161801.034019919@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	Dave Marquardt <davemarq@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 160/244] scsi: ibmvfc: Fix OOB access in ibmvfc_discover_targets_done()
+Date: Tue, 31 Mar 2026 18:21:50 +0200
+Message-ID: <20260331161747.677100471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +70,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-232140-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232464-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 1B3BC36E625
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7D67E36DAD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zubin Mithra <zsm@google.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit c3fd16c3b98ed726294feab2f94f876290bf7b61 upstream.
+commit 61d099ac4a7a8fb11ebdb6e2ec8d77f38e77362f upstream.
 
-Validate host controlled value `quote_buf->out_len` that determines how
-many bytes of the quote are copied out to guest userspace. In TDX
-environments with remote attestation, quotes are not considered private,
-and can be forwarded to an attestation server.
+A malicious or compromised VIO server can return a num_written value in the
+discover targets MAD response that exceeds max_targets. This value is
+stored directly in vhost->num_targets without validation, and is then used
+as the loop bound in ibmvfc_alloc_targets() to index into disc_buf[], which
+is only allocated for max_targets entries. Indices at or beyond max_targets
+access kernel memory outside the DMA-coherent allocation.  The
+out-of-bounds data is subsequently embedded in Implicit Logout and PLOGI
+MADs that are sent back to the VIO server, leaking kernel memory.
 
-Catch scenarios where the host specifies a response length larger than
-the guest's allocation, or otherwise races modifying the response while
-the guest consumes it.
+Fix by clamping num_written to max_targets before storing it.
 
-This prevents contents beyond the pages allocated for `quote_buf`
-(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
-and possibly forwarded in attestation requests.
-
-Recall that some deployments want per-container configs-tsm-report
-interfaces, so the leak may cross container protection boundaries, not
-just local root.
-
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Fixes: 072b91f9c651 ("[SCSI] ibmvfc: IBM Power Virtual Fibre Channel Adapter Client Driver")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zubin Mithra <zsm@google.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Link: https://patch.msgid.link/20260314170151.548614-1-LivelyCarpet87@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virt/coco/tdx-guest/tdx-guest.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -169,6 +169,8 @@ static void tdx_mr_deinit(const struct a
- #define GET_QUOTE_SUCCESS		0
- #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
- 
-+#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
-+
- /* struct tdx_quote_buf: Format of Quote request buffer.
-  * @version: Quote format version, filled by TD.
-  * @status: Status code of Quote request, filled by VMM.
-@@ -267,6 +269,7 @@ static int tdx_report_new_locked(struct
- 	u8 *buf;
- 	struct tdx_quote_buf *quote_buf = quote_data;
- 	struct tsm_report_desc *desc = &report->desc;
-+	u32 out_len;
- 	int ret;
- 	u64 err;
- 
-@@ -304,12 +307,17 @@ static int tdx_report_new_locked(struct
- 		return ret;
- 	}
- 
--	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
-+	out_len = READ_ONCE(quote_buf->out_len);
-+
-+	if (out_len > TDX_QUOTE_MAX_LEN)
-+		return -EFBIG;
-+
-+	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
- 	report->outblob = buf;
--	report->outblob_len = quote_buf->out_len;
-+	report->outblob_len = out_len;
- 
- 	/*
- 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -4963,7 +4963,8 @@ static void ibmvfc_discover_targets_done
+ 	switch (mad_status) {
+ 	case IBMVFC_MAD_SUCCESS:
+ 		ibmvfc_dbg(vhost, "Discover Targets succeeded\n");
+-		vhost->num_targets = be32_to_cpu(rsp->num_written);
++		vhost->num_targets = min_t(u32, be32_to_cpu(rsp->num_written),
++					   max_targets);
+ 		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_ALLOC_TGTS);
+ 		break;
+ 	case IBMVFC_MAD_FAILED:
 
 
 
