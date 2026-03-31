@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BC1KPkFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:53 +0200
+	id 8Ei7OFD8y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D59636EF61
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E5036D604
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8304832A1418
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9482B30E5539
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C3D3F7867;
-	Tue, 31 Mar 2026 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049C93E9299;
+	Tue, 31 Mar 2026 16:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YspkhhuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CF0xxq7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C5129DB8F;
-	Tue, 31 Mar 2026 16:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCC1413258;
+	Tue, 31 Mar 2026 16:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976204; cv=none; b=IDnZbBHKeHBFtMqP4guUXcV4te57qBavhszNwOYINsQphm4UGHO5KHEtEvmuW+cPr51bKNeKy9LmZB42OxcDVNZ/gzHVrXRXBKIJms3hcWWKdc1cjUQ7UkjhJa2F55e0GKoueQc+WF9FSDOsd/eQNiJTCH/1TdBxCELC0An1tBE=
+	t=1774975539; cv=none; b=tvqPbKAGNtI6mOayBFpIN5pAoxdNGIKzuOS1RSAPs/nPHjttVP65bgwaZxM7egVfvdBwMUlhPBSVHOeJxPvAtvWJXd7z6xkjcp1C7cbxZ2QBi0ImIVnFCwCeTEZN8RtrF4yICZGDHWC/iPHzatql0olAHZWhupKi5KA5aCfsXW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976204; c=relaxed/simple;
-	bh=XaYACKJA/3m0KmXe1BD3LVJZM2BzT6VVrnRslHzkcXk=;
+	s=arc-20240116; t=1774975539; c=relaxed/simple;
+	bh=IPgXGiGJgd9n6ycu72gv2g/I8vaXMPPmHQp6ThCYy2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SlgCoSr4CKJOmmquxfMFrewfgpgkWkmCbsrCkclaY2rDVVurTqulKEK1+CeO3pL9l8NTcG9ciu/iYJovxPJ92chvo42Tc/BXq3H0t7DIhrPkHBV/+QrzKausbK9ocbNEN5f3Uk8eXSKxSHGaQG9eRfNG6QlW7C/nBVHayEcGihk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YspkhhuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66721C19423;
-	Tue, 31 Mar 2026 16:56:44 +0000 (UTC)
+	 MIME-Version; b=Nv3YKsPsr/bIXDXCF1q97xkB+uitBVmQTC4uh5J/nng2rzgPEEsDtdyWQ5ukN8hE2UVkzc3MQkrzd6F7m0Yrc9vJyOHhPpBGpGche/cBOdQH1iDhWPI8HNHDjVsmn7No2D0L8EN1XvWxvNGva3Yib0Fwg9IloOnanZDKrMlXm3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CF0xxq7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C669C19424;
+	Tue, 31 Mar 2026 16:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976204;
-	bh=XaYACKJA/3m0KmXe1BD3LVJZM2BzT6VVrnRslHzkcXk=;
+	s=korg; t=1774975539;
+	bh=IPgXGiGJgd9n6ycu72gv2g/I8vaXMPPmHQp6ThCYy2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YspkhhuJ0PsvehTl9dEveQg3wOliz42t6L2E9hixnibSRNmPKPu/2gC869dahSCCl
-	 lmMUY1NLAVAngZgj5j9RK61crxUcvFqqMjwEvLPL0DrsuH4fuNyiuiwgqJh+nsu/eW
-	 cgqydkaRGXyFqrXfyW5ekPNJTf//NjaDayTOCLMc=
+	b=CF0xxq7qqNINTdLfY3+9NCkWr0DN9d9buAmLFHV8KtFDF6qkfKsFxSCXvUAe7cLaT
+	 SP+nVbiRMn20w8QFP4JHAjs5mtnddqaSmojw2FX45lnuNaNgRJflzaU8udEXHVhMJW
+	 OEVHV1DVpfvTMDzXUfM6XsKGP9u1RuTc6/TKPgBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 215/244] landlock: Optimize file path walks and prepare for audit support
-Date: Tue, 31 Mar 2026 18:22:45 +0200
-Message-ID: <20260331161749.703085348@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 333/342] btrfs: fix lost error when running device stats on multiple devices fs
+Date: Tue, 31 Mar 2026 18:22:46 +0200
+Message-ID: <20260331161811.157900474@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232227-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231971-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4D59636EF61
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 33E5036D604
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit d617f0d72d8041c7099fd04a62db0f0fa5331c1a ]
+[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
 
-Always synchronize access_masked_parent* with access_request_parent*
-according to allowed_parent*.  This is required for audit support to be
-able to get back to the reason of denial.
+Whenever we get an error updating the device stats item for a device in
+btrfs_run_dev_stats() we allow the loop to go to the next device, and if
+updating the stats item for the next device succeeds, we end up losing
+the error we had from the previous device.
 
-In a rename/link action, instead of always checking a rule two times for
-the same parent directory of the source and the destination files, only
-check it when an action on a child was not already allowed.  This also
-enables us to keep consistent allowed_parent* status, which is required
-to get back to the reason of denial.
+Fix this by breaking out of the loop once we get an error and make sure
+it's returned to the caller. Since we are in the transaction commit path
+(and in the critical section actually), returning the error will result
+in a transaction abort.
 
-For internal mount points, only upgrade allowed_parent* to true but do
-not wrongfully set both of them to false otherwise.  This is also
-required to get back to the reason of denial.
-
-This does not impact the current behavior but slightly optimize code and
-prepare for audit support that needs to know the exact reason why an
-access was denied.
-
-Cc: Günther Noack <gnoack@google.com>
-Link: https://lore.kernel.org/r/20250108154338.1129069-14-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-(cherry picked from commit d617f0d72d8041c7099fd04a62db0f0fa5331c1a)
-Stable-dep-of: 49c9e09d9610 ("landlock: Fix handling of disconnected directories")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/fs.c |   44 +++++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 17 deletions(-)
+ fs/btrfs/volumes.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -849,15 +849,6 @@ static bool is_access_to_paths_allowed(
- 				     child1_is_directory, layer_masks_parent2,
- 				     layer_masks_child2,
- 				     child2_is_directory))) {
--			allowed_parent1 = scope_to_request(
--				access_request_parent1, layer_masks_parent1);
--			allowed_parent2 = scope_to_request(
--				access_request_parent2, layer_masks_parent2);
--
--			/* Stops when all accesses are granted. */
--			if (allowed_parent1 && allowed_parent2)
--				break;
--
- 			/*
- 			 * Now, downgrades the remaining checks from domain
- 			 * handled accesses to requested accesses.
-@@ -865,15 +856,32 @@ static bool is_access_to_paths_allowed(
- 			is_dom_check = false;
- 			access_masked_parent1 = access_request_parent1;
- 			access_masked_parent2 = access_request_parent2;
-+
-+			allowed_parent1 =
-+				allowed_parent1 ||
-+				scope_to_request(access_masked_parent1,
-+						 layer_masks_parent1);
-+			allowed_parent2 =
-+				allowed_parent2 ||
-+				scope_to_request(access_masked_parent2,
-+						 layer_masks_parent2);
-+
-+			/* Stops when all accesses are granted. */
-+			if (allowed_parent1 && allowed_parent2)
-+				break;
- 		}
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index fbf23d20cce01..052b830a0b66e 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -7874,8 +7874,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
+ 		smp_rmb();
  
- 		rule = find_rule(domain, walker_path.dentry);
--		allowed_parent1 = landlock_unmask_layers(
--			rule, access_masked_parent1, layer_masks_parent1,
--			ARRAY_SIZE(*layer_masks_parent1));
--		allowed_parent2 = landlock_unmask_layers(
--			rule, access_masked_parent2, layer_masks_parent2,
--			ARRAY_SIZE(*layer_masks_parent2));
-+		allowed_parent1 = allowed_parent1 ||
-+				  landlock_unmask_layers(
-+					  rule, access_masked_parent1,
-+					  layer_masks_parent1,
-+					  ARRAY_SIZE(*layer_masks_parent1));
-+		allowed_parent2 = allowed_parent2 ||
-+				  landlock_unmask_layers(
-+					  rule, access_masked_parent2,
-+					  layer_masks_parent2,
-+					  ARRAY_SIZE(*layer_masks_parent2));
+ 		ret = update_dev_stat_item(trans, device);
+-		if (!ret)
+-			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
++		if (ret)
++			break;
++		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
  
- 		/* Stops when a rule from each layer grants access. */
- 		if (allowed_parent1 && allowed_parent2)
-@@ -897,8 +905,10 @@ jump_up:
- 			 * access to internal filesystems (e.g. nsfs, which is
- 			 * reachable through /proc/<pid>/ns/<namespace>).
- 			 */
--			allowed_parent1 = allowed_parent2 =
--				!!(walker_path.mnt->mnt_flags & MNT_INTERNAL);
-+			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
-+				allowed_parent1 = true;
-+				allowed_parent2 = true;
-+			}
- 			break;
- 		}
- 		parent_dentry = dget_parent(walker_path.dentry);
+-- 
+2.53.0
+
 
 
 
