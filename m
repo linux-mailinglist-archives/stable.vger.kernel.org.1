@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAPkDiv4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:59 +0200
+	id MILtKCT9y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEFC36CD51
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1016336D8C1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59450315DE4D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93055322F854
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EA5423A8E;
-	Tue, 31 Mar 2026 16:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD0C426693;
+	Tue, 31 Mar 2026 16:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkR6deZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7rWKZPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B27D3FADEE;
-	Tue, 31 Mar 2026 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF92423A82;
+	Tue, 31 Mar 2026 16:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974522; cv=none; b=lr+z6TMeue/Pvdue2TWgO+jPhIdkhFqvexv4UEaK/aBWa+au+AZ/t3Oq4T96PLgMHitKupx/OPdgySpLScp1wbdgF1vWbskVp8sS3hjWhfsbcLXqmHaMQUnDuRo4Kijct2I6wwtN6kGr+K1ygpSCQUp42doGdea8QxKwd7nHbDU=
+	t=1774975355; cv=none; b=Nb1gfi4V6/6Cq7nWJQeWTl6T2UvFNkgDLYGWLppUVTgHoshI6Pqu0fEZW9/UMh5cYxrtV0d1N85OWHprX2Xfj58xYUvSdd15al7LU8xuGCXACijfchFgb2xh/pBHJOdwSwsNnhsDpuXTmMBy0cNKXAtgrLybrkxx8hnlh0Xnwao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974522; c=relaxed/simple;
-	bh=rKZZ9PYAfTlk2wzx4d7In0TdtTPDR9BZ+NFPYew4QbU=;
+	s=arc-20240116; t=1774975355; c=relaxed/simple;
+	bh=riYoh1BXQ8cNS43ppDflNWpHC1rXC3Ly26YWOWsk7XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5sBnBvN6511GuvCxoPmzV3BYrtmEtzHeSMlyVoMacOgjnwkd3shyR0HJosOqd4FwqC1HnfuOQvarIifjdiHd1gXGByV2Qh9ZSQnmhkEAKmqT/b9Gr/J8prTs/nVRYujFroJIJ9R3t/Ob70CyiCM3ueLAT4jlHRjmNodIZGGMO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkR6deZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38033C2BCB1;
-	Tue, 31 Mar 2026 16:28:41 +0000 (UTC)
+	 MIME-Version; b=Ppx+5tJuk5KLi4tr2uluHhoQPIOh7h3dea1U6xg7PNLt5t31JuvtUjCXwYZkrPkEfKr56+/xhb0qAYRdBEdbcQrCl48GdwHNVbaFS3piZ+Zcz37yftNobVY3QfQ5Jz10ECA6PDtokbTnbUYHCCddN+1LmbaWx3X8FYa0hlwMyUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7rWKZPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C359C19423;
+	Tue, 31 Mar 2026 16:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974521;
-	bh=rKZZ9PYAfTlk2wzx4d7In0TdtTPDR9BZ+NFPYew4QbU=;
+	s=korg; t=1774975354;
+	bh=riYoh1BXQ8cNS43ppDflNWpHC1rXC3Ly26YWOWsk7XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkR6deZRoIeeLE7jRRr3tQa8T+LaWpHbKeK1DEJJbCcW2hJvdRiSeEd6w5BtuPuSh
-	 BWsfqUYs1ngcMGzXjrZM3ll0aQgSnXoiBGP5ClsJkyib1IB1LUqAbEO5t9h2adVBDt
-	 2KgWgDsemlPt6umjHfvFNT4HbJpbUZDk29q5Fods=
+	b=x7rWKZPB7mKwthvKkA6eoiB7ji+k3qk64zmf8a4H3b/g6wFn4BvKnJzXl6rkbtzsq
+	 AH0My404g+6KuVU0PeKCKX01m5Ptfk0h7ec5E2iWTrrUelOU8wkJzRBp/95SIbNgpw
+	 /P7ti1Yd3t2id/E79nifMWzu8XZcFD86oaiNICrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 110/175] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable sysfs attributes
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.19 261/342] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
 Date: Tue, 31 Mar 2026 18:21:34 +0200
-Message-ID: <20260331161733.820013279@linuxfoundation.org>
+Message-ID: <20260331161808.557558328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,114 +74,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231899-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231574-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9FEFC36CD51
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1016336D8C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-commit 3075a3951f7708da5a8ab47b0b7d068a32f69e58 upstream.
+commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 upstream.
 
-The custom avs0_enable and avs1_enable sysfs attributes access PMBus
-registers through the exported API helpers (pmbus_read_byte_data,
-pmbus_read_word_data, pmbus_write_word_data, pmbus_update_byte_data)
-without holding the PMBus update_lock mutex. These exported helpers do
-not acquire the mutex internally, unlike the core's internal callers
-which hold the lock before invoking them.
+Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
+CHCTRL register. To avoid concurrency issues when configuring
+functionalities exposed by this registers, take the virtual channel lock.
+All other CHCTRL updates were already protected by the same lock.
 
-The store callback is especially vulnerable: it performs a multi-step
-read-modify-write sequence (read VOUT_COMMAND, write VOUT_COMMAND, then
-update OPERATION) where concurrent access from another thread could
-interleave and corrupt the register state.
+Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
+accessing CHCTRL registers but this does not ensure race-free access.
+Remove the local IRQ disable/enable code as well.
 
-Add pmbus_lock_interruptible()/pmbus_unlock() around both the show and
-store callbacks to serialize PMBus register access with the rest of the
-driver.
-
-Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260319173055.125271-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/isl68137.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/dma/sh/rz-dmac.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -78,7 +78,15 @@ static ssize_t isl68137_avs_enable_show_
- 					     int page,
- 					     char *buf)
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -298,13 +298,10 @@ static void rz_dmac_disable_hw(struct rz
  {
--	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
-+	int val;
-+
-+	val = pmbus_lock_interruptible(client);
-+	if (val)
-+		return val;
-+
-+	val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
-+
-+	pmbus_unlock(client);
+ 	struct dma_chan *chan = &channel->vc.chan;
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+-	unsigned long flags;
  
- 	if (val < 0)
- 		return val;
-@@ -100,6 +108,10 @@ static ssize_t isl68137_avs_enable_store
+ 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
  
- 	op_val = result ? ISL68137_VOUT_AVS : 0;
- 
-+	rc = pmbus_lock_interruptible(client);
-+	if (rc)
-+		return rc;
-+
- 	/*
- 	 * Writes to VOUT setpoint over AVSBus will persist after the VRM is
- 	 * switched to PMBus control. Switching back to AVSBus control
-@@ -111,17 +123,20 @@ static ssize_t isl68137_avs_enable_store
- 		rc = pmbus_read_word_data(client, page, 0xff,
- 					  PMBUS_VOUT_COMMAND);
- 		if (rc < 0)
--			return rc;
-+			goto unlock;
- 
- 		rc = pmbus_write_word_data(client, page, PMBUS_VOUT_COMMAND,
- 					   rc);
- 		if (rc < 0)
--			return rc;
-+			goto unlock;
- 	}
- 
- 	rc = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
- 				    ISL68137_VOUT_AVS, op_val);
- 
-+unlock:
-+	pmbus_unlock(client);
-+
- 	return (rc < 0) ? rc : count;
+-	local_irq_save(flags);
+ 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+-	local_irq_restore(flags);
  }
+ 
+ static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
+@@ -569,8 +566,8 @@ static int rz_dmac_terminate_all(struct
+ 	unsigned int i;
+ 	LIST_HEAD(head);
+ 
+-	rz_dmac_disable_hw(channel);
+ 	spin_lock_irqsave(&channel->vc.lock, flags);
++	rz_dmac_disable_hw(channel);
+ 	for (i = 0; i < DMAC_NR_LMDESC; i++)
+ 		lmdesc[i].header = 0;
+ 
+@@ -707,7 +704,9 @@ static void rz_dmac_irq_handle_channel(s
+ 	if (chstat & CHSTAT_ER) {
+ 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
+ 			channel->index, chstat);
+-		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
++
++		scoped_guard(spinlock_irqsave, &channel->vc.lock)
++			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+ 		goto done;
+ 	}
  
 
 
