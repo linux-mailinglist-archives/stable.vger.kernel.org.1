@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LXgC0f5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:43 +0200
+	id 8HInEVb+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805DB36CFC0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D3F36DBF3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F27643086847
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:32:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 20F60304FF53
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A843F99EA;
-	Tue, 31 Mar 2026 16:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F9E425CE0;
+	Tue, 31 Mar 2026 16:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgDTILm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/EW/Oh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB4B2D5937;
-	Tue, 31 Mar 2026 16:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C74421F1F;
+	Tue, 31 Mar 2026 16:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974713; cv=none; b=pEhzwON39h4ooMUaW0x8zGEZqqNejGTMS0cFmJ3Kl/Miv7Jk9IPzb2lgT28Vn7ZyHdZS9XvD7NPgl32W06BTP8k6ddyC80ftM9Oy2hpjNUHbL3TVpHUI68TFOcm3L+FNiXUF7BF6+eEWOLqM+ZS/OI0qgzuPjdaKkvCiOFEP5I0=
+	t=1774974830; cv=none; b=uJ338tMfe/OhXPPBlVvHB+qsQKxj34q9QfORQAJYjnMOL0fjZSeV5FnswK/m43GWHXXcfN/FFvRZPH06csRg3Vh88GiKroLLy4Znr5JTg2ux3IkgV8KsewiSizYp85+wax2KyPDiq8SGVu1iuY3wnwmTM9/X7Cc2CSBB9cIB/9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974713; c=relaxed/simple;
-	bh=MPiCRyHhqByH8gtCUDhxFbPuTOPqaYPov3ipywF1tig=;
+	s=arc-20240116; t=1774974830; c=relaxed/simple;
+	bh=oPmgT21hhLLCfDOQApOyCrRL1GwOi5gsoQSv4M2o78Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SSVcqI3trNuEzlwjaG1wLKIyMK+3QleFov52cdk9O5KrL0Ukud16W4VsytS0e0DQatn5S6uZMTUpaPdyAabY/JL3EEW8AXudvcLHXik2fsRpQE6aDwCa+7TcI3wrqwMUxTHJg7qkT4S1UPwmYOCmB0/zTSA5QapbJUN/NqGjfhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgDTILm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A71CC19423;
-	Tue, 31 Mar 2026 16:31:53 +0000 (UTC)
+	 MIME-Version; b=p/MUNlbigEVMwQN3ab2yN3ivg/p5u14vWIUTbSMR2jUk3fN2xvcBpOHc8G5Rocx+U+icR5K3ly6umCxFVLc2THEQbXTnfROP/BFvGiWcUKFPXGBdUkFM5AZkPzk5HEFL92Z2jXVKVUrRqUxpAj+To9ttLrhSy8Oo2KClw5UlMRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/EW/Oh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED0DC19423;
+	Tue, 31 Mar 2026 16:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974713;
-	bh=MPiCRyHhqByH8gtCUDhxFbPuTOPqaYPov3ipywF1tig=;
+	s=korg; t=1774974830;
+	bh=oPmgT21hhLLCfDOQApOyCrRL1GwOi5gsoQSv4M2o78Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgDTILm6SzRV2ABV75tmMuudb65TC3yr1Hyg4+sLxE2yyL5DV9fjQhOS5yR/QqAxW
-	 7xZByEsDUKWSLeXaF2sGdEgKu1xr8AY2zwbrZJqcEhdi79xv2Dx6d2Rt3UjflK4xNV
-	 24gUOHB7GBajQ/Rteruvk8joZ2s7PIWWegfgDMN0=
+	b=X/EW/Oh18P2mwZjBJVQoIIqJcDYYE+8LZGDy8609ObyekscjK1PSY8YNmGsoPCWd8
+	 3RxrrvdEcUTYIEFXpuVQd6Rl7yeMgTw+kN6IEJXmJFJGddhR2RrPwy8/0IIwk0fg7r
+	 6X3F6RC5c7kkVkchpEgAWOfhXNxWNQSNk7n9371w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Gregory Bell <grbell@redhat.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+	Cui Chao <cuichao1753@phytium.com.cn>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 016/342] bpf: Release module BTF IDR before module unload
-Date: Tue, 31 Mar 2026 18:17:29 +0200
-Message-ID: <20260331161759.504131728@linuxfoundation.org>
+Subject: [PATCH 6.19 017/342] cxl: Adjust the startup priority of cxl_pmem to be higher than that of cxl_acpi
+Date: Tue, 31 Mar 2026 18:17:30 +0200
+Message-ID: <20260331161759.540628472@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -71,31 +70,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-231650-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231695-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[etsalapatis.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,info.id:url]
-X-Rspamd-Queue-Id: 805DB36CFC0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,phytium.com.cn:email]
+X-Rspamd-Queue-Id: 18D3F36DBF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,126 +101,49 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Cui Chao <cuichao1753@phytium.com.cn>
 
-[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
+[ Upstream commit be5c5280cf2b20e363dc8e2a424dd200a29b1c77 ]
 
-Gregory reported in [0] that the global_map_resize test when run in
-repeatedly ends up failing during program load. This stems from the fact
-that BTF reference has not dropped to zero after the previous run's
-module is unloaded, and the older module's BTF is still discoverable and
-visible. Later, in libbpf, load_module_btfs() will find the ID for this
-stale BTF, open its fd, and then it will be used during program load
-where later steps taking module reference using btf_try_get_module()
-fail since the underlying module for the BTF is gone.
+During the cxl_acpi probe process, it checks whether the cxl_nvb device
+and driver have been attached. Currently, the startup priority of the
+cxl_pmem driver is lower than that of the cxl_acpi driver. At this point,
+the cxl_nvb driver has not yet been registered on the cxl_bus, causing
+the attachment check to fail. This results in a failure to add the root
+nvdimm bridge, leading to a cxl_acpi probe failure and ultimately
+affecting the subsequent loading of cxl drivers. As a consequence, only
+one mem device object exists on the cxl_bus, while the cxl_port device
+objects and decoder device objects are missing.
 
-Logically, once a module is unloaded, it's associated BTF artifacts
-should become hidden. The BTF object inside the kernel may still remain
-alive as long its reference counts are alive, but it should no longer be
-discoverable.
+The solution is to raise the startup priority of cxl_pmem to be higher
+than that of cxl_acpi, ensuring that the cxl_pmem driver is registered
+before the aforementioned attachment check occurs.
 
-To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
-for the module unload to free the BTF associated IDR entry, and disable
-its discovery once module unload returns to user space. If a race
-happens during unload, the outcome is non-deterministic anyway. However,
-user space should be able to rely on the guarantee that once it has
-synchronously established a successful module unload, no more stale
-artifacts associated with this module can be obtained subsequently.
-
-Note that we must be careful to not invoke btf_free_id() in btf_put()
-when btf_is_module() is true now. There could be a window where the
-module unload drops a non-terminal reference, frees the IDR, but the
-same ID gets reused and the second unconditional btf_free_id() ends up
-releasing an unrelated entry.
-
-To avoid a special case for btf_is_module() case, set btf->id to zero to
-make btf_free_id() idempotent, such that we can unconditionally invoke it
-from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
-an invalid IDR, the idr_remove() should be a noop.
-
-Note that we can be sure that by the time we reach final btf_put() for
-btf_is_module() case, the btf_free_id() is already done, since the
-module itself holds the BTF reference, and it will call this function
-for the BTF before dropping its own reference.
-
-  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
-
-Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reported-by: Gregory Bell <grbell@redhat.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Co-developed-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Signed-off-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Fixes: e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko")
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260319074535.1709250-1-cuichao1753@phytium.com.cn
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/cxl/pmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 0de8fc8a0e0b3..75a5df36f9170 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -1676,7 +1676,16 @@ static void btf_free_id(struct btf *btf)
- 	 * of the _bh() version.
- 	 */
- 	spin_lock_irqsave(&btf_idr_lock, flags);
--	idr_remove(&btf_idr, btf->id);
-+	if (btf->id) {
-+		idr_remove(&btf_idr, btf->id);
-+		/*
-+		 * Clear the id here to make this function idempotent, since it will get
-+		 * called a couple of times for module BTFs: on module unload, and then
-+		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
-+		 * 0 as sentinel value.
-+		 */
-+		WRITE_ONCE(btf->id, 0);
-+	}
- 	spin_unlock_irqrestore(&btf_idr_lock, flags);
- }
+diff --git a/drivers/cxl/pmem.c b/drivers/cxl/pmem.c
+index c00b84b960761..3432fd83b1e2a 100644
+--- a/drivers/cxl/pmem.c
++++ b/drivers/cxl/pmem.c
+@@ -554,7 +554,7 @@ static __exit void cxl_pmem_exit(void)
  
-@@ -7995,7 +8004,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
- {
- 	const struct btf *btf = filp->private_data;
- 
--	seq_printf(m, "btf_id:\t%u\n", btf->id);
-+	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
- }
- #endif
- 
-@@ -8077,7 +8086,7 @@ int btf_get_info_by_fd(const struct btf *btf,
- 	if (copy_from_user(&info, uinfo, info_copy))
- 		return -EFAULT;
- 
--	info.id = btf->id;
-+	info.id = READ_ONCE(btf->id);
- 	ubtf = u64_to_user_ptr(info.btf);
- 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
- 	if (copy_to_user(ubtf, btf->data, btf_copy))
-@@ -8140,7 +8149,7 @@ int btf_get_fd_by_id(u32 id)
- 
- u32 btf_obj_id(const struct btf *btf)
- {
--	return btf->id;
-+	return READ_ONCE(btf->id);
- }
- 
- bool btf_is_kernel(const struct btf *btf)
-@@ -8262,6 +8271,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
- 			if (btf_mod->module != module)
- 				continue;
- 
-+			/*
-+			 * For modules, we do the freeing of BTF IDR as soon as
-+			 * module goes away to disable BTF discovery, since the
-+			 * btf_try_get_module() on such BTFs will fail. This may
-+			 * be called again on btf_put(), but it's ok to do so.
-+			 */
-+			btf_free_id(btf_mod->btf);
- 			list_del(&btf_mod->list);
- 			if (btf_mod->sysfs_attr)
- 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
+ MODULE_DESCRIPTION("CXL PMEM: Persistent Memory Support");
+ MODULE_LICENSE("GPL v2");
+-module_init(cxl_pmem_init);
++subsys_initcall(cxl_pmem_init);
+ module_exit(cxl_pmem_exit);
+ MODULE_IMPORT_NS("CXL");
+ MODULE_ALIAS_CXL(CXL_DEVICE_NVDIMM_BRIDGE);
 -- 
 2.51.0
 
