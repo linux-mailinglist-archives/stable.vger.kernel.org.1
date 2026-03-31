@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJNZKJcIzGlaNgYAu9opvQ
-	(envelope-from <stable+bounces-232503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:47:03 +0200
+	id 2OIaJacAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051C136F504
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:47:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07E336E321
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C554D3181466
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF70B30B4F2C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2C9313531;
-	Tue, 31 Mar 2026 17:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864792D7DEF;
+	Tue, 31 Mar 2026 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jk6RVRlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMA2umxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3496331326C;
-	Tue, 31 Mar 2026 17:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494D922578D;
+	Tue, 31 Mar 2026 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976916; cv=none; b=kleKaSyNegFuNriSEDEpoDnxG7E7gwocoj46Z16n/Fti6VOPppARz/mRLWZTVrFO9mti+gMkPkgD98eymOEoFcMma3TiyD+loB7lKK7ppceMguJjKkumkNMRMoqpKh+CxQrM5a1vU2teORcXiFIbzqO9OjMGmU9MXYfzCdtVHWY=
+	t=1774975506; cv=none; b=PxzI3iSND3XvC1TbyqXJNITdZunsI491qgGXviPBwByXIxMruwlsJpgL5osj62KE923K+/GXQtFAD4itWAI6i4TBHKwhOsmE5wCMEEmNMxPix1E/PPizz9EajvbBJ42AbhdgcFzKZfBkEn8ORE26eh6wjL0CPq6UgFh+tUtkX1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976916; c=relaxed/simple;
-	bh=AN7gpwBfqGFBqXc+BMm8YeTLQqPrVrOGjQpyhU82QzM=;
+	s=arc-20240116; t=1774975506; c=relaxed/simple;
+	bh=JHtqYUsUBHVDsPWNv59SindbRvLNQ7/sezj/qBXL5Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1Czs72jy5e0mplzBjVT75WpHgjKZW3gUPvA4gHrL/h1qqKYbi4zI3skkOB3uu6X1Z9DHKBr+sy5hPiCTfv5WMBPnvo+0vCiuWUm6Wdnm45emZZ3DYkVUgxEzyvXI2dN0u5zAsH3gCVo8n+nw9qBdKsbAw4KnKm/fSJ90T9pqIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jk6RVRlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77B8C19423;
-	Tue, 31 Mar 2026 17:08:35 +0000 (UTC)
+	 MIME-Version; b=XRaW9MNof+9296xHVL4MDUevrqV+VaHDPRLJpxo3Iq0DYrUmz3Fh2K8gjWYjGzmDL9bg8joOrtjmDktd+8DbYg3hy9q7D8F+YMvaJSuIkML7HJp2rjMPWxCxhryCJvzfbH0kvlL3Qhw4jvGDo4h7qCndF2qtVwbEeciJNu5W9q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMA2umxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AC9C19423;
+	Tue, 31 Mar 2026 16:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976916;
-	bh=AN7gpwBfqGFBqXc+BMm8YeTLQqPrVrOGjQpyhU82QzM=;
+	s=korg; t=1774975506;
+	bh=JHtqYUsUBHVDsPWNv59SindbRvLNQ7/sezj/qBXL5Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jk6RVRlpqIlKL8P6XH2WidVUDgHE8puf0bgIIA0YReGMWwmFC7kn2gaQ+fNBporXw
-	 yAMOWU5T4UpzAWZReBjWm5qgfBEocVsUAIE5EW9fXB15cMvX9dY43BZJ6sLrkAAPm+
-	 4hThbGukDfTCftShVJSkkg7uaFox8bn2DcMh4sDo=
+	b=wMA2umxT0fo2P4n6RGa8mqY9fDQ217m9FbBAsK9XYPrNgkCj35ldQTnRKgADYRe5G
+	 u8uafRLhw1YI/Y6c53kbTAtawhaO/kJ3h93C2snslmPNRowj+7batO3xNpI6MpEJQ5
+	 tzPXyegqZz68sl7fLbaf7d2wb96WF8hRugZr7LaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Chuanyu Tseng <chuanyu.tseng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 234/309] drm/amd/display: Fix drm_edid leak in amdgpu_dm
+	Zqiang <qiang.zhang@linux.dev>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.19 304/342] ext4: fix the might_sleep() warnings in kvfree()
 Date: Tue, 31 Mar 2026 18:22:17 +0200
-Message-ID: <20260331161802.191907761@linuxfoundation.org>
+Message-ID: <20260331161810.113209324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232503-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231958-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,55 +86,183 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: 051C136F504
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: B07E336E321
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit 37c2caa167b0b8aca4f74c32404c5288b876a2a3 upstream.
+commit 496bb99b7e66f48b178126626f47e9ba79e2d0fa upstream.
 
-[WHAT]
-When a sink is connected, aconnector->drm_edid was overwritten without
-freeing the previous allocation, causing a memory leak on resume.
+Use the kvfree() in the RCU read critical section can trigger
+the following warnings:
 
-[HOW]
-Free the previous drm_edid before updating it.
+EXT4-fs (vdb): unmounting filesystem cd983e5b-3c83-4f5a-a136-17b00eb9d018.
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Chuanyu Tseng <chuanyu.tseng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 52024a94e7111366141cfc5d888b2ef011f879e5)
-Cc: stable@vger.kernel.org
+WARNING: suspicious RCU usage
+
+./include/linux/rcupdate.h:409 Illegal context switch in RCU read-side critical section!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbb/0xd0
+ dump_stack+0x14/0x20
+ lockdep_rcu_suspicious+0x15a/0x1b0
+ __might_resched+0x375/0x4d0
+ ? put_object.part.0+0x2c/0x50
+ __might_sleep+0x108/0x160
+ vfree+0x58/0x910
+ ? ext4_group_desc_free+0x27/0x270
+ kvfree+0x23/0x40
+ ext4_group_desc_free+0x111/0x270
+ ext4_put_super+0x3c8/0xd40
+ generic_shutdown_super+0x14c/0x4a0
+ ? __pfx_shrinker_free+0x10/0x10
+ kill_block_super+0x40/0x90
+ ext4_kill_sb+0x6d/0xb0
+ deactivate_locked_super+0xb4/0x180
+ deactivate_super+0x7e/0xa0
+ cleanup_mnt+0x296/0x3e0
+ __cleanup_mnt+0x16/0x20
+ task_work_run+0x157/0x250
+ ? __pfx_task_work_run+0x10/0x10
+ ? exit_to_user_mode_loop+0x6a/0x550
+ exit_to_user_mode_loop+0x102/0x550
+ do_syscall_64+0x44a/0x500
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+BUG: sleeping function called from invalid context at mm/vmalloc.c:3441
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556, name: umount
+preempt_count: 1, expected: 0
+CPU: 3 UID: 0 PID: 556 Comm: umount
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbb/0xd0
+ dump_stack+0x14/0x20
+ __might_resched+0x275/0x4d0
+ ? put_object.part.0+0x2c/0x50
+ __might_sleep+0x108/0x160
+ vfree+0x58/0x910
+ ? ext4_group_desc_free+0x27/0x270
+ kvfree+0x23/0x40
+ ext4_group_desc_free+0x111/0x270
+ ext4_put_super+0x3c8/0xd40
+ generic_shutdown_super+0x14c/0x4a0
+ ? __pfx_shrinker_free+0x10/0x10
+ kill_block_super+0x40/0x90
+ ext4_kill_sb+0x6d/0xb0
+ deactivate_locked_super+0xb4/0x180
+ deactivate_super+0x7e/0xa0
+ cleanup_mnt+0x296/0x3e0
+ __cleanup_mnt+0x16/0x20
+ task_work_run+0x157/0x250
+ ? __pfx_task_work_run+0x10/0x10
+ ? exit_to_user_mode_loop+0x6a/0x550
+ exit_to_user_mode_loop+0x102/0x550
+ do_syscall_64+0x44a/0x500
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The above scenarios occur in initialization failures and teardown
+paths, there are no parallel operations on the resources released
+by kvfree(), this commit therefore remove rcu_read_lock/unlock() and
+use rcu_access_pointer() instead of rcu_dereference() operations.
+
+Fixes: 7c990728b99e ("ext4: fix potential race between s_flex_groups online resizing and access")
+Fixes: df3da4ea5a0f ("ext4: fix potential race between s_group_info online resizing and access")
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Link: https://patch.msgid.link/20260319094545.19291-1-qiang.zhang@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c |   10 +++-------
+ fs/ext4/super.c   |    8 ++------
+ 2 files changed, 5 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3822,8 +3822,9 @@ void amdgpu_dm_update_connector_after_de
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3584,9 +3584,7 @@ err_freebuddy:
+ 	rcu_read_unlock();
+ 	iput(sbi->s_buddy_cache);
+ err_freesgi:
+-	rcu_read_lock();
+-	kvfree(rcu_dereference(sbi->s_group_info));
+-	rcu_read_unlock();
++	kvfree(rcu_access_pointer(sbi->s_group_info));
+ 	return -ENOMEM;
+ }
  
- 		aconnector->dc_sink = sink;
- 		dc_sink_retain(aconnector->dc_sink);
-+		drm_edid_free(aconnector->drm_edid);
-+		aconnector->drm_edid = NULL;
- 		if (sink->dc_edid.length == 0) {
--			aconnector->drm_edid = NULL;
- 			hdmi_cec_unset_edid(aconnector);
- 			if (aconnector->dc_link->aux_mode) {
- 				drm_dp_cec_unset_edid(&aconnector->dm_dp_aux.aux);
+@@ -3903,7 +3901,8 @@ void ext4_mb_release(struct super_block
+ 		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+ 	}
+ 
+-	if (sbi->s_group_info) {
++	group_info = rcu_access_pointer(sbi->s_group_info);
++	if (group_info) {
+ 		for (i = 0; i < ngroups; i++) {
+ 			cond_resched();
+ 			grinfo = ext4_get_group_info(sb, i);
+@@ -3921,12 +3920,9 @@ void ext4_mb_release(struct super_block
+ 		num_meta_group_infos = (ngroups +
+ 				EXT4_DESC_PER_BLOCK(sb) - 1) >>
+ 			EXT4_DESC_PER_BLOCK_BITS(sb);
+-		rcu_read_lock();
+-		group_info = rcu_dereference(sbi->s_group_info);
+ 		for (i = 0; i < num_meta_group_infos; i++)
+ 			kfree(group_info[i]);
+ 		kvfree(group_info);
+-		rcu_read_unlock();
+ 	}
+ 	ext4_mb_avg_fragment_size_destroy(sbi);
+ 	ext4_mb_largest_free_orders_destroy(sbi);
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1249,12 +1249,10 @@ static void ext4_group_desc_free(struct
+ 	struct buffer_head **group_desc;
+ 	int i;
+ 
+-	rcu_read_lock();
+-	group_desc = rcu_dereference(sbi->s_group_desc);
++	group_desc = rcu_access_pointer(sbi->s_group_desc);
+ 	for (i = 0; i < sbi->s_gdb_count; i++)
+ 		brelse(group_desc[i]);
+ 	kvfree(group_desc);
+-	rcu_read_unlock();
+ }
+ 
+ static void ext4_flex_groups_free(struct ext4_sb_info *sbi)
+@@ -1262,14 +1260,12 @@ static void ext4_flex_groups_free(struct
+ 	struct flex_groups **flex_groups;
+ 	int i;
+ 
+-	rcu_read_lock();
+-	flex_groups = rcu_dereference(sbi->s_flex_groups);
++	flex_groups = rcu_access_pointer(sbi->s_flex_groups);
+ 	if (flex_groups) {
+ 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
+ 			kvfree(flex_groups[i]);
+ 		kvfree(flex_groups);
+ 	}
+-	rcu_read_unlock();
+ }
+ 
+ static void ext4_put_super(struct super_block *sb)
 
 
 
