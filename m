@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-231585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YN54FrT+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:52 +0200
+	id cKPWEMj+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33EA36DCFF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F37836DD45
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA80B30D5C19
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 117FC30CAB47
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13CC3EF0A2;
-	Tue, 31 Mar 2026 16:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795104266A6;
+	Tue, 31 Mar 2026 16:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt+sEex2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8mw86We"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AA53E3D82;
-	Tue, 31 Mar 2026 16:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAA2425CD5;
+	Tue, 31 Mar 2026 16:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974550; cv=none; b=kv4n1Co6oBrNLL68b6+i2dB5TnG8vjX3EHJoW9B7KDcWjB6P1ipHbd0m4Yde/IwiHk/d+B2BTgr+m/TiJ9YRld8AZDPbd5R3zp1YEnhqS8RnrabuUHdgPfTPb8/OMIXNkZcXxmG4/div5Dy9hnhfuswf+N9wgPrwIxPPc6u1tSU=
+	t=1774976024; cv=none; b=ECN862MPlOGszwXDvAVV5yI/addBORLD/VeCxLt4TJkgUpUGCGmOuBJFR2o/UKWiF3/N3s+8ia51qxnuT9A5qYedlmj1SvnBq752jyV1IMVtDNawFeyPpGt3fh5QZRkR4zwJF8cJ6m2bV6ZrTKr7nWhAsWOiLu+nDSKhJFCZhP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974550; c=relaxed/simple;
-	bh=9ucCAfSFfgW/Xm90WhpAjwULTr6j8uFKjt6mNg6rexs=;
+	s=arc-20240116; t=1774976024; c=relaxed/simple;
+	bh=YSILM1EPFu8z6gw4i7Isss1UR5RKewRgqsxV4mivtYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WegdbWAXT4DJ++LLeyAliHxdBtek8PgxtimyN6dtDGGeI/zcVkwlheZKkUxvhiaPF3OWLxk665jEnXhkaJiRi8nUANL2iHQF6L9G9BAunUrrGKeJ5VNPKkRXTegsM3OWuE1McI5TDsqSOVyRPrJKVAlOmRw1PIkw3L6CqPQOsMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt+sEex2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D29C19423;
-	Tue, 31 Mar 2026 16:29:09 +0000 (UTC)
+	 MIME-Version; b=MTxSGAc5wuHmQMvJjB6HYRYLyardPxThSdNTILBznZdGiLldJfgZhQy2N0Jhewotri9u+P+YmYjnjKLuJR/PZ9TsceMgxEzFjidCBvZ8xaUqpg8gnVol1BSTYWbFG9or8Kri3/2ijkvvrm3ne1fdqm3Bnd80RoE4xJGxCFMB09M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8mw86We; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D40C19423;
+	Tue, 31 Mar 2026 16:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974550;
-	bh=9ucCAfSFfgW/Xm90WhpAjwULTr6j8uFKjt6mNg6rexs=;
+	s=korg; t=1774976024;
+	bh=YSILM1EPFu8z6gw4i7Isss1UR5RKewRgqsxV4mivtYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jt+sEex2OI5eEHe7q1I8kjZKMngYs/ey+T3TNfnGc1mhNOf11igZmIptFOQVlrIsV
-	 S/n74kVpaP5QKPLiridLGsblYXWYdeN8U06if8hQv2Xsxy406oDzmloeauCaLkSAKJ
-	 /Nnp/fup+ryimKNrobS0c7olNVYR2aOza3Ld4u0k=
+	b=X8mw86We8JoraaOIHdsZrSu+AoJo7CJgrMjP+PirnJuBsxn98BXypVMu/Ta/BsUAa
+	 d2hFsYjpWtXaUUflzOJ0XTC3KSSFKzU+sqIXcNMhBZFCORl/6+FhHRr8U6fQrvs3Xr
+	 Rn8L8U+6ePFqiqa+dwLOdTAJWjOCfxja9RNxa1Yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 111/175] hwmon: (peci/cputemp) Fix crit_hyst returning delta instead of absolute temperature
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 145/244] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
 Date: Tue, 31 Mar 2026 18:21:35 +0200
-Message-ID: <20260331161733.856085801@linuxfoundation.org>
+Message-ID: <20260331161747.121775430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231585-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232157-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,80 +87,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D33EA36DCFF
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hartkopp.net:email,msgid.link:url,pengutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,keysight.com:email]
+X-Rspamd-Queue-Id: 0F37836DD45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-commit 0adc752b4f7d82af7bd14f7cad3091b3b5d702ba upstream.
+commit 424e95d62110cdbc8fd12b40918f37e408e35a92 upstream.
 
-The hwmon sysfs ABI expects tempN_crit_hyst to report the temperature at
-which the critical condition clears, not the hysteresis delta from the
-critical limit.
+isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
+to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
+wait_event_interruptible() and then calls kfree(so->tx.buf).
 
-The peci cputemp driver currently returns tjmax - tcontrol for
-crit_hyst_type, which is the hysteresis margin rather than the
-corresponding absolute temperature.
+If a signal interrupts the wait_event_interruptible() inside close()
+while tx.state is ISOTP_SENDING, the loop exits early and release
+proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
+while sendmsg may still be reading so->tx.buf for the final CAN frame
+in isotp_fill_dataframe().
 
-Return tcontrol directly, and update the documentation accordingly.
+The so->tx.buf can be allocated once when the standard tx.buf length needs
+to be extended. Move the kfree() of this potentially extended tx.buf to
+sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
 
-Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260323002352.93417-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/hwmon/peci-cputemp.rst |   10 ++++++----
- drivers/hwmon/peci/cputemp.c         |    2 +-
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ net/can/isotp.c |   24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
---- a/Documentation/hwmon/peci-cputemp.rst
-+++ b/Documentation/hwmon/peci-cputemp.rst
-@@ -51,8 +51,9 @@ temp1_max		Provides thermal control temp
- temp1_crit		Provides shutdown temperature of the CPU package which
- 			is also known as the maximum processor junction
- 			temperature, Tjmax or Tprochot.
--temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
--			the CPU package.
-+temp1_crit_hyst		Provides the hysteresis temperature of the CPU
-+			package. Returns Tcontrol, the temperature at which
-+			the critical condition clears.
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1229,12 +1229,6 @@ static int isotp_release(struct socket *
+ 	so->ifindex = 0;
+ 	so->bound = 0;
  
- temp2_label		"DTS"
- temp2_input		Provides current temperature of the CPU package scaled
-@@ -62,8 +63,9 @@ temp2_max		Provides thermal control temp
- temp2_crit		Provides shutdown temperature of the CPU package which
- 			is also known as the maximum processor junction
- 			temperature, Tjmax or Tprochot.
--temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
--			the CPU package.
-+temp2_crit_hyst		Provides the hysteresis temperature of the CPU
-+			package. Returns Tcontrol, the temperature at which
-+			the critical condition clears.
+-	if (so->rx.buf != so->rx.sbuf)
+-		kfree(so->rx.buf);
+-
+-	if (so->tx.buf != so->tx.sbuf)
+-		kfree(so->tx.buf);
+-
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
  
- temp3_label		"Tcontrol"
- temp3_input		Provides current Tcontrol temperature of the CPU
---- a/drivers/hwmon/peci/cputemp.c
-+++ b/drivers/hwmon/peci/cputemp.c
-@@ -133,7 +133,7 @@ static int get_temp_target(struct peci_c
- 		*val = priv->temp.target.tjmax;
- 		break;
- 	case crit_hyst_type:
--		*val = priv->temp.target.tjmax - priv->temp.target.tcontrol;
-+		*val = priv->temp.target.tcontrol;
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
+@@ -1602,6 +1596,21 @@ static int isotp_notifier(struct notifie
+ 	return NOTIFY_DONE;
+ }
+ 
++static void isotp_sock_destruct(struct sock *sk)
++{
++	struct isotp_sock *so = isotp_sk(sk);
++
++	/* do the standard CAN sock destruct work */
++	can_sock_destruct(sk);
++
++	/* free potential extended PDU buffers */
++	if (so->rx.buf != so->rx.sbuf)
++		kfree(so->rx.buf);
++
++	if (so->tx.buf != so->tx.sbuf)
++		kfree(so->tx.buf);
++}
++
+ static int isotp_init(struct sock *sk)
+ {
+ 	struct isotp_sock *so = isotp_sk(sk);
+@@ -1648,6 +1657,9 @@ static int isotp_init(struct sock *sk)
+ 	list_add_tail(&so->notifier, &isotp_notifier_list);
+ 	spin_unlock(&isotp_notifier_lock);
+ 
++	/* re-assign default can_sock_destruct() reference */
++	sk->sk_destruct = isotp_sock_destruct;
++
+ 	return 0;
+ }
+ 
 
 
 
