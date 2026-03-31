@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2J3bJsIEzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:42 +0200
+	id UPm7CRn8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F053C36ED6D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E77636D577
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BB1C328E0F5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43CA030D09B0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F6B423A61;
-	Tue, 31 Mar 2026 16:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DB13E9299;
+	Tue, 31 Mar 2026 16:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6An2SlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX0igg3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C74241B373;
-	Tue, 31 Mar 2026 16:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374B43D8114;
+	Tue, 31 Mar 2026 16:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976094; cv=none; b=B/v8kiFzsRlAYpTf2RIbBEeptZJ4YT3/ameHh+fzHIKhLx9cDdbwEQyXORJFAm8mfSb/V8uhC/DOPJAhllMBJXQsjwplUqD81dsYFpe9i1Ub7WmMFcBtJ1kau5zYUIX0sZ4qVr4SNBlSdbSm/A7/XAhn0jrrqlnluV6wnwPhJO8=
+	t=1774975501; cv=none; b=J1USFr9a6tCPoyG1Xw9qGufpvQkgZ3/yYot2t8PyuU+ritT/ScXegGMXv4u4zGCLeczqoIIZFhuK6j6lIDUlDpHxlFSkP91koclVhXfmXDGA4xxFaickd3L/4Qh7MViDgdVNEoKGQrs6RXIDVchVz4FGmCEeFwFLz01dq6LQF/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976094; c=relaxed/simple;
-	bh=LzJ//a9A23auxZ4TSxx36XFT22FwJP3H7y5fqvD4m/g=;
+	s=arc-20240116; t=1774975501; c=relaxed/simple;
+	bh=5xsLBkY0hiTjYwY2SskTFmZfwU2SubdMFQfbl6WPddc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5Ij9Qn2j0Z78LJsQFpo+5ohXC5cOXIB7v2SMM6ZraN/9ne20317UDpTyiLTLRg/jSzY2b8G5bVtjISobA/5Xe+5KuACeC8z+OUClOkkQMOoVa0kFrqrfTSBzI+r69b1UjrlH0csWcN+1F02PrDlecEMeQaA4oo1NYuuj4TCNPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6An2SlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F23DC19423;
-	Tue, 31 Mar 2026 16:54:53 +0000 (UTC)
+	 MIME-Version; b=mAcNWADLHkA77a04AKWPdQj3KPCeBUWl9QqRH+ZU1sOHxDA4JIiCbmAcdAx/uTRPP8halgnhfAAaxqjxaRAQ+TVZFoXc97Kuy2xboDyaf5442qgfKBmljOvzSBIAX0p6pBc+ycItlFog70CCCA4UyB2TKq0zen5ZQRyjNr3jFXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MX0igg3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1567C19423;
+	Tue, 31 Mar 2026 16:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976093;
-	bh=LzJ//a9A23auxZ4TSxx36XFT22FwJP3H7y5fqvD4m/g=;
+	s=korg; t=1774975501;
+	bh=5xsLBkY0hiTjYwY2SskTFmZfwU2SubdMFQfbl6WPddc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6An2SlNoinMmPsed090sh/+ekZRz41j0Jei8slPlGlFcr3v+Ooh8Y4jBs3PsP3gx
-	 iLg+OnBc6jAiyC2FNKYz/ZIjEsBm9dAwvhHA8O7H0cjTxBM/rmobyMrUFXV8QB2VIc
-	 D0jguSmWY1BW4Kwc51NQLGNFzva8XWFLHS/Gb7uk=
+	b=MX0igg3+XHQ68tfJ7TUQ78uH2SIZwLS3ShHbDlXM64ufRgAQLijvD9iI+vi0H7A5X
+	 JE9P2eiIzRllzcAqiT1Mni7TSquSRuKqB46vUDAKszRmhghHrv1/J1eUQjTXw0aAMO
+	 gGb/Xk2B1SSVZHiSavv7Fk4KhlALCfosQxZfAP7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	LUO Haowen <luo-hw@foxmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/244] drm/xe: always keep track of remap prev/next
+Subject: [PATCH 6.19 320/342] dmaengine: dw-edma: Fix multiple times setting of the CYCLE_STATE and CYCLE_BIT bits for HDMA.
 Date: Tue, 31 Mar 2026 18:22:33 +0200
-Message-ID: <20260331161749.248163862@linuxfoundation.org>
+Message-ID: <20260331161810.691431711@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,231 +69,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,foxmail.com,nxp.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231956-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232184-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: F053C36ED6D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,foxmail.com:email,gxmicro.cn:email]
+X-Rspamd-Queue-Id: 8E77636D577
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: LUO Haowen <luo-hw@foxmail.com>
 
-[ Upstream commit bfe9e314d7574d1c5c851972e7aee342733819d2 ]
+[ Upstream commit 3f63297ff61a994b99d710dcb6dbde41c4003233 ]
 
-During 3D workload, user is reporting hitting:
+Others have submitted this issue (https://lore.kernel.org/dmaengine/
+20240722030405.3385-1-zhengdongxiong@gxmicro.cn/),
+but it has not been fixed yet. Therefore, more supplementary information
+is provided here.
 
-[  413.361679] WARNING: drivers/gpu/drm/xe/xe_vm.c:1217 at vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe], CPU#7: vkd3d_queue/9925
-[  413.361944] CPU: 7 UID: 1000 PID: 9925 Comm: vkd3d_queue Kdump: loaded Not tainted 7.0.0-070000rc3-generic #202603090038 PREEMPT(lazy)
-[  413.361949] RIP: 0010:vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe]
-[  413.362074] RSP: 0018:ffffd4c25c3df930 EFLAGS: 00010282
-[  413.362077] RAX: 0000000000000000 RBX: ffff8f3ee817ed10 RCX: 0000000000000000
-[  413.362078] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[  413.362079] RBP: ffffd4c25c3df980 R08: 0000000000000000 R09: 0000000000000000
-[  413.362081] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8f41fbf99380
-[  413.362082] R13: ffff8f3ee817e968 R14: 00000000ffffffef R15: ffff8f43d00bd380
-[  413.362083] FS:  00000001040ff6c0(0000) GS:ffff8f4696d89000(0000) knlGS:00000000330b0000
-[  413.362085] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-[  413.362086] CR2: 00007ddfc4747000 CR3: 00000002e6262005 CR4: 0000000000f72ef0
-[  413.362088] PKRU: 55555554
-[  413.362089] Call Trace:
-[  413.362092]  <TASK>
-[  413.362096]  xe_vm_bind_ioctl+0xa9a/0xc60 [xe]
+As mentioned in the "PCS-CCS-CB-TCB" Producer-Consumer Synchronization of
+"DesignWare Cores PCI Express Controller Databook, version 6.00a":
 
-Which seems to hint that the vma we are re-inserting for the ops unwind
-is either invalid or overlapping with something already inserted in the
-vm. It shouldn't be invalid since this is a re-insertion, so must have
-worked before. Leaving the likely culprit as something already placed
-where we want to insert the vma.
+1. The Consumer CYCLE_STATE (CCS) bit in the register only needs to be
+initialized once; the value will update automatically to be
+~CYCLE_BIT (CB) in the next chunk.
+2. The Consumer CYCLE_BIT bit in the register is loaded from the LL
+element and tested against CCS. When CB = CCS, the data transfer is
+executed. Otherwise not.
 
-Following from that, for the case where we do something like a rebind in
-the middle of a vma, and one or both mapped ends are already compatible,
-we skip doing the rebind of those vma and set next/prev to NULL. As well
-as then adjust the original unmap va range, to avoid unmapping the ends.
-However, if we trigger the unwind path, we end up with three va, with
-the two ends never being removed and the original va range in the middle
-still being the shrunken size.
+The current logic sets customer (HDMA) CS and CB bits to 1 in each chunk
+while setting the producer (software) CB of odd chunks to 0 and even
+chunks to 1 in the linked list. This is leading to a mismatch between
+the producer CB and consumer CS bits.
 
-If this occurs, one failure mode is when another unwind op needs to
-interact with that range, which can happen with a vector of binds. For
-example, if we need to re-insert something in place of the original va.
-In this case the va is still the shrunken version, so when removing it
-and then doing a re-insert it can overlap with the ends, which were
-never removed, triggering a warning like above, plus leaving the vm in a
-bad state.
+This issue can be reproduced by setting the transmission data size to
+exceed one chunk. By the way, in the EDMA using the same "PCS-CCS-CB-TCB"
+mechanism, the CS bit is only initialized once and this issue was not
+found. Refer to
+drivers/dma/dw-edma/dw-edma-v0-core.c:dw_edma_v0_core_start.
 
-With that, we need two things here:
+So fix this issue by initializing the CYCLE_STATE and CYCLE_BIT bits
+only once.
 
- 1) Stop nuking the prev/next tracking for the skip cases. Instead
-    relying on checking for skip prev/next, where needed. That way on the
-    unwind path, we now correctly remove both ends.
-
- 2) Undo the unmap va shrinkage, on the unwind path. With the two ends
-    now removed the unmap va should expand back to the original size again,
-    before re-insertion.
-
-v2:
-  - Update the explanation in the commit message, based on an actual IGT of
-    triggering this issue, rather than conjecture.
-  - Also undo the unmap shrinkage, for the skip case. With the two ends
-    now removed, the original unmap va range should expand back to the
-    original range.
-v3:
-  - Track the old start/range separately. vma_size/start() uses the va
-    info directly.
-
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7602
-Fixes: 8f33b4f054fc ("drm/xe: Avoid doing rebinds")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260318100208.78097-2-matthew.auld@intel.com
-(cherry picked from commit aec6969f75afbf4e01fd5fb5850ed3e9c27043ac)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[ adapted function signatures ]
+Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
+Signed-off-by: LUO Haowen <luo-hw@foxmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/tencent_CB11AA9F3920C1911AF7477A9BD8EFE0AD05@qq.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_pt.c       |   12 ++++++------
- drivers/gpu/drm/xe/xe_vm.c       |   22 ++++++++++++++++++----
- drivers/gpu/drm/xe/xe_vm_types.h |    4 ++++
- 3 files changed, 28 insertions(+), 10 deletions(-)
+ drivers/dma/dw-edma/dw-hdma-v0-core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -1281,9 +1281,9 @@ static int op_check_userptr(struct xe_vm
- 		err = vma_check_userptr(vm, op->map.vma, pt_update);
- 		break;
- 	case DRM_GPUVA_OP_REMAP:
--		if (op->remap.prev)
-+		if (op->remap.prev && !op->remap.skip_prev)
- 			err = vma_check_userptr(vm, op->remap.prev, pt_update);
--		if (!err && op->remap.next)
-+		if (!err && op->remap.next && !op->remap.skip_next)
- 			err = vma_check_userptr(vm, op->remap.next, pt_update);
- 		break;
- 	case DRM_GPUVA_OP_UNMAP:
-@@ -1784,12 +1784,12 @@ static int op_prepare(struct xe_vm *vm,
- 		err = unbind_op_prepare(tile, pt_update_ops,
- 					gpuva_to_vma(op->base.remap.unmap->va));
- 
--		if (!err && op->remap.prev) {
-+		if (!err && op->remap.prev && !op->remap.skip_prev) {
- 			err = bind_op_prepare(vm, tile, pt_update_ops,
- 					      op->remap.prev);
- 			pt_update_ops->wait_vm_bookkeep = true;
- 		}
--		if (!err && op->remap.next) {
-+		if (!err && op->remap.next && !op->remap.skip_next) {
- 			err = bind_op_prepare(vm, tile, pt_update_ops,
- 					      op->remap.next);
- 			pt_update_ops->wait_vm_bookkeep = true;
-@@ -1950,10 +1950,10 @@ static void op_commit(struct xe_vm *vm,
- 				 gpuva_to_vma(op->base.remap.unmap->va), fence,
- 				 fence2);
- 
--		if (op->remap.prev)
-+		if (op->remap.prev && !op->remap.skip_prev)
- 			bind_op_commit(vm, tile, pt_update_ops, op->remap.prev,
- 				       fence, fence2);
--		if (op->remap.next)
-+		if (op->remap.next && !op->remap.skip_next)
- 			bind_op_commit(vm, tile, pt_update_ops, op->remap.next,
- 				       fence, fence2);
- 		break;
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -2187,7 +2187,6 @@ static int xe_vma_op_commit(struct xe_vm
- 			if (!err && op->remap.skip_prev) {
- 				op->remap.prev->tile_present =
- 					tile_present;
--				op->remap.prev = NULL;
- 			}
- 		}
- 		if (op->remap.next) {
-@@ -2197,11 +2196,13 @@ static int xe_vma_op_commit(struct xe_vm
- 			if (!err && op->remap.skip_next) {
- 				op->remap.next->tile_present =
- 					tile_present;
--				op->remap.next = NULL;
- 			}
- 		}
- 
--		/* Adjust for partial unbind after removin VMA from VM */
-+		/*
-+		 * Adjust for partial unbind after removing VMA from VM. In case
-+		 * of unwind we might need to undo this later.
-+		 */
- 		if (!err) {
- 			op->base.remap.unmap->va->va.addr = op->remap.start;
- 			op->base.remap.unmap->va->va.range = op->remap.range;
-@@ -2273,6 +2274,8 @@ static int vm_bind_ioctl_ops_parse(struc
- 
- 			op->remap.start = xe_vma_start(old);
- 			op->remap.range = xe_vma_size(old);
-+			op->remap.old_start = op->remap.start;
-+			op->remap.old_range = op->remap.range;
- 
- 			if (op->base.remap.prev) {
- 				flags |= op->base.remap.unmap->va->flags &
-@@ -2421,8 +2424,19 @@ static void xe_vma_op_unwind(struct xe_v
- 			down_read(&vm->userptr.notifier_lock);
- 			vma->gpuva.flags &= ~XE_VMA_DESTROYED;
- 			up_read(&vm->userptr.notifier_lock);
--			if (post_commit)
-+			if (post_commit) {
-+				/*
-+				 * Restore the old va range, in case of the
-+				 * prev/next skip optimisation. Otherwise what
-+				 * we re-insert here could be smaller than the
-+				 * original range.
-+				 */
-+				op->base.remap.unmap->va->va.addr =
-+					op->remap.old_start;
-+				op->base.remap.unmap->va->va.range =
-+					op->remap.old_range;
- 				xe_vm_insert_vma(vm, vma);
-+			}
- 		}
- 		break;
+diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+index e3f8db4fe909a..ce8f7254bab21 100644
+--- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
++++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+@@ -252,10 +252,10 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+ 			  lower_32_bits(chunk->ll_region.paddr));
+ 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
+ 			  upper_32_bits(chunk->ll_region.paddr));
++		/* Set consumer cycle */
++		SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
++			HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
  	}
---- a/drivers/gpu/drm/xe/xe_vm_types.h
-+++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -314,6 +314,10 @@ struct xe_vma_op_remap {
- 	u64 start;
- 	/** @range: range of the VMA unmap */
- 	u64 range;
-+	/** @old_start: Original start of the VMA we unmap */
-+	u64 old_start;
-+	/** @old_range: Original range of the VMA we unmap */
-+	u64 old_range;
- 	/** @skip_prev: skip prev rebind */
- 	bool skip_prev;
- 	/** @skip_next: skip next rebind */
+-	/* Set consumer cycle */
+-	SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
+-		  HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
+ 
+ 	dw_hdma_v0_sync_ll_data(chunk);
+ 
+-- 
+2.53.0
+
 
 
 
