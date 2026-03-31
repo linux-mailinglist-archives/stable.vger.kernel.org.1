@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-231636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGWMM134y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:49 +0200
+	id MPlxKAkFzGnPNQYAu9opvQ
+	(envelope-from <stable+bounces-232162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84E136CE03
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E0136EE17
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7BD9A3063229
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37C26315C003
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCDF423A9F;
-	Tue, 31 Mar 2026 16:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E18425CD6;
+	Tue, 31 Mar 2026 16:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upMA63Ni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktJlR2T+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8F7423A9A;
-	Tue, 31 Mar 2026 16:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25430421EE4;
+	Tue, 31 Mar 2026 16:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974677; cv=none; b=jL9NU2ejJYlL2T5KSdx7OrPcK8BgEa1nFHFaUSA+6NJTZ19cSFHWBV9w8j78Tawcj4egZ0I0j6eMECpSjae1e2rVrKTmf1FW8s+F+Rkgu0RyvgJNlMx2MKjo2O/kYcO/gLApXqWWvd8NhXbRoNO//uRcUZcqg1eAVMVfGsPr9Js=
+	t=1774976037; cv=none; b=cW55qRRrRyPIM0ZoOHpN5ifWOqrcgaOVQsX0Sx4mA1iDGjwPkdmaaAi1Rarpj7+1/O6PybBr+f16YLPj7l+9zKSgJkll5mosx8/r7tQrvuiMaD45+4N9PrHGR3si/vLkrlArc0d9yw4N0QuR3lAkiP241NI4npQShl9bDy01qfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974677; c=relaxed/simple;
-	bh=qlOA3Og8BKTNRf5TBaEoSHLPfJ7eFEtbn63N5Ce/lz4=;
+	s=arc-20240116; t=1774976037; c=relaxed/simple;
+	bh=swD8lb4zec28pCEqvHnQAvdCfZ2tqTG84Th0NR1rmOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcEvWiksGeAaqs9uY0Vf5v1HJmdjIyClP6wmT9FydcZrhCHlKPOcpV8QAto3wbvnqaI5vYtwgshCEgPgrc2GWi+CqRc6C90iKVhvPp+ozw1/e7Bi+79seGfrdx+sGKucLA1MjDFyq5MO+JWpBKba0ddFevSoAfWX2tJw+t7+XIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upMA63Ni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A90C19424;
-	Tue, 31 Mar 2026 16:31:17 +0000 (UTC)
+	 MIME-Version; b=ukrmuiJU+jEYUBEgyti3I4TMa8KLj0zCag1YvNruZfBLNtZTpl6nNjzwHQjwJ/y2qntTOqTl5Aiph6/+GCowz+Img4SNPSlPvNyEgnDa+vP5eOLs7Dp4LFF35Re9rqE6VGA3E0lkJ6EryKeGsmr5Z2o+ImPqFeIPxdFQGZHkjxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktJlR2T+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B165AC19423;
+	Tue, 31 Mar 2026 16:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974677;
-	bh=qlOA3Og8BKTNRf5TBaEoSHLPfJ7eFEtbn63N5Ce/lz4=;
+	s=korg; t=1774976037;
+	bh=swD8lb4zec28pCEqvHnQAvdCfZ2tqTG84Th0NR1rmOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upMA63NiLNu0YY/m9GBuPwK3DG1IsQJ9LqncV/J2W+3taG9eec+CljbV31pk6J8Xc
-	 ixrfsxF+qVkq+jUGU24I9HDBJXhvib88j3p6lp77EJO3mQ+UxfZOmhv9AEdc/cLqDG
-	 bHm0XFdX4RcM+KECZKAvoZj31c9eIqMHv7oJ6C6Q=
+	b=ktJlR2T+gu+SieqsbKqL2baHgzmFeecUjKb3IVBePWR9w8e8vzWl/MHm11FeXcg4w
+	 0D0X5wUbyqbV+fza34u80/CQMVPFZQCfRDisYgevcCiS3t2jBs95aN5g5fCKzQfhOI
+	 +0lQwk/YpC8bpgceUgqRYLs60r6Q3vI4tAmN6oIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>
-Subject: [PATCH 6.6 148/175] rust: pin-init: add references to previously initialized fields
-Date: Tue, 31 Mar 2026 18:22:12 +0200
-Message-ID: <20260331161735.226121984@linuxfoundation.org>
+	Anthony Durrer <anthonydev@fastmail.com>,
+	Simon Weber <simon.weber.39@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 183/244] ext4: fix journal credit check when setting fscrypt context
+Date: Tue, 31 Mar 2026 18:22:13 +0200
+Message-ID: <20260331161748.516981785@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,250 +66,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231636-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232162-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.com,gmail.com,kernel.org,mit.edu];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.989];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A84E136CE03
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,fastmail.com:email]
+X-Rspamd-Queue-Id: D0E0136EE17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benno Lossin <lossin@kernel.org>
+From: Simon Weber <simon.weber.39@gmail.com>
 
-[ Upstream commit 42415d163e5df6db799c7de6262d707e402c2c7e ]
+commit b1d682f1990c19fb1d5b97d13266210457092bcd upstream.
 
-After initializing a field in an initializer macro, create a variable
-holding a reference that points at that field. The type is either
-`Pin<&mut T>` or `&mut T` depending on the field's structural pinning
-kind.
+Fix an issue arising when ext4 features has_journal, ea_inode, and encrypt
+are activated simultaneously, leading to ENOSPC when creating an encrypted
+file.
 
-[ Applied fixes to devres and rust_driver_pci sample - Benno]
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-[ Removed the devres changes, because devres is not present in 6.12.y and
-  earlier. Also adjusted paths in the macro to account for the fact that
-  pin-init is part of the kernel crate in 6.12.y and earlier. - Benno ]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
+Fix by passing XATTR_CREATE flag to xattr_set_handle function if a handle
+is specified, i.e., when the function is called in the control flow of
+creating a new inode. This aligns the number of jbd2 credits set_handle
+checks for with the number allocated for creating a new inode.
+
+ext4_set_context must not be called with a non-null handle (fs_data) if
+fscrypt context xattr is not guaranteed to not exist yet. The only other
+usage of this function currently is when handling the ioctl
+FS_IOC_SET_ENCRYPTION_POLICY, which calls it with fs_data=NULL.
+
+Fixes: c1a5d5f6ab21eb7e ("ext4: improve journal credit handling in set xattr paths")
+
+Co-developed-by: Anthony Durrer <anthonydev@fastmail.com>
+Signed-off-by: Anthony Durrer <anthonydev@fastmail.com>
+Signed-off-by: Simon Weber <simon.weber.39@gmail.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20260207100148.724275-4-simon.weber.39@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init/macros.rs |  144 +++++++++++++++++++++++++++++++++++----------
- 1 file changed, 113 insertions(+), 31 deletions(-)
+ fs/ext4/crypto.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -964,35 +964,54 @@ macro_rules! __pin_data {
-         @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
-         @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
-     ) => {
--        // For every field, we create a projection function according to its projection type. If a
--        // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
--        // structurally pinned, then it can be initialized via `Init`.
--        //
--        // The functions are `unsafe` to prevent accidentally calling them.
--        #[allow(dead_code)]
--        impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
--        where $($whr)*
--        {
--            $(
--                $(#[$($p_attr)*])*
--                $pvis unsafe fn $p_field<E>(
--                    self,
--                    slot: *mut $p_type,
--                    init: impl $crate::init::PinInit<$p_type, E>,
--                ) -> ::core::result::Result<(), E> {
--                    unsafe { $crate::init::PinInit::__pinned_init(init, slot) }
--                }
--            )*
--            $(
--                $(#[$($attr)*])*
--                $fvis unsafe fn $field<E>(
--                    self,
--                    slot: *mut $type,
--                    init: impl $crate::init::Init<$type, E>,
--                ) -> ::core::result::Result<(), E> {
--                    unsafe { $crate::init::Init::__init(init, slot) }
--                }
--            )*
-+        $crate::macros::paste! {
-+            // For every field, we create a projection function according to its projection type. If a
-+            // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
-+            // structurally pinned, then it can be initialized via `Init`.
-+            //
-+            // The functions are `unsafe` to prevent accidentally calling them.
-+            #[allow(dead_code, non_snake_case)]
-+            #[expect(clippy::missing_safety_doc)]
-+            impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
-+            where $($whr)*
-+            {
-+                $(
-+                    $(#[$($p_attr)*])*
-+                    $pvis unsafe fn $p_field<E>(
-+                        self,
-+                        slot: *mut $p_type,
-+                        init: impl $crate::init::PinInit<$p_type, E>,
-+                    ) -> ::core::result::Result<(), E> {
-+                        unsafe { $crate::init::PinInit::__pinned_init(init, slot) }
-+                    }
-+
-+                    $(#[$($p_attr)*])*
-+                    $pvis unsafe fn [<__project_ $p_field>]<'__slot>(
-+                        self,
-+                        slot: &'__slot mut $p_type,
-+                    ) -> ::core::pin::Pin<&'__slot mut $p_type> {
-+                        unsafe { ::core::pin::Pin::new_unchecked(slot) }
-+                    }
-+                )*
-+                $(
-+                    $(#[$($attr)*])*
-+                    $fvis unsafe fn $field<E>(
-+                        self,
-+                        slot: *mut $type,
-+                        init: impl $crate::init::Init<$type, E>,
-+                    ) -> ::core::result::Result<(), E> {
-+                        unsafe { $crate::init::Init::__init(init, slot) }
-+                    }
-+
-+                    $(#[$($attr)*])*
-+                    $fvis unsafe fn [<__project_ $field>]<'__slot>(
-+                        self,
-+                        slot: &'__slot mut $type,
-+                    ) -> &'__slot mut $type {
-+                        slot
-+                    }
-+                )*
-+            }
-         }
-     };
- }
-@@ -1186,6 +1205,13 @@ macro_rules! __init_internal {
-         // return when an error/panic occurs.
-         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
-         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
-+        // SAFETY:
-+        // - the project function does the correct field projection,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        #[allow(unused_variables, unused_assignments)]
-+        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
-+
-         // Create the drop guard:
-         //
-         // We rely on macro hygiene to make it impossible for users to access this local variable.
-@@ -1217,6 +1243,14 @@ macro_rules! __init_internal {
-         // SAFETY: `slot` is valid, because we are inside of an initializer closure, we
-         // return when an error/panic occurs.
-         unsafe { $crate::init::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
-+
-+        // SAFETY:
-+        // - the field is not structurally pinned, since the line above must compile,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        #[allow(unused_variables, unused_assignments)]
-+        let $field = unsafe { &mut (*$slot).$field };
-+
-         // Create the drop guard:
-         //
-         // We rely on macro hygiene to make it impossible for users to access this local variable.
-@@ -1235,7 +1269,7 @@ macro_rules! __init_internal {
-             );
-         }
-     };
--    (init_slot($($use_data:ident)?):
-+    (init_slot(): // No `use_data`, so all fields are not structurally pinned
-         @data($data:ident),
-         @slot($slot:ident),
-         @guards($($guards:ident,)*),
-@@ -1249,6 +1283,15 @@ macro_rules! __init_internal {
-             // SAFETY: The memory at `slot` is uninitialized.
-             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-         }
-+
-+        #[allow(unused_variables, unused_assignments)]
-+        // SAFETY:
-+        // - the field is not structurally pinned, since no `use_data` was required to create this
-+        //   initializer,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        let $field = unsafe { &mut (*$slot).$field };
-+
-         // Create the drop guard:
-         //
-         // We rely on macro hygiene to make it impossible for users to access this local variable.
-@@ -1259,7 +1302,46 @@ macro_rules! __init_internal {
-                 $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
-             };
+--- a/fs/ext4/crypto.c
++++ b/fs/ext4/crypto.c
+@@ -163,10 +163,17 @@ static int ext4_set_context(struct inode
+ 	 */
  
--            $crate::__init_internal!(init_slot($($use_data)?):
-+            $crate::__init_internal!(init_slot():
-+                @data($data),
-+                @slot($slot),
-+                @guards([< __ $field _guard >], $($guards,)*),
-+                @munch_fields($($rest)*),
-+            );
-+        }
-+    };
-+    (init_slot($use_data:ident):
-+        @data($data:ident),
-+        @slot($slot:ident),
-+        @guards($($guards:ident,)*),
-+        // Init by-value.
-+        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
-+    ) => {
-+        {
-+            $(let $field = $val;)?
-+            // Initialize the field.
-+            //
-+            // SAFETY: The memory at `slot` is uninitialized.
-+            unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-+        }
-+        // SAFETY:
-+        // - the project function does the correct field projection,
-+        // - the field has been initialized,
-+        // - the reference is only valid until the end of the initializer.
-+        #[allow(unused_variables, unused_assignments)]
-+        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
-+
-+        // Create the drop guard:
-+        //
-+        // We rely on macro hygiene to make it impossible for users to access this local variable.
-+        // We use `paste!` to create new hygiene for `$field`.
-+        $crate::macros::paste! {
-+            // SAFETY: We forget the guard later when initialization has succeeded.
-+            let [< __ $field _guard >] = unsafe {
-+                $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
-+            };
-+
-+            $crate::__init_internal!(init_slot($use_data):
-                 @data($data),
-                 @slot($slot),
-                 @guards([<$field>], $($guards,)*),
+ 	if (handle) {
++		/*
++		 * Since the inode is new it is ok to pass the
++		 * XATTR_CREATE flag. This is necessary to match the
++		 * remaining journal credits check in the set_handle
++		 * function with the credits allocated for the new
++		 * inode.
++		 */
+ 		res = ext4_xattr_set_handle(handle, inode,
+ 					    EXT4_XATTR_INDEX_ENCRYPTION,
+ 					    EXT4_XATTR_NAME_ENCRYPTION_CONTEXT,
+-					    ctx, len, 0);
++					    ctx, len, XATTR_CREATE);
+ 		if (!res) {
+ 			ext4_set_inode_flag(inode, EXT4_INODE_ENCRYPT);
+ 			ext4_clear_inode_state(inode,
 
 
 
