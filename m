@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FVjLhcAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:47 +0200
+	id ECxOICn/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4A636E139
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE5836DE48
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B7D230BD193
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A00130C0530
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25142401A2C;
-	Tue, 31 Mar 2026 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFED425CC4;
+	Tue, 31 Mar 2026 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhCr0R0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSQrUQJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB8733F38A;
-	Tue, 31 Mar 2026 16:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9ED423A7C;
+	Tue, 31 Mar 2026 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974930; cv=none; b=LbceTemhB0/CSCPaXetmSbzBOo3+1ouBrzpjdLWMLeElxDyRY5lOz3aalN3s3VBAlaX1Cc5vE4nG3FyT10Q57wESHQJLy1HD4BaHuqbm8v2wgYDNt9zUJZtNC17hDkOAV6MOlzsQk32QJp2sLvbFcOUQfACF8FEFU2J630Mz3Jk=
+	t=1774976362; cv=none; b=jKaYYbzBz0JsSc2zvKnMrowlGwyYvr6nwhSgnTd/c3eJqlyX8xCjWVsQ3ezhW4wpG5GYmSyzYFUGo/xW3ypRMh8QAtJpiF5x97+/wEXEhdIdyaxA0+QcfnqPh3xZWuBk7no2wIGRq2ZBOv6Tq3S62djwNEvk1FuHss0lj6gMfwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974930; c=relaxed/simple;
-	bh=sJO8Kp4zcuohaZqS3gcmMPxys+SnLxMpUYrheqjHfGs=;
+	s=arc-20240116; t=1774976362; c=relaxed/simple;
+	bh=6phVvRMb6ZQPUmSEq3bnLL9haGUFKvF1WUmYncfTb5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrUAwILM6Ghxw5AH1uB3+lm9GFcmCkq0in4HrpWVqV4jtMVTbfjiIaXMOgChV+mVx6AZGCiuuxJZ29vnLjBYjaWxQsHdRGFQCeM2FK9gOs3EUiy7ZFlr3gsuzFoN7wr6bvgBe6CW7s1MJQTrNJOIwn06xJdiZDApSHYT1fHjL0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhCr0R0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC3C19423;
-	Tue, 31 Mar 2026 16:35:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MjxMYjUxkwmka0DB5xsM+1hKBIazs6W/YznjGwDgrfd0YNzORAnEA2TbdQ6mJgsCEgDGXWDfPngCc0ZJGmhxg82w8XV5GtdHoe0Y/+1Awn7i5UCl5e12+GQ1kg89Ol4BRl2LyGGSadzceUTY6jqcIvbxMsnSUMGFXxcu+Ux9aSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSQrUQJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86BCC19424;
+	Tue, 31 Mar 2026 16:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974930;
-	bh=sJO8Kp4zcuohaZqS3gcmMPxys+SnLxMpUYrheqjHfGs=;
+	s=korg; t=1774976362;
+	bh=6phVvRMb6ZQPUmSEq3bnLL9haGUFKvF1WUmYncfTb5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UhCr0R0P16KOFQ1Kn4khpVR2LGwNND350DR6mz2Am5Uh4213xs1roLOgJo0qh9Ciq
-	 0maisyN0ojYZlTFiFl+lSw60l65b3jkRt9CcoZhlDxCw1WnzvxwnVVCAbbPFc8KNOo
-	 U1KssGDFfOVuPT9858OHA7oq8nA3R1pEKn4eNxjg=
+	b=MSQrUQJS90Mv28WO0Oundmr3yuolyOGYbOm8rrnfJJ3b4lJgMyuRN4ijFXr0QdO6g
+	 RuSXDX94Zf+31BpKXq8kdQCSXG5PkjW8PVisQJrzNWl5IdQpvyrhDZshf0WvParja5
+	 vjJ8F6aWCj+m+I1uWiM0kJFeGM/Ds1BJbWbs/I8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 100/342] ionic: fix persistent MAC address override on PF
+Subject: [PATCH 6.18 030/309] platform/x86: oxpec: Add support for OneXPlayer APEX
 Date: Tue, 31 Mar 2026 18:18:53 +0200
-Message-ID: <20260331161802.695162179@linuxfoundation.org>
+Message-ID: <20260331161754.591027319@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231735-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232288-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3E4A636E139
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,antheas.dev:email]
+X-Rspamd-Queue-Id: ECE5836DE48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
+[ Upstream commit 3385ea97c14d271dcb0c6e6fcf16972f819eecd8 ]
 
-The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
-the ionic firmware to update the LIF's identity in its persistent state.
-Since the firmware state is maintained across host warm boots and driver
-reloads, any MAC change on the Physical Function (PF) becomes "sticky.
+OneXPlayer Apex is a new Strix Halo handheld. It uses the same registers
+as the OneXPlayer Fly devices. Add a quirk for it to the oxpec driver.
 
-This is problematic because it causes ethtool -P to report the
-user-configured MAC as the permanent factory address, which breaks
-system management tools that rely on a stable hardware identity.
-
-While Virtual Functions (VFs) need this hardware-level programming to
-properly handle MAC assignments in guest environments, the PF should
-maintain standard transient behavior. This patch gates the
-ionic_program_mac call using is_virtfn so that PF MAC changes remain
-local to the netdev filters and do not overwrite the firmware's
-permanent identity block.
-
-Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://patch.msgid.link/20260223183004.2696892-2-lkml@antheas.dev
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/platform/x86/oxpec.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 058eea86e141c..38a827203a2f7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -1719,13 +1719,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
- 	if (ether_addr_equal(netdev->dev_addr, mac))
- 		return 0;
+diff --git a/drivers/platform/x86/oxpec.c b/drivers/platform/x86/oxpec.c
+index 54377b282ff88..9511791f04d9a 100644
+--- a/drivers/platform/x86/oxpec.c
++++ b/drivers/platform/x86/oxpec.c
+@@ -13,7 +13,7 @@
+  *
+  * Copyright (C) 2022 Joaquín I. Aramendía <samsagax@gmail.com>
+  * Copyright (C) 2024 Derek J. Clark <derekjohn.clark@gmail.com>
+- * Copyright (C) 2025 Antheas Kapenekakis <lkml@antheas.dev>
++ * Copyright (C) 2025-2026 Antheas Kapenekakis <lkml@antheas.dev>
+  */
  
--	err = ionic_program_mac(lif, mac);
--	if (err < 0)
--		return err;
-+	/* Only program macs for virtual functions to avoid losing the permanent
-+	 * Mac across warm reset/reboot.
-+	 */
-+	if (lif->ionic->pdev->is_virtfn) {
-+		err = ionic_program_mac(lif, mac);
-+		if (err < 0)
-+			return err;
- 
--	if (err > 0)
--		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
--			   __func__);
-+		if (err > 0)
-+			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
-+				   __func__);
-+	}
- 
- 	err = eth_prepare_mac_addr_change(netdev, addr);
- 	if (err)
+ #include <linux/acpi.h>
+@@ -208,6 +208,13 @@ static const struct dmi_system_id dmi_table[] = {
+ 		},
+ 		.driver_data = (void *)oxp_2,
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "ONEXPLAYER APEX"),
++		},
++		.driver_data = (void *)oxp_fly,
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
 -- 
 2.51.0
 
