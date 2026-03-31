@@ -1,200 +1,241 @@
-Return-Path: <stable+bounces-232602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBwcCHBSzGmvSQYAu9opvQ
-	(envelope-from <stable+bounces-232602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:02:08 +0200
+	id AOBnNfBVzGn/SQYAu9opvQ
+	(envelope-from <stable+bounces-232603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:17:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED2B372908
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:02:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700B4372A6F
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A65EF3024B67
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:02:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D807C3029ABE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8237C4611CE;
-	Tue, 31 Mar 2026 23:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1EA3EDAA5;
+	Tue, 31 Mar 2026 23:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="pep+ZU7Z";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gmQnSYAh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6A4zemM"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D4D46AEE8;
-	Tue, 31 Mar 2026 23:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F6F2857EA
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 23:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774998117; cv=none; b=HyII1jTCHDiZcj17ni54igSXZlJCdp3WfddeFDY4ero4xJkbInSu0cISwFbFPd2TST4sIK7xtBawQRBlwq6I3mket0eRWEASHrsAUS/5ZFnWo1MggJgrbd9JEmkiwd1u5kSwRPMddj5SipugxOOT5g7tKEYsfK0MGe94v1HC7SI=
+	t=1774999022; cv=none; b=VwrymxpQdmmoyiiB4wxjAqhtxw7fDx5CN4rqO0hSCRaoUxsuMn0xYqZClXv+7nngut/iu+RBVEPsEnxznKkbRNiV7xnf+0z8Aj6VjF1iVa2NI5dM7C54tvNF7wUg2spzAyhxsLT8x8LPQibHEPBoQpZbLmC0nZrAlwvezyFckMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774998117; c=relaxed/simple;
-	bh=uhwpHP2Ttf1/01lqwrO31sK/lvNvQg/Kd/276OzWF2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lqxKAJPwAMKPyngGy4xbLy0frI9luH7auzuCollsmJcZ4SzRNXvxQQzsCQL359JWwGAHW6JaqH6D9BrY512Kgd5IHdLDvu+fabm9YPfLe9ydKoRq0rfZNjbneCiNIsQbMGBUCf0Sjy1wWkkl6SjB0jkwTixmcoe6rcK+x0E2qiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=pep+ZU7Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gmQnSYAh; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 13EE01D000CA;
-	Tue, 31 Mar 2026 19:01:54 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 31 Mar 2026 19:01:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774998113;
-	 x=1775084513; bh=lBuwiN4qeR4cp/7SH69mL0nqRv1FXISJ3o63/YTRGfg=; b=
-	pep+ZU7ZC3w9Knw2+EVJlg2x63zg4wT3UdZrVqlDEE7Vq2NuVK6V58imjucxc+9d
-	SCoehZTAGBC/3mQZpy5MNXpLhTQGLlfC8bFvgCfOtAKAHv/Z5aN2sexAssHYLS1r
-	Y2pTMWBejAZ1AbridVRr2HEfGqjKnQ9bDjSsvaFNa45dpWao08Ax/IsDbWQgj5CL
-	yo6NraMeq96MzEb6iLYsKls9IXreZ2QyHUrAoxvAymLGhpW82iO90zdk998JSM0Q
-	4jtgjj4CVGOZBQmtFKq0dscJtHvylQattMcrqMpzGOvESf+pORryb+hlTXVBTRXE
-	cMhc+Jw92552e7z+lJFfKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774998113; x=
-	1775084513; bh=lBuwiN4qeR4cp/7SH69mL0nqRv1FXISJ3o63/YTRGfg=; b=g
-	mQnSYAhgsyOrSnAkj/YHViJUvj8OiAmpYwFkw24F6NVsIu5WMlskx6uvqqHzY6fL
-	8PppWhL8dPTtie07AOWs0oaVCALp464pZ6hwDPm1qoqI0DQ11mv7sZ8ERBDZNAmr
-	OASopWF885SkfcilJZXeykIfuanC3/Vi/Y001T4qAirq5crfQDhX7GFQfnrV7Pfj
-	/RO4y0l2E3IQ4Msn9lg4d4K0hib9eCKDBJlTbrNRG8aWnANpOrW+gN+HOllg52+u
-	HfbtPBUckTY6IpeevPhdzT019cpRtbyA5c0TuiPPwLORKOccCIgMw+DbAAJTiGpS
-	oarPL1G4UhzL4ake8RacQ==
-X-ME-Sender: <xms:YFLMafuMcmhNatmHxRMsquzXHyKQKw2ECQdrtt13zTzMS1N8aUWuow>
-    <xme:YFLMaW8oQWr8ne2aCzOqpWvRmZV4d4WDBaBUG7oGTLMXbB8_M8kOSumWfaZm0h0-5
-    Z9YyrfRUh8cr3SOwe8VaAAc2hTd6E8VXOkQ2nmKAUhBXnhkWa7gJw>
-X-ME-Received: <xmr:YFLMaQz8T-kL2pA0LQ_0l2_tjttOJXaA5tpN0JudmmFcR_TUfkb238RXQgI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
-    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
-    gvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudegveeu
-    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
-    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehluhhkrghsseifuhhnnhgvrhdruggvpdhrtghpthhtoh
-    epsggvrhhnugessghstghhuhdruggvpdhrtghpthhtoheptggrrhhnihhlseguvggsihgr
-    nhdrohhrghdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtg
-    hpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrihho
-    rdhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohepuddufedutddvhe
-    essghughhsrdguvggsihgrnhdrohhrghdprhgtphhtthhopehrvghgrhgvshhsihhonhhs
-    sehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgvsehvghgvrh
-    drkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:YFLMaQ9lOwQmNviNE1kutxf7BjGVpEcv3AogzAj7vfCI0HcJbQQEcA>
-    <xmx:YFLMaWNk1895DW6-12Ka3SygpAUYWDMiCRhPaVqOjcqerxjQ_Amfew>
-    <xmx:YFLMaYqj8AVcWzH0mBY0BWYbtC0h2V9uRSX1Z62wI_qcTXYWj1oDvw>
-    <xmx:YFLMaV7rEvHQcto4kCNk1YJA3mkl3uzF5D2Xx0-57L1Ph5bYIO8Dvw>
-    <xmx:YVLMaeXAx9OBrpu6BP6didbMwx09-SVpWIumjKVjGkzbke2Utn_ih5-2>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 19:01:52 -0400 (EDT)
-Date: Tue, 31 Mar 2026 17:01:49 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Bernd Schumacher <bernd@bschu.de>, Salvatore Bonaccorso
- <carnil@debian.org>, Bjorn Helgaas <bhelgaas@google.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Mario Limonciello
- <mario.limonciello@amd.com>, 1131025@bugs.debian.org,
- regressions@lists.linux.dev, stable@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [6.12.y regression] Regression with 58130e7ce6cb ("PCI/ERR:
- Ensure error recoverability at all times"): echo vfio-pci >driver_override
- does not work for DVB Adapter
-Message-ID: <20260331170149.3ee222aa@shazbot.org>
-In-Reply-To: <acvHjo8PKdyHshSE@wunner.de>
-References: <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
-	<acfZrlP0Ua_5D3U4@eldamar.lan>
-	<acfhf-odtr0yw_py@wunner.de>
-	<74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>
-	<acgohjvBpVcR7HcK@wunner.de>
-	<5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>
-	<aclRwznwq6KpA2qA@wunner.de>
-	<ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
-	<acvHjo8PKdyHshSE@wunner.de>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1774999022; c=relaxed/simple;
+	bh=dxpL4nPXDo52VzDNRcXh6eo8/iV6fMvAxJ4HXN94GmA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IMvkLyLWjJteYF7qb92qY87oMfOBWUQSvcYIQWWAr0ZmJHF4sD27M28aht8XGzhYiQXBsFctM24gnPW46VPcWJ68behHuL7SYTkdhsIRKuw/beKkYtev+KK8RXfesd9E4SdOYsYzsIoF+MEnMDhclhSaqhk8kKNxezRwPbjAR8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6A4zemM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A793BC19423;
+	Tue, 31 Mar 2026 23:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774999022;
+	bh=dxpL4nPXDo52VzDNRcXh6eo8/iV6fMvAxJ4HXN94GmA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K6A4zemMPNAmcODYxwgidA52I08qZRJdOMUq1REJuQZQyuQ2vqZ2boo3hMMvpbqRN
+	 PdZ2fKfz26JDiCTl6Z5A/VPQNjKcLqTL/IQIea57ukcJvM5GnABbgBzwaP34dqiTaE
+	 4og1rWW8QWtlnx4KQEnLiHKrhJBxEJaqqB21sv/ncnQJqgTOr5OWyC6WdM/zf0s7hW
+	 OxiEBjg7GHrOusmi2SSpvKGCTCLlYwGKyFC8jQQXotQrpd0RZPitKinKudzGJjnBBQ
+	 RIurrE7oAbxI7ipmR+DUv9WAOHSUKlTiaZJ8KV5l/d1BwxxWmkulqHqmedeN3FDv+d
+	 IFiW3wWqHs/og==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kevin Hao <haokexin@gmail.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] net: macb: Move devm_{free,request}_irq() out of spin lock area
+Date: Tue, 31 Mar 2026 19:17:00 -0400
+Message-ID: <20260331231700.3419361-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033000-dove-underwire-bd5c@gregkh>
+References: <2026033000-dove-underwire-bd5c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm1,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-232602-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,bootlin.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232603-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.993];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,shazbot.org:dkim,shazbot.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4ED2B372908
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 700B4372A6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 31 Mar 2026 15:09:34 +0200
-Lukas Wunner <lukas@wunner.de> wrote:
+From: Kevin Hao <haokexin@gmail.com>
 
-> On Mon, Mar 30, 2026 at 08:14:53AM +0200, Bernd Schumacher wrote:
-> > [    0.318903] pci 0000:07:00.0: [dd01:0003] type 00 class 0x048000 PCIe Endpoint
-> > [    0.318939] pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]  
-> 
-> BIOS initially sets the BAR address to an incorrect value (the top 32 bits
-> should be all zeroes instead of all ones)...
-> 
-> > [    0.339685] pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]: can't claim; no compatible bridge window  
-> [...]
-> > [    0.311065] pci 0000:02:03.0: [1022:57a3] type 01 class 0x060400 PCIe Switch Downstream Port
-> > [    0.311107] pci 0000:02:03.0: PCI bridge to [bus 07]
-> > [    0.311118] pci 0000:02:03.0:   bridge window [mem 0xfc500000-0xfc5fffff]  
-> 
-> ... this doesn't fit into the window of the bridge above the DVB card,
-> which has the top 32 bits set to all zeroes...
-> 
-> > [    0.357346] pci 0000:07:00.0: BAR 0 [mem 0xfc500000-0xfc50ffff 64bit]: assigned  
-> 
-> ... the kernel fixes the incorrect BAR, but it seems there's an ordering
-> issue such that pci_save_state() is called beforehand.  It's weird that
-> this doen't occur with newer kernels and it would be good to understand why.
-> I'm not seeing the ordering issue despite staring at the code for a while.
+[ Upstream commit 317e49358ebbf6390fa439ef3c142f9239dd25fb ]
 
-Do we know this isn't occurring on newer kernels?  If we have a bogus
-BAR address that later gets fixed, this seems like a fairly unique
-setup.  AIUI, we're saving the state via the call chain invoked by
-subsys_initcall(pcibios_init), but I think we're doing the resource
-fixes in fs_initcall(pcibios_assign_resources).  That suggests that the
-saved state would have the bogus BAR values.
+The devm_free_irq() and devm_request_irq() functions should not be
+executed in an atomic context.
 
-If we toss PM runtime into that mix, pci_pm_default_resume_early() will
-call pci_restore_state() however pci_save_state() in that file is
-mostly wrapped around pci_dev->state_saved guards.  This suggests we
-likely won't save the reallocated state, but we will restore the
-pre-reallocated state.
+During device suspend, all userspace processes and most kernel threads
+are frozen. Additionally, we flush all tx/rx status, disable all macb
+interrupts, and halt rx operations. Therefore, it is safe to split the
+region protected by bp->lock into two independent sections, allowing
+devm_free_irq() and devm_request_irq() to run in a non-atomic context.
+This modification resolves the following lockdep warning:
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
+  preempt_count: 1, expected: 0
+  RCU nest depth: 1, expected: 0
+  7 locks held by rtcwake/501:
+   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
+   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
+  irq event stamp: 8682
+  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
+  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
+  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
+  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
+  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   __might_resched+0x200/0x218
+   __might_sleep+0x38/0x98
+   __mutex_lock_common+0x7c/0x1378
+   mutex_lock_nested+0x38/0x50
+   free_irq+0x68/0x2b0
+   devm_irq_release+0x24/0x38
+   devres_release+0x40/0x80
+   devm_free_irq+0x48/0x88
+   macb_suspend+0x298/0x558
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
 
-Maybe this can be quickly validated by loading vfio-pci with the
-disable_idle_d3=1 option to avoid the PM transition.  Thanks,
+Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `tmp` variable with direct `MACB_BIT(MAG)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-Alex
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 412a821148d7b..1c061750eae44 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5270,6 +5270,8 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 		macb_writel(bp, TSR, -1);
+ 		macb_writel(bp, RSR, -1);
+ 
++		spin_unlock_irqrestore(&bp->lock, flags);
++
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
+@@ -5281,11 +5283,12 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+ 			gem_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		} else {
+ 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+ 					       IRQF_SHARED, netdev->name, bp->queues);
+@@ -5293,13 +5296,13 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+ 			macb_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 		enable_irq_wake(bp->queues[0].irq);
+ 	}
+@@ -5366,6 +5369,8 @@ static int __maybe_unused macb_resume(struct device *dev)
+ 		queue_readl(bp->queues, ISR);
+ 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 			queue_writel(bp->queues, ISR, -1);
++		spin_unlock_irqrestore(&bp->lock, flags);
++
+ 		/* Replace interrupt handler on queue 0 */
+ 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+ 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+@@ -5374,10 +5379,8 @@ static int __maybe_unused macb_resume(struct device *dev)
+ 			dev_err(dev,
+ 				"Unable to request IRQ %d (error %d)\n",
+ 				bp->queues[0].irq, err);
+-			spin_unlock_irqrestore(&bp->lock, flags);
+ 			return err;
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 		disable_irq_wake(bp->queues[0].irq);
+ 
+-- 
+2.53.0
+
 
