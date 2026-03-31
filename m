@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLJWOYQAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:36 +0200
+	id uMxqJFQBzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-231828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843A836E2CF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1597F36E586
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A28E305C333
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CCBF317EC36
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46E0301471;
-	Tue, 31 Mar 2026 17:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DDF42669A;
+	Tue, 31 Mar 2026 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/YGgWjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfwCphfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D712FE042;
-	Tue, 31 Mar 2026 17:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91681425CC4;
+	Tue, 31 Mar 2026 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976513; cv=none; b=YXTyp2Yy02FFFX6Y8Sw0B2PRxBQ1xI8ZvA2LQkFrult7597jMYdPkpUVqeuBiKGSBXQZ+A8fpNh6XkXCbPFYoddjkcTPZVCvGlNM54wrd2E/7xLrT1xzk7lZEo2WOB/NfNv334R378094FDvwv9V4I/oEcvP+wUWthiUDTmyF5E=
+	t=1774975174; cv=none; b=kuJneq39lsYsahy5pHqP7shreIhSRZnDlZsRBqXSaxFl/KbSUGA3WPTM0uLZLFq/0LK/zl+fBEWgZC4u0iQ8b/ErHQp593TJC2o/DopMO6Zl+xYTs+qT6qKcGlIo04wwIsyokiHGgkPTO6XFw7O+ueHRqf9tFRHAIU40FW8z2Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976513; c=relaxed/simple;
-	bh=E3NFJVPFtUI18Bb3hxpn16Ch8d86YwMjkBnbn29fupo=;
+	s=arc-20240116; t=1774975174; c=relaxed/simple;
+	bh=RCH31EZWfXN5tp+efoeIAJUdIO79A5yEISDHpAoVq1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RA/8JY+P0Eg7uG0U9E8DfrEyVRosk7+yc0GxUQ73xof+pb6yc6FKcRWqiPxnwkhLVxFsuwDfmYBTX2N3qJKBpx8TSgbXIdmIKyFUMzdvXJFNiJ8DKqMK2x36MOv1vuYBVS6HHfXL9rjxh98RAY0qVeH5iZ0h/VFnFEXV3+jHW7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/YGgWjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1095BC19423;
-	Tue, 31 Mar 2026 17:01:52 +0000 (UTC)
+	 MIME-Version; b=YuCM2ENVJNGojzkfOtgIAOYZkVWK/+0uqPMBCNEhg+fINlw47HBurG3b8xUaRLMYUEkS8Tzo470QE1/EEIDfyrI3C6xj6eGZvOxtX5SxUDvT1R5Ibz6wlgzo9u5xnUlpyxIFEy+Ne/O+y9HzmiRnTLOtHFgPMHN/7ewb4gbgC/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfwCphfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294D1C19423;
+	Tue, 31 Mar 2026 16:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976513;
-	bh=E3NFJVPFtUI18Bb3hxpn16Ch8d86YwMjkBnbn29fupo=;
+	s=korg; t=1774975174;
+	bh=RCH31EZWfXN5tp+efoeIAJUdIO79A5yEISDHpAoVq1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/YGgWjQbjM7gYEpGer6Y3oawcb/Q4uAiB9A+b6qjK4YR3WSmq+bP7QO33jI7vSUo
-	 Igot+e63KJSa6QJUNxbThwkNJilZgZRtQNnYpW53J6WPWMClrQXttVwBWT9957uaD8
-	 vpMiMfvl2n6rm883A8Dqn+GT14MSc0xSFpKaBqIc=
+	b=qfwCphfcuENI1tIvg3ADPJeYL0W8a3Kij7KZ7fKuvp0yDaQW2bNWhcDrEQewYq24a
+	 XAmgN7EF5Y5yM4MB39V0C7Vf5Gcynj7X+lTpyIeD61iHUK/NTSrm3aQgj6lRYg4YVo
+	 0/vkEjU2KHYfvE7KPp1IeB5X4jUrHSkiWp26S4Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 121/309] Bluetooth: L2CAP: Fix not tracking outstanding TX ident
+Subject: [PATCH 6.19 191/342] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
 Date: Tue, 31 Mar 2026 18:20:24 +0200
-Message-ID: <20260331161757.936099605@linuxfoundation.org>
+Message-ID: <20260331161806.025069648@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,171 +78,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232346-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231828-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 843A836E2CF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1597F36E586
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 6c3ea155e5ee3e56606233acde8309afda66d483 ]
+[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
 
-This attempts to proper track outstanding request by using struct ida
-and allocating from it in l2cap_get_ident using ida_alloc_range which
-would reuse ids as they are free, then upon completion release
-the id using ida_free.
+There is a teardown order issue in the driver. The SPI controller is
+registered using devm_spi_register_controller(), which delays
+unregistration of the SPI controller until after the fsl_lpspi_remove()
+function returns.
 
-This fixes the qualification test case L2CAP/COS/CED/BI-29-C which
-attempts to check if the host stack is able to work after 256 attempts
-to connect which requires Ident field to use the full range of possible
-values in order to pass the test.
+As the fsl_lpspi_remove() function synchronously tears down the DMA
+channels, a running SPI transfer triggers the following NULL pointer
+dereference due to use after free:
 
-Link: https://github.com/bluez/bluez/issues/1829
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Stable-dep-of: 00fdebbbc557 ("Bluetooth: L2CAP: Fix deadlock in l2cap_conn_del()")
+| fsl_lpspi 42550000.spi: I/O Error in DMA RX
+| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[...]
+| Call trace:
+|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
+|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
+|  spi_transfer_one_message+0x49c/0x7c8
+|  __spi_pump_transfer_message+0x120/0x420
+|  __spi_sync+0x2c4/0x520
+|  spi_sync+0x34/0x60
+|  spidev_message+0x20c/0x378 [spidev]
+|  spidev_ioctl+0x398/0x750 [spidev]
+[...]
+
+Switch from devm_spi_register_controller() to spi_register_controller() in
+fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
+fsl_lpspi_remove().
+
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/l2cap.h |  3 +--
- net/bluetooth/l2cap_core.c    | 46 ++++++++++++++++++++++++-----------
- 2 files changed, 33 insertions(+), 16 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
-index f08ed93bb6fa3..010f1a8fd15f8 100644
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -657,8 +657,7 @@ struct l2cap_conn {
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 065456aba2aea..47d372557e4f6 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -972,7 +972,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		enable_irq(irq);
+ 	}
  
- 	struct sk_buff		*rx_skb;
- 	__u32			rx_len;
--	__u8			tx_ident;
--	struct mutex		ident_lock;
-+	struct ida		tx_ida;
+-	ret = devm_spi_register_controller(&pdev->dev, controller);
++	ret = spi_register_controller(controller);
+ 	if (ret < 0) {
+ 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
+ 		goto free_dma;
+@@ -998,6 +998,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
+ 	struct fsl_lpspi_data *fsl_lpspi =
+ 				spi_controller_get_devdata(controller);
  
- 	struct sk_buff_head	pending_rx;
- 	struct work_struct	pending_rx_work;
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index b5e393e4f3eb1..5bd5561a8dbf5 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -924,26 +924,18 @@ int l2cap_chan_check_security(struct l2cap_chan *chan, bool initiator)
- 				 initiator);
- }
++	spi_unregister_controller(controller);
+ 	fsl_lpspi_dma_exit(controller);
  
--static u8 l2cap_get_ident(struct l2cap_conn *conn)
-+static int l2cap_get_ident(struct l2cap_conn *conn)
- {
--	u8 id;
-+	/* LE link does not support tools like l2ping so use the full range */
-+	if (conn->hcon->type == LE_LINK)
-+		return ida_alloc_range(&conn->tx_ida, 1, 255, GFP_ATOMIC);
- 
- 	/* Get next available identificator.
- 	 *    1 - 128 are used by kernel.
- 	 *  129 - 199 are reserved.
- 	 *  200 - 254 are used by utilities like l2ping, etc.
- 	 */
--
--	mutex_lock(&conn->ident_lock);
--
--	if (++conn->tx_ident > 128)
--		conn->tx_ident = 1;
--
--	id = conn->tx_ident;
--
--	mutex_unlock(&conn->ident_lock);
--
--	return id;
-+	return ida_alloc_range(&conn->tx_ida, 1, 128, GFP_ATOMIC);
- }
- 
- static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
-@@ -1769,6 +1761,8 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
- 	if (work_pending(&conn->pending_rx_work))
- 		cancel_work_sync(&conn->pending_rx_work);
- 
-+	ida_destroy(&conn->tx_ida);
-+
- 	cancel_delayed_work_sync(&conn->id_addr_timer);
- 
- 	l2cap_unregister_all_users(conn);
-@@ -4780,12 +4774,34 @@ static int l2cap_le_connect_rsp(struct l2cap_conn *conn,
- 	return err;
- }
- 
-+static void l2cap_put_ident(struct l2cap_conn *conn, u8 code, u8 id)
-+{
-+	switch (code) {
-+	case L2CAP_COMMAND_REJ:
-+	case L2CAP_CONN_RSP:
-+	case L2CAP_CONF_RSP:
-+	case L2CAP_DISCONN_RSP:
-+	case L2CAP_ECHO_RSP:
-+	case L2CAP_INFO_RSP:
-+	case L2CAP_CONN_PARAM_UPDATE_RSP:
-+	case L2CAP_ECRED_CONN_RSP:
-+	case L2CAP_ECRED_RECONF_RSP:
-+		/* First do a lookup since the remote may send bogus ids that
-+		 * would make ida_free to generate warnings.
-+		 */
-+		if (ida_find_first_range(&conn->tx_ida, id, id) >= 0)
-+			ida_free(&conn->tx_ida, id);
-+	}
-+}
-+
- static inline int l2cap_bredr_sig_cmd(struct l2cap_conn *conn,
- 				      struct l2cap_cmd_hdr *cmd, u16 cmd_len,
- 				      u8 *data)
- {
- 	int err = 0;
- 
-+	l2cap_put_ident(conn, cmd->code, cmd->ident);
-+
- 	switch (cmd->code) {
- 	case L2CAP_COMMAND_REJ:
- 		l2cap_command_rej(conn, cmd, cmd_len, data);
-@@ -5470,6 +5486,8 @@ static inline int l2cap_le_sig_cmd(struct l2cap_conn *conn,
- {
- 	int err = 0;
- 
-+	l2cap_put_ident(conn, cmd->code, cmd->ident);
-+
- 	switch (cmd->code) {
- 	case L2CAP_COMMAND_REJ:
- 		l2cap_le_command_rej(conn, cmd, cmd_len, data);
-@@ -6972,13 +6990,13 @@ static struct l2cap_conn *l2cap_conn_add(struct hci_conn *hcon)
- 	     hci_dev_test_flag(hcon->hdev, HCI_FORCE_BREDR_SMP)))
- 		conn->local_fixed_chan |= L2CAP_FC_SMP_BREDR;
- 
--	mutex_init(&conn->ident_lock);
- 	mutex_init(&conn->lock);
- 
- 	INIT_LIST_HEAD(&conn->chan_l);
- 	INIT_LIST_HEAD(&conn->users);
- 
- 	INIT_DELAYED_WORK(&conn->info_timer, l2cap_info_timeout);
-+	ida_init(&conn->tx_ida);
- 
- 	skb_queue_head_init(&conn->pending_rx);
- 	INIT_WORK(&conn->pending_rx_work, process_pending_rx);
+ 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
 -- 
-2.51.0
+2.53.0
 
 
 
