@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-232186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MwVKyb/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:46 +0200
+	id OBngHjcIzGlaNgYAu9opvQ
+	(envelope-from <stable+bounces-232478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5032C36DE40
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB5C36F42A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA31930DAE82
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 369AD3062F96
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA5D423A99;
-	Tue, 31 Mar 2026 16:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DDC30AD00;
+	Tue, 31 Mar 2026 17:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKi58gVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcgSbkWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19B3F8E04;
-	Tue, 31 Mar 2026 16:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C266303A07;
+	Tue, 31 Mar 2026 17:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976099; cv=none; b=WsO6OJ9pP+K4t9axwn/Kq1J5WT7CbZyDP+PqjtJxyeu1LGNSKG5Zy64wUdKSvBdjV9JtvZ1ND34hmP/WRo4q8sfqH4VmmW9AL4T6hRBxHI1E72ouNAaxKmTRrtwvio7fW21I8kX3ZNcTYtRhUars0vzy6H3QuETHI99Ra4VN6l8=
+	t=1774976851; cv=none; b=qsFDFyagdoyVfn1N64XAQ3ZRNxVNQgIlRYS5fLr/sxfMJ2lDfM36/jomO/5r2PKtgNwEbYZ2ha06LqF0JfZQnljhQWHEXEP8kMKUbzGG3h6x084Vv8QrJZBMBGHIyVjKJC3qrW7nszakwk6NZemSd8XPS4elqGGhor1ndCH40g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976099; c=relaxed/simple;
-	bh=b2kWUpoZqOqd7rqFTsAAvl23QKewzGh0F3thdjC8w/Q=;
+	s=arc-20240116; t=1774976851; c=relaxed/simple;
+	bh=Bu0mqBm5hAGai0nQ4xmqexTNMugJCONgT0d7dVOwHSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGHR49SeihWtW5Ty+4iwUDOzReNOBClknooUkg3xz8Gw9VDtRgocwZowQdVqdkyeVSDncDH/tE9MRxKDdDYo5iEZ1Oi/1XyMPrLnINun87wCuV6rNVpyGeu1EIjWdSU8OU4CTQSyze0WTvqpX++YtKFvLgAkQUVNOtHML1D98m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKi58gVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB66C19423;
-	Tue, 31 Mar 2026 16:54:58 +0000 (UTC)
+	 MIME-Version; b=D8Uicmc1QD0tEsfMdEJYL4T1hsc9VQ3kX9GnABfLxA427peBLiJYCHymzol5Z5T64VpVNQHr7JU3ZshAzv4IzQCqnxvOO1TuhV07AH7ZsHX1AIJr6AQJK2J64jqzNzvc0+PLCGgMWLAM7cU1nXP/V/o1xKy7psnhXPb1xKYT40s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcgSbkWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3083DC19423;
+	Tue, 31 Mar 2026 17:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976099;
-	bh=b2kWUpoZqOqd7rqFTsAAvl23QKewzGh0F3thdjC8w/Q=;
+	s=korg; t=1774976851;
+	bh=Bu0mqBm5hAGai0nQ4xmqexTNMugJCONgT0d7dVOwHSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKi58gVsbdZbwG09Ly9iPbANRbR7mqO0VKoH4m9lEW/E9rOerSyktWlE1cPwgXnbh
-	 Jn2QJoTHM51y5s5nPsajy1xCVMgwrmjVpw7aubLWVGKUCg0Jx7sAgIvmcHjedE2rq7
-	 l1rUBgWiMME4pV71hU3FWNfckJT2G+5zN9lO0ELE=
+	b=CcgSbkWtIxjsEf1ayDsavQj6DdKFPFx/3zuBWeugX7PWhicEcmuFkjZfLtGSxkAGV
+	 958raSi6mD2ohWPnxL/lDgwR88IBGTEdmkw5JJDHmrWejYTRB7HZ7BFxX1uR7ZFsvz
+	 /g8Rmx5fhABiT9aQpSlbz6+McA6WHiiaJqJuOz/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: [PATCH 6.12 205/244] spi: tegra210-quad: Protect curr_xfer check in IRQ handler
-Date: Tue, 31 Mar 2026 18:22:35 +0200
-Message-ID: <20260331161749.322817589@linuxfoundation.org>
+	rostedt@goodmis.org,
+	david.laight.linux@gmail.com,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.18 253/309] xfs: remove file_path tracepoint data
+Date: Tue, 31 Mar 2026 18:22:36 +0200
+Message-ID: <20260331161802.886288307@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,148 +67,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,nvidia.com,kernel.org,sina.cn];
-	TAGGED_FROM(0.00)[bounces-232186-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232478-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,gmail.com,kernel.org,redhat.com,lst.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sina.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5032C36DE40
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: EFB5C36F42A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit edf9088b6e1d6d88982db7eb5e736a0e4fbcc09e ]
+commit e31c53a8060e134111ed095783fee0aa0c43b080 upstream.
 
-Now that all other accesses to curr_xfer are done under the lock,
-protect the curr_xfer NULL check in tegra_qspi_isr_thread() with the
-spinlock. Without this protection, the following race can occur:
+The xfile/xmbuf shmem file descriptions are no longer as detailed as
+they were when online fsck was first merged, because moving to static
+strings in commit 60382993a2e180 ("xfs: get rid of the
+xchk_xfile_*_descr calls") removed a memory allocation and hence a
+source of failure.
 
-  CPU0 (ISR thread)              CPU1 (timeout path)
-  ----------------               -------------------
-  if (!tqspi->curr_xfer)
-    // sees non-NULL
-                                 spin_lock()
-                                 tqspi->curr_xfer = NULL
-                                 spin_unlock()
-  handle_*_xfer()
-    spin_lock()
-    t = tqspi->curr_xfer  // NULL!
-    ... t->len ...        // NULL dereference!
+However this makes encoding the description in the tracepoints sort of a
+waste of memory.  David Laight also points out that file_path doesn't
+zero the whole buffer which causes exposure of stale trace bytes, and
+Steven Rostedt wonders why we're not using a dynamic array for the file
+path.
 
-With this patch, all curr_xfer accesses are now properly synchronized.
+I don't think this is worth fixing, so let's just rip it out.
 
-Although all accesses to curr_xfer are done under the lock, in
-tegra_qspi_isr_thread() it checks for NULL, releases the lock and
-reacquires it later in handle_cpu_based_xfer()/handle_dma_based_xfer().
-There is a potential for an update in between, which could cause a NULL
-pointer dereference.
-
-To handle this, add a NULL check inside the handlers after acquiring
-the lock. This ensures that if the timeout path has already cleared
-curr_xfer, the handler will safely return without dereferencing the
-NULL pointer.
-
-Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20260126-tegra_xfer-v2-6-6d2115e4f387@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Cc: rostedt@goodmis.org
+Cc: david.laight.linux@gmail.com
+Link: https://lore.kernel.org/linux-xfs/20260323172204.work.979-kees@kernel.org/
+Cc: stable@vger.kernel.org # v6.11
+Fixes: 19ebc8f84ea12e ("xfs: fix file_path handling in tracepoints")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ fs/xfs/scrub/trace.h |   12 ++----------
+ fs/xfs/xfs_trace.h   |   11 ++---------
+ 2 files changed, 4 insertions(+), 19 deletions(-)
 
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1351,6 +1351,11 @@ static irqreturn_t handle_cpu_based_xfer
- 	spin_lock_irqsave(&tqspi->lock, flags);
- 	t = tqspi->curr_xfer;
+--- a/fs/xfs/scrub/trace.h
++++ b/fs/xfs/scrub/trace.h
+@@ -972,20 +972,12 @@ TRACE_EVENT(xfile_create,
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(unsigned long, ino)
+-		__array(char, pathname, MAXNAMELEN)
+ 	),
+ 	TP_fast_assign(
+-		char		*path;
+-
+ 		__entry->ino = file_inode(xf->file)->i_ino;
+-		path = file_path(xf->file, __entry->pathname, MAXNAMELEN);
+-		if (IS_ERR(path))
+-			strncpy(__entry->pathname, "(unknown)",
+-					sizeof(__entry->pathname));
+ 	),
+-	TP_printk("xfino 0x%lx path '%s'",
+-		  __entry->ino,
+-		  __entry->pathname)
++	TP_printk("xfino 0x%lx",
++		  __entry->ino)
+ );
  
-+	if (!t) {
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (tqspi->tx_status ||  tqspi->rx_status) {
- 		tegra_qspi_handle_error(tqspi);
- 		complete(&tqspi->xfer_completion);
-@@ -1419,6 +1424,11 @@ static irqreturn_t handle_dma_based_xfer
- 	spin_lock_irqsave(&tqspi->lock, flags);
- 	t = tqspi->curr_xfer;
+ TRACE_EVENT(xfile_destroy,
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -5117,23 +5117,16 @@ TRACE_EVENT(xmbuf_create,
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(unsigned long, ino)
+-		__array(char, pathname, MAXNAMELEN)
+ 	),
+ 	TP_fast_assign(
+-		char		*path;
+ 		struct file	*file = btp->bt_file;
  
-+	if (!t) {
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (err) {
- 		tegra_qspi_dma_unmap_xfer(tqspi, t);
- 		tegra_qspi_handle_error(tqspi);
-@@ -1457,6 +1467,7 @@ exit:
- static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
- {
- 	struct tegra_qspi *tqspi = context_data;
-+	unsigned long flags;
- 	u32 status;
+ 		__entry->dev = btp->bt_mount->m_super->s_dev;
+ 		__entry->ino = file_inode(file)->i_ino;
+-		path = file_path(file, __entry->pathname, MAXNAMELEN);
+-		if (IS_ERR(path))
+-			strncpy(__entry->pathname, "(unknown)",
+-					sizeof(__entry->pathname));
+ 	),
+-	TP_printk("dev %d:%d xmino 0x%lx path '%s'",
++	TP_printk("dev %d:%d xmino 0x%lx",
+ 		  MAJOR(__entry->dev), MINOR(__entry->dev),
+-		  __entry->ino,
+-		  __entry->pathname)
++		  __entry->ino)
+ );
  
- 	/*
-@@ -1474,7 +1485,9 @@ static irqreturn_t tegra_qspi_isr_thread
- 	 * If no transfer is in progress, check if this was a real interrupt
- 	 * that the timeout handler already processed, or a spurious one.
- 	 */
-+	spin_lock_irqsave(&tqspi->lock, flags);
- 	if (!tqspi->curr_xfer) {
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
- 		/* Spurious interrupt - transfer not ready */
- 		if (!(status & QSPI_RDY))
- 			return IRQ_NONE;
-@@ -1491,7 +1504,14 @@ static irqreturn_t tegra_qspi_isr_thread
- 		tqspi->rx_status = tqspi->status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF);
- 
- 	tegra_qspi_mask_clear_irq(tqspi);
-+	spin_unlock_irqrestore(&tqspi->lock, flags);
- 
-+	/*
-+	 * Lock is released here but handlers safely re-check curr_xfer under
-+	 * lock before dereferencing.
-+	 * DMA handler also needs to sleep in wait_for_completion_*(), which
-+	 * cannot be done while holding spinlock.
-+	 */
- 	if (!tqspi->is_curr_dma_xfer)
- 		return handle_cpu_based_xfer(tqspi);
- 
+ TRACE_EVENT(xmbuf_free,
 
 
 
