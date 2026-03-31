@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABoMIGQAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:04 +0200
+	id IOkcOWMHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8933636E242
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BB136F255
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3CA3D31829CA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B0F533133F83
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405E4402BA9;
-	Tue, 31 Mar 2026 16:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E3E301471;
+	Tue, 31 Mar 2026 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZ2Sgw9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpY6l847"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017F033F38A;
-	Tue, 31 Mar 2026 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156BA2E1C7C;
+	Tue, 31 Mar 2026 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975417; cv=none; b=t9xTi8RpQNEo1rAcfhcBLCR68loz7QoK4LIpxQXqzrvZUVU53XnOJXy7tzoAk/Ukegbd4iiJ5zb+pHROVQhC+WZQrJMf/j2Tegryk06hL1F2JD1r1SuzEEkOtCtgBEgY2gZmLFcb1TuSYLvDAG4Tma1gs0O6/mr7mwxVFh4MiPk=
+	t=1774976758; cv=none; b=XYALDiWGURlvu+2Mfmdl6WTmV/qVvhIQ1PIBzWI18T3YEBCCQ2eaL1Iqn3RqQCGx9OXVoNF8dmnoJIc17RAMUrlnkXJ0pqdsxzQMrciSrhokF7HS7qFnRCgk/TFcz5oHMhU2AJIGafqGmstc2oVZ5S1JpmiwLuFZCInF24qzzDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975417; c=relaxed/simple;
-	bh=JV5g2i7ECkZTU9YGuLf5Wh6cGFrxfKdmKRbwhzqqjRM=;
+	s=arc-20240116; t=1774976758; c=relaxed/simple;
+	bh=4RfKTY0H7P57i/VQwERo/1QulP4Hwp/WfaowSktGWu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0tscQVkWXKWK52T90oRbp3HIW3HK7BVyko6JZv471QIab/FkmYr1qV6sD9Jy3Jgw4lG4dHv7nSSg18PktDYMbZRpEoHSKwWS/vMzCEP7igQy9dGMwX1giaCsxyDjs30p1msFOKQ4aRfclnSlcYRB+/AcwN8PiE0amOupNSM5yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZ2Sgw9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4657DC19423;
-	Tue, 31 Mar 2026 16:43:36 +0000 (UTC)
+	 MIME-Version; b=VTg9ZyvH0lnR6qi6KPxHkVDZ7aOmR42X1ttO8b5oYgHsl1gGMJGfUjgV72OWmOSw8Xmzk7yCUtzu1YE0m0KyU8p2tg7fAECWNzsoCne5YtMTFwhO+SzDI4JTbAV1fHvARwCDnz5lq4BHZtViN6xmMLNdSOikBHFHiAZMdJxOYt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpY6l847; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22CC19423;
+	Tue, 31 Mar 2026 17:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975416;
-	bh=JV5g2i7ECkZTU9YGuLf5Wh6cGFrxfKdmKRbwhzqqjRM=;
+	s=korg; t=1774976758;
+	bh=4RfKTY0H7P57i/VQwERo/1QulP4Hwp/WfaowSktGWu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZ2Sgw9toQRWiNQIyDemVcMqmqLr8XEbGmEhMysol621Dxajh0fqUbg6fXvuuU6Xr
-	 RYQwKf3pUJy9qooD6T4LNrN/w8IeLBrNXC0z3AWeNeOVlINc47ZrmM+Y/PfNXKrQQg
-	 1g4tefj/yOlsYyannxAUe3hh6r8TX91CNCk73czo=
+	b=cpY6l847SXvUhUlp6y90RhTRAIx+wF0WYs/d8Rk3jSm+g01DR0Pw0Cvz3B0/7uDr0
+	 jMin9VOeFvLUWwwignfex5bLSsTC07EeGSdGDBwblywe4DRNS/grK4irr65XX5CWZJ
+	 KYC+adbva8emNQlxmNUyUx53ffIeEe5yj9L3KrnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hongao <hongao@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.19 286/342] xfs: scrub: unlock dquot before early return in quota scrub
-Date: Tue, 31 Mar 2026 18:21:59 +0200
-Message-ID: <20260331161809.463709290@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	Dave Marquardt <davemarq@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.18 217/309] scsi: ibmvfc: Fix OOB access in ibmvfc_discover_targets_done()
+Date: Tue, 31 Mar 2026 18:22:00 +0200
+Message-ID: <20260331161801.437376316@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,67 +75,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-232442-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231923-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,uniontech.com:email]
-X-Rspamd-Queue-Id: 8933636E242
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
+X-Rspamd-Queue-Id: E3BB136F255
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hongao <hongao@uniontech.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit 268378b6ad20569af0d1957992de1c8b16c6e900 upstream.
+commit 61d099ac4a7a8fb11ebdb6e2ec8d77f38e77362f upstream.
 
-xchk_quota_item can return early after calling xchk_fblock_process_error.
-When that helper returns false, the function returned immediately without
-dropping dq->q_qlock, which can leave the dquot lock held and risk lock
-leaks or deadlocks in later quota operations.
+A malicious or compromised VIO server can return a num_written value in the
+discover targets MAD response that exceeds max_targets. This value is
+stored directly in vhost->num_targets without validation, and is then used
+as the loop bound in ibmvfc_alloc_targets() to index into disc_buf[], which
+is only allocated for max_targets entries. Indices at or beyond max_targets
+access kernel memory outside the DMA-coherent allocation.  The
+out-of-bounds data is subsequently embedded in Implicit Logout and PLOGI
+MADs that are sent back to the VIO server, leaking kernel memory.
 
-Fix this by unlocking dq->q_qlock before the early return.
+Fix by clamping num_written to max_targets before storing it.
 
-Signed-off-by: hongao <hongao@uniontech.com>
-Fixes: 7d1f0e167a067e ("xfs: check the ondisk space mapping behind a dquot")
-Cc: <stable@vger.kernel.org> # v6.8
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Fixes: 072b91f9c651 ("[SCSI] ibmvfc: IBM Power Virtual Fibre Channel Adapter Client Driver")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Link: https://patch.msgid.link/20260314170151.548614-1-LivelyCarpet87@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/quota.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/scrub/quota.c
-+++ b/fs/xfs/scrub/quota.c
-@@ -171,8 +171,10 @@ xchk_quota_item(
- 
- 	error = xchk_quota_item_bmap(sc, dq, offset);
- 	xchk_iunlock(sc, XFS_ILOCK_SHARED);
--	if (!xchk_fblock_process_error(sc, XFS_DATA_FORK, offset, &error))
-+	if (!xchk_fblock_process_error(sc, XFS_DATA_FORK, offset, &error)) {
-+		mutex_unlock(&dq->q_qlock);
- 		return error;
-+	}
- 
- 	/*
- 	 * Warn if the hard limits are larger than the fs.
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -4965,7 +4965,8 @@ static void ibmvfc_discover_targets_done
+ 	switch (mad_status) {
+ 	case IBMVFC_MAD_SUCCESS:
+ 		ibmvfc_dbg(vhost, "Discover Targets succeeded\n");
+-		vhost->num_targets = be32_to_cpu(rsp->num_written);
++		vhost->num_targets = min_t(u32, be32_to_cpu(rsp->num_written),
++					   max_targets);
+ 		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_ALLOC_TGTS);
+ 		break;
+ 	case IBMVFC_MAD_FAILED:
 
 
 
