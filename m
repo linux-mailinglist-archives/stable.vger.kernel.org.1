@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-231642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAbmCiv5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:15 +0200
+	id eDH2HtgAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A59536CF61
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DE136E3E4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 939BE307A330
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02E3A30B2B8B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED9A3E95A9;
-	Tue, 31 Mar 2026 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765023019D6;
+	Tue, 31 Mar 2026 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTW+jrlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbZUswe4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218DD3FADEE;
-	Tue, 31 Mar 2026 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398A42E1C7C;
+	Tue, 31 Mar 2026 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974693; cv=none; b=og0PFLWH4LuIUU/pMaT4dScxVJaVtqzdMR/AY7CdXXXla81nGJYllITznJPZOTbRPgBGyn/rQJr6b2FQBk60CoBrWVfKARufWQ7rnD7PyZS6acA3HikttiyZyCZfdb2op1QV4d9lLRT/be816lNzlKF0XaGIXwjudR9wJ9lMVZM=
+	t=1774976784; cv=none; b=dfVknqZPR/Cjki+Tx7Oa5t5PPN4249OP5JKfN7et2/wDjn+XQOhg/0L0qHu3uRMppAK52A6oIxRkq7sclR4f2f6aAwNzN/lLuYqXpz+nYOtBIlZq5PTQoxEGcwk6qEnm5MAFA+vuKjbuzBpgH52nSD/dCr1x5D0q5n15S4qK6iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974693; c=relaxed/simple;
-	bh=rTBCrRbGrVWnR6c8MRn5/XtoRf5++J+sLjm1Mkfb0/g=;
+	s=arc-20240116; t=1774976784; c=relaxed/simple;
+	bh=Ux/GIHzvFMYNG/brA++zdcGhq7OhXd5uQ37bIBOdu44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZQakOwbt/Xs42j+KifcVOdrmFaeoyB68A52cKMSS8535q6jrLhwNb2kDvZuzfkrnxXLe5jSx3S81XHDoLqZtvEGL7Xn8mfL0S3H3cn0+UB43sC/pPUqqfaYsaGErUB6CMMZqHt/LtXeKo4iNTQlppaXcXTJa+SxQOlFRyYkdzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTW+jrlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD345C19424;
-	Tue, 31 Mar 2026 16:31:32 +0000 (UTC)
+	 MIME-Version; b=ZmB64lA6wJficu//tKyiiVj1YaMYFzC879VDvr3vOP7K16H1KPgO/CZcuS9bwcHtcyzq6Ohjzhms2I/HC2aVNFxeraKOllm3FvfsrCb0zVmb0c7EnyvfRR0jlO3CJ1DQh3X4SJGzAoZSB3DHro7JnWgmv52K99+9/lp884HdJMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbZUswe4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2723C19423;
+	Tue, 31 Mar 2026 17:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974693;
-	bh=rTBCrRbGrVWnR6c8MRn5/XtoRf5++J+sLjm1Mkfb0/g=;
+	s=korg; t=1774976784;
+	bh=Ux/GIHzvFMYNG/brA++zdcGhq7OhXd5uQ37bIBOdu44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTW+jrlmplN83v2FX0EXtjnG1A5fW9w0W8WDhy6cnDkngbyolSoYNcHvvxIWRiaV0
-	 0mCQ9ACJWPMdGvec1DAfKq9Absd3+nC1B5f7c298t5Uutl4r9JqYVtGTUPVLUDLizY
-	 8P0V/w3wikwaCPv1sTE6BSNH5XrVP0q0YX8u4rwY=
+	b=QbZUswe4PXxx1zLcIX36KGbGBFsV6KSHQNP+FhR2UYGLrJciaVepQB+UTAG91Xk6f
+	 Srh+DDtyEt0fPMZSJqMWFmWvatYG6Yf/jMz7YSLlNdGz8/N4RRGdiG7rS9hjqOM38V
+	 Ilw+FGmTNcKMYW1YcJmCBYvZEMjVZZ3/vjXd+OVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Kasselman <werner@verivus.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/175] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
-Date: Tue, 31 Mar 2026 18:22:08 +0200
-Message-ID: <20260331161735.076215663@linuxfoundation.org>
+	Bin Du <bin.du@amd.com>,
+	Pratap Nirujogi <pratap.nirujogi@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.18 226/309] i2c: designware: amdisp: Fix resume-probe race condition issue
+Date: Tue, 31 Mar 2026 18:22:09 +0200
+Message-ID: <20260331161801.765485957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231642-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232452-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,188 +88,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6A59536CF61
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 48DE136E3E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Kasselman <werner@verivus.com>
+From: Pratap Nirujogi <pratap.nirujogi@amd.com>
 
-[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
+commit e2f1ada8e089dd5a331bcd8b88125ae2af8d188f upstream.
 
-smb_grant_oplock() has two issues in the oplock publication sequence:
+Identified resume-probe race condition in kernel v7.0 with the commit
+38fa29b01a6a ("i2c: designware: Combine the init functions"),but this
+issue existed from the beginning though not detected.
 
-1) opinfo is linked into ci->m_op_list (via opinfo_add) before
-   add_lease_global_list() is called.  If add_lease_global_list()
-   fails (kmalloc returns NULL), the error path frees the opinfo
-   via __free_opinfo() while it is still linked in ci->m_op_list.
-   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
-   in smb_break_all_levII_oplock) dereference the freed node.
+The amdisp i2c device requires ISP to be in power-on state for probe
+to succeed. To meet this requirement, this device is added to genpd
+to control ISP power using runtime PM. The pm_runtime_get_sync() called
+before i2c_dw_probe() triggers PM resume, which powers on ISP and also
+invokes the amdisp i2c runtime resume before the probe completes resulting
+in this race condition and a NULL dereferencing issue in v7.0
 
-2) opinfo->o_fp is assigned after add_lease_global_list() publishes
-   the opinfo on the global lease list.  A concurrent
-   find_same_lease_key() can walk the lease list and dereference
-   opinfo->o_fp->f_ci while o_fp is still NULL.
+Fix this race condition by using the genpd APIs directly during probe:
+  - Call dev_pm_genpd_resume() to Power ON ISP before probe
+  - Call dev_pm_genpd_suspend() to Power OFF ISP after probe
+  - Set the device to suspended state with pm_runtime_set_suspended()
+  - Enable runtime PM only after the device is fully initialized
 
-Fix by restructuring the publication sequence to eliminate post-publish
-failure:
-
-- Set opinfo->o_fp before any list publication (fixes NULL deref).
-- Preallocate lease_table via alloc_lease_table() before opinfo_add()
-  so add_lease_global_list() becomes infallible after publication.
-- Keep the original m_op_list publication order (opinfo_add before
-  lease list) so concurrent opens via same_client_has_lease() and
-  opinfo_get_list() still see the in-flight grant.
-- Use opinfo_put() instead of __free_opinfo() on err_out so that
-  the RCU-deferred free path is used.
-
-This also requires splitting add_lease_global_list() to take a
-preallocated lease_table and changing its return type from int to void,
-since it can no longer fail.
-
-Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ replaced kmalloc_obj() and KSMBD_DEFAULT_GFP with kmalloc(sizeof(), GFP_KERNEL) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d6263c468a761 ("i2c: amd-isp: Add ISP i2c-designware driver")
+Co-developed-by: Bin Du <bin.du@amd.com>
+Signed-off-by: Bin Du <bin.du@amd.com>
+Signed-off-by: Pratap Nirujogi <pratap.nirujogi@amd.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260320201302.3490570-1-pratap.nirujogi@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   72 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 27 deletions(-)
+ drivers/i2c/busses/i2c-designware-amdisp.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock
- 	spin_unlock(&lb->lb_lock);
- }
+--- a/drivers/i2c/busses/i2c-designware-amdisp.c
++++ b/drivers/i2c/busses/i2c-designware-amdisp.c
+@@ -7,6 +7,7 @@
  
--static void lb_add(struct lease_table *lb)
-+static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
- {
--	write_lock(&lease_list_lock);
--	list_add(&lb->l_entry, &lease_table_list);
--	write_unlock(&lease_list_lock);
-+	struct lease_table *lb;
-+
-+	lb = kmalloc(sizeof(struct lease_table), GFP_KERNEL);
-+	if (!lb)
-+		return NULL;
-+
-+	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-+	       SMB2_CLIENT_GUID_SIZE);
-+	INIT_LIST_HEAD(&lb->lease_list);
-+	spin_lock_init(&lb->lb_lock);
-+	return lb;
- }
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/soc/amd/isp4_misc.h>
  
- static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
-@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_inf
- 	lease2->version = lease1->version;
- }
+@@ -82,22 +83,20 @@ static int amd_isp_dw_i2c_plat_probe(str
+ 	if (isp_i2c_dev->shared_with_punit)
+ 		pm_runtime_get_noresume(&pdev->dev);
  
--static int add_lease_global_list(struct oplock_info *opinfo)
-+static void add_lease_global_list(struct oplock_info *opinfo,
-+				  struct lease_table *new_lb)
- {
- 	struct lease_table *lb;
- 
--	read_lock(&lease_list_lock);
-+	write_lock(&lease_list_lock);
- 	list_for_each_entry(lb, &lease_table_list, l_entry) {
- 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			opinfo->o_lease->l_lb = lb;
- 			lease_add_list(opinfo);
--			read_unlock(&lease_list_lock);
--			return 0;
-+			write_unlock(&lease_list_lock);
-+			kfree(new_lb);
-+			return;
- 		}
- 	}
--	read_unlock(&lease_list_lock);
- 
--	lb = kmalloc(sizeof(struct lease_table), GFP_KERNEL);
--	if (!lb)
--		return -ENOMEM;
+-	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(&pdev->dev);
 -
--	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
--	       SMB2_CLIENT_GUID_SIZE);
--	INIT_LIST_HEAD(&lb->lease_list);
--	spin_lock_init(&lb->lb_lock);
--	opinfo->o_lease->l_lb = lb;
-+	opinfo->o_lease->l_lb = new_lb;
- 	lease_add_list(opinfo);
--	lb_add(lb);
--	return 0;
-+	list_add(&new_lb->l_entry, &lease_table_list);
-+	write_unlock(&lease_list_lock);
- }
- 
- static void set_oplock_level(struct oplock_info *opinfo, int level,
-@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *
- 	int err = 0;
- 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
- 	struct ksmbd_inode *ci = fp->f_ci;
-+	struct lease_table *new_lb = NULL;
- 	bool prev_op_has_lease;
- 	__le32 prev_op_state = 0;
- 
-@@ -1291,21 +1293,37 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	opinfo_count_inc(fp);
--	opinfo_add(opinfo, fp);
--
-+	/*
-+	 * Set o_fp before any publication so that concurrent readers
-+	 * (e.g. find_same_lease_key() on the lease list) that
-+	 * dereference opinfo->o_fp don't hit a NULL pointer.
-+	 *
-+	 * Keep the original publication order so concurrent opens can
-+	 * still observe the in-flight grant via ci->m_op_list, but make
-+	 * everything after opinfo_add() no-fail by preallocating any new
-+	 * lease_table first.
-+	 */
-+	opinfo->o_fp = fp;
- 	if (opinfo->is_lease) {
--		err = add_lease_global_list(opinfo);
--		if (err)
-+		new_lb = alloc_lease_table(opinfo);
-+		if (!new_lb) {
-+			err = -ENOMEM;
- 			goto err_out;
-+		}
++	dev_pm_genpd_resume(&pdev->dev);
+ 	ret = i2c_dw_probe(isp_i2c_dev);
+ 	if (ret) {
+ 		dev_err_probe(&pdev->dev, ret, "i2c_dw_probe failed\n");
+ 		goto error_release_rpm;
  	}
- 
-+	opinfo_count_inc(fp);
-+	opinfo_add(opinfo, fp);
-+
-+	if (opinfo->is_lease)
-+		add_lease_global_list(opinfo, new_lb);
-+
- 	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
+-
+-	pm_runtime_put_sync(&pdev->dev);
++	dev_pm_genpd_suspend(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
  
  	return 0;
- err_out:
--	__free_opinfo(opinfo);
-+	kfree(new_lb);
-+	opinfo_put(opinfo);
- 	return err;
+ 
+ error_release_rpm:
+ 	amd_isp_dw_i2c_plat_pm_cleanup(isp_i2c_dev);
+-	pm_runtime_put_sync(&pdev->dev);
+ 	return ret;
  }
  
 
