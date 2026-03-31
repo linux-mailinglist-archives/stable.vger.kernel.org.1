@@ -1,166 +1,179 @@
-Return-Path: <stable+bounces-231333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEthNgtpy2ktHgYAu9opvQ
-	(envelope-from <stable+bounces-231333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:26:19 +0200
+	id YBpvFkFry2mfHgYAu9opvQ
+	(envelope-from <stable+bounces-231335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:35:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764BD36476F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2D7364849
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1133302E90A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 06:24:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C5A53020003
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 06:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9583A450F;
-	Tue, 31 Mar 2026 06:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4DC36E46E;
+	Tue, 31 Mar 2026 06:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2M3pV4O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTE805pn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A517385509
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 06:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB8040DFAC;
+	Tue, 31 Mar 2026 06:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774938278; cv=none; b=t2PuKNRRAASjV0Y9G44ACTb8GV8kZ2HFENj5v2KNYVounpDzhC1vsQm0wgHwHAeKxzoUyccfO8djBPO641WmrRc62cX0rKJTqzmyf2AN7YMkq1pWegMhhOTm4041V5vrCIyNoCFA5WSx+Qchuenp9UxldYtrXmRhTbTP3by6S+E=
+	t=1774938827; cv=none; b=mnVDKillCYjAwFCcQ96GLvbzKjXL8MpK0XqU0u7rsO2hkz6W/bMHH2qed04LWEXwD1ZzptobVpcqEJihMqNeVF8mW1xKAaw9xv8bZHcnHSY9NvQre7aSmaFJO0RIci6J3GkvgP7HNFDmE/70ZQVP+YsxmfLKR7mHBk9egRTnzaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774938278; c=relaxed/simple;
-	bh=vWlAHWkTCyA7++NZ0O2EqtDYUYeKrn9fUAwZU7E8i7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSbPytr3B+QZEPG6oygKolyoxNPmc1mhFvmAGAHUaiCGzXLWRUUXIGcpkAqiXGaVwEFbsrZaCV7fSj88J5A/OZvFRatDMhtUSk4NLm29YCz2dxxHKd5bGAnaUi7nj16ZahRwwF4ilQlDwX2lI3bIaYtHXWD29vRn91ZSlyyCq+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2M3pV4O; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b0c8362d93so30538185ad.3
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 23:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774938277; x=1775543077; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vWlAHWkTCyA7++NZ0O2EqtDYUYeKrn9fUAwZU7E8i7s=;
-        b=C2M3pV4Odr+GN1Pzxm/nYKp9vkvixRqq+dz4wFyJyIYCbZBgUZgjdPYYxpueZj2dWQ
-         6PpH6VflVENLOpBFC9x5G9hh1Ziky9Lu8OVsHabY4trwhdKqpcYxd179S/iq040ok6n5
-         gMzNQ4CnFDTD2+lSwa7DvELjbRfEgq5Ono3IYbkWhjTqJtEsrBjcrFeYTaNVbh/omWq5
-         lTZBkVVH/Ib7Y+ELM+WuOm5zT3+Pl9WdxTGj33A9whLyutc91Py4e6H3fkXk0d9FxryL
-         8jfnuRhNcR42usacAiYm4QkAKSQxIMHtqADlGMeOUi1P6pI88O3PfqLp21CVxDyr8vWm
-         9S7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774938277; x=1775543077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vWlAHWkTCyA7++NZ0O2EqtDYUYeKrn9fUAwZU7E8i7s=;
-        b=qBWjzUU5Zgt+lgeOFzduqHGZZEWrzFKfO/qpPstDgsJ4MpTDl1NPJX4RD9MrdAtenX
-         md7aKeJW9ZoSqesXAdlZ2/CTJDrZ6FGa8zvfUnJcJFC4g5q5usecp+m9lgQhCD7fz6Ln
-         vaTdJssjtAF6tvpdP5GWOqimD42BKLpUDyYoSj7yDTmGaRu62XypcdGuuXCeyl0a/zRA
-         GTeGpGAp4spGnjWTwOzdTD309LwrXGy6u575ylDc6592rFy4yypJGkwfe17SddcDlN/F
-         nrBJsLQPzbWPLi/o/jRlerPjkxZY3UWAp2692XGgxgWQE7nLudz6vUnbkDQaAKGHpa99
-         Niog==
-X-Forwarded-Encrypted: i=1; AJvYcCUvWvYNhG9FgfW1vdBpEQCNLKGwhm1e/1IHuOkCZyVXr0rHyMIMcB9xAe3rBuNXDRrcwl5adaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycpL03oPhSbQX2XqGVG2tOJd1L7wg7UA+W31A5blEsVD2tgf5H
-	c/eU1wfSsvc+2fnEvM/ro+cC7fWJIAggxiCz9Vn2UC31MWno7XyxKZ9R
-X-Gm-Gg: ATEYQzzlEy+9kP5AFvXYNzkwIEJ6JFXmlp1TiDTp2edHOtujhLYyskdffN/2NkALj10
-	CnpnF7hmAUUVa1Xv709gwOzkMWFjqmMyhDpQEYAmtrv6h+ui77ssKvLEYESBRCSZMBxorPGHP92
-	6sGI6gS+4Ra59VRpGS0YZ3Nr26QQqSgWFDzONhCSS3eJVac91OoDI4+VkQ4cCCG5s8GmfSucV1z
-	75l//1BQDuFbGaQl0ukBj6cKqhnO6iVI22EDXhQpcp1FYx2c34dqkKqoWz4IdG5gasR9Z5/0ISV
-	Ipf5Tkp9wPF2uA3+MsmZT00KcfQSby6LvzgvbwVXtuT8sPgIpxZNDtFPbSFzWMeFlVdE8i7UPBc
-	lGcPKv/GHtN7aBAYHPJiej9jb2AGDCk0GTU5nwzLTkA5pWh8aXRGQJCaNGuLakyPlnOptf/1x9+
-	FATZrHb6YLkDwi3mX97UH9gFAGAiNAT9k=
-X-Received: by 2002:a17:902:e889:b0:2ae:d09c:5241 with SMTP id d9443c01a7336-2b0cdc0332dmr160886305ad.2.1774938276711;
-        Mon, 30 Mar 2026 23:24:36 -0700 (PDT)
-Received: from f7eceb44c2db ([115.245.213.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242676e13sm103873625ad.28.2026.03.30.23.24.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 23:24:36 -0700 (PDT)
-From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
-To: mwalle@kernel.org,
-	pratyush@kernel.org
-Cc: hd@os-cillation.de,
-	linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	miquel.raynal@bootlin.com,
-	richard@nod.at,
-	sanjaikumar.vs@dicortech.com,
-	sanjaikumarvs@gmail.com,
-	stable@vger.kernel.org,
-	tudor.ambarus@linaro.org,
-	vigneshr@ti.com
-Subject: Re: [PATCH v4 2/2] mtd: spi-nor: core: Fix AAI mode when dirmap is not available
-Date: Tue, 31 Mar 2026 06:24:17 +0000
-Message-ID: <20260331062417.26-1-sanjaikumarvs@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <2vxz1ph11jmq.fsf@kernel.org>
-References: <2vxz1ph11jmq.fsf@kernel.org>
+	s=arc-20240116; t=1774938827; c=relaxed/simple;
+	bh=ui7nelJNgDVq7+lCQ8oQddflHq1KI/3JObI0yenQbQE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t6AbPyGiquvP35YnHfEKtIV83uQQpJQbJJq10roZkUwUrH9UKM8w1NX32si5J6urxvtls8yzbXOGCybje/kInrg8x+f8wxLMWysghNVDuG19z/y44qFTlSLpWE0LS4iU7eGPZWIx+14UpYXZhMVyCzMwluzaZc0Lrw7TucxvpXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTE805pn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 439DEC19423;
+	Tue, 31 Mar 2026 06:33:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774938827;
+	bh=ui7nelJNgDVq7+lCQ8oQddflHq1KI/3JObI0yenQbQE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ZTE805pno7S6DeTyVYU0xr0Ac0Sk7pZt3Koareit5y7Go7/0WzmS5fstfcFIUMgSN
+	 MOZl7bqz2CGZSym+Cc69MS/vlcuR+nt2n3nh3s4hNlWpA8hVbMFGc7XIjT+zmiBc9y
+	 KlBNTsVsU+npAC+UhmXa6o1tKn1Mr6PEVjH6YoNZzGXr8MOMfYxro8CaksVcWe7yBu
+	 cz9VZDGUDygWhJYOJmnfzT288lzUBIuV0EhPNKZTiGTwLehtl5+7Cl6g9sRAtcW7Zy
+	 AO+rnIccsC0c3R8tLt+u70Fer8Nnqg7nfpvgOQKEsEw3ERswlK+JUww88plpo34u7u
+	 e2VzB/TWn3GvA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F678FF60CF;
+	Tue, 31 Mar 2026 06:33:47 +0000 (UTC)
+From: Kyle Farnung via B4 Relay <devnull+kfarnung.gmail.com@kernel.org>
+Date: Mon, 30 Mar 2026 23:32:53 -0700
+Subject: [PATCH v2] wifi: ath11k: apply existing PM quirk to ThinkPad P14s
+ Gen 5 AMD
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260330-p14s-pm-quirk-v2-1-ef18ce07996b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMSw7CIBSF4a00d+w1PMSkjtyH6QAptDdKQVCia
+ di72LnD/yTnWyHbRDbDqVsh2UKZwtJC7Dows14mizS2BsHEkUnJMPJDxujx8aJ0Q6YVv2reC6k
+ ctE9M1tF78y5D65nyM6TPxhf+W/9JhSNH44TTsjdGjOo8eU33vQkehlrrFwFGBJiqAAAA
+X-Change-ID: 20260330-p14s-pm-quirk-0a51ba19235f
+To: Jeff Johnson <jjohnson@kernel.org>, 
+ Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Kyle Farnung <kfarnung@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774938826; l=2024;
+ i=kfarnung@gmail.com; s=20260330; h=from:subject:message-id;
+ bh=goqTouCdFtdr9SNadM69GmR467yJ8YsnFiPC1yn5iAQ=;
+ b=IdTKuCdL9uMN7+89uh+WWQM8YD+zhhN/m4BDbQDv4Ukh/UqXDAxT/kZFxTkgIyohPv/r4xmNp
+ h+R43lTYheCDkjHeMkAMiQ3CqrP9or/GUtWD8C5oV/nlkR0bptu41P1
+X-Developer-Key: i=kfarnung@gmail.com; a=ed25519;
+ pk=47jis5OdLKFgZynNQVqkx1mTGiEgFTUX+MecmG9rbmE=
+X-Endpoint-Received: by B4 Relay for kfarnung@gmail.com/20260330 with
+ auth_id=706
+X-Original-From: Kyle Farnung <kfarnung@gmail.com>
+Reply-To: kfarnung@gmail.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[os-cillation.de,vger.kernel.org,lists.infradead.org,bootlin.com,nod.at,dicortech.com,gmail.com,linaro.org,ti.com];
-	TAGGED_FROM(0.00)[bounces-231333-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-231335-lists,stable=lfdr.de,kfarnung.gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[kfarnung@gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sanjaikumarvs@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 764BD36476F
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lenovo.com:url]
+X-Rspamd-Queue-Id: AB2D7364849
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+From: Kyle Farnung <kfarnung@gmail.com>
 
-> But if the controller does support direct mapping, won't it end up
-> using the wrong opcode? Would it be a better idea to update the
-> dirmap_info with the right opcodes?
+Some ThinkPad P14s Gen 5 AMD systems experience suspend/resume
+reliability issues similar to those reported in [1]. These platforms
+were not previously included in the ath11k PM quirk table.
 
-You're right. If the controller supports direct mapping, it would still
-use the wrong opcode from the template created at probe time.
+Add DMI matches for product IDs 21ME and 21MF to apply the existing
+ATH11K_PM_WOW override, improving suspend/resume behavior on these
+systems.
 
-Updating dirmap_info at runtime is problematic because SST AAI mode
-requires dynamic changes per write:
-- cmd.opcode: SPINOR_OP_BP (single byte) vs SPINOR_OP_AAI_WP (word)
-- addr.nbytes: must be 0 for subsequent AAI writes
+Tested on a ThinkPad P14s Gen 5 AMD (21ME) running 6.19.9.
 
-Controllers may also cache the template at dirmap_create time, so
-modifying it at runtime could cause issues.
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+[2] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thinkpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/
 
-A cleaner approach is to disable dirmap for SST AAI devices by setting
-nodirmap=1 in sst_nor_late_init(). This ensures all writes go through
-spi_nor_spimem_exec_op() which uses the runtime opcode.
+Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
+---
+Changes in v2:
+- Fix missing mailing list recipients (linux-wireless, ath11k, linux-kernel)
+- Link to v1: https://lore.kernel.org/r/20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com
+---
+ drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-This only affects devices with SST_WRITE flag (sst25wf*, sst25vf016b,
-sst25vf032b, sst25vf040b, sst25vf080b). Other SST devices that use
-standard page program can still benefit from dirmap.
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 3f6f4db5b7ee1aba79fd7526e5d59d068e0f4a2e..21d366224e75904feeae6cb9c93d9ef692d127fe 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1041,6 +1041,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
+ 		},
+ 	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P14s G5 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P14s G5 AMD #2 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
++		},
++	},
+ 	{}
+ };
+ 
 
-I'll send a v5 with this change.
+---
+base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
+change-id: 20260330-p14s-pm-quirk-0a51ba19235f
 
-Thanks,
-Sanjaikumar
+Best regards,
+-- 
+Kyle Farnung <kfarnung@gmail.com>
+
+
 
