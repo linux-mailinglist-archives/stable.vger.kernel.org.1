@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-232201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eECXI98EzGm4NQYAu9opvQ
-	(envelope-from <stable+bounces-232201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:11 +0200
+	id mFmiNC0JzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:49:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63BC36EDA8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B45536F5C6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D112232BB3D1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E8EF31B4AA0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B074035AB;
-	Tue, 31 Mar 2026 16:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A648317150;
+	Tue, 31 Mar 2026 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynKymaPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSKsEyWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86483EF0A2;
-	Tue, 31 Mar 2026 16:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA5B2D8771;
+	Tue, 31 Mar 2026 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976137; cv=none; b=GI8EgQyTLsjOBcybl9I+3Ca0BBh7Fzb/vUQQ+Y/UhMtzw9K6fPEIQ7T9qY0283FCJxgxP3T80MmmBjatff4ehPSsf5X3N6dUoO1cojR4Mb++hAEsisp+lOZn1GF2Rf8Y95eyx0rNpl1602Wybz/wSfRhg3fTe1BJEOfGuGE2fvg=
+	t=1774977007; cv=none; b=eRVYFpP2Hd0PQB/fq9zU2xQ4wfJNEX0s2Q95Y6RalHWFIQdHrvKOtcdGxEnmj0FeMRmAv9AQvbomp7uAMJYThydTHh+drH70d7QvlUk/dVTLVLA8i4rSg9tqRWZ2jgaPXZADlR3svk6Cdu+6jwI5ssk45bERuLMMAbO+c/W38qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976137; c=relaxed/simple;
-	bh=GYAIo6PwNl0v792QWl0qOSX8bRCLYsWetTD8WfKQKR4=;
+	s=arc-20240116; t=1774977007; c=relaxed/simple;
+	bh=I+JKLcYUt8jt7mdURaysE0kS79S/q4nWCMYiCtl9m94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buMjfd3tlICC1L3A5G+ltIvfjH8T5HQ0mxEZiwRsbPo6hoWKAN2x014t9HaXVOxr8tTvDFXwuYIsDLcUWeTaLo50Y5hAnUJnap4e0y66/XZaqODpooL72KewFFbc/j4EzlbyJb7msEuRdi7q9PSueJtldVjLhrwspprw5NM0K4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynKymaPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA11C19423;
-	Tue, 31 Mar 2026 16:55:37 +0000 (UTC)
+	 MIME-Version; b=CakTaDTmMuvJEQ0z7pqKR+C61heweTfJBMi0yXHhfJoeGNgAeIvYuONaXVrDdcCxhivOy9BPa029Pj0r4OYsev9l7FUxu5xx3cRl0bwAlpLIHhWJuwddyAdIfKlOR7GsRtALNF7GQR6VAvoxllT8xaUBOz66M+1l57NRMbXym2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSKsEyWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F43C19423;
+	Tue, 31 Mar 2026 17:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976137;
-	bh=GYAIo6PwNl0v792QWl0qOSX8bRCLYsWetTD8WfKQKR4=;
+	s=korg; t=1774977006;
+	bh=I+JKLcYUt8jt7mdURaysE0kS79S/q4nWCMYiCtl9m94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynKymaPeKlMLNobaXQSfs6qSFTnoi3u80lLjWDZkFobL4qr6ZJOAWpbwX281jEaqb
-	 N3ANTpOrn6YFMFhBT8E5u/7sIqoSKM3t27vT0IPFWZHW6pqvoX/6ahG3+tf7MkA8si
-	 Wj7Iqd+zjO5tjcwOL/QLumOimEaH75XpsEZxZYkQ=
+	b=YSKsEyWZmYbirfwHO8tjsC9Md+Zna7sHMMidcSRqiQjl+en46ylX8iygPszlybt9x
+	 NjkQSMkp7t0gdMnO+6D+Ywr7sMD74W0qq7MrcXM0iQj5E+Xy0Tp31aCH08Hhnp7wDl
+	 1EoD7kCT89DS+vElnA3NYQy5ol7om2KFiUgpLGfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreedevi Joshi <sreedevi.joshi@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 222/244] idpf: Fix RSS LUT NULL ptr issue after soft reset
-Date: Tue, 31 Mar 2026 18:22:52 +0200
-Message-ID: <20260331161749.966802536@linuxfoundation.org>
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 270/309] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
+Date: Tue, 31 Mar 2026 18:22:53 +0200
+Message-ID: <20260331161803.501149099@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232201-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232541-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,166 +88,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E63BC36EDA8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iloc.bh:url,alibaba.com:email,suse.cz:email,msgid.link:url]
+X-Rspamd-Queue-Id: 3B45536F5C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sreedevi Joshi <sreedevi.joshi@intel.com>
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-[ Upstream commit ebecca5b093895da801b3eba1a55b4ec4027d196 ]
+commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
 
-During soft reset, the RSS LUT is freed and not restored unless the
-interface is up. If an ethtool command that accesses the rss lut is
-attempted immediately after reset, it will result in NULL ptr
-dereference. Also, there is no need to reset the rss lut if the soft reset
-does not involve queue count change.
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
 
-After soft reset, set the RSS LUT to default values based on the updated
-queue count only if the reset was a result of a queue count change and
-the LUT was not configured by the user. In all other cases, don't touch
-the LUT.
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
 
-Steps to reproduce:
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
 
-** Bring the interface down (if up)
-ifconfig eth1 down
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
 
-** update the queue count (eg., 27->20)
-ethtool -L eth1 combined 20
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
 
-** display the RSS LUT
-ethtool -x eth1
-
-[82375.558338] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[82375.558373] #PF: supervisor read access in kernel mode
-[82375.558391] #PF: error_code(0x0000) - not-present page
-[82375.558408] PGD 0 P4D 0
-[82375.558421] Oops: Oops: 0000 [#1] SMP NOPTI
-<snip>
-[82375.558516] RIP: 0010:idpf_get_rxfh+0x108/0x150 [idpf]
-[82375.558786] Call Trace:
-[82375.558793]  <TASK>
-[82375.558804]  rss_prepare.isra.0+0x187/0x2a0
-[82375.558827]  rss_prepare_data+0x3a/0x50
-[82375.558845]  ethnl_default_doit+0x13d/0x3e0
-[82375.558863]  genl_family_rcv_msg_doit+0x11f/0x180
-[82375.558886]  genl_rcv_msg+0x1ad/0x2b0
-[82375.558902]  ? __pfx_ethnl_default_doit+0x10/0x10
-[82375.558920]  ? __pfx_genl_rcv_msg+0x10/0x10
-[82375.558937]  netlink_rcv_skb+0x58/0x100
-[82375.558957]  genl_rcv+0x2c/0x50
-[82375.558971]  netlink_unicast+0x289/0x3e0
-[82375.558988]  netlink_sendmsg+0x215/0x440
-[82375.559005]  __sys_sendto+0x234/0x240
-[82375.559555]  __x64_sys_sendto+0x28/0x30
-[82375.560068]  x64_sys_call+0x1909/0x1da0
-[82375.560576]  do_syscall_64+0x7a/0xfa0
-[82375.561076]  ? clear_bhb_loop+0x60/0xb0
-[82375.561567]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-<snip>
-
-Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
-Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-(cherry picked from commit ebecca5b093895da801b3eba1a55b4ec4027d196)
-[Harshit: backport to 6.12.y, conflicts due to missing commit:
-8dd72ebc73f3 - idpf: convert vport state to bitmap andbd74a86bc75d -
-idpf: link NAPIs to queues which changes idpf_vport_open/stop() APIs
-also take rtnl argument)
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c  |   20 ++++----------------
- drivers/net/ethernet/intel/idpf/idpf_txrx.c |    2 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h |    1 +
- 3 files changed, 6 insertions(+), 17 deletions(-)
+ fs/ext4/fast_commit.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1405,8 +1405,6 @@ static int idpf_vport_open(struct idpf_v
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
- 	struct idpf_adapter *adapter = vport->adapter;
--	struct idpf_vport_config *vport_config;
--	struct idpf_rss_data *rss_data;
- 	int err;
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1613,19 +1613,21 @@ static int ext4_fc_replay_inode(struct s
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
  
- 	if (np->state != __IDPF_VPORT_DOWN)
-@@ -1488,19 +1486,6 @@ static int idpf_vport_open(struct idpf_v
- 
- 	idpf_restore_features(vport);
- 
--	vport_config = adapter->vport_config[vport->idx];
--	rss_data = &vport_config->user_config.rss_data;
--
--	if (!rss_data->rss_lut) {
--		err = idpf_init_rss_lut(vport);
--		if (err) {
--			dev_err(&adapter->pdev->dev,
--				"Failed to initialize RSS LUT for vport %u: %d\n",
--				vport->vport_id, err);
--			goto disable_vport;
--		}
--	}
--
- 	err = idpf_config_rss(vport);
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to configure RSS for vport %u: %d\n",
-@@ -1953,7 +1938,6 @@ int idpf_initiate_soft_reset(struct idpf
- 		idpf_vport_stop(vport);
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		ext4_debug("Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
  	}
  
--	idpf_deinit_rss_lut(vport);
- 	/* We're passing in vport here because we need its wait_queue
- 	 * to send a message and it should be getting all the vport
- 	 * config data out of the adapter but we need to be careful not
-@@ -1979,6 +1963,10 @@ int idpf_initiate_soft_reset(struct idpf
- 	if (err)
- 		goto err_open;
+ 	/*
+@@ -1642,13 +1644,14 @@ static int ext4_fc_replay_inode(struct s
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev);
  
-+	if (reset_cause == IDPF_SR_Q_CHANGE &&
-+	    !netif_is_rxfh_configured(vport->netdev))
-+		idpf_fill_dflt_rss_lut(vport);
-+
- 	if (current_state == __IDPF_VPORT_UP)
- 		err = idpf_vport_open(vport);
+-	return 0;
++	return ret;
+ }
  
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -4059,7 +4059,7 @@ int idpf_config_rss(struct idpf_vport *v
-  * idpf_fill_dflt_rss_lut - Fill the indirection table with the default values
-  * @vport: virtual port structure
-  */
--static void idpf_fill_dflt_rss_lut(struct idpf_vport *vport)
-+void idpf_fill_dflt_rss_lut(struct idpf_vport *vport)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
- 	u16 num_active_rxq = vport->num_rxq;
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -1017,6 +1017,7 @@ void idpf_vport_intr_update_itr_ena_irq(
- void idpf_vport_intr_deinit(struct idpf_vport *vport);
- int idpf_vport_intr_init(struct idpf_vport *vport);
- void idpf_vport_intr_ena(struct idpf_vport *vport);
-+void idpf_fill_dflt_rss_lut(struct idpf_vport *vport);
- int idpf_config_rss(struct idpf_vport *vport);
- int idpf_init_rss_lut(struct idpf_vport *vport);
- void idpf_deinit_rss_lut(struct idpf_vport *vport);
+ /*
 
 
 
