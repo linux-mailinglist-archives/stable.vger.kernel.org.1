@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-232450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0D3FMdYAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:58 +0200
+	id OJF0A8j5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773C436E3D5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3804E36D08E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF72B30B1429
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A9815305F7B7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0213043DE;
-	Tue, 31 Mar 2026 17:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CAF3E316C;
+	Tue, 31 Mar 2026 16:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOoZbGrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9ZRwCTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D343019DC;
-	Tue, 31 Mar 2026 17:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B314536AB47;
+	Tue, 31 Mar 2026 16:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976779; cv=none; b=rqJVnYg3soj6gH+kO2cQdifHblFTjAHE0UDUAiVo5grTMGF2FJBScRRl/QdIDoqViqOLAJPaBtV4yQYw1Kg1sZcmYP9HjEXaKwmjxvrd5baJuWVS3Bi2zD+pZuoUutiJsFZErh3UMrFcbcI8vLtZylU0hoApZj413dMsgEBu4I0=
+	t=1774974591; cv=none; b=gjSxrGzza2pWQb387CehFn7TTagdkYI81OlF2lZiCo5oUgYl4x/3XrfdenvuMxYfLO6Ku+x234NMzr4KYRfeA4FiRA8FkHfLdnrZjNSh2ZEIfbGEYpa2inIDEVNI0ODP2E2HMvVaOYzT0FXyuL+i6bD7VMwieC/3TQ8gaM+G8qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976779; c=relaxed/simple;
-	bh=EZUnIiXj7oqmyhPESi7Jm/2F4nQn8MuY2iUOUE3dV9s=;
+	s=arc-20240116; t=1774974591; c=relaxed/simple;
+	bh=SLquIfnDsClu5AWwBr6yU+rJUejgNgUgQjJ9weGDvuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkZSTFCUhO2A5sgUGm6P0bsLbR2ti0GmMgXVCIjct28/4S38q9dBEb/+3qn7QIczp0QqJcvZVebbdyWoKrPnBgO2jjHifWdmuYA9oQQBqE6Y/W/CjjeGPJ5TzLf7RPvfMW6SxkG8B4oUg/xc6df+yptHH4ApENQ1CAZ57sJGRJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOoZbGrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D427C19423;
-	Tue, 31 Mar 2026 17:06:18 +0000 (UTC)
+	 MIME-Version; b=G1z67lg9PW2ngG2j00Q2rYcTWzeaWIMUKaQJ8KDzKaCwyaGkAyQhOeuYl60ASvGypTQjQESMmQFoOoi+YHeDo0LbXjh+Cf0GIOTwfB6FgOc5ECz7u1Yajf56cZaAZWa6fnlx9/VukzVKqgIHZSmxKhAAUCejmM48GSL4gIyBR0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9ZRwCTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489A4C19423;
+	Tue, 31 Mar 2026 16:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976778;
-	bh=EZUnIiXj7oqmyhPESi7Jm/2F4nQn8MuY2iUOUE3dV9s=;
+	s=korg; t=1774974591;
+	bh=SLquIfnDsClu5AWwBr6yU+rJUejgNgUgQjJ9weGDvuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOoZbGrMAfQ3nFH8FT327UcNIpCBkPPS3bXuz72DLRSf5YwE8jkVsdtr1GFC7hGif
-	 xsmQ+/oTh+6Avih7X2MwKQBzsEdIyKJDLv7hEdsv6L2gaOpdMtzOacsS7biE3/4k//
-	 TwE1oseUR/FkM8xgCBSYawmtBtDv4o3pwjnAmaJE=
+	b=Z9ZRwCTndmI4sySNyZG9uTQLHOXFs3PnxZQrAUEo8ZfQa+aiLxCdzf+CygoAnhRBZ
+	 h5O3Zp6/oLmEimDHvO7lTuOhFPpy07OiKwkwhk2OFK+2xHCAcNnZaxkm0RSSOi5UZI
+	 BI1RDJQGld1TNa8WWSTeaWtPS0qwCvntmMUvpw+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milos Nikic <nikic.milos@gmail.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 224/309] jbd2: gracefully abort on checkpointing state corruptions
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.6 143/175] powerpc64/bpf: do not increment tailcall count when prog is NULL
 Date: Tue, 31 Mar 2026 18:22:07 +0200
-Message-ID: <20260331161801.689563418@linuxfoundation.org>
+Message-ID: <20260331161735.037960863@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,104 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232450-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dilger.ca,huawei.com,linux.alibaba.com,suse.cz,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231601-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,suse.cz:email,dilger.ca:email]
-X-Rspamd-Queue-Id: 773C436E3D5
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3804E36D08E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Milos Nikic <nikic.milos@gmail.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
 
-commit bac3190a8e79beff6ed221975e0c9b1b5f2a21da upstream.
+commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
 
-This patch targets two internal state machine invariants in checkpoint.c
-residing inside functions that natively return integer error codes.
+Do not increment tailcall count, if tailcall did not succeed due to
+missing BPF program.
 
-- In jbd2_cleanup_journal_tail(): A blocknr of 0 indicates a severely
-corrupted journal superblock. Replaced the J_ASSERT with a WARN_ON_ONCE
-and a graceful journal abort, returning -EFSCORRUPTED.
-
-- In jbd2_log_do_checkpoint(): Replaced the J_ASSERT_BH checking for
-an unexpected buffer_jwrite state. If the warning triggers, we
-explicitly drop the just-taken get_bh() reference and call __flush_batch()
-to safely clean up any previously queued buffers in the j_chkpt_bhs array,
-preventing a memory leak before returning -EFSCORRUPTED.
-
-Signed-off-by: Milos Nikic <nikic.milos@gmail.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260311041548.159424-1-nikic.milos@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
+Cc: stable@vger.kernel.org
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
+[ Conflict due to missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf:
+  Support tailcalls with subprogs") resolved accordingly. ]
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/powerpc/net/bpf_jit_comp64.c |   23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -267,7 +267,15 @@ restart:
- 			 */
- 			BUFFER_TRACE(bh, "queue");
- 			get_bh(bh);
--			J_ASSERT_BH(bh, !buffer_jwrite(bh));
-+			if (WARN_ON_ONCE(buffer_jwrite(bh))) {
-+				put_bh(bh); /* drop the ref we just took */
-+				spin_unlock(&journal->j_list_lock);
-+				/* Clean up any previously batched buffers */
-+				if (batch_count)
-+					__flush_batch(journal, &batch_count);
-+				jbd2_journal_abort(journal, -EFSCORRUPTED);
-+				return -EFSCORRUPTED;
-+			}
- 			journal->j_chkpt_bhs[batch_count++] = bh;
- 			transaction->t_chp_stats.cs_written++;
- 			transaction->t_checkpoint_list = jh->b_cpnext;
-@@ -325,7 +333,10 @@ int jbd2_cleanup_journal_tail(journal_t
- 
- 	if (!jbd2_journal_get_log_tail(journal, &first_tid, &blocknr))
- 		return 1;
--	J_ASSERT(blocknr != 0);
-+	if (WARN_ON_ONCE(blocknr == 0)) {
-+		jbd2_journal_abort(journal, -EFSCORRUPTED);
-+		return -EFSCORRUPTED;
-+	}
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -307,27 +307,32 @@ static int bpf_jit_emit_tail_call(u32 *i
  
  	/*
- 	 * We need to make sure that any blocks that were recently written out
+ 	 * tail_call_cnt++;
++	 * Writeback this updated value only if tailcall succeeds.
+ 	 */
+ 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
+-	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
+ 
+ 	/* prog = array->ptrs[index]; */
+-	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
+-	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
++	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
++	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_array, ptrs)));
+ 
+ 	/*
+ 	 * if (prog == NULL)
+ 	 *   goto out;
+ 	 */
+-	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
++	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
+ 	PPC_BCC_SHORT(COND_EQ, out);
+ 
+ 	/* goto *(prog->bpf_func + prologue_size); */
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
+-	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
+-			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
+-	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_prog, bpf_func)));
++	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
++	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
++
++	/* Writeback updated tailcall count */
++	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
+ 
+ 	/* tear down stack, restore NVRs, ... */
+ 	bpf_jit_emit_common_epilogue(image, ctx);
 
 
 
