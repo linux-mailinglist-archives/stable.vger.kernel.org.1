@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBFWMEQAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:32 +0200
+	id gJOsHB/5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B1536E1A9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726A936CF46
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DDEB9317F962
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D790830993C1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B6A402435;
-	Tue, 31 Mar 2026 16:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE643FF8A7;
+	Tue, 31 Mar 2026 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OozNn1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IDvL2TH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A02402B9B;
-	Tue, 31 Mar 2026 16:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E391B3DD507;
+	Tue, 31 Mar 2026 16:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975370; cv=none; b=l8aokwzD0GyzF5ZRPcVh8PA13Fuk9H81ofwWgB9uwLomqHf/Hahugw6Mku6gq/K10NRSTVXYuq7cRbVjEFDqIH33/iBD4bg7s/lU+N2mBZQcKAcKKh7lDsButkDlTQWf+KIjDnK7Tby0rDBfCs3bOKpUQxr5pPv75FLhSBWwZ8M=
+	t=1774974439; cv=none; b=n2ofVxFEXWeo4p73naZgKxAPEVFD5YwyonpK3qe80hPz2ZFFS1loskRQfoFpp4q3CO14S9rHrlKz/FNYiMilaDAj1pFRZnYdX64O7C35NALPHy41OjU4Ynqh0k44l7RQb2IB8rk0FD1Nr4J7rJwkTLjy2xhvL5JBb06Pq/xEmLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975370; c=relaxed/simple;
-	bh=iLEoHetaD5ZlaANSsYpBpeHB4UyjmNzbBTsLdHdIheY=;
+	s=arc-20240116; t=1774974439; c=relaxed/simple;
+	bh=7AJQghWNnWJDLtpotECSiHq000wNjL9mikXL6CROTP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0jpb+bi/IVNd5eV+YlCakTIGTojiKiwb4JIeZkunmm9H9IjOaLx/lpTyQHRWWezYNm+qWhGpq/qrWnhimH2k959aoWbIB9cXv+nn+h8yoGfJ03yFM3+S+uYs7qx1TLSWFbMk6ekKRB6lRyCFDpLoIWgsP2loFod6Ie5uWMIZTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OozNn1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F889C19423;
-	Tue, 31 Mar 2026 16:42:49 +0000 (UTC)
+	 MIME-Version; b=N56jwHYvuqZcuEcN/qB2REN2+ZUAaWRXt/mmXeZ9lITNvmjBOyGbqVg3vbys1SFHYHW+ceDBJNyQ+qliVzuFMHhjJ8//roOf8uj/nc66dpRojldDVoUyUvQ4mdLiXXSIYoyPYjiUDnKnxbslQH6DjVf8ru5QDJ5tX7NjjkkfKu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IDvL2TH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CC7C19423;
+	Tue, 31 Mar 2026 16:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975370;
-	bh=iLEoHetaD5ZlaANSsYpBpeHB4UyjmNzbBTsLdHdIheY=;
+	s=korg; t=1774974438;
+	bh=7AJQghWNnWJDLtpotECSiHq000wNjL9mikXL6CROTP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OozNn1Va9rEwLPvn6Kf3d0p2/NlitUUjkiudaQ60bJyQeSHWe0XDO8MaoE0skSZk
-	 fGQDEUTBJQkvolwOAZzZrohjhwb867c5zNnqulR8I2eC8Y6yvnKkKiWotfIFC2sR/N
-	 rhpftnyjsMHjl+ElwHOZkXRsYiNbu2dONEp1gIQQ=
+	b=2IDvL2THlxYer25w5waiL4nfVAyojh3msfhZkdz0Pn0Cja4OJExZI1fZvbHu1gRcn
+	 neUKBKnqxRTgPn49iAq/H+mD3rT/P1jkrcC0YHlLoiEXpjejvwe2rp77tjmPLmYzQa
+	 L85HmUaS1yaeUsPo9IJOdzkougc8X9XiKZaWfZNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhan Xusheng <zhanxusheng@xiaomi.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.19 236/342] alarmtimer: Fix argument order in alarm_timer_forward()
-Date: Tue, 31 Mar 2026 18:21:09 +0200
-Message-ID: <20260331161807.649113054@linuxfoundation.org>
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/175] drm/i915/gmbus: fix spurious timeout on 512-byte burst reads
+Date: Tue, 31 Mar 2026 18:21:10 +0200
+Message-ID: <20260331161732.931341680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,78 +74,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231542-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231905-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email]
-X-Rspamd-Queue-Id: F3B1536E1A9
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,oracle.com:email]
+X-Rspamd-Queue-Id: 726A936CF46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-commit 5d16467ae56343b9205caedf85e3a131e0914ad8 upstream.
+[ Upstream commit 08441f10f4dc09fdeb64529953ac308abc79dd38 ]
 
-alarm_timer_forward() passes arguments to alarm_forward() in the wrong
-order:
+When reading exactly 512 bytes with burst read enabled, the
+extra_byte_added path breaks out of the inner do-while without
+decrementing len. The outer while(len) then re-enters and gmbus_wait()
+times out since all data has been delivered. Decrement len before the
+break so the outer loop terminates correctly.
 
-  alarm_forward(alarm, timr->it_interval, now);
-
-However, alarm_forward() is defined as:
-
-  u64 alarm_forward(struct alarm *alarm, ktime_t now, ktime_t interval);
-
-and uses the second argument as the current time:
-
-  delta = ktime_sub(now, alarm->node.expires);
-
-Passing the interval as "now" results in incorrect delta computation,
-which can lead to missed expirations or incorrect overrun accounting.
-
-This issue has been present since the introduction of
-alarm_timer_forward().
-
-Fix this by swapping the arguments.
-
-Fixes: e7561f1633ac ("alarmtimer: Implement forward callback")
-Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260323061130.29991-1-zhanxusheng@xiaomi.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5dc0f43f268 ("drm/i915/gmbus: Enable burst read")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patch.msgid.link/20260316231920.135438-2-samasth.norway.ananda@oracle.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 4ab0f09ee73fc853d00466682635f67c531f909c)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/alarmtimer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_gmbus.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -540,7 +540,7 @@ static s64 alarm_timer_forward(struct k_
- {
- 	struct alarm *alarm = &timr->it.alarm.alarmtimer;
+diff --git a/drivers/gpu/drm/i915/display/intel_gmbus.c b/drivers/gpu/drm/i915/display/intel_gmbus.c
+index e95ddb580ef6c..a01e655c24ff3 100644
+--- a/drivers/gpu/drm/i915/display/intel_gmbus.c
++++ b/drivers/gpu/drm/i915/display/intel_gmbus.c
+@@ -460,8 +460,10 @@ gmbus_xfer_read_chunk(struct drm_i915_private *i915,
  
--	return alarm_forward(alarm, timr->it_interval, now);
-+	return alarm_forward(alarm, now, timr->it_interval);
- }
+ 		val = intel_de_read_fw(i915, GMBUS3(i915));
+ 		do {
+-			if (extra_byte_added && len == 1)
++			if (extra_byte_added && len == 1) {
++				len--;
+ 				break;
++			}
  
- /**
+ 			*buf++ = val & 0xff;
+ 			val >>= 8;
+-- 
+2.53.0
+
 
 
 
