@@ -1,204 +1,185 @@
-Return-Path: <stable+bounces-231408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIg8IHS2y2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:56:36 +0200
+	id iOICLqa3y2mCKgYAu9opvQ
+	(envelope-from <stable+bounces-231409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:01:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB733692D2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:56:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDA53693DA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8744C305DD1A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:51:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47A043019B85
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC24D3BAD8D;
-	Tue, 31 Mar 2026 11:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2CB3D8909;
+	Tue, 31 Mar 2026 11:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khe4O7h+"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="Pj8D0Bb7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9092C378812
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2301C2C0F6C;
+	Tue, 31 Mar 2026 11:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774957886; cv=none; b=mI9d0Bwiv5hMn2pv2nIe+2dgbmqBlmQww1bwmLi1RuGla2otlZj6sOZ0fDnIfzrXtRDkyoP/7F5dfW3dwOrb4NjbcRDAr4igvOw+l35IYUzNskDDGFdAa/XpkbEkfte2m1+mwi1snEemaUl4SNf/EV9Qfi9rYkGbM3ZvmrwDt9k=
+	t=1774958308; cv=none; b=Yi4plVkzn3E5IGCHQ93g6ssOnzi7fQb3XJUnWNfEqMXZuZA5Ca+y/GDmZbwtjlB4qq3nLgOgmtBnSmWt456Hh8ajnlOaYcGaaAA4eXfJVyo83bwnf0tLRL6fnvZWhAvZuzKZ5acS9YBpAu5Q8FA1LYAJ1lXLfOJlmaDE0x1MM2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774957886; c=relaxed/simple;
-	bh=T0w0qR+ML9AF96aFpedODhWrVK3Pryyi5Z8+jwCNTf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFGGM9xOz5XbynjuKyT8H/hqCLW4unsO//LL0s7Dn0rPaLyhlbELrG1dCTdunrfE0MP4ZqNDTVlRt7NPHlelvSeUcQzc+3yVFZJKpykrAAK7EzswIxHRDdIvwXjgD60eZ+22jRKWhPGFPeFUtW02iAEwFqIC0HW0gUPFo3TujKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khe4O7h+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F93C19423;
-	Tue, 31 Mar 2026 11:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774957886;
-	bh=T0w0qR+ML9AF96aFpedODhWrVK3Pryyi5Z8+jwCNTf0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khe4O7h+6pH1j/0JXABwSqxe/HvMAc2HxFLNgG0rnixYjIdEMy7ZMwKJEeiQZKdtG
-	 /HPOGZR6cqqqM6g8FeZE8n6b/xHn4LCSHyTe+Uw6mRnWtB/a5QCavHcjRseoP3/Qik
-	 sGPHnUE/vNyuehN1ehUgj9TdwdBUrhx+Q63cDbSandCAf1xwQGn/07jxTdlkVGvGQ5
-	 f7LyJtQv/QHNhd3uJeyy4TPgVv+Tao82g8L4yOaE8AHIl2dGt/nGeyubtBhFgTM/eD
-	 JJ+eYaXFJfyvZiCWEokvDLKFHDk6xCMRTeRLlLJApE/GrJXy5QXNHnMO51O8dROdd6
-	 SUw5HU/CaPZCw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jinjiang Tu <tujinjiang@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
-Date: Tue, 31 Mar 2026 07:51:22 -0400
-Message-ID: <20260331115122.2131507-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033037-lethargic-pandemic-39fa@gregkh>
-References: <2026033037-lethargic-pandemic-39fa@gregkh>
+	s=arc-20240116; t=1774958308; c=relaxed/simple;
+	bh=3mf8dvG+9rFVnKzVa1OC9tPsr+jcRYU4szsDa0j10BI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=opd4Ej3jc6pfKpohRDcGVT9LziZ4GavTvbjq0E/uY+RFDz2DARnUELupUHhzn5KHon7BAI2ICYyS6MufModIGP0q54PkJU39RXXE2tv97w84nrYDueAJdcq+Rrtt87H2XWU3rfBoyuFxM2RiJmZqbkFUJYwTr5Kfx9lI2tjmn8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=Pj8D0Bb7; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1774958298;
+	bh=Q+6Na3CE55bhXWEE7x8LaGzTN9Zx6l20lYyfBDEpFeM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Pj8D0Bb7H+eyChHPT6p55yxWqElVcZmbxgfg3dZT2gXwe13I+9gKA9DoUhWp2+CjO
+	 yVMPfTukcAn0ZyMgp5MRBM1pQYvmMbQXoGDulbKVRqPGoTCjmrvaPVP+Dr8jLHHBn6
+	 3Hyc0IDOe8bUTflTTArhuDkD/8m4k2paYcw9eLgg=
+Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 17C0865992;
+	Tue, 31 Mar 2026 07:58:16 -0400 (EDT)
+Message-ID: <42ab19d20e572c61587728350b5f1ca900632322.camel@xry111.site>
+Subject: Re: [PATCH for 6.6] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+From: Xi Ruoyao <xry111@xry111.site>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen
+	 <chenhuacai@loongson.cn>
+Cc: Sasha Levin <sashal@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
+ Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	loongarch@lists.linux.dev
+Date: Tue, 31 Mar 2026 19:58:15 +0800
+In-Reply-To: <2026033148-expletive-many-cd82@gregkh>
+References: <20260330100133.3955364-1-chenhuacai@loongson.cn>
+	 <2026033148-expletive-many-cd82@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231408-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-231409-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DCB733692D2
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xry111.site:dkim,xry111.site:email,xry111.site:mid]
+X-Rspamd-Queue-Id: 7FDA53693DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+On Tue, 2026-03-31 at 13:10 +0200, Greg Kroah-Hartman wrote:
+> On Mon, Mar 30, 2026 at 06:01:33PM +0800, Huacai Chen wrote:
+> > From: Xi Ruoyao <xry111@xry111.site>
+> >=20
+> > commit e4878c37f6679fdea91b27a0f4e60a871f0b7bad upstream.
+> >=20
+> > With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+> > of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+> > empty.=C2=A0 This is not valid, as the current DWARF specification mand=
+ates
+> > the first byte of the EH frame to be the version number 1.=C2=A0 It cau=
+ses
+> > some unwinders to complain, for example the ClickHouse query profiler
+> > spams the log with messages:
+> >=20
+> > =C2=A0=C2=A0=C2=A0 clickhouse-server[365854]: libunwind: unsupported .e=
+h_frame_hdr
+> > =C2=A0=C2=A0=C2=A0 version: 127 at 7ffffffb0000
+> >=20
+> > Here "127" is just the byte located at the p_vaddr (0, i.e. the
+> > beginning of the vDSO) of the empty GNU_EH_FRAME segment. Cross-
+> > checking with /proc/365854/maps has also proven 7ffffffb0000 is the
+> > start of vDSO in the process VM image.
+> >=20
+> > In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+> > MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specifi=
+c
+> > "genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+> > use -fno-asynchronous-unwind-tables").=C2=A0 IIRC it indicates some inh=
+erent
+> > limitation of the MIPS ELF ABI and has nothing to do with LoongArch.=C2=
+=A0 So
+> > we can simply flip it over to -fasynchronous-unwind-tables and pass
+> > --eh-frame-hdr for linking the vDSO, allowing the profilers to unwind t=
+he
+> > stack for statistics even if the sample point is taken when the PC is i=
+n
+> > the vDSO.
+> >=20
+> > However simply adjusting the options above would exploit an issue: when
+> > the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+> > falled back to a machine-specific routine to match the code pattern of
+> > rt_sigreturn() and extract the registers saved in the sigframe if the
+> > code pattern is matched.=C2=A0 As unwinding from signal handlers is vit=
+al for
+> > libgcc to support pthread cancellation etc., the fall-back routine had
+> > been silently keeping the LoongArch Linux systems functioning since
+> > Linux 5.19.=C2=A0 But when we start to emit GNU_EH_FRAME with the corre=
+ct
+> > format, fall-back routine will no longer be used and libgcc will fail
+> > to unwind the sigframe, and unwinding from signal handlers will no
+> > longer work, causing dozens of glibc test failures.=C2=A0 To make it po=
+ssible
+> > to unwind from signal handlers again, it's necessary to code the unwind
+> > info in __vdso_rt_sigreturn via .cfi_* directives.
+> >=20
+> > The offsets in the .cfi_* directives depend on the layout of struct
+> > sigframe, notably the offset of sigcontext in the sigframe.=C2=A0 To us=
+e the
+> > offset in the assembly file, factor out struct sigframe into a header t=
+o
+> > allow asm-offsets.c to output the offset for assembly.
+> >=20
+> > To work around a long-term issue in the libgcc unwinder (the pc is
+> > unconditionally substracted by 1: doing so is technically incorrect for
+> > a signal frame), a nop instruction is included with the two real
+> > instructions in __vdso_rt_sigreturn in the same FDE PC range.=C2=A0 The=
+ same
+> > hack has been used on x86 for a long time.
+> >=20
+> > Cc: stable@vger.kernel.org
+> > Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+> > Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+>=20
+> Does not apply cleanly on the latest 6.12.y queue :(
 
-[ Upstream commit 4c5e7f0fcd592801c9cc18f29f80fbee84eb8669 ]
+This is for 6.6.  Maybe your agent is malfunctioning?
 
-On arm64 server, we found folio that get from migration entry isn't locked
-in softleaf_to_folio().  This issue triggers when mTHP splitting and
-zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-in softleaf_to_folio().  The race is as follows:
-
-	CPU0                                             CPU1
-
-deferred_split_scan()                              zap_nonpresent_ptes()
-  lock folio
-  split_folio()
-    unmap_folio()
-      change ptes to migration entries
-    __split_folio_to_order()                         softleaf_to_folio()
-      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
-      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
-      prep_compound_page() for tail pages
-
-In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-are visible before the tail page becomes non-compound.  smp_wmb() should
-be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
-result, if zap_nonpresent_ptes() accesses migration entry that stores tail
-pfn, softleaf_to_folio() may see the updated compound_head of tail page
-before page->flags.
-
-This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
-because of the race between folio split and zap_nonpresent_ptes()
-leading to a folio incorrectly undergoing modification without a folio
-lock being held.
-
-This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
-swapops predicates"), which in merged in v6.19-rc1.
-
-To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-in softleaf_to_folio() and softleaf_to_page().
-
-[tujinjiang@huawei.com: update function name and comments]
-  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
-Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adapted fix from leafops.h softleaf_to_page()/softleaf_to_folio() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/swapops.h | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 925c84653af5e..7555a4a3d3d49 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -488,11 +488,21 @@ static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
- {
- 	struct page *p = pfn_to_page(swp_offset_pfn(entry));
- 
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding page is locked
--	 */
--	BUG_ON(is_migration_entry(entry) && !PageLocked(p));
-+	if (is_migration_entry(entry)) {
-+		/*
-+		 * Ensure we do not race with split, which might alter tail
-+		 * pages into new folios and thus result in observing an
-+		 * unlocked folio.
-+		 * This matches the write barrier in __split_folio_to_order().
-+		 */
-+		smp_rmb();
-+
-+		/*
-+		 * Any use of migration entries may only occur while the
-+		 * corresponding page is locked
-+		 */
-+		BUG_ON(!PageLocked(p));
-+	}
- 
- 	return p;
- }
--- 
-2.53.0
-
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
