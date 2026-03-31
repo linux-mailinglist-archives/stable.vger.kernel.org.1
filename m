@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-231911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLybNiz8y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:04 +0200
+	id QAVbN+n+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EBBA36D595
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F04C36DDA5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CB6F30E2CFD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 716F331A52FC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D126262A6;
-	Tue, 31 Mar 2026 16:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7B8423A9A;
+	Tue, 31 Mar 2026 16:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxY42RDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KVo+prR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45403E3C5C;
-	Tue, 31 Mar 2026 16:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAE13FB7F1;
+	Tue, 31 Mar 2026 16:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975385; cv=none; b=m+6yC/1yiWEIJzv20jks/aoqoI6uwyOHEw2wJrZWX0LUsx7Pli5/RK956mR4205YtQceEY/Y38x3B1ZHDPlE5y3iondnHNWeCUquHA86TS454zyCaumOZQC6G99PNpn6MOV5jwo0PJBuhJXeqza/fj/LSfpx+U6mPVgiydy6wHo=
+	t=1774974605; cv=none; b=RX0BF/U1NbAdEM/0H6dUBjSjr2EGLrOjf0KBMoe5esN+pweSOtC6sjAMwDEN9RrA8V7Z2JH42EHjvCuFIcdwPqwlRaiCkSqQN/htoFiuKXBqKsCNwt+E//5u3+VSO7CMVkW1tYF793d8aYLB0nS48sa3CmDPwpNvEx7bHT36EoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975385; c=relaxed/simple;
-	bh=GBRzkanGS3fDO4+nxLD5tfZ/YlkAiuTT9G5NUdVEd6o=;
+	s=arc-20240116; t=1774974605; c=relaxed/simple;
+	bh=qsAw8BciD7LE5KSepi4zFzNCjL/HAMA4tK5053TRIUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UPPBJdujujcQ2hjnzHqWWeoI4ys7zXmKp6JrPJVTEsRZE8Hk76dFNi7zQkSpeqTLwPw8N6lfQDZbVqQgeM6BAq0J2pjBhayqF6I3YfOeBPvgiAPscOm11igN4a0hzIzMlXZ+LQvYF0mwrVAuEpPMWjm/zUs8VWpUQjqaJmuplwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxY42RDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B164C19423;
-	Tue, 31 Mar 2026 16:43:05 +0000 (UTC)
+	 MIME-Version; b=iG15Lnu9E8SA8WtF0Up5NvqkPLFyVAR5DYDqO/8k1Rd+MpMcExkmWhLPpMwIRZd1G5N/Rfd690+tdiZwxOSjfT5P+grlg6638kP8dV8Ky3b8E2R0XvgI6+1fiYngrA9xkGEbZI3YTCR7pzV87Llw70JVUZJS29G/yKwXLkvVcM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KVo+prR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF29C19423;
+	Tue, 31 Mar 2026 16:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975385;
-	bh=GBRzkanGS3fDO4+nxLD5tfZ/YlkAiuTT9G5NUdVEd6o=;
+	s=korg; t=1774974604;
+	bh=qsAw8BciD7LE5KSepi4zFzNCjL/HAMA4tK5053TRIUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxY42RDZzceRbeKVmT4rzsacZTE8w8K1/fgGu9u+Njeh0KWt7Yf43l+jy62IlwQvv
-	 fi6515ntVff/Sjhhz8wsIjDMpTODEJ/W3YU14pkvRNfD+J7BSCjFvo6BFcdCRFnnOU
-	 BMa5RrvPmqsZWGSa58ZfE57xl+DU5OYpDaZISkVY=
+	b=2KVo+prRiuVwcCalThfk0yr8Vdg4Np/xGmnP11rlynwyEHxrEdi0BgJ2fWkLCgKrT
+	 73iI+Fn7KKQnVZTofmk3tuHqFWSyx8H3UdSKDafoDtr94Qr4OcwGUrWenqljM2O9O0
+	 hNEHFcFNFJmIeRS6tTFTtYrhDpcAATeRCtbYl9RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uma Shankar <uma.shankar@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.19 267/342] drm/i915/dp_tunnel: Fix error handling when clearing stream BW in atomic state
-Date: Tue, 31 Mar 2026 18:21:40 +0200
-Message-ID: <20260331161808.773478123@linuxfoundation.org>
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.6 117/175] alarmtimer: Fix argument order in alarm_timer_forward()
+Date: Tue, 31 Mar 2026 18:21:41 +0200
+Message-ID: <20260331161734.079957714@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,165 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231911-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231606-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,msgid.link:url,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7EBBA36D595
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,xiaomi.com:email]
+X-Rspamd-Queue-Id: 6F04C36DDA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
 
-commit 77fcf58df15edcf3f5b5421f24814fb72796def9 upstream.
+commit 5d16467ae56343b9205caedf85e3a131e0914ad8 upstream.
 
-Clearing the DP tunnel stream BW in the atomic state involves getting
-the tunnel group state, which can fail. Handle the error accordingly.
+alarm_timer_forward() passes arguments to alarm_forward() in the wrong
+order:
 
-This fixes at least one issue where drm_dp_tunnel_atomic_set_stream_bw()
-failed to get the tunnel group state returning -EDEADLK, which wasn't
-handled. This lead to the ctx->contended warn later in modeset_lock()
-while taking a WW mutex for another object in the same atomic state, and
-thus within the same already contended WW context.
+  alarm_forward(alarm, timr->it_interval, now);
 
-Moving intel_crtc_state_alloc() later would avoid freeing saved_state on
-the error path; this stable patch leaves that simplification for a
-follow-up.
+However, alarm_forward() is defined as:
 
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.9+
-Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during encoder state computation")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7617
-Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patch.msgid.link/20260320092900.13210-1-imre.deak@intel.com
-(cherry picked from commit fb69d0076e687421188bc8103ab0e8e5825b1df1)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+  u64 alarm_forward(struct alarm *alarm, ktime_t now, ktime_t interval);
+
+and uses the second argument as the current time:
+
+  delta = ktime_sub(now, alarm->node.expires);
+
+Passing the interval as "now" results in incorrect delta computation,
+which can lead to missed expirations or incorrect overrun accounting.
+
+This issue has been present since the introduction of
+alarm_timer_forward().
+
+Fix this by swapping the arguments.
+
+Fixes: e7561f1633ac ("alarmtimer: Implement forward callback")
+Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260323061130.29991-1-zhanxusheng@xiaomi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c   |    8 +++++++-
- drivers/gpu/drm/i915/display/intel_dp_tunnel.c |   20 ++++++++++++++------
- drivers/gpu/drm/i915/display/intel_dp_tunnel.h |   11 +++++++----
- 3 files changed, 28 insertions(+), 11 deletions(-)
+ kernel/time/alarmtimer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -4578,6 +4578,7 @@ intel_crtc_prepare_cleared_state(struct
- 	struct intel_crtc_state *crtc_state =
- 		intel_atomic_get_new_crtc_state(state, crtc);
- 	struct intel_crtc_state *saved_state;
-+	int err;
- 
- 	saved_state = intel_crtc_state_alloc(crtc);
- 	if (!saved_state)
-@@ -4586,7 +4587,12 @@ intel_crtc_prepare_cleared_state(struct
- 	/* free the old crtc_state->hw members */
- 	intel_crtc_free_hw_state(crtc_state);
- 
--	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
-+	err = intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
-+	if (err) {
-+		kfree(saved_state);
-+
-+		return err;
-+	}
- 
- 	/* FIXME: before the switch to atomic started, a new pipe_config was
- 	 * kzalloc'd. Code that depends on any field being zero should be
---- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-@@ -622,19 +622,27 @@ int intel_dp_tunnel_atomic_compute_strea
-  *
-  * Clear any DP tunnel stream BW requirement set by
-  * intel_dp_tunnel_atomic_compute_stream_bw().
-+ *
-+ * Returns 0 in case of success, a negative error code otherwise.
-  */
--void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
--					    struct intel_crtc_state *crtc_state)
-+int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-+					   struct intel_crtc_state *crtc_state)
+--- a/kernel/time/alarmtimer.c
++++ b/kernel/time/alarmtimer.c
+@@ -608,7 +608,7 @@ static s64 alarm_timer_forward(struct k_
  {
- 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
-+	int err;
+ 	struct alarm *alarm = &timr->it.alarm.alarmtimer;
  
- 	if (!crtc_state->dp_tunnel_ref.tunnel)
--		return;
-+		return 0;
-+
-+	err = drm_dp_tunnel_atomic_set_stream_bw(&state->base,
-+						 crtc_state->dp_tunnel_ref.tunnel,
-+						 crtc->pipe, 0);
-+	if (err)
-+		return err;
- 
--	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
--					   crtc_state->dp_tunnel_ref.tunnel,
--					   crtc->pipe, 0);
- 	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
-+
-+	return 0;
+-	return alarm_forward(alarm, timr->it_interval, now);
++	return alarm_forward(alarm, now, timr->it_interval);
  }
  
  /**
---- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-+++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-@@ -40,8 +40,8 @@ int intel_dp_tunnel_atomic_compute_strea
- 					     struct intel_dp *intel_dp,
- 					     const struct intel_connector *connector,
- 					     struct intel_crtc_state *crtc_state);
--void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
--					    struct intel_crtc_state *crtc_state);
-+int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-+					   struct intel_crtc_state *crtc_state);
- 
- int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
- 					      struct intel_crtc *crtc);
-@@ -88,9 +88,12 @@ intel_dp_tunnel_atomic_compute_stream_bw
- 	return 0;
- }
- 
--static inline void
-+static inline int
- intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
--				       struct intel_crtc_state *crtc_state) {}
-+				       struct intel_crtc_state *crtc_state)
-+{
-+	return 0;
-+}
- 
- static inline int
- intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
 
 
 
