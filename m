@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-231929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAFpJ2sAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:11 +0200
+	id aA6XC4UHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB23936E275
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3017736F297
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5056830B59DE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8FDB5313AB15
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF59262A6;
-	Tue, 31 Mar 2026 16:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC01304BA3;
+	Tue, 31 Mar 2026 17:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+EodTLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6a5K6vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F97A2C15BB;
-	Tue, 31 Mar 2026 16:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700CA2FDC5E;
+	Tue, 31 Mar 2026 17:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975432; cv=none; b=MkcahpTqNx8w/tjl1ZiJRuf0LIk/d+8iNaIj8lPV0DuJtVoPoGeqWTodGHDHmwz+f0pWY7PZaDLg4xUPY+H64THcUiPe7ASkWWDErvQSVSjhgrIEjwp9ZN3zeP9jZwo/8M/4TUfeloBp8dNEaHeQrE8ADKCU++uc6x38zl9EFW8=
+	t=1774976776; cv=none; b=puDwj1dPurdEiFYfdbyp2PrXKTehFgRwg1ZGVXPXK6KMoOOz7P/DYZ3YwgierArSotg4zr7BszK9WM3McVW+E18agYu5h5FamwT79YcXZlr3QH63UZWKMvcCqYHm0HYwNM4buMbz5+FxY8YUcyPkd9dur1SDJgs9M1WWQyda0M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975432; c=relaxed/simple;
-	bh=BdASsn8IqL769ftM490losrOutfGun1hm91VZB7mKIo=;
+	s=arc-20240116; t=1774976776; c=relaxed/simple;
+	bh=h6OhDYu7CkjkxPWU3u+5IhR4p21x1yAVc0vCpI5cids=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXdyVDAOafSk4tFrKKZM2ptjqYzhQGBbU+8bVK0hYgSB1C9t00LUev/BiwFtX9TBuD4V3M2AMDKg8dduGJxcDA5kCUzgThV9dg5XrzGcxx9ACu90KRyfkW94tVVrpQp76qMlugtbxUQuUcBvXEXwhpfEPBGZF55lfzGSRGDMhPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+EodTLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8229FC19423;
-	Tue, 31 Mar 2026 16:43:51 +0000 (UTC)
+	 MIME-Version; b=GNls0d0kbI9VCm80/NzzYEiZrIQMu9vJ8DBbNveVwejhSdZGoQ7A8NqR2MTZOjh++b5uRnXJaHWqw56QoTdmfnqc2zWxNoHW4Hdk2F7tovWgcKsIqk3XkklbQ0EvRgCc+OVTqdthvZA2lnn/+Uj+nQtFgWa0NaLnzplg450xV8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6a5K6vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BF1C19423;
+	Tue, 31 Mar 2026 17:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975431;
-	bh=BdASsn8IqL769ftM490losrOutfGun1hm91VZB7mKIo=;
+	s=korg; t=1774976776;
+	bh=h6OhDYu7CkjkxPWU3u+5IhR4p21x1yAVc0vCpI5cids=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+EodTLLzn7PI2MdlFmDccbhob5gM83zjX674p9ntNFipF6J2APgLs51a4RfPVmsf
-	 YSoPMkU3fXppniJSd0aaJalsbdGenf5Gv7DqT3rS7fk6xm1a4u1yiJdcrBSnm6+uos
-	 iieSt+5J+c3VW2JOqC7D6jitU+uSB9jMVfyw8cWM=
+	b=i6a5K6vbllJeev/xqWMfXXPcgQ5QCZ4EYC9v9+1gSDGBKOJwBuUFFzpB1x366Qmq7
+	 Cdqs3Iqw87pUPYbNUmI56li0M9r+DDI0QNWrZQPWo+253WFMr6WlSMyZKRAJ5UPJO2
+	 aRz1Mv4Xs5I8V1aLVnuuGkjQ7NgdsiEJmpNU+NzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Yang <gerald.yang@canonical.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 292/342] ext4: fix stale xarray tags after writeback
-Date: Tue, 31 Mar 2026 18:22:05 +0200
-Message-ID: <20260331161809.684544149@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.18 223/309] KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE
+Date: Tue, 31 Mar 2026 18:22:06 +0200
+Message-ID: <20260331161801.653741377@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +66,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231929-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232449-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.cz:email]
-X-Rspamd-Queue-Id: BB23936E275
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3017736F297
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Sean Christopherson <seanjc@google.com>
 
-commit f4a2b42e78914ff15630e71289adc589c3a8eb45 upstream.
+commit df83746075778958954aa0460cca55f4b3fc9c02 upstream.
 
-There are cases where ext4_bio_write_page() gets called for a page which
-has no buffers to submit. This happens e.g. when the part of the file is
-actually a hole, when we cannot allocate blocks due to being called from
-jbd2, or in data=journal mode when checkpointing writes the buffers
-earlier. In these cases we just return from ext4_bio_write_page()
-however if the page didn't need redirtying, we will leave stale DIRTY
-and/or TOWRITE tags in xarray because those get cleared only in
-__folio_start_writeback(). As a result we can leave these tags set in
-mappings even after a final sync on filesystem that's getting remounted
-read-only or that's being frozen. Various assertions can then get upset
-when writeback is started on such filesystems (Gerald reported assertion
-in ext4_journal_check_start() firing).
+Adjust KVM's sanity check against overwriting a shadow-present SPTE with a
+another SPTE with a different target PFN to only apply to direct MMUs,
+i.e. only to MMUs without shadowed gPTEs.  While it's impossible for KVM
+to overwrite a shadow-present SPTE in response to a guest write, writes
+from outside the scope of KVM, e.g. from host userspace, aren't detected
+by KVM's write tracking and so can break KVM's shadow paging rules.
 
-Fix the problem by cycling the page through writeback state even if we
-decide nothing needs to be written for it so that xarray tags get
-properly updated. This is slightly silly (we could update the xarray
-tags directly) but I don't think a special helper messing with xarray
-tags is really worth it in this relatively rare corner case.
+  ------------[ cut here ]------------
+  pfn != spte_to_pfn(*sptep)
+  WARNING: arch/x86/kvm/mmu/mmu.c:3069 at mmu_set_spte+0x1e4/0x440 [kvm], CPU#0: vmx_ept_stale_r/872
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 0 UID: 1000 PID: 872 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:mmu_set_spte+0x1e4/0x440 [kvm]
+  Call Trace:
+   <TASK>
+   ept_page_fault+0x535/0x7f0 [kvm]
+   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
+   kvm_mmu_page_fault+0x8d/0x620 [kvm]
+   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb5/0x730
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Reported-by: Gerald Yang <gerald.yang@canonical.com>
-Link: https://lore.kernel.org/all/20260128074515.2028982-1-gerald.yang@canonical.com
-Fixes: dff4ac75eeee ("ext4: move keep_towrite handling to ext4_bio_write_page()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260205092223.21287-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 11d45175111d ("KVM: x86/mmu: Warn if PFN changes on shadow-present SPTE in shadow MMU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/page-io.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/page-io.c
-+++ b/fs/ext4/page-io.c
-@@ -523,9 +523,15 @@ int ext4_bio_write_folio(struct ext4_io_
- 		nr_to_submit++;
- 	} while ((bh = bh->b_this_page) != head);
- 
--	/* Nothing to submit? Just unlock the folio... */
--	if (!nr_to_submit)
-+	if (!nr_to_submit) {
-+		/*
-+		 * We have nothing to submit. Just cycle the folio through
-+		 * writeback state to properly update xarray tags.
-+		 */
-+		__folio_start_writeback(folio, keep_towrite);
-+		folio_end_writeback(folio);
- 		return 0;
-+	}
- 
- 	bh = head = folio_buffers(folio);
- 
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 98406d6aa2d6..dd06453d5b72 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3060,7 +3060,8 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 			child = spte_to_child_sp(pte);
+ 			drop_parent_pte(vcpu->kvm, child, sptep);
+ 			flush = true;
+-		} else if (WARN_ON_ONCE(pfn != spte_to_pfn(*sptep))) {
++		} else if (pfn != spte_to_pfn(*sptep)) {
++			WARN_ON_ONCE(vcpu->arch.mmu->root_role.direct);
+ 			drop_spte(vcpu->kvm, sptep);
+ 			flush = true;
+ 		} else
+-- 
+2.53.0
+
 
 
 
