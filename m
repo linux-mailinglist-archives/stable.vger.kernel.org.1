@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-232425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPi5HT0BzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:41 +0200
+	id YLoCAesAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8DF36E54D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8CC36E42C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9D3F930A2A6F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7267530513F7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F202FF669;
-	Tue, 31 Mar 2026 17:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC063016EE;
+	Tue, 31 Mar 2026 17:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlr7mLbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpWwsF/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A46B2D63E8;
-	Tue, 31 Mar 2026 17:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419C02E1C7C;
+	Tue, 31 Mar 2026 17:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976714; cv=none; b=BPnHyud2BPbSOwGPYKqo50UI13Feamwr7xPBum9piNUmcjl/EiwCLGh1laSMbdB630DfUzrPR/z+rIof5ByNbXpPdEeD3L3qsN45inySzSFPE5iUgzr7m+XW9p0I0xJADzSHezlp1ZJfen+XA4kEDfYq0aVPRAsjomIXiDQt8eg=
+	t=1774976823; cv=none; b=naiaPtd7uQ3oCJzQ0LgGac6Gvgxt7iG0z5lQYCYdFi5VRw019poqVVBDNnAzzUIDO4s3HVAXpgSgvQofWNSFUGhKjsaWoX7VPCQrzedQbE0RDwshkhG69blhaFMKYzykGQoWCpzvFTAOc6whfae0JQGwB3Eyck53kQ7cvL4uTEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976714; c=relaxed/simple;
-	bh=YzkgyXALyv0LYZBFyrVK4oWOfY5q/mh9McHEmVGdiLw=;
+	s=arc-20240116; t=1774976823; c=relaxed/simple;
+	bh=LJiS5zKGhd2mEiK3+Vam+nr9v/oGTuN9alrOIlM1n7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgQ/W4BI4beKOy0jIu7bZVYlXWMwDx6uE5O10epbrGrJfx32RhfYVZbXHE8Vb2afniDg1kCRGkBFB9EdZzPFOxF9HdrAooDL4tsgnSt9W7RgMcr+sEJviqwEQWcCCZKwGQpcZhrThHavZJ+fE8Vtcy92YfhqW1FYSI5wvXUmyLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlr7mLbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A609FC19424;
-	Tue, 31 Mar 2026 17:05:13 +0000 (UTC)
+	 MIME-Version; b=AeBa7Xmqcl7BFfWacxzsvONeHbU/u7GLv8moIVtq0SojdZaQdEFBCurfV78iHing5guEL2zvA289gpsOz0BEfe8vlhYhA+V0uaZ/RJSuGr9Yi3AhbC3oLvh2oymCJp4CfW47SdpWwVBEJrBm3Zh0jPmQqR1SbQVVAeSaMMcE8v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpWwsF/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA963C19423;
+	Tue, 31 Mar 2026 17:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976714;
-	bh=YzkgyXALyv0LYZBFyrVK4oWOfY5q/mh9McHEmVGdiLw=;
+	s=korg; t=1774976823;
+	bh=LJiS5zKGhd2mEiK3+Vam+nr9v/oGTuN9alrOIlM1n7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlr7mLbtCXB+0ptKnBI8F1pcDkgAofrrVUmVnGQL2Jd0SOijwzXNEjn+ZwAjpMlVT
-	 5+9EvKfeWlckappQPoXsq+QObwLJcy+4sV1zfmyMuR3xfVEReJDmWJ4/cbVnxMClgd
-	 jXwK+pSL4LRmcZIdImuyu8e61tHpCFyO5fj4AeCg=
+	b=KpWwsF/E6/USuksewql4qIec0qDjkJ07DuW8zBO95HZkImGG3V8EhGW0I5xH+rwNz
+	 o9qkqgBOY+ODHl3FXVJ1G8pmIT5bkQzpOuB9q53t72IQzk+KlBJq/q5WZbJ+FbvTv1
+	 eh23zbS3cFRRy9zP6I89P/jIhotwe/7FAKDuTX+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 198/309] KVM: arm64: Discard PC update state on vcpu reset
-Date: Tue, 31 Mar 2026 18:21:41 +0200
-Message-ID: <20260331161800.743365814@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 199/309] hwmon: (pmbus/ina233) Fix error handling and sign extension in shunt voltage read
+Date: Tue, 31 Mar 2026 18:21:42 +0200
+Message-ID: <20260331161800.778741739@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
 References: <20260331161753.468533260@linuxfoundation.org>
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232425-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232467-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,11 +86,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,arm.com:email]
-X-Rspamd-Queue-Id: 1B8DF36E54D
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,juniper.net:email,roeck-us.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BA8CC36E42C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,82 +98,57 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 1744a6ef48b9a48f017e3e1a0d05de0a6978396e upstream.
+commit f7e775c4694782844c66da5316fed82881835cf8 upstream.
 
-Our vcpu reset suffers from a particularly interesting flaw, as it
-does not correctly deal with state that will have an effect on the
-execution flow out of reset.
+ina233_read_word_data() reads MFR_READ_VSHUNT via pmbus_read_word_data()
+but has two issues:
 
-Take the following completely random example, never seen in the wild
-and that never resulted in a couple of sleepless nights: /s
+1. The return value is not checked for errors before being used in
+   arithmetic. A negative error code from a failed I2C transaction is
+   passed directly to DIV_ROUND_CLOSEST(), producing garbage data.
 
-- vcpu-A issues a PSCI_CPU_OFF using the SMC conduit
+2. MFR_READ_VSHUNT is a 16-bit two's complement value. Negative shunt
+   voltages (values with bit 15 set) are treated as large positive
+   values since pmbus_read_word_data() returns them zero-extended in an
+   int. This leads to incorrect scaling in the VIN coefficient
+   conversion.
 
-- SMC being a trapped instruction (as opposed to HVC which is always
-  normally executed), we annotate the vcpu as needing to skip the
-  next instruction, which is the SMC itself
+Fix both issues by adding an error check, casting to s16 for proper
+sign extension, and clamping the result to a valid non-negative range.
+The clamp is necessary because read_word_data callbacks must return
+non-negative values on success (negative values indicate errors to the
+pmbus core).
 
-- vcpu-A is now safely off
-
-- vcpu-B issues a PSCI_CPU_ON for vcpu-A, providing a starting PC
-
-- vcpu-A gets reset, get the new PC, and is sent on its merry way
-
-- right at the point of entering the guest, we notice that a PC
-  increment is pending (remember the earlier SMC?)
-
-- vcpu-A skips its first instruction...
-
-What could possibly go wrong?
-
-Well, I'm glad you asked. For pKVM as a NV guest, that first instruction
-is extremely significant, as it indicates whether the CPU is booting
-or resuming. Having skipped that instruction, nothing makes any sense
-anymore, and CPU hotplugging fails.
-
-This is all caused by the decoupling of PC update from the handling
-of an exception that triggers such update, making it non-obvious
-what affects what when.
-
-Fix this train wreck by discarding all the PC-affecting state on
-vcpu reset.
-
-Fixes: f5e30680616ab ("KVM: arm64: Move __adjust_pc out of line")
+Fixes: b64b6cb163f16 ("hwmon: Add driver for TI INA233 Current and Power Monitor")
 Cc: stable@vger.kernel.org
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-Link: https://patch.msgid.link/20260312140850.822968-1-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260319173055.125271-2-sanman.pradhan@hpe.com
+[groeck: Fixed clamp to avoid losing the sign bit]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/reset.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/hwmon/pmbus/ina233.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -247,6 +247,20 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcp
- 			kvm_vcpu_set_be(vcpu);
+diff --git a/drivers/hwmon/pmbus/ina233.c b/drivers/hwmon/pmbus/ina233.c
+index 2d8b5a5347ed..7aebd854763a 100644
+--- a/drivers/hwmon/pmbus/ina233.c
++++ b/drivers/hwmon/pmbus/ina233.c
+@@ -72,7 +72,8 @@ static int ina233_read_word_data(struct i2c_client *client, int page,
  
- 		*vcpu_pc(vcpu) = target_pc;
-+
-+		/*
-+		 * We may come from a state where either a PC update was
-+		 * pending (SMC call resulting in PC being increpented to
-+		 * skip the SMC) or a pending exception. Make sure we get
-+		 * rid of all that, as this cannot be valid out of reset.
-+		 *
-+		 * Note that clearing the exception mask also clears PC
-+		 * updates, but that's an implementation detail, and we
-+		 * really want to make it explicit.
-+		 */
-+		vcpu_clear_flag(vcpu, PENDING_EXCEPTION);
-+		vcpu_clear_flag(vcpu, EXCEPT_MASK);
-+		vcpu_clear_flag(vcpu, INCREMENT_PC);
- 		vcpu_set_reg(vcpu, 0, reset_state.r0);
- 	}
- 
+ 		/* Adjust returned value to match VIN coefficients */
+ 		/* VIN: 1.25 mV VSHUNT: 2.5 uV LSB */
+-		ret = DIV_ROUND_CLOSEST(ret * 25, 12500);
++		ret = clamp_val(DIV_ROUND_CLOSEST((s16)ret * 25, 12500),
++				S16_MIN, S16_MAX) & 0xffff;
+ 		break;
+ 	default:
+ 		ret = -ENODATA;
+-- 
+2.53.0
+
 
 
 
