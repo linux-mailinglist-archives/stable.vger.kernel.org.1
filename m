@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-231914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBnULi38y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:05 +0200
+	id 6ESAFrEAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEA136D59C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190A436E353
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7616530805B3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5762C30835B7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFB0423A82;
-	Tue, 31 Mar 2026 16:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A545A3019DC;
+	Tue, 31 Mar 2026 17:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoaW91De"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIJcq7gz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD0F31714F;
-	Tue, 31 Mar 2026 16:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6936C2FE042;
+	Tue, 31 Mar 2026 17:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975393; cv=none; b=M/vwaBP0Sb6jPZOvbZxejsykkC+XYgBWX/iuCG9lR/uffe4o2T7s4Hg/20nKx5IeuZT8tXX6eg/C7m+99l307Z6Hcf+6d3w/nrmk9m34Q8Z7I9sNd2sK+J3fx9yegCx02CzeEfeE2bXqHs+0oNUsWg3hbnQxuguPTwbDkq3+Kwk=
+	t=1774976737; cv=none; b=tHO5J2RajaAkU5hnaARMKlWFMtkWftGXkxz/f80MOGHkwiC+iVHjwzCUpLcaJv0P6OSkl58brj/gn5eKl9eLLeGExv1pkk3yeVv1ey0y7Ld1q88CdIaQ+ZziHsSk+P2oM+oo8wQVKtrRD5Q5R2vT+fC2dHn1aRC7c5lnk29PQII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975393; c=relaxed/simple;
-	bh=aQO3PtaSQtqOwaJgJAE/3CtUKgfLsoVc4ki/9697UJY=;
+	s=arc-20240116; t=1774976737; c=relaxed/simple;
+	bh=RX1a4hkxdQ79zM8doB7ZSvtrnCCAbiRWS5Mxit0h/LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UalvN4gbJbcXJ/yNqMjqZTDxV0Aq2iXemJ6PcXP2tVPIUTchKvNfEsVcawUqvZ3Ep7qBK320om8hVe2TR1BcnhjdIFjoFmv9aUhRO0ZuvxjetEMV4LfdoHQ53ZSrDOoHNj6Gfa9QajKTLmoWR6Iss14QQsrs3JOKLzW9wCV0668=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoaW91De; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A72C19423;
-	Tue, 31 Mar 2026 16:43:12 +0000 (UTC)
+	 MIME-Version; b=Q8sZbU2UzrHehU5zjz12MNu7rFd1UVFogzSWIruV5FyDXEbW0tLySrdNKGmnTKiLYrJ/UZFgaK55Z+4wJ4bqgi9z2QMnVj1rw0gxAMUlN36TO4rYPIDas5h06a8Dx/EoyP2LJitJmEbA7pVG5RJy8uA0Ke/FXDYKzj0k+SJDY0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIJcq7gz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006C4C19423;
+	Tue, 31 Mar 2026 17:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975393;
-	bh=aQO3PtaSQtqOwaJgJAE/3CtUKgfLsoVc4ki/9697UJY=;
+	s=korg; t=1774976737;
+	bh=RX1a4hkxdQ79zM8doB7ZSvtrnCCAbiRWS5Mxit0h/LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YoaW91De2+wDjW517mhGoUKnn5wVB+dewwHjMjo9tWj3zAjY6HuuZWjT3ZJx5BwEM
-	 cfBXHFNJNWlb0QfPNaMKaqLYQCXLTs81AL6sqNHm5YKPDYzpTRzSipOgRvfowjs9TI
-	 lsjsc/phzmJbMFB7m777zNiGXagInNETCt67CtgE=
+	b=rIJcq7gzgYDfNBKibZgTZV7Kahlp904VzHQMwZnNsOnYVMaEbA2Xm94YPzikYBANZ
+	 pGsIAqvnHj6cE1mBrTUys+WCq6zr6rve9Hv2O5dLjFQloxM+/WTYwSx3U9HS8mXOAG
+	 XLmfaEeY7k8n+GFvl36GHtafG8M9WD0MsYeqXSxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Antonius <antonius@bluedragonsec.com>,
-	"David Hildenbrand (ARM)" <david@kernel.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Jann Horn <jannh@google.com>,
-	Jeff Xu <jeffxu@chromium.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 278/342] mm/mseal: update VMA end correctly on merge
-Date: Tue, 31 Mar 2026 18:21:51 +0200
-Message-ID: <20260331161809.167794779@linuxfoundation.org>
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.18 209/309] alarmtimer: Fix argument order in alarm_timer_forward()
+Date: Tue, 31 Mar 2026 18:21:52 +0200
+Message-ID: <20260331161801.141593950@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -84,92 +77,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231914-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-232434-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,oracle.com:email,linux-foundation.org:email,chromium.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5EEA136D59C
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 190A436E353
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
 
-commit 2697dd8ae721db4f6a53d4f4cbd438212a80f8dc upstream.
+commit 5d16467ae56343b9205caedf85e3a131e0914ad8 upstream.
 
-Previously we stored the end of the current VMA in curr_end, and then upon
-iterating to the next VMA updated curr_start to curr_end to advance to the
-next VMA.
+alarm_timer_forward() passes arguments to alarm_forward() in the wrong
+order:
 
-However, this doesn't take into account the fact that a VMA might be
-updated due to a merge by vma_modify_flags(), which can result in curr_end
-being stale and thus, upon setting curr_start to curr_end, ending up with
-an incorrect curr_start on the next iteration.
+  alarm_forward(alarm, timr->it_interval, now);
 
-Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-ensure this value remains updated should this occur.
+However, alarm_forward() is defined as:
 
-While we're here, eliminate this entire class of bug by simply setting
-const curr_[start/end] to be clamped to the input range and VMAs, which
-also happens to simplify the logic.
+  u64 alarm_forward(struct alarm *alarm, ktime_t now, ktime_t interval);
 
-Link: https://lkml.kernel.org/r/20260327173104.322405-1-ljs@kernel.org
-Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
-Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jeff Xu <jeffxu@chromium.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+and uses the second argument as the current time:
+
+  delta = ktime_sub(now, alarm->node.expires);
+
+Passing the interval as "now" results in incorrect delta computation,
+which can lead to missed expirations or incorrect overrun accounting.
+
+This issue has been present since the introduction of
+alarm_timer_forward().
+
+Fix this by swapping the arguments.
+
+Fixes: e7561f1633ac ("alarmtimer: Implement forward callback")
+Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260323061130.29991-1-zhanxusheng@xiaomi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mseal.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/time/alarmtimer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct
- 		unsigned long start, unsigned long end)
+--- a/kernel/time/alarmtimer.c
++++ b/kernel/time/alarmtimer.c
+@@ -540,7 +540,7 @@ static s64 alarm_timer_forward(struct k_
  {
- 	struct vm_area_struct *vma, *prev;
--	unsigned long curr_start = start;
- 	VMA_ITERATOR(vmi, mm, start);
+ 	struct alarm *alarm = &timr->it.alarm.alarmtimer;
  
- 	/* We know there are no gaps so this will be non-NULL. */
-@@ -66,6 +65,7 @@ static int mseal_apply(struct mm_struct
- 		prev = vma;
+-	return alarm_forward(alarm, timr->it_interval, now);
++	return alarm_forward(alarm, now, timr->it_interval);
+ }
  
- 	for_each_vma_range(vmi, vma, end) {
-+		const unsigned long curr_start = MAX(vma->vm_start, start);
- 		const unsigned long curr_end = MIN(vma->vm_end, end);
- 
- 		if (!(vma->vm_flags & VM_SEALED)) {
-@@ -79,7 +79,6 @@ static int mseal_apply(struct mm_struct
- 		}
- 
- 		prev = vma;
--		curr_start = curr_end;
- 	}
- 
- 	return 0;
+ /**
 
 
 
