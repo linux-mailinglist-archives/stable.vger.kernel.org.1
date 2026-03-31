@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NPhL4D8y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:28 +0200
+	id 6MwVKyb/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6690B36D6A5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5032C36DE40
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB9A730DF6C1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA31930DAE82
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B60E25D527;
-	Tue, 31 Mar 2026 16:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA5D423A99;
+	Tue, 31 Mar 2026 16:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypGoOoAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKi58gVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D147A33120E;
-	Tue, 31 Mar 2026 16:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19B3F8E04;
+	Tue, 31 Mar 2026 16:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975508; cv=none; b=ljonh2HtQaEBm/TQbEY0Bg0mvyK4NGBsAKBhWQAThWFFAbMn3E7Oh/cHynoqDUT6Hgcr2aPaRjxr7Qjhk4wgMnrOOMjL5lU3hYuJyjg0saF5dfCq45I501fyrH25VQawW/P+swakqJ8RntqSMLqem92GstwRQzj1j+WhJezl+kQ=
+	t=1774976099; cv=none; b=WsO6OJ9pP+K4t9axwn/Kq1J5WT7CbZyDP+PqjtJxyeu1LGNSKG5Zy64wUdKSvBdjV9JtvZ1ND34hmP/WRo4q8sfqH4VmmW9AL4T6hRBxHI1E72ouNAaxKmTRrtwvio7fW21I8kX3ZNcTYtRhUars0vzy6H3QuETHI99Ra4VN6l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975508; c=relaxed/simple;
-	bh=czHzEsUpR72bxM7b3dib6i2kHfB/Hooqf1YZJNDUE1o=;
+	s=arc-20240116; t=1774976099; c=relaxed/simple;
+	bh=b2kWUpoZqOqd7rqFTsAAvl23QKewzGh0F3thdjC8w/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeALuhzdheFUoj1Wioipx8tmciK27x6oB+ovO2ihbIXtPF6OojAHocarFMvwzWNjgWvWKnDHvi6GxcvaruM9JuHj2YfQLZC8m+iCiUZ9h1z9M7xVIwIJ/X9I8nDejVUJPva6DBFv1zDz10BbFk9bqKUAHzaMivWhOJjTHNvTHas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypGoOoAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67677C19423;
-	Tue, 31 Mar 2026 16:45:08 +0000 (UTC)
+	 MIME-Version; b=hGHR49SeihWtW5Ty+4iwUDOzReNOBClknooUkg3xz8Gw9VDtRgocwZowQdVqdkyeVSDncDH/tE9MRxKDdDYo5iEZ1Oi/1XyMPrLnINun87wCuV6rNVpyGeu1EIjWdSU8OU4CTQSyze0WTvqpX++YtKFvLgAkQUVNOtHML1D98m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKi58gVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB66C19423;
+	Tue, 31 Mar 2026 16:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975508;
-	bh=czHzEsUpR72bxM7b3dib6i2kHfB/Hooqf1YZJNDUE1o=;
+	s=korg; t=1774976099;
+	bh=b2kWUpoZqOqd7rqFTsAAvl23QKewzGh0F3thdjC8w/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ypGoOoALAMxG1k4WvGM3od8KgnP4AmgVx6mdS/n5ZKWpiV2iRvXvyc7ckzuonUxlq
-	 AGlzucGtbnwy+lGeUqedTIYvxABYnwATVW8z65YNVIpf9MLoTBKc51NExshTrqSFOQ
-	 pgNylMqITu8Vk1SQe6YRlyhBw/HHYoYexsMK5uf8=
+	b=lKi58gVsbdZbwG09Ly9iPbANRbR7mqO0VKoH4m9lEW/E9rOerSyktWlE1cPwgXnbh
+	 Jn2QJoTHM51y5s5nPsajy1xCVMgwrmjVpw7aubLWVGKUCg0Jx7sAgIvmcHjedE2rq7
+	 l1rUBgWiMME4pV71hU3FWNfckJT2G+5zN9lO0ELE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 322/342] netfs: Fix kernel BUG in netfs_limit_iter() for ITER_KVEC iterators
+	Breno Leitao <leitao@debian.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jianqiang kang <jianqkang@sina.cn>
+Subject: [PATCH 6.12 205/244] spi: tegra210-quad: Protect curr_xfer check in IRQ handler
 Date: Tue, 31 Mar 2026 18:22:35 +0200
-Message-ID: <20260331161810.763342385@linuxfoundation.org>
+Message-ID: <20260331161749.322817589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +66,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231959-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,nvidia.com,kernel.org,sina.cn];
+	TAGGED_FROM(0.00)[bounces-232186-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,9c058f0d63475adc97fd];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6690B36D6A5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sina.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5032C36DE40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 67e467a11f62ff64ad219dc6aa5459e132c79d14 ]
+[ Upstream commit edf9088b6e1d6d88982db7eb5e736a0e4fbcc09e ]
 
-When a process crashes and the kernel writes a core dump to a 9P
-filesystem, __kernel_write() creates an ITER_KVEC iterator. This
-iterator reaches netfs_limit_iter() via netfs_unbuffered_write(), which
-only handles ITER_FOLIOQ, ITER_BVEC and ITER_XARRAY iterator types,
-hitting the BUG() for any other type.
+Now that all other accesses to curr_xfer are done under the lock,
+protect the curr_xfer NULL check in tegra_qspi_isr_thread() with the
+spinlock. Without this protection, the following race can occur:
 
-Fix this by adding netfs_limit_kvec() following the same pattern as
-netfs_limit_bvec(), since both kvec and bvec are simple segment arrays
-with pointer and length fields. Dispatch it from netfs_limit_iter() when
-the iterator type is ITER_KVEC.
+  CPU0 (ISR thread)              CPU1 (timeout path)
+  ----------------               -------------------
+  if (!tqspi->curr_xfer)
+    // sees non-NULL
+                                 spin_lock()
+                                 tqspi->curr_xfer = NULL
+                                 spin_unlock()
+  handle_*_xfer()
+    spin_lock()
+    t = tqspi->curr_xfer  // NULL!
+    ... t->len ...        // NULL dereference!
 
-Fixes: cae932d3aee5 ("netfs: Add func to calculate pagecount/size-limited span of an iterator")
-Reported-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9c058f0d63475adc97fd
-Tested-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260307090041.359870-1-kartikey406@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With this patch, all curr_xfer accesses are now properly synchronized.
+
+Although all accesses to curr_xfer are done under the lock, in
+tegra_qspi_isr_thread() it checks for NULL, releases the lock and
+reacquires it later in handle_cpu_based_xfer()/handle_dma_based_xfer().
+There is a potential for an update in between, which could cause a NULL
+pointer dereference.
+
+To handle this, add a NULL check inside the handlers after acquiring
+the lock. This ensures that if the timeout path has already cleared
+curr_xfer, the handler will safely return without dereferencing the
+NULL pointer.
+
+Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-6-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/iterator.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/spi/spi-tegra210-quad.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 72a435e5fc6da..154a14bb2d7f7 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -142,6 +142,47 @@ static size_t netfs_limit_bvec(const struct iov_iter *iter, size_t start_offset,
- 	return min(span, max_size);
- }
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1351,6 +1351,11 @@ static irqreturn_t handle_cpu_based_xfer
+ 	spin_lock_irqsave(&tqspi->lock, flags);
+ 	t = tqspi->curr_xfer;
  
-+/*
-+ * Select the span of a kvec iterator we're going to use.  Limit it by both
-+ * maximum size and maximum number of segments.  Returns the size of the span
-+ * in bytes.
-+ */
-+static size_t netfs_limit_kvec(const struct iov_iter *iter, size_t start_offset,
-+			       size_t max_size, size_t max_segs)
-+{
-+	const struct kvec *kvecs = iter->kvec;
-+	unsigned int nkv = iter->nr_segs, ix = 0, nsegs = 0;
-+	size_t len, span = 0, n = iter->count;
-+	size_t skip = iter->iov_offset + start_offset;
-+
-+	if (WARN_ON(!iov_iter_is_kvec(iter)) ||
-+	    WARN_ON(start_offset > n) ||
-+	    n == 0)
-+		return 0;
-+
-+	while (n && ix < nkv && skip) {
-+		len = kvecs[ix].iov_len;
-+		if (skip < len)
-+			break;
-+		skip -= len;
-+		n -= len;
-+		ix++;
++	if (!t) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
++		return IRQ_HANDLED;
 +	}
 +
-+	while (n && ix < nkv) {
-+		len = min3(n, kvecs[ix].iov_len - skip, max_size);
-+		span += len;
-+		nsegs++;
-+		ix++;
-+		if (span >= max_size || nsegs >= max_segs)
-+			break;
-+		skip = 0;
-+		n -= len;
+ 	if (tqspi->tx_status ||  tqspi->rx_status) {
+ 		tegra_qspi_handle_error(tqspi);
+ 		complete(&tqspi->xfer_completion);
+@@ -1419,6 +1424,11 @@ static irqreturn_t handle_dma_based_xfer
+ 	spin_lock_irqsave(&tqspi->lock, flags);
+ 	t = tqspi->curr_xfer;
+ 
++	if (!t) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
++		return IRQ_HANDLED;
 +	}
 +
-+	return min(span, max_size);
-+}
-+
- /*
-  * Select the span of an xarray iterator we're going to use.  Limit it by both
-  * maximum size and maximum number of segments.  It is assumed that segments
-@@ -245,6 +286,8 @@ size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
- 		return netfs_limit_bvec(iter, start_offset, max_size, max_segs);
- 	if (iov_iter_is_xarray(iter))
- 		return netfs_limit_xarray(iter, start_offset, max_size, max_segs);
-+	if (iov_iter_is_kvec(iter))
-+		return netfs_limit_kvec(iter, start_offset, max_size, max_segs);
- 	BUG();
- }
- EXPORT_SYMBOL(netfs_limit_iter);
--- 
-2.53.0
-
+ 	if (err) {
+ 		tegra_qspi_dma_unmap_xfer(tqspi, t);
+ 		tegra_qspi_handle_error(tqspi);
+@@ -1457,6 +1467,7 @@ exit:
+ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ {
+ 	struct tegra_qspi *tqspi = context_data;
++	unsigned long flags;
+ 	u32 status;
+ 
+ 	/*
+@@ -1474,7 +1485,9 @@ static irqreturn_t tegra_qspi_isr_thread
+ 	 * If no transfer is in progress, check if this was a real interrupt
+ 	 * that the timeout handler already processed, or a spurious one.
+ 	 */
++	spin_lock_irqsave(&tqspi->lock, flags);
+ 	if (!tqspi->curr_xfer) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
+ 		/* Spurious interrupt - transfer not ready */
+ 		if (!(status & QSPI_RDY))
+ 			return IRQ_NONE;
+@@ -1491,7 +1504,14 @@ static irqreturn_t tegra_qspi_isr_thread
+ 		tqspi->rx_status = tqspi->status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF);
+ 
+ 	tegra_qspi_mask_clear_irq(tqspi);
++	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 
++	/*
++	 * Lock is released here but handlers safely re-check curr_xfer under
++	 * lock before dereferencing.
++	 * DMA handler also needs to sleep in wait_for_completion_*(), which
++	 * cannot be done while holding spinlock.
++	 */
+ 	if (!tqspi->is_curr_dma_xfer)
+ 		return handle_cpu_based_xfer(tqspi);
+ 
 
 
 
