@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-231528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YC2XNdr2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:22 +0200
+	id yBQPKFX7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A60736CB0E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2090236D3B0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CFD1D3061764
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4014312C746
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5B63FADF9;
-	Tue, 31 Mar 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A99426D12;
+	Tue, 31 Mar 2026 16:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUcRg0YD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2cC0FWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B393DB62F;
-	Tue, 31 Mar 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9024426D08;
+	Tue, 31 Mar 2026 16:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974402; cv=none; b=MD/TkIBV8sw2x39GH8q90qabapEuB+N7KIeqmQ54vG15hsfA/ad/YLTB9SoB+U59ZTt5DlB9qnHMRVIhZGmdi83NEeCACkotVgZAhCJv4ku/4qUIIcn+49e92WFWljUtEco7znF5k7MaTYZLs/LgiyXwRjN1uqlNZ/KOONu876A=
+	t=1774975249; cv=none; b=OPcNEw5ffSi0VVB62BIz55TbI6YaUZ6czDDEOK0G7Yu3XD6pr0W7XVEclLFk2mRdS92AyznJ6RmshBocJnDL6eMSvLDLCBMakKUOvNYJIAc+qYpxB3fW6+eJ0PeptrAbk2g36qaxJF8Ui74vaJY5HITP8clEy9er2oYtZV9hqDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974402; c=relaxed/simple;
-	bh=Rc1giwrWb0aOWzIRKZMvxshhr08e00FFhMfLI6i3o+s=;
+	s=arc-20240116; t=1774975249; c=relaxed/simple;
+	bh=+B0+KrS9R0p3RP6k0X1d217YdSo+P2NxBrBatwcoz4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9Czl2JQ0ikFD0FhHmLwc/LzvWTZ6ftJCXBzLy7OdMPqIkN2OpwkHPvbB2iCxg6GE6BOc1oJU4iXxondfk/R1srebXHSiM3oWYtaXhBa37aKZvhtrvOm2zfRbBaKpYUapXq+K1c34kMhMLzfwEbcxtUELZF2enAT4QxgjOs/oTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUcRg0YD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3ACC19423;
-	Tue, 31 Mar 2026 16:26:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mce4SCyFne214NkJ0DsFqpTyaU4/o8P8Bid4+UbyBLvBBetD5dzkpTG/KuZ6yFlOR62Jt3OSrx7m5hWUG4yx/Q5vqN60gSnrcPiR1HRreAS8v33xE64XUA9qI9oThJHXU5Cb14itfmLhMb3XXt2j9bA+d59/SHBOJCKwBKHqS3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2cC0FWq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50867C19423;
+	Tue, 31 Mar 2026 16:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974402;
-	bh=Rc1giwrWb0aOWzIRKZMvxshhr08e00FFhMfLI6i3o+s=;
+	s=korg; t=1774975249;
+	bh=+B0+KrS9R0p3RP6k0X1d217YdSo+P2NxBrBatwcoz4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUcRg0YDyzamZrY7jCnypawq0iS4ddzHcCnSqOzSbRMk3afRWa4OTQ7yxmcYtF2Ig
-	 Y+rBWP39ZW/wviLaAz3+6zKjod+gtmUgkMwvYr2wZd9NoBm1uNFcfg1Gzh9oWsLsOi
-	 hBibXCjKKzfpSzgabp4Yf+Me2AI8bUfFxjUOkKNs=
+	b=e2cC0FWqTzkqGLi5CqhUUHVqjlXgeAH27l9Br9oXXftOy2B9EpunVXcczJ+YzC2s6
+	 1nUQERIIW3FzGtjEc2fKL2wEusDctUlHU0S7c6+hlWg7wvVxK9PUM/PdvtBlGWNbPI
+	 lRh+j0K3PgDCO4gIm0Sf+R6t+q7b9zc8O7NRwqPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuhang Zheng <z1652074432@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/175] netfilter: ip6t_rt: reject oversized addrnr in rt_mt6_check()
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.19 221/342] platform/x86: ISST: Correct locked bit width
 Date: Tue, 31 Mar 2026 18:20:54 +0200
-Message-ID: <20260331161732.352291533@linuxfoundation.org>
+Message-ID: <20260331161807.106190425@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231528-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-231857-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.986];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 7A60736CB0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2090236D3B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ren Wei <n05ec@lzu.edu.cn>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 9d3f027327c2fa265f7f85ead41294792c3296ed ]
+commit fbddf68d7b4e1e6da7a78dd7fbd8ec376536584a upstream.
 
-Reject rt match rules whose addrnr exceeds IP6T_RT_HOPS.
+SST-PP locked bit width is set to three bits. It should be only one bit.
+Use SST_PP_LOCK_WIDTH define instead of SST_PP_LEVEL_WIDTH.
 
-rt_mt6() expects addrnr to stay within the bounds of rtinfo->addrs[].
-Validate addrnr during rule installation so malformed rules are rejected
-before the match logic can use an out-of-range value.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yuhang Zheng <z1652074432@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ea009e4769fa ("platform/x86: ISST: Add SST-PP support via TPMI")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260323153635.3263828-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/ip6t_rt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
-index 4ad8b2032f1f9..5561bd9cea818 100644
---- a/net/ipv6/netfilter/ip6t_rt.c
-+++ b/net/ipv6/netfilter/ip6t_rt.c
-@@ -157,6 +157,10 @@ static int rt_mt6_check(const struct xt_mtchk_param *par)
- 		pr_debug("unknown flags %X\n", rtinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (rtinfo->addrnr > IP6T_RT_HOPS) {
-+		pr_debug("too many addresses specified\n");
-+		return -EINVAL;
-+	}
- 	if ((rtinfo->flags & (IP6T_RT_RES | IP6T_RT_FST_MASK)) &&
- 	    (!(rtinfo->flags & IP6T_RT_TYP) ||
- 	     (rtinfo->rt_type != 0) ||
--- 
-2.51.0
-
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -871,7 +871,7 @@ static int isst_if_get_perf_level(void _
+ 	_read_pp_info("current_level", perf_level.current_level, SST_PP_STATUS_OFFSET,
+ 		      SST_PP_LEVEL_START, SST_PP_LEVEL_WIDTH, SST_MUL_FACTOR_NONE)
+ 	_read_pp_info("locked", perf_level.locked, SST_PP_STATUS_OFFSET,
+-		      SST_PP_LOCK_START, SST_PP_LEVEL_WIDTH, SST_MUL_FACTOR_NONE)
++		      SST_PP_LOCK_START, SST_PP_LOCK_WIDTH, SST_MUL_FACTOR_NONE)
+ 	_read_pp_info("feature_state", perf_level.feature_state, SST_PP_STATUS_OFFSET,
+ 		      SST_PP_FEATURE_STATE_START, SST_PP_FEATURE_STATE_WIDTH, SST_MUL_FACTOR_NONE)
+ 	perf_level.enabled = !!(power_domain_info->sst_header.cap_mask & BIT(1));
 
 
 
