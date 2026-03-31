@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDDQLxL2y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:02 +0200
+	id KOQXHff/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4729636C9D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1982E36E0F6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1759A30B461C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 12E9330FEB97
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CD23FADEE;
-	Tue, 31 Mar 2026 16:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6202FCC0E;
+	Tue, 31 Mar 2026 17:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x43xVD9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3G9hqLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95712329E4B;
-	Tue, 31 Mar 2026 16:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3A2FF669;
+	Tue, 31 Mar 2026 17:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974312; cv=none; b=R0E0mS61HAFMBlmy+23z0cFeCQfB3a22TJNo6ToOEs4sYGwEqoLkQ2pk3zrzJGI2DCTsH9YSe5QSa9XEy2OfPrX42BJ7CahyypnzI1y7c0t33cu70y2OU1KIWOXGQ7b33pko4GnSpv3LpMqPdN0LWRkQXVnhJ4UChZHpgxkQxJ0=
+	t=1774976503; cv=none; b=ePMWVDN0eAHu8586N5O1NYRNofed3mSzsvAvYb7rLLK/RQBm30rEmD79r8cHp+GruT9mcdDpiS2Pun46aaTS7rmarhziUwoS8jxMY3xFHXzuChBItl78U3qG2BpjhN6F41vfg/ZQtRA7RfcQ3KO8dpTPhW/90EqC9lXdEgDHiwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974312; c=relaxed/simple;
-	bh=UZpOYb94TcREFhk2q/fVyU+Ly2cBprIA4HD3pnS5/2E=;
+	s=arc-20240116; t=1774976503; c=relaxed/simple;
+	bh=mszdTCObfEterdgmR7YXI9tBW7uMKuAynaLlCT3YOgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEojrCq8t+p/zPZ5tpW6/UAByJ/PYYV0y5Sh3ghI6sY2rhq32AuD9pZXZbUxFJVHRlGAA0/edzso7fMaLfs8ZVUCGoh9nS83T3oEktNgzzzIwjjUdFfpbRDCwUY1UlRsh3ugHj8ysph2aO1p/hvatld6koBQ3Y5KdkU7iJCgEtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x43xVD9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A3AC19423;
-	Tue, 31 Mar 2026 16:25:11 +0000 (UTC)
+	 MIME-Version; b=Dm6V8ExQ0VUJSj334iDtdLM+pkvePOJfYQ2VMvnp1qnMYjA6+t6wEw/LghAddBizb0OyNb8P+r2lAkDnUxcH1hZR9z5H5c7qPI3iP/EzVqkHm6TaJ3REM0gAidxO7YVu9pPZTFgv43Gp1qCAwxlDx7hMqemu60IMrNyAK5ykM5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3G9hqLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2467C2BCB1;
+	Tue, 31 Mar 2026 17:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974312;
-	bh=UZpOYb94TcREFhk2q/fVyU+Ly2cBprIA4HD3pnS5/2E=;
+	s=korg; t=1774976503;
+	bh=mszdTCObfEterdgmR7YXI9tBW7uMKuAynaLlCT3YOgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x43xVD9QAhRuchczjP9ynyTD9fAcUryMF1XQPGa9QM+SiFokOudlSHvmSRYscNTvx
-	 l4A+0VvhW4VIlyuXlmOncVqwWY4oly8DNbEWpjiO6ajUbQDEWdch6H/HJI+6tKAbqE
-	 0aNRsHrKKpLoeuMXYuGITENGmpI9x9N+oZk1Ad80=
+	b=j3G9hqLwlm5gfjPh1e+7KIzdf26dcrBX57hf0v6EI/CrgeC0vW647EGSej6D0UThT
+	 j9D251A2xHwMW/KlxiRxL3akoQPqm06/5cpiZiXwf7nsB0lkEKYsteI+tLLla+jEKi
+	 /apMeR1B6XpIXTuFA3zkAO1AoMFRUFs68JG5P+O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/175] esp: fix skb leak with espintcp and async crypto
-Date: Tue, 31 Mar 2026 18:20:19 +0200
-Message-ID: <20260331161731.075270641@linuxfoundation.org>
+Subject: [PATCH 6.18 117/309] rtnetlink: fix leak of SRCU struct in rtnl_link_register
+Date: Tue, 31 Mar 2026 18:20:20 +0200
+Message-ID: <20260331161757.790176122@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231492-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232342-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,83 +86,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email]
-X-Rspamd-Queue-Id: 4729636C9D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,queasysnail.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1982E36E0F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 0c0eef8ccd2413b0a10eb6bbd3442333b1e64dd2 ]
+[ Upstream commit 09474055f2619be9445ba4245e4013741ed01a5e ]
 
-When the TX queue for espintcp is full, esp_output_tail_tcp will
-return an error and not free the skb, because with synchronous crypto,
-the common xfrm output code will drop the packet for us.
+Commit 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.") swapped
+the EEXIST check with the init_srcu_struct, but didn't add cleanup of
+the SRCU struct we just allocated in case of error.
 
-With async crypto (esp_output_done), we need to drop the skb when
-esp_output_tail_tcp returns an error.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/e77fe499f9a58c547b33b5212b3596dad417cec6.1774025341.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c | 9 ++++++---
- net/ipv6/esp6.c | 9 ++++++---
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ net/core/rtnetlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 85e24dc42f2f3..4256c7ee59397 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -233,10 +233,13 @@ static void esp_output_done(void *data, int err)
- 		xfrm_dev_resume(skb);
- 	} else {
- 		if (!err &&
--		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
--			esp_output_tail_tcp(x, skb);
--		else
-+		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
-+			err = esp_output_tail_tcp(x, skb);
-+			if (err != -EINPROGRESS)
-+				kfree_skb(skb);
-+		} else {
- 			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
-+		}
- 	}
- }
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index b389210d518ef..f3b22d5526fe6 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -629,6 +629,9 @@ int rtnl_link_register(struct rtnl_link_ops *ops)
+ unlock:
+ 	mutex_unlock(&link_ops_mutex);
  
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index be8e2e5b439ed..f3305154745ec 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -269,10 +269,13 @@ static void esp_output_done(void *data, int err)
- 		xfrm_dev_resume(skb);
- 	} else {
- 		if (!err &&
--		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
--			esp_output_tail_tcp(x, skb);
--		else
-+		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
-+			err = esp_output_tail_tcp(x, skb);
-+			if (err != -EINPROGRESS)
-+				kfree_skb(skb);
-+		} else {
- 			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
-+		}
- 	}
++	if (err)
++		cleanup_srcu_struct(&ops->srcu);
++
+ 	return err;
  }
- 
+ EXPORT_SYMBOL_GPL(rtnl_link_register);
 -- 
 2.51.0
 
