@@ -1,70 +1,59 @@
-Return-Path: <stable+bounces-232505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHaRKo4CzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:21:18 +0200
+	id YIOiFW7+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F26D36E88F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:21:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F2336DC2E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C341F3155EC4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAADF3131ACE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF99313293;
-	Tue, 31 Mar 2026 17:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E4E3FADEE;
+	Tue, 31 Mar 2026 16:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQpMheie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krdO9IEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6373E311592;
-	Tue, 31 Mar 2026 17:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FB23EF0A2;
+	Tue, 31 Mar 2026 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976921; cv=none; b=F9oJQgAGLfrCNNB5gTpc6aeQS+mFGrZZ5Yn+ViQG00a3QXhbUZNX59HBYCKi1tCLl4dl7bMeu3JWhhB6dY9v5Cuq51i+OkHjvcScdPJx1Qr7ISBKyInAAeZ0tRG0qRG2OkU7OiA01sDs40DtxP1PrJZXtmaVCLt8uZ78lW6/kuM=
+	t=1774976168; cv=none; b=DJii1/VDYE6wsNWXXL4xcz/Je66fV+NteSdlMBLOLcqQRuY/PcvVtC/yxZhbSSDs3qifu/TND8Oq2fDODv3oDRGg4OUnzErwK544WQTd3Etj20W4a2oRwyVutRZ+oNXYHSCPaT1cOFnqkwxZyiLeoQEt0849rWDpdRnIiats7K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976921; c=relaxed/simple;
-	bh=JmquOdWSplFXLXkyGGIXQ+rEpRS7EMRvV4GghuBme5E=;
+	s=arc-20240116; t=1774976168; c=relaxed/simple;
+	bh=CrFrMXZsCp2w+K+cragR8eXDcyDqzgO7uxWZ6xfo16U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gELvL+fIEX+iLctVH8Kirt85sHVkzJ9NRPuz1prVwgpYeVfyq9eWT5j2Sfn+AA6fGsIZSeefFFImxnQI55KIgSa68uMtIsWK1QjRY2RNg5FMDaKZIhcDy564jggeWarIM4sW0rW/vWTaSM51T+H/nsdf0lVSM/rLmlQyovFHJaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQpMheie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62B4C19424;
-	Tue, 31 Mar 2026 17:08:40 +0000 (UTC)
+	 MIME-Version; b=KukF2CoGCKfgJlft8/5Iy67EAAbVXeGLZMEWOEc4VFje+QMKHwZIwJ5i1x9n/Mxi9xx0V4gqM/tP29x1pcZQQ3N4W0jphQRA3JcxnU1JW4C+KP6Zv0/TQegm19iUBgwUniuFYoB1ELMtJhcM9Bjmr/F2rtKpl+uJmIMMCMIElkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krdO9IEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBC8C19423;
+	Tue, 31 Mar 2026 16:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976921;
-	bh=JmquOdWSplFXLXkyGGIXQ+rEpRS7EMRvV4GghuBme5E=;
+	s=korg; t=1774976168;
+	bh=CrFrMXZsCp2w+K+cragR8eXDcyDqzgO7uxWZ6xfo16U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQpMheiejOq6VjTU8blHcUiYLfRbR+0QSb7tctN+TrXwuBYb+AMn18DLFvdv0u5ky
-	 haOQ3vYXgbWEAMlEpQBZZmHrj/vuLxE80DfDcw1IllRbkcEdhNIREFIfbmUlDQRXbo
-	 nBhRyopzb48FZ4SCNGLxKIbxctn884IAJBh8uBoI=
+	b=krdO9IEPISm3TmIADFWsL99f+lHXQJcTH1Jvh4qJJdGUbURc4gPw8SYXfre5qjEAH
+	 fdQpct8GAfsG35XckeZITjVBrc+TBgpiy33kX51o9+uP8fNAXFjsTpQ3GVUy13Y8n0
+	 yS+SgkPGwp7r4XJlAG7j/q2oQ3lvJAQc/0C4sMJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 280/309] mm/huge_memory: fix folio isnt locked in softleaf_to_folio()
+Subject: [PATCH 6.12 233/244] dmaengine: xilinx: xilinx_dma: Fix residue calculation for cyclic DMA
 Date: Tue, 31 Mar 2026 18:23:03 +0200
-Message-ID: <20260331161803.872940900@linuxfoundation.org>
+Message-ID: <20260331161750.367704817@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -89,140 +78,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232505-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-232213-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F26D36E88F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E8F2336DC2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit 4c5e7f0fcd592801c9cc18f29f80fbee84eb8669 ]
+[ Upstream commit f61d145999d61948a23cd436ebbfa4c3b9ab8987 ]
 
-On arm64 server, we found folio that get from migration entry isn't locked
-in softleaf_to_folio().  This issue triggers when mTHP splitting and
-zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-in softleaf_to_folio().  The race is as follows:
+The cyclic DMA calculation is currently entirely broken and reports
+residue only for the first segment. The problem is twofold.
 
-	CPU0                                             CPU1
+First, when the first descriptor finishes, it is moved from active_list
+to done_list, but it is never returned back into the active_list. The
+xilinx_dma_tx_status() expects the descriptor to be in the active_list
+to report any meaningful residue information, which never happens after
+the first descriptor finishes. Fix this up in xilinx_dma_start_transfer()
+and if the descriptor is cyclic, lift it from done_list and place it back
+into active_list list.
 
-deferred_split_scan()                              zap_nonpresent_ptes()
-  lock folio
-  split_folio()
-    unmap_folio()
-      change ptes to migration entries
-    __split_folio_to_order()                         softleaf_to_folio()
-      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
-      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
-      prep_compound_page() for tail pages
+Second, the segment .status fields of the descriptor remain dirty. Once
+the DMA did one pass on the descriptor, the .status fields are populated
+with data by the DMA, but the .status fields are not cleared before reuse
+during the next cyclic DMA round. The xilinx_dma_get_residue() recognizes
+that as if the descriptor was complete and had 0 residue, which is bogus.
+Reinitialize the status field before placing the descriptor back into the
+active_list.
 
-In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-are visible before the tail page becomes non-compound.  smp_wmb() should
-be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
-result, if zap_nonpresent_ptes() accesses migration entry that stores tail
-pfn, softleaf_to_folio() may see the updated compound_head of tail page
-before page->flags.
-
-This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
-because of the race between folio split and zap_nonpresent_ptes()
-leading to a folio incorrectly undergoing modification without a folio
-lock being held.
-
-This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
-swapops predicates"), which in merged in v6.19-rc1.
-
-To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-in softleaf_to_folio() and softleaf_to_page().
-
-[tujinjiang@huawei.com: update function name and comments]
-  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
-Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ applied fix to swapops.h using old pfn_swap_entry/swp_entry_t naming ]
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221943.160375-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/swapops.h |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -487,15 +487,29 @@ static inline int pte_none_mostly(pte_t
- 	return pte_none(pte) || is_pte_marker(pte);
- }
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 7d49b8978aa57..fff51a00fb9fb 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1543,8 +1543,29 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 	if (chan->err)
+ 		return;
  
--static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
-+static inline void swap_entry_migration_sync(swp_entry_t entry,
-+		struct folio *folio)
- {
--	struct page *p = pfn_to_page(swp_offset_pfn(entry));
-+	/*
-+	 * Ensure we do not race with split, which might alter tail pages into new
-+	 * folios and thus result in observing an unlocked folio.
-+	 * This matches the write barrier in __split_folio_to_order().
-+	 */
-+	smp_rmb();
- 
- 	/*
- 	 * Any use of migration entries may only occur while the
- 	 * corresponding page is locked
- 	 */
--	BUG_ON(is_migration_entry(entry) && !PageLocked(p));
-+	BUG_ON(!folio_test_locked(folio));
-+}
+-	if (list_empty(&chan->pending_list))
++	if (list_empty(&chan->pending_list)) {
++		if (chan->cyclic) {
++			struct xilinx_dma_tx_descriptor *desc;
++			struct list_head *entry;
 +
-+static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
-+{
-+	struct page *p = pfn_to_page(swp_offset_pfn(entry));
++			desc = list_last_entry(&chan->done_list,
++					       struct xilinx_dma_tx_descriptor, node);
++			list_for_each(entry, &desc->segments) {
++				struct xilinx_axidma_tx_segment *axidma_seg;
++				struct xilinx_axidma_desc_hw *axidma_hw;
++				axidma_seg = list_entry(entry,
++							struct xilinx_axidma_tx_segment,
++							node);
++				axidma_hw = &axidma_seg->hw;
++				axidma_hw->status = 0;
++			}
 +
-+	if (is_migration_entry(entry))
-+		swap_entry_migration_sync(entry, page_folio(p));
++			list_splice_tail_init(&chan->done_list, &chan->active_list);
++			chan->desc_pendingcount = 0;
++			chan->idle = false;
++		}
+ 		return;
++	}
  
- 	return p;
- }
-@@ -504,11 +518,8 @@ static inline struct folio *pfn_swap_ent
- {
- 	struct folio *folio = pfn_folio(swp_offset_pfn(entry));
- 
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding folio is locked
--	 */
--	BUG_ON(is_migration_entry(entry) && !folio_test_locked(folio));
-+	if (is_migration_entry(entry))
-+		swap_entry_migration_sync(entry, folio);
- 
- 	return folio;
- }
+ 	if (!chan->idle)
+ 		return;
+-- 
+2.53.0
+
 
 
 
