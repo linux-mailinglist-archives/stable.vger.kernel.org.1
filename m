@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJoeHsL2y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:58 +0200
+	id 0CzZAbz9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A16136CAD5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D8E36DA39
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09D6C305C0C3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5252B31135AF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D69A3FADEE;
-	Tue, 31 Mar 2026 16:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1A63EF0A2;
+	Tue, 31 Mar 2026 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k72eTs9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyL5U6NV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F249C3E3174;
-	Tue, 31 Mar 2026 16:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4FD33120E;
+	Tue, 31 Mar 2026 16:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974336; cv=none; b=O203/SdfNSAIBpapGQY2aUzMbFukofi8sAkxdvBnahf3uyZ4sEJPnkI5FEatwpY2OGVGV8Xa/VAsMwd2iixRBeLCv8/TAvAagUg6hJ3B4bz8OmkGoVYbK5Lq3iJ2u0RfzwkZNmPZTfXE0LnjufwzwP62rj5oCmS7D95C2G+v2o4=
+	t=1774975749; cv=none; b=ZwivQlmZ/3kF5htum2Of4IXEcMM9gToguwCHBuJe2oy4B1sshLNl4Rx1NRoyMxoqIQcM0s1z11yprtpICvPnGyDBiMMKxitBcjhoI1OkHbnRgFFqZjUozrWKzckcqYlt9VqKuh1I9e76mcXz1GxRwCAaQ5G49EdnsdQUEDTqim8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974336; c=relaxed/simple;
-	bh=rD2li+y8znJqUwQvaciEPf6oges0oS9hueLzt37EfIM=;
+	s=arc-20240116; t=1774975749; c=relaxed/simple;
+	bh=HxI+BINaMQNNCP8sp6xHWMfEn2rega5Jm72GE74Rt+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKKDAcNfiMAKXSaO+Kz1tGWmez76OzyZhNaXePT9AnrRES+5+UtOPHeYjqy7Xm0wdp6n4/Pi4doTBrn2Lpu22AVyd5r0LhDD7sXf36tUbDbKAFcxz0s6JK3ZScXLdlDuvITerMWh7kQRyjRqSgUUrQZXSsffK0MrR1+J+bYXFic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k72eTs9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A28C19423;
-	Tue, 31 Mar 2026 16:25:35 +0000 (UTC)
+	 MIME-Version; b=Lpdm8zF1aFKk1B1GUnhUKsPWePyYaUd26REbiQaGgIEArOyEd53nOTQ/lw5TDcG5QbC5eyyvAfU+B2ef60ZI5zWvuvLDqB7+W2eH3GMZoPrKGKrxaKFC8nrpyEFG9uzB8rA3AO1XA1dPPQlx4VwsmD3MJFxqCzj3/VbOMhR6BS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyL5U6NV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25EC19423;
+	Tue, 31 Mar 2026 16:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974335;
-	bh=rD2li+y8znJqUwQvaciEPf6oges0oS9hueLzt37EfIM=;
+	s=korg; t=1774975748;
+	bh=HxI+BINaMQNNCP8sp6xHWMfEn2rega5Jm72GE74Rt+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k72eTs9VtMwF44yGR479MQ0rsY2XlspP73ZMxtP7vt4Mj34r6G7dsZglvzshc6xkB
-	 8+bMtpFo3VdUqnWGFZZySie8OUcr43ksCyhp/3TE6Dk3VhbJu60UUiZmBj5v2jwH0h
-	 yyjmiXFVAQ+AhaG63jsWXwhz1UddIM9wlrylJshI=
+	b=FyL5U6NVVHQH2M6opxahXh3IJAkP0BS0vE2FZmcJuELdBwvnhf/4r+lbESqsxS0tB
+	 2xcswlyduZpbzsNvSBwdMfBM9a8vrKivhD5W6I03KrOIksJ/ZUiMsvsCRq4fiNRrcT
+	 6hfP7YWBgvlu65FaEnatv1doE5It3BVCc8UQjNQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Liucheng Lu <luliucheng100@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/175] cxl/hdm: Avoid incorrect DVSEC fallback when HDM decoders are enabled
-Date: Tue, 31 Mar 2026 18:19:47 +0200
-Message-ID: <20260331161729.909978788@linuxfoundation.org>
+Subject: [PATCH 6.12 038/244] ALSA: hda/realtek: add HP Laptop 14s-dr5xxx mute LED quirk
+Date: Tue, 31 Mar 2026 18:19:48 +0200
+Message-ID: <20260331161743.106142616@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232051-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,suse.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231502-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: 0A16136CAD5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.de:email,outlook.com:email]
+X-Rspamd-Queue-Id: 07D8E36DA39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+From: Liucheng Lu <luliucheng100@outlook.com>
 
-[ Upstream commit 75cea0776de502f2a1be5ca02d37c586dc81887e ]
+[ Upstream commit 178dd118c0f07fd63a9ed74cfbd8c31ae50e33af ]
 
-Check the global CXL_HDM_DECODER_ENABLE bit instead of looping over
-per-decoder COMMITTED bits to determine whether to fall back to DVSEC
-range emulation. When the HDM decoder capability is globally enabled,
-ignore DVSEC range registers regardless of individual decoder commit
-state.
+HP Laptop 14s-dr5xxx with ALC236 codec does not handle the toggling of
+the mute LED.
+This patch adds a quirk entry for subsystem ID 0x8a1f using
+ALC236_FIXUP_HP_MUTE_LED_COEFBIT2 fixup, enabling correct mute LED
+behavior.
 
-should_emulate_decoders() currently loops over per-decoder COMMITTED
-bits, which leads to an incorrect DVSEC fallback when those bits are
-zero. One way to trigger this is to destroy a region and bounce the
-memdev:
-
-  cxl disable-region region0
-  cxl destroy-region region0
-  cxl disable-memdev mem0
-  cxl enable-memdev mem0
-
-Region teardown zeroes the HDM decoder registers including the committed
-bits. The subsequent memdev re-probe finds uncommitted decoders and falls
-back to DVSEC emulation, even though HDM remains globally enabled.
-
-Observed failures:
-
-  should_emulate_decoders: cxl_port endpoint6: decoder6.0: committed: 0 base: 0x0_00000000 size: 0x0_00000000
-  devm_cxl_setup_hdm: cxl_port endpoint6: Fallback map 1 range register
-  ..
-  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region0
-  __construct_region: cxl_pci 0000:e1:00.0: mem1:decoder6.0:
-  __construct_region region0 res: [mem 0x850000000-0x284fffffff flags 0x200] iw: 1 ig: 4096
-  cxl region0: pci0000:e0:port1 cxl_port_setup_targets expected iw: 1 ig: 4096 ..
-  cxl region0: pci0000:e0:port1 cxl_port_setup_targets got iw: 1 ig: 256 state: disabled ..
-  cxl_port endpoint6: failed to attach decoder6.0 to region0: -6
-  ..
-  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region4
-  alloc_hpa: cxl region4: HPA allocation error (-34) ..
-
-Fixes: 52cc48ad2a76 ("cxl/hdm: Limit emulation to the number of range registers")
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260316201950.224567-1-Smita.KoralahalliChannabasappa@amd.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Liucheng Lu <luliucheng100@outlook.com>
+Link: https://patch.msgid.link/PAVPR03MB9774F3FCE9CCD181C585281AE37BA@PAVPR03MB9774.eurprd03.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/hdm.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index f9738c863df0e..dc4dff7a2d38d 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -119,7 +119,6 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
- 	struct cxl_hdm *cxlhdm;
- 	void __iomem *hdm;
- 	u32 ctrl;
--	int i;
- 
- 	if (!info)
- 		return false;
-@@ -138,22 +137,16 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
- 		return false;
- 
- 	/*
--	 * If any decoders are committed already, there should not be any
--	 * emulated DVSEC decoders.
-+	 * If HDM decoders are globally enabled, do not fall back to DVSEC
-+	 * range emulation. Zeroed decoder registers after region teardown
-+	 * do not imply absence of HDM capability.
-+	 *
-+	 * Falling back to DVSEC here would treat the decoder as AUTO and
-+	 * may incorrectly latch default interleave settings.
- 	 */
--	for (i = 0; i < cxlhdm->decoder_count; i++) {
--		ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(i));
--		dev_dbg(&info->port->dev,
--			"decoder%d.%d: committed: %ld base: %#x_%.8x size: %#x_%.8x\n",
--			info->port->id, i,
--			FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl),
--			readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i)),
--			readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(i)),
--			readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i)),
--			readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i)));
--		if (FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl))
--			return false;
--	}
-+	ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
-+	if (ctrl & CXL_HDM_DECODER_ENABLE)
-+		return false;
- 
- 	return true;
- }
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index cb6ff3c36c5f0..77623373fad3d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10953,6 +10953,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x89d3, "HP EliteBook 645 G9 (MB 89D2)", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x89e7, "HP Elite x2 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8a1f, "HP Laptop 14s-dr5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a26, "HP Victus 16-d1xxx (MB 8A26)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
 -- 
 2.51.0
 
