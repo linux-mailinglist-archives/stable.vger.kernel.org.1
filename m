@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-231322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JJ7EI1by2lJGwYAu9opvQ
-	(envelope-from <stable+bounces-231322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:28:45 +0200
+	id 8CFyJpdcy2lJGwYAu9opvQ
+	(envelope-from <stable+bounces-231323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:33:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1CF3641E3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:28:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C95364256
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1EFEF301545A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 05:28:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6E733087812
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 05:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B7836EABF;
-	Tue, 31 Mar 2026 05:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7C336F431;
+	Tue, 31 Mar 2026 05:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="noCM57/t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yy5V62C/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B668C29E0F6;
-	Tue, 31 Mar 2026 05:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42A336F42C;
+	Tue, 31 Mar 2026 05:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774934920; cv=none; b=McRgphO6FQY0jkDqSMTplremZuDbGy5G6n5NBCFTqxKQa/osfBguG1YCZsQSPvOtSH0xvHsU30s6kLDz/cdyqbWa2j2z77dgOGJNoqEm3882P2p20H2Tl+/qvlW2NEih94Lw9/6DelobRhUenhtGqGrWWRA3TkhVa9RDg+nfObQ=
+	t=1774935002; cv=none; b=EIpm0EK4A+IAlDsugAFwELrCCxueW1Bd/Fi/soN5UAxypE0zV7JWEp3XK4sX/SAxMX6715BWs+DycB+pAVongVwDU+GJR6xW/58wb98fJ1bLt8qXvKLWVDh2HkEXmACcf2ldUPvw5QuzzO2LHp2L7VEPTh0o+lWxUt1B0jE34AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774934920; c=relaxed/simple;
-	bh=+Bku8QdBzfNE9060qI3hHjAAlgN1XJ+QsUnUMhIfTww=;
+	s=arc-20240116; t=1774935002; c=relaxed/simple;
+	bh=KJHZYM+ehxHHJBXpt1MD5YGvWlY42uOJ4mL62puB1cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ge+lFwotyysO0mZFt419UPU1IBjtHL5bA0N2oRzuCFZo51cBo0rZvNFjoFaE5p+LN4ithKBUkv4b4bK+tRbR24qQ1wLLoyqdB/Nh5t6xrhnlMkkE/T6CD+/cjgN74WyGC6DA38Yjt9vf/18ibuMP6B1iOVAWG0c+eA0+AE8BuOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=noCM57/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC79C19423;
-	Tue, 31 Mar 2026 05:28:40 +0000 (UTC)
+	 MIME-Version; b=QB1vPmKToSPBpByDiOGrwSAcDRptyuVAxAUOm74OWZRleROjUH4g5s3Bn060rsORzyKsT2A0DJ4P1t9MnpHbNhvFA3GBclDSNLEie4zB/LBAohudF2dxzuEI0aAx5+V5/0dKVTBEO6AeCi+zlIsAWyZXX8tF8RiA38ldAiNQqsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yy5V62C/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC61C19423;
+	Tue, 31 Mar 2026 05:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774934920;
-	bh=+Bku8QdBzfNE9060qI3hHjAAlgN1XJ+QsUnUMhIfTww=;
+	s=k20201202; t=1774935001;
+	bh=KJHZYM+ehxHHJBXpt1MD5YGvWlY42uOJ4mL62puB1cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=noCM57/tC+ZKaAzklJ5CJEevkGW5fC59phSSjgz3d0AoyfXufsF7Q8izXCJiokGBA
-	 GCmsFc0chaZqRqQ2gKVi29T7WQTqi8ndjv7r5Bs2aYuiumyP3Z7KgKGWDyMIWQ5T5+
-	 l5zMFeOPwKDwKaWpUCU2jbGsP7BXtHSgu67GGiuT2P86lpr6eNYSAj7bEpx9jhyYpP
-	 XG45870LupIZUfMHXbtqTK6jBWMUXke6srW+mLTXqIEB8IIzBmga1sIcJadVxEgiti
-	 t8Mf1XMSSzYzXqvjdQskvY6Vc2xtvApCaQr3VvYyhHdClPUyM7P9u7N/xWmdCrcQhl
-	 6bLVBHW+h/qkg==
+	b=Yy5V62C/mjfsvi85AOblFk+jrZ2o8/Nch95sGlK/qYdu1aC0jPN/p8bF72x9dtt2R
+	 DgR8V8Ctcr8tjbf78YPkDKlCeFq3PGNwbLhssyyx6G+yYYhF5QIjB9qyIF/iz4Li4R
+	 bzeFCCFclnYEXOtbhTiVIipcfgFyMkwU6YJPeHEhZnVz05VlpoJRMQ9QWktqILkpBg
+	 tjBN+VGUGtYwN57r3T72P9m/HuClNesIuhgaJ8QNLSDIJvXbjqmwAZu9q344u94Ya2
+	 3KUaAdhHGrXpiJS61lOMWsCAfASkF5cPL28ryeKXzhINl9TFVs6xwgOCAa8gtIBlCP
+	 gsfwAdtWvMpcA==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
 	Josh Law <objecting@objecting.org>,
 	SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
-Date: Mon, 30 Mar 2026 22:28:38 -0700
-Message-ID: <20260331052838.73914-1-sj@kernel.org>
+Subject: [PATCH 6.1.y] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+Date: Mon, 30 Mar 2026 22:29:59 -0700
+Message-ID: <20260331052959.77831-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026033036-ecosphere-leggings-7691@gregkh>
-References: <2026033036-ecosphere-leggings-7691@gregkh>
+In-Reply-To: <2026033040-expedited-twentieth-454a@gregkh>
+References: <2026033040-expedited-twentieth-454a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231322-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231323-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[objecting.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: DC1CF3641E3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,objecting.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 16C95364256
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -135,10 +135,10 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index acb6e57cd9cb..7a410640a0ef 100644
+index a5a1e90e53e7..bdcf895a29a7 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1494,6 +1494,9 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+@@ -2576,6 +2576,9 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
  {
  	bool need_wait = true;
  
