@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMtSBXf9y2nqNAYAu9opvQ
-	(envelope-from <stable+bounces-232004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:35 +0200
+	id CMbaEHz6y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3459936D9B7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F090636D229
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E738230BB145
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ADA063090703
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1342B346E46;
-	Tue, 31 Mar 2026 16:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A99423A76;
+	Tue, 31 Mar 2026 16:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peDGJpt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Uq9yoYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB442D1F40;
-	Tue, 31 Mar 2026 16:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE783FA5D9;
+	Tue, 31 Mar 2026 16:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975626; cv=none; b=rB8lH9tyoh/Uz0rYJvHIBdorNbBOMT38MYduevAahtGuhpqlyJiPfxGJZ6k1aAVKobERFecukyHeuqc5P1tLXINts8gknpZWTqsblidHMiNyDkrdReX1GPURKJ49KDFyfahFxaJ21ZOHBCzFY/4hrEQNncBrzmlIPRCkrxi+Fg4=
+	t=1774975042; cv=none; b=qUAtOt61FWnpIxe11B393hFzhl8btt/rWcJqPFkZAMNYB3nS40qTFKHzsIY5Bc0/RL3l7Q8XBDGteJSAE0GbEhWoxoubtg53G7DSSxCUYxbxpwrSFni5jVT5vVOuK51QPjxoAuHH0h2sbOsmyXq+mpUMbJUDSF3pkoErc54Ma9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975626; c=relaxed/simple;
-	bh=CF7hN5WZr+6jzYZLdjNDrPEogN14voePBdH7O9AecwA=;
+	s=arc-20240116; t=1774975042; c=relaxed/simple;
+	bh=8rIz3mVR5Q0iCaWfEPRAGDhW76Xs+ZMAjeL5kmEArvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJmrF7TKglu4jka1ZxvLLx246HteRrXQ4yIjTIZHB9Rwye06vsBwlEQByDCrRKyAdjiN5cPs43+85QlO8wtl/GjzDsgRo4Dyli2NGEhPWMn7ShR1txxUMFlCIK3kOgfGxEUT8t6yXYyf+HMqkz9w5f3l2T1bKNLfWzYh7cc3K/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peDGJpt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DF3C19423;
-	Tue, 31 Mar 2026 16:47:06 +0000 (UTC)
+	 MIME-Version; b=sBEdIr6BBADwDCCYBuW5KNDWAF8pYc8DgQaZqqH/awCwlh8V9GOLlpL6W6pX5AWhQjTLxmsuekPercxB7cl8p/Jqkwu2h71xL3G+DfY9e6cfD4UcbeLxghb8jVPPZoVfkbbZLtZHmBfrreQCciq6OZ/bfRpTdhVO0PWG/9+UWN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Uq9yoYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6582C19423;
+	Tue, 31 Mar 2026 16:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975626;
-	bh=CF7hN5WZr+6jzYZLdjNDrPEogN14voePBdH7O9AecwA=;
+	s=korg; t=1774975042;
+	bh=8rIz3mVR5Q0iCaWfEPRAGDhW76Xs+ZMAjeL5kmEArvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=peDGJpt2QnlbddSfEBuDSDue1CZ/ScIUQfQmxRPh4op3RRa+Szekt/QEUPEE5RXGp
-	 Dx9qm8+dy2yKfTqjgFGHknKaN7cT1UMmNvFC2P6JFZHedf8S6XIzDIgf4WyhfHCvu9
-	 lTry9XObfkH5QWXYafSUUzSnYUNQMF060DV3u62c=
+	b=0Uq9yoYyPYFlDcbp+5Js1OXxrkXz7yzRrhAOeEjf5g7lFGWbpyXw0k24+GQ5t3y6v
+	 Cujy0ZYX2eH0EMgzzK5zfykR6PcHSKPTkSDLVymEpMdKKhkpW8moavgfGhuAe9ME4d
+	 7W/bYQhZzUeWLzYklvmfHIYVo10LVdGcN3wdmHKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain Sioen <romain.sioen@microchip.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Chris Arges <carges@cloudflare.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/244] HID: mcp2221: cancel last I2C command on read error
-Date: Tue, 31 Mar 2026 18:19:34 +0200
-Message-ID: <20260331161742.597167974@linuxfoundation.org>
+Subject: [PATCH 6.19 142/342] netfilter: nft_set_rbtree: revisit array resize logic
+Date: Tue, 31 Mar 2026 18:19:35 +0200
+Message-ID: <20260331161804.233214004@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +69,218 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231777-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232004-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3459936D9B7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: F090636D229
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Sioen <romain.sioen@microchip.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e31b556c0ba21f20c298aa61181b96541140b7b9 ]
+[ Upstream commit fafdd92b9e30fe057740c5bb5cd4f92ecea9bf26 ]
 
-When an I2C SMBus read operation fails, the MCP2221 internal state machine
-may not reset correctly, causing subsequent transactions to fail.
+Chris Arges reports high memory consumption with thousands of
+containers, this patch revisits the array allocation logic.
 
-By adding a short delay and explicitly cancelling the last command,
-we ensure the device is ready for the next operation.
+For anonymous sets, start by 16 slots (which takes 256 bytes on x86_64).
+Expand it by x2 until threshold of 512 slots is reached, over that
+threshold, expand it by x1.5.
 
-Fix an issue where i2cdetect was not able to detect all devices correctly
-on the bus.
+For non-anonymous set, start by 1024 slots in the array (which takes 16
+Kbytes initially on x86_64). Expand it by x1.5.
 
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Use set->ndeact to subtract deactivated elements when calculating the
+number of the slots in the array, otherwise the array size array gets
+increased artifically. Add special case shrink logic to deal with flush
+set too.
+
+The shrink logic is skipped by anonymous sets.
+
+Use check_add_overflow() to calculate the new array size.
+
+Add a WARN_ON_ONCE check to make sure elements fit into the new array
+size.
+
+Reported-by: Chris Arges <carges@cloudflare.com>
+Fixes: 7e43e0a1141d ("netfilter: nft_set_rbtree: translate rbtree to array for binary search")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_set_rbtree.c | 92 +++++++++++++++++++++++++++-------
+ 1 file changed, 75 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-index 83941b916cd6b..f7b12d4cd2160 100644
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -337,6 +337,8 @@ static int mcp_i2c_smbus_read(struct mcp2221 *mcp,
- 				usleep_range(90, 100);
- 				retries++;
- 			} else {
-+				usleep_range(980, 1000);
-+				mcp_cancel_last_cmd(mcp);
- 				return ret;
- 			}
- 		} else {
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 5d91b7d08d33a..154bf2772e27d 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -572,14 +572,12 @@ static struct nft_array *nft_array_alloc(u32 max_intervals)
+ 	return array;
+ }
+ 
+-#define NFT_ARRAY_EXTRA_SIZE	10240
+-
+ /* Similar to nft_rbtree_{u,k}size to hide details to userspace, but consider
+  * packed representation coming from userspace for anonymous sets too.
+  */
+ static u32 nft_array_elems(const struct nft_set *set)
+ {
+-	u32 nelems = atomic_read(&set->nelems);
++	u32 nelems = atomic_read(&set->nelems) - set->ndeact;
+ 
+ 	/* Adjacent intervals are represented with a single start element in
+ 	 * anonymous sets, use the current element counter as is.
+@@ -595,27 +593,87 @@ static u32 nft_array_elems(const struct nft_set *set)
+ 	return (nelems / 2) + 2;
+ }
+ 
+-static int nft_array_may_resize(const struct nft_set *set)
++#define NFT_ARRAY_INITIAL_SIZE		1024
++#define NFT_ARRAY_INITIAL_ANON_SIZE	16
++#define NFT_ARRAY_INITIAL_ANON_THRESH	(8192U / sizeof(struct nft_array_interval))
++
++static int nft_array_may_resize(const struct nft_set *set, bool flush)
+ {
+-	u32 nelems = nft_array_elems(set), new_max_intervals;
++	u32 initial_intervals, max_intervals, new_max_intervals, delta;
++	u32 shrinked_max_intervals, nelems = nft_array_elems(set);
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	struct nft_array *array;
+ 
+-	if (!priv->array_next) {
+-		array = nft_array_alloc(nelems + NFT_ARRAY_EXTRA_SIZE);
+-		if (!array)
+-			return -ENOMEM;
++	if (nft_set_is_anonymous(set))
++		initial_intervals = NFT_ARRAY_INITIAL_ANON_SIZE;
++	else
++		initial_intervals = NFT_ARRAY_INITIAL_SIZE;
++
++	if (priv->array_next) {
++		max_intervals = priv->array_next->max_intervals;
++		new_max_intervals = priv->array_next->max_intervals;
++	} else {
++		if (priv->array) {
++			max_intervals = priv->array->max_intervals;
++			new_max_intervals = priv->array->max_intervals;
++		} else {
++			max_intervals = 0;
++			new_max_intervals = initial_intervals;
++		}
++	}
+ 
+-		priv->array_next = array;
++	if (nft_set_is_anonymous(set))
++		goto maybe_grow;
++
++	if (flush) {
++		/* Set flush just started, nelems still report elements.*/
++		nelems = 0;
++		new_max_intervals = NFT_ARRAY_INITIAL_SIZE;
++		goto realloc_array;
+ 	}
+ 
+-	if (nelems < priv->array_next->max_intervals)
+-		return 0;
++	if (check_add_overflow(new_max_intervals, new_max_intervals,
++			       &shrinked_max_intervals))
++		return -EOVERFLOW;
++
++	shrinked_max_intervals = DIV_ROUND_UP(shrinked_max_intervals, 3);
+ 
+-	new_max_intervals = priv->array_next->max_intervals + NFT_ARRAY_EXTRA_SIZE;
+-	if (nft_array_intervals_alloc(priv->array_next, new_max_intervals) < 0)
++	if (shrinked_max_intervals > NFT_ARRAY_INITIAL_SIZE &&
++	    nelems < shrinked_max_intervals) {
++		new_max_intervals = shrinked_max_intervals;
++		goto realloc_array;
++	}
++maybe_grow:
++	if (nelems > new_max_intervals) {
++		if (nft_set_is_anonymous(set) &&
++		    new_max_intervals < NFT_ARRAY_INITIAL_ANON_THRESH) {
++			new_max_intervals <<= 1;
++		} else {
++			delta = new_max_intervals >> 1;
++			if (check_add_overflow(new_max_intervals, delta,
++					       &new_max_intervals))
++				return -EOVERFLOW;
++		}
++	}
++
++realloc_array:
++	if (WARN_ON_ONCE(nelems > new_max_intervals))
+ 		return -ENOMEM;
+ 
++	if (priv->array_next) {
++		if (max_intervals == new_max_intervals)
++			return 0;
++
++		if (nft_array_intervals_alloc(priv->array_next, new_max_intervals) < 0)
++			return -ENOMEM;
++	} else {
++		array = nft_array_alloc(new_max_intervals);
++		if (!array)
++			return -ENOMEM;
++
++		priv->array_next = array;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -630,7 +688,7 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 
+ 	nft_rbtree_maybe_reset_start_cookie(priv, tstamp);
+ 
+-	if (nft_array_may_resize(set) < 0)
++	if (nft_array_may_resize(set, false) < 0)
+ 		return -ENOMEM;
+ 
+ 	do {
+@@ -741,7 +799,7 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
+ 	    nft_rbtree_interval_null(set, this))
+ 		priv->start_rbe_cookie = 0;
+ 
+-	if (nft_array_may_resize(set) < 0)
++	if (nft_array_may_resize(set, false) < 0)
+ 		return NULL;
+ 
+ 	while (parent != NULL) {
+@@ -811,7 +869,7 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
+ 
+ 	switch (iter->type) {
+ 	case NFT_ITER_UPDATE_CLONE:
+-		if (nft_array_may_resize(set) < 0) {
++		if (nft_array_may_resize(set, true) < 0) {
+ 			iter->err = -ENOMEM;
+ 			break;
+ 		}
 -- 
 2.51.0
 
