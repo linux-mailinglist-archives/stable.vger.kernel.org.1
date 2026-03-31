@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDMNIK38y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:13 +0200
+	id gKL/LRb5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AA536D73B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5F336CF30
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C95AC3149F5E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0AF9830473B7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDF1426D23;
-	Tue, 31 Mar 2026 16:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E290C3FF8AB;
+	Tue, 31 Mar 2026 16:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIRxxhqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoVqQjZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F75426D0C;
-	Tue, 31 Mar 2026 16:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AB73EE1DD;
+	Tue, 31 Mar 2026 16:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975257; cv=none; b=sVScQXR+fCB318d5NAqIgv6i1YfW6xV8pAShkjnmDFRwpNcTpLJ3LFI1CD3xoKWc46C00vvsQkT8DMkMWT/tuq8xRj2JL7hcUazvL0ZfkCdA0ck+vFGMG7f5ureP2+5jfK9+huEnnRd/+nZ+Lsp6O8rR5j5NRcshQ3igpyp3whU=
+	t=1774974428; cv=none; b=FhBGNdKEG1F5rART4xfxOXhhoJ6szEZIkEeIJsnR50blBIy4xRJPqeWdPdt4PqbMdLebsNpOm1OSiqEyeGihrmZC2TA30mqdj9/9LkvXpEBxBW32h9glo+zI76dpsyK+BpBHNTvtufYkY5eQYQwuXuqAKCPfRyMq1uNTBqzA68A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975257; c=relaxed/simple;
-	bh=emOdB+1TWdJYpMhB9jW8BVn9+ZYNYrBywKCrwlYqZBo=;
+	s=arc-20240116; t=1774974428; c=relaxed/simple;
+	bh=S2oTL3Xt6btSraN1AURSf/kxDFuFrNEOSQARS+URBr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqt6BFQMbtzxGvlmZPjVohFdG8UhX4eSF4fAcv+vQ87K85PSfe1nqCdpROEpKWV6kg/84/x6nJellpA/nBuUcAiedfclUvxF9CvmUa9zW1zRG+OwzxRfpvuHMgunHvKl4t0KN9lLbvnNDswtmUx2gHCYakYrNrAu4NGXb4Bg4U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIRxxhqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18263C19423;
-	Tue, 31 Mar 2026 16:40:56 +0000 (UTC)
+	 MIME-Version; b=SmAQHXiv0HdKf/hn9SGaNmEOHSGYzkaYzcb/INIoxdgfcRUuq5MjMxb+ER7g3hLoLGLaDkNffhp0FP2+bPKcK2ePu/rse21GNZWfZiTQkIl9dEvJ5KGOaFSvGYAhvwFiM75VrImvuldMuSXCA36eJ88FqiZY+5PncA/1oq4apqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoVqQjZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38089C19423;
+	Tue, 31 Mar 2026 16:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975257;
-	bh=emOdB+1TWdJYpMhB9jW8BVn9+ZYNYrBywKCrwlYqZBo=;
+	s=korg; t=1774974428;
+	bh=S2oTL3Xt6btSraN1AURSf/kxDFuFrNEOSQARS+URBr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIRxxhqXcBADHjDqyHqSl5VGAA1K8x0KiT/TKHv9rIi2bapn8tgQHCMdvXeg5n/+s
-	 /QMO9ZWx5moha2SFOocVR0ytVecAzn50OruIdrlLljMSxkqS8JzgoHglJrTZChkZDq
-	 Yow4E5JrydbsUd3wYgrsf3flswRn1oQBCYLLUAEo=
+	b=LoVqQjZ5cY6rG+tMqrES9wTjPhIP054+/kQW32o+wJLtoMc90SG7qpdnzA2ioLalc
+	 f6PlhksuqOuHf0cd7IacZFbAc+ugQ8CGUmIX4nJ7nm6vjeGhc4BwZ9NZSD3MgiQnzl
+	 VRnzF/qGmQvEsfqb3EnljHhF+WpIBcPZDa8W2LkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.19 224/342] hwmon: (pmbus/ina233) Fix error handling and sign extension in shunt voltage read
-Date: Tue, 31 Mar 2026 18:20:57 +0200
-Message-ID: <20260331161807.212428844@linuxfoundation.org>
+	Paolo Valerio <pvalerio@redhat.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 074/175] net: macb: use the current queue number for stats
+Date: Tue, 31 Mar 2026 18:20:58 +0200
+Message-ID: <20260331161732.496661856@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +69,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231538-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231860-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 14AA536D73B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tipi-net.de:email]
+X-Rspamd-Queue-Id: BB5F336CF30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Paolo Valerio <pvalerio@redhat.com>
 
-commit f7e775c4694782844c66da5316fed82881835cf8 upstream.
+[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
 
-ina233_read_word_data() reads MFR_READ_VSHUNT via pmbus_read_word_data()
-but has two issues:
+There's a potential mismatch between the memory reserved for statistics
+and the amount of memory written.
 
-1. The return value is not checked for errors before being used in
-   arithmetic. A negative error code from a failed I2C transaction is
-   passed directly to DIV_ROUND_CLOSEST(), producing garbage data.
+gem_get_sset_count() correctly computes the number of stats based on the
+active queues, whereas gem_get_ethtool_stats() indiscriminately copies
+data using the maximum number of queues, and in the case the number of
+active queues is less than MACB_MAX_QUEUES, this results in a OOB write
+as observed in the KASAN splat.
 
-2. MFR_READ_VSHUNT is a 16-bit two's complement value. Negative shunt
-   voltages (values with bit 15 set) are treated as large positive
-   values since pmbus_read_word_data() returns them zero-extended in an
-   int. This leads to incorrect scaling in the VIN coefficient
-   conversion.
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
+  [macb]
+Write of size 760 at addr ffff80008080b000 by task ethtool/1027
 
-Fix both issues by adding an error check, casting to s16 for proper
-sign extension, and clamping the result to a valid non-negative range.
-The clamp is necessary because read_word_data callbacks must return
-non-negative values on success (negative values indicate errors to the
-pmbus core).
+CPU: [...]
+Tainted: [E]=UNSIGNED_MODULE
+Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
+Call trace:
+ show_stack+0x20/0x38 (C)
+ dump_stack_lvl+0x80/0xf8
+ print_report+0x384/0x5e0
+ kasan_report+0xa0/0xf0
+ kasan_check_range+0xe8/0x190
+ __asan_memcpy+0x54/0x98
+ gem_get_ethtool_stats+0x54/0x78 [macb
+   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
+ dev_ethtool+0x1220/0x38c0
+ dev_ioctl+0x4ac/0xca8
+ sock_do_ioctl+0x170/0x1d8
+ sock_ioctl+0x484/0x5d8
+ __arm64_sys_ioctl+0x12c/0x1b8
+ invoke_syscall+0xd4/0x258
+ el0_svc_common.constprop.0+0xb4/0x240
+ do_el0_svc+0x48/0x68
+ el0_svc+0x40/0xf8
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1b0/0x1b8
 
-Fixes: b64b6cb163f16 ("hwmon: Add driver for TI INA233 Current and Power Monitor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260319173055.125271-2-sanman.pradhan@hpe.com
-[groeck: Fixed clamp to avoid losing the sign bit]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The buggy address belongs to a 1-page vmalloc region starting at
+  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000
+  index:0xffff00000a333000 pfn:0xa333
+flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
+raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
+raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                                  ^
+ ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+==================================================================
+
+Fix it by making sure the copied size only considers the active number of
+queues.
+
+Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
+Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/ina233.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/ina233.c
-+++ b/drivers/hwmon/pmbus/ina233.c
-@@ -72,7 +72,8 @@ static int ina233_read_word_data(struct
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 693688a580022..18dd191526448 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -3255,7 +3255,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
+ 	spin_lock_irq(&bp->stats_lock);
+ 	gem_update_stats(bp);
+ 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
+-			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
++			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
+ 	spin_unlock_irq(&bp->stats_lock);
+ }
  
- 		/* Adjust returned value to match VIN coefficients */
- 		/* VIN: 1.25 mV VSHUNT: 2.5 uV LSB */
--		ret = DIV_ROUND_CLOSEST(ret * 25, 12500);
-+		ret = clamp_val(DIV_ROUND_CLOSEST((s16)ret * 25, 12500),
-+				S16_MIN, S16_MAX) & 0xffff;
- 		break;
- 	default:
- 		ret = -ENODATA;
+-- 
+2.51.0
+
 
 
 
