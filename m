@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCLxCYT+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:04 +0200
+	id QDMNIK38y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF10936DC83
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AA536D73B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4431D305B2B3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C95AC3149F5E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5965425CD2;
-	Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDF1426D23;
+	Tue, 31 Mar 2026 16:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6fIGDyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIRxxhqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B24423149;
-	Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F75426D0C;
+	Tue, 31 Mar 2026 16:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975927; cv=none; b=oIQ6GMbnL34pRIT7PE1PLQ7H0kswM94IPnxsIIpOOlfvphb4PG1Ar7zwKjO57R8RAiCYuPoYbq1wrucNT1gAXJLMlft8ddza6NxxHzrQROrTy/rBvH5Vo2BIo4+pY9EiEYJTOepYa0SkHG6F80OBSq6lZIgDdZNtAAKhG06E4uo=
+	t=1774975257; cv=none; b=sVScQXR+fCB318d5NAqIgv6i1YfW6xV8pAShkjnmDFRwpNcTpLJ3LFI1CD3xoKWc46C00vvsQkT8DMkMWT/tuq8xRj2JL7hcUazvL0ZfkCdA0ck+vFGMG7f5ureP2+5jfK9+huEnnRd/+nZ+Lsp6O8rR5j5NRcshQ3igpyp3whU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975927; c=relaxed/simple;
-	bh=8nz0Wo2u3FTLfpk5yOHZK8IRMG8ZqlBvyloomAadJOI=;
+	s=arc-20240116; t=1774975257; c=relaxed/simple;
+	bh=emOdB+1TWdJYpMhB9jW8BVn9+ZYNYrBywKCrwlYqZBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upnUB0xLz9yOmgkTfDKkeWXUccY7HNAT/wVULwk3GAGc8kCdqQ/9PoPwqNstiRdFCY61yQLx8EJXpWNdcGbggG98/gQub1Jr7zACLJMYc1p4HS9XyNClgWTMfuiR5im0e+OKCIZoRjQ8dal/0Ks4V7tgYGTmjYTkq7tcHbRvIcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6fIGDyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E009C19423;
-	Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
+	 MIME-Version; b=jqt6BFQMbtzxGvlmZPjVohFdG8UhX4eSF4fAcv+vQ87K85PSfe1nqCdpROEpKWV6kg/84/x6nJellpA/nBuUcAiedfclUvxF9CvmUa9zW1zRG+OwzxRfpvuHMgunHvKl4t0KN9lLbvnNDswtmUx2gHCYakYrNrAu4NGXb4Bg4U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIRxxhqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18263C19423;
+	Tue, 31 Mar 2026 16:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975927;
-	bh=8nz0Wo2u3FTLfpk5yOHZK8IRMG8ZqlBvyloomAadJOI=;
+	s=korg; t=1774975257;
+	bh=emOdB+1TWdJYpMhB9jW8BVn9+ZYNYrBywKCrwlYqZBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6fIGDyH8M+/N3E914Snuoeio9P6scGB2t3h0W4cVX36V7EQ11KubrdWKxeljHrg2
-	 P5GGfC5ORMCiKhDK0VS5o6AbghZnr38XusRD35yWY9KOk4/NrEFLkJ0GCfQFcHpDrl
-	 Cu5yuuryqJ5GVybVpusPXJIWx47yWqN7qoBnWiZk=
+	b=xIRxxhqXcBADHjDqyHqSl5VGAA1K8x0KiT/TKHv9rIi2bapn8tgQHCMdvXeg5n/+s
+	 /QMO9ZWx5moha2SFOocVR0ytVecAzn50OruIdrlLljMSxkqS8JzgoHglJrTZChkZDq
+	 Yow4E5JrydbsUd3wYgrsf3flswRn1oQBCYLLUAEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/244] RDMA/rw: Fall back to direct SGE on MR pool exhaustion
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.19 224/342] hwmon: (pmbus/ina233) Fix error handling and sign extension in shunt voltage read
 Date: Tue, 31 Mar 2026 18:20:57 +0200
-Message-ID: <20260331161745.620241276@linuxfoundation.org>
+Message-ID: <20260331161807.212428844@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +67,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232120-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231860-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BF10936DC83
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 14AA536D73B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 00da250c21b074ea9494c375d0117b69e5b1d0a4 ]
+commit f7e775c4694782844c66da5316fed82881835cf8 upstream.
 
-When IOMMU passthrough mode is active, ib_dma_map_sgtable_attrs()
-produces no coalescing: each scatterlist page maps 1:1 to a DMA
-entry, so sgt.nents equals the raw page count. A 1 MB transfer
-yields 256 DMA entries. If that count exceeds the device's
-max_sgl_rd threshold (an optimization hint from mlx5 firmware),
-rdma_rw_io_needs_mr() steers the operation into the MR
-registration path. Each such operation consumes one or more MRs
-from a pool sized at max_rdma_ctxs -- roughly one MR per
-concurrent context. Under write-intensive workloads that issue
-many concurrent RDMA READs, the pool is rapidly exhausted,
-ib_mr_pool_get() returns NULL, and rdma_rw_init_one_mr() returns
--EAGAIN. Upper layer protocols treat this as a fatal DMA mapping
-failure and tear down the connection.
+ina233_read_word_data() reads MFR_READ_VSHUNT via pmbus_read_word_data()
+but has two issues:
 
-The max_sgl_rd check is a performance optimization, not a
-correctness requirement: the device can handle large SGE counts
-via direct posting, just less efficiently than with MR
-registration. When the MR pool cannot satisfy a request, falling
-back to the direct SGE (map_wrs) path avoids the connection
-reset while preserving the MR optimization for the common case
-where pool resources are available.
+1. The return value is not checked for errors before being used in
+   arithmetic. A negative error code from a failed I2C transaction is
+   passed directly to DIV_ROUND_CLOSEST(), producing garbage data.
 
-Add a fallback in rdma_rw_ctx_init() so that -EAGAIN from
-rdma_rw_init_mr_wrs() triggers direct SGE posting instead of
-propagating the error. iWARP devices, which mandate MR
-registration for RDMA READs, and force_mr debug mode continue
-to treat -EAGAIN as terminal.
+2. MFR_READ_VSHUNT is a 16-bit two's complement value. Negative shunt
+   voltages (values with bit 15 set) are treated as large positive
+   values since pmbus_read_word_data() returns them zero-extended in an
+   int. This leads to incorrect scaling in the VIN coefficient
+   conversion.
 
-Fixes: 00bd1439f464 ("RDMA/rw: Support threshold for registration vs scattering to local pages")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260313194201.5818-2-cel@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix both issues by adding an error check, casting to s16 for proper
+sign extension, and clamping the result to a valid non-negative range.
+The clamp is necessary because read_word_data callbacks must return
+non-negative values on success (negative values indicate errors to the
+pmbus core).
+
+Fixes: b64b6cb163f16 ("hwmon: Add driver for TI INA233 Current and Power Monitor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260319173055.125271-2-sanman.pradhan@hpe.com
+[groeck: Fixed clamp to avoid losing the sign bit]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/rw.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/hwmon/pmbus/ina233.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/rw.c b/drivers/infiniband/core/rw.c
-index 2522ff1cc462c..49fbfe1cef689 100644
---- a/drivers/infiniband/core/rw.c
-+++ b/drivers/infiniband/core/rw.c
-@@ -326,14 +326,29 @@ int rdma_rw_ctx_init(struct rdma_rw_ctx *ctx, struct ib_qp *qp, u32 port_num,
- 	if (rdma_rw_io_needs_mr(qp->device, port_num, dir, sg_cnt)) {
- 		ret = rdma_rw_init_mr_wrs(ctx, qp, port_num, sg, sg_cnt,
- 				sg_offset, remote_addr, rkey, dir);
--	} else if (sg_cnt > 1) {
-+		/*
-+		 * If MR init succeeded or failed for a reason other
-+		 * than pool exhaustion, that result is final.
-+		 *
-+		 * Pool exhaustion (-EAGAIN) from the max_sgl_rd
-+		 * optimization is recoverable: fall back to
-+		 * direct SGE posting. iWARP and force_mr require
-+		 * MRs unconditionally, so -EAGAIN is terminal.
-+		 */
-+		if (ret != -EAGAIN ||
-+		    rdma_protocol_iwarp(qp->device, port_num) ||
-+		    unlikely(rdma_rw_force_mr))
-+			goto out;
-+	}
-+
-+	if (sg_cnt > 1)
- 		ret = rdma_rw_init_map_wrs(ctx, qp, sg, sg_cnt, sg_offset,
- 				remote_addr, rkey, dir);
--	} else {
-+	else
- 		ret = rdma_rw_init_single_wr(ctx, qp, sg, sg_offset,
- 				remote_addr, rkey, dir);
--	}
+--- a/drivers/hwmon/pmbus/ina233.c
++++ b/drivers/hwmon/pmbus/ina233.c
+@@ -72,7 +72,8 @@ static int ina233_read_word_data(struct
  
-+out:
- 	if (ret < 0)
- 		goto out_unmap_sg;
- 	return ret;
--- 
-2.53.0
-
+ 		/* Adjust returned value to match VIN coefficients */
+ 		/* VIN: 1.25 mV VSHUNT: 2.5 uV LSB */
+-		ret = DIV_ROUND_CLOSEST(ret * 25, 12500);
++		ret = clamp_val(DIV_ROUND_CLOSEST((s16)ret * 25, 12500),
++				S16_MIN, S16_MAX) & 0xffff;
+ 		break;
+ 	default:
+ 		ret = -ENODATA;
 
 
 
