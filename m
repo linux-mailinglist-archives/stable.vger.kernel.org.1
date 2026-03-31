@@ -1,270 +1,312 @@
-Return-Path: <stable+bounces-232578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aL0SBNg3zGn7RQYAu9opvQ
-	(envelope-from <stable+bounces-232578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:08:40 +0200
+	id iEqHI8w6zGlyRgYAu9opvQ
+	(envelope-from <stable+bounces-232579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:21:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D05F37161C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:08:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2572A371937
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 28B8C3034DED
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:07:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9685530DF6C1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BAD3FFAD0;
-	Tue, 31 Mar 2026 21:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8CB4266A5;
+	Tue, 31 Mar 2026 21:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="uChPHJWK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o5KsyktZ"
 X-Original-To: stable@vger.kernel.org
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022090.outbound.protection.outlook.com [52.101.96.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173E3D6CBE;
-	Tue, 31 Mar 2026 21:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.90
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774991247; cv=fail; b=uLOmqbTn62oh1ODXiJrH+sYNkElVIloLsL9MDMYEF0r3/61kDeZIHbRiyeG8DIM734KiqdTrwWNrIicxy3ZqcVU/DVKgY74LVDPyzzaWhjziXqnDSiFMFiqpTIB5Sphe13DRM2oC5TiiGs3o3VZ+msu+pZHpzNGffJFt9aHw3G0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774991247; c=relaxed/simple;
-	bh=1lgLWVwflkyNUhGkpR8atonESCL4oUa1kdXPm6ZVzEs=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=apKypRt6Uxqh39sfI9cKoZFiK66h25Gyier/hkmpy6x21qW8Q3EWNYGV2rDH+1101DwUovTs6v6nQIZ+LaFHXn85J9Kylvv2aXlYCXJjLV/Blcf3fvoCgkC7TFfronJ/8Qg+0Cz9/2WOivrXiGd+Ctwa38oa8bOCIMVQxvLbCNU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=uChPHJWK; arc=fail smtp.client-ip=52.101.96.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zNtpWrE2Jp5/nURel55JIS45pUHbH278z37tC7nbPQsNvTwp+gehyR9JWsHMGn1hCg0xo5foT9p5DrXX1bmgo1jeibx1J8W0QauI+hYtoYAv02Ip+Jl8zd1SfXwgxBJxbICwE9YigN+HoLE5/kexcc4e06Xtx9X8tBk69mx3+Y96/XvgQDBeZ8qRVBUDflKFH/hmMjceNxU+SgFwnZ6D1T3/xnw+XKf2xnfzBTO/fSC42An4QpY5RSsAtV+F/JD+SGfvmSIsESpgUOwRPW26Tr79F5WBh862X5hwzXC6JttGKGXmR+nuV2OiUOYZ4RbBL1peEej8O8Hp3tPotRIZ3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DokolR/ibShIit6LbJGIvre8QW66yAyZmVL3+hvZdAE=;
- b=i2hd6aQEIDMA6XDxPvGLdnHq36Reh/1KFzJ566yH9qB7cp7g75Zw1ZqXNV92bcYcmhfHrRzgIvI2PABXB9tApiFNxeGc2CYLqul/mDgwe36asnLkPe7/Hsw6w+I9eIwplpyDG1NRfWUT6JS2oGi70k3aKYPi6RE7MADm6Lb93yu0xjp4exHEpHgrCUnZuGjVt4c4d3bqW9OqBcssrwzyTVGEGLGIuNdC9+LNA2PAOT//YO2PH2X3lyhkvWIVe7Bu3ZhuSbUq1BS86m4UAphw9Rt6KuFzxUOv1OlWW9nSgK0TIXQt4afPytLU8o5rCvFFIi5WOTpK1IZDxFjNgrWAVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DokolR/ibShIit6LbJGIvre8QW66yAyZmVL3+hvZdAE=;
- b=uChPHJWKbh/Pwkn1h4HwmRy41ZKFxhjdPeF4Lix0gjhY14oxFB2+KeQfOtwSWnBq1qDS6QSIoyb0NIPy0aeNhSa+V/8AChrLrdVYRfyq1jWazJ/kLr2KSAj0edvHc2gn3TvguyprtAgbgkiEsKx0hEuwC1uHDD766FgrQ6XHF38=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6523.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Tue, 31 Mar
- 2026 21:07:22 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 21:07:22 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Mar 2026 22:07:21 +0100
-Message-Id: <DHH9VRFULJST.383BKVSWUTZ3E@garyguo.net>
-Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
- <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Nathan
- Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>, "Aaron
- Tomlin" <atomlin@atomlin.com>, <linux-modules@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
- <stable@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260331205849.498295-1-ojeda@kernel.org>
-In-Reply-To: <20260331205849.498295-1-ojeda@kernel.org>
-X-ClientProxiedBy: LO4P302CA0028.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c1::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B04041B36E
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 21:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774991665; cv=none; b=YBDHJCE3jHFRyJTh+QtazQI1e3bwl/V1ZjOme9aOllj7j79OohCrCJaZz+sb5MGAYY/e2UEVhdZ9xCi+ON7P5OaufDCYmmJ9oMuh9d/PndY+FldEybkQZS+Dr3glOSQeeb3n2hibjrbu1RPO7zN7D1gx0vGj5tyNCQmKZr6KGbU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774991665; c=relaxed/simple;
+	bh=cEbTkyoIGc+4FGvanw1ToTAF9VBzhvD48F9X5JgbIgU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kXX/rCmcERVvo7gyvKXlOiiImxKysZk4GWATeu8Xa1+YXhAiFwRr7Lw7ALXUeF0nuJBQHgh4YhT2LI3rBQcASGBuiYiFrqY1z+dVeRMss5i3IVl3lNol+Xlyl8tsXbRwTQf4+wAfMYmUgWGX/gTdHG9w6ciojc/egNYFw0CQ3qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o5KsyktZ; arc=none smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12a693cdf29so322649c88.0
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 14:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774991661; x=1775596461; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BP58qPqPxGlCUhciznkv7Din9R33uAXsesYeu9BIBzw=;
+        b=o5KsyktZ9GbRkYQNLVK28RkMj4QWcOXtdHjjqYQGEQ89C1CwJOY+P2h3dWFnW3yk0L
+         AwN2w1JiFqyNDmdhmJj3cuEtPSVuA7nPVS3Skq81f4IMYCDwiZmAx4EFRmejy+k0YCR4
+         +P23dD88gp7LCePYZp/3M8MBr9tB9Co+tTpKhkVRNC5GTlOBn+yQQlYuWIbwDyxWhDoX
+         DWc2n0waqYrd7Uj8+0qftMhzReC1daE45C7qbqayHT2YTxyBgbXtROxuH3iqaUbKPqbZ
+         Sg8wHIAvHPj0W7g9WZ4orm7+NA/wn6sCK6wIBc039fNPHTZHYgB3EgjlI/7RTvveWRJB
+         fSDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774991661; x=1775596461;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BP58qPqPxGlCUhciznkv7Din9R33uAXsesYeu9BIBzw=;
+        b=PHtHzLOud028fjSxBIaFVnBng7votS3lHVKN8J1izrNjGmkb65CZkeocEa22wc/yKf
+         KtfuDdmPMBqCA7ERqjE8uX9RRsL24yjstEYn1XdNg4MucxzzM8pRF/aHSlS9BptlKbvo
+         0bPNzIDhvuiSWAy2PDtKtgSrmp5RyldEAwHYyI+vXpw/c5bsJteCVZDLpEckIUYVdYMV
+         sT2itx5wbMLKPUjpzDJLK8uLZ+GyE/U6CoasZrM9jCuVACWnvIC7GIIfeQ9VzTYnR+94
+         8Kk89+MVQLCTN9Zu0vu7jcOF58wX5wa1kxnsVT4DEjNYegEgzu0DzRiX5baEHXkmu4v3
+         sW4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXYfblmkmQt91d8n5IboJ0S33GiRU8JjFQl9NaC/wqIHORza775Fj56NeJg3rVz0kNsTwyCRE8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsnEiT16rs6buzMG+IEsiQIWgjfHuZfZJyvAgIXWheLfXpk74u
+	zxwj4UXLt5Lt/r/c5XTIUsi00FYWfQi3VVhrDcGdgh5JCqe0w7gdcl4n
+X-Gm-Gg: ATEYQzyhroixb2f1VVAIDzxYMogWrm4IeADglvsLRZHdVRUz4ysKXoxrGCgCiU1QYf0
+	3y98JsWiOUhiU0cVzsXwwFkyyZNgh/Yg9lfIfDUGbmznM855XNb6lP8uSZZcGsXD6MYUM7Qr7UU
+	ruzvKN0bPtih3Jh6MxtBTz33kqvdripqaRxhkL0mTlsZCrKxVHwsocVxw0+Tdm80HtzRQiwKAZq
+	kWk7Kg7liePM4FpVFJ7WOXPa1hmKnqhgSlJaMQYAC9bMXCV3brDyzYvpfblJ8gFQApZzFnGxNBo
+	AJk/UR7eYZutqtMJxYqjnuZDmh3wlUlfvz1toT8O+Klk90taUvVUsbymh0MkU8psIivU2As8XPf
+	cK/ghVXayTfYDXoWIQN2CZKMm7fpgTSQK34PU/3r8Q2j4zmZNBzuos5VNpmYWN35RJ4WNzvSC5W
+	I4jHrIFVTsBa3CEGT17nnp6sZtfbg4zF1VS37kqDYLXMp7/liMFmkOvfD+G7lHT9Y72nigXfgvb
+	ig=
+X-Received: by 2002:a05:7022:f10e:b0:12a:8122:24a9 with SMTP id a92af1059eb24-12bde008650mr2430073c88.22.1774991661386;
+        Tue, 31 Mar 2026 14:14:21 -0700 (PDT)
+Received: from [192.168.1.8] (177-4-161-218.user3p.v-tal.net.br. [177.4.161.218])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ab97cb08csm17870444c88.3.2026.03.31.14.14.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 14:14:21 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Tue, 31 Mar 2026 18:14:04 -0300
+Subject: [PATCH v2] ALSA: aoa: i2sbus: clear stale prepared state
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6523:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49a31d52-e810-4f7a-0034-08de8f698073
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|13003099007|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	K5XfsQjqhol89hoj2E6rgN4/2zLUxyDB9lXBtsfEV39XfbPxTJGS+1Far1jv13wf6Z9D9e9BnJKlsIIk1Z7Is0W9FlF4AupUU0yXU52EulhP4i2B9uxVhDuDDj3H/ER0n1KHXgFvXhUEJByTaKqKKoeeH6Be87udRspn6mHEtTYATNgK98BKwjqJr3xqs6xqE5F2hPMuxa28AAA4S+zSoxDrfkeB8hCoDKHqkt+DqB1LdagFLS4MDBbkbif0bG/20i7gYBNVELYxuN9Ddy7KjupLWFz1ezSc0pBS7MFm7oMstKVXRoVkxJuOW1aOAw14TnQOEfcJq0DAVm4hbkLq8me7LzylSWOyPIehSlLLGFenuq4A49Myh2p5BxXeL2eYHT2J/RhCpKJrSYBy44j7QaaaAXSiaHuJBeiZxMErp14T+zcGTDvEW0Tg7fN9upFSJBJhEAwi+aoIshGq7eSYEgkeYQdDPOmvDRYmYOwXVyn7rcCePE/4nrUjpP9qz6B6f3YtHF6PJfghdVWP7BKwEdB50Y+08MlKRcqZ2yRc257y/yU2Y+gGWyR9bnRjx2IYA9QJetkaEPPPSbcQpGYYjIkEi1ior/ap0tJgpk8OYNmYJdVWmKrgak51bplW4Z2qvLXf+RK7fVFfwdKJrE0C1xnlU0DLqpgPG1vaCYZnWDYH5+LrZj2mQ0cFT78CxbFw
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(13003099007)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?clZWQXU1RTRiQmN6TjYvbEpaWmVDZGNQai9PZ2ZYOTBVQmE5SlErRUp3Z3hX?=
- =?utf-8?B?KzJLV1VwNGtHcTh2VE51YkpjWmsyZnR5cjgzSDNaZFFCd3VmRU4rOTZRYW13?=
- =?utf-8?B?MXlKM3pPTEV5T2ZZK3VyTXZ4OG9BUWV3czNTMEhTalYzamdyb3dpbGhQVHZk?=
- =?utf-8?B?N3p2aTRsMFFudFFqNTFpYVMrMFcxR0pVL1F3U285VHc2b1ZiMXMycm5HTWlt?=
- =?utf-8?B?NTltcjJvR25TUllHZ2xBbkUrWmRsanZ1VGorSk9DQmlNUWVTcm9lYTJ1QWYz?=
- =?utf-8?B?eGVmeTNKQWl6RHFtWGFjYmlreGhjWndNSWhsdWx0TlRVNGlxQjE2TlZKTUVp?=
- =?utf-8?B?OTNGTWJwTUlPQkVuZDNnWjlJbmwxZXNhY1p0TTI1ZlUrdXJlQlpnOEJTdGVT?=
- =?utf-8?B?eVdtRjdrejRSdkxYVWJMeU8xMU1hcERxMVR3UnhsSng0ZVdNSWNQVU1wc29x?=
- =?utf-8?B?ZndVNFpnUTNvUytZZWl6eUF0RnQ0NVR6VmordzdsTFNOcEpJSUFrOVlpejNn?=
- =?utf-8?B?b2lhMlFwKzFKNkpvQ2ROMGlFYnZIKzJrMzFlNDgxY0NITnAyNkxPVUQ1M0Zx?=
- =?utf-8?B?WU80a3lGZWFPWUlNa0pzSUR3Zmx2WHpTTEZ2TXpwK1ZKbjFOdGtPaTFnbDJX?=
- =?utf-8?B?RWZWRWRIY2xVenZVYktxZU9sTXJVQ3pwZlFkbUI2QUMxZjlQMjVibGpxbW42?=
- =?utf-8?B?QjdJbkJxQnM2UWpJUG43ZlVFVEVlR0VwUzBXUXd5NWRGc1ZPc21JSUt4R0Vh?=
- =?utf-8?B?bGtLSkg3SVRmcnZSdUN4bjhYb2ZEa0lZb0RzMk1Nc0JOZVdJUFhqbGxlRTY2?=
- =?utf-8?B?NS9kbVYxSXcrV3IyRWRSekZmK0lSUmovSGxrRzV3NHpqVksraWFJVmpHZUpE?=
- =?utf-8?B?RUxFQzZQWWlLS2ZSZlRRb2lXUmI4aVUvVklNbmxPL1lJYXE5bVZ1SzhLTTA4?=
- =?utf-8?B?U0QvVFlGT2hrdTR1R1VpTHF4THBVK1Y0akZBNGNTYjEzTVdOeldFRUZvd0cx?=
- =?utf-8?B?eHhsK1JUUjYzSVZVaDJmNG9LQWVGL2ZPc3QwQVp5V3BXL3JONkZBajhyWTd0?=
- =?utf-8?B?c0hwaUJQeDNnR1dIbTczNDBxN2J4MVFXWG53RU5UOFN0RlBTUkt2KzVOVTMw?=
- =?utf-8?B?cGhIdXNYOGEyL3ZENklPTnJ6MlRFS3FoYjVTQkdjNG5lUzZGamFPcmF2VHNs?=
- =?utf-8?B?NHR5WndDTnhXbkxjeGhTd3RkTE56Wmx6R0tBQVpacHg5M1VwODRncTN0TVZP?=
- =?utf-8?B?SS91K2hZU2dPUTkxRm0zVkV2dWp2eVZVQ2hlVUdtaXVjOXJOUmxvcXVZWjJP?=
- =?utf-8?B?NW03bkJtK3ZGSlF1cEszYnhiVVRTRGR2TnhNMVRNbmoraDhidDUyVUQxeUpy?=
- =?utf-8?B?V0Rydk5hR0MyL2ZzWEFWWURwc3lCV3JSM1NiSFdRNGUwTmVRbEJTZ3hGRUxi?=
- =?utf-8?B?ZjYybUpFYXAxcHpZekVKYkEwd0FtMDV1QVUxMVhIaDdQMFdhTHVSNDFOcmlL?=
- =?utf-8?B?bmxZYVpoNVhLN2lnMkhDa3c1ZGhTQzE5MklTYWorbW1TdVAyb3ErUlRkeW1z?=
- =?utf-8?B?ODZoRGhyRWVvdUlzUGR1ZVRwWWIyd1g0Y3lHL0Q2VHE3RUtkaTcvL0Q4NUc4?=
- =?utf-8?B?dWFSVDhtSkdpYzVDcUF1Z3RoN29CSnZpK0p0WGJMVlpkbVdDSEVxWENsSFhI?=
- =?utf-8?B?Umt1dFI0c25JdTNXck9lakV2eDl2SEJvQ1Q4a1ZYZ2pKcTJZS0V4YXMrald6?=
- =?utf-8?B?MTcvRUZvWDFWYUNwdjBnLzlaSEFLa0VqY0taNFlLR2RFVjJZOHd6MnRxRWxO?=
- =?utf-8?B?M1VnclRhQWxpSFpuRmhud042bWZGMDlFY0lVNWRGL2ZNanB4bEtqYy9qUUZO?=
- =?utf-8?B?eFAzK1JMczRZQklyZHFGK2MwZ2U3UXZXRnk3cC9ZQklRL0tiaFQ2U3kzQ00z?=
- =?utf-8?B?RXc3bkdjNmw2RVpTYzF5dHY5Sk9jUm9sZ0dxZ3MrOGw3QldrUFFGcXBGUkpm?=
- =?utf-8?B?WkJUOUFqbnVEaFQyeGlVNkRMcUNPeGVhbElBLytLVzlsRDNZeTlienRzcXUr?=
- =?utf-8?B?YXg2TUxxU1ZKZUxFemxjQXgyMmZ4aEVCcmV4WDRqTmxjTlFpTGIzMzA5N3NP?=
- =?utf-8?B?SHIybXdSZDlhYzMwYUZ3RVhJN2ptbHA0UThYS2pYaUE3V0djUG9sWFZHeFBa?=
- =?utf-8?B?eEc3c2tPeE92SDVwT3FLWmFMOFNta2FZTXlzcm1GZ09vVE13djhkQW80TGZn?=
- =?utf-8?B?WWhOdlkyTmJENW5NNWVMVnFQRTMvcGMrTE1vRFNrY0JweE9vWS9nd3pjdFQ1?=
- =?utf-8?B?WE5pNU56d3NRL0t3blpCSUd1WS9yeDNNeGNxZmovNUpWMGVSVmk2Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49a31d52-e810-4f7a-0034-08de8f698073
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 21:07:22.3497
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /Cmrp8+DabVTOQPULJCY12r8/jK7qyz7OxIYMx0Kp+A5FfVIt/9hZ9rlnJXsyaRM8Yy/ndGeBWG+dgcWavEqjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6523
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260331-aoa-i2sbus-clear-stale-active-v2-1-3764ae2889a1@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WOyw6CMBBFf4V07ZjSEgiu/A/DYhgGGcPDtKXRE
+ P5dQPcuT3Jzzl2UZyfs1SVZlOMoXqZxA3NKFHU43hmk2VgZbXJtTQk4IYjx9eyBekYHPmDPgBQ
+ kMmSNrQudE2lu1eZ4Om7ldfhv1Zf9XD+Ywi7dF534MLn3cSCm++7XsvpPK6aQQlZgThotUsnX+
+ 4DSn2kaVLWu6webS2Hb3AAAAA==
+X-Change-ID: 20260329-aoa-i2sbus-clear-stale-active-4d3b706cc0ef
+To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6526;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=cEbTkyoIGc+4FGvanw1ToTAF9VBzhvD48F9X5JgbIgU=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJlnLFU7quq+64lsub+v5Efv3SXNjJbfvlywyZl1w2XvT
+ qPskm7djlIWBjEuBlkxRZbVSYss93Q9uFoft8IDZg4rE8gQBi5OAZhI5FVGhqeX3GLnHpsxTfYF
+ c0DFpQjOiFxGueJDc5Yc9N2/X1lqkz4jw1QTy3O+6T8r5e1eHJyyobzJ/OCXjV+KzIraWB/bL7o
+ uygoA
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-232578-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,atomlin.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,intel.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-232579-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[garyguo.net:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,rust-lang.github.io:url,garyguo.net:dkim,garyguo.net:mid]
-X-Rspamd-Queue-Id: 0D05F37161C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2572A371937
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue Mar 31, 2026 at 9:58 PM BST, Miguel Ojeda wrote:
-> Clippy in Rust 1.88.0 (only) reports [1]:
->
->     warning: variables can be used directly in the `format!` string
->        --> rust/macros/module.rs:112:23
->         |
->     112 |         let content =3D format!("{param}:{content}", param =3D =
-param, content =3D content);
->         |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#uninlined_format_args
->         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
-y::all`
->         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
-ined_format_args)]`
->     help: change this to
->         |
->     112 -         let content =3D format!("{param}:{content}", param =3D =
-param, content =3D content);
->     112 +         let content =3D format!("{param}:{content}");
->
->     warning: variables can be used directly in the `format!` string
->        --> rust/macros/module.rs:198:14
->         |
->     198 |         t =3D> panic!("Unsupported parameter type {}", t),
->         |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#uninlined_format_args
->         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
-y::all`
->         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
-ined_format_args)]`
->     help: change this to
->         |
->     198 -         t =3D> panic!("Unsupported parameter type {}", t),
->     198 +         t =3D> panic!("Unsupported parameter type {t}"),
->         |
->
-> The reason it only triggers in that version is that the lint was moved
-> from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
-> in Rust 1.89.0 [2][3].
->
-> In the first case, the suggestion is fair and a pure simplification, thus
-> we will clean it up separately.
->
-> To keep the behavior the same across all versions, and since the lint
-> does not work for all macros (e.g. custom ones like `pr_info!`), disable
-> it globally.
+The i2sbus PCM code uses pi->active to constrain the sibling stream to
+an already prepared duplex format and rate in i2sbus_pcm_open().
 
-Does it produce a false positive, or it's a false negative? If it's the lat=
-ter,
-I think we don't need to disable the lint.
+That state is set from i2sbus_pcm_prepare(), but the current code only
+clears it on close. As a result, the sibling stream can inherit stale
+constraints after the prepared state has been torn down.
 
-Best,
-Gary
+Clear pi->active when hw_params() or hw_free() tears down the prepared
+state, and set it again only after prepare succeeds.
 
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3DdrAtf3y_DZ-2o4jb6A=
-z9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com/ [1]
-> Link: https://github.com/rust-lang/rust-clippy/pull/15287 [2]
-> Link: https://github.com/rust-lang/rust-clippy/issues/15151 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  Makefile | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Makefile b/Makefile
-> index 1a219bf1c771..a63684c36d60 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -494,6 +494,7 @@ export rust_common_flags :=3D --edition=3D2021 \
->  			    -Wclippy::ptr_cast_constness \
->  			    -Wclippy::ref_as_ptr \
->  			    -Wclippy::undocumented_unsafe_blocks \
-> +			    -Aclippy::uninlined_format_args \
->  			    -Wclippy::unnecessary_safety_comment \
->  			    -Wclippy::unnecessary_safety_doc \
->  			    -Wrustdoc::missing_crate_level_docs \
+Replace the stale FIXME in the duplex constraint comment with a description
+of the current driver behavior: i2sbus still programs a single shared
+transport configuration for both directions, so mixed formats are not
+supported in duplex mode.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+---
+Changes in v2:
+- Drop the extra clear of pi->active at the beginning of i2sbus_pcm_prepare()
+- Keep the state reset in hw_params() and hw_free() only.
+- Fix the newly added .hw_params callbacks to use the proper ALSA prototype
+  with struct snd_pcm_hw_params *params, addressing the kernel test robot
+  build failure.
+- Update the changelog to match the reduced scope of the fix.
+- Link to v1: https://patch.msgid.link/20260330-aoa-i2sbus-clear-stale-active-v1-1-47a6c0a3ac9e@gmail.com
+---
+ sound/aoa/soundbus/i2sbus/pcm.c | 55 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 44 insertions(+), 11 deletions(-)
+
+diff --git a/sound/aoa/soundbus/i2sbus/pcm.c b/sound/aoa/soundbus/i2sbus/pcm.c
+index 97c807e67d56..63004ece94f9 100644
+--- a/sound/aoa/soundbus/i2sbus/pcm.c
++++ b/sound/aoa/soundbus/i2sbus/pcm.c
+@@ -165,17 +165,16 @@ static int i2sbus_pcm_open(struct i2sbus_dev *i2sdev, int in)
+ 	 * currently in use (if any). */
+ 	hw->rate_min = 5512;
+ 	hw->rate_max = 192000;
+-	/* if the other stream is active, then we can only
+-	 * support what it is currently using.
+-	 * FIXME: I lied. This comment is wrong. We can support
+-	 * anything that works with the same serial format, ie.
+-	 * when recording 24 bit sound we can well play 16 bit
+-	 * sound at the same time iff using the same transfer mode.
++	/* If the other stream is already prepared, keep this stream
++	 * on the same duplex format and rate.
++	 *
++	 * i2sbus_pcm_prepare() still programs one shared transport
++	 * configuration for both directions, so mixed duplex formats
++	 * are not supported here.
+ 	 */
+ 	if (other->active) {
+-		/* FIXME: is this guaranteed by the alsa api? */
+ 		hw->formats &= pcm_format_to_bits(i2sdev->format);
+-		/* see above, restrict rates to the one we already have */
++		/* Restrict rates to the one already in use. */
+ 		hw->rate_min = i2sdev->rate;
+ 		hw->rate_max = i2sdev->rate;
+ 	}
+@@ -283,6 +282,23 @@ void i2sbus_wait_for_stop_both(struct i2sbus_dev *i2sdev)
+ }
+ #endif
+ 
++static void i2sbus_pcm_clear_active(struct i2sbus_dev *i2sdev, int in)
++{
++	struct pcm_info *pi;
++
++	guard(mutex)(&i2sdev->lock);
++
++	get_pcm_info(i2sdev, in, &pi, NULL);
++	pi->active = 0;
++}
++
++static inline int i2sbus_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params, int in)
++{
++	i2sbus_pcm_clear_active(snd_pcm_substream_chip(substream), in);
++	return 0;
++}
++
+ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
+ {
+ 	struct i2sbus_dev *i2sdev = snd_pcm_substream_chip(substream);
+@@ -291,14 +307,27 @@ static inline int i2sbus_hw_free(struct snd_pcm_substream *substream, int in)
+ 	get_pcm_info(i2sdev, in, &pi, NULL);
+ 	if (pi->dbdma_ring.stopping)
+ 		i2sbus_wait_for_stop(i2sdev, pi);
++	i2sbus_pcm_clear_active(i2sdev, in);
+ 	return 0;
+ }
+ 
++static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream,
++				     struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 0);
++}
++
+ static int i2sbus_playback_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 0);
+ }
+ 
++static int i2sbus_record_hw_params(struct snd_pcm_substream *substream,
++				   struct snd_pcm_hw_params *params)
++{
++	return i2sbus_hw_params(substream, params, 1);
++}
++
+ static int i2sbus_record_hw_free(struct snd_pcm_substream *substream)
+ {
+ 	return i2sbus_hw_free(substream, 1);
+@@ -335,7 +364,6 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 		return -EINVAL;
+ 
+ 	runtime = pi->substream->runtime;
+-	pi->active = 1;
+ 	if (other->active &&
+ 	    ((i2sdev->format != runtime->format)
+ 	     || (i2sdev->rate != runtime->rate)))
+@@ -444,9 +472,11 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 
+ 	/* early exit if already programmed correctly */
+ 	/* not locking these is fine since we touch them only in this function */
+-	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
+-	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
++	if (in_le32(&i2sdev->intfregs->serial_format) == sfr &&
++	    in_le32(&i2sdev->intfregs->data_word_sizes) == dws) {
++		pi->active = 1;
+ 		return 0;
++	}
+ 
+ 	/* let's notify the codecs about clocks going away.
+ 	 * For now we only do mastering on the i2s cell... */
+@@ -484,6 +514,7 @@ static int i2sbus_pcm_prepare(struct i2sbus_dev *i2sdev, int in)
+ 		if (cii->codec->switch_clock)
+ 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
+ 
++	pi->active = 1;
+ 	return 0;
+ }
+ 
+@@ -728,6 +759,7 @@ static snd_pcm_uframes_t i2sbus_playback_pointer(struct snd_pcm_substream
+ static const struct snd_pcm_ops i2sbus_playback_ops = {
+ 	.open =		i2sbus_playback_open,
+ 	.close =	i2sbus_playback_close,
++	.hw_params =	i2sbus_playback_hw_params,
+ 	.hw_free =	i2sbus_playback_hw_free,
+ 	.prepare =	i2sbus_playback_prepare,
+ 	.trigger =	i2sbus_playback_trigger,
+@@ -796,6 +828,7 @@ static snd_pcm_uframes_t i2sbus_record_pointer(struct snd_pcm_substream
+ static const struct snd_pcm_ops i2sbus_record_ops = {
+ 	.open =		i2sbus_record_open,
+ 	.close =	i2sbus_record_close,
++	.hw_params =	i2sbus_record_hw_params,
+ 	.hw_free =	i2sbus_record_hw_free,
+ 	.prepare =	i2sbus_record_prepare,
+ 	.trigger =	i2sbus_record_trigger,
+
+---
+base-commit: 5a8ba15bcbf0cd70cc89d1e1a3d4037b2ab5ccdd
+change-id: 20260329-aoa-i2sbus-clear-stale-active-4d3b706cc0ef
+
+Best regards,
+--  
+Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
 
