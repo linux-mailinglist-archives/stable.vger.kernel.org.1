@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CzZAbz9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:44 +0200
+	id MGlUHHf1y2lwMwYAu9opvQ
+	(envelope-from <stable+bounces-231467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:25:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D8E36DA39
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C343636C8E1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5252B31135AF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59639305B0B2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1A63EF0A2;
-	Tue, 31 Mar 2026 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312783E92A5;
+	Tue, 31 Mar 2026 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyL5U6NV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqw3t3lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4FD33120E;
-	Tue, 31 Mar 2026 16:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88293EF0A2;
+	Tue, 31 Mar 2026 16:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975749; cv=none; b=ZwivQlmZ/3kF5htum2Of4IXEcMM9gToguwCHBuJe2oy4B1sshLNl4Rx1NRoyMxoqIQcM0s1z11yprtpICvPnGyDBiMMKxitBcjhoI1OkHbnRgFFqZjUozrWKzckcqYlt9VqKuh1I9e76mcXz1GxRwCAaQ5G49EdnsdQUEDTqim8=
+	t=1774974248; cv=none; b=DXyv25mhA78ZP5pIPtcS+2kPLXPMhywp5xgkbBGUgmDeue4UtTjunWwqFa6nI7oPt3ZvIREmHZdi5m0iYo3NeQO5+1ycWfUsOefQUfDu8DSBCX84ml3jpNAoCBVlI4ZjYPWgYUlWjQBgsS0I7TeCmz7woBB1JOKPiW54vRSCEAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975749; c=relaxed/simple;
-	bh=HxI+BINaMQNNCP8sp6xHWMfEn2rega5Jm72GE74Rt+k=;
+	s=arc-20240116; t=1774974248; c=relaxed/simple;
+	bh=Hzm8tQI0cq2XgXEL/I2wH+yuWyPm+ABcLJMvQFC7iUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lpdm8zF1aFKk1B1GUnhUKsPWePyYaUd26REbiQaGgIEArOyEd53nOTQ/lw5TDcG5QbC5eyyvAfU+B2ef60ZI5zWvuvLDqB7+W2eH3GMZoPrKGKrxaKFC8nrpyEFG9uzB8rA3AO1XA1dPPQlx4VwsmD3MJFxqCzj3/VbOMhR6BS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyL5U6NV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25EC19423;
-	Tue, 31 Mar 2026 16:49:08 +0000 (UTC)
+	 MIME-Version; b=K4MgolD2hxKHNwPiCXWDrNPEoINXJH367yCMnzN96nmhLTtLZPqNKoAfrJQw4W3H7UVmPIjo+Fa1cBG8vCIcDHalPlkIVCYYQjTvKIT4LjEzCSl7Us/kP04BAQ6GtgBtnQ/Mw1hVwHX70K+Pw8Trj4HD5VEUGZe8YivpijjlJXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqw3t3lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F3BC19423;
+	Tue, 31 Mar 2026 16:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975748;
-	bh=HxI+BINaMQNNCP8sp6xHWMfEn2rega5Jm72GE74Rt+k=;
+	s=korg; t=1774974247;
+	bh=Hzm8tQI0cq2XgXEL/I2wH+yuWyPm+ABcLJMvQFC7iUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FyL5U6NVVHQH2M6opxahXh3IJAkP0BS0vE2FZmcJuELdBwvnhf/4r+lbESqsxS0tB
-	 2xcswlyduZpbzsNvSBwdMfBM9a8vrKivhD5W6I03KrOIksJ/ZUiMsvsCRq4fiNRrcT
-	 6hfP7YWBgvlu65FaEnatv1doE5It3BVCc8UQjNQ8=
+	b=nqw3t3lfT9GWQ6ffmTQXqQhzylWKwPpjwrii1l26Wj/Uj46arxRAJhJd0Jnd3CpWN
+	 E2lwafebUJGwtLYZoG5ccfWFUx3lUF1U90yH06t2K6WqDCMH0Ne1NzR+VihzF0L6kD
+	 j7Q3eKm8BNn4v/zz0S45Rf084rejwczACJFZINKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liucheng Lu <luliucheng100@outlook.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/244] ALSA: hda/realtek: add HP Laptop 14s-dr5xxx mute LED quirk
+Subject: [PATCH 6.6 004/175] hwmon: (axi-fan-control) Use device firmware agnostic API
 Date: Tue, 31 Mar 2026 18:19:48 +0200
-Message-ID: <20260331161743.106142616@linuxfoundation.org>
+Message-ID: <20260331161729.946360395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +66,157 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232051-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,suse.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231467-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.de:email,outlook.com:email]
-X-Rspamd-Queue-Id: 07D8E36DA39
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C343636C8E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liucheng Lu <luliucheng100@outlook.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 178dd118c0f07fd63a9ed74cfbd8c31ae50e33af ]
+[ Upstream commit 1b5239f70fcd2d7fe86f0f5473006c2896db07a8 ]
 
-HP Laptop 14s-dr5xxx with ALC236 codec does not handle the toggling of
-the mute LED.
-This patch adds a quirk entry for subsystem ID 0x8a1f using
-ALC236_FIXUP_HP_MUTE_LED_COEFBIT2 fixup, enabling correct mute LED
-behavior.
+Don't directly use OF and use device property APIs. In addition, this
+makes the probe() code neater and also allow us to move the
+of_device_id table to it's natural place.
 
-Signed-off-by: Liucheng Lu <luliucheng100@outlook.com>
-Link: https://patch.msgid.link/PAVPR03MB9774F3FCE9CCD181C585281AE37BA@PAVPR03MB9774.eurprd03.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+While at it, make sure to explicitly include mod_devicetable.h for the
+of_device_id table.
+
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240214-axi-fan-control-no-of-v1-1-43ca656fe2e3@analog.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 813bbc4d33d2 ("hwmon: axi-fan: don't use driver_override as IRQ name")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/axi-fan-control.c | 39 +++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index cb6ff3c36c5f0..77623373fad3d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10953,6 +10953,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x89d3, "HP EliteBook 645 G9 (MB 89D2)", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x89e7, "HP Elite x2 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8a1f, "HP Laptop 14s-dr5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a26, "HP Victus 16-d1xxx (MB 8A26)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
+index 19b9bf3d75ef9..8dfe3b6c5a177 100644
+--- a/drivers/hwmon/axi-fan-control.c
++++ b/drivers/hwmon/axi-fan-control.c
+@@ -13,8 +13,9 @@
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ 
+ /* register map */
+ #define ADI_REG_RSTN		0x0080
+@@ -368,12 +369,12 @@ static irqreturn_t axi_fan_control_irq_handler(int irq, void *data)
+ }
+ 
+ static int axi_fan_control_init(struct axi_fan_control_data *ctl,
+-				const struct device_node *np)
++				const struct device *dev)
+ {
+ 	int ret;
+ 
+ 	/* get fan pulses per revolution */
+-	ret = of_property_read_u32(np, "pulses-per-revolution", &ctl->ppr);
++	ret = device_property_read_u32(dev, "pulses-per-revolution", &ctl->ppr);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -443,25 +444,16 @@ static struct attribute *axi_fan_control_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(axi_fan_control);
+ 
+-static const u32 version_1_0_0 = ADI_AXI_PCORE_VER(1, 0, 'a');
+-
+-static const struct of_device_id axi_fan_control_of_match[] = {
+-	{ .compatible = "adi,axi-fan-control-1.00.a",
+-		.data = (void *)&version_1_0_0},
+-	{},
+-};
+-MODULE_DEVICE_TABLE(of, axi_fan_control_of_match);
+-
+ static int axi_fan_control_probe(struct platform_device *pdev)
+ {
+ 	struct axi_fan_control_data *ctl;
+ 	struct clk *clk;
+-	const struct of_device_id *id;
++	const unsigned int *id;
+ 	const char *name = "axi_fan_control";
+ 	u32 version;
+ 	int ret;
+ 
+-	id = of_match_node(axi_fan_control_of_match, pdev->dev.of_node);
++	id = device_get_match_data(&pdev->dev);
+ 	if (!id)
+ 		return -EINVAL;
+ 
+@@ -485,18 +477,18 @@ static int axi_fan_control_probe(struct platform_device *pdev)
+ 
+ 	version = axi_ioread(ADI_AXI_REG_VERSION, ctl);
+ 	if (ADI_AXI_PCORE_VER_MAJOR(version) !=
+-	    ADI_AXI_PCORE_VER_MAJOR((*(u32 *)id->data))) {
++	    ADI_AXI_PCORE_VER_MAJOR((*id))) {
+ 		dev_err(&pdev->dev, "Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
+-			ADI_AXI_PCORE_VER_MAJOR((*(u32 *)id->data)),
+-			ADI_AXI_PCORE_VER_MINOR((*(u32 *)id->data)),
+-			ADI_AXI_PCORE_VER_PATCH((*(u32 *)id->data)),
++			ADI_AXI_PCORE_VER_MAJOR(*id),
++			ADI_AXI_PCORE_VER_MINOR(*id),
++			ADI_AXI_PCORE_VER_PATCH(*id),
+ 			ADI_AXI_PCORE_VER_MAJOR(version),
+ 			ADI_AXI_PCORE_VER_MINOR(version),
+ 			ADI_AXI_PCORE_VER_PATCH(version));
+ 		return -ENODEV;
+ 	}
+ 
+-	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
++	ret = axi_fan_control_init(ctl, &pdev->dev);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to initialize device\n");
+ 		return ret;
+@@ -527,6 +519,15 @@ static int axi_fan_control_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static const u32 version_1_0_0 = ADI_AXI_PCORE_VER(1, 0, 'a');
++
++static const struct of_device_id axi_fan_control_of_match[] = {
++	{ .compatible = "adi,axi-fan-control-1.00.a",
++		.data = (void *)&version_1_0_0},
++	{},
++};
++MODULE_DEVICE_TABLE(of, axi_fan_control_of_match);
++
+ static struct platform_driver axi_fan_control_driver = {
+ 	.driver = {
+ 		.name = "axi_fan_control_driver",
 -- 
 2.51.0
 
