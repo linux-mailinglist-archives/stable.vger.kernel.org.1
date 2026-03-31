@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBJnBXwHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:20 +0200
+	id uNNtC6/7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8285836F288
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C376E36D471
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6C853137EA5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1EBA311D95A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D352FB632;
-	Tue, 31 Mar 2026 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9884266A8;
+	Tue, 31 Mar 2026 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yv+YNRGi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGxSxCnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790082E11A6;
-	Tue, 31 Mar 2026 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6FA33F38A;
+	Tue, 31 Mar 2026 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976636; cv=none; b=Lb2S+hlTF7r148AAY6Lp8MGRjKv2IThvMzX6V/F9joY4wk1pyDU3wl76R06h2NHwJbOxECANtP41bVxDGiDku144Jen3oOQ3e6rdm+UyhN/5qGGSn6+hL9cOQrGqoU3QMI2On1N68igoOmj6WLTM+ag0/VWDUQwFeDS2SfcDyGs=
+	t=1774975211; cv=none; b=Yga5mYqpmR8gnewFWIhQnUP847dXhctyHegjBaPMHgba8TydcwyxO+XuFrqOf6glWQoxU6+S1VJExL2DFgJOcG1L6VzotA63NASTpslIeAv+3VVt+X9m37a/X2sbLuehAH67xZKvepZvxjoSt0Y2v5uwrIXf+pdAb6fSTLw5Daw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976636; c=relaxed/simple;
-	bh=bqObKNGDwopKEeMVBMUmEQYN1QtLMX6SNkr60eC5aXw=;
+	s=arc-20240116; t=1774975211; c=relaxed/simple;
+	bh=G/RXOzn0Ze9s7LXBjm3HkA044cOLYUGAHPKlIQBC4wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFcHhEiMznRcFzOC2cOSPHwnLX8CAqGgVd0Mg6ja2GlO/oUGSCRzxV71g0L2izTI/uMF9/UwFfj3TgMIrJOZmZoqNICdtvvDy88Q2YOFy74ZK4siQewk9mW0lWapttIhjlX04tOucHXMmUYQc2/ClzG/QCZ+XRa1fOwj3dEoFZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yv+YNRGi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F744C19423;
-	Tue, 31 Mar 2026 17:03:55 +0000 (UTC)
+	 MIME-Version; b=JvNhLm9+UrZRuQ0HeOKQ2JTartVmxror6PcKtRHN/AROZP2gL2qS49G7bQVYA3Xv0SfYuYsHLKuJw8cTy3M7rvowSS9tq+WmXgD+rI6nnyINl3fz3JDw4sR+LGd1z0CtfQJRRveXPFhM1UJqk2N8112Bdv71Pno1NJp3pa2532I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGxSxCnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7765C2BCB1;
+	Tue, 31 Mar 2026 16:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976636;
-	bh=bqObKNGDwopKEeMVBMUmEQYN1QtLMX6SNkr60eC5aXw=;
+	s=korg; t=1774975211;
+	bh=G/RXOzn0Ze9s7LXBjm3HkA044cOLYUGAHPKlIQBC4wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yv+YNRGiwd+jxHyORCbBGEJDSdS5LhbBPbaRCPtcsLIqtnZwa9TOwJLTEWQmnnRYU
-	 cxlZbhwTDP7iu4kaM/7SXyCYj4CHBOIKeUkoJo+Bvg8vi99f/TgA2eK9RG3qs5kyVl
-	 9Sq3+LjaM+T6jDdGNK/WiW5aH8lY8yPzwOGUR4EE=
+	b=GGxSxCnE1onqhy/DXqneAxslMB6S4t6tMPT/6hYzzJdWzu/G3tGgzmsXt+vqrQ1jK
+	 0zBzr8AGeKTU7CkxeHronjzgHiIhl6t0z6EJD7enQK+4aXIcpJHl7y7/rk73hqgw/r
+	 snpy9bpkq6F7A0nbokSp2yiFXPs1lXabuWodgTPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Rhodes <sean@starlabs.systems>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 137/309] ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 207/342] ALSA: firewire-lib: fix uninitialized local variable
 Date: Tue, 31 Mar 2026 18:20:40 +0200
-Message-ID: <20260331161758.518673163@linuxfoundation.org>
+Message-ID: <20260331161806.598794954@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,116 +77,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232395-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231842-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,starlabs.systems:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8285836F288
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,nppct.ru:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C376E36D471
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Rhodes <sean@starlabs.systems>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-[ Upstream commit a6919f2a01f8fbf807b015e5b26aecae7db8117b ]
+commit bb120ad57def62e3f23e3d999c5fbed11f610993 upstream.
 
-The initial StarFighter quirk fixed the runtime suspend pop by muting
-speakers in the shutup callback before power-down. Further hardware
-validation showed that the speaker path is controlled directly by LINE2
-EAPD on NID 0x1b together with GPIO2 for the external amplifier.
+Similar to commit d8dc8720468a ("ALSA: firewire-lib: fix uninitialized
+local variable"), the local variable `curr_cycle_time` in
+process_rx_packets() is declared without initialization.
 
-Replace the shutup-delay workaround with explicit sequencing of those
-controls at playback start and stop:
-- assert LINE2 EAPD and drive GPIO2 high on PREPARE
-- deassert LINE2 EAPD and drive GPIO2 low on CLEANUP
+When the tracepoint event is not probed, the variable may appear to be
+used without being initialized. In practice the value is only relevant
+when the tracepoint is enabled, however initializing it avoids potential
+use of an uninitialized value and improves code safety.
 
-This avoids the runtime suspend pop without a sleep, and also fixes pops
-around G3 entry and display-manager start that the original workaround
-did not cover.
+Initialize `curr_cycle_time` to zero.
 
-Fixes: 1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
-Tested-by: Sean Rhodes <sean@starlabs.systems>
-Signed-off-by: Sean Rhodes <sean@starlabs.systems>
-Link: https://patch.msgid.link/20260315201127.33744-1-sean@starlabs.systems
+Fixes: fef4e61b0b76 ("ALSA: firewire-lib: extend tracepoints event including CYCLE_TIME of 1394 OHCI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Link: https://patch.msgid.link/20260316191824.83249-1-sdl@nppct.ru
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 38 ++++++++++++++++++++++++++-----
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ sound/firewire/amdtp-stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 38fe144e6238a..b7d2c6f8f73ce 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -1017,12 +1017,30 @@ static int alc269_resume(struct hda_codec *codec)
- 	return 0;
- }
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -1179,7 +1179,7 @@ static void process_rx_packets(struct fw
+ 	struct pkt_desc *desc = s->packet_descs_cursor;
+ 	unsigned int pkt_header_length;
+ 	unsigned int packets;
+-	u32 curr_cycle_time;
++	u32 curr_cycle_time = 0;
+ 	bool need_hw_irq;
+ 	int i;
  
--#define STARLABS_STARFIGHTER_SHUTUP_DELAY_MS	30
-+#define ALC233_STARFIGHTER_SPK_PIN	0x1b
-+#define ALC233_STARFIGHTER_GPIO2	0x04
- 
--static void starlabs_starfighter_shutup(struct hda_codec *codec)
-+static void alc233_starfighter_update_amp(struct hda_codec *codec, bool on)
- {
--	if (snd_hda_gen_shutup_speakers(codec))
--		msleep(STARLABS_STARFIGHTER_SHUTUP_DELAY_MS);
-+	snd_hda_codec_write(codec, ALC233_STARFIGHTER_SPK_PIN, 0,
-+			    AC_VERB_SET_EAPD_BTLENABLE,
-+			    on ? AC_EAPDBTL_EAPD : 0);
-+	alc_update_gpio_data(codec, ALC233_STARFIGHTER_GPIO2, on);
-+}
-+
-+static void alc233_starfighter_pcm_hook(struct hda_pcm_stream *hinfo,
-+					struct hda_codec *codec,
-+					struct snd_pcm_substream *substream,
-+					int action)
-+{
-+	switch (action) {
-+	case HDA_GEN_PCM_ACT_PREPARE:
-+		alc233_starfighter_update_amp(codec, true);
-+		break;
-+	case HDA_GEN_PCM_ACT_CLEANUP:
-+		alc233_starfighter_update_amp(codec, false);
-+		break;
-+	}
- }
- 
- static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
-@@ -1031,8 +1049,16 @@ static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
- {
- 	struct alc_spec *spec = codec->spec;
- 
--	if (action == HDA_FIXUP_ACT_PRE_PROBE)
--		spec->shutup = starlabs_starfighter_shutup;
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		spec->gpio_mask |= ALC233_STARFIGHTER_GPIO2;
-+		spec->gpio_dir |= ALC233_STARFIGHTER_GPIO2;
-+		spec->gpio_data &= ~ALC233_STARFIGHTER_GPIO2;
-+		break;
-+	case HDA_FIXUP_ACT_PROBE:
-+		spec->gen.pcm_playback_hook = alc233_starfighter_pcm_hook;
-+		break;
-+	}
- }
- 
- static void alc269_fixup_pincfg_no_hp_to_lineout(struct hda_codec *codec,
--- 
-2.53.0
-
 
 
 
