@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SC1MEX0AzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:29 +0200
+	id cBHjBMgEzGm4NQYAu9opvQ
+	(envelope-from <stable+bounces-232124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF46836E2AB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F0936ED76
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2C63307F3AF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75A5D3144857
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39412FF669;
-	Tue, 31 Mar 2026 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37996425CD5;
+	Tue, 31 Mar 2026 16:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7baDZT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6WrwE0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B736D2D63E8;
-	Tue, 31 Mar 2026 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAF7428481;
+	Tue, 31 Mar 2026 16:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976610; cv=none; b=ugSV1WWNASoo4OEUgCJy6La8ylKREKRwikhKkqdFvsKpXQ0DCFiaQFJUopKUCv/1xW3L16IrfZETBi6BTARyjbx4WHCXOEHGzbrK0ybM8lQNuKhnZGmdUWMw78sUeBRCWm4yVNeDGnLS/2XRzmuUojoEpWT8i3rFSC3NWcO5k1U=
+	t=1774975938; cv=none; b=MlIaA3o3FTUtroXWQjxJaOsBPWK/yauQZrDKXKh6EoWhA2GtMll83VOUND2CVCOJ1TLp43J5t0YG9MGxWMbmFGKV86Unv8IJHLtIRTBoi5IKbaERp1ZWXYXiKmTCIMYC46N368tpdX1TPnkQ4QpOQPzWbLb0ZqoNg2n0j97S148=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976610; c=relaxed/simple;
-	bh=9AbhmYnavbjXMdIB10mh+JVQNfcspX/J4B9fhFhxQKg=;
+	s=arc-20240116; t=1774975938; c=relaxed/simple;
+	bh=Xst8fdtKrPG4G676keHQyZYlioCA7RFf3HdnrsA+Zeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iV2E1nJiMW7J8jG8ZemzO/SwO+BznrGx10cfwhbmMK//CjNBnJbctPc9dERyH6Go/m92b8Ha9NooKeIJ9cB0H5fn12sR6wh9s7eTWdwzriQ69im/JiojJewWiS1Ow9QeD+D5U+RsSOIJUIARfPnRSUREl+jG5foHQ/h3yWkXw18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7baDZT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A12C19423;
-	Tue, 31 Mar 2026 17:03:30 +0000 (UTC)
+	 MIME-Version; b=gngx5+tHq2yXBk7fcB4KxsOf41L1yv6Zc5ZyQCeyzjm6uN6M6QP3Y37Om/8Eht75tRzpuLWrXD9xkNVoYMxff1QRDsxT47j33K7SGN7mYBqcI+8lEcbXizqakcFJT4tk5rtiYl7o9iOtX/WElRISKAAONNZzJUZZkChTP9FIvXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6WrwE0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83286C2BCB4;
+	Tue, 31 Mar 2026 16:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976610;
-	bh=9AbhmYnavbjXMdIB10mh+JVQNfcspX/J4B9fhFhxQKg=;
+	s=korg; t=1774975937;
+	bh=Xst8fdtKrPG4G676keHQyZYlioCA7RFf3HdnrsA+Zeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7baDZT6Oq1BS26XD37RGg4kSJ4Vy3xgsfSaan207CAqVaZo+Pc6O5KmJiyCCqyoI
-	 8ZcTOIo8NQP2pHcAePeS/IdbzrSrszz6JMPVvpjb6yiVCi0SqyKFezBiY1Tvq9c8he
-	 +Wwxd1KtbgydsoyryNHgg0DWFiLDfRkWauwMhPKg=
+	b=G6WrwE0T3cWGEXo/SGXnPmKsfeBmIqL8M6aWjczt/HL17n5CNQfanoIgfLYSKsf21
+	 ifmoH7McBjhlgq56iSU0V656/6n3QE0aKtqI5OUvJrRVEXOlyq0G8ODIVeFltUKoo8
+	 XjEy/O5uof24YlHF9nMIZDNwH4MoeqwOmxIyEiYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Ivan Barrera <ivan.d.barrera@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 158/309] spi: meson-spicc: Fix double-put in remove path
+Subject: [PATCH 6.12 111/244] RDMA/irdma: Clean up unnecessary dereference of event->cm_node
 Date: Tue, 31 Mar 2026 18:21:01 +0200
-Message-ID: <20260331161759.283929687@linuxfoundation.org>
+Message-ID: <20260331161745.765341925@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +65,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232385-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232124-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: DF46836E2AB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 14F0936ED76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Ivan Barrera <ivan.d.barrera@intel.com>
 
-[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
+[ Upstream commit b415399c9a024d574b65479636f0d4eb625b9abd ]
 
-meson_spicc_probe() registers the controller with
-devm_spi_register_controller(), so teardown already drops the
-controller reference via devm cleanup.
+The cm_node is available and the usage of cm_node and event->cm_node
+seems arbitrary. Clean up unnecessary dereference of event->cm_node.
 
-Calling spi_controller_put() again in meson_spicc_remove()
-causes a double-put.
-
-Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
+Signed-off-by: Ivan Barrera <ivan.d.barrera@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-meson-spicc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/infiniband/hw/irdma/cm.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 6b91373075334..c99fab392add1 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -1102,8 +1102,6 @@ static void meson_spicc_remove(struct platform_device *pdev)
+diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
+index 7b9cba80a7f74..e7f315e102d51 100644
+--- a/drivers/infiniband/hw/irdma/cm.c
++++ b/drivers/infiniband/hw/irdma/cm.c
+@@ -4238,21 +4238,21 @@ static void irdma_cm_event_handler(struct work_struct *work)
+ 		irdma_cm_event_reset(event);
+ 		break;
+ 	case IRDMA_CM_EVENT_CONNECTED:
+-		if (!event->cm_node->cm_id ||
+-		    event->cm_node->state != IRDMA_CM_STATE_OFFLOADED)
++		if (!cm_node->cm_id ||
++		    cm_node->state != IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_cm_event_connected(event);
+ 		break;
+ 	case IRDMA_CM_EVENT_MPA_REJECT:
+-		if (!event->cm_node->cm_id ||
++		if (!cm_node->cm_id ||
+ 		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_send_cm_event(cm_node, cm_node->cm_id,
+ 				    IW_CM_EVENT_CONNECT_REPLY, -ECONNREFUSED);
+ 		break;
+ 	case IRDMA_CM_EVENT_ABORTED:
+-		if (!event->cm_node->cm_id ||
+-		    event->cm_node->state == IRDMA_CM_STATE_OFFLOADED)
++		if (!cm_node->cm_id ||
++		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_event_connect_error(event);
+ 		break;
+@@ -4262,7 +4262,7 @@ static void irdma_cm_event_handler(struct work_struct *work)
+ 		break;
+ 	}
  
- 	/* Disable SPI */
- 	writel(0, spicc->base + SPICC_CONREG);
--
--	spi_controller_put(spicc->host);
+-	irdma_rem_ref_cm_node(event->cm_node);
++	irdma_rem_ref_cm_node(cm_node);
+ 	kfree(event);
  }
  
- static const struct meson_spicc_data meson_spicc_gx_data = {
 -- 
 2.53.0
 
