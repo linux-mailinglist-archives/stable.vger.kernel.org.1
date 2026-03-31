@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AP/It4FzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:26 +0200
+	id cPWNDNL7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A55636EF44
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB0436D4BA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51AD530E0936
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2445230F9798
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E09E2D4B40;
-	Tue, 31 Mar 2026 17:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C568E3FA5E6;
+	Tue, 31 Mar 2026 16:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H172ZQvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejoXvLJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215322C21F8;
-	Tue, 31 Mar 2026 17:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88504426D27;
+	Tue, 31 Mar 2026 16:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976420; cv=none; b=iiH4InIaHXbbz8dufsQl3IecgjnwFzrRvAN3Zwf3T18zBAyT/G5KjLCQZbAVCmTjG4U8DAnD+v3eMn3VdSlDtL1BmJE0TAg+WZqSWhC+9SwyS7TsIeYJr37atcMqZBBSknAsxDMUiqIu88F3VvAzBhXaEU5LFLs/dFRz4DeKJAA=
+	t=1774975081; cv=none; b=KCR47ROVSvzSJRceJ6mKB7KqirBJ10SkCVN2dkmh9hUO9DUaPAk7SvBbC3xbvrETsrMsjPlP/2AzgLR/VpMf6rF6YP2zWlpYsEHboXJ1X+bP0e0MNJB7tzwoePDo6mh7vGAgdRdXEmWtbrORaqtSx+K6/zkA8I9Q5Fh/JZMnREM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976420; c=relaxed/simple;
-	bh=J0dgRK9hZ4+XZDMn0XFVo49Yv6TieCkve71lRlKN6k0=;
+	s=arc-20240116; t=1774975081; c=relaxed/simple;
+	bh=SLdV3D0V7RhKEsjtr9lFQJDnsNWy55qfihMWrJoGy28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyfPEPXflmzdqLd05nvEKChGlxcU6hQR+wetUVXd1dnzj44hLjlNu/l9/gkPeWXeNUBU9GNNbL6rCc4UHJiEGAUl/OPl5MQi266G76WGirCgW0pqdLRzCzh06h/iVyQzbeBjv9yZcfseHVqXU9rZkLEkPAc2rxc0RGAWgETtvhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H172ZQvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9142C19423;
-	Tue, 31 Mar 2026 17:00:19 +0000 (UTC)
+	 MIME-Version; b=HopBLS9UxxziUavj/e0yGDFD1AqB6kKJjXR5z0LD3ZJh2A1IBtWh3/kp78MhTwl+5QbyOCeEjhs00QQHvt/235od2MDREzcA08yvNDxSzN5WBFJcr3kqVygtek7fKu7ZliAzfUkNGeprtmc06TvLJBgtV7RgSQRO3sCu4SnhJXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejoXvLJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D41C19423;
+	Tue, 31 Mar 2026 16:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976420;
-	bh=J0dgRK9hZ4+XZDMn0XFVo49Yv6TieCkve71lRlKN6k0=;
+	s=korg; t=1774975081;
+	bh=SLdV3D0V7RhKEsjtr9lFQJDnsNWy55qfihMWrJoGy28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H172ZQvEBgzk2CAkUfaLF6B/3R5Gc/E/MWefhS3B58eRshVU52JAhEp7YwmCMpKdi
-	 V1ltrFY4YepzW/BCced2xjPpd1pzwEtn8Byt1w2yafli4t3cOWmegCZGsrODH8gm/Z
-	 LF/xEkcXH0GR316opompyE2g23UsN44d2JqO6+B8=
+	b=ejoXvLJrsEweVdwwKMy5BQc43A/lJbBUQwOPGF5WYKCq+ULtdWYV5Vpzad8cQ79JN
+	 DhDABXrzsMs9x/YWforulngQJuczEd9Tk5JFqa5dLx5cEIhGhJzYDL4Uqoxn0c1oK+
+	 Wd57KcHIrZHndPWR+/0ICV1q9H+tqGDv4tR/Jcng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 085/309] Bluetooth: MGMT: Fix dangling pointer on mgmt_add_adv_patterns_monitor_complete
+Subject: [PATCH 6.19 155/342] ALSA: usb-audio: Exclude Scarlett 2i2 1st Gen from SKIP_IFACE_SETUP
 Date: Tue, 31 Mar 2026 18:19:48 +0200
-Message-ID: <20260331161756.613403689@linuxfoundation.org>
+Message-ID: <20260331161804.712771928@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231792-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,51 +89,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email]
-X-Rspamd-Queue-Id: 8A55636EF44
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8FB0436D4BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 5f5fa4cd35f707344f65ce9e225b6528691dbbaa ]
+[ Upstream commit 8780f561f6717dec52351251881bff79e960eb46 ]
 
-This fixes the condition checking so mgmt_pending_valid is executed
-whenever status != -ECANCELED otherwise calling mgmt_pending_free(cmd)
-would kfree(cmd) without unlinking it from the list first, leaving a
-dangling pointer. Any subsequent list traversal (e.g.,
-mgmt_pending_foreach during __mgmt_power_off, or another
-mgmt_pending_valid call) would dereference freed memory.
+The Focusrite Scarlett 2i2 1st Gen (1235:8006) produces
+distorted/silent audio when QUIRK_FLAG_SKIP_IFACE_SETUP is active, as
+that flag causes the feedback format to be detected as 17.15 instead
+of 16.16.
 
-Link: https://lore.kernel.org/linux-bluetooth/20260315132013.75ab40c5@kernel.org/T/#m1418f9c82eeff8510c1beaa21cf53af20db96c06
-Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Add a DEVICE_FLG entry for this device before the Focusrite VENDOR_FLG
+entry so that it gets no quirk flags, overriding the vendor-wide
+SKIP_IFACE_SETUP. This device doesn't have the internal mixer, Air, or
+Safe modes that the quirk was designed to protect.
+
+Fixes: 38c322068a26 ("ALSA: usb-audio: Add QUIRK_FLAG_SKIP_IFACE_SETUP")
+Reported-by: pairomaniac [https://github.com/geoffreybennett/linux-fcp/issues/54]
+Tested-by: pairomaniac [https://github.com/geoffreybennett/linux-fcp/issues/54]
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/abmsTjKmQMKbhYtK@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 1a270f0b17d9e..5d70b1f69bb6d 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5273,7 +5273,7 @@ static void mgmt_add_adv_patterns_monitor_complete(struct hci_dev *hdev,
- 	 * hci_adv_monitors_clear is about to be called which will take care of
- 	 * freeing the adv_monitor instances.
- 	 */
--	if (status == -ECANCELED && !mgmt_pending_valid(hdev, cmd))
-+	if (status == -ECANCELED || !mgmt_pending_valid(hdev, cmd))
- 		return;
- 
- 	monitor = cmd->user_data;
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index d87b988516bbf..461d7d254e378 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2425,6 +2425,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_CTL_MSG_DELAY | QUIRK_FLAG_IFACE_DELAY),
+ 	VENDOR_FLG(0x07fd, /* MOTU */
+ 		   QUIRK_FLAG_VALIDATE_RATES),
++	DEVICE_FLG(0x1235, 0x8006, 0), /* Focusrite Scarlett 2i2 1st Gen */
+ 	VENDOR_FLG(0x1235, /* Focusrite Novation */
+ 		   QUIRK_FLAG_SKIP_IFACE_SETUP),
+ 	VENDOR_FLG(0x1511, /* AURALiC */
 -- 
-2.51.0
+2.53.0
 
 
 
