@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-231548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sO9ZLvf2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:51 +0200
+	id oOeZHzv+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B92036CB80
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D63736DB8E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4EEDF3069F9F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB757304CE48
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65C3410D00;
-	Tue, 31 Mar 2026 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D662F4266A6;
+	Tue, 31 Mar 2026 16:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSdyE55z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFGRNuMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686C93FADEE;
-	Tue, 31 Mar 2026 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989623DE431;
+	Tue, 31 Mar 2026 16:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974454; cv=none; b=hRfoI9PrgmMLYGTI+V5FFFv9A5Gn8eRmFP3+E7vGzuDHYedUCxzXICkbq6rdvvuQQUnfVvk2ATY/ewx7Wfhd2FHD7zos1CXkieL8jgf8xYt/Xlr75stEjfIDxWzJpwEnvHC2m/WrMAlnmknZo5sophKhI8VGo1shaGTgOGVzXtQ=
+	t=1774975891; cv=none; b=MIcmr7wC2BmPOnPeqnegMdTfceSnLKurGD0olVWlLS+iX6vHrUKjZL3rPtB4rVzmobNwJFUE2QUaawzg4JOjz5kDra9rQh1Vq9J6tZL5QmL494GPZHJa3aEhUUpdOlsdWUq2M2Plc/IGkf6d5L+LVZLohA2KlHmoGFywK8MlOw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974454; c=relaxed/simple;
-	bh=GreHCGcvyUUbRJOwsQxTi8f4tenCevrqjbSoxwmYbBU=;
+	s=arc-20240116; t=1774975891; c=relaxed/simple;
+	bh=l9FRl0c2pO2Tq4gn2y6TEeD35pfzGW+bE3TAnbWJfKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t643/oaVP+GHwPwox1hl/YvuMVJW744nvvEXUG0KqIzUCjkbFm/9Hiyh6X+8g3c7fJAwr+N9z+UwOUyOSX9EgZTUrj7l+K8TZb+mQdMIFtGciaWTb7M7hlIFE/QxcolREmipiLOW/P/ZvmCWIHznlOIS5+nYqcVm8ujrVEeLaTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSdyE55z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3148C19423;
-	Tue, 31 Mar 2026 16:27:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FABs8RLOfLNw+d3Tukbo41Zx948R/qiEOOHCi/+cu2/LyGHKbLppsL6rCnUWvzMqyHGU5zyWBdYC2JmxJ0os/luVEc9BMgd/Q28ubANmP28iFVu3RC9l8b5uTLS+kantqhcYyS2+VQjt23jxBHVtLYs/jt1s978viy7powyA4wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFGRNuMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE688C19423;
+	Tue, 31 Mar 2026 16:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974454;
-	bh=GreHCGcvyUUbRJOwsQxTi8f4tenCevrqjbSoxwmYbBU=;
+	s=korg; t=1774975891;
+	bh=l9FRl0c2pO2Tq4gn2y6TEeD35pfzGW+bE3TAnbWJfKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSdyE55znrirN9V+5xrk140hcWg1pf3YBwNRp87zVT4PAsidTQ2z23ZzZg3H+38Lz
-	 TxO0G8xHGz3/lql7a03InTtAiK0Gb6z6di9e/rPva6jwvxkRYNTd5oHLhsIDKYnDcq
-	 s8APFQEzuTUlDs10VzHRArxKhj0icc1jmHB89RaI=
+	b=kFGRNuMe/+bVAvva02mz+4SBPz61B6Au2M86c95d/Utk1f3DrN5sSecP1qCakbCl3
+	 GgfdLIhIHwQguY0Ivn7t9ZGKbZu078lWYrKctl/GhSAprEnTv6N7VVGOQlXn6tNAvR
+	 dV/99IiILWpF44Jub4Chj39xy5ExcRo8IlMVz0mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/175] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
+Subject: [PATCH 6.12 126/244] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
 Date: Tue, 31 Mar 2026 18:21:16 +0200
-Message-ID: <20260331161733.150272401@linuxfoundation.org>
+Message-ID: <20260331161746.311137946@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,12 +71,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231548-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232106-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,17 +88,17 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6B92036CB80
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2D63736DB8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -138,10 +138,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index fbee10927bfb6..946264a87d0e8 100644
+index 84e5364d1f67d..a872da6324865 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -670,9 +670,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
+@@ -702,9 +702,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
  		goto err_ib_sched;
  	}
  
