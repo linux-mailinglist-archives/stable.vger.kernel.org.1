@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-231926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDuSEEL8y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:26 +0200
+	id uGAEONIAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBBB36D5E1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30A136E3B7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A2423095F2E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9E048305DCF9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E555402435;
-	Tue, 31 Mar 2026 16:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFEF30276A;
+	Tue, 31 Mar 2026 17:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHI/Ut24"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2URPBnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520D0262A6;
-	Tue, 31 Mar 2026 16:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10393301471;
+	Tue, 31 Mar 2026 17:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975424; cv=none; b=lzg6ArcIJKO3sshuiblyObRWOVXgf1SaEv0izyoIrXN5HT95GIaqIBFzyLzUlV+UTcljSTN5ImLmJBJ9IVKi3ChPvYs1tFOAk1wPk5NkOJJBv7FAZVaon7Y+QS87S9ID+xpK+Wzkr90y6LtQwNq5Mup6n5vS4ef8/y8U8//VARo=
+	t=1774976766; cv=none; b=SmeLN40qsMbKGDIhzDYsDxZ76p5tPRqUgQ3J4rZ7DuRmSA59WeDsYeCNNgkvLSjgwPbGMlS+BtYsljABDFW0XbyNjzJtXq+NHYb4nd7S1OZYm3ndRezOfReZ2VEkLN6pn4vwCqDYUGlB+ufDRYVI9TPO4qs+EosjjV59MBxp7VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975424; c=relaxed/simple;
-	bh=LzmNfeFXt7byRM/TYzuL1WQCJAngB9zhF0q9116hITE=;
+	s=arc-20240116; t=1774976766; c=relaxed/simple;
+	bh=J6E2+TF+8ePoO6X497RM3G/62fvW0TtLLovy+PCtaDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCxBG+EK2OjtEzgOo5Y3wbdHi+rcoHuiV1PpaKe+cQA59fcHjTRG/4vDKBphMg0OCDrFVHynKO+244KREXzk6YUfh4ekTbm0mYo1PmrGn9eoY4gqkevipEtl6IR9F7ruuBgfPYs2zAcHp99OqSfg+3N1AKdkH/7igx521DKL820=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHI/Ut24; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92F2C19423;
-	Tue, 31 Mar 2026 16:43:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JbCmpm1OZ4NK74mhGMHD0Q+sTEMB2TajFXmDmvphngohg7KZr6sFYJhaZ5QeRDNcuqMZiycihqdiEr6gLO/7j5m4ogFDq2SRsVMwo7DsUqpgdjXV1WYkngkqYOK+myhGTDe6qSW6Gu4DyPHJxXF6KmsYmYqDy5pbAw90rGdMboM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2URPBnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBCC19423;
+	Tue, 31 Mar 2026 17:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975424;
-	bh=LzmNfeFXt7byRM/TYzuL1WQCJAngB9zhF0q9116hITE=;
+	s=korg; t=1774976766;
+	bh=J6E2+TF+8ePoO6X497RM3G/62fvW0TtLLovy+PCtaDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHI/Ut24a6MTAAVwZXcsI2xtEcOhCpR4jC2lB3BzgKsKDXKrGi/YwvBmM68vpcnKR
-	 CNHyZ9kpddSyzl9UFwnTpMkuK7rCbBpPUhZUWImz35vkrEiHMHHcHqBlmU2kCVxOz9
-	 ighFBnqCg+t3PoXencHWE+KCi1UGoLoAw5HHl3TU=
+	b=o2URPBnmrNwEUTDk5YureqB2wMGG4lTuw0WQPt/inr2Cx3FcA+GLATvjmwrv0wBhW
+	 hRR+nBK2FssmnjTVkGpMwvgl11XqFfBYJ41Ba0WQKNiHQdEp6dRSlabBKnCFWeoCRu
+	 78gKuBzIK4Xkj6uis3dqeMMK4R6f73hjEhKDDoEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rostedt@goodmis.org,
-	david.laight.linux@gmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.19 289/342] xfs: remove file_path tracepoint data
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 219/309] net: macb: Move devm_{free,request}_irq() out of spin lock area
 Date: Tue, 31 Mar 2026 18:22:02 +0200
-Message-ID: <20260331161809.574770603@linuxfoundation.org>
+Message-ID: <20260331161801.509172436@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,130 +63,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231926-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,gmail.com,kernel.org,redhat.com,lst.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-232445-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.981];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: ADBBB36D5E1
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A30A136E3B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit e31c53a8060e134111ed095783fee0aa0c43b080 upstream.
+commit 317e49358ebbf6390fa439ef3c142f9239dd25fb upstream.
 
-The xfile/xmbuf shmem file descriptions are no longer as detailed as
-they were when online fsck was first merged, because moving to static
-strings in commit 60382993a2e180 ("xfs: get rid of the
-xchk_xfile_*_descr calls") removed a memory allocation and hence a
-source of failure.
+The devm_free_irq() and devm_request_irq() functions should not be
+executed in an atomic context.
 
-However this makes encoding the description in the tracepoints sort of a
-waste of memory.  David Laight also points out that file_path doesn't
-zero the whole buffer which causes exposure of stale trace bytes, and
-Steven Rostedt wonders why we're not using a dynamic array for the file
-path.
+During device suspend, all userspace processes and most kernel threads
+are frozen. Additionally, we flush all tx/rx status, disable all macb
+interrupts, and halt rx operations. Therefore, it is safe to split the
+region protected by bp->lock into two independent sections, allowing
+devm_free_irq() and devm_request_irq() to run in a non-atomic context.
+This modification resolves the following lockdep warning:
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
+  preempt_count: 1, expected: 0
+  RCU nest depth: 1, expected: 0
+  7 locks held by rtcwake/501:
+   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
+   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
+  irq event stamp: 8682
+  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
+  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
+  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
+  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
+  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   __might_resched+0x200/0x218
+   __might_sleep+0x38/0x98
+   __mutex_lock_common+0x7c/0x1378
+   mutex_lock_nested+0x38/0x50
+   free_irq+0x68/0x2b0
+   devm_irq_release+0x24/0x38
+   devres_release+0x40/0x80
+   devm_free_irq+0x48/0x88
+   macb_suspend+0x298/0x558
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
 
-I don't think this is worth fixing, so let's just rip it out.
-
-Cc: rostedt@goodmis.org
-Cc: david.laight.linux@gmail.com
-Link: https://lore.kernel.org/linux-xfs/20260323172204.work.979-kees@kernel.org/
-Cc: stable@vger.kernel.org # v6.11
-Fixes: 19ebc8f84ea12e ("xfs: fix file_path handling in tracepoints")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/trace.h |   12 ++----------
- fs/xfs/xfs_trace.h   |   11 ++---------
- 2 files changed, 4 insertions(+), 19 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -972,20 +972,12 @@ TRACE_EVENT(xfile_create,
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(unsigned long, ino)
--		__array(char, pathname, MAXNAMELEN)
- 	),
- 	TP_fast_assign(
--		char		*path;
--
- 		__entry->ino = file_inode(xf->file)->i_ino;
--		path = file_path(xf->file, __entry->pathname, MAXNAMELEN);
--		if (IS_ERR(path))
--			strncpy(__entry->pathname, "(unknown)",
--					sizeof(__entry->pathname));
- 	),
--	TP_printk("xfino 0x%lx path '%s'",
--		  __entry->ino,
--		  __entry->pathname)
-+	TP_printk("xfino 0x%lx",
-+		  __entry->ino)
- );
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5832,6 +5832,7 @@ static int __maybe_unused macb_suspend(s
+ 			/* write IP address into register */
+ 			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
+ 		}
++		spin_unlock_irqrestore(&bp->lock, flags);
  
- TRACE_EVENT(xfile_destroy,
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -5115,23 +5115,16 @@ TRACE_EVENT(xmbuf_create,
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(unsigned long, ino)
--		__array(char, pathname, MAXNAMELEN)
- 	),
- 	TP_fast_assign(
--		char		*path;
- 		struct file	*file = btp->bt_file;
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+@@ -5844,11 +5845,12 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+ 			gem_writel(bp, WOL, tmp);
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		} else {
+ 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+ 					       IRQF_SHARED, netdev->name, bp->queues);
+@@ -5856,13 +5858,13 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+ 			macb_writel(bp, WOL, tmp);
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
  
- 		__entry->dev = btp->bt_mount->m_super->s_dev;
- 		__entry->ino = file_inode(file)->i_ino;
--		path = file_path(file, __entry->pathname, MAXNAMELEN);
--		if (IS_ERR(path))
--			strncpy(__entry->pathname, "(unknown)",
--					sizeof(__entry->pathname));
- 	),
--	TP_printk("dev %d:%d xmino 0x%lx path '%s'",
-+	TP_printk("dev %d:%d xmino 0x%lx",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
--		  __entry->ino,
--		  __entry->pathname)
-+		  __entry->ino)
- );
+ 		enable_irq_wake(bp->queues[0].irq);
+ 	}
+@@ -5929,6 +5931,8 @@ static int __maybe_unused macb_resume(st
+ 		queue_readl(bp->queues, ISR);
+ 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 			queue_writel(bp->queues, ISR, -1);
++		spin_unlock_irqrestore(&bp->lock, flags);
++
+ 		/* Replace interrupt handler on queue 0 */
+ 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+ 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+@@ -5937,10 +5941,8 @@ static int __maybe_unused macb_resume(st
+ 			dev_err(dev,
+ 				"Unable to request IRQ %d (error %d)\n",
+ 				bp->queues[0].irq, err);
+-			spin_unlock_irqrestore(&bp->lock, flags);
+ 			return err;
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
  
- TRACE_EVENT(xmbuf_free,
+ 		disable_irq_wake(bp->queues[0].irq);
+ 
 
 
 
