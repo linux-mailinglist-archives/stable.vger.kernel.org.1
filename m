@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H2VINL+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:22 +0200
+	id 6Eb1OsYCzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A711336DD53
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C2F36E90C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 131E430C7224
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 874FF30CB1C0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AFC423A93;
-	Tue, 31 Mar 2026 16:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3DA3EF0A2;
+	Tue, 31 Mar 2026 16:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOlIn5SC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gH4A5slX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80F442317F;
-	Tue, 31 Mar 2026 16:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F88D2D1F40;
+	Tue, 31 Mar 2026 16:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974992; cv=none; b=eWiKrgexL28Pc32gqqFhTE0QCdqKWqrnxUWVwZwyDWSHcf02agp+9eS20/Y2Z87qRjl06DdqNeS9XFTtMlvQGtApyoqrUcFyKd7SKCL2PnGHxMvmIOqZLg7zZAoU55ZDKmZ6JEek81E5ibCzDnVa0rI0aZtlZ88VJ03L1eQUZcI=
+	t=1774975647; cv=none; b=bIS07UDX9+CIpgo+kO/DGfYjxATS9LWDb7enbIx7KhbH/bAzpoU9ZJigUG13Ihw1RqczZg9Kekc4x7bbeF083IwtMFEInf+6eSBotavfpkljAuW+lMF9W+R0DiuOgNOPuFA34p3Pulo2t6wUvFBTm9IMwIUo+ev/Ycj9dJqsQ70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974992; c=relaxed/simple;
-	bh=5Fn7pJo7Ed6O9X0x7pTj5v+Jh7d7J1bQOWI5CecTUDw=;
+	s=arc-20240116; t=1774975647; c=relaxed/simple;
+	bh=ymLH2SK0RBmx7LnlVv1cVsPti4JWgDOG9BWFsU80HSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHRssvJ179Vbi895BAZRvrGwkMeBYs2XFnimktZrxb3ha3nWd5JmRLHnv9MfK9UsRrqfHfPGQH7sKMx6m+EQm92YPJl1KkB/irBVnIE/leKHtsA329pzS/53qv6lzv1SpGkwiyKfWxGbNzRqNF5QTCWbmSzX8pvnqH8vNOhV4R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOlIn5SC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC13C19424;
-	Tue, 31 Mar 2026 16:36:32 +0000 (UTC)
+	 MIME-Version; b=XoBWOwueEjh6irVgpewMgxtO9x3IF2dLyNy8G2GojhY+aK5/IJhuSKIq0B0KwknL3RkrAnLyk7WCxLy3KHhxewuTZ0jRrKggr07NKmjYaLsK3Dch47jVJp2Rrd7vTBPgxxhgzyVH+ZeMNV73buuEEy5Lk1MPX0Z0pYCKRtWv8M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gH4A5slX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25599C19423;
+	Tue, 31 Mar 2026 16:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974992;
-	bh=5Fn7pJo7Ed6O9X0x7pTj5v+Jh7d7J1bQOWI5CecTUDw=;
+	s=korg; t=1774975647;
+	bh=ymLH2SK0RBmx7LnlVv1cVsPti4JWgDOG9BWFsU80HSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOlIn5SC+wm0XpkG6SOhNgIzQ5gLyfau/uOn4N75p/e+y5i1NgJpFhqzBVAcVjSB6
-	 G3necKzN14mrUigZdcyNiDHjFMsB1TzLiLYDoTra5XQJ9wGqGs6fAR1iuQBo04hebE
-	 vkG+KCEmHw7J1VrS6t1RadiU8RbAH+xmNKtT5aUE=
+	b=gH4A5slXtYPXifZ7RWJBnRPqXQd+oYr4Zb/YPsQg3qcb2eyfIG1kLnalDl3c++nMv
+	 lg19KDqRL7EhuQ6xfnTNiZ5ilidH47LoG7ASbx/fZXUPTVs1+qJbtB1fWpiozF5fzK
+	 TJfk+0gIpHPNzhTnTSabq25sTBwpgCVW1hq5Gdeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 121/342] net: airoha: add RCU lock around dev_fill_forward_path
+Subject: [PATCH 6.12 004/244] cxl/hdm: Avoid incorrect DVSEC fallback when HDM decoders are enabled
 Date: Tue, 31 Mar 2026 18:19:14 +0200
-Message-ID: <20260331161803.461979910@linuxfoundation.org>
+Message-ID: <20260331161741.820393992@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +69,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231758-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232012-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A711336DD53
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,amd.com:email]
+X-Rspamd-Queue-Id: 77C2F36E90C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-[ Upstream commit 1065913dedfd3a8269816835bfe810b6e2c28579 ]
+[ Upstream commit 75cea0776de502f2a1be5ca02d37c586dc81887e ]
 
-Since 0417adf367a0 ("ppp: fix race conditions in ppp_fill_forward_path")
-dev_fill_forward_path() should be called with RCU read lock held. This
-fix was applied to net, while the Airoha flowtable commit was applied to
-net-next, so it hadn't been an issue until net was merged into net-next.
+Check the global CXL_HDM_DECODER_ENABLE bit instead of looping over
+per-decoder COMMITTED bits to determine whether to fall back to DVSEC
+range emulation. When the HDM decoder capability is globally enabled,
+ignore DVSEC range registers regardless of individual decoder commit
+state.
 
-Fixes: a8bdd935d1dd ("net: airoha: Add wlan flowtable TX offload")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260320094315.525126-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+should_emulate_decoders() currently loops over per-decoder COMMITTED
+bits, which leads to an incorrect DVSEC fallback when those bits are
+zero. One way to trigger this is to destroy a region and bounce the
+memdev:
+
+  cxl disable-region region0
+  cxl destroy-region region0
+  cxl disable-memdev mem0
+  cxl enable-memdev mem0
+
+Region teardown zeroes the HDM decoder registers including the committed
+bits. The subsequent memdev re-probe finds uncommitted decoders and falls
+back to DVSEC emulation, even though HDM remains globally enabled.
+
+Observed failures:
+
+  should_emulate_decoders: cxl_port endpoint6: decoder6.0: committed: 0 base: 0x0_00000000 size: 0x0_00000000
+  devm_cxl_setup_hdm: cxl_port endpoint6: Fallback map 1 range register
+  ..
+  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region0
+  __construct_region: cxl_pci 0000:e1:00.0: mem1:decoder6.0:
+  __construct_region region0 res: [mem 0x850000000-0x284fffffff flags 0x200] iw: 1 ig: 4096
+  cxl region0: pci0000:e0:port1 cxl_port_setup_targets expected iw: 1 ig: 4096 ..
+  cxl region0: pci0000:e0:port1 cxl_port_setup_targets got iw: 1 ig: 256 state: disabled ..
+  cxl_port endpoint6: failed to attach decoder6.0 to region0: -6
+  ..
+  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region4
+  alloc_hpa: cxl region4: HPA allocation error (-34) ..
+
+Fixes: 52cc48ad2a76 ("cxl/hdm: Limit emulation to the number of range registers")
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260316201950.224567-1-Smita.KoralahalliChannabasappa@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_ppe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cxl/core/hdm.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 2221bafaf7c9f..36e4f328c6e81 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -227,7 +227,9 @@ static int airoha_ppe_get_wdma_info(struct net_device *dev, const u8 *addr,
- 	if (!dev)
- 		return -ENODEV;
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index fde609f37e562..5b4ddc1262d7c 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -99,7 +99,6 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
+ 	struct cxl_hdm *cxlhdm;
+ 	void __iomem *hdm;
+ 	u32 ctrl;
+-	int i;
  
-+	rcu_read_lock();
- 	err = dev_fill_forward_path(dev, addr, &stack);
-+	rcu_read_unlock();
- 	if (err)
- 		return err;
+ 	if (!info)
+ 		return false;
+@@ -118,22 +117,16 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
+ 		return false;
  
+ 	/*
+-	 * If any decoders are committed already, there should not be any
+-	 * emulated DVSEC decoders.
++	 * If HDM decoders are globally enabled, do not fall back to DVSEC
++	 * range emulation. Zeroed decoder registers after region teardown
++	 * do not imply absence of HDM capability.
++	 *
++	 * Falling back to DVSEC here would treat the decoder as AUTO and
++	 * may incorrectly latch default interleave settings.
+ 	 */
+-	for (i = 0; i < cxlhdm->decoder_count; i++) {
+-		ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(i));
+-		dev_dbg(&info->port->dev,
+-			"decoder%d.%d: committed: %ld base: %#x_%.8x size: %#x_%.8x\n",
+-			info->port->id, i,
+-			FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl),
+-			readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i)));
+-		if (FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl))
+-			return false;
+-	}
++	ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
++	if (ctrl & CXL_HDM_DECODER_ENABLE)
++		return false;
+ 
+ 	return true;
+ }
 -- 
 2.51.0
 
