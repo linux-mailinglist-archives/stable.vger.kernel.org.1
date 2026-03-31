@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +O6nOUgIzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:44 +0200
+	id ELZ5FQQGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC1236F457
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B699136EF91
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5CF3307B23A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75996308CB37
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9503B30B51A;
-	Tue, 31 Mar 2026 17:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6593240710B;
+	Tue, 31 Mar 2026 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1+JHKXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/f+TgMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594442D7DEF;
-	Tue, 31 Mar 2026 17:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22109425CD5;
+	Tue, 31 Mar 2026 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976859; cv=none; b=WPzCGUv0eIb3DK1cPjpIRPxN8chsmyt1rUIx2I50Bguu9HOne+3OUltSa0kai5ZdL0aMCuPtXvgy6L8ADajWsDHaILCe8lSmvVdCq3kM1ujop2HCv+HipYMp2gnhJ3k/r4PV/whrH/yqrez/9QpnUAidTEwXasNySmwYlxr2788=
+	t=1774976215; cv=none; b=chQohHnGJYrHI5v6t8zK7G0voqaf3tG2xUkr6kyBNzdI4pAMiBTRDIhDeZcwCMXN4yhrqRzN48cLkegn8khEZv3KAFeNQCjuTSmJOGlVKBD/ZVqb2PADi8+/NfQ6up7omDtEh4Z3O0jNT4lJCoGps1B5vmYej8F/36hOnzGrZBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976859; c=relaxed/simple;
-	bh=m02/ecOA/ZDSHMkDGuyv09pAjIFqarjwmeOD2+jW7AA=;
+	s=arc-20240116; t=1774976215; c=relaxed/simple;
+	bh=7mlq3QF2JnjfzHpPPVdyR5vyknHPk7PkVQO8VPmbblk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rh9mymlxt4jfL20fiFRCT49GEVh4LByAgNUPz/0/IxrrXnaEswh6mLT6bRmXTR0yl3WqkNNbC6N8Yq5vH5g4ipHlzfOFr5Ge1ZDXmM0rYG7xrxspn4LvA3D/Sjcfn6kWw8zugewEBICEpcrWBpDd0sBx0KgMdNATXbXqzLI3IGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1+JHKXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FF2C19423;
-	Tue, 31 Mar 2026 17:07:38 +0000 (UTC)
+	 MIME-Version; b=Z3p2JcFdcE3ciSwqFmvt+diCrkwhJpphdueXmA/lVKK9tQXV2LcKwgGlp1p0l7ANkQRBZ4fqPIr1e3vniZEWbdn2wVw2udMnDiKsHKC1W/DbIPgG4GH3c7fhdowuhh9WGWI6SdM9jhSO/9GWQNfmsPBYIwtnk3wdeF1ltylQ0no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/f+TgMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A733EC19423;
+	Tue, 31 Mar 2026 16:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976859;
-	bh=m02/ecOA/ZDSHMkDGuyv09pAjIFqarjwmeOD2+jW7AA=;
+	s=korg; t=1774976215;
+	bh=7mlq3QF2JnjfzHpPPVdyR5vyknHPk7PkVQO8VPmbblk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1+JHKXCb9bDCqQt5cvoFK48ZXiJE/nJW5Kn2PFUF+SpMNxAWp4H8xoe0Lx4QlQUN
-	 0fv85IXAADzNZbdNC81VkUZ51U4aBGtrfSxYmdoY3eiMtoF63W4n275H0PHI9KiEAm
-	 AVtgY/jJO1tdJjbsnHUHsDemDZSArYKCdFSA05Zc=
+	b=K/f+TgMc+/Z6+nUqKx0W2LqcHKJv2JATfPMcJHFrtBVvZqORX+U81SOxGrqT5TLcR
+	 X5fJp2GLNfLvTzxf5ZiTUlImhEPuAhUje+eHJLPdQZJoc+UXsAZn1FCKZEmGs38nfe
+	 wpxP6Hkfrw1qyeQieWp5YaISAgyyArGIw2bYdLFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 255/309] ext4: convert inline data to extents when truncate exceeds inline size
-Date: Tue, 31 Mar 2026 18:22:38 +0200
-Message-ID: <20260331161802.960004858@linuxfoundation.org>
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 209/244] rust: pin-init: internal: init: document load-bearing fact of field accessors
+Date: Tue, 31 Mar 2026 18:22:39 +0200
+Message-ID: <20260331161749.473456466@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +64,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232481-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7de5fe447862fc37576f];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232231-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4FC1236F457
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,zulipchat.com:url,garyguo.net:email]
+X-Rspamd-Queue-Id: B699136EF91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Benno Lossin <lossin@kernel.org>
 
-commit ed9356a30e59c7cc3198e7fc46cfedf3767b9b17 upstream.
+commit 580cc37b1de4fcd9997c48d7080e744533f09f36 upstream.
 
-Add a check in ext4_setattr() to convert files from inline data storage
-to extent-based storage when truncate() grows the file size beyond the
-inline capacity. This prevents the filesystem from entering an
-inconsistent state where the inline data flag is set but the file size
-exceeds what can be stored inline.
+The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
+the `init!` macro require the passed pointer to be aligned. This fact is
+ensured by the creation of field accessors to previously initialized
+fields.
 
-Without this fix, the following sequence causes a kernel BUG_ON():
+Since we missed this very important fact from the beginning [1],
+document it in the code.
 
-1. Mount filesystem with inode that has inline flag set and small size
-2. truncate(file, 50MB) - grows size but inline flag remains set
-3. sendfile() attempts to write data
-4. ext4_write_inline_data() hits BUG_ON(write_size > inline_capacity)
-
-The crash occurs because ext4_write_inline_data() expects inline storage
-to accommodate the write, but the actual inline capacity (~60 bytes for
-i_block + ~96 bytes for xattrs) is far smaller than the file size and
-write request.
-
-The fix checks if the new size from setattr exceeds the inode's actual
-inline capacity (EXT4_I(inode)->i_inline_size) and converts the file to
-extent-based storage before proceeding with the size change.
-
-This addresses the root cause by ensuring the inline data flag and file
-size remain consistent during truncate operations.
-
-Reported-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7de5fe447862fc37576f
-Tested-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260207043607.1175976-1-kartikey406@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
+Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
+Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust: pin-init: add references to previously initialized fields
+Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260302140424.4097655-2-lossin@kernel.org
+[ Updated Cc: stable@ tags as discussed. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+[ Moved changes to the declarative macro, because 6.19.y and earlier do not
+  have `syn`. Also duplicated the comment for all field accessor creations.
+  - Benno ]
+Signed-off-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ rust/kernel/init/macros.rs |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5915,6 +5915,18 @@ int ext4_setattr(struct mnt_idmap *idmap
- 		if (attr->ia_size == inode->i_size)
- 			inc_ivers = false;
+--- a/rust/kernel/init/macros.rs
++++ b/rust/kernel/init/macros.rs
+@@ -1231,6 +1231,10 @@ macro_rules! __init_internal {
+         // return when an error/panic occurs.
+         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
+         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
+@@ -1270,6 +1274,10 @@ macro_rules! __init_internal {
+         // return when an error/panic occurs.
+         unsafe { $crate::init::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
  
-+		/*
-+		 * If file has inline data but new size exceeds inline capacity,
-+		 * convert to extent-based storage first to prevent inconsistent
-+		 * state (inline flag set but size exceeds inline capacity).
-+		 */
-+		if (ext4_has_inline_data(inode) &&
-+		    attr->ia_size > EXT4_I(inode)->i_inline_size) {
-+			error = ext4_convert_inline_data(inode);
-+			if (error)
-+				goto err_out;
-+		}
-+
- 		if (shrink) {
- 			if (ext4_should_order_data(inode)) {
- 				error = ext4_begin_ordered_truncate(inode,
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         // SAFETY:
+         // - the field is not structurally pinned, since the line above must compile,
+         // - the field has been initialized,
+@@ -1310,6 +1318,10 @@ macro_rules! __init_internal {
+             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+         }
+ 
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the field is not structurally pinned, since no `use_data` was required to create this
+@@ -1350,6 +1362,10 @@ macro_rules! __init_internal {
+             // SAFETY: The memory at `slot` is uninitialized.
+             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+         }
++        // NOTE: the field accessor ensures that the initialized field is properly aligned.
++        // Unaligned fields will cause the compiler to emit E0793. We do not support
++        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++        // `ptr::write` below has the same requirement.
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
 
 
 
