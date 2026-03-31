@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-231971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Ei7OFD8y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:40 +0200
+	id MKmKLfYFzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E5036D604
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19ECF36EF5A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9482B30E5539
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F115332AB0CF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049C93E9299;
-	Tue, 31 Mar 2026 16:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB92C423A61;
+	Tue, 31 Mar 2026 16:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CF0xxq7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Wp3Om2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCC1413258;
-	Tue, 31 Mar 2026 16:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5A33EF0A2;
+	Tue, 31 Mar 2026 16:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975539; cv=none; b=tvqPbKAGNtI6mOayBFpIN5pAoxdNGIKzuOS1RSAPs/nPHjttVP65bgwaZxM7egVfvdBwMUlhPBSVHOeJxPvAtvWJXd7z6xkjcp1C7cbxZ2QBi0ImIVnFCwCeTEZN8RtrF4yICZGDHWC/iPHzatql0olAHZWhupKi5KA5aCfsXW0=
+	t=1774976207; cv=none; b=ZF0CNxBnZonmfvOQCYuZQdsKa12esVbDLAB0UQPorRuqtuwnJ+/intWFGPfAQDFtF2HsxMCN5/gAsVhYbT4E4DJyS6A+uK5ff00YT+IdhzU3J+V0AnQHAXdRbpdl9PbDxo+7IVC6Gvor0K8tgLWby8WPzUJdNMHWZzf0T2BJ7Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975539; c=relaxed/simple;
-	bh=IPgXGiGJgd9n6ycu72gv2g/I8vaXMPPmHQp6ThCYy2s=;
+	s=arc-20240116; t=1774976207; c=relaxed/simple;
+	bh=p/oAhJb4QVm6RqWPVQHhQYaHc49EPb93KjQUY2ddmaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nv3YKsPsr/bIXDXCF1q97xkB+uitBVmQTC4uh5J/nng2rzgPEEsDtdyWQ5ukN8hE2UVkzc3MQkrzd6F7m0Yrc9vJyOHhPpBGpGche/cBOdQH1iDhWPI8HNHDjVsmn7No2D0L8EN1XvWxvNGva3Yib0Fwg9IloOnanZDKrMlXm3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CF0xxq7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C669C19424;
-	Tue, 31 Mar 2026 16:45:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f1gt08NpsJoGcO2OYoyBnxjb2RQAlX8VKS/Lvf/vni4OHVf+Loa3HTt7DaRwEh7Ndp6a8uACZlvJytbwpmynFXVOnvCXuG0Ala2fS1Fh0T0z/BTjeR+465TbBJOQfyVaLTIS4+P363+4/nU70TJzXJDoM8NRDS5rkLG9jvHTgi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Wp3Om2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F27C19423;
+	Tue, 31 Mar 2026 16:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975539;
-	bh=IPgXGiGJgd9n6ycu72gv2g/I8vaXMPPmHQp6ThCYy2s=;
+	s=korg; t=1774976207;
+	bh=p/oAhJb4QVm6RqWPVQHhQYaHc49EPb93KjQUY2ddmaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CF0xxq7qqNINTdLfY3+9NCkWr0DN9d9buAmLFHV8KtFDF6qkfKsFxSCXvUAe7cLaT
-	 SP+nVbiRMn20w8QFP4JHAjs5mtnddqaSmojw2FX45lnuNaNgRJflzaU8udEXHVhMJW
-	 OEVHV1DVpfvTMDzXUfM6XsKGP9u1RuTc6/TKPgBA=
+	b=0Wp3Om2bFX4drxzv+fJnVMhvw8CD8i+NeAb3cGfLx5xhSs7S39L22Aq1EDqjWOfSc
+	 yl4dTTLt2iAjxdEbMHpULEF+S+FuJ09aEdrbobbwCRLggp9nu5efbuN2AtyS2QQLek
+	 XbFahKZGlKj+nZBtgnJlhjjY8OP3cvg9CyxpY0gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 333/342] btrfs: fix lost error when running device stats on multiple devices fs
+	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Song Liu <song@kernel.org>,
+	Tingmao Wang <m@maowtm.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 216/244] landlock: Fix handling of disconnected directories
 Date: Tue, 31 Mar 2026 18:22:46 +0200
-Message-ID: <20260331161811.157900474@linuxfoundation.org>
+Message-ID: <20260331161749.740971676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +66,199 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232228-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231971-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 33E5036D604
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,maowtm.org:email]
+X-Rspamd-Queue-Id: 19ECF36EF5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
+[ Upstream commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1 ]
 
-Whenever we get an error updating the device stats item for a device in
-btrfs_run_dev_stats() we allow the loop to go to the next device, and if
-updating the stats item for the next device succeeds, we end up losing
-the error we had from the previous device.
+Disconnected files or directories can appear when they are visible and
+opened from a bind mount, but have been renamed or moved from the source
+of the bind mount in a way that makes them inaccessible from the mount
+point (i.e. out of scope).
 
-Fix this by breaking out of the loop once we get an error and make sure
-it's returned to the caller. Since we are in the transaction commit path
-(and in the critical section actually), returning the error will result
-in a transaction abort.
+Previously, access rights tied to files or directories opened through a
+disconnected directory were collected by walking the related hierarchy
+down to the root of the filesystem, without taking into account the
+mount point because it couldn't be found. This could lead to
+inconsistent access results, potential access right widening, and
+hard-to-debug renames, especially since such paths cannot be printed.
 
-Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For a sandboxed task to create a disconnected directory, it needs to
+have write access (i.e. FS_MAKE_REG, FS_REMOVE_FILE, and FS_REFER) to
+the underlying source of the bind mount, and read access to the related
+mount point.   Because a sandboxed task cannot acquire more access
+rights than those defined by its Landlock domain, this could lead to
+inconsistent access rights due to missing permissions that should be
+inherited from the mount point hierarchy, while inheriting permissions
+from the filesystem hierarchy hidden by this mount point instead.
+
+Landlock now handles files and directories opened from disconnected
+directories by taking into account the filesystem hierarchy when the
+mount point is not found in the hierarchy walk, and also always taking
+into account the mount point from which these disconnected directories
+were opened.  This ensures that a rename is not allowed if it would
+widen access rights [1].
+
+The rationale is that, even if disconnected hierarchies might not be
+visible or accessible to a sandboxed task, relying on the collected
+access rights from them improves the guarantee that access rights will
+not be widened during a rename because of the access right comparison
+between the source and the destination (see LANDLOCK_ACCESS_FS_REFER).
+It may look like this would grant more access on disconnected files and
+directories, but the security policies are always enforced for all the
+evaluated hierarchies.  This new behavior should be less surprising to
+users and safer from an access control perspective.
+
+Remove a wrong WARN_ON_ONCE() canary in collect_domain_accesses() and
+fix the related comment.
+
+Because opened files have their access rights stored in the related file
+security properties, there is no impact for disconnected or unlinked
+files.
+
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Song Liu <song@kernel.org>
+Reported-by: Tingmao Wang <m@maowtm.org>
+Closes: https://lore.kernel.org/r/027d5190-b37a-40a8-84e9-4ccbc352bcdf@maowtm.org
+Closes: https://lore.kernel.org/r/09b24128f86973a6022e6aa8338945fcfb9a33e4.1749925391.git.m@maowtm.org
+Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
+Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
+Link: https://lore.kernel.org/r/b0f46246-f2c5-42ca-93ce-0d629702a987@maowtm.org [1]
+Reviewed-by: Tingmao Wang <m@maowtm.org>
+Link: https://lore.kernel.org/r/20251128172200.760753-2-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+(cherry picked from commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1)
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ security/landlock/errata/abi-1.h |   16 +++++++++++++++
+ security/landlock/fs.c           |   40 +++++++++++++++++++++++++++------------
+ 2 files changed, 44 insertions(+), 12 deletions(-)
+ create mode 100644 security/landlock/errata/abi-1.h
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index fbf23d20cce01..052b830a0b66e 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -7874,8 +7874,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
- 		smp_rmb();
- 
- 		ret = update_dev_stat_item(trans, device);
--		if (!ret)
--			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
-+		if (ret)
-+			break;
-+		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+--- /dev/null
++++ b/security/landlock/errata/abi-1.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++/**
++ * DOC: erratum_3
++ *
++ * Erratum 3: Disconnected directory handling
++ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ *
++ * This fix addresses an issue with disconnected directories that occur when a
++ * directory is moved outside the scope of a bind mount.  The change ensures
++ * that evaluated access rights include both those from the disconnected file
++ * hierarchy down to its filesystem root and those from the related mount point
++ * hierarchy.  This prevents access right widening through rename or link
++ * actions.
++ */
++LANDLOCK_ERRATUM(3)
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -899,21 +899,31 @@ jump_up:
+ 				break;
+ 			}
+ 		}
++
+ 		if (unlikely(IS_ROOT(walker_path.dentry))) {
+-			/*
+-			 * Stops at disconnected root directories.  Only allows
+-			 * access to internal filesystems (e.g. nsfs, which is
+-			 * reachable through /proc/<pid>/ns/<namespace>).
+-			 */
+-			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
++			if (likely(walker_path.mnt->mnt_flags & MNT_INTERNAL)) {
++				/*
++				 * Stops and allows access when reaching disconnected root
++				 * directories that are part of internal filesystems (e.g. nsfs,
++				 * which is reachable through /proc/<pid>/ns/<namespace>).
++				 */
+ 				allowed_parent1 = true;
+ 				allowed_parent2 = true;
++				break;
+ 			}
+-			break;
++
++			/*
++			 * We reached a disconnected root directory from a bind mount.
++			 * Let's continue the walk with the mount point we missed.
++			 */
++			dput(walker_path.dentry);
++			walker_path.dentry = walker_path.mnt->mnt_root;
++			dget(walker_path.dentry);
++		} else {
++			parent_dentry = dget_parent(walker_path.dentry);
++			dput(walker_path.dentry);
++			walker_path.dentry = parent_dentry;
+ 		}
+-		parent_dentry = dget_parent(walker_path.dentry);
+-		dput(walker_path.dentry);
+-		walker_path.dentry = parent_dentry;
  	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+ 	path_put(&walker_path);
  
--- 
-2.53.0
-
+@@ -990,6 +1000,9 @@ static access_mask_t maybe_remove(const
+  * file.  While walking from @dir to @mnt_root, we record all the domain's
+  * allowed accesses in @layer_masks_dom.
+  *
++ * Because of disconnected directories, this walk may not reach @mnt_dir.  In
++ * this case, the walk will continue to @mnt_dir after this call.
++ *
+  * This is similar to is_access_to_paths_allowed() but much simpler because it
+  * only handles walking on the same mount point and only checks one set of
+  * accesses.
+@@ -1031,8 +1044,11 @@ static bool collect_domain_accesses(
+ 			break;
+ 		}
+ 
+-		/* We should not reach a root other than @mnt_root. */
+-		if (dir == mnt_root || WARN_ON_ONCE(IS_ROOT(dir)))
++		/*
++		 * Stops at the mount point or the filesystem root for a disconnected
++		 * directory.
++		 */
++		if (dir == mnt_root || unlikely(IS_ROOT(dir)))
+ 			break;
+ 
+ 		parent_dentry = dget_parent(dir);
 
 
 
