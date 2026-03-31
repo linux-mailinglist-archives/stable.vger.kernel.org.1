@@ -1,272 +1,225 @@
-Return-Path: <stable+bounces-231298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJlLNWcLy2lwDQYAu9opvQ
-	(envelope-from <stable+bounces-231298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:46:47 +0200
+	id SK89Ap4Qy2lCDgYAu9opvQ
+	(envelope-from <stable+bounces-231299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 02:09:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378AF36268C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 01:46:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D0F362919
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 02:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0DEEB3034A0B
-	for <lists+stable@lfdr.de>; Mon, 30 Mar 2026 23:46:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE1BD301D68E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F0A26E706;
-	Mon, 30 Mar 2026 23:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0E413957E;
+	Tue, 31 Mar 2026 00:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzu9A12s"
+	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="Bi5w3av7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14030199EAD
-	for <stable@vger.kernel.org>; Mon, 30 Mar 2026 23:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774914405; cv=none; b=LincsusOOvH7vZNrpZNsH13pINgJQO1qdwERoSyhIHoyX9K4ztVvFGi0t9SGLxb9hAESYTL7cBeaQ8MLM1wx0Oy3Qfw+wTzmoQTfd6O8E/jcb5R4iuC+ExQRlEMLvislvJDN1pPQzlDXGXC1rh31uFLbiuIHaHSSnfDD1zdmfjE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774914405; c=relaxed/simple;
-	bh=1azy0m7RwaL8GqhDxyFLtuPxNMxcNRpK2+/mZn5SRHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Azf1dCHEkznDETJhOyTPLRnn6s0wsn9fcvU/1zfgdsD2iHgu0CYjQkVreCynkPpze/l3/xtCwHp945HNyXvcZxjlBHDoIn5VjFjUTSPHx/IdwjU+b9jyBZtZjVWDX6t8y6eHF0NxcyCwMXIvMr+W3+vhyJ8JJf0E95gGpM0ryKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzu9A12s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9A9C4CEF7;
-	Mon, 30 Mar 2026 23:46:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774914404;
-	bh=1azy0m7RwaL8GqhDxyFLtuPxNMxcNRpK2+/mZn5SRHw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzu9A12shbHwR8F8x6jaL0V+FV7Cu5PqZ9mGdT4RpDHW+O3j4lMLwcDxW6aIXy/16
-	 HdoqtBlZjBg2Jb/Lxju07sl8WhXCHh4P7skF2Bgb2rvna8qsJRY/YCbclCem+ZWkoQ
-	 FWMclA/TTXfET5XrnE8FE7sGBIQfWQMsd7DfFvDx0YBq2AKbFrb313okAB+/0mucqT
-	 4iRte6PkkY3W3BraJU37UIbgpl/5AM+IYfIgaZl0KICHLvQ+3BnVruSjo+dy5w3/nB
-	 0D/wzx/tmNPzT9yHO9Y3yo5iAqLklgLmcpL4jrXNWMLD4Pa5AAXJZR9RrMVt+gcTBz
-	 5EAugETherWzg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Werner Kasselman <werner@verivus.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
-Date: Mon, 30 Mar 2026 19:46:42 -0400
-Message-ID: <20260330234642.1399542-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026032918-refute-diameter-867a@gregkh>
-References: <2026032918-refute-diameter-867a@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4720670808
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 00:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774915675; cv=pass; b=AHtCjFBLyI094Asd30kyVOps0T+3jaZfZ1g3yN1K83HaWfvPjaIBX6/hO2qUHnXO00NXzrncDkJynYWTHOLeaeUVbXrMI1jkks9z1KNkFLMuIdjarkt+JsHKKjngdkIqacdKZBWcx9xBEe+iNDw7DTujxdraafVCQ73i+HgScew=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774915675; c=relaxed/simple;
+	bh=kvNS4jrTKNThGiO49BMz7mXMS60LyAjy24E/Nzyru+8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cLxB9QnvdT9AuZgSe4APAdjiTDB1nmatAy8Xf8vBzQSV4R+B1d1CyuGoKshlLchj0iuKZjRTaU37cI0Qu44OiTZVyLduiNhqLalIbKghfpuQflaC0chySN66y2rfP+FmPzcsHjDrUZz33JeTepwV+TlPFt0C18NQc033oEajvxo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=Bi5w3av7; arc=pass smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jphein.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6500040f172so6454782d50.1
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 17:07:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774915673; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RjNk5NP8UI0mSZ6IPuC+CdmUxdrWJIqFGXOr3PumVECl4SbCCgOs4BfObxg0F1WSvW
+         f5RJVuqJnct2b0RJqQ6Ag0CR7uYgISmLrir5WqzQ4kDH/hT1YwBNQ6hU6T8Gd8i4w85P
+         2jSBtt0LwCvGLsqNZUEaFNXZtOEyah/ForNugNNtQ+e8I6lnXaK6NfstPijigQbyEljy
+         XPnHGnSTDxpm5oJqghTtWk4MNGF+0uT6VR5wn+Ejh7wE+NCkWwyoub5kOgLjqeklBHqe
+         MNqImMZOvwP8dSJyvQNNtEp4i8HhFFTJcyK6XiN7IpIfokqLchm/D9KpgBFWU3D+fhn9
+         ogjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0aiGgV4znT/MrEJo920Y34xdg0R+ZL3fdPeG6yCs7CI=;
+        fh=ZLqs8EUe+z8ByALUq5njay3+GazGtkJGeRClPbUpcfk=;
+        b=Sf822M2HDTbR6VScNVIqxGeLS0lYRxnk9XehFocqn6W++n3CQkxjpEi8zH4XxHY4cq
+         /uJQHXKF+LPCoUNgxiBYih11lrc80flxHgMACEoXkCy4NYb0Six4CltLN7K0l58UgJgE
+         +uy4dS7TQo5gY86h1SPqQ9xravKXdEvY04C3y8AMNkinlSDPMpFwkBfjIDsJjuVvq1OJ
+         Ui/v5Gt/PkQ4yZaFRpxtN05Wjz9Pj6p/jGNUP5ghaqUQBJkQn8IcViu8/8ZjnlQ32xjM
+         BLG/vqBuMQ2GTrSk75j56Il7ixLUXPssucyE3VZIA1p2UDb7Ugvz/Gd7kFc4qLV3bRMx
+         jFHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jphein.com; s=google; t=1774915673; x=1775520473; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0aiGgV4znT/MrEJo920Y34xdg0R+ZL3fdPeG6yCs7CI=;
+        b=Bi5w3av7VUE2o8tn1uwELmmXZV3F1N8z7zOf/hSAxiASLrMh3k8t1gOyQUoEm5PW/V
+         2IlO05z8dgdBrX/vE/poN5ZX/nss0IE+aQYoZsNti6baBwaWs6Amjl3A/c5MF/rpgJIL
+         qQJ716Ypaoi7KlBDcnMYIG1q33NB1tQhqU3wpK5N9ZRS6SfBf/J6x6vdWAVeUzItksdy
+         3eAKQ61ckB0JCkxuTsQe6drnOZ6zdlwdZOFATbZB2WfUmqbdrHPP8aB6J4FpIHECzXiZ
+         /+qlnhO+w50KZ9XYwV9mI5VcQivg7ZJp9a0qTy5ADqs067iqcP0oWczeR2ZqKMkg1xzM
+         v4Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774915673; x=1775520473;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0aiGgV4znT/MrEJo920Y34xdg0R+ZL3fdPeG6yCs7CI=;
+        b=XxCcFD2M0OBP7I9r9R2xlHLGSIXUDpU7yUZBtQcZux8T5Ro3GVhKTeGoEaIF0dnSY3
+         Q2Rk/VT2uUns4z0pcC3nPi4DMufNEioRVrGk7bdI8Mt3WNxSs6vWmfNdBnci1kDQ1/8l
+         sAsIM0K28KW+eRhoWsSlcmEQQgG0HUVLzrgpbgSwK8PxlwkbJeLGfpZ0EGfgMfUa/bRt
+         d6wZvKCOC/P0zawwF6zol7/4AP4my4FrZv7RuV/FUKlNj9a6DyZQxVbNwRmalcL3kyIf
+         6UZ9O7UwFSvW4Gjnkbq5EpNuz9rF8048Dz8x5i0C8gXx9NcCreb4mJ/gB/jMLywAUEsO
+         3Yvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUas/hI69KQaLEjF7L7XdevdnxM9F54QxcV/lu2L5P2DxrA4aWryczWng9jf2kFvLH05//ZUeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHL8OjEGaHIEP0jFN6weC9+ugAe0OdmByf/BJidxPAX2k+jpJ6
+	/vFywvITDbQHcMK6QCL06XVzkb8VdRr04MoV7wokuDQl/cp/8nySlxZSWNxQp7fMbCkJTMSLr4C
+	cwLa2Lo+S/9jSAiwriQSrWH484vLyyR9YiJU3fA2e
+X-Gm-Gg: ATEYQzw7YwIZIIvB+5M5N8hlq28D1SNpK4iZefjdm9cmSfkAQ9ub765Lx1kCF5hvLNZ
+	9e5m3N13SUCUpXKuDfF1IjrRM0FHebNV0xVfdv1wBx+AVSD8eBLbcctCbGjDSSc3hQKj8Z1vu8C
+	YDzHjCmokKrh8/O40owV5ktb30ZGMrPeuPNnjjCn3rQjliorYw21db0Z6OTzF2zPso2GSzy5H+q
+	qokkPPd4fYYjKd7nGPgYnIbQ/+rRa8tloAGNJnKZk2ksa2bH7J75kARbEB4BO8YzsnL7n5G1Q6F
+	vTH5rzHUm/S5d+s=
+X-Received: by 2002:a53:ac95:0:b0:650:19a8:2ae2 with SMTP id
+ 956f58d0204a3-65019a831a9mr6375585d50.25.1774915673080; Mon, 30 Mar 2026
+ 17:07:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260321223713.1219297-1-jp@jphein.com> <20260322055354.03399a32.michal.pecio@gmail.com>
+ <CAD5VvzBE8Oq80EhFZnZ7kNrRC_rpoR25Ct5-Fg62yDZUHVtWzw@mail.gmail.com>
+ <20260323085845.6bf57b3b.michal.pecio@gmail.com> <CAD5VvzDWF7SO0Aytp3K_uXV6ZYoqEqN1dhfv7VtMAHSpHP+qTA@mail.gmail.com>
+ <20260329174022.6513d797.michal.pecio@gmail.com>
+In-Reply-To: <20260329174022.6513d797.michal.pecio@gmail.com>
+From: Jeffrey Hein <jp@jphein.com>
+Date: Mon, 30 Mar 2026 17:07:41 -0700
+X-Gm-Features: AQROBzC65uQWp9GEtVFzdYryhIRpVWhTdTI7oafhHvD_kOc7K_CrPhhba6QgsCM
+Message-ID: <CAD5VvzA1XnNKk3W2sVP7fjPF_BNkkSQ2p_4xhwnE1yV8zFOhSg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI
+ cascade failure
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-media@vger.kernel.org, 
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[jphein.com,reject];
+	R_DKIM_ALLOW(-0.20)[jphein.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231298-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231299-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jp@jphein.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[jphein.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: 378AF36268C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,techempower.org:url,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 64D0F362919
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Werner Kasselman <werner@verivus.com>
+Hi Michal,
 
-[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
+I spoke too soon. The stress test (rapid v4l2-ctl control transfers
+with no video stream) passes on 6.17, but the crash still occurs
+during actual use.
 
-smb_grant_oplock() has two issues in the oplock publication sequence:
+Starting a video call on 6.17.0-19-generic triggered the full
+hc_died() cascade. No patches, no workarounds, stock kernel:
 
-1) opinfo is linked into ci->m_op_list (via opinfo_add) before
-   add_lease_global_list() is called.  If add_lease_global_list()
-   fails (kmalloc returns NULL), the error path frees the opinfo
-   via __free_opinfo() while it is still linked in ci->m_op_list.
-   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
-   in smb_break_all_levII_oplock) dereference the freed node.
+    usb 2-3.4: disable of device-initiated U1 failed.
+    usb 2-3.4: Failed to set U2 timeout to 0x0,error code -110
+    uvcvideo 2-3.4:1.1: usb_set_interface Failed to disable LPM
+    usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71
+    [errors escalate from -71 EPROTO to -110 ETIMEDOUT]
+    usb 2-3.4: 3:1: cannot set freq 48000 to ep 0x82
+    xhci_hcd 0000:00:14.0: xHCI host not responding to stop endpoint comman=
+d
+    xhci_hcd 0000:00:14.0: xHCI host controller not responding, assume dead
+    xhci_hcd 0000:00:14.0: HC died; cleaning up
 
-2) opinfo->o_fp is assigned after add_lease_global_list() publishes
-   the opinfo on the global lease list.  A concurrent
-   find_same_lease_key() can walk the lease list and dereference
-   opinfo->o_fp->f_ci while o_fp is still NULL.
+I also ran the stress test during an active video call with dynamic
+debug enabled. The firmware locked up at round 19 of 50 with repeated
+endpoint stalls:
 
-Fix by restructuring the publication sequence to eliminate post-publish
-failure:
+    xhci_hcd 0000:00:14.0: Stalled endpoint for slot 17 ep 2
+    xhci_hcd 0000:00:14.0: Giveback URB ..., status =3D -32
+    [repeated every 2 seconds]
 
-- Set opinfo->o_fp before any list publication (fixes NULL deref).
-- Preallocate lease_table via alloc_lease_table() before opinfo_add()
-  so add_lease_global_list() becomes infallible after publication.
-- Keep the original m_op_list publication order (opinfo_add before
-  lease list) so concurrent opens via same_client_has_lease() and
-  opinfo_get_list() still see the in-flight grant.
-- Use opinfo_put() instead of __free_opinfo() on err_out so that
-  the RCU-deferred free path is used.
+In this case the xHCI controller survived (no hc_died), but the camera
+was frozen and needed a physical replug.
 
-This also requires splitting add_lease_global_list() to take a
-preallocated lease_table and changing its return type from int to void,
-since it can no longer fail.
+So the pattern is: the firmware cannot handle concurrent control
+transfers while servicing isochronous streams. The stress test alone
+passes because there is no isochronous load. Add video streaming and
+the firmware falls over. The 6.8 -> 6.17 xHCI improvements help -- the
+controller sometimes recovers instead of always dying -- but the
+firmware lockup still occurs.
 
-Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/server/oplock.c | 72 ++++++++++++++++++++++++++----------------
- 1 file changed, 45 insertions(+), 27 deletions(-)
+Full debug logs are at:
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 228166c47d8c9..590ddd31a68da 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock_info *opinfo)
- 	spin_unlock(&lb->lb_lock);
- }
- 
--static void lb_add(struct lease_table *lb)
-+static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
- {
--	write_lock(&lease_list_lock);
--	list_add(&lb->l_entry, &lease_table_list);
--	write_unlock(&lease_list_lock);
-+	struct lease_table *lb;
-+
-+	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
-+	if (!lb)
-+		return NULL;
-+
-+	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-+	       SMB2_CLIENT_GUID_SIZE);
-+	INIT_LIST_HEAD(&lb->lease_list);
-+	spin_lock_init(&lb->lb_lock);
-+	return lb;
- }
- 
- static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
-@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_info *op1, struct oplock_info *op2)
- 	lease2->version = lease1->version;
- }
- 
--static int add_lease_global_list(struct oplock_info *opinfo)
-+static void add_lease_global_list(struct oplock_info *opinfo,
-+				  struct lease_table *new_lb)
- {
- 	struct lease_table *lb;
- 
--	read_lock(&lease_list_lock);
-+	write_lock(&lease_list_lock);
- 	list_for_each_entry(lb, &lease_table_list, l_entry) {
- 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			opinfo->o_lease->l_lb = lb;
- 			lease_add_list(opinfo);
--			read_unlock(&lease_list_lock);
--			return 0;
-+			write_unlock(&lease_list_lock);
-+			kfree(new_lb);
-+			return;
- 		}
- 	}
--	read_unlock(&lease_list_lock);
- 
--	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
--	if (!lb)
--		return -ENOMEM;
--
--	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
--	       SMB2_CLIENT_GUID_SIZE);
--	INIT_LIST_HEAD(&lb->lease_list);
--	spin_lock_init(&lb->lb_lock);
--	opinfo->o_lease->l_lb = lb;
-+	opinfo->o_lease->l_lb = new_lb;
- 	lease_add_list(opinfo);
--	lb_add(lb);
--	return 0;
-+	list_add(&new_lb->l_entry, &lease_table_list);
-+	write_unlock(&lease_list_lock);
- }
- 
- static void set_oplock_level(struct oplock_info *opinfo, int level,
-@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	int err = 0;
- 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
- 	struct ksmbd_inode *ci = fp->f_ci;
-+	struct lease_table *new_lb = NULL;
- 	bool prev_op_has_lease;
- 	__le32 prev_op_state = 0;
- 
-@@ -1291,21 +1293,37 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	opinfo_count_inc(fp);
--	opinfo_add(opinfo, fp);
--
-+	/*
-+	 * Set o_fp before any publication so that concurrent readers
-+	 * (e.g. find_same_lease_key() on the lease list) that
-+	 * dereference opinfo->o_fp don't hit a NULL pointer.
-+	 *
-+	 * Keep the original publication order so concurrent opens can
-+	 * still observe the in-flight grant via ci->m_op_list, but make
-+	 * everything after opinfo_add() no-fail by preallocating any new
-+	 * lease_table first.
-+	 */
-+	opinfo->o_fp = fp;
- 	if (opinfo->is_lease) {
--		err = add_lease_global_list(opinfo);
--		if (err)
-+		new_lb = alloc_lease_table(opinfo);
-+		if (!new_lb) {
-+			err = -ENOMEM;
- 			goto err_out;
-+		}
- 	}
- 
-+	opinfo_count_inc(fp);
-+	opinfo_add(opinfo, fp);
-+
-+	if (opinfo->is_lease)
-+		add_lease_global_list(opinfo, new_lb);
-+
- 	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
- 
- 	return 0;
- err_out:
--	__free_opinfo(opinfo);
-+	kfree(new_lb);
-+	opinfo_put(opinfo);
- 	return err;
- }
- 
--- 
-2.53.0
+    https://github.com/jphein/kiyo-xhci-fix
 
+I have dynamic debug enabled for xhci_hcd and usbcore going forward.
+
+JP
+
+
+On Sun, Mar 29, 2026 at 8:40=E2=80=AFAM Michal Pecio <michal.pecio@gmail.co=
+m> wrote:
+>
+> On Sun, 29 Mar 2026 08:03:42 -0700, Jeffrey Hein wrote:
+> > I have now tested on 6.17.0-19-generic (Ubuntu 25.04) with dynamic
+> > debug enabled for xhci_hcd and usbcore, and without any of my proposed
+> > patches or workarounds applied. No udev quirks, no LPM disable, no
+> > control throttle -- completely stock kernel.
+> >
+> > Results: the stress test passes 50/50 rounds with 0ms delay. On
+> > 6.8.0-106-generic the same test crashed consistently around round 25.
+>
+> Thanks for the update, that's good to hear.
+> Hopefully it will still work without dynamic debug too.
+>
+> If you would want to fix the old 6.8 kernel you will need to talk with
+> Ubuntu about it, because that version is no longer supported upstream.
+>
+> Regards,
+> Michal
+
+
+
+--=20
+Jeffrey Pine Hein
+Just plain helpful.
+jphein.com =E2=98=80=EF=B8=8F techempower.org
+(530) 798-4099
 
