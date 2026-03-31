@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-232477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJQBCzsIzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:31 +0200
+	id 6NPhL4D8y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE74636F438
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6690B36D6A5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA4B9305E302
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB9A730DF6C1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5698130AD00;
-	Tue, 31 Mar 2026 17:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B60E25D527;
+	Tue, 31 Mar 2026 16:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEHbUilq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypGoOoAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB2303A07;
-	Tue, 31 Mar 2026 17:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D147A33120E;
+	Tue, 31 Mar 2026 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976849; cv=none; b=p2AlCWmjkRI91GwtRn75T6cz0cAr7VcXALTYkexNAVEatykmG8wXRmhAjVllwdzqplWUPq4G1fXeBLp5461Y5Pipr2+suOoh49dPEfuIOHn6S6qgo2w8BikvGur+Mf105lk+qRF00xaheBSCgAmoJqyVfg7T+/6tyY/Yh8YaO4M=
+	t=1774975508; cv=none; b=ljonh2HtQaEBm/TQbEY0Bg0mvyK4NGBsAKBhWQAThWFFAbMn3E7Oh/cHynoqDUT6Hgcr2aPaRjxr7Qjhk4wgMnrOOMjL5lU3hYuJyjg0saF5dfCq45I501fyrH25VQawW/P+swakqJ8RntqSMLqem92GstwRQzj1j+WhJezl+kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976849; c=relaxed/simple;
-	bh=Ps+MzcUDJscKmNNmgzAZAzw1jdLBmHq4BH3PPhoQA+Y=;
+	s=arc-20240116; t=1774975508; c=relaxed/simple;
+	bh=czHzEsUpR72bxM7b3dib6i2kHfB/Hooqf1YZJNDUE1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u31O0Kzb1nBiInZo7B+ZkLstM6PVZgvgffbaBlm1fPd1XgLIvY5gcx9rYRe7lfCNEIaq9o7BXJRscNZsh2JMhd60ruHBH8WBuxUTjFr+DpuHpSP1Gx/OsD1mVvsDqcmOmT9l1XB+4ux056rsd3c6TwVBJLbhdR6XEc4n5CXG5WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEHbUilq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0F8C19423;
-	Tue, 31 Mar 2026 17:07:28 +0000 (UTC)
+	 MIME-Version; b=LeALuhzdheFUoj1Wioipx8tmciK27x6oB+ovO2ihbIXtPF6OojAHocarFMvwzWNjgWvWKnDHvi6GxcvaruM9JuHj2YfQLZC8m+iCiUZ9h1z9M7xVIwIJ/X9I8nDejVUJPva6DBFv1zDz10BbFk9bqKUAHzaMivWhOJjTHNvTHas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypGoOoAL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67677C19423;
+	Tue, 31 Mar 2026 16:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976849;
-	bh=Ps+MzcUDJscKmNNmgzAZAzw1jdLBmHq4BH3PPhoQA+Y=;
+	s=korg; t=1774975508;
+	bh=czHzEsUpR72bxM7b3dib6i2kHfB/Hooqf1YZJNDUE1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEHbUilqFeQLMSkMJOFVFB4A1jPaddlwBxEZvfJ0K2aLmP6eyuEO/z0zcRyOUKutD
-	 QNXR768ETcz2wDF04enLr/cfwlGYPLlcHVRqrDWPlr1NEjwXZLKKx5NYz83yof/h7X
-	 PvIS7fOruuIuW1EfcR7n7/dz6e4AALFpcIGUtomw=
+	b=ypGoOoALAMxG1k4WvGM3od8KgnP4AmgVx6mdS/n5ZKWpiV2iRvXvyc7ckzuonUxlq
+	 AGlzucGtbnwy+lGeUqedTIYvxABYnwATVW8z65YNVIpf9MLoTBKc51NExshTrqSFOQ
+	 pgNylMqITu8Vk1SQe6YRlyhBw/HHYoYexsMK5uf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Long Li <leo.lilong@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.18 252/309] xfs: dont irele after failing to iget in xfs_attri_recover_work
+	syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 322/342] netfs: Fix kernel BUG in netfs_limit_iter() for ITER_KVEC iterators
 Date: Tue, 31 Mar 2026 18:22:35 +0200
-Message-ID: <20260331161802.848785912@linuxfoundation.org>
+Message-ID: <20260331161810.763342385@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +65,134 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232477-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231959-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: AE74636F438
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,9c058f0d63475adc97fd];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6690B36D6A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 70685c291ef82269180758130394ecdc4496b52c upstream.
+[ Upstream commit 67e467a11f62ff64ad219dc6aa5459e132c79d14 ]
 
-xlog_recovery_iget* never set @ip to a valid pointer if they return
-an error, so this irele will walk off a dangling pointer.  Fix that.
+When a process crashes and the kernel writes a core dump to a 9P
+filesystem, __kernel_write() creates an ITER_KVEC iterator. This
+iterator reaches netfs_limit_iter() via netfs_unbuffered_write(), which
+only handles ITER_FOLIOQ, ITER_BVEC and ITER_XARRAY iterator types,
+hitting the BUG() for any other type.
 
-Cc: stable@vger.kernel.org # v6.10
-Fixes: ae673f534a3097 ("xfs: record inode generation in xattr update log intent items")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by adding netfs_limit_kvec() following the same pattern as
+netfs_limit_bvec(), since both kvec and bvec are simple segment arrays
+with pointer and length fields. Dispatch it from netfs_limit_iter() when
+the iterator type is ITER_KVEC.
+
+Fixes: cae932d3aee5 ("netfs: Add func to calculate pagecount/size-limited span of an iterator")
+Reported-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9c058f0d63475adc97fd
+Tested-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260307090041.359870-1-kartikey406@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_attr_item.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/netfs/iterator.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -656,7 +656,6 @@ xfs_attri_recover_work(
- 		break;
- 	}
- 	if (error) {
--		xfs_irele(ip);
- 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp, attrp,
- 				sizeof(*attrp));
- 		return ERR_PTR(-EFSCORRUPTED);
+diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
+index 72a435e5fc6da..154a14bb2d7f7 100644
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -142,6 +142,47 @@ static size_t netfs_limit_bvec(const struct iov_iter *iter, size_t start_offset,
+ 	return min(span, max_size);
+ }
+ 
++/*
++ * Select the span of a kvec iterator we're going to use.  Limit it by both
++ * maximum size and maximum number of segments.  Returns the size of the span
++ * in bytes.
++ */
++static size_t netfs_limit_kvec(const struct iov_iter *iter, size_t start_offset,
++			       size_t max_size, size_t max_segs)
++{
++	const struct kvec *kvecs = iter->kvec;
++	unsigned int nkv = iter->nr_segs, ix = 0, nsegs = 0;
++	size_t len, span = 0, n = iter->count;
++	size_t skip = iter->iov_offset + start_offset;
++
++	if (WARN_ON(!iov_iter_is_kvec(iter)) ||
++	    WARN_ON(start_offset > n) ||
++	    n == 0)
++		return 0;
++
++	while (n && ix < nkv && skip) {
++		len = kvecs[ix].iov_len;
++		if (skip < len)
++			break;
++		skip -= len;
++		n -= len;
++		ix++;
++	}
++
++	while (n && ix < nkv) {
++		len = min3(n, kvecs[ix].iov_len - skip, max_size);
++		span += len;
++		nsegs++;
++		ix++;
++		if (span >= max_size || nsegs >= max_segs)
++			break;
++		skip = 0;
++		n -= len;
++	}
++
++	return min(span, max_size);
++}
++
+ /*
+  * Select the span of an xarray iterator we're going to use.  Limit it by both
+  * maximum size and maximum number of segments.  It is assumed that segments
+@@ -245,6 +286,8 @@ size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
+ 		return netfs_limit_bvec(iter, start_offset, max_size, max_segs);
+ 	if (iov_iter_is_xarray(iter))
+ 		return netfs_limit_xarray(iter, start_offset, max_size, max_segs);
++	if (iov_iter_is_kvec(iter))
++		return netfs_limit_kvec(iter, start_offset, max_size, max_segs);
+ 	BUG();
+ }
+ EXPORT_SYMBOL(netfs_limit_iter);
+-- 
+2.53.0
+
 
 
 
