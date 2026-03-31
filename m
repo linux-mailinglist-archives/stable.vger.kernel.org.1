@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJa1NSz9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:20 +0200
+	id +O6nOUgIzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CB336D8CA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC1236F457
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1EFC30C7B8B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5CF3307B23A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C968A423A7C;
-	Tue, 31 Mar 2026 16:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9503B30B51A;
+	Tue, 31 Mar 2026 17:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv5UPzE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1+JHKXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8241A423149;
-	Tue, 31 Mar 2026 16:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594442D7DEF;
+	Tue, 31 Mar 2026 17:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975516; cv=none; b=UKaXPmtkdMRU1oyhRoVeReWTnPyhdyw5njgd8OrFHc/1AnM78Ih65LqYVoTm/C4R0Vn2H4XYYmildC42agTLEUXERn1uJvQrbEUBXTKCA3IzSfTFUQXQoHbMfRw8b0vk20iVK2Y9yE0mFI4ubrFmylPs7qSNbIakBWsL+z3Hn/Q=
+	t=1774976859; cv=none; b=WPzCGUv0eIb3DK1cPjpIRPxN8chsmyt1rUIx2I50Bguu9HOne+3OUltSa0kai5ZdL0aMCuPtXvgy6L8ADajWsDHaILCe8lSmvVdCq3kM1ujop2HCv+HipYMp2gnhJ3k/r4PV/whrH/yqrez/9QpnUAidTEwXasNySmwYlxr2788=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975516; c=relaxed/simple;
-	bh=4Mexmz7EY5q5ZvxZTRy34BnoMqOxlV8htLzNHFDXXc4=;
+	s=arc-20240116; t=1774976859; c=relaxed/simple;
+	bh=m02/ecOA/ZDSHMkDGuyv09pAjIFqarjwmeOD2+jW7AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dfh2YVyEuZ/UusgrvsOLszlaU2FrkUJV96eIwIpQuBkY6sswfLlKNLjRhlDNXCzyti/q9EyI8oIYxfSyIMse7ND1JPYxoEL7M845jIr/JQW73Qf/vUeBKCr4yemVrEMgYP6XMjtlVR5tg9p7sQp3pJRn+o/Yng0VGmIASpywMFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv5UPzE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EFDC19423;
-	Tue, 31 Mar 2026 16:45:15 +0000 (UTC)
+	 MIME-Version; b=Rh9mymlxt4jfL20fiFRCT49GEVh4LByAgNUPz/0/IxrrXnaEswh6mLT6bRmXTR0yl3WqkNNbC6N8Yq5vH5g4ipHlzfOFr5Ge1ZDXmM0rYG7xrxspn4LvA3D/Sjcfn6kWw8zugewEBICEpcrWBpDd0sBx0KgMdNATXbXqzLI3IGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1+JHKXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FF2C19423;
+	Tue, 31 Mar 2026 17:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975516;
-	bh=4Mexmz7EY5q5ZvxZTRy34BnoMqOxlV8htLzNHFDXXc4=;
+	s=korg; t=1774976859;
+	bh=m02/ecOA/ZDSHMkDGuyv09pAjIFqarjwmeOD2+jW7AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cv5UPzE/SEbb6nLAHyfnPQ47nmAukrC/grI9p0kYOogzqlO29nbAnK7p4tJq+csOH
-	 edM2XutsbERdfEZrAEWhx04OFSkwfSQxgh/hy7Klz/2yJS0mxEt6lFS69kOO193c1Q
-	 QZxu7R3N6fFQ6o0DPnorcyjwMw4sH7b8dGAsGqcE=
+	b=s1+JHKXCb9bDCqQt5cvoFK48ZXiJE/nJW5Kn2PFUF+SpMNxAWp4H8xoe0Lx4QlQUN
+	 0fv85IXAADzNZbdNC81VkUZ51U4aBGtrfSxYmdoY3eiMtoF63W4n275H0PHI9KiEAm
+	 AVtgY/jJO1tdJjbsnHUHsDemDZSArYKCdFSA05Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 325/342] dmaengine: xilinx: xilinx_dma: Fix dma_device directions
+	syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 255/309] ext4: convert inline data to extents when truncate exceeds inline size
 Date: Tue, 31 Mar 2026 18:22:38 +0200
-Message-ID: <20260331161810.870772894@linuxfoundation.org>
+Message-ID: <20260331161802.960004858@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +65,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231962-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232481-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,7de5fe447862fc37576f];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nabladev.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 14CB336D8CA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4FC1236F457
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit e9cc95397bb7da13fe8a5b53a2f23cfaf9018ade ]
+commit ed9356a30e59c7cc3198e7fc46cfedf3767b9b17 upstream.
 
-Unlike chan->direction , struct dma_device .directions field is a
-bitfield. Turn chan->direction into a bitfield to make it compatible
-with struct dma_device .directions .
+Add a check in ext4_setattr() to convert files from inline data storage
+to extent-based storage when truncate() grows the file size beyond the
+inline capacity. This prevents the filesystem from entering an
+inconsistent state where the inline data flag is set but the file size
+exceeds what can be stored inline.
 
-Fixes: 7e01511443c3 ("dmaengine: xilinx_dma: Set dma_device directions")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316221728.160139-1-marex@nabladev.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this fix, the following sequence causes a kernel BUG_ON():
+
+1. Mount filesystem with inode that has inline flag set and small size
+2. truncate(file, 50MB) - grows size but inline flag remains set
+3. sendfile() attempts to write data
+4. ext4_write_inline_data() hits BUG_ON(write_size > inline_capacity)
+
+The crash occurs because ext4_write_inline_data() expects inline storage
+to accommodate the write, but the actual inline capacity (~60 bytes for
+i_block + ~96 bytes for xattrs) is far smaller than the file size and
+write request.
+
+The fix checks if the new size from setattr exceeds the inode's actual
+inline capacity (EXT4_I(inode)->i_inline_size) and converts the file to
+extent-based storage before proceeding with the size change.
+
+This addresses the root cause by ensuring the inline data flag and file
+size remain consistent during truncate operations.
+
+Reported-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7de5fe447862fc37576f
+Tested-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260207043607.1175976-1-kartikey406@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/inode.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 89a8254d9cdc6..e6d10079ec670 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -3003,7 +3003,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
- 	}
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5915,6 +5915,18 @@ int ext4_setattr(struct mnt_idmap *idmap
+ 		if (attr->ia_size == inode->i_size)
+ 			inc_ivers = false;
  
--	xdev->common.directions |= chan->direction;
-+	xdev->common.directions |= BIT(chan->direction);
- 
- 	/* Request the interrupt */
- 	chan->irq = of_irq_get(node, chan->tdest);
--- 
-2.53.0
-
++		/*
++		 * If file has inline data but new size exceeds inline capacity,
++		 * convert to extent-based storage first to prevent inconsistent
++		 * state (inline flag set but size exceeds inline capacity).
++		 */
++		if (ext4_has_inline_data(inode) &&
++		    attr->ia_size > EXT4_I(inode)->i_inline_size) {
++			error = ext4_convert_inline_data(inode);
++			if (error)
++				goto err_out;
++		}
++
+ 		if (shrink) {
+ 			if (ext4_should_order_data(inode)) {
+ 				error = ext4_begin_ordered_truncate(inode,
 
 
 
