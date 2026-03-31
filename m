@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-231693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAY2ItP5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:03 +0200
+	id KMViAMP/y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-231694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0812536D0BD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7C536E02B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5557F31B4389
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95A883122E27
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A84541B37F;
-	Tue, 31 Mar 2026 16:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4B6423A7A;
+	Tue, 31 Mar 2026 16:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFauzZBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkUx/QVy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA3C402435;
-	Tue, 31 Mar 2026 16:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E4E402435;
+	Tue, 31 Mar 2026 16:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974825; cv=none; b=nwXF83zYKxxugHRzlY1WfNc/6fiUcs2ySGT43vYSsSG8QvrQ7K8X7U82+I260K0EkDMtGfEQbJKxDW+bU6mNYYgLMbJX6AKZeKOmkI/rfChgaDsmxoXwvY7PdEPl4tseS9VYFXRo0sdv+ZDIJsSGBZ0O+61/EC08PpaUZ8Yloh0=
+	t=1774974827; cv=none; b=RyQeONhd+nSHxfRyT2zYzi9hutwv7YclJ+VxGEW/HqZSAiFDDPHwEuK+Jzzd4t1s9TX1BryqsUslzqBdtCuWr4NFrIWHzh+6s1mJwXCoR14P80W1iL8lTCM9kevztzW30TS8jGa/Gf/mkWg5UWCEZpffCTokE93f8iY7Qil+vDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974825; c=relaxed/simple;
-	bh=YvKhJttd4YIW89+6qId9e6CnMUh+6mAkLKs8SFC+2hg=;
+	s=arc-20240116; t=1774974827; c=relaxed/simple;
+	bh=Rl/SROiXkN5GprmnpwVrziKXfCZ6v6+ZDET/Ijmx8JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXFJNTCVa/LQJe7cbISF2Eh3jpKdZTAaP5S74OKdKcT2OFvt2CpnwIF/Y+Cd6B5vKGk80SNmCkcwYy1OeLKgKBURg/S8jMgYI0pCe5MXWHhjtG6PU9BPy+x39u7A4hml0eira4x6IbEF1i5JI58JtXg5Y6rXLF0ebSp/h/nw468=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFauzZBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E82C19423;
-	Tue, 31 Mar 2026 16:33:44 +0000 (UTC)
+	 MIME-Version; b=o6lFyy0zuR3WFji87iIXabgA1agWdyJ/SSE/33qjPaE2c2Ff70CSnSpe2rLhMppj+nj/J8MPd2srlE8l2prBgCnaLAaOPRNxUkkv26t/HKLzQlwPSeyMXBfP322olXgoWe6tXXmlcV2z1x6sMIUJzH4cwave/bvuvZLJ3cr+qNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkUx/QVy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3803AC19423;
+	Tue, 31 Mar 2026 16:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974825;
-	bh=YvKhJttd4YIW89+6qId9e6CnMUh+6mAkLKs8SFC+2hg=;
+	s=korg; t=1774974827;
+	bh=Rl/SROiXkN5GprmnpwVrziKXfCZ6v6+ZDET/Ijmx8JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFauzZBPn6hGBerQeK7CW0sSyj7fBSi9Cm966Ma5NS/exrgWpH+3NRczrkXLRgrVD
-	 MEAzkcINYkqebxfdgsZTkxbWitJva0CH/VHQCzGJBOny3IvDgRZxY2DnpSmPtlCtIi
-	 rHw0kKplldUXnlS4Gqb9M3Vg/WtxMt92wQLtJkX0=
+	b=kkUx/QVyEP3Z9PwAfzIYYtSfSO9QZYWueRWSSC4Qx524YJXIUys6o70KejBH05Dio
+	 hi3ZiEzvxgXkAzek1lDrWRHHg5e35YmTASz9sqfB1AIYiylkD+a8P9CLEguA/ml1Nb
+	 AG8iibkid7sGLQMG2YWoRVVktD7OMztmDahGenqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanchan Joshi <joshi.k@samsung.com>,
 	Christoph Hellwig <hch@lst.de>,
+	Daniel Hodges <hodgesd@meta.com>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 025/342] nvme-pci: cap queue creation to used queues
-Date: Tue, 31 Mar 2026 18:17:38 +0200
-Message-ID: <20260331161759.837315785@linuxfoundation.org>
+Subject: [PATCH 6.19 026/342] nvme-fabrics: use kfree_sensitive() for DHCHAP secrets
+Date: Tue, 31 Mar 2026 18:17:39 +0200
+Message-ID: <20260331161759.873885818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231693-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231694-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0812536D0BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,meta.com:email,lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9C7C536E02B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +100,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
+[ Upstream commit 0a1fc2f301529ac75aec0ce80d5ab9d9e4dc4b16 ]
 
-If the user reduces the special queue count at runtime and resets the
-controller, we need to reduce the number of queues and interrupts
-requested accordingly rather than start with the pre-allocated queue
-count.
+The DHCHAP secrets (dhchap_secret and dhchap_ctrl_secret) contain
+authentication key material for NVMe-oF. Use kfree_sensitive() instead
+of kfree() in nvmf_free_options() to ensure secrets are zeroed before
+the memory is freed, preventing recovery from freed pages.
 
-Tested-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/nvme/host/fabrics.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 3c83076a57e57..a5eab31c1bb7a 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2778,7 +2778,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	dev->nr_write_queues = write_queues;
- 	dev->nr_poll_queues = poll_queues;
- 
--	nr_io_queues = dev->nr_allocated_queues - 1;
-+	/*
-+	 * The initial number of allocated queue slots may be too large if the
-+	 * user reduced the special queue parameters. Cap the value to the
-+	 * number we need for this round.
-+	 */
-+	nr_io_queues = min(nvme_max_io_queues(dev),
-+			   dev->nr_allocated_queues - 1);
- 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
- 	if (result < 0)
- 		return result;
+diff --git a/drivers/nvme/host/fabrics.c b/drivers/nvme/host/fabrics.c
+index 55a8afd2efd50..d37cb140d8323 100644
+--- a/drivers/nvme/host/fabrics.c
++++ b/drivers/nvme/host/fabrics.c
+@@ -1290,8 +1290,8 @@ void nvmf_free_options(struct nvmf_ctrl_options *opts)
+ 	kfree(opts->subsysnqn);
+ 	kfree(opts->host_traddr);
+ 	kfree(opts->host_iface);
+-	kfree(opts->dhchap_secret);
+-	kfree(opts->dhchap_ctrl_secret);
++	kfree_sensitive(opts->dhchap_secret);
++	kfree_sensitive(opts->dhchap_ctrl_secret);
+ 	kfree(opts);
+ }
+ EXPORT_SYMBOL_GPL(nvmf_free_options);
 -- 
 2.51.0
 
