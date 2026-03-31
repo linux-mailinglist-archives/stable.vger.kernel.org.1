@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-232230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJVdCaL/y2koNQYAu9opvQ
-	(envelope-from <stable+bounces-232230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:50 +0200
+	id 2GuREbz8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E573336DF9F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F64236D758
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C18330783A5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 47BF730EB4F7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C734441B373;
-	Tue, 31 Mar 2026 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0242D423149;
+	Tue, 31 Mar 2026 16:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAD5mc8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGVsQd+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2593F7867;
-	Tue, 31 Mar 2026 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A3A3EF0A2;
+	Tue, 31 Mar 2026 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976212; cv=none; b=CX6K6n67ulJmC+TyDqF6psoLrJHMtEi9/7PaIiHNorNOAShlwqFmoOAXKxVj+8yX6j1QO6lTtFlVM8+YYARTOKCe8WJ/5d5BoHBhyHYYuHRtSQdFk5C4gYPcFwe2nIMtMFmngevOo5qHpmeJx6Roh+uMtAOVscBjFeGLHO2818I=
+	t=1774975544; cv=none; b=pinoR3Jgzk+MS2psgqypR7PEzfqKxAeBI6+icxpi3K7K0lv3lqDWdhMDq2bOa8JccoTavqVbrX0KPHiDAaRom+ZhZ97N++hWntW2FoL6UZkEXQDTK7M7DGyHaqMWEUe2DzXXcQkxeLW7m4pCt/HMykD9eySjrsu57/Cu+n45T4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976212; c=relaxed/simple;
-	bh=kE25zzWLVyt8nhsSz6b8g2IAg5Y7wW4Lfi8A9beY4gM=;
+	s=arc-20240116; t=1774975544; c=relaxed/simple;
+	bh=LZIeec4gnJBrIAABOjwLV/gUJmKAVKPFNlacbvf/EuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgyikD53eDyiVyEt+4pBNhOvVLLL1fLSw1WdI94BVjVCaYZcUdmxorbjij1ey0egPQCZCjVFiCDgF9GefHCsy1YhKqbI4Vcybb0rLHelwIthk5xaWlrPqKihbtxphfl0x45fpw+i+6Kuqcb/oMqBRjbjvllS1a4Q7ntEZjh/m+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAD5mc8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB3EC19423;
-	Tue, 31 Mar 2026 16:56:51 +0000 (UTC)
+	 MIME-Version; b=SWKkD8NiSgNAa4n+RTtxoexSOFY3KWayoMAio1bBxBSzpkdd1ihlflj6tGxccHPdDK6dSgbSI+7g8OJqK8RyNd5j1es4MipNYEwbp1/qOPrvGMEjjIrNeI35pbdWg3oj0XMh7QKAgiKShaiGBL4w6bfnmCVa1G4pD/CZ5Fp+eic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGVsQd+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521FCC19423;
+	Tue, 31 Mar 2026 16:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976212;
-	bh=kE25zzWLVyt8nhsSz6b8g2IAg5Y7wW4Lfi8A9beY4gM=;
+	s=korg; t=1774975544;
+	bh=LZIeec4gnJBrIAABOjwLV/gUJmKAVKPFNlacbvf/EuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAD5mc8v7ru9Io9dMLFfno40FSp/jX1QsxchjJdmZcgcAixf3BoPav4l7l0XMELav
-	 yCObqbx9gaOQM/8ATplK1zyfWl3IMSljdcSIh9/QAvHkUvDnNPc2Exd0DcMayJN/lp
-	 pEwDMDy7FWDNRjCs3BExLHM3ShSQOw3H539HC83o=
+	b=AGVsQd+Okfd+l4pQmMJIdLwTwOr/2NI6YEKyv7EA1+0BqJwtWUbQGmN15q3GG5iCR
+	 AI+xZUtLL/vmc1YRk0SKNtrmJ08PmG+G/6m8BiAF8+Dn7+wEYUl7Uz0qfFWNlIPr+w
+	 CmtqwUADdyjz433eKKM7jVlb1FDxMQPNrTQXkdsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Ma <aaron.ma@canonical.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 6.12 218/244] ice: Fix PTP NULL pointer dereference during VSI rebuild
+	Paulo Alcantara <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 335/342] netfs: Fix the handling of stream->front by removing it
 Date: Tue, 31 Mar 2026 18:22:48 +0200
-Message-ID: <20260331161749.816532483@linuxfoundation.org>
+Message-ID: <20260331161811.229757268@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232230-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231973-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,144 +88,211 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,intel.com:email]
-X-Rspamd-Queue-Id: E573336DF9F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,manguebit.org:email,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2F64236D758
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Ma <aaron.ma@canonical.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit fc6f36eaaedcf4b81af6fe1a568f018ffd530660 ]
+[ Upstream commit 0e764b9d46071668969410ec5429be0e2f38c6d3 ]
 
-Fix race condition where PTP periodic work runs while VSI is being
-rebuilt, accessing NULL vsi->rx_rings.
+The netfs_io_stream::front member is meant to point to the subrequest
+currently being collected on a stream, but it isn't actually used this way
+by direct write (which mostly ignores it).  However, there's a tracepoint
+which looks at it.  Further, stream->front is actually redundant with
+stream->subrequests.next.
 
-The sequence was:
-1. ice_ptp_prepare_for_reset() cancels PTP work
-2. ice_ptp_rebuild() immediately queues PTP work
-3. VSI rebuild happens AFTER ice_ptp_rebuild()
-4. PTP work runs and accesses NULL vsi->rx_rings
+Fix the potential problem in the direct code by just removing the member
+and using stream->subrequests.next instead, thereby also simplifying the
+code.
 
-Fix: Keep PTP work cancelled during rebuild, only queue it after
-VSI rebuild completes in ice_rebuild().
-
-Added ice_ptp_queue_work() helper function to encapsulate the logic
-for queuing PTP work, ensuring it's only queued when PTP is supported
-and the state is ICE_PTP_READY.
-
-Error log:
-[  121.392544] ice 0000:60:00.1: PTP reset successful
-[  121.392692] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  121.392712] #PF: supervisor read access in kernel mode
-[  121.392720] #PF: error_code(0x0000) - not-present page
-[  121.392727] PGD 0
-[  121.392734] Oops: Oops: 0000 [#1] SMP NOPTI
-[  121.392746] CPU: 8 UID: 0 PID: 1005 Comm: ice-ptp-0000:60 Tainted: G S                  6.19.0-rc6+ #4 PREEMPT(voluntary)
-[  121.392761] Tainted: [S]=CPU_OUT_OF_SPEC
-[  121.392773] RIP: 0010:ice_ptp_update_cached_phctime+0xbf/0x150 [ice]
-[  121.393042] Call Trace:
-[  121.393047]  <TASK>
-[  121.393055]  ice_ptp_periodic_work+0x69/0x180 [ice]
-[  121.393202]  kthread_worker_fn+0xa2/0x260
-[  121.393216]  ? __pfx_ice_ptp_periodic_work+0x10/0x10 [ice]
-[  121.393359]  ? __pfx_kthread_worker_fn+0x10/0x10
-[  121.393371]  kthread+0x10d/0x230
-[  121.393382]  ? __pfx_kthread+0x10/0x10
-[  121.393393]  ret_from_fork+0x273/0x2b0
-[  121.393407]  ? __pfx_kthread+0x10/0x10
-[  121.393417]  ret_from_fork_asm+0x1a/0x30
-[  121.393432]  </TASK>
-
-Fixes: 803bef817807d ("ice: factor out ice_ptp_rebuild_owner()")
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-(cherry picked from commit fc6f36eaaedcf4b81af6fe1a568f018ffd530660)
-[Harshit: Backported to 6.12.y, ice_ptp_prepare_rebuild_sec() is not
-present in 6.12.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
+Reported-by: Paulo Alcantara <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/4158599.1774426817@warthog.procyon.org.uk
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c |    3 +++
- drivers/net/ethernet/intel/ice/ice_ptp.c  |   17 ++++++++++++++---
- drivers/net/ethernet/intel/ice/ice_ptp.h  |    5 +++++
- 3 files changed, 22 insertions(+), 3 deletions(-)
+ fs/netfs/buffered_read.c     | 3 +--
+ fs/netfs/direct_read.c       | 3 +--
+ fs/netfs/direct_write.c      | 1 -
+ fs/netfs/read_collect.c      | 4 ++--
+ fs/netfs/read_single.c       | 1 -
+ fs/netfs/write_collect.c     | 4 ++--
+ fs/netfs/write_issue.c       | 3 +--
+ include/linux/netfs.h        | 1 -
+ include/trace/events/netfs.h | 8 ++++----
+ 9 files changed, 11 insertions(+), 17 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -7792,6 +7792,9 @@ static void ice_rebuild(struct ice_pf *p
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 37ab6f28b5ad0..88361e8c70961 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -171,9 +171,8 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
+ 	spin_lock(&rreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-		stream->front = subreq;
+ 		if (!stream->active) {
+-			stream->collected_to = stream->front->start;
++			stream->collected_to = subreq->start;
+ 			/* Store list pointers before active flag */
+ 			smp_store_release(&stream->active, true);
+ 		}
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index a498ee8d66745..f72e6da88cca7 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -71,9 +71,8 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ 		spin_lock(&rreq->lock);
+ 		list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-			stream->front = subreq;
+ 			if (!stream->active) {
+-				stream->collected_to = stream->front->start;
++				stream->collected_to = subreq->start;
+ 				/* Store list pointers before active flag */
+ 				smp_store_release(&stream->active, true);
+ 			}
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 4d9760e36c119..f9ab69de3e298 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -111,7 +111,6 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
+ 			netfs_prepare_write(wreq, stream, wreq->start + wreq->transferred);
+ 			subreq = stream->construct;
+ 			stream->construct = NULL;
+-			stream->front = NULL;
+ 		}
  
- 	/* Restore timestamp mode settings after VSI rebuild */
- 	ice_ptp_restore_timestamp_mode(pf);
-+
-+	/* Start PTP periodic work after VSI is fully rebuilt */
-+	ice_ptp_queue_work(pf);
- 	return;
+ 		/* Check if (re-)preparation failed. */
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 137f0e28a44c5..e5f6665b3341e 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -205,7 +205,8 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 	 * in progress.  The issuer thread may be adding stuff to the tail
+ 	 * whilst we're doing this.
+ 	 */
+-	front = READ_ONCE(stream->front);
++	front = list_first_entry_or_null(&stream->subrequests,
++					 struct netfs_io_subrequest, rreq_link);
+ 	while (front) {
+ 		size_t transferred;
  
- err_vsi_rebuild:
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -2754,6 +2754,20 @@ static void ice_ptp_periodic_work(struct
- }
+@@ -301,7 +302,6 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 		list_del_init(&front->rreq_link);
+ 		front = list_first_entry_or_null(&stream->subrequests,
+ 						 struct netfs_io_subrequest, rreq_link);
+-		stream->front = front;
+ 		spin_unlock(&rreq->lock);
+ 		netfs_put_subrequest(remove,
+ 				     notes & ABANDON_SREQ ?
+diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
+index 8e6264f62a8f3..d0e23bc42445f 100644
+--- a/fs/netfs/read_single.c
++++ b/fs/netfs/read_single.c
+@@ -107,7 +107,6 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ 	spin_lock(&rreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
+-	stream->front = subreq;
+ 	/* Store list pointers before active flag */
+ 	smp_store_release(&stream->active, true);
+ 	spin_unlock(&rreq->lock);
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 83eb3dc1adf8a..b194447f4b111 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -228,7 +228,8 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 		if (!smp_load_acquire(&stream->active))
+ 			continue;
  
- /**
-+ * ice_ptp_queue_work - Queue PTP periodic work for a PF
-+ * @pf: Board private structure
-+ *
-+ * Helper function to queue PTP periodic work after VSI rebuild completes.
-+ * This ensures that PTP work only runs when VSI structures are ready.
-+ */
-+void ice_ptp_queue_work(struct ice_pf *pf)
-+{
-+	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) &&
-+	    pf->ptp.state == ICE_PTP_READY)
-+		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work, 0);
-+}
-+
-+/**
-  * ice_ptp_prepare_for_reset - Prepare PTP for reset
-  * @pf: Board private structure
-  * @reset_type: the reset type being performed
-@@ -2888,9 +2902,6 @@ void ice_ptp_rebuild(struct ice_pf *pf,
+-		front = stream->front;
++		front = list_first_entry_or_null(&stream->subrequests,
++						 struct netfs_io_subrequest, rreq_link);
+ 		while (front) {
+ 			trace_netfs_collect_sreq(wreq, front);
+ 			//_debug("sreq [%x] %llx %zx/%zx",
+@@ -279,7 +280,6 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 			list_del_init(&front->rreq_link);
+ 			front = list_first_entry_or_null(&stream->subrequests,
+ 							 struct netfs_io_subrequest, rreq_link);
+-			stream->front = front;
+ 			spin_unlock(&wreq->lock);
+ 			netfs_put_subrequest(remove,
+ 					     notes & SAW_FAILURE ?
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 437268f656409..2db688f941251 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -206,9 +206,8 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
+ 	spin_lock(&wreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-		stream->front = subreq;
+ 		if (!stream->active) {
+-			stream->collected_to = stream->front->start;
++			stream->collected_to = subreq->start;
+ 			/* Write list pointers before active flag */
+ 			smp_store_release(&stream->active, true);
+ 		}
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 72ee7d210a744..ba17ac5bf356a 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -140,7 +140,6 @@ struct netfs_io_stream {
+ 	void (*issue_write)(struct netfs_io_subrequest *subreq);
+ 	/* Collection tracking */
+ 	struct list_head	subrequests;	/* Contributory I/O operations */
+-	struct netfs_io_subrequest *front;	/* Op being collected */
+ 	unsigned long long	collected_to;	/* Position we've collected results to */
+ 	size_t			transferred;	/* The amount transferred from this stream */
+ 	unsigned short		error;		/* Aggregate error for the stream */
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 2d366be46a1c3..cbe28211106c5 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -740,19 +740,19 @@ TRACE_EVENT(netfs_collect_stream,
+ 		    __field(unsigned int,	wreq)
+ 		    __field(unsigned char,	stream)
+ 		    __field(unsigned long long,	collected_to)
+-		    __field(unsigned long long,	front)
++		    __field(unsigned long long,	issued_to)
+ 			     ),
  
- 	ptp->state = ICE_PTP_READY;
+ 	    TP_fast_assign(
+ 		    __entry->wreq	= wreq->debug_id;
+ 		    __entry->stream	= stream->stream_nr;
+ 		    __entry->collected_to = stream->collected_to;
+-		    __entry->front	= stream->front ? stream->front->start : UINT_MAX;
++		    __entry->issued_to	= atomic64_read(&wreq->issued_to);
+ 			   ),
  
--	/* Start periodic work going */
--	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
--
- 	dev_info(ice_pf_to_dev(pf), "PTP reset successful\n");
- 	return;
+-	    TP_printk("R=%08x[%x:] cto=%llx frn=%llx",
++	    TP_printk("R=%08x[%x:] cto=%llx ito=%llx",
+ 		      __entry->wreq, __entry->stream,
+-		      __entry->collected_to, __entry->front)
++		      __entry->collected_to, __entry->issued_to)
+ 	    );
  
---- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -333,6 +333,7 @@ void ice_ptp_prepare_for_reset(struct ic
- void ice_ptp_init(struct ice_pf *pf);
- void ice_ptp_release(struct ice_pf *pf);
- void ice_ptp_link_change(struct ice_pf *pf, bool linkup);
-+void ice_ptp_queue_work(struct ice_pf *pf);
- #else /* IS_ENABLED(CONFIG_PTP_1588_CLOCK) */
- static inline int ice_ptp_set_ts_config(struct ice_pf *pf, struct ifreq *ifr)
- {
-@@ -384,6 +385,10 @@ static inline void ice_ptp_link_change(s
- {
- }
- 
-+static inline void ice_ptp_queue_work(struct ice_pf *pf)
-+{
-+}
-+
- static inline int ice_ptp_clock_index(struct ice_pf *pf)
- {
- 	return -1;
+ TRACE_EVENT(netfs_folioq,
+-- 
+2.53.0
+
 
 
 
