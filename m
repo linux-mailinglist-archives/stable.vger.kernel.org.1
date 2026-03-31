@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOJgNpcGzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:31 +0200
+	id CFp5OJ37y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04F336F109
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD0636D442
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DE5B30328FC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D975D30B2991
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48752FDC5E;
-	Tue, 31 Mar 2026 17:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB2B42B749;
+	Tue, 31 Mar 2026 16:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOwKVz8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpEzt8qI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025EB2EDD69;
-	Tue, 31 Mar 2026 17:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C1A427A1B;
+	Tue, 31 Mar 2026 16:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976501; cv=none; b=gdsSisGGhp05/ke0YGljTi9KkkFl/fNjP9GhiYW0ZQygqikwGGJLibUNYzuB0x2jfBeOGr2cf4nqIXWpyWblr85z44eVSJxz6OQY5c0UgsLeQFqV1P2qsQT+6EdBxwuLGbX6wyzU6cOdjK3X9jZDe4i8kGffoWc2b8sXr7Um09A=
+	t=1774975159; cv=none; b=J5gdp032p0iLhhbgTy5ZVt6LkpnhIfE6FYp8gkpq1JtylPhJlx8vqp2zA8q4RV5Ph9HfAwMK8DW/Kdw53HkE7r+kJQf+km1V7cHT28xnvWUwW1kbpY286YbLDa+MRxJdphTPNC4o8IwGzx9GU0Ygdxu1C3IacHeaq6kyyXgW3OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976501; c=relaxed/simple;
-	bh=yzQRZJyJffikl4dVG2HNyN+aUqhafjDdW1t90jSJSz4=;
+	s=arc-20240116; t=1774975159; c=relaxed/simple;
+	bh=5qHAMyPk6NPK5FaXUzXBRC/NlRtxfuBLC8mTtreFi1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mON9sEgRXsFzsowXWDNhEfO5HEn3TeAvZ5G457XnCpjKpTccnpRAWgmy5tJbRIec+YjI3KvlULGmwbVxejJFYsUKdH7NWNXm3UPjkqWoU9D+jnsnD8kFVeGUb+9L4XUl9HkFpSdoT2mnK+9GJh3rNyKMqYGOEQbirPBzJnkUoJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOwKVz8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2193FC19424;
-	Tue, 31 Mar 2026 17:01:39 +0000 (UTC)
+	 MIME-Version; b=B3LHKlLF4wiBOzOkPT1VyYf0JPqwsooBstzxzh8JrX+cT5lCdu0kYy0qZucvQlI52oZuoqxCWjkQ+3w6Cj1K6KKKRo1urlzFPdUHOpdyNWtEoNF9QA96vJYRu4bftQ2RS/5dRl1oxtb5O/MSsRsWcP6uFUgI3yVk+Wnt4g8zqMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpEzt8qI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF44C19423;
+	Tue, 31 Mar 2026 16:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976500;
-	bh=yzQRZJyJffikl4dVG2HNyN+aUqhafjDdW1t90jSJSz4=;
+	s=korg; t=1774975159;
+	bh=5qHAMyPk6NPK5FaXUzXBRC/NlRtxfuBLC8mTtreFi1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOwKVz8h1DTnwSuvupCk29w5kMY9f40RyGTPgcnAyEK1qwsKU2bsEArDAHtb93EWU
-	 grXfLVFI3zCP/rYgqeZLdDgBbjMF09JWqvTGa6PwnFd4et3KpyRLk9K1891amuvQ/b
-	 d4idgenC4qZCbeLxyBE4NjoBMKLpZNrVrHurk3rk=
+	b=bpEzt8qIL1JwM653zjlCWTFCv1EF2lTotIAJezwWOQ8ollcZSDKep/Ad6VTtHMLh1
+	 WZ2KtYj67QrE2iXgsr9roQl+ANDx/duOHbZgEk4JgQWESQi3fx6BBuZENuxoNWybDa
+	 zvouB9r5Ne5lGoTeNq5p/IZWSUcA+HGyUDNidA+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 116/309] net: lan743x: fix duplex configuration in mac_link_up
+Subject: [PATCH 6.19 186/342] hwmon: (pmbus) Introduce the concept of "write-only" attributes
 Date: Tue, 31 Mar 2026 18:20:19 +0200
-Message-ID: <20260331161757.753508500@linuxfoundation.org>
+Message-ID: <20260331161805.845589012@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +64,221 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232341-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231822-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,microchip.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D04F336F109
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email]
+X-Rspamd-Queue-Id: 8AD0636D442
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 71399707876b93240f236f48b8062f3423a5fe97 ]
+[ Upstream commit cd658475e7694d58e1c40dabc1dacf8431ccedb2 ]
 
-The driver does not explicitly configure the MAC duplex mode when
-bringing the link up. As a result, the MAC may retain a stale duplex
-setting from a previous link state, leading to duplex mismatches with
-the link partner and degraded network performance.
+Attributes intended to clear sensor history are intended to be writeable
+only. Reading those attributes today results in reporting more or less
+random values. To avoid ABI surprises, have those attributes explicitly
+return 0 when reading.
 
-Update lan743x_phylink_mac_link_up() to set or clear the MAC_CR_DPX_
-bit according to the negotiated duplex mode.
-
-This ensures the MAC configuration is consistent with the phylink
-resolved state.
-
-Fixes: a5f199a8d8a03 ("net: lan743x: Migrate phylib to phylink")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20260323065345.144915-1-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 787c095edaa9d ("hwmon: (pmbus/core) Add support for rated attributes")
+Reviewed-by: Sanman Pradhan <psanman@juniper.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hwmon/pmbus/pmbus_core.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index e4c542fc6c2b8..09d255e78f6cd 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3054,6 +3054,11 @@ static void lan743x_phylink_mac_link_up(struct phylink_config *config,
- 	else if (speed == SPEED_100)
- 		mac_cr |= MAC_CR_CFG_L_;
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index ecd1dddcbe0ff..cbc36f0ba4bf9 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -1209,6 +1209,12 @@ static ssize_t pmbus_show_boolean(struct device *dev,
+ 	return sysfs_emit(buf, "%d\n", val);
+ }
  
-+	if (duplex == DUPLEX_FULL)
-+		mac_cr |= MAC_CR_DPX_;
-+	else
-+		mac_cr &= ~MAC_CR_DPX_;
++static ssize_t pmbus_show_zero(struct device *dev,
++			       struct device_attribute *devattr, char *buf)
++{
++	return sysfs_emit(buf, "0\n");
++}
 +
- 	lan743x_csr_write(adapter, MAC_CR, mac_cr);
+ static ssize_t pmbus_show_sensor(struct device *dev,
+ 				 struct device_attribute *devattr, char *buf)
+ {
+@@ -1407,7 +1413,7 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
+ 					     int reg,
+ 					     enum pmbus_sensor_classes class,
+ 					     bool update, bool readonly,
+-					     bool convert)
++					     bool writeonly, bool convert)
+ {
+ 	struct pmbus_sensor *sensor;
+ 	struct device_attribute *a;
+@@ -1436,7 +1442,8 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
+ 	sensor->data = -ENODATA;
+ 	pmbus_dev_attr_init(a, sensor->name,
+ 			    readonly ? 0444 : 0644,
+-			    pmbus_show_sensor, pmbus_set_sensor);
++			    writeonly ? pmbus_show_zero : pmbus_show_sensor,
++			    pmbus_set_sensor);
  
- 	lan743x_ptp_update_latency(adapter, speed);
+ 	if (pmbus_add_attribute(data, &a->attr))
+ 		return NULL;
+@@ -1496,6 +1503,7 @@ struct pmbus_limit_attr {
+ 	u16 reg;		/* Limit register */
+ 	u16 sbit;		/* Alarm attribute status bit */
+ 	bool readonly:1;	/* True if the attribute is read-only */
++	bool writeonly:1;	/* True if the attribute is write-only */
+ 	bool update:1;		/* True if register needs updates */
+ 	bool low:1;		/* True if low limit; for limits with compare functions only */
+ 	const char *attr;	/* Attribute name */
+@@ -1545,7 +1553,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
+ 			curr = pmbus_add_sensor(data, name, l->attr, index,
+ 						page, 0xff, l->reg, attr->class,
+ 						attr->update || l->update,
+-						l->readonly, true);
++						l->readonly, l->writeonly, true);
+ 			if (!curr)
+ 				return -ENOMEM;
+ 			if (l->sbit && (info->func[page] & attr->sfunc)) {
+@@ -1585,7 +1593,7 @@ static int pmbus_add_sensor_attrs_one(struct i2c_client *client,
+ 			return ret;
+ 	}
+ 	base = pmbus_add_sensor(data, name, "input", index, page, phase,
+-				attr->reg, attr->class, true, true, true);
++				attr->reg, attr->class, true, true, false, true);
+ 	if (!base)
+ 		return -ENOMEM;
+ 	/* No limit and alarm attributes for phase specific sensors */
+@@ -1722,6 +1730,7 @@ static const struct pmbus_limit_attr vin_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_VIN_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_VIN_MIN,
+@@ -1796,6 +1805,7 @@ static const struct pmbus_limit_attr vout_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_VOUT_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_VOUT_MIN,
+@@ -1877,6 +1887,7 @@ static const struct pmbus_limit_attr iin_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_IIN_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_IIN_MAX,
+@@ -1918,6 +1929,7 @@ static const struct pmbus_limit_attr iout_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_IOUT_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_IOUT_MAX,
+@@ -1976,6 +1988,7 @@ static const struct pmbus_limit_attr pin_limit_attrs[] = {
+ 		.attr = "input_highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_PIN_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_PIN_MAX,
+@@ -2017,6 +2030,7 @@ static const struct pmbus_limit_attr pout_limit_attrs[] = {
+ 		.attr = "input_highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_POUT_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_POUT_MAX,
+@@ -2088,6 +2102,7 @@ static const struct pmbus_limit_attr temp_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_TEMP_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_MAX_TEMP_1,
+@@ -2133,6 +2148,7 @@ static const struct pmbus_limit_attr temp_limit_attrs2[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_TEMP2_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_MAX_TEMP_2,
+@@ -2250,7 +2266,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+ 
+ 	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
+ 				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
+-				  false, false, true);
++				  false, false, false, true);
+ 
+ 	if (!sensor)
+ 		return -ENOMEM;
+@@ -2261,14 +2277,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+ 
+ 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
+ 				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
+-				  false, false, true);
++				  false, false, false, true);
+ 
+ 	if (!sensor)
+ 		return -ENOMEM;
+ 
+ 	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
+ 				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
+-				  true, false, false);
++				  true, false, false, false);
+ 
+ 	if (!sensor)
+ 		return -ENOMEM;
+@@ -2310,7 +2326,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
+ 
+ 			if (pmbus_add_sensor(data, "fan", "input", index,
+ 					     page, 0xff, pmbus_fan_registers[f],
+-					     PSC_FAN, true, true, true) == NULL)
++					     PSC_FAN, true, true, false, true) == NULL)
+ 				return -ENOMEM;
+ 
+ 			/* Fan control */
 -- 
-2.51.0
+2.53.0
 
 
 
