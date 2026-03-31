@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-231611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wK6PGgD/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:08 +0200
+	id 4GiJLYf8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAE436DDE9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4836D6BB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C015231CB791
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7119A30ED5E8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F01423A89;
-	Tue, 31 Mar 2026 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D259B413258;
+	Tue, 31 Mar 2026 16:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIlVMXjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQk4d+hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B2421A1D;
-	Tue, 31 Mar 2026 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9508133E367;
+	Tue, 31 Mar 2026 16:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974618; cv=none; b=GUr56ylPv9fWEmAmlm+sDy+bSQCFAfSTS+tkDmFASuNM3G+lCEToFHoOFfbpVrYfIEoisMB0S9lAOhksxPCpecVMLpzc4N9EbaHZLwEyNN827XjARgHy9BNrV2lJ/6N5pPiXo91xyt30Syady0uwp+eMRkj/lqZBomstBx4RaGo=
+	t=1774975552; cv=none; b=Ytksl+v4ZAYmmEvVsc6lhcJUZJTckELB+34tvOmvj48SDm/nhfeSxybr/c1Ajc+KuPBThqU0p5wlZ9m29Y+IcZ9fRW3E7djVB6xj7jzRw1AP/uH6txj81ZCesTk9OPTaFX43hGsQ37NEIJDlTkOPPmGVcYC0qx4Fcq66TGahhrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974618; c=relaxed/simple;
-	bh=e1MzedQeY1+CbM27PKkog8Obc7WLoEjABasvzOSXlZM=;
+	s=arc-20240116; t=1774975552; c=relaxed/simple;
+	bh=BLMOkHO4CUSH+t6GKXWjp8gejwHCyxIrxCLJn6qzzI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViZmjKXeUAMA591nGP0JvZtLxGtTfnQeVwtTgS/B8Vo6Racl/N9UwuPjqKJShdnDZKTIx3sKp9itWRz8yj3MikgWt5sOGmnzL2MhVmBGjU9F4AKfAqW9wqkbv9RfHA58HTsVHjVaGL6/VbzOlPertV6FcyU3pO1/v94YW6dxzKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIlVMXjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9687CC19423;
-	Tue, 31 Mar 2026 16:30:17 +0000 (UTC)
+	 MIME-Version; b=K9X5ACGUS9b/1huRMq2uOV/FcfQJtJU9k6G3YuHveOPDts0j4HB3JSCAbDV/cpINMBf/8pt6rN+uEai+DTXSzCMPw0IJ1e8s7QvjE3TVABTBgvba/lsFx9JTHmNA0FJuiyma3PvKrd+0RYXL/vnQIBIU9OQBlQJlqGDNEWIL7XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQk4d+hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27982C19423;
+	Tue, 31 Mar 2026 16:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974617;
-	bh=e1MzedQeY1+CbM27PKkog8Obc7WLoEjABasvzOSXlZM=;
+	s=korg; t=1774975552;
+	bh=BLMOkHO4CUSH+t6GKXWjp8gejwHCyxIrxCLJn6qzzI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIlVMXjzg8bGMhtFuT3i+VWNHUNafytwT8oD9XVh7j8uLyHt4WOYpwOF/X1lB+u/d
-	 BVSWFqvQ0s01djnngVNsZ8RdctygfI4FEW3b1qWfg165qzt6xf4eZfQ/2nb4kmyO/N
-	 KG//jInIhQFmL1U2/ecku0tFEJmO09Q9dIcVFgpE=
+	b=DQk4d+hi/rJZJfs31IXIIbx+a7cqqdkBpMuSzxl9Nwz9kktHBT5RTM566eQj+UJGj
+	 Q3CnPA/y/Ecg4BR6vP1ZHgjdnNgRH4NW2kyI4edBErzzx6+HX2E4o+pjHGCQ+jNIJ2
+	 9804NaKZAztKflW4rKqBHzHgdK+bSTDrnZ9COFbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Li hongliang <1468888505@139.com>,
-	Yi Zhang <yi.zhang@redhat.com>
-Subject: [PATCH 6.6 155/175] nvme: fix admin queue leak on controller reset
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.19 306/342] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
 Date: Tue, 31 Mar 2026 18:22:19 +0200
-Message-ID: <20260331161735.489034603@linuxfoundation.org>
+Message-ID: <20260331161810.185705262@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +71,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,139.com];
-	TAGGED_FROM(0.00)[bounces-231611-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231976-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: ADAE436DDE9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url,huawei.com:email,suse.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,iloc.bh:url]
+X-Rspamd-Queue-Id: 2EF4836D6BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-[ Upstream commit b84bb7bd913d8ca2f976ee6faf4a174f91c02b8d ]
+commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
 
-When nvme_alloc_admin_tag_set() is called during a controller reset,
-a previous admin queue may still exist. Release it properly before
-allocating a new one to avoid orphaning the old queue.
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
 
-This fixes a regression introduced by commit 03b3bcd319b3 ("nvme: fix
-admin request_queue lifetime").
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
 
-Cc: Keith Busch <kbusch@kernel.org>
-Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime").
-Reported-and-tested-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/linux-block/CAHj4cs9wv3SdPo+N01Fw2SHBYDs9tj2M_e1-GdQOkRy=DsBB1w@mail.gmail.com/
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
+
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
+
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
+
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/fast_commit.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4287,6 +4287,13 @@ int nvme_alloc_admin_tag_set(struct nvme
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1613,19 +1613,21 @@ static int ext4_fc_replay_inode(struct s
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
  	if (ret)
- 		return ret;
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
  
-+	/*
-+	 * If a previous admin queue exists (e.g., from before a reset),
-+	 * put it now before allocating a new one to avoid orphaning it.
-+	 */
-+	if (ctrl->admin_q)
-+		blk_put_queue(ctrl->admin_q);
-+
- 	ctrl->admin_q = blk_mq_init_queue(set);
- 	if (IS_ERR(ctrl->admin_q)) {
- 		ret = PTR_ERR(ctrl->admin_q);
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		ext4_debug("Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
+ 
+ 	/*
+@@ -1642,13 +1644,14 @@ static int ext4_fc_replay_inode(struct s
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 
 
 
