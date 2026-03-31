@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Jh+IgQFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:48 +0200
+	id OMa5OPoGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:40:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0319636EE01
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B7536F1A3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFAC932A1832
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8574331F2046
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B63A40710B;
-	Tue, 31 Mar 2026 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1143314D34;
+	Tue, 31 Mar 2026 17:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKskRLNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syKL6mbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2853A4F34;
-	Tue, 31 Mar 2026 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF6B315D50;
+	Tue, 31 Mar 2026 17:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976179; cv=none; b=gXnQtIpBflQPvynxpz4sk6OjSr+7/2YmEj0WupchDuNi5hQzgjYtpW4Xb6pYsbwGzxZVZzPuAeEMTL/qD3Ao/hgDbqw2NU/w1UzJRwGJPJ+3TuDgAR8PLX6Ee+M/lNsvXOU+5mV/AB5DZ29ibOtRWMNz0OyaKsijMICHIL4mokg=
+	t=1774976931; cv=none; b=mG9Ho6Za5w9HT4YGbQBjnAUK2WQU0By/NqrD0cKvB5VukA6M0vZLidPktZ3X8a1CzGjGyV/cqgX9eWSIa90eYroDgNhEilaZNRzMpansudyZ0RIyA+eMTHvGoVQre2fEZngW+HYDXSwF+veaPwfqqXdOnu4o6A6DP998rbioqiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976179; c=relaxed/simple;
-	bh=eyN8pWY7S/M9jqfeFJbdCaWsqHDlxDkUu2PyyRaDxRc=;
+	s=arc-20240116; t=1774976931; c=relaxed/simple;
+	bh=+7XuOqYPSJcBoAXcSiPuSx/tgXR+W6UWUlx4W60VVZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2+P0b5E8d/ukDyi9fDeDMSur38AbkPUkHaMyOHgjqosq3gbkUGBiNW2BNbLanlcQ6TT9VRmdAPQTI3w44F9f14qjMUrqHuFkCtF1ZUi5LyuA4ERqcN0aCACAM4R+RPqQ2EYv3IN37f4rTmB47J2Pn9y4zuG62790Wg+fztWn7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKskRLNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946B1C19423;
-	Tue, 31 Mar 2026 16:56:18 +0000 (UTC)
+	 MIME-Version; b=MEDHxUcjwnO6VzOC5xIBKFXVsyamEbCmW0O3QFOWfAkbiGlEsOJoRvSp7pXkTisrtS2UgsJ9HQ8pPY+cfHJSZ9jGNmebHM8qLqgbb2RYec61kk82KzDMrTGI5rg5gTQNHYfW5xvNqEj26HADa/lheaPRF7PZFQDlxT+ybTGOPmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syKL6mbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3633DC2BCB1;
+	Tue, 31 Mar 2026 17:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976178;
-	bh=eyN8pWY7S/M9jqfeFJbdCaWsqHDlxDkUu2PyyRaDxRc=;
+	s=korg; t=1774976931;
+	bh=+7XuOqYPSJcBoAXcSiPuSx/tgXR+W6UWUlx4W60VVZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKskRLNf4aMQ2XvKbZeCTA0K70xzYW9ucb+1YfYjfRlbiqi5qIGBJ+KYtSqANxb62
-	 Jl1RDbCdXV/4axpkuYD7S73g4TMqbnnYC5s9Fdy0gbnz9KX1Pn0y4HSonp0OOTqOGM
-	 ZY4y87xBB82qEli7DS535xfoJEI3baAaRdm7YWOQ=
+	b=syKL6mbIw20o3rPdielF0Zu0nqH92J4v7GHR5YluYpJS3Fm74xRox52j1WtV/ijlW
+	 K7jyt/pXIsEHnQk8aqcqpq0qohZPnv7s9OhbfNhxwh15Z37WSQpy71vDdRxeD2ImGN
+	 ez5ZCDGzcFSgjrvffRh9ZtqO3VwnPMy+kuFHgtZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/244] btrfs: fix leak of kobject name for sub-group space_info
+Subject: [PATCH 6.18 284/309] dmaengine: idxd: Fix possible invalid memory access after FLR
 Date: Tue, 31 Mar 2026 18:23:07 +0200
-Message-ID: <20260331161750.514012019@linuxfoundation.org>
+Message-ID: <20260331161804.023121298@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232217-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232509-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,82 +86,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wdc.com:email]
-X-Rspamd-Queue-Id: 0319636EE01
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 84B7536F1A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit a4376d9a5d4c9610e69def3fc0b32c86a7ab7a41 ]
+[ Upstream commit d6077df7b75d26e4edf98983836c05d00ebabd8d ]
 
-When create_space_info_sub_group() allocates elements of
-space_info->sub_group[], kobject_init_and_add() is called for each
-element via btrfs_sysfs_add_space_info_type(). However, when
-check_removing_space_info() frees these elements, it does not call
-btrfs_sysfs_remove_space_info() on them. As a result, kobject_put() is
-not called and the associated kobj->name objects are leaked.
+In the case that the first Function Level Reset (FLR) concludes
+correctly, but in the second FLR the scratch area for the saved
+configuration cannot be allocated, it's possible for a invalid memory
+access to happen.
 
-This memory leak is reproduced by running the blktests test case
-zbd/009 on kernels built with CONFIG_DEBUG_KMEMLEAK. The kmemleak
-feature reports the following error:
+Always set the deallocated scratch area to NULL after FLR completes.
 
-unreferenced object 0xffff888112877d40 (size 16):
-  comm "mount", pid 1244, jiffies 4294996972
-  hex dump (first 16 bytes):
-    64 61 74 61 2d 72 65 6c 6f 63 00 c4 c6 a7 cb 7f  data-reloc......
-  backtrace (crc 53ffde4d):
-    __kmalloc_node_track_caller_noprof+0x619/0x870
-    kstrdup+0x42/0xc0
-    kobject_set_name_vargs+0x44/0x110
-    kobject_init_and_add+0xcf/0x150
-    btrfs_sysfs_add_space_info_type+0xfc/0x210 [btrfs]
-    create_space_info_sub_group.constprop.0+0xfb/0x1b0 [btrfs]
-    create_space_info+0x211/0x320 [btrfs]
-    btrfs_init_space_info+0x15a/0x1b0 [btrfs]
-    open_ctree+0x33c7/0x4a50 [btrfs]
-    btrfs_get_tree.cold+0x9f/0x1ee [btrfs]
-    vfs_get_tree+0x87/0x2f0
-    vfs_cmd_create+0xbd/0x280
-    __do_sys_fsconfig+0x3df/0x990
-    do_syscall_64+0x136/0x1540
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-To avoid the leak, call btrfs_sysfs_remove_space_info() instead of
-kfree() for the elements.
-
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-Link: https://lore.kernel.org/linux-block/b9488881-f18d-4f47-91a5-3c9bf63955a5@wdc.com/
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 98d187a98903 ("dmaengine: idxd: Enable Function Level Reset (FLR) for halt")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-3-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/idxd/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index c579713e9899c..3ca24a0845cbe 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -4452,7 +4452,7 @@ static void check_removing_space_info(struct btrfs_space_info *space_info)
- 		for (int i = 0; i < BTRFS_SPACE_INFO_SUB_GROUP_MAX; i++) {
- 			if (space_info->sub_group[i]) {
- 				check_removing_space_info(space_info->sub_group[i]);
--				kfree(space_info->sub_group[i]);
-+				btrfs_sysfs_remove_space_info(space_info->sub_group[i]);
- 				space_info->sub_group[i] = NULL;
- 			}
- 		}
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 449424242631d..f2b37c63a964c 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -1137,6 +1137,7 @@ static void idxd_reset_done(struct pci_dev *pdev)
+ 	}
+ out:
+ 	kfree(idxd->idxd_saved);
++	idxd->idxd_saved = NULL;
+ }
+ 
+ static const struct pci_error_handlers idxd_error_handler = {
 -- 
 2.53.0
 
