@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CnXHNz+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:32 +0200
+	id kJy3G74BzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-231896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292C536DD63
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A5736E6FC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9DA70300D4F6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3717F31DB833
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D913F8E04;
-	Tue, 31 Mar 2026 16:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B973FF8AB;
+	Tue, 31 Mar 2026 16:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4ECDNQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxa65kwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7749B425CD4;
-	Tue, 31 Mar 2026 16:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7116425CC5;
+	Tue, 31 Mar 2026 16:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976016; cv=none; b=e76DwI/kslPiM8G4SEyUectT12URJtRcVqNTDbBN2KMd3YUGVdPmyvBmnC/loBp2baymadowbhWLmaXx1Iz9nyQHZ7VHvofdPEl2ng1hul9FFeD4ds7TirWeSyYcXghM75rnqx9erRDsEIGyxMAaBLr9GLGYA4M+gHea1h92sTw=
+	t=1774975347; cv=none; b=OSiod4pt52N6fDfMX2K5LtcOXShiBHXqLIG2yOdSJQ1bDfz/kHvvVIYbLiQTcr10+hihetNEzlpJjuXouMCjxZDuZGvAuhylIlDD9qsgUpXR15Hc6WhvETclBMcCQm8r8lipVFq1iBTAK2WO7EVbWD0Y4ft63swHc4a+SVIb6DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976016; c=relaxed/simple;
-	bh=yvbaHsDmn10NjtcscCB6WCvacf0aNmKKIDjzGFxEn54=;
+	s=arc-20240116; t=1774975347; c=relaxed/simple;
+	bh=Hv4NtBIqExsfAyGfkJkf2O4ipGWBSwpzoaATGTlOe9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwh3istF5qhjNT+HZ7Pojpjc6gheKmtilZiDi3zyU78TqADHkCSv33KHSzDKcsacCSMlpBjLi0yAxObP4bAsb9IWTYwKwZW3oB+2jRqCqu3alnE6jqg1woBg6bpLZwkJ465uJbMulTmnSRwtWFgdkDeNsF9t9wmmk6BOjIRuCm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4ECDNQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6C9C19423;
-	Tue, 31 Mar 2026 16:53:35 +0000 (UTC)
+	 MIME-Version; b=LM5oRQKhfAkniAxixsBltwSTGavKr9xcNf9oF8ojD7dTZxbqx8iA+y63FkEcNs2JR66YJJz+saHHenYM7hgRfO2OVsaghI9yCO5kXdpCtIL2kBcyOn01hiDx+kQiJRuyxBjmbqt3fQQe7NreDMUWG/5T+XTAXqMPr3J+pChnHH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxa65kwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FE9C19423;
+	Tue, 31 Mar 2026 16:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976016;
-	bh=yvbaHsDmn10NjtcscCB6WCvacf0aNmKKIDjzGFxEn54=;
+	s=korg; t=1774975346;
+	bh=Hv4NtBIqExsfAyGfkJkf2O4ipGWBSwpzoaATGTlOe9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4ECDNQUafanU+nGb0bctAhOKfVOhKC3JZf7KJtI0dVF//GvsA+81j8GG1y27PLMz
-	 I+kggpHaddCfbDIFqZAOe/4eSTESw4wu+xurvYFOHv0GOpT13C5GuEXQwNLFR0m6ki
-	 A7XSuAotW5xc4qc2yxY7XAhTuXEj1zLNHXazQBCg=
+	b=jxa65kwn4MQrgvZirV24+4hFhBQluaGKxgtn6u7dVf36z4LqdlbumWkeLXAbcyTzV
+	 pAaS7zz1MTvWWEjCV3W86dDiwCGYyxZpqOyrRuTPlhrUO9Tb5N+fLscG6n+5vZkpcn
+	 ugSiyqJc4Nyvqx2MUNQGtJcvbjeClYStoUs/h4Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 142/244] ALSA: firewire-lib: fix uninitialized local variable
+	Joy Zou <joy.zou@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.19 259/342] dmaengine: fsl-edma: fix channel parameter config for fixed channel requests
 Date: Tue, 31 Mar 2026 18:21:32 +0200
-Message-ID: <20260331161747.012583815@linuxfoundation.org>
+Message-ID: <20260331161808.486152151@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232154-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231896-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,54 +87,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nppct.ru:email]
-X-Rspamd-Queue-Id: 292C536DD63
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: D8A5736E6FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Joy Zou <joy.zou@nxp.com>
 
-commit bb120ad57def62e3f23e3d999c5fbed11f610993 upstream.
+commit 2e7b5cf72e51c9cf9c8b75190189c757df31ddd9 upstream.
 
-Similar to commit d8dc8720468a ("ALSA: firewire-lib: fix uninitialized
-local variable"), the local variable `curr_cycle_time` in
-process_rx_packets() is declared without initialization.
+Configure only the requested channel when a fixed channel is specified
+to avoid modifying other channels unintentionally.
 
-When the tracepoint event is not probed, the variable may appear to be
-used without being initialized. In practice the value is only relevant
-when the tracepoint is enabled, however initializing it avoids potential
-use of an uninitialized value and improves code safety.
+Fix parameter configuration when a fixed DMA channel is requested on
+i.MX9 AON domain and i.MX8QM/QXP/DXL platforms. When a client requests
+a fixed channel (e.g., channel 6), the driver traverses channels 0-5
+and may unintentionally modify their configuration if they are unused.
 
-Initialize `curr_cycle_time` to zero.
+This leads to issues such as setting the `is_multi_fifo` flag unexpectedly,
+causing memcpy tests to fail when using the dmatest tool.
 
-Fixes: fef4e61b0b76 ("ALSA: firewire-lib: extend tracepoints event including CYCLE_TIME of 1394 OHCI")
+Only affect edma memcpy test when the channel is fixed.
+
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joy Zou <joy.zou@nxp.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Link: https://patch.msgid.link/20260316191824.83249-1-sdl@nppct.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/amdtp-stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/fsl-edma-main.c |   26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -1179,7 +1179,7 @@ static void process_rx_packets(struct fw
- 	struct pkt_desc *desc = s->packet_descs_cursor;
- 	unsigned int pkt_header_length;
- 	unsigned int packets;
--	u32 curr_cycle_time;
-+	u32 curr_cycle_time = 0;
- 	bool need_hw_irq;
- 	int i;
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -317,10 +317,8 @@ static struct dma_chan *fsl_edma3_xlate(
+ 			return NULL;
+ 		i = fsl_chan - fsl_edma->chans;
  
+-		fsl_chan->priority = dma_spec->args[1];
+-		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
+-		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
+-		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
++		if (!b_chmux && i != dma_spec->args[0])
++			continue;
+ 
+ 		if ((dma_spec->args[2] & FSL_EDMA_EVEN_CH) && (i & 0x1))
+ 			continue;
+@@ -328,17 +326,15 @@ static struct dma_chan *fsl_edma3_xlate(
+ 		if ((dma_spec->args[2] & FSL_EDMA_ODD_CH) && !(i & 0x1))
+ 			continue;
+ 
+-		if (!b_chmux && i == dma_spec->args[0]) {
+-			chan = dma_get_slave_channel(chan);
+-			chan->device->privatecnt++;
+-			return chan;
+-		} else if (b_chmux && !fsl_chan->srcid) {
+-			/* if controller support channel mux, choose a free channel */
+-			chan = dma_get_slave_channel(chan);
+-			chan->device->privatecnt++;
+-			fsl_chan->srcid = dma_spec->args[0];
+-			return chan;
+-		}
++		fsl_chan->srcid = dma_spec->args[0];
++		fsl_chan->priority = dma_spec->args[1];
++		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
++		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
++		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
++
++		chan = dma_get_slave_channel(chan);
++		chan->device->privatecnt++;
++		return chan;
+ 	}
+ 	return NULL;
+ }
 
 
 
