@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wE0eM8T9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:52 +0200
+	id cMmOFOz2y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CA436DA51
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1133F36CB51
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CD7730B2B8C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C83FF3067308
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96B8425CE4;
-	Tue, 31 Mar 2026 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C0421EE4;
+	Tue, 31 Mar 2026 16:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COcWymzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxF97rNs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3CB423149;
-	Tue, 31 Mar 2026 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40284410D00;
+	Tue, 31 Mar 2026 16:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975865; cv=none; b=h+HIpi0bSkdEn3PGIMTgPGwoPqPDQNECqCUrKx5okZEJhvA7r4eK24h9GhdGrtHdrCW206ArNy9JQpfRSaRwflPr0YmMTfQnk5PyWKEuzhfGoue9KvjzRoeYvlZ3+q0tkTTnIJdMkIFvaVUKujNbwAyra2RObJ44HfvUU3XhGxY=
+	t=1774974431; cv=none; b=F7OE5Qy0nJ2d4aRIgQ7rCtOMFV+SV4rbMdMHP/OXWJguKAR/LIBNwZa6LntUBTEWskn6VvoCUOwlup7nw1DirrrFW/UCCrN5j2zpMAki/oncgeQCiaRZ+PrUZeDGJzGqwKscBYs7zgJIWQF0Oyq/DjJfisM0u3B8W0gydrdqzpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975865; c=relaxed/simple;
-	bh=/mAa/BH1POdqgrtz7lujM9KdhcD0CBQAxMoUsLFvp/M=;
+	s=arc-20240116; t=1774974431; c=relaxed/simple;
+	bh=SYpxNVNRHX2Zeia6vFfEPP8r2+ix8sOkEPJJzKBEFDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfxyO2gPn6/HiuBJab/NIFbOa3RazV6AoCAuQGw0wTB67EitFnPuO3BKPQT5r6tIBqjbJIEhFv6Pf6mI9OnoEajuEreen2zeXpNs9Gx9YhFbvO0HyI1oJt11dr8+OmMbBnjKhd/tqVHQgzmOqqoYgr0hW8YmossPKalBhSR4rsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COcWymzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E55C19423;
-	Tue, 31 Mar 2026 16:51:04 +0000 (UTC)
+	 MIME-Version; b=ktWa943wAeL3EixXwSlGySu9JIV40C3dQsEa0DrlPqNztF57sy3PxHaC3tWxPjmPHPOZ5+wbMLCv6oPi40USsj4//E4DoP3aXEq706JdDA4m2dm5nGOa425vOgnW15GSDx/K8nIb4ePFmKYdIURqvcWrVy+b3kUnSU1vlQcCMBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxF97rNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBE1C19423;
+	Tue, 31 Mar 2026 16:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975865;
-	bh=/mAa/BH1POdqgrtz7lujM9KdhcD0CBQAxMoUsLFvp/M=;
+	s=korg; t=1774974431;
+	bh=SYpxNVNRHX2Zeia6vFfEPP8r2+ix8sOkEPJJzKBEFDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COcWymzF6OP2NjpCmjwgvjEI/0gRweVzKJDqA58j+8cbjUnigHx9+YolpJ5OmzkOu
-	 4kNxorU97y7h0CwAaZg4fXrJ7ROl2mdm29iAPmHGyjTW4IYpFfqnpQVX/QYfsfcIAR
-	 fX5iJuSOCu53onNyggfKu4+2Vlm4cCbHvC4+dyqY=
+	b=oxF97rNs9OL18luUwv7s2K/BjHgB1VVMXZgyue0tlejA03fxoZo+T/+yHR3klHaMJ
+	 xmQCPhmMBtxJ/IrhmGQ1K4sY8EjpflSOvuIdiBoQeMjmp6ZPRy7hANxIiPlHvyDq8o
+	 lcXqJnRPc3FUOp/cJBEw8PtP6mDh4W16AC2lL0jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/244] drm/i915/gmbus: fix spurious timeout on 512-byte burst reads
+Subject: [PATCH 6.6 083/175] RDMA/irdma: Return EINVAL for invalid arp index error
 Date: Tue, 31 Mar 2026 18:21:07 +0200
-Message-ID: <20260331161745.984001948@linuxfoundation.org>
+Message-ID: <20260331161732.822573552@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232096-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231539-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 71CA436DA51
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 1133F36CB51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 
-[ Upstream commit 08441f10f4dc09fdeb64529953ac308abc79dd38 ]
+[ Upstream commit 7221f581eefa79ead06e171044f393fb7ee22f87 ]
 
-When reading exactly 512 bytes with burst read enabled, the
-extra_byte_added path breaks out of the inner do-while without
-decrementing len. The outer while(len) then re-enters and gmbus_wait()
-times out since all data has been delivered. Decrement len before the
-break so the outer loop terminates correctly.
+When rdma_connect() fails due to an invalid arp index, user space rdma core
+reports ENOMEM which is confusing. Modify irdma_make_cm_node() to return the
+correct error code.
 
-Fixes: d5dc0f43f268 ("drm/i915/gmbus: Enable burst read")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patch.msgid.link/20260316231920.135438-2-samasth.norway.ananda@oracle.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4ab0f09ee73fc853d00466682635f67c531f909c)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_gmbus.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/cm.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_gmbus.c b/drivers/gpu/drm/i915/display/intel_gmbus.c
-index 6470f75106bd4..88b37deb5c82a 100644
---- a/drivers/gpu/drm/i915/display/intel_gmbus.c
-+++ b/drivers/gpu/drm/i915/display/intel_gmbus.c
-@@ -460,8 +460,10 @@ gmbus_xfer_read_chunk(struct drm_i915_private *i915,
+diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
+index 00e63a46a50ee..122b4cffc8dc7 100644
+--- a/drivers/infiniband/hw/irdma/cm.c
++++ b/drivers/infiniband/hw/irdma/cm.c
+@@ -2239,11 +2239,12 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
+ 	int oldarpindex;
+ 	int arpindex;
+ 	struct net_device *netdev = iwdev->netdev;
++	int ret;
  
- 		val = intel_de_read_fw(i915, GMBUS3(i915));
- 		do {
--			if (extra_byte_added && len == 1)
-+			if (extra_byte_added && len == 1) {
-+				len--;
- 				break;
-+			}
+ 	/* create an hte and cm_node for this instance */
+ 	cm_node = kzalloc(sizeof(*cm_node), GFP_ATOMIC);
+ 	if (!cm_node)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
  
- 			*buf++ = val & 0xff;
- 			val >>= 8;
+ 	/* set our node specific transport info */
+ 	cm_node->ipv4 = cm_info->ipv4;
+@@ -2346,8 +2347,10 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
+ 			arpindex = -EINVAL;
+ 	}
+ 
+-	if (arpindex < 0)
++	if (arpindex < 0) {
++		ret = -EINVAL;
+ 		goto err;
++	}
+ 
+ 	ether_addr_copy(cm_node->rem_mac,
+ 			iwdev->rf->arp_table[arpindex].mac_addr);
+@@ -2358,7 +2361,7 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
+ err:
+ 	kfree(cm_node);
+ 
+-	return NULL;
++	return ERR_PTR(ret);
+ }
+ 
+ static void irdma_destroy_connection(struct irdma_cm_node *cm_node)
+@@ -3019,8 +3022,8 @@ static int irdma_create_cm_node(struct irdma_cm_core *cm_core,
+ 
+ 	/* create a CM connection node */
+ 	cm_node = irdma_make_cm_node(cm_core, iwdev, cm_info, NULL);
+-	if (!cm_node)
+-		return -ENOMEM;
++	if (IS_ERR(cm_node))
++		return PTR_ERR(cm_node);
+ 
+ 	/* set our node side to client (active) side */
+ 	cm_node->tcp_cntxt.client = 1;
+@@ -3217,9 +3220,9 @@ void irdma_receive_ilq(struct irdma_sc_vsi *vsi, struct irdma_puda_buf *rbuf)
+ 		cm_info.cm_id = listener->cm_id;
+ 		cm_node = irdma_make_cm_node(cm_core, iwdev, &cm_info,
+ 					     listener);
+-		if (!cm_node) {
++		if (IS_ERR(cm_node)) {
+ 			ibdev_dbg(&cm_core->iwdev->ibdev,
+-				  "CM: allocate node failed\n");
++				  "CM: allocate node failed ret=%ld\n", PTR_ERR(cm_node));
+ 			refcount_dec(&listener->refcnt);
+ 			return;
+ 		}
 -- 
 2.53.0
 
