@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-231779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEtxKsAAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:36 +0200
+	id uBN0JC8BzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9E936E388
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4E236E529
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76DB031A8EB6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:38:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ECE0C30EB0F6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC184279F3;
-	Tue, 31 Mar 2026 16:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD55D425CC5;
+	Tue, 31 Mar 2026 16:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeVOI3+3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rw+18k6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B204279E4;
-	Tue, 31 Mar 2026 16:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81072423A9F;
+	Tue, 31 Mar 2026 16:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975047; cv=none; b=AElOeqMTo34/JLBcwXmXUdEcX3YYhdYdedib2NyzkD0nIinMa7gZCECsTcFmsaM6ipotzWx+ph7sMm58iEljEJDhSv2sWvDabESuNy7zCf3mJUOKmoEXfabjIZZK0fRKO/SuBCFhewkU3y0URuuD4xG9U0G9p3cSRIxk+izT86Q=
+	t=1774975660; cv=none; b=Cnpns9ylqX61c328agkalr2lnNSR++/CjTJXrimF/TWgqz3x3GZZSoq5NZ7t2qVsOQnrtZehbxxmMAFQndFP3AHT00pE/d9epUNOjrtGctIqMAR8FbGyPQsEq1ST6k978fhI2EPxlOKiOxNIMBDTARsJW8OUYYG4N/LPUbRo1zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975047; c=relaxed/simple;
-	bh=6+hsLyzWe2GaiUt/WQB3k7Y0fhY3X2jZLi4hGTNrZKI=;
+	s=arc-20240116; t=1774975660; c=relaxed/simple;
+	bh=4jP8GGJMBbwTfTDFRMMAAPLHTTga3NKG6sEI6EP/F2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZ7XqKl39LCu6C89P4AuO9WhH30V2iuYx/eLw6Pika/SuxRHz8tQ9qgHUSe2otdyhglhkXs7qbR1vBGkTI2/yhrkYNV384MO14606v67wpeK38hYtr6mBGCF4sZlHsI80ji06iyzVKQKS5aiOUsN4fq9+/bgGQ6DfN0y2zH7TwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeVOI3+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C31C2BCB4;
-	Tue, 31 Mar 2026 16:37:26 +0000 (UTC)
+	 MIME-Version; b=r/hnrGXZSW1Nhk8UzQknrkYukweim5PYyeNKGWKm/Nsd7vzn7A6BLhZYNA6rliIkgQ6Uz1hiiVxgJyUrqo01zbDoMMJZGX3KbKZsa144hvFM1tHulY0/BbLci6WfYLmPk7o1dvgedimh8XNofkfEjCcpH7za3PrKxYY94Eywgu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rw+18k6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196CEC2BCB1;
+	Tue, 31 Mar 2026 16:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975047;
-	bh=6+hsLyzWe2GaiUt/WQB3k7Y0fhY3X2jZLi4hGTNrZKI=;
+	s=korg; t=1774975660;
+	bh=4jP8GGJMBbwTfTDFRMMAAPLHTTga3NKG6sEI6EP/F2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NeVOI3+3uInrweh0O7gpLdht22+UBH42ZjFiuprFawxi1crSA7cjy1f9qy2anXTVz
-	 jU497fYqRmNFoHUwb9vA2og3GQEfUmGXa8DGR1rZAZs/JOMN6VyCVSGnU+niHEnaWL
-	 bk9FHr3lwLSLeErJULQXEZSc5QPuja+ln4yAJHaQ=
+	b=Rw+18k6NnwJLaYnBOQtyPE5kHz+/GTOCY88YykbCyFUb55Nd523o8/Jv3V94VHD5K
+	 ryLrvEim1psosHlBLsoMJeN3VH8Z8FMKzU2IUun1OJ7EQaLHdk0fabSHbY2WwU3nFf
+	 B8/i3vb7TRMgSwULyilz1umxJUo7ZLkxgv+tKDPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Gregory Bell <grbell@redhat.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 126/342] virtio-net: correct hdr_len handling for tunnel gso
+Subject: [PATCH 6.12 009/244] bpf: Release module BTF IDR before module unload
 Date: Tue, 31 Mar 2026 18:19:19 +0200
-Message-ID: <20260331161803.642496543@linuxfoundation.org>
+Message-ID: <20260331161742.048625606@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +71,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-232017-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231779-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: AA9E936E388
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,etsalapatis.com:email]
+X-Rspamd-Queue-Id: 7F4E236E529
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 6c860dc02a8e60b438e26940227dfa641fcdb66a ]
+[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
 
-The commit a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP
-GSO tunneling.") introduces support for the UDP GSO tunnel feature in
-virtio-net.
+Gregory reported in [0] that the global_map_resize test when run in
+repeatedly ends up failing during program load. This stems from the fact
+that BTF reference has not dropped to zero after the previous run's
+module is unloaded, and the older module's BTF is still discoverable and
+visible. Later, in libbpf, load_module_btfs() will find the ID for this
+stale BTF, open its fd, and then it will be used during program load
+where later steps taking module reference using btf_try_get_module()
+fail since the underlying module for the BTF is gone.
 
-The virtio spec says:
+Logically, once a module is unloaded, it's associated BTF artifacts
+should become hidden. The BTF object inside the kernel may still remain
+alive as long its reference counts are alive, but it should no longer be
+discoverable.
 
-    If the \field{gso_type} has the VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 bit or
-    VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 bit set, \field{hdr_len} accounts for
-    all the headers up to and including the inner transport.
+To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
+for the module unload to free the BTF associated IDR entry, and disable
+its discovery once module unload returns to user space. If a race
+happens during unload, the outcome is non-deterministic anyway. However,
+user space should be able to rely on the guarantee that once it has
+synchronously established a successful module unload, no more stale
+artifacts associated with this module can be obtained subsequently.
 
-The commit did not update the hdr_len to include the inner transport.
+Note that we must be careful to not invoke btf_free_id() in btf_put()
+when btf_is_module() is true now. There could be a window where the
+module unload drops a non-terminal reference, frees the IDR, but the
+same ID gets reused and the second unconditional btf_free_id() ends up
+releasing an unrelated entry.
 
-I observed that the "hdr_len" is 116 for this packet:
+To avoid a special case for btf_is_module() case, set btf->id to zero to
+make btf_free_id() idempotent, such that we can unconditionally invoke it
+from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
+an invalid IDR, the idr_remove() should be a noop.
 
-    17:36:18.241105 52:55:00:d1:27:0a > 2e:2c:df:46:a9:e1, ethertype IPv4 (0x0800), length 2912: (tos 0x0, ttl 64, id 45197, offset 0, flags [none], proto UDP (17), length 2898)
-        192.168.122.100.50613 > 192.168.122.1.4789: [bad udp cksum 0x8106 -> 0x26a0!] VXLAN, flags [I] (0x08), vni 1
-    fa:c3:ba:82:05:ee > ce:85:0c:31:77:e5, ethertype IPv4 (0x0800), length 2862: (tos 0x0, ttl 64, id 14678, offset 0, flags [DF], proto TCP (6), length 2848)
-        192.168.3.1.49880 > 192.168.3.2.9898: Flags [P.], cksum 0x9266 (incorrect -> 0xaa20), seq 515667:518463, ack 1, win 64, options [nop,nop,TS val 2990048824 ecr 2798801412], length 2796
+Note that we can be sure that by the time we reach final btf_put() for
+btf_is_module() case, the btf_free_id() is already done, since the
+module itself holds the BTF reference, and it will call this function
+for the BTF before dropping its own reference.
 
-116 = 14(mac) + 20(ip) + 8(udp) + 8(vxlan) + 14(inner mac) + 20(inner ip) + 32(innner tcp)
+  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
 
-Fixes: a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP GSO tunneling.")
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20260320021818.111741-3-xuanzhuo@linux.alibaba.com
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reported-by: Gregory Bell <grbell@redhat.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ kernel/bpf/btf.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 361b60c8be680..f36d21b5bc19e 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -224,6 +224,22 @@ static inline void __virtio_net_set_hdrlen(const struct sk_buff *skb,
- 	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index f83bd019db141..cd523ad72838a 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -1657,7 +1657,16 @@ static void btf_free_id(struct btf *btf)
+ 	 * of the _bh() version.
+ 	 */
+ 	spin_lock_irqsave(&btf_idr_lock, flags);
+-	idr_remove(&btf_idr, btf->id);
++	if (btf->id) {
++		idr_remove(&btf_idr, btf->id);
++		/*
++		 * Clear the id here to make this function idempotent, since it will get
++		 * called a couple of times for module BTFs: on module unload, and then
++		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
++		 * 0 as sentinel value.
++		 */
++		WRITE_ONCE(btf->id, 0);
++	}
+ 	spin_unlock_irqrestore(&btf_idr_lock, flags);
  }
  
-+/* This function must be called after virtio_net_hdr_from_skb(). */
-+static inline void __virtio_net_set_tnl_hdrlen(const struct sk_buff *skb,
-+					       struct virtio_net_hdr *hdr)
-+{
-+	u16 hdr_len;
-+
-+	hdr_len = skb_inner_transport_offset(skb);
-+
-+	if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+		hdr_len += sizeof(struct udphdr);
-+	else
-+		hdr_len += inner_tcp_hdrlen(skb);
-+
-+	hdr->hdr_len = __cpu_to_virtio16(true, hdr_len);
-+}
-+
- static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
- 					  struct virtio_net_hdr *hdr,
- 					  bool little_endian,
-@@ -440,6 +456,9 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
- 	if (ret)
- 		return ret;
+@@ -7805,7 +7814,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
+ {
+ 	const struct btf *btf = filp->private_data;
  
-+	if (feature_hdrlen && hdr->hdr_len)
-+		__virtio_net_set_tnl_hdrlen(skb, hdr);
-+
- 	if (skb->protocol == htons(ETH_P_IPV6))
- 		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
- 	else
+-	seq_printf(m, "btf_id:\t%u\n", btf->id);
++	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
+ }
+ #endif
+ 
+@@ -7892,7 +7901,7 @@ int btf_get_info_by_fd(const struct btf *btf,
+ 	if (copy_from_user(&info, uinfo, info_copy))
+ 		return -EFAULT;
+ 
+-	info.id = btf->id;
++	info.id = READ_ONCE(btf->id);
+ 	ubtf = u64_to_user_ptr(info.btf);
+ 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
+ 	if (copy_to_user(ubtf, btf->data, btf_copy))
+@@ -7955,7 +7964,7 @@ int btf_get_fd_by_id(u32 id)
+ 
+ u32 btf_obj_id(const struct btf *btf)
+ {
+-	return btf->id;
++	return READ_ONCE(btf->id);
+ }
+ 
+ bool btf_is_kernel(const struct btf *btf)
+@@ -8088,6 +8097,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
+ 			if (btf_mod->module != module)
+ 				continue;
+ 
++			/*
++			 * For modules, we do the freeing of BTF IDR as soon as
++			 * module goes away to disable BTF discovery, since the
++			 * btf_try_get_module() on such BTFs will fail. This may
++			 * be called again on btf_put(), but it's ok to do so.
++			 */
++			btf_free_id(btf_mod->btf);
+ 			list_del(&btf_mod->list);
+ 			if (btf_mod->sysfs_attr)
+ 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
 -- 
 2.51.0
 
