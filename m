@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-231936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEN7MjT7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:56 +0200
+	id QKZiIAT/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4004536D366
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2479036DDF6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69F67306B380
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B6533086510
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113D33E559E;
-	Tue, 31 Mar 2026 16:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A4C423A61;
+	Tue, 31 Mar 2026 16:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvVJMJZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZX3lyL+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C892F31714F;
-	Tue, 31 Mar 2026 16:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CF23F7867;
+	Tue, 31 Mar 2026 16:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975449; cv=none; b=pXcpOLRSv1HC2N+62sar0SBmtFFP4KKIupboPpiC4b7PMRkwlmS5vzreUonA7vdzOHaPVng5iJ0Oz1MS5p2JDNSQ5ZHYlsfvn33IoOg5lbgjJbC8dy7QiNPxlnnNxMZORQLqlwrIrQXZ3/aL3SfoHLV7u2IRfej0g3C49FBJmpQ=
+	t=1774976122; cv=none; b=qt12Ula3YyboRIoS6RL1LvFW7Alm0KtObjVcO87lRM4W3IvXTweH07Xk/+k4uvX63+vfYacjPybIM6YPq/MirheO/t/9gpCC5u7G8oW2BEY2/uH40SrmfP4t7kO7SjARWkhSRdubsSqdnuraokCe0QJamNu9H1DXuXcACOjJnhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975449; c=relaxed/simple;
-	bh=za/AlUXdta+2zD/60x2gfM89AQTzCTJfpGOkwQnvXME=;
+	s=arc-20240116; t=1774976122; c=relaxed/simple;
+	bh=PFmrcSKv1bYE9YZk6OJBYyBTC2GcEgSBYuVzD3pBrO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X60dVunFpuqNyJgaZNOl+z2wlbzbboFCsMEDmRzjaVJZL1MaXeffDSMeLxiF5bQn/YFp7WWoSx7fQwz0AS5Br7Jl1iPdC9TiiWP3uat85AMPT28Djnrs/fZiebBY2DDFSdQCVLkG5wZHKhWsK0K++zqgB3yr8YePsvsX3fK3fuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvVJMJZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBCCC19423;
-	Tue, 31 Mar 2026 16:44:09 +0000 (UTC)
+	 MIME-Version; b=F65eN/fadLL93aSdILhjGBeBMNgVmmsRzRQOFv52xa1OuxGpk2MhN4qPFHRqAJ2t2I4RmAdAiH3xa3kS9gjrFa+DsU/6cJmUhIUj3puWTR2i0ta9++s2yjbbKPOzMKBbkpQj8h1Y0sUnXLLfX13jw85wJCScmeu3A8nhBBHdIn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZX3lyL+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB7EC19423;
+	Tue, 31 Mar 2026 16:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975449;
-	bh=za/AlUXdta+2zD/60x2gfM89AQTzCTJfpGOkwQnvXME=;
+	s=korg; t=1774976122;
+	bh=PFmrcSKv1bYE9YZk6OJBYyBTC2GcEgSBYuVzD3pBrO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvVJMJZE/nbIE7OtARem5imO2xgNof5kZ62mrqA2SyXiLIyFk7RnI5m+qA+znD8co
-	 FCqt+C3yqySgsfe45fQTjQWD7rrNLDuDJpBi2BgXOiseL6zHvghhmBB7i/TjBKItJI
-	 agXBkbpgP9boSa8Ol+jICscORr4P/cYj5HiNwZXY=
+	b=ZX3lyL+eF1rCW9yrSJQm9EWCMvIXPTROHRbgE/NVdpFmpY5QrnP4Job39nAcDbtwm
+	 w7w6qLlB1+VMwb/fpyuTBfuwvNPz4FKqCQxouNR8U5O/TEjFDxZsTavLIS2wWbPdyc
+	 qS7BrWuqQ8+AWkYrra+vM96Pr4urxF8fiucu8Ebs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 298/342] ext4: test if inodes all dirty pages are submitted to disk
-Date: Tue, 31 Mar 2026 18:22:11 +0200
-Message-ID: <20260331161809.898162568@linuxfoundation.org>
+	rostedt@goodmis.org,
+	david.laight.linux@gmail.com,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 182/244] xfs: remove file_path tracepoint data
+Date: Tue, 31 Mar 2026 18:22:12 +0200
+Message-ID: <20260331161748.479827830@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +67,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231936-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232195-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,gmail.com,kernel.org,redhat.com,lst.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4004536D366
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lst.de:email]
+X-Rspamd-Queue-Id: 2479036DDF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 73bf12adbea10b13647864cd1c62410d19e21086 upstream.
+commit e31c53a8060e134111ed095783fee0aa0c43b080 upstream.
 
-The commit aa373cf55099 ("writeback: stop background/kupdate works from
-livelocking other works") introduced an issue where unmounting a filesystem
-in a multi-logical-partition scenario could lead to batch file data loss.
-This problem was not fixed until the commit d92109891f21 ("fs/writeback:
-bail out if there is no more inodes for IO and queued once"). It took
-considerable time to identify the root cause. Additionally, in actual
-production environments, we frequently encountered file data loss after
-normal system reboots. Therefore, we are adding a check in the inode
-release flow to verify whether all dirty pages have been flushed to disk,
-in order to determine whether the data loss is caused by a logic issue in
-the filesystem code.
+The xfile/xmbuf shmem file descriptions are no longer as detailed as
+they were when online fsck was first merged, because moving to static
+strings in commit 60382993a2e180 ("xfs: get rid of the
+xchk_xfile_*_descr calls") removed a memory allocation and hence a
+source of failure.
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260303012242.3206465-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+However this makes encoding the description in the tracepoints sort of a
+waste of memory.  David Laight also points out that file_path doesn't
+zero the whole buffer which causes exposure of stale trace bytes, and
+Steven Rostedt wonders why we're not using a dynamic array for the file
+path.
+
+I don't think this is worth fixing, so let's just rip it out.
+
+Cc: rostedt@goodmis.org
+Cc: david.laight.linux@gmail.com
+Link: https://lore.kernel.org/linux-xfs/20260323172204.work.979-kees@kernel.org/
+Cc: stable@vger.kernel.org # v6.11
+Fixes: 19ebc8f84ea12e ("xfs: fix file_path handling in tracepoints")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/xfs/scrub/trace.h |   12 ++----------
+ fs/xfs/xfs_trace.h   |   11 ++---------
+ 2 files changed, 4 insertions(+), 19 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -184,6 +184,14 @@ void ext4_evict_inode(struct inode *inod
- 	if (EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)
- 		ext4_evict_ea_inode(inode);
- 	if (inode->i_nlink) {
-+		/*
-+		 * If there's dirty page will lead to data loss, user
-+		 * could see stale data.
-+		 */
-+		if (unlikely(!ext4_emergency_state(inode->i_sb) &&
-+		    mapping_tagged(&inode->i_data, PAGECACHE_TAG_DIRTY)))
-+			ext4_warning_inode(inode, "data will be lost");
-+
- 		truncate_inode_pages_final(&inode->i_data);
+--- a/fs/xfs/scrub/trace.h
++++ b/fs/xfs/scrub/trace.h
+@@ -959,20 +959,12 @@ TRACE_EVENT(xfile_create,
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(unsigned long, ino)
+-		__array(char, pathname, MAXNAMELEN)
+ 	),
+ 	TP_fast_assign(
+-		char		*path;
+-
+ 		__entry->ino = file_inode(xf->file)->i_ino;
+-		path = file_path(xf->file, __entry->pathname, MAXNAMELEN);
+-		if (IS_ERR(path))
+-			strncpy(__entry->pathname, "(unknown)",
+-					sizeof(__entry->pathname));
+ 	),
+-	TP_printk("xfino 0x%lx path '%s'",
+-		  __entry->ino,
+-		  __entry->pathname)
++	TP_printk("xfino 0x%lx",
++		  __entry->ino)
+ );
  
- 		goto no_delete;
+ TRACE_EVENT(xfile_destroy,
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -4710,23 +4710,16 @@ TRACE_EVENT(xmbuf_create,
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(unsigned long, ino)
+-		__array(char, pathname, MAXNAMELEN)
+ 	),
+ 	TP_fast_assign(
+-		char		*path;
+ 		struct file	*file = btp->bt_file;
+ 
+ 		__entry->dev = btp->bt_mount->m_super->s_dev;
+ 		__entry->ino = file_inode(file)->i_ino;
+-		path = file_path(file, __entry->pathname, MAXNAMELEN);
+-		if (IS_ERR(path))
+-			strncpy(__entry->pathname, "(unknown)",
+-					sizeof(__entry->pathname));
+ 	),
+-	TP_printk("dev %d:%d xmino 0x%lx path '%s'",
++	TP_printk("dev %d:%d xmino 0x%lx",
+ 		  MAJOR(__entry->dev), MINOR(__entry->dev),
+-		  __entry->ino,
+-		  __entry->pathname)
++		  __entry->ino)
+ );
+ 
+ TRACE_EVENT(xmbuf_free,
 
 
 
