@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CcpGwYFzGnPNQYAu9opvQ
-	(envelope-from <stable+bounces-232159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:50 +0200
+	id +CLiIMn5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF8D36EE08
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68EE36D09A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8853F315972D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0582D30AEECC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A079D423A9B;
-	Tue, 31 Mar 2026 16:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FE33D75B3;
+	Tue, 31 Mar 2026 16:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8/maZ2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq8pZtLj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645CF3EF0A2;
-	Tue, 31 Mar 2026 16:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655DC421EE4;
+	Tue, 31 Mar 2026 16:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976029; cv=none; b=jsGKHb+zPQ89OqKIGhUYz5m1o11O9rR+QXakWSmvGvBuMWkOkn1n/Z2nJPsilVrPgIHlMWEFidSSkO2PT0GydSoGpmifL6bxUPrQTW/ls9l+oRqLaV1HG4Qgz5CRDGHnTO4mqtqRStFkF7i8ymGsG4dqG5RtnCONuYLDFh7Kc2s=
+	t=1774974594; cv=none; b=Q+YTlGKlcR9UkJNS6rRLdgtaj/sFOqE48lGJPT+Z8A2ksG+sLohxrx5AFdHZvYHldDdKuyEMk+VJw29ZQYIEYOQz1Xf/OB4AXs7hG6qegkjAsK6vOPojV3bWdw8UxW+EcUvvC+eRYPjGq8lCAgA47KkMOAw2ty5e6hzv1VZhWRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976029; c=relaxed/simple;
-	bh=oezdWL/0DswYLeL9e5nLBLUw4w0BWEFkgJxdE1YzjMA=;
+	s=arc-20240116; t=1774974594; c=relaxed/simple;
+	bh=Z+8po0VV8W19+CKRhB51twY7dh9VeFCytwlRmt16e1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WoX0/8at53ShxYYujqQeWln1ijy8q8x6EX+frWgu1DiTbgSFm3GODLH9XwNYxUXCWjWrAEEIAE3dtWus8+iWnbxomK9a0m3ENNjcPEgY7KV168HarRG9/R8emWBqefgieL44guvrGbA2YB6CZCyl9rXc9yxyZUZc2CSU4zgUM9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8/maZ2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC30FC2BCB1;
-	Tue, 31 Mar 2026 16:53:48 +0000 (UTC)
+	 MIME-Version; b=q5YqKnaZaJRnTkQHun/DkO4+RtCLUA7rNgOtjBCA/j0DosnTGjbS6Ib+egZ2VhYLP0FCKrHshPmqFTC/7oXs2lEvZ48jRcjfMR+zJCwucCtPCyl5ON6Ny55cvr0xeMrAhLHudm7r/itjr6nUvVi5Pka/DWFPvB5PJtc4/7TYmEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq8pZtLj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1065C19423;
+	Tue, 31 Mar 2026 16:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976029;
-	bh=oezdWL/0DswYLeL9e5nLBLUw4w0BWEFkgJxdE1YzjMA=;
+	s=korg; t=1774974594;
+	bh=Z+8po0VV8W19+CKRhB51twY7dh9VeFCytwlRmt16e1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8/maZ2PSW+VNXiBMG3aNiwJpVdCoFOleX8PeEtoiwQOjp+w2BmFdkmVqyFQDx/Oi
-	 2dgHDbbqLpkz8GAS42R4IFXZ3ljZzXvYy3t2n1011YbmynexTpTZteS9nRUsXB4rGW
-	 ziQZajCvyk6Tv2BEa5fyEZsJ4fqFyB54lPapmTPY=
+	b=Lq8pZtLjkbRcdJOX0cCKxD5oRsaSQsF2q7QKjE5zOQEhucCxPBBAlOAnUKi+P9SFl
+	 J1ueSFwvlcpbq+dqVyZjUDY3kh/0IxX6NVYF3lX6Aizpguk1skj+AoDxWRGs4GCXyu
+	 kTFzmau3YdW7FwXlJPkjwvUupVwr1s/3Fpc6Ph4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 147/244] platform/x86: ISST: Correct locked bit width
+	Yuchan Nam <entropy1110@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 113/175] media: mc, v4l2: serialize REINIT and REQBUFS with req_queue_mutex
 Date: Tue, 31 Mar 2026 18:21:37 +0200
-Message-ID: <20260331161747.194648161@linuxfoundation.org>
+Message-ID: <20260331161733.932455432@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232159-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-231602-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,huawei];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 6DF8D36EE08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A68EE36D09A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Yuchan Nam <entropy1110@gmail.com>
 
-commit fbddf68d7b4e1e6da7a78dd7fbd8ec376536584a upstream.
+commit bef4f4a88b73e4cc550d25f665b8a9952af22773 upstream.
 
-SST-PP locked bit width is set to three bits. It should be only one bit.
-Use SST_PP_LOCK_WIDTH define instead of SST_PP_LEVEL_WIDTH.
+MEDIA_REQUEST_IOC_REINIT can run concurrently with VIDIOC_REQBUFS(0)
+queue teardown paths. This can race request object cleanup against vb2
+queue cancellation and lead to use-after-free reports.
 
-Fixes: ea009e4769fa ("platform/x86: ISST: Add SST-PP support via TPMI")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+We already serialize request queueing against STREAMON/OFF with
+req_queue_mutex. Extend that serialization to REQBUFS, and also take
+the same mutex in media_request_ioctl_reinit() so REINIT is in the
+same exclusion domain.
+
+This keeps request cleanup and queue cancellation from running in
+parallel for request-capable devices.
+
+Fixes: 6093d3002eab ("media: vb2: keep a reference to the request until dqbuf")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260323153635.3263828-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/mc/mc-request.c        |    5 +++++
+ drivers/media/v4l2-core/v4l2-ioctl.c |    5 +++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -866,7 +866,7 @@ static int isst_if_get_perf_level(void _
- 	_read_pp_info("current_level", perf_level.current_level, SST_PP_STATUS_OFFSET,
- 		      SST_PP_LEVEL_START, SST_PP_LEVEL_WIDTH, SST_MUL_FACTOR_NONE)
- 	_read_pp_info("locked", perf_level.locked, SST_PP_STATUS_OFFSET,
--		      SST_PP_LOCK_START, SST_PP_LEVEL_WIDTH, SST_MUL_FACTOR_NONE)
-+		      SST_PP_LOCK_START, SST_PP_LOCK_WIDTH, SST_MUL_FACTOR_NONE)
- 	_read_pp_info("feature_state", perf_level.feature_state, SST_PP_STATUS_OFFSET,
- 		      SST_PP_FEATURE_STATE_START, SST_PP_FEATURE_STATE_WIDTH, SST_MUL_FACTOR_NONE)
- 	perf_level.enabled = !!(power_domain_info->sst_header.cap_mask & BIT(1));
+--- a/drivers/media/mc/mc-request.c
++++ b/drivers/media/mc/mc-request.c
+@@ -190,6 +190,8 @@ static long media_request_ioctl_reinit(s
+ 	struct media_device *mdev = req->mdev;
+ 	unsigned long flags;
+ 
++	mutex_lock(&mdev->req_queue_mutex);
++
+ 	spin_lock_irqsave(&req->lock, flags);
+ 	if (req->state != MEDIA_REQUEST_STATE_IDLE &&
+ 	    req->state != MEDIA_REQUEST_STATE_COMPLETE) {
+@@ -197,6 +199,7 @@ static long media_request_ioctl_reinit(s
+ 			"request: %s not in idle or complete state, cannot reinit\n",
+ 			req->debug_str);
+ 		spin_unlock_irqrestore(&req->lock, flags);
++		mutex_unlock(&mdev->req_queue_mutex);
+ 		return -EBUSY;
+ 	}
+ 	if (req->access_count) {
+@@ -204,6 +207,7 @@ static long media_request_ioctl_reinit(s
+ 			"request: %s is being accessed, cannot reinit\n",
+ 			req->debug_str);
+ 		spin_unlock_irqrestore(&req->lock, flags);
++		mutex_unlock(&mdev->req_queue_mutex);
+ 		return -EBUSY;
+ 	}
+ 	req->state = MEDIA_REQUEST_STATE_CLEANING;
+@@ -214,6 +218,7 @@ static long media_request_ioctl_reinit(s
+ 	spin_lock_irqsave(&req->lock, flags);
+ 	req->state = MEDIA_REQUEST_STATE_IDLE;
+ 	spin_unlock_irqrestore(&req->lock, flags);
++	mutex_unlock(&mdev->req_queue_mutex);
+ 
+ 	return 0;
+ }
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -2998,13 +2998,14 @@ static long __video_do_ioctl(struct file
+ 		vfh = file->private_data;
+ 
+ 	/*
+-	 * We need to serialize streamon/off with queueing new requests.
++	 * We need to serialize streamon/off/reqbufs with queueing new requests.
+ 	 * These ioctls may trigger the cancellation of a streaming
+ 	 * operation, and that should not be mixed with queueing a new
+ 	 * request at the same time.
+ 	 */
+ 	if (v4l2_device_supports_requests(vfd->v4l2_dev) &&
+-	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF)) {
++	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF ||
++	     cmd == VIDIOC_REQBUFS)) {
+ 		req_queue_lock = &vfd->v4l2_dev->mdev->req_queue_mutex;
+ 
+ 		if (mutex_lock_interruptible(req_queue_lock))
 
 
 
