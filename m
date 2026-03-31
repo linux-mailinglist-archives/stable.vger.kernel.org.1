@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4N03LWr/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:54 +0200
+	id WOE3G3AFzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:33:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8562736DEE7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CB336EE98
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0DDBF30F0019
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F7373313308
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD57421EE4;
-	Tue, 31 Mar 2026 16:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31DA30F819;
+	Tue, 31 Mar 2026 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzJxvJNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djCsdm/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A098B3F7867;
-	Tue, 31 Mar 2026 16:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761B13195E4;
+	Tue, 31 Mar 2026 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976163; cv=none; b=Kn8NIiMSfZFbUuPEFhdGJ7DRbgyzK+LbHMeLtGMyvLj00PtRuvtL5VAU/6S/UfJ5VHJeSS5FgusRvNuvnsNf4qyfefvZI3HdQV4yhckTvRJwaFDchUBHAqSYE+KJVVipu21281KIFYgtU9XK7RmW4e12w1FTgdhPbtBTTZKuQQo=
+	t=1774977004; cv=none; b=rrShUq+ZfwSmvLljPH5iuDyVsm8tsfC8nlA5sceiOw0V7jOSzsj4CanHHioP2AoGrz0ImhXlYdumeDcgUxFK718hvOWCeJCb2RUhzzZ0Ce7T+63AnPKBozk6spYjxLksEJkuca7KIiWH88AXgf6muEZlvLCfNIEiEOJQ7fR5mjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976163; c=relaxed/simple;
-	bh=GUWpfeGS7EBl8sH2DWv8fP1IsaCLX8XWJaadc9zy1Vw=;
+	s=arc-20240116; t=1774977004; c=relaxed/simple;
+	bh=r5S2e0rjpq9gnIoZUHR/Ypv9/gOZQipwCptdIBnbtYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bC87RY50VhkeoVv+boalejbISxZgUDK4ShgUzocFrlXelCbxD2ayZIIv/w6E/HYqPefOZxngtBX8SeKaZTWkgtrYQAu66eSNEcLA1qv+ileWAYMFr0i1uU/7pzKh9d6VJooewlB3N7ovrSzP41PDR5kHS4CtfEisS0Kax93ZeZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzJxvJNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BFFC19423;
-	Tue, 31 Mar 2026 16:56:03 +0000 (UTC)
+	 MIME-Version; b=s479fw2c1OXRjYBw1qgUhKlJXzy/3irBbDMu4RNgxBik4gU9Z96H0Dw7pBKZn+C6RgKztuGzXX3MKZwBK7dx4YSrRtWei2ninkzlH9S4NcT1Vh5b+arKEY9Mvaz1dPKJaD8dNSFmbB/VRFCErX7pYIwfTYPJjATrojOYdMnAl0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djCsdm/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B3DC19423;
+	Tue, 31 Mar 2026 17:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976163;
-	bh=GUWpfeGS7EBl8sH2DWv8fP1IsaCLX8XWJaadc9zy1Vw=;
+	s=korg; t=1774977004;
+	bh=r5S2e0rjpq9gnIoZUHR/Ypv9/gOZQipwCptdIBnbtYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzJxvJNn5pyLszWFTMBiNJfNXCpFjuYZPUxQks1BDwkWt+Q/zeSlt50FjDyukWJV2
-	 vlN6MmQBaZl6kixU8I5BtwonGOEXQ/IeIiMHgv4LrVs/mEopYdpekZ2UrJpiPqc6T1
-	 du0kcjXDUtGCFnrwroKE1W8saLxKbw7n1zKpjVHw=
+	b=djCsdm/0r7HQyrsMSvbcOhi/iEFCOnmYQtsSzjS5w0M1gv2vHjrPJYekvAANGeeuv
+	 KU00xENCgDJD2NzEvc54NIeoOICC1xfkBqAGAs3piQQZBNJtr36frUXzzQ4FS/xSBt
+	 PQVk4pTuqLbsIgGNk7waE4OdWG9csUf8O70i/hnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/244] dmaengine: idxd: fix possible wrong descriptor completion in llist_abort_desc()
-Date: Tue, 31 Mar 2026 18:23:01 +0200
-Message-ID: <20260331161750.295240848@linuxfoundation.org>
+	Josh Law <objecting@objecting.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 279/309] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Tue, 31 Mar 2026 18:23:02 +0200
+Message-ID: <20260331161803.833961879@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232211-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-232540-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8562736DEE7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email,objecting.org:email]
+X-Rspamd-Queue-Id: 99CB336EE98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Josh Law <objecting@objecting.org>
 
-[ Upstream commit e1c9866173c5f8521f2d0768547a01508cb9ff27 ]
+commit 7fe000eb32904758a85e62f6ea9483f89d5dabfc upstream.
 
-At the end of this function, d is the traversal cursor of flist, but the
-code completes found instead. This can lead to issues such as NULL pointer
-dereferences, double completion, or descriptor leaks.
+Patch series "mm/damon/sysfs: fix memory leak and NULL dereference
+issues", v4.
 
-Fix this by completing d instead of found in the final
-list_for_each_entry_safe() loop.
+DAMON_SYSFS can leak memory under allocation failure, and do NULL pointer
+dereference when a privileged user make wrong sequences of control.  Fix
+those.
 
-Fixes: aa8d18becc0c ("dmaengine: idxd: add callback support for iaa crypto")
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20260106032428.162445-1-islituo@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This patch (of 3):
+
+When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
+param_ctx is leaked because the early return skips the cleanup at the out
+label.  Destroy param_ctx before returning.
+
+Link: https://lkml.kernel.org/r/20260321175427.86000-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20260321175427.86000-2-sj@kernel.org
+Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/submit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/submit.c b/drivers/dma/idxd/submit.c
-index 94eca25ae9b90..b246da3cfb55d 100644
---- a/drivers/dma/idxd/submit.c
-+++ b/drivers/dma/idxd/submit.c
-@@ -138,7 +138,7 @@ static void llist_abort_desc(struct idxd_wq *wq, struct idxd_irq_entry *ie,
- 	 */
- 	list_for_each_entry_safe(d, t, &flist, list) {
- 		list_del_init(&d->list);
--		idxd_dma_complete_txd(found, IDXD_COMPLETE_ABORT, true,
-+		idxd_dma_complete_txd(d, IDXD_COMPLETE_ABORT, true,
- 				      NULL, NULL);
- 	}
- }
--- 
-2.53.0
-
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1476,8 +1476,10 @@ static int damon_sysfs_commit_input(void
+ 	if (IS_ERR(param_ctx))
+ 		return PTR_ERR(param_ctx);
+ 	test_ctx = damon_new_ctx();
+-	if (!test_ctx)
++	if (!test_ctx) {
++		damon_destroy_ctx(param_ctx);
+ 		return -ENOMEM;
++	}
+ 	err = damon_commit_ctx(test_ctx, param_ctx);
+ 	if (err)
+ 		goto out;
 
 
 
