@@ -1,75 +1,61 @@
-Return-Path: <stable+bounces-231457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPseLKvvy2m5MgYAu9opvQ
-	(envelope-from <stable+bounces-231457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:00:43 +0200
+	id kKjYKo/wy2m5MgYAu9opvQ
+	(envelope-from <stable+bounces-231458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:04:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0431636C44C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F49F36C520
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B2BC304C639
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:55:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D26F03018D7C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2253FA5ED;
-	Tue, 31 Mar 2026 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6821029A9FE;
+	Tue, 31 Mar 2026 16:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smEqOJma"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HfNYL3td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C88285CBA;
-	Tue, 31 Mar 2026 15:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C40733F399
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774972510; cv=none; b=pvuUbzp26Mnd2sKClvPuY+T7m//Nk2a+OOWSbCoQqvEF0CdsnF3fXLTElQcc4ZSo09mwosvTdVfNNpItaODA5by4sBByBVRV2hh3BsSBH6DaEv8Fe5DCWlTWPYD9kzvw5dQdMqw0z98qMJ3IaDfBaFHDXFUth9pEcGFx8DowYLU=
+	t=1774972818; cv=none; b=AFHA3XvjDFmTGCAPr0LVyEEMATxlBgWv1hAzOamRvXUfTncNeMS+hnKsLE31Cm6KCeaZCz3jJJ5SSmEUk2m37koqDs9I9yhscvqBNKGesb+xu6LD0aFMpFgfLveEc4FxqVw9IH9PDpkFVl0aMyBHoyYRyKjabXMm9QYQxEbA2ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774972510; c=relaxed/simple;
-	bh=aDprB0j2xJvFThcBl3Af0grhX/iIzs5DFB/VWB2U/7o=;
+	s=arc-20240116; t=1774972818; c=relaxed/simple;
+	bh=8xkcmqcXJmmiDltGTeWwOvYRHEW1eXf7YYFz5p1BRJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNNGkCHbHlNG7YauSlK4LpugXAPzebPXaoWKakQHKiY8Myt8cs5qIQ7yDjKFn3EoWoQQPgXpI1XfK8WDCShzEPyXT3H3l8ODdJKFgE/2Jf1cmE2G+EzGL6ZAfLsN8cfVfDVicnFKhBdg2mNrFjRNfdlrh2DBoQYt3YHKJNkg7x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smEqOJma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCB7C19423;
-	Tue, 31 Mar 2026 15:55:09 +0000 (UTC)
+	 MIME-Version; b=BjdPvX/EP3Nap/l3dU5XUl5m+5XKqlk1z+gdCfvnLVvYZ6ywDZDdkPLD/2TpMoZCsutNZoWaJd8eyszqaeklZqW66wCzT2WwvBskmQx2xeIH0hy+0VqeH86zYw1UgnyW5Uno9rwP1BcNBL/4fOZkIkbycyW8J3O81OcZbvR5bhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HfNYL3td; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCFDC19423;
+	Tue, 31 Mar 2026 16:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774972509;
-	bh=aDprB0j2xJvFThcBl3Af0grhX/iIzs5DFB/VWB2U/7o=;
+	s=k20201202; t=1774972818;
+	bh=8xkcmqcXJmmiDltGTeWwOvYRHEW1eXf7YYFz5p1BRJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smEqOJma4I5FxSVuk1qKqNI84owp9C38/avG+tPtkBmAtprNzYCdqS/r2O8esNOXg
-	 S7ZUAnTOcU9x7n3y35chh7HeEXf3o9k0YxpGYBLBNDXdm9abb5mmbMNsobZPYr62B7
-	 U1e+C0O6aWIT81qlzRRrb9VewH7+5oVJ40ff4ET8NwyNt2BBSQwcDwh775CFLrA8wM
-	 CmFcMeZrjj5W3rtzzaVUpGgnk1ONnohgiLnJVI6zUksTnSlXm5z4hxxvJrBrFrkLvQ
-	 ZD60YjKOcD8yNOEXL/WQKcD0+CFDXy8XxPVZMnZUIoTRkDH0FS46KqS18IpBqFGi0Y
-	 nRYPgg5zLzi6Q==
-From: SeongJae Park <sj@kernel.org>
-To: "Theodore Tso" <tytso@mit.edu>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"# 5 . 19 . x" <stable@vger.kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn commit_inputs vs other params race
-Date: Tue, 31 Mar 2026 08:55:06 -0700
-Message-ID: <20260331155507.79720-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331121943.GA74409@macsyma-wired.lan>
-References: 
+	b=HfNYL3td+M6N6FfUJvB6Z4VS6wV65WD7fK/AND1vNnJmM+iALD1/FVtSCH/i2/O21
+	 cRqM3NAI43ZztmD5X+Oh49WPGm9g/j6WlsTlHIJMynXP+TFT0lnc0ZUiECa/xZ40nM
+	 uVmElIId536LCrPW8HLCPhqJY1YhwIn58O9MV0iyzDBaZoBwu9Y1xd/GtgNCx/okds
+	 eKrX9u7ykaePKX3r5IjaHaY0mDIeverERhaOhMRn97leZ/0DkxsatFjWYN8fpb0Bwz
+	 r/4yZ9rhEobvPWLCzJwOEACmBNqhRqVJxDArz0S8UMwisKCSBO7AhU08PuxtvdpJ19
+	 MZjfwtc/nDmcg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	Long Li <longli@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19.y] net: mana: fix use-after-free in add_adev() error path
+Date: Tue, 31 Mar 2026 12:00:15 -0400
+Message-ID: <20260331160015.2677476-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033040-marauding-puma-a849@gregkh>
+References: <2026033040-marauding-puma-a849@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,51 +74,86 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231457-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-231458-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0431636C44C
+X-Rspamd-Queue-Id: 0F49F36C520
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 31 Mar 2026 08:19:43 -0400 "Theodore Tso" <tytso@mit.edu> wrote:
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-> On Mon, Mar 30, 2026 at 02:22:05PM -0700, Andrew Morton wrote:
-> > 
-> > I view Sashiko as primarily an author tool.  Sometimes I call it
-> > checkpatch++.  In a better world, author would be able to sort out
-> > Sashiko issues before ever sending out the patchset.  But in this
-> > world, a public send is needed to obtain that review.
-> 
-> Note that Sashiko is fully open source and the prompts are available
-> in third_party/prompts in the git repo:
-> 
-> 	https://github.com/sashiko-dev/sashiko
-> 
-> So people can run it privately, although they will need to provide
-> their own LLM credits.
+[ Upstream commit c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f ]
 
-That's unfortunately a barrier to some people.  To me, what makes sashiko
-special and different from other AI review tools is the fact that it is
-automatically reviewing nearly every kernel patch for free and publicly sharing
-the results.
+If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
+auxiliary_device_uninit(adev).
 
+The auxiliary device has its release callback set to adev_release(),
+which frees the containing struct mana_adev. Since adev is embedded in
+struct mana_adev, the subsequent fall-through to init_fail and access
+to adev->id may result in a use-after-free.
 
-Thanks,
-SJ
+Fix this by saving the allocated auxiliary device id in a local
+variable before calling auxiliary_device_add(), and use that saved id
+in the cleanup path after auxiliary_device_uninit().
 
-[...]
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
+Cc: stable@vger.kernel.org
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260323165730.945365-1-lgs201920130244@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 4a616a97d89d5..14f44b71daded 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3376,6 +3376,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	struct auxiliary_device *adev;
+ 	struct mana_adev *madev;
+ 	int ret;
++	int id;
+ 
+ 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
+ 	if (!madev)
+@@ -3385,7 +3386,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	ret = mana_adev_idx_alloc();
+ 	if (ret < 0)
+ 		goto idx_fail;
+-	adev->id = ret;
++	id = ret;
++	adev->id = id;
+ 
+ 	adev->name = name;
+ 	adev->dev.parent = gd->gdma_context->dev;
+@@ -3411,7 +3413,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	auxiliary_device_uninit(adev);
+ 
+ init_fail:
+-	mana_adev_idx_free(adev->id);
++	mana_adev_idx_free(id);
+ 
+ idx_fail:
+ 	kfree(madev);
+-- 
+2.53.0
+
 
