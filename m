@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-231707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yD+fNVX7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:29 +0200
+	id uMGMMJ75y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71BB36D3AF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7698036D03D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD115305104F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D0CD307DCAB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7494D421898;
-	Tue, 31 Mar 2026 16:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A1340710B;
+	Tue, 31 Mar 2026 16:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOU3uMzH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oim74WmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370983E3C5C;
-	Tue, 31 Mar 2026 16:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3FF423A76;
+	Tue, 31 Mar 2026 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974861; cv=none; b=e6r+0Tqx3eI3mFxKi2mP6/an+/qm1htv1RnIxYzKXVFookZyTT9D8Zn1iP01IK/qaZsqOLapIgYtI5aIyNQqhqrXquub/Iu/EypZeL96v9Bfhkhe2cW0HCB612l0fLTO/b+1/PwiuYLJff7s0De2NgigIJICndaqsp1upBNfg0A=
+	t=1774974889; cv=none; b=SEyQxv0B4iaDUCWRDzZ10OpktTPpx+EUeS8q/gy29S0bxq22wffmdYwDB2bPK4hLCKxKgR7UXoaI4Zb5fLqA4tqohRxa6v8ES1moeOSADdRlKYl2n7EZ3/HqYKz5AZC2RabgseLbuNmRexCL9cg3losy+uE3xnqvoHFl3hEjESk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974861; c=relaxed/simple;
-	bh=SGOZ94CZaZfuxX9Klcna6RHE0JA5fhyKi9+6mkfVAVA=;
+	s=arc-20240116; t=1774974889; c=relaxed/simple;
+	bh=Vh1ahq59aDt8J70RP8WToCoVt0OeKtaLRL2ktoMHMmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lBce2sUHlqjn8PrSJUc489hgE+FaJaNbY68d0g1bWo8nF9x50Dv0MdpHHwJhiHtfwV5emWqVUP7hNRgfXqa4bQmBni1LdoNPJFvKdBOILkvQN+LIjQqyGucG4dLOfCdx4GDXgpq+xN1o4dQiu7A63VCoW1xWQB6fZa+UhBgtGTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOU3uMzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CEFC19423;
-	Tue, 31 Mar 2026 16:34:20 +0000 (UTC)
+	 MIME-Version; b=gFAWOUOaacVl3bRWTbtsggSeNMXJhdNITmVZgpgyzjwQq/VOzt923fRCTTgCqmS/MzkQXZWnIMsgt4C91BK6+5SmpoiG+BXIyFi6svueaNyVT896oDgIikPSEFAU1Hcqj4J6e8+Bwyu10plEprDIGHLF6FTSoQvZr1LEuRBFEyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oim74WmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFFFC19423;
+	Tue, 31 Mar 2026 16:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974861;
-	bh=SGOZ94CZaZfuxX9Klcna6RHE0JA5fhyKi9+6mkfVAVA=;
+	s=korg; t=1774974889;
+	bh=Vh1ahq59aDt8J70RP8WToCoVt0OeKtaLRL2ktoMHMmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOU3uMzHbX49zOuDGP87n/azXor99MjcT5wmuUKhYOHmIp9aVA9bGDNrxyycqMNmF
-	 mKklqpFjd6w2nBkMOwpS/xAP9P777h6rKfHWyeeUa/DcXjaaUgEPwwbdlmsCas7UnZ
-	 3cOD5UcT0Qy4sQBygnLvzlr5ni0hAv2ea3jj08hY=
+	b=Oim74WmS/gAax0OZ0NmhrSO1F7WTz0SKw2dEdoeiR0JU9mt/+7e4IqELBs/6hEFg2
+	 qJqau0x2gFM2+MldRLfXOuA/KNCn40OKgF/3gbQqAK3GURmcmZWHPgLrx2ctsxPnKb
+	 7CdA+1X0mSRuboR5WsxzngebOuW0vAC/H+ua3RSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 055/342] dma-buf: Include ioctl.h in UAPI header
-Date: Tue, 31 Mar 2026 18:18:08 +0200
-Message-ID: <20260331161800.923097161@linuxfoundation.org>
+Subject: [PATCH 6.19 056/342] block: break pcpu_alloc_mutex dependency on freeze_lock
+Date: Tue, 31 Mar 2026 18:18:09 +0200
+Message-ID: <20260331161800.958732894@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -64,35 +66,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231707-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231719-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: C71BB36D3AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,fnnas.com:email]
+X-Rspamd-Queue-Id: 7698036D03D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,39 +102,127 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit a116bac87118903925108e57781bbfc7a7eea27b ]
+[ Upstream commit 539d1b47e935e8384977dd7e5cec370c08b7a644 ]
 
-include/uapi/linux/dma-buf.h uses several macros from ioctl.h to define
-its ioctl commands. However, it does not include ioctl.h itself. So,
-if userspace source code tries to include the dma-buf.h file without
-including ioctl.h, it can result in build failures.
+While nr_hw_update allocates tagset tags it acquires ->pcpu_alloc_mutex
+after ->freeze_lock is acquired or queue is frozen. This potentially
+creates a circular dependency involving ->fs_reclaim if reclaim is
+triggered simultaneously in a code path which first acquires ->pcpu_
+alloc_mutex. As the queue is already frozen while nr_hw_queue update
+allocates tagsets, the reclaim can't forward progress and thus it could
+cause a potential deadlock as reported in lockdep splat[1].
 
-Therefore, include ioctl.h in the dma-buf UAPI header.
+Fix this by pre-allocating tagset tags before we freeze queue during
+nr_hw_queue update. Later the allocated tagset tags could be safely
+installed and used after queue is frozen.
 
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20260303002309.1401849-1-isaacmanjarres@google.com
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/all/CAHj4cs8F=OV9s3La2kEQ34YndgfZP-B5PHS4Z8_b9euKG6J4mw@mail.gmail.com/ [1]
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+[axboe: fix brace style issue]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/dma-buf.h | 1 +
- 1 file changed, 1 insertion(+)
+ block/blk-mq.c | 45 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 15 deletions(-)
 
-diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-buf.h
-index 5a6fda66d9adf..e827c9d20c5d3 100644
---- a/include/uapi/linux/dma-buf.h
-+++ b/include/uapi/linux/dma-buf.h
-@@ -20,6 +20,7 @@
- #ifndef _DMA_BUF_UAPI_H_
- #define _DMA_BUF_UAPI_H_
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 968699277c3d5..3b58dd5876114 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -4778,38 +4778,45 @@ static void blk_mq_update_queue_map(struct blk_mq_tag_set *set)
+ 	}
+ }
  
-+#include <linux/ioctl.h>
- #include <linux/types.h>
+-static int blk_mq_realloc_tag_set_tags(struct blk_mq_tag_set *set,
+-				       int new_nr_hw_queues)
++static struct blk_mq_tags **blk_mq_prealloc_tag_set_tags(
++				struct blk_mq_tag_set *set,
++				int new_nr_hw_queues)
+ {
+ 	struct blk_mq_tags **new_tags;
+ 	int i;
  
- /**
+ 	if (set->nr_hw_queues >= new_nr_hw_queues)
+-		goto done;
++		return NULL;
+ 
+ 	new_tags = kcalloc_node(new_nr_hw_queues, sizeof(struct blk_mq_tags *),
+ 				GFP_KERNEL, set->numa_node);
+ 	if (!new_tags)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	if (set->tags)
+ 		memcpy(new_tags, set->tags, set->nr_hw_queues *
+ 		       sizeof(*set->tags));
+-	kfree(set->tags);
+-	set->tags = new_tags;
+ 
+ 	for (i = set->nr_hw_queues; i < new_nr_hw_queues; i++) {
+-		if (!__blk_mq_alloc_map_and_rqs(set, i)) {
+-			while (--i >= set->nr_hw_queues)
+-				__blk_mq_free_map_and_rqs(set, i);
+-			return -ENOMEM;
++		if (blk_mq_is_shared_tags(set->flags)) {
++			new_tags[i] = set->shared_tags;
++		} else {
++			new_tags[i] = blk_mq_alloc_map_and_rqs(set, i,
++					set->queue_depth);
++			if (!new_tags[i])
++				goto out_unwind;
+ 		}
+ 		cond_resched();
+ 	}
+ 
+-done:
+-	set->nr_hw_queues = new_nr_hw_queues;
+-	return 0;
++	return new_tags;
++out_unwind:
++	while (--i >= set->nr_hw_queues) {
++		if (!blk_mq_is_shared_tags(set->flags))
++			blk_mq_free_map_and_rqs(set, new_tags[i], i);
++	}
++	kfree(new_tags);
++	return ERR_PTR(-ENOMEM);
+ }
+ 
+ /*
+@@ -5093,6 +5100,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 	unsigned int memflags;
+ 	int i;
+ 	struct xarray elv_tbl;
++	struct blk_mq_tags **new_tags;
+ 	bool queues_frozen = false;
+ 
+ 	lockdep_assert_held(&set->tag_list_lock);
+@@ -5127,11 +5135,18 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 		if (blk_mq_elv_switch_none(q, &elv_tbl))
+ 			goto switch_back;
+ 
++	new_tags = blk_mq_prealloc_tag_set_tags(set, nr_hw_queues);
++	if (IS_ERR(new_tags))
++		goto switch_back;
++
+ 	list_for_each_entry(q, &set->tag_list, tag_set_list)
+ 		blk_mq_freeze_queue_nomemsave(q);
+ 	queues_frozen = true;
+-	if (blk_mq_realloc_tag_set_tags(set, nr_hw_queues) < 0)
+-		goto switch_back;
++	if (new_tags) {
++		kfree(set->tags);
++		set->tags = new_tags;
++	}
++	set->nr_hw_queues = nr_hw_queues;
+ 
+ fallback:
+ 	blk_mq_update_queue_map(set);
 -- 
 2.51.0
 
