@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIfyOmkAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:09 +0200
+	id iL6jKTf+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF7636E261
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA436DB73
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6092C30D81B0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45854328E0C2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AB23E559E;
-	Tue, 31 Mar 2026 16:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD785423A89;
+	Tue, 31 Mar 2026 16:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM9DZ/YE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/eHr6qF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8880C3F7A8B;
-	Tue, 31 Mar 2026 16:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03F14035AB;
+	Tue, 31 Mar 2026 16:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975434; cv=none; b=l8IGQBl87eWQJp5kvgw9icze/pp0CvSKtVbePFe/FGvtMbfDR5Nz/5mMGtYhZGaAb9QuTtzTWBLP+C6H0sXZD0a4JrqxksSu4fZUr8djOs7tLF0CF5FduL1S8Uv6XDdUW1xLZhoGS92PpQRQdQ82wkmRzQU6l/YTYusEU+9loZE=
+	t=1774976091; cv=none; b=Oog07PEhUauKZ2IYZL9JFzwQH6JON4umzgRiJaAfkkJObdv5ZaXa4ReQb/Hr5LD4RaGFKSapNym9xwnr0H7a3bdn4YrXFlqmwUQQCCTB9myL6N5GO4qZ8DnXDMqC+GW7RDUQG2HTSTn7cfsWMxxjUl3plPwSAtLAYu9q02G5ReQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975434; c=relaxed/simple;
-	bh=RTLk4NfRjMcILSS3/+sjhhes+pzlCbNEGFlhZFzdbBQ=;
+	s=arc-20240116; t=1774976091; c=relaxed/simple;
+	bh=+DDH0wl7THdzxEAsU8+kKwe/rTZCGdjxaJz/BAuW9fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNrMcAK0OE6yA5KlzUs0c+ZMZ32kKxZXmaS6ZEazugo5T8FTzdv7lvBEP4x1EtJ7mVJJlxZW6oF6M5txPY7J/TIcDQdWAQGaHQoNmtqzbiinqnG0Haj8xqVynTE1O6otJ+Rk9n6BvcFV1n0oST4/rejR6iFy9MHDtaJJLE7sRh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM9DZ/YE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F156C19423;
-	Tue, 31 Mar 2026 16:43:53 +0000 (UTC)
+	 MIME-Version; b=OrotpzaAifJX6i9hPvfe0Nnmev9IomyhwmKz0kbN4Jj99Vufe3oABjRFkDeSfPTAWf+pAkp68+EyZWlrYJ+v5kSLVXkzo726u6a2k1u+fRSOWthd3MG9I4MP0AzewPUb3WPx7GY+ikY+yZwSQdpQ6K3r8ROE9G1vBU85Xj7dqhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/eHr6qF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE59AC19423;
+	Tue, 31 Mar 2026 16:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975434;
-	bh=RTLk4NfRjMcILSS3/+sjhhes+pzlCbNEGFlhZFzdbBQ=;
+	s=korg; t=1774976091;
+	bh=+DDH0wl7THdzxEAsU8+kKwe/rTZCGdjxaJz/BAuW9fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DM9DZ/YEWsA9MHTnLott0MDRAJozMu1cK8FBsPZZVOShcr3aoGcTjkWD9vykY/PUS
-	 /5YjsFGhlA4M9UkjpXY3IE90XicvC1ApyD6/6J3RpK3qutjE260YtIL6qMaaNhZvXq
-	 CzcXinfsXCI+ytOFDllRd1B3sf0c5QKNcTJKBey8=
+	b=O/eHr6qFN9VoILY26DZ5CoKg5bXN/8to6DcuP/Ev7FPgX3uk6aAYLylgAUDUaFKEA
+	 kYLXwA/RRvNA9xX6OYyXxJbodpG0GpQUMpFY00BqbkDYTywRzLHZvoBEiTQwPLkqjZ
+	 u5rqIm2Uq3IGClTQ53J1Fbs0we7HvHO2r/gOhzPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 293/342] ext4: do not check fast symlink during orphan recovery
+	Aurelien Jarno <aurel32@debian.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 176/244] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more robust
 Date: Tue, 31 Mar 2026 18:22:06 +0200
-Message-ID: <20260331161809.720175714@linuxfoundation.org>
+Message-ID: <20260331161748.256918963@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +67,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231930-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232183-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.cz:email,msgid.link:url]
-X-Rspamd-Queue-Id: ECF7636E261
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0EBA436DB73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 84e21e3fb8fd99ea460eb7274584750d11cf3e9f upstream.
+commit 2db06c15d8c7a0ccb6108524e16cd9163753f354 upstream.
 
-Commit '5f920d5d6083 ("ext4: verify fast symlink length")' causes the
-generic/475 test to fail during orphan cleanup of zero-length symlinks.
+kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+case so as to make it more robust.
 
-  generic/475  84s ... _check_generic_filesystem: filesystem on /dev/vde is inconsistent
+This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
 
-The fsck reports are provided below:
-
-  Deleted inode 9686 has zero dtime.
-  Deleted inode 158230 has zero dtime.
-  ...
-  Inode bitmap differences:  -9686 -158230
-  Orphan file (inode 12) block 13 is not clean.
-  Failed to initialize orphan file.
-
-In ext4_symlink(), a newly created symlink can be added to the orphan
-list due to ENOSPC. Its data has not been initialized, and its size is
-zero. Therefore, we need to disregard the length check of the symbolic
-link when cleaning up orphan inodes. Instead, we should ensure that the
-nlink count is zero.
-
-Fixes: 5f920d5d6083 ("ext4: verify fast symlink length")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260131091156.1733648-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: <stable@vger.kernel.org>
+Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+Reported-by: Aurelien Jarno <aurel32@debian.org>
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |   40 +++++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
+ arch/loongarch/kvm/vcpu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5449,18 +5449,36 @@ struct inode *__ext4_iget(struct super_b
- 			inode->i_op = &ext4_encrypted_symlink_inode_operations;
- 		} else if (ext4_inode_is_fast_symlink(inode)) {
- 			inode->i_op = &ext4_fast_symlink_inode_operations;
--			if (inode->i_size == 0 ||
--			    inode->i_size >= sizeof(ei->i_data) ||
--			    strnlen((char *)ei->i_data, inode->i_size + 1) !=
--								inode->i_size) {
--				ext4_error_inode(inode, function, line, 0,
--					"invalid fast symlink length %llu",
--					 (unsigned long long)inode->i_size);
--				ret = -EFSCORRUPTED;
--				goto bad_inode;
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -531,6 +531,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(s
+ {
+ 	struct kvm_phyid_map *map;
+ 
++	if (cpuid < 0)
++		return NULL;
 +
-+			/*
-+			 * Orphan cleanup can see inodes with i_size == 0
-+			 * and i_data uninitialized. Skip size checks in
-+			 * that case. This is safe because the first thing
-+			 * ext4_evict_inode() does for fast symlinks is
-+			 * clearing of i_data and i_size.
-+			 */
-+			if ((EXT4_SB(sb)->s_mount_state & EXT4_ORPHAN_FS)) {
-+				if (inode->i_nlink != 0) {
-+					ext4_error_inode(inode, function, line, 0,
-+						"invalid orphan symlink nlink %d",
-+						inode->i_nlink);
-+					ret = -EFSCORRUPTED;
-+					goto bad_inode;
-+				}
-+			} else {
-+				if (inode->i_size == 0 ||
-+				    inode->i_size >= sizeof(ei->i_data) ||
-+				    strnlen((char *)ei->i_data, inode->i_size + 1) !=
-+						inode->i_size) {
-+					ext4_error_inode(inode, function, line, 0,
-+						"invalid fast symlink length %llu",
-+						(unsigned long long)inode->i_size);
-+					ret = -EFSCORRUPTED;
-+					goto bad_inode;
-+				}
-+				inode_set_cached_link(inode, (char *)ei->i_data,
-+						      inode->i_size);
- 			}
--			inode_set_cached_link(inode, (char *)ei->i_data,
--					      inode->i_size);
- 		} else {
- 			inode->i_op = &ext4_symlink_inode_operations;
- 		}
+ 	if (cpuid >= KVM_MAX_PHYID)
+ 		return NULL;
+ 
 
 
 
