@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEp2Fsr3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:22 +0200
+	id UGssCXoAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1273136CCCD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B4B36E299
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE643134489
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:28:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 86F75304C52D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A501421898;
-	Tue, 31 Mar 2026 16:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5873002A9;
+	Tue, 31 Mar 2026 17:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNmXzz5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXvFzi2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE93E3EF0A2;
-	Tue, 31 Mar 2026 16:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1C72F5491;
+	Tue, 31 Mar 2026 17:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974496; cv=none; b=Ri3lRWuY1uqFl5UP9v8gvhuFsBAaZ8c1ljWc3ZHBpBu4Uw4ptueeNUZxm6GH4JFAQyixwFjY5fkLHNJjt4FZqEhYipyYI9D0x4o+tkCjF4reUMIjFszSAKEGaIrkJV71WeqoUlJDHcLdqyAf+TTsrY1WtQR8EH1qsNRx6qpRRUg=
+	t=1774976683; cv=none; b=RjEpoHSL63bWAhqbOCBmOhJV2d2mpN688VpXrPdJ9snQnJO8m0wr4E+TucxsmnDSaco70TMrHChIzvAbCvB77raJBBiqmWW72ynUoafV5sBZZKsNyzcPTPl0NoG57oBIFfaE2+SbKbFDxyWRe16QY7poclAnIj6VwmZMPCeiG/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974496; c=relaxed/simple;
-	bh=GbvnkSTY3Hp4pKgqpBD9OO73D/Kw/vjWhZ8M8JNc38A=;
+	s=arc-20240116; t=1774976683; c=relaxed/simple;
+	bh=ffMZCVhu/fl9RRmUsKa+BMNiys2VhxoTDE9ACYWyAws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UN1DYIxavBznXOt/58nfFtjjJjapJZsTTQ0u9M7yu6BiUa7NET/9nEmRr6zHGk/81of12n9+haVCA6U1+D0lPR8xSTL48nLdY9ME/9q2whIBg5Mb/rh/qgeVYDGMbxEnwJtttCwrCqtwXqsp5+WbKbo8wvrsrFfeGqvGr5oLKIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNmXzz5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6F5C2BCB2;
-	Tue, 31 Mar 2026 16:28:15 +0000 (UTC)
+	 MIME-Version; b=WVpnBs3PNad9n8mC7HNh9wmo9F5hbKCIxkBC5TTJiLqUcjYpfvmYkAWTqLhye4PwcjAX8B6i4em+lcj7oeVj0auKGmgX+yY14X8aYuKMQ3eYy/j8GrnqatfFu42NclnPeLMubf2ZAvDlDcjoueitlGlHgFLWtb9bNnkDaDrkmew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXvFzi2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96716C19423;
+	Tue, 31 Mar 2026 17:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974495;
-	bh=GbvnkSTY3Hp4pKgqpBD9OO73D/Kw/vjWhZ8M8JNc38A=;
+	s=korg; t=1774976682;
+	bh=ffMZCVhu/fl9RRmUsKa+BMNiys2VhxoTDE9ACYWyAws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNmXzz5hCA2jOF+cN8baI7biMbumZRezleaNInWnNJJiovDs35nlBVS+xPYQmNCEQ
-	 K7qJzpNg7SKklrusk08J6Nr5a7ovaaLleM8E+DCBE0eqCJLeNyW1GOZTLr5GmXdvTR
-	 wM/hrdB/dlPyLd7cH+7ixrO7wL0Ek2537h9ej1RY=
+	b=EXvFzi2fLuT/WYfhKSeX78xM5yspyedht2RR0An4nsQWKQvj4GsQHqHGX673I44oB
+	 utg5+bwmD9qOgeZoTF2dSy9PB7y+moaWaYcuPewDLQzvnjlhQ20bxBKnB+Hp44t1f9
+	 +Y5xE+T2cmoQ/FxeLMfxh2HCU2gyLUbbjnz5DDAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 106/175] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
+	Stable@vger.kernel.org,
+	Joel Selvaraj <foss@joelselvaraj.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 187/309] ASoC: codecs: wcd934x: fix typo in dt parsing
 Date: Tue, 31 Mar 2026 18:21:30 +0200
-Message-ID: <20260331161733.675191550@linuxfoundation.org>
+Message-ID: <20260331161800.342148919@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +70,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232413-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231564-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hartkopp.net:email,keysight.com:email]
-X-Rspamd-Queue-Id: 1273136CCCD
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,joelselvaraj.com:email]
+X-Rspamd-Queue-Id: E3B4B36E299
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 424e95d62110cdbc8fd12b40918f37e408e35a92 upstream.
+commit cfb385a8dc88d86a805a5682eaa68f59fa5c0ec3 upstream.
 
-isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
-to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
-wait_event_interruptible() and then calls kfree(so->tx.buf).
+Looks like we ended up with a typo during device tree data parsing
+as part of 4f16b6351bbff ("ASoC: codecs: wcd: add common helper for wcd
+codecs") patch.
+ This will result in not parsing the device tree data and results in
+zero mic bias values.
 
-If a signal interrupts the wait_event_interruptible() inside close()
-while tx.state is ISOTP_SENDING, the loop exits early and release
-proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
-while sendmsg may still be reading so->tx.buf for the final CAN frame
-in isotp_fill_dataframe().
+Fix this by calling wcd_dt_parse_micbias_info instead of
+wcd_dt_parse_mbhc_data.
 
-The so->tx.buf can be allocated once when the standard tx.buf length needs
-to be extended. Move the kfree() of this potentially extended tx.buf to
-sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
-
-Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 4f16b6351bbff ("ASoC: codecs: wcd: add common helper for wcd codecs")
+Cc: Stable@vger.kernel.org
+Reported-by: Joel Selvaraj <foss@joelselvaraj.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260323231748.2217967-1-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/isotp.c |   24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ sound/soc/codecs/wcd934x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1227,12 +1227,6 @@ static int isotp_release(struct socket *
- 	so->ifindex = 0;
- 	so->bound = 0;
+diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
+index c8db33f78a1b..bc41a1466c70 100644
+--- a/sound/soc/codecs/wcd934x.c
++++ b/sound/soc/codecs/wcd934x.c
+@@ -2172,7 +2172,7 @@ static int wcd934x_init_dmic(struct snd_soc_component *comp)
+ 	u32 def_dmic_rate, dmic_clk_drv;
+ 	int ret;
  
--	if (so->rx.buf != so->rx.sbuf)
--		kfree(so->rx.buf);
--
--	if (so->tx.buf != so->tx.sbuf)
--		kfree(so->tx.buf);
--
- 	sock_orphan(sk);
- 	sock->sk = NULL;
+-	ret = wcd_dt_parse_mbhc_data(comp->dev, &wcd->mbhc_cfg);
++	ret = wcd_dt_parse_micbias_info(&wcd->common);
+ 	if (ret)
+ 		return ret;
  
-@@ -1600,6 +1594,21 @@ static int isotp_notifier(struct notifie
- 	return NOTIFY_DONE;
- }
- 
-+static void isotp_sock_destruct(struct sock *sk)
-+{
-+	struct isotp_sock *so = isotp_sk(sk);
-+
-+	/* do the standard CAN sock destruct work */
-+	can_sock_destruct(sk);
-+
-+	/* free potential extended PDU buffers */
-+	if (so->rx.buf != so->rx.sbuf)
-+		kfree(so->rx.buf);
-+
-+	if (so->tx.buf != so->tx.sbuf)
-+		kfree(so->tx.buf);
-+}
-+
- static int isotp_init(struct sock *sk)
- {
- 	struct isotp_sock *so = isotp_sk(sk);
-@@ -1646,6 +1655,9 @@ static int isotp_init(struct sock *sk)
- 	list_add_tail(&so->notifier, &isotp_notifier_list);
- 	spin_unlock(&isotp_notifier_lock);
- 
-+	/* re-assign default can_sock_destruct() reference */
-+	sk->sk_destruct = isotp_sock_destruct;
-+
- 	return 0;
- }
- 
+-- 
+2.53.0
+
 
 
 
