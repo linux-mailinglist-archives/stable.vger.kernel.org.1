@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDPMFZgDzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:44 +0200
+	id sxGEHDcGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBE136EAD3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 109AE36F011
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA8BE321BC68
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1EA33222E2F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950D9346E7F;
-	Tue, 31 Mar 2026 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A653033E1;
+	Tue, 31 Mar 2026 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIBqB2Kv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kb52dFqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E822C15B2;
-	Tue, 31 Mar 2026 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA893033C9;
+	Tue, 31 Mar 2026 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975811; cv=none; b=IqN0pf4pv+yc1v68ArfdaYfi7xXa91r+CQS+i9V3Xs65kk6sR2/RxCFsQe/UokrZAMiAnAScwxEuaIyi0m9QJ+VWwY8bawt9jHMX8mZ4a0JIX0dSJssHaoFI+Tp8lQGThzZwngU+gsZ23YjggJHIMkQshjeI/rH8bDxgVuXr788=
+	t=1774976564; cv=none; b=BEc/yK1sA6YSB7Cm4ubPJttxuayipGbXYBCf0NZmfXHxYLDNCHvqSVJwl5lcTLm1OGuq98s1deaXgCXgB8Smd3D1mTjqHi4XYQGa8J4Ou7oEW8xWdm4dWkwGY+2AV+bemivxGlEGMP6mds090NcqohaDpEwY66ih4sfIfbOQKgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975811; c=relaxed/simple;
-	bh=cakKbTh4hdXXiddk9mBx+hbJWa0oEhiUTgH8PYoLBa4=;
+	s=arc-20240116; t=1774976564; c=relaxed/simple;
+	bh=2YgpsOOB7dKEXaXQVJR9M+LIjpmPTM0/jcmiAvFd0bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XK74xBAF0VxggZhTSOVwnaJefzkOCUtNsOIRq6ulOB3kVvyT1tLV0XxjJtgnuZpDG1k/H8HZzQ8fqqFJXXyEmZF3o5RvUsUOtXoJ/pvmR6H9xv7olr2r1v246K9/U5gV5TEPfGyJ8mbUDAgwE/rXqgBpiVtodiE/ijvUhI5FPfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIBqB2Kv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990B0C19423;
-	Tue, 31 Mar 2026 16:50:10 +0000 (UTC)
+	 MIME-Version; b=byZEEIoslU3xL19cBPTDR9RkMbLagOaLNUBdHTSFNEJMfrBcMIVtGh+TzgjtvnlfIMbjJw37icl+bMyrVDVB+4mai27ZmAwOpsEQEaFbb/jVksBiJmNd0rXS9dCQPgWOA3Y5DcqhOq7SxaYKtbiN8eMC34sUNuAuc4e3++fyUK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kb52dFqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34516C19423;
+	Tue, 31 Mar 2026 17:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975810;
-	bh=cakKbTh4hdXXiddk9mBx+hbJWa0oEhiUTgH8PYoLBa4=;
+	s=korg; t=1774976564;
+	bh=2YgpsOOB7dKEXaXQVJR9M+LIjpmPTM0/jcmiAvFd0bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIBqB2KvZjFVkHnXdCFYcPmvhJYusCpdbwUSxsUnEppxySiZKHr6ujdMRwrh8g4qt
-	 5fiDo/XgIUkczkL5tETCkzGx5KdGgnWQc5JnL5d8L8fKxa8u8+LeZZn1UU1ng17Sf+
-	 qwuhyzZeorB2mB5yXpyatBI9I5Qu1WTv7oYJgnj4=
+	b=Kb52dFqD4hjgwzvLx0D4W83h4vc5NXpL68bvtvE1xch1a1cJJhsI6xDt5FbB0xWe3
+	 RAAwFnL10FzGWZ6kqSd/fV88ih9j7ju8cdOyl5fgi+NuSKcUoGlYIMWs+NdwkFYPJc
+	 /eqy2YGSHh0DebN02uuXSVsEfqpjoILPD+mvBJ9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cen Zhang <zzzccc427@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/244] Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock
+Subject: [PATCH 6.18 142/309] RDMA/irdma: Update ibqp state to error if QP is already in error state
 Date: Tue, 31 Mar 2026 18:20:45 +0200
-Message-ID: <20260331161745.184776659@linuxfoundation.org>
+Message-ID: <20260331161758.700271249@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232075-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232367-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CBBE136EAD3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 109AE36F011
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 
-[ Upstream commit 94d8e6fe5d0818e9300e514e095a200bd5ff93ae ]
+[ Upstream commit 8c1f19a2225cf37b3f8ab0b5a8a5322291cda620 ]
 
-btintel_hw_error() issues two __hci_cmd_sync() calls (HCI_OP_RESET
-and Intel exception-info retrieval) without holding
-hci_req_sync_lock().  This lets it race against
-hci_dev_do_close() -> btintel_shutdown_combined(), which also runs
-__hci_cmd_sync() under the same lock.  When both paths manipulate
-hdev->req_status/req_rsp concurrently, the close path may free the
-response skb first, and the still-running hw_error path hits a
-slab-use-after-free in kfree_skb().
+In irdma_modify_qp() update ibqp state to error if the irdma QP is already
+in error state, otherwise the ibqp state which is visible to the consumer
+app remains stale.
 
-Wrap the whole recovery sequence in hci_req_sync_lock/unlock so it
-is serialized with every other synchronous HCI command issuer.
-
-Below is the data race report and the kasan report:
-
-  BUG: data-race in __hci_cmd_sync_sk / btintel_shutdown_combined
-
-  read of hdev->req_rsp at net/bluetooth/hci_sync.c:199
-  by task kworker/u17:1/83:
-   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
-   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
-   btintel_hw_error+0x114/0x670 drivers/bluetooth/btintel.c:254
-   hci_error_reset+0x348/0xa30 net/bluetooth/hci_core.c:1030
-
-  write/free by task ioctl/22580:
-   btintel_shutdown_combined+0xd0/0x360
-    drivers/bluetooth/btintel.c:3648
-   hci_dev_close_sync+0x9ae/0x2c10 net/bluetooth/hci_sync.c:5246
-   hci_dev_do_close+0x232/0x460 net/bluetooth/hci_core.c:526
-
-  BUG: KASAN: slab-use-after-free in
-   sk_skb_reason_drop+0x43/0x380 net/core/skbuff.c:1202
-  Read of size 4 at addr ffff888144a738dc
-  by task kworker/u17:1/83:
-   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
-   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
-   btintel_hw_error+0x186/0x670 drivers/bluetooth/btintel.c:260
-
-Fixes: 973bb97e5aee ("Bluetooth: btintel: Add generic function for handling hardware errors")
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 3a4db68fc2e63..6e3e4a817e727 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -245,11 +245,13 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
- 
- 	bt_dev_err(hdev, "Hardware error 0x%2.2x", code);
- 
-+	hci_req_sync_lock(hdev);
-+
- 	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
- 	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Reset after hardware error failed (%ld)",
- 			   PTR_ERR(skb));
--		return;
-+		goto unlock;
- 	}
- 	kfree_skb(skb);
- 
-@@ -257,18 +259,21 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
- 	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Retrieving Intel exception info failed (%ld)",
- 			   PTR_ERR(skb));
--		return;
-+		goto unlock;
- 	}
- 
- 	if (skb->len != 13) {
- 		bt_dev_err(hdev, "Exception info size mismatch");
- 		kfree_skb(skb);
--		return;
-+		goto unlock;
- 	}
- 
- 	bt_dev_err(hdev, "Exception info %s", (char *)(skb->data + 1));
- 
- 	kfree_skb(skb);
-+
-+unlock:
-+	hci_req_sync_unlock(hdev);
- }
- EXPORT_SYMBOL_GPL(btintel_hw_error);
- 
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index f53b8f0d7ca83..c2449f5721eeb 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -1541,6 +1541,7 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 		case IB_QPS_ERR:
+ 		case IB_QPS_RESET:
+ 			if (iwqp->iwarp_state == IRDMA_QP_STATE_ERROR) {
++				iwqp->ibqp_state = attr->qp_state;
+ 				spin_unlock_irqrestore(&iwqp->lock, flags);
+ 				if (udata && udata->inlen) {
+ 					if (ib_copy_from_udata(&ureq, udata,
+@@ -1746,6 +1747,7 @@ int irdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
+ 		case IB_QPS_ERR:
+ 		case IB_QPS_RESET:
+ 			if (iwqp->iwarp_state == IRDMA_QP_STATE_ERROR) {
++				iwqp->ibqp_state = attr->qp_state;
+ 				spin_unlock_irqrestore(&iwqp->lock, flags);
+ 				if (udata && udata->inlen) {
+ 					if (ib_copy_from_udata(&ureq, udata,
 -- 
-2.51.0
+2.53.0
 
 
 
