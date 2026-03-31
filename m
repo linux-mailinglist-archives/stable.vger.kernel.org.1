@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCm9DnL8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:14 +0200
+	id 8P8SG6cHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FCC36D676
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3D236F2F8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 049413017267
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DCA6A3147097
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A52423A8A;
-	Tue, 31 Mar 2026 16:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC863043DE;
+	Tue, 31 Mar 2026 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/khjhvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GLU2E7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2FD25D527;
-	Tue, 31 Mar 2026 16:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38FC30276A;
+	Tue, 31 Mar 2026 17:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975534; cv=none; b=ZK7TZ+t6P/hsyxroqwWD+JIkDAlbFMps/3NaFgvJLuGVfjum57uB3Jspnswzd6s/vT+GN1cG8TvJC+b4XQnXBWEJKr6/RysutxHY0SxF9deNNac+p2lAvdjPx4iHLN8Cc39uu0xnv2YjKkVsktG/ruFkVkUMqqJITTanYv42HQI=
+	t=1774976825; cv=none; b=BVbXYbg0djHKcOsBf7WcIDsoD8TPhV4hwcqfa6MPVSo9nKGq6Mp+34pDM5AWaJrSPs+PBuz9Bm94/9GiK9FQE94nTNx7WLi+1vNBbu0C6AuQntRj9ckKE+GtbFQA7OVQ4HNDAnrDjLszKbfp8fw9NlVz874f2SVHkcepO5jEFUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975534; c=relaxed/simple;
-	bh=FA0e9+NlxG/rKtywro35pQZNKlhmtaMphqCewmrF+g8=;
+	s=arc-20240116; t=1774976825; c=relaxed/simple;
+	bh=Y7L6oge+E1FxjOfmkQSB6FVICxy/ukOIu+cKfbIxyPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvPda3j/Iz75TdNWNP/zSQRRj/rHxsJnmMg35L+mcQNc0lhfVywGHyYqrzHQUeZQXT9D5YFymBAn01ZB26rwuT2nd4MJ2IESo8zFAOxTVpMMiMX01XnqSeLMZnapMoHAhciXwA07HXlFMt28P0f60dejmNd7I7ohxsCYOXeuTr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/khjhvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FC6C19423;
-	Tue, 31 Mar 2026 16:45:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MJYzvFL+IOpy9QQ2I2lfwwHM4LgxCFB4d+lbFJ1gDNvVoU+wT32owGn7AhrHko0hdNMBBTxe40lC5upL15URsG3dXu33prbSIp96odE8YHdMjnZvEeYrr86DT1mqxorcnAPASlAtr30WmRoczeVGWeqMrKgKk9h44ZSHpb0lCw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GLU2E7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641DAC19423;
+	Tue, 31 Mar 2026 17:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975534;
-	bh=FA0e9+NlxG/rKtywro35pQZNKlhmtaMphqCewmrF+g8=;
+	s=korg; t=1774976825;
+	bh=Y7L6oge+E1FxjOfmkQSB6FVICxy/ukOIu+cKfbIxyPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/khjhvgmTlJ1fB3gDVHf2CzTvUF/rzuLgCOtxuHe7yI8ko+8JJmJjcBmLbdnj5zJ
-	 ZtsOZhSNF+OVMKDP6mVdKZTTSIahCe+SmZ+L7gPsOy1mQohlhuRj/F5xUo7QYgYYMu
-	 xYBZAq1jrDdD+ILS06horo4/YEX5MVuLxM2h1AgE=
+	b=2GLU2E7JMAHIfNjhiMfg8aqTtFZAhV3X57mR78Fm9NxR8nIfcj9V9vpOfgRJQBYCW
+	 G1Sgo9+ulzh2ffflzIwRda2Navo0yY4ZV/ybElTFuxY9G4Zouyd7m+RrvJ+AoIeyFF
+	 hQ/2QpqUiJeHwDzQGYZ1KTkGskAg90OLVB9jHHN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 305/342] ext4: handle wraparound when searching for blocks for indirect mapped blocks
+	Uma Shankar <uma.shankar@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.18 235/309] drm/i915/dp_tunnel: Fix error handling when clearing stream BW in atomic state
 Date: Tue, 31 Mar 2026 18:22:18 +0200
-Message-ID: <20260331161810.149588561@linuxfoundation.org>
+Message-ID: <20260331161802.227375826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +65,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231969-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232468-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,alibaba.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D3FCC36D676
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gitlab.freedesktop.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 6C3D236F2F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Imre Deak <imre.deak@intel.com>
 
-commit bb81702370fad22c06ca12b6e1648754dbc37e0f upstream.
+commit 77fcf58df15edcf3f5b5421f24814fb72796def9 upstream.
 
-Commit 4865c768b563 ("ext4: always allocate blocks only from groups
-inode can use") restricts what blocks will be allocated for indirect
-block based files to block numbers that fit within 32-bit block
-numbers.
+Clearing the DP tunnel stream BW in the atomic state involves getting
+the tunnel group state, which can fail. Handle the error accordingly.
 
-However, when using a review bot running on the latest Gemini LLM to
-check this commit when backporting into an LTS based kernel, it raised
-this concern:
+This fixes at least one issue where drm_dp_tunnel_atomic_set_stream_bw()
+failed to get the tunnel group state returning -EDEADLK, which wasn't
+handled. This lead to the ctx->contended warn later in modeset_lock()
+while taking a WW mutex for another object in the same atomic state, and
+thus within the same already contended WW context.
 
-   If ac->ac_g_ex.fe_group is >= ngroups (for instance, if the goal
-   group was populated via stream allocation from s_mb_last_groups),
-   then start will be >= ngroups.
+Moving intel_crtc_state_alloc() later would avoid freeing saved_state on
+the error path; this stable patch leaves that simplification for a
+follow-up.
 
-   Does this allow allocating blocks beyond the 32-bit limit for
-   indirect block mapped files? The commit message mentions that
-   ext4_mb_scan_groups_linear() takes care to not select unsupported
-   groups. However, its loop uses group = *start, and the very first
-   iteration will call ext4_mb_scan_group() with this unsupported
-   group because next_linear_group() is only called at the end of the
-   iteration.
-
-After reviewing the code paths involved and considering the LLM
-review, I determined that this can happen when there is a file system
-where some files/directories are extent-mapped and others are
-indirect-block mapped.  To address this, add a safety clamp in
-ext4_mb_scan_groups().
-
-Fixes: 4865c768b563 ("ext4: always allocate blocks only from groups inode can use")
-Cc: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://patch.msgid.link/20260326045834.1175822-1-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.9+
+Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during encoder state computation")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7617
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patch.msgid.link/20260320092900.13210-1-imre.deak@intel.com
+(cherry picked from commit fb69d0076e687421188bc8103ab0e8e5825b1df1)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i915/display/intel_display.c   |    8 +++++++-
+ drivers/gpu/drm/i915/display/intel_dp_tunnel.c |   20 ++++++++++++++------
+ drivers/gpu/drm/i915/display/intel_dp_tunnel.h |   11 +++++++----
+ 3 files changed, 28 insertions(+), 11 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1199,6 +1199,8 @@ static int ext4_mb_scan_groups(struct ex
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -4568,6 +4568,7 @@ intel_crtc_prepare_cleared_state(struct
+ 	struct intel_crtc_state *crtc_state =
+ 		intel_atomic_get_new_crtc_state(state, crtc);
+ 	struct intel_crtc_state *saved_state;
++	int err;
  
- 	/* searching for the right group start from the goal value specified */
- 	start = ac->ac_g_ex.fe_group;
-+	if (start >= ngroups)
-+		start = 0;
- 	ac->ac_prefetch_grp = start;
- 	ac->ac_prefetch_nr = 0;
+ 	saved_state = intel_crtc_state_alloc(crtc);
+ 	if (!saved_state)
+@@ -4576,7 +4577,12 @@ intel_crtc_prepare_cleared_state(struct
+ 	/* free the old crtc_state->hw members */
+ 	intel_crtc_free_hw_state(crtc_state);
  
+-	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
++	err = intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
++	if (err) {
++		kfree(saved_state);
++
++		return err;
++	}
+ 
+ 	/* FIXME: before the switch to atomic started, a new pipe_config was
+ 	 * kzalloc'd. Code that depends on any field being zero should be
+--- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
+@@ -622,19 +622,27 @@ int intel_dp_tunnel_atomic_compute_strea
+  *
+  * Clear any DP tunnel stream BW requirement set by
+  * intel_dp_tunnel_atomic_compute_stream_bw().
++ *
++ * Returns 0 in case of success, a negative error code otherwise.
+  */
+-void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+-					    struct intel_crtc_state *crtc_state)
++int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
++					   struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
++	int err;
+ 
+ 	if (!crtc_state->dp_tunnel_ref.tunnel)
+-		return;
++		return 0;
++
++	err = drm_dp_tunnel_atomic_set_stream_bw(&state->base,
++						 crtc_state->dp_tunnel_ref.tunnel,
++						 crtc->pipe, 0);
++	if (err)
++		return err;
+ 
+-	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
+-					   crtc_state->dp_tunnel_ref.tunnel,
+-					   crtc->pipe, 0);
+ 	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
++
++	return 0;
+ }
+ 
+ /**
+--- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
++++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
+@@ -40,8 +40,8 @@ int intel_dp_tunnel_atomic_compute_strea
+ 					     struct intel_dp *intel_dp,
+ 					     const struct intel_connector *connector,
+ 					     struct intel_crtc_state *crtc_state);
+-void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+-					    struct intel_crtc_state *crtc_state);
++int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
++					   struct intel_crtc_state *crtc_state);
+ 
+ int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
+ 					      struct intel_crtc *crtc);
+@@ -88,9 +88,12 @@ intel_dp_tunnel_atomic_compute_stream_bw
+ 	return 0;
+ }
+ 
+-static inline void
++static inline int
+ intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+-				       struct intel_crtc_state *crtc_state) {}
++				       struct intel_crtc_state *crtc_state)
++{
++	return 0;
++}
+ 
+ static inline int
+ intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
 
 
 
