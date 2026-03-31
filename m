@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBfeHFUDzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:37 +0200
+	id sNrwC478y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734A936EA2D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CBB36D6D0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0BA8031243E3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27C9632C382E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E31301708;
-	Tue, 31 Mar 2026 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4721402435;
+	Tue, 31 Mar 2026 16:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hmk+OFeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7bbL7/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062CB3016E3;
-	Tue, 31 Mar 2026 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CE43E559E;
+	Tue, 31 Mar 2026 16:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976557; cv=none; b=ddSri3xvdX69Gntf61cumn6Pcae4IPZs7UZffTZszEHDZwzzP9lBwLjiMmFTp5HJgX2iIhlugZatq0AgRA6Lw+SGW6ZURJ06MK/NJ0tdBHCXAnrERDGP/v2RcMtEZUOHbTu7Dq9wQmz0nPDi/Nr6YOCU3pgfxVCRFre6qZ1Zxkg=
+	t=1774975216; cv=none; b=JC/KTFurzfP8ua+denmPfmkVU6jPnM3izcQI/N/3FvB6vVTF69ozCbePjKJGRzcqwdkf9mq+I71Vrr5wGaCG6kRJ/IaJCIt3ewHCA5lTM4x+S8g4wpSNBrXPkDnrkbIY53bQRDWakqz8KZhP5DFl0xPlDLJURFTycT+ynSx5lGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976557; c=relaxed/simple;
-	bh=/eBJ28zVPr4+1PGEAqeXYUHUtRNmklR65e/FZtKvl3A=;
+	s=arc-20240116; t=1774975216; c=relaxed/simple;
+	bh=gggfqyLzBn8va7ecmV1TEm+8hJcvwi8XYd0haqUOSf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=soSc06ml0c4CaYpeTxaWLzdoQ58e1Y9fedOvYKwolbjb4cUeW5uFVZpDnnx0BNLdUkak50Hh7Y6jXE7HwoKB2HCvyd3Jsq4ABg5/TqocknIGbnC/HloszJ4JN4lUDk1DBwMUG5uUN7K/6QZNG/nAeeY3dH58cwO3E97biO1zLvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hmk+OFeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93334C19423;
-	Tue, 31 Mar 2026 17:02:36 +0000 (UTC)
+	 MIME-Version; b=PonCaR2+Dh06ttwdmHij38Gy/bI9Xv6qvHVgoDif0Vayb5K/704SLawjw8XCnpmvRkQYt4UFpAaG/VzhvtmJRYMDPoY3Y6fz0ReG47bHCZxYThgbzk2ps43iB99mNB6HYu+QMLJ00mesZRjfwRU03Ge5gi8a0BCMsnmXrkPY2UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7bbL7/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1D6C19423;
+	Tue, 31 Mar 2026 16:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976556;
-	bh=/eBJ28zVPr4+1PGEAqeXYUHUtRNmklR65e/FZtKvl3A=;
+	s=korg; t=1774975216;
+	bh=gggfqyLzBn8va7ecmV1TEm+8hJcvwi8XYd0haqUOSf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hmk+OFeGUUGGcp7LU/jy8wt1PUjEygYu45huhvAu7TbLzefUVfP2OcBxwz2/tk7fr
-	 qZthQSzFVzVGUjV3s0GQyRw5coO1NyAhiKGjaBfiRuqxihwdCiTVh1ZceHaTWn6lFt
-	 i0rIFf1JTpRyqI/bCUg3I1qbvqQELg2u/mJe538Y=
+	b=B7bbL7/ErfqdNIw1BCQGK49v7ERphw4dFAjMh6U2Ltxl8e50OquqKLrxWATkDcO2z
+	 Oon00azYz/2NOxTFp9CMTs1w9oHP25dVaDVLseWWUO/lLToU8yxP+YoXHJExpCuO3z
+	 08WitGs+MNKv1RCzHTkw63K5Wo3UC8plFuojNhLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 139/309] RDMA/efa: Fix possible deadlock
+	Stable@vger.kernel.org,
+	Joel Selvaraj <foss@joelselvaraj.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.19 209/342] ASoC: codecs: wcd934x: fix typo in dt parsing
 Date: Tue, 31 Mar 2026 18:20:42 +0200
-Message-ID: <20260331161758.592504301@linuxfoundation.org>
+Message-ID: <20260331161806.671464988@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +68,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232364-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231844-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 734A936EA2D
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,joelselvaraj.com:email]
+X-Rspamd-Queue-Id: 84CBB36D6D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 0f2055db7b630559870afb40fc84490816ab8ec5 ]
+commit cfb385a8dc88d86a805a5682eaa68f59fa5c0ec3 upstream.
 
-In the error path for efa_com_alloc_comp_ctx() the semaphore assigned to
-&aq->avail_cmds is not released.
+Looks like we ended up with a typo during device tree data parsing
+as part of 4f16b6351bbff ("ASoC: codecs: wcd: add common helper for wcd
+codecs") patch.
+ This will result in not parsing the device tree data and results in
+zero mic bias values.
 
-Detected by Smatch:
-drivers/infiniband/hw/efa/efa_com.c:662 efa_com_cmd_exec() warn:
-inconsistent returns '&aq->avail_cmds'
+Fix this by calling wcd_dt_parse_micbias_info instead of
+wcd_dt_parse_mbhc_data.
 
-Add release for &aq->avail_cmds in efa_com_alloc_comp_ctx() error path.
-
-Fixes: ef3b06742c8a2 ("RDMA/efa: Fix use of completion ctx after free")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Link: https://patch.msgid.link/20260314045730.1143862-1-ethantidmore06@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4f16b6351bbff ("ASoC: codecs: wcd: add common helper for wcd codecs")
+Cc: Stable@vger.kernel.org
+Reported-by: Joel Selvaraj <foss@joelselvaraj.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260323231748.2217967-1-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/wcd934x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index 56caba612139f..e97b5f0d70038 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -629,6 +629,7 @@ int efa_com_cmd_exec(struct efa_com_admin_queue *aq,
- 	comp_ctx = efa_com_alloc_comp_ctx(aq);
- 	if (!comp_ctx) {
- 		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
-+		up(&aq->avail_cmds);
- 		return -EINVAL;
- 	}
+--- a/sound/soc/codecs/wcd934x.c
++++ b/sound/soc/codecs/wcd934x.c
+@@ -2172,7 +2172,7 @@ static int wcd934x_init_dmic(struct snd_
+ 	u32 def_dmic_rate, dmic_clk_drv;
+ 	int ret;
  
--- 
-2.53.0
-
+-	ret = wcd_dt_parse_mbhc_data(comp->dev, &wcd->mbhc_cfg);
++	ret = wcd_dt_parse_micbias_info(&wcd->common);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
