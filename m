@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-231939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QK7wFkn7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:17 +0200
+	id MMAIB+z+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD4636D38A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF83736DDAD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D5E93072396
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 450393048CAB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF343EF0A2;
-	Tue, 31 Mar 2026 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026A64266B0;
+	Tue, 31 Mar 2026 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/NKJfRi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qViewdN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706D2262A6;
-	Tue, 31 Mar 2026 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F3E3EF0A2;
+	Tue, 31 Mar 2026 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975457; cv=none; b=cCrwyjPXkqt3Rk6J4tKZGbFP4LtgI5cZis2U4DHeNjjJDHfrtIAWzb9PcAjwexMKn/OrxnkSZvWpzIiYdEZCBUoQAWsydfUAJeiWyWzKZYhBcyQOHRA+grABxryN1x5MfN/+Ug0M7+0Bj2b9HXvuwZ2jP0HYvuaP5IwBg8w0T0Q=
+	t=1774976039; cv=none; b=s0H4mFfD6FQCaqGfl6N3v+qgu6X8C4VuNKqNZuUaJ9xtcgsIw4DWLq1hGKJQn/2KLjrNYnWP18/o9n1ZV4RcQmVeI7SHbjyJnD+4P7B+10anbyrJMzI3+ACTJ5vBOym3dlQR3XUAAkMUA4p/Gi8om9O1ZoIo1QabewIiB2sBwpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975457; c=relaxed/simple;
-	bh=KOsMyFTrY7w9pGFNiXVJd+tR/sOD2sPyO/2TzXah3Nk=;
+	s=arc-20240116; t=1774976039; c=relaxed/simple;
+	bh=foxIvvG/oHFagKLflUyBjgTioCBedoWrc2ykmn8Q2n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNmnV51hbI88ixgeoEOnZCG1aycEt/Vg9Sj8AKJEDSlwoiHrR27oYYBtFFznkJGD424Qmg76u6NSMw+dju13EXYeIyNM23pSe2EWqxFt5LjlFuNdsYwzMtJbg6a0o0c4s/sQynkOLs9AQ7BMpFBawVQcgbyJ42UmYpHkbEEGBcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/NKJfRi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060D2C19423;
-	Tue, 31 Mar 2026 16:44:16 +0000 (UTC)
+	 MIME-Version; b=DXRvAO9amoPtzns2CoG5sBgyaKN6pqmCnGNzBSKmX/bSjhKJy2iB0KICc82xg7ahEcFOdqVXl0yHfRs+K33c4HzvgeHJRslHephiezBVMqmPHi3nJccqi43Xxuu/AwaxY4IlDzIvOKOMWu0gOssnFMBBjY96qnekzjDMAi3c7Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qViewdN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D592C19423;
+	Tue, 31 Mar 2026 16:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975457;
-	bh=KOsMyFTrY7w9pGFNiXVJd+tR/sOD2sPyO/2TzXah3Nk=;
+	s=korg; t=1774976039;
+	bh=foxIvvG/oHFagKLflUyBjgTioCBedoWrc2ykmn8Q2n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/NKJfRiREISfAdZx40YXxpG/iaVmvtNdea+j7ZTh9vjMEDgfwvrdmL0iQhqMo/M4
-	 KOzRnBC2U+N1p2PdKh0m29Cn9FavDShPEAtcJR0ZE5f5bn65BFjlT5lhUUHXyHACeI
-	 QTXtgzM57IpDKedZzJsp7JDRsaxDhrKt2i/d0+GU=
+	b=qViewdN3UCmYnVvjxG2Nl2E8HRnYOC+PNINsIz3Ryt5m2ITCcXMvffoGhsPpvPjIe
+	 DyEg2e+b4Gwo0B3DDvrBC/sgY3zFk4+bi13hGvfXoCafSVQWIIKx2W+xMArAjOAUnP
+	 aiCx7kjeI2UOZ1n2QD/zRZsY9nDQbhq5tHNgIMK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
+	syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.19 301/342] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
+Subject: [PATCH 6.12 184/244] ext4: convert inline data to extents when truncate exceeds inline size
 Date: Tue, 31 Mar 2026 18:22:14 +0200
-Message-ID: <20260331161810.004813004@linuxfoundation.org>
+Message-ID: <20260331161748.552943081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,124 +71,99 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231939-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232163-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,7de5fe447862fc37576f];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:email,msgid.link:url,dilger.ca:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9CD4636D38A
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AF83736DDAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
+commit ed9356a30e59c7cc3198e7fc46cfedf3767b9b17 upstream.
 
-There's issue as follows:
-...
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Add a check in ext4_setattr() to convert files from inline data storage
+to extent-based storage when truncate() grows the file size beyond the
+inline capacity. This prevents the filesystem from entering an
+inconsistent state where the inline data flag is set but the file size
+exceeds what can be stored inline.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Without this fix, the following sequence causes a kernel BUG_ON():
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+1. Mount filesystem with inode that has inline flag set and small size
+2. truncate(file, 50MB) - grows size but inline flag remains set
+3. sendfile() attempts to write data
+4. ext4_write_inline_data() hits BUG_ON(write_size > inline_capacity)
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+The crash occurs because ext4_write_inline_data() expects inline storage
+to accommodate the write, but the actual inline capacity (~60 bytes for
+i_block + ~96 bytes for xattrs) is far smaller than the file size and
+write request.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+The fix checks if the new size from setattr exceeds the inode's actual
+inline capacity (EXT4_I(inode)->i_inline_size) and converts the file to
+extent-based storage before proceeding with the size change.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+This addresses the root cause by ensuring the inline data flag and file
+size remain consistent during truncate operations.
 
-EXT4-fs (mmcblk0p1): error count since last fsck: 1
-EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
-EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
-...
-
-According to the log analysis, blocks are always requested from the
-corrupted block group. This may happen as follows:
-ext4_mb_find_by_goal
-  ext4_mb_load_buddy
-   ext4_mb_load_buddy_gfp
-     ext4_mb_init_cache
-      ext4_read_block_bitmap_nowait
-      ext4_wait_block_bitmap
-       ext4_validate_block_bitmap
-        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-         return -EFSCORRUPTED; // There's no logs.
- if (err)
-  return err;  // Will return error
-ext4_lock_group(ac->ac_sb, group);
-  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
-   goto out;
-
-After commit 9008a58e5dce ("ext4: make the bitmap read routines return
-real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
-as corrupt on block bitmap error") is no real solution for allocating
-blocks from corrupted block groups. This is because if
-'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
-'ext4_mb_load_buddy()' may return an error. This means that the block
-allocation will fail.
-Therefore, check block group if corrupted when ext4_mb_load_buddy()
-returns error.
-
-Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
+Reported-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7de5fe447862fc37576f
+Tested-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260207043607.1175976-1-kartikey406@gmail.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ext4/inode.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2443,8 +2443,12 @@ int ext4_mb_find_by_goal(struct ext4_all
- 		return 0;
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5490,6 +5490,18 @@ int ext4_setattr(struct mnt_idmap *idmap
+ 		if (attr->ia_size == inode->i_size)
+ 			inc_ivers = false;
  
- 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
--	if (err)
-+	if (err) {
-+		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
-+		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
-+			return 0;
- 		return err;
-+	}
- 
- 	ext4_lock_group(ac->ac_sb, group);
- 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		/*
++		 * If file has inline data but new size exceeds inline capacity,
++		 * convert to extent-based storage first to prevent inconsistent
++		 * state (inline flag set but size exceeds inline capacity).
++		 */
++		if (ext4_has_inline_data(inode) &&
++		    attr->ia_size > EXT4_I(inode)->i_inline_size) {
++			error = ext4_convert_inline_data(inode);
++			if (error)
++				goto err_out;
++		}
++
+ 		if (shrink) {
+ 			if (ext4_should_order_data(inode)) {
+ 				error = ext4_begin_ordered_truncate(inode,
 
 
 
