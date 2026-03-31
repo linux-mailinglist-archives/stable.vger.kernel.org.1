@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIxIHnb2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:42 +0200
+	id AGAAJ4//y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EDD36CA50
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABF836DF49
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A09B9304ACCF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38AC130E05A9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBACA421EE4;
-	Tue, 31 Mar 2026 16:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D852D9EE4;
+	Tue, 31 Mar 2026 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUAgPUGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdnBbstE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9432421898;
-	Tue, 31 Mar 2026 16:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071312D3EF2;
+	Tue, 31 Mar 2026 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974242; cv=none; b=iBJ7mFei3fQ8DhVFDVshXYv8Eouo6E8W8V6/YUr1YwY+tPX8KKlhlIjpKkydP3TM4YbUvLZSNc6AWZl6TiGoKdD/JVU46Hst0j0zWi3Js8UfpCEKzXFj6OJPHjpMOL2zKH3DRiCkPPQKQdWM2EU1wMn6EeXv/g5iKRRbd6XcuUA=
+	t=1774976415; cv=none; b=oDM5uaoZmQIBPBiC+kP1pANXuEVWpc7Eh+deBQ6Wt5LwX9hk+/VVJXlh46kR2tSS443iYlmXjfIxLrz7qmQgh+4LSDiNTKyQdvm5L/cwFwj8XOSDhKtmleq2YZdraQRaFJKPbPMJyY4M9ztE57wlz3pAljxB2v4jQzXp4Xs1fXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974242; c=relaxed/simple;
-	bh=7k2ewNhighUvAhRVUpj+LBJyTAIiJ47InjUE2x1Pu8I=;
+	s=arc-20240116; t=1774976415; c=relaxed/simple;
+	bh=DVOq7zH9mO8DKQTrQ+6a31shwsz63FcSVFWab4q5Khs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ2QRevtlf5hYJxmR2+AaRvh3fZwK/nR18gX4I6GcEzfMYi+KQYML3DrC0CXbDYd1aTyVr1t/p3IH9vpzFKhld5uYFFPjdk15Tp6i6J8JHpImsNyVJflBeSwGh4jPbb7S5pYbIZocKfEqPBlfsbG2V3m6CyuZQKej2+C5qtO8rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUAgPUGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9236C19424;
-	Tue, 31 Mar 2026 16:24:01 +0000 (UTC)
+	 MIME-Version; b=IWK1AVjl7BaHwENwCLVRhHJvvnu3lFi/HtLa6E+DgxZkHV0xm3e9wvMlP59YnCrB1QV3UuWJ/H5qcH5VJ0MtV5C2pIby5eXRxI9F/q1J6hiwCi340gRFLSHRChI1WQ4wJbNlYJ4KQ7mF/Xk+6e23xNXe5nTP/oCTACSFp2pVQL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdnBbstE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8994AC19423;
+	Tue, 31 Mar 2026 17:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974242;
-	bh=7k2ewNhighUvAhRVUpj+LBJyTAIiJ47InjUE2x1Pu8I=;
+	s=korg; t=1774976414;
+	bh=DVOq7zH9mO8DKQTrQ+6a31shwsz63FcSVFWab4q5Khs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUAgPUGE6UJrFYHXaqEe9OsanOndbeX+m6bZMORpN0/iE+ygH9dVCTARsgJcbAcPb
-	 RmBmE1YleaFQqwGTDsodC8+R9n+oSjkuJ+YvbgxpAp5I+gy65rtNXLIg7E2CT6Ioaz
-	 EfF6qJMI2FId/AHj3tiYTc8zgX4UHmTM11zi6aMs=
+	b=CdnBbstEl5ATXt+7gmqINvb5sp/hiWskdyP04J7nQSGQvQuClYIcRQYkQrtsvVGwd
+	 NXuAQurIryUDQq28mRzsr53lFIY8i7p0osWfxc/JOwr+gF8xbnEzH8RJs0/sR649YU
+	 R/FkoEbtDlc8ctZLZHwT/Bfz5RqhEJRXk+GR2hZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Rosenberg <olrose55@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ian Rogers <irogers@google.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/175] perf: Make sure to use pmu_ctx->pmu for groups
+Subject: [PATCH 6.18 083/309] Bluetooth: L2CAP: Validate PDU length before reading SDU length in l2cap_ecred_data_rcv()
 Date: Tue, 31 Mar 2026 18:19:46 +0200
-Message-ID: <20260331161729.873719569@linuxfoundation.org>
+Message-ID: <20260331161756.540550092@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,infradead.org,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231465-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232308-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 39EDD36CA50
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 1ABF836DF49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 4b9ce671960627b2505b3f64742544ae9801df97 ]
+[ Upstream commit c65bd945d1c08c3db756821b6bf9f1c4a77b29c6 ]
 
-Oliver reported that x86_pmu_del() ended up doing an out-of-bound memory access
-when group_sched_in() fails and needs to roll back.
+l2cap_ecred_data_rcv() reads the SDU length field from skb->data using
+get_unaligned_le16() without first verifying that skb contains at least
+L2CAP_SDULEN_SIZE (2) bytes. When skb->len is less than 2, this reads
+past the valid data in the skb.
 
-This *should* be handled by the transaction callbacks, but he found that when
-the group leader is a software event, the transaction handlers of the wrong PMU
-are used. Despite the move_group case in perf_event_open() and group_sched_in()
-using pmu_ctx->pmu.
+The ERTM reassembly path correctly calls pskb_may_pull() before reading
+the SDU length (l2cap_reassemble_sdu, L2CAP_SAR_START case). Apply the
+same validation to the Enhanced Credit Based Flow Control data path.
 
-Turns out, inherit uses event->pmu to clone the events, effectively undoing the
-move_group case for all inherited contexts. Fix this by also making inherit use
-pmu_ctx->pmu, ensuring all inherited counters end up in the same pmu context.
-
-Similarly, __perf_event_read() should use equally use pmu_ctx->pmu for the
-group case.
-
-Fixes: bd2756811766 ("perf: Rewrite core context handling")
-Reported-by: Oliver Rosenberg <olrose55@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://patch.msgid.link/20260309133713.GB606826@noisy.programming.kicks-ass.net
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ net/bluetooth/l2cap_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 53cb9ee145746..eba5eb6fcb876 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4532,7 +4532,7 @@ static void __perf_event_read(void *info)
- 	struct perf_event *sub, *event = data->event;
- 	struct perf_event_context *ctx = event->ctx;
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
--	struct pmu *pmu = event->pmu;
-+	struct pmu *pmu;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 583fe3b654c11..848a9b945de89 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6672,6 +6672,11 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 	if (!chan->sdu) {
+ 		u16 sdu_len;
  
- 	/*
- 	 * If this is a task context, we need to check whether it is
-@@ -4544,7 +4544,7 @@ static void __perf_event_read(void *info)
- 	if (ctx->task && cpuctx->task_ctx != ctx)
- 		return;
++		if (!pskb_may_pull(skb, L2CAP_SDULEN_SIZE)) {
++			err = -EINVAL;
++			goto failed;
++		}
++
+ 		sdu_len = get_unaligned_le16(skb->data);
+ 		skb_pull(skb, L2CAP_SDULEN_SIZE);
  
--	raw_spin_lock(&ctx->lock);
-+	guard(raw_spinlock)(&ctx->lock);
- 	ctx_time_update_event(ctx, event);
- 
- 	perf_event_update_time(event);
-@@ -4552,25 +4552,22 @@ static void __perf_event_read(void *info)
- 		perf_event_update_sibling_time(event);
- 
- 	if (event->state != PERF_EVENT_STATE_ACTIVE)
--		goto unlock;
-+		return;
- 
- 	if (!data->group) {
--		pmu->read(event);
-+		perf_pmu_read(event);
- 		data->ret = 0;
--		goto unlock;
-+		return;
- 	}
- 
-+	pmu = event->pmu_ctx->pmu;
- 	pmu->start_txn(pmu, PERF_PMU_TXN_READ);
- 
--	pmu->read(event);
--
-+	perf_pmu_read(event);
- 	for_each_sibling_event(sub, event)
- 		perf_pmu_read(sub);
- 
- 	data->ret = pmu->commit_txn(pmu);
--
--unlock:
--	raw_spin_unlock(&ctx->lock);
- }
- 
- static inline u64 perf_event_count(struct perf_event *event)
-@@ -13541,7 +13538,7 @@ inherit_event(struct perf_event *parent_event,
- 	get_ctx(child_ctx);
- 	child_event->ctx = child_ctx;
- 
--	pmu_ctx = find_get_pmu_context(child_event->pmu, child_ctx, child_event);
-+	pmu_ctx = find_get_pmu_context(parent_event->pmu_ctx->pmu, child_ctx, child_event);
- 	if (IS_ERR(pmu_ctx)) {
- 		free_event(child_event);
- 		return ERR_CAST(pmu_ctx);
 -- 
 2.51.0
 
