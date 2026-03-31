@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBblFVn6y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:17 +0200
+	id KOoFCzsIzGlaNgYAu9opvQ
+	(envelope-from <stable+bounces-232476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574D536D1AE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9B936F439
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7EB6A30CFD9E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5B8E302E43A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59A4425CC0;
-	Tue, 31 Mar 2026 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C4430BF6F;
+	Tue, 31 Mar 2026 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQ9at8Y9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqjjhoDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E70423A9E;
-	Tue, 31 Mar 2026 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51D303A07;
+	Tue, 31 Mar 2026 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974659; cv=none; b=UFQDNEoVzMwUjenm/1NA4GBp4V/CGGP04A01bEsDsAHsQ535gkjxlR+G3fxqjmVau4kvajTp3dEA4HqgyEiarc09jTONBwn59jxv/QN7Vpy/T6nz8K627C1mZRLko4A3W5Q20c4bTZ9AEkfKkkg6RHIVHTN5Mf9RHGNHYxATfAU=
+	t=1774976846; cv=none; b=meNTa7E7gttiSvmAbA65yERPqcSGGQnxqA5A3mu3VqMqC3OeGRd78dG86Blt8cU4eE2UwRaHRGfPRlhXplt5QhWY3bjppLx+R/5EmY3fsZj9WaNBg1Bk42P1uXRE21WOXPQOdet8ry9GWFby3BhJQYr8maSkF/oySUZClv2T9NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974659; c=relaxed/simple;
-	bh=5GSfsEjH3UVQf8zgDTK1o2IqgNpTOP/V2ZV8yXSceSI=;
+	s=arc-20240116; t=1774976846; c=relaxed/simple;
+	bh=xvJbMUZZU97Ymp9TJL+Esyi5E5/cCFFwJHkF2N/FhyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBqd7eSYTqPWXLTohdjcjfGsqAt85FcuyB7QJbeOqV+jPkwlwGWusyWCAdjRlAY1SEZ0hkV8FWo2Ivx+37l/1oWWtVYNwkgGx9XtEYO9+7WuO27XseNBXtxGyyCI2xp4mpeGEJUwhjZTvDGqFWnjpQEAJ69fGs2Dx0UtdKjQnFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQ9at8Y9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F771C19423;
-	Tue, 31 Mar 2026 16:30:58 +0000 (UTC)
+	 MIME-Version; b=mXJym5QK9pQdvaKag4m+jz1c5LL57sHSahGTeAGtzurapfb9gdaPOhffqDQ6d0M6boIk4Dt+ZSFW1ntQKfcSf7x55A8fL8lO7HjhcpbCNpVUNsJll/nlfwOHCc4w8Lwp6o3eiQXwPrwx9fzvC7MwDL+i+TXZcBBl0bKrTqcOrPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqjjhoDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E285C19423;
+	Tue, 31 Mar 2026 17:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974659;
-	bh=5GSfsEjH3UVQf8zgDTK1o2IqgNpTOP/V2ZV8yXSceSI=;
+	s=korg; t=1774976846;
+	bh=xvJbMUZZU97Ymp9TJL+Esyi5E5/cCFFwJHkF2N/FhyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQ9at8Y9qwEf6wupbtxroG4qg+llyEBKrXUBjHnJ0Yd5mLujAogR5ouxIT3bpt4rw
-	 mWQtVOfyIqynEJDAlugLuz4jdrhO336AlC9h3UBS/gybigkOipTmKBbrfQGZ1POyvu
-	 IAm9nhlMUImLqCh2moRiJ0iBQZ0Gcu5WaMgb1XzY=
+	b=PqjjhoDGuIIGyEoMqG/PoD9VtHsbOhgT7gNvNJMyCvhSMYRLN/W2Lv1Fth0/Uos2/
+	 VuCVyvr1Eg9fYr4q3DPyh2hsmcNnMhBSxZp5k9S/LPPeVvgT3sqGzey9WKUwBlRCUc
+	 aDeHveAyCJ1rTETYFbitv/BHbqTlq2+eu7Jm1c6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/175] btrfs: fix leak of kobject name for sub-group space_info
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Long Li <leo.lilong@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.18 251/309] xfs: fix ri_total validation in xlog_recover_attri_commit_pass2
 Date: Tue, 31 Mar 2026 18:22:34 +0200
-Message-ID: <20260331161736.041585455@linuxfoundation.org>
+Message-ID: <20260331161802.812192218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231629-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232476-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,85 +86,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,wdc.com:email]
-X-Rspamd-Queue-Id: 574D536D1AE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AE9B936F439
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit a4376d9a5d4c9610e69def3fc0b32c86a7ab7a41 ]
+commit d72f2084e30966097c8eae762e31986a33c3c0ae upstream.
 
-When create_space_info_sub_group() allocates elements of
-space_info->sub_group[], kobject_init_and_add() is called for each
-element via btrfs_sysfs_add_space_info_type(). However, when
-check_removing_space_info() frees these elements, it does not call
-btrfs_sysfs_remove_space_info() on them. As a result, kobject_put() is
-not called and the associated kobj->name objects are leaked.
+The ri_total checks for SET/REPLACE operations are hardcoded to 3,
+but xfs_attri_item_size() only emits a value iovec when value_len > 0,
+so ri_total is 2 when value_len == 0.
 
-This memory leak is reproduced by running the blktests test case
-zbd/009 on kernels built with CONFIG_DEBUG_KMEMLEAK. The kmemleak
-feature reports the following error:
+For PPTR_SET/PPTR_REMOVE/PPTR_REPLACE, value_len is validated by
+xfs_attri_validate() to be exactly sizeof(struct xfs_parent_rec) and
+is never zero, so their hardcoded checks remain correct.
 
-unreferenced object 0xffff888112877d40 (size 16):
-  comm "mount", pid 1244, jiffies 4294996972
-  hex dump (first 16 bytes):
-    64 61 74 61 2d 72 65 6c 6f 63 00 c4 c6 a7 cb 7f  data-reloc......
-  backtrace (crc 53ffde4d):
-    __kmalloc_node_track_caller_noprof+0x619/0x870
-    kstrdup+0x42/0xc0
-    kobject_set_name_vargs+0x44/0x110
-    kobject_init_and_add+0xcf/0x150
-    btrfs_sysfs_add_space_info_type+0xfc/0x210 [btrfs]
-    create_space_info_sub_group.constprop.0+0xfb/0x1b0 [btrfs]
-    create_space_info+0x211/0x320 [btrfs]
-    btrfs_init_space_info+0x15a/0x1b0 [btrfs]
-    open_ctree+0x33c7/0x4a50 [btrfs]
-    btrfs_get_tree.cold+0x9f/0x1ee [btrfs]
-    vfs_get_tree+0x87/0x2f0
-    vfs_cmd_create+0xbd/0x280
-    __do_sys_fsconfig+0x3df/0x990
-    do_syscall_64+0x136/0x1540
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This problem may cause log recovery failures. The following script can be
+used to reproduce the problem:
 
-To avoid the leak, call btrfs_sysfs_remove_space_info() instead of
-kfree() for the elements.
+ #!/bin/bash
+ mkfs.xfs -f /dev/sda
+ mount /dev/sda /mnt/test/
+ touch /mnt/test/file
+ for i in {1..200}; do
+         attr -s "user.attr_$i" -V "value_$i" /mnt/test/file > /dev/null
+ done
+ echo 1 > /sys/fs/xfs/debug/larp
+ echo 1 > /sys/fs/xfs/sda/errortag/larp
+ attr -s "user.zero" -V "" /mnt/test/file
+ echo 0 > /sys/fs/xfs/sda/errortag/larp
+ umount /mnt/test
+ mount /dev/sda /mnt/test/  # mount failed
 
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-Link: https://lore.kernel.org/linux-block/b9488881-f18d-4f47-91a5-3c9bf63955a5@wdc.com/
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by deriving the expected count dynamically as "2 + !!value_len"
+for SET/REPLACE operations.
+
+Cc: stable@vger.kernel.org # v6.9
+Fixes: ad206ae50eca ("xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2")
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_attr_item.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index a08e03a74909a..3bc6c99ed2e38 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -4386,7 +4386,7 @@ static void check_removing_space_info(struct btrfs_space_info *space_info)
- 		for (int i = 0; i < BTRFS_SPACE_INFO_SUB_GROUP_MAX; i++) {
- 			if (space_info->sub_group[i]) {
- 				check_removing_space_info(space_info->sub_group[i]);
--				kfree(space_info->sub_group[i]);
-+				btrfs_sysfs_remove_space_info(space_info->sub_group[i]);
- 				space_info->sub_group[i] = NULL;
- 			}
- 		}
--- 
-2.53.0
-
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -1050,8 +1050,8 @@ xlog_recover_attri_commit_pass2(
+ 		break;
+ 	case XFS_ATTRI_OP_FLAGS_SET:
+ 	case XFS_ATTRI_OP_FLAGS_REPLACE:
+-		/* Log item, attr name, attr value */
+-		if (item->ri_total != 3) {
++		/* Log item, attr name, optional attr value */
++		if (item->ri_total != 2 + !!attri_formatp->alfi_value_len) {
+ 			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 					     attri_formatp, len);
+ 			return -EFSCORRUPTED;
 
 
 
