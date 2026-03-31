@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-232392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NmFCYgGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:16 +0200
+	id UCW6Fsz4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EC636F0DC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5198A36CE98
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7940A32D19EA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 47E8F308092F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E322FF669;
-	Tue, 31 Mar 2026 17:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EA8421898;
+	Tue, 31 Mar 2026 16:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnwZiGs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQBpsjoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC54F2E11A6;
-	Tue, 31 Mar 2026 17:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF40401A2C;
+	Tue, 31 Mar 2026 16:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976628; cv=none; b=WjbQoabAiAYe7uGcaqPaB36rX1SlWDtlBHmEr7Ez2Ei3WI0CM7f8/vTWp8rs97pYew8bAFAg4vND2EviLTRZK8IC5YIen9TO6ZisFHVU/Q8NLct17eQlvIkzwBFK4F9kt1a5TWEgQv1YDFbeK4sSdJNWxuvKDxpAF5DLmBAMzOc=
+	t=1774974354; cv=none; b=oSgwz1JmxiA6jC0Dr7OG7N6HIj7xcWh9sLWTigPbdggl+yHani+WriR2NPZAzWK66ELyxiumTiDgkIIz8dtKvOxudy4dEhyfo/lzXYSPXby4j9g/ebrP+EyyAbi51IQprf/V3eNpxXZ9yeCZCA1uwbs56p829i9AvPkoYIaUaW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976628; c=relaxed/simple;
-	bh=KLPLZIrTaZWMlb3AEpXCQswD80Uy3LWchJEPstKw/9U=;
+	s=arc-20240116; t=1774974354; c=relaxed/simple;
+	bh=hTHnR3YzSPUIwM+QSPfxubKgKBeJIswFqgq7Lwdv2Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fw3CxI7DzwXNHAVGRjlQs83rDpDRAvvt0GOfjaiYXUjI1nEUMpe9ARs1gZiyTUHeNgvodgz66tqbi9yYZ/Oxe5r/LsSbN9/lFJAqr2HfxvwVGXUzwlUa2xtgz4nYiCn5pa1vTJIN/GBGTix5k6Ged9fL2gTR0UYdx17M3glSJec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnwZiGs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601DDC19424;
-	Tue, 31 Mar 2026 17:03:48 +0000 (UTC)
+	 MIME-Version; b=twtOdZXGr58v1/B2kH5QaMrDnwhGtXLa4wqTYEL6ZXGzGmVIrm1zAwsyqmBxctk4sKbPEw90XttddDDwxQx0yMTKBQRy8WUYR1delDh2bxUoAVjjAtUXkxlPo3wRYjJ+v/Ic5GWcCDVNg3A0bS/4x8jm4RM21lioFMf4l8zHieg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQBpsjoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E59C19423;
+	Tue, 31 Mar 2026 16:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976628;
-	bh=KLPLZIrTaZWMlb3AEpXCQswD80Uy3LWchJEPstKw/9U=;
+	s=korg; t=1774974353;
+	bh=hTHnR3YzSPUIwM+QSPfxubKgKBeJIswFqgq7Lwdv2Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnwZiGs3WwX9Do9C7Iusj+ATRnbRJMU8P3w9LHVUVFtoJsRQjMcohYE/A14Lkm2fO
-	 pPCtJyjSJ4TdyeDfSASnQ9GjmlRWuW60k6hyNTKlXhAWM3nIk12ot8sKq9qGhPS45a
-	 8FzS0xQxZ0FB2b9qQADnOWEHUd8ETYRzlrrbZgUw=
+	b=iQBpsjoIq+YHgsd1Aw/KWUP7NFxe/rVOLG+oIPWWSY7UPO1rpkwQvVffbT6jqdYh0
+	 RuTQv7gwVFNYD3Y21uDeBc4AXb4HUng8lCzHXwYxJiw9mhjrO84cl9iCkpUXu8yR9L
+	 yz27/paccah/L9yfod2VVWfGk3oYyiQtQneZipCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Kranzdorf <dkkranzd@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 134/309] RDMA/efa: Improve admin completion context state machine
+Subject: [PATCH 6.6 053/175] ipv6: Remove permanent routes from tb6_gc_hlist when all exceptions expire.
 Date: Tue, 31 Mar 2026 18:20:37 +0200
-Message-ID: <20260331161758.409386190@linuxfoundation.org>
+Message-ID: <20260331161731.733296126@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,240 +66,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232392-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231509-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B7EC636F0DC
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5198A36CE98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonatan Nachum <ynachum@amazon.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit dab5825491f7b0ea92a09390f39df0a51100f12f ]
+[ Upstream commit 6af51e9f31336632263c4680b2a3712295103e1f ]
 
-Add a new unused state to the admin completion contexts state machine
-instead of the occupied field. This improves the completion validity
-check because it now enforce the context to be in submitted state prior
-to completing it. Also add allocated state as a intermediate state
-between unused and submitted.
+Commit 5eb902b8e719 ("net/ipv6: Remove expired routes with a
+separated list of routes.") introduced a per-table GC list and
+changed GC to iterate over that list instead of traversing
+the entire route table.
 
-Reviewed-by: Daniel Kranzdorf <dkkranzd@amazon.com>
-Reviewed-by: Michael Margolin <mrgolin@amazon.com>
-Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
-Link: https://patch.msgid.link/20251210130614.36460-3-ynachum@amazon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: ef3b06742c8a ("RDMA/efa: Fix use of completion ctx after free")
+However, it forgot to add permanent routes to tb6_gc_hlist
+when exception routes are added.
+
+Commit cfe82469a00f ("ipv6: add exception routes to GC list
+in rt6_insert_exception") fixed that issue but introduced
+another one.
+
+Even after all exception routes expire, the permanent routes
+remain in tb6_gc_hlist, potentially negating the performance
+benefits intended by the initial change.
+
+Let's count gc_args->more before and after rt6_age_exceptions()
+and remove the permanent route when the delta is 0.
+
+Note that the next patch will reuse fib6_age_exceptions().
+
+Fixes: cfe82469a00f ("ipv6: add exception routes to GC list in rt6_insert_exception")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260320072317.2561779-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 91 ++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 41 deletions(-)
+ net/ipv6/ip6_fib.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index b31478f3a1212..229b0ad3b0cbb 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -23,6 +23,8 @@
- #define EFA_CTRL_SUB_MINOR      1
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 6fe867579118b..bec610819fc1b 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -2311,6 +2311,17 @@ static void fib6_flush_trees(struct net *net)
+ /*
+  *	Garbage collection
+  */
++static void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
++				unsigned long now)
++{
++	bool may_expire = rt->fib6_flags & RTF_EXPIRES && rt->expires;
++	int old_more = gc_args->more;
++
++	rt6_age_exceptions(rt, gc_args, now);
++
++	if (!may_expire && old_more == gc_args->more)
++		fib6_remove_gc_list(rt);
++}
  
- enum efa_cmd_status {
-+	EFA_CMD_UNUSED,
-+	EFA_CMD_ALLOCATED,
- 	EFA_CMD_SUBMITTED,
- 	EFA_CMD_COMPLETED,
- };
-@@ -34,7 +36,6 @@ struct efa_comp_ctx {
- 	enum efa_cmd_status status;
- 	u16 cmd_id;
- 	u8 cmd_opcode;
--	u8 occupied;
- };
+ static int fib6_age(struct fib6_info *rt, struct fib6_gc_args *gc_args)
+ {
+@@ -2333,7 +2344,7 @@ static int fib6_age(struct fib6_info *rt, struct fib6_gc_args *gc_args)
+ 	 *	Note, that clones are aged out
+ 	 *	only if they are not in use now.
+ 	 */
+-	rt6_age_exceptions(rt, gc_args, now);
++	fib6_age_exceptions(rt, gc_args, now);
  
- static const char *efa_com_cmd_str(u8 cmd)
-@@ -243,7 +244,6 @@ static int efa_com_admin_init_aenq(struct efa_com_dev *edev,
  	return 0;
  }
- 
--/* ID to be used with efa_com_get_comp_ctx */
- static u16 efa_com_alloc_ctx_id(struct efa_com_admin_queue *aq)
- {
- 	u16 ctx_id;
-@@ -265,36 +265,47 @@ static void efa_com_dealloc_ctx_id(struct efa_com_admin_queue *aq,
- 	spin_unlock(&aq->comp_ctx_lock);
- }
- 
--static inline void efa_com_put_comp_ctx(struct efa_com_admin_queue *aq,
--					struct efa_comp_ctx *comp_ctx)
-+static struct efa_comp_ctx *efa_com_alloc_comp_ctx(struct efa_com_admin_queue *aq)
- {
--	u16 cmd_id = EFA_GET(&comp_ctx->user_cqe->acq_common_descriptor.command,
--			     EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
--	u16 ctx_id = cmd_id & (aq->depth - 1);
-+	struct efa_comp_ctx *comp_ctx;
-+	u16 ctx_id;
- 
--	ibdev_dbg(aq->efa_dev, "Put completion command_id %#x\n", cmd_id);
--	comp_ctx->occupied = 0;
--	efa_com_dealloc_ctx_id(aq, ctx_id);
-+	ctx_id = efa_com_alloc_ctx_id(aq);
-+
-+	comp_ctx = &aq->comp_ctx[ctx_id];
-+	if (comp_ctx->status != EFA_CMD_UNUSED) {
-+		efa_com_dealloc_ctx_id(aq, ctx_id);
-+		ibdev_err_ratelimited(aq->efa_dev,
-+				      "Completion context[%u] is used[%u]\n",
-+				      ctx_id, comp_ctx->status);
-+		return NULL;
-+	}
-+
-+	comp_ctx->status = EFA_CMD_ALLOCATED;
-+	ibdev_dbg(aq->efa_dev, "Take completion context[%u]\n", ctx_id);
-+	return comp_ctx;
- }
- 
--static struct efa_comp_ctx *efa_com_get_comp_ctx(struct efa_com_admin_queue *aq,
--						 u16 cmd_id, bool capture)
-+static inline u16 efa_com_get_comp_ctx_id(struct efa_com_admin_queue *aq,
-+					  struct efa_comp_ctx *comp_ctx)
- {
--	u16 ctx_id = cmd_id & (aq->depth - 1);
-+	return comp_ctx - aq->comp_ctx;
-+}
- 
--	if (aq->comp_ctx[ctx_id].occupied && capture) {
--		ibdev_err_ratelimited(
--			aq->efa_dev,
--			"Completion context for command_id %#x is occupied\n",
--			cmd_id);
--		return NULL;
--	}
-+static inline void efa_com_dealloc_comp_ctx(struct efa_com_admin_queue *aq,
-+					    struct efa_comp_ctx *comp_ctx)
-+{
-+	u16 ctx_id = efa_com_get_comp_ctx_id(aq, comp_ctx);
- 
--	if (capture) {
--		aq->comp_ctx[ctx_id].occupied = 1;
--		ibdev_dbg(aq->efa_dev,
--			  "Take completion ctxt for command_id %#x\n", cmd_id);
--	}
-+	ibdev_dbg(aq->efa_dev, "Put completion context[%u]\n", ctx_id);
-+	comp_ctx->status = EFA_CMD_UNUSED;
-+	efa_com_dealloc_ctx_id(aq, ctx_id);
-+}
-+
-+static inline struct efa_comp_ctx *efa_com_get_comp_ctx_by_cmd_id(struct efa_com_admin_queue *aq,
-+								  u16 cmd_id)
-+{
-+	u16 ctx_id = cmd_id & (aq->depth - 1);
- 
- 	return &aq->comp_ctx[ctx_id];
- }
-@@ -312,10 +323,13 @@ static struct efa_comp_ctx *__efa_com_submit_admin_cmd(struct efa_com_admin_queu
- 	u16 ctx_id;
- 	u16 pi;
- 
-+	comp_ctx = efa_com_alloc_comp_ctx(aq);
-+	if (!comp_ctx)
-+		return ERR_PTR(-EINVAL);
-+
- 	queue_size_mask = aq->depth - 1;
- 	pi = aq->sq.pc & queue_size_mask;
--
--	ctx_id = efa_com_alloc_ctx_id(aq);
-+	ctx_id = efa_com_get_comp_ctx_id(aq, comp_ctx);
- 
- 	/* cmd_id LSBs are the ctx_id and MSBs are entropy bits from pc */
- 	cmd_id = ctx_id & queue_size_mask;
-@@ -326,12 +340,6 @@ static struct efa_comp_ctx *__efa_com_submit_admin_cmd(struct efa_com_admin_queu
- 	EFA_SET(&cmd->aq_common_descriptor.flags,
- 		EFA_ADMIN_AQ_COMMON_DESC_PHASE, aq->sq.phase);
- 
--	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, true);
--	if (!comp_ctx) {
--		efa_com_dealloc_ctx_id(aq, ctx_id);
--		return ERR_PTR(-EINVAL);
--	}
--
- 	comp_ctx->status = EFA_CMD_SUBMITTED;
- 	comp_ctx->comp_size = comp_size_in_bytes;
- 	comp_ctx->user_cqe = comp;
-@@ -372,9 +380,9 @@ static inline int efa_com_init_comp_ctxt(struct efa_com_admin_queue *aq)
- 	}
- 
- 	for (i = 0; i < aq->depth; i++) {
--		comp_ctx = efa_com_get_comp_ctx(aq, i, false);
--		if (comp_ctx)
--			init_completion(&comp_ctx->wait_event);
-+		comp_ctx = &aq->comp_ctx[i];
-+		comp_ctx->status = EFA_CMD_UNUSED;
-+		init_completion(&comp_ctx->wait_event);
- 
- 		aq->comp_ctx_pool[i] = i;
- 	}
-@@ -419,11 +427,12 @@ static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq
- 	cmd_id = EFA_GET(&cqe->acq_common_descriptor.command,
- 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
- 
--	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
-+	comp_ctx = efa_com_get_comp_ctx_by_cmd_id(aq, cmd_id);
- 	if (comp_ctx->status != EFA_CMD_SUBMITTED || comp_ctx->cmd_id != cmd_id) {
- 		ibdev_err(aq->efa_dev,
--			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
--			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
-+			  "Received completion with unexpected command id[%x], status[%d] sq producer[%d], sq consumer[%d], cq consumer[%d]\n",
-+			  cmd_id, comp_ctx->status, aq->sq.pc, aq->sq.cc,
-+			  aq->cq.cc);
- 		return -EINVAL;
- 	}
- 
-@@ -532,7 +541,7 @@ static int efa_com_wait_and_process_admin_cq_polling(struct efa_comp_ctx *comp_c
- 
- 	err = efa_com_comp_status_to_errno(comp_ctx->user_cqe->acq_common_descriptor.status);
- out:
--	efa_com_put_comp_ctx(aq, comp_ctx);
-+	efa_com_dealloc_comp_ctx(aq, comp_ctx);
- 	return err;
- }
- 
-@@ -582,7 +591,7 @@ static int efa_com_wait_and_process_admin_cq_interrupts(struct efa_comp_ctx *com
- 
- 	err = efa_com_comp_status_to_errno(comp_ctx->user_cqe->acq_common_descriptor.status);
- out:
--	efa_com_put_comp_ctx(aq, comp_ctx);
-+	efa_com_dealloc_comp_ctx(aq, comp_ctx);
- 	return err;
- }
- 
 -- 
-2.53.0
+2.51.0
 
 
 
