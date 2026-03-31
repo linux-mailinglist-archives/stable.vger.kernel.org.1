@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJTuAmH/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:45 +0200
+	id oEtnAv/6y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB58136DEC9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E5536D2DA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C98143034325
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9B7873078BAA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE96425CC5;
-	Tue, 31 Mar 2026 17:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB1C4266AA;
+	Tue, 31 Mar 2026 16:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1xP40oE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="be4yTBrD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F0F3A1E8C;
-	Tue, 31 Mar 2026 17:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928BA423A8B;
+	Tue, 31 Mar 2026 16:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976402; cv=none; b=L4YTGAQz2RrahfVrtX8ia/RCIHyyih+c21EAsMnUREJ/oDC5dk/K5UGu7QgaVOTh/ldmrdnqvnxJ/QevpModFl3wZXTIyze272cyZeF3Vca5auhKOcMQDL+yZzz28QfWOS45JClfP3a8FgOJK/kyIvJE9DvbBZs/IIYL+R5kDPk=
+	t=1774975060; cv=none; b=gzE0R03+eA31RGKRBZQCRF/zRpIsctQwihIKMaxYLHVQTvTmrm/l6O0YJs7fepjkJRFvVsIgjn/RsemORadwBr0/pQgkvb3qe1+qTdBESRj75qCnGP+aQIJDew600bKbmFpCnv5vrPv+5vIv5Oq+HksGLiZw5z2lTAxS5Ep9LWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976402; c=relaxed/simple;
-	bh=QdddpCzNslIpHjyyP2he+/toZzTcaX64KQUk/bs4JoA=;
+	s=arc-20240116; t=1774975060; c=relaxed/simple;
+	bh=BFrH0izzut3oYZ+zXxR6cIBeogPB77gebwE972naoO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raN4zfHqpU44AtRZZGNnjrxV/DuDA8npadFFsAykCfL9bV57wcTTTVzo/3HfsdjtSlNGJOSTMQgHUVIqwybkGzZUkKend8HSmchggLFumaqZlOh6BK5DA0hudBzrNKtpP42O5J/KYUa6YrnVgXpKA8RSUDFNMisRFKrtcXmOEXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1xP40oE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA52C19423;
-	Tue, 31 Mar 2026 17:00:01 +0000 (UTC)
+	 MIME-Version; b=b0p/2liIO9woxXt6+6ceEBSbnhPiQ01SImS27ja7py37f6gjSAERqUALOHd3GjWZ+M0cCqb4yYvTipVnQ0EGfBpY6rgEzVaPKv8jXBoEjVXR1lAP56tKpq0RfhhOso7rYOTMSix/znFK9Yv9pCm8725Ft1dOy2tCVDNTAvUUAkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=be4yTBrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA234C19423;
+	Tue, 31 Mar 2026 16:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976402;
-	bh=QdddpCzNslIpHjyyP2he+/toZzTcaX64KQUk/bs4JoA=;
+	s=korg; t=1774975060;
+	bh=BFrH0izzut3oYZ+zXxR6cIBeogPB77gebwE972naoO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1xP40oE4RrSQUVDoy5rPyEiweP73MDRCBu5Ib0bfhzAr7p+oY3Ug6nqE/7c+3WQk
-	 XQbGQ9WJsL9Od/Eyr2eCaPoTbJU6VZUQhaRq9gus+ED30pTRMYFNlCjd8Hza2S+sAp
-	 GvKksXLArXJodY3UYyn6WQS81nHn1Fl5TyFJqGR4=
+	b=be4yTBrDKGGdGg7DTdKacs/olrZOfuLfrR5V7iKm2ZIr1OR8Gdp0HAovB+5WsGWGZ
+	 QluL7PMRDkIuSCrd/wUnWHfxLQRrGBaD+NF1AU/2X4v3sda6OO2DYmo+dcDhY/o4ar
+	 7ZlBF7WkIOeK28wYbUK9O+VsBs51aUaK0SGkfOm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Daniel Kranzdorf <dkkranzd@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 078/309] dma: swiotlb: add KMSAN annotations to swiotlb_bounce()
+Subject: [PATCH 6.19 148/342] RDMA/efa: Check stored completion CTX command ID with received one
 Date: Tue, 31 Mar 2026 18:19:41 +0200
-Message-ID: <20260331161756.358866019@linuxfoundation.org>
+Message-ID: <20260331161804.450502859@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232303-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231784-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,97 +87,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BB58136DEC9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 98E5536D2DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Yonatan Nachum <ynachum@amazon.com>
 
-[ Upstream commit 6f770b73d0311a5b099277653199bb6421c4fed2 ]
+[ Upstream commit 4b01ec0f133b3fe1038dc538d6bfcbd72462d2f0 ]
 
-When a device performs DMA to a bounce buffer, KMSAN is unaware of
-the write and does not mark the data as initialized.  When
-swiotlb_bounce() later copies the bounce buffer back to the original
-buffer, memcpy propagates the uninitialized shadow to the original
-buffer, causing false positive uninit-value reports.
+In admin command completion, we receive a CQE with the command ID which
+is constructed from context index and entropy bits from the admin queue
+producer counter. To try to detect memory corruptions in the received
+CQE, validate the full command ID of the fetched context with the CQE
+command ID. If there is a mismatch, complete the CQE with error.
+Also use LSBs of the admin queue producer counter to better detect
+entropy mismatch between smaller number of commands.
 
-Fix this by calling kmsan_unpoison_memory() on the bounce buffer
-before copying it back in the DMA_FROM_DEVICE path, so that memcpy
-naturally propagates initialized shadow to the destination.
-
-Suggested-by: Alexander Potapenko <glider@google.com>
-Link: https://lore.kernel.org/CAG_fn=WUGta-paG1BgsGRoAR+fmuCgh3xo=R3XdzOt_-DqSdHw@mail.gmail.com/
-Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260315082750.2375581-1-syoshida@redhat.com
+Reviewed-by: Daniel Kranzdorf <dkkranzd@amazon.com>
+Reviewed-by: Michael Margolin <mrgolin@amazon.com>
+Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
+Link: https://patch.msgid.link/20251210130614.36460-2-ynachum@amazon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: ef3b06742c8a ("RDMA/efa: Fix use of completion ctx after free")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/efa/efa_com.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 0d37da3d95b65..e27225f8aeb27 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -30,6 +30,7 @@
- #include <linux/gfp.h>
- #include <linux/highmem.h>
- #include <linux/io.h>
-+#include <linux/kmsan-checks.h>
- #include <linux/iommu-helper.h>
- #include <linux/init.h>
- #include <linux/memblock.h>
-@@ -903,10 +904,19 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
+diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
+index 0e979ca10d240..b31478f3a1212 100644
+--- a/drivers/infiniband/hw/efa/efa_com.c
++++ b/drivers/infiniband/hw/efa/efa_com.c
+@@ -3,6 +3,8 @@
+  * Copyright 2018-2025 Amazon.com, Inc. or its affiliates. All rights reserved.
+  */
  
- 			local_irq_save(flags);
- 			page = pfn_to_page(pfn);
--			if (dir == DMA_TO_DEVICE)
-+			if (dir == DMA_TO_DEVICE) {
-+				/*
-+				 * Ideally, kmsan_check_highmem_page()
-+				 * could be used here to detect infoleaks,
-+				 * but callers may map uninitialized buffers
-+				 * that will be written by the device,
-+				 * causing false positives.
-+				 */
- 				memcpy_from_page(vaddr, page, offset, sz);
--			else
-+			} else {
-+				kmsan_unpoison_memory(vaddr, sz);
- 				memcpy_to_page(page, offset, vaddr, sz);
-+			}
- 			local_irq_restore(flags);
++#include <linux/log2.h>
++
+ #include "efa_com.h"
+ #include "efa_regs_defs.h"
  
- 			size -= sz;
-@@ -915,8 +925,15 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
- 			offset = 0;
- 		}
- 	} else if (dir == DMA_TO_DEVICE) {
-+		/*
-+		 * Ideally, kmsan_check_memory() could be used here to detect
-+		 * infoleaks (uninitialized data being sent to device), but
-+		 * callers may map uninitialized buffers that will be written
-+		 * by the device, causing false positives.
-+		 */
- 		memcpy(vaddr, phys_to_virt(orig_addr), size);
- 	} else {
-+		kmsan_unpoison_memory(vaddr, size);
- 		memcpy(phys_to_virt(orig_addr), vaddr, size);
- 	}
- }
+@@ -317,7 +319,7 @@ static struct efa_comp_ctx *__efa_com_submit_admin_cmd(struct efa_com_admin_queu
+ 
+ 	/* cmd_id LSBs are the ctx_id and MSBs are entropy bits from pc */
+ 	cmd_id = ctx_id & queue_size_mask;
+-	cmd_id |= aq->sq.pc & ~queue_size_mask;
++	cmd_id |= aq->sq.pc << ilog2(aq->depth);
+ 	cmd_id &= EFA_ADMIN_AQ_COMMON_DESC_COMMAND_ID_MASK;
+ 
+ 	cmd->aq_common_descriptor.command_id = cmd_id;
+@@ -418,7 +420,7 @@ static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq
+ 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
+ 
+ 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
+-	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
++	if (comp_ctx->status != EFA_CMD_SUBMITTED || comp_ctx->cmd_id != cmd_id) {
+ 		ibdev_err(aq->efa_dev,
+ 			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
+ 			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
 -- 
-2.51.0
+2.53.0
 
 
 
