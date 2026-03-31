@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +L4RAHr9y2nqNAYAu9opvQ
-	(envelope-from <stable+bounces-232006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:38 +0200
+	id GG7gFhz7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977CF36D9D2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53BD36D31C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D16B3113134
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76E02301A3AE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A049423149;
-	Tue, 31 Mar 2026 16:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6AE423A7C;
+	Tue, 31 Mar 2026 16:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iwp2Kvfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2sCwBvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA2D33120E;
-	Tue, 31 Mar 2026 16:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0111A3E3C5C;
+	Tue, 31 Mar 2026 16:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975632; cv=none; b=KV0a1keZQU3fRXwqWrn0V/1DnfC2ctQplsz3GD9wfjzDMl5q4RlzGlrY3yjy73rKYpVVRhPTGsHUcRRqnIQl4CMtz/sCTy1yImyHVCSPVKNm5j+MrA9WgiQkACS/qzoG19Mv9NbVqX8zu3SAK3NvdOs7tfHT629Eruxjlc5+aIk=
+	t=1774975045; cv=none; b=XmuxGU83kg6AFTXO2RsU7kMrlg1/z7OTYKKV3Od/cLcV6d4ykOyx8vaod63tTh6gt1pCxdYS2cnjtJ925Ig6TGtqT2W06z2fO0x0nr+GBgUbncb3Lz1GtJvZcri+yX2vgbFOZCuen9TE7PQozhWdcxsEMizmhmt7olGeX8WeEkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975632; c=relaxed/simple;
-	bh=ET6rNQfOtwF5cFDSkUn/yXjXL7xu3zWrWOW7pJxYZyM=;
+	s=arc-20240116; t=1774975045; c=relaxed/simple;
+	bh=aIuuk7zT7ciCHqCz0EjmiVN1ahk9sjNWH4pdwfifZWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUu1AcKb+1uT6R+TWfaeuCOWxr28/hMO9vWzJqYvHdnUd0SK2/htGts4m5ZdHE7klt9nLbgpxdoX5ZWqcyq+aGIIi3ez3JJS/RCyvnysHEcKBkNu9WF8U1fQMKq0aF5dwmIe2LoPyZ6mHtQX7YlBW67tguhXxdELBfKaazL46IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iwp2Kvfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D0AC19423;
-	Tue, 31 Mar 2026 16:47:11 +0000 (UTC)
+	 MIME-Version; b=OSBS38Kcwlev6EmST32Ski025aKdC3x2ehdBO+2SNDOptZsDLrQpnUD3uK1EgfJR9rdeW9Bks63gxh8L0/SMTk4mwaNst14dsLaYpmoC+kPIkj1WJ8YwiD/0eysE5lElD4c4rwWGO+jfBOjPe69c8Ai3MyfbI/2PEGep+RmmrRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2sCwBvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFFCC19423;
+	Tue, 31 Mar 2026 16:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975631;
-	bh=ET6rNQfOtwF5cFDSkUn/yXjXL7xu3zWrWOW7pJxYZyM=;
+	s=korg; t=1774975044;
+	bh=aIuuk7zT7ciCHqCz0EjmiVN1ahk9sjNWH4pdwfifZWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iwp2Kvfh1fATGGkCuRvAKb87DrML04Dq/KNkCqMgTy0dmTg+EVvx0GRvkUjuXceK0
-	 QlPNwTuYG7a4ChB73Kfx/oInTkdJFHoXUnhil4LEd1waR1UojjjVsA+KTGIgP6lmVA
-	 VfwWj1aTNIaWsH+CwZt5fNEThTv2GiXAxpPN0LAI=
+	b=Z2sCwBvdZwaielbig/z1oaYhRWtLV7fjAQQXC2rgldQhTFngOjPw7nWXD5PFufCIV
+	 jq+jSUlOXuC1mbpJ4mYR/0NBRsmRj41ZD7k5HEqpaoxD/gXDqciaZRxRMZ8AuuAkse
+	 DILyt+vZkwk0u/DNpiJBNJt2OdZS26PMICuPR+4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/244] module: Fix kernel panic when a symbol st_shndx is out of bounds
+Subject: [PATCH 6.19 143/342] netfilter: nf_conntrack_expect: skip expectations in other netns via proc
 Date: Tue, 31 Mar 2026 18:19:36 +0200
-Message-ID: <20260331161742.669236182@linuxfoundation.org>
+Message-ID: <20260331161804.269936896@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,109 +68,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232006-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231778-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email]
-X-Rspamd-Queue-Id: 977CF36D9D2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A53BD36D31C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f9d69d5e7bde2295eb7488a56f094ac8f5383b92 ]
+[ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
 
-The module loader doesn't check for bounds of the ELF section index in
-simplify_symbols():
+Skip expectations that do not reside in this netns.
 
-       for (i = 1; i < symsec->sh_size / sizeof(Elf_Sym); i++) {
-		const char *name = info->strtab + sym[i].st_name;
+Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
+conntrack entries via proc").
 
-		switch (sym[i].st_shndx) {
-		case SHN_COMMON:
-
-		[...]
-
-		default:
-			/* Divert to percpu allocation if a percpu var. */
-			if (sym[i].st_shndx == info->index.pcpu)
-				secbase = (unsigned long)mod_percpu(mod);
-			else
-  /** HERE --> **/		secbase = info->sechdrs[sym[i].st_shndx].sh_addr;
-			sym[i].st_value += secbase;
-			break;
-		}
-	}
-
-A symbol with an out-of-bounds st_shndx value, for example 0xffff
-(known as SHN_XINDEX or SHN_HIRESERVE), may cause a kernel panic:
-
-  BUG: unable to handle page fault for address: ...
-  RIP: 0010:simplify_symbols+0x2b2/0x480
-  ...
-  Kernel panic - not syncing: Fatal exception
-
-This can happen when module ELF is legitimately using SHN_XINDEX or
-when it is corrupted.
-
-Add a bounds check in simplify_symbols() to validate that st_shndx is
-within the valid range before using it.
-
-This issue was discovered due to a bug in llvm-objcopy, see relevant
-discussion for details [1].
-
-[1] https://lore.kernel.org/linux-modules/20251224005752.201911-1-ihor.solodrai@linux.dev/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/netfilter/nf_conntrack_expect.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 4511d0a4762a2..915a9cf33dd0d 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1449,6 +1449,13 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
- 			break;
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index cfc2daa3fc7f3..227fb5dc39e27 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
+ {
+ 	struct nf_conntrack_expect *expect;
+ 	struct nf_conntrack_helper *helper;
++	struct net *net = seq_file_net(s);
+ 	struct hlist_node *n = v;
+ 	char *delim = "";
  
- 		default:
-+			if (sym[i].st_shndx >= info->hdr->e_shnum) {
-+				pr_err("%s: Symbol %s has an invalid section index %u (max %u)\n",
-+				       mod->name, name, sym[i].st_shndx, info->hdr->e_shnum - 1);
-+				ret = -ENOEXEC;
-+				break;
-+			}
+ 	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
+ 
++	if (!net_eq(nf_ct_exp_net(expect), net))
++		return 0;
 +
- 			/* Divert to percpu allocation if a percpu var. */
- 			if (sym[i].st_shndx == info->index.pcpu)
- 				secbase = (unsigned long)mod_percpu(mod);
+ 	if (expect->timeout.function)
+ 		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
+ 			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
 -- 
 2.51.0
 
