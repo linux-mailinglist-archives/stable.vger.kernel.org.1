@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFG0A/EAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:25 +0200
+	id oJqqBt0CzGmGNQYAu9opvQ
+	(envelope-from <stable+bounces-232178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08B736E44E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F3536E939
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF97F3086531
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2CB38305F04B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA483043CF;
-	Tue, 31 Mar 2026 17:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4329425CC4;
+	Tue, 31 Mar 2026 16:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLjAL7qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gORyNLfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FE13016E3;
-	Tue, 31 Mar 2026 17:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C54423A9A;
+	Tue, 31 Mar 2026 16:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976831; cv=none; b=lU9yfOmxb/XNv76frUJ8tNbYE9nXqdaxK8siqv2RYSqmDJHMQbsl8VWdFYED1E7RTI7i0rqffaJ8pQprI+sdgZqAIAUHZJQfTzCXuHCwPLzVeknxy5/wh7RQFLVRO0uB+9yGisA0gxuWzG+BJB7+nGxFxXjAL0PE4cPNvI3aLKc=
+	t=1774976078; cv=none; b=b7/tnsLxKb2grC2za6asU5r5Vt6smnxANkanZVEPNw40ZluU1nw1PIGmqpHf3HqS9GNMuV4jJWBvvipGzBiEPqolqUE6g1vLA4ud8IO/RmNCzhm2xjGeMtyCSTRDjc1GMHywvgEobnT9yeyaCaWivOk2P0ts7arpQ8JjTiQWPds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976831; c=relaxed/simple;
-	bh=LLKFS79j+8zaNuUAI7RxsDTFMp55FGp54cr/u7YAK7I=;
+	s=arc-20240116; t=1774976078; c=relaxed/simple;
+	bh=U5/uwpCb48VVSVTx2YMsFtAPRYkcJ4siQsCDXQ3K1jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tw7vBLEnyGcGawNU9B58yJMnZEB7a02JFR8IRt/dgAcoVl5LwHEGzoE+V3+befOu8E5uoYoAgSj0klue2B4CBEY5uNUu6B4H3PGgrGsGJ9YSz7/eAkQ7sRnOkkMreqNidD5kWfvmdBNr8HCkaeL7+uiVzEt8nw29ajlDgSIMG2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLjAL7qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3D3C19423;
-	Tue, 31 Mar 2026 17:07:10 +0000 (UTC)
+	 MIME-Version; b=SESiR8GoM0bhtxICDzm7m1XNb+96+rCumbuFR8ookfT9PkqgdltEb25bnHi15DxiSID684+pvd4f2Jxaj/4YgMSfc/1q4qZbUvkHQJuSbe6jyQeVe1c6rpgbPtUHil4+GSn6nYlH+08BJmLULcRZpiYoM4xmBePwlr3vjU1e6dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gORyNLfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E54C19423;
+	Tue, 31 Mar 2026 16:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976830;
-	bh=LLKFS79j+8zaNuUAI7RxsDTFMp55FGp54cr/u7YAK7I=;
+	s=korg; t=1774976078;
+	bh=U5/uwpCb48VVSVTx2YMsFtAPRYkcJ4siQsCDXQ3K1jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLjAL7qeCix2xnabpBzJ7xtMG6blOQd4O5cEAR3JtsgZ60Jn24ZK/NE7AD2Zfqgth
-	 os3Dj626YSE5Tt5MsJ8KjoNbgUOsrS2AvzL+h6L0CciBTlrSWvjeShd253RORujsRx
-	 +9SH8gdMXTIHfYakpvcFamcq4FCPbTHzFNN5DbM0=
+	b=gORyNLfBVFh2OsTAslpf0VHmMpEwydKqkVEyxe8XcY/QPGnKgklyrxYrIEF9lqye6
+	 v3qErQxNGWZZtHfFU9oCJwFOEcMY3yT8nE9hS1cJ3QnMedNIwqTgnrM01PL93GDW2M
+	 RbLfbErfAYn8UtabcNxnH7WudT8CV9zszUmtOGPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 245/309] mm/damon/sysfs: check contexts->nr in repeat_call_fn
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 198/244] arm64: dts: imx8mn-tqma8mqnl: fix LDO5 power off
 Date: Tue, 31 Mar 2026 18:22:28 +0200
-Message-ID: <20260331161802.588613976@linuxfoundation.org>
+Message-ID: <20260331161749.061687306@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232470-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232178-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,63 +89,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email,objecting.org:email]
-X-Rspamd-Queue-Id: C08B736E44E
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,tq-group.com:email]
+X-Rspamd-Queue-Id: 25F3536E939
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-commit 6557004a8b59c7701e695f02be03c7e20ed1cc15 upstream.
+commit 8adc841d43ebceabec996c9dcff6e82d3e585268 upstream.
 
-damon_sysfs_repeat_call_fn() calls damon_sysfs_upd_tuned_intervals(),
-damon_sysfs_upd_schemes_stats(), and
-damon_sysfs_upd_schemes_effective_quotas() without checking contexts->nr.
-If nr_contexts is set to 0 via sysfs while DAMON is running, these
-functions dereference contexts_arr[0] and cause a NULL pointer
-dereference.  Add the missing check.
+Fix SD card removal caused by automatic LDO5 power off after boot
 
-For example, the issue can be reproduced using DAMON sysfs interface and
-DAMON user-space tool (damo) [1] like below.
+To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
+regulator that is supplied by LDO5. Since this is implemented on SoM but
+used on baseboards with SD-card interface, implement the functionality
+on SoM part and optionally enable it on baseboards if needed.
 
-    $ sudo damo start --refresh_interval 1s
-    $ echo 0 | sudo tee \
-            /sys/kernel/mm/damon/admin/kdamonds/0/contexts/nr_contexts
-
-Link: https://patch.msgid.link/20260320163559.178101-3-objecting@objecting.org
-Link: https://lkml.kernel.org/r/20260321175427.86000-4-sj@kernel.org
-Link: https://github.com/damonitor/damo [1]
-Fixes: d809a7c64ba8 ("mm/damon/sysfs: implement refresh_ms file internal work")
-Signed-off-by: Josh Law <objecting@objecting.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts |   13 ++++----
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       |   22 ++++++++++++++
+ 2 files changed, 29 insertions(+), 6 deletions(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1570,9 +1570,12 @@ static int damon_sysfs_repeat_call_fn(vo
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
+@@ -64,6 +64,10 @@
+ 	};
+ };
  
- 	if (!mutex_trylock(&damon_sysfs_lock))
- 		return 0;
-+	if (sysfs_kdamond->contexts->nr != 1)
-+		goto out;
- 	damon_sysfs_upd_tuned_intervals(sysfs_kdamond);
- 	damon_sysfs_upd_schemes_stats(sysfs_kdamond);
- 	damon_sysfs_upd_schemes_effective_quotas(sysfs_kdamond);
-+out:
- 	mutex_unlock(&damon_sysfs_lock);
- 	return 0;
- }
++&reg_usdhc2_vqmmc {
++	status = "okay";
++};
++
+ &sai3 {
+ 	assigned-clocks = <&clk IMX8MN_CLK_SAI3>;
+ 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
+@@ -207,8 +211,7 @@
+ 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
+-			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
+-			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
++			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+@@ -217,8 +220,7 @@
+ 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
+-			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
+-			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
++			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+@@ -227,8 +229,7 @@
+ 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
+-			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
+-			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
++			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+@@ -30,6 +30,20 @@
+ 		regulator-max-microvolt = <3300000>;
+ 	};
+ 
++	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
++		regulator-name = "V_SD2";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x1>,
++			 <3300000 0x0>;
++		vin-supply = <&ldo5_reg>;
++		status = "disabled";
++	};
++
+ 	reserved-memory {
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+@@ -228,6 +242,10 @@
+ 	vddio-supply = <&ldo3_reg>;
+ };
+ 
++&usdhc2 {
++	vqmmc-supply = <&reg_usdhc2_vqmmc>;
++};
++
+ &usdhc3 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+@@ -282,6 +300,10 @@
+ 		fsl,pins = <MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
+ 	};
+ 
++	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
++		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
++	};
++
+ 	pinctrl_usdhc3: usdhc3grp {
+ 		fsl,pins = <MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
+ 			   <MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
 
 
 
