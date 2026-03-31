@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-232266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SC6DLq/+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:47 +0200
+	id KIBAErT+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B6D36DCF0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFECC36DCFE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BBAB30974A4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4656E3099C98
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C684B425CC4;
-	Tue, 31 Mar 2026 16:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A110425CD2;
+	Tue, 31 Mar 2026 16:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLtECfhP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYOoAujY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1E7423A89;
-	Tue, 31 Mar 2026 16:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC4F423A89;
+	Tue, 31 Mar 2026 16:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976305; cv=none; b=aryjRvq/vGGT26rtXD+ptn1HUs/GJyU+Sta+gi2OQ+GZRsbHqA4XfodA7BOAjQkYoqsoGDa2BV/OZCjz7A1upEUW+9CxZu8jcT4ALHw2Y5JPCC/G5qQk0CN+VFe7lLMdMYsa4mMexBvbHhZ9Ho3Z2EBogwn9MShnmwi70YavIl0=
+	t=1774976308; cv=none; b=mvBSo3glue7EeD/sq7KLVRw4QVE9321MJ2VXrIhsL+vN9/PDLsgPYlyXq3DsD8PZ2slwrXnpueQoxQO0+1nlgDQ+amnLMZws0uk62XK+OoEWLjBKHfEHllw9G/+fjCsweCMnCYBDCKHvVVkpvyeECfROcrJvq4fLsx8DKHs/9wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976305; c=relaxed/simple;
-	bh=dNI89v9vR+yWr7EgX061Oa9F8falEHLob9RagXk1m7s=;
+	s=arc-20240116; t=1774976308; c=relaxed/simple;
+	bh=U/mLIFHReUeV51X0JtvifmZlg0OGD1Tqn4AphPLo8ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nl1KbS9D+6Semr4FVQPz9VVe4hZf9u5lw0U2FL1RRdzkW08frcoCVRcvE9CAnrwPlY2TYKD0gAagFG2Xby+DPi79lw8ex2aJB8vyoElR9SslLUptcNHM7QdDZC4qi4ket9sHcp74PYfTAFUyep4dlbn0lPTlBQr0rpG+hzAltiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLtECfhP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E61C19423;
-	Tue, 31 Mar 2026 16:58:24 +0000 (UTC)
+	 MIME-Version; b=miDAVH/cGEqCDXj9tfxSW+PDLUAKNlIBHEHaPIUumT1XUBejx8GhX8ld89ZH9Ha0ZBKJc7zsS1KPJ7BHRwULHD5qrvYgUywu/6nQYxQLYUwNS+t6d3LL/n43++wxIpeOL/hSprIyvNBy5+iN/webLh8sAThG6SGmlk+DXFYNmcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYOoAujY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91FFC19423;
+	Tue, 31 Mar 2026 16:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976305;
-	bh=dNI89v9vR+yWr7EgX061Oa9F8falEHLob9RagXk1m7s=;
+	s=korg; t=1774976308;
+	bh=U/mLIFHReUeV51X0JtvifmZlg0OGD1Tqn4AphPLo8ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLtECfhPq+Eg+0yCXMMEVe2HObAWqc2gLI4vI7RXsvBCV0pUT8Klanqoiukpr0NI6
-	 W4UpXbTHR6p/LSigJPLutDggwZ4nUqQ0dfWh/46hvaRMuo6z+QJ5z2Gztw3Ii4NVoP
-	 SELt2ahQwornUZH4axgHYSBd63sPFlsJVehNulHE=
+	b=GYOoAujY+zdKD/+ENEvb0GJ9AA/fCSX8GlivJ7e/TSRwrHF8BDoc1dEsywmqpzSl7
+	 +szATzvts+yx7FZ5QydYi4RyLcHD68zceQqeiIi25rvoOSxXnnK2mAikNhv44ObIDR
+	 xET7DnZhgVx701zYcvrNeKCRanyDyeq9QzOBI9+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/309] scsi: mpi3mr: Clear reset history on ready and recheck state after timeout
-Date: Tue, 31 Mar 2026 18:19:04 +0200
-Message-ID: <20260331161754.996955252@linuxfoundation.org>
+Subject: [PATCH 6.18 042/309] ASoC: rt1321: fix DMIC ch2/3 mask issue
+Date: Tue, 31 Mar 2026 18:19:05 +0200
+Message-ID: <20260331161755.034189386@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
 References: <20260331161753.468533260@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,20 +78,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232266-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232267-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: 61B6D36DCF0
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CFECC36DCFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,56 +99,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit dbd53975ed4132d161b6a97ebe785a262380182d ]
+[ Upstream commit 986841dcad257615a6e3f89231bb38e1f3506b77 ]
 
-The driver retains reset history even after the IOC has successfully
-reached the READY state. That leaves stale reset information active during
-normal operation and can mislead recovery and diagnostics.  In addition, if
-the IOC becomes READY just as the ready timeout loop exits, the driver
-still follows the failure path and may retry or report failure incorrectly.
+This patch fixed the DMIC ch2/3 mask missing problem.
 
-Clear reset history once READY is confirmed so driver state matches actual
-IOC status. After the timeout loop, recheck the IOC state and treat READY
-as success instead of failing.
-
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://patch.msgid.link/20260225082622.82588-1-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20260225091210.3648905-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/codecs/rt1320-sdw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index 8382afed12813..4c8d78b840fc9 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -1530,6 +1530,7 @@ static int mpi3mr_bring_ioc_ready(struct mpi3mr_ioc *mrioc)
- 			ioc_info(mrioc,
- 			    "successfully transitioned to %s state\n",
- 			    mpi3mr_iocstate_name(ioc_state));
-+			mpi3mr_clear_reset_history(mrioc);
- 			return 0;
- 		}
- 		ioc_status = readl(&mrioc->sysif_regs->ioc_status);
-@@ -1549,6 +1550,15 @@ static int mpi3mr_bring_ioc_ready(struct mpi3mr_ioc *mrioc)
- 		elapsed_time_sec = jiffies_to_msecs(jiffies - start_time)/1000;
- 	} while (elapsed_time_sec < mrioc->ready_timeout);
+diff --git a/sound/soc/codecs/rt1320-sdw.c b/sound/soc/codecs/rt1320-sdw.c
+index e3f9b03df3aae..e1bd991a823a4 100644
+--- a/sound/soc/codecs/rt1320-sdw.c
++++ b/sound/soc/codecs/rt1320-sdw.c
+@@ -1455,7 +1455,7 @@ static int rt1320_sdw_hw_params(struct snd_pcm_substream *substream,
+ 	struct sdw_port_config port_config;
+ 	struct sdw_port_config dmic_port_config[2];
+ 	struct sdw_stream_runtime *sdw_stream;
+-	int retval;
++	int retval, num_channels;
+ 	unsigned int sampling_rate;
  
-+	ioc_state = mpi3mr_get_iocstate(mrioc);
-+	if (ioc_state == MRIOC_STATE_READY) {
-+		ioc_info(mrioc,
-+		    "successfully transitioned to %s state after %llu seconds\n",
-+		    mpi3mr_iocstate_name(ioc_state), elapsed_time_sec);
-+		mpi3mr_clear_reset_history(mrioc);
-+		return 0;
-+	}
-+
- out_failed:
- 	elapsed_time_sec = jiffies_to_msecs(jiffies - start_time)/1000;
- 	if ((retry < 2) && (elapsed_time_sec < (mrioc->ready_timeout - 60))) {
+ 	dev_dbg(dai->dev, "%s %s", __func__, dai->name);
+@@ -1487,7 +1487,8 @@ static int rt1320_sdw_hw_params(struct snd_pcm_substream *substream,
+ 				dmic_port_config[1].num = 10;
+ 				break;
+ 			case RT1321_DEV_ID:
+-				dmic_port_config[0].ch_mask = BIT(0) | BIT(1);
++				num_channels = params_channels(params);
++				dmic_port_config[0].ch_mask = GENMASK(num_channels - 1, 0);
+ 				dmic_port_config[0].num = 8;
+ 				break;
+ 			default:
 -- 
 2.51.0
 
