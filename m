@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-231954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AtkMBD8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:36 +0200
+	id 4MoaIR//y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C84936D570
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4380036DE2A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 473D030CEB01
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E8DB30D0A3F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AA6423146;
-	Tue, 31 Mar 2026 16:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80256423A9A;
+	Tue, 31 Mar 2026 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlxyBvL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ip3v+jKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2BB33E372;
-	Tue, 31 Mar 2026 16:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C0A423A7C;
+	Tue, 31 Mar 2026 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975495; cv=none; b=F5DSmn+EbOskyVCjjft/FaDHadBUfVcm81yssQqMTPVw72SWsE5TyaXG4JDCn5uPhEoSugWkwt+GEbP0jcWlq+TkQhGHH6lXoJZjkG/dXTqmViANRRdHn6fjiL7YeOK6MV0VzLuspOFlUY77YJXAe/oZ0z+9MqlaUxvOKQF5YcU=
+	t=1774976086; cv=none; b=i9X/8aw2OqZ+4tHlCJAcXSfF1qMUK8OVsW4xHYUVw3AHwkPueuWC7VGGXsLyK1LX7EG7QfEtD6pApY1hbHc2okJYF1ZfWirT5VP3EKMlqj2nmbN223hrUTv2KGqC39s3sTX8TArUeFjfS5ZQqSS+JukNTy5SHY4Z/5A8QMD5YHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975495; c=relaxed/simple;
-	bh=12eDt66OUjnvm+frkEYHjz4jt/theeMsKqo0RdjxJvo=;
+	s=arc-20240116; t=1774976086; c=relaxed/simple;
+	bh=EAevIMB2GQ0X4nS2k9TuYAwljLh4xaSgzoH3oilfoco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+O8JfUyfVncUfxI2ZuboFHfVBXmwzNM4iCf8088Jg+9bxP1OAKTylYsu0zVn+H+6mX1Zmp+2bGCqiyEJS+uq1wLfNlWmlqbVo84LTUCjScJtpJAkYbW/GBGE0yLVFgRUKs5pJKRNZMHjgOQnpm+PYtTcrZrtKKCkW3KYYJ93KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlxyBvL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21444C19423;
-	Tue, 31 Mar 2026 16:44:54 +0000 (UTC)
+	 MIME-Version; b=CNuaTfYXDjGf7N8P21FcWWEKhMLekACQ3jXP/Wc6BOuoW7hl+8gTfvw2LE4FHNquSwmoJfmsXpcDJyTud+fPvaYsNAon6oZGvo4aImDH9sA/Hc67iuOxju23smGHzmVe/MoiLgEcOfQUnZq5/NHGs1SsXW/g/KCnk17OgjVaRwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip3v+jKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45B0C19423;
+	Tue, 31 Mar 2026 16:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975495;
-	bh=12eDt66OUjnvm+frkEYHjz4jt/theeMsKqo0RdjxJvo=;
+	s=korg; t=1774976086;
+	bh=EAevIMB2GQ0X4nS2k9TuYAwljLh4xaSgzoH3oilfoco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlxyBvL8R5mMbWo+2m6tNwCmo68yO7RFmGsmwuQjE01DJkFBBLxrCdSknaPUupXHA
-	 O2fzJ6UM4X8uYBX/mVL5Tbsta1pdqLeyph9Ji4NCemkeZrJuo5Ki4DbOSDSTie9pUZ
-	 Q+2rqjiYkKLK/9tAiEPjIE1CvSbnRkuoP9U8MPCk=
+	b=Ip3v+jKc/B3PXbbQPgti31m8UlplfY93J/n9b2azoXyfiIHrsph+/bm2i8vXbYxcU
+	 RsJ5SXQlffEDn/YQYN/D9kOMQRemf7+9SouE4Dpl4J8zktlktzhP3dy9fQ+CyfOaE5
+	 1bAxFshRcIraLEcWRyh36S7GPgFlAsATEARCnOr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 318/342] dmaengine: idxd: Fix leaking event log memory
+Subject: [PATCH 6.12 201/244] tracing: Switch trace_osnoise.c code over to use guard() and __free()
 Date: Tue, 31 Mar 2026 18:22:31 +0200
-Message-ID: <20260331161810.619438719@linuxfoundation.org>
+Message-ID: <20260331161749.172325618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231954-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232181-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,61 +89,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3C84936D570
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,efficios.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,goodmis.org:email,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 4380036DE2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit ee66bc29578391c9b48523dc9119af67bd5c7c0f ]
+[ Upstream commit 930d2b32c0af6895ba4c6ca6404e7f7b6dc214ed ]
 
-During the device remove process, the device is reset, causing the
-configuration registers to go back to their default state, which is
-zero. As the driver is checking if the event log support was enabled
-before deallocating, it will fail if a reset happened before.
+The osnoise_hotplug_workfn() grabs two mutexes and cpu_read_lock(). It has
+various gotos to handle unlocking them. Switch them over to guard() and
+let the compiler worry about it.
 
-Do not check if the support was enabled, the check for 'idxd->evl'
-being valid (only allocated if the HW capability is available) is
-enough.
+The osnoise_cpus_read() has a temporary mask_str allocated and there's
+some gotos to make sure it gets freed on error paths. Switch that over to
+__free() to let the compiler worry about it.
 
-Fixes: 244da66cda35 ("dmaengine: idxd: setup event log configuration")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-10-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/20241225222931.517329690@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 1f9885732248 ("tracing: Fix potential deadlock in cpu hotplug with osnoise")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/device.c | 4 ----
- 1 file changed, 4 deletions(-)
+ kernel/trace/trace_osnoise.c |   40 +++++++++++++---------------------------
+ 1 file changed, 13 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index a7ecc17442354..4013f970cb3b2 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -833,10 +833,6 @@ static void idxd_device_evl_free(struct idxd_device *idxd)
- 	if (!evl)
- 		return;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2099,26 +2099,21 @@ static void osnoise_hotplug_workfn(struc
+ {
+ 	unsigned int cpu = smp_processor_id();
  
--	gencfg.bits = ioread32(idxd->reg_base + IDXD_GENCFG_OFFSET);
--	if (!gencfg.evl_en)
--		return;
+-	mutex_lock(&trace_types_lock);
++	guard(mutex)(&trace_types_lock);
+ 
+ 	if (!osnoise_has_registered_instances())
+-		goto out_unlock_trace;
++		return;
+ 
+-	mutex_lock(&interface_lock);
+-	cpus_read_lock();
++	guard(mutex)(&interface_lock);
++	guard(cpus_read_lock)();
+ 
+ 	if (!cpu_online(cpu))
+-		goto out_unlock;
++		return;
++
+ 	if (!cpumask_test_cpu(cpu, &osnoise_cpumask))
+-		goto out_unlock;
++		return;
+ 
+ 	start_kthread(cpu);
 -
- 	mutex_lock(&evl->lock);
- 	gencfg.evl_en = 0;
- 	iowrite32(gencfg.bits, idxd->reg_base + IDXD_GENCFG_OFFSET);
--- 
-2.53.0
-
+-out_unlock:
+-	cpus_read_unlock();
+-	mutex_unlock(&interface_lock);
+-out_unlock_trace:
+-	mutex_unlock(&trace_types_lock);
+ }
+ 
+ static DECLARE_WORK(osnoise_hotplug_work, osnoise_hotplug_workfn);
+@@ -2316,31 +2311,22 @@ static ssize_t
+ osnoise_cpus_read(struct file *filp, char __user *ubuf, size_t count,
+ 		  loff_t *ppos)
+ {
+-	char *mask_str;
++	char *mask_str __free(kfree) = NULL;
+ 	int len;
+ 
+-	mutex_lock(&interface_lock);
++	guard(mutex)(&interface_lock);
+ 
+ 	len = snprintf(NULL, 0, "%*pbl\n", cpumask_pr_args(&osnoise_cpumask)) + 1;
+ 	mask_str = kmalloc(len, GFP_KERNEL);
+-	if (!mask_str) {
+-		count = -ENOMEM;
+-		goto out_unlock;
+-	}
++	if (!mask_str)
++		return -ENOMEM;
+ 
+ 	len = snprintf(mask_str, len, "%*pbl\n", cpumask_pr_args(&osnoise_cpumask));
+-	if (len >= count) {
+-		count = -EINVAL;
+-		goto out_free;
+-	}
++	if (len >= count)
++		return -EINVAL;
+ 
+ 	count = simple_read_from_buffer(ubuf, count, ppos, mask_str, len);
+ 
+-out_free:
+-	kfree(mask_str);
+-out_unlock:
+-	mutex_unlock(&interface_lock);
+-
+ 	return count;
+ }
+ 
 
 
 
