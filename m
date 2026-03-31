@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-231671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCN7CRb7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:26 +0200
+	id GNwzFFf5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E134A36D314
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BCC36CFD7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 097D23123B40
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:33:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC582304D102
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBBF425CEF;
-	Tue, 31 Mar 2026 16:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8A4423A8B;
+	Tue, 31 Mar 2026 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbeW880l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFYIzgX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4275D4218B4;
-	Tue, 31 Mar 2026 16:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B089C3F99EA;
+	Tue, 31 Mar 2026 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974768; cv=none; b=M/DkcEtTR7rchUcv/i9fXF6I7S0Ar/78au3VG1WJhzNRcWSzyo1Zhm+bAY0id8w52Tutpfais/zXEsfpLyhw/hfrPnLzZXvBd9ParD4VOoQyXJf+oXx2eR1Hp+omExJH58S53+UFmrq8WuvYceEJdjYpm92ebhW+iQohns2EhPo=
+	t=1774974796; cv=none; b=juxcCJtILf0qRAPRIS7Z49eAKYOEIWggngnW0CuM81/gUezNzJTMcOXS7VA8Z9uMVy4cqstPGjbdjMq+NQp2nUyK9tx+ilWIhkYoOvH5kJ8knEMO4SHyhXju06db/5PsgJ5NN4DUMBK3DzImeSBdmtbvYU6RNYsmV7R+1crbamE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974768; c=relaxed/simple;
-	bh=JCaSCCxLZFgjTHcM0KQlO1PHesIcKYdf86Dna93d02I=;
+	s=arc-20240116; t=1774974796; c=relaxed/simple;
+	bh=DDL8T5BKJer9/NTZJIDP1Ry87Wr2h5qkGC8cCH3/ScM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ycdi6KRQ+PwK51mDm9ZdxPzc4I1rzx8GH7M85vrPQQY5KRUO3fWuLnUU2rv1VESYIltwI7cTl7lkI1/edF1+7USFGR2ZSmWYDfGDOgQ05WI/PB9OKFGRkI95M3mYKoc/BwfXHVjXdC+1i92iC2Mti1knbK7ShJiA5IqUQZeBcKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbeW880l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC4BC19423;
-	Tue, 31 Mar 2026 16:32:47 +0000 (UTC)
+	 MIME-Version; b=X35wX/UdTiWwOHhwPhDXEiqwoe1fhhbmqLzOKUCo0k+Hz9xt85sbS3UsvwfUuA0T9+Qcccclv9YG8vtPBeIg7BRDqw/kni0pbRuGzNpPMmKXaE4oVYCObn+gtopNH5uZRXSOvnaokizF3GADOc1sFOFIqe90Xag6eW9fIS2W3jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFYIzgX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47352C19423;
+	Tue, 31 Mar 2026 16:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974768;
-	bh=JCaSCCxLZFgjTHcM0KQlO1PHesIcKYdf86Dna93d02I=;
+	s=korg; t=1774974796;
+	bh=DDL8T5BKJer9/NTZJIDP1Ry87Wr2h5qkGC8cCH3/ScM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbeW880lqVLdjtvvo1DLWauUFXf+Iqc7+rsK/LXvGcPiitdNJ6FG42XljjS3QknoH
-	 +qcq4BxlU5l/MtPQ0FUu6B9vUigbuIKxAuknuDFGj03Dtw2ZZoZojwbU8y4nDwgfWX
-	 LVjYJdd3p+UifF7sJrUFJs4DgfTlPciTo4HCtzlI=
+	b=pFYIzgX3GOypeCfbR+0gpkrXUxJ8iqa/nACGn4Bf/3DqL/RBFCvBK71fYoct2EhHd
+	 GPgc83o5rEvNuIpiDf+m71kb9n1d1QJm/XlVfXa2h4uC6ClkwnK8kB7sQfI3dN0pA/
+	 VrIdCBgKYWyiz+DAuw/hbSm026QFUeb1Cb2fivEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
+	Daniel Wade <danjwade95@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 019/342] bpf: Fix undefined behavior in interpreter sdiv/smod for INT_MIN
-Date: Tue, 31 Mar 2026 18:17:32 +0200
-Message-ID: <20260331161759.619343083@linuxfoundation.org>
+Subject: [PATCH 6.19 020/342] bpf: Fix unsound scalar forking in maybe_fork_scalars() for BPF_OR
+Date: Tue, 31 Mar 2026 18:17:33 +0200
+Message-ID: <20260331161759.656196413@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -70,21 +70,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,meta.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231671-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231682-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.994];
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E134A36D314
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 24BCC36CFD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,102 +102,50 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Daniel Wade <danjwade95@gmail.com>
 
-[ Upstream commit c77b30bd1dcb61f66c640ff7d2757816210c7cb0 ]
+[ Upstream commit c845894ebd6fb43226b3118d6b017942550910c5 ]
 
-The BPF interpreter's signed 32-bit division and modulo handlers use
-the kernel abs() macro on s32 operands. The abs() macro documentation
-(include/linux/math.h) explicitly states the result is undefined when
-the input is the type minimum. When DST contains S32_MIN (0x80000000),
-abs((s32)DST) triggers undefined behavior and returns S32_MIN unchanged
-on arm64/x86. This value is then sign-extended to u64 as
-0xFFFFFFFF80000000, causing do_div() to compute the wrong result.
+maybe_fork_scalars() is called for both BPF_AND and BPF_OR when the
+source operand is a constant.  When dst has signed range [-1, 0], it
+forks the verifier state: the pushed path gets dst = 0, the current
+path gets dst = -1.
 
-The verifier's abstract interpretation (scalar32_min_max_sdiv) computes
-the mathematically correct result for range tracking, creating a
-verifier/interpreter mismatch that can be exploited for out-of-bounds
-map value access.
+For BPF_AND this is correct: 0 & K == 0.
+For BPF_OR this is wrong:    0 | K == K, not 0.
 
-Introduce abs_s32() which handles S32_MIN correctly by casting to u32
-before negating, avoiding signed overflow entirely. Replace all 8
-abs((s32)...) call sites in the interpreter's sdiv32/smod32 handlers.
+The pushed path therefore tracks dst as 0 when the runtime value is K,
+producing an exploitable verifier/runtime divergence that allows
+out-of-bounds map access.
 
-s32 is the only affected case -- the s64 division/modulo handlers do
-not use abs().
+Fix this by passing env->insn_idx (instead of env->insn_idx + 1) to
+push_stack(), so the pushed path re-executes the ALU instruction with
+dst = 0 and naturally computes the correct result for any opcode.
 
-Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Link: https://lore.kernel.org/r/20260311011116.2108005-2-qguanni@gmail.com
+Fixes: bffacdb80b93 ("bpf: Recognize special arithmetic shift in the verifier")
+Signed-off-by: Daniel Wade <danjwade95@gmail.com>
+Reviewed-by: Amery Hung <ameryhung@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260314021521.128361-2-danjwade95@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 1b32333d8f8c6..5a56bc2ab900d 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1754,6 +1754,12 @@ bool bpf_opcode_in_insntable(u8 code)
- }
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 0160c6c28af1f..ea312acf7d482 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15593,7 +15593,7 @@ static int maybe_fork_scalars(struct bpf_verifier_env *env, struct bpf_insn *ins
+ 	else
+ 		return 0;
  
- #ifndef CONFIG_BPF_JIT_ALWAYS_ON
-+/* Absolute value of s32 without undefined behavior for S32_MIN */
-+static u32 abs_s32(s32 x)
-+{
-+	return x >= 0 ? (u32)x : -(u32)x;
-+}
-+
- /**
-  *	___bpf_prog_run - run eBPF program on a given context
-  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
-@@ -1918,8 +1924,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = do_div(AX, (u32) SRC);
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			AX = do_div(AX, abs((s32)SRC));
-+			AX = abs_s32((s32)DST);
-+			AX = do_div(AX, abs_s32((s32)SRC));
- 			if ((s32)DST < 0)
- 				DST = (u32)-AX;
- 			else
-@@ -1946,8 +1952,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = do_div(AX, (u32) IMM);
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			AX = do_div(AX, abs((s32)IMM));
-+			AX = abs_s32((s32)DST);
-+			AX = do_div(AX, abs_s32((s32)IMM));
- 			if ((s32)DST < 0)
- 				DST = (u32)-AX;
- 			else
-@@ -1973,8 +1979,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = (u32) AX;
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			do_div(AX, abs((s32)SRC));
-+			AX = abs_s32((s32)DST);
-+			do_div(AX, abs_s32((s32)SRC));
- 			if (((s32)DST < 0) == ((s32)SRC < 0))
- 				DST = (u32)AX;
- 			else
-@@ -2000,8 +2006,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = (u32) AX;
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			do_div(AX, abs((s32)IMM));
-+			AX = abs_s32((s32)DST);
-+			do_div(AX, abs_s32((s32)IMM));
- 			if (((s32)DST < 0) == ((s32)IMM < 0))
- 				DST = (u32)AX;
- 			else
+-	branch = push_stack(env, env->insn_idx + 1, env->insn_idx, false);
++	branch = push_stack(env, env->insn_idx, env->insn_idx, false);
+ 	if (IS_ERR(branch))
+ 		return PTR_ERR(branch);
+ 
 -- 
 2.51.0
 
