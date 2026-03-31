@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCrHJ7IAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:22 +0200
+	id mPWoBUz4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D22836E35B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB2A36CDD7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3F2253090492
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9555830D660C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92653016E3;
-	Tue, 31 Mar 2026 17:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF2B421A06;
+	Tue, 31 Mar 2026 16:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnlSz04e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKV6BKm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7222E1C7C;
-	Tue, 31 Mar 2026 17:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33793FADEE;
+	Tue, 31 Mar 2026 16:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976747; cv=none; b=UkPNQVA6lCk/vr/u2hy+Fej2qC2SRTBeW9/yqmNng2STDAwYy7wlpjWFLOQgYNhUej2Qz9XqYuZRv88nrlSvwC/nnRJmxDgeMMeEQBErpkAo7/Q2mqMaf4w2Jji3vV28zBbTsnx67LPzCY6H1HDLnZ7qUyuKCWgM5N6k8Prcu3Q=
+	t=1774974560; cv=none; b=o5Y0TCI3lmmSsrhNY+xmY3p4+13LzbwrQMcKwTWP2NKqCB6i/Yq+iwzy0EoJtGzjAcOlw346zIZic140KJqXwdjsYdf0VWRoK29b+x0JTL3YqFqjjK+UnJb6aovZaytp2UEI1ek6gKvCTvPuy7gCWBfkW/M6jWLAqnm5xXl6BDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976747; c=relaxed/simple;
-	bh=sHsyyCUdyrDRYP2SiCd32acMQTWZuYDP9NBu7OSSwIU=;
+	s=arc-20240116; t=1774974560; c=relaxed/simple;
+	bh=3sTeN6nRTIiUBiWRXR6tZlBlf+KWQdATnVdSoe2waAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a03p1uagX7U6wGboox8j6sPUMwpnKGfB4AvELy98Q0NfJG098EmYtsFYqRvpD8iMHRQMnbArJi5dwtaprz37a2+GbXXWfI0PeSPrXETdR8qmFxHrDcND9FREldR8sbAX0tTu8jnsISq/Y7P/xZvKGT1b3O313KelWQ0jacV23zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnlSz04e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42150C19423;
-	Tue, 31 Mar 2026 17:05:47 +0000 (UTC)
+	 MIME-Version; b=Qf0FceyCZuwqakhFotzlbyksKmBdRKqbxrxhNCM2cRC1OVwfPFx07d/3b+o+1hiINMCicaL/YXzTX41K6MAmUeQDeUY/O9IRQ89UggBuooTeJObEp/elxr40CGOaCGBIIbeAo4xiVyLMTw3b8s1CZaMwiBTUhVySrPL/B/vIy3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKV6BKm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BD5C19423;
+	Tue, 31 Mar 2026 16:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976747;
-	bh=sHsyyCUdyrDRYP2SiCd32acMQTWZuYDP9NBu7OSSwIU=;
+	s=korg; t=1774974560;
+	bh=3sTeN6nRTIiUBiWRXR6tZlBlf+KWQdATnVdSoe2waAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnlSz04eZChIyeHlcPVm0ev1r5zUWgjqD740KFVdPsmbuyglhFPypD7tXDleK9FdN
-	 AWJkffNW2hzUAe+dx03T6Cbl3HVu8Rjsq1nc81Wzr2KGYk1AqwR1IkmoxeX6wj+DIy
-	 gODdHLULaZxcWfe36tPpHzrL3DPQriIVZm4UucVA=
+	b=bKV6BKm2+a8d5Sehy3cV1A03djZMidcrl73u4cT3NAhC3nZBhNPSeRBy7LTYgtgvc
+	 l98LkaMedUVUiHPnmZpXARlJC26Lm6/fgaxuXiaVtL0iVwnqX1wf334CHoxIop+F5d
+	 ZjGKV+q19QOGsm8nPOp76jd4mvwGvX9w5rVeGXBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
+	Free Ekanayaka <free.ekanayaka@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.18 213/309] x86/fred: Fix early boot failures on SEV-ES/SNP guests
+Subject: [PATCH 6.6 132/175] ext4: fix fsync(2) for nojournal mode
 Date: Tue, 31 Mar 2026 18:21:56 +0200
-Message-ID: <20260331161801.286675516@linuxfoundation.org>
+Message-ID: <20260331161734.636100548@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +66,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232438-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231589-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alien8.de:email]
-X-Rspamd-Queue-Id: 6D22836E35B
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email]
+X-Rspamd-Queue-Id: 8AB2A36CDD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikunj A Dadhania <nikunj@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 3645eb7e3915990a149460c151a00894cb586253 upstream.
+commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
 
-FRED-enabled SEV-(ES,SNP) guests fail to boot due to the following issues
-in the early boot sequence:
+When inode metadata is changed, we sometimes just call
+ext4_mark_inode_dirty() to track modified metadata. This copies inode
+metadata into block buffer which is enough when we are journalling
+metadata. However when we are running in nojournal mode we currently
+fail to write the dirtied inode buffer during fsync(2) because the inode
+is not marked as dirty. Use explicit ext4_write_inode() call to make
+sure the inode table buffer is written to the disk. This is a band aid
+solution but proper solution requires a much larger rewrite including
+changes in metadata bh tracking infrastructure.
 
-* FRED does not have a #VC exception handler in the dispatch logic
-
-* Early FRED #VC exceptions attempt to use uninitialized per-CPU GHCBs
-  instead of boot_ghcb
-
-Add X86_TRAP_VC case to fred_hwexc() with a new exc_vmm_communication()
-function that provides the unified entry point FRED requires, dispatching
-to existing user/kernel handlers based on privilege level. The function is
-already declared via DECLARE_IDTENTRY_VC().
-
-Fix early GHCB access by falling back to boot_ghcb in
-__sev_{get,put}_ghcb() when per-CPU GHCBs are not yet initialized.
-
-Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@kernel.org>  # 6.12+
-Link: https://patch.msgid.link/20260318075654.1792916-4-nikunj@amd.com
+Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
+Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/coco/sev/noinstr.c |    6 ++++++
- arch/x86/entry/entry_fred.c |   14 ++++++++++++++
- 2 files changed, 20 insertions(+)
+ fs/ext4/fsync.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/x86/coco/sev/noinstr.c
-+++ b/arch/x86/coco/sev/noinstr.c
-@@ -120,6 +120,9 @@ noinstr struct ghcb *__sev_get_ghcb(stru
- 
- 	WARN_ON(!irqs_disabled());
- 
-+	if (!sev_cfg.ghcbs_initialized)
-+		return boot_ghcb;
-+
- 	data = this_cpu_read(runtime_data);
- 	ghcb = &data->ghcb_page;
- 
-@@ -163,6 +166,9 @@ noinstr void __sev_put_ghcb(struct ghcb_
- 
- 	WARN_ON(!irqs_disabled());
- 
-+	if (!sev_cfg.ghcbs_initialized)
-+		return;
-+
- 	data = this_cpu_read(runtime_data);
- 	ghcb = &data->ghcb_page;
- 
---- a/arch/x86/entry/entry_fred.c
-+++ b/arch/x86/entry/entry_fred.c
-@@ -176,6 +176,16 @@ static noinstr void fred_extint(struct p
- 	}
- }
- 
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+noinstr void exc_vmm_communication(struct pt_regs *regs, unsigned long error_code)
-+{
-+	if (user_mode(regs))
-+		return user_exc_vmm_communication(regs, error_code);
-+	else
-+		return kernel_exc_vmm_communication(regs, error_code);
-+}
-+#endif
-+
- static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
+--- a/fs/ext4/fsync.c
++++ b/fs/ext4/fsync.c
+@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
+ 				int datasync, bool *needs_barrier)
  {
- 	/* Optimize for #PF. That's the only exception which matters performance wise */
-@@ -206,6 +216,10 @@ static noinstr void fred_hwexc(struct pt
- #ifdef CONFIG_X86_CET
- 	case X86_TRAP_CP: return exc_control_protection(regs, error_code);
- #endif
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	case X86_TRAP_VC: return exc_vmm_communication(regs, error_code);
-+#endif
+ 	struct inode *inode = file->f_inode;
++	struct writeback_control wbc = {
++		.sync_mode = WB_SYNC_ALL,
++		.nr_to_write = 0,
++	};
+ 	int ret;
+ 
+ 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
+-	if (!ret)
+-		ret = ext4_sync_parent(inode);
++	if (ret)
++		return ret;
 +
- 	default: return fred_bad_type(regs, error_code);
- 	}
++	/* Force writeout of inode table buffer to disk */
++	ret = ext4_write_inode(inode, &wbc);
++	if (ret)
++		return ret;
++
++	ret = ext4_sync_parent(inode);
++
+ 	if (test_opt(inode->i_sb, BARRIER))
+ 		*needs_barrier = true;
  
 
 
