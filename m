@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEdYBzUGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:53 +0200
+	id +L4RAHr9y2nqNAYAu9opvQ
+	(envelope-from <stable+bounces-232006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B43636F008
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977CF36D9D2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 11AF9303E182
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D16B3113134
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A65425CC5;
-	Tue, 31 Mar 2026 16:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A049423149;
+	Tue, 31 Mar 2026 16:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBmBK8sM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iwp2Kvfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A473F423A7C;
-	Tue, 31 Mar 2026 16:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA2D33120E;
+	Tue, 31 Mar 2026 16:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976385; cv=none; b=idRTGE+Uh2lyRFO6mm3ygFfF9hUl7V9Qr4kqFS/I8bdXnjgOXyaLQ3NJrVthtfu5iAUbdRV/o9aZRcJWkrypya1ujAqgNDqUfE2PsIbi/CEt1CKu7RlvIWdvU/6C9sBroXA1ZstZLRl+2A27JX+olCXnjp4VzsAF9Mdf/l6HfRk=
+	t=1774975632; cv=none; b=KV0a1keZQU3fRXwqWrn0V/1DnfC2ctQplsz3GD9wfjzDMl5q4RlzGlrY3yjy73rKYpVVRhPTGsHUcRRqnIQl4CMtz/sCTy1yImyHVCSPVKNm5j+MrA9WgiQkACS/qzoG19Mv9NbVqX8zu3SAK3NvdOs7tfHT629Eruxjlc5+aIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976385; c=relaxed/simple;
-	bh=06mkK/eFmBm/rxmkUbOBB1uEFUuU3zmI+iPRMNmoUEc=;
+	s=arc-20240116; t=1774975632; c=relaxed/simple;
+	bh=ET6rNQfOtwF5cFDSkUn/yXjXL7xu3zWrWOW7pJxYZyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3k/ovQbibs2pUseBU621pdr+dHWCwwH+4RXtEgooZXAvj34MnwX8ULIHqZ3c6bIHheSFoE6nvtfjuAzjENS+loRoZX6faq9riQeGjoS+MGYWqJbL9Dv7Ro/p9/KM0t4yxDS6H4/9dD6ndH0EZc5LfjcQJoz/lC5DUjrh7qETQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBmBK8sM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3110BC19423;
-	Tue, 31 Mar 2026 16:59:45 +0000 (UTC)
+	 MIME-Version; b=HUu1AcKb+1uT6R+TWfaeuCOWxr28/hMO9vWzJqYvHdnUd0SK2/htGts4m5ZdHE7klt9nLbgpxdoX5ZWqcyq+aGIIi3ez3JJS/RCyvnysHEcKBkNu9WF8U1fQMKq0aF5dwmIe2LoPyZ6mHtQX7YlBW67tguhXxdELBfKaazL46IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iwp2Kvfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D0AC19423;
+	Tue, 31 Mar 2026 16:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976385;
-	bh=06mkK/eFmBm/rxmkUbOBB1uEFUuU3zmI+iPRMNmoUEc=;
+	s=korg; t=1774975631;
+	bh=ET6rNQfOtwF5cFDSkUn/yXjXL7xu3zWrWOW7pJxYZyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBmBK8sM8DdpxZ96lmBkrndd0tKQ6PWhTHz2omrdR8WExj+xkSqx2/UuZdofSkWSr
-	 TZBLqdUahaW0MzKgoviWgQVaSp0qOyi+dt7EZq5nsIQ2ut7H1/98lZhY+PZd83D7UJ
-	 fFnRQNhf8a0uhEJOBiDYo63vBEMgSdkMG7KjI1JE=
+	b=Iwp2Kvfh1fATGGkCuRvAKb87DrML04Dq/KNkCqMgTy0dmTg+EVvx0GRvkUjuXceK0
+	 QlPNwTuYG7a4ChB73Kfx/oInTkdJFHoXUnhil4LEd1waR1UojjjVsA+KTGIgP6lmVA
+	 VfwWj1aTNIaWsH+CwZt5fNEThTv2GiXAxpPN0LAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Long <me@imlonghao.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 073/309] xfrm: iptfs: fix skb_put() panic on non-linear skb during reassembly
+Subject: [PATCH 6.12 026/244] module: Fix kernel panic when a symbol st_shndx is out of bounds
 Date: Tue, 31 Mar 2026 18:19:36 +0200
-Message-ID: <20260331161756.175655302@linuxfoundation.org>
+Message-ID: <20260331161742.669236182@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232297-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232006-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,92 +87,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,imlonghao.com:email]
-X-Rspamd-Queue-Id: 4B43636F008
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email]
+X-Rspamd-Queue-Id: 977CF36D9D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
 
-[ Upstream commit 0b352f83cabfefdaafa806d6471f0eca117dc7d5 ]
+[ Upstream commit f9d69d5e7bde2295eb7488a56f094ac8f5383b92 ]
 
-In iptfs_reassem_cont(), IP-TFS attempts to append data to the new inner
-packet 'newskb' that is being reassembled. First a zero-copy approach is
-tried if it succeeds then newskb becomes non-linear.
+The module loader doesn't check for bounds of the ELF section index in
+simplify_symbols():
 
-When a subsequent fragment in the same datagram does not meet the
-fast-path conditions, a memory copy is performed. It calls skb_put() to
-append the data and as newskb is non-linear it triggers
-SKB_LINEAR_ASSERT check.
+       for (i = 1; i < symsec->sh_size / sizeof(Elf_Sym); i++) {
+		const char *name = info->strtab + sym[i].st_name;
 
- Oops: invalid opcode: 0000 [#1] SMP NOPTI
- [...]
- RIP: 0010:skb_put+0x3c/0x40
- [...]
- Call Trace:
-  <IRQ>
-  iptfs_reassem_cont+0x1ab/0x5e0 [xfrm_iptfs]
-  iptfs_input_ordered+0x2af/0x380 [xfrm_iptfs]
-  iptfs_input+0x122/0x3e0 [xfrm_iptfs]
-  xfrm_input+0x91e/0x1a50
-  xfrm4_esp_rcv+0x3a/0x110
-  ip_protocol_deliver_rcu+0x1d7/0x1f0
-  ip_local_deliver_finish+0xbe/0x1e0
-  __netif_receive_skb_core.constprop.0+0xb56/0x1120
-  __netif_receive_skb_list_core+0x133/0x2b0
-  netif_receive_skb_list_internal+0x1ff/0x3f0
-  napi_complete_done+0x81/0x220
-  virtnet_poll+0x9d6/0x116e [virtio_net]
-  __napi_poll.constprop.0+0x2b/0x270
-  net_rx_action+0x162/0x360
-  handle_softirqs+0xdc/0x510
-  __irq_exit_rcu+0xe7/0x110
-  irq_exit_rcu+0xe/0x20
-  common_interrupt+0x85/0xa0
-  </IRQ>
-  <TASK>
+		switch (sym[i].st_shndx) {
+		case SHN_COMMON:
 
-Fix this by checking if the skb is non-linear. If it is, linearize it by
-calling skb_linearize(). As the initial allocation of newskb originally
-reserved enough tailroom for the entire reassembled packet we do not
-need to check if we have enough tailroom or extend it.
+		[...]
 
-Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
-Reported-by: Hao Long <me@imlonghao.com>
-Closes: https://lore.kernel.org/netdev/DGRCO9SL0T5U.JTINSHJQ9KPK@imlonghao.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+		default:
+			/* Divert to percpu allocation if a percpu var. */
+			if (sym[i].st_shndx == info->index.pcpu)
+				secbase = (unsigned long)mod_percpu(mod);
+			else
+  /** HERE --> **/		secbase = info->sechdrs[sym[i].st_shndx].sh_addr;
+			sym[i].st_value += secbase;
+			break;
+		}
+	}
+
+A symbol with an out-of-bounds st_shndx value, for example 0xffff
+(known as SHN_XINDEX or SHN_HIRESERVE), may cause a kernel panic:
+
+  BUG: unable to handle page fault for address: ...
+  RIP: 0010:simplify_symbols+0x2b2/0x480
+  ...
+  Kernel panic - not syncing: Fatal exception
+
+This can happen when module ELF is legitimately using SHN_XINDEX or
+when it is corrupted.
+
+Add a bounds check in simplify_symbols() to validate that st_shndx is
+within the valid range before using it.
+
+This issue was discovered due to a bug in llvm-objcopy, see relevant
+discussion for details [1].
+
+[1] https://lore.kernel.org/linux-modules/20251224005752.201911-1-ihor.solodrai@linux.dev/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_iptfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/module/main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 3b6d7284fc70a..4e270628fc347 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -901,6 +901,12 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
- 	    iptfs_skb_can_add_frags(newskb, fragwalk, data, copylen)) {
- 		iptfs_skb_add_frags(newskb, fragwalk, data, copylen);
- 	} else {
-+		if (skb_linearize(newskb)) {
-+			XFRM_INC_STATS(xs_net(xtfs->x),
-+				       LINUX_MIB_XFRMINBUFFERERROR);
-+			goto abandon;
-+		}
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 4511d0a4762a2..915a9cf33dd0d 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1449,6 +1449,13 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
+ 			break;
+ 
+ 		default:
++			if (sym[i].st_shndx >= info->hdr->e_shnum) {
++				pr_err("%s: Symbol %s has an invalid section index %u (max %u)\n",
++				       mod->name, name, sym[i].st_shndx, info->hdr->e_shnum - 1);
++				ret = -ENOEXEC;
++				break;
++			}
 +
- 		/* copy fragment data into newskb */
- 		if (skb_copy_seq_read(st, data, skb_put(newskb, copylen),
- 				      copylen)) {
+ 			/* Divert to percpu allocation if a percpu var. */
+ 			if (sym[i].st_shndx == info->index.pcpu)
+ 				secbase = (unsigned long)mod_percpu(mod);
 -- 
 2.51.0
 
