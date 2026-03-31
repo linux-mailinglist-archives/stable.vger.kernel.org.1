@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CC0TK8X+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:09 +0200
+	id KK7eJ+T+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A1836DD31
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6486536DD87
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C982A31824CF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1A2430A2B89
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58B336AB47;
-	Tue, 31 Mar 2026 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1894266AA;
+	Tue, 31 Mar 2026 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjEuAIQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxGd2wEu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688493D75B3;
-	Tue, 31 Mar 2026 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7CC425CD6;
+	Tue, 31 Mar 2026 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974581; cv=none; b=gZwrS/j6e/qt2wz7l5WGwvADTKn0SADM9lBeTPRKJCQkTv1kEaDItEuYJLTK5K6m7tjcv4BZ9qh1OK/1e9tKIHEUPXCLZunYLX90cRtL63KjXz8YVloSoy1wcBOnQ4STQSBWWkkQY3rawasiaIu7xdxRkxpRdV0eHXQZOAxLvqs=
+	t=1774976034; cv=none; b=bjHIGt4GPGL0j/gLeUK7fndOHPMfuVTsNzD5hNGegLmxb0JwjHxYJfrnirSkFdKRj8vEzen24H/TYy5LIEbTvzLcvWmzAI3T7pOP1v1gLCjaBq5ylAqtrjy744yWVXguDzXzuU8nyZTnii7T9MLh3SASKJqCdjCk5c9qJ/APHKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974581; c=relaxed/simple;
-	bh=G2GGGAAN+D0h0BBimYBL8hVbD8cAEgNWVKJ6aqndCwM=;
+	s=arc-20240116; t=1774976034; c=relaxed/simple;
+	bh=v7Q0uza27SMw16nOezMxJw1r4NHmhPXM2h1KzozXpzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cx5k7Z9r9/SnwHOykjgdsJ1odxiL1DjzpCVZfmvR81K/3cLDbGDhhw/tGJk/4Uwnt+YxrnkhiKFmO+gcAmAb0ge2w9u6G9KdUdi+nIbKILCV4Sqs05E1VKJ80BGpTMgYl6uY071tengp2H2OKjIT7lZxUCRdoWXkHTaGAvHuRr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjEuAIQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F287EC19423;
-	Tue, 31 Mar 2026 16:29:40 +0000 (UTC)
+	 MIME-Version; b=q8PmejpHcaJdJyVYVUn2M8ne5x85xFPPIOuyvtiyOXV4e77ke1eJg/EScLTrSnGZtCMrxurJTBR1PEYcby4LXYtTtkKjnPGRDOQssK72phNovMgcC88Gw1aTuEYjBKixuG59JnYbW0nQmUY9Fhe03kVCydUic3kJW4qYM3PjOYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxGd2wEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A83C19423;
+	Tue, 31 Mar 2026 16:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974581;
-	bh=G2GGGAAN+D0h0BBimYBL8hVbD8cAEgNWVKJ6aqndCwM=;
+	s=korg; t=1774976034;
+	bh=v7Q0uza27SMw16nOezMxJw1r4NHmhPXM2h1KzozXpzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjEuAIQpkXxVUeZCsYmL8Jgz0p31CyiQBYp44M8vCI1kQn4mq8n5lbcLPZ67wZlXX
-	 9nYnKk3RPvw1Z5JNjyeOavlnAREmnIwGV5+66O+UHwiulgX1gLFUEP/Vp74JvrNHCc
-	 eZQnXZeVyo//b8f+S9vPV9tnI44ndQozNYBw3iJQ=
+	b=DxGd2wEu/E2EreYr4q/t2ubD2DxEUfZS90g6M4I3utE1o28DcvcWdfETnd7YA0MED
+	 N4tpdQsjpXEk5yVC9MJLiNj4rP3RVstC8Mi7IUx8NqC0s7r/mSk2FBb9vt63Y2R6sz
+	 BoxDoR36zztP5psKTK/nVIVs4bpz+ajFtGv7yLc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 139/175] ext4: fix the might_sleep() warnings in kvfree()
-Date: Tue, 31 Mar 2026 18:22:03 +0200
-Message-ID: <20260331161734.892118153@linuxfoundation.org>
+	Li Jun <lijun01@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 174/244] LoongArch: Fix missing NULL checks for kstrdup()
+Date: Tue, 31 Mar 2026 18:22:04 +0200
+Message-ID: <20260331161748.184519686@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,200 +67,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231597-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232161-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,alibaba.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 35A1836DD31
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,loongson.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6486536DD87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Li Jun <lijun01@kylinos.cn>
 
-commit 496bb99b7e66f48b178126626f47e9ba79e2d0fa upstream.
+commit 3a28daa9b7d7c2ddf2c722e9e95d7e0928bf0cd1 upstream.
 
-Use the kvfree() in the RCU read critical section can trigger
-the following warnings:
+1. Replace "of_find_node_by_path("/")" with "of_root" to avoid multiple
+calls to "of_node_put()".
 
-EXT4-fs (vdb): unmounting filesystem cd983e5b-3c83-4f5a-a136-17b00eb9d018.
+2. Fix a potential kernel oops during early boot when memory allocation
+fails while parsing CPU model from device tree.
 
-WARNING: suspicious RCU usage
-
-./include/linux/rcupdate.h:409 Illegal context switch in RCU read-side critical section!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbb/0xd0
- dump_stack+0x14/0x20
- lockdep_rcu_suspicious+0x15a/0x1b0
- __might_resched+0x375/0x4d0
- ? put_object.part.0+0x2c/0x50
- __might_sleep+0x108/0x160
- vfree+0x58/0x910
- ? ext4_group_desc_free+0x27/0x270
- kvfree+0x23/0x40
- ext4_group_desc_free+0x111/0x270
- ext4_put_super+0x3c8/0xd40
- generic_shutdown_super+0x14c/0x4a0
- ? __pfx_shrinker_free+0x10/0x10
- kill_block_super+0x40/0x90
- ext4_kill_sb+0x6d/0xb0
- deactivate_locked_super+0xb4/0x180
- deactivate_super+0x7e/0xa0
- cleanup_mnt+0x296/0x3e0
- __cleanup_mnt+0x16/0x20
- task_work_run+0x157/0x250
- ? __pfx_task_work_run+0x10/0x10
- ? exit_to_user_mode_loop+0x6a/0x550
- exit_to_user_mode_loop+0x102/0x550
- do_syscall_64+0x44a/0x500
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-BUG: sleeping function called from invalid context at mm/vmalloc.c:3441
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556, name: umount
-preempt_count: 1, expected: 0
-CPU: 3 UID: 0 PID: 556 Comm: umount
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbb/0xd0
- dump_stack+0x14/0x20
- __might_resched+0x275/0x4d0
- ? put_object.part.0+0x2c/0x50
- __might_sleep+0x108/0x160
- vfree+0x58/0x910
- ? ext4_group_desc_free+0x27/0x270
- kvfree+0x23/0x40
- ext4_group_desc_free+0x111/0x270
- ext4_put_super+0x3c8/0xd40
- generic_shutdown_super+0x14c/0x4a0
- ? __pfx_shrinker_free+0x10/0x10
- kill_block_super+0x40/0x90
- ext4_kill_sb+0x6d/0xb0
- deactivate_locked_super+0xb4/0x180
- deactivate_super+0x7e/0xa0
- cleanup_mnt+0x296/0x3e0
- __cleanup_mnt+0x16/0x20
- task_work_run+0x157/0x250
- ? __pfx_task_work_run+0x10/0x10
- ? exit_to_user_mode_loop+0x6a/0x550
- exit_to_user_mode_loop+0x102/0x550
- do_syscall_64+0x44a/0x500
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The above scenarios occur in initialization failures and teardown
-paths, there are no parallel operations on the resources released
-by kvfree(), this commit therefore remove rcu_read_lock/unlock() and
-use rcu_access_pointer() instead of rcu_dereference() operations.
-
-Fixes: 7c990728b99e ("ext4: fix potential race between s_flex_groups online resizing and access")
-Fixes: df3da4ea5a0f ("ext4: fix potential race between s_group_info online resizing and access")
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
-Link: https://patch.msgid.link/20260319094545.19291-1-qiang.zhang@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Jun <lijun01@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   10 +++-------
- fs/ext4/super.c   |    8 ++------
- 2 files changed, 5 insertions(+), 13 deletions(-)
+ arch/loongarch/kernel/env.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3502,9 +3502,7 @@ err_freebuddy:
- 	rcu_read_unlock();
- 	iput(sbi->s_buddy_cache);
- err_freesgi:
--	rcu_read_lock();
--	kvfree(rcu_dereference(sbi->s_group_info));
--	rcu_read_unlock();
-+	kvfree(rcu_access_pointer(sbi->s_group_info));
- 	return -ENOMEM;
- }
+--- a/arch/loongarch/kernel/env.c
++++ b/arch/loongarch/kernel/env.c
+@@ -42,16 +42,15 @@ static int __init init_cpu_fullname(void
+ 	int cpu, ret;
+ 	char *cpuname;
+ 	const char *model;
+-	struct device_node *root;
  
-@@ -3803,7 +3801,8 @@ int ext4_mb_release(struct super_block *
- 		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+ 	/* Parsing cpuname from DTS model property */
+-	root = of_find_node_by_path("/");
+-	ret = of_property_read_string(root, "model", &model);
++	ret = of_property_read_string(of_root, "model", &model);
+ 	if (ret == 0) {
+ 		cpuname = kstrdup(model, GFP_KERNEL);
++		if (!cpuname)
++			return -ENOMEM;
+ 		loongson_sysconf.cpuname = strsep(&cpuname, " ");
  	}
+-	of_node_put(root);
  
--	if (sbi->s_group_info) {
-+	group_info = rcu_access_pointer(sbi->s_group_info);
-+	if (group_info) {
- 		for (i = 0; i < ngroups; i++) {
- 			cond_resched();
- 			grinfo = ext4_get_group_info(sb, i);
-@@ -3821,12 +3820,9 @@ int ext4_mb_release(struct super_block *
- 		num_meta_group_infos = (ngroups +
- 				EXT4_DESC_PER_BLOCK(sb) - 1) >>
- 			EXT4_DESC_PER_BLOCK_BITS(sb);
--		rcu_read_lock();
--		group_info = rcu_dereference(sbi->s_group_info);
- 		for (i = 0; i < num_meta_group_infos; i++)
- 			kfree(group_info[i]);
- 		kvfree(group_info);
--		rcu_read_unlock();
- 	}
- 	kfree(sbi->s_mb_avg_fragment_size);
- 	kfree(sbi->s_mb_avg_fragment_size_locks);
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1266,12 +1266,10 @@ static void ext4_group_desc_free(struct
- 	struct buffer_head **group_desc;
- 	int i;
- 
--	rcu_read_lock();
--	group_desc = rcu_dereference(sbi->s_group_desc);
-+	group_desc = rcu_access_pointer(sbi->s_group_desc);
- 	for (i = 0; i < sbi->s_gdb_count; i++)
- 		brelse(group_desc[i]);
- 	kvfree(group_desc);
--	rcu_read_unlock();
- }
- 
- static void ext4_flex_groups_free(struct ext4_sb_info *sbi)
-@@ -1279,14 +1277,12 @@ static void ext4_flex_groups_free(struct
- 	struct flex_groups **flex_groups;
- 	int i;
- 
--	rcu_read_lock();
--	flex_groups = rcu_dereference(sbi->s_flex_groups);
-+	flex_groups = rcu_access_pointer(sbi->s_flex_groups);
- 	if (flex_groups) {
- 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
- 			kvfree(flex_groups[i]);
- 		kvfree(flex_groups);
- 	}
--	rcu_read_unlock();
- }
- 
- static void ext4_put_super(struct super_block *sb)
+ 	if (loongson_sysconf.cpuname && !strncmp(loongson_sysconf.cpuname, "Loongson", 8)) {
+ 		for (cpu = 0; cpu < NR_CPUS; cpu++)
 
 
 
