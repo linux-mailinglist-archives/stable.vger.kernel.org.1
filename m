@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLI0GVkAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:53 +0200
+	id 8BuFI6j2y2kGNAYAu9opvQ
+	(envelope-from <stable+bounces-231521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AF936E20D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED46436CAB8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 474B0306C7E6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9FC63029E60
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDF42FDC5E;
-	Tue, 31 Mar 2026 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B793EE1DD;
+	Tue, 31 Mar 2026 16:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUvMiKzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCSvHdc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C478E2D595D;
-	Tue, 31 Mar 2026 17:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0956D336EC5;
+	Tue, 31 Mar 2026 16:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976569; cv=none; b=gdSdhRweprswfx08OAJ0si3Ye3p/14pbaxcHRk9becn1To1E83j5KR09wJT5Ah+b10gnFZZyq0YNFn38yXgX8bOicRbMSdppVXF0CAUOzSGFJs8w8vsKv1gcW8sr+MVqPKdIudVTfY48YoSreA+hgSHp3Djzz91GvIYrqM6D7LY=
+	t=1774974385; cv=none; b=CFqunkl9jsfTUAo2PlVc+AAc9WJWr3YmYuR7YHtr3cJORkYirgHALTSMVmAfo2kBBMmUlAXZ+ipS9IAhGhQNGLju4kPKsB4hsAtpgVBXDpQNZ+GOumMHkR3Uk/OMRxXdysZAomhG1R0ALoiUbgfwXQ40h7mT0VM3bnu+R49qxC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976569; c=relaxed/simple;
-	bh=60sYr36zn564hFayDXiWckQG6W+wQTSaXdLdA4+bCX8=;
+	s=arc-20240116; t=1774974385; c=relaxed/simple;
+	bh=R9tD341VAzPIGznTgxJdzEvxA5LH8JM7j69fdXxHzFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbgnQzDCtFuKjbcTUuH6QBX9u8kSfVjN3qUUqkDIZOiPXR7FlzdQaN2HFhLm1HZY9EeaOZLNHE+WKy7aV/rGufNZePK8VB9GtPyth8IqULsM6pwtTgWe3Ki4skTGw1s8xtyQnIbL8TNTGyLj1iPY3XVZ8rBKg0IjzFL9f0uZEao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUvMiKzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BB7C19424;
-	Tue, 31 Mar 2026 17:02:49 +0000 (UTC)
+	 MIME-Version; b=sD6WTy3+0GZd+490NUa4fGIEbWIjCiTpMp82OQObhaWtAd9VMcWfdzugDm5LvvCfGXwkq1PBDQecEfc95/p4uIdt0TOnb6vbW9Fy7qKWoQCbPLFBi/K21PtQ+ZVvyLD6m4WJm5Ggs8qYuhtgMOw4dpidpjgq2dkbDTWbKbVFvhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCSvHdc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F37C19423;
+	Tue, 31 Mar 2026 16:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976569;
-	bh=60sYr36zn564hFayDXiWckQG6W+wQTSaXdLdA4+bCX8=;
+	s=korg; t=1774974384;
+	bh=R9tD341VAzPIGznTgxJdzEvxA5LH8JM7j69fdXxHzFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUvMiKzCIMeft7+HgMbomN2u3a0dm3+xbjFVBFcD9Kl97GxicqrTfBTmpAqRmuSdG
-	 R/Of254rAi1BR6bH6/LetSK1hSNyhmXYVYW59G7NQ2jDWyIfklcSqEo4nsgUsH6Hp9
-	 NqOaJxJ/w0wSpXlW8pAMnItnyZN7Y3u7Iwru6ZPA=
+	b=JCSvHdc4v5tXSMKKLw2w/ipSgNn6QTuQyCmUssYrQxRQDRvWJBot/A9qj6O1ZH47s
+	 2Lml0IuBqrctALKwE9upcJjLuQyXIS40ghq/yAETkM++YNQNNpd8M/1V8C49OVxSb9
+	 P+zClvaHEiVX400shIDbIB31OCU2DiuZ5xmXzVsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Barrera <ivan.d.barrera@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 144/309] RDMA/irdma: Clean up unnecessary dereference of event->cm_node
-Date: Tue, 31 Mar 2026 18:20:47 +0200
-Message-ID: <20260331161758.773322524@linuxfoundation.org>
+Subject: [PATCH 6.6 064/175] Bluetooth: hci_sync: Remove remaining dependencies of hci_request
+Date: Tue, 31 Mar 2026 18:20:48 +0200
+Message-ID: <20260331161732.134102495@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +67,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232369-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231521-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 22AF936E20D
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: ED46436CAB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Barrera <ivan.d.barrera@intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit b415399c9a024d574b65479636f0d4eb625b9abd ]
+[ Upstream commit f2d89775358606c7ab6b6b6c4a02fe1e8cd270b1 ]
 
-The cm_node is available and the usage of cm_node and event->cm_node
-seems arbitrary. Clean up unnecessary dereference of event->cm_node.
+This removes the dependencies of hci_req_init and hci_request_cancel_all
+from hci_sync.c.
 
-Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
-Signed-off-by: Ivan Barrera <ivan.d.barrera@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 94d8e6fe5d08 ("Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/cm.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/net/bluetooth/hci_sync.h | 17 +++++++++++++++++
+ net/bluetooth/hci_request.h      | 17 -----------------
+ net/bluetooth/hci_sync.c         | 14 +++++++++++---
+ 3 files changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
-index f4f4f92ba63ac..128cfcf27714d 100644
---- a/drivers/infiniband/hw/irdma/cm.c
-+++ b/drivers/infiniband/hw/irdma/cm.c
-@@ -4239,21 +4239,21 @@ static void irdma_cm_event_handler(struct work_struct *work)
- 		irdma_cm_event_reset(event);
- 		break;
- 	case IRDMA_CM_EVENT_CONNECTED:
--		if (!event->cm_node->cm_id ||
--		    event->cm_node->state != IRDMA_CM_STATE_OFFLOADED)
-+		if (!cm_node->cm_id ||
-+		    cm_node->state != IRDMA_CM_STATE_OFFLOADED)
- 			break;
- 		irdma_cm_event_connected(event);
- 		break;
- 	case IRDMA_CM_EVENT_MPA_REJECT:
--		if (!event->cm_node->cm_id ||
-+		if (!cm_node->cm_id ||
- 		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
- 			break;
- 		irdma_send_cm_event(cm_node, cm_node->cm_id,
- 				    IW_CM_EVENT_CONNECT_REPLY, -ECONNREFUSED);
- 		break;
- 	case IRDMA_CM_EVENT_ABORTED:
--		if (!event->cm_node->cm_id ||
--		    event->cm_node->state == IRDMA_CM_STATE_OFFLOADED)
-+		if (!cm_node->cm_id ||
-+		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
- 			break;
- 		irdma_event_connect_error(event);
- 		break;
-@@ -4263,7 +4263,7 @@ static void irdma_cm_event_handler(struct work_struct *work)
- 		break;
- 	}
+diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
+index e2e588b08fe90..e155ab5aa9b4f 100644
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -8,6 +8,23 @@
+ #define UINT_PTR(_handle)		((void *)((uintptr_t)_handle))
+ #define PTR_UINT(_ptr)			((uintptr_t)((void *)_ptr))
  
--	irdma_rem_ref_cm_node(event->cm_node);
-+	irdma_rem_ref_cm_node(cm_node);
- 	kfree(event);
++#define HCI_REQ_DONE	  0
++#define HCI_REQ_PEND	  1
++#define HCI_REQ_CANCELED  2
++
++#define hci_req_sync_lock(hdev)   mutex_lock(&hdev->req_lock)
++#define hci_req_sync_unlock(hdev) mutex_unlock(&hdev->req_lock)
++
++struct hci_request {
++	struct hci_dev		*hdev;
++	struct sk_buff_head	cmd_q;
++
++	/* If something goes wrong when building the HCI request, the error
++	 * value is stored in this field.
++	 */
++	int			err;
++};
++
+ typedef int (*hci_cmd_sync_work_func_t)(struct hci_dev *hdev, void *data);
+ typedef void (*hci_cmd_sync_work_destroy_t)(struct hci_dev *hdev, void *data,
+ 					    int err);
+diff --git a/net/bluetooth/hci_request.h b/net/bluetooth/hci_request.h
+index c91f2838f5424..b730da4a8b476 100644
+--- a/net/bluetooth/hci_request.h
++++ b/net/bluetooth/hci_request.h
+@@ -22,23 +22,6 @@
+ 
+ #include <asm/unaligned.h>
+ 
+-#define HCI_REQ_DONE	  0
+-#define HCI_REQ_PEND	  1
+-#define HCI_REQ_CANCELED  2
+-
+-#define hci_req_sync_lock(hdev)   mutex_lock(&hdev->req_lock)
+-#define hci_req_sync_unlock(hdev) mutex_unlock(&hdev->req_lock)
+-
+-struct hci_request {
+-	struct hci_dev		*hdev;
+-	struct sk_buff_head	cmd_q;
+-
+-	/* If something goes wrong when building the HCI request, the error
+-	 * value is stored in this field.
+-	 */
+-	int			err;
+-};
+-
+ void hci_req_init(struct hci_request *req, struct hci_dev *hdev);
+ void hci_req_purge(struct hci_request *req);
+ bool hci_req_status_pend(struct hci_dev *hdev);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 6192f70e4d393..c1c9d82faa658 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -12,7 +12,6 @@
+ #include <net/bluetooth/hci_core.h>
+ #include <net/bluetooth/mgmt.h>
+ 
+-#include "hci_request.h"
+ #include "hci_codec.h"
+ #include "hci_debugfs.h"
+ #include "smp.h"
+@@ -147,6 +146,13 @@ static int hci_req_sync_run(struct hci_request *req)
+ 	return 0;
  }
  
++static void hci_request_init(struct hci_request *req, struct hci_dev *hdev)
++{
++	skb_queue_head_init(&req->cmd_q);
++	req->hdev = hdev;
++	req->err = 0;
++}
++
+ /* This function requires the caller holds hdev->req_lock. */
+ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 				  const void *param, u8 event, u32 timeout,
+@@ -158,7 +164,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 
+ 	bt_dev_dbg(hdev, "Opcode 0x%4.4x", opcode);
+ 
+-	hci_req_init(&req, hdev);
++	hci_request_init(&req, hdev);
+ 
+ 	hci_cmd_sync_add(&req, opcode, plen, param, event, sk);
+ 
+@@ -5227,7 +5233,9 @@ int hci_dev_close_sync(struct hci_dev *hdev)
+ 	cancel_delayed_work(&hdev->le_scan_disable);
+ 	cancel_delayed_work(&hdev->le_scan_restart);
+ 
+-	hci_request_cancel_all(hdev);
++	hci_cmd_sync_cancel_sync(hdev, ENODEV);
++
++	cancel_interleave_scan(hdev);
+ 
+ 	if (hdev->adv_instance_timeout) {
+ 		cancel_delayed_work_sync(&hdev->adv_instance_expire);
 -- 
-2.53.0
+2.51.0
 
 
 
