@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-232408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFa+E28AzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:15 +0200
+	id kOEyEPoBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFBC36E27C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4296F36E76F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1AACD3023F10
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E59630C9405
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F042FDC5E;
-	Tue, 31 Mar 2026 17:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3C0423A62;
+	Tue, 31 Mar 2026 16:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTH3Xk8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qttopUxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C472D63E8;
-	Tue, 31 Mar 2026 17:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6A73DE431;
+	Tue, 31 Mar 2026 16:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976670; cv=none; b=cUXUQxmhwiq1twq8besaBPmeU28ZkFpYf7JRuVjIVsG3EQ3ufNNR/xHWOKZdvsoB3kA6KAj3UYQEbWCJ/9uYXuwlnNs7RKsS0/cWD0iknh8t7A5FvzoIDW4cZl79PqUBLhS2f0KSSF+I7HjbeorkQ63Bvzc9jeW5NT6k6EE/qeU=
+	t=1774975868; cv=none; b=aZHkEb9DQSzZKOaoFhdtXRQBGkvtB7C31KFeu8PsFjdHMXfK/yQr9jcED5YC38jL5VyS5IIuhgEG4fngw6tVeMNAlbjSGDa++KLUECaKsCGHFqYNZyf4vuKAhlvrldwf7T1E3nhhdrJrA9jgfhryhOTjgjWC6/u2WPrYhVHtXQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976670; c=relaxed/simple;
-	bh=URUWnhx5e1yr0+12OShgorCxTEerUQSWWWijZ9LMkBw=;
+	s=arc-20240116; t=1774975868; c=relaxed/simple;
+	bh=vSVxSRBlvMpb+Xljuju28wvUpA3aaJTlv/67G2gKspk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xghw+IcFTZDJDR5DSTIteM+qwSdEQHUa3d29eWRfjGyDvB2ICJXbXNf8vf4TsqqlY6TyUcnjfYwEsJ0/mlhNQSZmXSZWI9bgMpnBDN3HcrDSRALfqqB8bV5RRHr1NXAv0Ajdv+jzbAGlz5MpSduaMGDaGJ+yBefC+n0h+l7Op7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTH3Xk8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE97DC2BCB1;
-	Tue, 31 Mar 2026 17:04:29 +0000 (UTC)
+	 MIME-Version; b=BmDRXHooD1iN2mPblzEuv/BjPOqNF4iJCE6k8wJEHu6KMGTweXiDshnA1eXtVrBJI5bnOUX+XTcnBe0zdrANZ0ma88UyBCDSsCuzi4pcxL+T6kG0tT6oDmHh2YydlMLvXkJImggBtRGnRAsjnWCO1SbdfKXVi+eVzJB+xha04Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qttopUxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C33C19423;
+	Tue, 31 Mar 2026 16:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976670;
-	bh=URUWnhx5e1yr0+12OShgorCxTEerUQSWWWijZ9LMkBw=;
+	s=korg; t=1774975868;
+	bh=vSVxSRBlvMpb+Xljuju28wvUpA3aaJTlv/67G2gKspk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTH3Xk8CF44HJS3wILBL0AWVDF+satsDac9vhTZYAtzWgTdugLp+aeFhMQkFClO49
-	 yjWb0l+crw3GKK8RayoJO7kUDU2N9Z50HfcvWf+zo+99twoxdQhTfZ4jxxjdpyFGJl
-	 QsrC36joTp+vWgi1C9SriaweS3xkPFLDXNZe9B/4=
+	b=qttopUxQSltWOxQ6JhlE5hLVecOMK9iBbZwMO+ZIOcYJU1SAzezxXPsc4gGl/M8Hf
+	 Kyg2+JE1fmYwNBwLm+L/ctdPkeh7F67IZhkQmaM3bhJw/t9ES8vjTlWctFnJEI4BIk
+	 PmVUExZfxsh3LRQ3wOg9l2vXcCV2mdJKAhqytGRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alberto Garcia <berto@igalia.com>,
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 165/309] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
+Subject: [PATCH 6.12 118/244] PM: hibernate: Drain trailing zero pages on userspace restore
 Date: Tue, 31 Mar 2026 18:21:08 +0200
-Message-ID: <20260331161759.539081477@linuxfoundation.org>
+Message-ID: <20260331161746.020325981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +64,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232408-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232097-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,amd.com:email]
-X-Rspamd-Queue-Id: 0EFBC36E27C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 4296F36E76F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alberto Garcia <berto@igalia.com>
 
-[ Upstream commit 7150850146ebfa4ca998f653f264b8df6f7f85be ]
+[ Upstream commit 734eba62cd32cb9ceffa09e57cdc03d761528525 ]
 
-amdgpu_amdkfd_submit_ib() submits a GPU job and gets a fence
-from amdgpu_ib_schedule(). This fence is used to wait for job
-completion.
+Commit 005e8dddd497 ("PM: hibernate: don't store zero pages in the
+image file") added an optimization to skip zero-filled pages in the
+hibernation image. On restore, zero pages are handled internally by
+snapshot_write_next() in a loop that processes them without returning
+to the caller.
 
-Currently, the code drops the fence reference using dma_fence_put()
-before calling dma_fence_wait().
+With the userspace restore interface, writing the last non-zero page
+to /dev/snapshot is followed by the SNAPSHOT_ATOMIC_RESTORE ioctl. At
+this point there are no more calls to snapshot_write_next() so any
+trailing zero pages are not processed, snapshot_image_loaded() fails
+because handle->cur is smaller than expected, the ioctl returns -EPERM
+and the image is not restored.
 
-If dma_fence_put() releases the last reference, the fence may be
-freed before dma_fence_wait() is called. This can lead to a
-use-after-free.
+The in-kernel restore path is not affected by this because the loop in
+load_image() in swap.c calls snapshot_write_next() until it returns 0.
+It is this final call that drains any trailing zero pages.
 
-Fix this by waiting on the fence first and releasing the reference
-only after dma_fence_wait() completes.
+Fixed by calling snapshot_write_next() in snapshot_write_finalize(),
+giving the kernel the chance to drain any trailing zero pages.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c:697 amdgpu_amdkfd_submit_ib() warn: passing freed memory 'f' (line 696)
-
-Fixes: 9ae55f030dc5 ("drm/amdgpu: Follow up change to previous drm scheduler change.")
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8b9e5259adc385b61a6590a13b82ae0ac2bd3482)
+Fixes: 005e8dddd497 ("PM: hibernate: don't store zero pages in the image file")
+Signed-off-by: Alberto Garcia <berto@igalia.com>
+Acked-by: Brian Geffon <bgeffon@google.com>
+Link: https://patch.msgid.link/ef5a7c5e3e3dbd17dcb20efaa0c53a47a23498bb.1773075892.git.berto@igalia.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/power/snapshot.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index a2879d2b7c8ec..1ec26be82f30e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -687,9 +687,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
- 		goto err_ib_sched;
- 	}
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 30894d8f0a781..c56b08121dbc5 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2861,6 +2861,17 @@ int snapshot_write_finalize(struct snapshot_handle *handle)
+ {
+ 	int error;
  
--	/* Drop the initial kref_init count (see drm_sched_main as example) */
--	dma_fence_put(f);
- 	ret = dma_fence_wait(f, false);
-+	/* Drop the returned fence reference after the wait completes */
-+	dma_fence_put(f);
- 
- err_ib_sched:
- 	amdgpu_job_free(job);
++	/*
++	 * Call snapshot_write_next() to drain any trailing zero pages,
++	 * but make sure we're in the data page region first.
++	 * This function can return PAGE_SIZE if the kernel was expecting
++	 * another copy page. Return -ENODATA in that situation.
++	 */
++	if (handle->cur > nr_meta_pages + 1) {
++		error = snapshot_write_next(handle);
++		if (error)
++			return error > 0 ? -ENODATA : error;
++	}
+ 	copy_last_highmem_page();
+ 	error = hibernate_restore_protect_page(handle->buffer);
+ 	/* Do that only if we have loaded the image entirely */
 -- 
 2.53.0
 
