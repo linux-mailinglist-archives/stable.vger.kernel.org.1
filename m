@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMphKw38y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:33 +0200
+	id yGi5M7D1y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1D536D55C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE7036C933
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2982A3109262
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E855F3028EC7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB16426EC7;
-	Tue, 31 Mar 2026 16:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122F03E3174;
+	Tue, 31 Mar 2026 16:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bL+gSSMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ry7Qw87+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4080426EB7;
-	Tue, 31 Mar 2026 16:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C6F329E4B;
+	Tue, 31 Mar 2026 16:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975127; cv=none; b=dnlWvT/3DbQ+YuH75p2esPQ6pSOA2BZOI3l46d7ubaKrwt5iejuo53fJs4Lsqhx6md1/Eol5rjTW3D3UyF2xxFwN4Zyt3SB376RRT8aFC6wXAxy4pFZ/vKPZbD0Rj+6vywfMbbvTbHAFm/1YuWvqd7GucHJ9cvCwNHFoOG4opbU=
+	t=1774974281; cv=none; b=Zhptt+70e/m5ahnVK/6d+7X6wDaStByi8KYuIACVRTe7GheyiTPOJVtWZ5w+n8Y7VHKgnjhAijereVGj9Fn++KviRvVrrfqhh5T0e2EpsuAS9N7nyazd/fPNieyB7bXT1KjGQhN8hsAtKdkZhQhA8wW8STfpBGqZCp1CxqkkR6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975127; c=relaxed/simple;
-	bh=tt71lWwhBep+CirBDKhjHD1jC5ocB8IYAmEtMlnFp2U=;
+	s=arc-20240116; t=1774974281; c=relaxed/simple;
+	bh=B4uEnqXAHji3iC6Yix44IAahw2sGmG501QaL4l0lvbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gztj7iPEZUThYZGzYZxIM2UnWEMIiTgRPwy4OGKNcn3mCOUojJICIBfZft2Uix5PFy7RO/6NJMTArSiWU+yhWffP+f/ALcl9uLR1FCuIzquJhbBikkECxhlzmOEOH1VbxFXzoJcdIj91aepo8zh64pJ3Ph1MdJzqC1tWir2F8es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bL+gSSMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC50C19423;
-	Tue, 31 Mar 2026 16:38:47 +0000 (UTC)
+	 MIME-Version; b=rFIZ08jYu09uhds0OFBsUHEno3eck9SsQccVify1dpzHI4vq++zEsk73YcbaY6S1+IoJdagg3kWIWIvw5EoOQlkLOmrb6ssWiJUxVv8nhkV0xV+6RjmXb0KwIgwXY5e5zZZxz41VBIZapoQLjYT+1w2eihQ3QVRGtYoHj9pH614=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ry7Qw87+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29086C19423;
+	Tue, 31 Mar 2026 16:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975127;
-	bh=tt71lWwhBep+CirBDKhjHD1jC5ocB8IYAmEtMlnFp2U=;
+	s=korg; t=1774974281;
+	bh=B4uEnqXAHji3iC6Yix44IAahw2sGmG501QaL4l0lvbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bL+gSSMAIUeQaQUzwqgKmmqH8cCrBI0rU60j0Xn9sQWd9NewhJZwpjdWDi5scWVxY
-	 Z9t5LZnsggyGc53X3iCWlfHU28vfaMaaJ+2Tsp2rEJEK8Aws/+DpgmzFpvDYrIDpf5
-	 QqPOYPAdyTOrra0IUEXaD7JP40pKQ/qwOnBRSf3s=
+	b=Ry7Qw87+d84HPSSTLjl6/2IwiRfrrxsCYUq9i26jwzKs3SyOeK9cR3L5RqOH2nxH4
+	 GoAhsXbjJ27L1DvBCDK/ERig43cdFThhJwxnPCr6/DLE4cOvr32UegcbjLRC+vwM8E
+	 CA/dZa3R1lSAUsVJxoq3VMK/5ZcaEXibqocnX1Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 175/342] spi: meson-spicc: Fix double-put in remove path
+Subject: [PATCH 6.6 024/175] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_put_bits()
 Date: Tue, 31 Mar 2026 18:20:08 +0200
-Message-ID: <20260331161805.448546042@linuxfoundation.org>
+Message-ID: <20260331161730.670692303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +63,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231810-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231480-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2D1D536D55C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2BE7036C933
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
+[ Upstream commit 54a86cf48eaa6d1ab5130d756b718775e81e1748 ]
 
-meson_spicc_probe() registers the controller with
-devm_spi_register_controller(), so teardown already drops the
-controller reference via devm cleanup.
+ALSA controls should return 1 if the value in the control changed but the
+control put operation fsl_easrc_iec958_put_bits() unconditionally returns
+0, causing ALSA to not generate any change events. This is detected by
+mixer-test with large numbers of messages in the form:
 
-Calling spi_controller_put() again in meson_spicc_remove()
-causes a double-put.
+    No event generated for Context 3 IEC958 CS5
+    Context 3 IEC958 CS5.0 orig 5224 read 5225, is_volatile 0
 
-Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Add a suitable check.
+
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-1-39d4c766918b@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-meson-spicc.c | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/fsl/fsl_easrc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 6b91373075334..c99fab392add1 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -1102,8 +1102,6 @@ static void meson_spicc_remove(struct platform_device *pdev)
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index c3d81cab2556d..13396a167b8ac 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -52,10 +52,13 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
+ 	unsigned int regval = ucontrol->value.integer.value[0];
++	int ret;
++
++	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
  
- 	/* Disable SPI */
- 	writel(0, spicc->base + SPICC_CONREG);
--
--	spi_controller_put(spicc->host);
+ 	easrc_priv->bps_iec958[mc->regbase] = regval;
+ 
+-	return 0;
++	return ret;
  }
  
- static const struct meson_spicc_data meson_spicc_gx_data = {
+ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
 -- 
-2.53.0
+2.51.0
 
 
 
