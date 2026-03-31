@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-232478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBngHjcIzGlaNgYAu9opvQ
-	(envelope-from <stable+bounces-232478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:27 +0200
+	id 8O6KBD78y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB5C36F42A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:45:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAD136D5D0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 369AD3062F96
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6986330D948B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DDC30AD00;
-	Tue, 31 Mar 2026 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC03E423A8A;
+	Tue, 31 Mar 2026 16:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcgSbkWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dPB279h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C266303A07;
-	Tue, 31 Mar 2026 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7D33EE1DD;
+	Tue, 31 Mar 2026 16:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976851; cv=none; b=qsFDFyagdoyVfn1N64XAQ3ZRNxVNQgIlRYS5fLr/sxfMJ2lDfM36/jomO/5r2PKtgNwEbYZ2ha06LqF0JfZQnljhQWHEXEP8kMKUbzGG3h6x084Vv8QrJZBMBGHIyVjKJC3qrW7nszakwk6NZemSd8XPS4elqGGhor1ndCH40g4=
+	t=1774975511; cv=none; b=FCNOVNDCHvgWbjvmMhyzA3/eVESYFz8Aud4au93PJeZrPLEbkGX9OvZtOe52yTz1WXOscyA9w3kNglMLVUlgpCjxXqGbKqQ9Lw0KGyhOeHTuU1DRo97pTKpuYgkvDNCsBZ3vnRId8Xoe+okZpA8uIGM92cXhmpUanDfLd642e7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976851; c=relaxed/simple;
-	bh=Bu0mqBm5hAGai0nQ4xmqexTNMugJCONgT0d7dVOwHSM=;
+	s=arc-20240116; t=1774975511; c=relaxed/simple;
+	bh=NJ/UgWBcK3B9zx0QZMccaCCuaOdd0NQ58/b7/B5VAKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8Uicmc1QD0tEsfMdEJYL4T1hsc9VQ3kX9GnABfLxA427peBLiJYCHymzol5Z5T64VpVNQHr7JU3ZshAzv4IzQCqnxvOO1TuhV07AH7ZsHX1AIJr6AQJK2J64jqzNzvc0+PLCGgMWLAM7cU1nXP/V/o1xKy7psnhXPb1xKYT40s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcgSbkWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3083DC19423;
-	Tue, 31 Mar 2026 17:07:31 +0000 (UTC)
+	 MIME-Version; b=FGywDNZfoYAD95olCcL0//0trqkIb8DPLw2YbO1+n3IVMtypfGRawfCUu9cwp567ghGdxhWbK6412nRmk6Otshy3pM4sgpfwhDi6st0VbEAIvkLNd9xOsiWTmnXv0ThFQ60es/NO3OVOJc9+2E9EZT6VdA6+tN+Mu0O80IxpN0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dPB279h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0552BC2BCB1;
+	Tue, 31 Mar 2026 16:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976851;
-	bh=Bu0mqBm5hAGai0nQ4xmqexTNMugJCONgT0d7dVOwHSM=;
+	s=korg; t=1774975511;
+	bh=NJ/UgWBcK3B9zx0QZMccaCCuaOdd0NQ58/b7/B5VAKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcgSbkWtIxjsEf1ayDsavQj6DdKFPFx/3zuBWeugX7PWhicEcmuFkjZfLtGSxkAGV
-	 958raSi6mD2ohWPnxL/lDgwR88IBGTEdmkw5JJDHmrWejYTRB7HZ7BFxX1uR7ZFsvz
-	 /g8Rmx5fhABiT9aQpSlbz6+McA6WHiiaJqJuOz/k=
+	b=0dPB279hDk0n30nX/RS1IqBrCjHgQCXW06zG7JHVyMI+0IYwOLhXd7k1T+QAJHBEm
+	 pXoXY5WgfN/iZQcw2BomE49vroPiXconqs/z9htbqGcGlSDQwbqKJwSu94R5Xvp8It
+	 H6AVfGYEeoG+eMKCvtLIzkPhhVY6kRIMCPeASb1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rostedt@goodmis.org,
-	david.laight.linux@gmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.18 253/309] xfs: remove file_path tracepoint data
+	syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 323/342] netfs: Fix NULL pointer dereference in netfs_unbuffered_write() on retry
 Date: Tue, 31 Mar 2026 18:22:36 +0200
-Message-ID: <20260331161802.886288307@linuxfoundation.org>
+Message-ID: <20260331161810.799414796@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,123 +71,96 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232478-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231960-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,gmail.com,kernel.org,redhat.com,lst.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,7227db0fbac9f348dba0];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: EFB5C36F42A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BAAD136D5D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit e31c53a8060e134111ed095783fee0aa0c43b080 upstream.
+[ Upstream commit e9075e420a1eb3b52c60f3b95893a55e77419ce8 ]
 
-The xfile/xmbuf shmem file descriptions are no longer as detailed as
-they were when online fsck was first merged, because moving to static
-strings in commit 60382993a2e180 ("xfs: get rid of the
-xchk_xfile_*_descr calls") removed a memory allocation and hence a
-source of failure.
+When a write subrequest is marked NETFS_SREQ_NEED_RETRY, the retry path
+in netfs_unbuffered_write() unconditionally calls stream->prepare_write()
+without checking if it is NULL.
 
-However this makes encoding the description in the tracepoints sort of a
-waste of memory.  David Laight also points out that file_path doesn't
-zero the whole buffer which causes exposure of stale trace bytes, and
-Steven Rostedt wonders why we're not using a dynamic array for the file
-path.
+Filesystems such as 9P do not set the prepare_write operation, so
+stream->prepare_write remains NULL. When get_user_pages() fails with
+-EFAULT and the subrequest is flagged for retry, this results in a NULL
+pointer dereference at fs/netfs/direct_write.c:189.
 
-I don't think this is worth fixing, so let's just rip it out.
+Fix this by mirroring the pattern already used in write_retry.c: if
+stream->prepare_write is NULL, skip renegotiation and directly reissue
+the subrequest via netfs_reissue_write(), which handles iterator reset,
+IN_PROGRESS flag, stats update and reissue internally.
 
-Cc: rostedt@goodmis.org
-Cc: david.laight.linux@gmail.com
-Link: https://lore.kernel.org/linux-xfs/20260323172204.work.979-kees@kernel.org/
-Cc: stable@vger.kernel.org # v6.11
-Fixes: 19ebc8f84ea12e ("xfs: fix file_path handling in tracepoints")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
+Reported-by: syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7227db0fbac9f348dba0
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260307043947.347092-1-kartikey406@gmail.com
+Tested-by: syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/trace.h |   12 ++----------
- fs/xfs/xfs_trace.h   |   11 ++---------
- 2 files changed, 4 insertions(+), 19 deletions(-)
+ fs/netfs/direct_write.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -972,20 +972,12 @@ TRACE_EVENT(xfile_create,
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(unsigned long, ino)
--		__array(char, pathname, MAXNAMELEN)
- 	),
- 	TP_fast_assign(
--		char		*path;
--
- 		__entry->ino = file_inode(xf->file)->i_ino;
--		path = file_path(xf->file, __entry->pathname, MAXNAMELEN);
--		if (IS_ERR(path))
--			strncpy(__entry->pathname, "(unknown)",
--					sizeof(__entry->pathname));
- 	),
--	TP_printk("xfino 0x%lx path '%s'",
--		  __entry->ino,
--		  __entry->pathname)
-+	TP_printk("xfino 0x%lx",
-+		  __entry->ino)
- );
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index dd1451bf7543d..4d9760e36c119 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -186,10 +186,18 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
+ 		stream->sreq_max_segs	= INT_MAX;
  
- TRACE_EVENT(xfile_destroy,
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -5117,23 +5117,16 @@ TRACE_EVENT(xmbuf_create,
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(unsigned long, ino)
--		__array(char, pathname, MAXNAMELEN)
- 	),
- 	TP_fast_assign(
--		char		*path;
- 		struct file	*file = btp->bt_file;
+ 		netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
+-		stream->prepare_write(subreq);
  
- 		__entry->dev = btp->bt_mount->m_super->s_dev;
- 		__entry->ino = file_inode(file)->i_ino;
--		path = file_path(file, __entry->pathname, MAXNAMELEN);
--		if (IS_ERR(path))
--			strncpy(__entry->pathname, "(unknown)",
--					sizeof(__entry->pathname));
- 	),
--	TP_printk("dev %d:%d xmino 0x%lx path '%s'",
-+	TP_printk("dev %d:%d xmino 0x%lx",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
--		  __entry->ino,
--		  __entry->pathname)
-+		  __entry->ino)
- );
+-		__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+-		netfs_stat(&netfs_n_wh_retry_write_subreq);
++		if (stream->prepare_write) {
++			stream->prepare_write(subreq);
++			__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
++			netfs_stat(&netfs_n_wh_retry_write_subreq);
++		} else {
++			struct iov_iter source;
++
++			netfs_reset_iter(subreq);
++			source = subreq->io_iter;
++			netfs_reissue_write(stream, subreq, &source);
++		}
+ 	}
  
- TRACE_EVENT(xmbuf_free,
+ 	netfs_unbuffered_write_done(wreq);
+-- 
+2.53.0
+
 
 
 
