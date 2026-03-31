@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-231759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cC6TFKv7y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:55 +0200
+	id AOFmCPT/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE5B36D462
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D485036E0D8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 135FD30CBA21
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AACE7306ECBB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD2440710B;
-	Tue, 31 Mar 2026 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8391F425CD2;
+	Tue, 31 Mar 2026 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUUi/r3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12l6ZUbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB003FA5D9;
-	Tue, 31 Mar 2026 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456C7423A62;
+	Tue, 31 Mar 2026 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974995; cv=none; b=NFnSgkPQoHNS+F4CvC228aONFzUmzIDkN2OstvawHZ4PJqNZloyQtZfTUmUtpdjasQz+1oa9CgsyCwIWqlubaebpAJQs+jIQ4hZ6Zx5iI0rAKoJ+pZeG6vu1PUZ8T0mRn90tQciyy7//7wII2+7XaMEkapd8Zdt4emWczcmKSxI=
+	t=1774976339; cv=none; b=CenwqEBNANu+wCrpTGUfpJRKmPerUYJbxT9bfK4MqlFEbRlM7ND2+8//IhNEK40PCxsR2TeCS2Mi/mNlj599uYODGwfNw6IFXDhnWsxcgz8pctzagUZyCoE0yVFIau2HUjsf3N+rmqKFbNoSm4Xx9ErXRyBcgu99oHdRovZF0R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974995; c=relaxed/simple;
-	bh=cn8nTwxjc5acMfAtKIf0Tdwu+UMulZ7AQx/yVRb2Y/c=;
+	s=arc-20240116; t=1774976339; c=relaxed/simple;
+	bh=ZRYm8j3DqSnRRjzVw3cUOZZre0xQi2YmPQ2ULwv+97Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLetgsD4antzIziIoUcSKvWBsxwJgo9GDz+vYPBkHUyqB699Fv5NRxw0c/W088M7JWZMC5hwcQZ//JUAniorXOC5AO+fjr912Y9gxtujh+RNBxRwOgWcO1MopPwUdRHHP38EqRPhJBbbJKYXePk3gMivqk7DRG+87PhU0TkMICE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUUi/r3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BEEC19423;
-	Tue, 31 Mar 2026 16:36:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dCYTBurEq1aXaza6nwPoj/Kf379sNo8hED9AB7YOEocYOdduxnGhKtgzAG0EDrhJC7oICCYSF3IMEZHSw/qagTspeKqm3yIxPTi0myRPy5g7kL+y9dqRkKNOOB+fZuN6Xwc/vZWcSS7Tk9UOLAhyEDsdAm5LLUAI/fQVMhSyesc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12l6ZUbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9205DC19423;
+	Tue, 31 Mar 2026 16:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974995;
-	bh=cn8nTwxjc5acMfAtKIf0Tdwu+UMulZ7AQx/yVRb2Y/c=;
+	s=korg; t=1774976338;
+	bh=ZRYm8j3DqSnRRjzVw3cUOZZre0xQi2YmPQ2ULwv+97Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUUi/r3GJaiFMRbG9AzkZCycCbTXxFTBYJtLCTJi9oHOQdFDa/sG2v2P0ia+7J4nb
-	 mItDKXaENxqplVUoRIzhbYA1Ghxi4FT4s4RmQmNt8Y/20pWUGyuPA6EDfPe9uf9KpN
-	 6RKoVbEXe+UqR8XZw97ObdpwiqWHjZyGG917Aw74=
+	b=12l6ZUbuUJComF5RLq3UXXD0zOPXWYYcI6Wt6WBzEW999M5J5xWUyj5pkbVuulgJb
+	 st7d5kipanOwL+w4d3osEQW6C7AaxCYnDvE8A9NnZcetNh7Lk4T04b8qkqvrhxuCSj
+	 JwXsS/xoVDlu3M24ji3PfSEUxluqQzaMzpbidWUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 122/342] net: b44: always select CONFIG_FIXED_PHY
-Date: Tue, 31 Mar 2026 18:19:15 +0200
-Message-ID: <20260331161803.497848841@linuxfoundation.org>
+Subject: [PATCH 6.18 053/309] bpf: Fix u32/s32 bounds when ranges cross min/max boundary
+Date: Tue, 31 Mar 2026 18:19:16 +0200
+Message-ID: <20260331161755.437989333@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +66,237 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,etsalapatis.com,suse.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231759-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_FROM(0.00)[bounces-232279-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
-X-Rspamd-Queue-Id: 5AE5B36D462
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,etsalapatis.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: D485036E0D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 3f0f591b44b04a77ff561676ae53fcfd7532a54c ]
+[ Upstream commit fbc7aef517d8765e4c425d2792409bb9bf2e1f13 ]
 
-When CONFIG_FIXED_PHY=m but CONFIG_B44=y, the kernel fails to link:
+Same as in __reg64_deduce_bounds(), refine s32/u32 ranges
+in __reg32_deduce_bounds() in the following situations:
 
-ld.lld: error: undefined symbol: fixed_phy_unregister
->>> referenced by b44.c
->>>               drivers/net/ethernet/broadcom/b44.o:(b44_remove_one) in archive vmlinux.a
+- s32 range crosses U32_MAX/0 boundary, positive part of the s32 range
+  overlaps with u32 range:
 
-ld.lld: error: undefined symbol: fixed_phy_register_100fd
->>> referenced by b44.c
->>>               drivers/net/ethernet/broadcom/b44.o:(b44_register_phy_one) in archive vmlinux.a
+  0                                                   U32_MAX
+  |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
+  |----------------------------|----------------------------|
+  |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
+  0                     S32_MAX S32_MIN                    -1
 
-The fixed phy support is small enough that just always enabling it
-for b44 is the simplest solution, and it avoids adding ugly #ifdef
-checks.
+- s32 range crosses U32_MAX/0 boundary, negative part of the s32 range
+  overlaps with u32 range:
 
-Fixes: 10d2f15afba2 ("net: b44: register a fixed phy using fixed_phy_register_100fd if needed")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20260320154927.674555-1-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  0                                                   U32_MAX
+  |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
+  |----------------------------|----------------------------|
+  |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
+  0                     S32_MAX S32_MIN                    -1
+
+- No refinement if ranges overlap in two intervals.
+
+This helps for e.g. consider the following program:
+
+   call %[bpf_get_prandom_u32];
+   w0 &= 0xffffffff;
+   if w0 < 0x3 goto 1f;    // on fall-through u32 range [3..U32_MAX]
+   if w0 s> 0x1 goto 1f;   // on fall-through s32 range [S32_MIN..1]
+   if w0 s< 0x0 goto 1f;   // range can be narrowed to  [S32_MIN..-1]
+   r10 = 0;
+1: ...;
+
+The reg_bounds.c selftest is updated to incorporate identical logic,
+refinement based on non-overflowing range halves:
+
+  ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
+  ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
+
+Reported-by: Andrea Righi <arighi@nvidia.com>
+Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
+Closes: https://lore.kernel.org/bpf/aakqucg4vcujVwif@gpd4/T/
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260306-bpf-32-bit-range-overflow-v3-1-f7f67e060a6b@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c                         | 24 +++++++
+ .../selftests/bpf/prog_tests/reg_bounds.c     | 62 +++++++++++++++++--
+ 2 files changed, 82 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
-index cd7dddeb91dd6..9787c1857e13b 100644
---- a/drivers/net/ethernet/broadcom/Kconfig
-+++ b/drivers/net/ethernet/broadcom/Kconfig
-@@ -25,7 +25,7 @@ config B44
- 	select SSB
- 	select MII
- 	select PHYLIB
--	select FIXED_PHY if BCM47XX
-+	select FIXED_PHY
- 	help
- 	  If you have a network (Ethernet) controller of this type, say Y
- 	  or M here.
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index f1264972e0245..3eaff8453e9a9 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2479,6 +2479,30 @@ static void __reg32_deduce_bounds(struct bpf_reg_state *reg)
+ 	if ((u32)reg->s32_min_value <= (u32)reg->s32_max_value) {
+ 		reg->u32_min_value = max_t(u32, reg->s32_min_value, reg->u32_min_value);
+ 		reg->u32_max_value = min_t(u32, reg->s32_max_value, reg->u32_max_value);
++	} else {
++		if (reg->u32_max_value < (u32)reg->s32_min_value) {
++			/* See __reg64_deduce_bounds() for detailed explanation.
++			 * Refine ranges in the following situation:
++			 *
++			 * 0                                                   U32_MAX
++			 * |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
++			 * |----------------------------|----------------------------|
++			 * |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
++			 * 0                     S32_MAX S32_MIN                    -1
++			 */
++			reg->s32_min_value = (s32)reg->u32_min_value;
++			reg->u32_max_value = min_t(u32, reg->u32_max_value, reg->s32_max_value);
++		} else if ((u32)reg->s32_max_value < reg->u32_min_value) {
++			/*
++			 * 0                                                   U32_MAX
++			 * |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
++			 * |----------------------------|----------------------------|
++			 * |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
++			 * 0                     S32_MAX S32_MIN                    -1
++			 */
++			reg->s32_max_value = (s32)reg->u32_max_value;
++			reg->u32_min_value = max_t(u32, reg->u32_min_value, reg->s32_min_value);
++		}
+ 	}
+ }
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
+index 0322f817d07be..04938d0d431b3 100644
+--- a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
++++ b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
+@@ -422,15 +422,69 @@ static bool is_valid_range(enum num_t t, struct range x)
+ 	}
+ }
+ 
+-static struct range range_improve(enum num_t t, struct range old, struct range new)
++static struct range range_intersection(enum num_t t, struct range old, struct range new)
+ {
+ 	return range(t, max_t(t, old.a, new.a), min_t(t, old.b, new.b));
+ }
+ 
++/*
++ * Result is precise when 'x' and 'y' overlap or form a continuous range,
++ * result is an over-approximation if 'x' and 'y' do not overlap.
++ */
++static struct range range_union(enum num_t t, struct range x, struct range y)
++{
++	if (!is_valid_range(t, x))
++		return y;
++	if (!is_valid_range(t, y))
++		return x;
++	return range(t, min_t(t, x.a, y.a), max_t(t, x.b, y.b));
++}
++
++/*
++ * This function attempts to improve x range intersecting it with y.
++ * range_cast(... to_t ...) looses precision for ranges that pass to_t
++ * min/max boundaries. To avoid such precision loses this function
++ * splits both x and y into halves corresponding to non-overflowing
++ * sub-ranges: [0, smin] and [smax, -1].
++ * Final result is computed as follows:
++ *
++ *   ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
++ *   ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
++ *
++ * Precision might still be lost if final union is not a continuous range.
++ */
++static struct range range_refine_in_halves(enum num_t x_t, struct range x,
++					   enum num_t y_t, struct range y)
++{
++	struct range x_pos, x_neg, y_pos, y_neg, r_pos, r_neg;
++	u64 smax, smin, neg_one;
++
++	if (t_is_32(x_t)) {
++		smax = (u64)(u32)S32_MAX;
++		smin = (u64)(u32)S32_MIN;
++		neg_one = (u64)(u32)(s32)(-1);
++	} else {
++		smax = (u64)S64_MAX;
++		smin = (u64)S64_MIN;
++		neg_one = U64_MAX;
++	}
++	x_pos = range_intersection(x_t, x, range(x_t, 0, smax));
++	x_neg = range_intersection(x_t, x, range(x_t, smin, neg_one));
++	y_pos = range_intersection(y_t, y, range(x_t, 0, smax));
++	y_neg = range_intersection(y_t, y, range(y_t, smin, neg_one));
++	r_pos = range_intersection(x_t, x_pos, range_cast(y_t, x_t, y_pos));
++	r_neg = range_intersection(x_t, x_neg, range_cast(y_t, x_t, y_neg));
++	return range_union(x_t, r_pos, r_neg);
++
++}
++
+ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t, struct range y)
+ {
+ 	struct range y_cast;
+ 
++	if (t_is_32(x_t) == t_is_32(y_t))
++		x = range_refine_in_halves(x_t, x, y_t, y);
++
+ 	y_cast = range_cast(y_t, x_t, y);
+ 
+ 	/* If we know that
+@@ -444,7 +498,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
+ 	 */
+ 	if (x_t == S64 && y_t == S32 && y_cast.a <= S32_MAX  && y_cast.b <= S32_MAX &&
+ 	    (s64)x.a >= S32_MIN && (s64)x.b <= S32_MAX)
+-		return range_improve(x_t, x, y_cast);
++		return range_intersection(x_t, x, y_cast);
+ 
+ 	/* the case when new range knowledge, *y*, is a 32-bit subregister
+ 	 * range, while previous range knowledge, *x*, is a full register
+@@ -462,7 +516,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
+ 		x_swap = range(x_t, swap_low32(x.a, y_cast.a), swap_low32(x.b, y_cast.b));
+ 		if (!is_valid_range(x_t, x_swap))
+ 			return x;
+-		return range_improve(x_t, x, x_swap);
++		return range_intersection(x_t, x, x_swap);
+ 	}
+ 
+ 	if (!t_is_32(x_t) && !t_is_32(y_t) && x_t != y_t) {
+@@ -480,7 +534,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
+ 	}
+ 
+ 	/* otherwise, plain range cast and intersection works */
+-	return range_improve(x_t, x, y_cast);
++	return range_intersection(x_t, x, y_cast);
+ }
+ 
+ /* =======================
 -- 
 2.51.0
 
