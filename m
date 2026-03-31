@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEvxLJ31y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:05 +0200
+	id yCnTJhQDzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1229236C90C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0249336E9B6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D6173074F00
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 921233188CC1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AADF2EE262;
-	Tue, 31 Mar 2026 16:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4920B425CCA;
+	Tue, 31 Mar 2026 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqnyJFQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiDnjdKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09363E3174;
-	Tue, 31 Mar 2026 16:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB85425CD6;
+	Tue, 31 Mar 2026 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974261; cv=none; b=LR8tnHR02woPyvkNPbovREG05pLrQ0WLrMcP2GL7cKbI21d3cexGx2p9Sa0yT1RTgnN6ubOovdQ2sJiqt1Ne/n+k+q5XIHr1NyPmqLM3vbFeY1UkckunklBhlk8uD4VeyxvNHDi4LTtv+Vh96caca06IfWUkRUjFe15NDdVvRrw=
+	t=1774975697; cv=none; b=jRxCsrojgZfoWfcW0okimH3uLNpf+8k+lJXq2fY/TwOErh6pbaTN3n87Im8GQLh2oXnbnAxAPi3MY5pOcMHAY0TRx2hODGUGa6Fa0mWslcxYj4fxmKUuN3FtKtomiZS9s2jikhdON1z93I93K3rQZ96WnDhDObJDyXotlEj8nX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974261; c=relaxed/simple;
-	bh=VbU2nzil7mn/8wc8sKECzkVYZfwUmOsYv+t/2LoTj0M=;
+	s=arc-20240116; t=1774975697; c=relaxed/simple;
+	bh=BBIcj8Uj268aPD/UlAyBO0foh8JPksBPXFOyHpRiVVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmwdZP53ZPqO39c19eMnHM18dXt+Ht7Rlq7OH4Oju/GtpIusMhh3VA8YjqzeDCaLIKkya3dxFY7V8zqa8HVpcrtOGA1eh4H9odvkp14Q3NPszCuccRVFyubqCDPD6986XYgUPDiTJ2QEOz+EYlb7WxNaISvEEGav9SELfUOcaEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqnyJFQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4579CC19423;
-	Tue, 31 Mar 2026 16:24:20 +0000 (UTC)
+	 MIME-Version; b=D+BwEpag9/V0bshhl1KIgiI7JFwqrGhJk3qRnXer+Hnyz2mqw+PM0l7FszbBtZFnmOYpve+S7crBLY+9DpYymLgRsMtT8KeLaPgNXNhZLhtbWD837GuurOausP11cmOwowlxdnnLvbFywFOfUzMddGYKOkzlAnJucXJZFtxdK1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiDnjdKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABC4C19423;
+	Tue, 31 Mar 2026 16:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974260;
-	bh=VbU2nzil7mn/8wc8sKECzkVYZfwUmOsYv+t/2LoTj0M=;
+	s=korg; t=1774975696;
+	bh=BBIcj8Uj268aPD/UlAyBO0foh8JPksBPXFOyHpRiVVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqnyJFQfLOULUfv6UwKNVGSXVDjzhdNJFtLkOJ6VI/s6m7joC6FCr9eKZgcgYlAbF
-	 ZeVT6SffIg1Z0uOHCWkYt+b2kCB47mVY44LygaulWa4FLXwhQpOdEYO6YAFDjApMoQ
-	 hicbDB6gC32UhK8JXOajh+HrI2v3xBB2xiqbfG/k=
+	b=fiDnjdKG277by8k50kCbPLmaN2S2fKpayZZFhFmKF0wU6in4A/Gvw86dazF28zJaP
+	 IRZf5PGE//xm94RrbFRLld9n6iRspexrPQCaCd2AxlRBT+Pd/J8rIatRemCpy5lEFM
+	 8nC53UQroPgJTKZizDe5JPQDVdEJzlmx84RnzhHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julius Lehmann <lehmanju@devpi.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/175] HID: magicmouse: fix battery reporting for Apple Magic Trackpad 2
+Subject: [PATCH 6.12 051/244] esp: fix skb leak with espintcp and async crypto
 Date: Tue, 31 Mar 2026 18:20:01 +0200
-Message-ID: <20260331161730.415061911@linuxfoundation.org>
+Message-ID: <20260331161743.579368173@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,65 +74,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232031-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231472-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,devpi.de:email]
-X-Rspamd-Queue-Id: 1229236C90C
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,secunet.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,queasysnail.net:email]
+X-Rspamd-Queue-Id: 0249336E9B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julius Lehmann <lehmanju@devpi.de>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 5f3518d77419255f8b12bb23c8ec22acbeb6bc5b ]
+[ Upstream commit 0c0eef8ccd2413b0a10eb6bbd3442333b1e64dd2 ]
 
-Battery reporting does not work for the Apple Magic Trackpad 2 if it is
-connected via USB. The current hid descriptor fixup code checks for a
-hid descriptor length of exactly 83 bytes. If the hid descriptor is
-larger, which is the case for newer apple mice, the fixup is not
-applied.
+When the TX queue for espintcp is full, esp_output_tail_tcp will
+return an error and not free the skb, because with synchronous crypto,
+the common xfrm output code will drop the packet for us.
 
-This fix checks for hid descriptor sizes greater/equal 83 bytes which
-applies the fixup for newer devices as well.
+With async crypto (esp_output_done), we need to drop the skb when
+esp_output_tail_tcp returns an error.
 
-Signed-off-by: Julius Lehmann <lehmanju@devpi.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-magicmouse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/esp4.c | 9 ++++++---
+ net/ipv6/esp6.c | 9 ++++++---
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
-index 99d0dbf62af37..bb725dfcef196 100644
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -963,7 +963,7 @@ static __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 	 */
- 	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
- 	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
--	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
-+	    *rsize >= 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
- 		*rsize = *rsize - 1;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index b8c7c8b42c0a0..deea0b934d910 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -235,10 +235,13 @@ static void esp_output_done(void *data, int err)
+ 		xfrm_dev_resume(skb);
+ 	} else {
+ 		if (!err &&
+-		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+-			esp_output_tail_tcp(x, skb);
+-		else
++		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
++			err = esp_output_tail_tcp(x, skb);
++			if (err != -EINPROGRESS)
++				kfree_skb(skb);
++		} else {
+ 			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
++		}
+ 	}
+ }
+ 
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 9c4c7b1f29550..20c1149f0f0a3 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -271,10 +271,13 @@ static void esp_output_done(void *data, int err)
+ 		xfrm_dev_resume(skb);
+ 	} else {
+ 		if (!err &&
+-		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+-			esp_output_tail_tcp(x, skb);
+-		else
++		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
++			err = esp_output_tail_tcp(x, skb);
++			if (err != -EINPROGRESS)
++				kfree_skb(skb);
++		} else {
+ 			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
++		}
+ 	}
+ }
+ 
 -- 
 2.51.0
 
