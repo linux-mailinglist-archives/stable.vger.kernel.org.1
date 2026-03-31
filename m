@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DZGJ633y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:53 +0200
+	id UKgYHM0AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F93436CC92
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7F036E3A0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 177B5312C836
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 547083089195
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885A23FADEE;
-	Tue, 31 Mar 2026 16:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4382FF669;
+	Tue, 31 Mar 2026 17:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMXN8YuX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erGNHAgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AE43EF0A2;
-	Tue, 31 Mar 2026 16:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51DD2E11A6;
+	Tue, 31 Mar 2026 17:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974470; cv=none; b=GTbDsSJQGp4RJyz+6oXC7SA5lc3Jc5QTk0VeSlTxEjduBRIk7UrbQqACfoqYoGFoaQVZW2GkmOZi1qmcbc4IlC5CobU1Uzia7/9X6E5vyUiFFLOz8FKXM8wSMbVCBa+HABza+8yVi+9/k6nTp3WQ5U6P1usxlCWRx9+5uyRyf4Y=
+	t=1774976659; cv=none; b=f4PMJnRdQm3L6R717CQIOFv/AqZMaHaMaGrXFuiF5qUmjn4ThGVutT4p4UWDFaYUtPCDhmiPBwkSlQ1TsfFFy8emOySq9xnipEb+w8j80PD+ok+/8Vl/GhmsJlwnCO0p0VskvssM/6nOlr8GHmiXWHtLWNjjP1PnOrKM2izKUAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974470; c=relaxed/simple;
-	bh=sZtr+MfGzAZ7kREv8rX5efAh7ERZ5xMUpt54NbkbVcI=;
+	s=arc-20240116; t=1774976659; c=relaxed/simple;
+	bh=OpVddjQ9P7C2zxJw3+qKGvK9ID/qs5wwypdpGPPewNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qa+JbFqFtM/iYaslxJKB5IrCQHVaXJjkoLc++RaACaFQhdG5yhdMR1+t42zubSVSuhDZKBbx0t2cbjqWXyzgCzb9cHdhnq/rCxmu5mJoe8sm9fj5pL4JGLbUenWUYxDEvnmBtaDXG8BDym05OjBrYGpL4BhxkXO3v7Jr/39RPeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMXN8YuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84029C19423;
-	Tue, 31 Mar 2026 16:27:49 +0000 (UTC)
+	 MIME-Version; b=gKS4jg4vfPlURHwOzO3KurkprMl4H+/VM19I+kHZlRRy05ZQQ5WCRbUitvpmrSmc5hWPLelpQM4vfVoQ9mniN4eTAcwUpu0USHAFP1G//E1F92PIFZm8g5T5400/121S1MpD0qfJPJa14B4agOqSjY6RL42/HbAZKxzpqWxX2sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erGNHAgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E19C19423;
+	Tue, 31 Mar 2026 17:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974469;
-	bh=sZtr+MfGzAZ7kREv8rX5efAh7ERZ5xMUpt54NbkbVcI=;
+	s=korg; t=1774976659;
+	bh=OpVddjQ9P7C2zxJw3+qKGvK9ID/qs5wwypdpGPPewNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMXN8YuXSFYMPb9r19L7c6rq2wg+s1FtlN6dK8Y9dlz/8TgXTl0rcwKXagmgUEfmA
-	 tf/kIJNK+2UPPBz+Mu07bEv/ZunAkHRzkBOHpyGA7KJFfOLpAtzzpZslE0DA0YE+H7
-	 BShkWbqbDXNehQMSSdYbWoepY/0406+azQFchtxc=
+	b=erGNHAgZsf2+qcS40hLtl6LXF9YLi0zW6eeCU3GryGqukEjrIY9qzgRBL66pUkfLO
+	 BrHAyxd7+PogAQLFqdApwsdvdpz8WQ7eKhijUsCq/agYtktfZRQ2MSoHWwHIx0Af6A
+	 a78K5SNkKya13sYfr1suo8P6ZDfQl1DS3xDC/sZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/175] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
-Date: Tue, 31 Mar 2026 18:21:21 +0200
-Message-ID: <20260331161733.334103363@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.18 179/309] drm/xe: always keep track of remap prev/next
+Date: Tue, 31 Mar 2026 18:21:22 +0200
+Message-ID: <20260331161800.053707683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,91 +78,219 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231554-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232404-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email]
-X-Rspamd-Queue-Id: 1F93436CC92
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gitlab.freedesktop.org:url,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: DA7F036E3A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
+commit bfe9e314d7574d1c5c851972e7aee342733819d2 upstream.
 
-There is a teardown order issue in the driver. The SPI controller is
-registered using devm_spi_register_controller(), which delays
-unregistration of the SPI controller until after the fsl_lpspi_remove()
-function returns.
+During 3D workload, user is reporting hitting:
 
-As the fsl_lpspi_remove() function synchronously tears down the DMA
-channels, a running SPI transfer triggers the following NULL pointer
-dereference due to use after free:
+[  413.361679] WARNING: drivers/gpu/drm/xe/xe_vm.c:1217 at vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe], CPU#7: vkd3d_queue/9925
+[  413.361944] CPU: 7 UID: 1000 PID: 9925 Comm: vkd3d_queue Kdump: loaded Not tainted 7.0.0-070000rc3-generic #202603090038 PREEMPT(lazy)
+[  413.361949] RIP: 0010:vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe]
+[  413.362074] RSP: 0018:ffffd4c25c3df930 EFLAGS: 00010282
+[  413.362077] RAX: 0000000000000000 RBX: ffff8f3ee817ed10 RCX: 0000000000000000
+[  413.362078] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[  413.362079] RBP: ffffd4c25c3df980 R08: 0000000000000000 R09: 0000000000000000
+[  413.362081] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8f41fbf99380
+[  413.362082] R13: ffff8f3ee817e968 R14: 00000000ffffffef R15: ffff8f43d00bd380
+[  413.362083] FS:  00000001040ff6c0(0000) GS:ffff8f4696d89000(0000) knlGS:00000000330b0000
+[  413.362085] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+[  413.362086] CR2: 00007ddfc4747000 CR3: 00000002e6262005 CR4: 0000000000f72ef0
+[  413.362088] PKRU: 55555554
+[  413.362089] Call Trace:
+[  413.362092]  <TASK>
+[  413.362096]  xe_vm_bind_ioctl+0xa9a/0xc60 [xe]
 
-| fsl_lpspi 42550000.spi: I/O Error in DMA RX
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[...]
-| Call trace:
-|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
-|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
-|  spi_transfer_one_message+0x49c/0x7c8
-|  __spi_pump_transfer_message+0x120/0x420
-|  __spi_sync+0x2c4/0x520
-|  spi_sync+0x34/0x60
-|  spidev_message+0x20c/0x378 [spidev]
-|  spidev_ioctl+0x398/0x750 [spidev]
-[...]
+Which seems to hint that the vma we are re-inserting for the ops unwind
+is either invalid or overlapping with something already inserted in the
+vm. It shouldn't be invalid since this is a re-insertion, so must have
+worked before. Leaving the likely culprit as something already placed
+where we want to insert the vma.
 
-Switch from devm_spi_register_controller() to spi_register_controller() in
-fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
-fsl_lpspi_remove().
+Following from that, for the case where we do something like a rebind in
+the middle of a vma, and one or both mapped ends are already compatible,
+we skip doing the rebind of those vma and set next/prev to NULL. As well
+as then adjust the original unmap va range, to avoid unmapping the ends.
+However, if we trigger the unwind path, we end up with three va, with
+the two ends never being removed and the original va range in the middle
+still being the shrunken size.
 
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If this occurs, one failure mode is when another unwind op needs to
+interact with that range, which can happen with a vector of binds. For
+example, if we need to re-insert something in place of the original va.
+In this case the va is still the shrunken version, so when removing it
+and then doing a re-insert it can overlap with the ends, which were
+never removed, triggering a warning like above, plus leaving the vm in a
+bad state.
+
+With that, we need two things here:
+
+ 1) Stop nuking the prev/next tracking for the skip cases. Instead
+    relying on checking for skip prev/next, where needed. That way on the
+    unwind path, we now correctly remove both ends.
+
+ 2) Undo the unmap va shrinkage, on the unwind path. With the two ends
+    now removed the unmap va should expand back to the original size again,
+    before re-insertion.
+
+v2:
+  - Update the explanation in the commit message, based on an actual IGT of
+    triggering this issue, rather than conjecture.
+  - Also undo the unmap shrinkage, for the skip case. With the two ends
+    now removed, the original unmap va range should expand back to the
+    original range.
+v3:
+  - Track the old start/range separately. vma_size/start() uses the va
+    info directly.
+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7602
+Fixes: 8f33b4f054fc ("drm/xe: Avoid doing rebinds")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260318100208.78097-2-matthew.auld@intel.com
+(cherry picked from commit aec6969f75afbf4e01fd5fb5850ed3e9c27043ac)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_pt.c       |   12 ++++++------
+ drivers/gpu/drm/xe/xe_vm.c       |   22 ++++++++++++++++++----
+ drivers/gpu/drm/xe/xe_vm_types.h |    4 ++++
+ 3 files changed, 28 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 8ef82a11ebb0f..6b66b0e62db4f 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -954,7 +954,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		enable_irq(irq);
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -1451,9 +1451,9 @@ static int op_check_svm_userptr(struct x
+ 		err = vma_check_userptr(vm, op->map.vma, pt_update);
+ 		break;
+ 	case DRM_GPUVA_OP_REMAP:
+-		if (op->remap.prev)
++		if (op->remap.prev && !op->remap.skip_prev)
+ 			err = vma_check_userptr(vm, op->remap.prev, pt_update);
+-		if (!err && op->remap.next)
++		if (!err && op->remap.next && !op->remap.skip_next)
+ 			err = vma_check_userptr(vm, op->remap.next, pt_update);
+ 		break;
+ 	case DRM_GPUVA_OP_UNMAP:
+@@ -2038,12 +2038,12 @@ static int op_prepare(struct xe_vm *vm,
+ 
+ 		err = unbind_op_prepare(tile, pt_update_ops, old);
+ 
+-		if (!err && op->remap.prev) {
++		if (!err && op->remap.prev && !op->remap.skip_prev) {
+ 			err = bind_op_prepare(vm, tile, pt_update_ops,
+ 					      op->remap.prev, false);
+ 			pt_update_ops->wait_vm_bookkeep = true;
+ 		}
+-		if (!err && op->remap.next) {
++		if (!err && op->remap.next && !op->remap.skip_next) {
+ 			err = bind_op_prepare(vm, tile, pt_update_ops,
+ 					      op->remap.next, false);
+ 			pt_update_ops->wait_vm_bookkeep = true;
+@@ -2267,10 +2267,10 @@ static void op_commit(struct xe_vm *vm,
+ 
+ 		unbind_op_commit(vm, tile, pt_update_ops, old, fence, fence2);
+ 
+-		if (op->remap.prev)
++		if (op->remap.prev && !op->remap.skip_prev)
+ 			bind_op_commit(vm, tile, pt_update_ops, op->remap.prev,
+ 				       fence, fence2, false);
+-		if (op->remap.next)
++		if (op->remap.next && !op->remap.skip_next)
+ 			bind_op_commit(vm, tile, pt_update_ops, op->remap.next,
+ 				       fence, fence2, false);
+ 		break;
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2503,7 +2503,6 @@ static int xe_vma_op_commit(struct xe_vm
+ 			if (!err && op->remap.skip_prev) {
+ 				op->remap.prev->tile_present =
+ 					tile_present;
+-				op->remap.prev = NULL;
+ 			}
+ 		}
+ 		if (op->remap.next) {
+@@ -2513,11 +2512,13 @@ static int xe_vma_op_commit(struct xe_vm
+ 			if (!err && op->remap.skip_next) {
+ 				op->remap.next->tile_present =
+ 					tile_present;
+-				op->remap.next = NULL;
+ 			}
+ 		}
+ 
+-		/* Adjust for partial unbind after removing VMA from VM */
++		/*
++		 * Adjust for partial unbind after removing VMA from VM. In case
++		 * of unwind we might need to undo this later.
++		 */
+ 		if (!err) {
+ 			op->base.remap.unmap->va->va.addr = op->remap.start;
+ 			op->base.remap.unmap->va->va.range = op->remap.range;
+@@ -2636,6 +2637,8 @@ static int vm_bind_ioctl_ops_parse(struc
+ 
+ 			op->remap.start = xe_vma_start(old);
+ 			op->remap.range = xe_vma_size(old);
++			op->remap.old_start = op->remap.start;
++			op->remap.old_range = op->remap.range;
+ 
+ 			flags |= op->base.remap.unmap->va->flags & XE_VMA_CREATE_MASK;
+ 			if (op->base.remap.prev) {
+@@ -2783,8 +2786,19 @@ static void xe_vma_op_unwind(struct xe_v
+ 			xe_svm_notifier_lock(vm);
+ 			vma->gpuva.flags &= ~XE_VMA_DESTROYED;
+ 			xe_svm_notifier_unlock(vm);
+-			if (post_commit)
++			if (post_commit) {
++				/*
++				 * Restore the old va range, in case of the
++				 * prev/next skip optimisation. Otherwise what
++				 * we re-insert here could be smaller than the
++				 * original range.
++				 */
++				op->base.remap.unmap->va->va.addr =
++					op->remap.old_start;
++				op->base.remap.unmap->va->va.range =
++					op->remap.old_range;
+ 				xe_vm_insert_vma(vm, vma);
++			}
+ 		}
+ 		break;
  	}
- 
--	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	ret = spi_register_controller(controller);
- 	if (ret < 0) {
- 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
- 		goto free_dma;
-@@ -981,6 +981,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
- 
-+	spi_unregister_controller(controller);
- 	fsl_lpspi_dma_exit(controller);
- 
- 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
--- 
-2.53.0
-
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -365,6 +365,10 @@ struct xe_vma_op_remap {
+ 	u64 start;
+ 	/** @range: range of the VMA unmap */
+ 	u64 range;
++	/** @old_start: Original start of the VMA we unmap */
++	u64 old_start;
++	/** @old_range: Original range of the VMA we unmap */
++	u64 old_range;
+ 	/** @skip_prev: skip prev rebind */
+ 	bool skip_prev;
+ 	/** @skip_next: skip next rebind */
 
 
 
