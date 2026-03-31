@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIFcGs0EzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:53 +0200
+	id OIOxFQD/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9F636ED7D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD1C36DDE8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 131EF32AD263
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5AD31C9A8F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED24B421EE4;
-	Tue, 31 Mar 2026 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B7D425CC4;
+	Tue, 31 Mar 2026 16:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnvBQjJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jneEXrFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ACD3F8E04;
-	Tue, 31 Mar 2026 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9618426685;
+	Tue, 31 Mar 2026 16:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976114; cv=none; b=oxsysbYxhuTdCVi+/nRVGx3a9PiqJmCbLwoD/SxelVVQLFJ5kuxiydiUDLT7DApuhIIAwtPvUCTIwQ+YQskHLUYDFMURshzJI32gtT90EohjlCjldhMv7U43FCiF+c07LHySZgaruvONo7o6BWkaI+kXpc9IdQf5X1UDzPh5aww=
+	t=1774974612; cv=none; b=k+0KyHlZutnYxaQm3OTJOI9ILX5no6pEGGWnWqlLkUPUEj69LWnAYeMgRijJ27V9jiPm4vuEW71t7hnPWr+n/9+2pq9buKfMPk9Df2+vCoP6GT8mFY2OmAEpx1J2iTCKL+/qAkQz/G61gno1d3QYsCAuXw1fjSNnxsDjRmLYKPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976114; c=relaxed/simple;
-	bh=1PYR1RXgk1B2YZ+9G7HzlcN1hZV42Vx/98Vhp+tcz2E=;
+	s=arc-20240116; t=1774974612; c=relaxed/simple;
+	bh=5yALuWCKZaQb7WUPCnBfwFCr797t9x1dye/TsZ2SU3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xt5yGrjKwM4gTZkNvB2DWteJvABxZBp2jz/5fZJIq4GuimmU93pqZ7tuKOgoQBfbpWgI/03Hq4+STK99sZ5WaobhafLKd0FfT1OOhivIf5F9b+hTkNKdfhtLuHTUcKZsN5k5lzC8ql1LqCjmNYoBqwGqk2RclTaR9JBTSaV6WOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnvBQjJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D48C19423;
-	Tue, 31 Mar 2026 16:55:14 +0000 (UTC)
+	 MIME-Version; b=GwvYsckJzDr5biBcS/oxdilFurQ7A8I95DBWG+R50XGaPGSujbAbL9NsMoBmKP1eyd406VHckXg/qQBxkwSbJGNZKQC9WgS3SMi6nQCSTAxhL01QGUMCcS3plpeBZ9Od0Omvt3qxIicISy5fhdQYoAnUfwh1JlRD7kS1JeStWRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jneEXrFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70792C19423;
+	Tue, 31 Mar 2026 16:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976114;
-	bh=1PYR1RXgk1B2YZ+9G7HzlcN1hZV42Vx/98Vhp+tcz2E=;
+	s=korg; t=1774974612;
+	bh=5yALuWCKZaQb7WUPCnBfwFCr797t9x1dye/TsZ2SU3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnvBQjJlHA7LhwhKOExcWhQ3teSBN5TcSyrU1eEvkKSmhWsmzWnR4hs+b7NmPuHpm
-	 4N7CTTO0of+uoI2gBU3r3xKvjQmSPJA06TUZ7o2c1WebC0BwEAKWDrEFze8xYrSPC3
-	 algRdGof7iKvvRNGbIqR8FJav7ElNEse09l62Ohs=
+	b=jneEXrFBHY6nhTkAxGdQulAcEx4RTKc3D+gDpfjebWC9aFsAaoOEw7zAtAXe/xE4x
+	 /apJKZ4WKY7Xj90xHUAN6M/R80wJQxD+Blo2O6TTEJh8zROGAbmlA6uq10WLYP6q5H
+	 c1ummyKfSomnJO1L+OWpRbJsokSLYxUDE2lkOTVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hongao <hongao@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 179/244] xfs: scrub: unlock dquot before early return in quota scrub
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Werner Kasselman <werner@verivus.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 145/175] ksmbd: fix memory leaks and NULL deref in smb2_lock()
 Date: Tue, 31 Mar 2026 18:22:09 +0200
-Message-ID: <20260331161748.366666004@linuxfoundation.org>
+Message-ID: <20260331161735.113666941@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,67 +75,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231609-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232192-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:email]
-X-Rspamd-Queue-Id: BF9F636ED7D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8FD1C36DDE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hongao <hongao@uniontech.com>
+From: Werner Kasselman <werner@verivus.com>
 
-commit 268378b6ad20569af0d1957992de1c8b16c6e900 upstream.
+[ Upstream commit 309b44ed684496ed3f9c5715d10b899338623512 ]
 
-xchk_quota_item can return early after calling xchk_fblock_process_error.
-When that helper returns false, the function returned immediately without
-dropping dq->q_qlock, which can leave the dquot lock held and risk lock
-leaks or deadlocks in later quota operations.
+smb2_lock() has three error handling issues after list_del() detaches
+smb_lock from lock_list at no_check_cl:
 
-Fix this by unlocking dq->q_qlock before the early return.
+1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK
+   path, goto out leaks smb_lock and its flock because the out:
+   handler only iterates lock_list and rollback_list, neither of
+   which contains the detached smb_lock.
 
-Signed-off-by: hongao <hongao@uniontech.com>
-Fixes: 7d1f0e167a067e ("xfs: check the ondisk space mapping behind a dquot")
-Cc: <stable@vger.kernel.org> # v6.8
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out
+   leaks smb_lock and flock for the same reason.  The error code
+   returned to the dispatcher is also stale.
+
+3) In the rollback path, smb_flock_init() can return NULL on
+   allocation failure.  The result is dereferenced unconditionally,
+   causing a kernel NULL pointer dereference.  Add a NULL check to
+   prevent the crash and clean up the bookkeeping; the VFS lock
+   itself cannot be rolled back without the allocation and will be
+   released at file or connection teardown.
+
+Fix cases 1 and 2 by hoisting the locks_free_lock()/kfree() to before
+the if(!rc) check in the UNLOCK branch so all exit paths share one
+free site, and by freeing smb_lock and flock before goto out in the
+non-UNLOCK branch.  Propagate the correct error code in both cases.
+Fix case 3 by wrapping the VFS unlock in an if(rlock) guard and adding
+a NULL check for locks_free_lock(rlock) in the shared cleanup.
+
+Found via call-graph analysis using sqry.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Suggested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Werner Kasselman <werner@verivus.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted rlock->c.flc_type to rlock->fl_type ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/quota.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
---- a/fs/xfs/scrub/quota.c
-+++ b/fs/xfs/scrub/quota.c
-@@ -174,8 +174,10 @@ xchk_quota_item(
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7536,14 +7536,15 @@ retry:
+ 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
+ skip:
+ 		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
++			locks_free_lock(flock);
++			kfree(smb_lock);
+ 			if (!rc) {
+ 				ksmbd_debug(SMB, "File unlocked\n");
+ 			} else if (rc == -ENOENT) {
+ 				rsp->hdr.Status = STATUS_NOT_LOCKED;
++				err = rc;
+ 				goto out;
+ 			}
+-			locks_free_lock(flock);
+-			kfree(smb_lock);
+ 		} else {
+ 			if (rc == FILE_LOCK_DEFERRED) {
+ 				void **argv;
+@@ -7612,6 +7613,9 @@ skip:
+ 				spin_unlock(&work->conn->llist_lock);
+ 				ksmbd_debug(SMB, "successful in taking lock\n");
+ 			} else {
++				locks_free_lock(flock);
++				kfree(smb_lock);
++				err = rc;
+ 				goto out;
+ 			}
+ 		}
+@@ -7642,13 +7646,17 @@ out:
+ 		struct file_lock *rlock = NULL;
  
- 	error = xchk_quota_item_bmap(sc, dq, offset);
- 	xchk_iunlock(sc, XFS_ILOCK_SHARED);
--	if (!xchk_fblock_process_error(sc, XFS_DATA_FORK, offset, &error))
-+	if (!xchk_fblock_process_error(sc, XFS_DATA_FORK, offset, &error)) {
-+		mutex_unlock(&dq->q_qlock);
- 		return error;
-+	}
+ 		rlock = smb_flock_init(filp);
+-		rlock->fl_type = F_UNLCK;
+-		rlock->fl_start = smb_lock->start;
+-		rlock->fl_end = smb_lock->end;
+-
+-		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
+-		if (rc)
+-			pr_err("rollback unlock fail : %d\n", rc);
++		if (rlock) {
++			rlock->fl_type = F_UNLCK;
++			rlock->fl_start = smb_lock->start;
++			rlock->fl_end = smb_lock->end;
++
++			rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
++			if (rc)
++				pr_err("rollback unlock fail : %d\n", rc);
++		} else {
++			pr_err("rollback unlock alloc failed\n");
++		}
  
- 	/*
- 	 * Warn if the hard limits are larger than the fs.
+ 		list_del(&smb_lock->llist);
+ 		spin_lock(&work->conn->llist_lock);
+@@ -7658,7 +7666,8 @@ out:
+ 		spin_unlock(&work->conn->llist_lock);
+ 
+ 		locks_free_lock(smb_lock->fl);
+-		locks_free_lock(rlock);
++		if (rlock)
++			locks_free_lock(rlock);
+ 		kfree(smb_lock);
+ 	}
+ out2:
 
 
 
