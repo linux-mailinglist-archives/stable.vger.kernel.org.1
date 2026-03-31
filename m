@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALCsFtsAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:03 +0200
+	id OKU1BrX9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E8A36E3F3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E9636DA24
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE436308CD62
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5A1D313C6C6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B271301471;
-	Tue, 31 Mar 2026 17:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6B4426EBB;
+	Tue, 31 Mar 2026 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBPUhXkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5S6b3N5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E24B2F5491;
-	Tue, 31 Mar 2026 17:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAF1425CC6;
+	Tue, 31 Mar 2026 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976675; cv=none; b=HU0qGJ8Mw+XzYKJBUKsH5B54ZWnjrSL9ycC+YPrhG5YlkY6uBfF3aCaNUul16fMeex4clKHyuhJxQzZwlc6bfnNUWe4BPVn0FcIxkYQ6EtVKjTfkyZwg8BgxKdiM8Y40LpuCjjIbNs4P5EQ7nwQdCJLMzW+0wi6tBOpLPuc49Sk=
+	t=1774975922; cv=none; b=hnQg0VdhpTDoDlQcdXCFBjepP9ZgT9LhULRPEVepOthI0WXx7ynOQjuK2jyUbQ75iGpLFxhCT3swjXzgIhaGETEOdWDt5IoJ/x/IgAGCg3MjK+duLyhO3tF8X0cYA8TRGqHxp37jo6xUAqTMuP+oqjkTPROqmPXHLKpa/X5wyko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976675; c=relaxed/simple;
-	bh=cJd7i8Y8CrkO2y4SB6KsTw1+7PQ3aW1q4OErz5csI6A=;
+	s=arc-20240116; t=1774975922; c=relaxed/simple;
+	bh=BxMXBBs47H7W3qPajzlwk+mpa0UpwSHfB1crGoQWDv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9CKtAPvu4PSAcqDAAkFeyL/NL0VhMq5IKcrlBpPUFbHIef55vbGZStDZHza5AFFEoGpvRY5swfYfmfRrtrhgjpcbiSvfK14XM3bXvt8U2bQNj77YmMKHiXwkLHOseWu1IQwz4b7igcoLBmd/JDt9EihsoHlzXJQSJ0O1odgO0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBPUhXkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D721DC19423;
-	Tue, 31 Mar 2026 17:04:34 +0000 (UTC)
+	 MIME-Version; b=KGEasCPOGn6bDK+pO9xLZZGdXBK++kHT4U5QKs3d8CU1f4dwTjhmDSR2UvI01ftp1QsBjonU691VIQlNR7uqfXwyQqPl2WCrns9NjhcoDgpUYDQSZVF/9irmO7mLmqd6420JeFu2Z2QZVnXEsD8Bqk6KupB5/M5DblGaX7QH3OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5S6b3N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04406C19423;
+	Tue, 31 Mar 2026 16:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976675;
-	bh=cJd7i8Y8CrkO2y4SB6KsTw1+7PQ3aW1q4OErz5csI6A=;
+	s=korg; t=1774975922;
+	bh=BxMXBBs47H7W3qPajzlwk+mpa0UpwSHfB1crGoQWDv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vBPUhXkhvkmNofrKHh686oIyPKtfEbrfUxj/gAGygykhmis4lO5VAffD42ov7uPH1
-	 c4GeksRrHVycyw/kUuCdGgkSheWw5jq/1bobTdmLLNcpKy6nGLnI40TpjXlqDxj+55
-	 Y2v49ruqzIc6uxiZJAaTQg/MbB/d83WerZ0T8bxU=
+	b=u5S6b3N591cmRtAQ8upeEkc1a3L7aPVOmnPc2QzcKhpZn5VO+WqInPnL5CdrHZxlg
+	 4+FJWB7abwt7Z5DprZvVhwloVu8a9kI5MMxYPF2u8OYp4snxmzIrBDUoc7RhujbId/
+	 cMVmAtxYeHlYdBGU+hea6kCQWtP5hloTWiFrfWfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juhyun Song <juju6985@outlook.kr>,
-	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 184/309] Revert "ALSA: hda/intel: Add MSI X870E Tomahawk to denylist"
+	stable@kernel.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.12 137/244] s390/entry: Scrub r12 register on kernel entry
 Date: Tue, 31 Mar 2026 18:21:27 +0200
-Message-ID: <20260331161800.234854005@linuxfoundation.org>
+Message-ID: <20260331161746.711703870@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +64,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232410-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.kr,gmail.com,amd.com,suse.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232118-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,outlook.kr:email,suse.de:email]
-X-Rspamd-Queue-Id: D0E8A36E3F3
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74E9636DA24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit ed4da361bf943b9041fc63e5cb6af01b3c0de978 upstream.
+commit 0738d395aab8fae3b5a3ad3fc640630c91693c27 upstream.
 
-commit 30b3211aa2416 ("ALSA: hda/intel: Add MSI X870E Tomahawk
-to denylist") was added to silence a warning, but this effectively
-reintroduced commit df42ee7e22f03 ("ALSA: hda: Add ASRock
-X670E Taichi to denylist") which was already reported to cause
-problems and reverted in commit ee8f1613596ad ("Revert "ALSA: hda:
-Add ASRock X670E Taichi to denylist"")
+Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
+all entry handlers loaded r12 with the current task pointer
+(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
+commit removed TIF_ISOLATE_BP, dropping both the branch prediction
+macros and the r12 load, but did not add r12 to the register clearing
+sequence.
 
-Revert it yet again.
+Add the missing xgr %r12,%r12 to make the register scrub consistent
+across all entry points.
 
-Cc: stable@vger.kernel.org
-Reported-by: Juhyun Song <juju6985@outlook.kr>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221274
-Cc: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260326190542.524515-1-mario.limonciello@amd.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
+Cc: stable@kernel.org
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/controllers/intel.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/s390/kernel/entry.S |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/hda/controllers/intel.c
-+++ b/sound/hda/controllers/intel.c
-@@ -2077,7 +2077,6 @@ static const struct pci_device_id driver
- 	{ PCI_DEVICE_SUB(0x1022, 0x1487, 0x1043, 0x874f) }, /* ASUS ROG Zenith II / Strix */
- 	{ PCI_DEVICE_SUB(0x1022, 0x1487, 0x1462, 0xcb59) }, /* MSI TRX40 Creator */
- 	{ PCI_DEVICE_SUB(0x1022, 0x1487, 0x1462, 0xcb60) }, /* MSI TRX40 */
--	{ PCI_DEVICE_SUB(0x1022, 0x15e3, 0x1462, 0xee59) }, /* MSI X870E Tomahawk WiFi */
- 	{}
- };
- 
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -286,6 +286,7 @@ SYM_CODE_START(system_call)
+ 	xgr	%r9,%r9
+ 	xgr	%r10,%r10
+ 	xgr	%r11,%r11
++	xgr	%r12,%r12
+ 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
+ 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
+ 	MBEAR	%r2,%r13
+@@ -431,6 +432,7 @@ SYM_CODE_START(\name)
+ 	xgr	%r6,%r6
+ 	xgr	%r7,%r7
+ 	xgr	%r10,%r10
++	xgr	%r12,%r12
+ 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
+ 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
+ 	MBEAR	%r11,%r13
+@@ -523,6 +525,7 @@ SYM_CODE_START(mcck_int_handler)
+ 	xgr	%r6,%r6
+ 	xgr	%r7,%r7
+ 	xgr	%r10,%r10
++	xgr	%r12,%r12
+ 	stmg	%r8,%r9,__PT_PSW(%r11)
+ 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
+ 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
 
 
 
