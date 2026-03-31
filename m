@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJhxFGYBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:22 +0200
+	id EK0YGywBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CC136E5A5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A6836E522
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8BD14302A95B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AD493212215
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95CD423A62;
-	Tue, 31 Mar 2026 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4B94279ED;
+	Tue, 31 Mar 2026 16:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1HaPTnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpNF3stU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8B641B342;
-	Tue, 31 Mar 2026 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FB4279E6;
+	Tue, 31 Mar 2026 16:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975720; cv=none; b=VA6EJO8kdYlY1+ItI0wSEsnHSqj/CYu+f78/SobKJKL1rUhJ9H6eREGNsK8FiaH8a4l4dOBFsPsZTL5Cob0dvqXl7uxjUNTkMp9rmC8Lu5OXg63mQD9CK0MYpgAPK0RXUcFVVhl47s0HROK15fVibvHsnvU6/37qYoi0r5yGEAA=
+	t=1774975135; cv=none; b=RgQ2VpGlEJS0jzqau9Xd5bVqx8HPOf/FVdU/A9ZlEupe+7qK/7CDF3L+9vHXvNmJH1e5H47JteQTPZm44g1O2jC+FOSczQsvqFzvoXLnwP798tKU6O+TVouh/JbHZsipdsMAJSVH9/PrCr8AjwWlBG6KvTapkjAGlFEzUWjtX8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975720; c=relaxed/simple;
-	bh=DjEMGLEi3RgKegLR8EdgVpcSCVvE5pTNDWleDcbXHW0=;
+	s=arc-20240116; t=1774975135; c=relaxed/simple;
+	bh=6BvXbstGLYKWzFd2HnlJbkXtJZ4EAr7vchJJ7BnzMRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuBVBRs2Kx40OmsliP/EXccOwxmIHIjV1wjwr77vtTQWiSrMTPOZz8TIXOVBedCkN7qodFrLyvBpHyXXC3LGe9+YqSATVGUMPPukXUgJkKF5RLFq9Aa5qan47J5J3M+c5lTmJ6QrnCAC1hgStl8PhEV/56VNeILAQ8Iou64EHdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1HaPTnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08F5C19423;
-	Tue, 31 Mar 2026 16:48:39 +0000 (UTC)
+	 MIME-Version; b=CWsOpYd6CbV9QRNYAeNbupy+Azo8rIIeteg9eodLhwHs6rnFoGZV3GyrJ5z7MYP4mK9Gdv3j2W1BjYlVbi1iR0Te35Ihitl7Ahtg49//Jdb0Yi+9EleDTDCyRUQwjI0TNvsUen8JZ6cVAkqBsSJV6hsyVQsJQmfssUx/rCkxy+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpNF3stU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B9DC2BCB1;
+	Tue, 31 Mar 2026 16:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975720;
-	bh=DjEMGLEi3RgKegLR8EdgVpcSCVvE5pTNDWleDcbXHW0=;
+	s=korg; t=1774975135;
+	bh=6BvXbstGLYKWzFd2HnlJbkXtJZ4EAr7vchJJ7BnzMRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1HaPTnlp1dUWHFJYj3FXkDKY5ju0RX59z9U5VSYgYxi6E9eQOLoWJ2KTX3uVD43W
-	 7TYpCw+lu8HxSzGHhr2HYTackSRGf6dFT21+WLqA8T8aIXK8Ebtw9SjbeL0g8+ic/M
-	 BXuvPSwu1xGkjvh195a5fg5CklqmswGP8CY1Iobw=
+	b=tpNF3stUb9Fn4NBk2u1wqtQylk4/X/Jl99EaTo104JtXMrune9esQxduNfU/XRLtQ
+	 1tqHUIyxmgVojUO/k/+TNLW/twK6DTKxmL+q7QtQSUGXSL1+uoPwWDNvmFvCEtrqeM
+	 FHT+c8bD6n24JHxntD9+00gf1ErjpoWdn/FCMX4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/244] Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold
-Date: Tue, 31 Mar 2026 18:20:10 +0200
-Message-ID: <20260331161743.906214945@linuxfoundation.org>
+Subject: [PATCH 6.19 178/342] rust: regulator: do not assume that regulator_get() returns non-null
+Date: Tue, 31 Mar 2026 18:20:11 +0200
+Message-ID: <20260331161805.555743890@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +68,174 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232040-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231813-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 97CC136E5A5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: C3A6836E522
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit 598dbba9919c5e36c54fe1709b557d64120cb94b ]
+[ Upstream commit 8121353a4bf8e38afee26299419a78ec108e14a6 ]
 
-sco_recv_frame() reads conn->sk under sco_conn_lock() but immediately
-releases the lock without holding a reference to the socket. A concurrent
-close() can free the socket between the lock release and the subsequent
-sk->sk_state access, resulting in a use-after-free.
+The Rust `Regulator` abstraction uses `NonNull` to wrap the underlying
+`struct regulator` pointer. When `CONFIG_REGULATOR` is disabled, the C
+stub for `regulator_get` returns `NULL`. `from_err_ptr` does not treat
+`NULL` as an error, so it was passed to `NonNull::new_unchecked`,
+causing undefined behavior.
 
-Other functions in the same file (sco_sock_timeout(), sco_conn_del())
-correctly use sco_sock_hold() to safely hold a reference under the lock.
+Fix this by using a raw pointer `*mut bindings::regulator` instead of
+`NonNull`. This allows `inner` to be `NULL` when `CONFIG_REGULATOR` is
+disabled, and leverages the C stubs which are designed to handle `NULL`
+or are no-ops.
 
-Fix by using sco_sock_hold() to take a reference before releasing the
-lock, and adding sock_put() on all exit paths.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 9b614ceada7c ("rust: regulator: add a bare minimum regulator abstraction")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/r/20260322193830.89324-1-ojeda@kernel.org
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Link: https://patch.msgid.link/20260324-regulator-fix-v1-1-a5244afa3c15@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/sco.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ rust/kernel/regulator.rs | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 202d75ad0dc39..ad3439bd4d51a 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -339,7 +339,7 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	struct sock *sk;
+diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+index 2c44827ad0b7e..40c7f2209867d 100644
+--- a/rust/kernel/regulator.rs
++++ b/rust/kernel/regulator.rs
+@@ -23,7 +23,10 @@ use crate::{
+     prelude::*,
+ };
  
- 	sco_conn_lock(conn);
--	sk = conn->sk;
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
+-use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
++use core::{
++    marker::PhantomData,
++    mem::ManuallyDrop, //
++};
  
- 	if (!sk)
-@@ -348,11 +348,15 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	BT_DBG("sk %p len %u", sk, skb->len);
- 
- 	if (sk->sk_state != BT_CONNECTED)
--		goto drop;
-+		goto drop_put;
- 
--	if (!sock_queue_rcv_skb(sk, skb))
-+	if (!sock_queue_rcv_skb(sk, skb)) {
-+		sock_put(sk);
- 		return;
-+	}
- 
-+drop_put:
-+	sock_put(sk);
- drop:
- 	kfree_skb(skb);
+ mod private {
+     pub trait Sealed {}
+@@ -232,15 +235,17 @@ pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> Result {
+ ///
+ /// # Invariants
+ ///
+-/// - `inner` is a non-null wrapper over a pointer to a `struct
+-///   regulator` obtained from [`regulator_get()`].
++/// - `inner` is a pointer obtained from a successful call to
++///   [`regulator_get()`]. It is treated as an opaque token that may only be
++///   accessed using C API methods (e.g., it may be `NULL` if the C API returns
++///   `NULL`).
+ ///
+ /// [`regulator_get()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_get
+ pub struct Regulator<State>
+ where
+     State: RegulatorState,
+ {
+-    inner: NonNull<bindings::regulator>,
++    inner: *mut bindings::regulator,
+     _phantom: PhantomData<State>,
  }
+ 
+@@ -252,7 +257,7 @@ impl<T: RegulatorState> Regulator<T> {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+         to_result(unsafe {
+             bindings::regulator_set_voltage(
+-                self.inner.as_ptr(),
++                self.inner,
+                 min_voltage.as_microvolts(),
+                 max_voltage.as_microvolts(),
+             )
+@@ -262,7 +267,7 @@ impl<T: RegulatorState> Regulator<T> {
+     /// Gets the current voltage of the regulator.
+     pub fn get_voltage(&self) -> Result<Voltage> {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
++        let voltage = unsafe { bindings::regulator_get_voltage(self.inner) };
+ 
+         to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
+     }
+@@ -273,10 +278,8 @@ impl<T: RegulatorState> Regulator<T> {
+             // received from the C code.
+             from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_char_ptr()) })?;
+ 
+-        // SAFETY: We can safely trust `inner` to be a pointer to a valid
+-        // regulator if `ERR_PTR` was not returned.
+-        let inner = unsafe { NonNull::new_unchecked(inner) };
+-
++        // INVARIANT: `inner` is a pointer obtained from `regulator_get()`, and
++        // the call was successful.
+         Ok(Self {
+             inner,
+             _phantom: PhantomData,
+@@ -285,12 +288,12 @@ impl<T: RegulatorState> Regulator<T> {
+ 
+     fn enable_internal(&self) -> Result {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
++        to_result(unsafe { bindings::regulator_enable(self.inner) })
+     }
+ 
+     fn disable_internal(&self) -> Result {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
++        to_result(unsafe { bindings::regulator_disable(self.inner) })
+     }
+ }
+ 
+@@ -352,7 +355,7 @@ impl<T: IsEnabled> Regulator<T> {
+     /// Checks if the regulator is enabled.
+     pub fn is_enabled(&self) -> bool {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        unsafe { bindings::regulator_is_enabled(self.inner.as_ptr()) != 0 }
++        unsafe { bindings::regulator_is_enabled(self.inner) != 0 }
+     }
+ }
+ 
+@@ -362,11 +365,11 @@ impl<T: RegulatorState> Drop for Regulator<T> {
+             // SAFETY: By the type invariants, we know that `self` owns a
+             // reference on the enabled refcount, so it is safe to relinquish it
+             // now.
+-            unsafe { bindings::regulator_disable(self.inner.as_ptr()) };
++            unsafe { bindings::regulator_disable(self.inner) };
+         }
+         // SAFETY: By the type invariants, we know that `self` owns a reference,
+         // so it is safe to relinquish it now.
+-        unsafe { bindings::regulator_put(self.inner.as_ptr()) };
++        unsafe { bindings::regulator_put(self.inner) };
+     }
+ }
+ 
 -- 
-2.51.0
+2.53.0
 
 
 
