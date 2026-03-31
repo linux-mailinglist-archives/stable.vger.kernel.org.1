@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFG0Fp/8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231836-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:59 +0200
+	id b04bCJz1y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AE736D710
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9DB36C8FF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3B3263171CFC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C90A301E3D9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A7E3E3C40;
-	Tue, 31 Mar 2026 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6153B30C345;
+	Tue, 31 Mar 2026 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOlH/quT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUu6Himq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4A140710B;
-	Tue, 31 Mar 2026 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245213E316C;
+	Tue, 31 Mar 2026 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975195; cv=none; b=Qix50Gb/HCcr+r5u6os8DkfclCXwY2qs/Xfjz3w+/NtT6nKPDj+Js/CMLpuERZc4Zyrd8oXQ5+rn9ASbQrUb2oN1nNspnk+gvycmkkTVcBwcNuPdRIMH0EJE1Wbw3BifJ0sukzytTE4mBX7bjXUWO7zJjlA1iy3+bMQE7mR8UGM=
+	t=1774974258; cv=none; b=i3XQPk4V4tVlD9ywv5fNsTVqg8XFpI9nhqrVE9XSY/nTfh6yGgl0VjOfJ9YQaqyMZRutqVaXS6xDTdMLtPqq+aPT7qG2aSy4C2Ynt4NLv6o9hS4I4HDClkDEdUS4O8qu7JNRZm5lOF0MkJvjnOeYVQ8zLb16seB7PdUyVvHecYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975195; c=relaxed/simple;
-	bh=kfxII0cZhz4kO1bndNlS7Dpg7Dv2ufEqb6lOdOdRTeE=;
+	s=arc-20240116; t=1774974258; c=relaxed/simple;
+	bh=U6JhT2uScj1XX5FW2zhUmbVyBIo5Ezop6u0MVX3Ik90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBnnXQ+k5Rqi3EYYvDp/9OzxxKxRZoCKWSwvyfbYC4wUDIxFXcvRDPjaVSP0a4cYk3iWgwr0tMz7cUrxB/GJ9HKMf2sDZf6PXktnvp3hreJRvg7wYWj868METKy1if+ShA4BTVnw0R/I+BClgog1F6aiiE0jM2olWiY7TI1Tktg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOlH/quT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D593AC19423;
-	Tue, 31 Mar 2026 16:39:54 +0000 (UTC)
+	 MIME-Version; b=Tad+oDYynicqv9VnRqIxz4ItUunfhM5yVAN6N9+vqCFUzVJIZtuDOQWk/VBGUp9898wJZqtw18l1Mbue2h8rrFZoXTZuXaNrfnersgcZnYuHTwD/oLTJsWEdIWoFSMEp00LoP4WWrXcq3SUBnmneQw4pqBRfolkxnnVwfex6368=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUu6Himq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE8EC2BCB1;
+	Tue, 31 Mar 2026 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975195;
-	bh=kfxII0cZhz4kO1bndNlS7Dpg7Dv2ufEqb6lOdOdRTeE=;
+	s=korg; t=1774974258;
+	bh=U6JhT2uScj1XX5FW2zhUmbVyBIo5Ezop6u0MVX3Ik90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOlH/quT3BrzgbLay3bsDXOdH/BJoj9QKXoAjbe56LH0891NmByAnEwDMB3fyEvMi
-	 d1P4SffxApF0jPXm5yN9EgKMa+MJc1NkxvyyAPgSS7y+tY5FMHE/MR/9uMxRK+9Qxk
-	 95FoswSSk8E38OD1dEHD2z2l7q74P6o2W9SaYXk4=
+	b=GUu6Himq8Q/GDlr8DJpU+FifllDB5LQaEDDF9ObZkpcexaCPNXdGY+x9PC51YoLTm
+	 bBEBo2iQ4RUs9Q9vuDkBlPHfAjSFncFMz65TeUA2TdYRT86C9bJ+ZY1cAShywCkaNC
+	 YIfvoRsOaforHfOAVhG3Hk2eBlhFN57dCqRpAjBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 167/342] x86/efi: efi_unmap_boot_services: fix calculation of ranges_to_free size
+Subject: [PATCH 6.6 016/175] nvme-pci: ensure were polling a polled queue
 Date: Tue, 31 Mar 2026 18:20:00 +0200
-Message-ID: <20260331161805.155526091@linuxfoundation.org>
+Message-ID: <20260331161730.378872133@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231836-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231471-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,55 +86,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 83AE736D710
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: 5C9DB36C8FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 217c0a5c177a3d4f7c8497950cbf5c36756e8bbb ]
+[ Upstream commit 166e31d7dbf6aa44829b98aa446bda5c9580f12a ]
 
-ranges_to_free array should have enough room to store the entire EFI
-memmap plus an extra element for NULL entry.
-The calculation of this array size wrongly adds 1 to the overall size
-instead of adding 1 to the number of elements.
+A user can change the polled queue count at run time. There's a brief
+window during a reset where a hipri task may try to poll that queue
+before the block layer has updated the queue maps, which would race with
+the now interrupt driven queue and may cause double completions.
 
-Add parentheses to properly size the array.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: a4b0bf6a40f3 ("x86/efi: defer freeing of boot services memory")
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/efi/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 35caa5746115d..79f0818131e83 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -424,7 +424,7 @@ void __init efi_unmap_boot_services(void)
- 	if (efi_enabled(EFI_DBG))
- 		return;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 820e211feded2..6f78577fb70da 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1120,7 +1120,8 @@ static int nvme_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+ 	struct nvme_queue *nvmeq = hctx->driver_data;
+ 	bool found;
  
--	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	sz = sizeof(*ranges_to_free) * (efi.memmap.nr_map + 1);
- 	ranges_to_free = kzalloc(sz, GFP_KERNEL);
- 	if (!ranges_to_free) {
- 		pr_err("Failed to allocate storage for freeable EFI regions\n");
+-	if (!nvme_cqe_pending(nvmeq))
++	if (!test_bit(NVMEQ_POLLED, &nvmeq->flags) ||
++	    !nvme_cqe_pending(nvmeq))
+ 		return 0;
+ 
+ 	spin_lock(&nvmeq->cq_poll_lock);
 -- 
-2.53.0
+2.51.0
 
 
 
