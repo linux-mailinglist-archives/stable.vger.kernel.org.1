@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-231989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKJKNlj9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:04 +0200
+	id SHoGHv8AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-231790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C7136D957
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED32536E468
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0753C30A1B81
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4E3C32766B6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DD73EF0A2;
-	Tue, 31 Mar 2026 16:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ECC4266BA;
+	Tue, 31 Mar 2026 16:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbAi3+in"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzapEWRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFFE2D1F40;
-	Tue, 31 Mar 2026 16:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3351A423172;
+	Tue, 31 Mar 2026 16:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975588; cv=none; b=SRU2a3CkQwwgPiTRbBA3CUdZP1XXoTprLBT7NzqVY3c/AbQegNPRXzl0btjWh6uWp2TUn02DCQgQKsk+S/fdp7xnvxIe2zGw+dR1x0eo3ManMqhu3I9PCd+6SzEut7JKGWBl/Q2oa8yqLGvvEYza6b7gCwBGLG/VRLlGSKI4IZs=
+	t=1774975076; cv=none; b=ohYzX9PS+hMwYeGthoB4i3T+UnsrY7hGB4Kqd055GRyiFFXGo8zypbZkPyZ4TQ2nYyJrY8UiGO6RxMh4zJ/Ccq0eQjqD7qrrPppPjYm0csG8C9n+UicDviIK3Qtq9D5nsISCy0bf9rvNDwjrQuukARyATCYw+nDYcARtYGIPzNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975588; c=relaxed/simple;
-	bh=0el4LM025nn2evVJRDYoTJoRW9kB0ZHomt8xNBgfMxI=;
+	s=arc-20240116; t=1774975076; c=relaxed/simple;
+	bh=GVVrbTawekv9dc9+hXCVFShZ5S4ANHZeE8etzP0fT1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7BsbwWFGO8TvgFeHWMLLQtFruEv4qj6Lp1eYkmlcCv9oy+Mwof0uetbhekGHU78GeNoM7Kd53zZs8tu9ODVHfUEjFWKBT1LbDAkvYAYUUN0isapSLJG9zfvT4Meh3VQpsKKNiXfuyLlnhDj49eOkvqn2kk56lpdhqMOlamISnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbAi3+in; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961CDC19423;
-	Tue, 31 Mar 2026 16:46:27 +0000 (UTC)
+	 MIME-Version; b=mo0X2GECdOqt3E3sK2jLW3mwsK8toFSdCP8esKmYUz5F9+WwCYiKtSQ4hkcM2/p843CFmuCY4HiguqTE6qfEi4fDm94HtkUhn/YdB48JEnQR16zmZvv373zvQrHKj8ajJ9KYZvEugGy4bYUx2H5NmH5i6DRKWlZyB8a5qGbsbmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzapEWRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B7FC19423;
+	Tue, 31 Mar 2026 16:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975587;
-	bh=0el4LM025nn2evVJRDYoTJoRW9kB0ZHomt8xNBgfMxI=;
+	s=korg; t=1774975075;
+	bh=GVVrbTawekv9dc9+hXCVFShZ5S4ANHZeE8etzP0fT1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbAi3+intkpSzbk556iuCVdyoX+vNIvewj+wlYE0K1gz94NZ2MenZg2B7NZF7PK3Z
-	 5ZuytHBpcibk24+W/Jh+Lc/d1mA1VsQMyx++mJOV+IdYLn9Ougw02l2ew6/Rx1llGE
-	 N6J4Bur75IPBSD6YYvqX38SDH/Qztyq0F+ri4mFk=
+	b=zzapEWRWbm5srhRR8UFG4LEPptR722VFXYx+pm05QE8rwJ2aN4H2+bXvJJ3igmwW1
+	 sA8qSn99nab1wS4eP4pktaZDJjEvFQ7rnxlSSO8Mj4QHqFhRtmUsCKAYwlxId/sshf
+	 2/0m8bv0x1YeMNzqnBWeAR4A++wr+xgCJ+uPgYcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+3d8bc31c45e11450f24c@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/244] bpf: Fix undefined behavior in interpreter sdiv/smod for INT_MIN
+Subject: [PATCH 6.19 127/342] team: fix header_ops type confusion with non-Ethernet ports
 Date: Tue, 31 Mar 2026 18:19:20 +0200
-Message-ID: <20260331161742.085567930@linuxfoundation.org>
+Message-ID: <20260331161803.679820899@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,138 +66,166 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,meta.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231989-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231790-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,3d8bc31c45e11450f24c];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,meta.com:email]
-X-Rspamd-Queue-Id: B6C7136D957
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,linux.dev:email,shopee.com:email]
+X-Rspamd-Queue-Id: ED32536E468
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit c77b30bd1dcb61f66c640ff7d2757816210c7cb0 ]
+[ Upstream commit 425000dbf17373a4ab8be9428f5dc055ef870a56 ]
 
-The BPF interpreter's signed 32-bit division and modulo handlers use
-the kernel abs() macro on s32 operands. The abs() macro documentation
-(include/linux/math.h) explicitly states the result is undefined when
-the input is the type minimum. When DST contains S32_MIN (0x80000000),
-abs((s32)DST) triggers undefined behavior and returns S32_MIN unchanged
-on arm64/x86. This value is then sign-extended to u64 as
-0xFFFFFFFF80000000, causing do_div() to compute the wrong result.
+Similar to commit 950803f72547 ("bonding: fix type confusion in
+bond_setup_by_slave()") team has the same class of header_ops type
+confusion.
 
-The verifier's abstract interpretation (scalar32_min_max_sdiv) computes
-the mathematically correct result for range tracking, creating a
-verifier/interpreter mismatch that can be exploited for out-of-bounds
-map value access.
+For non-Ethernet ports, team_setup_by_port() copies port_dev->header_ops
+directly. When the team device later calls dev_hard_header() or
+dev_parse_header(), these callbacks can run with the team net_device
+instead of the real lower device, so netdev_priv(dev) is interpreted as
+the wrong private type and can crash.
 
-Introduce abs_s32() which handles S32_MIN correctly by casting to u32
-before negating, avoiding signed overflow entirely. Replace all 8
-abs((s32)...) call sites in the interpreter's sdiv32/smod32 handlers.
+The syzbot report shows a crash in bond_header_create(), but the root
+cause is in team: the topology is gre -> bond -> team, and team calls
+the inherited header_ops with its own net_device instead of the lower
+device, so bond_header_create() receives a team device and interprets
+netdev_priv() as bonding private data, causing a type confusion crash.
 
-s32 is the only affected case -- the s64 division/modulo handlers do
-not use abs().
+Fix this by introducing team header_ops wrappers for create/parse,
+selecting a team port under RCU, and calling the lower device callbacks
+with port->dev, so each callback always sees the correct net_device
+context.
 
-Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Link: https://lore.kernel.org/r/20260311011116.2108005-2-qguanni@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Also pass the selected lower device to the lower parse callback, so
+recursion is bounded in stacked non-Ethernet topologies and parse
+callbacks always run with the correct device context.
+
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Reported-by: syzbot+3d8bc31c45e11450f24c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69b46af7.050a0220.36eb34.000e.GAE@google.com/T/
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260320072139.134249-2-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/net/team/team_core.c | 65 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index fbd5d292d8bf9..b58833e99969a 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1735,6 +1735,12 @@ bool bpf_opcode_in_insntable(u8 code)
- }
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index a0fe998cc055d..98772d749f2bf 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -2060,6 +2060,68 @@ static const struct ethtool_ops team_ethtool_ops = {
+  * rt netlink interface
+  ***********************/
  
- #ifndef CONFIG_BPF_JIT_ALWAYS_ON
-+/* Absolute value of s32 without undefined behavior for S32_MIN */
-+static u32 abs_s32(s32 x)
++/* For tx path we need a linkup && enabled port and for parse any port
++ * suffices.
++ */
++static struct team_port *team_header_port_get_rcu(struct team *team,
++						  bool txable)
 +{
-+	return x >= 0 ? (u32)x : -(u32)x;
++	struct team_port *port;
++
++	list_for_each_entry_rcu(port, &team->port_list, list) {
++		if (!txable || team_port_txable(port))
++			return port;
++	}
++
++	return NULL;
 +}
 +
- /**
-  *	___bpf_prog_run - run eBPF program on a given context
-  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
-@@ -1899,8 +1905,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = do_div(AX, (u32) SRC);
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			AX = do_div(AX, abs((s32)SRC));
-+			AX = abs_s32((s32)DST);
-+			AX = do_div(AX, abs_s32((s32)SRC));
- 			if ((s32)DST < 0)
- 				DST = (u32)-AX;
- 			else
-@@ -1927,8 +1933,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = do_div(AX, (u32) IMM);
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			AX = do_div(AX, abs((s32)IMM));
-+			AX = abs_s32((s32)DST);
-+			AX = do_div(AX, abs_s32((s32)IMM));
- 			if ((s32)DST < 0)
- 				DST = (u32)-AX;
- 			else
-@@ -1954,8 +1960,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = (u32) AX;
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			do_div(AX, abs((s32)SRC));
-+			AX = abs_s32((s32)DST);
-+			do_div(AX, abs_s32((s32)SRC));
- 			if (((s32)DST < 0) == ((s32)SRC < 0))
- 				DST = (u32)AX;
- 			else
-@@ -1981,8 +1987,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 			DST = (u32) AX;
- 			break;
- 		case 1:
--			AX = abs((s32)DST);
--			do_div(AX, abs((s32)IMM));
-+			AX = abs_s32((s32)DST);
-+			do_div(AX, abs_s32((s32)IMM));
- 			if (((s32)DST < 0) == ((s32)IMM < 0))
- 				DST = (u32)AX;
- 			else
++static int team_header_create(struct sk_buff *skb, struct net_device *team_dev,
++			      unsigned short type, const void *daddr,
++			      const void *saddr, unsigned int len)
++{
++	struct team *team = netdev_priv(team_dev);
++	const struct header_ops *port_ops;
++	struct team_port *port;
++	int ret = 0;
++
++	rcu_read_lock();
++	port = team_header_port_get_rcu(team, true);
++	if (port) {
++		port_ops = READ_ONCE(port->dev->header_ops);
++		if (port_ops && port_ops->create)
++			ret = port_ops->create(skb, port->dev,
++					       type, daddr, saddr, len);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static int team_header_parse(const struct sk_buff *skb,
++			     const struct net_device *team_dev,
++			     unsigned char *haddr)
++{
++	struct team *team = netdev_priv(team_dev);
++	const struct header_ops *port_ops;
++	struct team_port *port;
++	int ret = 0;
++
++	rcu_read_lock();
++	port = team_header_port_get_rcu(team, false);
++	if (port) {
++		port_ops = READ_ONCE(port->dev->header_ops);
++		if (port_ops && port_ops->parse)
++			ret = port_ops->parse(skb, port->dev, haddr);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static const struct header_ops team_header_ops = {
++	.create		= team_header_create,
++	.parse		= team_header_parse,
++};
++
+ static void team_setup_by_port(struct net_device *dev,
+ 			       struct net_device *port_dev)
+ {
+@@ -2068,7 +2130,8 @@ static void team_setup_by_port(struct net_device *dev,
+ 	if (port_dev->type == ARPHRD_ETHER)
+ 		dev->header_ops	= team->header_ops_cache;
+ 	else
+-		dev->header_ops	= port_dev->header_ops;
++		dev->header_ops	= port_dev->header_ops ?
++				  &team_header_ops : NULL;
+ 	dev->type = port_dev->type;
+ 	dev->hard_header_len = port_dev->hard_header_len;
+ 	dev->needed_headroom = port_dev->needed_headroom;
 -- 
 2.51.0
 
