@@ -1,223 +1,231 @@
-Return-Path: <stable+bounces-231454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB/SFFvvy2m5MgYAu9opvQ
-	(envelope-from <stable+bounces-231454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:59:23 +0200
+	id ED3YDLTty2m5MgYAu9opvQ
+	(envelope-from <stable+bounces-231455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:52:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD1036C3E5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:59:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B1636C249
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF5A931BE8FA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:42:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F41CB304FA3A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B6641322E;
-	Tue, 31 Mar 2026 15:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710DF411615;
+	Tue, 31 Mar 2026 15:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkOO1ubW"
+	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="MknPGXTr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB523FF8BF
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 15:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774971618; cv=pass; b=L7DI8vekwiw1NPCC5AbBbmYKdmE9T3F8/XVAj0FptAzoIheVzzgda5tMNnIl8i0yG5cxUzTc8cDgVBtX+dSO9GU2o5aFPk9L5K4nAb7lK9113VGAGm29QQCM7RDaX9dqtedkVGpKpzgA+YH1Oi3FX9zEAou/IosuQBV59JAuQeU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774971618; c=relaxed/simple;
-	bh=M86POBW/a3TsEts6tVZ7TB0EfrjJxMIvFGo4HhkDcK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EvzUGTRtLC2KRjOSTkZuhzg2QNIarIDPRMTvJZbJVJqELfQl1w532YE2ivTs2UjaVclBzh4OqJ5MTzT27glK0XkpQMIiWrV2LaufAatkria+JoC+qBE+z3UX2LeDUQxIp0p2Gi4n9njkhndZqiXB4MkwvmmVad7gZZoTm2XfHqY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkOO1ubW; arc=pass smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d86eb7c854so3086805a34.3
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 08:40:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774971616; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YDkoZAoQXXWMdhQdlunJweA8/cWbVyvev2knMmsh2g3OFVkGJho7M92SpCOVCbWeMM
-         xu9OYyIaYjKHJsDQbWdI1DKphUPTpgE9RRQe3JARWxG85i+ovTNbzEd8E0PqbhParbF1
-         WZCr2Yr6ND2afKjh0Y1FAfnXtjXH4cE1LjbZZHO8WqSQhj9EV4UilYc/rfiDjc/ku/Ic
-         5AMmrduI8WJX3Eb9MNqZwbfQSfQWVenX+pdiaqr5Ks0Rq94ddrlx1vyp86crLKvchjPe
-         wmTG3ZGnQkxq1pv8l+vwer5KwEZFnZz4T1t64QqIUWI7s35kSD3+3rPYr9Vah0BDsLGC
-         0Ngg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=u8qcruLr1TaN4a3nPxJC8zeje2SUnWQJ8J8aOZ6a6Fo=;
-        fh=20JaHP+r9w/TX4pcZL3n5dzOP++LzO1svWU977HtyHM=;
-        b=R7Z7CnC8sQXwXHBtGIntHjfRa2bNWmgzdTU2arKxK6k0yXXmSHx00YNLmcm+9eCQ7m
-         Uka9Ajdgk2uYUX1iNhqoKxGvA0lG7NWKf1zXOAmDE5xAcYiQD3LFqyB0aBtdq5gmqg/c
-         a28oNAR+47yLzlFHTRd551SBDQ8uo+LPnbxWXPL6zxQt82wyDBKxUBlPguTsSfOWiBMX
-         D/TWzYMzJuAQyWtNB3sgfx7m5OBwR45UQ3RavCdrd8SU4RLF7GKLr1NyTVLRMmN8tGhN
-         VvuH8gZCcyDSQfdBoysPummj8ND/ygSmRsaCyaveXVvFwum3R+qGHXTfPlZc8+5EJ70R
-         aUGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A24411624
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 15:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774971830; cv=none; b=ubuz+zdjnX/umOCUfx/cBm9amRXvhX6guQscddptrdKssecKe+sAYgdBRsHy0YQQF0a4nXG4Sy/4lDJTu/HD0EsYZal6CCnT5QyV0Lsy/0btof427foSzUxDqT+oJ7obVgWG7SeWUrWmJ2OFooh2ZemH5+ecJvUgWAHpishnpzg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774971830; c=relaxed/simple;
+	bh=Lak4zcWpFwfXjCXPbBnc4yBKiesb3cWUXZkq+I+QBCM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MjkY2bwEcW2QyFqhILZyjfuNCBXTtDyodU/E8uV+Dn878wm5PmCfDmCnCjB+M+VSjhc7KwQ1qseqUGZz6OoczB/STIuCqVzHcFHLsnC8jl/LzQwwNrI3GLk37enuqSXptL0GNZlTasj6QxXynmtZHSDJgTIN+7UIipBoIsQEyAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=MknPGXTr; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flipper.net
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486fba7ce4cso59092405e9.3
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 08:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774971616; x=1775576416; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u8qcruLr1TaN4a3nPxJC8zeje2SUnWQJ8J8aOZ6a6Fo=;
-        b=nkOO1ubWeSgBynejD6YjsUMf4rGxqUG52/z/ZMrxG8uCSmw+eUI0nRSh6ranGg7xjA
-         zliEmUdzHmYndZvYeOoDTCTqQV6YtkKQI8Rnmf5fPEXX7mMhcQoZyGpEYT57WMAf5M8p
-         /GOTZ8DxjEy4Yf92ts63IfA0BrZEvshDztmLNQoQ1zFzhxslHxcE55TNepseMr7TTjJU
-         MgLjevZbRop1ZLsN1V0uGh/mMoDei9iXcetugblwbhv8ARWQcF0AQPFS+IhHnPxyX19S
-         ytE1bpXUTWJ99bEuKIbTUGW57qbJjQTft/dziHHrKkdB7NsRazbpj+sKVoUHjUX5PGbe
-         Ch4w==
+        d=flipper.net; s=google; t=1774971827; x=1775576627; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=py3e1w6KMUuyJpztK2fw9vXLuizsBVQDCyepeMdTu4I=;
+        b=MknPGXTrRCR8++ycFypzpqIkF9kCxkjzGSp2X8DCtBFyeUiY4AltsaGEOBUuqAplUV
+         8DZ0N2bXO8bISlOVt80YV6NMDtTljI0l3AwcnamV9zu1PxPr24nW+zBmXI2IL4YNTjcb
+         e3UPhDaEpvZQAa0i00oHvQKJ19xcP2nBxUlm1hsuXNngg25JGEmFwVTors2rNgfujgWI
+         GVWF+Y22BnjYHStSop2j+jOFqBulBB75s981TaUmZSL7FtdkBm5tSVXCxHwc40oQkEFm
+         MKa9hR/XOvUTfzJCVusI1CbPyqKvYvniDt7/iRWCI4R8J2m+6vUm7pw2mayqC4+l3YVU
+         y4Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774971616; x=1775576416;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=u8qcruLr1TaN4a3nPxJC8zeje2SUnWQJ8J8aOZ6a6Fo=;
-        b=QWJlJJROSGP8pgpBrh6zo/T86U+FcxjYTh4KEnpSqrPX5ZJYd/mPTtOTjyczd/3unG
-         SHy5Vw7iYY7Pv6yXt9BfVBSfTcm5g/KENIAy5CkBBl+JXgOv78+FNdGyz4SD5d8DLDXN
-         jHXj8TFcdBTONrlTYSY9HDGbIvNxyX2HXATgewQ7tL15YVYpJw61YE9bpdC3+BtcgMaT
-         f0bqQzKKBujIpL7LHSvOJbfytHKUig1QI0fiuRtZZO2nwluBuZilrwWCMs8qTie5OqSw
-         IF6PJwQnWLzHK9Rw8qjBkK5iXC2//mqrMJFozTDIWCOIHLAvPIEAiEpzmvbiWRn88T9W
-         RhFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4g3QS7AMzKwCyaUxKxQAaVW5G6BnsYCtZwnKs/SH3lR0wPcCm3Am3YZ758XRyg/Qxe4zMdQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP3fGgTFg/Jt8K+rd9DQxpcHuW94lAIc7c8mnP/9no2wI+Uw2C
-	FhcxpeO/ohWI5SkQnfWKisrrG+CB/pCNEKz50rKyFnjsv8Tf5CEJnu+1h1l8npUCkYIA8LGx+5D
-	xsw2eOpuFYIxytnB/ZyXv6xe63vHduK9HFm2hFac=
-X-Gm-Gg: ATEYQzzIPaGZfOFcAWXMz+nY7uEtLjwxxrsDmzPSkKFaRYc/6EGb29+Q/PmawbdbLW2
-	Uu162X32I0sX52pe/TkwEmaolwDcuCPpIgRQV/AoxGCoZGX05LXDf4vaa90EAgIiuRNQ2tSBgmk
-	yCQiN8TRYQAZeFRcrvZukYN2hTmMtq+0dFV1zwJBVtzOVZlqaEDQKdJ6RLgAcJS4+eZzOp1ykR4
-	uv9r/ixnVcYVOBH9rCKEG58JxvFg6bDW3jRVGDKHb/eK+pGmEEtE+AIPhu5+EIJUwd5yfpr6xMi
-	eHmtrIKUIkxi/qFW0u4o6SmsRNkDY8nHjQgpW8NtQRr5Tb8=
-X-Received: by 2002:a05:6808:1718:b0:468:48d:8075 with SMTP id
- 5614622812f47-46a8a395fb3mr7995552b6e.8.1774971616516; Tue, 31 Mar 2026
- 08:40:16 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774971827; x=1775576627;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=py3e1w6KMUuyJpztK2fw9vXLuizsBVQDCyepeMdTu4I=;
+        b=MfYzECWKU22hMSIMr8Kj2Q3PZAEUsWqtUn459mVIUsu3hKIkDNOeGZqvqrpIMW1Giw
+         I4PmLEyYxtFp8oixBPyDb4HI5AN2oCV9LCkvk51N1aDnBURjcxCsnIHMagZiiojKqo03
+         tLInVllIayFP1h3sUYZlqwYMSdCOV4vwuB2kgIgrPfSH1BGpytoE/MpMQMJYnmD2EQif
+         e2KMGRKLNx4WJTr5MEykOLKLwxyg4r1ivyTeVOFDytwt7G5OH3RCBUYfFq+uqFLnkXAV
+         yGpPhRbw19hYEAzkLCDso4ZLirI+A3rBuPqPYXM18S/zxI2w1Spei8xf3t1Bc541oPnc
+         c+uA==
+X-Forwarded-Encrypted: i=1; AJvYcCX8ROvvJlrx9agHkHAgPCTUSuFguZGYRtunXLpOj45JkEitm/n9LPonebHYve0gUXH5QgoF8Vo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZCRqJ7D/ZlUlOW7oWtvQZ8bNxTmKxWfK1TXd5UEzcxV4YUmGX
+	e49sjN403RZRniIcGHG1oKGFmLEoAIUNd77E5MpAAAKagTaIlt2zge7lhApR6ZD1OUM=
+X-Gm-Gg: ATEYQzzn221unzQpVWEPgir2wxqe0BVDx6r7WGDkSEv4NlAvSdrMYJaSvXSYpbKkBxJ
+	+gBAkXWsAXgjQkA7oNF+XfhErLXi+5PNVbyoeOY4z4GTJf4A6/PkKIXO7CgTJ1P/Qtdd5MJ0WbN
+	VJeZZ/7EM77+V+lde6buIjKfQLnenrQLhK++VcJPH+I3k6J55D1i9Be0KAI8p2nPy1SB0HPl2fp
+	SUBPPIUg2WNUsQjpK5uGdtjIbb5jdltSFhKxZ9/L4RDJqjIMA+h0Eypfky1B1OmhJblr0b6gkPU
+	zpdQtSC7bNWCB6vCmFUvV0qWCS+v49CeDQ++/S+2ffdA2KOLpVOQm/vxqdpkS5H1HWv3J+VpZWp
+	mJemPVkO06V7IdoHKe+8zV3/Wth1afIwSOWgStWijU6qVcsEFhc/FsHbHHQzpcmftK9eibTV+R8
+	kpXpuSywQ2VnnDYip63URskSpsAIhcAQVjxtp3Q5vBIl+yyBA+QBjOrXVqFweJGgfPFhimz+kFg
+	C9m6Q==
+X-Received: by 2002:a05:600c:4744:b0:485:2a4b:7bc3 with SMTP id 5b1f17b1804b1-48727d5d6femr284014105e9.4.1774971827114;
+        Tue, 31 Mar 2026 08:43:47 -0700 (PDT)
+Received: from alchark-surface.localdomain (bba-86-98-192-109.alshamil.net.ae. [86.98.192.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8852a5sm48412605e9.9.2026.03.31.08.43.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 08:43:46 -0700 (PDT)
+From: Alexey Charkov <alchark@flipper.net>
+Subject: [PATCH v6 00/11] Add support for the TI BQ25792 battery charger
+Date: Tue, 31 Mar 2026 19:43:37 +0400
+Message-Id: <20260331-bq25792-v6-0-0278fba33eb9@flipper.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com>
-In-Reply-To: <20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com>
-From: Kyle Farnung <kfarnung@gmail.com>
-Date: Tue, 31 Mar 2026 08:40:05 -0700
-X-Gm-Features: AQROBzAt-wrDIMtX7p-AOcDjVXjahzEybmuxfvEKnbowGjaS1uRal6qZfRUGMgw
-Message-ID: <CAOPSVF3tbkTVjW1o1NfrgbOA9v163n_QuDR4ay2ggdMs5f9Z0g@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: apply existing PM quirk to ThinkPad P14s
- Gen 5 AMD
-To: kfarnung@gmail.com
-Cc: jjohnson@kernel.org, mpearson-lenovo@squebb.ca, stable@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKnry2kC/2XOwW6DMAwG4Fepcl4mx47dsNPeY9oBiLNGmigNF
+ dpU8e4LvcDE8bf8/fbDTFqyTubt9DBF5zzl61CDvJxMf2mHL7U51mwQUICAbHdDPjdowRG2fZD
+ gJZq6PRZN+efZ9PFZ8yVP92v5fRbPbp0eO2ZnwaooKwCR5/CevvM4ankd9G7Wlhn3UjZZH7DCD
+ aNvoqiko6SddLBJqhIwBUXCKNQdpd9Lt0lf5RkdecexUe2PkncS/SZ5vdmidhz65Fz8L5dl+QN
+ rVXNriAEAAA==
+X-Change-ID: 20260303-bq25792-0132ac86846d
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chris Morgan <macromorgan@hotmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Sebastian Reichel <sre@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ linux-pm@vger.kernel.org, Alexey Charkov <alchark@flipper.net>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4161; i=alchark@flipper.net;
+ h=from:subject:message-id; bh=Lak4zcWpFwfXjCXPbBnc4yBKiesb3cWUXZkq+I+QBCM=;
+ b=owGbwMvMwCW2adGNfoHIK0sZT6slMWSefr1eLv3I3dnefgoarKt4n7KHOEy9dbDoh5O+2zIL0
+ Z7729KPdExkYRDjYrAUU2SZ+22J7VQjvlm7PDy+wsxhZQIZIi3SwAAELAx8uYl5pUY6Rnqm2oZ6
+ hoY6xjpGDFycAjDV3OEM/+zWzTi/Q4HD43+z4WI1+YKao0p5Zzflb9lwLOynA8PTTy8ZGSaIufx
+ SE7bIaXr1TbZO/M8C2Vvf1sVUu4plyFzYeGBjBgcA
+X-Developer-Key: i=alchark@flipper.net; a=openpgp;
+ fpr=9DF6A43D95320E9ABA4848F5B2A2D88F1059D4A5
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[flipper.net,quarantine];
+	R_DKIM_ALLOW(-0.20)[flipper.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231454-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231455-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.org,hotmail.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[flipper.net:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kfarnung@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lenovo.com:url,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: CFD1036C3E5
+	FROM_NEQ_ENVFROM(0.00)[alchark@flipper.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D2B1636C249
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 11:18=E2=80=AFPM Kyle Farnung via B4 Relay
-<devnull+kfarnung.gmail.com@kernel.org> wrote:
->
-> From: Kyle Farnung <kfarnung@gmail.com>
->
-> Some ThinkPad P14s Gen 5 AMD systems experience suspend/resume
-> reliability issues similar to those reported in [1]. These platforms
-> were not previously included in the ath11k PM quirk table.
->
-> Add DMI matches for product IDs 21ME and 21MF to apply the existing
-> ATH11K_PM_WOW override, improving suspend/resume behavior on these
-> systems.
->
-> Tested on a ThinkPad P14s Gen 5 AMD (21ME) running 6.19.9.
->
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196
-> [2] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thin=
-kpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/
->
-> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine =
-model")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireles=
-s/ath/ath11k/core.c
-> index 3f6f4db5b7ee1aba79fd7526e5d59d068e0f4a2e..21d366224e75904feeae6cb9c=
-93d9ef692d127fe 100644
-> --- a/drivers/net/wireless/ath/ath11k/core.c
-> +++ b/drivers/net/wireless/ath/ath11k/core.c
-> @@ -1041,6 +1041,20 @@ static const struct dmi_system_id ath11k_pm_quirk_=
-table[] =3D {
->                         DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
->                 },
->         },
-> +       {
-> +               .driver_data =3D (void *)ATH11K_PM_WOW,
-> +               .matches =3D { /* P14s G5 AMD #1 */
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
-> +               },
-> +       },
-> +       {
-> +               .driver_data =3D (void *)ATH11K_PM_WOW,
-> +               .matches =3D { /* P14s G5 AMD #2 */
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
-> +               },
-> +       },
->         {}
->  };
->
->
-> ---
-> base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
-> change-id: 20260330-p14s-pm-quirk-0a51ba19235f
->
-> Best regards,
-> --
-> Kyle Farnung <kfarnung@gmail.com>
->
->
+This adds support for the TI BQ25792 battery charger, which is similar in
+overall logic to the BQ25703A, but has a different register layout and
+slightly different lower-level programming logic.
 
-Apologies to everyone, I realized that I lost my CC list in the sending
-process. I wasn't sure what the right fix was so I ended up posting a v2
-patch [1] instead.
+The series is organized as follows:
+- Patch 1 adds the new variant to the existing DT binding, including the
+  changes in electrical characteristics
+- Patches 2-4 are minor cleanups to the existing BQ25703A OTG regulator
+  driver, slimming down the code and making it more reusable for the new
+  BQ25792 variant
+- Patch 5 is a logical fix to the BQ25703A clamping logic for VSYSMIN
+  (this is a standalone fix which can be applied independently and may be
+  backported to stable)
+- Patches 6-8 are slight refactoring of the existing BQ25703A charger
+  driver to make it more reusable for the new BQ25792 variant
+- Patch 9 adds platform data to distinguish between the two variants in
+  the parent MFD driver, and binds it to the new compatible string
+- Patches 10-11 add variant-specific code to support the new BQ25792
+  variant in the regulator part and the charger part respectively,
+  selected by the platform data added in patch 9
 
-[1] https://lore.kernel.org/linux-wireless/20260330-p14s-pm-quirk-v2-1-ef18=
-ce07996b@gmail.com/
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
+---
+Changes in v6:
+- Changed -EINVAL to -ENODEV for non-match cases in the MFD driver, to stay
+  in line with what other drivers do in similar situations (Lee Jones)
+- Link to v5: https://lore.kernel.org/r/20260324-bq25792-v5-0-0a2eb58cf11d@flipper.net
 
-Thanks,
-Kyle
+Changes in v5:
+- Added non-OF match data and switched to i2c_get_match_data() to support
+  non-OF platforms (Lee Jones)
+- Shifted the types in the enum to start at 1 to avoid confusion with
+  zero-initialized data and non-match cases (Lee Jones)
+- Reinstated the const qualifier on the MFD cell array (Lee Jones)
+- Link to v4: https://lore.kernel.org/r/20260311-bq25792-v4-0-7213415d9eec@flipper.net
+
+Changes in v4:
+- Avoid additional data structures and pass 'type' within the existing
+  struct bq257xx_device instead (Lee Jones)
+- Move comments for new struct fields to the patches where those fields
+  are added (Sebastian Reichel)
+- Collect tags from Sebastian Reichel (thanks!)
+- Link to v3: https://lore.kernel.org/r/20260310-bq25792-v3-0-02f8e232d63b@flipper.net
+
+Changes in v3:
+- Move MFD cell definitions back out of the probe function (Lee Jones)
+- Collect tags from Mark Brown, Krzysztof Kozlowski and Chris Morgan (thanks!)
+- Enable ship FET functionality at init for BQ25792
+- Link to v2: https://lore.kernel.org/r/20260306-bq25792-v2-0-6595249d6e6f@flipper.net
+
+Changes in v2:
+- Fix an error in DT schema (thanks Rob's bot)
+- Ensure the broadest constraints for all variants remain in the common
+  part of the schema, per writing-schema doc (thanks Krzysztof)
+- Link to v1: https://lore.kernel.org/r/20260303-bq25792-v1-0-e6e5e0033458@flipper.net
+
+---
+Alexey Charkov (11):
+      dt-bindings: mfd: ti,bq25703a: Expand to include BQ25792
+      regulator: bq257xx: Remove reference to the parent MFD's dev
+      regulator: bq257xx: Drop the regulator_dev from the driver data
+      regulator: bq257xx: Make OTG enable GPIO really optional
+      power: supply: bq257xx: Fix VSYSMIN clamping logic
+      power: supply: bq257xx: Make the default current limit a per-chip attribute
+      power: supply: bq257xx: Consistently use indirect get/set helpers
+      power: supply: bq257xx: Add fields for 'charging' and 'overvoltage' states
+      mfd: bq257xx: Add BQ25792 support
+      regulator: bq257xx: Add support for BQ25792
+      power: supply: bq257xx: Add support for BQ25792
+
+ .../devicetree/bindings/mfd/ti,bq25703a.yaml       |  73 ++-
+ drivers/mfd/bq257xx.c                              |  54 ++-
+ drivers/power/supply/bq257xx_charger.c             | 534 ++++++++++++++++++++-
+ drivers/regulator/bq257xx-regulator.c              | 121 ++++-
+ include/linux/mfd/bq257xx.h                        | 412 ++++++++++++++++
+ 5 files changed, 1156 insertions(+), 38 deletions(-)
+---
+base-commit: 36ece9697e89016181e5ae87510e40fb31d86f2b
+change-id: 20260303-bq25792-0132ac86846d
+
+Best regards,
+-- 
+Alexey Charkov <alchark@flipper.net>
+
 
