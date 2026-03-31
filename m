@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMrUDAL9y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:38 +0200
+	id wKxaFbf3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8723C36D80F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B067636CCAF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3403A3168B49
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB3FA30B29A6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8951425CD9;
-	Tue, 31 Mar 2026 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8BA3FF8A7;
+	Tue, 31 Mar 2026 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTu4oZUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hzu6qfKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9889F423A76;
-	Tue, 31 Mar 2026 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8083F9F5E;
+	Tue, 31 Mar 2026 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975321; cv=none; b=Lckl6TgHHU5ihBxNEXD8FXavQ3w3xpawwu69wU6VsdkSJNiJIofmRKm1IolwTlZOGn00h9h8y6UFK8LGw3MVbVrn83M0qkrghFGMLM+BvpHE7isN+KQmjkkCzor9M0VeJMRZrszRmiGuEtTefDNSLbA9fNZgabOs7frGAW/2x1g=
+	t=1774974475; cv=none; b=V7KH9O01sMvAWx0K7reiAxOR/L+NLw3rpqAVKt5yr22NVOUjB7y+1CIIQDHTuqmRcvfmEZpRyUqPVMeYKZnqh/10hpJoZU9T0iszaSDIER8lRhP68GXQ0i/y0/TQlPcGOdB/QUxtBNGVskgITVZxmJAxz2qVFI+KegJiUwC0vUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975321; c=relaxed/simple;
-	bh=7F49mslvYlekFabGdrRSHX4pTUIIBAa2EnOUpdN2qQ4=;
+	s=arc-20240116; t=1774974475; c=relaxed/simple;
+	bh=2ZvVz2D6kqWDRWJlVu2CuzsVMEfgalrpsK2EOfFVyBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRaLDPGTie9MjMawrq33zmakZAlGnMqYqCp9hmcyrYAwKa1n65zfFciDA6btsu5YVuSC032RwJ7CYkDeZlDuNJoftihE5IE/iEmdNTd3HBKJQ8zeaozxBCaKmTX8S/WGbzOLNr+fbpCMHV2ZWg2wIUUmEGK24gWxibBKxim14d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTu4oZUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329CDC19423;
-	Tue, 31 Mar 2026 16:42:01 +0000 (UTC)
+	 MIME-Version; b=TGmR0X6qxKAcZ9yiI49j1FacCB6qurWAI96o3RAKHc2fqASTcm1bqWAVdNe798t9y1Imo/2Tao+b4ACEnDjFGp2miY4CSWJDhxUHlt1WN1kWxjDjJcgP+OvIMYAKmLm4YlGdejBttZH2MAd0bCxf43si0+JO0lGFDBqNcv9ohWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hzu6qfKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57D4C19423;
+	Tue, 31 Mar 2026 16:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975321;
-	bh=7F49mslvYlekFabGdrRSHX4pTUIIBAa2EnOUpdN2qQ4=;
+	s=korg; t=1774974475;
+	bh=2ZvVz2D6kqWDRWJlVu2CuzsVMEfgalrpsK2EOfFVyBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTu4oZUxn61jun7Ol9V4bNflBXLvXTTJzMuSqr9dim0KF5JmrXl+stuuC8KtEKoww
-	 a8bDA1hlwzbvSVk2alecoEc/nkrU/aUuvpciIFOn0SE9rsVnvQZU3UTUEypS0MlUHy
-	 SMVH4ea/4NIfuocei7Ynhr4VUsHu3h9/jxn/4L6g=
+	b=Hzu6qfKygaXJUxJ+jDljPWBrnnfCbX/IxTnw6toXaLfSuFVg1/5opf3TYzfj+rUzA
+	 HZavfyELfVW38I6ECQpV1vwGPR43TG5RrCeeDHnzkTa5Lg9SgXRLcGuslr9k3lfTvx
+	 ZHcFStlVWiUPtYeeMuYcngogMvdVtbbFFjTn4oSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.19 250/342] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
+	stable@kernel.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.6 099/175] s390/barrier: Make array_index_mask_nospec() __always_inline
 Date: Tue, 31 Mar 2026 18:21:23 +0200
-Message-ID: <20260331161808.158992675@linuxfoundation.org>
+Message-ID: <20260331161733.416019388@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231886-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231556-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,93 +89,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 8723C36D80F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B067636CCAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit aad885e774966e97b675dfe928da164214a71605 upstream.
+commit c5c0a268b38adffbb2e70e6957017537ff54c157 upstream.
 
-When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
-existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
-right about it being impossible to convert a shadow-present SPTE to an
-MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
-memory that are outside the scope of KVM.
+Mark array_index_mask_nospec() as __always_inline to guarantee the
+mitigation is emitted inline regardless of compiler inlining decisions.
 
-E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
-to emulted MMIO and then the guest hits a relevant page fault, KVM will
-install the MMIO SPTE without first zapping the shadow-present SPTE.
-
-  ------------[ cut here ]------------
-  is_shadow_present_pte(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
-  Call Trace:
-   <TASK>
-   mmu_set_spte+0x237/0x440 [kvm]
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x47fa3f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-Reported-by: Alexander Bulekov <bkov@amazon.com>
-Debugged-by: Alexander Bulekov <bkov@amazon.com>
-Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
-Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: e2dd833389cc ("s390: add optimized array_index_mask_nospec")
+Cc: stable@kernel.org
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/s390/include/asm/barrier.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3044,12 +3044,6 @@ static int mmu_set_spte(struct kvm_vcpu
- 	bool prefetch = !fault || fault->prefetch;
- 	bool write_fault = fault && fault->write;
- 
--	if (unlikely(is_noslot_pfn(pfn))) {
--		vcpu->stat.pf_mmio_spte_created++;
--		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
--		return RET_PF_EMULATE;
--	}
--
- 	if (is_shadow_present_pte(*sptep)) {
- 		if (prefetch && is_last_spte(*sptep, level) &&
- 		    pfn == spte_to_pfn(*sptep))
-@@ -3073,6 +3067,14 @@ static int mmu_set_spte(struct kvm_vcpu
- 			was_rmapped = 1;
- 	}
- 
-+	if (unlikely(is_noslot_pfn(pfn))) {
-+		vcpu->stat.pf_mmio_spte_created++;
-+		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
-+		if (flush)
-+			kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
-+		return RET_PF_EMULATE;
-+	}
-+
- 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
- 			   false, host_writable, &spte);
+--- a/arch/s390/include/asm/barrier.h
++++ b/arch/s390/include/asm/barrier.h
+@@ -60,8 +60,8 @@ do {									\
+  * @size: number of elements in array
+  */
+ #define array_index_mask_nospec array_index_mask_nospec
+-static inline unsigned long array_index_mask_nospec(unsigned long index,
+-						    unsigned long size)
++static __always_inline unsigned long array_index_mask_nospec(unsigned long index,
++							     unsigned long size)
+ {
+ 	unsigned long mask;
  
 
 
