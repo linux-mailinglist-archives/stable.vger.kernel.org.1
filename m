@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-231692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WK5/BsL/y2koNQYAu9opvQ
-	(envelope-from <stable+bounces-231692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:22 +0200
+	id sAY2ItP5y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E5236E023
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0812536D0BD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D36132402F3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5557F31B4389
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD2E425CD8;
-	Tue, 31 Mar 2026 16:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A84541B37F;
+	Tue, 31 Mar 2026 16:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1E+NYye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFauzZBP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73F441324B;
-	Tue, 31 Mar 2026 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA3C402435;
+	Tue, 31 Mar 2026 16:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974822; cv=none; b=mibS/7R/UHKzmvOPzWlpXtsPYMHiJ+MLJD/yOKZg9JpRVxppGOrGr5PshQ95pywUgB2cW9+vQepgyJeOHEy3eROnYzOXY+T6zs6eDtyNkvGo0Ly0l9+2X9dt9tCew5X+Q+Druj0TLO/CzQDLQQ8B65S2e5BXQRQcn2tS0khSbqg=
+	t=1774974825; cv=none; b=nwXF83zYKxxugHRzlY1WfNc/6fiUcs2ySGT43vYSsSG8QvrQ7K8X7U82+I260K0EkDMtGfEQbJKxDW+bU6mNYYgLMbJX6AKZeKOmkI/rfChgaDsmxoXwvY7PdEPl4tseS9VYFXRo0sdv+ZDIJsSGBZ0O+61/EC08PpaUZ8Yloh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974822; c=relaxed/simple;
-	bh=TKGCnC9ARO0G+6C+NF5iTuxjiAEV1A7Q55kz3poSpOs=;
+	s=arc-20240116; t=1774974825; c=relaxed/simple;
+	bh=YvKhJttd4YIW89+6qId9e6CnMUh+6mAkLKs8SFC+2hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lvPTlUhTT0oEwaY7QMJTPcDilYsSD2ndzytz4LnOVGn5oukvOYbrWyG91vgj+4cI6SAcznkgmlyx9XgBfnmlxC12zRFEYPLDjENHxkoNu+sIt6yI1p0GIL7SC9HY74iMjxoTA8R6duILzQd71cJx2DVMoGq8awJcAQGiTBK0KOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1E+NYye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B893C19423;
-	Tue, 31 Mar 2026 16:33:41 +0000 (UTC)
+	 MIME-Version; b=rXFJNTCVa/LQJe7cbISF2Eh3jpKdZTAaP5S74OKdKcT2OFvt2CpnwIF/Y+Cd6B5vKGk80SNmCkcwYy1OeLKgKBURg/S8jMgYI0pCe5MXWHhjtG6PU9BPy+x39u7A4hml0eira4x6IbEF1i5JI58JtXg5Y6rXLF0ebSp/h/nw468=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFauzZBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E82C19423;
+	Tue, 31 Mar 2026 16:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974822;
-	bh=TKGCnC9ARO0G+6C+NF5iTuxjiAEV1A7Q55kz3poSpOs=;
+	s=korg; t=1774974825;
+	bh=YvKhJttd4YIW89+6qId9e6CnMUh+6mAkLKs8SFC+2hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1E+NYyeX7pAS5yexHCLJTAinNSE92/XfIFh+D82/OfdrZ3Db7tQPG53cfnrqCWHU
-	 5J0G+YlodmGVQ87/1oddHFPsWPjW9Txdw28sFzVPN/s30xlYu5BUDN+SApU4G+dCxC
-	 D1r58InhGjEVnUhA/KAtC+dzTJHc3+r77ytSkNvA=
+	b=AFauzZBPn6hGBerQeK7CW0sSyj7fBSi9Cm966Ma5NS/exrgWpH+3NRczrkXLRgrVD
+	 MEAzkcINYkqebxfdgsZTkxbWitJva0CH/VHQCzGJBOny3IvDgRZxY2DnpSmPtlCtIi
+	 rHw0kKplldUXnlS4Gqb9M3Vg/WtxMt92wQLtJkX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Metz <peter.metz@unarin.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 024/342] platform/x86: intel-hid: Add Dell 14 Plus 2-in-1 to dmi_vgbs_allow_list
-Date: Tue, 31 Mar 2026 18:17:37 +0200
-Message-ID: <20260331161759.801386446@linuxfoundation.org>
+Subject: [PATCH 6.19 025/342] nvme-pci: cap queue creation to used queues
+Date: Tue, 31 Mar 2026 18:17:38 +0200
+Message-ID: <20260331161759.837315785@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -64,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231692-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231693-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 98E5236E023
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0812536D0BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,45 +100,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Peter Metz <peter.metz@unarin.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 6b3fa0615cd8432148581de62a52f83847af3d70 ]
+[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
 
-The Dell 14 Plus 2-in-1 (model DB04250) requires the VGBS allow list
-entry to correctly enable the tablet mode switch. Without this, the
-chassis state is not reported, and the hinge rotation only emits
-unknown scancodes.
+If the user reduces the special queue count at runtime and resets the
+controller, we need to reduce the number of queues and interrupts
+requested accordingly rather than start with the pre-allocated queue
+count.
 
-Verified on Dell 14 Plus 2-in-1 DB04250.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221090
-Signed-off-by: Peter Metz <peter.metz@unarin.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260213044627.203638-1-peter.metz@unarin.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/nvme/host/pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 560cc063198e1..5b475a09645a3 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -189,6 +189,12 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Dell 14 Plus 2-in-1 DB04250"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 3c83076a57e57..a5eab31c1bb7a 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2778,7 +2778,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
  
+-	nr_io_queues = dev->nr_allocated_queues - 1;
++	/*
++	 * The initial number of allocated queue slots may be too large if the
++	 * user reduced the special queue parameters. Cap the value to the
++	 * number we need for this round.
++	 */
++	nr_io_queues = min(nvme_max_io_queues(dev),
++			   dev->nr_allocated_queues - 1);
+ 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
+ 	if (result < 0)
+ 		return result;
 -- 
 2.51.0
 
