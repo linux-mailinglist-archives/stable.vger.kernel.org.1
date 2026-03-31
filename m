@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHO6Kar4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:06 +0200
+	id CDiYGCT+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3ACF36CE70
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBD336DB24
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADFB031CA283
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 943E33100DC9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71D1423A8C;
-	Tue, 31 Mar 2026 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52157426D07;
+	Tue, 31 Mar 2026 16:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQSTysb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5pnOGKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EF740710B;
-	Tue, 31 Mar 2026 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A573EF0A2;
+	Tue, 31 Mar 2026 16:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974615; cv=none; b=krywMiEqiXPnDRgVy76uZSbFy8EIdItFjGhUZ2DklBOhPXngrFy2sfZrGwXl3Z2qIZVwe32AbpbXzlsu5g/r2GT9Ogu3ymtdyvtIDNVpn9XNjIrRevpqdR6sbQClUYn2DKnvWOkZoEleTgY8c6YJfgBCJiu+pgNupeZHulS7fAk=
+	t=1774976050; cv=none; b=EBJSKcMMrV8fqki6NNMxbn0BwnkuTr3ZGr2e2mLJsm/gWFJUsYvT7TOc9ynTXEI2hUkk4etKNswpA//BZgRAOwVSFDGGHc5ZwXj6csfHf8gRLZra7ICUvAPZbP2GABz39QZKBWz5fG96XxX/a+xphXGfVbs5N950m6h8wxQ8jDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974615; c=relaxed/simple;
-	bh=4SfU4IyLLJYdGNeBeZaaOeeV8HaVZymP72fCavohIUM=;
+	s=arc-20240116; t=1774976050; c=relaxed/simple;
+	bh=H3KnPAKGjdXvqd6w/kRytiOjbc+WAdQUTvC1DylUsxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dL53eIvKgQheqjjPsRtWu4HqcQTa0/+c5icE58EvNxHEE+9uqzUqrDFxaiIiy0nnKgpd9RAXtBX7Y6oNAzLaejQ0qipGy23Q2jpmeSS8PL2vDKvrg/daMTyrw2SJ3Qd64s0gYwJ2Yituxyk9O9u6cqvysy0PdfpjRosgbylXx5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQSTysb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A11BC19423;
-	Tue, 31 Mar 2026 16:30:14 +0000 (UTC)
+	 MIME-Version; b=rc3XQyWT9uK/iz5sCTo3kWuyjhzu7vKgffm6vRJm5hSx5mUqTLanBaoCGJYLm0pKUQNahnlcmU3I96u4fmCKWYc7vasMFQdbpErsIrhalcvwAZBPh/JU6BXPi3h84U3wFC9twrdMTTTRmycjZkczPTslqXN3LEPBGPS9LuUp1+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5pnOGKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A107BC19423;
+	Tue, 31 Mar 2026 16:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974615;
-	bh=4SfU4IyLLJYdGNeBeZaaOeeV8HaVZymP72fCavohIUM=;
+	s=korg; t=1774976050;
+	bh=H3KnPAKGjdXvqd6w/kRytiOjbc+WAdQUTvC1DylUsxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQSTysb190xj/fI5ABaOY5BWnGcyE2a3V176I3T+8trC/wgM76RlgFeb2Phq1UWg1
-	 8oG2IpCyZJ+3hbsJ0awpvxUidfdSX+QyL39y3OAef9uTsXkxQ5kq0z5FFaV6KGzOJi
-	 8CsFSEJtni+Uf+TtzTgX87m/tNKNijb84947n/C8=
+	b=o5pnOGKYDUH7DP0v+wGvIbH74QlVkjUEaEcpOBNQZblVYKO4zOq0lBsxtAEeCaCzU
+	 mn1TKoQiHCiAhyfdX/ipb+t/7qAzQ9ek7E74/4XcvQQ3Tq2f4NmNzjnhm5XIR8botL
+	 I+0La2ckGRZqw5XR2cKpUT1pJeZAWzOpOi4wLl38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 154/175] xattr: switch to CLASS(fd)
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 188/244] ext4: replace BUG_ON with proper error handling in ext4_read_inline_folio
 Date: Tue, 31 Mar 2026 18:22:18 +0200
-Message-ID: <20260331161735.450792982@linuxfoundation.org>
+Message-ID: <20260331161748.698911455@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231610-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,zeniv.linux.org.uk,foxmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232167-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,foxmail.com:email]
-X-Rspamd-Queue-Id: F3ACF36CE70
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iloc.bh:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BBBD336DB24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-[ Upstream commit a71874379ec8c6e788a61d71b3ad014a8d9a5c08 ]
+commit 356227096eb66e41b23caf7045e6304877322edf upstream.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-[ Only switch to CLASS(fd) in v6.6.y for fd_empty() was introduced in commit
-88a2f6468d01 ("struct fd: representation change") in 6.12. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Replace BUG_ON() with proper error handling when inline data size
+exceeds PAGE_SIZE. This prevents kernel panic and allows the system to
+continue running while properly reporting the filesystem corruption.
+
+The error is logged via ext4_error_inode(), the buffer head is released
+to prevent memory leak, and -EFSCORRUPTED is returned to indicate
+filesystem corruption.
+
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Link: https://patch.msgid.link/20260223123345.14838-2-ytohnuki@amazon.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xattr.c |   27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+ fs/ext4/inline.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/xattr.c
-+++ b/fs/xattr.c
-@@ -698,8 +698,6 @@ SYSCALL_DEFINE5(fsetxattr, int, fd, cons
- 	int error;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -517,7 +517,15 @@ static int ext4_read_inline_folio(struct
+ 		goto out;
  
- 	CLASS(fd, f)(fd);
--	if (!f.file)
--		return -EBADF;
- 
- 	audit_file(f.file);
- 	error = setxattr_copy(name, &ctx);
-@@ -810,16 +808,11 @@ SYSCALL_DEFINE4(lgetxattr, const char __
- SYSCALL_DEFINE4(fgetxattr, int, fd, const char __user *, name,
- 		void __user *, value, size_t, size)
- {
--	struct fd f = fdget(fd);
--	ssize_t error = -EBADF;
-+	CLASS(fd, f)(fd);
- 
--	if (!f.file)
--		return error;
- 	audit_file(f.file);
--	error = getxattr(file_mnt_idmap(f.file), f.file->f_path.dentry,
-+	return getxattr(file_mnt_idmap(f.file), f.file->f_path.dentry,
- 			 name, value, size);
--	fdput(f);
--	return error;
- }
- 
- /*
-@@ -886,15 +879,10 @@ SYSCALL_DEFINE3(llistxattr, const char _
- 
- SYSCALL_DEFINE3(flistxattr, int, fd, char __user *, list, size_t, size)
- {
--	struct fd f = fdget(fd);
--	ssize_t error = -EBADF;
-+	CLASS(fd, f)(fd);
- 
--	if (!f.file)
--		return error;
- 	audit_file(f.file);
--	error = listxattr(f.file->f_path.dentry, list, size);
--	fdput(f);
--	return error;
-+	return listxattr(f.file->f_path.dentry, list, size);
- }
- 
- /*
-@@ -951,12 +939,10 @@ SYSCALL_DEFINE2(lremovexattr, const char
- 
- SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
- {
--	struct fd f = fdget(fd);
-+	CLASS(fd, f)(fd);
- 	char kname[XATTR_NAME_MAX + 1];
--	int error = -EBADF;
-+	int error;
- 
--	if (!f.file)
--		return error;
- 	audit_file(f.file);
- 
- 	error = strncpy_from_user(kname, name, sizeof(kname));
-@@ -971,7 +957,6 @@ SYSCALL_DEFINE2(fremovexattr, int, fd, c
- 				    f.file->f_path.dentry, kname);
- 		mnt_drop_write_file(f.file);
- 	}
--	fdput(f);
- 	return error;
- }
- 
+ 	len = min_t(size_t, ext4_get_inline_size(inode), i_size_read(inode));
+-	BUG_ON(len > PAGE_SIZE);
++
++	if (len > PAGE_SIZE) {
++		ext4_error_inode(inode, __func__, __LINE__, 0,
++				 "inline size %zu exceeds PAGE_SIZE", len);
++		ret = -EFSCORRUPTED;
++		brelse(iloc.bh);
++		goto out;
++	}
++
+ 	kaddr = kmap_local_folio(folio, 0);
+ 	ret = ext4_read_inline_data(inode, kaddr, len, &iloc);
+ 	kaddr = folio_zero_tail(folio, len, kaddr + len);
 
 
 
