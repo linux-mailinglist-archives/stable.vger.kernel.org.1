@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKaaBC8CzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:43 +0200
+	id SK5oKLAGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E03836E7DD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 157D336F135
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB1F31D331A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CD233160A8D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53842413225;
-	Tue, 31 Mar 2026 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650F43009D4;
+	Tue, 31 Mar 2026 17:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR3OiMfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg/oFLxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B7E23507B;
-	Tue, 31 Mar 2026 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259C52FF669;
+	Tue, 31 Mar 2026 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975767; cv=none; b=vEiODWv8O6h9hihWSxuJAE3bnlBlp5tgefJJXj8gAmClCMuh766XGOre61mGzBjBXTbvojI25kemYx8MA57Gwh7wZiBHLJAELPBwbClqOszYpooII/VT3TABGBLpBeEzIQf3D4M87q21apB9b9WXiKyJQYZBYx9PSeYLCbECIqs=
+	t=1774976529; cv=none; b=c32cFFcFFVjGDcNYlsdPgMkWngll6Kj1X07OXBgFTu6yMP8vUCbrgK+HwC9aRYKuHSEa4eQLC4yqb38JyWR9r+q4BaZC4LryfxTlZNZpweInWCL72wU/B95WavYGttKpPdwMkcfGHIHbTk9h00bYClEFJyFSpKs19U1mbB2d7+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975767; c=relaxed/simple;
-	bh=cgewbzyzyjSnUAGoTQtXPiBUOVIr3TQjn4nA6WEHqQE=;
+	s=arc-20240116; t=1774976529; c=relaxed/simple;
+	bh=HgawXeR0DmNPx4uweFZduQdiymhgzcFncMZ0CnoZl5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvTY6pUObFIr/buvbbltkcNc4R4Ze5YAGpxCYLEPkUB3kAO25vtC5JNykYExwDWmESwFuevgpOpchcIFsXH6htc+C0EWGeWVZBwIsZ+sZO+LaBkfwReSax/JSeOBOmZ8da0RIUaqOy9mCzylK3z8vGSOjilUvIqrJD5+F9q8WHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR3OiMfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24A4C19423;
-	Tue, 31 Mar 2026 16:49:26 +0000 (UTC)
+	 MIME-Version; b=HH+ylP4kqGSJy5e/FrkkDUh01Dp4yey4rqknRcyZyJZ68Kx3lpENw+9ZqM/EmyoMkkHgdsMzEGAXzvZD1cQgKHV2QFSQsjsxS9dueMm+AM5VPpBuhlnZLBaDuO9UlI3IFb/D+2iD/fgPUuYeCw2QcC4qdlIQBUbuF20GW9AOAKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg/oFLxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D9BC19423;
+	Tue, 31 Mar 2026 17:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975767;
-	bh=cgewbzyzyjSnUAGoTQtXPiBUOVIr3TQjn4nA6WEHqQE=;
+	s=korg; t=1774976528;
+	bh=HgawXeR0DmNPx4uweFZduQdiymhgzcFncMZ0CnoZl5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YR3OiMfHoVbfhZKGgb8oH5kf867IgKXx1rQN4wDnYntxV+VXLTwX3bluRavxImJiq
-	 OsAXGIlU7xYETsWYD4w+UVLy013npA4RqwUCwdH3jAVFNJ6n2SRDp18wC7QkYn2JGj
-	 378T7z8ywTpo4vQnLpX7T/GfFYGNMZLGVXy+Q3Hw=
+	b=zg/oFLxhW0ih2PokE7wnlti0umIovpecMypc2CDSC/fAlh5sBJ3T7Fe3Yd/WK/lFS
+	 cwvkBzsmk067iKye0ceBuqiqAF/6eDIbNpCz6bwnc1nO1MeFc/ZU3AWBKle2lG5aDN
+	 ssZPahNkOWzYLf0pp7p9qMTQNatK0q2DROPNaC7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/244] net: bcmasp: fix double disable of clk
+Subject: [PATCH 6.18 126/309] netfilter: nfnetlink_log: fix uninitialized padding leak in NFULA_PAYLOAD
 Date: Tue, 31 Mar 2026 18:20:29 +0200
-Message-ID: <20260331161744.602687692@linuxfoundation.org>
+Message-ID: <20260331161758.117347473@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,146 +75,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232352-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232058-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email]
-X-Rspamd-Queue-Id: 8E03836E7DD
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,asu.edu:email]
+X-Rspamd-Queue-Id: 157D336F135
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 27dfe9030acbc601c260b42ecdbb4e5858a97b53 ]
+[ Upstream commit 52025ebaa29f4eb4ed8bf92ce83a68f24ab7fdf7 ]
 
-Switch to devm_clk_get_optional() so we can manage the clock ourselves.
-We dynamically control the clocks depending on the state of the interface
-for power savings. The default state is clock disabled, so unbinding the
-driver causes a double disable.
+__build_packet_message() manually constructs the NFULA_PAYLOAD netlink
+attribute using skb_put() and skb_copy_bits(), bypassing the standard
+nla_reserve()/nla_put() helpers. While nla_total_size(data_len) bytes
+are allocated (including NLA alignment padding), only data_len bytes
+of actual packet data are copied. The trailing nla_padlen(data_len)
+bytes (1-3 when data_len is not 4-byte aligned) are never initialized,
+leaking stale heap contents to userspace via the NFLOG netlink socket.
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260319234813.1937315-3-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Replace the manual attribute construction with nla_reserve(), which
+handles the tailroom check, header setup, and padding zeroing via
+__nla_reserve(). The subsequent skb_copy_bits() fills in the payload
+data on top of the properly initialized attribute.
+
+Fixes: df6fb868d611 ("[NETFILTER]: nfnetlink: convert to generic netlink attribute functions")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 33 ++++++++++++++-------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ net/netfilter/nfnetlink_log.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index 9f2947d2d41f0..2ef5f49beab86 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -1253,7 +1253,7 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	if (priv->irq <= 0)
- 		return -EINVAL;
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index bfcb9cd335bff..27dd35224e629 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -647,15 +647,11 @@ __build_packet_message(struct nfnl_log_net *log,
  
--	priv->clk = devm_clk_get_optional_enabled(dev, "sw_asp");
-+	priv->clk = devm_clk_get_optional(dev, "sw_asp");
- 	if (IS_ERR(priv->clk))
- 		return dev_err_probe(dev, PTR_ERR(priv->clk),
- 				     "failed to request clock\n");
-@@ -1281,6 +1281,10 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	if (data_len) {
+ 		struct nlattr *nla;
+-		int size = nla_attr_size(data_len);
  
- 	bcmasp_set_pdata(priv, pdata);
+-		if (skb_tailroom(inst->skb) < nla_total_size(data_len))
++		nla = nla_reserve(inst->skb, NFULA_PAYLOAD, data_len);
++		if (!nla)
+ 			goto nla_put_failure;
  
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to start clock\n");
-+
- 	/* Enable all clocks to ensure successful probing */
- 	bcmasp_core_clock_set(priv, ASP_CTRL_CLOCK_CTRL_ASP_ALL_DISABLE, 0);
- 
-@@ -1292,8 +1296,10 @@ static int bcmasp_probe(struct platform_device *pdev)
- 
- 	ret = devm_request_irq(&pdev->dev, priv->irq, bcmasp_isr, 0,
- 			       pdev->name, priv);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to request ASP interrupt: %d", ret);
-+	if (ret) {
-+		dev_err(dev, "Failed to request ASP interrupt: %d", ret);
-+		goto err_clock_disable;
-+	}
- 
- 	/* Register mdio child nodes */
- 	of_platform_populate(dev->of_node, bcmasp_mdio_of_match, NULL, dev);
-@@ -1305,13 +1311,17 @@ static int bcmasp_probe(struct platform_device *pdev)
- 
- 	priv->mda_filters = devm_kcalloc(dev, priv->num_mda_filters,
- 					 sizeof(*priv->mda_filters), GFP_KERNEL);
--	if (!priv->mda_filters)
--		return -ENOMEM;
-+	if (!priv->mda_filters) {
-+		ret = -ENOMEM;
-+		goto err_clock_disable;
-+	}
- 
- 	priv->net_filters = devm_kcalloc(dev, priv->num_net_filters,
- 					 sizeof(*priv->net_filters), GFP_KERNEL);
--	if (!priv->net_filters)
--		return -ENOMEM;
-+	if (!priv->net_filters) {
-+		ret = -ENOMEM;
-+		goto err_clock_disable;
-+	}
- 
- 	bcmasp_core_init_filters(priv);
- 
-@@ -1320,7 +1330,8 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
- 	if (!ports_node) {
- 		dev_warn(dev, "No ports found\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_clock_disable;
- 	}
- 
- 	i = 0;
-@@ -1342,8 +1353,6 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	 */
- 	bcmasp_core_clock_set(priv, 0, ASP_CTRL_CLOCK_CTRL_ASP_ALL_DISABLE);
- 
--	clk_disable_unprepare(priv->clk);
+-		nla = skb_put(inst->skb, nla_total_size(data_len));
+-		nla->nla_type = NFULA_PAYLOAD;
+-		nla->nla_len = size;
 -
- 	/* Now do the registration of the network ports which will take care
- 	 * of managing the clock properly.
- 	 */
-@@ -1356,12 +1365,16 @@ static int bcmasp_probe(struct platform_device *pdev)
- 		count++;
+ 		if (skb_copy_bits(skb, 0, nla_data(nla), data_len))
+ 			BUG();
  	}
- 
-+	clk_disable_unprepare(priv->clk);
-+
- 	dev_info(dev, "Initialized %d port(s)\n", count);
- 
- 	return ret;
- 
- err_cleanup:
- 	bcmasp_remove_intfs(priv);
-+err_clock_disable:
-+	clk_disable_unprepare(priv->clk);
- 
- 	return ret;
- }
 -- 
 2.51.0
 
