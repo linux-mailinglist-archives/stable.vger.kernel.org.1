@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGqvEfgEzGnPNQYAu9opvQ
-	(envelope-from <stable+bounces-232214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:36 +0200
+	id UFv5CuUGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCF236EDF2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9754C36F186
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D320312BEDB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55C2531D5AC6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2883F8E04;
-	Tue, 31 Mar 2026 16:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93FC31985D;
+	Tue, 31 Mar 2026 17:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlwfALmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5S5B35+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA6A3A4F34;
-	Tue, 31 Mar 2026 16:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20517313E21;
+	Tue, 31 Mar 2026 17:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976171; cv=none; b=JyEDhIR5HBkYmVu+Xp8paKdYRf/5sdzdY6zqCvKOVJf/QPSnU4uxTLRIpxUEMijrdCV/FPJurcD8CIYsZVhQubY9AwGs3ojrM+MnqGFHsbHACFrwnMYAWpa0X7MvAbNxtGf5fCK5QId3IDkuLW/og9ip+jBuXf/ZFJRBGxCzEMY=
+	t=1774976924; cv=none; b=PW3oaN8rwbz5hzVLJ3/du94EjkhHHf9od9zm019QMrUCc/BFqGn8R/3jPmN8k0iF22Pu1mohSBLPcM0W4FjtUzA3ViffLcJlWrUpJ6eFWbSUON5X5w9DFimHjlykpavS+iKq0+gtZlm2fFjYFxsDRzNRMn+H8JGfoosWDsz10yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976171; c=relaxed/simple;
-	bh=UAGVPoUG9gOiDwN6zY61ysm+zxncnGQ9ZWhBxJPQnBE=;
+	s=arc-20240116; t=1774976924; c=relaxed/simple;
+	bh=Wfxmrbz1zOzdAxTMol2sQzv8EQZXhLnl6dARCboIZyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3T2iRrIjs6XRgpev0NLVZ+Pk9VZSEi56PUFEBz7VKlsvNapPNJRxke4Eq6CaGT9/epKUN9Y6g04F0VpI1UHkR3oRK8jHQ01t3XpMZm4KgITCQ9KNCMK6euVxcov1MQRztC+h2Lmg+eStNIhtknkuhSBIA/1hi/Zze1mDXW7mb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlwfALmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DE7C19423;
-	Tue, 31 Mar 2026 16:56:10 +0000 (UTC)
+	 MIME-Version; b=geXSqII6pPxmCzPSy9wrWk7qHZZWBCNWY4E4JUHV7YfUllXGMIfwQB44qWNInk7TBwsnQ6hgMEWMqX7y5fYvS3rqU2AEVyAI28KaIb7ISn1xcVlMDdeUc4M0A2Vxed18dWqpkhOpd5FBQ7J+RLHpvBF4bYiu3sAXfHKZQXPLv9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5S5B35+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE0BC19423;
+	Tue, 31 Mar 2026 17:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976171;
-	bh=UAGVPoUG9gOiDwN6zY61ysm+zxncnGQ9ZWhBxJPQnBE=;
+	s=korg; t=1774976923;
+	bh=Wfxmrbz1zOzdAxTMol2sQzv8EQZXhLnl6dARCboIZyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlwfALmL4XJWKM8/R/HdLul4GfH6qXSuWiNkLGKtVUpo+sat3XSN/TnsLdhUgati8
-	 DHZgYlXOS4Btx1Zxb2vH0jmz9QPVve/WdGvmoox+OANv+kO7N0BHLhmNDv+iI8X3yr
-	 hcKR5JNlsRSkyufu0hobM2AxC1PLERdsKcTUZCoA=
+	b=a5S5B35+I2Coi58Q05xgaE8tNpnvS/5v/x/y/S/+a5g4bT2IiNbKO3CMijIzcX8OX
+	 zk3wlkNtiLhTXqHAmZim2zx0WdznSBt1TgISD6WQyr6yak0X/DN1lsk2WkzJDmLf+1
+	 WsyVBVhRv22KjzkzsbYsU1eEn6NWMvt5K3xwk6qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Werner Kasselman <werner@verivus.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/244] dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
+Subject: [PATCH 6.18 281/309] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
 Date: Tue, 31 Mar 2026 18:23:04 +0200
-Message-ID: <20260331161750.403895181@linuxfoundation.org>
+Message-ID: <20260331161803.910995559@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,89 +75,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232506-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232214-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nabladev.com:email]
-X-Rspamd-Queue-Id: 9FCF236EDF2
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,verivus.com:email]
+X-Rspamd-Queue-Id: 9754C36F186
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Werner Kasselman <werner@verivus.com>
 
-[ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
+[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
 
-The segment .control and .status fields both contain top bits which are
-not part of the buffer size, the buffer size is located only in the bottom
-max_buffer_len bits. To avoid interference from those top bits, mask out
-the size using max_buffer_len first, and only then subtract the values.
+smb_grant_oplock() has two issues in the oplock publication sequence:
 
-Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+1) opinfo is linked into ci->m_op_list (via opinfo_add) before
+   add_lease_global_list() is called.  If add_lease_global_list()
+   fails (kmalloc returns NULL), the error path frees the opinfo
+   via __free_opinfo() while it is still linked in ci->m_op_list.
+   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
+   in smb_break_all_levII_oplock) dereference the freed node.
+
+2) opinfo->o_fp is assigned after add_lease_global_list() publishes
+   the opinfo on the global lease list.  A concurrent
+   find_same_lease_key() can walk the lease list and dereference
+   opinfo->o_fp->f_ci while o_fp is still NULL.
+
+Fix by restructuring the publication sequence to eliminate post-publish
+failure:
+
+- Set opinfo->o_fp before any list publication (fixes NULL deref).
+- Preallocate lease_table via alloc_lease_table() before opinfo_add()
+  so add_lease_global_list() becomes infallible after publication.
+- Keep the original m_op_list publication order (opinfo_add before
+  lease list) so concurrent opens via same_client_has_lease() and
+  opinfo_get_list() still see the in-flight grant.
+- Use opinfo_put() instead of __free_opinfo() on err_out so that
+  the RCU-deferred free path is used.
+
+This also requires splitting add_lease_global_list() to take a
+preallocated lease_table and changing its return type from int to void,
+since it can no longer fail.
+
+Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Kasselman <werner@verivus.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/smb/server/oplock.c |   72 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 45 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index fff51a00fb9fb..b1c540fbcd716 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -996,16 +996,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					      struct xilinx_cdma_tx_segment,
- 					      node);
- 			cdma_hw = &cdma_seg->hw;
--			residue += (cdma_hw->control - cdma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
-+			           (cdma_hw->status & chan->xdev->max_buffer_len);
- 		} else if (chan->xdev->dma_config->dmatype ==
- 			   XDMA_TYPE_AXIDMA) {
- 			axidma_seg = list_entry(entry,
- 						struct xilinx_axidma_tx_segment,
- 						node);
- 			axidma_hw = &axidma_seg->hw;
--			residue += (axidma_hw->control - axidma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
-+			           (axidma_hw->status & chan->xdev->max_buffer_len);
- 		} else {
- 			aximcdma_seg =
- 				list_entry(entry,
-@@ -1013,8 +1013,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					   node);
- 			aximcdma_hw = &aximcdma_seg->hw;
- 			residue +=
--				(aximcdma_hw->control - aximcdma_hw->status) &
--				chan->xdev->max_buffer_len;
-+				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
-+				(aximcdma_hw->status & chan->xdev->max_buffer_len);
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock
+ 	spin_unlock(&lb->lb_lock);
+ }
+ 
+-static void lb_add(struct lease_table *lb)
++static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
+ {
+-	write_lock(&lease_list_lock);
+-	list_add(&lb->l_entry, &lease_table_list);
+-	write_unlock(&lease_list_lock);
++	struct lease_table *lb;
++
++	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
++	if (!lb)
++		return NULL;
++
++	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
++	       SMB2_CLIENT_GUID_SIZE);
++	INIT_LIST_HEAD(&lb->lease_list);
++	spin_lock_init(&lb->lb_lock);
++	return lb;
+ }
+ 
+ static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
+@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_inf
+ 	lease2->version = lease1->version;
+ }
+ 
+-static int add_lease_global_list(struct oplock_info *opinfo)
++static void add_lease_global_list(struct oplock_info *opinfo,
++				  struct lease_table *new_lb)
+ {
+ 	struct lease_table *lb;
+ 
+-	read_lock(&lease_list_lock);
++	write_lock(&lease_list_lock);
+ 	list_for_each_entry(lb, &lease_table_list, l_entry) {
+ 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
+ 			    SMB2_CLIENT_GUID_SIZE)) {
+ 			opinfo->o_lease->l_lb = lb;
+ 			lease_add_list(opinfo);
+-			read_unlock(&lease_list_lock);
+-			return 0;
++			write_unlock(&lease_list_lock);
++			kfree(new_lb);
++			return;
  		}
  	}
+-	read_unlock(&lease_list_lock);
  
--- 
-2.53.0
-
+-	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
+-	if (!lb)
+-		return -ENOMEM;
+-
+-	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
+-	       SMB2_CLIENT_GUID_SIZE);
+-	INIT_LIST_HEAD(&lb->lease_list);
+-	spin_lock_init(&lb->lb_lock);
+-	opinfo->o_lease->l_lb = lb;
++	opinfo->o_lease->l_lb = new_lb;
+ 	lease_add_list(opinfo);
+-	lb_add(lb);
+-	return 0;
++	list_add(&new_lb->l_entry, &lease_table_list);
++	write_unlock(&lease_list_lock);
+ }
+ 
+ static void set_oplock_level(struct oplock_info *opinfo, int level,
+@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *
+ 	int err = 0;
+ 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
+ 	struct ksmbd_inode *ci = fp->f_ci;
++	struct lease_table *new_lb = NULL;
+ 	bool prev_op_has_lease;
+ 	__le32 prev_op_state = 0;
+ 
+@@ -1291,21 +1293,37 @@ set_lev:
+ 	set_oplock_level(opinfo, req_op_level, lctx);
+ 
+ out:
+-	opinfo_count_inc(fp);
+-	opinfo_add(opinfo, fp);
+-
++	/*
++	 * Set o_fp before any publication so that concurrent readers
++	 * (e.g. find_same_lease_key() on the lease list) that
++	 * dereference opinfo->o_fp don't hit a NULL pointer.
++	 *
++	 * Keep the original publication order so concurrent opens can
++	 * still observe the in-flight grant via ci->m_op_list, but make
++	 * everything after opinfo_add() no-fail by preallocating any new
++	 * lease_table first.
++	 */
++	opinfo->o_fp = fp;
+ 	if (opinfo->is_lease) {
+-		err = add_lease_global_list(opinfo);
+-		if (err)
++		new_lb = alloc_lease_table(opinfo);
++		if (!new_lb) {
++			err = -ENOMEM;
+ 			goto err_out;
++		}
+ 	}
+ 
++	opinfo_count_inc(fp);
++	opinfo_add(opinfo, fp);
++
++	if (opinfo->is_lease)
++		add_lease_global_list(opinfo, new_lb);
++
+ 	rcu_assign_pointer(fp->f_opinfo, opinfo);
+-	opinfo->o_fp = fp;
+ 
+ 	return 0;
+ err_out:
+-	__free_opinfo(opinfo);
++	kfree(new_lb);
++	opinfo_put(opinfo);
+ 	return err;
+ }
+ 
 
 
 
