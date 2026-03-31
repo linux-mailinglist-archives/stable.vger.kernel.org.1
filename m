@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-232400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO/7BZcGzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:31 +0200
+	id yMCIFqP3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D5436F108
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D977536CC6A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A268A32D7A91
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2904730ACF9A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B3D2FF641;
-	Tue, 31 Mar 2026 17:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A583F9F5E;
+	Tue, 31 Mar 2026 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1SrkXgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCWSFWaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42A92E11A6;
-	Tue, 31 Mar 2026 17:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A873E92A5;
+	Tue, 31 Mar 2026 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976649; cv=none; b=J08VTVMUKsv1ydlLw2kpCK478k9qBr5tAUeyMRWY8xBBzpGqgzihlBEotResSjPNdjklTdgFGl7/g3yMt56a9vjvwPftFW79ao7zgejA6lBoZwsxDzYAq1ljPN8OjWTUz7PIr+AkGnFOf2VLW0ywms+/eXxwj8tMx5vuJ3JHGpg=
+	t=1774974462; cv=none; b=gaoNtdreopGi+9tBJHl7eW4iAJ/ffc19t5Orq+vxNtnFJKJK6Y39/fhoOr7DN/DMhLNEmXQiuSCew9nhWd2qXLl/ZLqbePVtMNf+Fb4XKOvtAyogM+XB8lsp3zoFw82zndtMsvDFUmHbAvwe4rQjF9ewHjK9sbX0Fwr0mZr1k3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976649; c=relaxed/simple;
-	bh=O8/rfsP95ejLYview66m3+DroH4WVTz29LC0re+XQno=;
+	s=arc-20240116; t=1774974462; c=relaxed/simple;
+	bh=Td4NrqaL2CcHD1DhkxXanRLMEFfLlEE0Tkfl6WoUVYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1c7vfjGCP3lUh63cyJr0lJuUdpAjJFRSw13APrZ1bG9fmKADeZLxf5wT0DmWp+3OCm+cN26iGUxRvk7H0Kpujf/7lx4fo4Waft09aXf5Tn/3SIpxFKMA3aFRPVHMnyxH5VrkG1N8EzRu0XZXJ+L6B63ZPWj5OpWkCpMuykaVJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1SrkXgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3515C19423;
-	Tue, 31 Mar 2026 17:04:08 +0000 (UTC)
+	 MIME-Version; b=eY55xcx3fU9//ZynOf3P8D2I6tlsHa3l7oUwY/KouKiyIwfXaNTH+/egzx/sY6r1LHgfDaPKQocY1MlTj3buVwAFOeo4A8nUn73xqSC9AH4BASdf732zDaZgoFwVVOdTyAYSGU1OmujZxh0xkpbFick3KkSh3mbhFG41wl8wYVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCWSFWaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE928C19423;
+	Tue, 31 Mar 2026 16:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976649;
-	bh=O8/rfsP95ejLYview66m3+DroH4WVTz29LC0re+XQno=;
+	s=korg; t=1774974462;
+	bh=Td4NrqaL2CcHD1DhkxXanRLMEFfLlEE0Tkfl6WoUVYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1SrkXgl6mPyJzuDQ2+PaYrdBacsgpml4xWTFEaJNWihFn33RIVtf7ZNYCAp2QwgO
-	 9BuqLBThrXvi7GGqbD2fHvBuHcgPtqf+tIgjtxwJ1i9aZq4xajMrhM3IENRzns1HT3
-	 OzUgHka8yfzeSWQRhZR89Erx9mfzwjJmbwOlW2tk=
+	b=WCWSFWaU+9NlvqGLU+6ImXv6/re3CboNqgx2T0XOuba247j7gAfHUENsmRtK53Syz
+	 j2AsIXj8RS21JpQeSD28nzd6fB5zYdkes1AlcQWjJLOwBoglowL9db5Q7cTkvl3/tj
+	 da7mu5crzItunmhlqi38Y3F5SOxDAgMqwn2smQXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	stable@kernel.org
-Subject: [PATCH 6.18 175/309] s390/syscalls: Add spectre boundary for syscall dispatch table
+	Marc Buerg <buermarc@googlemail.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 094/175] sysctl: fix uninitialized variable in proc_do_large_bitmap
 Date: Tue, 31 Mar 2026 18:21:18 +0200
-Message-ID: <20260331161759.908252873@linuxfoundation.org>
+Message-ID: <20260331161733.223747141@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +66,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231551-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232400-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 70D5436F108
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D977536CC6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Marc Buerg <buermarc@googlemail.com>
 
-commit 48b8814e25d073dd84daf990a879a820bad2bcbd upstream.
+[ Upstream commit f63a9df7e3f9f842945d292a19d9938924f066f9 ]
 
-The s390 syscall number is directly controlled by userspace, but does
-not have an array_index_nospec() boundary to prevent access past the
-syscall function pointer tables.
+proc_do_large_bitmap() does not initialize variable c, which is expected
+to be set to a trailing character by proc_get_long().
 
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Fixes: 56e62a737028 ("s390: convert to generic entry")
-Cc: stable@kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/2026032404-sterling-swoosh-43e6@gregkh
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, proc_get_long() only sets c when the input buffer contains a
+trailing character after the parsed value.
+
+If c is not initialized it may happen to contain a '-'. If this is the
+case proc_do_large_bitmap() expects to be able to parse a second part of
+the input buffer. If there is no second part an unjustified -EINVAL will
+be returned.
+
+Initialize c to 0 to prevent returning -EINVAL on valid input.
+
+Fixes: 9f977fb7ae9d ("sysctl: add proc_do_large_bitmap")
+Signed-off-by: Marc Buerg <buermarc@googlemail.com>
+Reviewed-by: Joel Granados <joel.granados@kernel.org>
+Signed-off-by: Joel Granados <joel.granados@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/syscall.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/sysctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/kernel/syscall.c
-+++ b/arch/s390/kernel/syscall.c
-@@ -13,6 +13,7 @@
-  */
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 354a2d294f526..f8f07c0492388 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -1374,7 +1374,7 @@ int proc_do_large_bitmap(struct ctl_table *table, int write,
+ 	unsigned long bitmap_len = table->maxlen;
+ 	unsigned long *bitmap = *(unsigned long **) table->data;
+ 	unsigned long *tmp_bitmap = NULL;
+-	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c;
++	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c = 0;
  
- #include <linux/cpufeature.h>
-+#include <linux/nospec.h>
- #include <linux/errno.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-@@ -121,8 +122,10 @@ void noinstr __do_syscall(struct pt_regs
- 	if (unlikely(test_and_clear_pt_regs_flag(regs, PIF_SYSCALL_RET_SET)))
- 		goto out;
- 	regs->gprs[2] = -ENOSYS;
--	if (likely(nr < NR_syscalls))
-+	if (likely(nr < NR_syscalls)) {
-+		nr = array_index_nospec(nr, NR_syscalls);
- 		regs->gprs[2] = current->thread.sys_call_table[nr](regs);
-+	}
- out:
- 	syscall_exit_to_user_mode(regs);
- }
+ 	if (!bitmap || !bitmap_len || !left || (*ppos && !write)) {
+ 		*lenp = 0;
+-- 
+2.53.0
+
 
 
 
