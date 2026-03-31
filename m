@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDEzHA7+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:06 +0200
+	id QIJXDmUAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-231924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB08636DAEA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566B436E24A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03E1D32234F1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ED68230AEAE7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF77F425CE7;
-	Tue, 31 Mar 2026 16:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5E233F38A;
+	Tue, 31 Mar 2026 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHh4p07b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tlPvs0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24CE3EF0A2;
-	Tue, 31 Mar 2026 16:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE4E262A6;
+	Tue, 31 Mar 2026 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976008; cv=none; b=NkvPwHrgMqiazR25LOHB7rTewOD0wXiG+zSQj3l4gTElBKmyWh32MPNOTUe0jbEkV5nu7v2yCey5T5y9JR7D6Ra64U8E2cpEkNNGQXo9GX2ja+BOoAjX9RnlEPV93fVLtyvdMbPMLqMOSdP3IeQiE3gduRO1v3tdaEWqqlnPQh0=
+	t=1774975419; cv=none; b=MxO6NE1k5fJGCJfi2At+ESXxVTPkKpElj0D6mlgs05x5WxE3aXvzXrtsU6HKQaAvkeFu5ICL9j6kVeVCPDj3JXaglqolHI4OC0f42+7gP4dtXMMLR5/Zrk0kvPdNRsdQPO8TU1QXX6eM/aSZPTlBVkCq4XWUKxWSP2xUv4RbSL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976008; c=relaxed/simple;
-	bh=HYxroxPGP26nefQTxZvwFBTvaEyP8InhVD2Wc+iIx24=;
+	s=arc-20240116; t=1774975419; c=relaxed/simple;
+	bh=g21HwWCGFDaZacMbFxOU6NS1W1zsHexxACT4dbB/g50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPXruq3pGQaY+VbHKHBwsa3ColtWnLOCKuW8fbnQvKDDZ00hsNvauS8nmGHUTxnu2+ElLoZmn2KjkfAIHR2/gRTYKGb9HiBIuDAuIt6EjLf/Mrval6hfdJPhwf+p8Gw2zajhWo+dxujaurtibBu142g5wXM/9F5WqZC0xvn6Vow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHh4p07b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49530C19423;
-	Tue, 31 Mar 2026 16:53:28 +0000 (UTC)
+	 MIME-Version; b=d1bj92AuVxMq5AwXppKyysXoyyij+wcvi9urqJW7ckyf9KahDDnQr/Z50LjfpHBQ29ZlnzxyHj7ZLkV1kWbI8vWpwVXYE3AxXwddOcZXwvk+kkxIQbR2U71RdmdiIaC6a/uzB3SzGP4Jxxy0ohuy0ugi/flnahpIoLszk+cmySU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tlPvs0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FAEC19423;
+	Tue, 31 Mar 2026 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976008;
-	bh=HYxroxPGP26nefQTxZvwFBTvaEyP8InhVD2Wc+iIx24=;
+	s=korg; t=1774975419;
+	bh=g21HwWCGFDaZacMbFxOU6NS1W1zsHexxACT4dbB/g50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHh4p07bBDPSOSDWU7be689gQ1qoR9wVSE2e4WYQ+L4XYWg2cN73YMJ5S7gYB3AJm
-	 C+UeQCM2MRDrk51FtkiBAKZ5WB0z1MHt+GhemOFtn/hnKilL3IY2JodMl0EGk+RXsh
-	 IAieHcMIXcPManjAC9NlqB88B7eC4aFy7xCfjIK0=
+	b=1tlPvs0dXSHzC8ODFXaLmNnorsv9vEgjh6CZlp1tvUWUs8sYKECZT1WK7HAnDMvT7
+	 uQ8QGocXedmqNvuxj5/nu1snrmpyGaU5iWfzddwJmnh3gDbEB8Vd++zrdHDyUR0mfn
+	 YkTyFGsIcbQBcKQqt7LCZjAf7lkHrg1Y0UFz9u7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 170/244] dmaengine: sh: rz-dmac: Protect the driver specific lists
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Long Li <leo.lilong@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.19 287/342] xfs: fix ri_total validation in xlog_recover_attri_commit_pass2
 Date: Tue, 31 Mar 2026 18:22:00 +0200
-Message-ID: <20260331161748.039683711@linuxfoundation.org>
+Message-ID: <20260331161809.500399514@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,158 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231924-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232151-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,renesas.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB08636DAEA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lst.de:email,huawei.com:email]
+X-Rspamd-Queue-Id: 566B436E24A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Long Li <leo.lilong@huawei.com>
 
-commit abb863e6213dc41a58ef8bb3289b7e77460dabf3 upstream.
+commit d72f2084e30966097c8eae762e31986a33c3c0ae upstream.
 
-The driver lists (ld_free, ld_queue) are used in
-rz_dmac_free_chan_resources(), rz_dmac_terminate_all(),
-rz_dmac_issue_pending(), and rz_dmac_irq_handler_thread(), all under
-the virtual channel lock. Take the same lock in rz_dmac_prep_slave_sg()
-and rz_dmac_prep_dma_memcpy() as well to avoid concurrency issues, since
-these functions also check whether the lists are empty and update or
-remove list entries.
+The ri_total checks for SET/REPLACE operations are hardcoded to 3,
+but xfs_attri_item_size() only emits a value iovec when value_len > 0,
+so ri_total is 2 when value_len == 0.
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+For PPTR_SET/PPTR_REMOVE/PPTR_REPLACE, value_len is validated by
+xfs_attri_validate() to be exactly sizeof(struct xfs_parent_rec) and
+is never zero, so their hardcoded checks remain correct.
+
+This problem may cause log recovery failures. The following script can be
+used to reproduce the problem:
+
+ #!/bin/bash
+ mkfs.xfs -f /dev/sda
+ mount /dev/sda /mnt/test/
+ touch /mnt/test/file
+ for i in {1..200}; do
+         attr -s "user.attr_$i" -V "value_$i" /mnt/test/file > /dev/null
+ done
+ echo 1 > /sys/fs/xfs/debug/larp
+ echo 1 > /sys/fs/xfs/sda/errortag/larp
+ attr -s "user.zero" -V "" /mnt/test/file
+ echo 0 > /sys/fs/xfs/sda/errortag/larp
+ umount /mnt/test
+ mount /dev/sda /mnt/test/  # mount failed
+
+Fix this by deriving the expected count dynamically as "2 + !!value_len"
+for SET/REPLACE operations.
+
+Cc: stable@vger.kernel.org # v6.9
+Fixes: ad206ae50eca ("xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2")
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/rz-dmac.c |   63 ++++++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ fs/xfs/xfs_attr_item.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
- #include <linux/interrupt.h>
-@@ -424,6 +425,7 @@ static int rz_dmac_alloc_chan_resources(
- 		if (!desc)
- 			break;
- 
-+		/* No need to lock. This is called only for the 1st client. */
- 		list_add_tail(&desc->node, &channel->ld_free);
- 		channel->descs_allocated++;
- 	}
-@@ -479,18 +481,21 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
- 	dev_dbg(dmac->dev, "%s channel: %d src=0x%pad dst=0x%pad len=%zu\n",
- 		__func__, channel->index, &src, &dest, len);
- 
--	if (list_empty(&channel->ld_free))
--		return NULL;
-+	scoped_guard(spinlock_irqsave, &channel->vc.lock) {
-+		if (list_empty(&channel->ld_free))
-+			return NULL;
-+
-+		desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
-+
-+		desc->type = RZ_DMAC_DESC_MEMCPY;
-+		desc->src = src;
-+		desc->dest = dest;
-+		desc->len = len;
-+		desc->direction = DMA_MEM_TO_MEM;
- 
--	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
--
--	desc->type = RZ_DMAC_DESC_MEMCPY;
--	desc->src = src;
--	desc->dest = dest;
--	desc->len = len;
--	desc->direction = DMA_MEM_TO_MEM;
-+		list_move_tail(channel->ld_free.next, &channel->ld_queue);
-+	}
- 
--	list_move_tail(channel->ld_free.next, &channel->ld_queue);
- 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
- }
- 
-@@ -506,27 +511,29 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
- 	int dma_length = 0;
- 	int i = 0;
- 
--	if (list_empty(&channel->ld_free))
--		return NULL;
--
--	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
-+	scoped_guard(spinlock_irqsave, &channel->vc.lock) {
-+		if (list_empty(&channel->ld_free))
-+			return NULL;
-+
-+		desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
-+
-+		for_each_sg(sgl, sg, sg_len, i)
-+			dma_length += sg_dma_len(sg);
-+
-+		desc->type = RZ_DMAC_DESC_SLAVE_SG;
-+		desc->sg = sgl;
-+		desc->sgcount = sg_len;
-+		desc->len = dma_length;
-+		desc->direction = direction;
-+
-+		if (direction == DMA_DEV_TO_MEM)
-+			desc->src = channel->src_per_address;
-+		else
-+			desc->dest = channel->dst_per_address;
- 
--	for_each_sg(sgl, sg, sg_len, i) {
--		dma_length += sg_dma_len(sg);
-+		list_move_tail(channel->ld_free.next, &channel->ld_queue);
- 	}
- 
--	desc->type = RZ_DMAC_DESC_SLAVE_SG;
--	desc->sg = sgl;
--	desc->sgcount = sg_len;
--	desc->len = dma_length;
--	desc->direction = direction;
--
--	if (direction == DMA_DEV_TO_MEM)
--		desc->src = channel->src_per_address;
--	else
--		desc->dest = channel->dst_per_address;
--
--	list_move_tail(channel->ld_free.next, &channel->ld_queue);
- 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
- }
- 
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -1050,8 +1050,8 @@ xlog_recover_attri_commit_pass2(
+ 		break;
+ 	case XFS_ATTRI_OP_FLAGS_SET:
+ 	case XFS_ATTRI_OP_FLAGS_REPLACE:
+-		/* Log item, attr name, attr value */
+-		if (item->ri_total != 3) {
++		/* Log item, attr name, optional attr value */
++		if (item->ri_total != 2 + !!attri_formatp->alfi_value_len) {
+ 			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 					     attri_formatp, len);
+ 			return -EFSCORRUPTED;
 
 
 
