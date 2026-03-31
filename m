@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-232586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OAnOmxDzGm+RgYAu9opvQ
-	(envelope-from <stable+bounces-232586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:58:04 +0200
+	id AG64AfFDzGm+RgYAu9opvQ
+	(envelope-from <stable+bounces-232587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:00:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A281372400
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:58:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF67437244B
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D782A300A8E2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:57:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5DB31300B452
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E352144E052;
-	Tue, 31 Mar 2026 21:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E460B3EC2F4;
+	Tue, 31 Mar 2026 21:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1K1FQXn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HVAK1/km"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3733EC2F4;
-	Tue, 31 Mar 2026 21:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC1A35DA60;
+	Tue, 31 Mar 2026 21:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774994256; cv=none; b=MUHNnAOZp+aOPQixmFcA2cZGtXXtEIgYgh93T3Dx2NKWctsgLZ4zOtE/1/8Ap7oAsQJGbwRhuRhOlJsQhUZlnLOBvPuAhWT/lqP5IwC7rfS7ySKMGR+bNe9cxXEVYrVOE6zElwy54uiuHLJT3Tx572IIAWv60MdWv/KYb3mBvzA=
+	t=1774994263; cv=none; b=Qsf1/x+0YKxwSRrqTmg4yoFyO8pl2dAT993BrSiU2GuqEGaB1HlgClYtjRDeMbsyovcHsGjfyoWlIhHVHUYXNcGlhStvQ6N86eSTiUHctdXn5XhpmZ3Keu1uy0A3AUrEMCizl4hs0kVBF+8Ct7ldWBX1D5OPDlPco7m1UnxEm48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774994256; c=relaxed/simple;
-	bh=uOuPEvwHizN6Y83fqDmEOv+kQCiiMjx/uNtq//NcO9Q=;
+	s=arc-20240116; t=1774994263; c=relaxed/simple;
+	bh=osHKNBJnoAssK6sgDBH0zR07D+BOTdyaNa/D8nRPko8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pxTuZ8oLXwNU35Koe5BUiyhR0yCPkIIB5ojM3f9Xkj5L38t3PAcnyoCudrZyW+36KSuTkajoryGv+vG0fIf05ohYQ+3SsjjToCu/HF3cwOdIBEA2arDjI8sNIn5XnnOWdiO/G39Fdj41qDu5rNWN72Zwd4bCaKm2Yh1coaEKoNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1K1FQXn; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=Y3ETrlyfUH5+NXbZeVRAQlzTYMcoawFCGOCxVFQtbXBSi5qgjP/cRmSb9GrDT0HF4LkfTDGX67KLqmiXrdI/76SGIV0fEfUeXjciFycquJ2S36ytwkA0z9eq7wBKcid2ahV67zFAmFsa/Dp40VNhMcJx0hrjytSnAB2G7h/KmsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HVAK1/km; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774994254; x=1806530254;
+  t=1774994262; x=1806530262;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=uOuPEvwHizN6Y83fqDmEOv+kQCiiMjx/uNtq//NcO9Q=;
-  b=h1K1FQXnBdpgj4BspR07cdro7Gwb7kwc3W5667NlU1zEz0TcA+3y0wYS
-   ui1G3YKPQooazajqQOHdhV9DYHJlxHHvZ2txfSd1HyUdcr8/sMMnKoNKb
-   RJdCYQdvh8fC1/HUhYqEgZmikJS0fu1KP2BTHQuVMcNBWCYpA17ozmBTq
-   72J5BEyws1Vodc1DN4WFNJqEdz29V+XKi00usUsM2BqH1PuLtnCdjKLFL
-   9OJO0vAOUyGVfxUJ/GPO48TupuKZ3u2myeQRc75V/AQRkY/HGX6VDEzHl
-   Fgjg87CJfdIKcPpkkeNhxHlzW7uyGcRjUADpjx/bS9u8enQNO8es9lqLf
-   w==;
-X-CSE-ConnectionGUID: e+UJp+ZiSNyIVrfRedk0qg==
-X-CSE-MsgGUID: vrod8zRWQ0GFeegQkE8iNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="93603550"
+  bh=osHKNBJnoAssK6sgDBH0zR07D+BOTdyaNa/D8nRPko8=;
+  b=HVAK1/km7UnGs39z00nn/ps2Kju39lQZr7ZGgffA0Lh7Q092JLHrwzz9
+   l4I8/Uv0yLYFi+CPz7T7VhWUhxt34zpI7TC1zVeyQDV2JZ6kHC4nL8VGL
+   sry+VuhZDRzxnbKiZNfMT8bFDiJDl2WXFR0ebI9wFiu8uU3JwYXHWECi+
+   A51/HDk6Y5233q8TaoSAKUzW24JUna8O3H2cC8LhpjRhDGTnekNJjVwMo
+   1iR8b58QjeuGaKOdz221edSfYI40jVjIbh+NGvjeuDKr27Qoa6eC+W9ij
+   9qz4efrN98/uVk9ProfuZIIkDiRU7To9AjLvcBQ1bX93X9zL6Qflt4gV3
+   g==;
+X-CSE-ConnectionGUID: c6cWSt6GTg2+KxyPszxtnw==
+X-CSE-MsgGUID: zA5dbqpwQ9eEi33ooJRk6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86720838"
 X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="93603550"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:33 -0700
-X-CSE-ConnectionGUID: QFTIB9rGR4evUXeFW+xzPg==
-X-CSE-MsgGUID: VbnlA3H2R/C9Vcd2AR4efA==
+   d="scan'208";a="86720838"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:41 -0700
+X-CSE-ConnectionGUID: ygebbQbFSsGxN9E27mM+cQ==
+X-CSE-MsgGUID: QMsDLU5DScizyhOrzfPPQg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="231288511"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:33 -0700
-Message-ID: <ee096f1e-b994-4d56-a78c-cb0e867ea047@linux.intel.com>
-Date: Tue, 31 Mar 2026 14:57:32 -0700
+   d="scan'208";a="222091722"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.111.56]) ([10.125.111.56])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:40 -0700
+Message-ID: <b0269343-6dc4-4b46-8d78-5edf85fed9a8@intel.com>
+Date: Tue, 31 Mar 2026 14:57:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,106 +70,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/tdx: Fix off-by-one in port I/O handling
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, stable@vger.kernel.org
-References: <20260331112430.71425-1-kas@kernel.org>
- <20260331112430.71425-2-kas@kernel.org>
+Subject: Re: [PATCH 0/9] dax/hmem: Add tests for the dax_hmem takeover
+ capability
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: patches@lists.linux.dev, linux-cxl@vger.kernel.org,
+ alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
+References: <20260327052821.440749-1-dan.j.williams@intel.com>
 Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20260331112430.71425-2-kas@kernel.org>
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20260327052821.440749-1-dan.j.williams@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232586-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[zytor.com,intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sathyanarayanan.kuppuswamy@linux.intel.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232587-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 3A281372400
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EF67437244B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Kirill,
 
-On 3/31/2026 4:24 AM, Kiryl Shutsemau (Meta) wrote:
-> handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use:
+
+On 3/26/26 10:28 PM, Dan Williams wrote:
+> Given all the cross subsystem dependencies needed to make this solution
+> work, it needs to have a unit test to keep it functional.
 > 
->     u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+> On the path to writing that, several fixes fell out, but not to Smita's
+> code, to mine. One use-after-free has been there since the original
+> automatic region assembly code.
 > 
-> GENMASK(h, l) includes bit h. For size=1 (INB), this produces
-> GENMASK(8, 0) = 0x1FF (9 bits) instead of GENMASK(7, 0) = 0xFF (8
-> bits). The mask is one bit too wide for all I/O sizes.
+> Here is a preview of the core of the test I will submit to the cxl-cli project:
 > 
-> Fix the mask calculation.
-> 
-> Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-> Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Cc: stable@vger.kernel.org
 > ---
-
-LGTM. Can you include a link to the bug report or related discussion in 
-the commit log? It will help understand the impact of this issue.
-
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-
->  arch/x86/coco/tdx/tdx.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> modprobe cxl_mock_mem && modprobe cxl_test hmem_test=1
 > 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 7b2833705d47..4d7f71d50122 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -693,7 +693,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
->  		.r13 = PORT_READ,
->  		.r14 = port,
->  	};
-> -	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
-> +	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
->  	bool success;
->  
->  	/*
-> @@ -713,7 +713,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
->  
->  static bool handle_out(struct pt_regs *regs, int size, int port)
->  {
-> -	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
-> +	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
->  
->  	/*
->  	 * Emulate the I/O write via hypercall. More info about ABI can be found
+> dax=$(find_dax_cxl)
+> [[ "$dax" == "" ]] && err $LINENO
+> dax=$(find_dax_hmem)
+> [[ "$dax" != "" ]] && err $LINENO
+> 
+> unload
+> 
+> modprobe cxl_mock_mem && modprobe cxl_test fail_autoassemble hmem_test=1
+> 
+> dax=$(find_dax_cxl)
+> [[ "$dax" != "" ]] && err $LINENO
+> dax=$(find_dax_hmem)
+> [[ "$dax" == "" ]] && err $LINENO
+> 
+> unload
+> ---
+> 
+> This builds on Smita's series [1] pushed out to for-7.1/dax-hmem in
+> cxl.git [2].
+> 
+> [1]: http://lore.kernel.org/20260322195343.206900-1-Smita.KoralahalliChannabasappa@amd.com
+> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-7.1/dax-hmem
+> 
+> Dan Williams (9):
+>   cxl/region: Fix use-after-free from auto assembly failure
+>   dax/cxl: Fix HMEM dependencies
+>   cxl/region: Limit visibility of cxl_region_contains_resource()
+>   cxl/region: Constify cxl_region_resource_contains()
+>   dax/hmem: Reduce visibility of dax_cxl coordination symbols
+>   dax/hmem: Fix singleton confusion between dax_hmem_work and hmem
+>     devices
+>   dax/hmem: Parent dax_hmem devices
+>   tools/testing/cxl: Simulate auto-assembly failure
+>   tools/testing/cxl: Test dax_hmem takeover of CXL regions
+> 
+>  drivers/dax/Kconfig                |   6 +-
+>  drivers/cxl/cxl.h                  |  11 ++-
+>  drivers/dax/bus.h                  |  15 +++-
+>  include/cxl/cxl.h                  |  15 ----
+>  tools/testing/cxl/test/mock.h      |   8 ++
+>  drivers/cxl/core/region.c          |  68 +++++++++++++++--
+>  drivers/dax/hmem/device.c          |  28 ++++---
+>  drivers/dax/hmem/hmem.c            | 115 +++++++++++++++--------------
+>  tools/testing/cxl/test/cxl.c       |  66 +++++++++++++++++
+>  tools/testing/cxl/test/hmem_test.c |  47 ++++++++++++
+>  tools/testing/cxl/test/mem.c       |   3 +
+>  tools/testing/cxl/test/mock.c      |  50 +++++++++++++
+>  tools/testing/cxl/Kbuild           |   7 ++
+>  tools/testing/cxl/test/Kbuild      |   1 +
+>  14 files changed, 344 insertions(+), 96 deletions(-)
+>  delete mode 100644 include/cxl/cxl.h
+>  create mode 100644 tools/testing/cxl/test/hmem_test.c
+> 
+> 
+> base-commit: 51d2fa02c0e4b3b23c4484f2af9b6d65c35471e8
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Applied to cxl/next
+fe5dfc24e003 tools/testing/cxl: Test dax_hmem takeover of CXL regions
+de121c377f88 tools/testing/cxl: Simulate auto-assembly failure
+a515eb335f51 dax/hmem: Parent dax_hmem devices
+841e96c053f1 dax/hmem: Fix singleton confusion between dax_hmem_work and hmem devices
+6c96c76597cc dax/hmem: Reduce visibility of dax_cxl coordination symbols
+069a54fd21e8 cxl/region: Constify cxl_region_resource_contains()
+b95c14f0dc79 cxl/region: Limit visibility of cxl_region_contains_resource()
+6c7077d5ca81 dax/cxl: Fix HMEM dependencies
+16413cc33cfd cxl/region: Fix use-after-free from auto assembly failure
 
 
