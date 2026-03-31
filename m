@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-231706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eG0XA4j5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:48 +0200
+	id 0LDyDhz+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6F336D009
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A10936DB16
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8B52E3055FD0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B6D7E305F52E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF9E423A99;
-	Tue, 31 Mar 2026 16:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41193DFC7E;
+	Tue, 31 Mar 2026 16:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyDsSEoJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW1ovmUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A073C3F7887;
-	Tue, 31 Mar 2026 16:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B7629DB8F;
+	Tue, 31 Mar 2026 16:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974858; cv=none; b=PAjMWlOxbTq27YXuA64NqG5u8KcL7Uiy+jD4/ceDyKnUEi9dyxmQyrT4rkalOqLx25ARGR1cTMncOYMkBHfupN0zWqKktTYQLCkl6wfwQewtl5MkBNXmJfzExdUPaE8tp7NHSl2W7UhynmZZKjGp0CTqbOZVgur0nXYUyPUDhgM=
+	t=1774976248; cv=none; b=YAveTQcl3/OchLlfW6fohd/rI4paDyIqqYw8nAwOAb9LBKbfg0/JQ3aVlnDMXI0CUEY85L3tGSn4oy9xWkT//wapvabaT/P9XPCIJzlGRYbhwHDGYGhInQDi5+CQQjGJ1+G703XHKLl1qTPQvlO9z5mrtkoQHi7OZU4mXOO4HMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974858; c=relaxed/simple;
-	bh=hk2YGHmARYPW3/4YTu9zfkaZ17W0E4lVx+3k0YXN9/4=;
+	s=arc-20240116; t=1774976248; c=relaxed/simple;
+	bh=ARdb5eLY2bB2tu3sIhs3XLgHQK+7S0Q9PTT1EezfBl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLC9rSxRAa+N65WLMwek3HZ7bC5QnxAJBTbDnFXG8yJAf8gFS87QUWdTU/6Ef1+nb4fO5YPCfPvCS2DAyGG5wmTiiOCUu+bOd9T8Ae0mRs93suf6Tcwtv1S54R/AeNq45Q8O89OSSk9mfVIHG8kHwlxRaCGXe40+zAdLp/j1xzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyDsSEoJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C1DC19423;
-	Tue, 31 Mar 2026 16:34:18 +0000 (UTC)
+	 MIME-Version; b=uglI0WdSnqsxHflTKPAJwFwiR2HKQfvOt0vP+RC5yaR3znPV2KH27tvSS60zellMcyBxcugyGhzs43wEerHxEvyeAY3TiPerDLijVKNHD1kHjB7S9oHNKYF/+ZoSEBIRA+q4olRxJtlN3rBeh2atqOqbM82gRR8ZJ57IIN30mSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW1ovmUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB15C19424;
+	Tue, 31 Mar 2026 16:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974858;
-	bh=hk2YGHmARYPW3/4YTu9zfkaZ17W0E4lVx+3k0YXN9/4=;
+	s=korg; t=1774976248;
+	bh=ARdb5eLY2bB2tu3sIhs3XLgHQK+7S0Q9PTT1EezfBl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyDsSEoJ7Aw0kiKvicNFnHL/irrP5MLd8iovmcmhUpZXj2ngpwbe8SMgD9f3E3173
-	 vKZgAK8THpgOJwwJFQgUEdSgSCgvFkbosXFQEKEAi8GFCa3CDRjnaOEP+bUrHPzoGu
-	 oBNGszrNyOzB+5VZB/jIfDTG58Nu8YiAZzJLuuVo=
+	b=yW1ovmUjX3zJcxeJnUjPWDzehxzjEcB0hRNakf4+ByLguq8dVrOmOLQ2B8s6/5lrg
+	 hkCekQ+d0PK3LDOlPHOac4LH74WAG6Ecig0UvPY/LBCJ5UkAM3L3H1wz2dRkBZNA+/
+	 we5pe9fPKEKzvyN2hvyiVBFiGBMc1WXuzZsaV6VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Guillaume Laporte <glapt.pro@outlook.com>,
+	Tianci Cao <ziye@zju.edu.cn>,
+	Shenghao Yuan <shenghaoyuan0928@163.com>,
+	Yazhou Tang <tangyazhou518@outlook.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 072/342] drm/amdgpu: fix gpu idle power consumption issue for gfx v12
+Subject: [PATCH 6.18 002/309] bpf: Reset register ID for BPF_END value tracking
 Date: Tue, 31 Mar 2026 18:18:25 +0200
-Message-ID: <20260331161801.543887498@linuxfoundation.org>
+Message-ID: <20260331161753.564387320@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +72,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,zju.edu.cn,163.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232244-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231706-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 9D6F336D009
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zju.edu.cn:email]
+X-Rspamd-Queue-Id: 6A10936DB16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Yazhou Tang <tangyazhou518@outlook.com>
 
-[ Upstream commit a6571045cf06c4aa749b4801382ae96650e2f0e1 ]
+[ Upstream commit a3125bc01884431d30d731461634c8295b6f0529 ]
 
-Older versions of the MES firmware may cause abnormal GPU power consumption.
-When performing inference tasks on the GPU (e.g., with Ollama using ROCm),
-the GPU may show abnormal power consumption in idle state and incorrect GPU load information.
-This issue has been fixed in firmware version 0x8b and newer.
+When a register undergoes a BPF_END (byte swap) operation, its scalar
+value is mutated in-place. If this register previously shared a scalar ID
+with another register (e.g., after an `r1 = r0` assignment), this tie must
+be broken.
 
-Closes: https://github.com/ROCm/ROCm/issues/5706
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4e22a5fe6ea6e0b057e7f246df4ac3ff8bfbc46a)
+Currently, the verifier misses resetting `dst_reg->id` to 0 for BPF_END.
+Consequently, if a conditional jump checks the swapped register, the
+verifier incorrectly propagates the learned bounds to the linked register,
+leading to false confidence in the linked register's value and potentially
+allowing out-of-bounds memory accesses.
+
+Fix this by explicitly resetting `dst_reg->id` to 0 in the BPF_END case
+to break the scalar tie, similar to how BPF_NEG handles it via
+`__mark_reg_known`.
+
+Fixes: 9d2119984224 ("bpf: Add bitwise tracking for BPF_END")
+Closes: https://lore.kernel.org/bpf/AMBPR06MB108683CFEB1CB8D9E02FC95ECF17EA@AMBPR06MB10868.eurprd06.prod.outlook.com/
+Link: https://lore.kernel.org/bpf/4be25f7442a52244d0dd1abb47bc6750e57984c9.camel@gmail.com/
+Reported-by: Guillaume Laporte <glapt.pro@outlook.com>
+Co-developed-by: Tianci Cao <ziye@zju.edu.cn>
+Signed-off-by: Tianci Cao <ziye@zju.edu.cn>
+Co-developed-by: Shenghao Yuan <shenghaoyuan0928@163.com>
+Signed-off-by: Shenghao Yuan <shenghaoyuan0928@163.com>
+Signed-off-by: Yazhou Tang <tangyazhou518@outlook.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260304083228.142016-2-tangyazhou@zju.edu.cn
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-index 231aba48d8d28..dcafbd7066c40 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -731,6 +731,9 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
- 	int i;
- 	struct amdgpu_device *adev = mes->adev;
- 	union MESAPI_SET_HW_RESOURCES mes_set_hw_res_pkt;
-+	uint32_t mes_rev = (pipe == AMDGPU_MES_SCHED_PIPE) ?
-+		(mes->sched_version & AMDGPU_MES_VERSION_MASK) :
-+		(mes->kiq_version & AMDGPU_MES_VERSION_MASK);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 648c4bd3e5a92..1280ee4c81c33 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15431,6 +15431,13 @@ static void scalar_byte_swap(struct bpf_reg_state *dst_reg, struct bpf_insn *ins
+ 	/* Apply bswap if alu64 or switch between big-endian and little-endian machines */
+ 	bool need_bswap = alu64 || (to_le == is_big_endian);
  
- 	memset(&mes_set_hw_res_pkt, 0, sizeof(mes_set_hw_res_pkt));
- 
-@@ -785,7 +788,7 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
- 	 * handling support, other queue will not use the oversubscribe timer.
- 	 * handling  mode - 0: disabled; 1: basic version; 2: basic+ version
- 	 */
--	mes_set_hw_res_pkt.oversubscription_timer = 50;
-+	mes_set_hw_res_pkt.oversubscription_timer = mes_rev < 0x8b ? 0 : 50;
- 	mes_set_hw_res_pkt.unmapped_doorbell_handling = 1;
- 
- 	if (amdgpu_mes_log_enable) {
++	/*
++	 * If the register is mutated, manually reset its scalar ID to break
++	 * any existing ties and avoid incorrect bounds propagation.
++	 */
++	if (need_bswap || insn->imm == 16 || insn->imm == 32)
++		dst_reg->id = 0;
++
+ 	if (need_bswap) {
+ 		if (insn->imm == 16)
+ 			dst_reg->var_off = tnum_bswap16(dst_reg->var_off);
 -- 
 2.51.0
 
