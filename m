@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-231968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KB3JMjD9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:24 +0200
+	id +MwCEAwFzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0208836D8D1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4EEA36EE25
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A13D630B34F4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C33F932AA063
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D82422578D;
-	Tue, 31 Mar 2026 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28B413258;
+	Tue, 31 Mar 2026 16:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRSUTj8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoQarikA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206D925D527;
-	Tue, 31 Mar 2026 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC2B29DB8F;
+	Tue, 31 Mar 2026 16:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975532; cv=none; b=PQ7I+0CwOwf+OGujJ/j52O09wgScSEe0cxo3zTPALFPi7Gadp6IRt62oGL38i6klYrH/gZpjXzYfJrcPRQpj/S77al4vQkpuQd2qy9Vm2hqzaSz5vvDuq7P/SjsIXEaLp50rpiW+xjRvqxj9aCsYrXKSyPHDg7m+wlbXjit/9vo=
+	t=1774976202; cv=none; b=nFIYj498gzXkVJHAk5oRzckF4f/hyR+9pxLZ9iiFqJoIXpM0bEaxRIS+rjWU+celjINC5gOymDZK4w6lz5R5UKCJlVHvl2UIaETIUGZWJl1MIGILw+JqKnNaJ7jhUcSJUZlwwvq/6xH/6gDx0BKlkZx21cLMNhiddM2yg8yqagg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975532; c=relaxed/simple;
-	bh=GCOnJ4FUex5IWqgAkSYDXCQgO9tDXf+j7YqCe3OrLYM=;
+	s=arc-20240116; t=1774976202; c=relaxed/simple;
+	bh=+m96hJuEj69HnCpllmcp6MvtVLPC0zGkOzimT+VjNIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6Hnr4JuH6wAGf6QRGG8kdYcUfTjXdicpgPlDuniTvjym0A1sG0HiBxWfWQlN7jcR8rXSyAX4pMBnRV1Rg/iQHGhdAQuylkrO3kYtD4ZlkVR28PfBFMf4FkyVKi1pZF2HRQzJKeY8sFkDxMeivALRMgCBDtZqLS0VZray5quddI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRSUTj8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99E4C19423;
-	Tue, 31 Mar 2026 16:45:31 +0000 (UTC)
+	 MIME-Version; b=JYyFElpKlCIC8tS6fhhQ4CM0xHw2+MUaTrmoQYwYmce5NM5i6JkMT82NxLOLSYqqT3ZQ/PF4yJ+/OPwAbFY58SUvBhaNjlJJHQlTo06qCN38Baz3nEU94+LF6I/oUDUrRjf5jiJSj97H50vOAfQNRFhFufXDgPGsPXxNpeDW2wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoQarikA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA19EC19424;
+	Tue, 31 Mar 2026 16:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975532;
-	bh=GCOnJ4FUex5IWqgAkSYDXCQgO9tDXf+j7YqCe3OrLYM=;
+	s=korg; t=1774976202;
+	bh=+m96hJuEj69HnCpllmcp6MvtVLPC0zGkOzimT+VjNIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRSUTj8TBGwyJGEZ3yDvF0vw1xMNHaFdr9CnWkV5uBfcwExHqxaccTbp/UbpAeCom
-	 B5YOPART1ha/iQFCdZMr7zlneQL5hARvIbsznXQ7r/5lzsOHzTn5qWl/J17CJ2ef0i
-	 j9xDw54U+AcR7bk3j7P1EsOPjENtC55zlUD3uKNg=
+	b=RoQarikAONEV195IY6c/T4pj8L0VncFc5T511Rhxy2taRf0Sm0HHzsHIkmD9WCOEP
+	 sOUGrSY4hTfN4sq26zBNVc7EOknnWByv6HUB9/mC1MudOjxXFkU1COkploxyXJRUHe
+	 NCJP+2ThQQauoIsu3o5JCqGREcy7mWatHXd5gdGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 331/342] btrfs: fix super block offset in error message in btrfs_validate_super()
+	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	XiaoHua Wang <561399680@139.com>
+Subject: [PATCH 6.12 214/244] net: add proper RCU protection to /proc/net/ptype
 Date: Tue, 31 Mar 2026 18:22:44 +0200
-Message-ID: <20260331161811.085655883@linuxfoundation.org>
+Message-ID: <20260331161749.662382030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +71,218 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,huawei.com,google.com,kernel.org,139.com];
+	TAGGED_FROM(0.00)[bounces-232226-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231968-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0208836D8D1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,139.com:email,huawei.com:email,alibaba.com:email,ptype_all.next:url]
+X-Rspamd-Queue-Id: A4EEA36EE25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b52fe51f724385b3ed81e37e510a4a33107e8161 ]
+[ Upstream commit f613e8b4afea0cd17c7168e8b00e25bc8d33175d ]
 
-Fix the superblock offset mismatch error message in
-btrfs_validate_super(): we changed it so that it considers all the
-superblocks, but the message still assumes we're only looking at the
-first one.
+Yin Fengwei reported an RCU stall in ptype_seq_show() and provided
+a patch.
 
-The change from %u to %llu is because we're changing from a constant to
-a u64.
+Real issue is that ptype_seq_next() and ptype_seq_show() violate
+RCU rules.
 
-Fixes: 069ec957c35e ("btrfs: Refactor btrfs_check_super_valid")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ptype_seq_show() runs under rcu_read_lock(), and reads pt->dev
+to get device name without any barrier.
+
+At the same time, concurrent writers can remove a packet_type structure
+(which is correctly freed after an RCU grace period) and clear pt->dev
+without an RCU grace period.
+
+Define ptype_iter_state to carry a dev pointer along seq_net_private:
+
+struct ptype_iter_state {
+	struct seq_net_private	p;
+	struct net_device	*dev; // added in this patch
+};
+
+We need to record the device pointer in ptype_get_idx() and
+ptype_seq_next() so that ptype_seq_show() is safe against
+concurrent pt->dev changes.
+
+We also need to add full RCU protection in ptype_seq_next().
+(Missing READ_ONCE() when reading list.next values)
+
+Many thanks to Dong Chenchen for providing a repro.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1d10f8a1f40b ("net-procfs: show net devices bound packet types")
+Fixes: c353e8983e0d ("net: introduce per netns packet chains")
+Reported-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Reported-by: Dong Chenchen <dongchenchen2@huawei.com>
+Closes: https://lore.kernel.org/netdev/CANn89iKRRKPnWjJmb-_3a=sq+9h6DvTQM4DBZHT5ZRGPMzQaiA@mail.gmail.com/T/#m7b80b9fc9b9267f90e0b7aad557595f686f9c50d
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Link: https://patch.msgid.link/20260202205217.2881198-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Some adjustments have been made. ]
+Signed-off-by: XiaoHua Wang <561399680@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/net-procfs.c |   49 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 6d2dcd023cc6f..8df7eb7f01e90 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2503,8 +2503,8 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
+--- a/net/core/net-procfs.c
++++ b/net/core/net-procfs.c
+@@ -168,8 +168,14 @@ static const struct seq_operations softn
+ 	.show  = softnet_seq_show,
+ };
  
- 	if (mirror_num >= 0 &&
- 	    btrfs_super_bytenr(sb) != btrfs_sb_offset(mirror_num)) {
--		btrfs_err(fs_info, "super offset mismatch %llu != %u",
--			  btrfs_super_bytenr(sb), BTRFS_SUPER_INFO_OFFSET);
-+		btrfs_err(fs_info, "super offset mismatch %llu != %llu",
-+			  btrfs_super_bytenr(sb), btrfs_sb_offset(mirror_num));
- 		ret = -EINVAL;
++struct ptype_iter_state {
++	struct seq_net_private	p;
++	struct net_device	*dev;
++};
++
+ static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct list_head *ptype_list = NULL;
+ 	struct packet_type *pt = NULL;
+ 	struct net_device *dev;
+@@ -179,12 +185,16 @@ static void *ptype_get_idx(struct seq_fi
+ 	for_each_netdev_rcu(seq_file_net(seq), dev) {
+ 		ptype_list = &dev->ptype_all;
+ 		list_for_each_entry_rcu(pt, ptype_list, list) {
+-			if (i == pos)
++			if (i == pos) {
++				iter->dev = dev;
+ 				return pt;
++			}
+ 			++i;
+ 		}
  	}
  
--- 
-2.53.0
-
++	iter->dev = NULL;
++
+ 	list_for_each_entry_rcu(pt, &net_hotdata.ptype_all, list) {
+ 		if (i == pos)
+ 			return pt;
+@@ -210,6 +220,7 @@ static void *ptype_seq_start(struct seq_
+ 
+ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct net_device *dev;
+ 	struct packet_type *pt;
+ 	struct list_head *nxt;
+@@ -220,20 +231,21 @@ static void *ptype_seq_next(struct seq_f
+ 		return ptype_get_idx(seq, 0);
+ 
+ 	pt = v;
+-	nxt = pt->list.next;
+-	if (pt->dev) {
+-		if (nxt != &pt->dev->ptype_all)
++	nxt = READ_ONCE(pt->list.next);
++	dev = iter->dev;
++	if (dev) {
++		if (nxt != &dev->ptype_all)
+ 			goto found;
+ 
+-		dev = pt->dev;
+ 		for_each_netdev_continue_rcu(seq_file_net(seq), dev) {
+-			if (!list_empty(&dev->ptype_all)) {
+-				nxt = dev->ptype_all.next;
++			nxt = READ_ONCE(dev->ptype_all.next);
++			if (nxt != &dev->ptype_all) {
++				iter->dev = dev;
+ 				goto found;
+ 			}
+ 		}
+-
+-		nxt = net_hotdata.ptype_all.next;
++		iter->dev = NULL;
++		nxt = READ_ONCE(net_hotdata.ptype_all.next);
+ 		goto ptype_all;
+ 	}
+ 
+@@ -242,14 +254,14 @@ ptype_all:
+ 		if (nxt != &net_hotdata.ptype_all)
+ 			goto found;
+ 		hash = 0;
+-		nxt = ptype_base[0].next;
++		nxt = READ_ONCE(ptype_base[0].next);
+ 	} else
+ 		hash = ntohs(pt->type) & PTYPE_HASH_MASK;
+ 
+ 	while (nxt == &ptype_base[hash]) {
+ 		if (++hash >= PTYPE_HASH_SIZE)
+ 			return NULL;
+-		nxt = ptype_base[hash].next;
++		nxt = READ_ONCE(ptype_base[hash].next);
+ 	}
+ found:
+ 	return list_entry(nxt, struct packet_type, list);
+@@ -263,19 +275,24 @@ static void ptype_seq_stop(struct seq_fi
+ 
+ static int ptype_seq_show(struct seq_file *seq, void *v)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct packet_type *pt = v;
++	struct net_device *dev;
+ 
+-	if (v == SEQ_START_TOKEN)
++	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq, "Type Device      Function\n");
+-	else if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
+-		 (!pt->dev || net_eq(dev_net(pt->dev), seq_file_net(seq)))) {
++		return 0;
++	}
++	dev = iter->dev;
++	if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
++		 (!dev || net_eq(dev_net(dev), seq_file_net(seq)))) {
+ 		if (pt->type == htons(ETH_P_ALL))
+ 			seq_puts(seq, "ALL ");
+ 		else
+ 			seq_printf(seq, "%04x", ntohs(pt->type));
+ 
+ 		seq_printf(seq, " %-8s %ps\n",
+-			   pt->dev ? pt->dev->name : "", pt->func);
++			   dev ? dev->name : "", pt->func);
+ 	}
+ 
+ 	return 0;
+@@ -299,7 +316,7 @@ static int __net_init dev_proc_net_init(
+ 			 &softnet_seq_ops))
+ 		goto out_dev;
+ 	if (!proc_create_net("ptype", 0444, net->proc_net, &ptype_seq_ops,
+-			sizeof(struct seq_net_private)))
++			sizeof(struct ptype_iter_state)))
+ 		goto out_softnet;
+ 
+ 	if (wext_proc_init(net))
 
 
 
