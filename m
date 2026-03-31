@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBAqIsgAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:44 +0200
+	id AAt9GKr3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8DE36E398
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AA336CC83
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9C373087EA1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2DA7312C5D4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE2E2D63E8;
-	Tue, 31 Mar 2026 17:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FE93F99EA;
+	Tue, 31 Mar 2026 16:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdnpnTeH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH/Ec6nv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA852E11A6;
-	Tue, 31 Mar 2026 17:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661AD3E92A5;
+	Tue, 31 Mar 2026 16:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976654; cv=none; b=su0iY0eRJu84ARQ65bLLfnKqE4GjRoRaALJ/4mA+rgGRo5aEG4DnVG1HJfVgyxlhy7QrTQuDmxJYbK98ay0k+CcmDkaV+u41Gz/EuVfyMsfOZ00XUcZJZVJDYsrlZujbLi5lOwCJpvPtaiBasSjoBO9reND3P53GHZSJB7WGnSU=
+	t=1774974467; cv=none; b=tA/VnXz1HePvKUnudYM++0O6Z7p0m1R41+wqH1vdqtop/Ud4EwfwVHwlbbGoKuNGhIvhvsamdIRlnTyg7b8BQWoM1LR7LZDw8O3x5YNtudBAZhijzNbZChAPPZbRq5n3FIc8V1ndDmgOw/qYksCbimDtoTh6NiLA+vP2mSzylxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976654; c=relaxed/simple;
-	bh=8+DWUzfcnS0j4YpiRRzEIZ+Jbhtqo2hUZkX0ZxecEsY=;
+	s=arc-20240116; t=1774974467; c=relaxed/simple;
+	bh=9KJnJDqxgKXF098kuIAuTuGZoqbiJcpfpLyR3llfg+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t35U4hFjNvhDHA7Ilk8l7G3YMQnJQ73xtMR7lfaX7f75l5pxFuAjswnQwYTpW3zp3AECS4ZxX1KCyzeV4rruTe2OeLUFyj8F/Za/59kyrpjcjv98dwlgRi665b8Tr36CVn21AX+4kFS1BzOh0G+XLUE9hK+MbU6e1ZsbHxYd3Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdnpnTeH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36108C19423;
-	Tue, 31 Mar 2026 17:04:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P6eAbeMGttNiwtMYp0jJACxiSonh0VABX/eiuU1PgBIFHnH1wO9Yaq/yFsW56CqV3Sd0dfXttatc98wzXKA4AFggDMMuIeHiuVE+lstpzyf7Yg5GvqZPGhTc52QKBdTzNzND6kPFNmtsuazHQ7GQBVcHNjfu84qCIg4cHjKM4XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH/Ec6nv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7465C19423;
+	Tue, 31 Mar 2026 16:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976654;
-	bh=8+DWUzfcnS0j4YpiRRzEIZ+Jbhtqo2hUZkX0ZxecEsY=;
+	s=korg; t=1774974467;
+	bh=9KJnJDqxgKXF098kuIAuTuGZoqbiJcpfpLyR3llfg+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdnpnTeHTe0gV1aFD3LhmwQrT3cEXeyK8ylhHFjulvh5DTswdRqUFN5a7et8G+dPV
-	 VfPw98+bi6qZTpNB+tOL8yt3IFYRhrIv9zwaTvmyHPvk6kLcj8cxBIUfJkOWwHQkf1
-	 mdDXZUE6aNWEY/TLr7quyzb12cBGsod9y7TkIMbE=
+	b=tH/Ec6nv4I3tjN71YpBKcLYckuehL6V7wN7Q05Oc+fLGqp+wtUemcXVoNee9VcEqm
+	 qX3p3dB4zKUFmdOKvlPvEwmMK9wSWyhpBRHDm3oFjpUYzH5fPpXXR4CIOExBpK5mhB
+	 bdk+Ar7VeVBpbsMqiR7o/4Ue8iNMpXLSf+DILyM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.18 177/309] s390/entry: Scrub r12 register on kernel entry
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 096/175] ASoC: adau1372: Fix clock leak on PLL lock failure
 Date: Tue, 31 Mar 2026 18:21:20 +0200
-Message-ID: <20260331161759.980779635@linuxfoundation.org>
+Message-ID: <20260331161733.297351179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231553-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232402-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F8DE36E398
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C5AA336CC83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-commit 0738d395aab8fae3b5a3ad3fc640630c91693c27 upstream.
+[ Upstream commit bfe6a264effcb6fe99ad7ceaf9e8c7439fc9555b ]
 
-Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
-all entry handlers loaded r12 with the current task pointer
-(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
-commit removed TIF_ISOLATE_BP, dropping both the branch prediction
-macros and the r12 load, but did not add r12 to the register clearing
-sequence.
+adau1372_enable_pll() was a void function that logged a dev_err() on
+PLL lock timeout but did not propagate the error. As a result,
+adau1372_set_power() would continue with adau1372->enabled set to true
+despite the PLL being unlocked, and the mclk left enabled with no
+corresponding disable on the error path.
 
-Add the missing xgr %r12,%r12 to make the register scrub consistent
-across all entry points.
+Convert adau1372_enable_pll() to return int, using -ETIMEDOUT on lock
+timeout and propagating regmap errors directly. In adau1372_set_power(),
+check the return value and unwind in reverse order: restore regcache to
+cache-only mode, reassert GPIO power-down, and disable the clock before
+returning the error.
 
-Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
-Cc: stable@kernel.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Fixes: 6cd4c6459e47 ("ASoC: Add ADAU1372 audio CODEC support")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20260325210704.76847-3-jihed.chaibi.dev@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/entry.S |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/adau1372.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -254,6 +254,7 @@ SYM_CODE_START(system_call)
- 	xgr	%r9,%r9
- 	xgr	%r10,%r10
- 	xgr	%r11,%r11
-+	xgr	%r12,%r12
- 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
- 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
- 	MBEAR	%r2,%r13
-@@ -390,6 +391,7 @@ SYM_CODE_START(\name)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
- 	MBEAR	%r11,%r13
-@@ -479,6 +481,7 @@ SYM_CODE_START(mcck_int_handler)
- 	xgr	%r6,%r6
- 	xgr	%r7,%r7
- 	xgr	%r10,%r10
-+	xgr	%r12,%r12
- 	stmg	%r8,%r9,__PT_PSW(%r11)
- 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
- 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
+diff --git a/sound/soc/codecs/adau1372.c b/sound/soc/codecs/adau1372.c
+index f629be6c297df..25f123110b5be 100644
+--- a/sound/soc/codecs/adau1372.c
++++ b/sound/soc/codecs/adau1372.c
+@@ -761,7 +761,7 @@ static int adau1372_startup(struct snd_pcm_substream *substream, struct snd_soc_
+ 	return 0;
+ }
+ 
+-static void adau1372_enable_pll(struct adau1372 *adau1372)
++static int adau1372_enable_pll(struct adau1372 *adau1372)
+ {
+ 	unsigned int val, timeout = 0;
+ 	int ret;
+@@ -777,8 +777,12 @@ static void adau1372_enable_pll(struct adau1372 *adau1372)
+ 		timeout++;
+ 	} while (!(val & 1) && timeout < 3);
+ 
+-	if (ret < 0 || !(val & 1))
++	if (ret < 0 || !(val & 1)) {
+ 		dev_err(adau1372->dev, "Failed to lock PLL\n");
++		return ret < 0 ? ret : -ETIMEDOUT;
++	}
++
++	return 0;
+ }
+ 
+ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
+@@ -806,7 +810,14 @@ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
+ 		 * accessed.
+ 		 */
+ 		if (adau1372->use_pll) {
+-			adau1372_enable_pll(adau1372);
++			ret = adau1372_enable_pll(adau1372);
++			if (ret) {
++				regcache_cache_only(adau1372->regmap, true);
++				if (adau1372->pd_gpio)
++					gpiod_set_value(adau1372->pd_gpio, 1);
++				clk_disable_unprepare(adau1372->mclk);
++				return ret;
++			}
+ 			clk_ctrl |= ADAU1372_CLK_CTRL_CLKSRC;
+ 		}
+ 
+-- 
+2.53.0
+
 
 
 
