@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LDyDhz+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:20 +0200
+	id 2FXoESf+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A10936DB16
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A7B36DB33
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B6D7E305F52E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B8143063AE2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41193DFC7E;
-	Tue, 31 Mar 2026 16:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631593A4F34;
+	Tue, 31 Mar 2026 16:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW1ovmUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf1IBS1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B7629DB8F;
-	Tue, 31 Mar 2026 16:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2678829DB8F;
+	Tue, 31 Mar 2026 16:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976248; cv=none; b=YAveTQcl3/OchLlfW6fohd/rI4paDyIqqYw8nAwOAb9LBKbfg0/JQ3aVlnDMXI0CUEY85L3tGSn4oy9xWkT//wapvabaT/P9XPCIJzlGRYbhwHDGYGhInQDi5+CQQjGJ1+G703XHKLl1qTPQvlO9z5mrtkoQHi7OZU4mXOO4HMY=
+	t=1774976254; cv=none; b=rqEkX45mwbjr1ywvEPx/p7XWyDOGuWE03TNV7n94PAITDA8s8XRAiV6iFgXvofIl0Tl4XQ5iBwGtyXYvvBpu5IhafWV4keR/z+a5BZNzsxJ+DyLmzIQTufolyrf0Nzf4VwEaeuaHOgJb7Ed2rkpSvP3TfuyrABmeOLnXJqgW1ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976248; c=relaxed/simple;
-	bh=ARdb5eLY2bB2tu3sIhs3XLgHQK+7S0Q9PTT1EezfBl0=;
+	s=arc-20240116; t=1774976254; c=relaxed/simple;
+	bh=HbmjjnTagP5mPPB6Akm0GQ4Vv9injxNnQ01MBJWLkFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uglI0WdSnqsxHflTKPAJwFwiR2HKQfvOt0vP+RC5yaR3znPV2KH27tvSS60zellMcyBxcugyGhzs43wEerHxEvyeAY3TiPerDLijVKNHD1kHjB7S9oHNKYF/+ZoSEBIRA+q4olRxJtlN3rBeh2atqOqbM82gRR8ZJ57IIN30mSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW1ovmUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB15C19424;
-	Tue, 31 Mar 2026 16:57:28 +0000 (UTC)
+	 MIME-Version; b=JkrnTPPbTaa0VJOMW8PbahJ+z6uhprfkUsrRw9oN/ukYxNR6CJfSK30U6fDhqjT0xmnvXBRX/bk3h++C5+ywGBb6dgqAO82YgU5ncPLqqy+lfBQTX6Qthr+cJjQvh/SdhZZTCM0xdQl9HixDXUIG+zfu9Kf/3HUWFJHzkZfDA4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf1IBS1D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6889AC19423;
+	Tue, 31 Mar 2026 16:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976248;
-	bh=ARdb5eLY2bB2tu3sIhs3XLgHQK+7S0Q9PTT1EezfBl0=;
+	s=korg; t=1774976253;
+	bh=HbmjjnTagP5mPPB6Akm0GQ4Vv9injxNnQ01MBJWLkFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yW1ovmUjX3zJcxeJnUjPWDzehxzjEcB0hRNakf4+ByLguq8dVrOmOLQ2B8s6/5lrg
-	 hkCekQ+d0PK3LDOlPHOac4LH74WAG6Ecig0UvPY/LBCJ5UkAM3L3H1wz2dRkBZNA+/
-	 we5pe9fPKEKzvyN2hvyiVBFiGBMc1WXuzZsaV6VY=
+	b=Lf1IBS1DgYWWFSX5KRLTRLSdA6v1id9Ez2hpmDtWZKGppUTVkG3wLhHnvSqIB7dfA
+	 zjr2TCZ8OIi+PbfABiPVXJiXXprcSH4xI+9IA2ZgjM8e5D75P4zqRiHao4LFZ+1mtr
+	 ddvFghiTdoRZVFySMAQpXSLIoitJ6JCt1ZUr/xX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Laporte <glapt.pro@outlook.com>,
-	Tianci Cao <ziye@zju.edu.cn>,
-	Shenghao Yuan <shenghaoyuan0928@163.com>,
-	Yazhou Tang <tangyazhou518@outlook.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Sachin Kumar <xcyfun@protonmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 002/309] bpf: Reset register ID for BPF_END value tracking
-Date: Tue, 31 Mar 2026 18:18:25 +0200
-Message-ID: <20260331161753.564387320@linuxfoundation.org>
+Subject: [PATCH 6.18 003/309] bpf: Fix constant blinding for PROBE_MEM32 stores
+Date: Tue, 31 Mar 2026 18:18:26 +0200
+Message-ID: <20260331161753.600677364@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
 References: <20260331161753.468533260@linuxfoundation.org>
@@ -72,31 +71,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,zju.edu.cn,163.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232244-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,etsalapatis.com,protonmail.com,iogearbox.net];
+	TAGGED_FROM(0.00)[bounces-232246-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zju.edu.cn:email]
-X-Rspamd-Queue-Id: 6A10936DB16
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,etsalapatis.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,protonmail.com:email,iogearbox.net:email]
+X-Rspamd-Queue-Id: B8A7B36DB33
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,60 +103,75 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Yazhou Tang <tangyazhou518@outlook.com>
+From: Sachin Kumar <xcyfun@protonmail.com>
 
-[ Upstream commit a3125bc01884431d30d731461634c8295b6f0529 ]
+[ Upstream commit 2321a9596d2260310267622e0ad8fbfa6f95378f ]
 
-When a register undergoes a BPF_END (byte swap) operation, its scalar
-value is mutated in-place. If this register previously shared a scalar ID
-with another register (e.g., after an `r1 = r0` assignment), this tie must
-be broken.
+BPF_ST | BPF_PROBE_MEM32 immediate stores are not handled by
+bpf_jit_blind_insn(), allowing user-controlled 32-bit immediates to
+survive unblinded into JIT-compiled native code when bpf_jit_harden >= 1.
 
-Currently, the verifier misses resetting `dst_reg->id` to 0 for BPF_END.
-Consequently, if a conditional jump checks the swapped register, the
-verifier incorrectly propagates the learned bounds to the linked register,
-leading to false confidence in the linked register's value and potentially
-allowing out-of-bounds memory accesses.
+The root cause is that convert_ctx_accesses() rewrites BPF_ST|BPF_MEM
+to BPF_ST|BPF_PROBE_MEM32 for arena pointer stores during verification,
+before bpf_jit_blind_constants() runs during JIT compilation. The
+blinding switch only matches BPF_ST|BPF_MEM (mode 0x60), not
+BPF_ST|BPF_PROBE_MEM32 (mode 0xa0). The instruction falls through
+unblinded.
 
-Fix this by explicitly resetting `dst_reg->id` to 0 in the BPF_END case
-to break the scalar tie, similar to how BPF_NEG handles it via
-`__mark_reg_known`.
+Add BPF_ST|BPF_PROBE_MEM32 cases to bpf_jit_blind_insn() alongside the
+existing BPF_ST|BPF_MEM cases. The blinding transformation is identical:
+load the blinded immediate into BPF_REG_AX via mov+xor, then convert
+the immediate store to a register store (BPF_STX).
 
-Fixes: 9d2119984224 ("bpf: Add bitwise tracking for BPF_END")
-Closes: https://lore.kernel.org/bpf/AMBPR06MB108683CFEB1CB8D9E02FC95ECF17EA@AMBPR06MB10868.eurprd06.prod.outlook.com/
-Link: https://lore.kernel.org/bpf/4be25f7442a52244d0dd1abb47bc6750e57984c9.camel@gmail.com/
-Reported-by: Guillaume Laporte <glapt.pro@outlook.com>
-Co-developed-by: Tianci Cao <ziye@zju.edu.cn>
-Signed-off-by: Tianci Cao <ziye@zju.edu.cn>
-Co-developed-by: Shenghao Yuan <shenghaoyuan0928@163.com>
-Signed-off-by: Shenghao Yuan <shenghaoyuan0928@163.com>
-Signed-off-by: Yazhou Tang <tangyazhou518@outlook.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260304083228.142016-2-tangyazhou@zju.edu.cn
+The rewritten STX instruction must preserve the BPF_PROBE_MEM32 mode so
+the architecture JIT emits the correct arena addressing (R12-based on
+x86-64). Cannot use the BPF_STX_MEM() macro here because it hardcodes
+BPF_MEM mode; construct the instruction directly instead.
+
+Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Sachin Kumar <xcyfun@protonmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/Y6IT5VvNRchPBLI5D7JZHBzZrU9rb0ycRJPJzJSXGj7kJlX8RJwZFSM2YZjcDxoQKABkxt1T8Os2gi23PYyFuQe6KkZGWVyfz8K5afdy9ak=@protonmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/bpf/core.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 648c4bd3e5a92..1280ee4c81c33 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15431,6 +15431,13 @@ static void scalar_byte_swap(struct bpf_reg_state *dst_reg, struct bpf_insn *ins
- 	/* Apply bswap if alu64 or switch between big-endian and little-endian machines */
- 	bool need_bswap = alu64 || (to_le == is_big_endian);
- 
-+	/*
-+	 * If the register is mutated, manually reset its scalar ID to break
-+	 * any existing ties and avoid incorrect bounds propagation.
-+	 */
-+	if (need_bswap || insn->imm == 16 || insn->imm == 32)
-+		dst_reg->id = 0;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index c2278f392e932..a17e42ff89853 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1403,6 +1403,27 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
+ 		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+ 		*to++ = BPF_STX_MEM(from->code, from->dst_reg, BPF_REG_AX, from->off);
+ 		break;
 +
- 	if (need_bswap) {
- 		if (insn->imm == 16)
- 			dst_reg->var_off = tnum_bswap16(dst_reg->var_off);
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
++	case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
++		*to++ = BPF_ALU64_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^
++				      from->imm);
++		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
++		/*
++		 * Cannot use BPF_STX_MEM() macro here as it
++		 * hardcodes BPF_MEM mode, losing PROBE_MEM32
++		 * and breaking arena addressing in the JIT.
++		 */
++		*to++ = (struct bpf_insn) {
++			.code  = BPF_STX | BPF_PROBE_MEM32 |
++				 BPF_SIZE(from->code),
++			.dst_reg = from->dst_reg,
++			.src_reg = BPF_REG_AX,
++			.off   = from->off,
++		};
++		break;
+ 	}
+ out:
+ 	return to - to_buff;
 -- 
 2.51.0
 
