@@ -1,502 +1,245 @@
-Return-Path: <stable+bounces-231862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OzKBXsBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:43 +0200
+	id uLLtARoGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D2636E603
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EEE36EFD3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34306329196C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1F0D3100DD0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4420426D39;
-	Tue, 31 Mar 2026 16:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1353016E3;
+	Tue, 31 Mar 2026 17:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p74Nvex3"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Im6GPjZY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ECC426D25
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDA02F6591;
+	Tue, 31 Mar 2026 17:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.156.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975260; cv=pass; b=CaR3n3biSto7rspKjRidjukVyvtGf5nYN7bJNymVjIR2z1UTy80rRLzTrxeHm/nIIWZZeQuxkereIM1147NhDYXoED4uj4d965wqFng9jyEk5gFPJ6uQarHSm7DLwQg+sXr3Qd26NUEpY2NUjlNsLkEPJ30hCTXDQdo3yMj59S0=
+	t=1774976537; cv=fail; b=JbTv6JxyVm395CPmtOGMF4G5knlRUuVmJGHqcJCY4ZbR94NFGQiraRqe6uv6cZtD7A4CdVVauK4O06n0ujKObKmKTuTEQOgv/D+egSiZklo1V1cpFq5qeZqkKP152WHMAmIc3u/R3bJfKUgaAwEyR5MZePw7NmIC45rn8HI9OYE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975260; c=relaxed/simple;
-	bh=4l2NaE7LW3H5OoRlHo5lqh6QQPrmt5E06g/yHYUgBRA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LGi34ByESuepxjYZ4WSdTQQNb8/mABGe1fy21ohSc/pudOPzgfk90o5lCXkayF+Ex7L42/c/WrMtQErIUHAyi+0ARgBOWKGJ4jTT3WdzZZqw2ZpSRsfUuATquqawilXqrS6sOcS9BMs2g7RXlnNr2D8KoVHP9sSQemqXnbfUlLo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p74Nvex3; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-66bb7118c96so15034a12.0
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 09:40:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774975256; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OdfEE/qCqHCsRSUMt1vo9a9tQGPRtEhz3EfrkTtqNoaLuac2B1sK27T7n7mGeTR5x6
-         kyMPTbIJkvcSbJSibLPwx+dDvJyDUdzobxI/ZwTwpLmZqQ9P9f1tPz+TUVmuqHeCOSkN
-         R6ipmittUl5OJG91WT+eMPRsPLkhtLd3tBFlEha5QXN9M6DpExtJfw7ejuZ67ZdsmxkV
-         1J5Wc2/1RU/OwKNgFzOCuoSYBIyjjCDCwORV6I9r3WNAYrCP5QJQ3AhnDjSJdAXKzCVy
-         HfE0Tqul2exkwUear8OznLIUmT4oS4cuPApExt/6E9qTpJph/GcfUczwITGMTKdmceYv
-         xkOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LIc2X8E0vIjTLT2jb1NUzuSo/1mrJl/iTePr2F6fdtk=;
-        fh=K44ixQFbbGfPpMxmQg4g4Pikz26uryovDcJFRc2sqpw=;
-        b=M1DXd7omwFCS6KM3iW5vLd6Z0tsZAgQkDffeYibCtgdfcko4/uRcektsRHW3cLfjw4
-         pjlhMzeGKGWLcm+cijuwjxjcna0wdz4OfAXk7Ix91ujOz/qykhyDs36jY8dvLw3GUoy2
-         RZS7ypJU2YAHiYdvESdCc+w/Rw4TwXUe7v5LAmU3qMmrlBGjSh2k3UBdORSRlaM++6Jg
-         sg1iK0NoY0U7o6HH6QagiqGJDWEG83RgAQXbbyXn+nBCUueeJfb1Sog9yhIMyd1gtfYp
-         fj87hVqU/lgso6LS5xr5PcO+CV2fb+fHIgwIpg94GkVB8gUEaYyEBomlnP5VMqkpkczY
-         JJWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774975256; x=1775580056; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LIc2X8E0vIjTLT2jb1NUzuSo/1mrJl/iTePr2F6fdtk=;
-        b=p74Nvex373JJMJ6ZcMs5tRH4ikloGuHibyT+CXZkv3PGxkEeSfvF3SGSE95oX1cYPa
-         Il69NFXM5m6DlIrUkWb8kWuJawFm01y2KjmUcbV4C5wGW+PpH9fkJ58xax7SwnybtcNo
-         +cKsE5bll+H6rT5BXsbOQhGYLDsPaFregC3FkgNAK2tUpOC+A/lSzJy3UZHKwmmVy/19
-         zewcXRizYryNVDkNpUYVnKNDJQkLzAFPJEfqDJ6J1uCzUT2pWYk1qM4a40tmll9/ViUd
-         OBkhbz91VvNQuq5eFcMCN/wKQvwUEsZC7GOEV8CIq2pgm2nTN8nFWqdMdLjZnp82Qu7e
-         a3ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774975256; x=1775580056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LIc2X8E0vIjTLT2jb1NUzuSo/1mrJl/iTePr2F6fdtk=;
-        b=FIARIF4zRaO20n5RHZO+rcss6p9+Lwwa7jZSmcLQtwX/RIpOH2WhvzVi+ahctuHgz/
-         eG+/z55ZET6m3Oo/rZcJYC8qgp/Hm91VQshMGRL+DHplQxLtXa01VxJ0/olwyQScD5DE
-         AFGfgZgTdU0OjPUEI3WwBP3BJgSrc4Zfx5ULl6dKm619GHWa22ca6ZLQ8d6v1u0Gfz4q
-         BCz6Te+uHAef/HHBgEyaNBwoMcGG6AgX36HciI1BT19DhYfFrEzXgfKr2XVQt3kDLYOi
-         rnK422tAH1wIhim29E00qpcgDrxJQqyWPamXB5OED2DwQ18IpFqNykUW/pyFqVj4VINv
-         Y9oA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsuuEV6iVavMZhOZVhtIY394AEJd2ymP2iZNhqiXfTa0RrFo9vIL2qElb8nVai/imeEHEWfYM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywkn/UnyEziWkDdjgV3Mbl3g4rqwRC9Wrr6cQPu2xIpp8ogkbVJ
-	AWcc9xH7i38ZnDGlwpLJ2dgrphM04lQXx0fTcRrUmsDMzmzgl+vglZjLSm9M37jQq2DLbT9yCUU
-	ZvFIXTbCgbzJoEgvb58y6JafXORvc8ZGWrfVMWLdNeA0gw2+iYPYp439jufc=
-X-Gm-Gg: ATEYQzzpvdm6GSyPNn92Qo6csC3Hx6zZa81pntlVz6mmFxDllvYXOqDPfpDABwnkWaO
-	cQweGyktGzPpXqw4rt1uehbIKyGGg5XzOCwLqVPh/60eG3gsj0sW7FK0o7mHWnFBZ9KQsRCjo7H
-	J1ijgxBtaH1ntZNpE8kkOBnvjxwBKYA/mCzhnrZQ3GIUHqzzDHjoHchsGPBRQe2qig8TmL2rMIa
-	ckL6zjmvm8b1bp8Fe/U+CwFUtw4F+lVOj8dWH605wZeOEwPjChcdU4XgfefAQyDmMWQQPbSB05Y
-	7+fpEiI5TJAkkhkpk31j76dA52HxEd6aHya6jQ==
-X-Received: by 2002:aa7:d70b:0:b0:66b:ed69:a85c with SMTP id
- 4fb4d7f45d1cf-66d9d143b48mr5858a12.7.1774975255673; Tue, 31 Mar 2026 09:40:55
- -0700 (PDT)
+	s=arc-20240116; t=1774976537; c=relaxed/simple;
+	bh=VZ0GDvNEjMOmFTSrlVa6s70S2IXwEmwB6+rPVFhl9k8=;
+	h=From:To:CC:Date:Message-ID:References:In-Reply-To:Content-Type:
+	 MIME-Version:Subject; b=oNHwxsYHya0mQ8jsa0plU4CFwMBeXP4zBjeEiiwpT58AwzmiJyRa7NgxJTVp1EkUN4aQ6Bpzu+cW/S72IJTsD7FEVAFbQWsi/sKdtv58ewJwHQdOGHDDpwiXBuXCNffuCDDn/QPV4iUJBUudTF5JovHt+MOy7nomJV/4p4G0bzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Im6GPjZY; arc=fail smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V9NLF4207283;
+	Tue, 31 Mar 2026 17:02:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-id:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	pp1; bh=VZ0GDvNEjMOmFTSrlVa6s70S2IXwEmwB6+rPVFhl9k8=; b=Im6GPjZY
+	krXgZIFhIMdOS80Xe2xQmYSjR5W4eQyy/C2pXG7/eVpA+LTTXbo9C9EHiObdA3YW
+	AHl+cktspx4eEh+2AHNiEVpmyGa5Ct3/2vhgZNFEgMEppBm2TH5dcREnFQHOlQmz
+	Y6hY2t334ASQlIiVUFUaQSOkUqQpSqa+ErJRPSly3yve2kmwjNupz/S3ijTDg4UR
+	SqswfcBqHC1UX4YdqbVUZD4OuRI8abfSpwMhpEuFl6j93o6jp9oG1GCDdlxHedR0
+	0mjSYc2eljdpuWciO9ef7crZMe+4AGSobpDr7SzGowr9IMhCS63CYUKFegOy1/+8
+	AgKKwb4vCG/rFQ==
+Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013001.outbound.protection.outlook.com [40.93.196.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66nnmdre-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 17:02:05 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NVMU1XEscSWKaCV4F7TEJYawb2Fmd0QJEaFUV8lWf4qaLa4xcDkFvpEchXoFMSNQMmJB6BumqmdrU+Z6mZGAHwaHIJObt2/TKNYA2pAp3gsJJnilXewSqKkoD8nJXHMt8qNDFHGh9a6aXYerX84f/TKdz6+TSrBqkpTRDm6znkhy1A6IsBVeCVzcF1E9Yi/UAuyDQ8Qr58sUmwV6cdhmJ6lL3LgbWTORlHzKEZzUDFmtqhS8hCAzqNRWnjw52B5XduVs7EsIEm17sHrM3509V0XLMp018pTJcjC/ijNKQEq/QrD0uORRJAVh2tYWFkuKavF4SxcPk3cVShyey2EVig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VZ0GDvNEjMOmFTSrlVa6s70S2IXwEmwB6+rPVFhl9k8=;
+ b=F7r9sjTXFs1fsS5EKRiWEy5UkarLPMQezESWnid6NWw2gCNKZK5rLKWPD9N5/0bvP+kfsQxFrGuJBhAIuJx2W5gRaivdu/+lmp8j+2jqLD2Rsm7T6NMtvhGDerssVrgWH0aUIpVvOY6tsEayzUJ4R1Yz5NIbTXI96es8MoztKJsqNDgpKSwz0V74Qjw9Kztc+egWM2W1jzxPrjEao5aPX40tqPF7cq95YkPLh+6h3tA2aS/XMkFAAuuK2uVHKDhtuzdLujSSD2kXbDvyE4VBoiyhoSP0MD3LfrREyJa02A/2++CWg6bXKFvauLs5x7wimejivuy+LEy9syqazy9KGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ibm.com; dmarc=pass action=none header.from=ibm.com; dkim=pass
+ header.d=ibm.com; arc=none
+Received: from SA1PR15MB5819.namprd15.prod.outlook.com (2603:10b6:806:338::8)
+ by IA3PR15MB6529.namprd15.prod.outlook.com (2603:10b6:208:523::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
+ 2026 17:01:58 +0000
+Received: from SA1PR15MB5819.namprd15.prod.outlook.com
+ ([fe80::920c:d2ba:5432:b539]) by SA1PR15MB5819.namprd15.prod.outlook.com
+ ([fe80::920c:d2ba:5432:b539%7]) with mapi id 15.20.9769.015; Tue, 31 Mar 2026
+ 17:01:58 +0000
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+To: "max.kellermann@ionos.com" <max.kellermann@ionos.com>,
+        "idryomov@gmail.com" <idryomov@gmail.com>,
+        Alex Markuze
+	<amarkuze@redhat.com>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "ceph-devel@vger.kernel.org"
+	<ceph-devel@vger.kernel.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Thread-Topic: [EXTERNAL] RE:  [PATCH] ceph: only d_add() negative dentries
+ when they are unhashed
+Thread-Index: AQHcwGczdLET/MkZjkWLja1B6qa1JLXI31oA
+Date: Tue, 31 Mar 2026 17:01:57 +0000
+Message-ID: <93e1f2a995ad4c8977e1519a542f9b7b58f47894.camel@ibm.com>
+References: <20260327162308.1118621-1-max.kellermann@ionos.com>
+		 <765945680a8b83b26148430752295deedea831e7.camel@ibm.com>
+	 <f8c25bcd64be6fdaafd4e49507ea9e04110d56a5.camel@ibm.com>
+In-Reply-To: <f8c25bcd64be6fdaafd4e49507ea9e04110d56a5.camel@ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR15MB5819:EE_|IA3PR15MB6529:EE_
+x-ms-office365-filtering-correlation-id: cd1d40f8-b2ba-497e-6a22-08de8f47381d
+x-ld-processed: fcf67057-50c9-4ad4-98f3-ffca64add9e9,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|1800799024|10070799003|38070700021|22082099003|18002099003|56012099003;
+x-microsoft-antispam-message-info:
+ MD5CMByjV08v0gUnG3p2GhlDqpkQufvF2AsUxUaPboJFB4eVKpCIf8gitSKuG0c0rOYhQ3w2hpuHwf7upTkrRajtSR8X/ETh1e6Z765RXS7yMMycqZcbeIFK665Br6q44NP6fj2o7ppMsezH640r86aeemSxYFJswXuksD92JnmnmvotGHt382wdfo2/IEB3QFvXjD2xbSDGNPlYIUj/5ayLoBXLIEbBQMOAJl6qFIBZ9NaUpsV++ildPnwqT1+5f5SWDzN8PywM5blkdiAvR3iIRCyu6byEa21XlMpwVY21LaaRRV8QeqaLoU6qCWkORgBY/W6TrZb3jN2l0zM6PziBp82BUntOZvVlyoYkaHn+ZjuLLnIpm4lMr/03j34+dP1pdWqrGGpSW64wrdPzns439WD8Kt5TUweVS6Bj/Z+jZhkufMCRgwYZG6ZPIh/KKHaSMe6VLTUczGu+xlT43F1DXg2x4VdWB2iBp55W54fJraysiZvdMAmT3eLMk5Vmb9CIy6M7Nh6QtYf6Qcq3eqeaPW5OV6VPDg9EZ8ShVcTyvNI/0kJEvmugT6S3R1h3+PMinNv655iqTBi14XrbO/IpxULU11AR9ciY/C2Uwg3kL2GmDnLoWP/9p4TrDkwKYs3W1GOgOI5AxH8vEO1I1enPE9bcv/ApH1fWfSPYB9b3Z5qDF4/q/XRxJ3ocy0toBR+TPL4IWLwiV82cUdcebLqy+szDJG+yp/1zEH52atNZ9mD/lOMgrMIzzetjIkwFUAtG9Qh/+FH8HwAyfgOGoNdDHd8czyDAPeT0DXTwYag=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR15MB5819.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(10070799003)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?NENCS0dkQ3FQaGJEZnMxblJGTzRhUm5ydi9lT24yWjBIVlJtSENrWi9SZ2Fq?=
+ =?utf-8?B?WlFKTWxpcUZ6cnZBblFIbE1hbnBXYTZHcFZTQ0hDdnlTeUNEOGVIeitTUTA1?=
+ =?utf-8?B?VHpTN1pRZzAxU01xNm05QTkvWlJGQjRHbXpEVkxqbzZNWGdONDBLWS9OdWVn?=
+ =?utf-8?B?c09sV3dwdUhueWF1VzREMk4xSHlPVGt5KzVRTHhvS1dGaFpCU2Z4TUNMM0tj?=
+ =?utf-8?B?bERDTDZJKzdmRThWdjE1MjRsVTJDMHhpUWhaQ3paMGhpQm5MdG5QUS94d0VW?=
+ =?utf-8?B?b3d0eVVYWHRCNTBxRVdXTWhPQ0ZIUWM0RFFQVWFnUzlwd1lhemYwNWxVNTZs?=
+ =?utf-8?B?YkNhdU9lQTZGNlJyV3VjcEttckV4WEVrbWZMR0FJZ2RvWU8yRlZpMndlRHhw?=
+ =?utf-8?B?cFB5QURIWHFmcFIzQWtzeXNGWkxOZUplOVNYZ2xMTDdOeVViSUNEcG9FNW1H?=
+ =?utf-8?B?dnJpcFhkYXQyVXVoVGNwckFveVRqTTBxaHpYZ08xVS85YVE5VmVCbElZeDBU?=
+ =?utf-8?B?NElNUUNMUVFuMFRka1FCMjZqbDh0aHNsazJVME5iVitoMFdCSXBJamtPNXdJ?=
+ =?utf-8?B?YWYzZHc1bnBsTnI1U2FSSlUvbVlrU3p3ekZiMUQ4VmN3TlVwMDhCaDFYb3Qv?=
+ =?utf-8?B?NGF1NDlOTStvTHFCRHBpa3BZelkzRGhuSUllaU5MeVNLRWg2aXQ5TzBpOUU2?=
+ =?utf-8?B?WjJTaCtDNWNIWDAxYU1kNzJ0WnZ4VE9FRXgxRzlxNjNpTnBQaDRZd0F1T0Ez?=
+ =?utf-8?B?bzBpVm1qUkltd1Jsc2x3aUFZRXppUXlKYlhtdlA4MHdXMHN2TXRLTkpxeENK?=
+ =?utf-8?B?Z0VOUjBpenExTXpPN2UvWnhKU3NBVHNNNHdKeHZ2RXNkOHB6YzIzSTR3L25a?=
+ =?utf-8?B?by80UDZwZ2tqeFRaMW9xK3NJcHZjajl3Y3o4czhiRGtVUjJsaE8zM3ZGV0ZJ?=
+ =?utf-8?B?UVdpc3RKQmNDcXhldk9VNlhFUklXQWNuYmZiSlhic3ZVMGFVYjg2bTZzcHg3?=
+ =?utf-8?B?MXpUVVlQOGkzazZRdGFoZGN2dHQybUtwdUt1K2lGM3htVzMrUHRGQTF1Uk1P?=
+ =?utf-8?B?SGZpc0Q2OTR6RVpiTGFSR2F3QmFaY3FrU0tWWUJKWGdZa3NZS2hKNCs5MHN5?=
+ =?utf-8?B?eGh5aE5RMjM2c1FCODNCd2tKcXBYalR1UThlQ1NtbnhJWnRmUlh1VENRa3I1?=
+ =?utf-8?B?ZysxWGxVdHhmbUtpT25od0lBb0xCQ1Y5UlI1NXVFN01hMlRzQmY1cUFMeGhR?=
+ =?utf-8?B?cklEU2tpbVl3cUliR1UrNFJzV0VNM1FNTkxFeVFqcG5IYWhuTW93TVRJQ3c3?=
+ =?utf-8?B?ZFNobHpEcDBYU3h3Q1A4UkxycENTazF4U2hicXhVNDRZMVI2UjZXVGV1RzBB?=
+ =?utf-8?B?cEIxamNGSERGdkdBUkdTaFNmTVROYTlFWWFDTFpJL1RyTWUzeUNteFhXeXVC?=
+ =?utf-8?B?dFZqbnptNkVIOU90MVpKMFdnNEFKZ3FhRXducTViSkhLTTY4QmUvc0dJR0dR?=
+ =?utf-8?B?em5OZStZUWJ1SlRBdk13Q01EeTUwdzFvMzhxUWJQVnBzdmYrTlpkZTFsZmlK?=
+ =?utf-8?B?YTBMUlZRT09kWlloWWJoT2ZEYWNWQVYyTTdXd0VnY3RZT0h4eHYzeENzUW9o?=
+ =?utf-8?B?ZnpjMzB1eVc0L0t3eVdWWHRqZk1VZDNnUG5tc05DdmkvcS9lY3BsNTRreHgy?=
+ =?utf-8?B?S3plTTZGL3N0dXRDWG5VbTRaTGIxRS83Y01hSGl4UWoyb1ZVa2JZU0FRY2Jr?=
+ =?utf-8?B?YTkzRVoxR0RhZWlzQTQwL3d4TktxY3c0ZDZKUjBxbzNzMmExOVpjcHNPeG5i?=
+ =?utf-8?B?N0ZKNDEzbWNVdU0wdW9LZEVsRDQ2ZFZsUGdVODAyVmpDTXhIUEwrSU5qYXFP?=
+ =?utf-8?B?SCs4VEt6V1pLa2szQjV2bCtzL1UxYmpjemVSUnkrMDhKbkIxRFpDcThGRWk1?=
+ =?utf-8?B?UmRvNnU0ZENUOWdVS09vN2IzZUpKUEUyYWJHWTJDUkxzTVN6cFNQTFdtM3dX?=
+ =?utf-8?B?NVJtamxZeW12VHBxZG12YXFCRGtJcmtrdE93V3crcS9jbXhoNjY5WFlqY0dp?=
+ =?utf-8?B?ejl3aXo4UHdxQ2szMDR2ejNYWXJpQ3h4OEdpTHhHYVVHT21xVFhSdFBBVW1J?=
+ =?utf-8?B?bk01R3NTbTBXaWVwUzBzRWV0WTBBZ0l5Z0g1YjFqK3Q0eDZhVm9zUldhYVdD?=
+ =?utf-8?B?WjV6N2t1Q2JFVjNaSXluWHcxajM1eDBPd3RGNnU0QlhIRFlQR1RqRnY5ajJu?=
+ =?utf-8?B?TC9zZC9FeUMvcmlJTHdvVEROMjB2UnlINzZMSWV0OHFuNExiRWR0MEhreXNw?=
+ =?utf-8?B?eS9GdDNiUFc4clNzTEpJSHBkaU5jSmZ0L0dsc0wxYVpOOUc1L01EQmJyVE1W?=
+ =?utf-8?Q?GbFbsu332txnobd7cAShYJx0wzoBxH7bqDocv?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <83FABBE1A13E654CA05BD276B67A2F49@namprd15.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331081312.123719-1-hao.ge@linux.dev>
-In-Reply-To: <20260331081312.123719-1-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 31 Mar 2026 09:40:42 -0700
-X-Gm-Features: AQROBzABp-AUj3Pffz35O2alHcdsG5Q14ohUAeycjzPwNAQPSmQH4ilHFcqtW0Y
-Message-ID: <CAJuCfpFZ6X09HrpSn+mDPf5zn3dfEarbFi0Ecqp37OmiY2Tcag@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+X-Exchange-RoutingPolicyChecked:
+	KykG9mAf6vmmA4Ub3iCzCaAn/R69CPX+yfJUFCeOFYoFL9P9d8JqDjv99TsPITsWrOpGj8l1FfLUXXiQR7rt8JsozFrhvYdZ15R4ee2EfZExobONiG4csEp7c2ILmLl+r07+iEWIk0V832/1tQXAeHsyUSBfEsCu4FvBkVj2cdRK+MtsMaiM/YG4syiiqnOowNvFmQrRfg3S30tEVTFRpLDsxnq7jPvuE62ZEPzgrPwGspiow2iQSRBzlHCPCU6O8txnGUIf936pIVtSNjMusX5n2JvHsRokmddp+3gwdkxSCo6FdTnxnjuLTZE5R54xJQjfhLqEeoNgXlPYnj7l4w==
+X-OriginatorOrg: ibm.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR15MB5819.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd1d40f8-b2ba-497e-6a22-08de8f47381d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2026 17:01:57.9810
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: fcf67057-50c9-4ad4-98f3-ffca64add9e9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 87iIgVZGm2xvb11S1piTgJhGcDmJBTSJEXeXPsGKZyvDt2v6UalCqnM0P8qAE1NkXBZ/0SaxSQsheNdTTlNfPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR15MB6529
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: suoDja6jOPqfklQH2sc-1fd3oGs1aksB
+X-Authority-Analysis: v=2.4 cv=KslAGGWN c=1 sm=1 tr=0 ts=69cbfe0d cx=c_pps
+ a=dImUGf+04sfXZTE2vAy0Gw==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=_1AO9TBkek7MWXjHW6MA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDE2MCBTYWx0ZWRfX85ohSpamaka8
+ tm+ePVCNrF4tgRPtBJk0cUdFi6d9Z4oNsCJpRrwxmkkSQFglIK3HqV2PTzTF7EMNyiTZ26JBlSX
+ rBrtCBURgNicyu2rqTgwN1H0j/dJYt2qypnf5TfS55NEqhl8Wesy+RADXu/a6Eq2SQVD5rcB/9f
+ +1q6DDOK4YrAA0ySEnFaEw1vtdRwHv5nxgXtXBnK0QCHdtddb3dLmxV7rG+MLi3KV+TwYqKRWCu
+ CJ5fPaa9My9ewoGl7WMsDE1l//ViW6WiwD2o1lrPUCK1TQsGRUjycLbRM1lRPIrHV/4oTB7VixJ
+ suEG7Ni78Wv1KNLKXukMbXmVmExIYzvwNVkrUBR2aO0vresYVX8kBT3chPT11nfiUjJ3yUb0Q6P
+ tEG0WQhZOYtlDsNO7hLOKXtKrTxjFWfxn/xYqCYpBNBzpolj9R+p+S5LBzDu8ZsyEUp/5LHAeec
+ mY/xFKzTxcUHwvuYvtw==
+X-Proofpoint-ORIG-GUID: KVkgBykuDBpAo8NrT08agCBmtY6Ied3g
+Subject: RE:  [PATCH] ceph: only d_add() negative dentries when they are
+ unhashed
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_03,2026-03-31_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ phishscore=0 adultscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603310160
+X-Spamd-Result: default: False [0.94 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,reject];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232356-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231862-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[ionos.com,gmail.com,redhat.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[Slava.Dubeyko@ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,linux.dev:email,qemu.org:url]
-X-Rspamd-Queue-Id: 74D2636E603
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 93EEE36EFD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 1:14=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Due to initialization ordering, page_ext is allocated and initialized
-> relatively late during boot. Some pages have already been allocated
-> and freed before page_ext becomes available, leaving their codetag
-> uninitialized.
->
-> A clear example is in init_section_page_ext(): alloc_page_ext() calls
-> kmemleak_alloc(). If the slab cache has no free objects, it falls back
-> to the buddy allocator to allocate memory. However, at this point page_ex=
-t
-> is not yet fully initialized, so these newly allocated pages have no
-> codetag set. These pages may later be reclaimed by KASAN, which causes
-> the warning to trigger when they are freed because their codetag ref is
-> still empty.
->
-> Use a global array to track pages allocated before page_ext is fully
-> initialized. The array size is fixed at 8192 entries, and will emit
-> a warning if this limit is exceeded. When page_ext initialization
-> completes, set their codetag to empty to avoid warnings when they
-> are freed later.
->
-> This warning is only observed with CONFIG_MEM_ALLOC_PROFILING_DEBUG=3DY
-> and mem_profiling_compressed disabled:
->
-> [    9.582133] ------------[ cut here ]------------
-> [    9.582137] alloc_tag was not set
-> [    9.582139] WARNING: ./include/linux/alloc_tag.h:164 at __pgalloc_tag_=
-sub+0x40f/0x550, CPU#5: systemd/1
-> [    9.582190] CPU: 5 UID: 0 PID: 1 Comm: systemd Not tainted 7.0.0-rc4 #=
-1 PREEMPT(lazy)
-> [    9.582192] Hardware name: Red Hat KVM, BIOS rel-1.16.3-0-ga6ed6b701f0=
-a-prebuilt.qemu.org 04/01/2014
-> [    9.582194] RIP: 0010:__pgalloc_tag_sub+0x40f/0x550
-> [    9.582196] Code: 00 00 4c 29 e5 48 8b 05 1f 88 56 05 48 8d 4c ad 00 4=
-8 8d 2c c8 e9 87 fd ff ff 0f 0b 0f 0b e9 f3 fe ff ff 48 8d 3d 61 2f ed 03 <=
-67> 48 0f b9 3a e9 b3 fd ff ff 0f 0b eb e4 e8 5e cd 14 02 4c 89 c7
-> [    9.582197] RSP: 0018:ffffc9000001f940 EFLAGS: 00010246
-> [    9.582200] RAX: dffffc0000000000 RBX: 1ffff92000003f2b RCX: 1ffff1102=
-00d806c
-> [    9.582201] RDX: ffff8881006c0360 RSI: 0000000000000004 RDI: ffffffff9=
-bc7b460
-> [    9.582202] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff=
-3a62324
-> [    9.582203] R10: ffffffff9d311923 R11: 0000000000000000 R12: ffffea000=
-4001b00
-> [    9.582204] R13: 0000000000002000 R14: ffffea0000000000 R15: ffff88810=
-06c0360
-> [    9.582206] FS:  00007ffbbcf2d940(0000) GS:ffff888450479000(0000) knlG=
-S:0000000000000000
-> [    9.582208] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    9.582210] CR2: 000055ee3aa260d0 CR3: 0000000148b67005 CR4: 000000000=
-0770ef0
-> [    9.582211] PKRU: 55555554
-> [    9.582212] Call Trace:
-> [    9.582213]  <TASK>
-> [    9.582214]  ? __pfx___pgalloc_tag_sub+0x10/0x10
-> [    9.582216]  ? check_bytes_and_report+0x68/0x140
-> [    9.582219]  __free_frozen_pages+0x2e4/0x1150
-> [    9.582221]  ? __free_slab+0xc2/0x2b0
-> [    9.582224]  qlist_free_all+0x4c/0xf0
-> [    9.582227]  kasan_quarantine_reduce+0x15d/0x180
-> [    9.582229]  __kasan_slab_alloc+0x69/0x90
-> [    9.582232]  kmem_cache_alloc_noprof+0x14a/0x500
-> [    9.582234]  do_getname+0x96/0x310
-> [    9.582237]  do_readlinkat+0x91/0x2f0
-> [    9.582239]  ? __pfx_do_readlinkat+0x10/0x10
-> [    9.582240]  ? get_random_bytes_user+0x1df/0x2c0
-> [    9.582244]  __x64_sys_readlinkat+0x96/0x100
-> [    9.582246]  do_syscall_64+0xce/0x650
-> [    9.582250]  ? __x64_sys_getrandom+0x13a/0x1e0
-> [    9.582252]  ? __pfx___x64_sys_getrandom+0x10/0x10
-> [    9.582254]  ? do_syscall_64+0x114/0x650
-> [    9.582255]  ? ksys_read+0xfc/0x1d0
-> [    9.582258]  ? __pfx_ksys_read+0x10/0x10
-> [    9.582260]  ? do_syscall_64+0x114/0x650
-> [    9.582262]  ? do_syscall_64+0x114/0x650
-> [    9.582264]  ? __pfx_fput_close_sync+0x10/0x10
-> [    9.582266]  ? file_close_fd_locked+0x178/0x2a0
-> [    9.582268]  ? __x64_sys_faccessat2+0x96/0x100
-> [    9.582269]  ? __x64_sys_close+0x7d/0xd0
-> [    9.582271]  ? do_syscall_64+0x114/0x650
-> [    9.582273]  ? do_syscall_64+0x114/0x650
-> [    9.582275]  ? clear_bhb_loop+0x50/0xa0
-> [    9.582277]  ? clear_bhb_loop+0x50/0xa0
-> [    9.582279]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [    9.582280] RIP: 0033:0x7ffbbda345ee
-> [    9.582282] Code: 0f 1f 40 00 48 8b 15 29 38 0d 00 f7 d8 64 89 02 48 c=
-7 c0 ff ff ff ff c3 0f 1f 40 00 f3 0f 1e fa 49 89 ca b8 0b 01 00 00 0f 05 <=
-48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d fa 37 0d 00 f7 d8 64 89 01 48
-> [    9.582284] RSP: 002b:00007ffe2ad8de58 EFLAGS: 00000202 ORIG_RAX: 0000=
-00000000010b
-> [    9.582286] RAX: ffffffffffffffda RBX: 000055ee3aa25570 RCX: 00007ffbb=
-da345ee
-> [    9.582287] RDX: 000055ee3aa25570 RSI: 00007ffe2ad8dee0 RDI: 00000000f=
-fffff9c
-> [    9.582288] RBP: 0000000000001000 R08: 0000000000000003 R09: 000000000=
-0001001
-> [    9.582289] R10: 0000000000001000 R11: 0000000000000202 R12: 000000000=
-0000033
-> [    9.582290] R13: 00007ffe2ad8dee0 R14: 00000000ffffff9c R15: 00007ffe2=
-ad8deb0
-> [    9.582292]  </TASK>
-> [    9.582293] ---[ end trace 0000000000000000 ]---
->
-> Fixes: dcfe378c81f72 ("lib: introduce support for page allocation tagging=
-")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-
-> ---
-> v4: Fix sparse warnings by changing the typedef from a function pointer
->     type to a function type, and placing __rcu before the pointer
->     declarator. Use RCU_INITIALIZER() for static initialization.
->     Closes: https://lore.kernel.org/oe-kbuild-all/202603291211.YhY0R0se-l=
-kp@intel.com/
->
-> v3:
->   - Use RCU to protect alloc_tag_add_early_pfn_ptr and avoid race conditi=
-ons
->     between alloc_tag_add_early_pfn() and clear_early_alloc_pfn_tag_refs(=
-)
->   - Add static_key_enabled() check in clear_early_alloc_pfn_tag_refs()
->   - Use task->alloc_tag instead of current->alloc_tag
->   - Add NULL check for task->alloc_tag before calling alloc_tag_set_inacc=
-urate()
->   - Add likely() hint for get_page_tag_ref() in the common path
->   - Update comments to explain the small race window between ref.ct check
->     and set_codetag_empty()
->   - Move all CONFIG_MEM_ALLOC_PROFILING_DEBUG code (variables and functio=
-ns)
->     together near init_page_alloc_tagging() for better code organization
->   - Add TODO comment about replacing fixed-size array with dynamic alloca=
-tion
->     using a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion
->   - Update function declaration in header file to use #if defined() style
->
-> v2:
->   - Replace spin_lock_irqsave() with atomic_try_cmpxchg() to avoid potent=
-ial
->      deadlock in NMI context
->   - Change EARLY_ALLOC_PFN_MAX from 256 to 8192
->   - Add pr_warn_once() when the limit is exceeded
->   - Check ref.ct before clearing to avoid overwriting valid tags
->   - Use function pointer (alloc_tag_add_early_pfn_ptr) instead of state
-> ---
->  include/linux/alloc_tag.h   |   2 +
->  include/linux/pgalloc_tag.h |   2 +-
->  lib/alloc_tag.c             | 109 ++++++++++++++++++++++++++++++++++++
->  mm/page_alloc.c             |  10 +++-
->  4 files changed, 121 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> index d40ac39bfbe8..02de2ede560f 100644
-> --- a/include/linux/alloc_tag.h
-> +++ b/include/linux/alloc_tag.h
-> @@ -163,9 +163,11 @@ static inline void alloc_tag_sub_check(union codetag=
-_ref *ref)
->  {
->         WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
->  }
-> +void alloc_tag_add_early_pfn(unsigned long pfn);
->  #else
->  static inline void alloc_tag_add_check(union codetag_ref *ref, struct al=
-loc_tag *tag) {}
->  static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
-> +static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
->  #endif
->
->  /* Caller should verify both ref and tag to be valid */
-> diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
-> index 38a82d65e58e..951d33362268 100644
-> --- a/include/linux/pgalloc_tag.h
-> +++ b/include/linux/pgalloc_tag.h
-> @@ -181,7 +181,7 @@ static inline struct alloc_tag *__pgalloc_tag_get(str=
-uct page *page)
->
->         if (get_page_tag_ref(page, &ref, &handle)) {
->                 alloc_tag_sub_check(&ref);
-> -               if (ref.ct)
-> +               if (ref.ct && !is_codetag_empty(&ref))
->                         tag =3D ct_to_alloc_tag(ref.ct);
->                 put_page_tag_ref(handle);
->         }
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index 58991ab09d84..ed1bdcf1f8ab 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -6,7 +6,9 @@
->  #include <linux/kallsyms.h>
->  #include <linux/module.h>
->  #include <linux/page_ext.h>
-> +#include <linux/pgalloc_tag.h>
->  #include <linux/proc_fs.h>
-> +#include <linux/rcupdate.h>
->  #include <linux/seq_buf.h>
->  #include <linux/seq_file.h>
->  #include <linux/string_choices.h>
-> @@ -758,8 +760,115 @@ static __init bool need_page_alloc_tagging(void)
->         return mem_profiling_support;
->  }
->
-> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-> +/*
-> + * Track page allocations before page_ext is initialized.
-> + * Some pages are allocated before page_ext becomes available, leaving
-> + * their codetag uninitialized. Track these early PFNs so we can clear
-> + * their codetag refs later to avoid warnings when they are freed.
-> + *
-> + * Early allocations include:
-> + *   - Base allocations independent of CPU count
-> + *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
-> + *     such as trace ring buffers, scheduler per-cpu data)
-> + *
-> + * For simplicity, we fix the size to 8192.
-> + * If insufficient, a warning will be triggered to alert the user.
-> + *
-> + * TODO: Replace fixed-size array with dynamic allocation using
-> + * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
-> + */
-> +#define EARLY_ALLOC_PFN_MAX            8192
-> +
-> +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
-> +static atomic_t early_pfn_count __initdata =3D ATOMIC_INIT(0);
-> +
-> +static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
-> +{
-> +       int old_idx, new_idx;
-> +
-> +       do {
-> +               old_idx =3D atomic_read(&early_pfn_count);
-> +               if (old_idx >=3D EARLY_ALLOC_PFN_MAX) {
-> +                       pr_warn_once("Early page allocations before page_=
-ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
-> +                                     EARLY_ALLOC_PFN_MAX);
-> +                       return;
-> +               }
-> +               new_idx =3D old_idx + 1;
-> +       } while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx)=
-);
-> +
-> +       early_pfns[old_idx] =3D pfn;
-> +}
-> +
-> +typedef void alloc_tag_add_func(unsigned long pfn);
-> +static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
-=3D
-> +       RCU_INITIALIZER(__alloc_tag_add_early_pfn);
-> +
-> +void alloc_tag_add_early_pfn(unsigned long pfn)
-> +{
-> +       alloc_tag_add_func *alloc_tag_add;
-> +
-> +       if (static_key_enabled(&mem_profiling_compressed))
-> +               return;
-> +
-> +       rcu_read_lock();
-> +       alloc_tag_add =3D rcu_dereference(alloc_tag_add_early_pfn_ptr);
-> +       if (alloc_tag_add)
-> +               alloc_tag_add(pfn);
-> +       rcu_read_unlock();
-> +}
-> +
-> +static void __init clear_early_alloc_pfn_tag_refs(void)
-> +{
-> +       unsigned int i;
-> +
-> +       if (static_key_enabled(&mem_profiling_compressed))
-> +               return;
-> +
-> +       rcu_assign_pointer(alloc_tag_add_early_pfn_ptr, NULL);
-> +       /* Make sure we are not racing with __alloc_tag_add_early_pfn() *=
-/
-> +       synchronize_rcu();
-> +
-> +       for (i =3D 0; i < atomic_read(&early_pfn_count); i++) {
-> +               unsigned long pfn =3D early_pfns[i];
-> +
-> +               if (pfn_valid(pfn)) {
-> +                       struct page *page =3D pfn_to_page(pfn);
-> +                       union pgtag_ref_handle handle;
-> +                       union codetag_ref ref;
-> +
-> +                       if (get_page_tag_ref(page, &ref, &handle)) {
-> +                               /*
-> +                                * An early-allocated page could be freed=
- and reallocated
-> +                                * after its page_ext is initialized but =
-before we clear it.
-> +                                * In that case, it already has a valid t=
-ag set.
-> +                                * We should not overwrite that valid tag=
- with CODETAG_EMPTY.
-> +                                *
-> +                                * Note: there is still a small race wind=
-ow between checking
-> +                                * ref.ct and calling set_codetag_empty()=
-. We accept this
-> +                                * race as it's unlikely and the extra co=
-mplexity of atomic
-> +                                * cmpxchg is not worth it for this debug=
--only code path.
-> +                                */
-> +                               if (ref.ct) {
-> +                                       put_page_tag_ref(handle);
-> +                                       continue;
-> +                               }
-> +
-> +                               set_codetag_empty(&ref);
-> +                               update_page_tag_ref(handle, &ref);
-> +                               put_page_tag_ref(handle);
-> +                       }
-> +               }
-> +
-> +       }
-> +}
-> +#else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
-> +static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
-> +#endif /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
-> +
->  static __init void init_page_alloc_tagging(void)
->  {
-> +       clear_early_alloc_pfn_tag_refs();
->  }
->
->  struct page_ext_operations page_alloc_tagging_ops =3D {
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2d4b6f1a554e..04494bc2e46f 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1289,10 +1289,18 @@ void __pgalloc_tag_add(struct page *page, struct =
-task_struct *task,
->         union pgtag_ref_handle handle;
->         union codetag_ref ref;
->
-> -       if (get_page_tag_ref(page, &ref, &handle)) {
-> +       if (likely(get_page_tag_ref(page, &ref, &handle))) {
->                 alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->                 update_page_tag_ref(handle, &ref);
->                 put_page_tag_ref(handle);
-> +       } else {
-> +               /*
-> +                * page_ext is not available yet, record the pfn so we ca=
-n
-> +                * clear the tag ref later when page_ext is initialized.
-> +                */
-> +               alloc_tag_add_early_pfn(page_to_pfn(page));
-> +               if (task->alloc_tag)
-> +                       alloc_tag_set_inaccurate(task->alloc_tag);
->         }
->  }
->
-> --
-> 2.25.1
->
+T24gTW9uLCAyMDI2LTAzLTMwIGF0IDE3OjA0ICswMDAwLCBWaWFjaGVzbGF2IER1YmV5a28gd3Jv
+dGU6DQo+IE9uIEZyaSwgMjAyNi0wMy0yNyBhdCAxODo0NCArMDAwMCwgVmlhY2hlc2xhdiBEdWJl
+eWtvIHdyb3RlOg0KPiA+IE9uIEZyaSwgMjAyNi0wMy0yNyBhdCAxNzoyMyArMDEwMCwgTWF4IEtl
+bGxlcm1hbm4gd3JvdGU6DQo+ID4gPiANCg0KPHNraXBwZWQ+DQoNCj4gPiANCj4gPiBMZXQgbWUg
+cnVuIHhmc3Rlc3RzIGZvciB0aGUgcGF0Y2ggdG8gZG91YmxlIGNoZWNrIHRoYXQgZXZlcnl0aGlu
+ZyB3b3JrcyB3ZWxsLg0KPiA+IA0KPiANCj4gSSBoYWQgbXVsdGlwbGUgeGZzdGVzdHMgaXNzdWVz
+IGR1cmluZyBsYXN0IHJ1bi4gTW9zdCBwcm9iYWJseSwgaXQgd2FzIHNvbWUNCj4gZ2xpdGNoIG9u
+IG15IHNpZGUgb3IgaW5jb25zaXN0ZW50IGJ1aWxkLiBJIG5lZWQgdG8gcmVwZWF0IHRoZSB4ZnN0
+ZXN0cyBydW4gd2l0aA0KPiB0aGUgcGF0Y2guDQo+IA0KDQpTb3JyeSwgaXQgbG9va3MgbGlrZSA3
+LjAtcmM1IGhhcyBzb21lIGluY29uc2lzdGVudCBzdGF0ZS4gTGV0IG1lIHN3aXRjaCBvbiA3LjAt
+DQpyYzEgYmVjYXVzZSBJIHdhcyBhYmxlIHRvIHJ1biB4ZnN0ZXN0cyBzdWNjZXNzZnVsbHkgYmVm
+b3JlIG9uIDcuMC1yYzEuDQoNClRoYW5rcywNClNsYXZhLg0K
 
