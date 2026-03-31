@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPwGGP8AzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:39 +0200
+	id sEPVLLz/y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-232321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C28E36E467
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C5736E005
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0C97930C5151
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1438230F0522
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7525423A8E;
-	Tue, 31 Mar 2026 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8BF2D8DC3;
+	Tue, 31 Mar 2026 17:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdCcAM27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQsVH148"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6AB423A89;
-	Tue, 31 Mar 2026 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0042D4B40;
+	Tue, 31 Mar 2026 17:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975603; cv=none; b=NXEQ32qKUxg2CSpzDUauMcRX+SDzTt6ZNktKJXSep5PcB3Qc/HlKxWdzhf8YInrC6sjiQ+QXGSucPy/ZXC3tMlHlfRjNjGfJcm5BD3lIdBAaKp3mlSh4H65wDK3SNAfspcRomXQjKevOmBn2vRNSi+RM+qMRNDxgkvTIMhnjcsk=
+	t=1774976448; cv=none; b=erJf98o/Lmg+xm9yPC1+3KeLuclQFmmm9FPaUTb8QdyJJCusFvzIGbnapSwbc3qm3Uhu7iCJula7ndc/R00amil6l+xH0ZDUSX9rFtwBSmEub73mSWYomd5sb/eNk4n/p7FCgGh4TbV2PVIglGTxuxoImVowjOGckuJkYKHwgU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975603; c=relaxed/simple;
-	bh=kocFV0Qafb9HSJQE1ufqkiFp4xUVMll32onMyQfLVag=;
+	s=arc-20240116; t=1774976448; c=relaxed/simple;
+	bh=ehoDJNFLT35jGSj12vKNBqSLZTHNFKTz1Byk5B6rmvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=do8UFNedW2wUAEaybfnGErLoqsQV7fNSwsAZriQzAraAe0rx3SQHX28KclmzwOPKbxjkBSYvOSfbkC60L71fJ1NtIMR6vPlvolSSt+mC5/bGKzpNP81R8fkmNaUcXftmWMZR8mK1j2B6vlrspyQLfaUreSx/lIytn39gEyKaHBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdCcAM27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FEEC19423;
-	Tue, 31 Mar 2026 16:46:42 +0000 (UTC)
+	 MIME-Version; b=r2+XzsL5MG2MlEGYdlZqUHsLZj3Nvt8znOj2OlibKcSoTB0MegQWby5atRIpru6QunkmLOnZdAXWB11uYZEPUOMmV9FZbyfBxBQOVr0FJF2FxQzYg8vKaKV3f19xM4qt7EKgp69Z66pwXjlv81cTIoqB4m+V0J5TGo1JbUf7e4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQsVH148; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ECDC19423;
+	Tue, 31 Mar 2026 17:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975603;
-	bh=kocFV0Qafb9HSJQE1ufqkiFp4xUVMll32onMyQfLVag=;
+	s=korg; t=1774976448;
+	bh=ehoDJNFLT35jGSj12vKNBqSLZTHNFKTz1Byk5B6rmvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdCcAM27QSAKkegLaS1pt8AQhK9Rk0pgKWgL0kTx5xGXpNR35aPpMLjBVLOXgQyZk
-	 xYS3Z0bkFOAujTauOYdS/jDg6m5J0ZrUCRwCRXiERZvs9YEWWuPDyuEkvucFR5ddxI
-	 IE1j3L5Bu7ZhECAsRsnetsavG2U/VZf+Hps1OmN4=
+	b=UQsVH1487hVzSjYEKcjKbDthfVg0PLDXHuLFE9a7DaG1MvfN0Wp7WL8gE5vDTv8eJ
+	 zY03FmlAxlbiITCMEh87Z4MVYehSvMsHJ/flP0PP5snVx0VYhSb+lYWkvsvkiyYT63
+	 4V5xQNQtrjZ+v30CblZhA7GxZ4SBqVB4HOmWVwZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leif Skunberg <diamondback@cohunt.app>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jie Deng <dengjie03@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/244] platform/x86: intel-hid: Enable 5-button array on ThinkPad X1 Fold 16 Gen 1
-Date: Tue, 31 Mar 2026 18:19:26 +0200
-Message-ID: <20260331161742.305153471@linuxfoundation.org>
+Subject: [PATCH 6.18 064/309] usb: core: new quirk to handle devices with zero configurations
+Date: Tue, 31 Mar 2026 18:19:27 +0200
+Message-ID: <20260331161755.844415464@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231995-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232321-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cohunt.app:email,qualcomm.com:email,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 5C28E36E467
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 57C5736E005
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leif Skunberg <diamondback@cohunt.app>
+From: Jie Deng <dengjie03@kylinos.cn>
 
-[ Upstream commit b38d478dad79e61e8a65931021bdfd7a71741212 ]
+[ Upstream commit 9f6a983cfa22ac662c86e60816d3a357d4b551e9 ]
 
-The Lenovo ThinkPad X1 Fold 16 Gen 1 has physical volume up/down
-buttons that are handled through the intel-hid 5-button array
-interface. The firmware does not advertise 5-button array support via
-HEBC, so the driver relies on a DMI allowlist to enable it.
+Some USB devices incorrectly report bNumConfigurations as 0 in their
+device descriptor, which causes the USB core to reject them during
+enumeration.
+logs:
+usb 1-2: device descriptor read/64, error -71
+usb 1-2: no configurations
+usb 1-2: can't read configurations, error -22
 
-Add the ThinkPad X1 Fold 16 Gen 1 to the button_array_table so the
-volume buttons work out of the box.
+However, these devices actually work correctly when
+treated as having a single configuration.
 
-Signed-off-by: Leif Skunberg <diamondback@cohunt.app>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260210085625.34380-1-diamondback@cohunt.app
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Add a new quirk USB_QUIRK_FORCE_ONE_CONFIG to handle such devices.
+When this quirk is set, assume the device has 1 configuration instead
+of failing with -EINVAL.
+
+This quirk is applied to the device with VID:PID 5131:2007 which
+exhibits this behavior.
+
+Signed-off-by: Jie Deng <dengjie03@kylinos.cn>
+Link: https://patch.msgid.link/20260227084931.1527461-1-dengjie03@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt | 3 +++
+ drivers/usb/core/config.c                       | 6 +++++-
+ drivers/usb/core/quirks.c                       | 5 +++++
+ include/linux/usb/quirks.h                      | 3 +++
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 0b21d8317db30..a51b65280bc40 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -126,6 +126,13 @@ static const struct dmi_system_id button_array_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Tablet Gen 2"),
- 		},
- 	},
-+	{
-+		.ident = "Lenovo ThinkPad X1 Fold 16 Gen 1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Fold 16 Gen 1"),
-+		},
-+	},
- 	{
- 		.ident = "Microsoft Surface Go 3",
- 		.matches = {
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6c42061ca20e5..ab4e03f91e744 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7925,6 +7925,9 @@
+ 				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
+ 					(Reduce timeout of the SET_ADDRESS
+ 					request from 5000 ms to 500 ms);
++				q = USB_QUIRK_FORCE_ONE_CONFIG (Device
++					claims zero configurations,
++					forcing to 1);
+ 			Example: quirks=0781:5580:bk,0a5c:5834:gij
+ 
+ 	usbhid.mousepoll=
+diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
+index 2bb1ceb9d621a..3067e18ec4d8a 100644
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -927,7 +927,11 @@ int usb_get_configuration(struct usb_device *dev)
+ 		dev->descriptor.bNumConfigurations = ncfg = USB_MAXCONFIG;
+ 	}
+ 
+-	if (ncfg < 1) {
++	if (ncfg < 1 && dev->quirks & USB_QUIRK_FORCE_ONE_CONFIG) {
++		dev_info(ddev, "Device claims zero configurations, forcing to 1\n");
++		dev->descriptor.bNumConfigurations = 1;
++		ncfg = 1;
++	} else if (ncfg < 1) {
+ 		dev_err(ddev, "no configurations\n");
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index 9fef2f4d604a5..65168eb89295c 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -141,6 +141,8 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
+ 			case 'p':
+ 				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
+ 				break;
++			case 'q':
++				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
+ 			/* Ignore unrecognized flag characters */
+ 			}
+ 		}
+@@ -597,6 +599,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	/* VCOM device */
+ 	{ USB_DEVICE(0x4296, 0x7570), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
+ 
++	/* Noji-MCS SmartCard Reader */
++	{ USB_DEVICE(0x5131, 0x2007), .driver_info = USB_QUIRK_FORCE_ONE_CONFIG },
++
+ 	/* INTEL VALUE SSD */
+ 	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
+diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
+index 2f7bd2fdc6164..b3cc7beab4a3c 100644
+--- a/include/linux/usb/quirks.h
++++ b/include/linux/usb/quirks.h
+@@ -78,4 +78,7 @@
+ /* skip BOS descriptor request */
+ #define USB_QUIRK_NO_BOS			BIT(17)
+ 
++/* Device claims zero configurations, forcing to 1 */
++#define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
++
+ #endif /* __LINUX_USB_QUIRKS_H */
 -- 
 2.51.0
 
