@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHI9BXgBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:40 +0200
+	id II3ZI3r4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECFA36E5F5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2504836CE27
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07D2530BF635
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC6913067CAD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3043016EE;
-	Tue, 31 Mar 2026 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9B0423A7C;
+	Tue, 31 Mar 2026 16:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoElibnQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBRm/XAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C052E1C7C;
-	Tue, 31 Mar 2026 17:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021D13E95A9;
+	Tue, 31 Mar 2026 16:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976805; cv=none; b=gkv0CsiW4ZaonU/aVam+wEpFOscFfKj6ShRYid/SnYHa0nA5BEWDAG1t+8JzVPKStdjIPc8q5iZKM/nsNaMUX3R2FNxWNRU6DkRESdmmamRG4h6R1jajYq4Leb0RFGw/JJzKd0ez5VYl1ov3G455YiFZJqx2DMHW+w3sGIH7S60=
+	t=1774974688; cv=none; b=astvUzT+CJaPXsDxfECVWM21+7Y0bJ7Bi2Z7vxGY9d67rw5PCk5cIhGWGovf3xIDMQWIeFXRrb3OIj1eNlpbnG63mqzpFuHlfQe+YafYJRVVSMQHVmhWoTl90hp9rVqyS7iED1PpVzV5JmUdC7t4BhVZhPgop7l3Jl8Nl7stPTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976805; c=relaxed/simple;
-	bh=31XaKez47BQuFzFHSqJYnA9EzkD2TlPHJL2HvGBJ1UA=;
+	s=arc-20240116; t=1774974688; c=relaxed/simple;
+	bh=cQLTzSu9nGejXDCZerhDhZjd5Nn4knyXDeZFbImQTk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QhtM3cXHJQ4moLS3ZYYhLE2KyW6jdIL4++Rxgh1idpNwStBAjiR/Ps6HB1nR3v7tHxqoHiTX7qFPlUnwvD2ay/Gw1FBlqGPaX51JwgeJpChQm33eWh3r2dfjcIoCLPQ2kF0EveSRAmNGcKuAz7R7L1vTEKtJUcsLDUTLarhBIWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoElibnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F3FC19423;
-	Tue, 31 Mar 2026 17:06:44 +0000 (UTC)
+	 MIME-Version; b=kgqvKNmH1DtyVcg0yX6hoBQ6TZl2lsdB151cPO0rnni2WoqmqJgDbCH9Z3k9Sf8bR1l1pPsBfN3TGElWwnZdf93z2v3tZYT1nPRGL7oq+xxhKb26pf2guOtQ+soy/hTW9aYPJmxuUM3OQvredwXV9Jhh+7Hi6D+mtmlpIBTfr5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBRm/XAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1CEC19423;
+	Tue, 31 Mar 2026 16:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976804;
-	bh=31XaKez47BQuFzFHSqJYnA9EzkD2TlPHJL2HvGBJ1UA=;
+	s=korg; t=1774974687;
+	bh=cQLTzSu9nGejXDCZerhDhZjd5Nn4knyXDeZFbImQTk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SoElibnQWA1Vp7iOzN59tsUqt02yhfqNbra6b/xc/Xx9PSffNWtycxC5+eWSGHnrN
-	 5uauEh1VnEAAJVf7xapZkbOhC+eRl5CnU8OgnluhCJ55sAKg105ZRvZ1LtYX/rhfjy
-	 zCew3OVhaHUvearbKC9YDRMPN8jnheVloEfjFhwM=
+	b=mBRm/XAyY0CQQ/KZ+CB/PEf8gNsHBgEAWEK7OYxqLpNI0VzY4wB5DHEOV3QhePeyY
+	 4nndRc6KmIYpU4Eb9hdHPSVZDMtLdJ8ogjEcF6bW0oe2FrAUTD2u1aOzBA2Gwc2vD0
+	 5PTNRDJdWWoHyIgy1zHiAQPxIAMkHbG9Upo784M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Andreas Gruenbacher" <agruenba@redhat.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 233/309] drm/amdgpu: prevent immediate PASID reuse case
+	Andrew Price <anprice@redhat.com>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.6 152/175] gfs2: Fix unlikely race in gdlm_put_lock
 Date: Tue, 31 Mar 2026 18:22:16 +0200
-Message-ID: <20260331161802.155707744@linuxfoundation.org>
+Message-ID: <20260331161735.376057205@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +63,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232460-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231640-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 9ECFA36E5F5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2504836CE27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 14b81abe7bdc25f8097906fc2f91276ffedb2d26 upstream.
+[ Upstream commit 28c4d9bc0708956c1a736a9e49fee71b65deee81 ]
 
-PASID resue could cause interrupt issue when process
-immediately runs into hw state left by previous
-process exited with the same PASID, it's possible that
-page faults are still pending in the IH ring buffer when
-the process exits and frees up its PASID. To prevent the
-case, it uses idr cyclic allocator same as kernel pid's.
+In gdlm_put_lock(), there is a small window of time in which the
+DFL_UNMOUNT flag has been set but the lockspace hasn't been released,
+yet.  In that window, dlm may still call gdlm_ast() and gdlm_bast().
+To prevent it from dereferencing freed glock objects, only free the
+glock if the lockspace has actually been released.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8f1de51f49be692de137c8525106e0fce2d1912d)
-Cc: stable@vger.kernel.org
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andrew Price <anprice@redhat.com>
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   45 ++++++++++++++++++++++----------
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h |    1 
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c  |    1 
- 3 files changed, 34 insertions(+), 13 deletions(-)
+ fs/gfs2/lock_dlm.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-@@ -35,10 +35,13 @@
-  * PASIDs are global address space identifiers that can be shared
-  * between the GPU, an IOMMU and the driver. VMs on different devices
-  * may use the same PASID if they share the same address
-- * space. Therefore PASIDs are allocated using a global IDA. VMs are
-- * looked up from the PASID per amdgpu_device.
-+ * space. Therefore PASIDs are allocated using IDR cyclic allocator
-+ * (similar to kernel PID allocation) which naturally delays reuse.
-+ * VMs are looked up from the PASID per amdgpu_device.
-  */
--static DEFINE_IDA(amdgpu_pasid_ida);
-+
-+static DEFINE_IDR(amdgpu_pasid_idr);
-+static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
+--- a/fs/gfs2/lock_dlm.c
++++ b/fs/gfs2/lock_dlm.c
+@@ -311,11 +311,6 @@ static void gdlm_put_lock(struct gfs2_gl
+ 	gfs2_sbstats_inc(gl, GFS2_LKS_DCOUNT);
+ 	gfs2_update_request_times(gl);
  
- /* Helper to free pasid from a fence callback */
- struct amdgpu_pasid_cb {
-@@ -50,8 +53,8 @@ struct amdgpu_pasid_cb {
-  * amdgpu_pasid_alloc - Allocate a PASID
-  * @bits: Maximum width of the PASID in bits, must be at least 1
-  *
-- * Allocates a PASID of the given width while keeping smaller PASIDs
-- * available if possible.
-+ * Uses kernel's IDR cyclic allocator (same as PID allocation).
-+ * Allocates sequentially with automatic wrap-around.
-  *
-  * Returns a positive integer on success. Returns %-EINVAL if bits==0.
-  * Returns %-ENOSPC if no PASID was available. Returns %-ENOMEM on
-@@ -59,14 +62,15 @@ struct amdgpu_pasid_cb {
-  */
- int amdgpu_pasid_alloc(unsigned int bits)
- {
--	int pasid = -EINVAL;
-+	int pasid;
- 
--	for (bits = min(bits, 31U); bits > 0; bits--) {
--		pasid = ida_alloc_range(&amdgpu_pasid_ida, 1U << (bits - 1),
--					(1U << bits) - 1, GFP_KERNEL);
--		if (pasid != -ENOSPC)
--			break;
+-	/* don't want to call dlm if we've unmounted the lock protocol */
+-	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
+-		gfs2_glock_free(gl);
+-		return;
 -	}
-+	if (bits == 0)
-+		return -EINVAL;
-+
-+	spin_lock(&amdgpu_pasid_idr_lock);
-+	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
-+				 1U << bits, GFP_KERNEL);
-+	spin_unlock(&amdgpu_pasid_idr_lock);
+ 	/* don't want to skip dlm_unlock writing the lvb when lock has one */
  
- 	if (pasid >= 0)
- 		trace_amdgpu_pasid_allocated(pasid);
-@@ -81,7 +85,10 @@ int amdgpu_pasid_alloc(unsigned int bits
- void amdgpu_pasid_free(u32 pasid)
- {
- 	trace_amdgpu_pasid_freed(pasid);
--	ida_free(&amdgpu_pasid_ida, pasid);
-+
-+	spin_lock(&amdgpu_pasid_idr_lock);
-+	idr_remove(&amdgpu_pasid_idr, pasid);
-+	spin_unlock(&amdgpu_pasid_idr_lock);
- }
- 
- static void amdgpu_pasid_free_cb(struct dma_fence *fence,
-@@ -640,3 +647,15 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
- 		}
+ 	if (test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags) &&
+@@ -332,6 +327,11 @@ again:
+ 		goto again;
  	}
- }
+ 
++	if (error == -ENODEV) {
++		gfs2_glock_free(gl);
++		return;
++	}
 +
-+/**
-+ * amdgpu_pasid_mgr_cleanup - cleanup PASID manager
-+ *
-+ * Cleanup the IDR allocator.
-+ */
-+void amdgpu_pasid_mgr_cleanup(void)
-+{
-+	spin_lock(&amdgpu_pasid_idr_lock);
-+	idr_destroy(&amdgpu_pasid_idr);
-+	spin_unlock(&amdgpu_pasid_idr_lock);
-+}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
-@@ -74,6 +74,7 @@ int amdgpu_pasid_alloc(unsigned int bits
- void amdgpu_pasid_free(u32 pasid);
- void amdgpu_pasid_free_delayed(struct dma_resv *resv,
- 			       u32 pasid);
-+void amdgpu_pasid_mgr_cleanup(void);
- 
- bool amdgpu_vmid_had_gpu_reset(struct amdgpu_device *adev,
- 			       struct amdgpu_vmid *id);
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2884,6 +2884,7 @@ void amdgpu_vm_manager_fini(struct amdgp
- 	xa_destroy(&adev->vm_manager.pasids);
- 
- 	amdgpu_vmid_mgr_fini(adev);
-+	amdgpu_pasid_mgr_cleanup();
- }
- 
- /**
+ 	if (error) {
+ 		fs_err(sdp, "gdlm_unlock %x,%llx err=%d\n",
+ 		       gl->gl_name.ln_type,
 
 
 
