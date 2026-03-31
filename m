@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-231689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KF3qCMD/y2koNQYAu9opvQ
-	(envelope-from <stable+bounces-231689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:20 +0200
+	id CEoGG8/5y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FB836E00D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C976C36D0AF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEA06319DBAA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 125AA319E37B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13457401A38;
-	Tue, 31 Mar 2026 16:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC04425CD2;
+	Tue, 31 Mar 2026 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFulhi8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNypu9gR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92A4425CCD;
-	Tue, 31 Mar 2026 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6200A3DFC7D;
+	Tue, 31 Mar 2026 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974814; cv=none; b=QmMfdkye8nuzpNDftCxZmjZ203O2moB6rjpfZDGuMCVHnXiQm+i39vfsxdBHxPIrB1XVmRfExRjk26oLm1f+B4cdSBVI0rWB0IHU9wjbI4VWpNjuZ/0RZlGuHB2kgw6oGIK720T4nH5PgOZP5gA0tM/lpKMY0bM016kAJWi/iDQ=
+	t=1774974817; cv=none; b=idRvo9w49BS9b3U3TEqTz6lsUDHrkStAMDSV94h9EWSZBxikZyWYQuLo04bWYqsLAIL0GnJxkPCZDTIuX8MHQc5Ep1njJn/O29XoHIOO5uZFH812CNJ3u5a5b7GpP+V2NbVEKB/5uqVFZgiqymC8cMTgpRSzqBTVhz63VuE2k2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974814; c=relaxed/simple;
-	bh=Zfzjz7AP6CerVedurOmGaiqVhBYq3VvXOwRwyFzYUTc=;
+	s=arc-20240116; t=1774974817; c=relaxed/simple;
+	bh=1fwp+LW1W+NiDXOAfXCoRtRdwEmmnxyuqkxldaKADWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ni8e38UTVHtQyP+7YVf+anzP0yUvJE7ysYYcLHiU45eNyM8W0ei/u2ithGs0gb/ayQ9M02j7imJ7rabYz4sVWUEdQcZSO3wc2qRDewpTqdjZQoPwr3EumZ1e20u0NUjWd3URQBAPXYSGQ4bmvg8plC5yTkMGqmDMo3mEddry/EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFulhi8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D627C19423;
-	Tue, 31 Mar 2026 16:33:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SnudjjC1vOaFwnGllvZGPZCWFTy5rYKo/wDADdrja2nCXxeuJTXe3uSHwjZVC/xpchaABwZvsiOEyGyW09EK8k/fXos+b6wBuWkdIQ2FPFDfJ4Lw56f4IGMLOdk2iAhLDoX4rhs678gzx66ksbv3qyTtBKVXgOt7S2Ht26MpHfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNypu9gR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB13EC19423;
+	Tue, 31 Mar 2026 16:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974814;
-	bh=Zfzjz7AP6CerVedurOmGaiqVhBYq3VvXOwRwyFzYUTc=;
+	s=korg; t=1774974817;
+	bh=1fwp+LW1W+NiDXOAfXCoRtRdwEmmnxyuqkxldaKADWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFulhi8PrAxF5jkebdFhHYaox0IUMfCBpOq8GQl1Vi6DT8t08tf3z1d6/KmJEagsJ
-	 wJUpkzVi2y2E5iJ3nQVV3EwQ0HvUQZtnx0Wg7KM6Bbj/T8ZpA/Esd79QB8sgItSEu9
-	 qlKoPpISqyAnywYAMcXpMlTmj5B4JAQTRX6oPiKg=
+	b=FNypu9gRh+LvDDYTshzt25wlW8DN3rSigZGjttcXihLrPkhnlup/OXFaNPunkxfaQ
+	 O+7P74MCNZ1cbySEe/rPzT3gtPNWKR1H2nUX0ppLmZwo+tELO+Hq2JOiuv4bJBAO2g
+	 6pfIwVjsD02xz/DVOv1ZIqaSCcfPAhAzgVs8qT/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	elver@google.com,
-	kees@kernel.org,
-	Guohua Yan <guohua.yan@unisoc.com>,
-	Xuewen Yan <xuewen.yan@unisoc.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Noah Provenzano <noahpro@gmail.com>,
+	Juan Martin Morales <juanm4morales@gmail.com>,
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 021/342] tracing: Revert "tracing: Remove pid in task_rename tracing output"
-Date: Tue, 31 Mar 2026 18:17:34 +0200
-Message-ID: <20260331161759.693559919@linuxfoundation.org>
+Subject: [PATCH 6.19 022/342] platform/x86: hp-wmi: Add Omen 16-wf0xxx fan and thermal support
+Date: Tue, 31 Mar 2026 18:17:35 +0200
+Message-ID: <20260331161759.729877424@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -68,35 +65,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231689-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231690-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,efficios.com:email,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 96FB836E00D
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C976C36D0AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,72 +103,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Xuewen Yan <xuewen.yan@unisoc.com>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-[ Upstream commit a6f22e50c7d51aa225c392c62c33f0fae11f734d ]
+[ Upstream commit 13fa3aaf02edaad9b41fc61d7f6326d2b6a4bf80 ]
 
-This reverts commit e3f6a42272e028c46695acc83fc7d7c42f2750ad.
+The HP Omen 16-wf0xxx (board ID: 8BAB) has the same WMI interface as
+other Victus S boards, but requires quirks for correctly switching
+thermal profile (similar to HP Omen 16-wf1xxx, board ID: 8C78).
 
-The commit says that the tracepoint only deals with the current task,
-however the following case is not current task:
+Add the DMI board name to victus_s_thermal_profile_boards[] table and
+map it to omen_v1_thermal_params.
 
-comm_write() {
-    p = get_proc_task(inode);
-    if (!p)
-        return -ESRCH;
+Testing on HP Omen 16-wf0xxx confirmed that platform profile is
+registered successfully and fan RPMs are readable and controllable.
 
-    if (same_thread_group(current, p))
-        set_task_comm(p, buffer);
-}
-where set_task_comm() calls __set_task_comm() which records
-the update of p and not current.
-
-So revert the patch to show pid.
-
-Cc: <mhiramat@kernel.org>
-Cc: <mathieu.desnoyers@efficios.com>
-Cc: <elver@google.com>
-Cc: <kees@kernel.org>
-Link: https://patch.msgid.link/20260306075954.4533-1-xuewen.yan@unisoc.com
-Fixes: e3f6a42272e0 ("tracing: Remove pid in task_rename tracing output")
-Reported-by: Guohua Yan <guohua.yan@unisoc.com>
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Suggested-by: Noah Provenzano <noahpro@gmail.com>
+Tested-by: Juan Martin Morales <juanm4morales@gmail.com>
+Reported-by: Juan Martin Morales <juanm4morales@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220639
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20260216072003.90151-1-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/task.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/trace/events/task.h b/include/trace/events/task.h
-index 4f0759634306c..b9a129eb54d9e 100644
---- a/include/trace/events/task.h
-+++ b/include/trace/events/task.h
-@@ -38,19 +38,22 @@ TRACE_EVENT(task_rename,
- 	TP_ARGS(task, comm),
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 24d065ddfc6ae..9fcc18635e4e7 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -160,6 +160,10 @@ static const char * const victus_thermal_profile_boards[] = {
  
- 	TP_STRUCT__entry(
-+		__field(	pid_t,	pid)
- 		__array(	char, oldcomm,  TASK_COMM_LEN)
- 		__array(	char, newcomm,  TASK_COMM_LEN)
- 		__field(	short,	oom_score_adj)
- 	),
- 
- 	TP_fast_assign(
-+		__entry->pid = task->pid;
- 		memcpy(entry->oldcomm, task->comm, TASK_COMM_LEN);
- 		strscpy(entry->newcomm, comm, TASK_COMM_LEN);
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
--	TP_printk("oldcomm=%s newcomm=%s oom_score_adj=%hd",
--		  __entry->oldcomm, __entry->newcomm, __entry->oom_score_adj)
-+	TP_printk("pid=%d oldcomm=%s newcomm=%s oom_score_adj=%hd",
-+		__entry->pid, __entry->oldcomm,
-+		__entry->newcomm, __entry->oom_score_adj)
- );
- 
- /**
+ /* DMI Board names of Victus 16-r and Victus 16-s laptops */
+ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst = {
++	{
++		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BAB") },
++		.driver_data = (void *)&omen_v1_thermal_params,
++	},
+ 	{
+ 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BBE") },
+ 		.driver_data = (void *)&victus_s_thermal_params,
 -- 
 2.51.0
 
