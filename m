@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-232063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLHbNAn9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:45 +0200
+	id ALvjEHoGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E92C36D83C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFFB36F09E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE97E3026200
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B989532BA962
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C10413225;
-	Tue, 31 Mar 2026 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593F5302163;
+	Tue, 31 Mar 2026 17:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqMNvxS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jW+JYACQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E643E95A9;
-	Tue, 31 Mar 2026 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7B93002A9;
+	Tue, 31 Mar 2026 17:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975780; cv=none; b=BO+bssyBLS8/zPAQ9fxSypTpiiQv31g+sMlVTb2PhwP/uD9y5D4wLw2XMLMGsB913YH1B4AATJk5qVuaQmboyFj1h6ZiybvaEuQ+H5RD2vf2i3GLkb7oGkpM3fSvLY4b5/Vrvuaz6MqAxmFB297b4pF1Hy3OwYGeGYiAC1drrVU=
+	t=1774976608; cv=none; b=NyyIa8a1YJMM9iFJ8hFBbwiWCvLnLFrNQ8Q3Mv/HhpWVsTuGYlLwtv0n9stYV0vHAsMiWbfnTIpMdMDpX43gxJKFbvwzmNuvLlOSufZx7VSUrT5DetGBBCD5RWyNNmChEugjcNCEC5LTewJxM0xuACaTyZddFbhvX9lbY8mS+aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975780; c=relaxed/simple;
-	bh=I/ej6eIQQAcoIktCt65wVEG83TPc7mdyTHoOeYTcDYQ=;
+	s=arc-20240116; t=1774976608; c=relaxed/simple;
+	bh=yk0/ZK3HDoN6XYlb65WnTPJEe/KFAW1aOzF17COyNKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ym+JUTQONUkY4TsHG8HEg2ncSwr3KLaCVHwF+Ce7BuKsApI0ZB5bGesbtdk9AGhIoB+6C7VEDOwcFRfkU0gz/+kciwx79UCr9yOXKybEESEYumfjd5tvMG+KL+ke9liOZGePI3zVHKgnClbvv4+x2x1Ucn5WVH9ojzIa0axQ/Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqMNvxS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94466C19423;
-	Tue, 31 Mar 2026 16:49:39 +0000 (UTC)
+	 MIME-Version; b=JeJXrvRjNB7BkKGnNkGsme1Rolp6qpPaiTRjQlufXiIxesJ+09KZ6P/l8M0aAjiKOjoKoDyC7SxUVo7FupDRhA0R57LkeT9iljroDDlsSzyZX2JQHSd1XFxgq3FEs2lmbC1BjwbyRsMaEgCeKwQSxu3IMeYBffQVhxf96ML6nHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jW+JYACQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C1BC19423;
+	Tue, 31 Mar 2026 17:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975779;
-	bh=I/ej6eIQQAcoIktCt65wVEG83TPc7mdyTHoOeYTcDYQ=;
+	s=korg; t=1774976608;
+	bh=yk0/ZK3HDoN6XYlb65WnTPJEe/KFAW1aOzF17COyNKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqMNvxS92IGIV4vE3bnKYTOME1oQSXHt9QtaCl6ZYgG4t3DGbj/rGXZ6pG/OYkfGW
-	 g3QHGjOpZtutU33oO6nYCOvtSwOgrUyURgGvc2ALTVYGY3ape5a+IHh3nEOu7SyiLu
-	 noOwyCDdwAulEUYmUNPSf6vNYW5mcPtSjrp+LfsQ=
+	b=jW+JYACQ2E5uyFK0CRvyhoRHWO5XZQlATfv41zmmbcrxzynAShyTDQ5WD4AgsbtJl
+	 9zLuySvi89dJ4Od8bgp5evciQxuSGLeki4aVgNYkF30OBmdMbHVJtakvMHruz5a2fQ
+	 52WfTK1ycxCG7c2BrGe+EmxemdD7HpyjLhhF82+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/244] iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
+	David Carlier <devnexen@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.18 131/309] netfilter: ctnetlink: use netlink policy range checks
 Date: Tue, 31 Mar 2026 18:20:34 +0200
-Message-ID: <20260331161744.783528957@linuxfoundation.org>
+Message-ID: <20260331161758.299395974@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,187 +69,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org,strlen.de];
+	TAGGED_FROM(0.00)[bounces-232384-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232063-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,enjuk.jp:email]
-X-Rspamd-Queue-Id: 5E92C36D83C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BDFFB36F09E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit fecacfc95f195b99c71c579a472120d0b4ed65fa ]
+[ Upstream commit 8f15b5071b4548b0aafc03b366eb45c9c6566704 ]
 
-iavf incorrectly uses real_num_tx_queues for ETH_SS_STATS. Since the
-value could change in runtime, we should use num_tx_queues instead.
+Replace manual range and mask validations with netlink policy
+annotations in ctnetlink code paths, so that the netlink core rejects
+invalid values early and can generate extack errors.
 
-Moreover iavf_get_ethtool_stats() uses num_active_queues while
-iavf_get_sset_count() and iavf_get_stat_strings() use
-real_num_tx_queues, which triggers out-of-bounds writes when we do
-"ethtool -L" and "ethtool -S" simultaneously [1].
+- CTA_PROTOINFO_TCP_STATE: reject values > TCP_CONNTRACK_SYN_SENT2 at
+  policy level, removing the manual >= TCP_CONNTRACK_MAX check.
+- CTA_PROTOINFO_TCP_WSCALE_ORIGINAL/REPLY: reject values > TCP_MAX_WSCALE
+  (14). The normal TCP option parsing path already clamps to this value,
+  but the ctnetlink path accepted 0-255, causing undefined behavior when
+  used as a u32 shift count.
+- CTA_FILTER_ORIG_FLAGS/REPLY_FLAGS: use NLA_POLICY_MASK with
+  CTA_FILTER_F_ALL, removing the manual mask checks.
+- CTA_EXPECT_FLAGS: use NLA_POLICY_MASK with NF_CT_EXPECT_MASK, adding
+  a new mask define grouping all valid expect flags.
 
-For example when we change channels from 1 to 8, Thread 3 could be
-scheduled before Thread 2, and out-of-bounds writes could be triggered
-in Thread 3:
+Extracted from a broader nf-next patch by Florian Westphal, scoped to
+ctnetlink for the fixes tree.
 
-Thread 1 (ethtool -L)       Thread 2 (work)        Thread 3 (ethtool -S)
-iavf_set_channels()
-...
-iavf_alloc_queues()
--> num_active_queues = 8
-iavf_schedule_finish_config()
-                                                   iavf_get_sset_count()
-                                                   real_num_tx_queues: 1
-                                                   -> buffer for 1 queue
-                                                   iavf_get_ethtool_stats()
-                                                   num_active_queues: 8
-                                                   -> out-of-bounds!
-                            iavf_finish_config()
-                            -> real_num_tx_queues = 8
-
-Use immutable num_tx_queues in all related functions to avoid the issue.
-
-[1]
- BUG: KASAN: vmalloc-out-of-bounds in iavf_add_one_ethtool_stat+0x200/0x270
- Write of size 8 at addr ffffc900031c9080 by task ethtool/5800
-
- CPU: 1 UID: 0 PID: 5800 Comm: ethtool Not tainted 6.19.0-enjuk-08403-g8137e3db7f1c #241 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6f/0xb0
-  print_report+0x170/0x4f3
-  kasan_report+0xe1/0x180
-  iavf_add_one_ethtool_stat+0x200/0x270
-  iavf_get_ethtool_stats+0x14c/0x2e0
-  __dev_ethtool+0x3d0c/0x5830
-  dev_ethtool+0x12d/0x270
-  dev_ioctl+0x53c/0xe30
-  sock_do_ioctl+0x1a9/0x270
-  sock_ioctl+0x3d4/0x5e0
-  __x64_sys_ioctl+0x137/0x1c0
-  do_syscall_64+0xf3/0x690
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7f7da0e6e36d
- ...
-  </TASK>
-
- The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900031c9000 allocated at __dev_ethtool+0x3cc9/0x5830
- The buggy address belongs to the physical page: page: refcount:1 mapcount:0 mapping:0000000000000000
- index:0xffff88813a013de0 pfn:0x13a013
- flags: 0x200000000000000(node=0|zone=2)
- raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: ffff88813a013de0 0000000000000000 00000001ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ffffc900031c8f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ffffc900031c9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffc900031c9080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                    ^
-  ffffc900031c9100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ffffc900031c9180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fixes: 64430f70ba6f ("iavf: Fix displaying queue statistics shown by ethtool")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: c8e2078cfe41 ("[NETFILTER]: ctnetlink: add support for internal tcp connection tracking flags handling")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Co-developed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 31 +++++++++----------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ .../uapi/linux/netfilter/nf_conntrack_common.h   |  4 ++++
+ net/netfilter/nf_conntrack_netlink.c             | 16 +++++-----------
+ net/netfilter/nf_conntrack_proto_tcp.c           | 10 +++-------
+ 3 files changed, 12 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 74a1e9fe18212..53e5a3bd9b956 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -311,14 +311,13 @@ static int iavf_get_sset_count(struct net_device *netdev, int sset)
- {
- 	/* Report the maximum number queues, even if not every queue is
- 	 * currently configured. Since allocation of queues is in pairs,
--	 * use netdev->real_num_tx_queues * 2. The real_num_tx_queues is set
--	 * at device creation and never changes.
-+	 * use netdev->num_tx_queues * 2. The num_tx_queues is set at
-+	 * device creation and never changes.
- 	 */
+diff --git a/include/uapi/linux/netfilter/nf_conntrack_common.h b/include/uapi/linux/netfilter/nf_conntrack_common.h
+index 26071021e986f..56b6b60a814f5 100644
+--- a/include/uapi/linux/netfilter/nf_conntrack_common.h
++++ b/include/uapi/linux/netfilter/nf_conntrack_common.h
+@@ -159,5 +159,9 @@ enum ip_conntrack_expect_events {
+ #define NF_CT_EXPECT_INACTIVE		0x2
+ #define NF_CT_EXPECT_USERSPACE		0x4
  
- 	if (sset == ETH_SS_STATS)
- 		return IAVF_STATS_LEN +
--			(IAVF_QUEUE_STATS_LEN * 2 *
--			 netdev->real_num_tx_queues);
-+		       (IAVF_QUEUE_STATS_LEN * 2 * netdev->num_tx_queues);
- 	else
- 		return -EINVAL;
++#ifdef __KERNEL__
++#define NF_CT_EXPECT_MASK	(NF_CT_EXPECT_PERMANENT | NF_CT_EXPECT_INACTIVE | \
++				 NF_CT_EXPECT_USERSPACE)
++#endif
+ 
+ #endif /* _UAPI_NF_CONNTRACK_COMMON_H */
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index f261dd48973fe..768f741f59afe 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -909,8 +909,8 @@ struct ctnetlink_filter {
+ };
+ 
+ static const struct nla_policy cta_filter_nla_policy[CTA_FILTER_MAX + 1] = {
+-	[CTA_FILTER_ORIG_FLAGS]		= { .type = NLA_U32 },
+-	[CTA_FILTER_REPLY_FLAGS]	= { .type = NLA_U32 },
++	[CTA_FILTER_ORIG_FLAGS]		= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
++	[CTA_FILTER_REPLY_FLAGS]	= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
+ };
+ 
+ static int ctnetlink_parse_filter(const struct nlattr *attr,
+@@ -924,17 +924,11 @@ static int ctnetlink_parse_filter(const struct nlattr *attr,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (tb[CTA_FILTER_ORIG_FLAGS]) {
++	if (tb[CTA_FILTER_ORIG_FLAGS])
+ 		filter->orig_flags = nla_get_u32(tb[CTA_FILTER_ORIG_FLAGS]);
+-		if (filter->orig_flags & ~CTA_FILTER_F_ALL)
+-			return -EOPNOTSUPP;
+-	}
+ 
+-	if (tb[CTA_FILTER_REPLY_FLAGS]) {
++	if (tb[CTA_FILTER_REPLY_FLAGS])
+ 		filter->reply_flags = nla_get_u32(tb[CTA_FILTER_REPLY_FLAGS]);
+-		if (filter->reply_flags & ~CTA_FILTER_F_ALL)
+-			return -EOPNOTSUPP;
+-	}
+ 
+ 	return 0;
  }
-@@ -343,19 +342,19 @@ static void iavf_get_ethtool_stats(struct net_device *netdev,
- 	iavf_add_ethtool_stats(&data, adapter, iavf_gstrings_stats);
- 
- 	rcu_read_lock();
--	/* As num_active_queues describe both tx and rx queues, we can use
--	 * it to iterate over rings' stats.
-+	/* Use num_tx_queues to report stats for the maximum number of queues.
-+	 * Queues beyond num_active_queues will report zero.
- 	 */
--	for (i = 0; i < adapter->num_active_queues; i++) {
--		struct iavf_ring *ring;
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
-+		struct iavf_ring *tx_ring = NULL, *rx_ring = NULL;
- 
--		/* Tx rings stats */
--		ring = &adapter->tx_rings[i];
--		iavf_add_queue_stats(&data, ring);
-+		if (i < adapter->num_active_queues) {
-+			tx_ring = &adapter->tx_rings[i];
-+			rx_ring = &adapter->rx_rings[i];
-+		}
- 
--		/* Rx rings stats */
--		ring = &adapter->rx_rings[i];
--		iavf_add_queue_stats(&data, ring);
-+		iavf_add_queue_stats(&data, tx_ring);
-+		iavf_add_queue_stats(&data, rx_ring);
- 	}
- 	rcu_read_unlock();
+@@ -2633,7 +2627,7 @@ static const struct nla_policy exp_nla_policy[CTA_EXPECT_MAX+1] = {
+ 	[CTA_EXPECT_HELP_NAME]	= { .type = NLA_NUL_STRING,
+ 				    .len = NF_CT_HELPER_NAME_LEN - 1 },
+ 	[CTA_EXPECT_ZONE]	= { .type = NLA_U16 },
+-	[CTA_EXPECT_FLAGS]	= { .type = NLA_U32 },
++	[CTA_EXPECT_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NF_CT_EXPECT_MASK),
+ 	[CTA_EXPECT_CLASS]	= { .type = NLA_U32 },
+ 	[CTA_EXPECT_NAT]	= { .type = NLA_NESTED },
+ 	[CTA_EXPECT_FN]		= { .type = NLA_NUL_STRING },
+diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
+index 0c1d086e96cb3..b67426c2189b2 100644
+--- a/net/netfilter/nf_conntrack_proto_tcp.c
++++ b/net/netfilter/nf_conntrack_proto_tcp.c
+@@ -1385,9 +1385,9 @@ static int tcp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
  }
-@@ -374,9 +373,9 @@ static void iavf_get_stat_strings(struct net_device *netdev, u8 *data)
- 	iavf_add_stat_strings(&data, iavf_gstrings_stats);
  
- 	/* Queues are always allocated in pairs, so we just use
--	 * real_num_tx_queues for both Tx and Rx queues.
-+	 * num_tx_queues for both Tx and Rx queues.
- 	 */
--	for (i = 0; i < netdev->real_num_tx_queues; i++) {
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
- 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
- 				      "tx", i);
- 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
+ static const struct nla_policy tcp_nla_policy[CTA_PROTOINFO_TCP_MAX+1] = {
+-	[CTA_PROTOINFO_TCP_STATE]	    = { .type = NLA_U8 },
+-	[CTA_PROTOINFO_TCP_WSCALE_ORIGINAL] = { .type = NLA_U8 },
+-	[CTA_PROTOINFO_TCP_WSCALE_REPLY]    = { .type = NLA_U8 },
++	[CTA_PROTOINFO_TCP_STATE]	    = NLA_POLICY_MAX(NLA_U8, TCP_CONNTRACK_SYN_SENT2),
++	[CTA_PROTOINFO_TCP_WSCALE_ORIGINAL] = NLA_POLICY_MAX(NLA_U8, TCP_MAX_WSCALE),
++	[CTA_PROTOINFO_TCP_WSCALE_REPLY]    = NLA_POLICY_MAX(NLA_U8, TCP_MAX_WSCALE),
+ 	[CTA_PROTOINFO_TCP_FLAGS_ORIGINAL]  = { .len = sizeof(struct nf_ct_tcp_flags) },
+ 	[CTA_PROTOINFO_TCP_FLAGS_REPLY]	    = { .len = sizeof(struct nf_ct_tcp_flags) },
+ };
+@@ -1414,10 +1414,6 @@ static int nlattr_to_tcp(struct nlattr *cda[], struct nf_conn *ct)
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (tb[CTA_PROTOINFO_TCP_STATE] &&
+-	    nla_get_u8(tb[CTA_PROTOINFO_TCP_STATE]) >= TCP_CONNTRACK_MAX)
+-		return -EINVAL;
+-
+ 	spin_lock_bh(&ct->lock);
+ 	if (tb[CTA_PROTOINFO_TCP_STATE])
+ 		ct->proto.tcp.state = nla_get_u8(tb[CTA_PROTOINFO_TCP_STATE]);
 -- 
 2.51.0
 
