@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-232391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDA9G4UGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:13 +0200
+	id YChyI9H8y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DF036F0D5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED50436D791
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5855032CF33E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 378EC310EEB4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFB02F5491;
-	Tue, 31 Mar 2026 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D269423A99;
+	Tue, 31 Mar 2026 16:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHuIl8Qw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNcehgrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEEB2D63E8;
-	Tue, 31 Mar 2026 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D7426686;
+	Tue, 31 Mar 2026 16:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976626; cv=none; b=RSiRDITejdKXjkMm/0lNkMXMkJisgeFpC/ZsGtZNftxyMN7bAkyIdxQTZIPkufPfZR1rCsThhE6r2bG2tkmfBCaD2KkIVTVyadQL7ikicuSsGIQvuYH+YPTTwIWGq8mCeriiRjhiT2ieOcolM6qKJC4z622+uLGFJ5r28mHC6Ao=
+	t=1774975288; cv=none; b=lBVR1S9dF3Ori6haZ+a2sQEcrGiHIHsH9JB5IyH7yIliFtetBn9thcvs7yGHMFS3wXtA2sRPFnbgthYY2SWV0WuTeL9BcQ6kygmsEkbXq55moLk/DARLHN5qYAbhifpnrWLB1oWCQ4cxw672cK3h9+b3uR23b21UuSDVEZ4kvkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976626; c=relaxed/simple;
-	bh=VwgX6lFzG1g48a76pKjWFJf3E9idE4Go+hFs+j8FaXs=;
+	s=arc-20240116; t=1774975288; c=relaxed/simple;
+	bh=r7MGkfJ0r64UoTF/HHCmKS9uhwUEF9/89ZONE2v39b0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1zqw5cU/aTFnod376lOCecLZbTQHNa6tvbc+MoMGe1m2SbrTTrMCN0h+Qa2pwT80VgTnCbRhia/DFh8Upd1MGJzPniNNNMG+oXB4bMyYAuehyGiWxSNpokdHBFjjGr3Gq80hKrHNdUTfGeSzBMAUzk6i6OI4yPHkI/ZybBJl9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHuIl8Qw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C630BC19423;
-	Tue, 31 Mar 2026 17:03:45 +0000 (UTC)
+	 MIME-Version; b=p3GZP8+NgZCZRlDZuZ2QYBVmkXJtMzSv/pexBaW7XOHkfFvLiH7mE+KNs8nQ5QYte2RGXDBynzDC1M6tMuqjOQJ7L6My0IKS0dg2Cwbz1jPKxDa4zfMGdNQbgUIE5eMl+KIjS6RGOVrrDAqE5Q3AFgJV8bRjomJAphAKpr+01GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNcehgrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A1EC19423;
+	Tue, 31 Mar 2026 16:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976626;
-	bh=VwgX6lFzG1g48a76pKjWFJf3E9idE4Go+hFs+j8FaXs=;
+	s=korg; t=1774975288;
+	bh=r7MGkfJ0r64UoTF/HHCmKS9uhwUEF9/89ZONE2v39b0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHuIl8QwHRHCeBKpkz7TtZedQfAzlvCX4eLAcWbC4e6s0nZE98Bb0I/WQO+puYcNK
-	 jCXloV7vcn8o737m753+Aa6wBJ5EYv1kEKh/D3libvLBV0B2ig8ZTELMgCwByi9Ax2
-	 wSiha5xKPZD+dZelOCfjSuq88E1Tqjs8lycop1mM=
+	b=bNcehgrzkl6TmxlGmOb+OEAUXFy4b6xODX4Bd5umWqOuXR8Y5Kjv0oOLZ8STE1GDF
+	 lhPuKsX50DecM31ylkntq6OfRzadIPePQshnW+INfQ2c3zZwIjMW/pCNX4aH5McI21
+	 d9JYZgGsUQVDQS95vz2us4h1VDdZ3WBHzoMb5Jeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Kranzdorf <dkkranzd@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 133/309] RDMA/efa: Check stored completion CTX command ID with received one
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Werner Kasselman <werner@verivus.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.19 203/342] ksmbd: fix memory leaks and NULL deref in smb2_lock()
 Date: Tue, 31 Mar 2026 18:20:36 +0200
-Message-ID: <20260331161758.372870147@linuxfoundation.org>
+Message-ID: <20260331161806.456414197@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232391-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231873-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,76 +87,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E7DF036F0D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: ED50436D791
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonatan Nachum <ynachum@amazon.com>
+From: Werner Kasselman <werner@verivus.com>
 
-[ Upstream commit 4b01ec0f133b3fe1038dc538d6bfcbd72462d2f0 ]
+commit 309b44ed684496ed3f9c5715d10b899338623512 upstream.
 
-In admin command completion, we receive a CQE with the command ID which
-is constructed from context index and entropy bits from the admin queue
-producer counter. To try to detect memory corruptions in the received
-CQE, validate the full command ID of the fetched context with the CQE
-command ID. If there is a mismatch, complete the CQE with error.
-Also use LSBs of the admin queue producer counter to better detect
-entropy mismatch between smaller number of commands.
+smb2_lock() has three error handling issues after list_del() detaches
+smb_lock from lock_list at no_check_cl:
 
-Reviewed-by: Daniel Kranzdorf <dkkranzd@amazon.com>
-Reviewed-by: Michael Margolin <mrgolin@amazon.com>
-Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
-Link: https://patch.msgid.link/20251210130614.36460-2-ynachum@amazon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: ef3b06742c8a ("RDMA/efa: Fix use of completion ctx after free")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK
+   path, goto out leaks smb_lock and its flock because the out:
+   handler only iterates lock_list and rollback_list, neither of
+   which contains the detached smb_lock.
+
+2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out
+   leaks smb_lock and flock for the same reason.  The error code
+   returned to the dispatcher is also stale.
+
+3) In the rollback path, smb_flock_init() can return NULL on
+   allocation failure.  The result is dereferenced unconditionally,
+   causing a kernel NULL pointer dereference.  Add a NULL check to
+   prevent the crash and clean up the bookkeeping; the VFS lock
+   itself cannot be rolled back without the allocation and will be
+   released at file or connection teardown.
+
+Fix cases 1 and 2 by hoisting the locks_free_lock()/kfree() to before
+the if(!rc) check in the UNLOCK branch so all exit paths share one
+free site, and by freeing smb_lock and flock before goto out in the
+non-UNLOCK branch.  Propagate the correct error code in both cases.
+Fix case 3 by wrapping the VFS unlock in an if(rlock) guard and adding
+a NULL check for locks_free_lock(rlock) in the shared cleanup.
+
+Found via call-graph analysis using sqry.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Suggested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Werner Kasselman <werner@verivus.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |   29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index 0e979ca10d240..b31478f3a1212 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -3,6 +3,8 @@
-  * Copyright 2018-2025 Amazon.com, Inc. or its affiliates. All rights reserved.
-  */
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7600,14 +7600,15 @@ retry:
+ 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
+ skip:
+ 		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
++			locks_free_lock(flock);
++			kfree(smb_lock);
+ 			if (!rc) {
+ 				ksmbd_debug(SMB, "File unlocked\n");
+ 			} else if (rc == -ENOENT) {
+ 				rsp->hdr.Status = STATUS_NOT_LOCKED;
++				err = rc;
+ 				goto out;
+ 			}
+-			locks_free_lock(flock);
+-			kfree(smb_lock);
+ 		} else {
+ 			if (rc == FILE_LOCK_DEFERRED) {
+ 				void **argv;
+@@ -7676,6 +7677,9 @@ skip:
+ 				spin_unlock(&work->conn->llist_lock);
+ 				ksmbd_debug(SMB, "successful in taking lock\n");
+ 			} else {
++				locks_free_lock(flock);
++				kfree(smb_lock);
++				err = rc;
+ 				goto out;
+ 			}
+ 		}
+@@ -7706,13 +7710,17 @@ out:
+ 		struct file_lock *rlock = NULL;
  
-+#include <linux/log2.h>
+ 		rlock = smb_flock_init(filp);
+-		rlock->c.flc_type = F_UNLCK;
+-		rlock->fl_start = smb_lock->start;
+-		rlock->fl_end = smb_lock->end;
+-
+-		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
+-		if (rc)
+-			pr_err("rollback unlock fail : %d\n", rc);
++		if (rlock) {
++			rlock->c.flc_type = F_UNLCK;
++			rlock->fl_start = smb_lock->start;
++			rlock->fl_end = smb_lock->end;
 +
- #include "efa_com.h"
- #include "efa_regs_defs.h"
++			rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
++			if (rc)
++				pr_err("rollback unlock fail : %d\n", rc);
++		} else {
++			pr_err("rollback unlock alloc failed\n");
++		}
  
-@@ -317,7 +319,7 @@ static struct efa_comp_ctx *__efa_com_submit_admin_cmd(struct efa_com_admin_queu
+ 		list_del(&smb_lock->llist);
+ 		spin_lock(&work->conn->llist_lock);
+@@ -7722,7 +7730,8 @@ out:
+ 		spin_unlock(&work->conn->llist_lock);
  
- 	/* cmd_id LSBs are the ctx_id and MSBs are entropy bits from pc */
- 	cmd_id = ctx_id & queue_size_mask;
--	cmd_id |= aq->sq.pc & ~queue_size_mask;
-+	cmd_id |= aq->sq.pc << ilog2(aq->depth);
- 	cmd_id &= EFA_ADMIN_AQ_COMMON_DESC_COMMAND_ID_MASK;
- 
- 	cmd->aq_common_descriptor.command_id = cmd_id;
-@@ -418,7 +420,7 @@ static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq
- 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
- 
- 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
--	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
-+	if (comp_ctx->status != EFA_CMD_SUBMITTED || comp_ctx->cmd_id != cmd_id) {
- 		ibdev_err(aq->efa_dev,
- 			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
- 			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
--- 
-2.53.0
-
+ 		locks_free_lock(smb_lock->fl);
+-		locks_free_lock(rlock);
++		if (rlock)
++			locks_free_lock(rlock);
+ 		kfree(smb_lock);
+ 	}
+ out2:
 
 
 
