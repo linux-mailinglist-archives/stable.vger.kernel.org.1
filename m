@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEwyKEL3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:06 +0200
+	id kNmHCcUDzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:26:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B84336CBEF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE5736EB45
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41D3130961ED
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F066F324B7E0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEB53FF8AB;
-	Tue, 31 Mar 2026 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD68423A9A;
+	Tue, 31 Mar 2026 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb3O11x1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrstdDJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E56A3EF0A2;
-	Tue, 31 Mar 2026 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF972C15B2;
+	Tue, 31 Mar 2026 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974426; cv=none; b=o1FuGFUhZmN1KSNI9lBFENg7aj+XxmnttZdSKDFCyuIC8C4qKC55kCuBey9zTXUBL66XiauhSnDU4V0V6q3qZ20ZW1n/m2OaghoAs/fXilqiON1SLeiUFzWEevcsAiHiyutGjzd8a2XezrPVap2LmKbARgnI+MBQAgIx0jQvR6s=
+	t=1774975834; cv=none; b=IYJ9tiB198vJ0DVD5cDLzq1wPO2Goza7ZvOJ8liSBZXjrdSaKIWdQVl28CX4gQEu/bksyxmKQe1/cCXb37mkeTtoAPWQnHEvglPIEOOWauRPn6/pL7WkGRXjW68Cmap9mR3Q+X7ceR0qUgLj9ohsuuC7vIqUDJu1rtky6ghBKN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974426; c=relaxed/simple;
-	bh=xYcVft71B4AAFyGJWwQvxVuKLLEBLTPrZYwk5MxDplc=;
+	s=arc-20240116; t=1774975834; c=relaxed/simple;
+	bh=xXJTqdcsBduwoT/8i14gqleV60GCgCku1kRc5Cf56TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcAKxpkJlmawasB0j33YDMEYG3GmP/sfB1xtSjRx33zSzXXcG1O5OXc79cXa37ucgTkVenVd9/jGVamLP7AQBPGUITPDXKaFRtdAA5RENR9f61fmHQLTc+HK4OM7QGvJov9SXQmAj8H/ccCcV/6qKXSc6YMlqqaAVyH/JSoJomM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb3O11x1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F59CC19423;
-	Tue, 31 Mar 2026 16:27:05 +0000 (UTC)
+	 MIME-Version; b=pVSeI0SAjNB4/RI2ij04+uhiLW7eMjZA9nJmoaLDWpjWTr843mW6VTps7298DgJEO+IH4ZUJ3gNmqCM3SYr/wihtUuNwW5wRuCbR2YLh+5MNVE7B0K0Z3UeAO7tPIWb9jZ3z/t8U6bPJ77T2RYyQoaF8rMoJ/jLRl4n3qF+2rX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrstdDJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E0CC2BCB3;
+	Tue, 31 Mar 2026 16:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974426;
-	bh=xYcVft71B4AAFyGJWwQvxVuKLLEBLTPrZYwk5MxDplc=;
+	s=korg; t=1774975834;
+	bh=xXJTqdcsBduwoT/8i14gqleV60GCgCku1kRc5Cf56TA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yb3O11x1SkCCn4glItbRMh5Oz3ieRfYFS/OWfFOJXzrPFz6EcGkPKQ4eDF7O1nwac
-	 NRImvNNKFuwpHvH9ntNUvT6sSbstgO8l8jU/Pwa05nfUDe0R9nlt5xKnKLehw8lCbN
-	 PmJMIrGuMFxoI3tH3G1SFMFa20XQtoKBiLdFqfmY=
+	b=KrstdDJecOB5jvwcTvxhfgOz+GBTXmLU2kaGDIycuPp3DtkTGxuDBWGo1zbquKoqy
+	 qbmEvLeTHBscFvyG0e/41V+dJ0g8O+jur+NqNGzTyPDE/IObfK669iV0OFWjPetrF2
+	 iCHrKSGt64gtZOB2y2CeeU2Xyx5XZEJfF7Fth19Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/175] can: statistics: add missing atomic access in hot path
+Subject: [PATCH 6.12 072/244] net: bcm: asp2: fix LPI timer handling
 Date: Tue, 31 Mar 2026 18:20:22 +0200
-Message-ID: <20260331161731.185043348@linuxfoundation.org>
+Message-ID: <20260331161744.346860747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +65,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231537-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232084-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 1B84336CBEF
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email,armlinux.org.uk:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8AE5736EB45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 46eee1661aa9b49966e6c43d07126fe408edda57 ]
+[ Upstream commit 54033f5512191fa355422d009f32923c1cf24aab ]
 
-Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
-fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
-variable used in can_rcv_filter().
+Fix the LPI timer handling in Broadcom ASP2 driver after the phylib
+managed EEE patches were merged.
 
-Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/E1tXk7r-000r4l-Li@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: cbfa5be2bf64 ("net: bcmasp: fix double free of WoL irq")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/af_can.c | 4 ++--
- net/can/af_can.h | 2 +-
- net/can/proc.c   | 3 ++-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c | 2 --
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c    | 5 +++++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index cdad0be43e8ff..e0ad55b9af646 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -467,7 +467,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+index ca163c8e37297..256577f0f2170 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+@@ -371,7 +371,6 @@ static int bcmasp_get_eee(struct net_device *dev, struct ethtool_keee *e)
+ 		return -ENODEV;
  
- 	rcv->can_id = can_id;
- 	rcv->mask = mask;
--	rcv->matches = 0;
-+	atomic_long_set(&rcv->matches, 0);
- 	rcv->func = func;
- 	rcv->data = data;
- 	rcv->ident = ident;
-@@ -571,7 +571,7 @@ EXPORT_SYMBOL(can_rx_unregister);
- static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
- {
- 	rcv->func(skb, rcv->data);
--	rcv->matches++;
-+	atomic_long_inc(&rcv->matches);
+ 	e->tx_lpi_enabled = p->tx_lpi_enabled;
+-	e->tx_lpi_timer = umac_rl(intf, UMC_EEE_LPI_TIMER);
+ 
+ 	return phy_ethtool_get_eee(dev->phydev, e);
  }
+@@ -395,7 +394,6 @@ static int bcmasp_set_eee(struct net_device *dev, struct ethtool_keee *e)
+ 			return ret;
+ 		}
  
- static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 22f3352c77fec..87887014f5628 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -52,7 +52,7 @@ struct receiver {
- 	struct hlist_node list;
- 	canid_t can_id;
- 	canid_t mask;
--	unsigned long matches;
-+	atomic_long_t matches;
- 	void (*func)(struct sk_buff *skb, void *data);
- 	void *data;
- 	char *ident;
-diff --git a/net/can/proc.c b/net/can/proc.c
-index 25fdf060e30d0..2f78ea8ac30b0 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
- 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
- 
- 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
--				r->func, r->data, r->matches, r->ident);
-+			   r->func, r->data, atomic_long_read(&r->matches),
-+			   r->ident);
+-		umac_wl(intf, e->tx_lpi_timer, UMC_EEE_LPI_TIMER);
+ 		intf->eee.tx_lpi_enabled = e->tx_lpi_enabled;
+ 		bcmasp_eee_enable_set(intf, true);
  	}
- }
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 79185bafaf4b3..73e704352d820 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -674,6 +674,8 @@ static void bcmasp_adj_link(struct net_device *dev)
+ 		}
+ 		umac_wl(intf, reg, UMC_CMD);
  
++		umac_wl(intf, phydev->eee_cfg.tx_lpi_timer, UMC_EEE_LPI_TIMER);
++
+ 		active = phy_init_eee(phydev, 0) >= 0;
+ 		bcmasp_eee_enable_set(intf, active);
+ 	}
+@@ -1052,6 +1054,9 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
+ 
+ 		/* Indicate that the MAC is responsible for PHY PM */
+ 		phydev->mac_managed_pm = true;
++
++		/* Set phylib's copy of the LPI timer */
++		phydev->eee_cfg.tx_lpi_timer = umac_rl(intf, UMC_EEE_LPI_TIMER);
+ 	}
+ 
+ 	umac_reset(intf);
 -- 
 2.51.0
 
