@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-231888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAWAOLIBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-231888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:38 +0200
+	id wPnAL773y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9290936E6CD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC7E36CCBD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B17D31695A5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 979FD3130EAA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1452E425CD6;
-	Tue, 31 Mar 2026 16:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A11F3FAE08;
+	Tue, 31 Mar 2026 16:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVqYAvO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYAvxgDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE52423A8E;
-	Tue, 31 Mar 2026 16:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D96A3E92A5;
+	Tue, 31 Mar 2026 16:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975326; cv=none; b=btewKizRShltgQMnMJWbs8THeiQSL5qbEhBIhBT5ImODk5mzo8Np1kv3Fh6OYikXxQ5HSKbUjWUThVvfxJyBwT0S0qg1lQ3VOInXOtfjX5WL/2Zramz2YC51aT/LlPnCD7gAl3gQBheujOt6EL0KSOwdKdug/67nECoIh6xZauY=
+	t=1774974480; cv=none; b=Xi+VPc87bUnVkG4Dlzej7jH64E5uKEGpzDd1Lwi5kiUpB5Yqk2n4syBWE2vjUtCTxOscaJFzpyodwSxFnxfVGmq5Me+eaObGaOp26UTH0k34icuoHB5R21+HfiLugDA+h3cHf79W+efMPWccYYLY3v2zS4OefC0L3JB+vLMfsFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975326; c=relaxed/simple;
-	bh=EjRBisr4SGiO+v4FNXqHqoSeWFaIAiavsBClZURofZ0=;
+	s=arc-20240116; t=1774974480; c=relaxed/simple;
+	bh=/MVYEUOSgcIuh5xpNGVqMP2OS6h00JrfSmWDDosIRps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWfgHOrWnxm+5T1LlxgcAInzg2Oacul5ph7aahztqJzoRQDuSqPv72aj+PHklaI0clS1VuLpong+MM1vDBRImWPOFW9+8C3G9PfBh8BWDmTqPGI7FJnKKIQ/FCNhSuuctI9OohL4piYDJs9MqGJJPr14t3dIpNRl2MXjQvNbfU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVqYAvO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E89C19423;
-	Tue, 31 Mar 2026 16:42:06 +0000 (UTC)
+	 MIME-Version; b=ixR3pNsejGdgDc1Y52k0ygLlDdxPmXN4H/cIsfHNHCadUZQwJoG1ERsaBX7PvIDMbDfe2T1cJAl1mi0xyi/yxYz9LhFNt2H1iau1Y2BtkxAsODX25ZB3L+qAGjOcWeMPohDtE9uOhDWSgo6gxQw/i3ITFwORPqDhh2vSj2Oxd/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYAvxgDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C967AC19423;
+	Tue, 31 Mar 2026 16:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975326;
-	bh=EjRBisr4SGiO+v4FNXqHqoSeWFaIAiavsBClZURofZ0=;
+	s=korg; t=1774974480;
+	bh=/MVYEUOSgcIuh5xpNGVqMP2OS6h00JrfSmWDDosIRps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVqYAvO6Hqy+2WZv+FKVG+syKBA7um5y05L1xPv+8mRnzA0Xc27JUIJxW5Wf0TsLU
-	 lPRzpZBgkm6Vv3vVzc7/YAINSfDmqsm4Xmui+1qVh/JqYcuyhLTRiqbOU2PmCXtWyE
-	 c0USUKVHxYZH9+gFDn5u1iIWZWER7R74bf2I5C1Y=
+	b=jYAvxgDo+eDX6qfXm5SHKxKorw2XNOwMkmqqdxxQ8pvzEFgfNZQt2TxFRk2U6QLRs
+	 qWp3wH6ZhgG0L2VdrZ1AuCl4Mhm5kL9GiJWqo0Ap+nmycTlkTwlL628n3m+yF7rPh/
+	 ERaWOhcBI5ScDSORvgW49fH7BA4HUXUgVma9Es6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.19 251/342] KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE
-Date: Tue, 31 Mar 2026 18:21:24 +0200
-Message-ID: <20260331161808.194771758@linuxfoundation.org>
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 101/175] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
+Date: Tue, 31 Mar 2026 18:21:25 +0200
+Message-ID: <20260331161733.489926303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +73,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231888-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231558-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9290936E6CD
+X-Rspamd-Queue-Id: 1AC7E36CCBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit df83746075778958954aa0460cca55f4b3fc9c02 upstream.
+commit beef2634f81f1c086208191f7228bce1d366493d upstream.
 
-Adjust KVM's sanity check against overwriting a shadow-present SPTE with a
-another SPTE with a different target PFN to only apply to direct MMUs,
-i.e. only to MMUs without shadowed gPTEs.  While it's impossible for KVM
-to overwrite a shadow-present SPTE in response to a guest write, writes
-from outside the scope of KVM, e.g. from host userspace, aren't detected
-by KVM's write tracking and so can break KVM's shadow paging rules.
+When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
+(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
+max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
+with PATH_MAX, causing out-of-bounds write beyond the response buffer.
+In get_file_all_info(), there was a missing validation check for
+the client-provided OutputBufferLength before copying the filename into
+FileName field of the smb2_file_all_info structure.
+If the filename length exceeds the available buffer space, it could lead to
+potential buffer overflows or memory corruption during smbConvertToUTF16
+conversion. This calculating the actual free buffer size using
+smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
+insufficient and updating smbConvertToUTF16 to use the actual filename
+length (clamped by PATH_MAX) to ensure a safe copy operation.
 
-  ------------[ cut here ]------------
-  pfn != spte_to_pfn(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:3069 at mmu_set_spte+0x1e4/0x440 [kvm], CPU#0: vmx_ept_stale_r/872
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 872 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mmu_set_spte+0x1e4/0x440 [kvm]
-  Call Trace:
-   <TASK>
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-Fixes: 11d45175111d ("KVM: x86/mmu: Warn if PFN changes on shadow-present SPTE in shadow MMU")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3060,7 +3060,8 @@ static int mmu_set_spte(struct kvm_vcpu
- 			child = spte_to_child_sp(pte);
- 			drop_parent_pte(vcpu->kvm, child, sptep);
- 			flush = true;
--		} else if (WARN_ON_ONCE(pfn != spte_to_pfn(*sptep))) {
-+		} else if (pfn != spte_to_pfn(*sptep)) {
-+			WARN_ON_ONCE(vcpu->arch.mmu->root_role.direct);
- 			drop_spte(vcpu->kvm, sptep);
- 			flush = true;
- 		} else
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4919,7 +4919,8 @@ static int get_file_all_info(struct ksmb
+ 	int conv_len;
+ 	char *filename;
+ 	u64 time;
+-	int ret;
++	int ret, buf_free_len, filename_len;
++	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
+ 
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
+@@ -4931,6 +4932,16 @@ static int get_file_all_info(struct ksmb
+ 	if (IS_ERR(filename))
+ 		return PTR_ERR(filename);
+ 
++	filename_len = strlen(filename);
++	buf_free_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer) +
++			offsetof(struct smb2_file_all_info, FileName),
++			le32_to_cpu(req->OutputBufferLength));
++	if (buf_free_len < (filename_len + 1) * 2) {
++		kfree(filename);
++		return -EINVAL;
++	}
++
+ 	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
+ 			  AT_STATX_SYNC_AS_STAT);
+ 	if (ret) {
+@@ -4966,7 +4977,8 @@ static int get_file_all_info(struct ksmb
+ 	file_info->Mode = fp->coption;
+ 	file_info->AlignmentRequirement = 0;
+ 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
+-				     PATH_MAX, conn->local_nls, 0);
++				     min(filename_len, PATH_MAX),
++				     conn->local_nls, 0);
+ 	conv_len *= 2;
+ 	file_info->FileNameLength = cpu_to_le32(conv_len);
+ 	rsp->OutputBufferLength =
 
 
 
