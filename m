@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Gl6HiP4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:51 +0200
+	id 0DBPCtn7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80E036CD2D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:36:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9708636D4DD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17C0D3159A89
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5A773053F3D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9D2423A6B;
-	Tue, 31 Mar 2026 16:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402444266A0;
+	Tue, 31 Mar 2026 16:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRUkOR88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwziQXQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212E6423149;
-	Tue, 31 Mar 2026 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012AE4266A3;
+	Tue, 31 Mar 2026 16:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974514; cv=none; b=LJfPWd6Ocss0c0Ut3Rs5moxRrkTeam1T9BkNhsX9Fs4TDV02q9dJYKJ6HYXxEw/U0LLTgyyGGVZGtgheya/+FCN79ByNFDN2vAGbASSqUF7uvJ9qyBQ9XswkzVQbbKx5cNpCoEBjJ3+IJ26SaPrCqlX4gOUbiWFfCWJfgzwA4ME=
+	t=1774975296; cv=none; b=liuIUXHdG2aCc3dXZI4ux5qmArrSwmtb5PEw6NpKUNAEw29KhameLg5P7HEPXDPfzSI+nsEmr8fe6WMN8quMY4mXfrLdSyKxGut2Ilhea8jcTlC+yzdMEkJtpMkQD3hyN9Y/9vg+OH4gGdtZxoyWcgMm9+rCMfBXLokyr1j75PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974514; c=relaxed/simple;
-	bh=9IBRfvT9VqNGn4ZotC91Aeep4C3t+688FptX0hxrzvY=;
+	s=arc-20240116; t=1774975296; c=relaxed/simple;
+	bh=kJ0XO87WHYVlOTW9moxSuXdfGHh0De656HAZf1GFtFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAhke+G85RIdD8WpmpcfRuvX2MaKeT+Lr70RnG8pfhZ9oR5yoq4Z9wPHKuQoG5v5OmlQ4F2lUeBgDtto3SIdZDYxJg9MHdSGTLVTsJHRgjY9tVhbt5hzTt9uB1CCwGgxoCcFcpe7HUIDAdEiuix9CBq03jjJIUIR593fun7on2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRUkOR88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A73EC19423;
-	Tue, 31 Mar 2026 16:28:33 +0000 (UTC)
+	 MIME-Version; b=KSCsrSgADm3fIMdG0vkrLYs8jS/XmP3RPCbj923OnHQ3R7ACFO+cVMWlioTVvaw0eNyfKyibfm2Pdu0EzcVbH4oQ6/nSdUBgEQrwTc6dU9Ed1c+TbiVcq46IOk1z3aURdxK+POdR3NjUt9eoqWd0EamYwoOtbyEH+/SD/HG9A9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwziQXQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0C6C19423;
+	Tue, 31 Mar 2026 16:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974513;
-	bh=9IBRfvT9VqNGn4ZotC91Aeep4C3t+688FptX0hxrzvY=;
+	s=korg; t=1774975295;
+	bh=kJ0XO87WHYVlOTW9moxSuXdfGHh0De656HAZf1GFtFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRUkOR88iQk0TSA1IO1xJUk03SFrp7MMjI2NjiUuIc7bNiLfvmAEDrP+6Gbll0oD/
-	 b1W642LMY81nXwwNWdzeLvMyjXNzS1rxKrT9FjZOTBuuFIGOX5uzYoPmqQPnEcd5mC
-	 MQns/9zPnWd0I+CW0z10dTPqLJ+AugmZXGewrqa0=
+	b=RwziQXQNRu2mHsM3FVTkgMMZ5Im27gT6QOO6StkmzgP7nrsNc7MDPKsTbjhVWw3tE
+	 /pNQFgYbkethjxhjp3goE/sGPiQdlj35Rf+9qpWxITPmvSTjA1sunCAqzQmGbLfOzO
+	 tOFldrA6k6u7BqfwhuD9HAtbar8LqI4qroqCBvZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/175] RDMA/irdma: Remove reset check from irdma_modify_qp_to_err()
+	Zubin Mithra <zsm@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.19 232/342] virt: tdx-guest: Fix handling of host controlled quote buffer length
 Date: Tue, 31 Mar 2026 18:21:05 +0200
-Message-ID: <20260331161732.749784537@linuxfoundation.org>
+Message-ID: <20260331161807.505365800@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +69,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231876-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231571-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C80E036CD2D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9708636D4DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Zubin Mithra <zsm@google.com>
 
-[ Upstream commit c45c6ebd693b944f1ffe429fdfb6cc1674c237be ]
+commit c3fd16c3b98ed726294feab2f94f876290bf7b61 upstream.
 
-During reset, irdma_modify_qp() to error should be called to disconnect
-the QP. Without this fix, if not preceded by irdma_modify_qp() to error, the
-API call irdma_destroy_qp() gets stuck waiting for the QP refcount to go
-to zero, because the cm_node associated with this QP isn't disconnected.
+Validate host controlled value `quote_buf->out_len` that determines how
+many bytes of the quote are copied out to guest userspace. In TDX
+environments with remote attestation, quotes are not considered private,
+and can be forwarded to an attestation server.
 
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Catch scenarios where the host specifies a response length larger than
+the guest's allocation, or otherwise races modifying the response while
+the guest consumes it.
+
+This prevents contents beyond the pages allocated for `quote_buf`
+(up to TSM_REPORT_OUTBLOB_MAX) from being read out to guest userspace,
+and possibly forwarded in attestation requests.
+
+Recall that some deployments want per-container configs-tsm-report
+interfaces, so the leak may cross container protection boundaries, not
+just local root.
+
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zubin Mithra <zsm@google.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/utils.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/virt/coco/tdx-guest/tdx-guest.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index 91ed7edcd788b..0571544e045e8 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -2345,8 +2345,6 @@ void irdma_modify_qp_to_err(struct irdma_sc_qp *sc_qp)
- 	struct irdma_qp *qp = sc_qp->qp_uk.back_qp;
- 	struct ib_qp_attr attr;
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -169,6 +169,8 @@ static void tdx_mr_deinit(const struct a
+ #define GET_QUOTE_SUCCESS		0
+ #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
  
--	if (qp->iwdev->rf->reset)
--		return;
- 	attr.qp_state = IB_QPS_ERR;
++#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
++
+ /* struct tdx_quote_buf: Format of Quote request buffer.
+  * @version: Quote format version, filled by TD.
+  * @status: Status code of Quote request, filled by VMM.
+@@ -267,6 +269,7 @@ static int tdx_report_new_locked(struct
+ 	u8 *buf;
+ 	struct tdx_quote_buf *quote_buf = quote_data;
+ 	struct tsm_report_desc *desc = &report->desc;
++	u32 out_len;
+ 	int ret;
+ 	u64 err;
  
- 	if (rdma_protocol_roce(qp->ibqp.device, 1))
--- 
-2.53.0
-
+@@ -304,12 +307,17 @@ static int tdx_report_new_locked(struct
+ 		return ret;
+ 	}
+ 
+-	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
++	out_len = READ_ONCE(quote_buf->out_len);
++
++	if (out_len > TDX_QUOTE_MAX_LEN)
++		return -EFBIG;
++
++	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+ 	report->outblob = buf;
+-	report->outblob_len = quote_buf->out_len;
++	report->outblob_len = out_len;
+ 
+ 	/*
+ 	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
 
 
 
