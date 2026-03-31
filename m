@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-232442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOkcOWMHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:55 +0200
+	id 0IZXKcH+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BB136F255
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0753B36DD1B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B0F533133F83
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57C18317937C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E3E301471;
-	Tue, 31 Mar 2026 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E748A423A8A;
+	Tue, 31 Mar 2026 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpY6l847"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBxJKCb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156BA2E1C7C;
-	Tue, 31 Mar 2026 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F18E423A71;
+	Tue, 31 Mar 2026 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976758; cv=none; b=XYALDiWGURlvu+2Mfmdl6WTmV/qVvhIQ1PIBzWI18T3YEBCCQ2eaL1Iqn3RqQCGx9OXVoNF8dmnoJIc17RAMUrlnkXJ0pqdsxzQMrciSrhokF7HS7qFnRCgk/TFcz5oHMhU2AJIGafqGmstc2oVZ5S1JpmiwLuFZCInF24qzzDI=
+	t=1774974571; cv=none; b=XKKOYUaBLi37li/IjOSlh4shK1b4FCe0oYWBkSftpXK4D6mR72kpQVwM5hbdwwmtwjf3BKeczpWz+WyffyOd+xeH3hLTf8/Anl17dl5SepU0Y0n16LkwqF1sDgRpi4WId34u3kde+OfB7jC2Co9YfzFbJm9QreDAE0SqyeurHjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976758; c=relaxed/simple;
-	bh=4RfKTY0H7P57i/VQwERo/1QulP4Hwp/WfaowSktGWu0=;
+	s=arc-20240116; t=1774974571; c=relaxed/simple;
+	bh=8ocftxWM2q67ybOtYIxjnt6TXWVfmuNg9GmjPlg/l9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTg9ZyvH0lnR6qi6KPxHkVDZ7aOmR42X1ttO8b5oYgHsl1gGMJGfUjgV72OWmOSw8Xmzk7yCUtzu1YE0m0KyU8p2tg7fAECWNzsoCne5YtMTFwhO+SzDI4JTbAV1fHvARwCDnz5lq4BHZtViN6xmMLNdSOikBHFHiAZMdJxOYt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpY6l847; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22CC19423;
-	Tue, 31 Mar 2026 17:05:57 +0000 (UTC)
+	 MIME-Version; b=OMcNPbwI69pLSaYJSkBgD0873v+XSL/uZEqnwTZstwvnCqPuYpfp4h4o2O6lUEsY26Y1Ad0OmlNKnjAwGudsOyUcoZ1M4guP5CRO2GciRZDb+WSC/AP3MhjbmaJl/oZrvsHZm0G5BQeI/NSs8IUPH1JQ1plRNIMxHsbZ3mLvOU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBxJKCb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1293C19423;
+	Tue, 31 Mar 2026 16:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976758;
-	bh=4RfKTY0H7P57i/VQwERo/1QulP4Hwp/WfaowSktGWu0=;
+	s=korg; t=1774974571;
+	bh=8ocftxWM2q67ybOtYIxjnt6TXWVfmuNg9GmjPlg/l9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpY6l847SXvUhUlp6y90RhTRAIx+wF0WYs/d8Rk3jSm+g01DR0Pw0Cvz3B0/7uDr0
-	 jMin9VOeFvLUWwwignfex5bLSsTC07EeGSdGDBwblywe4DRNS/grK4irr65XX5CWZJ
-	 KYC+adbva8emNQlxmNUyUx53ffIeEe5yj9L3KrnA=
+	b=RBxJKCb9cAOJKREpyKlHZboq73G8z5I3QznWC67gqtCyFk7B+i2p2F+iif1xg7d0K
+	 XQlZyZtzURNGi4JLfed9UXBDfXySJZE0uSjLyfgXM3q8GedclZcYpMqb9msTxx1sGT
+	 S9CBRe4dfldmEpyCu5cT+PxcTSPdyzYqQcXbwYgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Tyllis Xu <LivelyCarpet87@gmail.com>,
-	Dave Marquardt <davemarq@linux.ibm.com>,
-	Tyrel Datwyler <tyreld@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 217/309] scsi: ibmvfc: Fix OOB access in ibmvfc_discover_targets_done()
+	Ye Bin <yebin10@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 136/175] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
 Date: Tue, 31 Mar 2026 18:22:00 +0200
-Message-ID: <20260331161801.437376316@linuxfoundation.org>
+Message-ID: <20260331161734.783798980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +68,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-232442-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231593-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: E3BB136F255
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dilger.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0753B36DD1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyllis Xu <livelycarpet87@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 61d099ac4a7a8fb11ebdb6e2ec8d77f38e77362f upstream.
+commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
 
-A malicious or compromised VIO server can return a num_written value in the
-discover targets MAD response that exceeds max_targets. This value is
-stored directly in vhost->num_targets without validation, and is then used
-as the loop bound in ibmvfc_alloc_targets() to index into disc_buf[], which
-is only allocated for max_targets entries. Indices at or beyond max_targets
-access kernel memory outside the DMA-coherent allocation.  The
-out-of-bounds data is subsequently embedded in Implicit Logout and PLOGI
-MADs that are sent back to the VIO server, leaking kernel memory.
+There's issue as follows:
+...
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
 
-Fix by clamping num_written to max_targets before storing it.
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
 
-Fixes: 072b91f9c651 ("[SCSI] ibmvfc: IBM Power Virtual Fibre Channel Adapter Client Driver")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Link: https://patch.msgid.link/20260314170151.548614-1-LivelyCarpet87@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): error count since last fsck: 1
+EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
+EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
+...
+
+According to the log analysis, blocks are always requested from the
+corrupted block group. This may happen as follows:
+ext4_mb_find_by_goal
+  ext4_mb_load_buddy
+   ext4_mb_load_buddy_gfp
+     ext4_mb_init_cache
+      ext4_read_block_bitmap_nowait
+      ext4_wait_block_bitmap
+       ext4_validate_block_bitmap
+        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
+         return -EFSCORRUPTED; // There's no logs.
+ if (err)
+  return err;  // Will return error
+ext4_lock_group(ac->ac_sb, group);
+  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
+   goto out;
+
+After commit 9008a58e5dce ("ext4: make the bitmap read routines return
+real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
+as corrupt on block bitmap error") is no real solution for allocating
+blocks from corrupted block groups. This is because if
+'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
+'ext4_mb_load_buddy()' may return an error. This means that the block
+allocation will fail.
+Therefore, check block group if corrupted when ext4_mb_load_buddy()
+returns error.
+
+Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
+Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -4965,7 +4965,8 @@ static void ibmvfc_discover_targets_done
- 	switch (mad_status) {
- 	case IBMVFC_MAD_SUCCESS:
- 		ibmvfc_dbg(vhost, "Discover Targets succeeded\n");
--		vhost->num_targets = be32_to_cpu(rsp->num_written);
-+		vhost->num_targets = min_t(u32, be32_to_cpu(rsp->num_written),
-+					   max_targets);
- 		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_ALLOC_TGTS);
- 		break;
- 	case IBMVFC_MAD_FAILED:
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2369,8 +2369,12 @@ int ext4_mb_find_by_goal(struct ext4_all
+ 		return 0;
+ 
+ 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
+-	if (err)
++	if (err) {
++		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
++		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
++			return 0;
+ 		return err;
++	}
+ 
+ 	ext4_lock_group(ac->ac_sb, group);
+ 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
 
 
 
