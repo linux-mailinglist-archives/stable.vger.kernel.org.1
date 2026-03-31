@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-232007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJunJH39y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:41 +0200
+	id qCBrK07/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1326236D9D9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B89C36DEAD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A13DE3113D6B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6029330CAE28
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2743EF0A2;
-	Tue, 31 Mar 2026 16:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738A2425CD7;
+	Tue, 31 Mar 2026 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyuCBQvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7j9PAEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914E933120E;
-	Tue, 31 Mar 2026 16:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361033A1E8C;
+	Tue, 31 Mar 2026 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975634; cv=none; b=e0Jj+CC20i5ZFwzBPcbcWwxCb9q7psZKvZYy0TzmjZK8qNSNrdcxpyFf8ssMTePku0BR3FOoYAF/XnEQn19MZIZQFEZS4oeRBPhE4uvEkBJ9cRYpNfGxFqqXqNWMkLZER/+ap6NZq9hs/+GqIscKTe75iHHKtpQI1kGgjwhIAZ4=
+	t=1774976388; cv=none; b=MRrryQX+N6j9+5rNM4V4KkMy4dHDnzkGi09QadD7WCjuLPn0becypcRAO9PPEv2W8/Epg906N3uN898l0zKKWgdMUCh22OMjNKBxqtRyWmgY09VLOc2lUK3PMbxOwe+TzhiBF1nxzdsnL/F6fdMdjBsc0VSzSape7oIE8EQKYKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975634; c=relaxed/simple;
-	bh=O7cKrx47uDgMGQFCMjhtEDWtGFJC9ToSlouNxu95yd4=;
+	s=arc-20240116; t=1774976388; c=relaxed/simple;
+	bh=6P31AoUHd9wGKr3GtdQ53IeYIMl4mOGrgM0LR659aUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8WwqN+oT/lQtVjdF8/WpHwDSRjGDV+r3w6axvnJwWmYcR/MDUfPz6xF+GdKNXncR07Bji81/1+elAYlAxqwX8jGmKirz+Kzbryks8LiYc5zm4Y5Wu2m1PRUq/KgXjt0ggQ7ypFUTZiqaJW/M9KihX5fdY2iJI/aHkltH5DVBKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyuCBQvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275CAC19423;
-	Tue, 31 Mar 2026 16:47:13 +0000 (UTC)
+	 MIME-Version; b=MRnyPVxu7hD8ajUwt4T9bxVEluf9ZXO4CaArpveENGAopTNPWxHLjs6NNvCbmRKVzQJLXkuFmIXxIW1sbTIAO+/sDt55Ff58/eZVdEqYLglyT5Mz4jNa75NvUeIqSwuGa2bqckmyO90TnaQozI6IbmzTu0+v/QaZF4NIqZ/kIzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7j9PAEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01B4C19423;
+	Tue, 31 Mar 2026 16:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975634;
-	bh=O7cKrx47uDgMGQFCMjhtEDWtGFJC9ToSlouNxu95yd4=;
+	s=korg; t=1774976388;
+	bh=6P31AoUHd9wGKr3GtdQ53IeYIMl4mOGrgM0LR659aUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyuCBQvqzk4h7oiL/hVrAQw6XEKAVqku+tGoYFEwX8UciM4yvEAWDqFT8XssFvtl5
-	 QbTXe4RN7OTMrk70iix4olJRs5e5tQ8XpJmvP5OoXq74f8ETmJTDI+plZfjwd6K7Xz
-	 1kREGeR8ru228Q/p5VBtDqKCdt0MheTWtlQu6FvU=
+	b=E7j9PAEfTQpnrQLd4HOJJgr8jWeRVgDMev8xPqVjp8yU8iiDugY3b64HNxJUd+9kG
+	 +K8dahcargQAMPDXBvY6D3m2kEwfcGtwSWpRWlVhYZl5MMgdPjVLfsClNl6wrtO9oM
+	 5F3DEJKyDg6Remo3dGGPjQ50zo8FgNqJYkuWDxew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/244] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_set_reg()
+Subject: [PATCH 6.18 074/309] pinctrl: renesas: rza1: Normalize return value of gpio_get()
 Date: Tue, 31 Mar 2026 18:19:37 +0200
-Message-ID: <20260331161742.705195148@linuxfoundation.org>
+Message-ID: <20260331161756.213251264@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +67,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232007-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232298-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,oss.qualcomm.com,kernel.org,glider.be];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1326236D9D9
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,glider.be:email,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2B89C36DEAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 31ddc62c1cd92e51b9db61d7954b85ae2ec224da ]
+[ Upstream commit fb22bb9701d48c4b0e81fe204c2f96a37a520568 ]
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation fsl_easrc_set_reg() only returns 0 or a negative
-error code, causing ALSA to not generate any change events. Add a suitable
-check by using regmap_update_bits_check() with the underlying regmap, this
-is more clearly and simply correct than trying to verify that one of the
-generic ops is exactly equivalent to this one.
+The GPIO .get() callback is expected to return 0 or 1 (or a negative
+error code).  Ensure that the value returned by rza1_gpio_get() is
+normalized to the [0, 1] range.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-2-39d4c766918b@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 86ef402d805d606a ("gpiolib: sanitize the return value of gpio_chip::get()")
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/aZYnyl-Nf4S1U2yj@google.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rza1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 82359edd6a8b4..7aaea441f7a57 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -93,14 +93,17 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
-+	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
- 	unsigned int regval = ucontrol->value.integer.value[0];
-+	bool changed;
- 	int ret;
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza1.c b/drivers/pinctrl/renesas/pinctrl-rza1.c
+index f24e5915cbe4b..2677ee7035fce 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza1.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza1.c
+@@ -590,7 +590,7 @@ static inline unsigned int rza1_get_bit(struct rza1_port *port,
+ {
+ 	void __iomem *mem = RZA1_ADDR(port->base, reg, port->id);
  
--	ret = snd_soc_component_write(component, mc->regbase, regval);
--	if (ret < 0)
-+	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
-+				       GENMASK(31, 0), regval, &changed);
-+	if (ret != 0)
- 		return ret;
- 
--	return 0;
-+	return changed;
+-	return ioread16(mem) & BIT(bit);
++	return !!(ioread16(mem) & BIT(bit));
  }
  
- #define SOC_SINGLE_REG_RW(xname, xreg) \
+ /**
 -- 
 2.51.0
 
