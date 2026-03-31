@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK3ULpIDzGmPNQYAu9opvQ
-	(envelope-from <stable+bounces-232072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:38 +0200
+	id qGjkAAz5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EAE436EACC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A065736CF20
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3E3032181CD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCC9A30E6C79
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81276423A8E;
-	Tue, 31 Mar 2026 16:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5483EE1DD;
+	Tue, 31 Mar 2026 16:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOUS8wKg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es6/tJZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444FF423A61;
-	Tue, 31 Mar 2026 16:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226C330C345;
+	Tue, 31 Mar 2026 16:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975803; cv=none; b=pcL/7a+1Av0+RvsxwnB98I2ZaI6m4WOlBHqtsIyYLLc0b9sGhxhVT/MVhRomZIhSg7z83+xpVUL5pWnP8oWHFuLp69yCVbmF4wIYMPQP8gB5bsoWiOK3ZKQ4b+ySiVlOXarb4CA3F+H70Uam4BeNtPUSbG2d6YnwkfPo+PWLAC8=
+	t=1774974369; cv=none; b=A1FIiLYPEFQ2M0JbdL9TjIMTkldLCDqjmo/x0EkPkQtdabOiwXps0eEp2RaFk/uzMVKJDr0MWbf2BIVFPAUtpbwPluHoMymgXNeYfhbMJqPN2iiuVQwdQGCFVYGKTftrNEyAui7c5+leTgL8LwTItmIKBgNeDs6YUpS335K554g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975803; c=relaxed/simple;
-	bh=lj+2HyzIXNze/KdAGdsPR4pNRgM13ln6ZP73zbwnPvU=;
+	s=arc-20240116; t=1774974369; c=relaxed/simple;
+	bh=1dcxLP0PSYy458UrjfjwjOKI6QKspn+xcVlyzPISKcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mB5ucwKhF6IIVSTM3YZFs5mE2ODA+5Pc6bkFU/C2i5HRkYueLKxWnkn2g11999emnY7KsZDzO7dx/D9pTc3BiQD4Mu/B4pHPZW0g6cxWzRBGeiwEwW8u6OYSacU+4Jviad4snIjG692wdsfJ32n9/uy1g4kU2+g6J+4j42/nuao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOUS8wKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC0EC19423;
-	Tue, 31 Mar 2026 16:50:02 +0000 (UTC)
+	 MIME-Version; b=uCJoczF9MthYe3tJ7GTKi3880T8/9uIcciiZpGWa0dNqyhOON+FnjVBwmWdc86rx1Y7T6X9DYKXCxY2lVL4mV4k4/8bp3vnKjXvXkT56QK/ZySsJWUDsRaPNNjFdQZK4d/zolz7dEOoNqeJQyv7JaGBC1V2Jknj7fRKu3ZCFvOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es6/tJZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFE6C19423;
+	Tue, 31 Mar 2026 16:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975803;
-	bh=lj+2HyzIXNze/KdAGdsPR4pNRgM13ln6ZP73zbwnPvU=;
+	s=korg; t=1774974369;
+	bh=1dcxLP0PSYy458UrjfjwjOKI6QKspn+xcVlyzPISKcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOUS8wKg+bzPoIBBtj+9Cf76DrS0tK/sMb/DxVUdoblPE8TPpQMRyv2xo6Zepddha
-	 o7lkHhjkx7U4wXGtk6QpzC3dIe9tklpjVY1gU0E1bF9A2gLe+2dBhHL7D8M+ffK9Fe
-	 GV5qmOGs2bj2fmlrIhPcSNsKPP8/d2KkKbYutG7Q=
+	b=es6/tJZmPW0wEKZtFDzAR4yfdzCfHPpqfplpJbBPuD9KsQO9dypgUi6180FFWlj8W
+	 1zV4jF6pQExRm0TEjvIIn+mTKfQb1MhsbEujY5GdOZMlLyhTcSElFGBA3FFTcVZP5E
+	 rQQjepJjrzRDbNwUwGAB1M+fhZwmh8rZV98m1rEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/244] net: lan743x: fix duplex configuration in mac_link_up
+Subject: [PATCH 6.6 058/175] tcp: optimize inet_use_bhash2_on_bind()
 Date: Tue, 31 Mar 2026 18:20:42 +0200
-Message-ID: <20260331161745.074072182@linuxfoundation.org>
+Message-ID: <20260331161731.917468152@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +66,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232072-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,amazon.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231515-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,microchip.com:email,armlinux.org.uk:email]
-X-Rspamd-Queue-Id: 3EAE436EACC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A065736CF20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 71399707876b93240f236f48b8062f3423a5fe97 ]
+[ Upstream commit ca79d80b0b9f42362a893f06413a9fe91811158a ]
 
-The driver does not explicitly configure the MAC duplex mode when
-bringing the link up. As a result, the MAC may retain a stale duplex
-setting from a previous link state, leading to duplex mismatches with
-the link partner and degraded network performance.
+There is no reason to call ipv6_addr_type().
 
-Update lan743x_phylink_mac_link_up() to set or clear the MAC_CR_DPX_
-bit according to the negotiated duplex mode.
+Instead, use highly optimized ipv6_addr_any() and ipv6_addr_v4mapped().
 
-This ensures the MAC configuration is consistent with the phylink
-resolved state.
-
-Fixes: a5f199a8d8a03 ("net: lan743x: Migrate phylib to phylink")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20260323065345.144915-1-thangaraj.s@microchip.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250302124237.3913746-3-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e537dd15d0d4 ("udp: Fix wildcard bind conflict check when using hash2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/inet_connection_sock.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 8c4c28a1d6575..b897d071fc452 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3055,6 +3055,11 @@ static void lan743x_phylink_mac_link_up(struct phylink_config *config,
- 	else if (speed == SPEED_100)
- 		mac_cr |= MAC_CR_CFG_L_;
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index e7751bfab92bb..2274ac267c41a 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -155,12 +155,10 @@ static bool inet_use_bhash2_on_bind(const struct sock *sk)
+ {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (sk->sk_family == AF_INET6) {
+-		int addr_type = ipv6_addr_type(&sk->sk_v6_rcv_saddr);
+-
+-		if (addr_type == IPV6_ADDR_ANY)
++		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
+ 			return false;
  
-+	if (duplex == DUPLEX_FULL)
-+		mac_cr |= MAC_CR_DPX_;
-+	else
-+		mac_cr &= ~MAC_CR_DPX_;
-+
- 	lan743x_csr_write(adapter, MAC_CR, mac_cr);
- 
- 	lan743x_ptp_update_latency(adapter, speed);
+-		if (addr_type != IPV6_ADDR_MAPPED)
++		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
+ 			return true;
+ 	}
+ #endif
 -- 
 2.51.0
 
