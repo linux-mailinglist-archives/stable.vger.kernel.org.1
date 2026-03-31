@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-231658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qADEJFv/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:39 +0200
+	id 2Nr4HDf5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBEF36DEBB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B90B036CF8D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC3A630F953A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:32:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 786AC3251489
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A452D3E3C5C;
-	Tue, 31 Mar 2026 16:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758E6425CC5;
+	Tue, 31 Mar 2026 16:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx0jJeb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CE9UWkAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C412EE262;
-	Tue, 31 Mar 2026 16:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37828401A38;
+	Tue, 31 Mar 2026 16:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974734; cv=none; b=tKLDboBOZ7fLlQXnN9Dl2hWWr9ADoP+G3whOTPcQ7hRlKbeWTHRzFc3HM0ZYhw/w/rAWvjrW1IzQLMKzC1/mvLiViUhJDk/kTNH2SSEpD9kMa6DMGFx71Bmb/Pb34STpJdFBemICtLCKhLnQerg4q22u5UazynC+787p1QdbV20=
+	t=1774974698; cv=none; b=fg00CwAup3rFlHGUNC1oHY1eVtj/Te4BUW0vX/1gQo1jEBpTXiJVaHNgZwrUPDXVXZwxgkCUXZHEChXpjkUVIxukncfT9XBt1PC9Cyu6E64r0RHntxnjxFtjqnBytClTSJF/lGBV7t143ynQbMi1JLfwbIDy3XRtPYpxEB3Gf9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974734; c=relaxed/simple;
-	bh=akE71Jv4xiYg/mCBSuxw12mhohUmCdr84UcczpAzMbU=;
+	s=arc-20240116; t=1774974698; c=relaxed/simple;
+	bh=jhhLWX0IUsTaQZlwUhODMRsYajDBG9eZ8M1J3NmWnwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoZ8zIdzz6ICUaGChi8xaHBOrQVHtsn+/7jMEfdwdaabL3hpwzhGBXhs0JJPW2ajKoMRXqqzN9dr8lN/9hy+uFt/1sSJcLYoGSwI1PdlPaBw2E8GJNRfq1+qZcLiyZmwSWh/b6tSbF+JZYBIpXDnEAFOj6egDPlnlGJTyRERVh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx0jJeb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F82C19423;
-	Tue, 31 Mar 2026 16:32:13 +0000 (UTC)
+	 MIME-Version; b=rri3d0FlSd9mGIIqEyTgFrJ4loksv0V3MNdi9oyYcIIYKX40L7BBu7RcvyR3wEucG22qMccAO2mZudWWCzHq2Gopd9NZqe9c4w71NarWtHme5wkqdhdUsfDv3KckfhlnLn9WVTltBHXcwobvLbSN/IH2DrwTciBPA3/ftu2mcXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CE9UWkAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A8C19423;
+	Tue, 31 Mar 2026 16:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974734;
-	bh=akE71Jv4xiYg/mCBSuxw12mhohUmCdr84UcczpAzMbU=;
+	s=korg; t=1774974698;
+	bh=jhhLWX0IUsTaQZlwUhODMRsYajDBG9eZ8M1J3NmWnwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bx0jJeb/oKL0ND74SaDLfsCOiiuh1m0+3wAn9ddIo9xvydiXO9/t14WGoKF8Ls2KZ
-	 N5PgYThGJpekbqD6+pj21VBmcgAQ9o8N8Z3WdyktdiTBZJwB/pY76rQdZ1rQxeVEgb
-	 qJgNaELdT8teMRgW30T/0Tg0ktAT3Kq1zN4pSxSw=
+	b=CE9UWkAKMRFCuZMOlimvyjB9viK0rIBHElShxNFf+HXTtCVsEq4UdSueLVUXb0MTo
+	 3S/IEQ60T21zD20kDt+C16gFajm/iX8AF2sMFWmVF9GhC4UnMGBVL574FTfeyiPzl2
+	 tJQ+2cMMg22HHKbrg2WaKaM8bFzMXOlVzLbZztug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Lawrence <joe.lawrence@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Song Liu <song@kernel.org>,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 009/342] livepatch/klp-build: Fix inconsistent kernel version
-Date: Tue, 31 Mar 2026 18:17:22 +0200
-Message-ID: <20260331161759.254942270@linuxfoundation.org>
+Subject: [PATCH 6.19 010/342] cxl/hdm: Avoid incorrect DVSEC fallback when HDM decoders are enabled
+Date: Tue, 31 Mar 2026 18:17:23 +0200
+Message-ID: <20260331161759.290621423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231658-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231644-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,12 +87,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 0CBEF36DEBB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B90B036CF8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,53 +100,99 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-[ Upstream commit 6f93f7b06810d04acc6b106a7d5ecd6000f80545 ]
+[ Upstream commit 75cea0776de502f2a1be5ca02d37c586dc81887e ]
 
-If .config hasn't been synced with auto.conf, any recent changes to
-CONFIG_LOCALVERSION* may not get reflected in the kernel version name.
+Check the global CXL_HDM_DECODER_ENABLE bit instead of looping over
+per-decoder COMMITTED bits to determine whether to fall back to DVSEC
+range emulation. When the HDM decoder capability is globally enabled,
+ignore DVSEC range registers regardless of individual decoder commit
+state.
 
-Use "make syncconfig" to force them to sync, and "make -s kernelrelease"
-to get the version instead of having to construct it manually.
+should_emulate_decoders() currently loops over per-decoder COMMITTED
+bits, which leads to an incorrect DVSEC fallback when those bits are
+zero. One way to trigger this is to destroy a region and bounce the
+memdev:
 
-Fixes: 24ebfcd65a87 ("livepatch/klp-build: Introduce klp-build script for generating livepatch modules")
-Closes: https://lore.kernel.org/20260217160645.3434685-10-joe.lawrence@redhat.com
-Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Joe Lawrence <joe.lawrence@redhat.com>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://patch.msgid.link/20260310203751.1479229-10-joe.lawrence@redhat.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+  cxl disable-region region0
+  cxl destroy-region region0
+  cxl disable-memdev mem0
+  cxl enable-memdev mem0
+
+Region teardown zeroes the HDM decoder registers including the committed
+bits. The subsequent memdev re-probe finds uncommitted decoders and falls
+back to DVSEC emulation, even though HDM remains globally enabled.
+
+Observed failures:
+
+  should_emulate_decoders: cxl_port endpoint6: decoder6.0: committed: 0 base: 0x0_00000000 size: 0x0_00000000
+  devm_cxl_setup_hdm: cxl_port endpoint6: Fallback map 1 range register
+  ..
+  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region0
+  __construct_region: cxl_pci 0000:e1:00.0: mem1:decoder6.0:
+  __construct_region region0 res: [mem 0x850000000-0x284fffffff flags 0x200] iw: 1 ig: 4096
+  cxl region0: pci0000:e0:port1 cxl_port_setup_targets expected iw: 1 ig: 4096 ..
+  cxl region0: pci0000:e0:port1 cxl_port_setup_targets got iw: 1 ig: 256 state: disabled ..
+  cxl_port endpoint6: failed to attach decoder6.0 to region0: -6
+  ..
+  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region4
+  alloc_hpa: cxl region4: HPA allocation error (-34) ..
+
+Fixes: 52cc48ad2a76 ("cxl/hdm: Limit emulation to the number of range registers")
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260316201950.224567-1-Smita.KoralahalliChannabasappa@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/livepatch/klp-build | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/cxl/core/hdm.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/livepatch/klp-build b/scripts/livepatch/klp-build
-index 809e198a561d5..7b82c7503c2bf 100755
---- a/scripts/livepatch/klp-build
-+++ b/scripts/livepatch/klp-build
-@@ -285,15 +285,14 @@ set_module_name() {
- # application from appending it with '+' due to a dirty git working tree.
- set_kernelversion() {
- 	local file="$SRC/scripts/setlocalversion"
--	local localversion
-+	local kernelrelease
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index bc4b0c8607258..ce27074bb5c7d 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -94,7 +94,6 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
+ 	struct cxl_hdm *cxlhdm;
+ 	void __iomem *hdm;
+ 	u32 ctrl;
+-	int i;
  
- 	stash_file "$file"
+ 	if (!info)
+ 		return false;
+@@ -113,22 +112,16 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
+ 		return false;
  
--	localversion="$(cd "$SRC" && make --no-print-directory kernelversion)"
--	localversion="$(cd "$SRC" && KERNELVERSION="$localversion" ./scripts/setlocalversion)"
--	[[ -z "$localversion" ]] && die "setlocalversion failed"
-+	kernelrelease="$(cd "$SRC" && make syncconfig &>/dev/null && make -s kernelrelease)"
-+	[[ -z "$kernelrelease" ]] && die "failed to get kernel version"
+ 	/*
+-	 * If any decoders are committed already, there should not be any
+-	 * emulated DVSEC decoders.
++	 * If HDM decoders are globally enabled, do not fall back to DVSEC
++	 * range emulation. Zeroed decoder registers after region teardown
++	 * do not imply absence of HDM capability.
++	 *
++	 * Falling back to DVSEC here would treat the decoder as AUTO and
++	 * may incorrectly latch default interleave settings.
+ 	 */
+-	for (i = 0; i < cxlhdm->decoder_count; i++) {
+-		ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(i));
+-		dev_dbg(&info->port->dev,
+-			"decoder%d.%d: committed: %ld base: %#x_%.8x size: %#x_%.8x\n",
+-			info->port->id, i,
+-			FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl),
+-			readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i)));
+-		if (FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl))
+-			return false;
+-	}
++	ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
++	if (ctrl & CXL_HDM_DECODER_ENABLE)
++		return false;
  
--	sed -i "2i echo $localversion; exit 0" scripts/setlocalversion
-+	sed -i "2i echo $kernelrelease; exit 0" scripts/setlocalversion
+ 	return true;
  }
- 
- get_patch_files() {
 -- 
 2.51.0
 
