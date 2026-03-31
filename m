@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEIrJb0FzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:34:53 +0200
+	id SHZyGpD5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9497436EF1A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:34:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3A436D010
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B400C30B59D9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D864E30C2558
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905E43EF0A2;
-	Tue, 31 Mar 2026 16:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7338D30C368;
+	Tue, 31 Mar 2026 16:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiz/0qYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds4nRilw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5355129E11A;
-	Tue, 31 Mar 2026 16:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358363FA5E6;
+	Tue, 31 Mar 2026 16:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976264; cv=none; b=u1Vfc58ZK7RrtaNnb2eXupYUadc1izrGq9qE6hcBJTs2yhk39YFpzZ3+26AgSGO9vjniSmwwegxzr9npDGpgiIeBH3mYh0dswxWiKldkcawATFLk37Ngv1GQJA1JMIE4rh2/MQ7mx44JHf7IlCsaE0uCuXst+O/t2lNxGIKs2j8=
+	t=1774974874; cv=none; b=f2HgtNl+SGnPTiztbyAdXY9iqJqADIr2sjKzqVSdMzHj3wb5rgwcAvBYoOQFHA4lmH3DT3Rzo+q1011BzyXyXQ4TaWJO6/LTfIUHUbOo0nd9mm8AfzzMgmromQwPpuLiE8R5cc7Gosvkp+jZDG4rp+8LV3dh9RV0OA/Cot8fjS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976264; c=relaxed/simple;
-	bh=Z5oCOSbcHDFKt+DkBHWguC+53HJyqURS6RBxJEMqL78=;
+	s=arc-20240116; t=1774974874; c=relaxed/simple;
+	bh=cALsxi5ptQsgUng+A/zlzUF6ODWuMp+9a51kAO4lkCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVNmL8d5SajHUO1G1OeSHuE0ET45j5xCwyCDa/lOLTt7hFTo399qAGZFB6q0xETmPcMYB3aqhi3ANY5rICPfFm2qbiHSE7kxl4rBrwxZu9kbFN/q4ynfaWIk+euEbXtjJui9Rh0d8CIVEVMdDbSS/T0gGqGqsmNmB8pz7AlLfS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiz/0qYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1416C19423;
-	Tue, 31 Mar 2026 16:57:43 +0000 (UTC)
+	 MIME-Version; b=His2Ucdoaq5lebxtGrGVUsTTak8p00PPQ0qcabEwiU7D+OKlMI5f5Wnxy6Bhe8waoHB3THQtoq3cmvi+1vOWM6H2MdZ26nkidYtYpRDPuM0UnaVZ0Kgl1RITfsZ7/mf4lKet+L+8I2MoN1Kc3pADZ5ebsf885hDebBx/fsmRSKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds4nRilw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02EDC19423;
+	Tue, 31 Mar 2026 16:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976264;
-	bh=Z5oCOSbcHDFKt+DkBHWguC+53HJyqURS6RBxJEMqL78=;
+	s=korg; t=1774974874;
+	bh=cALsxi5ptQsgUng+A/zlzUF6ODWuMp+9a51kAO4lkCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiz/0qYo301Ky6ldeoq24Kp2cd38n+a4CCj75eXoOtZ4A+Xt8ytrxptgByPGWLL+O
-	 bLp/LI0xLGvZXV2NZ+BtD3umL13izHLWRBi2gybXJ9yEAmTaBPCZpkbpELzAuQSv/u
-	 D3w1ALoHiVHJOGnPeynkDsRgHroQPapI3BDv2zJs=
+	b=ds4nRilwmcvMPUMgWjjVntrxSYIRlQM0pWJZaInrjeH7ESW4i0+QD9O8BM22PBI8s
+	 mxJOl3AZ8F42KjYMWs087AzFY9mQiZfNqFcIxeqmSC2ASwWj/UdRf23YuN0T17wp8P
+	 TSK4tGHhIJ00n2sEpxNJS8hJ3RejatiLCGyH1pdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Peter Yin <peteryin.openbmc@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 007/309] cxl/hdm: Avoid incorrect DVSEC fallback when HDM decoders are enabled
+Subject: [PATCH 6.19 077/342] i3c: master: dw-i3c: Fix missing of_node for virtual I2C adapter
 Date: Tue, 31 Mar 2026 18:18:30 +0200
-Message-ID: <20260331161753.747857861@linuxfoundation.org>
+Message-ID: <20260331161801.725725935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232250-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231712-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,bootlin.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 9497436EF1A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email]
+X-Rspamd-Queue-Id: CB3A436D010
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+From: Peter Yin <peteryin.openbmc@gmail.com>
 
-[ Upstream commit 75cea0776de502f2a1be5ca02d37c586dc81887e ]
+[ Upstream commit f26ecaa0f0abfe5db173416214098a00d3b7db79 ]
 
-Check the global CXL_HDM_DECODER_ENABLE bit instead of looping over
-per-decoder COMMITTED bits to determine whether to fall back to DVSEC
-range emulation. When the HDM decoder capability is globally enabled,
-ignore DVSEC range registers regardless of individual decoder commit
-state.
+The DesignWare I3C master driver creates a virtual I2C adapter to
+provide backward compatibility with I2C devices. However, the current
+implementation does not associate this virtual adapter with any
+Device Tree node.
 
-should_emulate_decoders() currently loops over per-decoder COMMITTED
-bits, which leads to an incorrect DVSEC fallback when those bits are
-zero. One way to trigger this is to destroy a region and bounce the
-memdev:
+Propagate the of_node from the I3C master platform device to the
+virtual I2C adapter's device structure. This ensures that standard
+I2C aliases are correctly resolved and bus numbering remains consistent.
 
-  cxl disable-region region0
-  cxl destroy-region region0
-  cxl disable-memdev mem0
-  cxl enable-memdev mem0
-
-Region teardown zeroes the HDM decoder registers including the committed
-bits. The subsequent memdev re-probe finds uncommitted decoders and falls
-back to DVSEC emulation, even though HDM remains globally enabled.
-
-Observed failures:
-
-  should_emulate_decoders: cxl_port endpoint6: decoder6.0: committed: 0 base: 0x0_00000000 size: 0x0_00000000
-  devm_cxl_setup_hdm: cxl_port endpoint6: Fallback map 1 range register
-  ..
-  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region0
-  __construct_region: cxl_pci 0000:e1:00.0: mem1:decoder6.0:
-  __construct_region region0 res: [mem 0x850000000-0x284fffffff flags 0x200] iw: 1 ig: 4096
-  cxl region0: pci0000:e0:port1 cxl_port_setup_targets expected iw: 1 ig: 4096 ..
-  cxl region0: pci0000:e0:port1 cxl_port_setup_targets got iw: 1 ig: 256 state: disabled ..
-  cxl_port endpoint6: failed to attach decoder6.0 to region0: -6
-  ..
-  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region4
-  alloc_hpa: cxl region4: HPA allocation error (-34) ..
-
-Fixes: 52cc48ad2a76 ("cxl/hdm: Limit emulation to the number of range registers")
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260316201950.224567-1-Smita.KoralahalliChannabasappa@amd.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Peter Yin <peteryin.openbmc@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260302075645.1492766-1-peteryin.openbmc@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/hdm.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+ drivers/i3c/master/dw-i3c-master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 13dafac7c6d56..4d5113b5e6316 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -94,7 +94,6 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
- 	struct cxl_hdm *cxlhdm;
- 	void __iomem *hdm;
- 	u32 ctrl;
--	int i;
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index f9b981abd10c5..1368c834ca5e8 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1614,6 +1614,8 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 		pm_runtime_get_noresume(&pdev->dev);
  
- 	if (!info)
- 		return false;
-@@ -113,22 +112,16 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
- 		return false;
- 
- 	/*
--	 * If any decoders are committed already, there should not be any
--	 * emulated DVSEC decoders.
-+	 * If HDM decoders are globally enabled, do not fall back to DVSEC
-+	 * range emulation. Zeroed decoder registers after region teardown
-+	 * do not imply absence of HDM capability.
-+	 *
-+	 * Falling back to DVSEC here would treat the decoder as AUTO and
-+	 * may incorrectly latch default interleave settings.
- 	 */
--	for (i = 0; i < cxlhdm->decoder_count; i++) {
--		ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(i));
--		dev_dbg(&info->port->dev,
--			"decoder%d.%d: committed: %ld base: %#x_%.8x size: %#x_%.8x\n",
--			info->port->id, i,
--			FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl),
--			readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i)),
--			readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(i)),
--			readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i)),
--			readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i)));
--		if (FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl))
--			return false;
--	}
-+	ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
-+	if (ctrl & CXL_HDM_DECODER_ENABLE)
-+		return false;
- 
- 	return true;
- }
+ 	INIT_WORK(&master->hj_work, dw_i3c_hj_work);
++
++	device_set_of_node_from_dev(&master->base.i2c.dev, &pdev->dev);
+ 	ret = i3c_master_register(&master->base, &pdev->dev,
+ 				  &dw_mipi_i3c_ops, false);
+ 	if (ret)
 -- 
 2.51.0
 
