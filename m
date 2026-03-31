@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-231976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GiJLYf8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:35 +0200
+	id eN4lAQoBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4836D6BB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CF136E492
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7119A30ED5E8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F2919304ACDF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D259B413258;
-	Tue, 31 Mar 2026 16:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDADF30B51A;
+	Tue, 31 Mar 2026 17:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQk4d+hi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp9nZc/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9508133E367;
-	Tue, 31 Mar 2026 16:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DF622578D;
+	Tue, 31 Mar 2026 17:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975552; cv=none; b=Ytksl+v4ZAYmmEvVsc6lhcJUZJTckELB+34tvOmvj48SDm/nhfeSxybr/c1Ajc+KuPBThqU0p5wlZ9m29Y+IcZ9fRW3E7djVB6xj7jzRw1AP/uH6txj81ZCesTk9OPTaFX43hGsQ37NEIJDlTkOPPmGVcYC0qx4Fcq66TGahhrY=
+	t=1774976882; cv=none; b=CGkmw9FAj/ThqpfGKeAb+iNoALogx8niZmm7n5Vj67kdwHVSYxL7hw/7M8PGonzkIU4LTUJOmuCE3dgIxFTSFHSO+92hn5Hld9g8vG56AafVQmjD3oaH6KTH//rp/DXpwiG/wfp7jle3vjw14opfQtznQwhlEEVCK8+9AeHMT1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975552; c=relaxed/simple;
-	bh=BLMOkHO4CUSH+t6GKXWjp8gejwHCyxIrxCLJn6qzzI8=;
+	s=arc-20240116; t=1774976882; c=relaxed/simple;
+	bh=b/iXBvdXiHpcbSmIQBMruaqR5gOjDoDckO4PAxyYnc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9X5ACGUS9b/1huRMq2uOV/FcfQJtJU9k6G3YuHveOPDts0j4HB3JSCAbDV/cpINMBf/8pt6rN+uEai+DTXSzCMPw0IJ1e8s7QvjE3TVABTBgvba/lsFx9JTHmNA0FJuiyma3PvKrd+0RYXL/vnQIBIU9OQBlQJlqGDNEWIL7XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQk4d+hi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27982C19423;
-	Tue, 31 Mar 2026 16:45:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F+A0nDM0u/2ulpOv7bWiXLtAbLUm9hn8uK7wE7N1yr2OuonCvMj9NmofTCie5Sddh9cWCuZqI47SOprmKxo++AxsBSBsk/glYnzy+rlxW+gqOSHvU8FwuikaWT/wNIHRUtRC/TDP774THngPtJurAsq+bE54l9quXSmJYi73yyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp9nZc/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2745DC19423;
+	Tue, 31 Mar 2026 17:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975552;
-	bh=BLMOkHO4CUSH+t6GKXWjp8gejwHCyxIrxCLJn6qzzI8=;
+	s=korg; t=1774976882;
+	bh=b/iXBvdXiHpcbSmIQBMruaqR5gOjDoDckO4PAxyYnc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQk4d+hi/rJZJfs31IXIIbx+a7cqqdkBpMuSzxl9Nwz9kktHBT5RTM566eQj+UJGj
-	 Q3CnPA/y/Ecg4BR6vP1ZHgjdnNgRH4NW2kyI4edBErzzx6+HX2E4o+pjHGCQ+jNIJ2
-	 9804NaKZAztKflW4rKqBHzHgdK+bSTDrnZ9COFbM=
+	b=Mp9nZc/1P8frL/rBZUt/V6m4iojuXN+M5SKBOSjP7LezEuMeJDyMLbmzxIwPtDWP4
+	 rcDYqsiEUqOoeRrvHN9HJL8XUt13rkefwy9ToPgtgaOt/kTPqhCklzWYmlryAxqZT2
+	 KxbYIHmihuf4RiviZWbXc7I7mSftXub3Xk7dZEI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 306/342] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
-Date: Tue, 31 Mar 2026 18:22:19 +0200
-Message-ID: <20260331161810.185705262@linuxfoundation.org>
+	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.18 237/309] drm/i915: Unlink NV12 planes earlier
+Date: Tue, 31 Mar 2026 18:22:20 +0200
+Message-ID: <20260331161802.300820170@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,121 +64,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231976-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232490-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url,huawei.com:email,suse.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,iloc.bh:url]
-X-Rspamd-Queue-Id: 2EF4836D6BB
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B8CF136E492
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun@linux.alibaba.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
+commit bfa71b7a9dc6b5b8af157686e03308291141d00c upstream.
 
-During code review, Joseph found that ext4_fc_replay_inode() calls
-ext4_get_fc_inode_loc() to get the inode location, which holds a
-reference to iloc.bh that must be released via brelse().
+unlink_nv12_plane() will clobber parts of the plane state
+potentially already set up by plane_atomic_check(), so we
+must make sure not to call the two in the wrong order.
+The problem happens when a plane previously selected as
+a Y plane is now configured as a normal plane by user space.
+plane_atomic_check() will first compute the proper plane
+state based on the userspace request, and unlink_nv12_plane()
+later clears some of the state.
 
-However, several error paths jump to the 'out' label without
-releasing iloc.bh:
+This used to work on account of unlink_nv12_plane() skipping
+the state clearing based on the plane visibility. But I removed
+that check, thinking it was an impossible situation. Now when
+that situation happens unlink_nv12_plane() will just WARN
+and proceed to clobber the state.
 
- - ext4_handle_dirty_metadata() failure
- - sync_dirty_buffer() failure
- - ext4_mark_inode_used() failure
- - ext4_iget() failure
+Rather than reverting to the old way of doing things, I think
+it's more clear if we unlink the NV12 planes before we even
+compute the new plane state.
 
-Fix this by introducing an 'out_brelse' label placed just before
-the existing 'out' label to ensure iloc.bh is always released.
-
-Additionally, make ext4_fc_replay_inode() propagate errors
-properly instead of always returning 0.
-
-Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
-Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: stable@vger.kernel.org
+Reported-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Closes: https://lore.kernel.org/intel-gfx/20260212004852.1920270-1-khaled.almahallawy@intel.com/
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Fixes: 6a01df2f1b2a ("drm/i915: Remove pointless visible check in unlink_nv12_plane()")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260316163953.12905-2-ville.syrjala@linux.intel.com
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+(cherry picked from commit 017ecd04985573eeeb0745fa2c23896fb22ee0cc)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fast_commit.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_plane.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -1613,19 +1613,21 @@ static int ext4_fc_replay_inode(struct s
- 	/* Immediately update the inode on disk. */
- 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 	ret = sync_dirty_buffer(iloc.bh);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 	ret = ext4_mark_inode_used(sb, ino);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 
- 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
- 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
- 	if (IS_ERR(inode)) {
- 		ext4_debug("Inode not found.");
--		return -EFSCORRUPTED;
-+		inode = NULL;
-+		ret = -EFSCORRUPTED;
-+		goto out_brelse;
- 	}
- 
- 	/*
-@@ -1642,13 +1644,14 @@ static int ext4_fc_replay_inode(struct s
- 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
- 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
- 	sync_dirty_buffer(iloc.bh);
-+out_brelse:
- 	brelse(iloc.bh);
- out:
- 	iput(inode);
- 	if (!ret)
- 		blkdev_issue_flush(sb->s_bdev);
- 
--	return 0;
-+	return ret;
+--- a/drivers/gpu/drm/i915/display/intel_plane.c
++++ b/drivers/gpu/drm/i915/display/intel_plane.c
+@@ -421,11 +421,16 @@ void intel_plane_copy_hw_state(struct in
+ 		drm_framebuffer_get(plane_state->hw.fb);
  }
  
- /*
++static void unlink_nv12_plane(struct intel_crtc_state *crtc_state,
++			      struct intel_plane_state *plane_state);
++
+ void intel_plane_set_invisible(struct intel_crtc_state *crtc_state,
+ 			       struct intel_plane_state *plane_state)
+ {
+ 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+ 
++	unlink_nv12_plane(crtc_state, plane_state);
++
+ 	crtc_state->active_planes &= ~BIT(plane->id);
+ 	crtc_state->scaled_planes &= ~BIT(plane->id);
+ 	crtc_state->nv12_planes &= ~BIT(plane->id);
+@@ -1498,6 +1503,9 @@ static void unlink_nv12_plane(struct int
+ 	struct intel_display *display = to_intel_display(plane_state);
+ 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+ 
++	if (!plane_state->planar_linked_plane)
++		return;
++
+ 	plane_state->planar_linked_plane = NULL;
+ 
+ 	if (!plane_state->is_y_plane)
+@@ -1535,8 +1543,7 @@ static int icl_check_nv12_planes(struct
+ 		if (plane->pipe != crtc->pipe)
+ 			continue;
+ 
+-		if (plane_state->planar_linked_plane)
+-			unlink_nv12_plane(crtc_state, plane_state);
++		unlink_nv12_plane(crtc_state, plane_state);
+ 	}
+ 
+ 	if (!crtc_state->nv12_planes)
 
 
 
