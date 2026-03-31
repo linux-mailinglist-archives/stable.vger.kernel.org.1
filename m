@@ -1,163 +1,179 @@
-Return-Path: <stable+bounces-231359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFgRFHWHy2kuIwYAu9opvQ
-	(envelope-from <stable+bounces-231359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:36:05 +0200
+	id kHeLEp2Gy2l4IgYAu9opvQ
+	(envelope-from <stable+bounces-231358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:32:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BCC3663D2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA663662DE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7BC213025C66
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:32:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 89935307D51F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CC93630AD;
-	Tue, 31 Mar 2026 08:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908453DDDBF;
+	Tue, 31 Mar 2026 08:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="HHjDoJEd"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Ph+VFMKM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NuB4IJ5D"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B844298CA3;
-	Tue, 31 Mar 2026 08:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D843DF003;
+	Tue, 31 Mar 2026 08:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774945944; cv=none; b=lnE7dj/Afa/WjFZTY7QlEr2GgwQVFTZD0MN7zb7Hi+BFpPEEhIdRZBZ9eiyz+AvysIfXXIDdArxWTEfPMKV2g+ztuXY1gCrc+PomBEz/vhZwtmmtSAtZBFzYWpqHQSRQn3DADt8e3GWu5UvnQydRxJgp2q8GRd1g9RFTh0MLdAY=
+	t=1774945664; cv=none; b=bMuSJWeJ8g+6Kts48RrpJzBTSQHxpEwUxRIhyFgup4NGth5n6UAQiGCD/oviLk4Exop91LKITHLHKbxI0tRE8liTGfz7Ue255BqVdX82qNwNeai15JvWJviSSnzlPE3iEEhisB1vTUNNK9HdPtcpv5FGQru63aHzE582eN06l/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774945944; c=relaxed/simple;
-	bh=7IpDhYtokFqYLVQDcX7rImeQMvBoK4UVJ7DW/xKkzo0=;
-	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:To:
-	 In-Reply-To:Content-Type; b=cCmdocmNNGeWbPx4CIAl9XKGi9mO8MtZe3uJTel8ySEi8uyjmyRevqnnNiWJNeDWtlBbWxiDPaPjdesVCRZU6grbeYHY0cXHhjiVMMnERA09EYlJyKV242WyYLzQL2VThucOwOd0WMfIqShd4ZpGHwXrqkwCtTuiUDvly45nH1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=HHjDoJEd; arc=none smtp.client-ip=185.244.194.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4flLjX00M9z94Mf;
-	Tue, 31 Mar 2026 10:23:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1774945408;
-	bh=7IpDhYtokFqYLVQDcX7rImeQMvBoK4UVJ7DW/xKkzo0=;
-	h=Date:Subject:Cc:References:From:To:In-Reply-To:From;
-	b=HHjDoJEdph0AOjNAJz6dRmcPp7j73Yw/SygLwr3KxeMnVxwLc9VsCQh0w4LcWCCWi
-	 VsgvlWu3XrVLSFjNzTfYiiJKm2onnZvMyFhsbq3OzU2FkXvB22yNPp7IX6//ZcEp1Z
-	 mW3HYHKdaPdSi+jnGq98nc3Z4DNdgGbZsSnWgps+HVoviJp13FenAEe7XO4/dB2oeN
-	 bHV4jgQn6Ovd9RLt6VdvQglzD7bDz3qAdJaZDCKeKhUpCzKjQ9xoOD82mD/zBgvWFZ
-	 sBnI4M/fvKCAEL18quf+WqzkE3DmYJWvjEYKokw2P31yQewY6Mp6ifpWcUdXDT/qRr
-	 PETy68xPencCQ==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4flLjW6PLWz7xN0;
-	Tue, 31 Mar 2026 10:23:27 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4flLjV6RNSz8svf;
-	Tue, 31 Mar 2026 10:23:26 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 3520C635FD;
-	Tue, 31 Mar 2026 10:23:26 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <99426bd8-32e5-4246-9d3b-772e136bc078@leemhuis.info>
-Date: Tue, 31 Mar 2026 10:23:25 +0200
+	s=arc-20240116; t=1774945664; c=relaxed/simple;
+	bh=Yx1Xll+DsQnpK2EeA64/CzyBUEm1aXMFc+DIWQjRQjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P/QPHhHtUHvfYwZOcg8jMqVxu8znBOKRLKdeHSQiZEIMTE+7RSW7q4bF/xOGnZMMbON0opgz2hKkYalSP60KobXjFx9pnymT2r1n5lRkA6nT7WG3GcHAA1/6t5m0eqqFdjngb0Agjx5kSAOWqc69X/mFefEJmWzTBaOkneBAvLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Ph+VFMKM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NuB4IJ5D; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 82429EC022C;
+	Tue, 31 Mar 2026 04:27:41 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 04:27:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1774945661; x=1775032061; bh=c9Qkm02a5w
+	q082IfjuzHjs6ovjvxof7MtSCn6YRQST4=; b=Ph+VFMKMAXTaagkKOfQt6LOc88
+	yW1xEbxyA4OJSVyzbVE3G6tlwapGK+kVDEF5/IMsQpwmhrretPkh9Z48vmnRnjql
+	DkC72IROTcpr+o21Qg97aCo/OM1td+jqR3EZNpeHjxyzIUvKxtli8hWjtUz/943u
+	BvGuOpq0v/Cy2v+yWhycjsAgZfbPZN0wMoqSdpmoSRstklGAdZiYYcNQx0A2HKbR
+	pg3b0LZAaLtyiG5CaY7Xim7F+1kmvgrKaEoakoKbld9Gj5LvbFc7X7MnfRLg3I+2
+	jE4/0PdYnXMj77lOUUVeVZOVCBtt4udCZ8dpuQtvg4DSPaIDiXI3kVAxiMbw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1774945661; x=1775032061; bh=c9Qkm02a5wq082IfjuzHjs6ovjvxof7MtSC
+	n6YRQST4=; b=NuB4IJ5DEhGHPdidAkkluxRjQNz25rkjd+oLUPGfgngZSthWSF9
+	nHD4ByVw+5+s4vJi3WPMk5eu2Ing6otcUsNuXBCf0Mu8uBCJvqKxbgQWpii1wFH2
+	Jv60f8UdvlOSan3ArasgJHOSSLXwTIw6XkKWp2cSOBhzwGqacf5idGR5/HJRVqnV
+	k0a79slXlRELMTN64FElLsf3MlA9Szlrnoi+ds3ssNnTl5NEc+uVpCfX65LHwina
+	/KGQJgAtGkX9fG4eaALFL1NwwB/3sfJ1i761ttWl3dJcTUUgGuVNqkBx3GHc+z9o
+	TgMFpq42iQKRRKJjQfiSpqbeBq2KnmIgLeQ==
+X-ME-Sender: <xms:fYXLadUeXhiOLtQw2KQyqGIgR07FlSRWDQY4P9AqmdDeipLcP08a-Q>
+    <xme:fYXLaUoVftJzncRJjqfQHJkSkFMJEyeEF1EqxBQQoW5EL6KU0YEvN1Epo8G2QOrae
+    mvPGOXS413RZJaBzAmh0aSP_a5woXsK90mkHy8JBeFLZ_AgkA>
+X-ME-Received: <xmr:fYXLaRGu0bxH7jKcZMl2JK5dTkKgAYbJkZcyI10z3JxVrPh7ACIETLEL3oI_a-1Y-NrrPVXygeG0xJIqtBA0EfzYGluNPkflu1ajj8UvPQ8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefgedugedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehueehgf
+    dtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgrihhn
+    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepvddt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehghhgrughirdhrrghhmhgvsegtrg
+    hnohhnihgtrghlrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepshhfrhgvnhgthhesshgrmhgsrgdrohhrghdprhgtph
+    htthhopehptgestghjrhdrnhiipdhrtghpthhtoheplhhsrghhlhgsvghrsehrvgguhhgr
+    thdrtghomhdprhgtphhtthhopehsphhrrghsrggusehmihgtrhhoshhofhhtrdgtohhmpd
+    hrtghpthhtohepthhomhesthgrlhhpvgihrdgtohhmpdhrtghpthhtoheprggrphhtvghl
+    sehsuhhsvgdrtghomhdprhgtphhtthhopehlihhnuhigqdgtihhfshesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:fYXLaWsXZcct0UDUC8VOT9v26x8tehz4pz4LJDvGTogrmIvD2PZa8g>
+    <xmx:fYXLaUQoc5i5zuFSwk75FsuV587PEo_K6KntQPUcVKk8FxCwv84vmw>
+    <xmx:fYXLaTHuthN9b-LorOIjQxcO7SaCReFBb4dhwbXijjzEHscVtsGWUg>
+    <xmx:fYXLaWd1Pm3wnczhMBAtQQW_JCSbeK01HGB4Ns1R1MIkKsBNl2w_uQ>
+    <xmx:fYXLaS3TgabrFuQlWCi6Ts01DRYgZMByI0tHyPuWxLkgL_qR5beDU-dh>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 31 Mar 2026 04:27:40 -0400 (EDT)
+Date: Tue, 31 Mar 2026 10:27:38 +0200
+From: Greg KH <greg@kroah.com>
+To: Ghadi Rahme <ghadi.rahme@canonical.com>
+Cc: stable@vger.kernel.org, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@cjr.nz>, Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Aurelien Aptel <aaptel@suse.com>, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: Re: [PATCH v2 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on
+ session connection failure
+Message-ID: <2026033136-refining-ladybug-08b0@gregkh>
+References: <20260319144929.455978-1-ghadi.rahme@canonical.com>
+ <2026032339-irate-monsoon-76ce@gregkh>
+ <a7c5ecb2-d46c-4061-a70a-c7b149db56f2@canonical.com>
+ <2026033140-endearing-handcraft-b66a@gregkh>
+ <0dcbb073-4745-479a-8d55-bdb0a3fe55e8@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] PCI: Revert "Enable ACS after configuring IOMMU for
- OF platforms"
-Cc: John Hancock <john@kernel.doghat.io>, stable@vger.kernel.org,
- bhelgaas@google.com, manivannan.sadhasivam@oss.qualcomm.com,
- joro@8bytes.org, linux-pci@vger.kernel.org, iommu@lists.linux.dev,
- Manivannan Sadhasivam <mani@kernel.org>, Robin Murphy <robin.murphy@arm.com>
-References: <20260320172335.29778-1-john@kernel.doghat.io>
- <o7nnlvtkmatzafs44um6h5wnqo755msiukfn6kbu2zxdhe45ws@mde5lt2ufusz>
- <fad11c37-5bfb-44fd-b0bf-2a2d15b3382c@arm.com>
- <ovfco6pqzw734flu7navat36avt6yfosruouduhmbti7umunus@ijmu6nhz56l5>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-In-Reply-To: <ovfco6pqzw734flu7navat36avt6yfosruouduhmbti7umunus@ijmu6nhz56l5>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177494540663.2020972.9530421463839943276@mxe9fb.netcup.net>
-X-NC-CID: 3xzz847nKWelt8aC5ygN7tpAEHCa5Hi/PfXCYrf6D4kpXqVsB7M=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0dcbb073-4745-479a-8d55-bdb0a3fe55e8@canonical.com>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TAGGED_FROM(0.00)[bounces-231359-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	DMARC_NA(0.00)[leemhuis.info];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231358-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: B9BCC3663D2
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0CA663662DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 16:13, Manivannan Sadhasivam wrote:
-> On Mon, Mar 23, 2026 at 03:06:16PM +0000, Robin Murphy wrote:
->> On 23/03/2026 1:54 pm, Manivannan Sadhasivam wrote:
->>> On Fri, Mar 20, 2026 at 01:23:35PM -0400, John Hancock wrote:
->>>> Commit 7a126c1b6cfa ("PCI: Enable ACS after configuring IOMMU for OF
->>>> platforms") introduced a regression affecting AMD IOMMU group isolation
->>>> on x86 systems, making PCIe passthrough non-functional.
->>> [...]
->>> Ouch! Sorry for the breakage.
->>> [...]
->>> I still haven't investigated this failure deeply, but it is also worth noting
->>> that this regression only happens with v6.12 and earlier stable kernels as
->>> mentioned in [1].
->> Oops, indeed, relying on pci_dma_configure() to be called prior to group
->> assignment in iommu_init_device() only works since bcb81ac6ae3c ("iommu: Get
->> DT/ACPI parsing into the proper probe path") added that call path in 6.15 -
->> thus the backport probably doesn't actually work for OF platforms either.
+On Tue, Mar 31, 2026 at 10:54:08AM +0300, Ghadi Rahme wrote:
+> > Then why not backport the specific changes that caused newer kernels to
+> not be affected?
 > 
-> Ah, that makes sense. Thanks for finding the root cause. It might be very
-> obvious to you, but still... ;)
+> Based on the documentation [1] for submitting patches to stable, the patch
+> cannot be over 100 lines long with context.
 > 
->> Dropping this from 6.12.y and earlier stable branches seems like the correct
->> action to me (but not a mainline revert, obviously). ACS had essentially
->> *never* worked properly on OF platforms prior to 6.15, but that was more
->> down to fundamental design flaws in the OF-based IOMMU probe path (dating
->> back to 4.12) rather than any easily-fixable bug as such, so realistically I
->> think we just leave it that way.
+> The upstream patch exceeds this limit by a lot and cherry picking the
+> specific changes from it that remove this function is not feasible without
+> causing the driver to break. In other words the removal of
+> "find_ipc_from_server_path" is dependent on this refactor.
 > 
-> That's my opinion as well. I guess I need to send reverts for rest of the older
-> stable kernels as well.
+> > Backport the same changes?
+> 
+> I can go ahead with this solution, given I get the green light to ignore the
+> 100 line rule.
+> 
+> [1] https://www.kernel.org/doc/html/v4.11/process/stable-kernel-rules.html#
 
-Mani, did you send those reverts? I could not find any on lore. And the
-one at the start of the thread likely won't work, as it doesn't state
-that c41e2fb67e26b0 ("PCI: Enable ACS after configuring IOMMU for OF
-platforms") needs to be reverted for 6.12.y and all earlier series. So
-to speed things up:
+We take "large" backports from mainline all the time, as long as the
+maintainers for the subsystem are ok with it.  to take one-off patches
+is usually much harder as the change itself is almost always "wrong",
+and then future changes are even harder to backport.
 
-Greg, Sasha, could you maybe simply revert that backported commit
-directly in 6.12.y and all earlier series?
+So I recommend working with the maintainers here please and see what
+they want to do, if anything.
 
-Ciao, Thorsten
+thanks,
+
+greg k-h
 
