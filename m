@@ -1,205 +1,284 @@
-Return-Path: <stable+bounces-232611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEk+AD9czGlmSgYAu9opvQ
-	(envelope-from <stable+bounces-232611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:43:59 +0200
+	id BGKoE/BczGl3SgYAu9opvQ
+	(envelope-from <stable+bounces-232612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:46:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B85372E55
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:43:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10AF372E76
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFA893027953
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04D4C301E96B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414CA3AE6FA;
-	Tue, 31 Mar 2026 23:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3DC37F75F;
+	Tue, 31 Mar 2026 23:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="jcbAOBzp"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eE5Mo80u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC82C3A3821
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 23:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AA127456;
+	Tue, 31 Mar 2026 23:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775000606; cv=none; b=h74cewM9iIHznxyqjRu2L5094yc/FPUOMUlt7CMGwoZua+86OOr7T2AEDxO7nku2N8eHM7grD5l9XfDm6DvKw++DVnVpsda/c0s3mboUb0LzW7cD0RGyCd5D9CtJOeNanAQtOp4czaCCUINsPEdP9Rud/LlepfwyzO1HED2Ah3w=
+	t=1775000812; cv=none; b=A2MZg1IGeUTKBVxQ+t+bNj9e9CyTEjsiNVYTfEf2Qs2mjalmMMCluNSpOzfMybPwyCux9d3kDUS+nncq9QfuCAH4amsaHxjk2vJmBf3QXhVHRJ+cVYOfdRzOpK+wKayUUKm7u4nYZccVgl32CJNNISuXRJJwhdnLfXrCBBqNZfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775000606; c=relaxed/simple;
-	bh=3g2a38R67MBCRSp7Vsl58EBejHN/y3woO8+/KWmyCxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=erhMyxXB6ufHIQddQYSl7dy9oFijZETpWu9XLaejURdAMU7K4F+mm1CMvRYi6QifO0hHMNsAj3vmrz2F+rRbhUeFOCK0hkGBzCCZ0r08b+w+dQ+s75uIu2LGYyQjP8PCW98DJfvvwBsA+Uiz2qMMBatgvUtvg67fDELtVaQDbLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=jcbAOBzp; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad9516a653so27455685ad.0
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:43:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1775000604; x=1775605404; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ns9AQ9mj0Un6sqyHivwFXkOMubqhHvzCLjhPKqBz+Qw=;
-        b=jcbAOBzpHQkn8jO4EqpiCOi3GvhB2qTNJxULrgJ/oW9VFUi8WDx/gSSagvwL27sSvD
-         ddBdPnBsZ00g/BDxa/JhDqsxO39EhLxRznxrCwC0O7nowVGhjtDtIRlDy4GK0jgyaL/m
-         J/+73ETFhy4NPVQvPL1yK2DBVFlhk9f2nGKq+qSfTfYPGJX+7+5/+Naz20r4AbNNACPW
-         yNhYfG8Grk18cYA0kBKcDUbxkz60TvQiVfQaggTwAVa7xOLZr4/r4CXJsBAz9XzEWUNj
-         1W+fxQ+Kh3MGaKpw2mEZSwvkiTaV30KbYTzabwmNSUTyJQsJRyGsd7H6AQVLx9GAcylc
-         B5bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775000604; x=1775605404;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ns9AQ9mj0Un6sqyHivwFXkOMubqhHvzCLjhPKqBz+Qw=;
-        b=GnL5gvjJ6XTi/hT0oey9uuVKm3vlT044zYMMNt4Gh3JudAFM6ADPyQncrJEe0fUoYN
-         y4mU5uh7ou4X7ieOoMUcUlt02qJFvWi+5hM3bZcZW1G/bFD1guegGuJAWpGkN1nsun6q
-         ESNOb1PoPf1BsAN2ZHS2R9IYye1nP/u1/YaMod9E0DYESSdGD5ypkUwDQfHDDR/w9ANB
-         NDJ3qfeZTPr9SjlnnRg4QomNAvhzj/Hkkhz8UXUCd0AOiIw9eaySAA0vRFR/acaPpwnM
-         bh0dQd6oYEvhZOLONfjNKfvRJ2WDvYZOKyC/lj0KrtBiY4X6sHylPfIh99dIaV1ocd7E
-         AQBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlbrICynU8jM8FagZWezpDxOKSWD/zwbcXHY2q4u+6eLgW8GSb0BNdithmuLjZGZusUexXuWw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjDyW6gjZEaHHbeQyLwkJo8Fx1akKKiPZROH4V8cNbln7P29sx
-	XtNsSh+YXhsCVChd10Z0J0b3W+3c6n58XLxRTNG27OIlHbzBdGr7Nn9dfY46HJN8CPs=
-X-Gm-Gg: ATEYQzxaEOXRrSzZSBiTQoOuu79dD17eO8/9qvkcmrc9uYQCggv5Vm3kXSw7F3VtxU8
-	fPdDJEm2fVjn34PdTpOaCe/YB66PMuAqEgYoMNWJY79kNNq1+07s7XpxgbhftcRHc611AjL2y1K
-	FEnmq6VCgoTYAtys9z/MsWOC1togwMzErG3dcaCP+xWItXvOIzBtCGmnF0kJfg6WdI/75qdzMn1
-	qEpjdX32nBhihxq7cLH4f/jnWo+NbsSsfmauSuim0FuWRdTD5sFygQpS6LG9ZGk5h01KKhOo/+C
-	JsKwSwA0ThOTOJMzk12OKh+S2qZ5ckAtDsezt8G5/uJCowJ9f1nRqfFFlJhLC4iowWhNQqg92NP
-	6eGQe5E2WdDmD2Jxet1FuIft4Rca5NFIk6o4Afj3H2rXNVpfUbNmedpPmOtRNKF/oZ/xAdmZVdb
-	6gBMoY
-X-Received: by 2002:a17:903:2d2:b0:2b0:beb4:3bb with SMTP id d9443c01a7336-2b269a805cdmr9425095ad.10.1775000603562;
-        Tue, 31 Mar 2026 16:43:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:51::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24266e487sm123072225ad.24.2026.03.31.16.43.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 16:43:23 -0700 (PDT)
-Date: Tue, 31 Mar 2026 16:43:22 -0700
-From: Joe Damato <joe@dama.to>
-To: Wang Jun <1742789905@qq.com>
-Cc: Jes Sorensen <jes@trained-monkey.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-acenic@sunsite.dk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn, 25125283@bjtu.edu.cn, 23120469@bjtu.edu.cn,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: alteon: Add missing DMA mapping error checks in
- ace_start_xmit
-Message-ID: <acxcGhzbNsHdK49W@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, Wang Jun <1742789905@qq.com>,
-	Jes Sorensen <jes@trained-monkey.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-acenic@sunsite.dk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn, 25125283@bjtu.edu.cn, 23120469@bjtu.edu.cn,
-	stable@vger.kernel.org
-References: <tencent_FAB2A00E105488F503DCC787B8060F881E06@qq.com>
+	s=arc-20240116; t=1775000812; c=relaxed/simple;
+	bh=uTfxMIdCjUI48+fOQyhVdaZFMou0ASKHiiF1qNeZ/gs=;
+	h=Date:To:From:Subject:Message-Id; b=ic8fS5L9aH3QmT+ao1oeqACiiXLx7l5Kc7OZWNtWAooVS3T+KLEDnOBHLTj2kHatdgAvAddXFsd5GtQ4Gv/aOFX5xFEoJPMK7xlvKIjE4UwUV8OKAeFTCl8Do1V+0nmUzjpNv3VNdNNQWeyfM7/yRvOcPMnAUmrauBY3sLggnvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eE5Mo80u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA4DC19423;
+	Tue, 31 Mar 2026 23:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775000811;
+	bh=uTfxMIdCjUI48+fOQyhVdaZFMou0ASKHiiF1qNeZ/gs=;
+	h=Date:To:From:Subject:From;
+	b=eE5Mo80uWufPIoi47i/mmk39xzXxfPKNS9mxUoQTxaHDwzUhuakqCa4x0bMDwnNPw
+	 G9g1pfIRIDy/2VbTJi1Hm4BOMgJFP6jY9my60OJB1NzCQyhoGzeeaaDIqVfUAptD1b
+	 y+4CjckIvj3DKIJUeXxwwNb0Kyqn0PK/9LlVegvg=
+Date: Tue, 31 Mar 2026 16:46:51 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,lirongqing@baidu.com,bhe@redhat.com,urezki@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-vmalloc-use-dedicated-unbound-workqueues-for-vmap-drain.patch removed from -mm tree
+Message-Id: <20260331234651.8BA4DC19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_FAB2A00E105488F503DCC787B8060F881E06@qq.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[dama-to.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[dama.to];
-	TAGGED_FROM(0.00)[bounces-232611-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_TO(0.00)[qq.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232612-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,baidu.com,redhat.com,gmail.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joe@dama.to,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dama-to.20230601.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dama-to.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 59B85372E55
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: A10AF372E76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 09:48:41AM +0800, Wang Jun wrote:
-> The ace_start_xmit function does not check the return value of
-> dma_map_page (via ace_map_tx_skb) and skb_frag_dma_map when building
-> transmit descriptors. If mapping fails, an invalid DMA address is
-> written to the descriptor, which may cause hardware to access
-> illegal memory, leading to system instability or crashes.
-> 
-> Add proper dma_mapping_error() checks for all mapping calls. When
-> mapping fails, free the skb, increment the dropped packet counter,
-> and return NETDEV_TX_OK.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-Is this fixing a bug you've seen in the wild? If not, I'd probably drop the
-fixes tag and send this to net-next instead.
+The quilt patch titled
+     Subject: mm/vmalloc: use dedicated unbound workqueues for vmap drain
+has been removed from the -mm tree.  Its filename was
+     mm-vmalloc-use-dedicated-unbound-workqueues-for-vmap-drain.patch
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wang Jun <1742789905@qq.com>
-> ---
->  drivers/net/ethernet/alteon/acenic.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/alteon/acenic.c b/drivers/net/ethernet/alteon/acenic.c
-> index 455ee8930824..acabede53663 100644
-> --- a/drivers/net/ethernet/alteon/acenic.c
-> +++ b/drivers/net/ethernet/alteon/acenic.c
-> @@ -2417,6 +2417,11 @@ static netdev_tx_t ace_start_xmit(struct sk_buff *skb,
->  		u32 vlan_tag = 0;
->  
->  		mapping = ace_map_tx_skb(ap, skb, skb, idx);
-> +		if (dma_mapping_error(&ap->pdev->dev, mapping)) {
-> +			dev_kfree_skb(skb);
-> +			dev->stats.tx_dropped++;
-> +			return NETDEV_TX_OK;
-> +		}
->  		flagsize = (skb->len << 16) | (BD_FLG_END);
->  		if (skb->ip_summed == CHECKSUM_PARTIAL)
->  			flagsize |= BD_FLG_TCP_UDP_SUM;
-> @@ -2438,6 +2443,11 @@ static netdev_tx_t ace_start_xmit(struct sk_buff *skb,
->  		int i;
->  
->  		mapping = ace_map_tx_skb(ap, skb, NULL, idx);
-> +		if (dma_mapping_error(&ap->pdev->dev, mapping)) {
-> +			dev_kfree_skb(skb);
-> +			dev->stats.tx_dropped++;
-> +			return NETDEV_TX_OK;
-> +		}
+This patch was dropped because an updated version will be issued
 
+------------------------------------------------------
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Subject: mm/vmalloc: use dedicated unbound workqueues for vmap drain
+Date: Tue, 31 Mar 2026 22:23:52 +0200
 
-I am not sure about this. The function ace_map_tx_skb seems to modify a
-tx_ring_info entry, possibly writing invalid state to it if the dma_map_page
-fails?
+drain_vmap_area_work() function can take >10ms to complete when there are
+many accumulated vmap areas in a system with high CPU count, causing
+workqueue watchdog warnings when run via schedule_work():
 
-Maybe a better fix would be to refactor ace_map_tx_skb and do the
-dma_mapping_error check there and change the return type of the function and
-the code flow?
+  workqueue: drain_vmap_area_work hogged CPU for >10000us
 
-Then you wouldn't need to duplicate the error path handling code.
+Move the top-level drain work to a dedicated WQ_UNBOUND workqueue so the
+scheduler can run this background work on any available CPU, improving
+responsiveness.  Use the WQ_MEM_RECLAIM to ensure forward progress under
+memory pressure.
+
+Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM workqueue. 
+This allows drain_vmap_work to wait for helpers completion without
+creating dependency on the same rescuer thread and avoid a potential
+parent/child deadlock.
+
+Simplify purge helper scheduling by removing cpumask-based iteration to
+iterating directly over vmap nodes checking work_queued state.
+
+Link: https://lkml.kernel.org/r/20260331202352.879718-1-urezki@gmail.com
+Fixes: 72210662c5a2 ("mm: vmalloc: offload free_vmap_area_lock lock")
+Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Li RongQing <lirongqing@baidu.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmalloc.c |   79 ++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 52 insertions(+), 27 deletions(-)
+
+--- a/mm/vmalloc.c~mm-vmalloc-use-dedicated-unbound-workqueues-for-vmap-drain
++++ a/mm/vmalloc.c
+@@ -949,6 +949,7 @@ static struct vmap_node {
+ 	struct list_head purge_list;
+ 	struct work_struct purge_work;
+ 	unsigned long nr_purged;
++	bool work_queued;
+ } single;
+ 
+ /*
+@@ -1067,6 +1068,8 @@ static void reclaim_and_purge_vmap_areas
+ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
++static struct workqueue_struct *drain_vmap_helpers_wq;
++static struct workqueue_struct *drain_vmap_wq;
+ 
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+ 
+@@ -2329,6 +2332,16 @@ static void purge_vmap_node(struct work_
+ 	reclaim_list_global(&local_list);
+ }
+ 
++static bool
++schedule_drain_vmap_work(struct workqueue_struct *wq,
++		struct work_struct *work)
++{
++	if (wq)
++		return queue_work(wq, work);
++
++	return false;
++}
++
+ /*
+  * Purges all lazily-freed vmap areas.
+  */
+@@ -2336,19 +2349,12 @@ static bool __purge_vmap_area_lazy(unsig
+ 		bool full_pool_decay)
+ {
+ 	unsigned long nr_purged_areas = 0;
++	unsigned int nr_purge_nodes = 0;
+ 	unsigned int nr_purge_helpers;
+-	static cpumask_t purge_nodes;
+-	unsigned int nr_purge_nodes;
+ 	struct vmap_node *vn;
+-	int i;
+ 
+ 	lockdep_assert_held(&vmap_purge_lock);
+ 
+-	/*
+-	 * Use cpumask to mark which node has to be processed.
+-	 */
+-	purge_nodes = CPU_MASK_NONE;
+-
+ 	for_each_vmap_node(vn) {
+ 		INIT_LIST_HEAD(&vn->purge_list);
+ 		vn->skip_populate = full_pool_decay;
+@@ -2368,10 +2374,9 @@ static bool __purge_vmap_area_lazy(unsig
+ 		end = max(end, list_last_entry(&vn->purge_list,
+ 			struct vmap_area, list)->va_end);
+ 
+-		cpumask_set_cpu(node_to_id(vn), &purge_nodes);
++		nr_purge_nodes++;
+ 	}
+ 
+-	nr_purge_nodes = cpumask_weight(&purge_nodes);
+ 	if (nr_purge_nodes > 0) {
+ 		flush_tlb_kernel_range(start, end);
+ 
+@@ -2379,29 +2384,31 @@ static bool __purge_vmap_area_lazy(unsig
+ 		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+ 		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++		for_each_vmap_node(vn) {
++			vn->work_queued = false;
++
++			if (list_empty(&vn->purge_list))
++				continue;
+ 
+ 			if (nr_purge_helpers > 0) {
+ 				INIT_WORK(&vn->purge_work, purge_vmap_node);
++				vn->work_queued = schedule_drain_vmap_work(
++					READ_ONCE(drain_vmap_helpers_wq), &vn->purge_work);
+ 
+-				if (cpumask_test_cpu(i, cpu_online_mask))
+-					schedule_work_on(i, &vn->purge_work);
+-				else
+-					schedule_work(&vn->purge_work);
+-
+-				nr_purge_helpers--;
+-			} else {
+-				vn->purge_work.func = NULL;
+-				purge_vmap_node(&vn->purge_work);
+-				nr_purged_areas += vn->nr_purged;
++				if (vn->work_queued) {
++					nr_purge_helpers--;
++					continue;
++				}
+ 			}
+-		}
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++			/* Sync path. Process locally. */
++			purge_vmap_node(&vn->purge_work);
++			nr_purged_areas += vn->nr_purged;
++		}
+ 
+-			if (vn->purge_work.func) {
++		/* Wait for completion if queued any. */
++		for_each_vmap_node(vn) {
++			if (vn->work_queued) {
+ 				flush_work(&vn->purge_work);
+ 				nr_purged_areas += vn->nr_purged;
+ 			}
+@@ -2465,7 +2472,8 @@ static void free_vmap_area_noflush(struc
+ 
+ 	/* After this point, we may free va at any time */
+ 	if (unlikely(nr_lazy > nr_lazy_max))
+-		schedule_work(&drain_vmap_work);
++		schedule_drain_vmap_work(READ_ONCE(drain_vmap_wq),
++			&drain_vmap_work);
+ }
+ 
+ /*
+@@ -5483,3 +5491,20 @@ void __init vmalloc_init(void)
+ 	vmap_node_shrinker->scan_objects = vmap_node_shrink_scan;
+ 	shrinker_register(vmap_node_shrinker);
+ }
++
++static int __init vmalloc_init_workqueue(void)
++{
++	struct workqueue_struct *drain_wq, *helpers_wq;
++	unsigned int flags = WQ_UNBOUND | WQ_MEM_RECLAIM;
++
++	drain_wq = alloc_workqueue("vmap_drain", flags, 0);
++	WARN_ON_ONCE(drain_wq == NULL);
++	WRITE_ONCE(drain_vmap_wq, drain_wq);
++
++	helpers_wq = alloc_workqueue("vmap_drain_helpers", flags, 0);
++	WARN_ON_ONCE(helpers_wq == NULL);
++	WRITE_ONCE(drain_vmap_helpers_wq, helpers_wq);
++
++	return 0;
++}
++early_initcall(vmalloc_init_workqueue);
+_
+
+Patches currently in -mm which might be from urezki@gmail.com are
+
+mm-vmalloc-use-dedicated-unbound-workqueue-for-vmap-purge-drain.patch
+
 
