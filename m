@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-231586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIezBkP4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:23 +0200
+	id uFbYDrkAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7295436CD8D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9E736E365
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C870B316EC8A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C91B73087872
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EA43E3D82;
-	Tue, 31 Mar 2026 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C9A302756;
+	Tue, 31 Mar 2026 17:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWI8BgSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keLkKYZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACD63FB052;
-	Tue, 31 Mar 2026 16:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036FB3019D6;
+	Tue, 31 Mar 2026 17:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974552; cv=none; b=MrxFFxMShQZjbO6Z/ZnpUuLyGs3Ly9Vg/7+1kJV+2hiTaiDDPAqF9/lqHmOWpacCyBx05huornrzaE/fftswuqAfd+xqE3aL/CXEBiH1nvBtbRO5A6+quJo5opWLoyyEUbL66mP7Rzf9RB7T77F+pY/sUxrsfI3SDi3AOkcCWLo=
+	t=1774976740; cv=none; b=drA5q7sayAWetmvH1OrdNMMMrwdgs4BV6FMddEbhbIqNa7qwauq9v9JbVbTkG4fjOKMchPoLUeoY4Omzx30UNLlIb3+qt3Sby05Fb7Jsr1lQ0c94IxoDEBis9jxjJ7kXrzQsNsY2SE6nAvCCaCTXzlukObYmf80+k6e3jt8AgkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974552; c=relaxed/simple;
-	bh=9gSOw1pbXCnFgrz6Zsvi7hPvzBoXmLOEqYAp7NKx+nI=;
+	s=arc-20240116; t=1774976740; c=relaxed/simple;
+	bh=Pd5UcdUiD1lbpfX4ezbj3ivI1WJqa9SdvlvuSlcR5Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oH2+KJOPaLZ2dACZd1p0AQugOtyhXqxLqphXdeX7TBimx3lxyiyTDh74ApgGEejEcTVf3RaHBU4TKgZmhDcqT3RFQ1Nxua+QQwUY6BynAFXeve2JXMwsa3o77I2864TgHBje2eS0XIz6+t9KHV2uWOhRNKzTMTe9mOSRRfOMAoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWI8BgSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B13C19423;
-	Tue, 31 Mar 2026 16:29:12 +0000 (UTC)
+	 MIME-Version; b=IJQDeaMJPwwVIEeTt5yhNoRkz8BYDnvDVfxVOlO88lxfXgN8kxDVuwCjlDNg1lJVQaOREZFlnO2uZD+KpCSiqZ1K+7Ys+49JyEFgVtdTpgDZkQQ6lDnwnQzsro5t+nDNqlFut0nN7F3ZGSpCgze5FJGt3Ql21fh/vCdW22h26Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keLkKYZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D99DC19423;
+	Tue, 31 Mar 2026 17:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974552;
-	bh=9gSOw1pbXCnFgrz6Zsvi7hPvzBoXmLOEqYAp7NKx+nI=;
+	s=korg; t=1774976739;
+	bh=Pd5UcdUiD1lbpfX4ezbj3ivI1WJqa9SdvlvuSlcR5Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gWI8BgSVH4gpwHUd6tLlhGHZaiptJUW1gR8YrJOcB54cC4ZEkpOEJKoSgUjoHLcpm
-	 BsUmmuIiZmH52KkKNc31O01NQou8rMLirDyMUGlGFFNx9HWvESzRmSm1YEgu03fBH4
-	 CMacLdylQ2dXfhZs1d/2N/9dmZtYPYOQHzC/cWH0=
+	b=keLkKYZNyvKKGQDbUSPwawL65AjgNKu80m4ziDibhyvU3JMY1nuF96A5X9YmDQMdG
+	 +qn0l5nqt6nKSMzLK+VnMIJVFUkeAXf9loHQ+PDNeBzGhtsn76rlvGMYAsXXhNXnQB
+	 /R76yMSK2lJpFc8hRv/g8pFuPFVllk81dIQ3uqzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Durrer <anthonydev@fastmail.com>,
-	Simon Weber <simon.weber.39@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 129/175] ext4: fix journal credit check when setting fscrypt context
+	John <therealgraysky@proton.me>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.18 210/309] writeback: dont block sync for filesystems with no data integrity guarantees
 Date: Tue, 31 Mar 2026 18:21:53 +0200
-Message-ID: <20260331161734.525999272@linuxfoundation.org>
+Message-ID: <20260331161801.177714988@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +66,211 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231586-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.com,gmail.com,kernel.org,mit.edu];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,gmail.com,suse.cz,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232435-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,fastmail.com:email]
-X-Rspamd-Queue-Id: 7295436CD8D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.cz:email,proton.me:email]
+X-Rspamd-Queue-Id: CC9E736E365
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Weber <simon.weber.39@gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit b1d682f1990c19fb1d5b97d13266210457092bcd upstream.
+commit 76f9377cd2ab7a9220c25d33940d9ca20d368172 upstream.
 
-Fix an issue arising when ext4 features has_journal, ea_inode, and encrypt
-are activated simultaneously, leading to ENOSPC when creating an encrypted
-file.
+Add a SB_I_NO_DATA_INTEGRITY superblock flag for filesystems that cannot
+guarantee data persistence on sync (eg fuse). For superblocks with this
+flag set, sync kicks off writeback of dirty inodes but does not wait
+for the flusher threads to complete the writeback.
 
-Fix by passing XATTR_CREATE flag to xattr_set_handle function if a handle
-is specified, i.e., when the function is called in the control flow of
-creating a new inode. This aligns the number of jbd2 credits set_handle
-checks for with the number allocated for creating a new inode.
+This replaces the per-inode AS_NO_DATA_INTEGRITY mapping flag added in
+commit f9a49aa302a0 ("fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+in wait_sb_inodes()"). The flag belongs at the superblock level because
+data integrity is a filesystem-wide property, not a per-inode one.
+Having this flag at the superblock level also allows us to skip having
+to iterate every dirty inode in wait_sb_inodes() only to skip each inode
+individually.
 
-ext4_set_context must not be called with a non-null handle (fs_data) if
-fscrypt context xattr is not guaranteed to not exist yet. The only other
-usage of this function currently is when handling the ioctl
-FS_IOC_SET_ENCRYPTION_POLICY, which calls it with fs_data=NULL.
+Prior to this commit, mappings with no data integrity guarantees skipped
+waiting on writeback completion but still waited on the flusher threads
+to finish initiating the writeback. Waiting on the flusher threads is
+unnecessary. This commit kicks off writeback but does not wait on the
+flusher threads. This change properly addresses a recent report [1] for
+a suspend-to-RAM hang seen on fuse-overlayfs that was caused by waiting
+on the flusher threads to finish:
 
-Fixes: c1a5d5f6ab21eb7e ("ext4: improve journal credit handling in set xattr paths")
+Workqueue: pm_fs_sync pm_fs_sync_work_fn
+Call Trace:
+ <TASK>
+ __schedule+0x457/0x1720
+ schedule+0x27/0xd0
+ wb_wait_for_completion+0x97/0xe0
+ sync_inodes_sb+0xf8/0x2e0
+ __iterate_supers+0xdc/0x160
+ ksys_sync+0x43/0xb0
+ pm_fs_sync_work_fn+0x17/0xa0
+ process_one_work+0x193/0x350
+ worker_thread+0x1a1/0x310
+ kthread+0xfc/0x240
+ ret_from_fork+0x243/0x280
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Co-developed-by: Anthony Durrer <anthonydev@fastmail.com>
-Signed-off-by: Anthony Durrer <anthonydev@fastmail.com>
-Signed-off-by: Simon Weber <simon.weber.39@gmail.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20260207100148.724275-4-simon.weber.39@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+On fuse this is problematic because there are paths that may cause the
+flusher thread to block (eg if systemd freezes the user session cgroups
+first, which freezes the fuse daemon, before invoking the kernel
+suspend. The kernel suspend triggers ->write_node() which on fuse issues
+a synchronous setattr request, which cannot be processed since the
+daemon is frozen. Or if the daemon is buggy and cannot properly complete
+writeback, initiating writeback on a dirty folio already under writeback
+leads to writeback_get_folio() -> folio_prepare_writeback() ->
+unconditional wait on writeback to finish, which will cause a hang).
+This commit restores fuse to its prior behavior before tmp folios were
+removed, where sync was essentially a no-op.
+
+[1] https://lore.kernel.org/linux-fsdevel/CAJnrk1a-asuvfrbKXbEwwDSctvemF+6zfhdnuzO65Pt8HsFSRw@mail.gmail.com/T/#m632c4648e9cafc4239299887109ebd880ac6c5c1
+
+Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+Reported-by: John <therealgraysky@proton.me>
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Link: https://patch.msgid.link/20260320005145.2483161-2-joannelkoong@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/crypto.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/fs-writeback.c       |   18 ++++++++++++------
+ fs/fuse/file.c          |    4 +---
+ fs/fuse/inode.c         |    1 +
+ include/linux/fs.h      |    1 +
+ include/linux/pagemap.h |   11 -----------
+ 5 files changed, 15 insertions(+), 20 deletions(-)
 
---- a/fs/ext4/crypto.c
-+++ b/fs/ext4/crypto.c
-@@ -169,10 +169,17 @@ static int ext4_set_context(struct inode
- 	 */
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2735,13 +2735,8 @@ static void wait_sb_inodes(struct super_
+ 		 * The mapping can appear untagged while still on-list since we
+ 		 * do not have the mapping lock. Skip it here, wb completion
+ 		 * will remove it.
+-		 *
+-		 * If the mapping does not have data integrity semantics,
+-		 * there's no need to wait for the writeout to complete, as the
+-		 * mapping cannot guarantee that data is persistently stored.
+ 		 */
+-		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+-		    mapping_no_data_integrity(mapping))
++		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+ 			continue;
  
- 	if (handle) {
-+		/*
-+		 * Since the inode is new it is ok to pass the
-+		 * XATTR_CREATE flag. This is necessary to match the
-+		 * remaining journal credits check in the set_handle
-+		 * function with the credits allocated for the new
-+		 * inode.
-+		 */
- 		res = ext4_xattr_set_handle(handle, inode,
- 					    EXT4_XATTR_INDEX_ENCRYPTION,
- 					    EXT4_XATTR_NAME_ENCRYPTION_CONTEXT,
--					    ctx, len, 0);
-+					    ctx, len, XATTR_CREATE);
- 		if (!res) {
- 			ext4_set_inode_flag(inode, EXT4_INODE_ENCRYPT);
- 			ext4_clear_inode_state(inode,
+ 		spin_unlock_irq(&sb->s_inode_wblist_lock);
+@@ -2876,6 +2871,17 @@ void sync_inodes_sb(struct super_block *
+ 	 */
+ 	if (bdi == &noop_backing_dev_info)
+ 		return;
++
++	/*
++	 * If the superblock has SB_I_NO_DATA_INTEGRITY set, there's no need to
++	 * wait for the writeout to complete, as the filesystem cannot guarantee
++	 * data persistence on sync. Just kick off writeback and return.
++	 */
++	if (sb->s_iflags & SB_I_NO_DATA_INTEGRITY) {
++		wakeup_flusher_threads_bdi(bdi, WB_REASON_SYNC);
++		return;
++	}
++
+ 	WARN_ON(!rwsem_is_locked(&sb->s_umount));
+ 
+ 	/* protect against inode wb switch, see inode_switch_wbs_work_fn() */
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3146,10 +3146,8 @@ void fuse_init_file_inode(struct inode *
+ 
+ 	inode->i_fop = &fuse_file_operations;
+ 	inode->i_data.a_ops = &fuse_file_aops;
+-	if (fc->writeback_cache) {
++	if (fc->writeback_cache)
+ 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
+-		mapping_set_no_data_integrity(&inode->i_data);
+-	}
+ 
+ 	INIT_LIST_HEAD(&fi->write_files);
+ 	INIT_LIST_HEAD(&fi->queued_writes);
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1706,6 +1706,7 @@ static void fuse_sb_defaults(struct supe
+ 	sb->s_export_op = &fuse_export_operations;
+ 	sb->s_iflags |= SB_I_IMA_UNVERIFIABLE_SIGNATURE;
+ 	sb->s_iflags |= SB_I_NOIDMAP;
++	sb->s_iflags |= SB_I_NO_DATA_INTEGRITY;
+ 	if (sb->s_user_ns != &init_user_ns)
+ 		sb->s_iflags |= SB_I_UNTRUSTED_MOUNTER;
+ 	sb->s_flags &= ~(SB_NOSEC | SB_I_VERSION);
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1419,6 +1419,7 @@ extern int send_sigurg(struct file *file
+ #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
+ #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
+ #define SB_I_ALLOW_HSM	0x00004000	/* Allow HSM events on this superblock */
++#define SB_I_NO_DATA_INTEGRITY	0x00008000 /* fs cannot guarantee data persistence on sync */
+ 
+ /* Possible states of 'frozen' field */
+ enum {
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -213,7 +213,6 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
+-	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -349,16 +348,6 @@ static inline bool mapping_writeback_may
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+ }
+ 
+-static inline void mapping_set_no_data_integrity(struct address_space *mapping)
+-{
+-	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+-}
+-
+-static inline bool mapping_no_data_integrity(const struct address_space *mapping)
+-{
+-	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+-}
+-
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+ {
+ 	return mapping->gfp_mask;
 
 
 
