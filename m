@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKlbLmMAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:03 +0200
+	id wA3dDlr8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8917436E241
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FEB36D629
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F3C6630AE6C5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 627A531168AA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4251C2FC89C;
-	Tue, 31 Mar 2026 17:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9033342EEA2;
+	Tue, 31 Mar 2026 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp10pFu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWDVSJ4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E582FD7BC;
-	Tue, 31 Mar 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5381D42B756;
+	Tue, 31 Mar 2026 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976492; cv=none; b=ANjT+HnznaqjexDvZrUqj30bazvNCNRuNxepxf9DiJ0kcl2b4Gw9M/Un2by+YIotCBjwHqb9mpFWVEsmXu8+uwGyak7jgbFZLzexwohYt9BoP3lEjD4Vyf1bJkORGGKidaPbV+HKd/n1f2hJd9T1VMysofOdzk9JEtS5+A6DMRw=
+	t=1774975151; cv=none; b=bOhNAOu5Gr6lnjuv2v6w04HX4c/Zla4pZrp8oD5Yyyl7ei9CR02YheRJ0BCttBksUqZn68MWQ+22W7LoH9u4MXcCyX9K8Ht84iBCExw7+vgy6vxPjQGZU7kngt2kN5HGWUMLjH3z+QB7kucylUOr1iBAvoWh8sr62d5HRepi2ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976492; c=relaxed/simple;
-	bh=IlBUifvO/s4XKuIfZk1kYhsi11XuctpnTAQ6M0jGaUY=;
+	s=arc-20240116; t=1774975151; c=relaxed/simple;
+	bh=Y5RFvPUwii6gSBEF/aZr2+JxJSfoCkeWfWMrFt+6o1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtYN1RUKA+xjAxWkGmPjYLPATrGhQ12S0K8pD96upvEVQsOm5bPZpK2eGlaX3UlREf04O6cXJF01uh9GWq/nek16g0XuwLOlyqF+kBiuIW4m13j+XoWLZxo3qZyJiMn8ih1ygiBg3gXUg6eiMMaOHSTUufPl/nJ8kqUc+3zS4oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp10pFu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F9AC19423;
-	Tue, 31 Mar 2026 17:01:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KY5a8fC+0WAni31eikFDWCDUcK3oJTgfTynEzcFM2P/EhLV1ZYOV7leLmaYebrUO4x1BLsbYJ2gvMyKDaeoIRJBiFW34xu8c6lDd9ujMu4Ees+behDdpIesaxlFRnVfGs0yp2iyqXxdopaA+pTxXbWCo8G2qc5qF4g9cBTZs+LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWDVSJ4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02B3C19423;
+	Tue, 31 Mar 2026 16:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976492;
-	bh=IlBUifvO/s4XKuIfZk1kYhsi11XuctpnTAQ6M0jGaUY=;
+	s=korg; t=1774975151;
+	bh=Y5RFvPUwii6gSBEF/aZr2+JxJSfoCkeWfWMrFt+6o1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tp10pFu7tpEx0is4q3GAvcc7WZujNUG1mN4pJnSbeRzpn9EVBE6UeTG2B7gBrt2TD
-	 Dwls+Dx0odnSuPzPDhGf9/ezeLR5Y8FZzjOxfR3FN4HA7zRDJuD3rCH6PIQkvhusNV
-	 2NLwwst8fOFM4iUzcj9tOhVI9XMd6+DaOdlfbmvg=
+	b=OWDVSJ4iFbARsLnbHAAvGOHl7uxd9NjUPK715TEuSLU3NsEFBhVvBlPlmmqAX8Srh
+	 6j4JQNZoOhzLmMna/IVNsceblDvYVBqY8aVK8mPtaCxBuhhtJFu8V6chFyaxmX84nH
+	 pafitQrI6hBCacJUiDoenaBcbrS/YYtmi1gHr86s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sanman Pradhan <psanman@juniper.net>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 113/309] virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
+Subject: [PATCH 6.19 183/342] hwmon: (adm1177) fix sysfs ABI violation and current unit conversion
 Date: Tue, 31 Mar 2026 18:20:16 +0200
-Message-ID: <20260331161757.645439547@linuxfoundation.org>
+Message-ID: <20260331161805.736520303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,170 +64,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232338-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231819-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8917436E241
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email]
+X-Rspamd-Queue-Id: A1FEB36D629
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 38ec410b99a5ee6566f75650ce3d4fd632940fd0 ]
+[ Upstream commit bf08749a6abb6d1959bfdc0edc32c640df407558 ]
 
-The commit be50da3e9d4a ("net: virtio_net: implement exact header length
-guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
-feature in virtio-net.
+The adm1177 driver exposes the current alert threshold through
+hwmon_curr_max_alarm. This violates the hwmon sysfs ABI, where
+*_alarm attributes are read-only status flags and writable thresholds
+must use currN_max.
 
-This feature requires virtio-net to set hdr_len to the actual header
-length of the packet when transmitting, the number of
-bytes from the start of the packet to the beginning of the
-transport-layer payload.
+The driver also stores the threshold internally in microamps, while
+currN_max is defined in milliamps. Convert the threshold accordingly
+on both the read and write paths.
 
-However, in practice, hdr_len was being set using skb_headlen(skb),
-which is clearly incorrect. This commit fixes that issue.
+Widen the cached threshold and related calculations to 64 bits so
+that small shunt resistor values do not cause truncation or overflow.
+Also use 64-bit arithmetic for the mA/uA conversions, clamp writes
+to the range the hardware can represent, and propagate failures from
+adm1177_write_alert_thr() instead of silently ignoring them.
 
-Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length guest feature")
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20260320021818.111741-2-xuanzhuo@linux.alibaba.com
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Update the hwmon documentation to reflect the attribute rename and
+the correct units returned by the driver.
+
+Fixes: 09b08ac9e8d5 ("hwmon: (adm1177) Add ADM1177 Hot Swap Controller and Digital Power Monitor driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20260325051246.28262-1-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun_vnet.h     |  2 +-
- drivers/net/virtio_net.c   |  6 +++++-
- include/linux/virtio_net.h | 34 ++++++++++++++++++++++++++++++----
- 3 files changed, 36 insertions(+), 6 deletions(-)
+ Documentation/hwmon/adm1177.rst |  8 ++---
+ drivers/hwmon/adm1177.c         | 54 +++++++++++++++++++--------------
+ 2 files changed, 35 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-index a5f93b6c4482c..fa5cab9d3e55c 100644
---- a/drivers/net/tun_vnet.h
-+++ b/drivers/net/tun_vnet.h
-@@ -244,7 +244,7 @@ tun_vnet_hdr_tnl_from_skb(unsigned int flags,
+diff --git a/Documentation/hwmon/adm1177.rst b/Documentation/hwmon/adm1177.rst
+index 1c85a2af92bf7..375f6d6e03a7d 100644
+--- a/Documentation/hwmon/adm1177.rst
++++ b/Documentation/hwmon/adm1177.rst
+@@ -27,10 +27,10 @@ for details.
+ Sysfs entries
+ -------------
  
- 	if (virtio_net_hdr_tnl_from_skb(skb, tnl_hdr, has_tnl_offload,
- 					tun_vnet_is_little_endian(flags),
--					vlan_hlen, true)) {
-+					vlan_hlen, true, false)) {
- 		struct virtio_net_hdr_v1 *hdr = &tnl_hdr->hash_hdr.hdr;
- 		struct skb_shared_info *sinfo = skb_shinfo(skb);
+-The following attributes are supported. Current maxim attribute
++The following attributes are supported. Current maximum attribute
+ is read-write, all other attributes are read-only.
  
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index b67dbe346c807..9f855d196ae8f 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3326,8 +3326,12 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
- 	struct virtio_net_hdr_v1_hash_tunnel *hdr;
- 	int num_sg;
- 	unsigned hdr_len = vi->hdr_len;
-+	bool feature_hdrlen;
- 	bool can_push;
+-in0_input		Measured voltage in microvolts.
++in0_input		Measured voltage in millivolts.
  
-+	feature_hdrlen = virtio_has_feature(vi->vdev,
-+					    VIRTIO_NET_F_GUEST_HDRLEN);
-+
- 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
+-curr1_input		Measured current in microamperes.
+-curr1_max_alarm		Overcurrent alarm in microamperes.
++curr1_input		Measured current in milliamperes.
++curr1_max		Overcurrent shutdown threshold in milliamperes.
+diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
+index 8b2c965480e3f..7888afe8dafd6 100644
+--- a/drivers/hwmon/adm1177.c
++++ b/drivers/hwmon/adm1177.c
+@@ -10,6 +10,8 @@
+ #include <linux/hwmon.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
++#include <linux/math64.h>
++#include <linux/minmax.h>
+ #include <linux/module.h>
+ #include <linux/regulator/consumer.h>
  
- 	/* Make sure it's safe to cast between formats */
-@@ -3347,7 +3351,7 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+@@ -33,7 +35,7 @@
+ struct adm1177_state {
+ 	struct i2c_client	*client;
+ 	u32			r_sense_uohm;
+-	u32			alert_threshold_ua;
++	u64			alert_threshold_ua;
+ 	bool			vrange_high;
+ };
  
- 	if (virtio_net_hdr_tnl_from_skb(skb, hdr, vi->tx_tnl,
- 					virtio_is_little_endian(vi->vdev), 0,
--					false))
-+					false, feature_hdrlen))
- 		return -EPROTO;
- 
- 	if (vi->mergeable_rx_bufs)
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 75dabb763c650..361b60c8be680 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -207,6 +207,23 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
+@@ -48,7 +50,7 @@ static int adm1177_write_cmd(struct adm1177_state *st, u8 cmd)
  }
  
-+/* This function must be called after virtio_net_hdr_from_skb(). */
-+static inline void __virtio_net_set_hdrlen(const struct sk_buff *skb,
-+					   struct virtio_net_hdr *hdr,
-+					   bool little_endian)
-+{
-+	u16 hdr_len;
-+
-+	hdr_len = skb_transport_offset(skb);
-+
-+	if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+		hdr_len += sizeof(struct udphdr);
-+	else
-+		hdr_len += tcp_hdrlen(skb);
-+
-+	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
-+}
-+
- static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
- 					  struct virtio_net_hdr *hdr,
- 					  bool little_endian,
-@@ -385,7 +402,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
- 			    bool tnl_hdr_negotiated,
- 			    bool little_endian,
- 			    int vlan_hlen,
--			    bool has_data_valid)
-+			    bool has_data_valid,
-+			    bool feature_hdrlen)
+ static int adm1177_write_alert_thr(struct adm1177_state *st,
+-				   u32 alert_threshold_ua)
++				   u64 alert_threshold_ua)
  {
- 	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
- 	unsigned int inner_nh, outer_th;
-@@ -394,9 +412,17 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 	u64 val;
+ 	int ret;
+@@ -91,8 +93,8 @@ static int adm1177_read(struct device *dev, enum hwmon_sensor_types type,
+ 			*val = div_u64((105840000ull * dummy),
+ 				       4096 * st->r_sense_uohm);
+ 			return 0;
+-		case hwmon_curr_max_alarm:
+-			*val = st->alert_threshold_ua;
++		case hwmon_curr_max:
++			*val = div_u64(st->alert_threshold_ua, 1000);
+ 			return 0;
+ 		default:
+ 			return -EOPNOTSUPP;
+@@ -126,9 +128,10 @@ static int adm1177_write(struct device *dev, enum hwmon_sensor_types type,
+ 	switch (type) {
+ 	case hwmon_curr:
+ 		switch (attr) {
+-		case hwmon_curr_max_alarm:
+-			adm1177_write_alert_thr(st, val);
+-			return 0;
++		case hwmon_curr_max:
++			val = clamp_val(val, 0,
++					div_u64(105840000ULL, st->r_sense_uohm));
++			return adm1177_write_alert_thr(st, (u64)val * 1000);
+ 		default:
+ 			return -EOPNOTSUPP;
+ 		}
+@@ -156,7 +159,7 @@ static umode_t adm1177_is_visible(const void *data,
+ 			if (st->r_sense_uohm)
+ 				return 0444;
+ 			return 0;
+-		case hwmon_curr_max_alarm:
++		case hwmon_curr_max:
+ 			if (st->r_sense_uohm)
+ 				return 0644;
+ 			return 0;
+@@ -170,7 +173,7 @@ static umode_t adm1177_is_visible(const void *data,
  
- 	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
- 						    SKB_GSO_UDP_TUNNEL_CSUM);
--	if (!tnl_gso_type)
--		return virtio_net_hdr_from_skb(skb, hdr, little_endian,
--					       has_data_valid, vlan_hlen);
-+	if (!tnl_gso_type) {
-+		ret = virtio_net_hdr_from_skb(skb, hdr, little_endian,
-+					      has_data_valid, vlan_hlen);
+ static const struct hwmon_channel_info * const adm1177_info[] = {
+ 	HWMON_CHANNEL_INFO(curr,
+-			   HWMON_C_INPUT | HWMON_C_MAX_ALARM),
++			   HWMON_C_INPUT | HWMON_C_MAX),
+ 	HWMON_CHANNEL_INFO(in,
+ 			   HWMON_I_INPUT),
+ 	NULL
+@@ -192,7 +195,8 @@ static int adm1177_probe(struct i2c_client *client)
+ 	struct device *dev = &client->dev;
+ 	struct device *hwmon_dev;
+ 	struct adm1177_state *st;
+-	u32 alert_threshold_ua;
++	u64 alert_threshold_ua;
++	u32 prop;
+ 	int ret;
+ 
+ 	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
+@@ -208,22 +212,26 @@ static int adm1177_probe(struct i2c_client *client)
+ 	if (device_property_read_u32(dev, "shunt-resistor-micro-ohms",
+ 				     &st->r_sense_uohm))
+ 		st->r_sense_uohm = 0;
+-	if (device_property_read_u32(dev, "adi,shutdown-threshold-microamp",
+-				     &alert_threshold_ua)) {
+-		if (st->r_sense_uohm)
+-			/*
+-			 * set maximum default value from datasheet based on
+-			 * shunt-resistor
+-			 */
+-			alert_threshold_ua = div_u64(105840000000,
+-						     st->r_sense_uohm);
+-		else
+-			alert_threshold_ua = 0;
++	if (!device_property_read_u32(dev, "adi,shutdown-threshold-microamp",
++				      &prop)) {
++		alert_threshold_ua = prop;
++	} else if (st->r_sense_uohm) {
++		/*
++		 * set maximum default value from datasheet based on
++		 * shunt-resistor
++		 */
++		alert_threshold_ua = div_u64(105840000000ULL,
++					     st->r_sense_uohm);
++	} else {
++		alert_threshold_ua = 0;
+ 	}
+ 	st->vrange_high = device_property_read_bool(dev,
+ 						    "adi,vrange-high-enable");
+-	if (alert_threshold_ua && st->r_sense_uohm)
+-		adm1177_write_alert_thr(st, alert_threshold_ua);
++	if (alert_threshold_ua && st->r_sense_uohm) {
++		ret = adm1177_write_alert_thr(st, alert_threshold_ua);
 +		if (ret)
 +			return ret;
-+
-+		if (feature_hdrlen && hdr->hdr_len)
-+			__virtio_net_set_hdrlen(skb, hdr, little_endian);
-+
-+		return ret;
 +	}
  
- 	/* Tunnel support not negotiated but skb ask for it. */
- 	if (!tnl_hdr_negotiated)
+ 	ret = adm1177_write_cmd(st, ADM1177_CMD_V_CONT |
+ 				    ADM1177_CMD_I_CONT |
 -- 
-2.51.0
+2.53.0
 
 
 
