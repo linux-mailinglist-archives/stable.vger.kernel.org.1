@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id II3ZI3r4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:18 +0200
+	id uHj6OOf+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2504836CE27
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CB036DD97
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC6913067CAD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8CA0B30CC5FB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9B0423A7C;
-	Tue, 31 Mar 2026 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0513426D0B;
+	Tue, 31 Mar 2026 16:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBRm/XAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs/BWNOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021D13E95A9;
-	Tue, 31 Mar 2026 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FF94266BC;
+	Tue, 31 Mar 2026 16:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974688; cv=none; b=astvUzT+CJaPXsDxfECVWM21+7Y0bJ7Bi2Z7vxGY9d67rw5PCk5cIhGWGovf3xIDMQWIeFXRrb3OIj1eNlpbnG63mqzpFuHlfQe+YafYJRVVSMQHVmhWoTl90hp9rVqyS7iED1PpVzV5JmUdC7t4BhVZhPgop7l3Jl8Nl7stPTQ=
+	t=1774976047; cv=none; b=nhIEt5IQaqBO+ucYEU07jq/wnd5Y7ZiNu8OgGc6RVusheJkiynfjQ2HqSJS8vn4iTLGTvvYj4THt53v5BC3NpztMbSLULnBn9viNXA/Y/Qim+KJKv6M8y97mHfGj2WVpFl8JEhqprBlmdZpM19VKcKHgMD9+gxWiQnY/ch4XNv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974688; c=relaxed/simple;
-	bh=cQLTzSu9nGejXDCZerhDhZjd5Nn4knyXDeZFbImQTk0=;
+	s=arc-20240116; t=1774976047; c=relaxed/simple;
+	bh=bpwsubwuHvmTFWfU8PH1uagJj5ebFzkoT5TTGk0fxwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgqvKNmH1DtyVcg0yX6hoBQ6TZl2lsdB151cPO0rnni2WoqmqJgDbCH9Z3k9Sf8bR1l1pPsBfN3TGElWwnZdf93z2v3tZYT1nPRGL7oq+xxhKb26pf2guOtQ+soy/hTW9aYPJmxuUM3OQvredwXV9Jhh+7Hi6D+mtmlpIBTfr5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBRm/XAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1CEC19423;
-	Tue, 31 Mar 2026 16:31:27 +0000 (UTC)
+	 MIME-Version; b=VlOCy+RGkzw9xd1svpqGJRMOQnNbQXM5SBtUbKnR6M/F8qt7/3DgnKZoW1O7sCWFhx01uvbl3HiRCAB0f7ubM/5OFxMR+xg91iSxxnbiv6ZOgPmYo9qtEyv8mY+VRFUelQOD5cz+wcCBQ9piO6VQkqNrZUUGYv50wnL4uU7dQQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs/BWNOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1941BC19424;
+	Tue, 31 Mar 2026 16:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974687;
-	bh=cQLTzSu9nGejXDCZerhDhZjd5Nn4knyXDeZFbImQTk0=;
+	s=korg; t=1774976047;
+	bh=bpwsubwuHvmTFWfU8PH1uagJj5ebFzkoT5TTGk0fxwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBRm/XAyY0CQQ/KZ+CB/PEf8gNsHBgEAWEK7OYxqLpNI0VzY4wB5DHEOV3QhePeyY
-	 4nndRc6KmIYpU4Eb9hdHPSVZDMtLdJ8ogjEcF6bW0oe2FrAUTD2u1aOzBA2Gwc2vD0
-	 5PTNRDJdWWoHyIgy1zHiAQPxIAMkHbG9Upo784M4=
+	b=Gs/BWNOLHYPg3qDRebKz3Nk2a1SgzUx/yCIIgR5TapD+RZRPj2ggMQWd3gUmwqWk1
+	 j7mQcV8KEiQbw3RRdzaWQZK+fKtvYEc9qBsfsxJt9QYowPe0/Km2rVOPwSRXad9mZH
+	 CCoRbvHJWzddf3iaAkcGeGbFQ2f+yMkzUH8nokKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Andreas Gruenbacher" <agruenba@redhat.com>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 6.6 152/175] gfs2: Fix unlikely race in gdlm_put_lock
-Date: Tue, 31 Mar 2026 18:22:16 +0200
-Message-ID: <20260331161735.376057205@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 187/244] ext4: make recently_deleted() properly work with lazy itable initialization
+Date: Tue, 31 Mar 2026 18:22:17 +0200
+Message-ID: <20260331161748.662879969@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +67,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231640-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232166-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2504836CE27
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.cz:email]
+X-Rspamd-Queue-Id: A0CB036DD97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 28c4d9bc0708956c1a736a9e49fee71b65deee81 ]
+commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
 
-In gdlm_put_lock(), there is a small window of time in which the
-DFL_UNMOUNT flag has been set but the lockspace hasn't been released,
-yet.  In that window, dlm may still call gdlm_ast() and gdlm_bast().
-To prevent it from dereferencing freed glock objects, only free the
-glock if the lockspace has actually been released.
+recently_deleted() checks whether inode has been used in the near past.
+However this can give false positive result when inode table is not
+initialized yet and we are in fact comparing to random garbage (or stale
+itable block of a filesystem before mkfs). Ultimately this results in
+uninitialized inodes being skipped during inode allocation and possibly
+they are never initialized and thus e2fsck complains.  Verify if the
+inode has been initialized before checking for dtime.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andrew Price <anprice@redhat.com>
-[ Minor context change fixed. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/lock_dlm.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/ialloc.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -311,11 +311,6 @@ static void gdlm_put_lock(struct gfs2_gl
- 	gfs2_sbstats_inc(gl, GFS2_LKS_DCOUNT);
- 	gfs2_update_request_times(gl);
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -686,6 +686,12 @@ static int recently_deleted(struct super
+ 	if (unlikely(!gdp))
+ 		return 0;
  
--	/* don't want to call dlm if we've unmounted the lock protocol */
--	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
--		gfs2_glock_free(gl);
--		return;
--	}
- 	/* don't want to skip dlm_unlock writing the lvb when lock has one */
- 
- 	if (test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags) &&
-@@ -332,6 +327,11 @@ again:
- 		goto again;
- 	}
- 
-+	if (error == -ENODEV) {
-+		gfs2_glock_free(gl);
-+		return;
-+	}
++	/* Inode was never used in this filesystem? */
++	if (ext4_has_group_desc_csum(sb) &&
++	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
++	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
++		return 0;
 +
- 	if (error) {
- 		fs_err(sdp, "gdlm_unlock %x,%llx err=%d\n",
- 		       gl->gl_name.ln_type,
+ 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
+ 		       (ino / inodes_per_block));
+ 	if (!bh || !buffer_uptodate(bh))
 
 
 
