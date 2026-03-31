@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNFiKVcCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:20:23 +0200
+	id uO8aH30BzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E555036E820
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:20:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B9C36E60E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F3E4313D6D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3F3A32A40A6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F9E423A62;
-	Tue, 31 Mar 2026 16:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CC9426EA1;
+	Tue, 31 Mar 2026 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/Qbq3/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnJ+ldLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D43C3F8E04;
-	Tue, 31 Mar 2026 16:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8972426D26;
+	Tue, 31 Mar 2026 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975930; cv=none; b=i58gTCZ56ewbfWK6YPryXzVv5YzZyRBYitEVSLzocbj0QzaPaDg+oySIZD5ZCBnKLTpHbPy55WO0RKxZA8WDkC4nbbN0XhGjlDq6DeWXW5oeKHqHoIRlXNNxWHaUvVELviHLmceiBC7v0S51TIEKRvGeQhX0QRY7U+JzMBVrd6Q=
+	t=1774975262; cv=none; b=DhrkK+IlfjZ3R21ht6Xib3kbvMFolPtAXikmAtdrMwQ3aSd/MXE+0cBNTfRVY4m6nqWR/qzTO2LR3FEKylp18Cu2Hk+oQFiMzA6ty5ebQO/qkEi3SmcxUbnkBxGhn14sx63zS2kGUN4MlxPn1Bm+agnJnsKl8UYhvU/lHAGaXKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975930; c=relaxed/simple;
-	bh=t4xlBt7HKK3bGhh8TQgdfmLkAdqoKsfJaDmbkl+JBoA=;
+	s=arc-20240116; t=1774975262; c=relaxed/simple;
+	bh=Dea2W5bTg+3QmNJ/gVpH/uQY4zX1cWX6RjkADMUHgto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riWuer/34kyKsgITfg1DXkc3nepezHtrt4vFgyrCPNHULw5PmMIt8vJE6FSJBmcfWn8hCpHqT+5U3P/OwMSv9gSDy4D3jokHscrofmbF1veeq97bE4og056/qibT6ABCVZRfaTSgABnkkiwpVGbCBwqAvCYGAkovdQ5uSahfm6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/Qbq3/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61CFC2BCB1;
-	Tue, 31 Mar 2026 16:52:09 +0000 (UTC)
+	 MIME-Version; b=Pce7quyqZ9VqDqpqQn8n3/cmdO2D45JzrGISozc1r043ZGP/P4r6YxAwTTF6IPynEVvF3gudUbKRXe5hPdiYD/Ao0nJgPPEVPRj4+10wTRBGhpiu0jjNl6PrGfUicKpP84N28eD/fnU52T9BdtGRooBszkp4UlsUT7LnJRgxbB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnJ+ldLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBACC19423;
+	Tue, 31 Mar 2026 16:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975930;
-	bh=t4xlBt7HKK3bGhh8TQgdfmLkAdqoKsfJaDmbkl+JBoA=;
+	s=korg; t=1774975262;
+	bh=Dea2W5bTg+3QmNJ/gVpH/uQY4zX1cWX6RjkADMUHgto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/Qbq3/na8KYZxUWILz/cUySeO5CfSxCkviHF1sUISeV4ZIHTnqaIfQHhx/9CkHI4
-	 GH8HsDQPeyGssrBXFx9pPofiNAkFh+GWaQd1pgdYuzgFBjLUHExjdgprBFInppdSRm
-	 WWs0ezym5zYz0qIAV5ioO5j08IfYngotaEACzMrM=
+	b=OnJ+ldLQWoiMDeWDS3Gog3ith2zv1Zy5NNNvEPD0WMrnMcFBnNXmCu+g1damnz0SM
+	 plQAKbcMxUu/HldbcuHvHaIhpF7H97gvYCs0Bg7TVwYZSRlyY5f1Izw12igS/40ecg
+	 M8WhIG3ppFv/9mOhlocwUbFhMs8yBiUXKIKycf7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/244] RDMA/irdma: Initialize free_qp completion before using it
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.19 225/342] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable sysfs attributes
 Date: Tue, 31 Mar 2026 18:20:58 +0200
-Message-ID: <20260331161745.656296750@linuxfoundation.org>
+Message-ID: <20260331161807.247726441@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,78 +67,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232121-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231863-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: E555036E820
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 07B9C36E60E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 11a95521fb93c91e2d4ef9d53dc80ef0a755549b ]
+commit 3075a3951f7708da5a8ab47b0b7d068a32f69e58 upstream.
 
-In irdma_create_qp, if ib_copy_to_udata fails, it will call
-irdma_destroy_qp to clean up which will attempt to wait on
-the free_qp completion, which is not initialized yet. Fix this
-by initializing the completion before the ib_copy_to_udata call.
+The custom avs0_enable and avs1_enable sysfs attributes access PMBus
+registers through the exported API helpers (pmbus_read_byte_data,
+pmbus_read_word_data, pmbus_write_word_data, pmbus_update_byte_data)
+without holding the PMBus update_lock mutex. These exported helpers do
+not acquire the mutex internally, unlike the core's internal callers
+which hold the lock before invoking them.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The store callback is especially vulnerable: it performs a multi-step
+read-modify-write sequence (read VOUT_COMMAND, write VOUT_COMMAND, then
+update OPERATION) where concurrent access from another thread could
+interleave and corrupt the register state.
+
+Add pmbus_lock_interruptible()/pmbus_unlock() around both the show and
+store callbacks to serialize PMBus register access with the rest of the
+driver.
+
+Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260319173055.125271-3-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/isl68137.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index ac01b6c10327e..7514c5e54e026 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -1008,6 +1008,7 @@ static int irdma_create_qp(struct ib_qp *ibqp,
- 	spin_lock_init(&iwqp->sc_qp.pfpdu.lock);
- 	iwqp->sig_all = init_attr->sq_sig_type == IB_SIGNAL_ALL_WR;
- 	rf->qp_table[qp_num] = iwqp;
-+	init_completion(&iwqp->free_qp);
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -96,7 +96,15 @@ static ssize_t isl68137_avs_enable_show_
+ 					     int page,
+ 					     char *buf)
+ {
+-	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
++	int val;
++
++	val = pmbus_lock_interruptible(client);
++	if (val)
++		return val;
++
++	val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
++
++	pmbus_unlock(client);
  
- 	if (rdma_protocol_roce(&iwdev->ibdev, 1)) {
- 		if (dev->ws_add(&iwdev->vsi, 0)) {
-@@ -1042,7 +1043,6 @@ static int irdma_create_qp(struct ib_qp *ibqp,
- 		}
+ 	if (val < 0)
+ 		return val;
+@@ -118,6 +126,10 @@ static ssize_t isl68137_avs_enable_store
+ 
+ 	op_val = result ? ISL68137_VOUT_AVS : 0;
+ 
++	rc = pmbus_lock_interruptible(client);
++	if (rc)
++		return rc;
++
+ 	/*
+ 	 * Writes to VOUT setpoint over AVSBus will persist after the VRM is
+ 	 * switched to PMBus control. Switching back to AVSBus control
+@@ -129,17 +141,20 @@ static ssize_t isl68137_avs_enable_store
+ 		rc = pmbus_read_word_data(client, page, 0xff,
+ 					  PMBUS_VOUT_COMMAND);
+ 		if (rc < 0)
+-			return rc;
++			goto unlock;
+ 
+ 		rc = pmbus_write_word_data(client, page, PMBUS_VOUT_COMMAND,
+ 					   rc);
+ 		if (rc < 0)
+-			return rc;
++			goto unlock;
  	}
  
--	init_completion(&iwqp->free_qp);
- 	return 0;
+ 	rc = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
+ 				    ISL68137_VOUT_AVS, op_val);
  
- error:
--- 
-2.53.0
-
++unlock:
++	pmbus_unlock(client);
++
+ 	return (rc < 0) ? rc : count;
+ }
+ 
 
 
 
