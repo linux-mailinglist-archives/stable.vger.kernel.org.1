@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJ4HNlsIzGlaNgYAu9opvQ
-	(envelope-from <stable+bounces-232488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:03 +0200
+	id wK/UC3X8y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A31C36F484
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FE036D687
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4348A30EA933
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E85B730E1F13
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEEB30B51A;
-	Tue, 31 Mar 2026 17:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68306421892;
+	Tue, 31 Mar 2026 16:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VJQ9WP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8FqwxHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621FA30AABE;
-	Tue, 31 Mar 2026 17:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD243EF0A2;
+	Tue, 31 Mar 2026 16:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976877; cv=none; b=ph12X19+3zUBb1oXnYWzOSVPLug5Oid56QFteJtPAWgTwenrULrLz8tgGrKupn5IyDlpHufCQ67TexCTTMYzYTCyQFMIMG57FlZQYU4+NAmkHKJ9W1L6A7a/oMkbq7hdD+uuD83QBIZ603Ovq8gs9VHupQPaQkd+J/sqWDsaaJU=
+	t=1774975537; cv=none; b=bPnmIcJN3pH+Syeif6sB43NOg9JyUO6pBSQswRM/Aw8vz9vh+Xh0bit8QCevH+uyX2Orduqdbu8IonK2RJ7ynE5XvWc9p0gE5AwB5YS15xRAwMJpwsf9oJxPyMbAlHPisPebbE1/vFVC28cteMgKkvTLKNmC6x0BqpEDfGeeaCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976877; c=relaxed/simple;
-	bh=fiF4x6KpwYFHTSL9jNU7iuQC3BN5XfBIfpbWOdVyO7U=;
+	s=arc-20240116; t=1774975537; c=relaxed/simple;
+	bh=4NOHuxz5WgPJqgbG00MXrKiNbxJnmSVse5gifrCZWhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZYYa1VWz6KDyO19hE5IcVe0bPJVmD7oVToYM5qNUFqLMDRtZ0jW+/vqYNWn018rbp2HgFx4V9+8P27xmdEmtE2U4dylSSv4+TNDABrekG7w+xQELHQHd5y6t8SW9GG5h5Zr+kVTtrbJcc8/07DCpVZ3Tm2Zohl0qqvEs60NKm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VJQ9WP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCC1C19424;
-	Tue, 31 Mar 2026 17:07:56 +0000 (UTC)
+	 MIME-Version; b=mc1nz1Swti9GjSDYhYDUerhj7kmanftC6jvJgorYaldVNQmUg8DrHRbjpf4dJ0AnZgGS2vwKdSPIzaEN6/01LKwp8NRVqUQDNjQpNLRTyuR3Xs/GA2zzUTdIErp7ev5k4odcgkc/CIpMlAxrMEOeSjtxhjkhxkQ5EKNKkWnSDJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8FqwxHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4D5C2BCB1;
+	Tue, 31 Mar 2026 16:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976877;
-	bh=fiF4x6KpwYFHTSL9jNU7iuQC3BN5XfBIfpbWOdVyO7U=;
+	s=korg; t=1774975537;
+	bh=4NOHuxz5WgPJqgbG00MXrKiNbxJnmSVse5gifrCZWhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VJQ9WP3ECJw6aYN3vKv+nyT0kyo4qXfi+s1Sx5FU1iL4FvSnGMKEq+jDIL1D/Jnq
-	 r1t9ozg9O03XbgDrxXMpeWRQCEqcTgZ06BF21gd55HuwSsUlXIpR4xZxhIvBccyMQ4
-	 8ANlpsniTUZjj0W+FlEgIK4RIt0wqM/NddizhU9c=
+	b=P8FqwxHSh9CpRbSgI+qrnS+eO7O0uNYOhr4z7i9v78BmQe5b/7gs7pq4MCeeSIVYk
+	 uv9oiriPIAuD/nH1CjozHFbOQVo8wXHyMDAeveB0ghftdDitVb/88r4ZJGN1FeOp1v
+	 7Yv7HQvTagS0Hx+oNB0C3DpB5k+oaePZ7OEm7D5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 262/309] ext4: test if inodes all dirty pages are submitted to disk
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 332/342] btrfs: fix leak of kobject name for sub-group space_info
 Date: Tue, 31 Mar 2026 18:22:45 +0200
-Message-ID: <20260331161803.210154552@linuxfoundation.org>
+Message-ID: <20260331161811.122196050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232488-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231970-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,63 +86,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5A31C36F484
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,wdc.com:email]
+X-Rspamd-Queue-Id: 99FE036D687
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit 73bf12adbea10b13647864cd1c62410d19e21086 upstream.
+[ Upstream commit a4376d9a5d4c9610e69def3fc0b32c86a7ab7a41 ]
 
-The commit aa373cf55099 ("writeback: stop background/kupdate works from
-livelocking other works") introduced an issue where unmounting a filesystem
-in a multi-logical-partition scenario could lead to batch file data loss.
-This problem was not fixed until the commit d92109891f21 ("fs/writeback:
-bail out if there is no more inodes for IO and queued once"). It took
-considerable time to identify the root cause. Additionally, in actual
-production environments, we frequently encountered file data loss after
-normal system reboots. Therefore, we are adding a check in the inode
-release flow to verify whether all dirty pages have been flushed to disk,
-in order to determine whether the data loss is caused by a logic issue in
-the filesystem code.
+When create_space_info_sub_group() allocates elements of
+space_info->sub_group[], kobject_init_and_add() is called for each
+element via btrfs_sysfs_add_space_info_type(). However, when
+check_removing_space_info() frees these elements, it does not call
+btrfs_sysfs_remove_space_info() on them. As a result, kobject_put() is
+not called and the associated kobj->name objects are leaked.
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260303012242.3206465-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This memory leak is reproduced by running the blktests test case
+zbd/009 on kernels built with CONFIG_DEBUG_KMEMLEAK. The kmemleak
+feature reports the following error:
+
+unreferenced object 0xffff888112877d40 (size 16):
+  comm "mount", pid 1244, jiffies 4294996972
+  hex dump (first 16 bytes):
+    64 61 74 61 2d 72 65 6c 6f 63 00 c4 c6 a7 cb 7f  data-reloc......
+  backtrace (crc 53ffde4d):
+    __kmalloc_node_track_caller_noprof+0x619/0x870
+    kstrdup+0x42/0xc0
+    kobject_set_name_vargs+0x44/0x110
+    kobject_init_and_add+0xcf/0x150
+    btrfs_sysfs_add_space_info_type+0xfc/0x210 [btrfs]
+    create_space_info_sub_group.constprop.0+0xfb/0x1b0 [btrfs]
+    create_space_info+0x211/0x320 [btrfs]
+    btrfs_init_space_info+0x15a/0x1b0 [btrfs]
+    open_ctree+0x33c7/0x4a50 [btrfs]
+    btrfs_get_tree.cold+0x9f/0x1ee [btrfs]
+    vfs_get_tree+0x87/0x2f0
+    vfs_cmd_create+0xbd/0x280
+    __do_sys_fsconfig+0x3df/0x990
+    do_syscall_64+0x136/0x1540
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+To avoid the leak, call btrfs_sysfs_remove_space_info() instead of
+kfree() for the elements.
+
+Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
+Link: https://lore.kernel.org/linux-block/b9488881-f18d-4f47-91a5-3c9bf63955a5@wdc.com/
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/btrfs/block-group.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -184,6 +184,14 @@ void ext4_evict_inode(struct inode *inod
- 	if (EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)
- 		ext4_evict_ea_inode(inode);
- 	if (inode->i_nlink) {
-+		/*
-+		 * If there's dirty page will lead to data loss, user
-+		 * could see stale data.
-+		 */
-+		if (unlikely(!ext4_emergency_state(inode->i_sb) &&
-+		    mapping_tagged(&inode->i_data, PAGECACHE_TAG_DIRTY)))
-+			ext4_warning_inode(inode, "data will be lost");
-+
- 		truncate_inode_pages_final(&inode->i_data);
- 
- 		goto no_delete;
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 25a0d207f10c9..4b73ccefcbcba 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -4466,7 +4466,7 @@ static void check_removing_space_info(struct btrfs_space_info *space_info)
+ 		for (int i = 0; i < BTRFS_SPACE_INFO_SUB_GROUP_MAX; i++) {
+ 			if (space_info->sub_group[i]) {
+ 				check_removing_space_info(space_info->sub_group[i]);
+-				kfree(space_info->sub_group[i]);
++				btrfs_sysfs_remove_space_info(space_info->sub_group[i]);
+ 				space_info->sub_group[i] = NULL;
+ 			}
+ 		}
+-- 
+2.53.0
+
 
 
 
