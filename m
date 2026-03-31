@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFeQHrMFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:34:43 +0200
+	id WEVoLF77y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4756C36EF09
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC26436D3C6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C512317EBE1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23D81312A366
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A82413225;
-	Tue, 31 Mar 2026 16:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56048402435;
+	Tue, 31 Mar 2026 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/iCN6ZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNI8MCB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE6F3A1E8C;
-	Tue, 31 Mar 2026 16:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194DE3DFC7D;
+	Tue, 31 Mar 2026 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976256; cv=none; b=Wmta1sPBVmQjzc6Lvrhzt8HSw0lqxn21g4P6eA200/dY4HNvGH1nMps+Fdc1DB/uIBDGLkAhdW9pD/6FqrmvmvbS9JNLVKTvMBh453i8zMGO0KgAOgKjwutWJFThRjgwC9/Cmo1pcMfrCCHAIO3QiT+oyey7md1DmURMKfqtCV0=
+	t=1774974869; cv=none; b=dfr/GbwAgD2NfV/JAIsLc87bciJpX0v94I92AzS4SSZrU8zPluQXiLjeDjc80Rt4B6Ze3anAwe3jXwX/rooYzJUwJ6UHQOqa4wWpOa5Qk9Q8p1djZyPiNECSh2fpMc+3VSVEqkJLF+QWSvQ+7t4cMN/XhvqvWl/ifHmB3RcN5Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976256; c=relaxed/simple;
-	bh=nSc97pFEhL3dnzqpe1Guk9mVRJHqrBNh3FAF2lWULvA=;
+	s=arc-20240116; t=1774974869; c=relaxed/simple;
+	bh=FcO+aGKHnlhJXFHaL6/1NVzuliFA2PUv/6rbg81ReyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6Ha71HIAgHkw85M3LIVkS/5zrY61yl6vVYVzn1CWsV+8fB/bnKg1vWUImx4JLemibXePStzYimKE24Kh84elcuDVXez9uTFzldGh68cUAGTY2VfJZKMT51MIclL01uD6rfU2lcQWLHQSsYQAD55gnF3WcXJh2B+0/39UWsETZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/iCN6ZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02469C19423;
-	Tue, 31 Mar 2026 16:57:35 +0000 (UTC)
+	 MIME-Version; b=m7I4+GH2hFivaxqBZ13fyVbYJTrUhyxy0LUgf4UHClpOAOYgIoEkAk1KR1ZEp92RcSYGeaD+eKhWNTcVPEu53ioi4ja/KndIYg0Q4I85b6oLL+Wc2qVbceKokvp2SpElo8bfBAJqOAmB/O59G+fBco81sp81gLcAkiiS2JePwOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNI8MCB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E79BC19423;
+	Tue, 31 Mar 2026 16:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976256;
-	bh=nSc97pFEhL3dnzqpe1Guk9mVRJHqrBNh3FAF2lWULvA=;
+	s=korg; t=1774974868;
+	bh=FcO+aGKHnlhJXFHaL6/1NVzuliFA2PUv/6rbg81ReyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/iCN6ZTnYdSBWUn6NkReqU1+ia/9QFyLda/lgfvlCiGW/kLX/oue9S7nhH9TI/il
-	 9RBbtSUhsZdn3cP+7NvEW0XJv5kstaR5FgmRnNYEG/fGkorMdOTjKTzKZKShcMg6zv
-	 q2KK8RH0tVUk0ksaJKsnH1D0ZVHeod4GXUjjTG8o=
+	b=gNI8MCB3hEwiJXff1GsV3zP6KgGgVgngsxvse5Q7cNEJzP0et7LeGy5XwxzDOXtf/
+	 MvnQzlZby6UQGwp/io8eJJVqMAzgyDjq/uMa/XqEhpbcGU06K4N6u+uGZFr+UqLp4s
+	 8SL361K4ur3ttEBh6BMBDI/jpVaLfW+EVRk4iMnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Lianqin Hu <hulianqin@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 004/309] x86/perf: Make sure to program the counter value for stopped events on migration
-Date: Tue, 31 Mar 2026 18:18:27 +0200
-Message-ID: <20260331161753.636958079@linuxfoundation.org>
+Subject: [PATCH 6.19 075/342] ALSA: usb-audio: Add iface reset and delay quirk for SPACETOUCH USB Audio
+Date: Tue, 31 Mar 2026 18:18:28 +0200
+Message-ID: <20260331161801.653765326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,74 +73,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232247-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231710-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,infradead.org:email]
-X-Rspamd-Queue-Id: 4756C36EF09
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,vivo.com:email]
+X-Rspamd-Queue-Id: AC26436D3C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-[ Upstream commit f1cac6ac62d28a9a57b17f51ac5795bf250c12d3 ]
+[ Upstream commit 5182e5ec4355dd690307f5d5c28cbfc5b2c06a97 ]
 
-Both Mi Dapeng and Ian Rogers noted that not everything that sets HES_STOPPED
-is required to EF_UPDATE. Specifically the 'step 1' loop of rescheduling
-explicitly does EF_UPDATE to ensure the counter value is read.
+Setting up the interface when suspended/resumeing fail on this card.
+Adding a reset and delay quirk will eliminate this problem.
 
-However, then 'step 2' simply leaves the new counter uninitialized when
-HES_STOPPED, even though, as noted above, the thing that stopped them might not
-be aware it needs to EF_RELOAD -- since it didn't EF_UPDATE on stop.
+usb 1-1: New USB device found, idVendor=0666, idProduct=0880
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1: Product: USB Audio
+usb 1-1: Manufacturer: SPACETOUCH
+usb 1-1: SerialNumber: 000000000
 
-One such location that is affected is throttling, throttle does pmu->stop(, 0);
-and unthrottle does pmu->start(, 0); possibly restarting an uninitialized counter.
-
-Fixes: a4eaf7f14675 ("perf: Rework the PMU methods")
-Reported-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Reported-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://patch.msgid.link/20260311204035.GX606826@noisy.programming.kicks-ass.net
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/TYUPR06MB6217ACC80B70BE25D87456B0D247A@TYUPR06MB6217.apcprd06.prod.outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 6227690d19090..8a0cd2ebb60db 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1361,8 +1361,10 @@ static void x86_pmu_enable(struct pmu *pmu)
- 
- 			cpuc->events[hwc->idx] = event;
- 
--			if (hwc->state & PERF_HES_ARCH)
-+			if (hwc->state & PERF_HES_ARCH) {
-+				static_call(x86_pmu_set_period)(event);
- 				continue;
-+			}
- 
- 			/*
- 			 * if cpuc->enabled = 0, then no wrmsr as
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index caca0e586d832..d87b988516bbf 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2239,6 +2239,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_IFACE_DELAY | QUIRK_FLAG_FORCE_IFACE_RESET),
+ 	DEVICE_FLG(0x0661, 0x0883, /* iBasso DC04 Ultra */
+ 		   QUIRK_FLAG_DSD_RAW),
++	DEVICE_FLG(0x0666, 0x0880, /* SPACETOUCH USB Audio */
++		   QUIRK_FLAG_FORCE_IFACE_RESET | QUIRK_FLAG_IFACE_DELAY),
+ 	DEVICE_FLG(0x06f8, 0xb000, /* Hercules DJ Console (Windows Edition) */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x06f8, 0xd002, /* Hercules DJ Console (Macintosh Edition) */
 -- 
 2.51.0
 
