@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-232106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOeZHzv+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:51 +0200
+	id SLK1IiIAzGkJNQYAu9opvQ
+	(envelope-from <stable+bounces-231879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D63736DB8E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CFD36E156
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB757304CE48
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 55B8230A61D3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D662F4266A6;
-	Tue, 31 Mar 2026 16:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18484266AC;
+	Tue, 31 Mar 2026 16:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFGRNuMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPL7DP4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989623DE431;
-	Tue, 31 Mar 2026 16:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45094266AE;
+	Tue, 31 Mar 2026 16:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975891; cv=none; b=MIcmr7wC2BmPOnPeqnegMdTfceSnLKurGD0olVWlLS+iX6vHrUKjZL3rPtB4rVzmobNwJFUE2QUaawzg4JOjz5kDra9rQh1Vq9J6tZL5QmL494GPZHJa3aEhUUpdOlsdWUq2M2Plc/IGkf6d5L+LVZLohA2KlHmoGFywK8MlOw8=
+	t=1774975303; cv=none; b=AleXWAlt2wpYLgX2rqAnEcPqDqmcqiURJf++5a65YgawysObbirohlXrzPP/no1xDrjqAZKSJhw8BD0MGDSInmLlLiYrNQuZLJUJlEvsTh17Osirst9KkgFLDCIxGesVOC/3jgqijaBpFu8zueR9Vn0dFhC8OIaNX40nDia1qC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975891; c=relaxed/simple;
-	bh=l9FRl0c2pO2Tq4gn2y6TEeD35pfzGW+bE3TAnbWJfKw=;
+	s=arc-20240116; t=1774975303; c=relaxed/simple;
+	bh=3A2mnEE4o3raikTnTHFqVGjgjx0D3nY1CjD0WND4heU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FABs8RLOfLNw+d3Tukbo41Zx948R/qiEOOHCi/+cu2/LyGHKbLppsL6rCnUWvzMqyHGU5zyWBdYC2JmxJ0os/luVEc9BMgd/Q28ubANmP28iFVu3RC9l8b5uTLS+kantqhcYyS2+VQjt23jxBHVtLYs/jt1s978viy7powyA4wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFGRNuMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE688C19423;
-	Tue, 31 Mar 2026 16:51:30 +0000 (UTC)
+	 MIME-Version; b=YmLj3FhodeRQgBQyy/lNIcqG9DgkIDtwKc2inFyi5t1mEvnvSEkoI2b1dU9Tu80KpMSV1BbFEawNE0ef9jck3OiBAldIDIt5zc7VtatMI32I3VNqBJa3IsZ3Wb/v8W/ipoDKDPXlJUvWS/44BELpbY89Zhgx661WBS6sCKjGfS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPL7DP4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A030C19424;
+	Tue, 31 Mar 2026 16:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975891;
-	bh=l9FRl0c2pO2Tq4gn2y6TEeD35pfzGW+bE3TAnbWJfKw=;
+	s=korg; t=1774975303;
+	bh=3A2mnEE4o3raikTnTHFqVGjgjx0D3nY1CjD0WND4heU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kFGRNuMe/+bVAvva02mz+4SBPz61B6Au2M86c95d/Utk1f3DrN5sSecP1qCakbCl3
-	 GgfdLIhIHwQguY0Ivn7t9ZGKbZu078lWYrKctl/GhSAprEnTv6N7VVGOQlXn6tNAvR
-	 dV/99IiILWpF44Jub4Chj39xy5ExcRo8IlMVz0mQ=
+	b=QPL7DP4B0Lo0QqrAuNsLc2oxPPvZ1OFUeOMVFZgHUBWmkRC1MXoISJnJ1BwD7FAsF
+	 Z8p9iuTHKLOuv7wj22JcJAg4Pv7O/Os4kt/btRibwJvU2MFoOoVy4ZKPBJBsLR9HPo
+	 YpHU2bheEV0BMTkQnYwJk14W9g+/fCmTIY/ojNxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/244] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
+	Chenglong Tang <chenglongtang@google.com>,
+	Fei Lv <feilv@asrmicro.com>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.19 243/342] ovl: make fsync after metadata copy-up opt-in mount option
 Date: Tue, 31 Mar 2026 18:21:16 +0200
-Message-ID: <20260331161746.311137946@linuxfoundation.org>
+Message-ID: <20260331161807.907036010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +63,323 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232106-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231879-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,asrmicro.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2D63736DB8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A5CFD36E156
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Fei Lv <feilv@asrmicro.com>
 
-[ Upstream commit 7150850146ebfa4ca998f653f264b8df6f7f85be ]
+commit 1f6ee9be92f8df85a8c9a5a78c20fd39c0c21a95 upstream.
 
-amdgpu_amdkfd_submit_ib() submits a GPU job and gets a fence
-from amdgpu_ib_schedule(). This fence is used to wait for job
-completion.
+Commit 7d6899fb69d25 ("ovl: fsync after metadata copy-up") was done to
+fix durability of overlayfs copy up on an upper filesystem which does
+not enforce ordering on storing of metadata changes (e.g. ubifs).
 
-Currently, the code drops the fence reference using dma_fence_put()
-before calling dma_fence_wait().
+In an earlier revision of the regressing commit by Lei Lv, the metadata
+fsync behavior was opt-in via a new "fsync=strict" mount option.
+We were hoping that the opt-in mount option could be avoided, so the
+change was only made to depend on metacopy=off, in the hope of not
+hurting performance of metadata heavy workloads, which are more likely
+to be using metacopy=on.
 
-If dma_fence_put() releases the last reference, the fence may be
-freed before dma_fence_wait() is called. This can lead to a
-use-after-free.
+This hope was proven wrong by a performance regression report from Google
+COS workload after upgrade to kernel 6.12.
 
-Fix this by waiting on the fence first and releasing the reference
-only after dma_fence_wait() completes.
+This is an adaptation of Lei's original "fsync=strict" mount option
+to the existing upstream code.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c:697 amdgpu_amdkfd_submit_ib() warn: passing freed memory 'f' (line 696)
+The new mount option is mutually exclusive with the "volatile" mount
+option, so the latter is now an alias to the "fsync=volatile" mount
+option.
 
-Fixes: 9ae55f030dc5 ("drm/amdgpu: Follow up change to previous drm scheduler change.")
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8b9e5259adc385b61a6590a13b82ae0ac2bd3482)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Chenglong Tang <chenglongtang@google.com>
+Closes: https://lore.kernel.org/linux-unionfs/CAOdxtTadAFH01Vui1FvWfcmQ8jH1O45owTzUcpYbNvBxnLeM7Q@mail.gmail.com/
+Link: https://lore.kernel.org/linux-unionfs/CAOQ4uxgKC1SgjMWre=fUb00v8rxtd6sQi-S+dxR8oDzAuiGu8g@mail.gmail.com/
+Fixes: 7d6899fb69d25 ("ovl: fsync after metadata copy-up")
+Depends: 50e638beb67e0 ("ovl: Use str_on_off() helper in ovl_show_options()")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Fei Lv <feilv@asrmicro.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/filesystems/overlayfs.rst |   50 ++++++++++++++++++++++++++++++++
+ fs/overlayfs/copy_up.c                  |    6 +--
+ fs/overlayfs/overlayfs.h                |   21 +++++++++++++
+ fs/overlayfs/ovl_entry.h                |    7 ----
+ fs/overlayfs/params.c                   |   33 +++++++++++++++++----
+ fs/overlayfs/super.c                    |    2 -
+ 6 files changed, 104 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index 84e5364d1f67d..a872da6324865 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -702,9 +702,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
- 		goto err_ib_sched;
+--- a/Documentation/filesystems/overlayfs.rst
++++ b/Documentation/filesystems/overlayfs.rst
+@@ -783,6 +783,56 @@ controlled by the "uuid" mount option, w
+     mounted with "uuid=on".
+ 
+ 
++Durability and copy up
++----------------------
++
++The fsync(2) system call ensures that the data and metadata of a file
++are safely written to the backing storage, which is expected to
++guarantee the existence of the information post system crash.
++
++Without an fsync(2) call, there is no guarantee that the observed
++data after a system crash will be either the old or the new data, but
++in practice, the observed data after crash is often the old or new data
++or a mix of both.
++
++When an overlayfs file is modified for the first time, copy up will
++create a copy of the lower file and its parent directories in the upper
++layer.  Since the Linux filesystem API does not enforce any particular
++ordering on storing changes without explicit fsync(2) calls, in case
++of a system crash, the upper file could end up with no data at all
++(i.e. zeros), which would be an unusual outcome.  To avoid this
++experience, overlayfs calls fsync(2) on the upper file before completing
++data copy up with rename(2) or link(2) to make the copy up "atomic".
++
++By default, overlayfs does not explicitly call fsync(2) on copied up
++directories or on metadata-only copy up, so it provides no guarantee to
++persist the user's modification unless the user calls fsync(2).
++The fsync during copy up only guarantees that if a copy up is observed
++after a crash, the observed data is not zeroes or intermediate values
++from the copy up staging area.
++
++On traditional local filesystems with a single journal (e.g. ext4, xfs),
++fsync on a file also persists the parent directory changes, because they
++are usually modified in the same transaction, so metadata durability during
++data copy up effectively comes for free.  Overlayfs further limits risk by
++disallowing network filesystems as upper layer.
++
++Overlayfs can be tuned to prefer performance or durability when storing
++to the underlying upper layer.  This is controlled by the "fsync" mount
++option, which supports these values:
++
++- "auto": (default)
++    Call fsync(2) on upper file before completion of data copy up.
++    No explicit fsync(2) on directory or metadata-only copy up.
++- "strict":
++    Call fsync(2) on upper file and directories before completion of any
++    copy up.
++- "volatile": [*]
++    Prefer performance over durability (see `Volatile mount`_)
++
++[*] The mount option "volatile" is an alias to "fsync=volatile".
++
++
+ Volatile mount
+ --------------
+ 
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -1146,15 +1146,15 @@ static int ovl_copy_up_one(struct dentry
+ 		return -EOVERFLOW;
+ 
+ 	/*
+-	 * With metacopy disabled, we fsync after final metadata copyup, for
++	 * With "fsync=strict", we fsync after final metadata copyup, for
+ 	 * both regular files and directories to get atomic copyup semantics
+ 	 * on filesystems that do not use strict metadata ordering (e.g. ubifs).
+ 	 *
+-	 * With metacopy enabled we want to avoid fsync on all meta copyup
++	 * By default, we want to avoid fsync on all meta copyup, because
+ 	 * that will hurt performance of workloads such as chown -R, so we
+ 	 * only fsync on data copyup as legacy behavior.
+ 	 */
+-	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
++	ctx.metadata_fsync = ovl_should_sync_metadata(OVL_FS(dentry->d_sb)) &&
+ 			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
+ 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
+ 
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -99,6 +99,12 @@ enum {
+ 	OVL_VERITY_REQUIRE,
+ };
+ 
++enum {
++	OVL_FSYNC_VOLATILE,
++	OVL_FSYNC_AUTO,
++	OVL_FSYNC_STRICT,
++};
++
+ /*
+  * The tuple (fh,uuid) is a universal unique identifier for a copy up origin,
+  * where:
+@@ -656,6 +662,21 @@ static inline bool ovl_xino_warn(struct
+ 	return ofs->config.xino == OVL_XINO_ON;
+ }
+ 
++static inline bool ovl_should_sync(struct ovl_fs *ofs)
++{
++	return ofs->config.fsync_mode != OVL_FSYNC_VOLATILE;
++}
++
++static inline bool ovl_should_sync_metadata(struct ovl_fs *ofs)
++{
++	return ofs->config.fsync_mode == OVL_FSYNC_STRICT;
++}
++
++static inline bool ovl_is_volatile(struct ovl_config *config)
++{
++	return config->fsync_mode == OVL_FSYNC_VOLATILE;
++}
++
+ /*
+  * To avoid regressions in existing setups with overlay lower offline changes,
+  * we allow lower changes only if none of the new features are used.
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -18,7 +18,7 @@ struct ovl_config {
+ 	int xino;
+ 	bool metacopy;
+ 	bool userxattr;
+-	bool ovl_volatile;
++	int fsync_mode;
+ };
+ 
+ struct ovl_sb {
+@@ -120,11 +120,6 @@ static inline struct ovl_fs *OVL_FS(stru
+ 	return (struct ovl_fs *)sb->s_fs_info;
+ }
+ 
+-static inline bool ovl_should_sync(struct ovl_fs *ofs)
+-{
+-	return !ofs->config.ovl_volatile;
+-}
+-
+ static inline unsigned int ovl_numlower(struct ovl_entry *oe)
+ {
+ 	return oe ? oe->__numlower : 0;
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -58,6 +58,7 @@ enum ovl_opt {
+ 	Opt_xino,
+ 	Opt_metacopy,
+ 	Opt_verity,
++	Opt_fsync,
+ 	Opt_volatile,
+ 	Opt_override_creds,
+ };
+@@ -140,6 +141,23 @@ static int ovl_verity_mode_def(void)
+ 	return OVL_VERITY_OFF;
+ }
+ 
++static const struct constant_table ovl_parameter_fsync[] = {
++	{ "volatile",	OVL_FSYNC_VOLATILE },
++	{ "auto",	OVL_FSYNC_AUTO     },
++	{ "strict",	OVL_FSYNC_STRICT   },
++	{}
++};
++
++static const char *ovl_fsync_mode(struct ovl_config *config)
++{
++	return ovl_parameter_fsync[config->fsync_mode].name;
++}
++
++static int ovl_fsync_mode_def(void)
++{
++	return OVL_FSYNC_AUTO;
++}
++
+ const struct fs_parameter_spec ovl_parameter_spec[] = {
+ 	fsparam_string_empty("lowerdir",    Opt_lowerdir),
+ 	fsparam_file_or_string("lowerdir+", Opt_lowerdir_add),
+@@ -155,6 +173,7 @@ const struct fs_parameter_spec ovl_param
+ 	fsparam_enum("xino",                Opt_xino, ovl_parameter_xino),
+ 	fsparam_enum("metacopy",            Opt_metacopy, ovl_parameter_bool),
+ 	fsparam_enum("verity",              Opt_verity, ovl_parameter_verity),
++	fsparam_enum("fsync",               Opt_fsync, ovl_parameter_fsync),
+ 	fsparam_flag("volatile",            Opt_volatile),
+ 	fsparam_flag_no("override_creds",   Opt_override_creds),
+ 	{}
+@@ -665,8 +684,11 @@ static int ovl_parse_param(struct fs_con
+ 	case Opt_verity:
+ 		config->verity_mode = result.uint_32;
+ 		break;
++	case Opt_fsync:
++		config->fsync_mode = result.uint_32;
++		break;
+ 	case Opt_volatile:
+-		config->ovl_volatile = true;
++		config->fsync_mode = OVL_FSYNC_VOLATILE;
+ 		break;
+ 	case Opt_userxattr:
+ 		config->userxattr = true;
+@@ -800,6 +822,7 @@ int ovl_init_fs_context(struct fs_contex
+ 	ofs->config.nfs_export		= ovl_nfs_export_def;
+ 	ofs->config.xino		= ovl_xino_def();
+ 	ofs->config.metacopy		= ovl_metacopy_def;
++	ofs->config.fsync_mode		= ovl_fsync_mode_def();
+ 
+ 	fc->s_fs_info		= ofs;
+ 	fc->fs_private		= ctx;
+@@ -870,9 +893,9 @@ int ovl_fs_params_verify(const struct ov
+ 		config->index = false;
  	}
  
--	/* Drop the initial kref_init count (see drm_sched_main as example) */
--	dma_fence_put(f);
- 	ret = dma_fence_wait(f, false);
-+	/* Drop the returned fence reference after the wait completes */
-+	dma_fence_put(f);
+-	if (!config->upperdir && config->ovl_volatile) {
++	if (!config->upperdir && ovl_is_volatile(config)) {
+ 		pr_info("option \"volatile\" is meaningless in a non-upper mount, ignoring it.\n");
+-		config->ovl_volatile = false;
++		config->fsync_mode = ovl_fsync_mode_def();
+ 	}
  
- err_ib_sched:
- 	amdgpu_job_free(job);
--- 
-2.53.0
-
+ 	if (!config->upperdir && config->uuid == OVL_UUID_ON) {
+@@ -1070,8 +1093,8 @@ int ovl_show_options(struct seq_file *m,
+ 		seq_printf(m, ",xino=%s", ovl_xino_mode(&ofs->config));
+ 	if (ofs->config.metacopy != ovl_metacopy_def)
+ 		seq_printf(m, ",metacopy=%s", str_on_off(ofs->config.metacopy));
+-	if (ofs->config.ovl_volatile)
+-		seq_puts(m, ",volatile");
++	if (ofs->config.fsync_mode != ovl_fsync_mode_def())
++		seq_printf(m, ",fsync=%s", ovl_fsync_mode(&ofs->config));
+ 	if (ofs->config.userxattr)
+ 		seq_puts(m, ",userxattr");
+ 	if (ofs->config.verity_mode != ovl_verity_mode_def())
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -776,7 +776,7 @@ static int ovl_make_workdir(struct super
+ 	 * For volatile mount, create a incompat/volatile/dirty file to keep
+ 	 * track of it.
+ 	 */
+-	if (ofs->config.ovl_volatile) {
++	if (ovl_is_volatile(&ofs->config)) {
+ 		err = ovl_create_volatile_dirty(ofs);
+ 		if (err < 0) {
+ 			pr_err("Failed to create volatile/dirty file.\n");
 
 
 
