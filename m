@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKPWGWgAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:08 +0200
+	id SIVQAM8CzGmGNQYAu9opvQ
+	(envelope-from <stable+bounces-232014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03F436E258
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7EA36E91D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1CBD30CAA8F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C1731232C4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5213FA5E6;
-	Tue, 31 Mar 2026 16:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E2641B342;
+	Tue, 31 Mar 2026 16:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsg7ahL2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHDzlwLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E241D2EE262;
-	Tue, 31 Mar 2026 16:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE14E33120E;
+	Tue, 31 Mar 2026 16:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974998; cv=none; b=WKq93HGsmEq1CrwPRK35jbUM+V3sKDXFCItA7EOjDua7w17PUUMFibjCmRdNTv/8k2BzRWt6m/WSkiVsUPlsDYr56l9sawK0XBuYYmsFRFhlWxKJnTrA9UeXRpmT3EC7Ltq94Z3XtSWAfiGmTx14ZJ1K61rHJxeWFvgZXkjXBpE=
+	t=1774975652; cv=none; b=Wt7zx6YK8bG+VGASFWz4erOs2eaWoK2Gvpag7hxpvjJW5RJXbk0YV5ALEEfrt5i5pfCWrsA5Jx+vVyQQ0c0rEyfUncA9S+S8yJZq/kBjR7oK1TyxEEB7yTGzhl58JEdVaocSSkBAYeszI5RTtSFcSLZ/a7Y5qHn6yWMKgbkv6iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974998; c=relaxed/simple;
-	bh=DGoZ8UmQvH7ZPx8maGGvvhRqOEys+KsXK37ESwkC7zI=;
+	s=arc-20240116; t=1774975652; c=relaxed/simple;
+	bh=4ndE8liVUyY1pVEtyF8yWNnOw+kgSN1ge6xJZRYaffk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kd6loPeW+LttYsSLgseFzPJjJ3ZxlB8kOwH+XVb0wUp32ej5tto8t0dJOh1tHt4DzPMrQgcUB5iV4k7iuRFeAIXRoAY5wYrRGb94sQP7JUj+jzmLRNmAjFibrFnWj4ZICDQdWsgSU+9acyrSv718phD47E808OpNzJkhxH9Gs/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsg7ahL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D9EC19423;
-	Tue, 31 Mar 2026 16:36:37 +0000 (UTC)
+	 MIME-Version; b=Oifa2EHcyT/Go/NvQ2cy9rVLOULaaEJvhpsrI0sFLKejysbka5NWpDePT09jgaaya8ItF/A1UXALliCRnv7sQJjXTWUOMUzWOGoodcG/FIZhBedRHkhgwsf1odcXxHFw/8U2NJgY/J06uIjGMwmH/GU5/WXQ+InMqSAf5nTDBdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHDzlwLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49BFAC19423;
+	Tue, 31 Mar 2026 16:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974997;
-	bh=DGoZ8UmQvH7ZPx8maGGvvhRqOEys+KsXK37ESwkC7zI=;
+	s=korg; t=1774975652;
+	bh=4ndE8liVUyY1pVEtyF8yWNnOw+kgSN1ge6xJZRYaffk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsg7ahL22UtzM7F5kOvO84JBSdxYOXAWgU+jmuTD8kctsueAQ53r+o2truWg38Rx2
-	 1s5D8ryFp4Hq7sAvMSj+KUsvWcrL6E03rB2oUpfjJUV4CiYHfMhL90MZ1McZLdbO20
-	 nbWps0j1crABobxMdM17xVK7GVQuXHaATPEcBukg=
+	b=WHDzlwLZvI9/F1IaGIUxQwqXqVYPLwwqADSnrX/oQ9OiLBGLPaXGR85lJUAljOpUZ
+	 2mkze06GNMnQ7Z8HQJM2BiqqztQrGiEVGcolCyeYdVOwld4reA40O4E5mybj8S9gMY
+	 xe31GH9cpD8kWVcpur62HyZWWxU6G/DTlI0ZrRlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Onyshchuk <oandrew@meta.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 123/342] udp: Fix wildcard bind conflict check when using hash2
+Subject: [PATCH 6.12 006/244] sh: platform_early: remove pdev->driver_override check
 Date: Tue, 31 Mar 2026 18:19:16 +0200
-Message-ID: <20260331161803.534004119@linuxfoundation.org>
+Message-ID: <20260331161741.939597693@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,193 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232014-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231760-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,meta.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E03F436E258
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4F7EA36E91D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit e537dd15d0d4ad989d56a1021290f0c674dd8b28 ]
+[ Upstream commit c5f60e3f07b6609562d21efda878e83ce8860728 ]
 
-When binding a udp_sock to a local address and port, UDP uses
-two hashes (udptable->hash and udptable->hash2) for collision
-detection. The current code switches to "hash2" when
-hslot->count > 10.
+In commit 507fd01d5333 ("drivers: move the early platform device support to
+arch/sh") platform_match() was copied over to the sh platform_early
+code, accidentally including the driver_override check.
 
-"hash2" is keyed by local address and local port.
-"hash" is keyed by local port only.
+This check does not make sense for platform_early, as sysfs is not even
+available in first place at this point in the boot process, hence remove
+the check.
 
-The issue can be shown in the following bind sequence (pseudo code):
-
-bind(fd1,  "[fd00::1]:8888")
-bind(fd2,  "[fd00::2]:8888")
-bind(fd3,  "[fd00::3]:8888")
-bind(fd4,  "[fd00::4]:8888")
-bind(fd5,  "[fd00::5]:8888")
-bind(fd6,  "[fd00::6]:8888")
-bind(fd7,  "[fd00::7]:8888")
-bind(fd8,  "[fd00::8]:8888")
-bind(fd9,  "[fd00::9]:8888")
-bind(fd10, "[fd00::10]:8888")
-
-/* Correctly return -EADDRINUSE because "hash" is used
- * instead of "hash2". udp_lib_lport_inuse() detects the
- * conflict.
- */
-bind(fail_fd, "[::]:8888")
-
-/* After one more socket is bound to "[fd00::11]:8888",
- * hslot->count exceeds 10 and "hash2" is used instead.
- */
-bind(fd11, "[fd00::11]:8888")
-bind(fail_fd, "[::]:8888")      /* succeeds unexpectedly */
-
-The same issue applies to the IPv4 wildcard address "0.0.0.0"
-and the IPv4-mapped wildcard address "::ffff:0.0.0.0". For
-example, if there are existing sockets bound to
-"192.168.1.[1-11]:8888", then binding "0.0.0.0:8888" or
-"[::ffff:0.0.0.0]:8888" can also miss the conflict when
-hslot->count > 10.
-
-TCP inet_csk_get_port() already has the correct check in
-inet_use_bhash2_on_bind(). Rename it to
-inet_use_hash2_on_bind() and move it to inet_hashtables.h
-so udp.c can reuse it in this fix.
-
-Fixes: 30fff9231fad ("udp: bind() optimisation")
-Reported-by: Andrew Onyshchuk <oandrew@meta.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260319181817.1901357-1-martin.lau@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 507fd01d5333 ("drivers: move the early platform device support to arch/sh")
+Link: https://lore.kernel.org/all/DH4M3DJ4P58T.1BGVAVXN71Z09@kernel.org/
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_hashtables.h   | 14 ++++++++++++++
- net/ipv4/inet_connection_sock.c | 20 +++-----------------
- net/ipv4/udp.c                  |  2 +-
- 3 files changed, 18 insertions(+), 18 deletions(-)
+ arch/sh/drivers/platform_early.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index 5a979dcab5383..6d936e9f2fd32 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -264,6 +264,20 @@ inet_bhashfn_portaddr(const struct inet_hashinfo *hinfo, const struct sock *sk,
- 	return &hinfo->bhash2[hash & (hinfo->bhash_size - 1)];
- }
+diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_early.c
+index 143747c45206f..48ddbc547bd9a 100644
+--- a/arch/sh/drivers/platform_early.c
++++ b/arch/sh/drivers/platform_early.c
+@@ -26,10 +26,6 @@ static int platform_match(struct device *dev, struct device_driver *drv)
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct platform_driver *pdrv = to_platform_driver(drv);
  
-+static inline bool inet_use_hash2_on_bind(const struct sock *sk)
-+{
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (sk->sk_family == AF_INET6) {
-+		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
-+			return false;
-+
-+		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
-+			return true;
-+	}
-+#endif
-+	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
-+}
-+
- struct inet_bind_hashbucket *
- inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, int port);
- 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 97d57c52b9ad9..d587c5df84389 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -153,20 +153,6 @@ bool inet_sk_get_local_port_range(const struct sock *sk, int *low, int *high)
- }
- EXPORT_SYMBOL(inet_sk_get_local_port_range);
- 
--static bool inet_use_bhash2_on_bind(const struct sock *sk)
--{
--#if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family == AF_INET6) {
--		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
--			return false;
+-	/* When driver_override is set, only bind to the matching driver */
+-	if (pdev->driver_override)
+-		return !strcmp(pdev->driver_override, drv->name);
 -
--		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
--			return true;
--	}
--#endif
--	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
--}
--
- static bool inet_bind_conflict(const struct sock *sk, struct sock *sk2,
- 			       kuid_t uid, bool relax,
- 			       bool reuseport_cb_ok, bool reuseport_ok)
-@@ -258,7 +244,7 @@ static int inet_csk_bind_conflict(const struct sock *sk,
- 	 * checks separately because their spinlocks have to be acquired/released
- 	 * independently of each other, to prevent possible deadlocks
- 	 */
--	if (inet_use_bhash2_on_bind(sk))
-+	if (inet_use_hash2_on_bind(sk))
- 		return tb2 && inet_bhash2_conflict(sk, tb2, uid, relax,
- 						   reuseport_cb_ok, reuseport_ok);
- 
-@@ -375,7 +361,7 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
- 		head = &hinfo->bhash[inet_bhashfn(net, port,
- 						  hinfo->bhash_size)];
- 		spin_lock_bh(&head->lock);
--		if (inet_use_bhash2_on_bind(sk)) {
-+		if (inet_use_hash2_on_bind(sk)) {
- 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, relax, false))
- 				goto next_port;
- 		}
-@@ -561,7 +547,7 @@ int inet_csk_get_port(struct sock *sk, unsigned short snum)
- 				check_bind_conflict = false;
- 		}
- 
--		if (check_bind_conflict && inet_use_bhash2_on_bind(sk)) {
-+		if (check_bind_conflict && inet_use_hash2_on_bind(sk)) {
- 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, true, true))
- 				goto fail_unlock;
- 		}
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index fbdbb65676e0d..bbb076c6042b2 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -287,7 +287,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
- 	} else {
- 		hslot = udp_hashslot(udptable, net, snum);
- 		spin_lock_bh(&hslot->lock);
--		if (hslot->count > 10) {
-+		if (inet_use_hash2_on_bind(sk) && hslot->count > 10) {
- 			int exist;
- 			unsigned int slot2 = udp_sk(sk)->udp_portaddr_hash ^ snum;
- 
+ 	/* Then try to match against the id table */
+ 	if (pdrv->id_table)
+ 		return platform_match_id(pdrv->id_table, pdev) != NULL;
 -- 
 2.51.0
 
