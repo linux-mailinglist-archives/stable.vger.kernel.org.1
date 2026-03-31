@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-231595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEigH8P+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:07 +0200
+	id uDuSEEL8y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0761236DD22
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBBB36D5E1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEF2A3180AD0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A2423095F2E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D70541C30C;
-	Tue, 31 Mar 2026 16:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E555402435;
+	Tue, 31 Mar 2026 16:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Opk9Yp0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHI/Ut24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEAB36AB47;
-	Tue, 31 Mar 2026 16:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520D0262A6;
+	Tue, 31 Mar 2026 16:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974576; cv=none; b=WfV2ehpZgkMur2dLredJSxDbt2k00/IfN0aKmKx+uDTOkmK16zy3MrW2RN2GGELoYkeu1n2XmVfuHjsXdh5294tNEYaBrqKO7mRlm9eplyDYpvXhr0GpDApOmWtMJ2kOzyxpPjVAtURVoRuu8NE0qCUxphmHleMgnevSJT3rTCo=
+	t=1774975424; cv=none; b=lzg6ArcIJKO3sshuiblyObRWOVXgf1SaEv0izyoIrXN5HT95GIaqIBFzyLzUlV+UTcljSTN5ImLmJBJ9IVKi3ChPvYs1tFOAk1wPk5NkOJJBv7FAZVaon7Y+QS87S9ID+xpK+Wzkr90y6LtQwNq5Mup6n5vS4ef8/y8U8//VARo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974576; c=relaxed/simple;
-	bh=kHwKBqjZi1xGB5fL+LrrFJsJywfmfOahe5cOM+gQkAw=;
+	s=arc-20240116; t=1774975424; c=relaxed/simple;
+	bh=LzmNfeFXt7byRM/TYzuL1WQCJAngB9zhF0q9116hITE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJvmlQkbn8k6siyVSnkL738mWbLpaOFWRdgJcQwFyhv8R2l2bCUL0hCLoi/K0wRozXb0Ye2FaDFlypNevfxlAJYmIoeIeTm52+WqmMZ84GFBqqU9hcd8url6IPh7Chmb2inSP1xoLkn+8nAzgbMGZ1E1Z7B+BfyQ/XJQR7wNmb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Opk9Yp0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50D8C19423;
-	Tue, 31 Mar 2026 16:29:35 +0000 (UTC)
+	 MIME-Version; b=qCxBG+EK2OjtEzgOo5Y3wbdHi+rcoHuiV1PpaKe+cQA59fcHjTRG/4vDKBphMg0OCDrFVHynKO+244KREXzk6YUfh4ekTbm0mYo1PmrGn9eoY4gqkevipEtl6IR9F7ruuBgfPYs2zAcHp99OqSfg+3N1AKdkH/7igx521DKL820=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHI/Ut24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92F2C19423;
+	Tue, 31 Mar 2026 16:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974576;
-	bh=kHwKBqjZi1xGB5fL+LrrFJsJywfmfOahe5cOM+gQkAw=;
+	s=korg; t=1774975424;
+	bh=LzmNfeFXt7byRM/TYzuL1WQCJAngB9zhF0q9116hITE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Opk9Yp0bDTtcxnDQI6/JheuIEoK1LuV35/h8wX5pRA5PzwnvMSQzomfPmn2A9HDGh
-	 SVjjv/LHR2m+N5VkgUtcfF3ExYc9xYcxwXxkVgplbfFRVAnU9AtTNvi9eTp8ANNazm
-	 ogMeWVYpbH6v24gnCdFhtxibdgnPpXL6CqtAtygE=
+	b=gHI/Ut24a6MTAAVwZXcsI2xtEcOhCpR4jC2lB3BzgKsKDXKrGi/YwvBmM68vpcnKR
+	 CNHyZ9kpddSyzl9UFwnTpMkuK7rCbBpPUhZUWImz35vkrEiHMHHcHqBlmU2kCVxOz9
+	 ighFBnqCg+t3PoXencHWE+KCi1UGoLoAw5HHl3TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 138/175] ext4: fix use-after-free in update_super_work when racing with umount
+	rostedt@goodmis.org,
+	david.laight.linux@gmail.com,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.19 289/342] xfs: remove file_path tracepoint data
 Date: Tue, 31 Mar 2026 18:22:02 +0200
-Message-ID: <20260331161734.856583806@linuxfoundation.org>
+Message-ID: <20260331161809.574770603@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,145 +73,123 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231595-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231926-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,suse.cz,shopee.com,gmail.com,mit.edu,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,gmail.com,kernel.org,redhat.com,lst.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,msgid.link:url,shopee.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0761236DD22
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: ADBBB36D5E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit d15e4b0a418537aafa56b2cb80d44add83e83697 upstream.
+commit e31c53a8060e134111ed095783fee0aa0c43b080 upstream.
 
-Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
-filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
-to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
-reads during unmount. However, this introduced a use-after-free because
-update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
-accesses the kobject's kernfs_node after it has been freed by kobject_del()
-in ext4_unregister_sysfs():
+The xfile/xmbuf shmem file descriptions are no longer as detailed as
+they were when online fsck was first merged, because moving to static
+strings in commit 60382993a2e180 ("xfs: get rid of the
+xchk_xfile_*_descr calls") removed a memory allocation and hence a
+source of failure.
 
-  update_super_work                ext4_put_super
-  -----------------                --------------
-                                   ext4_unregister_sysfs(sb)
-                                     kobject_del(&sbi->s_kobj)
-                                       __kobject_del()
-                                         sysfs_remove_dir()
-                                           kobj->sd = NULL
-                                         sysfs_put(sd)
-                                           kernfs_put()  // RCU free
-  ext4_notify_error_sysfs(sbi)
-    sysfs_notify(&sbi->s_kobj)
-      kn = kobj->sd              // stale pointer
-      kernfs_get(kn)             // UAF on freed kernfs_node
-                                   ext4_journal_destroy()
-                                     flush_work(&sbi->s_sb_upd_work)
+However this makes encoding the description in the tracepoints sort of a
+waste of memory.  David Laight also points out that file_path doesn't
+zero the whole buffer which causes exposure of stale trace bytes, and
+Steven Rostedt wonders why we're not using a dynamic array for the file
+path.
 
-Instead of reordering the teardown sequence, fix this by making
-ext4_notify_error_sysfs() detect that sysfs has already been torn down
-by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
-in that case. A dedicated mutex (s_error_notify_mutex) serializes
-ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
-to prevent TOCTOU races where the kobject could be deleted between the
-state_in_sysfs check and the sysfs_notify() call.
+I don't think this is worth fixing, so let's just rip it out.
 
-Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: rostedt@goodmis.org
+Cc: david.laight.linux@gmail.com
+Link: https://lore.kernel.org/linux-xfs/20260323172204.work.979-kees@kernel.org/
+Cc: stable@vger.kernel.org # v6.11
+Fixes: 19ebc8f84ea12e ("xfs: fix file_path handling in tracepoints")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h  |    1 +
- fs/ext4/super.c |    1 +
- fs/ext4/sysfs.c |   10 +++++++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ fs/xfs/scrub/trace.h |   12 ++----------
+ fs/xfs/xfs_trace.h   |   11 ++---------
+ 2 files changed, 4 insertions(+), 19 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1535,6 +1535,7 @@ struct ext4_sb_info {
- 	struct proc_dir_entry *s_proc;
- 	struct kobject s_kobj;
- 	struct completion s_kobj_unregister;
-+	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
- 	struct super_block *s_sb;
- 	struct buffer_head *s_mmp_bh;
+--- a/fs/xfs/scrub/trace.h
++++ b/fs/xfs/scrub/trace.h
+@@ -972,20 +972,12 @@ TRACE_EVENT(xfile_create,
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(unsigned long, ino)
+-		__array(char, pathname, MAXNAMELEN)
+ 	),
+ 	TP_fast_assign(
+-		char		*path;
+-
+ 		__entry->ino = file_inode(xf->file)->i_ino;
+-		path = file_path(xf->file, __entry->pathname, MAXNAMELEN);
+-		if (IS_ERR(path))
+-			strncpy(__entry->pathname, "(unknown)",
+-					sizeof(__entry->pathname));
+ 	),
+-	TP_printk("xfino 0x%lx path '%s'",
+-		  __entry->ino,
+-		  __entry->pathname)
++	TP_printk("xfino 0x%lx",
++		  __entry->ino)
+ );
  
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5344,6 +5344,7 @@ static int __ext4_fill_super(struct fs_c
+ TRACE_EVENT(xfile_destroy,
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -5115,23 +5115,16 @@ TRACE_EVENT(xmbuf_create,
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(unsigned long, ino)
+-		__array(char, pathname, MAXNAMELEN)
+ 	),
+ 	TP_fast_assign(
+-		char		*path;
+ 		struct file	*file = btp->bt_file;
  
- 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
- 	spin_lock_init(&sbi->s_error_lock);
-+	mutex_init(&sbi->s_error_notify_mutex);
- 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
+ 		__entry->dev = btp->bt_mount->m_super->s_dev;
+ 		__entry->ino = file_inode(file)->i_ino;
+-		path = file_path(file, __entry->pathname, MAXNAMELEN);
+-		if (IS_ERR(path))
+-			strncpy(__entry->pathname, "(unknown)",
+-					sizeof(__entry->pathname));
+ 	),
+-	TP_printk("dev %d:%d xmino 0x%lx path '%s'",
++	TP_printk("dev %d:%d xmino 0x%lx",
+ 		  MAJOR(__entry->dev), MINOR(__entry->dev),
+-		  __entry->ino,
+-		  __entry->pathname)
++		  __entry->ino)
+ );
  
- 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -529,7 +529,10 @@ static const struct kobj_type ext4_feat_
- 
- void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
- {
--	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_lock(&sbi->s_error_notify_mutex);
-+	if (sbi->s_kobj.state_in_sysfs)
-+		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
- 
- static struct kobject *ext4_root;
-@@ -542,8 +545,10 @@ int ext4_register_sysfs(struct super_blo
- 	int err;
- 
- 	init_completion(&sbi->s_kobj_unregister);
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
- 				   "%s", sb->s_id);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- 	if (err) {
- 		kobject_put(&sbi->s_kobj);
- 		wait_for_completion(&sbi->s_kobj_unregister);
-@@ -576,7 +581,10 @@ void ext4_unregister_sysfs(struct super_
- 
- 	if (sbi->s_proc)
- 		remove_proc_subtree(sb->s_id, ext4_proc_root);
-+
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	kobject_del(&sbi->s_kobj);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
- 
- int __init ext4_init_sysfs(void)
+ TRACE_EVENT(xmbuf_free,
 
 
 
