@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-232494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBXvIjsBzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:39 +0200
+	id wOA4NQUDzGmGNQYAu9opvQ
+	(envelope-from <stable+bounces-232200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3704836E546
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E695D36E988
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D87930B448A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:08:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C76B316813B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DBE30CD85;
-	Tue, 31 Mar 2026 17:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DCD3F8E04;
+	Tue, 31 Mar 2026 16:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tywmv2l7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWLu1opH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D409531715C;
-	Tue, 31 Mar 2026 17:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C4E29DB8F;
+	Tue, 31 Mar 2026 16:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976892; cv=none; b=mze9dHy9iTR6kXKzXvCbG08MNWdrkdqi9F0VmT/kCAaQqMc9C9w1K26yWGoQ3iXtCTYTE4QP9a51ns7S9g27+KogJaAeFF/1B21FHHkRgepYOnt8YetM+Eu0aoE5K77GG2IgExghci7Wh7qWL8TscgunLf2yJm+Zx3zBj5cEYPY=
+	t=1774976135; cv=none; b=LmRjGEuYiUOoZ2qnUNB5GBHDmtx4gKoBackPCqbq3TeMGG2yFAZXUZErMgFGbkimPtLhAkVFaKa5ts9k5JERCYxsuV7Xx/1GcOHEQFqwACTcchvl4sHQxdER+YsMeluFuZ2q2lsOlXyaT1m487bV2oZYf+is3WuyJSjZx369g2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976892; c=relaxed/simple;
-	bh=lHd61boFM87TkJ4qEEYOfMe4upGbWpPqUxW8fstnzns=;
+	s=arc-20240116; t=1774976135; c=relaxed/simple;
+	bh=Pkwa4pZp3YN1EJ3wwDtQCJxyjIA/A30273uoXQiAW2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQQj6X8OHZtyrORjpw5wblSyGI2frVwPlZGU7Ds/r0g24+bx3Daw3EUO3kwH2z78+2UfGveSwCA32sQ1/qQ6TRkcY4VmJdfgC5sgk5rTlPy0dt1N2KSqFb8Zmjy1tpq103ouZS6WO8e9JuiBf5XF8PxKtHeGmQwXpNlHd8BpKTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tywmv2l7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7DBC2BCB1;
-	Tue, 31 Mar 2026 17:08:12 +0000 (UTC)
+	 MIME-Version; b=iwS6z5FmGA+GsX6ekm6kzUFnmTsI29/H/Wndo5r5I6HUEC+JP84eH66yTo4cU3Lar0Elv1EXUmtGCdq3UJ7Ph7ZoQJQqU/WtgFrAKRMJGDysFcVfR8pK1x68VCuy3KdPa/AhTxFJ3oVTI9a2QwNaep3K99wsTCmOFm95MgF4HWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWLu1opH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C464FC19423;
+	Tue, 31 Mar 2026 16:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976892;
-	bh=lHd61boFM87TkJ4qEEYOfMe4upGbWpPqUxW8fstnzns=;
+	s=korg; t=1774976135;
+	bh=Pkwa4pZp3YN1EJ3wwDtQCJxyjIA/A30273uoXQiAW2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tywmv2l72S2PzueDfX6eW/VAei0crrr22QxIvQTmSltITAB74c85faMpR0WVWXtWG
-	 V+8XCn26k9jUa6r1eS5MtYP5vkkWDvQRrtpX7B9UDppSXE9IRo0oV9XTdy+BG2dhua
-	 MxtQ2Fl2H3p6hi1ShHfQwnVX0JSqicJTHzQhL1OM=
+	b=sWLu1opHY6XD/e35RTzHnH0FjhUluoTV1aTGn2VjK+EwN067Qsu+RmxhAx6i0pQCv
+	 ZAuFuhBZaLT7bVdIZX66YFcQ8WiIeNb8L+2oOvfkXgwAB9VMqkSdEUQ9vMUesknMg7
+	 KFu8K8BfU1PXQ49lQGLWlSg9fsTnM45BdksImPwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 267/309] ext4: fix use-after-free in update_super_work when racing with umount
-Date: Tue, 31 Mar 2026 18:22:50 +0200
-Message-ID: <20260331161803.392136330@linuxfoundation.org>
+	Sreedevi Joshi <sreedevi.joshi@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 221/244] idpf: Fix RSS LUT NULL pointer crash on early ethtool operations
+Date: Tue, 31 Mar 2026 18:22:51 +0200
+Message-ID: <20260331161749.928702100@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,151 +70,433 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232494-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,suse.cz,shopee.com,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232200-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,shopee.com:email,msgid.link:url,suse.cz:email]
-X-Rspamd-Queue-Id: 3704836E546
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: E695D36E988
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Sreedevi Joshi <sreedevi.joshi@intel.com>
 
-commit d15e4b0a418537aafa56b2cb80d44add83e83697 upstream.
+[ Upstream commit 83f38f210b85676f40ba8586b5a8edae19b56995 ]
 
-Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
-filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
-to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
-reads during unmount. However, this introduced a use-after-free because
-update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
-accesses the kobject's kernfs_node after it has been freed by kobject_del()
-in ext4_unregister_sysfs():
+The RSS LUT is not initialized until the interface comes up, causing
+the following NULL pointer crash when ethtool operations like rxhash on/off
+are performed before the interface is brought up for the first time.
 
-  update_super_work                ext4_put_super
-  -----------------                --------------
-                                   ext4_unregister_sysfs(sb)
-                                     kobject_del(&sbi->s_kobj)
-                                       __kobject_del()
-                                         sysfs_remove_dir()
-                                           kobj->sd = NULL
-                                         sysfs_put(sd)
-                                           kernfs_put()  // RCU free
-  ext4_notify_error_sysfs(sbi)
-    sysfs_notify(&sbi->s_kobj)
-      kn = kobj->sd              // stale pointer
-      kernfs_get(kn)             // UAF on freed kernfs_node
-                                   ext4_journal_destroy()
-                                     flush_work(&sbi->s_sb_upd_work)
+Move RSS LUT initialization from ndo_open to vport creation to ensure LUT
+is always available. This enables RSS configuration via ethtool before
+bringing the interface up. Simplify LUT management by maintaining all
+changes in the driver's soft copy and programming zeros to the indirection
+table when rxhash is disabled. Defer HW programming until the interface
+comes up if it is down during rxhash and LUT configuration changes.
 
-Instead of reordering the teardown sequence, fix this by making
-ext4_notify_error_sysfs() detect that sysfs has already been torn down
-by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
-in that case. A dedicated mutex (s_error_notify_mutex) serializes
-ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
-to prevent TOCTOU races where the kobject could be deleted between the
-state_in_sysfs check and the sysfs_notify() call.
+Steps to reproduce:
+** Load idpf driver; interfaces will be created
+	modprobe idpf
+** Before bringing the interfaces up, turn rxhash off
+	ethtool -K eth2 rxhash off
 
-Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+[89408.371875] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[89408.371908] #PF: supervisor read access in kernel mode
+[89408.371924] #PF: error_code(0x0000) - not-present page
+[89408.371940] PGD 0 P4D 0
+[89408.371953] Oops: Oops: 0000 [#1] SMP NOPTI
+<snip>
+[89408.372052] RIP: 0010:memcpy_orig+0x16/0x130
+[89408.372310] Call Trace:
+[89408.372317]  <TASK>
+[89408.372326]  ? idpf_set_features+0xfc/0x180 [idpf]
+[89408.372363]  __netdev_update_features+0x295/0xde0
+[89408.372384]  ethnl_set_features+0x15e/0x460
+[89408.372406]  genl_family_rcv_msg_doit+0x11f/0x180
+[89408.372429]  genl_rcv_msg+0x1ad/0x2b0
+[89408.372446]  ? __pfx_ethnl_set_features+0x10/0x10
+[89408.372465]  ? __pfx_genl_rcv_msg+0x10/0x10
+[89408.372482]  netlink_rcv_skb+0x58/0x100
+[89408.372502]  genl_rcv+0x2c/0x50
+[89408.372516]  netlink_unicast+0x289/0x3e0
+[89408.372533]  netlink_sendmsg+0x215/0x440
+[89408.372551]  __sys_sendto+0x234/0x240
+[89408.372571]  __x64_sys_sendto+0x28/0x30
+[89408.372585]  x64_sys_call+0x1909/0x1da0
+[89408.372604]  do_syscall_64+0x7a/0xfa0
+[89408.373140]  ? clear_bhb_loop+0x60/0xb0
+[89408.373647]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[89408.378887]  </TASK>
+<snip>
+
+Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
+Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+(cherry picked from commit 83f38f210b85676f40ba8586b5a8edae19b56995)
+[Harshit: While this is a clean cherry-pick I had to change a line of
+code where test_bit(IDPF_VPORT_UP,..) is used because 6.12.y branch
+doesn't have commit: 8dd72ebc73f3 ("idpf: convert vport state to
+bitmap")]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h  |    1 +
- fs/ext4/super.c |    1 +
- fs/ext4/sysfs.c |   10 +++++++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf.h          |    2 
+ drivers/net/ethernet/intel/idpf/idpf_lib.c      |   94 ++++++++++--------------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c     |   36 +++------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h     |    4 -
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    9 ++
+ 5 files changed, 66 insertions(+), 79 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1564,6 +1564,7 @@ struct ext4_sb_info {
- 	struct proc_dir_entry *s_proc;
- 	struct kobject s_kobj;
- 	struct completion s_kobj_unregister;
-+	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
- 	struct super_block *s_sb;
- 	struct buffer_head *s_mmp_bh;
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -361,14 +361,12 @@ enum idpf_user_flags {
+  * @rss_key: RSS hash key
+  * @rss_lut_size: Size of RSS lookup table
+  * @rss_lut: RSS lookup table
+- * @cached_lut: Used to restore previously init RSS lut
+  */
+ struct idpf_rss_data {
+ 	u16 rss_key_size;
+ 	u8 *rss_key;
+ 	u16 rss_lut_size;
+ 	u32 *rss_lut;
+-	u32 *cached_lut;
+ };
  
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5361,6 +5361,7 @@ static int __ext4_fill_super(struct fs_c
+ /**
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -999,7 +999,7 @@ static void idpf_vport_rel(struct idpf_v
+ 	u16 idx = vport->idx;
  
- 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
- 	spin_lock_init(&sbi->s_error_lock);
-+	mutex_init(&sbi->s_error_notify_mutex);
- 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
+ 	vport_config = adapter->vport_config[vport->idx];
+-	idpf_deinit_rss(vport);
++	idpf_deinit_rss_lut(vport);
+ 	rss_data = &vport_config->user_config.rss_data;
+ 	kfree(rss_data->rss_key);
+ 	rss_data->rss_key = NULL;
+@@ -1148,6 +1148,7 @@ static struct idpf_vport *idpf_vport_all
+ 	u16 idx = adapter->next_vport;
+ 	struct idpf_vport *vport;
+ 	u16 num_max_q;
++	int err;
  
- 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -555,7 +555,10 @@ static const struct kobj_type ext4_feat_
+ 	if (idx == IDPF_NO_FREE_SLOT)
+ 		return NULL;
+@@ -1198,10 +1199,11 @@ static struct idpf_vport *idpf_vport_all
  
- void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
- {
--	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_lock(&sbi->s_error_notify_mutex);
-+	if (sbi->s_kobj.state_in_sysfs)
-+		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
+ 	idpf_vport_init(vport, max_q);
  
- static struct kobject *ext4_root;
-@@ -568,8 +571,10 @@ int ext4_register_sysfs(struct super_blo
+-	/* This alloc is done separate from the LUT because it's not strictly
+-	 * dependent on how many queues we have. If we change number of queues
+-	 * and soft reset we'll need a new LUT but the key can remain the same
+-	 * for as long as the vport exists.
++	/* LUT and key are both initialized here. Key is not strictly dependent
++	 * on how many queues we have. If we change number of queues and soft
++	 * reset is initiated, LUT will be freed and a new LUT will be allocated
++	 * as per the updated number of queues during vport bringup. However,
++	 * the key remains the same for as long as the vport exists.
+ 	 */
+ 	rss_data = &adapter->vport_config[idx]->user_config.rss_data;
+ 	rss_data->rss_key = kzalloc(rss_data->rss_key_size, GFP_KERNEL);
+@@ -1211,6 +1213,11 @@ static struct idpf_vport *idpf_vport_all
+ 	/* Initialize default rss key */
+ 	netdev_rss_key_fill((void *)rss_data->rss_key, rss_data->rss_key_size);
+ 
++	/* Initialize default rss LUT */
++	err = idpf_init_rss_lut(vport);
++	if (err)
++		goto free_rss_key;
++
+ 	/* fill vport slot in the adapter struct */
+ 	adapter->vports[idx] = vport;
+ 	adapter->vport_ids[idx] = idpf_get_vport_id(vport);
+@@ -1221,6 +1228,8 @@ static struct idpf_vport *idpf_vport_all
+ 
+ 	return vport;
+ 
++free_rss_key:
++	kfree(rss_data->rss_key);
+ free_vector_idxs:
+ 	kfree(vport->q_vector_idxs);
+ free_vport:
+@@ -1397,6 +1406,7 @@ static int idpf_vport_open(struct idpf_v
+ 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
+ 	struct idpf_adapter *adapter = vport->adapter;
+ 	struct idpf_vport_config *vport_config;
++	struct idpf_rss_data *rss_data;
  	int err;
  
- 	init_completion(&sbi->s_kobj_unregister);
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
- 				   "%s", sb->s_id);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- 	if (err) {
- 		kobject_put(&sbi->s_kobj);
- 		wait_for_completion(&sbi->s_kobj_unregister);
-@@ -602,7 +607,10 @@ void ext4_unregister_sysfs(struct super_
+ 	if (np->state != __IDPF_VPORT_DOWN)
+@@ -1479,12 +1489,21 @@ static int idpf_vport_open(struct idpf_v
+ 	idpf_restore_features(vport);
  
- 	if (sbi->s_proc)
- 		remove_proc_subtree(sb->s_id, ext4_proc_root);
+ 	vport_config = adapter->vport_config[vport->idx];
+-	if (vport_config->user_config.rss_data.rss_lut)
+-		err = idpf_config_rss(vport);
+-	else
+-		err = idpf_init_rss(vport);
++	rss_data = &vport_config->user_config.rss_data;
 +
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	kobject_del(&sbi->s_kobj);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
++	if (!rss_data->rss_lut) {
++		err = idpf_init_rss_lut(vport);
++		if (err) {
++			dev_err(&adapter->pdev->dev,
++				"Failed to initialize RSS LUT for vport %u: %d\n",
++				vport->vport_id, err);
++			goto disable_vport;
++		}
++	}
++
++	err = idpf_config_rss(vport);
+ 	if (err) {
+-		dev_err(&adapter->pdev->dev, "Failed to initialize RSS for vport %u: %d\n",
++		dev_err(&adapter->pdev->dev, "Failed to configure RSS for vport %u: %d\n",
+ 			vport->vport_id, err);
+ 		goto disable_vport;
+ 	}
+@@ -1493,13 +1512,11 @@ static int idpf_vport_open(struct idpf_v
+ 	if (err) {
+ 		dev_err(&adapter->pdev->dev, "Failed to complete interface up for vport %u: %d\n",
+ 			vport->vport_id, err);
+-		goto deinit_rss;
++		goto disable_vport;
+ 	}
+ 
+ 	return 0;
+ 
+-deinit_rss:
+-	idpf_deinit_rss(vport);
+ disable_vport:
+ 	idpf_send_disable_vport_msg(vport);
+ disable_queues:
+@@ -1936,7 +1953,7 @@ int idpf_initiate_soft_reset(struct idpf
+ 		idpf_vport_stop(vport);
+ 	}
+ 
+-	idpf_deinit_rss(vport);
++	idpf_deinit_rss_lut(vport);
+ 	/* We're passing in vport here because we need its wait_queue
+ 	 * to send a message and it should be getting all the vport
+ 	 * config data out of the adapter but we need to be careful not
+@@ -2103,40 +2120,6 @@ static void idpf_set_rx_mode(struct net_
  }
  
- int __init ext4_init_sysfs(void)
+ /**
+- * idpf_vport_manage_rss_lut - disable/enable RSS
+- * @vport: the vport being changed
+- *
+- * In the event of disable request for RSS, this function will zero out RSS
+- * LUT, while in the event of enable request for RSS, it will reconfigure RSS
+- * LUT with the default LUT configuration.
+- */
+-static int idpf_vport_manage_rss_lut(struct idpf_vport *vport)
+-{
+-	bool ena = idpf_is_feature_ena(vport, NETIF_F_RXHASH);
+-	struct idpf_rss_data *rss_data;
+-	u16 idx = vport->idx;
+-	int lut_size;
+-
+-	rss_data = &vport->adapter->vport_config[idx]->user_config.rss_data;
+-	lut_size = rss_data->rss_lut_size * sizeof(u32);
+-
+-	if (ena) {
+-		/* This will contain the default or user configured LUT */
+-		memcpy(rss_data->rss_lut, rss_data->cached_lut, lut_size);
+-	} else {
+-		/* Save a copy of the current LUT to be restored later if
+-		 * requested.
+-		 */
+-		memcpy(rss_data->cached_lut, rss_data->rss_lut, lut_size);
+-
+-		/* Zero out the current LUT to disable */
+-		memset(rss_data->rss_lut, 0, lut_size);
+-	}
+-
+-	return idpf_config_rss(vport);
+-}
+-
+-/**
+  * idpf_set_features - set the netdev feature flags
+  * @netdev: ptr to the netdev being adjusted
+  * @features: the feature set that the stack is suggesting
+@@ -2161,10 +2144,19 @@ static int idpf_set_features(struct net_
+ 	}
+ 
+ 	if (changed & NETIF_F_RXHASH) {
++		struct idpf_netdev_priv *np = netdev_priv(netdev);
++
+ 		netdev->features ^= NETIF_F_RXHASH;
+-		err = idpf_vport_manage_rss_lut(vport);
+-		if (err)
+-			goto unlock_mutex;
++
++		/* If the interface is not up when changing the rxhash, update
++		 * to the HW is skipped. The updated LUT will be committed to
++		 * the HW when the interface is brought up.
++		 */
++		if (np->state == __IDPF_VPORT_UP) {
++			err = idpf_config_rss(vport);
++			if (err)
++				goto unlock_mutex;
++		}
+ 	}
+ 
+ 	if (changed & NETIF_F_GRO_HW) {
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -4068,57 +4068,47 @@ static void idpf_fill_dflt_rss_lut(struc
+ 
+ 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
+ 
+-	for (i = 0; i < rss_data->rss_lut_size; i++) {
++	for (i = 0; i < rss_data->rss_lut_size; i++)
+ 		rss_data->rss_lut[i] = i % num_active_rxq;
+-		rss_data->cached_lut[i] = rss_data->rss_lut[i];
+-	}
+ }
+ 
+ /**
+- * idpf_init_rss - Allocate and initialize RSS resources
++ * idpf_init_rss_lut - Allocate and initialize RSS LUT
+  * @vport: virtual port
+  *
+- * Return 0 on success, negative on failure
++ * Return: 0 on success, negative on failure
+  */
+-int idpf_init_rss(struct idpf_vport *vport)
++int idpf_init_rss_lut(struct idpf_vport *vport)
+ {
+ 	struct idpf_adapter *adapter = vport->adapter;
+ 	struct idpf_rss_data *rss_data;
+-	u32 lut_size;
+ 
+ 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
++	if (!rss_data->rss_lut) {
++		u32 lut_size;
+ 
+-	lut_size = rss_data->rss_lut_size * sizeof(u32);
+-	rss_data->rss_lut = kzalloc(lut_size, GFP_KERNEL);
+-	if (!rss_data->rss_lut)
+-		return -ENOMEM;
+-
+-	rss_data->cached_lut = kzalloc(lut_size, GFP_KERNEL);
+-	if (!rss_data->cached_lut) {
+-		kfree(rss_data->rss_lut);
+-		rss_data->rss_lut = NULL;
+-
+-		return -ENOMEM;
++		lut_size = rss_data->rss_lut_size * sizeof(u32);
++		rss_data->rss_lut = kzalloc(lut_size, GFP_KERNEL);
++		if (!rss_data->rss_lut)
++			return -ENOMEM;
+ 	}
+ 
+ 	/* Fill the default RSS lut values */
+ 	idpf_fill_dflt_rss_lut(vport);
+ 
+-	return idpf_config_rss(vport);
++	return 0;
+ }
+ 
+ /**
+- * idpf_deinit_rss - Release RSS resources
++ * idpf_deinit_rss_lut - Release RSS LUT
+  * @vport: virtual port
+  */
+-void idpf_deinit_rss(struct idpf_vport *vport)
++void idpf_deinit_rss_lut(struct idpf_vport *vport)
+ {
+ 	struct idpf_adapter *adapter = vport->adapter;
+ 	struct idpf_rss_data *rss_data;
+ 
+ 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
+-	kfree(rss_data->cached_lut);
+-	rss_data->cached_lut = NULL;
+ 	kfree(rss_data->rss_lut);
+ 	rss_data->rss_lut = NULL;
+ }
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -1018,8 +1018,8 @@ void idpf_vport_intr_deinit(struct idpf_
+ int idpf_vport_intr_init(struct idpf_vport *vport);
+ void idpf_vport_intr_ena(struct idpf_vport *vport);
+ int idpf_config_rss(struct idpf_vport *vport);
+-int idpf_init_rss(struct idpf_vport *vport);
+-void idpf_deinit_rss(struct idpf_vport *vport);
++int idpf_init_rss_lut(struct idpf_vport *vport);
++void idpf_deinit_rss_lut(struct idpf_vport *vport);
+ int idpf_rx_bufs_init_all(struct idpf_vport *vport);
+ void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
+ 		      unsigned int size);
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -2341,6 +2341,10 @@ int idpf_send_get_stats_msg(struct idpf_
+  * @vport: virtual port data structure
+  * @get: flag to set or get rss look up table
+  *
++ * When rxhash is disabled, RSS LUT will be configured with zeros.  If rxhash
++ * is enabled, the LUT values stored in driver's soft copy will be used to setup
++ * the HW.
++ *
+  * Returns 0 on success, negative on failure.
+  */
+ int idpf_send_get_set_rss_lut_msg(struct idpf_vport *vport, bool get)
+@@ -2351,10 +2355,12 @@ int idpf_send_get_set_rss_lut_msg(struct
+ 	struct idpf_rss_data *rss_data;
+ 	int buf_size, lut_buf_size;
+ 	ssize_t reply_sz;
++	bool rxhash_ena;
+ 	int i;
+ 
+ 	rss_data =
+ 		&vport->adapter->vport_config[vport->idx]->user_config.rss_data;
++	rxhash_ena = idpf_is_feature_ena(vport, NETIF_F_RXHASH);
+ 	buf_size = struct_size(rl, lut, rss_data->rss_lut_size);
+ 	rl = kzalloc(buf_size, GFP_KERNEL);
+ 	if (!rl)
+@@ -2376,7 +2382,8 @@ int idpf_send_get_set_rss_lut_msg(struct
+ 	} else {
+ 		rl->lut_entries = cpu_to_le16(rss_data->rss_lut_size);
+ 		for (i = 0; i < rss_data->rss_lut_size; i++)
+-			rl->lut[i] = cpu_to_le32(rss_data->rss_lut[i]);
++			rl->lut[i] = rxhash_ena ?
++				cpu_to_le32(rss_data->rss_lut[i]) : 0;
+ 
+ 		xn_params.vc_op = VIRTCHNL2_OP_SET_RSS_LUT;
+ 	}
 
 
 
