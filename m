@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJfzJb/8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:31 +0200
+	id ECsLBVH+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB1F36D75F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 926DF36DBD2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7BB3D305F1B8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75D1D329B990
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A4F421892;
-	Tue, 31 Mar 2026 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E279F4035AB;
+	Tue, 31 Mar 2026 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxb2gjBn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VzwOOVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA122D1F40;
-	Tue, 31 Mar 2026 16:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52553EF0A2;
+	Tue, 31 Mar 2026 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975549; cv=none; b=Hb/FaHAhGZ6BTC4CnkqW/DlHqXevqTEHWlUEVcFUzCE79IASwH3u9EE2Prrh2Wto0cVVhfWDjal1XaypU9tWcPx8CaDzR3zvTNhmUr/IOCZlQhDnAOYq8XRlstvsH8yidEBE2jiCe5NEui24z22j6l5XwOXZOfxWheCGtO8bFec=
+	t=1774976132; cv=none; b=MsqAAAjwDkK1oSGSwSQ7bwiD0EBY53Ng4MVyFpBLzPWiIQs+pRvevxQpPAIIzAz3D/ZuIeP9x5X4dyWOIvUgsfCaTOUUG0kTRBDA1fAb9p/0gGuwi3S+Wr91TObq6aqs2Y/8vAp8gyzi0+9BqV+0bB8br2nl17QSS8+p60JyFYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975549; c=relaxed/simple;
-	bh=vGAuRw0rwL5uRJ/sfwM3UMWuQEwR0GDIurYpsGTGUnw=;
+	s=arc-20240116; t=1774976132; c=relaxed/simple;
+	bh=LMhLhpWwJwhpV6F7WFWw7lYsJfe8xhFEc8bdFRvNQ6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8ZdwiNCmgCMTONyQJpUA9WsVUPkhJQZ9fK6E3eVd1NEfhBzXS0egSSTwIK3H0jM1IWtkN8hOiEnVwoZHsY3D1tMPZXXOylhZ67E0Ax/KoHslr44EMSfN8pkDB1KHP0hvVdFU2VYddZqZEvRftb5V4lQuMEKUI6FRtGI93U6xyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxb2gjBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769E5C19423;
-	Tue, 31 Mar 2026 16:45:49 +0000 (UTC)
+	 MIME-Version; b=uMfibkQA8jqJefD11sJC00CxOprScwGA0EQ6uftTtFORUaJE8ghNBRT5xZtWRPBcZZhSoulqi9pQlpMwjWLbgyC2l5y12RP0yp4RVZ74KB5dxkdokrHYbY0PtKlP6AwtNBEHi9g39waUqD1EYX6WKFxRXmJ4hVCGmEZj7IR/zYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VzwOOVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B386C19423;
+	Tue, 31 Mar 2026 16:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975549;
-	bh=vGAuRw0rwL5uRJ/sfwM3UMWuQEwR0GDIurYpsGTGUnw=;
+	s=korg; t=1774976132;
+	bh=LMhLhpWwJwhpV6F7WFWw7lYsJfe8xhFEc8bdFRvNQ6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxb2gjBno1I37yqeT/xCgosS79mpZFXcrUX3jBVlBTYOBqZ9fYIUT2W+3EcYnS8cl
-	 azMYgAWi9p3ubfOZvwAXRkkr0D0Ut6itlsw4UUFS/x9Fbo9L4UHX2K4WI9jZfH493m
-	 lSRigZaJhoOtiPp3qxsVAOX7GXK4PPEeESC+eVwA=
+	b=1VzwOOVOsQCBHMB/k7hIGkTYeNRrZpPbdJaeo3ZBV7SaD8LA//0OxAWpQwPbocmxW
+	 tgnE8T7aA4u+cl7u3/jweqNr/gQU3fjlBZlOOsJKi5isFqNoi6gD/SRUryARgCLXiP
+	 V2FB54tDBN2SINR1R0l7wIogVpJS/+ngFIuEstG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Carlini <npc@anthropic.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 337/342] futex: Require sys_futex_requeue() to have identical flags
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 220/244] idpf: detach and close netdevs while handling a reset
 Date: Tue, 31 Mar 2026 18:22:50 +0200
-Message-ID: <20260331161811.301831720@linuxfoundation.org>
+Message-ID: <20260331161749.891473557@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +70,310 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232199-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231975-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,anthropic.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3DB1F36D75F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 926DF36DBD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 19f94b39058681dec64a10ebeb6f23fe7fc3f77a ]
+[ Upstream commit 2e281e1155fc476c571c0bd2ffbfe28ab829a5c3 ]
 
-Nicholas reported that his LLM found it was possible to create a UaF
-when sys_futex_requeue() is used with different flags. The initial
-motivation for allowing different flags was the variable sized futex,
-but since that hasn't been merged (yet), simply mandate the flags are
-identical, as is the case for the old style sys_futex() requeue
-operations.
+Protect the reset path from callbacks by setting the netdevs to detached
+state and close any netdevs in UP state until the reset handling has
+completed. During a reset, the driver will de-allocate resources for the
+vport, and there is no guarantee that those will recover, which is why the
+existing vport_ctrl_lock does not provide sufficient protection.
 
-Fixes: 0f4b5f972216 ("futex: Add sys_futex_requeue()")
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+idpf_detach_and_close() is called right before reset handling. If the
+reset handling succeeds, the netdevs state is recovered via call to
+idpf_attach_and_open(). If the reset handling fails the netdevs remain
+down. The detach/down calls are protected with RTNL lock to avoid racing
+with callbacks. On the recovery side the attach can be done without
+holding the RTNL lock as there are no callbacks expected at that point,
+due to detach/close always being done first in that flow.
+
+The previous logic restoring the netdevs state based on the
+IDPF_VPORT_UP_REQUESTED flag in the init task is not needed anymore, hence
+the removal of idpf_set_vport_state(). The IDPF_VPORT_UP_REQUESTED is
+still being used to restore the state of the netdevs following the reset,
+but has no use outside of the reset handling flow.
+
+idpf_init_hard_reset() is converted to void, since it was used as such and
+there is no error handling being done based on its return value.
+
+Before this change, invoking hard and soft resets simultaneously will
+cause the driver to lose the vport state:
+ip -br a
+<inf>	UP
+echo 1 > /sys/class/net/ens801f0/device/reset& \
+ethtool -L ens801f0 combined 8
+ip -br a
+<inf>	DOWN
+ip link set <inf> up
+ip -br a
+<inf>	DOWN
+
+Also in case of a failure in the reset path, the netdev is left
+exposed to external callbacks, while vport resources are not
+initialized, leading to a crash on subsequent ifup/down:
+[408471.398966] idpf 0000:83:00.0: HW reset detected
+[408471.411744] idpf 0000:83:00.0: Device HW Reset initiated
+[408472.277901] idpf 0000:83:00.0: The driver was unable to contact the device's firmware. Check that the FW is running. Driver state= 0x2
+[408508.125551] BUG: kernel NULL pointer dereference, address: 0000000000000078
+[408508.126112] #PF: supervisor read access in kernel mode
+[408508.126687] #PF: error_code(0x0000) - not-present page
+[408508.127256] PGD 2aae2f067 P4D 0
+[408508.127824] Oops: Oops: 0000 [#1] SMP NOPTI
+...
+[408508.130871] RIP: 0010:idpf_stop+0x39/0x70 [idpf]
+...
+[408508.139193] Call Trace:
+[408508.139637]  <TASK>
+[408508.140077]  __dev_close_many+0xbb/0x260
+[408508.140533]  __dev_change_flags+0x1cf/0x280
+[408508.140987]  netif_change_flags+0x26/0x70
+[408508.141434]  dev_change_flags+0x3d/0xb0
+[408508.141878]  devinet_ioctl+0x460/0x890
+[408508.142321]  inet_ioctl+0x18e/0x1d0
+[408508.142762]  ? _copy_to_user+0x22/0x70
+[408508.143207]  sock_do_ioctl+0x3d/0xe0
+[408508.143652]  sock_ioctl+0x10e/0x330
+[408508.144091]  ? find_held_lock+0x2b/0x80
+[408508.144537]  __x64_sys_ioctl+0x96/0xe0
+[408508.144979]  do_syscall_64+0x79/0x3d0
+[408508.145415]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[408508.145860] RIP: 0033:0x7f3e0bb4caff
+
+Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+(cherry picked from commit 2e281e1155fc476c571c0bd2ffbfe28ab829a5c3)
+[Harshit: Backport to 6.12.y, resolve conflicts at 5 places:
+These are caused to missing non-backportable commits:
+1. commit: bd74a86bc75d ("idpf: link NAPIs to queues")
+2. commit: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev
+create, init, and destroy")
+3. commit: 8dd72ebc73f3 ("idpf: convert vport state to bitmap")
+4. commit: bf86a012e676 ("idpf: implement remaining IDC RDMA core
+   callbacks and handlers") in 6.12.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/futex/syscalls.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c |  115 +++++++++++++++++------------
+ 1 file changed, 70 insertions(+), 45 deletions(-)
 
-diff --git a/kernel/futex/syscalls.c b/kernel/futex/syscalls.c
-index 880c9bf2f3150..99723189c8cf7 100644
---- a/kernel/futex/syscalls.c
-+++ b/kernel/futex/syscalls.c
-@@ -459,6 +459,14 @@ SYSCALL_DEFINE4(futex_requeue,
- 	if (ret)
- 		return ret;
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -693,6 +693,65 @@ static int idpf_init_mac_addr(struct idp
+ 	return 0;
+ }
  
-+	/*
-+	 * For now mandate both flags are identical, like the sys_futex()
-+	 * interface has. If/when we merge the variable sized futex support,
-+	 * that patch can modify this test to allow a difference in size.
-+	 */
-+	if (futexes[0].w.flags != futexes[1].w.flags)
-+		return -EINVAL;
++static void idpf_detach_and_close(struct idpf_adapter *adapter)
++{
++	int max_vports = adapter->max_vports;
 +
- 	cmpval = futexes[0].w.val;
++	for (int i = 0; i < max_vports; i++) {
++		struct net_device *netdev = adapter->netdevs[i];
++
++		/* If the interface is in detached state, that means the
++		 * previous reset was not handled successfully for this
++		 * vport.
++		 */
++		if (!netif_device_present(netdev))
++			continue;
++
++		/* Hold RTNL to protect racing with callbacks */
++		rtnl_lock();
++		netif_device_detach(netdev);
++		if (netif_running(netdev)) {
++			set_bit(IDPF_VPORT_UP_REQUESTED,
++				adapter->vport_config[i]->flags);
++			dev_close(netdev);
++		}
++		rtnl_unlock();
++	}
++}
++
++static void idpf_attach_and_open(struct idpf_adapter *adapter)
++{
++	int max_vports = adapter->max_vports;
++
++	for (int i = 0; i < max_vports; i++) {
++		struct idpf_vport *vport = adapter->vports[i];
++		struct idpf_vport_config *vport_config;
++		struct net_device *netdev;
++
++		/* In case of a critical error in the init task, the vport
++		 * will be freed. Only continue to restore the netdevs
++		 * if the vport is allocated.
++		 */
++		if (!vport)
++			continue;
++
++		/* No need for RTNL on attach as this function is called
++		 * following detach and dev_close(). We do take RTNL for
++		 * dev_open() below as it can race with external callbacks
++		 * following the call to netif_device_attach().
++		 */
++		netdev = adapter->netdevs[i];
++		netif_device_attach(netdev);
++		vport_config = adapter->vport_config[vport->idx];
++		if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED,
++				       vport_config->flags)) {
++			rtnl_lock();
++			dev_open(netdev, NULL);
++			rtnl_unlock();
++		}
++	}
++}
++
+ /**
+  * idpf_cfg_netdev - Allocate, configure and register a netdev
+  * @vport: main vport structure
+@@ -990,10 +1049,11 @@ static void idpf_vport_dealloc(struct id
+ 	unsigned int i = vport->idx;
  
- 	return futex_requeue(u64_to_user_ptr(futexes[0].w.uaddr), futexes[0].w.flags,
--- 
-2.53.0
-
+ 	idpf_deinit_mac_addr(vport);
+-	idpf_vport_stop(vport);
+ 
+-	if (!test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags))
++	if (!test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags)) {
++		idpf_vport_stop(vport);
+ 		idpf_decfg_netdev(vport);
++	}
+ 	if (test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+ 		idpf_del_all_mac_filters(vport);
+ 
+@@ -1471,7 +1531,6 @@ void idpf_init_task(struct work_struct *
+ 	struct idpf_vport_config *vport_config;
+ 	struct idpf_vport_max_q max_q;
+ 	struct idpf_adapter *adapter;
+-	struct idpf_netdev_priv *np;
+ 	struct idpf_vport *vport;
+ 	u16 num_default_vports;
+ 	struct pci_dev *pdev;
+@@ -1528,12 +1587,6 @@ void idpf_init_task(struct work_struct *
+ 	if (idpf_cfg_netdev(vport))
+ 		goto unwind_vports;
+ 
+-	/* Once state is put into DOWN, driver is ready for dev_open */
+-	np = netdev_priv(vport->netdev);
+-	np->state = __IDPF_VPORT_DOWN;
+-	if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED, vport_config->flags))
+-		idpf_vport_open(vport);
+-
+ 	/* Spawn and return 'idpf_init_task' work queue until all the
+ 	 * default vports are created
+ 	 */
+@@ -1710,27 +1763,6 @@ static int idpf_check_reset_complete(str
+ }
+ 
+ /**
+- * idpf_set_vport_state - Set the vport state to be after the reset
+- * @adapter: Driver specific private structure
+- */
+-static void idpf_set_vport_state(struct idpf_adapter *adapter)
+-{
+-	u16 i;
+-
+-	for (i = 0; i < adapter->max_vports; i++) {
+-		struct idpf_netdev_priv *np;
+-
+-		if (!adapter->netdevs[i])
+-			continue;
+-
+-		np = netdev_priv(adapter->netdevs[i]);
+-		if (np->state == __IDPF_VPORT_UP)
+-			set_bit(IDPF_VPORT_UP_REQUESTED,
+-				adapter->vport_config[i]->flags);
+-	}
+-}
+-
+-/**
+  * idpf_init_hard_reset - Initiate a hardware reset
+  * @adapter: Driver specific private structure
+  *
+@@ -1738,35 +1770,23 @@ static void idpf_set_vport_state(struct
+  * reallocate. Also reinitialize the mailbox. Return 0 on success,
+  * negative on failure.
+  */
+-static int idpf_init_hard_reset(struct idpf_adapter *adapter)
++static void idpf_init_hard_reset(struct idpf_adapter *adapter)
+ {
+ 	struct idpf_reg_ops *reg_ops = &adapter->dev_ops.reg_ops;
+ 	struct device *dev = &adapter->pdev->dev;
+-	struct net_device *netdev;
+ 	int err;
+-	u16 i;
+ 
++	idpf_detach_and_close(adapter);
+ 	mutex_lock(&adapter->vport_ctrl_lock);
+ 
+ 	dev_info(dev, "Device HW Reset initiated\n");
+ 
+-	/* Avoid TX hangs on reset */
+-	for (i = 0; i < adapter->max_vports; i++) {
+-		netdev = adapter->netdevs[i];
+-		if (!netdev)
+-			continue;
+-
+-		netif_carrier_off(netdev);
+-		netif_tx_disable(netdev);
+-	}
+-
+ 	/* Prepare for reset */
+ 	if (test_and_clear_bit(IDPF_HR_DRV_LOAD, adapter->flags)) {
+ 		reg_ops->trigger_reset(adapter, IDPF_HR_DRV_LOAD);
+ 	} else if (test_and_clear_bit(IDPF_HR_FUNC_RESET, adapter->flags)) {
+ 		bool is_reset = idpf_is_reset_detected(adapter);
+ 
+-		idpf_set_vport_state(adapter);
+ 		idpf_vc_core_deinit(adapter);
+ 		if (!is_reset)
+ 			reg_ops->trigger_reset(adapter, IDPF_HR_FUNC_RESET);
+@@ -1813,7 +1833,12 @@ static int idpf_init_hard_reset(struct i
+ unlock_mutex:
+ 	mutex_unlock(&adapter->vport_ctrl_lock);
+ 
+-	return err;
++	/* Attempt to restore netdevs and initialize RDMA CORE AUX device,
++	 * provided vc_core_init succeeded. It is still possible that
++	 * vports are not allocated at this point if the init task failed.
++	 */
++	if (!err)
++		idpf_attach_and_open(adapter);
+ }
+ 
+ /**
 
 
 
