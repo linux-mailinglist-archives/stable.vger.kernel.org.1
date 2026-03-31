@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-232279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOFmCPT/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:12 +0200
+	id qKPWGWgAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D485036E0D8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03F436E258
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AACE7306ECBB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1CBD30CAA8F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8391F425CD2;
-	Tue, 31 Mar 2026 16:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5213FA5E6;
+	Tue, 31 Mar 2026 16:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12l6ZUbu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsg7ahL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456C7423A62;
-	Tue, 31 Mar 2026 16:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E241D2EE262;
+	Tue, 31 Mar 2026 16:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976339; cv=none; b=CenwqEBNANu+wCrpTGUfpJRKmPerUYJbxT9bfK4MqlFEbRlM7ND2+8//IhNEK40PCxsR2TeCS2Mi/mNlj599uYODGwfNw6IFXDhnWsxcgz8pctzagUZyCoE0yVFIau2HUjsf3N+rmqKFbNoSm4Xx9ErXRyBcgu99oHdRovZF0R8=
+	t=1774974998; cv=none; b=WKq93HGsmEq1CrwPRK35jbUM+V3sKDXFCItA7EOjDua7w17PUUMFibjCmRdNTv/8k2BzRWt6m/WSkiVsUPlsDYr56l9sawK0XBuYYmsFRFhlWxKJnTrA9UeXRpmT3EC7Ltq94Z3XtSWAfiGmTx14ZJ1K61rHJxeWFvgZXkjXBpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976339; c=relaxed/simple;
-	bh=ZRYm8j3DqSnRRjzVw3cUOZZre0xQi2YmPQ2ULwv+97Q=;
+	s=arc-20240116; t=1774974998; c=relaxed/simple;
+	bh=DGoZ8UmQvH7ZPx8maGGvvhRqOEys+KsXK37ESwkC7zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dCYTBurEq1aXaza6nwPoj/Kf379sNo8hED9AB7YOEocYOdduxnGhKtgzAG0EDrhJC7oICCYSF3IMEZHSw/qagTspeKqm3yIxPTi0myRPy5g7kL+y9dqRkKNOOB+fZuN6Xwc/vZWcSS7Tk9UOLAhyEDsdAm5LLUAI/fQVMhSyesc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12l6ZUbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9205DC19423;
-	Tue, 31 Mar 2026 16:58:58 +0000 (UTC)
+	 MIME-Version; b=kd6loPeW+LttYsSLgseFzPJjJ3ZxlB8kOwH+XVb0wUp32ej5tto8t0dJOh1tHt4DzPMrQgcUB5iV4k7iuRFeAIXRoAY5wYrRGb94sQP7JUj+jzmLRNmAjFibrFnWj4ZICDQdWsgSU+9acyrSv718phD47E808OpNzJkhxH9Gs/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsg7ahL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D9EC19423;
+	Tue, 31 Mar 2026 16:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976338;
-	bh=ZRYm8j3DqSnRRjzVw3cUOZZre0xQi2YmPQ2ULwv+97Q=;
+	s=korg; t=1774974997;
+	bh=DGoZ8UmQvH7ZPx8maGGvvhRqOEys+KsXK37ESwkC7zI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12l6ZUbuUJComF5RLq3UXXD0zOPXWYYcI6Wt6WBzEW999M5J5xWUyj5pkbVuulgJb
-	 st7d5kipanOwL+w4d3osEQW6C7AaxCYnDvE8A9NnZcetNh7Lk4T04b8qkqvrhxuCSj
-	 JwXsS/xoVDlu3M24ji3PfSEUxluqQzaMzpbidWUs=
+	b=hsg7ahL22UtzM7F5kOvO84JBSdxYOXAWgU+jmuTD8kctsueAQ53r+o2truWg38Rx2
+	 1s5D8ryFp4Hq7sAvMSj+KUsvWcrL6E03rB2oUpfjJUV4CiYHfMhL90MZ1McZLdbO20
+	 nbWps0j1crABobxMdM17xVK7GVQuXHaATPEcBukg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Onyshchuk <oandrew@meta.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 053/309] bpf: Fix u32/s32 bounds when ranges cross min/max boundary
+Subject: [PATCH 6.19 123/342] udp: Fix wildcard bind conflict check when using hash2
 Date: Tue, 31 Mar 2026 18:19:16 +0200
-Message-ID: <20260331161755.437989333@linuxfoundation.org>
+Message-ID: <20260331161803.534004119@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,237 +65,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,etsalapatis.com,suse.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232279-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231760-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,etsalapatis.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: D485036E0D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,meta.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E03F436E258
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit fbc7aef517d8765e4c425d2792409bb9bf2e1f13 ]
+[ Upstream commit e537dd15d0d4ad989d56a1021290f0c674dd8b28 ]
 
-Same as in __reg64_deduce_bounds(), refine s32/u32 ranges
-in __reg32_deduce_bounds() in the following situations:
+When binding a udp_sock to a local address and port, UDP uses
+two hashes (udptable->hash and udptable->hash2) for collision
+detection. The current code switches to "hash2" when
+hslot->count > 10.
 
-- s32 range crosses U32_MAX/0 boundary, positive part of the s32 range
-  overlaps with u32 range:
+"hash2" is keyed by local address and local port.
+"hash" is keyed by local port only.
 
-  0                                                   U32_MAX
-  |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
-  |----------------------------|----------------------------|
-  |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
-  0                     S32_MAX S32_MIN                    -1
+The issue can be shown in the following bind sequence (pseudo code):
 
-- s32 range crosses U32_MAX/0 boundary, negative part of the s32 range
-  overlaps with u32 range:
+bind(fd1,  "[fd00::1]:8888")
+bind(fd2,  "[fd00::2]:8888")
+bind(fd3,  "[fd00::3]:8888")
+bind(fd4,  "[fd00::4]:8888")
+bind(fd5,  "[fd00::5]:8888")
+bind(fd6,  "[fd00::6]:8888")
+bind(fd7,  "[fd00::7]:8888")
+bind(fd8,  "[fd00::8]:8888")
+bind(fd9,  "[fd00::9]:8888")
+bind(fd10, "[fd00::10]:8888")
 
-  0                                                   U32_MAX
-  |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
-  |----------------------------|----------------------------|
-  |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
-  0                     S32_MAX S32_MIN                    -1
+/* Correctly return -EADDRINUSE because "hash" is used
+ * instead of "hash2". udp_lib_lport_inuse() detects the
+ * conflict.
+ */
+bind(fail_fd, "[::]:8888")
 
-- No refinement if ranges overlap in two intervals.
+/* After one more socket is bound to "[fd00::11]:8888",
+ * hslot->count exceeds 10 and "hash2" is used instead.
+ */
+bind(fd11, "[fd00::11]:8888")
+bind(fail_fd, "[::]:8888")      /* succeeds unexpectedly */
 
-This helps for e.g. consider the following program:
+The same issue applies to the IPv4 wildcard address "0.0.0.0"
+and the IPv4-mapped wildcard address "::ffff:0.0.0.0". For
+example, if there are existing sockets bound to
+"192.168.1.[1-11]:8888", then binding "0.0.0.0:8888" or
+"[::ffff:0.0.0.0]:8888" can also miss the conflict when
+hslot->count > 10.
 
-   call %[bpf_get_prandom_u32];
-   w0 &= 0xffffffff;
-   if w0 < 0x3 goto 1f;    // on fall-through u32 range [3..U32_MAX]
-   if w0 s> 0x1 goto 1f;   // on fall-through s32 range [S32_MIN..1]
-   if w0 s< 0x0 goto 1f;   // range can be narrowed to  [S32_MIN..-1]
-   r10 = 0;
-1: ...;
+TCP inet_csk_get_port() already has the correct check in
+inet_use_bhash2_on_bind(). Rename it to
+inet_use_hash2_on_bind() and move it to inet_hashtables.h
+so udp.c can reuse it in this fix.
 
-The reg_bounds.c selftest is updated to incorporate identical logic,
-refinement based on non-overflowing range halves:
-
-  ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
-  ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
-
-Reported-by: Andrea Righi <arighi@nvidia.com>
-Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
-Closes: https://lore.kernel.org/bpf/aakqucg4vcujVwif@gpd4/T/
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260306-bpf-32-bit-range-overflow-v3-1-f7f67e060a6b@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 30fff9231fad ("udp: bind() optimisation")
+Reported-by: Andrew Onyshchuk <oandrew@meta.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260319181817.1901357-1-martin.lau@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                         | 24 +++++++
- .../selftests/bpf/prog_tests/reg_bounds.c     | 62 +++++++++++++++++--
- 2 files changed, 82 insertions(+), 4 deletions(-)
+ include/net/inet_hashtables.h   | 14 ++++++++++++++
+ net/ipv4/inet_connection_sock.c | 20 +++-----------------
+ net/ipv4/udp.c                  |  2 +-
+ 3 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index f1264972e0245..3eaff8453e9a9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2479,6 +2479,30 @@ static void __reg32_deduce_bounds(struct bpf_reg_state *reg)
- 	if ((u32)reg->s32_min_value <= (u32)reg->s32_max_value) {
- 		reg->u32_min_value = max_t(u32, reg->s32_min_value, reg->u32_min_value);
- 		reg->u32_max_value = min_t(u32, reg->s32_max_value, reg->u32_max_value);
-+	} else {
-+		if (reg->u32_max_value < (u32)reg->s32_min_value) {
-+			/* See __reg64_deduce_bounds() for detailed explanation.
-+			 * Refine ranges in the following situation:
-+			 *
-+			 * 0                                                   U32_MAX
-+			 * |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
-+			 * |----------------------------|----------------------------|
-+			 * |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
-+			 * 0                     S32_MAX S32_MIN                    -1
-+			 */
-+			reg->s32_min_value = (s32)reg->u32_min_value;
-+			reg->u32_max_value = min_t(u32, reg->u32_max_value, reg->s32_max_value);
-+		} else if ((u32)reg->s32_max_value < reg->u32_min_value) {
-+			/*
-+			 * 0                                                   U32_MAX
-+			 * |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
-+			 * |----------------------------|----------------------------|
-+			 * |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
-+			 * 0                     S32_MAX S32_MIN                    -1
-+			 */
-+			reg->s32_max_value = (s32)reg->u32_max_value;
-+			reg->u32_min_value = max_t(u32, reg->u32_min_value, reg->s32_min_value);
-+		}
- 	}
+diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
+index 5a979dcab5383..6d936e9f2fd32 100644
+--- a/include/net/inet_hashtables.h
++++ b/include/net/inet_hashtables.h
+@@ -264,6 +264,20 @@ inet_bhashfn_portaddr(const struct inet_hashinfo *hinfo, const struct sock *sk,
+ 	return &hinfo->bhash2[hash & (hinfo->bhash_size - 1)];
  }
  
-diff --git a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
-index 0322f817d07be..04938d0d431b3 100644
---- a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
-+++ b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
-@@ -422,15 +422,69 @@ static bool is_valid_range(enum num_t t, struct range x)
- 	}
- }
- 
--static struct range range_improve(enum num_t t, struct range old, struct range new)
-+static struct range range_intersection(enum num_t t, struct range old, struct range new)
- {
- 	return range(t, max_t(t, old.a, new.a), min_t(t, old.b, new.b));
- }
- 
-+/*
-+ * Result is precise when 'x' and 'y' overlap or form a continuous range,
-+ * result is an over-approximation if 'x' and 'y' do not overlap.
-+ */
-+static struct range range_union(enum num_t t, struct range x, struct range y)
++static inline bool inet_use_hash2_on_bind(const struct sock *sk)
 +{
-+	if (!is_valid_range(t, x))
-+		return y;
-+	if (!is_valid_range(t, y))
-+		return x;
-+	return range(t, min_t(t, x.a, y.a), max_t(t, x.b, y.b));
-+}
++#if IS_ENABLED(CONFIG_IPV6)
++	if (sk->sk_family == AF_INET6) {
++		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
++			return false;
 +
-+/*
-+ * This function attempts to improve x range intersecting it with y.
-+ * range_cast(... to_t ...) looses precision for ranges that pass to_t
-+ * min/max boundaries. To avoid such precision loses this function
-+ * splits both x and y into halves corresponding to non-overflowing
-+ * sub-ranges: [0, smin] and [smax, -1].
-+ * Final result is computed as follows:
-+ *
-+ *   ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
-+ *   ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
-+ *
-+ * Precision might still be lost if final union is not a continuous range.
-+ */
-+static struct range range_refine_in_halves(enum num_t x_t, struct range x,
-+					   enum num_t y_t, struct range y)
-+{
-+	struct range x_pos, x_neg, y_pos, y_neg, r_pos, r_neg;
-+	u64 smax, smin, neg_one;
-+
-+	if (t_is_32(x_t)) {
-+		smax = (u64)(u32)S32_MAX;
-+		smin = (u64)(u32)S32_MIN;
-+		neg_one = (u64)(u32)(s32)(-1);
-+	} else {
-+		smax = (u64)S64_MAX;
-+		smin = (u64)S64_MIN;
-+		neg_one = U64_MAX;
++		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
++			return true;
 +	}
-+	x_pos = range_intersection(x_t, x, range(x_t, 0, smax));
-+	x_neg = range_intersection(x_t, x, range(x_t, smin, neg_one));
-+	y_pos = range_intersection(y_t, y, range(x_t, 0, smax));
-+	y_neg = range_intersection(y_t, y, range(y_t, smin, neg_one));
-+	r_pos = range_intersection(x_t, x_pos, range_cast(y_t, x_t, y_pos));
-+	r_neg = range_intersection(x_t, x_neg, range_cast(y_t, x_t, y_neg));
-+	return range_union(x_t, r_pos, r_neg);
-+
++#endif
++	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
 +}
 +
- static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t, struct range y)
- {
- 	struct range y_cast;
+ struct inet_bind_hashbucket *
+ inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, int port);
  
-+	if (t_is_32(x_t) == t_is_32(y_t))
-+		x = range_refine_in_halves(x_t, x, y_t, y);
-+
- 	y_cast = range_cast(y_t, x_t, y);
- 
- 	/* If we know that
-@@ -444,7 +498,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
- 	 */
- 	if (x_t == S64 && y_t == S32 && y_cast.a <= S32_MAX  && y_cast.b <= S32_MAX &&
- 	    (s64)x.a >= S32_MIN && (s64)x.b <= S32_MAX)
--		return range_improve(x_t, x, y_cast);
-+		return range_intersection(x_t, x, y_cast);
- 
- 	/* the case when new range knowledge, *y*, is a 32-bit subregister
- 	 * range, while previous range knowledge, *x*, is a full register
-@@ -462,7 +516,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
- 		x_swap = range(x_t, swap_low32(x.a, y_cast.a), swap_low32(x.b, y_cast.b));
- 		if (!is_valid_range(x_t, x_swap))
- 			return x;
--		return range_improve(x_t, x, x_swap);
-+		return range_intersection(x_t, x, x_swap);
- 	}
- 
- 	if (!t_is_32(x_t) && !t_is_32(y_t) && x_t != y_t) {
-@@ -480,7 +534,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
- 	}
- 
- 	/* otherwise, plain range cast and intersection works */
--	return range_improve(x_t, x, y_cast);
-+	return range_intersection(x_t, x, y_cast);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 97d57c52b9ad9..d587c5df84389 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -153,20 +153,6 @@ bool inet_sk_get_local_port_range(const struct sock *sk, int *low, int *high)
  }
+ EXPORT_SYMBOL(inet_sk_get_local_port_range);
  
- /* =======================
+-static bool inet_use_bhash2_on_bind(const struct sock *sk)
+-{
+-#if IS_ENABLED(CONFIG_IPV6)
+-	if (sk->sk_family == AF_INET6) {
+-		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
+-			return false;
+-
+-		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
+-			return true;
+-	}
+-#endif
+-	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
+-}
+-
+ static bool inet_bind_conflict(const struct sock *sk, struct sock *sk2,
+ 			       kuid_t uid, bool relax,
+ 			       bool reuseport_cb_ok, bool reuseport_ok)
+@@ -258,7 +244,7 @@ static int inet_csk_bind_conflict(const struct sock *sk,
+ 	 * checks separately because their spinlocks have to be acquired/released
+ 	 * independently of each other, to prevent possible deadlocks
+ 	 */
+-	if (inet_use_bhash2_on_bind(sk))
++	if (inet_use_hash2_on_bind(sk))
+ 		return tb2 && inet_bhash2_conflict(sk, tb2, uid, relax,
+ 						   reuseport_cb_ok, reuseport_ok);
+ 
+@@ -375,7 +361,7 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
+ 		head = &hinfo->bhash[inet_bhashfn(net, port,
+ 						  hinfo->bhash_size)];
+ 		spin_lock_bh(&head->lock);
+-		if (inet_use_bhash2_on_bind(sk)) {
++		if (inet_use_hash2_on_bind(sk)) {
+ 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, relax, false))
+ 				goto next_port;
+ 		}
+@@ -561,7 +547,7 @@ int inet_csk_get_port(struct sock *sk, unsigned short snum)
+ 				check_bind_conflict = false;
+ 		}
+ 
+-		if (check_bind_conflict && inet_use_bhash2_on_bind(sk)) {
++		if (check_bind_conflict && inet_use_hash2_on_bind(sk)) {
+ 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, true, true))
+ 				goto fail_unlock;
+ 		}
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index fbdbb65676e0d..bbb076c6042b2 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -287,7 +287,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
+ 	} else {
+ 		hslot = udp_hashslot(udptable, net, snum);
+ 		spin_lock_bh(&hslot->lock);
+-		if (hslot->count > 10) {
++		if (inet_use_hash2_on_bind(sk) && hslot->count > 10) {
+ 			int exist;
+ 			unsigned int slot2 = udp_sk(sk)->udp_portaddr_hash ^ snum;
+ 
 -- 
 2.51.0
 
