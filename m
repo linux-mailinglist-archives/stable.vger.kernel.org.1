@@ -1,227 +1,168 @@
-Return-Path: <stable+bounces-231311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFO6LrU6y2nmEwYAu9opvQ
-	(envelope-from <stable+bounces-231311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 05:08:37 +0200
+	id cGJyH3I9y2kFFAYAu9opvQ
+	(envelope-from <stable+bounces-231312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 05:20:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B760E3639F5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 05:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9454363A94
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 05:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EBD030191B2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 03:07:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0950F3021E63
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 03:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D31F30A9;
-	Tue, 31 Mar 2026 03:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="bqbNZ25k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218F429BD88;
+	Tue, 31 Mar 2026 03:20:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp134-33.sina.com.cn (smtp134-33.sina.com.cn [180.149.134.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85B8188CC9
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 03:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CE2266581;
+	Tue, 31 Mar 2026 03:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774926446; cv=none; b=sLKhi/YSeH8d7r1flAiWPxPbStO5ANocogIM43tGCuPL0QueEtZmdUK0hfKaW9Eq5RvW41IX1HTNd3aLLVYhEPU676EbANXsVuq5gXTpY5doJ4PRThctnTSaFRwlel5lQxrnWoVZzYfD7PRqYKQQPgxxiHWCv2axf0TUvcNH0mU=
+	t=1774927205; cv=none; b=klWYWeJU9ZYya0Ps/ifpLAt3JC5BHbH+qNkzcHU/2fH9oLXVFtbB5wz8W+g3yQvYZwCeGnmqIVsC+mQDwrc9yZkFokCNhjXKBiQsKapiwrgI0O+qsyJnKFMZzLQuGQFNBJo/tHyotyxAs8T6Yzfl/Cz9Q7fBBcTn/Sc/Q41v7mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774926446; c=relaxed/simple;
-	bh=zVD1ODOZ5ma95AWRiQkTgNVur1j4xCIgVj+SOxlI7AI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DmOYPx6LGlUdc3A8RaNx87umJ4P//HuYIsrNB5sKf8HS2IJiiK48KBBjzHz01TJmIBRThkJRNTQEtwH0kQTWT+qEmSIWdKbex4XzE4+FoxknsJcb6JMpwpvmGIcu9uQS8UjNArmF8a5jgUL2ccF1X/kvOTc3ROUnV66kjM5q4BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=bqbNZ25k; arc=none smtp.client-ip=180.149.134.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774926439;
-	bh=3sVFcfNlfARuQsbkufs1o7tCcDwibVQbTgHad3/m4bQ=;
-	h=From:Subject:Date:Message-Id;
-	b=bqbNZ25kD01nC6qYauMut8uesDIBuvsSNBelvfJiTDnQluyCoaZJMa83SLxDo1ntq
-	 AkZ1DtYXPDd+vYoWrcn+eLb1uce3MXMStm0XwLLMJCmkOzDduub+k4e5T1wslytzsf
-	 XgGpeBaWJUexx52dTYUauBCjLH6kmvlB+JTM2F58=
-X-SMAIL-HELO: pek-lpg-core6.wrs.com
-Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
-	by sina.com (10.185.250.21) with ESMTP
-	id 69CB391D00001F9E; Tue, 31 Mar 2026 11:01:51 +0800 (CST)
-X-Sender: johnny_haocn@sina.com
-X-Auth-ID: johnny_haocn@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=johnny_haocn@sina.com
-X-SMAIL-MID: 6303583408437
-X-SMAIL-UIID: C74F663AB5BB4A0BBAD4ADAF3C3124FE-20260331-110151-1
-From: Johnny Hao <johnny_haocn@sina.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 5.15.y] fbcon: Set fb_display[i]->mode to NULL when the mode is released
-Date: Tue, 31 Mar 2026 11:01:48 +0800
-Message-Id: <20260331030148.2724286-1-johnny_haocn@sina.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774927205; c=relaxed/simple;
+	bh=0E3F1ayyJ/8Pebql50Xnp0RR5w6MzmlF2TqewGTB/8o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JrT0wGxO+s6s1gQlEo8TWnrU+8zPMxYBg3EXHx7Oh+eCh87GGAPaPSq1HzUihzgKv2rBaiZglsCPwMhbQTFJlUKcMzRrSPfIehxAWGYa6Uquy3sK6auhPB3j/TYMlEwHlO9+hbk0gPYmtSzmZOo4w9pV4U1e9f5EZgFvQNRN/UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.0.104] (unknown [123.118.218.47])
+	by APP-03 (Coremail) with SMTP id rQCowACXstlPPctph81iDA--.55901S2;
+	Tue, 31 Mar 2026 11:19:44 +0800 (CST)
+Message-ID: <b9fd95f4-91d2-4af5-9239-6fca2ce77892@iscas.ac.cn>
+Date: Tue, 31 Mar 2026 11:19:43 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] riscv: misaligned: Make enabling delegation depend on
+ BROKEN
+To: Conor Dooley <conor@kernel.org>
+Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Songsong Zhang <U2FsdGVkX1@gmail.com>
+References: <20260330-riscv-misaligned-dont-delegate-v1-1-68b089b306c3@iscas.ac.cn>
+ <20260330-sensation-pronounce-98f8b14836ed@spud>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <20260330-sensation-pronounce-98f8b14836ed@spud>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-CM-TRANSID:rQCowACXstlPPctph81iDA--.55901S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF1UAry7WF43trW3CryrCrg_yoW5Wr1Upa
+	yUGF4DKry5trnrZr4Sg3yIgF45X395GryrGrsxt34Fvr98Zry7uF92qrWUua4DCr1vv340
+	vryrW3Wj9a45Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkIb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+	C2z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUtVW8ZwCF
+	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
+	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vI
+	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
+	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+	x4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU56yI5UUUUU==
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231311-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,huawei.com,suse.de,gmx.de,sina.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231312-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[sina.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sina.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_CC(0.00)[rivosinc.com,kernel.org,dabbelt.com,ghiti.fr,lists.infradead.org,vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.com:dkim,sina.com:email,sina.com:mid,syz.xxx:url,suse.de:email,gmx.de:email]
-X-Rspamd-Queue-Id: B760E3639F5
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D9454363A94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Quanmin Yan <yanquanmin1@huawei.com>
+On 3/30/26 20:59, Conor Dooley wrote:
 
-[ Upstream commit a1f3058930745d2b938b6b4f5bd9630dc74b26b7 ]
+> On Mon, Mar 30, 2026 at 02:47:15PM +0800, Vivian Wang wrote:
+>> The unaligned access emulation code in Linux has various deficiencies.
+>> For example, it doesn't emulate vector instructions [1], and doesn't
+>> emulate KVM guest accesses. Therefore, requesting misaligned exception
+>> delegation with SBI FWFT actually regresses userspace and KVM guest
+>> behavior. Until Linux can handle it properly, guard these sbi_fwft_set()
+>> calls behind RISCV_SBI_FWFT_DELEGATE_MISALIGNED, which in turn depends
+>> on BROKEN.
+>>
+>> The rest of the existing code proceeds as before, except as if
+>> SBI_FWFT_MISALIGNED_EXC_DELEG is not available, to handle any remaining
+>> address misaligned exceptions on a best-effort basis. The KVM SBI FWFT
+>> implementation is also not touched, but it is disabled if the firmware
+>> emulates unaligned accesses.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: cf5a8abc6560 ("riscv: misaligned: request misaligned exception from SBI")
+>> Reported-by: Songsong Zhang <U2FsdGVkX1@gmail.com> # KVM
+>> Link: https://lore.kernel.org/linux-riscv/38ce44c1-08cf-4e3f-8ade-20da224f529c@iscas.ac.cn/ [1]
+>> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+>> ---
+>> Clément: Sorry to call what you did broken, but it really is breaking
+>> on real hardware out there. I think this is the right way for now.
+>> ---
+>>  arch/riscv/Kconfig                   | 14 ++++++++++++++
+>>  arch/riscv/kernel/traps_misaligned.c |  2 +-
+>>  2 files changed, 15 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+>> index 90c531e6abf5..8ad1f13c170e 100644
+>> --- a/arch/riscv/Kconfig
+>> +++ b/arch/riscv/Kconfig
+>> @@ -941,6 +941,20 @@ config RISCV_VECTOR_MISALIGNED
+>>  	help
+>>  	  Enable detecting support for vector misaligned loads and stores.
+>>  
+>> +config RISCV_SBI_FWFT_DELEGATE_MISALIGNED
+>> +	bool "Request firmware delegation of unaligned access exceptions"
+>> +	depends on RISCV_SBI
+>> +	depends on BROKEN
+> Making it hard to enable I think makes a lot of sense, given the issues
+> you're reporting but I tacking on BROKEN will remove effectively all
+> build coverage of it* and will definitely stop almost anyone using it.
+> Should it be just made NONPORTABLE with the text about being incomplete
+> expanded a wee bit to say what is broken so that people can make a
+> decision?
 
-Recently, we discovered the following issue through syzkaller:
+Having thought about it more, I think NONPORTABLE does make sense. There
+is still a noticible amount of older non-H and non-RVV hardware out
+there that remain quite popular, and on these machines this will work
+fine, any further bugs notwithstanding.
 
-BUG: KASAN: slab-use-after-free in fb_mode_is_equal+0x285/0x2f0
-Read of size 4 at addr ff11000001b3c69c by task syz.xxx
-...
-Call Trace:
- <TASK>
- dump_stack_lvl+0xab/0xe0
- print_address_description.constprop.0+0x2c/0x390
- print_report+0xb9/0x280
- kasan_report+0xb8/0xf0
- fb_mode_is_equal+0x285/0x2f0
- fbcon_mode_deleted+0x129/0x180
- fb_set_var+0xe7f/0x11d0
- do_fb_ioctl+0x6a0/0x750
- fb_ioctl+0xe0/0x140
- __x64_sys_ioctl+0x193/0x210
- do_syscall_64+0x5f/0x9c0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+I'll change it to NONPORTABLE in v2, and, as you said, expand on known
+issues.
 
-Based on experimentation and analysis, during framebuffer unregistration,
-only the memory of fb_info->modelist is freed, without setting the
-corresponding fb_display[i]->mode to NULL for the freed modes. This leads
-to UAF issues during subsequent accesses. Here's an example of reproduction
-steps:
-1. With /dev/fb0 already registered in the system, load a kernel module
-   to register a new device /dev/fb1;
-2. Set fb1's mode to the global fb_display[] array (via FBIOPUT_CON2FBMAP);
-3. Switch console from fb to VGA (to allow normal rmmod of the ko);
-4. Unload the kernel module, at this point fb1's modelist is freed, leaving
-   a wild pointer in fb_display[];
-5. Trigger the bug via system calls through fb0 attempting to delete a mode
-   from fb0.
-
-Add a check in do_unregister_framebuffer(): if the mode to be freed exists
-in fb_display[], set the corresponding mode pointer to NULL.
-
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-[ The context change is due to the commit 2c0c19b681d5
-("fbdev: fbmem: Fix double free of 'fb_info->pixmap.addr'") in v5.16
-which is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
----
- drivers/video/fbdev/core/fbcon.c | 20 ++++++++++++++++++++
- drivers/video/fbdev/core/fbmem.c |  2 ++
- include/linux/fbcon.h            |  2 ++
- 3 files changed, 24 insertions(+)
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 8922595cc491..ede993b3fbd4 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2820,6 +2820,26 @@ int fbcon_mode_deleted(struct fb_info *info,
- 	return found;
- }
- 
-+static void fbcon_delete_mode(struct fb_videomode *m)
-+{
-+	struct fbcon_display *p;
-+	int i;
-+
-+	for (i = first_fb_vc; i <= last_fb_vc; i++) {
-+		p = &fb_display[i];
-+		if (p->mode == m)
-+			p->mode = NULL;
-+	}
-+}
-+
-+void fbcon_delete_modelist(struct list_head *head)
-+{
-+	struct fb_modelist *modelist;
-+
-+	list_for_each_entry(modelist, head, list)
-+		fbcon_delete_mode(&modelist->mode);
-+}
-+
- #ifdef CONFIG_VT_HW_CONSOLE_BINDING
- static void fbcon_unbind(void)
- {
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 3b52ddfe0350..03a7a7e2a670 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1750,6 +1750,8 @@ static void do_unregister_framebuffer(struct fb_info *fb_info)
- 	if (fb_info->pixmap.addr &&
- 	    (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
- 		kfree(fb_info->pixmap.addr);
-+
-+	fbcon_delete_modelist(&fb_info->modelist);
- 	fb_destroy_modelist(&fb_info->modelist);
- 	registered_fb[fb_info->node] = NULL;
- 	num_registered_fb--;
-diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-index 2382dec6d6ab..fb0fc2736b80 100644
---- a/include/linux/fbcon.h
-+++ b/include/linux/fbcon.h
-@@ -11,6 +11,7 @@ void fbcon_suspended(struct fb_info *info);
- void fbcon_resumed(struct fb_info *info);
- int fbcon_mode_deleted(struct fb_info *info,
- 		       struct fb_videomode *mode);
-+void fbcon_delete_modelist(struct list_head *head);
- void fbcon_new_modelist(struct fb_info *info);
- void fbcon_get_requirement(struct fb_info *info,
- 			   struct fb_blit_caps *caps);
-@@ -31,6 +32,7 @@ static inline void fbcon_suspended(struct fb_info *info) {}
- static inline void fbcon_resumed(struct fb_info *info) {}
- static inline int fbcon_mode_deleted(struct fb_info *info,
- 				     struct fb_videomode *mode) { return 0; }
-+static inline void fbcon_delete_modelist(struct list_head *head) {}
- static inline void fbcon_new_modelist(struct fb_info *info) {}
- static inline void fbcon_get_requirement(struct fb_info *info,
- 					 struct fb_blit_caps *caps) {}
--- 
-2.34.1
+Thanks,
+Vivian "dramforever" Wang
 
 
