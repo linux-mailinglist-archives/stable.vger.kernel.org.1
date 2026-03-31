@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHBZLCH6y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:45:21 +0200
+	id GFzRGRkGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6FD36D165
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:45:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E01C36EFCC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B59B3316E0AB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4BDB230C5175
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9038A3E559E;
-	Tue, 31 Mar 2026 16:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1766425CD2;
+	Tue, 31 Mar 2026 16:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqWp/exF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYMwfJNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547A733F38A;
-	Tue, 31 Mar 2026 16:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4965423A88;
+	Tue, 31 Mar 2026 16:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974928; cv=none; b=C+I7RrLq1I/kgqKl6+Z+lRX3s7rjuv9Ns5MrBhv929CdBv648EmgMRcmmHO0QwpOS8qJB+HgS9qY2+darpOITI+um5uUCvCuz8lAI5pk/gK/726dPpwAQ/qcePt4aohiuoK2eAgyG2Z1GHuVIA5r8EVR6mKG487TohayRA9KP1M=
+	t=1774976359; cv=none; b=VA1imppLuyCrp2PAHkIWYSRK8vkn3CzN7gV/JD01P61HbJeXVc1r1MNi625C93D5QY57hesFwo3B9lnHHxMKb1Sgfw9ydc2U6wyoT5ej3mhoXdGpKCqKx3/It7jkLTfNEmu3oKR4ET3bx1PgBn/ABuVE04xsnmRm+axaqS3ddDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974928; c=relaxed/simple;
-	bh=8ok9zZXNfI/ukfF+4xMOhFleoIYse1rhiumM8DO8/XQ=;
+	s=arc-20240116; t=1774976359; c=relaxed/simple;
+	bh=LKZUgNgDCA0DU768pYP9DLBa6rYRAj/416bh8sC3nH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVYGkSOXjtH3q3AYJ9VoqnJH9k29QqBOk3TkTSWCe+6lq2Ga1CSugoKkBxilSKVkfruaXBZ5up0BiTNd0tqjm12GvQIr2CUSfidHRbPNjs2EYr1p/+PyXfYdipMmP2CJPVOwT+2o7tGkc5B80V957QxOPyDX3kW4GKM/34ZdR+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqWp/exF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC9CC2BCB1;
-	Tue, 31 Mar 2026 16:35:27 +0000 (UTC)
+	 MIME-Version; b=hnKNxXxZbWNKrOoBA6fR7OhqVgd2RcjH0zhDiTw3nTpDPesgEThL94AEMU6zKXN5X9ePQOGoY+xlPU/UeEEbMmgrj4+gbAZpe/44U8DVX3Bj3DKw8+HrYXquq7fPasWmB3qVXHP9J0oN69osLu6XfkfT7Ytupv2+9kxrDvAq6y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYMwfJNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358E3C2BCB2;
+	Tue, 31 Mar 2026 16:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974928;
-	bh=8ok9zZXNfI/ukfF+4xMOhFleoIYse1rhiumM8DO8/XQ=;
+	s=korg; t=1774976359;
+	bh=LKZUgNgDCA0DU768pYP9DLBa6rYRAj/416bh8sC3nH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqWp/exFEO5PFYEekfHbp1kBmAlx+oZe792Evwq5GA32YT5WLjFM1DyM+y0b8Sj+W
-	 Y5jVTerRY0isTgyM3dGGSIp6a0soTNHwOzLIy3GVb7lH3iQYVl6HiB2K+NQsAZysF9
-	 EpsytJQeSV8uO99VFQWsxpQVbaP2LwRtbfGw3grs=
+	b=KYMwfJNCh6Dc9hLxnxOYhNwGyzknHD6SixpcWDhrHwTW3Kq6Ht+eOxulTpHNNzTFJ
+	 Xpgp7eUUAZ98bMjgnhbYPp0yaBOItvdWasvxXdC38vt2QLqNLXihd1RLwsrgUDailg
+	 6kYIpe3lA3DfFpz/RLORk6UZ2EDPm9832EhWVAdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Leonardo Scorcia <l.scorcia@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 099/342] pinctrl: mediatek: common: Fix probe failure for devices without EINT
+Subject: [PATCH 6.18 029/309] HID: intel-ish-hid: ipc: Add Nova Lake-H/S PCI device IDs
 Date: Tue, 31 Mar 2026 18:18:52 +0200
-Message-ID: <20260331161802.659607585@linuxfoundation.org>
+Message-ID: <20260331161754.553594045@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +66,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231734-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232287-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0B6FD36D165
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5E01C36EFCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Leonardo Scorcia <l.scorcia@gmail.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 8f9f64c8f90dca07d3b9f1d7ce5d34ccd246c9dd ]
+[ Upstream commit 22f8bcec5aeb05104b3eaa950cb5a345e95f0aa8 ]
 
-Some pinctrl devices like mt6397 or mt6392 don't support EINT at all, but
-the mtk_eint_init function is always called and returns -ENODEV, which
-then bubbles up and causes probe failure.
+Add device IDs of Nova Lake-H and Nova Lake-S into ishtp support list.
 
-To address this only call mtk_eint_init if EINT pins are present.
-
-Tested on Xiaomi Mi Smart Clock x04g (mt6392).
-
-Fixes: e46df235b4e6 ("pinctrl: mediatek: refactor EINT related code for all MediaTek pinctrl can fit")
-Signed-off-by: Luca Leonardo Scorcia <l.scorcia@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mtk-common.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/hw-ish.h  |  2 ++
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-index d6a46fe0cda89..3f518dce6d23f 100644
---- a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-@@ -1135,9 +1135,12 @@ int mtk_pctrl_init(struct platform_device *pdev,
- 		goto chip_error;
- 	}
+diff --git a/drivers/hid/intel-ish-hid/ipc/hw-ish.h b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
+index fa5d68c363134..27389971b96cc 100644
+--- a/drivers/hid/intel-ish-hid/ipc/hw-ish.h
++++ b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
+@@ -39,6 +39,8 @@
+ #define PCI_DEVICE_ID_INTEL_ISH_PTL_H		0xE345
+ #define PCI_DEVICE_ID_INTEL_ISH_PTL_P		0xE445
+ #define PCI_DEVICE_ID_INTEL_ISH_WCL		0x4D45
++#define PCI_DEVICE_ID_INTEL_ISH_NVL_H		0xD354
++#define PCI_DEVICE_ID_INTEL_ISH_NVL_S		0x6E78
  
--	ret = mtk_eint_init(pctl, pdev);
--	if (ret)
--		goto chip_error;
-+	/* Only initialize EINT if we have EINT pins */
-+	if (data->eint_hw.ap_num > 0) {
-+		ret = mtk_eint_init(pctl, pdev);
-+		if (ret)
-+			goto chip_error;
-+	}
+ #define	REVISION_ID_CHT_A0	0x6
+ #define	REVISION_ID_CHT_Ax_SI	0x0
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index b748ac6fbfdc7..51a41a28541c5 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -28,11 +28,15 @@ enum ishtp_driver_data_index {
+ 	ISHTP_DRIVER_DATA_LNL_M,
+ 	ISHTP_DRIVER_DATA_PTL,
+ 	ISHTP_DRIVER_DATA_WCL,
++	ISHTP_DRIVER_DATA_NVL_H,
++	ISHTP_DRIVER_DATA_NVL_S,
+ };
  
- 	return 0;
+ #define ISH_FW_GEN_LNL_M "lnlm"
+ #define ISH_FW_GEN_PTL "ptl"
+ #define ISH_FW_GEN_WCL "wcl"
++#define ISH_FW_GEN_NVL_H "nvlh"
++#define ISH_FW_GEN_NVL_S "nvls"
  
+ #define ISH_FIRMWARE_PATH(gen) "intel/ish/ish_" gen ".bin"
+ #define ISH_FIRMWARE_PATH_ALL "intel/ish/ish_*.bin"
+@@ -47,6 +51,12 @@ static struct ishtp_driver_data ishtp_driver_data[] = {
+ 	[ISHTP_DRIVER_DATA_WCL] = {
+ 		.fw_generation = ISH_FW_GEN_WCL,
+ 	},
++	[ISHTP_DRIVER_DATA_NVL_H] = {
++		.fw_generation = ISH_FW_GEN_NVL_H,
++	},
++	[ISHTP_DRIVER_DATA_NVL_S] = {
++		.fw_generation = ISH_FW_GEN_NVL_S,
++	},
+ };
+ 
+ static const struct pci_device_id ish_pci_tbl[] = {
+@@ -76,6 +86,8 @@ static const struct pci_device_id ish_pci_tbl[] = {
+ 	{PCI_DEVICE_DATA(INTEL, ISH_PTL_H, ISHTP_DRIVER_DATA_PTL)},
+ 	{PCI_DEVICE_DATA(INTEL, ISH_PTL_P, ISHTP_DRIVER_DATA_PTL)},
+ 	{PCI_DEVICE_DATA(INTEL, ISH_WCL, ISHTP_DRIVER_DATA_WCL)},
++	{PCI_DEVICE_DATA(INTEL, ISH_NVL_H, ISHTP_DRIVER_DATA_NVL_H)},
++	{PCI_DEVICE_DATA(INTEL, ISH_NVL_S, ISHTP_DRIVER_DATA_NVL_S)},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(pci, ish_pci_tbl);
 -- 
 2.51.0
 
