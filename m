@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-231738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2C/WHN75y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:14 +0200
+	id 6KQREYv+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0641D36D0DB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE56A36DC91
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D17903048CAD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25D8E308B261
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF035425CC9;
-	Tue, 31 Mar 2026 16:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76C4423A9B;
+	Tue, 31 Mar 2026 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWbZJ9pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWlu+psw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEF9402B9B;
-	Tue, 31 Mar 2026 16:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7614E3DFC7E;
+	Tue, 31 Mar 2026 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974938; cv=none; b=F2NnbT2E0hk9ZNzQ45po4jgvPE+XUJfel9ggtkFV5ejcvaeG527+5ZcRDMHgypOsyCJ3u8VUt24SWcMRysNeEq/Nu+EF46HFqzJrjQlMYb3YnrvgPK/9EdmJ9/iw63qCIixb9Hbw44UccgZJaKXmD0dPc3pOuM911BpOdLFa84Q=
+	t=1774976282; cv=none; b=mCf8KwAtBws6c5aGChSys2YTxJC67utT/MVBiSdqVv/F7+RACX5qZT9NTxQcRPrsB44w9IkJrDk9Vp5POmKU3lQcaCyH1JXCHir9tVsUOKRCHOmKSeWqLp0ByFSBFVEwUc3cNVIjibppJk+UKBGac6msZOq8+osWRr1gdFoQInw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974938; c=relaxed/simple;
-	bh=lu3pF75Z3UmUOT/4rSSVSgr0OVbM/oDsrEjgdqPTWWA=;
+	s=arc-20240116; t=1774976282; c=relaxed/simple;
+	bh=2A2OINQZcyxqVLQC8WSkuzinOjzB8YsIjbwLvtvoBzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbIGYooFpOCEQp+xqMsYm32SPYJtDRA+qbC/vSxKUTeGuGsHzeRS1SSlRE+LilTxVaxFJR+BvZeF/gWbZfybaW34k5534MvXmMQ3wU9v+a0Trt8sWjU9BZYpnLfC/z2Xkv6bDUkFRsKxZfoVhPtooyyyrqXdZBslVJ6Bbp55FYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWbZJ9pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30923C19423;
-	Tue, 31 Mar 2026 16:35:38 +0000 (UTC)
+	 MIME-Version; b=Bcgn1XMQ+kypAgujo+ReC1TvXaIt9iUIFRIIeTI9lZfUCNJw2OUDGZrfqVqJvMgn8nTrvNqqQDC9yRv9qWGibBQnJwS5RAynaY/iMEn+2MbMWgA7DPdD3fX2xAmkuyIMf59UJ48g+eMq5XSmKUTvNVM+cidic/NMXOoCpBA0VZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWlu+psw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBA9C19423;
+	Tue, 31 Mar 2026 16:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974938;
-	bh=lu3pF75Z3UmUOT/4rSSVSgr0OVbM/oDsrEjgdqPTWWA=;
+	s=korg; t=1774976282;
+	bh=2A2OINQZcyxqVLQC8WSkuzinOjzB8YsIjbwLvtvoBzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWbZJ9pvgz8D1ROyPOuLAhHc5Hx7+mmC5DKJD13BY+/qzQIaUjX1R8N4Hq248+qx2
-	 9im+rkVNuKVxuOqJBZ9QanXR+TOceA3czobFmKSxGOXCODMODe2q+G4lqq0N8rQ+Li
-	 0yFRhceqt66BtXBZImqvprtE68XRUIQKsbFxXOgo=
+	b=TWlu+psw5AVtNwJzqKlrahm5tgGo5+B94lFXhBT3CFR3qO7+UNiZgnaQtaqmdpcBY
+	 EIMpU1M9qvv39+SrY3DjKuwVJMYukb+qTgLiSQyjICdlLI235qkcYPdc3YU3EzAoUe
+	 Zvy13Q6EMF2iWyB4d2cHPyvIWyHdWWsyQNWOqV+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ilya Maximets <i.maximets@ovn.org>,
+	Valentin Spreckels <valentin@spreckels.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 103/342] openvswitch: defer tunnel netdev_put to RCU release
+Subject: [PATCH 6.18 033/309] net: usb: r8152: add TRENDnet TUC-ET2G
 Date: Tue, 31 Mar 2026 18:18:56 +0200
-Message-ID: <20260331161802.803415203@linuxfoundation.org>
+Message-ID: <20260331161754.700753093@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,80 +68,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231738-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-232257-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,ovn.org:email,msgid.link:url,lzu.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0641D36D0DB
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,spreckels.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DE56A36DC91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Valentin Spreckels <valentin@spreckels.dev>
 
-[ Upstream commit 6931d21f87bc6d657f145798fad0bf077b82486c ]
+[ Upstream commit 15fba71533bcdfaa8eeba69a5a5a2927afdf664a ]
 
-ovs_netdev_tunnel_destroy() may run after NETDEV_UNREGISTER already
-detached the device. Dropping the netdev reference in destroy can race
-with concurrent readers that still observe vport->dev.
+The TRENDnet TUC-ET2G is a RTL8156 based usb ethernet adapter. Add its
+vendor and product IDs.
 
-Do not release vport->dev in ovs_netdev_tunnel_destroy(). Instead, let
-vport_netdev_free() drop the reference from the RCU callback, matching
-the non-tunnel destroy path and avoiding additional synchronization
-under RTNL.
-
-Fixes: a9020fde67a6 ("openvswitch: Move tunnel destroy function to oppenvswitch module.")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-Link: https://patch.msgid.link/20260319074241.3405262-1-n05ec@lzu.edu.cn
+Signed-off-by: Valentin Spreckels <valentin@spreckels.dev>
+Link: https://patch.msgid.link/20260226195409.7891-2-valentin@spreckels.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/vport-netdev.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/usb/r8152.c   | 1 +
+ include/linux/usb/r8152.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
-index c688dee96503f..12055af832dc0 100644
---- a/net/openvswitch/vport-netdev.c
-+++ b/net/openvswitch/vport-netdev.c
-@@ -196,8 +196,6 @@ void ovs_netdev_tunnel_destroy(struct vport *vport)
- 	 */
- 	if (vport->dev->reg_state == NETREG_REGISTERED)
- 		rtnl_delete_link(vport->dev, 0, NULL);
--	netdev_put(vport->dev, &vport->dev_tracker);
--	vport->dev = NULL;
- 	rtnl_unlock();
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index da8de7b1a4891..357f5c733d0b5 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10061,6 +10061,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
+ 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
++	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
+ 	{}
+ };
  
- 	call_rcu(&vport->rcu, vport_netdev_free);
+diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
+index 2ca60828f28bb..1502b2a355f98 100644
+--- a/include/linux/usb/r8152.h
++++ b/include/linux/usb/r8152.h
+@@ -32,6 +32,7 @@
+ #define VENDOR_ID_DLINK			0x2001
+ #define VENDOR_ID_DELL			0x413c
+ #define VENDOR_ID_ASUS			0x0b05
++#define VENDOR_ID_TRENDNET		0x20f4
+ 
+ #if IS_REACHABLE(CONFIG_USB_RTL8152)
+ extern u8 rtl8152_get_version(struct usb_interface *intf);
 -- 
 2.51.0
 
