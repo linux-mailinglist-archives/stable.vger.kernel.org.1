@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHGAAqn8y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:09 +0200
+	id cFCMMKwEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C6936D72D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA9F36ED2A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F85A3100747
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23A85313C23F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963E342668F;
-	Tue, 31 Mar 2026 16:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE2F423A61;
+	Tue, 31 Mar 2026 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1S2+FYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKyYMeHY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587B73FF883;
-	Tue, 31 Mar 2026 16:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1004035AB;
+	Tue, 31 Mar 2026 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975252; cv=none; b=jrF8JB5OMmv3K+QzixHr5zdWrmE+facJNDacYmFRtFQFnthU68D+k8SSG2/e/Zhkb9O61mVtgqM48e8YR0KksbtsESjcITSZ7P048VTCDDAatXcuY7A0+mLwRNdBuyItj0wdLn8krVUP5bwSc885J6AVPCiKQVseMw0wWIx7C/g=
+	t=1774975925; cv=none; b=FizRkd9VgkG+Pc99V/kjsQqmV/dlSLNo2BlMv0sWiwZb0uMjVlYoCIwlf6dMX3jRI2pceuOvVl2q/QEIjC/Oqr5modG9hmXoWhuvn9UcYuQwot37JVPTZwAVzoj/mP+npm1o3/bbC53C9HMHtiu7rg1IpFwiU3jk4UXF43kzOTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975252; c=relaxed/simple;
-	bh=sejuvBTYCJcP7lFxsINjYoEuuGxU+SR7kAxvxY0JmJY=;
+	s=arc-20240116; t=1774975925; c=relaxed/simple;
+	bh=Y++7Pd88Xw1LdnmQXLt9GG2MwgrrLihjDBX8EGtjls4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HU5EkYyp9QEmWfExmLOvMypmlebLDa39PR4MdXd0kWo4DEUN/vID1YfSyxR6t7ZwQBlrsn00qxfDpkMxBp3QxP+WiFPYTfDxA4LISsYsgtUF5nLDoqW/pJvEro4OQFuaTTVwRlScf/FFBtCFpNLcJYi1A+WHjVZ5oFx8vY3pdaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1S2+FYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E201EC19423;
-	Tue, 31 Mar 2026 16:40:51 +0000 (UTC)
+	 MIME-Version; b=IApmU3uO+JGGJ3O9Z8wHUyQplMaWRU5AVtVyG/leYY4mPjHRsPmmd/j20KcGyOZzKSCbHDcKuF3so4Lh0FWOEzJvu7Hz3t4kAXWypuMLk8rPHYEf9zolPWsP6DZvH4vAuKJMWVt2IlR1FgOFLTf99KwXwPYReMCN2ucTHuR51hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKyYMeHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E58C19423;
+	Tue, 31 Mar 2026 16:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975252;
-	bh=sejuvBTYCJcP7lFxsINjYoEuuGxU+SR7kAxvxY0JmJY=;
+	s=korg; t=1774975924;
+	bh=Y++7Pd88Xw1LdnmQXLt9GG2MwgrrLihjDBX8EGtjls4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1S2+FYlNomr5OB2lBtWnUv/9Q+fSi9ODH/ET/BCAFYl5bhNagJlV0DFTrMpDhyid
-	 Y8gAga7NRANDt6Q0M80a5RZpL6m8s7UCu5Zq/HmC5rZLwZPXCyeyuH/mkmm9itlNdN
-	 X70NB7EBkG1u4btQicaHenNf+Jcv9dMoT0EI6GWg=
+	b=NKyYMeHY9s+E509HNyJ29KZyHBTB8q5mIrpWfePZ+w/kcbvViUAek+nDcyX1esYPN
+	 Ba7ljRWVqZqB5rxaz3kraXTdyuvhJ/ceycwjZMYtPhNNuKrDP0hF9EzUQpk0Wxfz6I
+	 A1iEcU8gsnKzHdk6CVKXnja1l0JBI+ypwTmhp71s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.19 222/342] KVM: arm64: Discard PC update state on vcpu reset
-Date: Tue, 31 Mar 2026 18:20:55 +0200
-Message-ID: <20260331161807.141212915@linuxfoundation.org>
+	Sean Rhodes <sean@starlabs.systems>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 106/244] ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter
+Date: Tue, 31 Mar 2026 18:20:56 +0200
+Message-ID: <20260331161745.583670966@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231858-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232119-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,92 +89,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 53C6936D72D
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,starlabs.systems:email]
+X-Rspamd-Queue-Id: 1BA9F36ED2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Sean Rhodes <sean@starlabs.systems>
 
-commit 1744a6ef48b9a48f017e3e1a0d05de0a6978396e upstream.
+[ Upstream commit a6919f2a01f8fbf807b015e5b26aecae7db8117b ]
 
-Our vcpu reset suffers from a particularly interesting flaw, as it
-does not correctly deal with state that will have an effect on the
-execution flow out of reset.
+The initial StarFighter quirk fixed the runtime suspend pop by muting
+speakers in the shutup callback before power-down. Further hardware
+validation showed that the speaker path is controlled directly by LINE2
+EAPD on NID 0x1b together with GPIO2 for the external amplifier.
 
-Take the following completely random example, never seen in the wild
-and that never resulted in a couple of sleepless nights: /s
+Replace the shutup-delay workaround with explicit sequencing of those
+controls at playback start and stop:
+- assert LINE2 EAPD and drive GPIO2 high on PREPARE
+- deassert LINE2 EAPD and drive GPIO2 low on CLEANUP
 
-- vcpu-A issues a PSCI_CPU_OFF using the SMC conduit
+This avoids the runtime suspend pop without a sleep, and also fixes pops
+around G3 entry and display-manager start that the original workaround
+did not cover.
 
-- SMC being a trapped instruction (as opposed to HVC which is always
-  normally executed), we annotate the vcpu as needing to skip the
-  next instruction, which is the SMC itself
-
-- vcpu-A is now safely off
-
-- vcpu-B issues a PSCI_CPU_ON for vcpu-A, providing a starting PC
-
-- vcpu-A gets reset, get the new PC, and is sent on its merry way
-
-- right at the point of entering the guest, we notice that a PC
-  increment is pending (remember the earlier SMC?)
-
-- vcpu-A skips its first instruction...
-
-What could possibly go wrong?
-
-Well, I'm glad you asked. For pKVM as a NV guest, that first instruction
-is extremely significant, as it indicates whether the CPU is booting
-or resuming. Having skipped that instruction, nothing makes any sense
-anymore, and CPU hotplugging fails.
-
-This is all caused by the decoupling of PC update from the handling
-of an exception that triggers such update, making it non-obvious
-what affects what when.
-
-Fix this train wreck by discarding all the PC-affecting state on
-vcpu reset.
-
-Fixes: f5e30680616ab ("KVM: arm64: Move __adjust_pc out of line")
-Cc: stable@vger.kernel.org
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-Link: https://patch.msgid.link/20260312140850.822968-1-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
+Tested-by: Sean Rhodes <sean@starlabs.systems>
+Signed-off-by: Sean Rhodes <sean@starlabs.systems>
+Link: https://patch.msgid.link/20260315201127.33744-1-sean@starlabs.systems
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/reset.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ sound/pci/hda/patch_realtek.c | 38 +++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -247,6 +247,20 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcp
- 			kvm_vcpu_set_be(vcpu);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 689b5510a95e8..fad159187f445 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4164,12 +4164,30 @@ static int alc269_resume(struct hda_codec *codec)
+ 	return 0;
+ }
  
- 		*vcpu_pc(vcpu) = target_pc;
+-#define STARLABS_STARFIGHTER_SHUTUP_DELAY_MS	30
++#define ALC233_STARFIGHTER_SPK_PIN	0x1b
++#define ALC233_STARFIGHTER_GPIO2	0x04
+ 
+-static void starlabs_starfighter_shutup(struct hda_codec *codec)
++static void alc233_starfighter_update_amp(struct hda_codec *codec, bool on)
+ {
+-	if (snd_hda_gen_shutup_speakers(codec))
+-		msleep(STARLABS_STARFIGHTER_SHUTUP_DELAY_MS);
++	snd_hda_codec_write(codec, ALC233_STARFIGHTER_SPK_PIN, 0,
++			    AC_VERB_SET_EAPD_BTLENABLE,
++			    on ? AC_EAPDBTL_EAPD : 0);
++	alc_update_gpio_data(codec, ALC233_STARFIGHTER_GPIO2, on);
++}
 +
-+		/*
-+		 * We may come from a state where either a PC update was
-+		 * pending (SMC call resulting in PC being increpented to
-+		 * skip the SMC) or a pending exception. Make sure we get
-+		 * rid of all that, as this cannot be valid out of reset.
-+		 *
-+		 * Note that clearing the exception mask also clears PC
-+		 * updates, but that's an implementation detail, and we
-+		 * really want to make it explicit.
-+		 */
-+		vcpu_clear_flag(vcpu, PENDING_EXCEPTION);
-+		vcpu_clear_flag(vcpu, EXCEPT_MASK);
-+		vcpu_clear_flag(vcpu, INCREMENT_PC);
- 		vcpu_set_reg(vcpu, 0, reset_state.r0);
- 	}
++static void alc233_starfighter_pcm_hook(struct hda_pcm_stream *hinfo,
++					struct hda_codec *codec,
++					struct snd_pcm_substream *substream,
++					int action)
++{
++	switch (action) {
++	case HDA_GEN_PCM_ACT_PREPARE:
++		alc233_starfighter_update_amp(codec, true);
++		break;
++	case HDA_GEN_PCM_ACT_CLEANUP:
++		alc233_starfighter_update_amp(codec, false);
++		break;
++	}
+ }
  
+ static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
+@@ -4178,8 +4196,16 @@ static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
+ {
+ 	struct alc_spec *spec = codec->spec;
+ 
+-	if (action == HDA_FIXUP_ACT_PRE_PROBE)
+-		spec->shutup = starlabs_starfighter_shutup;
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		spec->gpio_mask |= ALC233_STARFIGHTER_GPIO2;
++		spec->gpio_dir |= ALC233_STARFIGHTER_GPIO2;
++		spec->gpio_data &= ~ALC233_STARFIGHTER_GPIO2;
++		break;
++	case HDA_FIXUP_ACT_PROBE:
++		spec->gen.pcm_playback_hook = alc233_starfighter_pcm_hook;
++		break;
++	}
+ }
+ 
+ static void alc269_fixup_pincfg_no_hp_to_lineout(struct hda_codec *codec,
+-- 
+2.53.0
+
 
 
 
