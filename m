@@ -1,148 +1,159 @@
-Return-Path: <stable+bounces-231498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4N1PKXX2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:41 +0200
+	id iOVALhf/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549F836CA49
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF5136DE06
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB3C630DA2FD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11F5E30E5970
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B773E92A5;
-	Tue, 31 Mar 2026 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C24E3E3C5C;
+	Tue, 31 Mar 2026 16:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Qave5F0M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tBDIB0mT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393743F7A8B
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40315266581
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974326; cv=none; b=KaNgvYK7yvpvbFJ6KB3L3nURQLE1y1fWDLrc3bbtY3+TPOfuAkanAqed3RyBMdrQdZLDUmrct/TvHJ+FCqaH6ARa8bolvWQmXDFCfnQy2nZXjTwKHLgegFJmdKeYOw2bQxhSI9LcLISJhgAbTGpg56aMuFEGqNtRiutyidQ0aeM=
+	t=1774974642; cv=none; b=sQiubvy3DUloAE5/bOaaXEIyiV+d3slbelcVRHIH4IhmvOPxorN37X580ygjSdnEbVVbg/n7xR3GMk8DZ1s3OTmks7t6rCgUJwy5qEXvXLHtpWNwNjPC00LkgBICchcdUF6j+gxcS/n3NE0QrvFVZm6HUN0jN5rMczb15d7YCnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974326; c=relaxed/simple;
-	bh=5t1FqBMRuAaBCjDjDh+ZUpJziqPUYp8Eoc3Ac0ouYOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D7eTmeQXkTFY/1BPWUy2rg6ua2au7IRNpK/nSjt6aTfnqDg36CD4J7ww3MSMN0AS8x5YFnD6FdqIPXydIkLgoiSU0WGPr7hGU3O4Qz39JgCYPg7YnGTMTC4fRHqvcjsSsLJDsMzBSs569e/uofv0E+4lJU4wIR4fe8gmYL4i0QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Qave5F0M; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cfdac74050so771333585a.3
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 09:25:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1774974324; x=1775579124; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LsKEfazYLGr0lh88GcHa3cSE8LWBmMeMFJDl+wqwlHE=;
-        b=Qave5F0MYWxj+yVPZddoN7Ee7x0ZZswMgVH23P6XzC2SvgI9lMlJkAUMFfHPH1Nr/i
-         bByA6uPTqI9LVa5zdaBRwHTQ3/ep/wdMDmyh+oMTx8V2EgWd4M0nUFnqupDE6I6MaBpQ
-         V9GnXaBM+NYQYGz84wPlvjfmkZahMDlQZYU6UJfyDSuj211v6dsiU124MZoZeTAaMHAS
-         zhCPfVIQX7bWQVGFBy3+dvcR0aXlxZI70GTaaRj2taLfe8AaW1oz1p1S0Kvljiac064c
-         WWQ/r1OcUykFCNy48+4q2HVPibPYxI1qnD1hXfPAgzmd9oQu/McPVltuCmUfOQK4CYRn
-         NTfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774974324; x=1775579124;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LsKEfazYLGr0lh88GcHa3cSE8LWBmMeMFJDl+wqwlHE=;
-        b=TcTuctqaJ0UKZPqfSFR48BRNfbkjT/gVl9nh2lYKg/wELu05NSD9JZOeBxfGMXGiSe
-         u6LjIht8p6g8Rs761Qp59DMLeAqDEmJ5NCAFGujTU63a/GGnVhGDAJ7NjAuxHQN8QZmx
-         eZND6WaF9y2qJyzbIMNKFoHjqI8tEPErN1hFsRbRH0YXoC5/Ix1PcXHC60EGDyFo0V4P
-         tGbIKi3A4VeP01nfkKuOG6jatKbKlGRcBLbHc31wRWMTH53PBLgulHKxUwsQCNekodEF
-         GBG8TK0NgAy0Hcm1vVnefggV9cFRo79DH4j/C5f9HGPEhrpqJCoIN3TCQyu1tmCDiwtg
-         nbUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfx8IZzMgVhWqeKzuKbGkRYHGbZDQ7Tu/q9iDRvTsCiFjdkGDNu3CmI/nsn/WUbwtPQUM1GtU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhLNMY0DU4FdMheOTfuhxMoBxZvhOBG/9DW8+VQKwcjye0J/GZ
-	MMis3kWQ7uwb0HWXkanXlfIZlN8zY+wAMRwjziaPn6/1ZLlRdewNkCLTnbmDlADM28o=
-X-Gm-Gg: ATEYQzxco72Za/frRR3aThRPUnHyfYNCQDhnF7IC8X8Rsayq5eKSGsFb4oSW6X055hz
-	yp3fsYI3bByqJYEk8T93fpp5WF5QVK8QRXqMaIldxL275Ab4hm72I6Ebfo04eSvhxVogRHU7Sq3
-	IwUYvR9RKxPY6W9LkwZArxmqgGbzoa9cTW88rfNuv/V3kfiiB9xg0cdTsp4I8O65LVGRkHq2+Mh
-	oIGebBM1DnHCPDUQPJlRsoszn844urQtX2RIsL40h3UUu/hzhuwnPkfJ+9SK6lmApbY5HSq2ODr
-	N8n3xkCxRnvoxiMzLCudFBPkNak/tQdnak4R3YwV0getZacaDwl+C727wI27zXZV3DgKsNjHALH
-	twwb23SWTmm2c6TWvo8PHmwDpQUEIjDWtynI7h/cmPnKYyNAOXfl1q9NK09PMeyxhqgvmrdSXvs
-	oo7DijoDnpVBdG4Thn0IWCAHik1sAv4mu8culVQUR7Vv9PPEpjH8LTGVTjFXX2YvacbkLZrg==
-X-Received: by 2002:a05:620a:390c:b0:8cd:8d79:6c6e with SMTP id af79cd13be357-8d1b5c67078mr37101785a.69.1774974319269;
-        Tue, 31 Mar 2026 09:25:19 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d027edb7ddsm881241785a.9.2026.03.31.09.25.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 09:25:18 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w7bu1-0000000A1cm-2DKX;
-	Tue, 31 Mar 2026 13:25:17 -0300
-Date: Tue, 31 Mar 2026 13:25:17 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kevin.tian@intel.com, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, baolu.lu@linux.intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iommufd: Fix return value of iommufd_fault_fops_write()
-Message-ID: <20260331162517.GJ246076@ziepe.ca>
-References: <20260330030755.12856-1-zhenzhong.duan@intel.com>
+	s=arc-20240116; t=1774974642; c=relaxed/simple;
+	bh=ncL2O2t3igaQYXd/TYF8EXwxsPqeAWgQPl+l62SYSaI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dx2WJHTq87M5/8HjX3/KR/NycvVMygzxpTbfR41lrbLbR3PrsV6nN5obMRCWqfwjcnYL4VccM9HNO0pp1ua2+UKZ5bgP2yj5oFp85hdSAT4eMNLCuxWac4HDf8+hhbfLTqlcHoY/wR7VI+K+3hDkDqvmG/Jqr2peV+7Ng6bPrbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tBDIB0mT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A496C2BCB4;
+	Tue, 31 Mar 2026 16:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774974642;
+	bh=ncL2O2t3igaQYXd/TYF8EXwxsPqeAWgQPl+l62SYSaI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tBDIB0mTqMKpbwPIYMKGw1zlTvgfZWVJYruyE4svocv3r+71MrFV9mowTFr1FVhsC
+	 EmKUcgRuh1k8G55Dq8P45/aq/GC9GzHeHnFpaLhyRFSbXIIVw0D9DhYP4DzTz28Mi/
+	 cWK+80IBi+yQ0AdcnM/ql4yX+yD6H8BUf7Ig8h6vMFI47OoYbr7CTxnYxPvjbFo8Nb
+	 rNS7AX7k/iIv4QLlaCq8UzPWaJsvTBl0D6vjDBOjj/pK4fCmiGL73z1/yhAKzcd7aW
+	 8VuCrYBgaUFSuKvZMifcWxGS7P0NfxjuUZ+u7SWvzTQC14dJn00lhSowQRUC+qWX7E
+	 w2M2+IMJUnZzQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	Long Li <longli@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] net: mana: fix use-after-free in add_adev() error path
+Date: Tue, 31 Mar 2026 12:30:38 -0400
+Message-ID: <20260331163038.2733327-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033041-settle-wackiness-fce1@gregkh>
+References: <2026033041-settle-wackiness-fce1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330030755.12856-1-zhenzhong.duan@intel.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	TAGGED_FROM(0.00)[bounces-231498-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[ziepe.ca];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231621-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.993];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:dkim,ziepe.ca:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 549F836CA49
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1FF5136DE06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 29, 2026 at 11:07:55PM -0400, Zhenzhong Duan wrote:
-> copy_from_user() may return number of bytes failed to copy, we should
-> not pass over this number to user space to cheat that write() succeed.
-> Instead, -EFAULT should be returned.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> ---
->  drivers/iommu/iommufd/eventq.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-Applied to for-next, thanks
+[ Upstream commit c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f ]
 
-Jason
+If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
+auxiliary_device_uninit(adev).
+
+The auxiliary device has its release callback set to adev_release(),
+which frees the containing struct mana_adev. Since adev is embedded in
+struct mana_adev, the subsequent fall-through to init_fail and access
+to adev->id may result in a use-after-free.
+
+Fix this by saving the allocated auxiliary device id in a local
+variable before calling auxiliary_device_add(), and use that saved id
+in the cleanup path after auxiliary_device_uninit().
+
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
+Cc: stable@vger.kernel.org
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260323165730.945365-1-lgs201920130244@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 50d4437a518fd..a201fcf0ddbc9 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3295,6 +3295,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	struct auxiliary_device *adev;
+ 	struct mana_adev *madev;
+ 	int ret;
++	int id;
+ 
+ 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
+ 	if (!madev)
+@@ -3304,7 +3305,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	ret = mana_adev_idx_alloc();
+ 	if (ret < 0)
+ 		goto idx_fail;
+-	adev->id = ret;
++	id = ret;
++	adev->id = id;
+ 
+ 	adev->name = name;
+ 	adev->dev.parent = gd->gdma_context->dev;
+@@ -3330,7 +3332,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	auxiliary_device_uninit(adev);
+ 
+ init_fail:
+-	mana_adev_idx_free(adev->id);
++	mana_adev_idx_free(id);
+ 
+ idx_fail:
+ 	kfree(madev);
+-- 
+2.53.0
+
 
