@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4I8PIfv8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:31 +0200
+	id qIymM1/6y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4122D36D7F2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93C036D1CC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E84F130908F4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B93E530F18B6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929D23EF0A2;
-	Tue, 31 Mar 2026 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAF74266B9;
+	Tue, 31 Mar 2026 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLvXDsRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euUCk6Hn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560A5413258;
-	Tue, 31 Mar 2026 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5D23E559E;
+	Tue, 31 Mar 2026 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975611; cv=none; b=rQ/k5qjLj2q1+NWp2rCxeBzcSpuokMCTcdbHeyz2AmdFVFqoxoNU8FciGwApRhmNR5HzoX45RlozrIxWnhGDHW0jskEqgrY7HvT6JhkBeelqVVuLuYBN9EbhHb9nm6Dsp1CwfWqApeewkR97MT6lEFz7mY//ed+aqWBNChVuCr8=
+	t=1774975027; cv=none; b=uGSR16I5zp2/WHp240gCmUrnCpIYXtigGMqlzmtcrF3LT3eap+K0kb0Yxx0oxbPDzQBBfIXnP2e+BJmIzzyv8QsGn3VZ8eE+gkvpVX7ZfMZ71NFK8FRQ7W6ZLAviuB4udXZqxW2lmB4bMfnQ0qKt2Ppx69hYnmtZ+snR/Wpdlmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975611; c=relaxed/simple;
-	bh=ET+qEflT+olILQL5/YVPv+IH/iJU+M/BEfiGHAImXtw=;
+	s=arc-20240116; t=1774975027; c=relaxed/simple;
+	bh=30s3aiYpbE0v70qhxFdE1j2SwGTsem8lE4bEejknTzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLKPmqXJCDLHUqoW/C7tK1VDDxOvDICz753RFATnGc5Lo+aVlwhr9K8vjWvfaqb4ChU+SXc0m1feCoI3GkTFE08U7RvIrSw9h/q+MCsUmx11Kxaos8tLvYCM/mUuqnnMjVdNp2kz1sEti8XGVLpPDOiqDsMrDb7/+2ZK67HXBSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLvXDsRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0700C19423;
-	Tue, 31 Mar 2026 16:46:50 +0000 (UTC)
+	 MIME-Version; b=WwD8XUDQZ3eylIXuhIixuvtl3attdsQUpzvwQ5MZpEZByfVZancBmO8JPIOMYpxA8xXAcvA4QW8L+z8yrkOxejlHZQVVPCJll5TL4bUF5eO+oS59V4kbeTvM2yqY69ts6OsilCWTDp0Nv93kj7jrGwq9lhSZOyo0+JMOq6Gs9V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euUCk6Hn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1114AC19424;
+	Tue, 31 Mar 2026 16:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975611;
-	bh=ET+qEflT+olILQL5/YVPv+IH/iJU+M/BEfiGHAImXtw=;
+	s=korg; t=1774975026;
+	bh=30s3aiYpbE0v70qhxFdE1j2SwGTsem8lE4bEejknTzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLvXDsRH7WAbN60ChZjgeJlt7DQ75BYH55Sf8Dqw7DlZWgTMV7MjCexT+T+2Br8Qv
-	 orxlBTZaGmmuJemD+dLOXzX+SD9ko/xeWVTmnFn8VyVIAMNK608vW4rOZhe/ZrDl2f
-	 uN4tUEPw9c7ToLFcZmTbj/yfE4PyT0Yo+0Mg/U70=
+	b=euUCk6HnPzOBnoKDHhyFbm29N2lg80Dy4gfNyQyjOrCIOZAgQIUmaOHLksIlB5z0w
+	 oIKCFpGIwf5uoSAoD/H/Smmn5ugfWs/PWb8KsmHgRTtmbaaqPAzApf3JvrOjPKbutm
+	 BGek0Wg3wBNRlLeSrCOJynJEOJW3yZ3oiiQBFhwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julius Lehmann <lehmanju@devpi.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/244] HID: magicmouse: fix battery reporting for Apple Magic Trackpad 2
+Subject: [PATCH 6.19 136/342] Bluetooth: L2CAP: Fix deadlock in l2cap_conn_del()
 Date: Tue, 31 Mar 2026 18:19:29 +0200
-Message-ID: <20260331161742.413981415@linuxfoundation.org>
+Message-ID: <20260331161804.013152264@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231771-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231998-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4122D36D7F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B93C036D1CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julius Lehmann <lehmanju@devpi.de>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 5f3518d77419255f8b12bb23c8ec22acbeb6bc5b ]
+[ Upstream commit 00fdebbbc557a2fc21321ff2eaa22fd70c078608 ]
 
-Battery reporting does not work for the Apple Magic Trackpad 2 if it is
-connected via USB. The current hid descriptor fixup code checks for a
-hid descriptor length of exactly 83 bytes. If the hid descriptor is
-larger, which is the case for newer apple mice, the fixup is not
-applied.
+l2cap_conn_del() calls cancel_delayed_work_sync() for both info_timer
+and id_addr_timer while holding conn->lock. However, the work functions
+l2cap_info_timeout() and l2cap_conn_update_id_addr() both acquire
+conn->lock, creating a potential AB-BA deadlock if the work is already
+executing when l2cap_conn_del() takes the lock.
 
-This fix checks for hid descriptor sizes greater/equal 83 bytes which
-applies the fixup for newer devices as well.
+Move the work cancellations before acquiring conn->lock and use
+disable_delayed_work_sync() to additionally prevent the works from
+being rearmed after cancellation, consistent with the pattern used in
+hci_conn_del().
 
-Signed-off-by: Julius Lehmann <lehmanju@devpi.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in hci_chan_del")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-magicmouse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
-index 19c811f9ae074..69ea1de96bbab 100644
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -966,7 +966,7 @@ static const __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 	 */
- 	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
- 	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
--	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
-+	    *rsize >= 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
- 		*rsize = *rsize - 1;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 5bd5561a8dbf5..734cbb5dc1bfa 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -1748,6 +1748,9 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	BT_DBG("hcon %p conn %p, err %d", hcon, conn, err);
+ 
++	disable_delayed_work_sync(&conn->info_timer);
++	disable_delayed_work_sync(&conn->id_addr_timer);
++
+ 	mutex_lock(&conn->lock);
+ 
+ 	kfree_skb(conn->rx_skb);
+@@ -1763,8 +1766,6 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	ida_destroy(&conn->tx_ida);
+ 
+-	cancel_delayed_work_sync(&conn->id_addr_timer);
+-
+ 	l2cap_unregister_all_users(conn);
+ 
+ 	/* Force the connection to be immediately dropped */
+@@ -1783,9 +1784,6 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 		l2cap_chan_put(chan);
+ 	}
+ 
+-	if (conn->info_state & L2CAP_INFO_FEAT_MASK_REQ_SENT)
+-		cancel_delayed_work_sync(&conn->info_timer);
+-
+ 	hci_chan_del(conn->hchan);
+ 	conn->hchan = NULL;
+ 
 -- 
 2.51.0
 
