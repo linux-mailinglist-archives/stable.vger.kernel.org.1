@@ -1,182 +1,212 @@
-Return-Path: <stable+bounces-232605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KG3hECNWzGn/SQYAu9opvQ
-	(envelope-from <stable+bounces-232605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:17:55 +0200
+	id cClUMCtWzGn/SQYAu9opvQ
+	(envelope-from <stable+bounces-232606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:18:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FBD372A7E
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471F6372A87
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 01:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E20D0302EEE1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:17:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D309F301C59D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F4F46AEF2;
-	Tue, 31 Mar 2026 23:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73133A782B;
+	Tue, 31 Mar 2026 23:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+dkxSaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVCnSKrM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B644657D6
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 23:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EC42DF68
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 23:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774999044; cv=none; b=M+3PByBiJvB77ohiYrE/Dn2/mUU18sf1TTrxesDlJ8+ZpRC4u1NGKG7m4pGd8TaaeEtBk+whmz2QORVry9qZXVPZwgNaug4vQvlTsiF/EjkrQ63GcwHmrUrz/vxW1noeAidwxI6QfAUoggWuipWvwEvwelG8+xoScvYfFFNwJDk=
+	t=1774999068; cv=none; b=dVLuO/Nx6q/FDvTaX4hEq44s8ZMDkgVljq5Q81ow+pp17/GcdhvddFvXodDogLYQUWavq1H8NFEKcgy+f8SuDPW37IqXnavDPF1y0C4VYYcq97eHMQBBJ3HpmdUKfoqUYJ9CJ70BPNwQSKdnmd8rSXRzsBymNIu+mHt4bYqbalI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774999044; c=relaxed/simple;
-	bh=W1CB8O9hwmeUfTz1ieyEzxVgRKBi/KZxAgWHXxdlLbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqPcBY4zurBM97CVs762PUmvDAh6WW5GZKXsamJk7bAKUkk0SGx0qPV93PJTLKqMUO06tJn2lT2qzdBRbvG7ti2Cz1hH7FulpHqRnKCzGVJfQKn+BUk+chbeMgN6isJgSbs95z4GZAhc/IPyMsQCAdnlIvebf0QDFo6c1p4WRIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+dkxSaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503FEC19423;
-	Tue, 31 Mar 2026 23:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774999043;
-	bh=W1CB8O9hwmeUfTz1ieyEzxVgRKBi/KZxAgWHXxdlLbA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+dkxSaOUSzqZ4QabiPYZcuWRaZr6IjjJVLEUOw5VN+oO7IbJaOrJ+cWBVvDZC3sb
-	 yqe3XWhWgx/iZxLpkn7ZnUCaEeLUnOGAorIeMOPzsKCJmWW4AlyEwEvPx4pHDnFvJ0
-	 R+d5Bz8U/nIcyEZIZ47EadPk6XD9EzsEpBK31R1A0OWheeAoxt9HHvie/BB2ot/u7Q
-	 ILrWywHYEUYztrCW3aUps6qBy+veTynRzU0kr4/rkCHRHt2LetYt76/Kit5GsTswu9
-	 hUoKiGjbzqyGsJKbX5xKv67+i/vt7w3fjHn/15peUT1uw5Xe1IZ7NUd9Sq9ROvZMlu
-	 KSLBKoROu3mvg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
-Date: Tue, 31 Mar 2026 19:17:21 -0400
-Message-ID: <20260331231721.3421247-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033049-dial-everyone-46da@gregkh>
-References: <2026033049-dial-everyone-46da@gregkh>
+	s=arc-20240116; t=1774999068; c=relaxed/simple;
+	bh=aHZRNoTvbdlI/EombGoD9iP8bTf4Aj4gSIgmhshYEx0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u3Ny2DmYepwEd3ykS1nQU+0z3llSaiFMoSl3iH1QYzIXUpp29a7oUctEJuKdjb9TQ7pera9M0n9+Iye07P/9cp6UQe3yS/3Vf74RDCGbp3q8cNJKsE6Mo5oyGvJJnRRcW6PapMiecfQlvXJw+cjhN2avRZ0cFin/qzUNIaupJ9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVCnSKrM; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d751ef36ccso3381425a34.0
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 16:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1774999066; x=1775603866; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4mwEv/M/xQBFIbRAjlXXEdV7PZOOUIQNp5LFHgoTzio=;
+        b=BVCnSKrM9DvXuhNrDHYF8dDrfGbTXc2b0h1u9bjWhhnjlsXyWtBmxEtuabf990UrNj
+         eaDlMMn2mlxlOjD0/0hHNXrIMucgm7hBPEitUVBRBWrddwtnmMAcf2pCbrVXit+f+lxP
+         fNBQwGNOezu93ALYcvJ80bPQPJ0d36Cz384xU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774999066; x=1775603866;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4mwEv/M/xQBFIbRAjlXXEdV7PZOOUIQNp5LFHgoTzio=;
+        b=okmRfhmUSGUoS7wrT3RLGzqqe5RCC/HyN01yVWzlTs9HA0COlaqwjpOZ71XQSf+D96
+         eMSrLwHq14SgdkwHyzD5goiCKQMg1p86ALJEoyDypH/lbkmTLgl9wcIltQQZkGLG7P7K
+         R3moeLqyHb9nY8YpFzC7XmCdCVMi1TzTKJOVkfJ04rhMCo+Gy+d8wUW1pxGgtalNRnYL
+         EvOhNtyJSMs0Fpe7JdvHqmI1St4cod94eYXtlWxY6VD4i575y45zziQa22cIVMuDq8Kw
+         CZQcnX1wS33/9En+ZWQkYvmOcpgG/pTzz3QWCtjOgs4twVZdiWhYKNLUc3osxhLMvzsA
+         UG7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVVgHOznyf95h21oxijU1RSmDNeRT12457dQwN4Cs62omo0vr+rw6p463R0TFOUgrxPvdvzQQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOFCCJ6ihdORwG8QBf3Sl7eo6xS97xqdgcauH95LrljktTQNG9
+	bdtLSCc9McnpL9yQLHotoY2V5NS0CEQZ4dblMlah0pgoaS4X/HK9pXIW2ntZpqGDytw=
+X-Gm-Gg: ATEYQzyX1Jlj+S4VGR1rStb+p4xOQz+EB384BjohQqTgmh7O/R3IRZUQcMkvwYY5ae/
+	6ye5zz3qMokL8X3VVegZEn/TktUhWw4U6+405g0fhGjGwZ5SVvpDtwAdsdn3DA+/uG253ol6S+8
+	1OAV343RVgMMVpetXXLIMiiEIfWTkfNH8sBUEEtuNz2CEIxWdA3qq5DgsjsW6bZ762vAu02WpSM
+	VOBX1CW/VJ/23RMzd7nLSpPnWY3O7yEEWdKVtgRV5LYIil1q3NLHB65p3M4hpxmTq+ql0qIImak
+	0n5UQFHbmQIKZl00h5iaU6XhA3GaM/KmNRsuhq13hUdg0n208b1WTrlDEnXec59zHlGxxg85jw7
+	VF1wrCvYbKmhLsRNw609XnFxwbmb/jUgV2zpMXnVMhgC36xMPyCb7zvTy/WrJrWErVn775/8tbw
+	d2FZiuG4niA1cUxlG7CWiJ2UvwAvX9nk6k080=
+X-Received: by 2002:a05:6830:7009:b0:7d7:ecef:1460 with SMTP id 46e09a7af769-7db9946a0d8mr1102070a34.31.1774999065919;
+        Tue, 31 Mar 2026 16:17:45 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7da0a335440sm9117890a34.4.2026.03.31.16.17.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 16:17:45 -0700 (PDT)
+Message-ID: <34da1928-f6e7-43fb-a436-6bc02e262698@linuxfoundation.org>
+Date: Tue, 31 Mar 2026 17:17:44 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usbip: vhci: reject RET_SUBMIT with inflated
+ number_of_packets
+To: Nathan Rebello <nathan.c.rebello@gmail.com>, linux-usb@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, addcontent08@gmail.com,
+ kyungtae.kim@dartmouth.edu, stable@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260327064449.735-1-nathan.c.rebello@gmail.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20260327064449.735-1-nathan.c.rebello@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232605-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,dartmouth.edu,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232606-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 97FBD372A7E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 471F6372A87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+On 3/27/26 00:44, Nathan Rebello wrote:
+> When a USB/IP client receives a RET_SUBMIT response,
+> usbip_pack_ret_submit() unconditionally overwrites
+> urb->number_of_packets from the network PDU. This value is
+> subsequently used as the loop bound in usbip_recv_iso() and
+> usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
+> array whose size was fixed at URB allocation time based on the
+> *original* number_of_packets from the CMD_SUBMIT.
+> 
+> A malicious USB/IP server can set number_of_packets in the response
+> to a value larger than what was originally submitted, causing a heap
+> out-of-bounds write when usbip_recv_iso() writes to
+> urb->iso_frame_desc[i] beyond the allocated region.
+> 
+> KASAN confirmed this with kernel 7.0.0-rc5:
+> 
+>    BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
+>    Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
+> 
+>    The buggy address is located 0 bytes to the right of
+>     allocated 320-byte region [ffff888106351c00, ffff888106351d40)
+> 
+> The server side (stub_rx.c) and gadget side (vudc_rx.c) already
+> validate number_of_packets in the CMD_SUBMIT path since commits
+> c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
+> malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
+> CMD_SUBMIT path to handle malicious input"). The server side validates
+> against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
+> On the client side we have the original URB, so we can use the tighter
+> bound: the response must not exceed the original number_of_packets.
+> 
+> This mirrors the existing validation of actual_length against
+> transfer_buffer_length in usbip_recv_xbuff(), which checks the
+> response value against the original allocation size.
+> 
+> Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
+> usbip_recv_iso()", v2) hardens the receive-side functions themselves;
+> this patch complements that work by catching the bad value at its
+> source -- in usbip_pack_ret_submit() before the overwrite -- and
+> using the tighter per-URB allocation bound rather than the global
+> USBIP_MAX_ISO_PACKETS limit.
+> 
+> Fix this by checking rpdu->number_of_packets against
+> urb->number_of_packets in usbip_pack_ret_submit() before the
+> overwrite. On violation, clamp to zero so that usbip_recv_iso() and
+> usbip_pad_iso() safely return early.
+> 
+> Fixes: 0775a9cbc798 ("staging: usbip: vhci extension: modifications to the client side")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+> ---
+>   drivers/usb/usbip/usbip_common.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/usbip/usbip_common.c b/drivers/usb/usbip/usbip_common.c
+> --- a/drivers/usb/usbip/usbip_common.c
+> +++ b/drivers/usb/usbip/usbip_common.c
+> @@ -470,7 +470,18 @@ static void usbip_pack_ret_submit(struct usbip_header *pdu, struct urb *urb,
+>   		urb->status		= rpdu->status;
+>   		urb->actual_length	= rpdu->actual_length;
+>   		urb->start_frame	= rpdu->start_frame;
+> -		urb->number_of_packets = rpdu->number_of_packets;
+> +		/*
+> +		 * The number_of_packets field determines the length of
+> +		 * iso_frame_desc[], which is a flexible array allocated
+> +		 * at URB creation time. A response must never claim more
+> +		 * packets than originally submitted; doing so would cause
+> +		 * an out-of-bounds write in usbip_recv_iso() and
+> +		 * usbip_pad_iso(). Clamp to zero on violation so both
+> +		 * functions safely return early.
+> +		 */
+> +		if (rpdu->number_of_packets < 0 ||
+> +		    rpdu->number_of_packets > urb->number_of_packets)
+> +			rpdu->number_of_packets = 0;
+> +		urb->number_of_packets = rpdu->number_of_packets;
+>   		urb->error_count	= rpdu->error_count;
+>   	}
+>   }
 
-[ Upstream commit aad885e774966e97b675dfe928da164214a71605 ]
+Look good to me.
 
-When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
-existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
-right about it being impossible to convert a shadow-present SPTE to an
-MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
-memory that are outside the scope of KVM.
-
-E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
-to emulted MMIO and then the guest hits a relevant page fault, KVM will
-install the MMIO SPTE without first zapping the shadow-present SPTE.
-
-  ------------[ cut here ]------------
-  is_shadow_present_pte(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
-  Call Trace:
-   <TASK>
-   mmu_set_spte+0x237/0x440 [kvm]
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x47fa3f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-Reported-by: Alexander Bulekov <bkov@amazon.com>
-Debugged-by: Alexander Bulekov <bkov@amazon.com>
-Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
-Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ replaced kvm_flush_remote_tlbs_gfn() with kvm_flush_remote_tlbs_with_address() and preserved pgprintk call ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/kvm/mmu/mmu.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 04d060f370535..ed5ba38bec869 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2814,12 +2814,6 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
- 	pgprintk("%s: spte %llx write_fault %d gfn %llx\n", __func__,
- 		 *sptep, write_fault, gfn);
- 
--	if (unlikely(is_noslot_pfn(pfn))) {
--		vcpu->stat.pf_mmio_spte_created++;
--		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
--		return RET_PF_EMULATE;
--	}
--
- 	if (is_shadow_present_pte(*sptep)) {
- 		/*
- 		 * If we overwrite a PTE page pointer with a 2MB PMD, unlink
-@@ -2841,6 +2835,15 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
- 			was_rmapped = 1;
- 	}
- 
-+	if (unlikely(is_noslot_pfn(pfn))) {
-+		vcpu->stat.pf_mmio_spte_created++;
-+		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
-+		if (flush)
-+			kvm_flush_remote_tlbs_with_address(vcpu->kvm, gfn,
-+					KVM_PAGES_PER_HPAGE(level));
-+		return RET_PF_EMULATE;
-+	}
-+
- 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
- 			   true, host_writable, &spte);
- 
--- 
-2.53.0
-
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
