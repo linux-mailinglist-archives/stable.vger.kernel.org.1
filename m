@@ -1,281 +1,239 @@
-Return-Path: <stable+bounces-231441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AC50HNjey2m0MAYAu9opvQ
-	(envelope-from <stable+bounces-231441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:56 +0200
+	id qL1sIwfgy2m0MAYAu9opvQ
+	(envelope-from <stable+bounces-231442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E4236B2E0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ACC36B390
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 112D0302D9D5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:48:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF87C300A679
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96F43FEB11;
-	Tue, 31 Mar 2026 14:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E1C3A7F70;
+	Tue, 31 Mar 2026 14:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gbw6UUw5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aKzRnGHj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtwKP17z"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A4D3E3DAB
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 14:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACDF31197B
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 14:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774968530; cv=none; b=YaZsshFcZS9COC57wWNdVE778rirvVVfdeqXeJ9kVgQmnosaIPSFT6EDB3WKpBfvuJNWhWzY0NQd3dwWCbRpDTjXGzpRO+ah/E+aUbDd2fhbV7Snyp5dHaiEROhs1LhOP4Nfnbp79RkVfhDoTB59BeMidCSZi2YUVk44kxJZehw=
+	t=1774968832; cv=none; b=Gj4/V1trMsVm+ja6mYLmIbAuVqoMOT6/cAQT2QxSUUvgoCetHTxS51tNArDNwaE+uuDNvYNXzEOC4oOmLB21d3GB+navA+bxYjP1CjE6+hagGQllxxgwveXrdwpmJQ8qLjKw01UCUhYRrMrfxjZN6eJBYDLVepwlpPpLTN25crA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774968530; c=relaxed/simple;
-	bh=BJIMrk2MYSv2FDeHUUdOkp6wdcv9uNwI5U0yUBOXYVE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3+n0OvjC1JekMcqy4QLvRt6M4yDXnSFsSFhtLgYdIoqnSkS75ZUom7SfJ3a5CE1CG1aVYFG1Sj4RXFgZORkhD+1ynZZJFgKW4DCYFvmm08QbxBM96wUIAVVMLpByWipfihkCii1kOJW7OJE5McD2Iih+P8ximgwRD0PsMuUsZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gbw6UUw5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aKzRnGHj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774968528;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uO8xgLmSYcxawrJhbHfOO1eOZxDKPmONKgmhbq8TlcY=;
-	b=Gbw6UUw5UIaVem2sgIUZv7kq8qOu7s+3iYX95U6fAXT+i+bZ3FINpWloRlm4BClzSevXlK
-	qRVk9Z0xrX5z50UeYSEN6pjPJjXnVaoyGWKI4s1RnpGjNJpjftKkxwBG9N5QFkeIfFD/vD
-	8ZZC0VAcGMdwAO0IRNm90KDPr0TisDo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-NMafxTJNOFm62CuM6mj61g-1; Tue, 31 Mar 2026 10:48:46 -0400
-X-MC-Unique: NMafxTJNOFm62CuM6mj61g-1
-X-Mimecast-MFC-AGG-ID: NMafxTJNOFm62CuM6mj61g_1774968525
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-486f830f4e4so41840905e9.1
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 07:48:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774968525; x=1775573325; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uO8xgLmSYcxawrJhbHfOO1eOZxDKPmONKgmhbq8TlcY=;
-        b=aKzRnGHj308wMRZPrWd6JJ4TzdRnAFqYuSJK6kD86oVGq7JhzLls1TFbgEQNVeW9Fc
-         cfmliZVH/fZDZAjCJriyVaHUoEhNHTOS38mIFnZbXVUFshAal1Me9G6DDKE+Zuuq8y6S
-         PKxq5qVasyiR7b5fKIHs3W2YOXiUgglxLUD8NJuV1nDnTyRuJM4Sl6JCBbmBpVaJEw2N
-         5sSIw15cXCnjJYnOW/kl3H6ayQSoajx0pfr75mDKa3Oidkx430QZPlmL8F9/cjrj3Ftj
-         f7yWgTdpOV5CP6gvUMKyiR2NQgwB9cpGH4/U7ySLmo6MkX3U6JEq0+/b4+N4/9xOXsWG
-         LGfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774968525; x=1775573325;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uO8xgLmSYcxawrJhbHfOO1eOZxDKPmONKgmhbq8TlcY=;
-        b=pgKKSP+4zvn7NioWij7TqQOokhZ1eSiwMBZUP2xEDhqMP/tG4puGMBUt34Jfqc5wVS
-         glqjo5yaR/dxjRJmpr9fjqjRTshFnbgRHgHsl0/tx9qT0Fj6Tnda647btZ3xtOD8DbPK
-         Mx8sANwkk3Xt/nOSqbfo+f6/Gmj4+GhSuLe+A/ObV3rJUfzCS0RsvJqrYlp1lRNVzS/x
-         bLfs67lBcSAKBviusLn84oQryCIZVZtPw5ontzSo+eJKqxkwnJB5N/LAklt1Mb6K7tHW
-         nfXmSycsPVVDMEgCaY+byndrvVYjCCospIhXwEFN2Bmqupx6D9X9H3yt7DhwDhcKCIqo
-         JULw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbyeeG5kDMfc7xOHWM9rPbvumS8s7VZ6z+tFk86sWdGuwxyYMboimgObRCG/6khwPM1DVzQAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzljz+qWMUV1+X1DdYOAv9uGRtpnM/FP34taE6P0fpVgvmtv3vC
-	SKhEf51NGnjNeTe/SomSGESB3xC379gkMDcGBK7j6U0u4SaG3CKpiHP4v15i7Xj6nnKOLX4JK8+
-	SzwvYk1sXEbDd+w3kU8SCvk5geoY6p2KY3vO0p6pmkTcP832TIZ6QpXPO/Q==
-X-Gm-Gg: ATEYQzyWCKLNt8hr4YBsksB0iDZQqS29MYfgvSm3FDKjgf00Du4Wa+PAwlgn+p7lEce
-	q5iUzo0xBI3LewuC94VByCQARdbUUnSvgahFX19YmlcsmGRZJUkT2LjWY6ftsBI6zZQD7FLlLZ1
-	9y/c3IBn0jwKC7f05Qat8aTOSKUXW54IbRIcVRKMVZB6QZuA0cgksIa14NANZfi6/Gpx5T5hKzU
-	GHpjbHrXcqYJX5+xoA33j2CUC1mB7vhfR4VvGqv2qSC0C4qCNcgnQ4Iu+7FtWunAOxQmQUYNPa8
-	wJaBZZQ2DfYaaw4mHtUdDuujuv5U31DIcYFUOQqASChCIVL/ExQJX4+22DtJjWa+U3K5UlliW4n
-	tvOxmqqjSl2/alCqf
-X-Received: by 2002:a05:600c:a016:b0:483:64b4:79da with SMTP id 5b1f17b1804b1-48727ef153cmr267996825e9.26.1774968525210;
-        Tue, 31 Mar 2026 07:48:45 -0700 (PDT)
-X-Received: by 2002:a05:600c:a016:b0:483:64b4:79da with SMTP id 5b1f17b1804b1-48727ef153cmr267995995e9.26.1774968524618;
-        Tue, 31 Mar 2026 07:48:44 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8797ecsm38127025e9.8.2026.03.31.07.48.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 07:48:44 -0700 (PDT)
-Date: Tue, 31 Mar 2026 10:48:41 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Srujana Challa <schalla@marvell.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	Nithin Kumar Dabilpuram <ndabilpuram@marvell.com>,
-	Shiva Shankar Kommula <kshankar@marvell.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [EXTERNAL] Re: [PATCH net,v5] virtio_net: clamp rss_max_key_size
- to NETDEV_RSS_KEY_LEN
-Message-ID: <20260331104737-mutt-send-email-mst@kernel.org>
-References: <20260326142344.1171317-1-schalla@marvell.com>
- <ba027306-e5e0-4d4d-8357-f6080441167d@redhat.com>
- <CH3PR18MB6379D39BA068565667CF2B06A053A@CH3PR18MB6379.namprd18.prod.outlook.com>
- <68ca0a8c-27f9-45f1-94cc-7e3c7936181f@redhat.com>
+	s=arc-20240116; t=1774968832; c=relaxed/simple;
+	bh=YHb+mA/KnHK5JhlAvsWuyusnBpKJ2FFr513EdiMXjxo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dvCssz6i+MNasoq+beuJGnCIblyZ4CRJLBhGU3dxhIRn8lQZV51kyfvTZ4zLGIXU7cEkO8ld7ALAQfyh3UUIXMsFHpDYSql/mdF9oKf7jpuNouD9Tz+J3tIMkwbiM9jcZ1KScPbY10RJNR9fv1O1Q920kbhq0A1FGvU1xH7yCXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtwKP17z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA13C19423;
+	Tue, 31 Mar 2026 14:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774968832;
+	bh=YHb+mA/KnHK5JhlAvsWuyusnBpKJ2FFr513EdiMXjxo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RtwKP17zA8QDdIK6u+SinTLxQc8EI9Ye/u/5/peTw9FTvKk600HlrrZCKh2cx4fdC
+	 3Kr8fXPyqyrXRFjRd9VnHVMi3KWru77/r06j+cTyxyD5gd0tCXathkwc6D9meOHhnE
+	 E9+Rc3BPAMTsQkRj75vWsV8cKBavj6ezEbgnjHLYTVEvLXBoOxvq5IF3ybzsXBYNct
+	 2hQDoeyxpMxGVEqKlJQZ1ZuePSG+u0mxFTP7OLwiMqnNxemWhq7Jhx4gbQK5kxUB30
+	 Vbr0ghHowf6enGYUxHZUErskufm9MnSHnThBU4nOKA1DEkR/esevUHyaGtgOKIPd2K
+	 2Lc254tFlVYlg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Josef Bacik <josef@toxicpanda.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] scsi: target: tcm_loop: Drain commands in target_reset handler
+Date: Tue, 31 Mar 2026 10:53:49 -0400
+Message-ID: <20260331145349.2557768-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033011-baffle-superior-ddf5@gregkh>
+References: <2026033011-baffle-superior-ddf5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68ca0a8c-27f9-45f1-94cc-7e3c7936181f@redhat.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-231442-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231441-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.992];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,marvell.com:email]
-X-Rspamd-Queue-Id: 16E4236B2E0
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,toxicpanda.com:email,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 98ACC36B390
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 04:39:02PM +0200, Paolo Abeni wrote:
-> On 3/31/26 3:29 PM, Srujana Challa wrote:
-> >> On 3/26/26 3:23 PM, Srujana Challa wrote:
-> >>> rss_max_key_size in the virtio spec is the maximum key size supported
-> >>> by the device, not a mandatory size the driver must use. Also the
-> >>> value 40 is a spec minimum, not a spec maximum.
-> >>>
-> >>> The current code rejects RSS and can fail probe when the device
-> >>> reports a larger rss_max_key_size than the driver buffer limit.
-> >>> Instead, clamp the effective key length to min(device
-> >>> rss_max_key_size, NETDEV_RSS_KEY_LEN) and keep RSS enabled.
-> >>>
-> >>> This keeps probe working on devices that advertise larger maximum key
-> >>> sizes while respecting the netdev RSS key buffer size limit.
-> >>>
-> >>> Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Srujana Challa <schalla@marvell.com>
-> >>> ---
-> >>> v3:
-> >>> - Moved RSS key validation checks to virtnet_validate.
-> >>> - Add fixes: tag and CC -stable
-> >>> v4:
-> >>> - Use NETDEV_RSS_KEY_LEN instead of type_max for the maximum rss key
-> >> size.
-> >>> v5:
-> >>> - Interpret rss_max_key_size as a maximum and clamp it to
-> >> NETDEV_RSS_KEY_LEN.
-> >>> - Do not disable RSS/HASH_REPORT when device rss_max_key_size exceeds
-> >> NETDEV_RSS_KEY_LEN.
-> >>> - Drop the separate patch that replaced the runtime check with
-> >> BUILD_BUG_ON.
-> >>>
-> >>>  drivers/net/virtio_net.c | 20 +++++++++-----------
-> >>>  1 file changed, 9 insertions(+), 11 deletions(-)
-> >>>
-> >>> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c index
-> >>> 022f60728721..b241c8dbb4e1 100644
-> >>> --- a/drivers/net/virtio_net.c
-> >>> +++ b/drivers/net/virtio_net.c
-> >>> @@ -373,8 +373,6 @@ struct receive_queue {
-> >>>  	struct xdp_buff **xsk_buffs;
-> >>>  };
-> >>>
-> >>> -#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
-> >>> -
-> >>>  /* Control VQ buffers: protected by the rtnl lock */  struct
-> >>> control_buf {
-> >>>  	struct virtio_net_ctrl_hdr hdr;
-> >>> @@ -478,7 +476,7 @@ struct virtnet_info {
-> >>>
-> >>>  	/* Must be last as it ends in a flexible-array member. */
-> >>>  	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer,
-> >> hash_key_data,
-> >>> -		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-> >>> +		u8 rss_hash_key_data[NETDEV_RSS_KEY_LEN];
-> >>>  	);
-> >>>  };
-> >>>  static_assert(offsetof(struct virtnet_info,
-> >>> rss_trailer.hash_key_data) == @@ -6717,6 +6715,7 @@ static int
-> >> virtnet_probe(struct virtio_device *vdev)
-> >>>  	struct virtnet_info *vi;
-> >>>  	u16 max_queue_pairs;
-> >>>  	int mtu = 0;
-> >>> +	u16 key_sz;
-> >>>
-> >>>  	/* Find if host supports multiqueue/rss virtio_net device */
-> >>>  	max_queue_pairs = 1;
-> >>> @@ -6851,14 +6850,13 @@ static int virtnet_probe(struct virtio_device
-> >> *vdev)
-> >>>  	}
-> >>>
-> >>>  	if (vi->has_rss || vi->has_rss_hash_report) {
-> >>> -		vi->rss_key_size =
-> >>> -			virtio_cread8(vdev, offsetof(struct virtio_net_config,
-> >> rss_max_key_size));
-> >>> -		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
-> >>> -			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds
-> >> the limit %u.\n",
-> >>> -				vi->rss_key_size,
-> >> VIRTIO_NET_RSS_MAX_KEY_SIZE);
-> >>> -			err = -EINVAL;
-> >>> -			goto free;
-> >>> -		}
-> >>> +		key_sz = virtio_cread8(vdev, offsetof(struct virtio_net_config,
-> >>> +rss_max_key_size));
-> >>> +
-> >>> +		vi->rss_key_size = min_t(u16, key_sz, NETDEV_RSS_KEY_LEN);
-> >>> +		if (key_sz > vi->rss_key_size)
-> >>> +			dev_warn(&vdev->dev,
-> >>> +				 "rss_max_key_size=%u exceeds driver limit
-> >> %u, clamping\n",
-> >>> +				 key_sz, vi->rss_key_size);
-> >>
-> >> NETDEV_RSS_KEY_LEN is 256 and virtio_cread8() returns a u8. The check is
-> >> not needed, and the warning will never be printed. I think that the
-> >> BUILD_BUG_ON() you used in v4 would be better than the above chunk.
-> >>
-> > Thank you for the feedback. In net-next, NETDEV_RSS_KEY_LEN is 256. This fix is
-> > also intended for stable kernels, where NETDEV_RSS_KEY_LEN is 52, and
-> > I added the message to make clamping visible in that case.
-> > I will remove the check and send the next version.  
-> 
-> I'm sorry, I haven't looked at the historical context when I wrote my
-> previous reply.
-> 
-> IMHO the additional check does not make sense in the current net tree.
-> On the flip side stable trees will need it. I suggest:
-> 
-> - dropping the check for the 'net' patch
-> - also dropping CC: stable tag
-> - explicitly sending to stable the fix variant including the size check.
-> 
-> @Michael: WDYT?
-> 
-> /P
+From: Josef Bacik <josef@toxicpanda.com>
 
-I was the one who suggested it, the extra check is harmless, I'm
-inclined to always have it.  Less work than maintaining two patches.
+[ Upstream commit 1333eee56cdf3f0cf67c6ab4114c2c9e0a952026 ]
 
+tcm_loop_target_reset() violates the SCSI EH contract: it returns SUCCESS
+without draining any in-flight commands.  The SCSI EH documentation
+(scsi_eh.rst) requires that when a reset handler returns SUCCESS the driver
+has made lower layers "forget about timed out scmds" and is ready for new
+commands.  Every other SCSI LLD (virtio_scsi, mpt3sas, ipr, scsi_debug,
+mpi3mr) enforces this by draining or completing outstanding commands before
+returning SUCCESS.
+
+Because tcm_loop_target_reset() doesn't drain, the SCSI EH reuses in-flight
+scsi_cmnd structures for recovery commands (e.g. TUR) while the target core
+still has async completion work queued for the old se_cmd.  The memset in
+queuecommand zeroes se_lun and lun_ref_active, causing
+transport_lun_remove_cmd() to skip its percpu_ref_put().  The leaked LUN
+reference prevents transport_clear_lun_ref() from completing, hanging
+configfs LUN unlink forever in D-state:
+
+  INFO: task rm:264 blocked for more than 122 seconds.
+  rm              D    0   264    258 0x00004000
+  Call Trace:
+   __schedule+0x3d0/0x8e0
+   schedule+0x36/0xf0
+   transport_clear_lun_ref+0x78/0x90 [target_core_mod]
+   core_tpg_remove_lun+0x28/0xb0 [target_core_mod]
+   target_fabric_port_unlink+0x50/0x60 [target_core_mod]
+   configfs_unlink+0x156/0x1f0 [configfs]
+   vfs_unlink+0x109/0x290
+   do_unlinkat+0x1d5/0x2d0
+
+Fix this by making tcm_loop_target_reset() actually drain commands:
+
+ 1. Issue TMR_LUN_RESET via tcm_loop_issue_tmr() to drain all commands that
+    the target core knows about (those not yet CMD_T_COMPLETE).
+
+ 2. Use blk_mq_tagset_busy_iter() to iterate all started requests and
+    flush_work() on each se_cmd — this drains any deferred completion work
+    for commands that already had CMD_T_COMPLETE set before the TMR (which
+    the TMR skips via __target_check_io_state()).  This is the same pattern
+    used by mpi3mr, scsi_debug, and libsas to drain outstanding commands
+    during reset.
+
+Fixes: e0eb5d38b732 ("scsi: target: tcm_loop: Use block cmd allocator for se_cmds")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://patch.msgid.link/27011aa34c8f6b1b94d2e3cf5655b6d037f53428.1773706803.git.josef@toxicpanda.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/loopback/tcm_loop.c | 52 ++++++++++++++++++++++++++----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
+index d43b01eb1708b..1d1043cc649cd 100644
+--- a/drivers/target/loopback/tcm_loop.c
++++ b/drivers/target/loopback/tcm_loop.c
+@@ -26,6 +26,7 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/configfs.h>
++#include <linux/blk-mq.h>
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_tcq.h>
+ #include <scsi/scsi_host.h>
+@@ -267,15 +268,27 @@ static int tcm_loop_device_reset(struct scsi_cmnd *sc)
+ 	return (ret == TMR_FUNCTION_COMPLETE) ? SUCCESS : FAILED;
+ }
+ 
++static bool tcm_loop_flush_work_iter(struct request *rq, void *data)
++{
++	struct scsi_cmnd *sc = blk_mq_rq_to_pdu(rq);
++	struct tcm_loop_cmd *tl_cmd = scsi_cmd_priv(sc);
++	struct se_cmd *se_cmd = &tl_cmd->tl_se_cmd;
++
++	flush_work(&se_cmd->work);
++	return true;
++}
++
+ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
+ {
+ 	struct tcm_loop_hba *tl_hba;
+ 	struct tcm_loop_tpg *tl_tpg;
++	struct Scsi_Host *sh = sc->device->host;
++	int ret;
+ 
+ 	/*
+ 	 * Locate the tcm_loop_hba_t pointer
+ 	 */
+-	tl_hba = *(struct tcm_loop_hba **)shost_priv(sc->device->host);
++	tl_hba = *(struct tcm_loop_hba **)shost_priv(sh);
+ 	if (!tl_hba) {
+ 		pr_err("Unable to perform device reset without active I_T Nexus\n");
+ 		return FAILED;
+@@ -284,11 +297,38 @@ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
+ 	 * Locate the tl_tpg pointer from TargetID in sc->device->id
+ 	 */
+ 	tl_tpg = &tl_hba->tl_hba_tpgs[sc->device->id];
+-	if (tl_tpg) {
+-		tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
+-		return SUCCESS;
+-	}
+-	return FAILED;
++	if (!tl_tpg)
++		return FAILED;
++
++	/*
++	 * Issue a LUN_RESET to drain all commands that the target core
++	 * knows about.  This handles commands not yet marked CMD_T_COMPLETE.
++	 */
++	ret = tcm_loop_issue_tmr(tl_tpg, sc->device->lun, 0, TMR_LUN_RESET);
++	if (ret != TMR_FUNCTION_COMPLETE)
++		return FAILED;
++
++	/*
++	 * Flush any deferred target core completion work that may still be
++	 * queued.  Commands that already had CMD_T_COMPLETE set before the TMR
++	 * are skipped by the TMR drain, but their async completion work
++	 * (transport_lun_remove_cmd → percpu_ref_put, release_cmd → scsi_done)
++	 * may still be pending in target_completion_wq.
++	 *
++	 * The SCSI EH will reuse in-flight scsi_cmnd structures for recovery
++	 * commands (e.g. TUR) immediately after this handler returns SUCCESS —
++	 * if deferred work is still pending, the memset in queuecommand would
++	 * zero the se_cmd while the work accesses it, leaking the LUN
++	 * percpu_ref and hanging configfs unlink forever.
++	 *
++	 * Use blk_mq_tagset_busy_iter() to find all started requests and
++	 * flush_work() on each — the same pattern used by mpi3mr, scsi_debug,
++	 * and other SCSI drivers to drain outstanding commands during reset.
++	 */
++	blk_mq_tagset_busy_iter(&sh->tag_set, tcm_loop_flush_work_iter, NULL);
++
++	tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
++	return SUCCESS;
+ }
+ 
+ static const struct scsi_host_template tcm_loop_driver_template = {
 -- 
-MST
+2.53.0
 
 
