@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEnjI1/8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:55 +0200
+	id MPX1IFv9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7827036D638
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0A636D965
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 737B2315FA05
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F012030D6E9C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5834426682;
-	Tue, 31 Mar 2026 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95325423A93;
+	Tue, 31 Mar 2026 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+ym7tEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j48PcsXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9923C425CE5;
-	Tue, 31 Mar 2026 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5220C423A8A;
+	Tue, 31 Mar 2026 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975096; cv=none; b=CJlaJUiOp9k6eeaJ2IPUtEIinP3pOK13Nypax0iRMilrmGlBxbB/L5wsyTO30sTUh2MEm3FvMkjfNRtaD8GGOuyRRhlJlbYckdy9DyRBNKGon1vbhMUc1rNDTq0nBEqf9ViLiEY7yltK/H8KagnTiyZhHl+rxj80PBMAeBYSTtM=
+	t=1774975598; cv=none; b=Lx/d44mHLk3FUp38Fa9hZbwxX0tyEpe6tg1mLHV7ZuCr35qDlNlo1Tr4z2erggTK5c0JiZjGjGc9LN66rmeU1Sfg17rF9/NYYGbfNI62tMYLBYIBSVbl89kmUh8CDNmK9D7IUg1hOK0WNG48cbwJ8dsY2zCDIOlZMYK57zGQa/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975096; c=relaxed/simple;
-	bh=bzU9pXmje8WOI54AwEddBYa2wPbffWA1TgYP7qmhEZA=;
+	s=arc-20240116; t=1774975598; c=relaxed/simple;
+	bh=17D0YnUcqPluj68DR8ET6o3bMlCeOVVf+9lDSwmZ1U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgL8jC8sjvS5pYhfyfLuaE7OwWb3ZBbrJS3damznmEl3NLuGS4G3zjjAa/KsiYscFzWTK9MY6Ef6B9RfFR+o3HNB252EN4aA9edZ6KRR6KAsnyImMOJuPhzZ54sblXufU55Uu21dQ36wszlDf80jgurp+mbOuAsm6Tposp4RybA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+ym7tEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB0EC19423;
-	Tue, 31 Mar 2026 16:38:16 +0000 (UTC)
+	 MIME-Version; b=RsCJbET6dDuHqH+LYIZAi2K9QN1OjU4m474i7opBEkKWmbuNGVBXBfgU0vSv+x/Xs4KLhsQiQMsxe0d5+cr0oVg/pVVGgw3WBuuFP4sMblUZbdrcEw4vGCRDzfFWrPc0C7mtk88YW/8H6b5MFu94PFDTcXQNGuWquWKOtKC7Tvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j48PcsXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE389C2BCB1;
+	Tue, 31 Mar 2026 16:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975096;
-	bh=bzU9pXmje8WOI54AwEddBYa2wPbffWA1TgYP7qmhEZA=;
+	s=korg; t=1774975598;
+	bh=17D0YnUcqPluj68DR8ET6o3bMlCeOVVf+9lDSwmZ1U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+ym7tEwmQxnjqBpTeprGiEzDV0XX/rFe/I89lv7NIAn+eqDEkjf9S1ihwM7lXDIU
-	 qoNzPGniObj5s9Wdc50U+qslJTjbMRD1KhxJSfrCHbS20JuZKdRZUaSynV3/Dlnq5N
-	 XGOPGWm52J1EnpPiqNLdS7lfXsjA0LkD4hDPp8uk=
+	b=j48PcsXWh+X3vUc08RrYIYA9Lpln5k9KJjLPx61IsbQBEsRdT6xLmH4bKILtre6Hs
+	 gnchqGbW0wvkPtKrabIdDhanU7Kyzw4uNYSJS6iuLcJetqeS6oyOwKjjnKhGHGKpsK
+	 Efq6WmtcyAwgSvmU9rmGPc4Ahdlt3ko3uBBycJkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 130/342] rtnetlink: fix leak of SRCU struct in rtnl_link_register
-Date: Tue, 31 Mar 2026 18:19:23 +0200
-Message-ID: <20260331161803.790814869@linuxfoundation.org>
+Subject: [PATCH 6.12 014/244] nvme-pci: cap queue creation to used queues
+Date: Tue, 31 Mar 2026 18:19:24 +0200
+Message-ID: <20260331161742.232688437@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231798-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231993-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,51 +87,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,queasysnail.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7827036D638
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AB0A636D965
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 09474055f2619be9445ba4245e4013741ed01a5e ]
+[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
 
-Commit 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.") swapped
-the EEXIST check with the init_srcu_struct, but didn't add cleanup of
-the SRCU struct we just allocated in case of error.
+If the user reduces the special queue count at runtime and resets the
+controller, we need to reduce the number of queues and interrupts
+requested accordingly rather than start with the pre-allocated queue
+count.
 
-Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/e77fe499f9a58c547b33b5212b3596dad417cec6.1774025341.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 6cdf6ee8be216..11cdad3972ad8 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -629,6 +629,9 @@ int rtnl_link_register(struct rtnl_link_ops *ops)
- unlock:
- 	mutex_unlock(&link_ops_mutex);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 6bd02c9116501..7a58ba05484bf 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2456,7 +2456,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
  
-+	if (err)
-+		cleanup_srcu_struct(&ops->srcu);
-+
- 	return err;
- }
- EXPORT_SYMBOL_GPL(rtnl_link_register);
+-	nr_io_queues = dev->nr_allocated_queues - 1;
++	/*
++	 * The initial number of allocated queue slots may be too large if the
++	 * user reduced the special queue parameters. Cap the value to the
++	 * number we need for this round.
++	 */
++	nr_io_queues = min(nvme_max_io_queues(dev),
++			   dev->nr_allocated_queues - 1);
+ 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
+ 	if (result < 0)
+ 		return result;
 -- 
 2.51.0
 
