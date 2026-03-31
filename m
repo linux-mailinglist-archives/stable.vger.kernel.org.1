@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-231785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFZNDAD7y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:04 +0200
+	id GDyEBGP/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A56836D2E7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8861E36DED1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7843306F639
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4286230D0EF7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9364266B0;
-	Tue, 31 Mar 2026 16:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45C842668F;
+	Tue, 31 Mar 2026 17:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jjUJssu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oF/qGBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6847421A1D;
-	Tue, 31 Mar 2026 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61F5423A62;
+	Tue, 31 Mar 2026 17:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975063; cv=none; b=eY/jl1XzTZtxojADIa5k6rwLqQ9ACxtn4iFGg3irA4XQ/tBNzD+zWbaSLGSLUCGpR9U2hctDRzIKz9mpQjSx9SeyY5kHTXBYhsdjknrALXxlWBlBGzEi2K2eYzMQm38gdeqSAfqqRIwAYBoPfQzc/eM8D/e7frL9+ZjJKtayRb0=
+	t=1774976404; cv=none; b=WBkcf8INQrZfqjyiAMULjsGzGQxPuJ0dmNAoi4FEifzk6EYCxpqzkvJJwx8p3mdFT48dnx79tLiudwhKlpoMjNeiWtdMjWj9y2WoQ3gJaQt6bwiNo6gh4wgXcW7Yiu6+7TM3tZEInahrLMSqXEN3/iNTbmD5opmbsuMDh78uNVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975063; c=relaxed/simple;
-	bh=z03R5eJcdQkI0ByuspORgLyz9zXgJPFlLvrHa/uhtwU=;
+	s=arc-20240116; t=1774976404; c=relaxed/simple;
+	bh=0Qlle7kK7BSgRfmctvfDE5g7PA5H1XR7eL1Pto46faM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExKA9UyZj+DGsoAFjgKjOQoeDxICSUyaR9N45PxTVen0Gaiyrm+HwE8PRMjj9uJKjdetecOCNqs5QiIVNpkCfCL9GuGBObZ9k9K5YdepXaq0lnZy8cbSAYM4US9Y3G7Rc/ikvXjXPHB8mvFGvnPcrlhuf7cH5RGSk9TWsyXFbpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jjUJssu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F572C19423;
-	Tue, 31 Mar 2026 16:37:42 +0000 (UTC)
+	 MIME-Version; b=tCjkHiYTZBHvo9DN2+c2SziFZEFJkunLHhA8XW4ABe9nV5DFJJB1uxlcXKTfAp6gYxbiMlW5S45BrYegt7hooeMrnWExEFQ8l4ScyCueup4UVIT24uWK2h+lC+Bye6xv8r4JOW5dUU5uaQSuGdNMLTb/JGIoogOU7oOiHxKE0Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oF/qGBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DABAC19423;
+	Tue, 31 Mar 2026 17:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975062;
-	bh=z03R5eJcdQkI0ByuspORgLyz9zXgJPFlLvrHa/uhtwU=;
+	s=korg; t=1774976404;
+	bh=0Qlle7kK7BSgRfmctvfDE5g7PA5H1XR7eL1Pto46faM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jjUJssuJv81+aDuFmfC5Wig6kAVJbDISobI/zuQcCfQW4dBn3cfidN2eYqcQAD2s
-	 VWhLfeB0nA4oIr4JawRY6iikrf7wI/IkNel49EtzccvuqO+s064TRDCgY2eiLskSa5
-	 vkff1WzXfWNPb/ejq2DFmA8ih6zSqZ2fONfej9YI=
+	b=2oF/qGBasVUJZiQINchL+2Mu2S//WndQMmJH+qPOhZ1fFE1ezadnF/+VetZqDIEd0
+	 x2TfJAeOW7zOzSVcHCTil6+V3KxV/G7FbxPal8+T7L7eo8JaNkt7abPPZOsrPxZxeG
+	 tNjsJsjvYdUZEDl+I3G2V82YJEaWwhRRMm/7Fauo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Kranzdorf <dkkranzd@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	chenguanyou <chenguanyou@xiaomi.com>,
+	Yunlei He <heyunlei@xiaomi.com>,
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 149/342] RDMA/efa: Improve admin completion context state machine
+Subject: [PATCH 6.18 079/309] erofs: set fileio bio failed in short read case
 Date: Tue, 31 Mar 2026 18:19:42 +0200
-Message-ID: <20260331161804.488154713@linuxfoundation.org>
+Message-ID: <20260331161756.395878647@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231785-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232304-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,219 +88,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0A56836D2E7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,xiaomi.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,alibaba.com:email]
+X-Rspamd-Queue-Id: 8861E36DED1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonatan Nachum <ynachum@amazon.com>
+From: Sheng Yong <shengyong1@xiaomi.com>
 
-[ Upstream commit dab5825491f7b0ea92a09390f39df0a51100f12f ]
+[ Upstream commit eade54040384f54b7fb330e4b0975c5734850b3c ]
 
-Add a new unused state to the admin completion contexts state machine
-instead of the occupied field. This improves the completion validity
-check because it now enforce the context to be in submitted state prior
-to completing it. Also add allocated state as a intermediate state
-between unused and submitted.
+For file-backed mount, IO requests are handled by vfs_iocb_iter_read().
+However, it can be interrupted by SIGKILL, returning the number of
+bytes actually copied. Unused folios in bio are unexpectedly marked
+as uptodate.
 
-Reviewed-by: Daniel Kranzdorf <dkkranzd@amazon.com>
-Reviewed-by: Michael Margolin <mrgolin@amazon.com>
-Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
-Link: https://patch.msgid.link/20251210130614.36460-3-ynachum@amazon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: ef3b06742c8a ("RDMA/efa: Fix use of completion ctx after free")
+  vfs_read
+    filemap_read
+      filemap_get_pages
+        filemap_readahead
+          erofs_fileio_readahead
+            erofs_fileio_rq_submit
+              vfs_iocb_iter_read
+                filemap_read
+                  filemap_get_pages  <= detect signal
+              erofs_fileio_ki_complete  <= set all folios uptodate
+
+This patch addresses this by setting short read bio with an error
+directly.
+
+Fixes: bc804a8d7e86 ("erofs: handle end of filesystem properly for file-backed mounts")
+Reported-by: chenguanyou <chenguanyou@xiaomi.com>
+Signed-off-by: Yunlei He <heyunlei@xiaomi.com>
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 91 ++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 41 deletions(-)
+ fs/erofs/fileio.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index b31478f3a1212..229b0ad3b0cbb 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -23,6 +23,8 @@
- #define EFA_CTRL_SUB_MINOR      1
+diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
+index 5b77ee8cc99f4..740efd2097bf1 100644
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -25,10 +25,8 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
+ 			container_of(iocb, struct erofs_fileio_rq, iocb);
+ 	struct folio_iter fi;
  
- enum efa_cmd_status {
-+	EFA_CMD_UNUSED,
-+	EFA_CMD_ALLOCATED,
- 	EFA_CMD_SUBMITTED,
- 	EFA_CMD_COMPLETED,
- };
-@@ -34,7 +36,6 @@ struct efa_comp_ctx {
- 	enum efa_cmd_status status;
- 	u16 cmd_id;
- 	u8 cmd_opcode;
--	u8 occupied;
- };
- 
- static const char *efa_com_cmd_str(u8 cmd)
-@@ -243,7 +244,6 @@ static int efa_com_admin_init_aenq(struct efa_com_dev *edev,
- 	return 0;
- }
- 
--/* ID to be used with efa_com_get_comp_ctx */
- static u16 efa_com_alloc_ctx_id(struct efa_com_admin_queue *aq)
- {
- 	u16 ctx_id;
-@@ -265,36 +265,47 @@ static void efa_com_dealloc_ctx_id(struct efa_com_admin_queue *aq,
- 	spin_unlock(&aq->comp_ctx_lock);
- }
- 
--static inline void efa_com_put_comp_ctx(struct efa_com_admin_queue *aq,
--					struct efa_comp_ctx *comp_ctx)
-+static struct efa_comp_ctx *efa_com_alloc_comp_ctx(struct efa_com_admin_queue *aq)
- {
--	u16 cmd_id = EFA_GET(&comp_ctx->user_cqe->acq_common_descriptor.command,
--			     EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
--	u16 ctx_id = cmd_id & (aq->depth - 1);
-+	struct efa_comp_ctx *comp_ctx;
-+	u16 ctx_id;
- 
--	ibdev_dbg(aq->efa_dev, "Put completion command_id %#x\n", cmd_id);
--	comp_ctx->occupied = 0;
--	efa_com_dealloc_ctx_id(aq, ctx_id);
-+	ctx_id = efa_com_alloc_ctx_id(aq);
-+
-+	comp_ctx = &aq->comp_ctx[ctx_id];
-+	if (comp_ctx->status != EFA_CMD_UNUSED) {
-+		efa_com_dealloc_ctx_id(aq, ctx_id);
-+		ibdev_err_ratelimited(aq->efa_dev,
-+				      "Completion context[%u] is used[%u]\n",
-+				      ctx_id, comp_ctx->status);
-+		return NULL;
-+	}
-+
-+	comp_ctx->status = EFA_CMD_ALLOCATED;
-+	ibdev_dbg(aq->efa_dev, "Take completion context[%u]\n", ctx_id);
-+	return comp_ctx;
- }
- 
--static struct efa_comp_ctx *efa_com_get_comp_ctx(struct efa_com_admin_queue *aq,
--						 u16 cmd_id, bool capture)
-+static inline u16 efa_com_get_comp_ctx_id(struct efa_com_admin_queue *aq,
-+					  struct efa_comp_ctx *comp_ctx)
- {
--	u16 ctx_id = cmd_id & (aq->depth - 1);
-+	return comp_ctx - aq->comp_ctx;
-+}
- 
--	if (aq->comp_ctx[ctx_id].occupied && capture) {
--		ibdev_err_ratelimited(
--			aq->efa_dev,
--			"Completion context for command_id %#x is occupied\n",
--			cmd_id);
--		return NULL;
+-	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size) {
+-		bio_advance(&rq->bio, ret);
+-		zero_fill_bio(&rq->bio);
 -	}
-+static inline void efa_com_dealloc_comp_ctx(struct efa_com_admin_queue *aq,
-+					    struct efa_comp_ctx *comp_ctx)
-+{
-+	u16 ctx_id = efa_com_get_comp_ctx_id(aq, comp_ctx);
- 
--	if (capture) {
--		aq->comp_ctx[ctx_id].occupied = 1;
--		ibdev_dbg(aq->efa_dev,
--			  "Take completion ctxt for command_id %#x\n", cmd_id);
--	}
-+	ibdev_dbg(aq->efa_dev, "Put completion context[%u]\n", ctx_id);
-+	comp_ctx->status = EFA_CMD_UNUSED;
-+	efa_com_dealloc_ctx_id(aq, ctx_id);
-+}
-+
-+static inline struct efa_comp_ctx *efa_com_get_comp_ctx_by_cmd_id(struct efa_com_admin_queue *aq,
-+								  u16 cmd_id)
-+{
-+	u16 ctx_id = cmd_id & (aq->depth - 1);
- 
- 	return &aq->comp_ctx[ctx_id];
- }
-@@ -312,10 +323,13 @@ static struct efa_comp_ctx *__efa_com_submit_admin_cmd(struct efa_com_admin_queu
- 	u16 ctx_id;
- 	u16 pi;
- 
-+	comp_ctx = efa_com_alloc_comp_ctx(aq);
-+	if (!comp_ctx)
-+		return ERR_PTR(-EINVAL);
-+
- 	queue_size_mask = aq->depth - 1;
- 	pi = aq->sq.pc & queue_size_mask;
--
--	ctx_id = efa_com_alloc_ctx_id(aq);
-+	ctx_id = efa_com_get_comp_ctx_id(aq, comp_ctx);
- 
- 	/* cmd_id LSBs are the ctx_id and MSBs are entropy bits from pc */
- 	cmd_id = ctx_id & queue_size_mask;
-@@ -326,12 +340,6 @@ static struct efa_comp_ctx *__efa_com_submit_admin_cmd(struct efa_com_admin_queu
- 	EFA_SET(&cmd->aq_common_descriptor.flags,
- 		EFA_ADMIN_AQ_COMMON_DESC_PHASE, aq->sq.phase);
- 
--	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, true);
--	if (!comp_ctx) {
--		efa_com_dealloc_ctx_id(aq, ctx_id);
--		return ERR_PTR(-EINVAL);
--	}
--
- 	comp_ctx->status = EFA_CMD_SUBMITTED;
- 	comp_ctx->comp_size = comp_size_in_bytes;
- 	comp_ctx->user_cqe = comp;
-@@ -372,9 +380,9 @@ static inline int efa_com_init_comp_ctxt(struct efa_com_admin_queue *aq)
- 	}
- 
- 	for (i = 0; i < aq->depth; i++) {
--		comp_ctx = efa_com_get_comp_ctx(aq, i, false);
--		if (comp_ctx)
--			init_completion(&comp_ctx->wait_event);
-+		comp_ctx = &aq->comp_ctx[i];
-+		comp_ctx->status = EFA_CMD_UNUSED;
-+		init_completion(&comp_ctx->wait_event);
- 
- 		aq->comp_ctx_pool[i] = i;
- 	}
-@@ -419,11 +427,12 @@ static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq
- 	cmd_id = EFA_GET(&cqe->acq_common_descriptor.command,
- 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
- 
--	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
-+	comp_ctx = efa_com_get_comp_ctx_by_cmd_id(aq, cmd_id);
- 	if (comp_ctx->status != EFA_CMD_SUBMITTED || comp_ctx->cmd_id != cmd_id) {
- 		ibdev_err(aq->efa_dev,
--			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
--			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
-+			  "Received completion with unexpected command id[%x], status[%d] sq producer[%d], sq consumer[%d], cq consumer[%d]\n",
-+			  cmd_id, comp_ctx->status, aq->sq.pc, aq->sq.cc,
-+			  aq->cq.cc);
- 		return -EINVAL;
- 	}
- 
-@@ -532,7 +541,7 @@ static int efa_com_wait_and_process_admin_cq_polling(struct efa_comp_ctx *comp_c
- 
- 	err = efa_com_comp_status_to_errno(comp_ctx->user_cqe->acq_common_descriptor.status);
- out:
--	efa_com_put_comp_ctx(aq, comp_ctx);
-+	efa_com_dealloc_comp_ctx(aq, comp_ctx);
- 	return err;
- }
- 
-@@ -582,7 +591,7 @@ static int efa_com_wait_and_process_admin_cq_interrupts(struct efa_comp_ctx *com
- 
- 	err = efa_com_comp_status_to_errno(comp_ctx->user_cqe->acq_common_descriptor.status);
- out:
--	efa_com_put_comp_ctx(aq, comp_ctx);
-+	efa_com_dealloc_comp_ctx(aq, comp_ctx);
- 	return err;
- }
- 
++	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size)
++		ret = -EIO;
+ 	if (!rq->bio.bi_end_io) {
+ 		bio_for_each_folio_all(fi, &rq->bio) {
+ 			DBG_BUGON(folio_test_uptodate(fi.folio));
 -- 
-2.53.0
+2.51.0
 
 
 
