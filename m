@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Lj9Kk8BzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:59 +0200
+	id kKGcDrb5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F97636E563
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4617D36D061
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEC18313BA6F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4B9923057AFF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218213009D4;
-	Tue, 31 Mar 2026 17:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288FF41B373;
+	Tue, 31 Mar 2026 16:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEHQDVFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPUacl6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A862FDC5E;
-	Tue, 31 Mar 2026 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2D3FADEE;
+	Tue, 31 Mar 2026 16:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976752; cv=none; b=d7FPkgQ1CvwfDH0uCOrpABJsIbX2H6swVDCZRzJMUSoP1xkLXnHS17Km4g383Qh/IC6GZP4lc1GIBoN5dPUdaG5reJJLxIBwmcqetzi7SEWnzFlnvu/XzBYaObaHVXz4mCjwr+nun2CluKIVs8JxwNQ0EG6C6bqODGebfILmGL4=
+	t=1774974565; cv=none; b=RlUDIRg6neohUiX4WYEfUm8FbB5piVrf1isXa1ehnjOtepUGdUTMBnMX+I0P6ICZNlZBAGjQ4B5TxWo9I3oA/kiIOr6PDeDTtLAh5clxAJIwI1cSR//4JfEkU61vu4WiHemQ18C2jfb5rIhlz46g9tRQzBPQL5115Jardzh5sA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976752; c=relaxed/simple;
-	bh=GtSwU+GevXD2dGRjshe7YtP0B6r56wtpwxq7NXyi70E=;
+	s=arc-20240116; t=1774974565; c=relaxed/simple;
+	bh=t3j/r40AaOfJyCRgTgaWRfbrMyP9HEUZNqxdcmLgFqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHyPxvylTl4Hl0eenZbGtBKCX3zzrK9HTXr2lSg1jUmOR5OvycBc0UvEmcjk+qlEeeBsUZ3AHO2pGCjXLqR7cZ1+ykV70CysU6vY+SdQjUN4qk+0j0lSBCYW8Ge7Ga6cNXtadlKIkgn8tYAkb+IlEvhGsfbklaeCkIif2p2cGiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEHQDVFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF70C19423;
-	Tue, 31 Mar 2026 17:05:52 +0000 (UTC)
+	 MIME-Version; b=Nlxbmx2RKWMJZ0K0YQJbfA6E8h8kdkD0YH1okh49Yp53C5ZM8okE0l0A1zy0XGwp0+wztc9KzyR361KMYabzb0XQQT+0EV3W7NL066JClSjm0UiP3LJDxyeNdIWfTIr0kXrxBZQVaMwLYGY8y9MzPWse+R9ajJnXWi2/82SSdIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPUacl6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751D2C19423;
+	Tue, 31 Mar 2026 16:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976752;
-	bh=GtSwU+GevXD2dGRjshe7YtP0B6r56wtpwxq7NXyi70E=;
+	s=korg; t=1774974565;
+	bh=t3j/r40AaOfJyCRgTgaWRfbrMyP9HEUZNqxdcmLgFqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEHQDVFmDeo0KXtcODtSLlb0iyjaeDc1k0pqjGjlHhrpN9AO7e6WXGjjNlS9TXK2M
-	 EmBri/++4GJExk5X0iH3Q6fSQ5SKU6z+F00ugiZ7IsG+wJZV0vSO4seEzpJB0xMqwI
-	 H9rPuEekJSbJ3qG1W79hTqMyL+5ru9sPk0M/3JkE=
+	b=lPUacl6rdPKBBvxNf+/0HYpWWie/6XcLxneJUVBCRza07kBaJ4ju2s1+jROGZauMK
+	 s6NmMOxL6hEPI8L6RJATaK/fMmL1vJtTIwBxUSNMNWZ/mp3Te2874LV3T/tBKCrXln
+	 awVa9hs/4jDe0wX8n9mdjy9srp5U1jFGjvnjiFGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenglong Tang <chenglongtang@google.com>,
-	Fei Lv <feilv@asrmicro.com>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.18 215/309] ovl: make fsync after metadata copy-up opt-in mount option
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 134/175] ext4: replace BUG_ON with proper error handling in ext4_read_inline_folio
 Date: Tue, 31 Mar 2026 18:21:58 +0200
-Message-ID: <20260331161801.361702903@linuxfoundation.org>
+Message-ID: <20260331161734.708835405@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,320 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232440-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,asrmicro.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231591-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4F97636E563
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4617D36D061
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Lv <feilv@asrmicro.com>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit 1f6ee9be92f8df85a8c9a5a78c20fd39c0c21a95 upstream.
+commit 356227096eb66e41b23caf7045e6304877322edf upstream.
 
-Commit 7d6899fb69d25 ("ovl: fsync after metadata copy-up") was done to
-fix durability of overlayfs copy up on an upper filesystem which does
-not enforce ordering on storing of metadata changes (e.g. ubifs).
+Replace BUG_ON() with proper error handling when inline data size
+exceeds PAGE_SIZE. This prevents kernel panic and allows the system to
+continue running while properly reporting the filesystem corruption.
 
-In an earlier revision of the regressing commit by Lei Lv, the metadata
-fsync behavior was opt-in via a new "fsync=strict" mount option.
-We were hoping that the opt-in mount option could be avoided, so the
-change was only made to depend on metacopy=off, in the hope of not
-hurting performance of metadata heavy workloads, which are more likely
-to be using metacopy=on.
+The error is logged via ext4_error_inode(), the buffer head is released
+to prevent memory leak, and -EFSCORRUPTED is returned to indicate
+filesystem corruption.
 
-This hope was proven wrong by a performance regression report from Google
-COS workload after upgrade to kernel 6.12.
-
-This is an adaptation of Lei's original "fsync=strict" mount option
-to the existing upstream code.
-
-The new mount option is mutually exclusive with the "volatile" mount
-option, so the latter is now an alias to the "fsync=volatile" mount
-option.
-
-Reported-by: Chenglong Tang <chenglongtang@google.com>
-Closes: https://lore.kernel.org/linux-unionfs/CAOdxtTadAFH01Vui1FvWfcmQ8jH1O45owTzUcpYbNvBxnLeM7Q@mail.gmail.com/
-Link: https://lore.kernel.org/linux-unionfs/CAOQ4uxgKC1SgjMWre=fUb00v8rxtd6sQi-S+dxR8oDzAuiGu8g@mail.gmail.com/
-Fixes: 7d6899fb69d25 ("ovl: fsync after metadata copy-up")
-Depends: 50e638beb67e0 ("ovl: Use str_on_off() helper in ovl_show_options()")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Fei Lv <feilv@asrmicro.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Link: https://patch.msgid.link/20260223123345.14838-2-ytohnuki@amazon.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/filesystems/overlayfs.rst |   50 ++++++++++++++++++++++++++++++++
- fs/overlayfs/copy_up.c                  |    6 +--
- fs/overlayfs/overlayfs.h                |   21 +++++++++++++
- fs/overlayfs/ovl_entry.h                |    7 ----
- fs/overlayfs/params.c                   |   33 +++++++++++++++++----
- fs/overlayfs/super.c                    |    2 -
- 6 files changed, 104 insertions(+), 15 deletions(-)
+ fs/ext4/inline.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/Documentation/filesystems/overlayfs.rst
-+++ b/Documentation/filesystems/overlayfs.rst
-@@ -783,6 +783,56 @@ controlled by the "uuid" mount option, w
-     mounted with "uuid=on".
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -517,7 +517,15 @@ static int ext4_read_inline_folio(struct
+ 		goto out;
  
- 
-+Durability and copy up
-+----------------------
+ 	len = min_t(size_t, ext4_get_inline_size(inode), i_size_read(inode));
+-	BUG_ON(len > PAGE_SIZE);
 +
-+The fsync(2) system call ensures that the data and metadata of a file
-+are safely written to the backing storage, which is expected to
-+guarantee the existence of the information post system crash.
++	if (len > PAGE_SIZE) {
++		ext4_error_inode(inode, __func__, __LINE__, 0,
++				 "inline size %zu exceeds PAGE_SIZE", len);
++		ret = -EFSCORRUPTED;
++		brelse(iloc.bh);
++		goto out;
++	}
 +
-+Without an fsync(2) call, there is no guarantee that the observed
-+data after a system crash will be either the old or the new data, but
-+in practice, the observed data after crash is often the old or new data
-+or a mix of both.
-+
-+When an overlayfs file is modified for the first time, copy up will
-+create a copy of the lower file and its parent directories in the upper
-+layer.  Since the Linux filesystem API does not enforce any particular
-+ordering on storing changes without explicit fsync(2) calls, in case
-+of a system crash, the upper file could end up with no data at all
-+(i.e. zeros), which would be an unusual outcome.  To avoid this
-+experience, overlayfs calls fsync(2) on the upper file before completing
-+data copy up with rename(2) or link(2) to make the copy up "atomic".
-+
-+By default, overlayfs does not explicitly call fsync(2) on copied up
-+directories or on metadata-only copy up, so it provides no guarantee to
-+persist the user's modification unless the user calls fsync(2).
-+The fsync during copy up only guarantees that if a copy up is observed
-+after a crash, the observed data is not zeroes or intermediate values
-+from the copy up staging area.
-+
-+On traditional local filesystems with a single journal (e.g. ext4, xfs),
-+fsync on a file also persists the parent directory changes, because they
-+are usually modified in the same transaction, so metadata durability during
-+data copy up effectively comes for free.  Overlayfs further limits risk by
-+disallowing network filesystems as upper layer.
-+
-+Overlayfs can be tuned to prefer performance or durability when storing
-+to the underlying upper layer.  This is controlled by the "fsync" mount
-+option, which supports these values:
-+
-+- "auto": (default)
-+    Call fsync(2) on upper file before completion of data copy up.
-+    No explicit fsync(2) on directory or metadata-only copy up.
-+- "strict":
-+    Call fsync(2) on upper file and directories before completion of any
-+    copy up.
-+- "volatile": [*]
-+    Prefer performance over durability (see `Volatile mount`_)
-+
-+[*] The mount option "volatile" is an alias to "fsync=volatile".
-+
-+
- Volatile mount
- --------------
- 
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -1159,15 +1159,15 @@ static int ovl_copy_up_one(struct dentry
- 		return -EOVERFLOW;
- 
- 	/*
--	 * With metacopy disabled, we fsync after final metadata copyup, for
-+	 * With "fsync=strict", we fsync after final metadata copyup, for
- 	 * both regular files and directories to get atomic copyup semantics
- 	 * on filesystems that do not use strict metadata ordering (e.g. ubifs).
- 	 *
--	 * With metacopy enabled we want to avoid fsync on all meta copyup
-+	 * By default, we want to avoid fsync on all meta copyup, because
- 	 * that will hurt performance of workloads such as chown -R, so we
- 	 * only fsync on data copyup as legacy behavior.
- 	 */
--	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
-+	ctx.metadata_fsync = ovl_should_sync_metadata(OVL_FS(dentry->d_sb)) &&
- 			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
- 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
- 
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -99,6 +99,12 @@ enum {
- 	OVL_VERITY_REQUIRE,
- };
- 
-+enum {
-+	OVL_FSYNC_VOLATILE,
-+	OVL_FSYNC_AUTO,
-+	OVL_FSYNC_STRICT,
-+};
-+
- /*
-  * The tuple (fh,uuid) is a universal unique identifier for a copy up origin,
-  * where:
-@@ -634,6 +640,21 @@ static inline bool ovl_xino_warn(struct
- 	return ofs->config.xino == OVL_XINO_ON;
- }
- 
-+static inline bool ovl_should_sync(struct ovl_fs *ofs)
-+{
-+	return ofs->config.fsync_mode != OVL_FSYNC_VOLATILE;
-+}
-+
-+static inline bool ovl_should_sync_metadata(struct ovl_fs *ofs)
-+{
-+	return ofs->config.fsync_mode == OVL_FSYNC_STRICT;
-+}
-+
-+static inline bool ovl_is_volatile(struct ovl_config *config)
-+{
-+	return config->fsync_mode == OVL_FSYNC_VOLATILE;
-+}
-+
- /*
-  * To avoid regressions in existing setups with overlay lower offline changes,
-  * we allow lower changes only if none of the new features are used.
---- a/fs/overlayfs/ovl_entry.h
-+++ b/fs/overlayfs/ovl_entry.h
-@@ -18,7 +18,7 @@ struct ovl_config {
- 	int xino;
- 	bool metacopy;
- 	bool userxattr;
--	bool ovl_volatile;
-+	int fsync_mode;
- };
- 
- struct ovl_sb {
-@@ -120,11 +120,6 @@ static inline struct ovl_fs *OVL_FS(stru
- 	return (struct ovl_fs *)sb->s_fs_info;
- }
- 
--static inline bool ovl_should_sync(struct ovl_fs *ofs)
--{
--	return !ofs->config.ovl_volatile;
--}
--
- static inline unsigned int ovl_numlower(struct ovl_entry *oe)
- {
- 	return oe ? oe->__numlower : 0;
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -58,6 +58,7 @@ enum ovl_opt {
- 	Opt_xino,
- 	Opt_metacopy,
- 	Opt_verity,
-+	Opt_fsync,
- 	Opt_volatile,
- 	Opt_override_creds,
- };
-@@ -140,6 +141,23 @@ static int ovl_verity_mode_def(void)
- 	return OVL_VERITY_OFF;
- }
- 
-+static const struct constant_table ovl_parameter_fsync[] = {
-+	{ "volatile",	OVL_FSYNC_VOLATILE },
-+	{ "auto",	OVL_FSYNC_AUTO     },
-+	{ "strict",	OVL_FSYNC_STRICT   },
-+	{}
-+};
-+
-+static const char *ovl_fsync_mode(struct ovl_config *config)
-+{
-+	return ovl_parameter_fsync[config->fsync_mode].name;
-+}
-+
-+static int ovl_fsync_mode_def(void)
-+{
-+	return OVL_FSYNC_AUTO;
-+}
-+
- const struct fs_parameter_spec ovl_parameter_spec[] = {
- 	fsparam_string_empty("lowerdir",    Opt_lowerdir),
- 	fsparam_file_or_string("lowerdir+", Opt_lowerdir_add),
-@@ -155,6 +173,7 @@ const struct fs_parameter_spec ovl_param
- 	fsparam_enum("xino",                Opt_xino, ovl_parameter_xino),
- 	fsparam_enum("metacopy",            Opt_metacopy, ovl_parameter_bool),
- 	fsparam_enum("verity",              Opt_verity, ovl_parameter_verity),
-+	fsparam_enum("fsync",               Opt_fsync, ovl_parameter_fsync),
- 	fsparam_flag("volatile",            Opt_volatile),
- 	fsparam_flag_no("override_creds",   Opt_override_creds),
- 	{}
-@@ -665,8 +684,11 @@ static int ovl_parse_param(struct fs_con
- 	case Opt_verity:
- 		config->verity_mode = result.uint_32;
- 		break;
-+	case Opt_fsync:
-+		config->fsync_mode = result.uint_32;
-+		break;
- 	case Opt_volatile:
--		config->ovl_volatile = true;
-+		config->fsync_mode = OVL_FSYNC_VOLATILE;
- 		break;
- 	case Opt_userxattr:
- 		config->userxattr = true;
-@@ -800,6 +822,7 @@ int ovl_init_fs_context(struct fs_contex
- 	ofs->config.nfs_export		= ovl_nfs_export_def;
- 	ofs->config.xino		= ovl_xino_def();
- 	ofs->config.metacopy		= ovl_metacopy_def;
-+	ofs->config.fsync_mode		= ovl_fsync_mode_def();
- 
- 	fc->s_fs_info		= ofs;
- 	fc->fs_private		= ctx;
-@@ -870,9 +893,9 @@ int ovl_fs_params_verify(const struct ov
- 		config->index = false;
- 	}
- 
--	if (!config->upperdir && config->ovl_volatile) {
-+	if (!config->upperdir && ovl_is_volatile(config)) {
- 		pr_info("option \"volatile\" is meaningless in a non-upper mount, ignoring it.\n");
--		config->ovl_volatile = false;
-+		config->fsync_mode = ovl_fsync_mode_def();
- 	}
- 
- 	if (!config->upperdir && config->uuid == OVL_UUID_ON) {
-@@ -1070,8 +1093,8 @@ int ovl_show_options(struct seq_file *m,
- 		seq_printf(m, ",xino=%s", ovl_xino_mode(&ofs->config));
- 	if (ofs->config.metacopy != ovl_metacopy_def)
- 		seq_printf(m, ",metacopy=%s", str_on_off(ofs->config.metacopy));
--	if (ofs->config.ovl_volatile)
--		seq_puts(m, ",volatile");
-+	if (ofs->config.fsync_mode != ovl_fsync_mode_def())
-+		seq_printf(m, ",fsync=%s", ovl_fsync_mode(&ofs->config));
- 	if (ofs->config.userxattr)
- 		seq_puts(m, ",userxattr");
- 	if (ofs->config.verity_mode != ovl_verity_mode_def())
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -773,7 +773,7 @@ static int ovl_make_workdir(struct super
- 	 * For volatile mount, create a incompat/volatile/dirty file to keep
- 	 * track of it.
- 	 */
--	if (ofs->config.ovl_volatile) {
-+	if (ovl_is_volatile(&ofs->config)) {
- 		err = ovl_create_volatile_dirty(ofs);
- 		if (err < 0) {
- 			pr_err("Failed to create volatile/dirty file.\n");
+ 	kaddr = kmap_local_folio(folio, 0);
+ 	ret = ext4_read_inline_data(inode, kaddr, len, &iloc);
+ 	flush_dcache_folio(folio);
 
 
 
