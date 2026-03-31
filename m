@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-232325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMfdI8n/y2koNQYAu9opvQ
-	(envelope-from <stable+bounces-232325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:29 +0200
+	id mOfCCHD8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1178236E048
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AEC36D668
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E20E230F3BCE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C14D13252484
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A62D2D7DD7;
-	Tue, 31 Mar 2026 17:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319EA4266A6;
+	Tue, 31 Mar 2026 16:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE/MJNjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJ9ATgxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8522C21F8;
-	Tue, 31 Mar 2026 17:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DD53E3C40;
+	Tue, 31 Mar 2026 16:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976459; cv=none; b=EYWSOx9764eTcEifLNtur4y3JwAL2g174Tw9dU5seKRfzmfA0nHoMayPOH1XiG6Kk0QDPDptJNfGFt/kVbkdhYkaoXFBfmCm4FGD6S2KLgmKr8iYYwITmIUTlZMbx17MCfsVqwA3LDOrVlG6EM2iA6AWoE4PyKrCmvlnWMjIQ74=
+	t=1774975185; cv=none; b=dhblCbrZ4SRf9cTwoFvegXjmVRaaQ2CgRTyAjggEcv4BuncrW5aRrM+/xDDTImuAKRt9hVlKRW4gFvsJ7FiMh7yEk+umYXsBUzpWGKBTu3wdvLom0ZWc8gUJUqnBe+jrXbGMtE5n+X4BWPE47NHSYu4/SbuQ4C5Jq9irWqrx7KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976459; c=relaxed/simple;
-	bh=bF6zCXnuacN51BrQX7tP86OPex3I0KE3WILVFOM+TVo=;
+	s=arc-20240116; t=1774975185; c=relaxed/simple;
+	bh=+UPPyOZqCu5ZvZ3cR14o+r7L7sDNbd6NqiN+7IvvY7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZFqwjvxQEKpF9xH6BB/7M7c3QOnbKVVuNaA93q1ZwnUAw+LA3k67cdIaG4lUfrJ7yS+uhvOt9R6b+O+sFDOZUuezadjz9E8sb7EepwTvBoEvA0vpTZeymxnbFtaNdNmu3SS+36L1ndcrHRL19Xj/D4s4wKrZj1eyonvQSo5yIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE/MJNjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961A3C19423;
-	Tue, 31 Mar 2026 17:00:58 +0000 (UTC)
+	 MIME-Version; b=hQ0ofjO/rx4f7dA5aAWX8QmDrVRnSTT4bP/M5Cd+Tmvu39NYrak8Np2pOSOXqZbyfaJ067Ug7PjMehfdewmXPd/+HHc4/j0KMXI2rlFAebGaBudHMXA0q41DLHX2uO9EUpNLhj/16Vu7LHHnzItO3l5k7XDYHbZzh+r+WvJD18k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJ9ATgxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF59C19423;
+	Tue, 31 Mar 2026 16:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976458;
-	bh=bF6zCXnuacN51BrQX7tP86OPex3I0KE3WILVFOM+TVo=;
+	s=korg; t=1774975184;
+	bh=+UPPyOZqCu5ZvZ3cR14o+r7L7sDNbd6NqiN+7IvvY7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HE/MJNjweR8QIDqfcg+GR6Nne6H0qzhn/g4O0whx4U6T+oQPGNonU1UTj3JR+axHR
-	 wp+8tfcTCpy/eXDpPaIM3vGk/75LXSWXMp8GSKTQc47xIlMoEjYoYKMMXX/AFyGyql
-	 q8zctiBZH1cuQ/Ewo1af68E21E/dn9bjRjqK1FBg=
+	b=bJ9ATgxa18Lr8npwiRFRmBHeBKH4FBOJUPJrWLxqoljMeqfcFNslFy2wxwD40t3Jb
+	 wzZRIRrb1fk1Z087/w5TRcIFNvBls9NzbRgaEf65+EY145MOyxVWwkM3Nyk7FK7kiC
+	 kuOBJV5CU1x+3XrHmRkIRR8Ar1cOrTfYaXffT7gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/309] openvswitch: validate MPLS set/set_masked payload length
+Subject: [PATCH 6.19 163/342] RDMA/irdma: Harden depth calculation functions
 Date: Tue, 31 Mar 2026 18:19:56 +0200
-Message-ID: <20260331161756.914147427@linuxfoundation.org>
+Message-ID: <20260331161805.010191324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,82 +69,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232325-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231832-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email]
-X-Rspamd-Queue-Id: 1178236E048
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 95AEC36D668
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Shiraz Saleem <shiraz.saleem@intel.com>
 
-[ Upstream commit 546b68ac893595877ffbd7751e5c55fd1c43ede6 ]
+[ Upstream commit e37afcb56ae070477741fe2d6e61fc0c542cce2d ]
 
-validate_set() accepted OVS_KEY_ATTR_MPLS as variable-sized payload for
-SET/SET_MASKED actions. In action handling, OVS expects fixed-size
-MPLS key data (struct ovs_key_mpls).
+An issue was exposed where OS can pass in U32_MAX for SQ/RQ/SRQ size.
+This can cause integer overflow and truncation of SQ/RQ/SRQ depth
+returning a success when it should have failed.
 
-Use the already normalized key_len (masked case included) and reject
-non-matching MPLS action key sizes.
+Harden the functions to do all depth calculations and boundary
+checking in u64 sizes.
 
-Reject invalid MPLS action payload lengths early.
-
-Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-Link: https://patch.msgid.link/20260319080228.3423307-1-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 563e1feb5f6e ("RDMA/irdma: Add SRQ support")
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/irdma/uk.c | 39 ++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 2d536901309ea..2dc4a6c2aecec 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2953,6 +2953,8 @@ static int validate_set(const struct nlattr *a,
- 	case OVS_KEY_ATTR_MPLS:
- 		if (!eth_p_mpls(eth_type))
- 			return -EINVAL;
-+		if (key_len != sizeof(struct ovs_key_mpls))
-+			return -EINVAL;
- 		break;
+diff --git a/drivers/infiniband/hw/irdma/uk.c b/drivers/infiniband/hw/irdma/uk.c
+index f0846b800913d..3d6d0ee57c4c1 100644
+--- a/drivers/infiniband/hw/irdma/uk.c
++++ b/drivers/infiniband/hw/irdma/uk.c
+@@ -1442,7 +1442,7 @@ int irdma_uk_cq_poll_cmpl(struct irdma_cq_uk *cq,
+  * irdma_round_up_wq - return round up qp wq depth
+  * @wqdepth: wq depth in quanta to round up
+  */
+-static int irdma_round_up_wq(u32 wqdepth)
++static u64 irdma_round_up_wq(u64 wqdepth)
+ {
+ 	int scount = 1;
  
- 	case OVS_KEY_ATTR_SCTP:
+@@ -1495,15 +1495,16 @@ void irdma_get_wqe_shift(struct irdma_uk_attrs *uk_attrs, u32 sge,
+ int irdma_get_sqdepth(struct irdma_uk_attrs *uk_attrs, u32 sq_size, u8 shift,
+ 		      u32 *sqdepth)
+ {
+-	u32 min_size = (u32)uk_attrs->min_hw_wq_size << shift;
++	u32 min_hw_quanta = (u32)uk_attrs->min_hw_wq_size << shift;
++	u64 hw_quanta =
++		irdma_round_up_wq(((u64)sq_size << shift) + IRDMA_SQ_RSVD);
+ 
+-	*sqdepth = irdma_round_up_wq((sq_size << shift) + IRDMA_SQ_RSVD);
+-
+-	if (*sqdepth < min_size)
+-		*sqdepth = min_size;
+-	else if (*sqdepth > uk_attrs->max_hw_wq_quanta)
++	if (hw_quanta < min_hw_quanta)
++		hw_quanta = min_hw_quanta;
++	else if (hw_quanta > uk_attrs->max_hw_wq_quanta)
+ 		return -EINVAL;
+ 
++	*sqdepth = hw_quanta;
+ 	return 0;
+ }
+ 
+@@ -1517,15 +1518,16 @@ int irdma_get_sqdepth(struct irdma_uk_attrs *uk_attrs, u32 sq_size, u8 shift,
+ int irdma_get_rqdepth(struct irdma_uk_attrs *uk_attrs, u32 rq_size, u8 shift,
+ 		      u32 *rqdepth)
+ {
+-	u32 min_size = (u32)uk_attrs->min_hw_wq_size << shift;
+-
+-	*rqdepth = irdma_round_up_wq((rq_size << shift) + IRDMA_RQ_RSVD);
++	u32 min_hw_quanta = (u32)uk_attrs->min_hw_wq_size << shift;
++	u64 hw_quanta =
++		irdma_round_up_wq(((u64)rq_size << shift) + IRDMA_RQ_RSVD);
+ 
+-	if (*rqdepth < min_size)
+-		*rqdepth = min_size;
+-	else if (*rqdepth > uk_attrs->max_hw_rq_quanta)
++	if (hw_quanta < min_hw_quanta)
++		hw_quanta = min_hw_quanta;
++	else if (hw_quanta > uk_attrs->max_hw_rq_quanta)
+ 		return -EINVAL;
+ 
++	*rqdepth = hw_quanta;
+ 	return 0;
+ }
+ 
+@@ -1539,13 +1541,16 @@ int irdma_get_rqdepth(struct irdma_uk_attrs *uk_attrs, u32 rq_size, u8 shift,
+ int irdma_get_srqdepth(struct irdma_uk_attrs *uk_attrs, u32 srq_size, u8 shift,
+ 		       u32 *srqdepth)
+ {
+-	*srqdepth = irdma_round_up_wq((srq_size << shift) + IRDMA_RQ_RSVD);
++	u32 min_hw_quanta = (u32)uk_attrs->min_hw_wq_size << shift;
++	u64 hw_quanta =
++		irdma_round_up_wq(((u64)srq_size << shift) + IRDMA_RQ_RSVD);
+ 
+-	if (*srqdepth < ((u32)uk_attrs->min_hw_wq_size << shift))
+-		*srqdepth = uk_attrs->min_hw_wq_size << shift;
+-	else if (*srqdepth > uk_attrs->max_hw_srq_quanta)
++	if (hw_quanta < min_hw_quanta)
++		hw_quanta = min_hw_quanta;
++	else if (hw_quanta > uk_attrs->max_hw_srq_quanta)
+ 		return -EINVAL;
+ 
++	*srqdepth = hw_quanta;
+ 	return 0;
+ }
+ 
 -- 
-2.51.0
+2.53.0
 
 
 
