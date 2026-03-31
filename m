@@ -1,196 +1,186 @@
-Return-Path: <stable+bounces-232587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AG64AfFDzGm+RgYAu9opvQ
-	(envelope-from <stable+bounces-232587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:00:17 +0200
+	id cBDBIqBFzGm+RgYAu9opvQ
+	(envelope-from <stable+bounces-232588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:07:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF67437244B
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:00:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D2A3724D0
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5DB31300B452
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:57:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 919223064649
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E460B3EC2F4;
-	Tue, 31 Mar 2026 21:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDAA450918;
+	Tue, 31 Mar 2026 22:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HVAK1/km"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2Ofvz/w"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC1A35DA60;
-	Tue, 31 Mar 2026 21:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216B938F647
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 22:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774994263; cv=none; b=Qsf1/x+0YKxwSRrqTmg4yoFyO8pl2dAT993BrSiU2GuqEGaB1HlgClYtjRDeMbsyovcHsGjfyoWlIhHVHUYXNcGlhStvQ6N86eSTiUHctdXn5XhpmZ3Keu1uy0A3AUrEMCizl4hs0kVBF+8Ct7ldWBX1D5OPDlPco7m1UnxEm48=
+	t=1774994696; cv=none; b=YUMK+hkcAynWxvCLmtGYlQqz4tyyhJ5gWEmV5vp19dtXrTQwMKzYeBbXZZxGqdJjLGlX48+7GKDUB0I9i5YJB6aoxYoONbc7yydvErQ6xmA8FSGPhJm/iER8LwiK81VNfKzvdWfAlALJFuzN/NdQk+gtUufd56JEa1ZT2RpaLmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774994263; c=relaxed/simple;
-	bh=osHKNBJnoAssK6sgDBH0zR07D+BOTdyaNa/D8nRPko8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y3ETrlyfUH5+NXbZeVRAQlzTYMcoawFCGOCxVFQtbXBSi5qgjP/cRmSb9GrDT0HF4LkfTDGX67KLqmiXrdI/76SGIV0fEfUeXjciFycquJ2S36ytwkA0z9eq7wBKcid2ahV67zFAmFsa/Dp40VNhMcJx0hrjytSnAB2G7h/KmsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HVAK1/km; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774994262; x=1806530262;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=osHKNBJnoAssK6sgDBH0zR07D+BOTdyaNa/D8nRPko8=;
-  b=HVAK1/km7UnGs39z00nn/ps2Kju39lQZr7ZGgffA0Lh7Q092JLHrwzz9
-   l4I8/Uv0yLYFi+CPz7T7VhWUhxt34zpI7TC1zVeyQDV2JZ6kHC4nL8VGL
-   sry+VuhZDRzxnbKiZNfMT8bFDiJDl2WXFR0ebI9wFiu8uU3JwYXHWECi+
-   A51/HDk6Y5233q8TaoSAKUzW24JUna8O3H2cC8LhpjRhDGTnekNJjVwMo
-   1iR8b58QjeuGaKOdz221edSfYI40jVjIbh+NGvjeuDKr27Qoa6eC+W9ij
-   9qz4efrN98/uVk9ProfuZIIkDiRU7To9AjLvcBQ1bX93X9zL6Qflt4gV3
-   g==;
-X-CSE-ConnectionGUID: c6cWSt6GTg2+KxyPszxtnw==
-X-CSE-MsgGUID: zA5dbqpwQ9eEi33ooJRk6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86720838"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="86720838"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:41 -0700
-X-CSE-ConnectionGUID: ygebbQbFSsGxN9E27mM+cQ==
-X-CSE-MsgGUID: QMsDLU5DScizyhOrzfPPQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="222091722"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.111.56]) ([10.125.111.56])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:40 -0700
-Message-ID: <b0269343-6dc4-4b46-8d78-5edf85fed9a8@intel.com>
-Date: Tue, 31 Mar 2026 14:57:39 -0700
+	s=arc-20240116; t=1774994696; c=relaxed/simple;
+	bh=WjctfFZmGsUx6a6lgv/TNf96YHqARAzC7Zbemb1tscg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JEgm8Ky7xEFIZTbtRkCOfA6XRzMwGs0yMl/0p41QNzdbmvgPwI+rokF9DWlFtaJj0WP1kA4bPC1KkcnjaC0jfALwNMyM5Qkj/OHuWJHR0p5pEGTVxdkejl8GcbBxuiUuOhDfL9KjoDyjEFBPEC8Zd7rUtUdzma55lp8IApV7dJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2Ofvz/w; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-483487335c2so66580105e9.2
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 15:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774994693; x=1775599493; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6+cQN8/WkM3xxxuXSY+/LDGNdSNAwlkDI50XPvvPAQY=;
+        b=f2Ofvz/w+HRclYkI9iS1EvUobHF9nj3myytjBiiwS2OXP0wSbYGTiY5y663Zxwu9Nw
+         TlMxWPBYx33LF2pjHitBMZGaOk0AfFgtueEj+e2hEYQ0Cch2oQiTMhCBhje/XYQN2qi9
+         FYVLisgnwbn39hlr02ntjf9oKjFRaadut/TsIplRxs+bZ1b+PImhRnq1lUVyss0N7lHV
+         bI+pnq6rme5cZ1yBU/9eZ8IhKF2NgZ/u8jRikKaSkWcNr4/cJisX4ddvfdXwSUsF3Goj
+         CSLCsQH68PVbxz+CTDbxFTSEsj7NkErJro3WcXmC2XvR/A9rp98x+Wxq/SX/mCytF7Tx
+         Oc4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774994693; x=1775599493;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6+cQN8/WkM3xxxuXSY+/LDGNdSNAwlkDI50XPvvPAQY=;
+        b=gwHDj8NJH1QDD+tBM6/mg+3unvhpubZPl3pRtUwI6xGuBBsQwGezJSV5NI4s09Uu01
+         00OM7Sgoa64DKqbJRiu6P3SFKmb3S4nnJPQaY6ArpczYld5DOzQFSyYJkL5hEYzwO64j
+         Bjt+1hG+xvw2pc2NwDoeAy66IHOUWQeQuNZYwH2bjGlKaw+w9vv96QXvY1nwGrCxgARb
+         ebgPeVdi5rQXDMo7dzd7syCRo+MvbYiO/kt8zL1KGJcPLLO+NDfwAq8MltbaZ+xBghyn
+         Mmju4JS8+7MD2/dg866E6uSWVdTkpqCHPhxGDhmoL4JmUCgsEUrStPPr2Ex4UuVNChVq
+         wYEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXlLFLZUKtEm8eg9tsODPQNWf9IOPzoKE+43bCbtACYw/TFb5pcSgw9g2/rB9IkuWH8dVdOWf8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yznj/DoiYXA74nslbHxVWkhGMnIH62iCzLOu6MUnuRkvsFOW6Gh
+	qxRH6UQCj748njXq+dz1OhTCtgMKZ6ezdr3gA+rI0EKuT8st+LHenHin
+X-Gm-Gg: ATEYQzxCsOqMJpm8cHtrvGM265NafuYdNSZuRRcUlVZu642P71JcEuLer4fDIZZaZZ4
+	gayYo2DLVRwwS85HG77DyHaNenTQC+pD3d0hUwRjtXyWHBPeYJ4viX64u/Ob/Y39tfNwTj8X6tK
+	85VIr7Kdb/ORFz8iYP6HxNyyTHmJfHQe8MckcoM6Q02kzmsDqU1Bqz8jtcziHWliUgpxiTHAWim
+	Mi+/IHv3KR1TGm53zGY3EcpRXF0aGGokn9v47sLr4SLkqMBhO6kDQvrFfR22aeGoxd3ldhY+QEg
+	EMbJsTHm6u3IzEfNwLp/VB6xHUS07EaQYrOOutWombhzj8ZiP7AjL5Pp0b0xHPNvB4iCNXpYfx7
+	aQljsUNlxJbtq42OohNKOUJnysojpQXX+c74Z0o9c12LZLh8WfvaQ/MBPdq8m/1XcQ3aDB1bnOe
+	IoqJzzDE0FTTuk0/FzBCs5GmlhBl70yMvNS0Xn6QGeA2yyPWAf4JGI0th3t58Q
+X-Received: by 2002:a05:600c:3516:b0:485:3f72:3230 with SMTP id 5b1f17b1804b1-48883597e85mr16164905e9.15.1774994693263;
+        Tue, 31 Mar 2026 15:04:53 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e82e669sm60760165e9.11.2026.03.31.15.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 15:04:52 -0700 (PDT)
+Date: Tue, 31 Mar 2026 23:04:51 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Romain Gantois <romain.gantois@bootlin.com>, Jonathan Cameron
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Hans de Goede <hansg@kernel.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: inkern: Avoid risky abs() usage in
+ iio_multiply_value()
+Message-ID: <20260331230451.6c0bd155@pumpkin>
+In-Reply-To: <acwTnoz0aFs_xCyO@ashevche-desk.local>
+References: <20260331-iio-multiply-abs-usage-v1-1-2ae8063e80e4@bootlin.com>
+	<acuT8oTnaYujC0k6@ashevche-desk.local>
+	<20260331162635.2d8c7f70@pumpkin>
+	<acwTnoz0aFs_xCyO@ashevche-desk.local>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] dax/hmem: Add tests for the dax_hmem takeover
- capability
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: patches@lists.linux.dev, linux-cxl@vger.kernel.org,
- alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
-References: <20260327052821.440749-1-dan.j.williams@intel.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260327052821.440749-1-dan.j.williams@intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232587-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232588-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EF67437244B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 39D2A3724D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, 31 Mar 2026 21:34:06 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
+> On Tue, Mar 31, 2026 at 04:26:35PM +0100, David Laight wrote:
+> > On Tue, 31 Mar 2026 12:29:22 +0300
+> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:  
+> > > On Tue, Mar 31, 2026 at 10:49:59AM +0200, Romain Gantois wrote:  
+> 
+> > > > iio_multiply_value() passes integers val and val2 directly to abs(). This
+> > > > is problematic because if a signed argument to abs is the lowest value for
+> > > > its type, then the result is undefined due to overflow.
+> > > > 
+> > > > Cast val and val2 to s64 before passing them to abs() to avoid this issue.    
+> 
+> ...
+> 
+> > I've just looked at the 'work of art' that is abs().
+> > What is wrong with:
+> > #define abs(x) (sizeof(x) == sizeof(long long) ? __abs(long long, x) : \
+> > 		__abs(int, x))
+> > #define __abs(type, x) \
+> > 	({ type __abs_x = (x); __abs_x < 0 ? -__abs_x : __abs_x;})
+> > 
+> > It is just as broken for u128.
+> > It will use the correct signedness for char (but it is unsigned now).
+> > It doesn't cast back to char, but that is entirely pointless unless code
+> > looks at the type of the expression, the return value itself is always
+> > promoted to int before being used.
+> > 
+> > Actually replace the -__abs_x (UB for INT_MIN) with the safe:
+> > 	(unsigned type)-(__abs_x + 1) + 1
+> > and the return type will be unsigned with a correct value for -INT_MIN.
+> > (Oh and the compiler sees through the mess.)  
+> 
+> And this is definitely wrong. We must keep type, because abs() might be used in
+> the comparisons with signed or as parameter to multiplication or division where
+> sign has to be preserved.
 
-On 3/26/26 10:28 PM, Dan Williams wrote:
-> Given all the cross subsystem dependencies needed to make this solution
-> work, it needs to have a unit test to keep it functional.
-> 
-> On the path to writing that, several fixes fell out, but not to Smita's
-> code, to mine. One use-after-free has been there since the original
-> automatic region assembly code.
-> 
-> Here is a preview of the core of the test I will submit to the cxl-cli project:
-> 
-> ---
-> modprobe cxl_mock_mem && modprobe cxl_test hmem_test=1
-> 
-> dax=$(find_dax_cxl)
-> [[ "$dax" == "" ]] && err $LINENO
-> dax=$(find_dax_hmem)
-> [[ "$dax" != "" ]] && err $LINENO
-> 
-> unload
-> 
-> modprobe cxl_mock_mem && modprobe cxl_test fail_autoassemble hmem_test=1
-> 
-> dax=$(find_dax_cxl)
-> [[ "$dax" != "" ]] && err $LINENO
-> dax=$(find_dax_hmem)
-> [[ "$dax" == "" ]] && err $LINENO
-> 
-> unload
-> ---
-> 
-> This builds on Smita's series [1] pushed out to for-7.1/dax-hmem in
-> cxl.git [2].
-> 
-> [1]: http://lore.kernel.org/20260322195343.206900-1-Smita.KoralahalliChannabasappa@amd.com
-> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-7.1/dax-hmem
-> 
-> Dan Williams (9):
->   cxl/region: Fix use-after-free from auto assembly failure
->   dax/cxl: Fix HMEM dependencies
->   cxl/region: Limit visibility of cxl_region_contains_resource()
->   cxl/region: Constify cxl_region_resource_contains()
->   dax/hmem: Reduce visibility of dax_cxl coordination symbols
->   dax/hmem: Fix singleton confusion between dax_hmem_work and hmem
->     devices
->   dax/hmem: Parent dax_hmem devices
->   tools/testing/cxl: Simulate auto-assembly failure
->   tools/testing/cxl: Test dax_hmem takeover of CXL regions
-> 
->  drivers/dax/Kconfig                |   6 +-
->  drivers/cxl/cxl.h                  |  11 ++-
->  drivers/dax/bus.h                  |  15 +++-
->  include/cxl/cxl.h                  |  15 ----
->  tools/testing/cxl/test/mock.h      |   8 ++
->  drivers/cxl/core/region.c          |  68 +++++++++++++++--
->  drivers/dax/hmem/device.c          |  28 ++++---
->  drivers/dax/hmem/hmem.c            | 115 +++++++++++++++--------------
->  tools/testing/cxl/test/cxl.c       |  66 +++++++++++++++++
->  tools/testing/cxl/test/hmem_test.c |  47 ++++++++++++
->  tools/testing/cxl/test/mem.c       |   3 +
->  tools/testing/cxl/test/mock.c      |  50 +++++++++++++
->  tools/testing/cxl/Kbuild           |   7 ++
->  tools/testing/cxl/test/Kbuild      |   1 +
->  14 files changed, 344 insertions(+), 96 deletions(-)
->  delete mode 100644 include/cxl/cxl.h
->  create mode 100644 tools/testing/cxl/test/hmem_test.c
-> 
-> 
-> base-commit: 51d2fa02c0e4b3b23c4484f2af9b6d65c35471e8
+Thinks.... (bad at 11pm)
+IIRC -INT_MIN is UB, but (~INT_MIN + 1) is fine provided -fno-strict-overflow
+is set - which it is for kernel builds.
+At least that guarantees the abs(-INT_MIN) == INT_MIN which is about the best
+you can do.
+It isn't as if it is ever going to happen.
+There are all sorts of ways to break things in a driver.
 
-Applied to cxl/next
-fe5dfc24e003 tools/testing/cxl: Test dax_hmem takeover of CXL regions
-de121c377f88 tools/testing/cxl: Simulate auto-assembly failure
-a515eb335f51 dax/hmem: Parent dax_hmem devices
-841e96c053f1 dax/hmem: Fix singleton confusion between dax_hmem_work and hmem devices
-6c96c76597cc dax/hmem: Reduce visibility of dax_cxl coordination symbols
-069a54fd21e8 cxl/region: Constify cxl_region_resource_contains()
-b95c14f0dc79 cxl/region: Limit visibility of cxl_region_contains_resource()
-6c7077d5ca81 dax/cxl: Fix HMEM dependencies
-16413cc33cfd cxl/region: Fix use-after-free from auto assembly failure
+	David
+
 
 
