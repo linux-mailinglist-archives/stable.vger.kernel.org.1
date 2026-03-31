@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-232533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OaIAA0DzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:25 +0200
+	id WP/wJXoFzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:33:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB2D36E99E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C692236EEBD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 446243111EDB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:11:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7B023156FED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AFC32C923;
-	Tue, 31 Mar 2026 17:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4138F31985D;
+	Tue, 31 Mar 2026 17:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jW26FpLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJkkXCGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9043A329C48;
-	Tue, 31 Mar 2026 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D6B30FF20;
+	Tue, 31 Mar 2026 17:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976989; cv=none; b=rpb97D1EAqzPqjdekcQzkpOkaNHdcRi+TB/VB5Vo0MhSzoa0OVgx79oF8XT4WzawN8/SO47GdgXpgqemD7LuKByBiXuSzrNzXmK7vxUDXCGuTND/Ek8ryKV9GiLRqKNgFOyvXtTHA2V70Nh7ZPHC6NJsBQzwAlFrpag8Y+nEATM=
+	t=1774977020; cv=none; b=Jv2+mn9PfLBgEsgQPAeTfUnbG4mGaXAEyCb7YgepomkPgL8mg5Ji8Zbg03GIe2RnF9JuaTscb2hPnaeZP2GT6jrfJ/QcYEtjAeBG0G9IjnYLMxQiPw3UjlkNeliz593tCKO3P0C8k9Rq1L3E19S/IxZgEdo+2ISzeA+MeJ0e+1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976989; c=relaxed/simple;
-	bh=nCRvFFXEBgjdkQGFcPABF+4id+pny9HABCJvisV3DM8=;
+	s=arc-20240116; t=1774977020; c=relaxed/simple;
+	bh=0O7pbVwcKP6zzxAn3nAxvdvlnhR1hbnc9pRjVpoFrKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIXCKRxTwTjaxvw9RWvx3nsZs2vrB5F7MmYMjwCU1vShD9mVYYaTLtmtZ8yquHpDmiAg8F2qFyRyb1XUVng59rJZg/iMFPeG3AQO/N+5imlp+PbsSpY7Ptw1rjYKNuf6r7ynuAUcjEFHqT6G+ny8sfAITfaN6qAGn2tYiE+HhgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jW26FpLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48356C19423;
-	Tue, 31 Mar 2026 17:09:48 +0000 (UTC)
+	 MIME-Version; b=M59HuFkL8JJ53NcNKfq5Ato4ktXC5bBU7skdPdgHmr4RYglqppB7yttIBqgjZ4BmzJABxZEde5OKesRSW8mtrPKrxyh39WRKHcUyj8B1QnV4afqsdFhaP6MA5vEgtjBBSTAEm8PgpIHq360a7WaivkiJam+U5KNJ06Q/6dRTFiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJkkXCGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B27C2BCB1;
+	Tue, 31 Mar 2026 17:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976988;
-	bh=nCRvFFXEBgjdkQGFcPABF+4id+pny9HABCJvisV3DM8=;
+	s=korg; t=1774977019;
+	bh=0O7pbVwcKP6zzxAn3nAxvdvlnhR1hbnc9pRjVpoFrKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jW26FpLoxTHl1NmDc2s0ejpxFgLjBM1gnSg16DwlT8MmV19//GMe8rTNVZ7GjIAc1
-	 kb5MmfRkfdj9rTawcVXpT1e1ETwR+lsCUwANT3ah/K8hW9hUi/AtEr+fZgcGkTRszM
-	 JGiQLux6ZxeqR/41cZRg5VltbAXsnHmQlqeDUSIo=
+	b=OJkkXCGuYXwWU9+ews6h1BF7pgGCBCu9dNBTOf1W/MSjlzUbaAbJEHjBtLjQtTyap
+	 bh3AIqgx3x454fjP82U3ysLDaHEc9aBic3DG3xSF3JuK9mxbaZda22GA9il09op9Ql
+	 mGrQXAkR13w+gte4DIR2H8NF9ygobcQqfqojj2lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GuoHan Zhao <zhaoguohan@kylinos.cn>,
-	Juergen Gross <jgross@suse.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 304/309] xen/privcmd: unregister xenstore notifier on module exit
-Date: Tue, 31 Mar 2026 18:23:27 +0200
-Message-ID: <20260331161804.753950118@linuxfoundation.org>
+Subject: [PATCH 6.18 305/309] netfs: Fix the handling of stream->front by removing it
+Date: Tue, 31 Mar 2026 18:23:28 +0200
+Message-ID: <20260331161804.790300354@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
 References: <20260331161753.468533260@linuxfoundation.org>
@@ -68,30 +71,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232546-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232533-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: 6BB2D36E99E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,manguebit.org:email]
+X-Rspamd-Queue-Id: C692236EEBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,45 +102,194 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: GuoHan Zhao <zhaoguohan@kylinos.cn>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit cd7e1fef5a1ca1c4fcd232211962ac2395601636 ]
+[ Upstream commit 0e764b9d46071668969410ec5429be0e2f38c6d3 ]
 
-Commit 453b8fb68f36 ("xen/privcmd: restrict usage in
-unprivileged domU") added a xenstore notifier to defer setting the
-restriction target until Xenstore is ready.
+The netfs_io_stream::front member is meant to point to the subrequest
+currently being collected on a stream, but it isn't actually used this way
+by direct write (which mostly ignores it).  However, there's a tracepoint
+which looks at it.  Further, stream->front is actually redundant with
+stream->subrequests.next.
 
-XEN_PRIVCMD can be built as a module, but privcmd_exit() leaves that
-notifier behind. Balance the notifier lifecycle by unregistering it on
-module exit.
+Fix the potential problem in the direct code by just removing the member
+and using stream->subrequests.next instead, thereby also simplifying the
+code.
 
-This is harmless even if xenstore was already ready at registration
-time and the notifier was never queued on the chain.
-
-Fixes: 453b8fb68f3641fe ("xen/privcmd: restrict usage in unprivileged domU")
-Signed-off-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20260325120246.252899-1-zhaoguohan@kylinos.cn>
+Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
+Reported-by: Paulo Alcantara <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/4158599.1774426817@warthog.procyon.org.uk
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/privcmd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/netfs/buffered_read.c     | 3 +--
+ fs/netfs/direct_read.c       | 3 +--
+ fs/netfs/direct_write.c      | 1 -
+ fs/netfs/read_collect.c      | 4 ++--
+ fs/netfs/read_single.c       | 1 -
+ fs/netfs/write_collect.c     | 4 ++--
+ fs/netfs/write_issue.c       | 3 +--
+ include/linux/netfs.h        | 1 -
+ include/trace/events/netfs.h | 8 ++++----
+ 9 files changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index b8a546fe7c1e2..cbc62f0df11b7 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -1764,6 +1764,9 @@ static int __init privcmd_init(void)
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 37ab6f28b5ad0..88361e8c70961 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -171,9 +171,8 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
+ 	spin_lock(&rreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-		stream->front = subreq;
+ 		if (!stream->active) {
+-			stream->collected_to = stream->front->start;
++			stream->collected_to = subreq->start;
+ 			/* Store list pointers before active flag */
+ 			smp_store_release(&stream->active, true);
+ 		}
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index a498ee8d66745..f72e6da88cca7 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -71,9 +71,8 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ 		spin_lock(&rreq->lock);
+ 		list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-			stream->front = subreq;
+ 			if (!stream->active) {
+-				stream->collected_to = stream->front->start;
++				stream->collected_to = subreq->start;
+ 				/* Store list pointers before active flag */
+ 				smp_store_release(&stream->active, true);
+ 			}
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 4d9760e36c119..f9ab69de3e298 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -111,7 +111,6 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
+ 			netfs_prepare_write(wreq, stream, wreq->start + wreq->transferred);
+ 			subreq = stream->construct;
+ 			stream->construct = NULL;
+-			stream->front = NULL;
+ 		}
  
- static void __exit privcmd_exit(void)
- {
-+	if (!xen_initial_domain())
-+		unregister_xenstore_notifier(&xenstore_notifier);
-+
- 	privcmd_ioeventfd_exit();
- 	privcmd_irqfd_exit();
- 	misc_deregister(&privcmd_dev);
+ 		/* Check if (re-)preparation failed. */
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 137f0e28a44c5..e5f6665b3341e 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -205,7 +205,8 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 	 * in progress.  The issuer thread may be adding stuff to the tail
+ 	 * whilst we're doing this.
+ 	 */
+-	front = READ_ONCE(stream->front);
++	front = list_first_entry_or_null(&stream->subrequests,
++					 struct netfs_io_subrequest, rreq_link);
+ 	while (front) {
+ 		size_t transferred;
+ 
+@@ -301,7 +302,6 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 		list_del_init(&front->rreq_link);
+ 		front = list_first_entry_or_null(&stream->subrequests,
+ 						 struct netfs_io_subrequest, rreq_link);
+-		stream->front = front;
+ 		spin_unlock(&rreq->lock);
+ 		netfs_put_subrequest(remove,
+ 				     notes & ABANDON_SREQ ?
+diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
+index 5c0dc4efc7922..9d48ced80d1fa 100644
+--- a/fs/netfs/read_single.c
++++ b/fs/netfs/read_single.c
+@@ -107,7 +107,6 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ 	spin_lock(&rreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
+-	stream->front = subreq;
+ 	/* Store list pointers before active flag */
+ 	smp_store_release(&stream->active, true);
+ 	spin_unlock(&rreq->lock);
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 83eb3dc1adf8a..b194447f4b111 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -228,7 +228,8 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 		if (!smp_load_acquire(&stream->active))
+ 			continue;
+ 
+-		front = stream->front;
++		front = list_first_entry_or_null(&stream->subrequests,
++						 struct netfs_io_subrequest, rreq_link);
+ 		while (front) {
+ 			trace_netfs_collect_sreq(wreq, front);
+ 			//_debug("sreq [%x] %llx %zx/%zx",
+@@ -279,7 +280,6 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 			list_del_init(&front->rreq_link);
+ 			front = list_first_entry_or_null(&stream->subrequests,
+ 							 struct netfs_io_subrequest, rreq_link);
+-			stream->front = front;
+ 			spin_unlock(&wreq->lock);
+ 			netfs_put_subrequest(remove,
+ 					     notes & SAW_FAILURE ?
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 437268f656409..2db688f941251 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -206,9 +206,8 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
+ 	spin_lock(&wreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-		stream->front = subreq;
+ 		if (!stream->active) {
+-			stream->collected_to = stream->front->start;
++			stream->collected_to = subreq->start;
+ 			/* Write list pointers before active flag */
+ 			smp_store_release(&stream->active, true);
+ 		}
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 72ee7d210a744..ba17ac5bf356a 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -140,7 +140,6 @@ struct netfs_io_stream {
+ 	void (*issue_write)(struct netfs_io_subrequest *subreq);
+ 	/* Collection tracking */
+ 	struct list_head	subrequests;	/* Contributory I/O operations */
+-	struct netfs_io_subrequest *front;	/* Op being collected */
+ 	unsigned long long	collected_to;	/* Position we've collected results to */
+ 	size_t			transferred;	/* The amount transferred from this stream */
+ 	unsigned short		error;		/* Aggregate error for the stream */
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 2d366be46a1c3..cbe28211106c5 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -740,19 +740,19 @@ TRACE_EVENT(netfs_collect_stream,
+ 		    __field(unsigned int,	wreq)
+ 		    __field(unsigned char,	stream)
+ 		    __field(unsigned long long,	collected_to)
+-		    __field(unsigned long long,	front)
++		    __field(unsigned long long,	issued_to)
+ 			     ),
+ 
+ 	    TP_fast_assign(
+ 		    __entry->wreq	= wreq->debug_id;
+ 		    __entry->stream	= stream->stream_nr;
+ 		    __entry->collected_to = stream->collected_to;
+-		    __entry->front	= stream->front ? stream->front->start : UINT_MAX;
++		    __entry->issued_to	= atomic64_read(&wreq->issued_to);
+ 			   ),
+ 
+-	    TP_printk("R=%08x[%x:] cto=%llx frn=%llx",
++	    TP_printk("R=%08x[%x:] cto=%llx ito=%llx",
+ 		      __entry->wreq, __entry->stream,
+-		      __entry->collected_to, __entry->front)
++		      __entry->collected_to, __entry->issued_to)
+ 	    );
+ 
+ TRACE_EVENT(netfs_folioq,
 -- 
 2.53.0
 
