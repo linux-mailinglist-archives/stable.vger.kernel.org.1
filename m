@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GG7gFhz7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:32 +0200
+	id IJunJH39y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53BD36D31C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1326236D9D9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76E02301A3AE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:38:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A13DE3113D6B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6AE423A7C;
-	Tue, 31 Mar 2026 16:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2743EF0A2;
+	Tue, 31 Mar 2026 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2sCwBvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyuCBQvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0111A3E3C5C;
-	Tue, 31 Mar 2026 16:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914E933120E;
+	Tue, 31 Mar 2026 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975045; cv=none; b=XmuxGU83kg6AFTXO2RsU7kMrlg1/z7OTYKKV3Od/cLcV6d4ykOyx8vaod63tTh6gt1pCxdYS2cnjtJ925Ig6TGtqT2W06z2fO0x0nr+GBgUbncb3Lz1GtJvZcri+yX2vgbFOZCuen9TE7PQozhWdcxsEMizmhmt7olGeX8WeEkA=
+	t=1774975634; cv=none; b=e0Jj+CC20i5ZFwzBPcbcWwxCb9q7psZKvZYy0TzmjZK8qNSNrdcxpyFf8ssMTePku0BR3FOoYAF/XnEQn19MZIZQFEZS4oeRBPhE4uvEkBJ9cRYpNfGxFqqXqNWMkLZER/+ap6NZq9hs/+GqIscKTe75iHHKtpQI1kGgjwhIAZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975045; c=relaxed/simple;
-	bh=aIuuk7zT7ciCHqCz0EjmiVN1ahk9sjNWH4pdwfifZWI=;
+	s=arc-20240116; t=1774975634; c=relaxed/simple;
+	bh=O7cKrx47uDgMGQFCMjhtEDWtGFJC9ToSlouNxu95yd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSBS38Kcwlev6EmST32Ski025aKdC3x2ehdBO+2SNDOptZsDLrQpnUD3uK1EgfJR9rdeW9Bks63gxh8L0/SMTk4mwaNst14dsLaYpmoC+kPIkj1WJ8YwiD/0eysE5lElD4c4rwWGO+jfBOjPe69c8Ai3MyfbI/2PEGep+RmmrRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2sCwBvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFFCC19423;
-	Tue, 31 Mar 2026 16:37:24 +0000 (UTC)
+	 MIME-Version; b=r8WwqN+oT/lQtVjdF8/WpHwDSRjGDV+r3w6axvnJwWmYcR/MDUfPz6xF+GdKNXncR07Bji81/1+elAYlAxqwX8jGmKirz+Kzbryks8LiYc5zm4Y5Wu2m1PRUq/KgXjt0ggQ7ypFUTZiqaJW/M9KihX5fdY2iJI/aHkltH5DVBKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyuCBQvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275CAC19423;
+	Tue, 31 Mar 2026 16:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975044;
-	bh=aIuuk7zT7ciCHqCz0EjmiVN1ahk9sjNWH4pdwfifZWI=;
+	s=korg; t=1774975634;
+	bh=O7cKrx47uDgMGQFCMjhtEDWtGFJC9ToSlouNxu95yd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2sCwBvdZwaielbig/z1oaYhRWtLV7fjAQQXC2rgldQhTFngOjPw7nWXD5PFufCIV
-	 jq+jSUlOXuC1mbpJ4mYR/0NBRsmRj41ZD7k5HEqpaoxD/gXDqciaZRxRMZ8AuuAkse
-	 DILyt+vZkwk0u/DNpiJBNJt2OdZS26PMICuPR+4g=
+	b=eyuCBQvqzk4h7oiL/hVrAQw6XEKAVqku+tGoYFEwX8UciM4yvEAWDqFT8XssFvtl5
+	 QbTXe4RN7OTMrk70iix4olJRs5e5tQ8XpJmvP5OoXq74f8ETmJTDI+plZfjwd6K7Xz
+	 1kREGeR8ru228Q/p5VBtDqKCdt0MheTWtlQu6FvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 143/342] netfilter: nf_conntrack_expect: skip expectations in other netns via proc
-Date: Tue, 31 Mar 2026 18:19:36 +0200
-Message-ID: <20260331161804.269936896@linuxfoundation.org>
+Subject: [PATCH 6.12 027/244] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_set_reg()
+Date: Tue, 31 Mar 2026 18:19:37 +0200
+Message-ID: <20260331161742.705195148@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,64 +77,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231778-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232007-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A53BD36D31C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1326236D9D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
+[ Upstream commit 31ddc62c1cd92e51b9db61d7954b85ae2ec224da ]
 
-Skip expectations that do not reside in this netns.
+ALSA controls should return 1 if the value in the control changed but the
+control put operation fsl_easrc_set_reg() only returns 0 or a negative
+error code, causing ALSA to not generate any change events. Add a suitable
+check by using regmap_update_bits_check() with the underlying regmap, this
+is more clearly and simply correct than trying to verify that one of the
+generic ops is exactly equivalent to this one.
 
-Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
-conntrack entries via proc").
-
-Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-2-39d4c766918b@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_expect.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/fsl/fsl_easrc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index cfc2daa3fc7f3..227fb5dc39e27 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
- {
- 	struct nf_conntrack_expect *expect;
- 	struct nf_conntrack_helper *helper;
-+	struct net *net = seq_file_net(s);
- 	struct hlist_node *n = v;
- 	char *delim = "";
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 82359edd6a8b4..7aaea441f7a57 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -93,14 +93,17 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
+ 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
++	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
+ 	unsigned int regval = ucontrol->value.integer.value[0];
++	bool changed;
+ 	int ret;
  
- 	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
+-	ret = snd_soc_component_write(component, mc->regbase, regval);
+-	if (ret < 0)
++	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
++				       GENMASK(31, 0), regval, &changed);
++	if (ret != 0)
+ 		return ret;
  
-+	if (!net_eq(nf_ct_exp_net(expect), net))
-+		return 0;
-+
- 	if (expect->timeout.function)
- 		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
- 			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
+-	return 0;
++	return changed;
+ }
+ 
+ #define SOC_SINGLE_REG_RW(xname, xreg) \
 -- 
 2.51.0
 
