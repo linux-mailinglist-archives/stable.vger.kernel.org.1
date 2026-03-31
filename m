@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-232527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDIiA8cCzGmGNQYAu9opvQ
-	(envelope-from <stable+bounces-232527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:15 +0200
+	id sJpkMt0CzGmGNQYAu9opvQ
+	(envelope-from <stable+bounces-232529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB6636E90D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5D536E940
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 79B8E315FC29
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:10:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DFD33053A43
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA1530CD85;
-	Tue, 31 Mar 2026 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3491731F980;
+	Tue, 31 Mar 2026 17:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1+meR2F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4OznO5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4414131717C
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952031E826
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 17:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976976; cv=none; b=AKaO4lBmIiXgQR0F+9w0jc6Nu4imbtZqxAOoHXHXr+7dvPJkHP4f8A93DaV0F6ljUyXzljZDuhHzcTUlWjAPPT3A+ZxwHaBWoYR67vzHpxad0QVSXiEcEhnXd0+Rxr0bXjOHO/RdpMoqB/79ibg9tYdciBl8AZ+HyMUn12kJRjU=
+	t=1774976979; cv=none; b=OfRokaRtnU/6T7bvLxgNnGFcI9JD1StuEgr/9iLlO54BSHLl+J9hArCk6X2e322gTpkPSEqUiwEV2FimvkkNJc49+Xs3D6UQeapyyqJmkVS9RTpAbQSez63F3Ti5EgB2StgzC0cm2pFsW2XGIICe0hvZshm6tKpaNTuU3LYSdAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976976; c=relaxed/simple;
-	bh=y9XwLzUvZnA53pCHgraQGpDA2SXZ/9R64IdB1HzVpKc=;
+	s=arc-20240116; t=1774976979; c=relaxed/simple;
+	bh=13kDrlXu8TctjypoyMwOFmcJfVYKWFb+/Ltb0FAz4x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVf8lEqS2Rf809Rj4YdwWssqATKvurYbPOhIjs2EApij1zf85m4F0C3JYhQqltmd8pCaKuDaPl2oXX0mkSMNXRqm97upLMOAaZQ3fHAlmj41dxHA/vn/0mEGJSJwpG/5lfMtPVg3gr30mZ0idWYMudCbbc4UexfEop5uih2SWzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1+meR2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E83DC2BCB1;
-	Tue, 31 Mar 2026 17:09:35 +0000 (UTC)
+	 MIME-Version; b=aD2pvDjJC47ECt/YOsl8gI4nU0xrbzPTRkWcFb9rxftcmdfGhfoRtzY/aK6y8MT74AsS9JT5PV9ocBMBE89TN59WRn31na9wjVnEUq5DSvrb4jtdfAb1BkX5H2woiMmycYw6l07aGfj5ad429BX/HX0ca5IMPAOpHASOwMKIkZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4OznO5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DFBC19423;
+	Tue, 31 Mar 2026 17:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774976976;
-	bh=y9XwLzUvZnA53pCHgraQGpDA2SXZ/9R64IdB1HzVpKc=;
+	s=k20201202; t=1774976979;
+	bh=13kDrlXu8TctjypoyMwOFmcJfVYKWFb+/Ltb0FAz4x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1+meR2Fa4rbTiS7/zjZ2ua0DB49LqtiYDiWCARVuh+hdQpeje54QGLfuIj3UrHGu
-	 ZcIu+rS2eZ88Izaf/ROcNitmQ7ZQCJGuASTN1h83bTXjMGoeO6l+ZVgj3N6ESGUH81
-	 uSooo0JVTlR6Virjm5AW9ZdlU0wIVNRBzAi/TosHO6rNBc2AyJvNUSHpWxY+okA73J
-	 rNL7SJndgiD6R/P2ubTZz0xHVFIsBLNeHpu2W8wQULsh6cH+gxc0MFVU9U4PJFmH3V
-	 jnezF2L4vVhMXUSEbxS96yjA8nEWGiX4vpyvTVSF9oxgHy4q+pkuU/R6Zl4mYkm5z/
-	 MBYzW2NYTrJkQ==
+	b=W4OznO5FqcS+cdxb8wrWTj+elPmM4gGvZZp+tx1KllAqGe2Ag40xlumAKWFyCFmI1
+	 PAOqDA7jVUOX3wl97Zs94BaMfgyoA1ImF4lCAVn+IytvBcxTsMT3CfFSqW3daUnD5t
+	 gz+peokhANTrQpJbxmm5RILQ810gEHIQAc+Hc0GE238NGIEwFfSpddISEGUdiw1oyD
+	 CQ9LXzV62xjB103YrXglDsttt8Ymh+HiJVzViiHBJcaWRMXwWfxPxRl1QJnrA2xYMR
+	 N7kUytlh/yVfk/vxJ6oFldmYW3tip6wX2R7KkB283SN6YAJDRvt71ZMKYFjomYsWD4
+	 c8SXPKv0p6bUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	Long Li <longli@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Willem de Bruijn <willemb@google.com>,
+	Tangxin Xie <xietangxin@yeah.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] net: mana: fix use-after-free in add_adev() error path
-Date: Tue, 31 Mar 2026 13:09:32 -0400
-Message-ID: <20260331170932.2813528-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
+Date: Tue, 31 Mar 2026 13:09:35 -0400
+Message-ID: <20260331170935.2813592-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033041-unkind-wifi-8aa8@gregkh>
-References: <2026033041-unkind-wifi-8aa8@gregkh>
+In-Reply-To: <2026033030-estate-couch-53d1@gregkh>
+References: <2026033030-estate-couch-53d1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,9 +74,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
+	FREEMAIL_CC(0.00)[google.com,yeah.net,redhat.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232527-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232529-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -86,73 +86,85 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 2DB6636E90D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,yeah.net:email]
+X-Rspamd-Queue-Id: 4A5D536E940
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f ]
+[ Upstream commit c4336a07eb6b2526dc2b62928b5104b41a7f81f5 ]
 
-If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
-auxiliary_device_uninit(adev).
+NETIF_F_IPV6_CSUM only advertises support for checksum offload of
+packets without IPv6 extension headers. Packets with extension
+headers must fall back onto software checksumming. Since TSO
+depends on checksum offload, those must revert to GSO.
 
-The auxiliary device has its release callback set to adev_release(),
-which frees the containing struct mana_adev. Since adev is embedded in
-struct mana_adev, the subsequent fall-through to init_fail and access
-to adev->id may result in a use-after-free.
+The below commit introduces that fallback. It always checks
+network header length. For tunneled packets, the inner header length
+must be checked instead. Extend the check accordingly.
 
-Fix this by saving the allocated auxiliary device id in a local
-variable before calling auxiliary_device_add(), and use that saved id
-in the cleanup path after auxiliary_device_uninit().
+A special case is tunneled packets without inner IP protocol. Such as
+RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
+transport header either, so also must revert to the software GSO path.
 
-Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
 Cc: stable@vger.kernel.org
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://patch.msgid.link/20260323165730.945365-1-lgs201920130244@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
+Reported-by: Tangxin Xie <xietangxin@yeah.net>
+Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260320190148.2409107-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/dev.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index d953d6084269c..969dd44303569 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2823,6 +2823,7 @@ static int add_adev(struct gdma_dev *gd)
- 	struct auxiliary_device *adev;
- 	struct mana_adev *madev;
- 	int ret;
-+	int id;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 336257b515f04..eba7a4a39a4cb 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3579,6 +3579,22 @@ static netdev_features_t dflt_features_check(struct sk_buff *skb,
+ 	return vlan_features_check(skb, features);
+ }
  
- 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
- 	if (!madev)
-@@ -2832,7 +2833,8 @@ static int add_adev(struct gdma_dev *gd)
- 	ret = mana_adev_idx_alloc();
- 	if (ret < 0)
- 		goto idx_fail;
--	adev->id = ret;
-+	id = ret;
-+	adev->id = id;
++static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
++{
++	if (!skb->encapsulation)
++		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
++			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
++			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
++			skb_transport_header_was_set(skb) &&
++			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
++	else
++		return (!skb_inner_network_header_was_set(skb) ||
++			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
++			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
++			   inner_ip_hdr(skb)->version == 6)) &&
++			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
++}
++
+ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 					    struct net_device *dev,
+ 					    netdev_features_t features)
+@@ -3620,11 +3636,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 	 * so neither does TSO that depends on it.
+ 	 */
+ 	if (features & NETIF_F_IPV6_CSUM &&
+-	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
+-	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
+-	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
+-	    skb_transport_header_was_set(skb) &&
+-	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
++	    skb_gso_has_extension_hdr(skb) &&
+ 	    !ipv6_has_hopopt_jumbo(skb))
+ 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
  
- 	adev->name = "rdma";
- 	adev->dev.parent = gd->gdma_context->dev;
-@@ -2856,7 +2858,7 @@ static int add_adev(struct gdma_dev *gd)
- 	auxiliary_device_uninit(adev);
- 
- init_fail:
--	mana_adev_idx_free(adev->id);
-+	mana_adev_idx_free(id);
- 
- idx_fail:
- 	kfree(madev);
 -- 
 2.53.0
 
