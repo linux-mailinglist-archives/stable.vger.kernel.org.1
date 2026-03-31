@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oE4uAZH1y2lwMwYAu9opvQ
-	(envelope-from <stable+bounces-231469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:25:53 +0200
+	id yEd8Ci8AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A4C36C8F7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:25:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49FB36E174
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79A0D306B9D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4F2D305C3C3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5723F3FADEE;
-	Tue, 31 Mar 2026 16:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E652FDC5E;
+	Tue, 31 Mar 2026 17:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdTwSfEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGCja0hH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E8F3EE1DD;
-	Tue, 31 Mar 2026 16:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE582FD1DA;
+	Tue, 31 Mar 2026 17:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974253; cv=none; b=qWYGUvfpOlWClk67C4ScMFZWK95rx7wB4QqhujY2zu7NMqvp53Jr/KNTsNg9/CWWa5Y3JEv0SmWHxNArbDKq8YRtMNL6ahgS7vRFLMOgOwAsTcvFR8RmLczUmvNHd9jkVdit7V87mMzvTvbtS+tUNGf1wj34sjlaM1TWgbUdJ/M=
+	t=1774976516; cv=none; b=SOgTP3XDW4Spm73ieiG6nkKs5wZVrsetg0FLo5J/80TBWKtR3EOR235q51lHprbE/IJM5tTf3bz1RuIBc9T1JDrwyrrMvevrSl65lLEl9JswyO+z1V8UvqO2gtqb1kL/2WxrGqQ6Q/HVYTpX+Kw/dxzymB4JPKX5+dIO/h7tfoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974253; c=relaxed/simple;
-	bh=ImSP+WjU4y5lavsqIUfIkHNyr59zKi0xqwdUFc3V67o=;
+	s=arc-20240116; t=1774976516; c=relaxed/simple;
+	bh=LSEDfFK+yWzgkNK4vhsS6kH/zLUQ3j11ekzz8le1G2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qvukt0pjm7gnHQ7+67LglcSWHZOR9KMjecZYm60i+gMD4kibTM5w7Rgj6HAQ6keqdGu+5J8rEsSybERDFgZE0coLrNtDMi6oyyq1Gn0/Iv3i91+EazuPugYwsfPjwnU8pbqWg1L5FnW+hGIX0hgZjgA0Or8KSX7ZcG3Kj4lL494=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdTwSfEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCB7C19423;
-	Tue, 31 Mar 2026 16:24:12 +0000 (UTC)
+	 MIME-Version; b=CtYm9J2ESwY8s4Rp94WzzapgpKoLbcZcHeUfg9EfxbG+gfJsLnlmMV728RGV05Ts9/84OH38PcHKKva57mTcDu9XmcHZWN3aklFjhJ2DzGKELdqxiqy4FyQRf67nOqYUJLZmttBlYM+gYgG/UheW+iCFu1ZtNGCK0HVJj4zK7F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGCja0hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C626C19423;
+	Tue, 31 Mar 2026 17:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974252;
-	bh=ImSP+WjU4y5lavsqIUfIkHNyr59zKi0xqwdUFc3V67o=;
+	s=korg; t=1774976516;
+	bh=LSEDfFK+yWzgkNK4vhsS6kH/zLUQ3j11ekzz8le1G2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdTwSfEqN0JTS3E9VFAwEuBDNpMwrbgkr+XgOvttpR0uDMHLFGVBHuuSI8t/SefoG
-	 tb61sDslWM6qiV1lu+h7aDAqwa2zsJVPRzCiIVmkHc4x19PrYb4IBOf+7eAA+FQ7EG
-	 YxYKVuRkwQEZgZceV0UyZRk1f93xVr3kNBlZ9Apg=
+	b=mGCja0hHzihT917/KUfdpt3ECVXftj3Pt3/ta24GBTgiKbkjYAFSw9TCVHoYCwWkO
+	 ctSxGkr2QHU0phCiwWB4eGhYRhYzFxZtr6yvQp9QK7faqKzOc9i2U4hzMO3Al7QnFy
+	 eFPlYVuvu+Kk0GHSCeyHWVp0p/xyXATyTt/OUL/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leif Skunberg <diamondback@cohunt.app>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/175] platform/x86: intel-hid: Enable 5-button array on ThinkPad X1 Fold 16 Gen 1
+Subject: [PATCH 6.18 095/309] rtnetlink: count IFLA_PARENT_DEV_{NAME,BUS_NAME} in if_nlmsg_size
 Date: Tue, 31 Mar 2026 18:19:58 +0200
-Message-ID: <20260331161730.305283445@linuxfoundation.org>
+Message-ID: <20260331161756.987193562@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231469-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232347-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: 46A4C36C8F7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,queasysnail.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C49FB36E174
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leif Skunberg <diamondback@cohunt.app>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit b38d478dad79e61e8a65931021bdfd7a71741212 ]
+[ Upstream commit 52501989c76206462d9b11a8485beef40ef41821 ]
 
-The Lenovo ThinkPad X1 Fold 16 Gen 1 has physical volume up/down
-buttons that are handled through the intel-hid 5-button array
-interface. The firmware does not advertise 5-button array support via
-HEBC, so the driver relies on a DMI allowlist to enable it.
+Commit 00e77ed8e64d ("rtnetlink: add IFLA_PARENT_[DEV|DEV_BUS]_NAME")
+added those attributes to rtnl_fill_ifinfo, but forgot to extend
+if_nlmsg_size.
 
-Add the ThinkPad X1 Fold 16 Gen 1 to the button_array_table so the
-volume buttons work out of the box.
-
-Signed-off-by: Leif Skunberg <diamondback@cohunt.app>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260210085625.34380-1-diamondback@cohunt.app
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 00e77ed8e64d ("rtnetlink: add IFLA_PARENT_[DEV|DEV_BUS]_NAME")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/0b849da95562af45487080528d60f578636aba5c.1773919462.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/core/rtnetlink.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 7937ad20c2941..79390e9e888a7 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -121,6 +121,13 @@ static const struct dmi_system_id button_array_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Tablet Gen 2"),
- 		},
- 	},
-+	{
-+		.ident = "Lenovo ThinkPad X1 Fold 16 Gen 1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Fold 16 Gen 1"),
-+		},
-+	},
- 	{
- 		.ident = "Microsoft Surface Go 3",
- 		.matches = {
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 576d5ec3bb364..1960b59961cb8 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1267,6 +1267,21 @@ static size_t rtnl_dpll_pin_size(const struct net_device *dev)
+ 	return size;
+ }
+ 
++static size_t rtnl_dev_parent_size(const struct net_device *dev)
++{
++	size_t size = 0;
++
++	/* IFLA_PARENT_DEV_NAME */
++	if (dev->dev.parent)
++		size += nla_total_size(strlen(dev_name(dev->dev.parent)) + 1);
++
++	/* IFLA_PARENT_DEV_BUS_NAME */
++	if (dev->dev.parent && dev->dev.parent->bus)
++		size += nla_total_size(strlen(dev->dev.parent->bus->name) + 1);
++
++	return size;
++}
++
+ static noinline size_t if_nlmsg_size(const struct net_device *dev,
+ 				     u32 ext_filter_mask)
+ {
+@@ -1328,6 +1343,7 @@ static noinline size_t if_nlmsg_size(const struct net_device *dev,
+ 	       + nla_total_size(8)  /* IFLA_MAX_PACING_OFFLOAD_HORIZON */
+ 	       + nla_total_size(2)  /* IFLA_HEADROOM */
+ 	       + nla_total_size(2)  /* IFLA_TAILROOM */
++	       + rtnl_dev_parent_size(dev)
+ 	       + 0;
+ }
+ 
 -- 
 2.51.0
 
