@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNzYN538y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:57 +0200
+	id uG79HA79y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C4436D702
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D5C36D85D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 663B13171CD0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2AA1330B6BEB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1432425CC9;
-	Tue, 31 Mar 2026 16:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43DF423A8A;
+	Tue, 31 Mar 2026 16:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgSmjMcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNzmbDYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45523E3C40;
-	Tue, 31 Mar 2026 16:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7199423149;
+	Tue, 31 Mar 2026 16:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975192; cv=none; b=lN+D1uX3QjATxRX7Xpo50r2cimod5vqK/uvcUpp7q8JlPFjZ+YKbNXElJwh85vEMWhiZx85yt5YKmbdLm0rqhB43jRLgg1R3uzHMiO4u6PbEkXLgYw84dg1N531PWfkWdiz10Qu137D9G3RbeDfwM34QKUagg3xEi5Jbthc/u7U=
+	t=1774975691; cv=none; b=AWbdRtYRRn+4h5ZYvKQHSSAZfuXFtR+AKD71uNPvLFpnYTgJjoZuSFUyQHjAQ5g6oUzHoftKSy6oHBvy2Zd0bN117mmsF90VUSbFrSUOKZfe50OCC9mvjggCSMHunDxsa3YHMY/8s3RQWXaCNjBab/o6VxPNsTWLNy+5O22KA0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975192; c=relaxed/simple;
-	bh=CxGJm+S+z31V0MfW0ZtuF88uKsNZ5Y2Lqimtl8Sm5MY=;
+	s=arc-20240116; t=1774975691; c=relaxed/simple;
+	bh=LU6oQreE/jQb4KEC/RvTiKOG5kgcqXjuMkPXCA8zi7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWZC5TrrMNm3flYui0zeIxkYJ4lBeefrBWlrzfGiKAYYRU/bliUNs1uTEfwvNPV2OZ2ZbEt102uswiZwnphWFnWRjZfNnTl/sxPRXkqjdhSCkys/Rbj6B/n5W6PoZxNoZUMxiB0XtGnTLXdvSBbPpMv9xOiuwMqMSUpiZuuO33Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgSmjMcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471EEC19423;
-	Tue, 31 Mar 2026 16:39:52 +0000 (UTC)
+	 MIME-Version; b=AOrAXsEp5aaJb2lzKA+FGSjaOQNzz1XbvFcYSGDRu9IrkEBq5bzKEEnG9W5N3vZXMe/H60glzm7f3vxrwTOo2VBotPcr/lKWMAnGjg1htdePaU9e2lmAzhvT9kCVGgSqoIeigr32c/2Xqs4y8PIcMiiz1MSh2cPi5wRFvWnUQrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNzmbDYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F378C19423;
+	Tue, 31 Mar 2026 16:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975192;
-	bh=CxGJm+S+z31V0MfW0ZtuF88uKsNZ5Y2Lqimtl8Sm5MY=;
+	s=korg; t=1774975691;
+	bh=LU6oQreE/jQb4KEC/RvTiKOG5kgcqXjuMkPXCA8zi7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgSmjMcTIwbFUayEot39Xfd198nM+Z45/y9IXJ5/jO0fh6qQKjJQkO9HzDdF7pt+F
-	 VAbVawr+YG230DHP5gwhhJTDsKPYUl4vslGNRJK//IgLnqJ8sn/zmTSlprAzyo+2SL
-	 1k60sYXxopyInTvJXIHQ0M6c63FXY5GSS/KgcGTo=
+	b=rNzmbDYv7jlZofOuVK8F9VVrG8iPcA5Nqtv07QYoK8t6aURbPou5I47+HS9YWGP7Z
+	 TAsSEq9VyXyo0cQ+54FyWo0Hh+5WZmdx70kwMzSahoaKV8Zo0KSmd0Oy+u7dHQ5cAm
+	 98mXrqSsZ9Gw/+rWgNZgPQ7irzYpKMk3ZzS22iJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 166/342] scsi: scsi_transport_sas: Fix the maximum channel scanning issue
-Date: Tue, 31 Mar 2026 18:19:59 +0200
-Message-ID: <20260331161805.119341934@linuxfoundation.org>
+Subject: [PATCH 6.12 050/244] xfrm: Fix the usage of skb->sk
+Date: Tue, 31 Mar 2026 18:20:00 +0200
+Message-ID: <20260331161743.542558916@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,166 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231835-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232029-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,huawei.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E7C4436D702
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E5D5C36D85D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Steffen Klassert <steffen.klassert@secunet.com>
 
-[ Upstream commit d71afa9deb4d413232ba16d693f7d43b321931b4 ]
+[ Upstream commit 1620c88887b16940e00dbe57dd38c74eda9bad9e ]
 
-After commit 37c4e72b0651 ("scsi: Fix sas_user_scan() to handle wildcard
-and multi-channel scans"), if the device supports multiple channels (0 to
-shost->max_channel), user_scan() invokes updated sas_user_scan() to perform
-the scan behavior for a specific transfer.  However, when the user
-specifies shost->max_channel, it will return -EINVAL, which is not
-expected.
+xfrm assumed to always have a full socket at skb->sk.
+This is not always true, so fix it by converting to a
+full socket before it is used.
 
-Fix and support specifying the scan shost->max_channel for scanning.
-
-Fixes: 37c4e72b0651 ("scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20260317063147.2182562-1-liyihang9@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Stable-dep-of: 0c0eef8ccd24 ("esp: fix skb leak with espintcp and async crypto")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_sas.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/esp4.c                | 2 +-
+ net/ipv6/esp6.c                | 2 +-
+ net/ipv6/xfrm6_output.c        | 4 ++--
+ net/xfrm/xfrm_interface_core.c | 2 +-
+ net/xfrm/xfrm_output.c         | 7 ++++---
+ net/xfrm/xfrm_policy.c         | 2 +-
+ 6 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
-index d69c7c444a311..081c168094374 100644
---- a/drivers/scsi/scsi_transport_sas.c
-+++ b/drivers/scsi/scsi_transport_sas.c
-@@ -1734,7 +1734,7 @@ static int sas_user_scan(struct Scsi_Host *shost, uint channel,
- 		break;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index cbe4c6fc8b8e9..b8c7c8b42c0a0 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -238,7 +238,7 @@ static void esp_output_done(void *data, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
  
- 	default:
--		if (channel < shost->max_channel) {
-+		if (channel <= shost->max_channel) {
- 			res = scsi_scan_host_selected(shost, channel, id, lun,
- 						      SCSI_SCAN_MANUAL);
- 		} else {
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 62d17d7f6d9a9..9c4c7b1f29550 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -274,7 +274,7 @@ static void esp_output_done(void *data, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
+ 
+diff --git a/net/ipv6/xfrm6_output.c b/net/ipv6/xfrm6_output.c
+index 5f7b1fdbffe62..b3d5d1f266eee 100644
+--- a/net/ipv6/xfrm6_output.c
++++ b/net/ipv6/xfrm6_output.c
+@@ -82,14 +82,14 @@ static int __xfrm6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	toobig = skb->len > mtu && !skb_is_gso(skb);
+ 
+-	if (toobig && xfrm6_local_dontfrag(skb->sk)) {
++	if (toobig && xfrm6_local_dontfrag(sk)) {
+ 		xfrm6_local_rxpmtu(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+ 	} else if (toobig && xfrm6_noneed_fragment(skb)) {
+ 		skb->ignore_df = 1;
+ 		goto skip_frag;
+-	} else if (!skb->ignore_df && toobig && skb->sk) {
++	} else if (!skb->ignore_df && toobig && sk) {
+ 		xfrm_local_error(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index b95d882f9dbcb..c92db6b497d4b 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -506,7 +506,7 @@ xfrmi_xmit2(struct sk_buff *skb, struct net_device *dev, struct flowi *fl)
+ 	skb_dst_set(skb, dst);
+ 	skb->dev = tdev;
+ 
+-	err = dst_output(xi->net, skb->sk, skb);
++	err = dst_output(xi->net, skb_to_full_sk(skb), skb);
+ 	if (net_xmit_eval(err) == 0) {
+ 		dev_sw_netstats_tx_add(dev, 1, length);
+ 	} else {
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 9277dd4ed541a..a5b5d82bd7550 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -841,7 +841,7 @@ static int xfrm4_tunnel_check_size(struct sk_buff *skb)
+ 	     !skb_gso_validate_network_len(skb, ip_skb_dst_mtu(skb->sk, skb)))) {
+ 		skb->protocol = htons(ETH_P_IP);
+ 
+-		if (skb->sk)
++		if (skb->sk && sk_fullsock(skb->sk))
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmp_send(skb, ICMP_DEST_UNREACH,
+@@ -877,6 +877,7 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ {
+ 	int mtu, ret = 0;
+ 	struct dst_entry *dst = skb_dst(skb);
++	struct sock *sk = skb_to_full_sk(skb);
+ 
+ 	if (skb->ignore_df)
+ 		goto out;
+@@ -891,9 +892,9 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ 		skb->dev = dst->dev;
+ 		skb->protocol = htons(ETH_P_IPV6);
+ 
+-		if (xfrm6_local_dontfrag(skb->sk))
++		if (xfrm6_local_dontfrag(sk))
+ 			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
+-		else if (skb->sk)
++		else if (sk)
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index aba06ff8694de..e1ce873b83234 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -2962,7 +2962,7 @@ static void xfrm_policy_queue_process(struct timer_list *t)
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 
+-		dst_output(net, skb->sk, skb);
++		dst_output(net, skb_to_full_sk(skb), skb);
+ 	}
+ 
+ out:
 -- 
-2.53.0
+2.51.0
 
 
 
