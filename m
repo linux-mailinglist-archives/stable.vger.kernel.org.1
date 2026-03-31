@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFEjIm/+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:43 +0200
+	id xV+mCEL8y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DF636DC36
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6B436D5E2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8193D32A21A9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 922FB30DD7B0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736DE413225;
-	Tue, 31 Mar 2026 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551913F9F3E;
+	Tue, 31 Mar 2026 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsgVvQqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxOLsbH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372DF3EF0A2;
-	Tue, 31 Mar 2026 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173652D1F40;
+	Tue, 31 Mar 2026 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976184; cv=none; b=FQ3hEeDJR6odSDAErksNlfSskFY1qiCsCWN6gxfrGb1bg91PdS+9XFhZnOxPoyG0/IFW3V/PZvIWlA6GS5qv83LRbI2sI86WbAygze8O0jCbfycZaMx5OaF8md11onrJhR5lw5In5XOOZraP58AcHcmFq80gXlCaq76EYZj0hg4=
+	t=1774975527; cv=none; b=hv9r3supwBi5wB/2kUzYGC32RAf/OMDRhsXqDqzHYNGLJ49qTuSETxq0KV52E8ly8sVH8kZE4Wk8tsdFuQOPlChdt43n0lBOrJeubnLF6CwsQozi4E/j7S75agGgiI8ebw4Q0NUoYx5qY5BCTbW/PeN6pzbieufsJ80dLvsYh3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976184; c=relaxed/simple;
-	bh=B8zf1kpaW/vDhm0zB7a7LhegvM61kC3K3EkJO8UJN9E=;
+	s=arc-20240116; t=1774975527; c=relaxed/simple;
+	bh=s/Cep65FNyVR7/Q6aRLC7zXx+nZsapVla7TcuHuvQ48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxGFV9XWgZH2a6qDvhsGz9ercuVliEau3SXgY0tLnPLehCTVjooOoVwq33hPfylrvZZA6jaDnJhNsOo0tWx+2uDfjMjsXsEhcUIvGE+rpx7RdQH8Msda9/R45knjKH4XiSTFb6lth4EPU6dHQ0wH8ejmkNuyP2gYvq/jvLD3PIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsgVvQqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C013CC19423;
-	Tue, 31 Mar 2026 16:56:23 +0000 (UTC)
+	 MIME-Version; b=pwY+WwWMI5kmfZLVUS5ZO3t28YQtdrXu09foQUpVS2PGaYO4mfsjjtil4fOkqvI/fV4Whp7vT70EViZkgwiSjIk2XsJpmN7ZhHDycgR333qsstWly5Yb3CM+PZ92OnkPaT3W6+PR95JsBHBywZDJqQgCwLY6b8uJLuz2wrR46F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxOLsbH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A5FC19423;
+	Tue, 31 Mar 2026 16:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976184;
-	bh=B8zf1kpaW/vDhm0zB7a7LhegvM61kC3K3EkJO8UJN9E=;
+	s=korg; t=1774975527;
+	bh=s/Cep65FNyVR7/Q6aRLC7zXx+nZsapVla7TcuHuvQ48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsgVvQqudBhA+0r15tyKY14v0NxO7ZDKi79PRBdAPAEh1I4ixsVdwFQMd74tRygZd
-	 rqtNnAAtBJPaN6ZDupTEOxWvSFbyjObE7IIpIyQUw5kBVZF0lFs5W0ggJQd9ygukLN
-	 at+IAvOi0UncTKChPn/EWz5vPw/b1UaRXEaUXCM8=
+	b=uxOLsbH8dsuF/ZoUHOox7FzZiHpGF5iX+dNc5eumDxMTBKS5dARsaAB8JMhDJlcGT
+	 JIr1m+CLSJ0GRYWLyr28K+VxK1pc4Vv41OKcgKh92jD0tCWmiC9iFeiLKlyT3ODMwQ
+	 Z5UrVMcANavMQ95EdD2FEjn3QBu2Sa8ikTtzc8Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 212/244] xfs: avoid dereferencing log items after push callbacks
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 329/342] selftests/mount_setattr: increase tmpfs size for idmapped mount tests
 Date: Tue, 31 Mar 2026 18:22:42 +0200
-Message-ID: <20260331161749.586685343@linuxfoundation.org>
+Message-ID: <20260331161811.014096556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,200 +63,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232219-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231966-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 29DF636DC36
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BF6B436D5E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 79ef34ec0554ec04bdbafafbc9836423734e1bd6 upstream.
+[ Upstream commit c465f5591aa84a6f85d66d152e28b92844a45d4f ]
 
-After xfsaild_push_item() calls iop_push(), the log item may have been
-freed if the AIL lock was dropped during the push. Background inode
-reclaim or the dquot shrinker can free the log item while the AIL lock
-is not held, and the tracepoints in the switch statement dereference
-the log item after iop_push() returns.
+The mount_setattr_idmapped fixture mounts a 2 MB tmpfs at /mnt and then
+creates a 2 GB sparse ext4 image at /mnt/C/ext4.img. While ftruncate()
+succeeds (sparse file), mkfs.ext4 needs to write actual metadata blocks
+(inode tables, journal, bitmaps) which easily exceeds the 2 MB tmpfs
+limit, causing ENOSPC and failing the fixture setup for all
+mount_setattr_idmapped tests.
 
-Fix this by capturing the log item type, flags, and LSN before calling
-xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
-event class that takes these pre-captured values and the ailp pointer
-instead of the log item pointer.
+This was introduced by commit d37d4720c3e7 ("selftests/mount_settattr:
+ensure that ext4 filesystem can be created") which increased the image
+size from 2 MB to 2 GB but didn't adjust the tmpfs size.
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bump the tmpfs size to 256 MB which is sufficient for the ext4 metadata.
+
+Fixes: d37d4720c3e7 ("selftests/mount_settattr: ensure that ext4 filesystem can be created")
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_trace.h     |   36 ++++++++++++++++++++++++++++++++----
- fs/xfs/xfs_trans_ail.c |   26 +++++++++++++++++++-------
- 2 files changed, 51 insertions(+), 11 deletions(-)
+ tools/testing/selftests/mount_setattr/mount_setattr_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -52,6 +52,7 @@
- #include <linux/tracepoint.h>
+diff --git a/tools/testing/selftests/mount_setattr/mount_setattr_test.c b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+index 7aec3ae82a446..c6dafb3cc1163 100644
+--- a/tools/testing/selftests/mount_setattr/mount_setattr_test.c
++++ b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+@@ -1020,7 +1020,7 @@ FIXTURE_SETUP(mount_setattr_idmapped)
+ 			"size=100000,mode=700"), 0);
  
- struct xfs_agf;
-+struct xfs_ail;
- struct xfs_alloc_arg;
- struct xfs_attr_list_context;
- struct xfs_buf_log_item;
-@@ -1351,14 +1352,41 @@ TRACE_EVENT(xfs_log_force,
- DEFINE_EVENT(xfs_log_item_class, name, \
- 	TP_PROTO(struct xfs_log_item *lip), \
- 	TP_ARGS(lip))
--DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
--DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
--DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
--DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
- DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
- DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
- DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
+ 	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+-			"size=2m,mode=700"), 0);
++			"size=256m,mode=700"), 0);
  
-+DECLARE_EVENT_CLASS(xfs_ail_push_class,
-+	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
-+	TP_ARGS(ailp, type, flags, lsn),
-+	TP_STRUCT__entry(
-+		__field(dev_t, dev)
-+		__field(uint, type)
-+		__field(unsigned long, flags)
-+		__field(xfs_lsn_t, lsn)
-+	),
-+	TP_fast_assign(
-+		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
-+		__entry->type = type;
-+		__entry->flags = flags;
-+		__entry->lsn = lsn;
-+	),
-+	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
-+		  MAJOR(__entry->dev), MINOR(__entry->dev),
-+		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
-+		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
-+		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
-+)
-+
-+#define DEFINE_AIL_PUSH_EVENT(name) \
-+DEFINE_EVENT(xfs_ail_push_class, name, \
-+	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
-+	TP_ARGS(ailp, type, flags, lsn))
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
-+
- DECLARE_EVENT_CLASS(xfs_ail_class,
- 	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
- 	TP_ARGS(lip, old_lsn, new_lsn),
---- a/fs/xfs/xfs_trans_ail.c
-+++ b/fs/xfs/xfs_trans_ail.c
-@@ -370,6 +370,12 @@ xfsaild_resubmit_item(
- 	return XFS_ITEM_SUCCESS;
- }
+ 	ASSERT_EQ(mkdir("/mnt/A", 0777), 0);
  
-+/*
-+ * Push a single log item from the AIL.
-+ *
-+ * @lip may have been released and freed by the time this function returns,
-+ * so callers must not dereference the log item afterwards.
-+ */
- static inline uint
- xfsaild_push_item(
- 	struct xfs_ail		*ailp,
-@@ -510,7 +516,10 @@ xfsaild_push(
- 
- 	lsn = lip->li_lsn;
- 	while ((XFS_LSN_CMP(lip->li_lsn, ailp->ail_target) <= 0)) {
--		int	lock_result;
-+		int		lock_result;
-+		uint		type = lip->li_type;
-+		unsigned long	flags = lip->li_flags;
-+		xfs_lsn_t	item_lsn = lip->li_lsn;
- 
- 		if (test_bit(XFS_LI_FLUSHING, &lip->li_flags))
- 			goto next_item;
-@@ -519,14 +528,17 @@ xfsaild_push(
- 		 * Note that iop_push may unlock and reacquire the AIL lock.  We
- 		 * rely on the AIL cursor implementation to be able to deal with
- 		 * the dropped lock.
-+		 *
-+		 * The log item may have been freed by the push, so it must not
-+		 * be accessed or dereferenced below this line.
- 		 */
- 		lock_result = xfsaild_push_item(ailp, lip);
- 		switch (lock_result) {
- 		case XFS_ITEM_SUCCESS:
- 			XFS_STATS_INC(mp, xs_push_ail_success);
--			trace_xfs_ail_push(lip);
-+			trace_xfs_ail_push(ailp, type, flags, item_lsn);
- 
--			ailp->ail_last_pushed_lsn = lsn;
-+			ailp->ail_last_pushed_lsn = item_lsn;
- 			break;
- 
- 		case XFS_ITEM_FLUSHING:
-@@ -542,22 +554,22 @@ xfsaild_push(
- 			 * AIL is being flushed.
- 			 */
- 			XFS_STATS_INC(mp, xs_push_ail_flushing);
--			trace_xfs_ail_flushing(lip);
-+			trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
- 
- 			flushing++;
--			ailp->ail_last_pushed_lsn = lsn;
-+			ailp->ail_last_pushed_lsn = item_lsn;
- 			break;
- 
- 		case XFS_ITEM_PINNED:
- 			XFS_STATS_INC(mp, xs_push_ail_pinned);
--			trace_xfs_ail_pinned(lip);
-+			trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
- 
- 			stuck++;
- 			ailp->ail_log_flush++;
- 			break;
- 		case XFS_ITEM_LOCKED:
- 			XFS_STATS_INC(mp, xs_push_ail_locked);
--			trace_xfs_ail_locked(lip);
-+			trace_xfs_ail_locked(ailp, type, flags, item_lsn);
- 
- 			stuck++;
- 			break;
+-- 
+2.53.0
+
 
 
 
