@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIfSLVr3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:30 +0200
+	id iIMyOvL8y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2511336CC0C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE19F36D7D6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB1BA303B4DB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2ACF530AEAE9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D3F3F99EA;
-	Tue, 31 Mar 2026 16:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342AB423A62;
+	Tue, 31 Mar 2026 16:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvQhCsIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBhb7GG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB223E92A5;
-	Tue, 31 Mar 2026 16:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A5E421EFC;
+	Tue, 31 Mar 2026 16:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974441; cv=none; b=dV3qLBF5ub+tX1MzAmxkXudijyY8F2svN0Xe9l1yOjRKIRp5cDFWRiMhCS+YlXDvTAa0GiSwSNCu58VIHuebB44J/XERDLXeG+o1f+/3v9CwFUfWIsKlmGXqhNzAd9fgd8ri/D1TthguKrXUOv0/M0spGSp+aluSElVQxfBNOLc=
+	t=1774975376; cv=none; b=heAkN/KojQur0lH4/AVgmB77BrV4Sn19c/eN8j2yLJjBJTlaB2EgQWipwejR/LcUUf4+kcNSzQpLSksWUYLEDmfP722Y89I+nedGKTIhzUMcVTKRamdrgoVm+fRIb/DP0l6ASBj3JkEpx8YQfI+XgOsS4gdVykNAePhglvW4HFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974441; c=relaxed/simple;
-	bh=0yZnLFGBphip3i05T49U8nFDpwbWU2j6hodo1gKofqg=;
+	s=arc-20240116; t=1774975376; c=relaxed/simple;
+	bh=PA0P4C1bFIfOg0cq1r5HX5RUM5+rMnJqCcJYSXc+duM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOaJDq+k6rWjjwgeg8LXlAQTdFoBdf/UrnuhUFlRRlzQfZSVxUoxusyA0IHxGWsNPVEiWmmUnPSm5QG46IFDyWTCsq5R3L+UJZtc12ZjZfSFgQVU/tFYgJJFRnDcNUY18vd9W8E5kwHOAhtr1zUQ4V8A3zLM0SYPlVPGxEskRfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvQhCsIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126DEC19423;
-	Tue, 31 Mar 2026 16:27:20 +0000 (UTC)
+	 MIME-Version; b=ptBGwqYC3vWc3EgL0dc+psk0GCFHjbX8x83aYxZnUKjX0ugKPe6/GJ5ZTgJaunufx3sWngy9VEs2lfq9E4QREH12ksXVbwYR/bL4Uien1XoyqWzne97YE5euRKYuOLOlQ0FsS5fSMmKYRDlgxZxanOp8KKn/rQsPqmwji1QfSAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBhb7GG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B8FC19423;
+	Tue, 31 Mar 2026 16:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974441;
-	bh=0yZnLFGBphip3i05T49U8nFDpwbWU2j6hodo1gKofqg=;
+	s=korg; t=1774975375;
+	bh=PA0P4C1bFIfOg0cq1r5HX5RUM5+rMnJqCcJYSXc+duM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvQhCsIKvZKZ1pC+mpuIrzwxndftZ87ZoxAdn3uJRgC4cn+nxSl3W/mLpkEpBn8uA
-	 fprQQcqrrCIu1QgkHXK14ZLQLoOPw8MPuMTgkggjPGXILBHvoVKYoxOW/ydPQgMU8K
-	 UDFvWv7krg+5MNz7K7oQLn3Q57qO2/0Af5kdAn00=
+	b=hBhb7GG6jsql6Vk3/ajXY9WzlA5ptAfslTGy8uRwROysVIrBr7Fcu0xHTdRyiN8NW
+	 O4c79xloK8VJ/j3qkZj47T8nIVKVQuHPCMPmnbffugiuy3M8EBt8anvJUkAeovGFss
+	 k1hx4j1LXIUwUZZcvXmJmTl2KFkdhZkQVnbkkdpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Kees Cook <keescook@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/175] PM: hibernate: Dont ignore return from set_memory_ro()
+	John <therealgraysky@proton.me>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.19 238/342] writeback: dont block sync for filesystems with no data integrity guarantees
 Date: Tue, 31 Mar 2026 18:21:11 +0200
-Message-ID: <20260331161732.967725777@linuxfoundation.org>
+Message-ID: <20260331161807.722806399@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,183 +70,206 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,gmail.com,suse.cz,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231907-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231543-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,chromium.org:email]
-X-Rspamd-Queue-Id: 2511336CC0C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,proton.me:email]
+X-Rspamd-Queue-Id: CE19F36D7D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-[ Upstream commit f4311756a83fb01c28a9bf841cbb7eb2b318eebf ]
+commit 76f9377cd2ab7a9220c25d33940d9ca20d368172 upstream.
 
-set_memory_ro() and set_memory_rw() can fail, leaving memory
-unprotected.
+Add a SB_I_NO_DATA_INTEGRITY superblock flag for filesystems that cannot
+guarantee data persistence on sync (eg fuse). For superblocks with this
+flag set, sync kicks off writeback of dirty inodes but does not wait
+for the flusher threads to complete the writeback.
 
-Take the returned value into account and abort in case of
-failure.
+This replaces the per-inode AS_NO_DATA_INTEGRITY mapping flag added in
+commit f9a49aa302a0 ("fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+in wait_sb_inodes()"). The flag belongs at the superblock level because
+data integrity is a filesystem-wide property, not a per-inode one.
+Having this flag at the superblock level also allows us to skip having
+to iterate every dirty inode in wait_sb_inodes() only to skip each inode
+individually.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 734eba62cd32 ("PM: hibernate: Drain trailing zero pages on userspace restore")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prior to this commit, mappings with no data integrity guarantees skipped
+waiting on writeback completion but still waited on the flusher threads
+to finish initiating the writeback. Waiting on the flusher threads is
+unnecessary. This commit kicks off writeback but does not wait on the
+flusher threads. This change properly addresses a recent report [1] for
+a suspend-to-RAM hang seen on fuse-overlayfs that was caused by waiting
+on the flusher threads to finish:
+
+Workqueue: pm_fs_sync pm_fs_sync_work_fn
+Call Trace:
+ <TASK>
+ __schedule+0x457/0x1720
+ schedule+0x27/0xd0
+ wb_wait_for_completion+0x97/0xe0
+ sync_inodes_sb+0xf8/0x2e0
+ __iterate_supers+0xdc/0x160
+ ksys_sync+0x43/0xb0
+ pm_fs_sync_work_fn+0x17/0xa0
+ process_one_work+0x193/0x350
+ worker_thread+0x1a1/0x310
+ kthread+0xfc/0x240
+ ret_from_fork+0x243/0x280
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+On fuse this is problematic because there are paths that may cause the
+flusher thread to block (eg if systemd freezes the user session cgroups
+first, which freezes the fuse daemon, before invoking the kernel
+suspend. The kernel suspend triggers ->write_node() which on fuse issues
+a synchronous setattr request, which cannot be processed since the
+daemon is frozen. Or if the daemon is buggy and cannot properly complete
+writeback, initiating writeback on a dirty folio already under writeback
+leads to writeback_get_folio() -> folio_prepare_writeback() ->
+unconditional wait on writeback to finish, which will cause a hang).
+This commit restores fuse to its prior behavior before tmp folios were
+removed, where sync was essentially a no-op.
+
+[1] https://lore.kernel.org/linux-fsdevel/CAJnrk1a-asuvfrbKXbEwwDSctvemF+6zfhdnuzO65Pt8HsFSRw@mail.gmail.com/T/#m632c4648e9cafc4239299887109ebd880ac6c5c1
+
+Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+Reported-by: John <therealgraysky@proton.me>
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Link: https://patch.msgid.link/20260320005145.2483161-2-joannelkoong@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/power.h    |  2 +-
- kernel/power/snapshot.c | 25 ++++++++++++++++---------
- kernel/power/swap.c     |  8 ++++----
- kernel/power/user.c     |  4 +++-
- 4 files changed, 24 insertions(+), 15 deletions(-)
+ fs/fs-writeback.c              |   18 ++++++++++++------
+ fs/fuse/file.c                 |    4 +---
+ fs/fuse/inode.c                |    1 +
+ include/linux/fs/super_types.h |    1 +
+ include/linux/pagemap.h        |   11 -----------
+ 5 files changed, 15 insertions(+), 20 deletions(-)
 
-diff --git a/kernel/power/power.h b/kernel/power/power.h
-index 62a7cb452a4be..3ea663f1ad1e2 100644
---- a/kernel/power/power.h
-+++ b/kernel/power/power.h
-@@ -152,7 +152,7 @@ extern unsigned int snapshot_additional_pages(struct zone *zone);
- extern unsigned long snapshot_get_image_size(void);
- extern int snapshot_read_next(struct snapshot_handle *handle);
- extern int snapshot_write_next(struct snapshot_handle *handle);
--extern void snapshot_write_finalize(struct snapshot_handle *handle);
-+int snapshot_write_finalize(struct snapshot_handle *handle);
- extern int snapshot_image_loaded(struct snapshot_handle *handle);
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2759,13 +2759,8 @@ static void wait_sb_inodes(struct super_
+ 		 * The mapping can appear untagged while still on-list since we
+ 		 * do not have the mapping lock. Skip it here, wb completion
+ 		 * will remove it.
+-		 *
+-		 * If the mapping does not have data integrity semantics,
+-		 * there's no need to wait for the writeout to complete, as the
+-		 * mapping cannot guarantee that data is persistently stored.
+ 		 */
+-		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+-		    mapping_no_data_integrity(mapping))
++		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+ 			continue;
  
- extern bool hibernate_acquire(void);
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 50a15408c3fca..ea52417375a4e 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -58,22 +58,24 @@ static inline void hibernate_restore_protection_end(void)
- 	hibernate_restore_protection_active = false;
- }
- 
--static inline void hibernate_restore_protect_page(void *page_address)
-+static inline int __must_check hibernate_restore_protect_page(void *page_address)
- {
- 	if (hibernate_restore_protection_active)
--		set_memory_ro((unsigned long)page_address, 1);
-+		return set_memory_ro((unsigned long)page_address, 1);
-+	return 0;
- }
- 
--static inline void hibernate_restore_unprotect_page(void *page_address)
-+static inline int hibernate_restore_unprotect_page(void *page_address)
- {
- 	if (hibernate_restore_protection_active)
--		set_memory_rw((unsigned long)page_address, 1);
-+		return set_memory_rw((unsigned long)page_address, 1);
-+	return 0;
- }
- #else
- static inline void hibernate_restore_protection_begin(void) {}
- static inline void hibernate_restore_protection_end(void) {}
--static inline void hibernate_restore_protect_page(void *page_address) {}
--static inline void hibernate_restore_unprotect_page(void *page_address) {}
-+static inline int __must_check hibernate_restore_protect_page(void *page_address) {return 0; }
-+static inline int hibernate_restore_unprotect_page(void *page_address) {return 0; }
- #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
- 
- 
-@@ -2832,7 +2834,9 @@ int snapshot_write_next(struct snapshot_handle *handle)
- 		}
- 	} else {
- 		copy_last_highmem_page();
--		hibernate_restore_protect_page(handle->buffer);
-+		error = hibernate_restore_protect_page(handle->buffer);
-+		if (error)
-+			return error;
- 		handle->buffer = get_buffer(&orig_bm, &ca);
- 		if (IS_ERR(handle->buffer))
- 			return PTR_ERR(handle->buffer);
-@@ -2858,15 +2862,18 @@ int snapshot_write_next(struct snapshot_handle *handle)
-  * stored in highmem.  Additionally, it recycles bitmap memory that's not
-  * necessary any more.
-  */
--void snapshot_write_finalize(struct snapshot_handle *handle)
-+int snapshot_write_finalize(struct snapshot_handle *handle)
- {
-+	int error;
+ 		spin_unlock_irq(&sb->s_inode_wblist_lock);
+@@ -2900,6 +2895,17 @@ void sync_inodes_sb(struct super_block *
+ 	 */
+ 	if (bdi == &noop_backing_dev_info)
+ 		return;
 +
- 	copy_last_highmem_page();
--	hibernate_restore_protect_page(handle->buffer);
-+	error = hibernate_restore_protect_page(handle->buffer);
- 	/* Do that only if we have loaded the image entirely */
- 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages + nr_zero_pages) {
- 		memory_bm_recycle(&orig_bm);
- 		free_highmem_data();
- 	}
-+	return error;
++	/*
++	 * If the superblock has SB_I_NO_DATA_INTEGRITY set, there's no need to
++	 * wait for the writeout to complete, as the filesystem cannot guarantee
++	 * data persistence on sync. Just kick off writeback and return.
++	 */
++	if (sb->s_iflags & SB_I_NO_DATA_INTEGRITY) {
++		wakeup_flusher_threads_bdi(bdi, WB_REASON_SYNC);
++		return;
++	}
++
+ 	WARN_ON(!rwsem_is_locked(&sb->s_umount));
+ 
+ 	/* protect against inode wb switch, see inode_switch_wbs_work_fn() */
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3200,10 +3200,8 @@ void fuse_init_file_inode(struct inode *
+ 
+ 	inode->i_fop = &fuse_file_operations;
+ 	inode->i_data.a_ops = &fuse_file_aops;
+-	if (fc->writeback_cache) {
++	if (fc->writeback_cache)
+ 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
+-		mapping_set_no_data_integrity(&inode->i_data);
+-	}
+ 
+ 	INIT_LIST_HEAD(&fi->write_files);
+ 	INIT_LIST_HEAD(&fi->queued_writes);
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1709,6 +1709,7 @@ static void fuse_sb_defaults(struct supe
+ 	sb->s_export_op = &fuse_export_operations;
+ 	sb->s_iflags |= SB_I_IMA_UNVERIFIABLE_SIGNATURE;
+ 	sb->s_iflags |= SB_I_NOIDMAP;
++	sb->s_iflags |= SB_I_NO_DATA_INTEGRITY;
+ 	if (sb->s_user_ns != &init_user_ns)
+ 		sb->s_iflags |= SB_I_UNTRUSTED_MOUNTER;
+ 	sb->s_flags &= ~(SB_NOSEC | SB_I_VERSION);
+--- a/include/linux/fs/super_types.h
++++ b/include/linux/fs/super_types.h
+@@ -332,5 +332,6 @@ struct super_block {
+ #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
+ #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
+ #define SB_I_ALLOW_HSM	0x00004000	/* Allow HSM events on this superblock */
++#define SB_I_NO_DATA_INTEGRITY	0x00008000 /* fs cannot guarantee data persistence on sync */
+ 
+ #endif /* _LINUX_FS_SUPER_TYPES_H */
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,7 +210,6 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
+-	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -346,16 +345,6 @@ static inline bool mapping_writeback_may
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
  }
  
- int snapshot_image_loaded(struct snapshot_handle *handle)
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index d71c590550d28..8c162e18e1645 100644
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -1099,8 +1099,8 @@ static int load_image(struct swap_map_handle *handle,
- 		ret = err2;
- 	if (!ret) {
- 		pr_info("Image loading done\n");
--		snapshot_write_finalize(snapshot);
--		if (!snapshot_image_loaded(snapshot))
-+		ret = snapshot_write_finalize(snapshot);
-+		if (!ret && !snapshot_image_loaded(snapshot))
- 			ret = -ENODATA;
- 	}
- 	swsusp_show_speed(start, stop, nr_to_read, "Read");
-@@ -1440,8 +1440,8 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 	stop = ktime_get();
- 	if (!ret) {
- 		pr_info("Image loading done\n");
--		snapshot_write_finalize(snapshot);
--		if (!snapshot_image_loaded(snapshot))
-+		ret = snapshot_write_finalize(snapshot);
-+		if (!ret && !snapshot_image_loaded(snapshot))
- 			ret = -ENODATA;
- 		if (!ret) {
- 			if (swsusp_header->flags & SF_CRC32_MODE) {
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 3a4e70366f354..3aa41ba22129d 100644
---- a/kernel/power/user.c
-+++ b/kernel/power/user.c
-@@ -317,7 +317,9 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 		break;
- 
- 	case SNAPSHOT_ATOMIC_RESTORE:
--		snapshot_write_finalize(&data->handle);
-+		error = snapshot_write_finalize(&data->handle);
-+		if (error)
-+			break;
- 		if (data->mode != O_WRONLY || !data->frozen ||
- 		    !snapshot_image_loaded(&data->handle)) {
- 			error = -EPERM;
--- 
-2.53.0
-
+-static inline void mapping_set_no_data_integrity(struct address_space *mapping)
+-{
+-	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+-}
+-
+-static inline bool mapping_no_data_integrity(const struct address_space *mapping)
+-{
+-	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+-}
+-
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+ {
+ 	return mapping->gfp_mask;
 
 
 
