@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-231947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aENiAc/7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:31 +0200
+	id UBWOAiD+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A2636D4B3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C37836DB1D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA0EB30B1585
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66F9C30EB5CD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D0E425CD2;
-	Tue, 31 Mar 2026 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4A5426D08;
+	Tue, 31 Mar 2026 16:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btTXRYgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTIOTNla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53D93EF0A2;
-	Tue, 31 Mar 2026 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D574266B5;
+	Tue, 31 Mar 2026 16:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975477; cv=none; b=KmtZlNNbtgs0Jgof7c0WzCZqQA2Se9XcI/CCgoctXyXeUvYWnMCWj8YD/t8S9O6TxjZHwz1pcQHMd2EGNu24HgS/k0golt1aRWmSQeR+Xu6qXT42qKshVzA3qgA040vSE18TPtJACY9EuEAQMG9ldsqpzD1KdezemFKqp03Lj4M=
+	t=1774976045; cv=none; b=Ap/LjrFlHuvjizuLMAwRMvwDzY5qEC32uudq3dJFpCF4pcDmd7x+csvZ0ZqtMQtGvw4exQEIv5Z1+AWGlJsaE1szNWqbps9w6jZ/Ibp9F8ACZ3yZGRD7ke3fV4Xu9EQDo2ecgPJDAuESwZT0FjkNYlmNyz7vouLNFIjYynarfv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975477; c=relaxed/simple;
-	bh=LUX1v2C7U1N+9fd0yHH4TnBl5rZM6Sq977m2xPQlXZg=;
+	s=arc-20240116; t=1774976045; c=relaxed/simple;
+	bh=K3gzMI6Kwi/hKT01hBT+JTdxNZSYHojnhL+wbUO0zA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oH77+eqiq32pUQ+gCH/VdlUEkJ7Th6R6lpn7Emf+/dpMQ1h2CThPjF2H5ub9Shar3RqzAy/CPMj1EF00OQ4KNxHXStuQvCNAZcIys10Jf9HdbARWuOZDfIhyB4jmYgJC1Fj5g4t2ZvyJG0+fPMy7ENrAgSNiOMdoorXOUxYf/cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btTXRYgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB94C19423;
-	Tue, 31 Mar 2026 16:44:37 +0000 (UTC)
+	 MIME-Version; b=gtoZX5PeXmlKbHH6OsSL/QpGW5uk/HKqMdajwd3qFlhiJhKkok40YdxxKbjsW7xBZJrWZ8M6zNt073JCm9V7L4uQYq1kx0x2F+hXq6vSRbSZ5MqAMp4Ijiee3XtQym9geXeYCEBEsPCOgUYA5935c55YJQL6ZNG3ch0SRC20O58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTIOTNla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761BBC19423;
+	Tue, 31 Mar 2026 16:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975477;
-	bh=LUX1v2C7U1N+9fd0yHH4TnBl5rZM6Sq977m2xPQlXZg=;
+	s=korg; t=1774976044;
+	bh=K3gzMI6Kwi/hKT01hBT+JTdxNZSYHojnhL+wbUO0zA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btTXRYgCR1uj36ZnyqvwASrLb6CbrKimg1cAzU0kxHXY8pIsD7yriynFJRif+pEX0
-	 +8+2gYu5MvIyqaK3Z7p6X3TtWb/InA/NPNkz/Nq9rfCZ2tSbIyrVTeHIHo2oQ7SJST
-	 kubflkHHXWopi4ytt6YJWI5J+/zjChBYGCBNJxsE=
+	b=pTIOTNlaGtYuvmecXFpeTgizKisZXATACWSXD8Xa+fXKPIAbQsgBjOr3tEN88LU3I
+	 j+KpFYfs06h6VZYoWxndO5R1WGbRMyR2wAJXqjhAUe0saGBOiiREZ+Oo1Eq+UTnUe9
+	 tpxsYPIe7k8+UCHvu+UKhknTxpnPymC1iX/qLvZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Free Ekanayaka <free.ekanayaka@gmail.com>,
 	Jan Kara <jack@suse.cz>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.19 303/342] ext4: fix use-after-free in update_super_work when racing with umount
+Subject: [PATCH 6.12 186/244] ext4: fix fsync(2) for nojournal mode
 Date: Tue, 31 Mar 2026 18:22:16 +0200
-Message-ID: <20260331161810.077269812@linuxfoundation.org>
+Message-ID: <20260331161748.626231080@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,145 +72,92 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231947-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232165-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,suse.cz,shopee.com,gmail.com,mit.edu,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,shopee.com:email]
-X-Rspamd-Queue-Id: 72A2636D4B3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
+X-Rspamd-Queue-Id: 7C37836DB1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Jan Kara <jack@suse.cz>
 
-commit d15e4b0a418537aafa56b2cb80d44add83e83697 upstream.
+commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
 
-Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
-filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
-to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
-reads during unmount. However, this introduced a use-after-free because
-update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
-accesses the kobject's kernfs_node after it has been freed by kobject_del()
-in ext4_unregister_sysfs():
+When inode metadata is changed, we sometimes just call
+ext4_mark_inode_dirty() to track modified metadata. This copies inode
+metadata into block buffer which is enough when we are journalling
+metadata. However when we are running in nojournal mode we currently
+fail to write the dirtied inode buffer during fsync(2) because the inode
+is not marked as dirty. Use explicit ext4_write_inode() call to make
+sure the inode table buffer is written to the disk. This is a band aid
+solution but proper solution requires a much larger rewrite including
+changes in metadata bh tracking infrastructure.
 
-  update_super_work                ext4_put_super
-  -----------------                --------------
-                                   ext4_unregister_sysfs(sb)
-                                     kobject_del(&sbi->s_kobj)
-                                       __kobject_del()
-                                         sysfs_remove_dir()
-                                           kobj->sd = NULL
-                                         sysfs_put(sd)
-                                           kernfs_put()  // RCU free
-  ext4_notify_error_sysfs(sbi)
-    sysfs_notify(&sbi->s_kobj)
-      kn = kobj->sd              // stale pointer
-      kernfs_get(kn)             // UAF on freed kernfs_node
-                                   ext4_journal_destroy()
-                                     flush_work(&sbi->s_sb_upd_work)
-
-Instead of reordering the teardown sequence, fix this by making
-ext4_notify_error_sysfs() detect that sysfs has already been torn down
-by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
-in that case. A dedicated mutex (s_error_notify_mutex) serializes
-ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
-to prevent TOCTOU races where the kobject could be deleted between the
-state_in_sysfs check and the sysfs_notify() call.
-
-Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
+Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
+Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h  |    1 +
- fs/ext4/super.c |    1 +
- fs/ext4/sysfs.c |   10 +++++++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ fs/ext4/fsync.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1583,6 +1583,7 @@ struct ext4_sb_info {
- 	struct proc_dir_entry *s_proc;
- 	struct kobject s_kobj;
- 	struct completion s_kobj_unregister;
-+	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
- 	struct super_block *s_sb;
- 	struct buffer_head *s_mmp_bh;
- 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5400,6 +5400,7 @@ static int __ext4_fill_super(struct fs_c
- 
- 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
- 	spin_lock_init(&sbi->s_error_lock);
-+	mutex_init(&sbi->s_error_notify_mutex);
- 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
- 
- 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -561,7 +561,10 @@ static const struct kobj_type ext4_feat_
- 
- void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
+--- a/fs/ext4/fsync.c
++++ b/fs/ext4/fsync.c
+@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
+ 				int datasync, bool *needs_barrier)
  {
--	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_lock(&sbi->s_error_notify_mutex);
-+	if (sbi->s_kobj.state_in_sysfs)
-+		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
+ 	struct inode *inode = file->f_inode;
++	struct writeback_control wbc = {
++		.sync_mode = WB_SYNC_ALL,
++		.nr_to_write = 0,
++	};
+ 	int ret;
  
- static struct kobject *ext4_root;
-@@ -574,8 +577,10 @@ int ext4_register_sysfs(struct super_blo
- 	int err;
- 
- 	init_completion(&sbi->s_kobj_unregister);
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
- 				   "%s", sb->s_id);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- 	if (err) {
- 		kobject_put(&sbi->s_kobj);
- 		wait_for_completion(&sbi->s_kobj_unregister);
-@@ -608,7 +613,10 @@ void ext4_unregister_sysfs(struct super_
- 
- 	if (sbi->s_proc)
- 		remove_proc_subtree(sb->s_id, ext4_proc_root);
+ 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
+-	if (!ret)
+-		ret = ext4_sync_parent(inode);
++	if (ret)
++		return ret;
 +
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	kobject_del(&sbi->s_kobj);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
++	/* Force writeout of inode table buffer to disk */
++	ret = ext4_write_inode(inode, &wbc);
++	if (ret)
++		return ret;
++
++	ret = ext4_sync_parent(inode);
++
+ 	if (test_opt(inode->i_sb, BARRIER))
+ 		*needs_barrier = true;
  
- int __init ext4_init_sysfs(void)
 
 
 
