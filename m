@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HGULLwBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-231894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:48 +0200
+	id OEp2Fsr3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FA136E6F5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1273136CCCD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02E7231D3A2F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE643134489
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809AD4266B2;
-	Tue, 31 Mar 2026 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A501421898;
+	Tue, 31 Mar 2026 16:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLbQ3Tyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNmXzz5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448341C861A;
-	Tue, 31 Mar 2026 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE93E3EF0A2;
+	Tue, 31 Mar 2026 16:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975342; cv=none; b=EBtWPTJsvYV6/xgGdlKIvbACXmocryKijD88MRS3tY+rnv0qe7/90ctUQS3A6ANiB8vI5TGwF7/45tetPGRYq5JKgYoZhuPrq3CLYfgIcZTqMRwueDPsMngJpJok4pg1yZOvPxoKtibjdxC6AERQIH5OqdS5D0M2iDTlMsxUBao=
+	t=1774974496; cv=none; b=Ri3lRWuY1uqFl5UP9v8gvhuFsBAaZ8c1ljWc3ZHBpBu4Uw4ptueeNUZxm6GH4JFAQyixwFjY5fkLHNJjt4FZqEhYipyYI9D0x4o+tkCjF4reUMIjFszSAKEGaIrkJV71WeqoUlJDHcLdqyAf+TTsrY1WtQR8EH1qsNRx6qpRRUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975342; c=relaxed/simple;
-	bh=ZIK4vX7gJ4nlz/JyaHEqXYasogU2FlmmT9mrVd6YUlA=;
+	s=arc-20240116; t=1774974496; c=relaxed/simple;
+	bh=GbvnkSTY3Hp4pKgqpBD9OO73D/Kw/vjWhZ8M8JNc38A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcK+QVA49lz/U3rMfTFeOx/Ts5f1ui5nvnf7WI048HJTSN3ENoFPUWOlLxpPe58kU+fQbUdCKJgjamIjGoy3JRZGca6kz3BNlECCdQCddT068iDag5nSIgroV5F8V99gGMR7hy9X9j5NwP/oDcmgKNu5XTanlK65DObmQJ/2a7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLbQ3Tyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95471C19423;
-	Tue, 31 Mar 2026 16:42:21 +0000 (UTC)
+	 MIME-Version; b=UN1DYIxavBznXOt/58nfFtjjJjapJZsTTQ0u9M7yu6BiUa7NET/9nEmRr6zHGk/81of12n9+haVCA6U1+D0lPR8xSTL48nLdY9ME/9q2whIBg5Mb/rh/qgeVYDGMbxEnwJtttCwrCqtwXqsp5+WbKbo8wvrsrFfeGqvGr5oLKIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNmXzz5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6F5C2BCB2;
+	Tue, 31 Mar 2026 16:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975341;
-	bh=ZIK4vX7gJ4nlz/JyaHEqXYasogU2FlmmT9mrVd6YUlA=;
+	s=korg; t=1774974495;
+	bh=GbvnkSTY3Hp4pKgqpBD9OO73D/Kw/vjWhZ8M8JNc38A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLbQ3TytOUPDScT4Zjn8PyWq3E7myyq1yHoB1xuzlNy62Boj2hcJrfVNKHUDRJjX3
-	 W9fxl2dL11Mnf9TYu83wy2jS6uBXEnGQr4ogk4fKoVFStIp4zLn+Sx7g7bQpiTjrn5
-	 WbqFw9cOgb+kW7aK4a9WAY2UQ0U3Qc48VHzSIjUE=
+	b=YNmXzz5hCA2jOF+cN8baI7biMbumZRezleaNInWnNJJiovDs35nlBVS+xPYQmNCEQ
+	 K7qJzpNg7SKklrusk08J6Nr5a7ovaaLleM8E+DCBE0eqCJLeNyW1GOZTLr5GmXdvTR
+	 wM/hrdB/dlPyLd7cH+7ixrO7wL0Ek2537h9ej1RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.19 257/342] i2c: imx: fix i2c issue when reading multiple messages
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 106/175] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
 Date: Tue, 31 Mar 2026 18:21:30 +0200
-Message-ID: <20260331161808.411268368@linuxfoundation.org>
+Message-ID: <20260331161733.675191550@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,61 +78,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231894-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231564-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,0.0.0.0:email,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email]
-X-Rspamd-Queue-Id: 14FA136E6F5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hartkopp.net:email,keysight.com:email]
+X-Rspamd-Queue-Id: 1273136CCCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-commit f88e2e748a1fc3cb4b8d163a9be790812f578850 upstream.
+commit 424e95d62110cdbc8fd12b40918f37e408e35a92 upstream.
 
-When reading multiple messages, meaning a repeated start is required,
-polling the bus busy bit must be avoided. This must only be done for
-the last message. Otherwise, the driver will timeout.
+isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
+to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
+wait_event_interruptible() and then calls kfree(so->tx.buf).
 
-Here an example of such a sequence that fails with an error:
-i2ctransfer -y -a 0 w1@0x00 0x02 r1 w1@0x00 0x02 r1
-Error: Sending messages failed: Connection timed out
+If a signal interrupts the wait_event_interruptible() inside close()
+while tx.state is ISOTP_SENDING, the loop exits early and release
+proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
+while sendmsg may still be reading so->tx.buf for the final CAN frame
+in isotp_fill_dataframe().
 
-Fixes: 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260218150940.131354-2-eichest@gmail.com
+The so->tx.buf can be allocated once when the standard tx.buf length needs
+to be extended. Move the kfree() of this potentially extended tx.buf to
+sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
+
+Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/isotp.c |   24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1522,7 +1522,7 @@ static int i2c_imx_read(struct imx_i2c_s
- 		dev_err(&i2c_imx->adapter.dev, "<%s> read timedout\n", __func__);
- 		return -ETIMEDOUT;
- 	}
--	if (!i2c_imx->stopped)
-+	if (i2c_imx->is_lastmsg && !i2c_imx->stopped)
- 		return i2c_imx_bus_busy(i2c_imx, 0, false);
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1227,12 +1227,6 @@ static int isotp_release(struct socket *
+ 	so->ifindex = 0;
+ 	so->bound = 0;
  
+-	if (so->rx.buf != so->rx.sbuf)
+-		kfree(so->rx.buf);
+-
+-	if (so->tx.buf != so->tx.sbuf)
+-		kfree(so->tx.buf);
+-
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
+ 
+@@ -1600,6 +1594,21 @@ static int isotp_notifier(struct notifie
+ 	return NOTIFY_DONE;
+ }
+ 
++static void isotp_sock_destruct(struct sock *sk)
++{
++	struct isotp_sock *so = isotp_sk(sk);
++
++	/* do the standard CAN sock destruct work */
++	can_sock_destruct(sk);
++
++	/* free potential extended PDU buffers */
++	if (so->rx.buf != so->rx.sbuf)
++		kfree(so->rx.buf);
++
++	if (so->tx.buf != so->tx.sbuf)
++		kfree(so->tx.buf);
++}
++
+ static int isotp_init(struct sock *sk)
+ {
+ 	struct isotp_sock *so = isotp_sk(sk);
+@@ -1646,6 +1655,9 @@ static int isotp_init(struct sock *sk)
+ 	list_add_tail(&so->notifier, &isotp_notifier_list);
+ 	spin_unlock(&isotp_notifier_lock);
+ 
++	/* re-assign default can_sock_destruct() reference */
++	sk->sk_destruct = isotp_sock_destruct;
++
  	return 0;
+ }
+ 
 
 
 
