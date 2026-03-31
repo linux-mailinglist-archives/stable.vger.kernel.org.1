@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6E9eCsn3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:21 +0200
+	id cFZEJ9QAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF29036CCCC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B0D36E3BF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DA5423083596
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7B8AD30B98A3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEF9421A1D;
-	Tue, 31 Mar 2026 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D10533120E;
+	Tue, 31 Mar 2026 16:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRFY9jVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE0iVP3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41411266581;
-	Tue, 31 Mar 2026 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47B32D1F40;
+	Tue, 31 Mar 2026 16:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974623; cv=none; b=H3mlZi+Rte8vmDD3AD1zufvzskUxKHJ2gTgvuaIIpwt6AD8lToT4lgQ8qoNoTkJmORhU2qhhBs/ERPmJxO2WvgW8AOVE1k1VNqnpFsWKNg1xgDAblU1Si3OQXzxu8gZD2m0KZThNm+2NNNTkH12zoY6ZQ/10BKhcwX8bxXsxnko=
+	t=1774975559; cv=none; b=oTZ+2oCjY7YtLjTo8K2wZKPd0qaKWP1hfa6qCWAdHku50qaO6h0Wit3On9D9L0UxrV1UAw+YnaOrcFwRwhaeOR2HKZJxXuiBV+Lo1KMp8SvL2MiOU2Dw3QLP20CH74nF+ssuZh0hUwdO6LH15eirVpkG+YfIBpSPj6VdSqygu5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974623; c=relaxed/simple;
-	bh=GqejvB8fYN0ZE3OvaEthHobrAZHNJkC6JztrRvp10W0=;
+	s=arc-20240116; t=1774975559; c=relaxed/simple;
+	bh=I63BtbCOi/ifswt9KArcTr9k4OuzOXSl+aVP6TllJRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuBjOJPnqfFVI+fPsmHV7TeFcN6Q5FMk6PwwxOEBo10Qc9oIu99AMpYW4Z7eneDIai+orL68gTA1TV/oWAKIE6x2veWbGzxg0LKXuPfm57ZqNLwbG6B5nLemgBj4KOSZ8D6ZsKOqBuFnhvlxd3o5Z9lOxNLd5pa2kCcpKmGoVbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRFY9jVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C183DC19423;
-	Tue, 31 Mar 2026 16:30:22 +0000 (UTC)
+	 MIME-Version; b=rHFnlufqtFaITxk7UwXTA4Z9AuSz6y2Y/OMHLVToiI0Ya6OEQ8vYQ9v/V79opb0E1DzywRaESMHXYaRIvbNyK0SMAYCmOVkSXJAHqZCsLYvtMJd5wamAMrKhIh9Wzi8s7XoT8oXoEd1i8utp9/adRpK4wU+T0BKB+U1dbCwxFAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE0iVP3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFD4C19423;
+	Tue, 31 Mar 2026 16:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974623;
-	bh=GqejvB8fYN0ZE3OvaEthHobrAZHNJkC6JztrRvp10W0=;
+	s=korg; t=1774975559;
+	bh=I63BtbCOi/ifswt9KArcTr9k4OuzOXSl+aVP6TllJRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRFY9jVHVPt0mS3V9vc3e3R6p8okw58fK14h1lKPBmQAxEDpkmeZUYtbK3CJ6e7R1
-	 RYsKHKBYmkCLpuKNXocHo/aGZJ1ANAiw8vkas9La9IyqG+n/wfTWy4DTlHdaUioDO5
-	 rP8FrM4QCMi0K2Jh2HfrzRGAmTkHAKPtqR1KkK6s=
+	b=fE0iVP3Wq8ZVd1Rek3vSVbZ6Ma7950zIwhROXRcgeD/SHVK5J8jhvbUPM5o/KVJ8a
+	 2nJ8OhewinZrnIPq8y9uaqCNIQERE3sGhoAoOcM+OEQRLu4UKYK9HWYJJL5otM5jFM
+	 /0B1I4aATnSiPuTv6tsls4KHmdVBuDfwLxAwJVqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.6 157/175] xfs: avoid dereferencing log items after push callbacks
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.19 308/342] arm64: dts: imx8mn-tqma8mqnl: fix LDO5 power off
 Date: Tue, 31 Mar 2026 18:22:21 +0200
-Message-ID: <20260331161735.565346776@linuxfoundation.org>
+Message-ID: <20260331161810.257723444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,209 +64,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231613-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231978-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AF29036CCCC
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C8B0D36E3BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-commit 79ef34ec0554ec04bdbafafbc9836423734e1bd6 upstream.
+commit 8adc841d43ebceabec996c9dcff6e82d3e585268 upstream.
 
-After xfsaild_push_item() calls iop_push(), the log item may have been
-freed if the AIL lock was dropped during the push. Background inode
-reclaim or the dquot shrinker can free the log item while the AIL lock
-is not held, and the tracepoints in the switch statement dereference
-the log item after iop_push() returns.
+Fix SD card removal caused by automatic LDO5 power off after boot
 
-Fix this by capturing the log item type, flags, and LSN before calling
-xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
-event class that takes these pre-captured values and the ailp pointer
-instead of the log item pointer.
+To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
+regulator that is supplied by LDO5. Since this is implemented on SoM but
+used on baseboards with SD-card interface, implement the functionality
+on SoM part and optionally enable it on baseboards if needed.
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_trace.c     |    1 +
- fs/xfs/xfs_trace.h     |   36 ++++++++++++++++++++++++++++++++----
- fs/xfs/xfs_trans_ail.c |   26 +++++++++++++++++++-------
- 3 files changed, 52 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts |   13 ++++----
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       |   22 ++++++++++++++
+ 2 files changed, 29 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/xfs_trace.c
-+++ b/fs/xfs/xfs_trace.c
-@@ -22,6 +22,7 @@
- #include "xfs_trans.h"
- #include "xfs_log.h"
- #include "xfs_log_priv.h"
-+#include "xfs_trans_priv.h"
- #include "xfs_buf_item.h"
- #include "xfs_quota.h"
- #include "xfs_dquot_item.h"
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -50,6 +50,7 @@
- #include <linux/tracepoint.h>
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
+@@ -69,6 +69,10 @@
+ 	samsung,esc-clock-frequency = <20000000>;
+ };
  
- struct xfs_agf;
-+struct xfs_ail;
- struct xfs_alloc_arg;
- struct xfs_attr_list_context;
- struct xfs_buf_log_item;
-@@ -1332,14 +1333,41 @@ TRACE_EVENT(xfs_log_force,
- DEFINE_EVENT(xfs_log_item_class, name, \
- 	TP_PROTO(struct xfs_log_item *lip), \
- 	TP_ARGS(lip))
--DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
--DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
--DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
--DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
- DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
- DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
- DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
- 
-+DECLARE_EVENT_CLASS(xfs_ail_push_class,
-+	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
-+	TP_ARGS(ailp, type, flags, lsn),
-+	TP_STRUCT__entry(
-+		__field(dev_t, dev)
-+		__field(uint, type)
-+		__field(unsigned long, flags)
-+		__field(xfs_lsn_t, lsn)
-+	),
-+	TP_fast_assign(
-+		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
-+		__entry->type = type;
-+		__entry->flags = flags;
-+		__entry->lsn = lsn;
-+	),
-+	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
-+		  MAJOR(__entry->dev), MINOR(__entry->dev),
-+		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
-+		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
-+		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
-+)
++&reg_usdhc2_vqmmc {
++	status = "okay";
++};
 +
-+#define DEFINE_AIL_PUSH_EVENT(name) \
-+DEFINE_EVENT(xfs_ail_push_class, name, \
-+	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
-+	TP_ARGS(ailp, type, flags, lsn))
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
-+DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
+ &sai3 {
+ 	assigned-clocks = <&clk IMX8MN_CLK_SAI3>;
+ 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
+@@ -216,8 +220,7 @@
+ 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
+-			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
+-			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
++			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+@@ -226,8 +229,7 @@
+ 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
+-			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
+-			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
++			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+@@ -236,8 +238,7 @@
+ 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
+ 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
+-			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
+-			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
++			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+@@ -30,6 +30,20 @@
+ 		regulator-max-microvolt = <3300000>;
+ 	};
+ 
++	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
++		regulator-name = "V_SD2";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x1>,
++			 <3300000 0x0>;
++		vin-supply = <&ldo5_reg>;
++		status = "disabled";
++	};
 +
- DECLARE_EVENT_CLASS(xfs_ail_class,
- 	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
- 	TP_ARGS(lip, old_lsn, new_lsn),
---- a/fs/xfs/xfs_trans_ail.c
-+++ b/fs/xfs/xfs_trans_ail.c
-@@ -389,6 +389,12 @@ xfsaild_resubmit_item(
- 	return XFS_ITEM_SUCCESS;
- }
+ 	reserved-memory {
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+@@ -233,6 +247,10 @@
+ 	vddio-supply = <&ldo3_reg>;
+ };
  
-+/*
-+ * Push a single log item from the AIL.
-+ *
-+ * @lip may have been released and freed by the time this function returns,
-+ * so callers must not dereference the log item afterwards.
-+ */
- static inline uint
- xfsaild_push_item(
- 	struct xfs_ail		*ailp,
-@@ -476,20 +482,26 @@ xfsaild_push(
++&usdhc2 {
++	vqmmc-supply = <&reg_usdhc2_vqmmc>;
++};
++
+ &usdhc3 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+@@ -287,6 +305,10 @@
+ 		fsl,pins = <MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
+ 	};
  
- 	lsn = lip->li_lsn;
- 	while ((XFS_LSN_CMP(lip->li_lsn, target) <= 0)) {
--		int	lock_result;
-+		int		lock_result;
-+		uint		type = lip->li_type;
-+		unsigned long	flags = lip->li_flags;
-+		xfs_lsn_t	item_lsn = lip->li_lsn;
- 
- 		/*
- 		 * Note that iop_push may unlock and reacquire the AIL lock.  We
- 		 * rely on the AIL cursor implementation to be able to deal with
- 		 * the dropped lock.
-+		 *
-+		 * The log item may have been freed by the push, so it must not
-+		 * be accessed or dereferenced below this line.
- 		 */
- 		lock_result = xfsaild_push_item(ailp, lip);
- 		switch (lock_result) {
- 		case XFS_ITEM_SUCCESS:
- 			XFS_STATS_INC(mp, xs_push_ail_success);
--			trace_xfs_ail_push(lip);
-+			trace_xfs_ail_push(ailp, type, flags, item_lsn);
- 
--			ailp->ail_last_pushed_lsn = lsn;
-+			ailp->ail_last_pushed_lsn = item_lsn;
- 			break;
- 
- 		case XFS_ITEM_FLUSHING:
-@@ -505,22 +517,22 @@ xfsaild_push(
- 			 * AIL is being flushed.
- 			 */
- 			XFS_STATS_INC(mp, xs_push_ail_flushing);
--			trace_xfs_ail_flushing(lip);
-+			trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
- 
- 			flushing++;
--			ailp->ail_last_pushed_lsn = lsn;
-+			ailp->ail_last_pushed_lsn = item_lsn;
- 			break;
- 
- 		case XFS_ITEM_PINNED:
- 			XFS_STATS_INC(mp, xs_push_ail_pinned);
--			trace_xfs_ail_pinned(lip);
-+			trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
- 
- 			stuck++;
- 			ailp->ail_log_flush++;
- 			break;
- 		case XFS_ITEM_LOCKED:
- 			XFS_STATS_INC(mp, xs_push_ail_locked);
--			trace_xfs_ail_locked(lip);
-+			trace_xfs_ail_locked(ailp, type, flags, item_lsn);
- 
- 			stuck++;
- 			break;
++	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
++		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
++	};
++
+ 	pinctrl_usdhc3: usdhc3grp {
+ 		fsl,pins = <MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
+ 			   <MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
 
 
 
