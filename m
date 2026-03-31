@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIBGOs8HzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:43 +0200
+	id oPwFAz38y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D5A36F363
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFAFC36D5C2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2CC6A307C77B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67F0930DB8B8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA66C2D7DEF;
-	Tue, 31 Mar 2026 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163EC25D527;
+	Tue, 31 Mar 2026 16:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrSkyxbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3hOAMiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8D430AABE;
-	Tue, 31 Mar 2026 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF133E367;
+	Tue, 31 Mar 2026 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976864; cv=none; b=jvpbp60gYl++KYv8fAbizMAjC9r+7ktSmqUABzEMQxgsyS4V4/jRD+61xZXpvHVy4K9l0ahEYkjClkPxNNmdR9UT+LR7SYCZnhwPx6jqnN3Q/f3RcNg9+FLKSD12o6EV1uLxsUFkwJz1FixLB1/wHKggoljtO7DCBLidNpNBL8E=
+	t=1774975521; cv=none; b=KjF4dTHdGLIGdButfZV5OnQBUkSfWN0IWhno33GQlPXGsUXqOKx8+FyrA2XuEjek35+JwhYXRO2UG1q3EppUEg5BcUcCoz9cATwl+v3i85sWZEJsb2kf+oHmwD9I90ymBzknQeIIHjLvbt6RB8S301SXdt6RWUuSNRPYsXMNJdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976864; c=relaxed/simple;
-	bh=g16lM5dgg3GWPs48XqRVmdN/YW8T9G1F/IfImlcNeK4=;
+	s=arc-20240116; t=1774975521; c=relaxed/simple;
+	bh=JqoEaRJqH2V0xsP+ifCNFW51LoM2Ecj5PdCMbs6HF9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WB24/hQYU93oWcFSfKo818Z7wM9xI6r8L51akCYG5xg8Q0ol1uJBc7eT52YLgXiq0qI7ROXsr8F7ES5nQ2b5kVkmyBdckK/hlLlJj+036XZgmQJX4C9+sklvxDwvyI43P+Y7m4NoCzAL8m8qD9hMfmX3MU24jlpxGKzed1Y8GkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrSkyxbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1306CC19423;
-	Tue, 31 Mar 2026 17:07:43 +0000 (UTC)
+	 MIME-Version; b=WgoK0+7PpDaadZp6/YVoX8tQheBMQ9YNlQJnErdidNxaCKSWehFcTXlMYE2TGmVkXUlXi4M8y2OIF1FQ41GGWoNrqeBcsTWT0FAQemrc3y4rkyBnRjQleSapz+4RQPmExzd9KHBPlsth3xKFwbikQ0L1Zn4P3Lj3kbb7I0B+1Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3hOAMiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8EFC19423;
+	Tue, 31 Mar 2026 16:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976864;
-	bh=g16lM5dgg3GWPs48XqRVmdN/YW8T9G1F/IfImlcNeK4=;
+	s=korg; t=1774975521;
+	bh=JqoEaRJqH2V0xsP+ifCNFW51LoM2Ecj5PdCMbs6HF9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrSkyxbbqVnDQwZUuIDYMa25omqIBQIYlT5JN5IuCp6qjUIyA3xuT6vAfKq89iyrg
-	 6EXQDHRsrUDwVybsBpL2XLn+4IkeOY74bki+/Q73fhXSWWMk29lG0uMf9go9E+Urh3
-	 uYLt5t9/0jxGHdJcqIyDcpIyRfBJdiXzOUIcadjk=
+	b=L3hOAMiE/nWy/A/nayc/Dy4vdgsiQyI8vjwj58f+Yrhm2TYuB2sawlTvnPaCeClvt
+	 VeJkX8q7tugclQteatmw4OaSlY35sUCE2oxtWPZ2EmMCa92iY3jjv9OfSRlMCQrwqk
+	 1YWqhFjfIh8ZNX+eRWMCYhhuPweU4WweMrqQ+Shg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 257/309] ext4: do not check fast symlink during orphan recovery
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 327/342] dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
 Date: Tue, 31 Mar 2026 18:22:40 +0200
-Message-ID: <20260331161803.031440152@linuxfoundation.org>
+Message-ID: <20260331161810.942244122@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +68,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232483-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231964-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 16D5A36F363
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nabladev.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AFAFC36D5C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 84e21e3fb8fd99ea460eb7274584750d11cf3e9f upstream.
+[ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
 
-Commit '5f920d5d6083 ("ext4: verify fast symlink length")' causes the
-generic/475 test to fail during orphan cleanup of zero-length symlinks.
+The segment .control and .status fields both contain top bits which are
+not part of the buffer size, the buffer size is located only in the bottom
+max_buffer_len bits. To avoid interference from those top bits, mask out
+the size using max_buffer_len first, and only then subtract the values.
 
-  generic/475  84s ... _check_generic_filesystem: filesystem on /dev/vde is inconsistent
-
-The fsck reports are provided below:
-
-  Deleted inode 9686 has zero dtime.
-  Deleted inode 158230 has zero dtime.
-  ...
-  Inode bitmap differences:  -9686 -158230
-  Orphan file (inode 12) block 13 is not clean.
-  Failed to initialize orphan file.
-
-In ext4_symlink(), a newly created symlink can be added to the orphan
-list due to ENOSPC. Its data has not been initialized, and its size is
-zero. Therefore, we need to disregard the length check of the symbolic
-link when cleaning up orphan inodes. Instead, we should ensure that the
-nlink count is zero.
-
-Fixes: 5f920d5d6083 ("ext4: verify fast symlink length")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260131091156.1733648-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |   40 +++++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5465,18 +5465,36 @@ struct inode *__ext4_iget(struct super_b
- 			inode->i_op = &ext4_encrypted_symlink_inode_operations;
- 		} else if (ext4_inode_is_fast_symlink(inode)) {
- 			inode->i_op = &ext4_fast_symlink_inode_operations;
--			if (inode->i_size == 0 ||
--			    inode->i_size >= sizeof(ei->i_data) ||
--			    strnlen((char *)ei->i_data, inode->i_size + 1) !=
--								inode->i_size) {
--				ext4_error_inode(inode, function, line, 0,
--					"invalid fast symlink length %llu",
--					 (unsigned long long)inode->i_size);
--				ret = -EFSCORRUPTED;
--				goto bad_inode;
-+
-+			/*
-+			 * Orphan cleanup can see inodes with i_size == 0
-+			 * and i_data uninitialized. Skip size checks in
-+			 * that case. This is safe because the first thing
-+			 * ext4_evict_inode() does for fast symlinks is
-+			 * clearing of i_data and i_size.
-+			 */
-+			if ((EXT4_SB(sb)->s_mount_state & EXT4_ORPHAN_FS)) {
-+				if (inode->i_nlink != 0) {
-+					ext4_error_inode(inode, function, line, 0,
-+						"invalid orphan symlink nlink %d",
-+						inode->i_nlink);
-+					ret = -EFSCORRUPTED;
-+					goto bad_inode;
-+				}
-+			} else {
-+				if (inode->i_size == 0 ||
-+				    inode->i_size >= sizeof(ei->i_data) ||
-+				    strnlen((char *)ei->i_data, inode->i_size + 1) !=
-+						inode->i_size) {
-+					ext4_error_inode(inode, function, line, 0,
-+						"invalid fast symlink length %llu",
-+						(unsigned long long)inode->i_size);
-+					ret = -EFSCORRUPTED;
-+					goto bad_inode;
-+				}
-+				inode_set_cached_link(inode, (char *)ei->i_data,
-+						      inode->i_size);
- 			}
--			inode_set_cached_link(inode, (char *)ei->i_data,
--					      inode->i_size);
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index ccfcc2b801f82..7b24d0a18ea53 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -997,16 +997,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
+ 					      struct xilinx_cdma_tx_segment,
+ 					      node);
+ 			cdma_hw = &cdma_seg->hw;
+-			residue += (cdma_hw->control - cdma_hw->status) &
+-				   chan->xdev->max_buffer_len;
++			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
++			           (cdma_hw->status & chan->xdev->max_buffer_len);
+ 		} else if (chan->xdev->dma_config->dmatype ==
+ 			   XDMA_TYPE_AXIDMA) {
+ 			axidma_seg = list_entry(entry,
+ 						struct xilinx_axidma_tx_segment,
+ 						node);
+ 			axidma_hw = &axidma_seg->hw;
+-			residue += (axidma_hw->control - axidma_hw->status) &
+-				   chan->xdev->max_buffer_len;
++			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
++			           (axidma_hw->status & chan->xdev->max_buffer_len);
  		} else {
- 			inode->i_op = &ext4_symlink_inode_operations;
+ 			aximcdma_seg =
+ 				list_entry(entry,
+@@ -1014,8 +1014,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
+ 					   node);
+ 			aximcdma_hw = &aximcdma_seg->hw;
+ 			residue +=
+-				(aximcdma_hw->control - aximcdma_hw->status) &
+-				chan->xdev->max_buffer_len;
++				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
++				(aximcdma_hw->status & chan->xdev->max_buffer_len);
  		}
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
