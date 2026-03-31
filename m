@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FbMAuH2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:29 +0200
+	id cKAbEJ78y2nDNAYAu9opvQ
+	(envelope-from <stable+bounces-231854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5841936CB23
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F6A36D703
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50B4B30F231F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67B84310194B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF4B3F7A8B;
-	Tue, 31 Mar 2026 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F32C4266BB;
+	Tue, 31 Mar 2026 16:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFqp3c8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7axSOlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536243DB62F;
-	Tue, 31 Mar 2026 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019892EE262;
+	Tue, 31 Mar 2026 16:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974392; cv=none; b=RU+RWe8nHU2laB7ktm8Pbes9IhkJrCfhfugRs1Qn+8KfSg51nW5RX0LNaCm8zTotIbjXbW+27OHm19CNf66hKLQFv1Y51sQhf+F77T7lgkUaUzq191fF8Q5nWeP5evfdQi0UZ2gM089GZfYQADx+i8b2mO14Bi5apgttzfY35I4=
+	t=1774975242; cv=none; b=RwjoTexPeHT9i/2G8z++zZxV3z1yBCgcaLUE5uLf3dM+MCIB706202yzwtZ/wp+25ZMtwsZwYJYJMj4ZVZUdH6/DPCYhZiM8ojzQP6ajcj798US0cqeuJNo2f0vc2r4aekfgHi7UY/GNQluJsOoGCJDbxR31DeuikGjLDmTwmJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974392; c=relaxed/simple;
-	bh=yYkISdMK1T+8vfyx4Vfv4Sppyu3xpFQU6qU9NF1pOcI=;
+	s=arc-20240116; t=1774975242; c=relaxed/simple;
+	bh=kbfQuAl3N1lfLutqryqSqgS3vPX0IRhV9Xw+2PM+3Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuLglFhSHVorSJTN+7ZF1vEPr6SfjfSr/ROSlaTevxzh58uarSyNW5tTw4O9jVAwrbwd299geNkVoMq2+SIY5+kfiuVq1CLUI6i1/Gfpt1ZzcD6jx2P27S2dmRJFT5lJ3Zl3MhjixCvGL2GBzNRnwt9kLzW8HLW78O7V6OF0GU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFqp3c8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21DAC19423;
-	Tue, 31 Mar 2026 16:26:31 +0000 (UTC)
+	 MIME-Version; b=D8ziiY+grSHwGrCkuqn7A3+WIHE9v8BVCZlekU0N7skvGD8OKmNXc7J/IkYvWYssoAWqVNUYAtyJa+ku1agVEoZJo64MkokQXhn620YhPj5e7JWneTtYiYyJqHKcE/YR7yF/USSEDRwRbxNXiVo4MV9540bEUhujooPk4yqtIK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7axSOlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB92C19423;
+	Tue, 31 Mar 2026 16:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974392;
-	bh=yYkISdMK1T+8vfyx4Vfv4Sppyu3xpFQU6qU9NF1pOcI=;
+	s=korg; t=1774975241;
+	bh=kbfQuAl3N1lfLutqryqSqgS3vPX0IRhV9Xw+2PM+3Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFqp3c8BAWLZ9ys2jV5WFQBvG1iGmYAWGVG9RvPZ2XYhRn3NxLhJwhrszUXcd2NB6
-	 PKVYoRgX1mVfwe7HRteJUrLm8GAevAimHoIX8vOO80HMe5gtpBt3vkqgx3JNiXALfP
-	 eXnA/qL3pplD8QmFhzyoAjN42JUhmEJwq5cREkT4=
+	b=R7axSOlX2/q7f37aNXHjnFvJsC3hLiOrxunJvwp9JVsudLDg8p6a8aPlQhCBvf+aW
+	 VtFEQgBCXy+It4Wjbvjhdg7+Oc0YufivB4wwEUPFktoQSvowHIYeLXfGwb8R0N2L39
+	 Wten+d4oW8Nsa+PgDsMZMTFrWhKeA3kKCWYNq4Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/175] Bluetooth: btusb: clamp SCO altsetting table indices
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 218/342] mm/damon/stat: monitor all System RAM resources
 Date: Tue, 31 Mar 2026 18:20:51 +0200
-Message-ID: <20260331161732.243090230@linuxfoundation.org>
+Message-ID: <20260331161806.997574910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,71 +77,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231524-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231854-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 5841936CB23
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B7F6A36D703
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 129fa608b6ad08b8ab7178eeb2ec272c993aaccc ]
+commit 84481e705ab07ed46e56587fe846af194acacafe upstream.
 
-btusb_work() maps the number of active SCO links to USB alternate
-settings through a three-entry lookup table when CVSD traffic uses
-transparent voice settings. The lookup currently indexes alts[] with
-data->sco_num - 1 without first constraining sco_num to the number of
-available table entries.
+DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+says it monitors the system's entire physical memory.  But, it is
+monitoring only the biggest System RAM resource of the system.  When there
+are multiple System RAM resources, this results in monitoring only an
+unexpectedly small fraction of the physical memory.  For example, suppose
+the system has a 500 GiB System RAM, 10 MiB non-System RAM, and 500 GiB
+System RAM resources in order on the physical address space.  DAMON_STAT
+will monitor only the first 500 GiB System RAM.  This situation is
+particularly common on NUMA systems.
 
-While the table only defines alternate settings for up to three SCO
-links, data->sco_num comes from hci_conn_num() and is used directly.
-Cap the lookup to the last table entry before indexing it so the
-driver keeps selecting the highest supported alternate setting without
-reading past alts[].
+Select a physical address range that covers all System RAM areas of the
+system, to fix this issue and make it work as documented.
 
-Fixes: baac6276c0a9 ("Bluetooth: btusb: handle mSBC audio over USB Endpoints")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[sj@kernel.org: return error if monitoring target region is invalid]
+  Link: https://lkml.kernel.org/r/20260317053631.87907-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20260316235118.873-1-sj@kernel.org
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/damon/stat.c |   53 ++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 50 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 168e46ce59976..c51523d780e65 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2314,8 +2314,11 @@ static void btusb_work(struct work_struct *work)
- 		if (data->air_mode == HCI_NOTIFY_ENABLE_SCO_CVSD) {
- 			if (hdev->voice_setting & 0x0020) {
- 				static const int alts[3] = { 2, 4, 5 };
-+				unsigned int sco_idx;
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -145,12 +145,59 @@ static int damon_stat_damon_call_fn(void
+ 	return 0;
+ }
  
--				new_alts = alts[data->sco_num - 1];
-+				sco_idx = min_t(unsigned int, data->sco_num - 1,
-+						ARRAY_SIZE(alts) - 1);
-+				new_alts = alts[sco_idx];
- 			} else {
- 				new_alts = data->sco_num;
- 			}
--- 
-2.51.0
-
++struct damon_stat_system_ram_range_walk_arg {
++	bool walked;
++	struct resource res;
++};
++
++static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
++{
++	struct damon_stat_system_ram_range_walk_arg *a = arg;
++
++	if (!a->walked) {
++		a->walked = true;
++		a->res.start = res->start;
++	}
++	a->res.end = res->end;
++	return 0;
++}
++
++static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
++		unsigned long addr_unit)
++{
++	/*
++	 * Use div_u64() for avoiding linking errors related with __udivdi3,
++	 * __aeabi_uldivmod, or similar problems.  This should also improve the
++	 * performance optimization (read div_u64() comment for the detail).
++	 */
++	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
++		return div_u64(ra, addr_unit);
++	return ra / addr_unit;
++}
++
++static int damon_stat_set_monitoring_region(struct damon_target *t,
++		unsigned long addr_unit, unsigned long min_region_sz)
++{
++	struct damon_addr_range addr_range;
++	struct damon_stat_system_ram_range_walk_arg arg = {};
++
++	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
++	if (!arg.walked)
++		return -EINVAL;
++	addr_range.start = damon_stat_res_to_core_addr(
++			arg.res.start, addr_unit);
++	addr_range.end = damon_stat_res_to_core_addr(
++			arg.res.end + 1, addr_unit);
++	if (addr_range.end <= addr_range.start)
++		return -EINVAL;
++	return damon_set_regions(t, &addr_range, 1, min_region_sz);
++}
++
+ static struct damon_ctx *damon_stat_build_ctx(void)
+ {
+ 	struct damon_ctx *ctx;
+ 	struct damon_attrs attrs;
+ 	struct damon_target *target;
+-	unsigned long start = 0, end = 0;
+ 
+ 	ctx = damon_new_ctx();
+ 	if (!ctx)
+@@ -188,8 +235,8 @@ static struct damon_ctx *damon_stat_buil
+ 	if (!target)
+ 		goto free_out;
+ 	damon_add_target(ctx, target);
+-	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
+-							ctx->min_region_sz))
++	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
++				ctx->min_region_sz))
+ 		goto free_out;
+ 	return ctx;
+ free_out:
 
 
 
