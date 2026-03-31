@@ -1,168 +1,249 @@
-Return-Path: <stable+bounces-231343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFqtKtdzy2k3HwYAu9opvQ
-	(envelope-from <stable+bounces-231343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:12:23 +0200
+	id sOeKLfZ1y2k3HwYAu9opvQ
+	(envelope-from <stable+bounces-231344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:21:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97340364DDF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:12:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298F1365079
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3B511303AFBF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:10:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E19430CC938
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C9146A66;
-	Tue, 31 Mar 2026 07:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="n2yKjeH8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mg152J8z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256E93B6C11;
+	Tue, 31 Mar 2026 07:11:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0527129E10F;
-	Tue, 31 Mar 2026 07:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7063B5318
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 07:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774941026; cv=none; b=ZtnFhQVDR0ZXffcoNxRvnwCaxSIgTQqY2PfPDkHtwjWyMMosppQ+jhccQ14YNa9P1jPfuaxxqyBz5ysvygIrlFM0gJV8IraBfxgBL6pbwcQOAj7rPubkICKeRKD52Gi85YNUYhr7ITjSfyUXvGObDffB6zBR9VstJ2M0A+vOba4=
+	t=1774941110; cv=none; b=lpwjUO7QjBBUgA0ByZ/6SoCtBEV8nUbpGbczNKxC3scIaUDooNeU4JMvUpYwyHkRGq6GvXrr0TydGCckzWtwK/i/NylRzPpPqSyI75F9zrfG46eHJfGSuzipoX/+MOpe5jPXG8Om8lqdtb6vnKDogmqpfV8FNX0BftjC7ZDLJSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774941026; c=relaxed/simple;
-	bh=ec/xlGvb/OQavUWdxQ0dAivWFuVfBigJZln3uRdMZbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JIfbw9kO0OzKdw+Y1/V+Q2QEhL0jokUBrkrx/RAY0Wh9ZpDpIAYxJ9lXKMnmLHa5nM21jEIB8HTZFbM0sjldBofeDgbXoLtZAHO/5LFf6uSfBmbVZzcyfZc1tZ8NsiDgLSPtslsRP4pRsCJIBGpz8Zezm8NE1EJqbzY8aXFTMis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=n2yKjeH8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mg152J8z; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 2A43A1400076;
-	Tue, 31 Mar 2026 03:10:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 31 Mar 2026 03:10:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1774941024; x=1775027424; bh=esmbZsKpw1
-	HVHjembzXJErEZAoM9KmGX7HNGrJiFJW4=; b=n2yKjeH8mgs0W9ryngcdQs5zZz
-	MqczXGk7P8txtrJleotI329rVGgZAyjXVaNzqfU7mBzH+07opmm0Z6L0oHoVQc12
-	fjKt7bTlaH8cVBw9eSEPavJHdfev+hOAfVOdbOCLnCXSjraM7JrmPWM2aESBoOvV
-	pBmDK84fx9BtAfOn/pdouHmDdOedhbfW6l2hHI6Di/5AcljkVjztSVpA8lsC5ruf
-	f8a7Gs2Tok+aryjPSXwpEpYZBofplXtSB9kvfxl/gYJe2BQO9nuhPVm66EUKlSLD
-	CMVmQOTA8DiE8qLNmSp5KxOEhuN57nYQbZzRN9ydg0hMeNrDWMk6hluxk/9A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1774941024; x=1775027424; bh=esmbZsKpw1HVHjembzXJErEZAoM9KmGX7HN
-	GrJiFJW4=; b=mg152J8z0Qf64andBA0qR3mSHVEbMcr28NGIQIYltVgumXaJqm3
-	c8KQTR9W6M5xNmC2FfC7KS85Syb4npIlMRDthxXS5nRzAty/RN3i0M0Mj5G10JZh
-	gJ1WN9UpumXVYSRyLfSB0fOX3TR655O3RRaB4r/ZVNsjrafccI350K0HqZ52oERQ
-	WdDJjgbLkXscknm4Tba/eYHCzzgoO8MBvwe8uEN9YOMv2Dck2uUHFg/vO4eHRl2c
-	ypXXgBN+jN1nJqsOFt1tTYbT/xeTaAmVNOq1Et5rt5L/B3+I2nKs3m+gpivnXwil
-	Gm2S1itJPjdw7gXwlQsEC6VsK1/fRwBI9HQ==
-X-ME-Sender: <xms:X3PLad8Lo1WwDGqIwq2EoP6bQKBDKnuloNuUIt110T5A-KaS3-uLuw>
-    <xme:X3PLaYz-BQffwmhuXGq3ClbpH-5BLB_w59oS75FPsjGut-0DIqZvo2gbXPVBs8Vco
-    cgWf1MnQzIIPhH-BFoxQLx9An-l_Bv2udQiKHDUH_bWPfcU>
-X-ME-Received: <xmr:X3PLaStLGXtM-szUQIpez0ROckJnX5atIXS2bK62N2eKM0oPYL1dhkZPgJFxwyCcoKhgbjnEm2MkL0RLdhVIu16DzA8trnqOCpG_NI9LcCA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefgeduvdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepghhhrgguihdrrhgrhhhmvgestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhope
-    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsfhhrvghn
-    tghhsehsrghmsggrrdhorhhgpdhrtghpthhtohepphgtsegtjhhrrdhniidprhgtphhtth
-    hopehlshgrhhhlsggvrhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshhprhgrshgr
-    ugesmhhitghrohhsohhfthdrtghomhdprhgtphhtthhopehtohhmsehtrghlphgvhidrtg
-    homhdprhgtphhtthhopegrrghpthgvlhesshhushgvrdgtohhmpdhrtghpthhtoheplhhi
-    nhhugidqtghifhhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:X3PLaX1XAIMH2y07iW6W3DF2alnY2veLO6Yyp698bzyCGwFUp6KvJA>
-    <xmx:X3PLae6btaGtLatzSFE-UFAmp1H5SLF3jWUA1PIqoo0cwOEmX1RVaQ>
-    <xmx:X3PLaZPppMXW_AkyJm8v6e568SYZWLiw3kyYRp2uz2JEfJL35oBuvQ>
-    <xmx:X3PLaSGKxLnbNBvcPrHrfzoe2zF8rBEvlfdE_XUaTGtO93dy92KCzA>
-    <xmx:YHPLaYdYmvrpmhll_AsinPv1xMU6rrGopTbwK0aaYiS6JwKhu6oGigbs>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 03:10:22 -0400 (EDT)
-Date: Tue, 31 Mar 2026 09:10:20 +0200
-From: Greg KH <greg@kroah.com>
-To: Ghadi Rahme <ghadi.rahme@canonical.com>
-Cc: stable@vger.kernel.org, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@cjr.nz>, Ronnie Sahlberg <lsahlber@redhat.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Aurelien Aptel <aaptel@suse.com>, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH v2 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on
- session connection failure
-Message-ID: <2026033140-endearing-handcraft-b66a@gregkh>
-References: <20260319144929.455978-1-ghadi.rahme@canonical.com>
- <2026032339-irate-monsoon-76ce@gregkh>
- <a7c5ecb2-d46c-4061-a70a-c7b149db56f2@canonical.com>
+	s=arc-20240116; t=1774941110; c=relaxed/simple;
+	bh=0f3xzzz8ag9SNW7fb5jqQqPgwNvN6ZIv9z48me9iRiw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TP5tLVKhjbSd/F9odBZzs97UqvCn+ANzEcfR502T79L/OFjtlFcIL7EI+TKJghdZcHRN31x452eYIcOw6BQu1DEB3UBDm0MXH7V/nClQiChmwRgS0IuJmTK3Q5UtWkFy/Ad2sjKSJNojqEEtQUnVI9cFLsQU1PSMzjnv8YyDt74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz17t1774941099t14806ba7
+X-QQ-Originating-IP: +nL0vZovCMrBp6hTi9EZPmMc8xhqeBn1iAA2s+VSSKg=
+Received: from w-MS-7E16.trustnetic.com ( [115.227.224.139])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 31 Mar 2026 15:11:16 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14711434964415801438
+EX-QQ-RecipientCnt: 13
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: txgbe: fix RTNL assertion warning when remove module
+Date: Tue, 31 Mar 2026 15:11:07 +0800
+Message-ID: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a7c5ecb2-d46c-4061-a70a-c7b149db56f2@canonical.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: Mnff/9wu0oJYBaph783tGB90hZbKcLWoBk1t4ukQ7QC3ln8zuo2BvVYX
+	Uggjt+pHJIELWO/A81i37sq2P4bHNqryOaW8l8OxogMtzlxJ5QMzBM0boeVxDaRHLl5RbvF
+	Hl1LSM6YI8A2fE/1xzxButtHrMPmSLoxS07F4VROIYWsm2TWb/rRYKIXiJS6T8uH0tJAMS+
+	62OuEkCf7csvMCfSLL4C9NuVKboMAZKDtbHnz+CHM/A2nBiyXYvV+6xhKM6kYp0/1x0LGU+
+	SUMc4Jhb4YuASsRzMgWZNfn+Do2MPMB4yQ2I1THEOw5UD4NNFUDLQ9sPVB0ln+8rBPMrLDl
+	yvOqQj63UL9e3UQNXKX7t3A8Mo/JTFFlY2A3qiI8CvE+puvO2lwaCPc3d4KXcDlR/wFer0W
+	kJZ7dOct+VfEW9Q/L0trFJ0znzM8WgKzJAebL5uorq+IEBeA2OQSQ3vKEFKhf9I7jE/G72B
+	pqbJYrPffeB9xcA+2Yjr/pAz4k5H4R2TbJ7qRUYMnxQHmWIEaAkE5XtPSuXJhNPygF4azzh
+	tQtg9xanU5OmFGktmSw0vIETCDnj0/CepuxNuASmxcGu+laFUsZ2gs0JdQIPWBEYAiGVJFD
+	gh1pbjzs0ddMhm5yL8ljowXbNAsgkYQvTdXFyp6P4kBQCZKvRCZIEcW+jIm9jAsUL19+QVR
+	xZY6Stf17d+lyzO+HiJcMbK2vUotWfYEoa/g5vdGCU8L0Dclzl52w1FdYv4URskNSWvYtnB
+	9sPgPj+nnF6f7wU0sZ9AT5oNFZoeszBkSsNA+jy0lbF9r0dwS+NYiLFkn3PBxpOr0azXNJW
+	1p0xV1xK4qM8eTHwHkPu3D9NtIyDvf7vwpLCvR7XNm9MFnY8qxYT6bjrHOah00edfo0YbQ0
+	evrClrhOvlG5RRkzdgDyYQGpzn7+mfXs4TRkJDF/ZPA2UefsJ0RYTf8tDtRH+O9twIhPGck
+	xnaXUstHYQRW3C0JRBbe6h2lyw5L6NCKZXk56hmCK8ngENAKchw7KRUqyjyYTUisSk+b5uf
+	GuR6EGN3dXSIkDaS3qRHpxB1+yNw1MxhZGabDqgIoc1IGE2aGDZp/wd4UH6Xg=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	TAGGED_FROM(0.00)[bounces-231344-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231343-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[trustnetic.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[net-swift.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,armlinux.org.uk,intel.com,gmail.com,trustnetic.com,vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 97340364DDF
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.975];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustnetic.com:email,trustnetic.com:mid]
+X-Rspamd-Queue-Id: 298F1365079
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 09:59:01AM +0300, Ghadi Rahme wrote:
-> > Again, wrong git id :(
-> 
-> Thank you for reviewing this.
-> 
-> There is not direct fix to this issue upstream however upstream is no longer
-> affected by this issue.
+For the copper NIC with external PHY, the driver called
+phylink_connect_phy() during probe and phylink_disconnect_phy() during
+remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
+upon module remove.
 
-Then why not backport the specific changes that caused newer kernels to
-not be affected?
+To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
 
-> The commit ID I referenced is the commit that indirectly resolved this issue
-> by completely refactoring the code which led to the removal of the function
-> I patched.
-> 
-> Is there a better way I can convey this in a V3 maybe?
+ ------------[ cut here ]------------
+ RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
+ WARNING: drivers/net/phy/phylink.c:2351 at
+phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
+ Modules linked in: ...
+ CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
+ Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
+PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
+ RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
+ Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
+48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
+e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
+ RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
+ RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
+ RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
+ R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
+ FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
+knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  txgbe_remove_phy+0xbb/0xd0 [txgbe]
+  txgbe_remove+0x4c/0xb0 [txgbe]
+  pci_device_remove+0x41/0xb0
+  device_remove+0x43/0x80
+  device_release_driver_internal+0x206/0x270
+  driver_detach+0x4a/0xa0
+  bus_remove_driver+0x83/0x120
+  driver_unregister+0x2f/0x60
+  pci_unregister_driver+0x40/0x90
+  txgbe_driver_exit+0x10/0x850 [txgbe]
+  __do_sys_delete_module.isra.0+0x1c3/0x2f0
+  __x64_sys_delete_module+0x12/0x20
+  x64_sys_call+0x20c3/0x2390
+  do_syscall_64+0x11c/0x1500
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_syscall_64+0x15a/0x1500
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_fault+0x312/0x580
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? __handle_mm_fault+0x9d5/0x1040
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? count_memcg_events+0x101/0x1d0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? handle_mm_fault+0x1e8/0x2f0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? do_user_addr_fault+0x2f8/0x820
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? irqentry_exit+0xb2/0x600
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? exc_page_fault+0x92/0x1c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Backport the same changes?
+Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |  8 ++++++++
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c  | 11 -----------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
-thanks,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 0de051450a82..b4f95b3188dd 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -474,6 +474,12 @@ static int txgbe_open(struct net_device *netdev)
+ 	if (err)
+ 		goto err_free_irq;
+ 
++	if (wx->phydev) {
++		err = phylink_connect_phy(wx->phylink, wx->phydev);
++		if (err)
++			goto err_free_irq;
++	}
++
+ 	wx_ptp_init(wx);
+ 
+ 	txgbe_up_complete(wx);
+@@ -527,6 +533,8 @@ static int txgbe_close(struct net_device *netdev)
+ 	wx_free_irq(wx);
+ 	txgbe_free_misc_irq(wx->priv);
+ 	wx_free_resources(wx);
++	if (wx->phydev)
++		phylink_disconnect_phy(wx->phylink);
+ 	txgbe_fdir_filter_exit(wx);
+ 	wx_control_hw(wx, false);
+ 
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index 8ea7aa07ae4e..7268a0c101f3 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -294,16 +294,6 @@ static int txgbe_phylink_init(struct txgbe *txgbe)
+ 	if (IS_ERR(phylink))
+ 		return PTR_ERR(phylink);
+ 
+-	if (wx->phydev) {
+-		int ret;
+-
+-		ret = phylink_connect_phy(phylink, wx->phydev);
+-		if (ret) {
+-			phylink_destroy(phylink);
+-			return ret;
+-		}
+-	}
+-
+ 	wx->phylink = phylink;
+ 
+ 	return 0;
+@@ -657,7 +647,6 @@ void txgbe_remove_phy(struct txgbe *txgbe)
+ 		return;
+ 	case wx_mac_sp:
+ 		if (txgbe->wx->media_type == wx_media_copper) {
+-			phylink_disconnect_phy(txgbe->wx->phylink);
+ 			phylink_destroy(txgbe->wx->phylink);
+ 			return;
+ 		}
+-- 
+2.48.1
 
-greg k-h
 
