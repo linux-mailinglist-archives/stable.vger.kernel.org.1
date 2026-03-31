@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-232062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIbkFAz9y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-232062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:48 +0200
+	id 8NlxKEAGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CC336D84B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E5736F02C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92FAA30224C5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46DE43275A19
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0769413225;
-	Tue, 31 Mar 2026 16:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213AE2FE56E;
+	Tue, 31 Mar 2026 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNTGM/eS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw8tzhZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A357C2C15B2;
-	Tue, 31 Mar 2026 16:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86202E1C7C;
+	Tue, 31 Mar 2026 17:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975777; cv=none; b=PRQZm/Sd/KZaXFI7/6bZAWoFRASt1lJvW0+jAXwcQ7vkUvzSeuuWqNrWUbWPTTGCJJsnUe9UyjTLQf7Tbju4driW/M8YYlw4rqckHqG/vliud0khHCPlgjX/perX8LDh6k5QpRAvplV1/EEfbRRXfMpwNLgavVJXL1lYdpx8N4A=
+	t=1774976579; cv=none; b=iPydmJ5uYp+4g5WiazZMnLQlqbbhS57/J+HVL0FZptG1AmYcIXDgHb38h3x6icpCfzbK+2S+p9LdBFNSiU+fwaEKS3EggdgU3LKFOcVPUExXxVRas4/oS4Ui43PiaJLYtnlB4gK0F4dhSAp4V27NOIIIYFUDpfPSJtL0zvHFr4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975777; c=relaxed/simple;
-	bh=DUcM354bLPMx2KxbgheHEXO0/w3Zlgu4JhxNAZ+4+G8=;
+	s=arc-20240116; t=1774976579; c=relaxed/simple;
+	bh=5u2OTV2D6WvJ3jomus68lzcqT1pdHes0ilox4sxfWBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZPNqDgv73vmIdIOhgoG1lujbw3GOeQcqN73ZP12XqifyXPlbZlyYL8xPSOP5rVqSp/LkXXBT17XWETVuDjxzjAth0gBihojAu8eDDdGppF3/XVmkvn15SBtVGp0uJUi3us9lZ9CoymS9vRevfW0OPSIWV0r8VwVjeCvsy+33HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNTGM/eS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0323DC19423;
-	Tue, 31 Mar 2026 16:49:36 +0000 (UTC)
+	 MIME-Version; b=MLgE7VMy1ixUjaMpXxzgze3aRw6wIGBkuSal2f/FHrMMOH7zZcLHIW9paFA/6IK6qay7SrjUo4LKRqlwW+tAr3BjqwTn96rg0T8SyGWWqL/02/SURVYiANg8pZScmiRtejKaZJZAYSzuXHMyN8Ly65xhSfu+mUWSh4bW//MJRpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw8tzhZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BFBC19423;
+	Tue, 31 Mar 2026 17:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975777;
-	bh=DUcM354bLPMx2KxbgheHEXO0/w3Zlgu4JhxNAZ+4+G8=;
+	s=korg; t=1774976579;
+	bh=5u2OTV2D6WvJ3jomus68lzcqT1pdHes0ilox4sxfWBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNTGM/eSLCY9JMInYg2dA9WkQvSkAIA5t5ymtWP1bvBdoWfucNEGcahv5k2G/CiBp
-	 9S4Y9+WzalQVbRGi5CKvVW9i/uM6AGf9VpNCz4B52Q6bR6mIOfbUIC7Nk0Fi1619Tq
-	 62hBW6Qh4h9BAaIwpgQT/UWSiRlLzGI495aFlwHs=
+	b=dw8tzhZqlNAgV3niwVwPc3/Bfi3mVFliQpLKvsei7B86Y9Bg1dvrrEqMeyx2KBGV4
+	 Xg1+UBa5Ip/jcyanx635t1Wgn8SGBWXhUMfIqpZtx2DjI+oeAzrm+FSOMBNtc/WSQ3
+	 uOvIZCalGKqklRNKtU7FbnJxuvxDlqVZic23fTN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Patryk Holda <patryk.holda@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/244] ice: use ice_update_eth_stats() for representor stats
+Subject: [PATCH 6.18 130/309] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
 Date: Tue, 31 Mar 2026 18:20:33 +0200
-Message-ID: <20260331161744.747072877@linuxfoundation.org>
+Message-ID: <20260331161758.262936100@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,129 +70,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232373-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232062-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E3CC336D84B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email]
+X-Rspamd-Queue-Id: 12E5736F02C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 2526e440df2725e7328d59b835a164826f179b93 ]
+[ Upstream commit 6a2b724460cb67caed500c508c2ae5cf012e4db4 ]
 
-ice_repr_get_stats64() and __ice_get_ethtool_stats() call
-ice_update_vsi_stats() on the VF's src_vsi. This always returns early
-because ICE_VSI_DOWN is permanently set for VF VSIs - ice_up() is never
-called on them since queues are managed by iavf through virtchnl.
+process_sdp() declares union nf_inet_addr rtp_addr on the stack and
+passes it to the nf_nat_sip sdp_session hook after walking the SDP
+media descriptions. However rtp_addr is only initialized inside the
+media loop when a recognized media type with a non-zero port is found.
 
-In __ice_get_ethtool_stats() the original code called
-ice_update_vsi_stats() for all VSIs including representors, iterated
-over ice_gstrings_vsi_stats[] to populate the data, and then bailed out
-with an early return before the per-queue ring stats section. That early
-return was necessary because representor VSIs have no rings on the PF
-side - the rings belong to the VF driver (iavf), so accessing per-queue
-stats would be invalid.
+If the SDP body contains no m= lines, only inactive media sections
+(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
+assigned. Despite that, the function still calls hooks->sdp_session()
+with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
+value as an IP address and rewrite the SDP session owner and connection
+lines with it.
 
-Move the representor handling to the top of __ice_get_ethtool_stats()
-and call ice_update_eth_stats() directly to read the hardware GLV_*
-counters. This matches ice_get_vf_stats() which already uses
-ice_update_eth_stats() for the same VF VSI in legacy mode. Apply the
-same fix to ice_repr_get_stats64().
+With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
+results in the session-level o= and c= addresses being rewritten to
+0.0.0.0 for inactive SDP sessions. Without stack auto-init the
+rewritten address is whatever happened to be on the stack.
 
-Note that ice_gstrings_vsi_stats[] contains five software ring counters
-(rx_buf_failed, rx_page_failed, tx_linearize, tx_busy, tx_restart) that
-are always zero for representors since the PF never processes packets on
-VF rings. This is pre-existing behavior unchanged by this patch.
+Fix this by pre-initializing rtp_addr from the session-level connection
+address (caddr) when available, and tracking via a have_rtp_addr flag
+whether any valid address was established. Skip the sdp_session hook
+entirely when no valid address exists.
 
-Fixes: 7aae80cef7ba ("ice: add port representor ethtool ops and stats")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 14 +++++++++++---
- drivers/net/ethernet/intel/ice/ice_repr.c    |  3 ++-
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index b2183d5670b8c..606994fa99da9 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -1930,6 +1930,17 @@ __ice_get_ethtool_stats(struct net_device *netdev,
- 	int i = 0;
- 	char *p;
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 4ab5ef71d96db..17af0ff4ea7ab 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	unsigned int port;
+ 	const struct sdp_media_type *t;
+ 	int ret = NF_ACCEPT;
++	bool have_rtp_addr = false;
  
-+	if (ice_is_port_repr_netdev(netdev)) {
-+		ice_update_eth_stats(vsi);
-+
-+		for (j = 0; j < ICE_VSI_STATS_LEN; j++) {
-+			p = (char *)vsi + ice_gstrings_vsi_stats[j].stat_offset;
-+			data[i++] = (ice_gstrings_vsi_stats[j].sizeof_stat ==
-+				     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
-+		}
-+		return;
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
+ 
+@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	caddr_len = 0;
+ 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
+ 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
+-				  &matchoff, &matchlen, &caddr) > 0)
++				  &matchoff, &matchlen, &caddr) > 0) {
+ 		caddr_len = matchlen;
++		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
++		have_rtp_addr = true;
 +	}
-+
- 	ice_update_pf_stats(pf);
- 	ice_update_vsi_stats(vsi);
  
-@@ -1939,9 +1950,6 @@ __ice_get_ethtool_stats(struct net_device *netdev,
- 			     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
- 	}
+ 	mediaoff = sdpoff;
+ 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
+@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 					  &matchoff, &matchlen, &maddr) > 0) {
+ 			maddr_len = matchlen;
+ 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
+-		} else if (caddr_len)
++			have_rtp_addr = true;
++		} else if (caddr_len) {
+ 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
+-		else {
++			have_rtp_addr = true;
++		} else {
+ 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
+ 			return NF_DROP;
+ 		}
+@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
  
--	if (ice_is_port_repr_netdev(netdev))
--		return;
--
- 	/* populate per queue stats */
- 	rcu_read_lock();
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index 1b1288d243248..e8a9b6a5dd7ab 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -2,6 +2,7 @@
- /* Copyright (C) 2019-2021, Intel Corporation. */
- 
- #include "ice.h"
-+#include "ice_lib.h"
- #include "ice_eswitch.h"
- #include "devlink/devlink.h"
- #include "devlink/devlink_port.h"
-@@ -67,7 +68,7 @@ ice_repr_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
- 		return;
- 	vsi = repr->src_vsi;
- 
--	ice_update_vsi_stats(vsi);
-+	ice_update_eth_stats(vsi);
- 	eth_stats = &vsi->eth_stats;
- 
- 	stats->tx_packets = eth_stats->tx_unicast + eth_stats->tx_broadcast +
+ 	/* Update session connection and owner addresses */
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
+-	if (hooks && ct->status & IPS_NAT_MASK)
++	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
+ 		ret = hooks->sdp_session(skb, protoff, dataoff,
+ 					 dptr, datalen, sdpoff,
+ 					 &rtp_addr);
 -- 
 2.51.0
 
