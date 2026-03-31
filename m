@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBydLIj3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:16 +0200
+	id CGauGuP9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CA736CC55
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF6836DA91
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 542EB304A7F0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DC0C3195C48
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF47E423A7C;
-	Tue, 31 Mar 2026 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D74426D0E;
+	Tue, 31 Mar 2026 16:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBcvekHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QUztvwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B275F423A61;
-	Tue, 31 Mar 2026 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CD2426D09;
+	Tue, 31 Mar 2026 16:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974602; cv=none; b=JOQEJBHvw+ENon8Z3/0IdE7SFGkjwgJkwHCwoMcJgkNcsNrRqf+WZzXQg26us74Zbk5X2CdAr4+TmhbsK8r27jlbjg2kFkZrB8GjZiIQJcVV1NSCgUMT36WFzrg4oml2YEOOigVBwQbMDd3E+20vkqLDeVF26GT8Ta3CSAui3r8=
+	t=1774975950; cv=none; b=dXR8rAMt01WhezlFa6OZAT7J4tNSb6efBojO8TXvNObMJSfIb5vGsPF5mU/ct5lvirzxc6Pfw3ka9J1zVEVPIbScKnhcSzAvhS8ELSflLwW5BfP0Vj/GLXM7LvKhKr7yj3RjaiEvOJ/mkkxlhSh+jbIgPIsC74sMuYVrOf+gddo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974602; c=relaxed/simple;
-	bh=lNym5ItBn+8Y7tGRvXcD5aaO7S8YzVEg+nws2WiBPmc=;
+	s=arc-20240116; t=1774975950; c=relaxed/simple;
+	bh=Jm/D2JV+DnVBIBbcoCovajC+nMhNeuBRMzlSUTo25rM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gju8/VK0esIAs3JINZOfYQGxyQ/aJoHRgpRKDII6mqsQi10XOoZpN/I6wsbyQ0VEJbHbAhIp7tdY7K6OBujhr9wLGn8KFdqdJD3IG9BynnYm3vjhy8okrBtGkbWUym1n1YiKZjgWlgsX3o4x+J22hZJT7XH+rLTeyAswLsyhE9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBcvekHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80E7C19424;
-	Tue, 31 Mar 2026 16:30:01 +0000 (UTC)
+	 MIME-Version; b=XGRy4Xthx0xZyaZXQOIaX1+mTvxaWEw2NKEwp7Ob7JRAg9eKAp0jCkW0YYlcM/5px0rCsDzqI8rWoY+vo9JlR1gaFjsV9mLRQiJfEXg9BAG2k/2ScEF4DtWScLH8z8EJ0TeoGk0NMt5YjZETgET9XSlVJuDYdqjZYRvbz3ZnNNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QUztvwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6710EC19423;
+	Tue, 31 Mar 2026 16:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974602;
-	bh=lNym5ItBn+8Y7tGRvXcD5aaO7S8YzVEg+nws2WiBPmc=;
+	s=korg; t=1774975950;
+	bh=Jm/D2JV+DnVBIBbcoCovajC+nMhNeuBRMzlSUTo25rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBcvekHFjrgpNXNpev0nxj8uOBPgEBv8nzNBuOyeLNfLv+ZL6QetcEx9sNndR6/nn
-	 Fs5O+DQX8gZZnM31F4Fpzzjs0GOtLb9sj663oK3MD+P2mLVUbc2xFKI0ciVENQ/Mx7
-	 sY7pfSJCdv2CwzHtJwGKDQRj+835jp8fniGb78C8=
+	b=2QUztvwx9T33jA5UlX/A5iFabZmeVaTvkNtDwogrj0XcNOaUev1Uy/hE/Ttg7nHhT
+	 wyLGj0s48HMXiCxvyfU25SW250MDFVKtt41KgUG8Sln7jVijhCjBQD7D4cCH2PeDrZ
+	 kjllnmpaPZE7qGf7S1nDGsdKUtPQen+LQXVovH80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jiucheng Xu <jiucheng.xu@amlogic.com>,
-	Chao Yu <chao@kernel.org>
-Subject: [PATCH 6.6 116/175] erofs: add GFP_NOIO in the bio completion if needed
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 150/244] hwmon: (peci/cputemp) Fix crit_hyst returning delta instead of absolute temperature
 Date: Tue, 31 Mar 2026 18:21:40 +0200
-Message-ID: <20260331161734.043763834@linuxfoundation.org>
+Message-ID: <20260331161747.303570709@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,84 +77,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231605-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232129-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email]
-X-Rspamd-Queue-Id: 65CA736CC55
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email]
+X-Rspamd-Queue-Id: DFF6836DA91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit c23df30915f83e7257c8625b690a1cece94142a0 upstream.
+commit 0adc752b4f7d82af7bd14f7cad3091b3b5d702ba upstream.
 
-The bio completion path in the process context (e.g. dm-verity)
-will directly call into decompression rather than trigger another
-workqueue context for minimal scheduling latencies, which can
-then call vm_map_ram() with GFP_KERNEL.
+The hwmon sysfs ABI expects tempN_crit_hyst to report the temperature at
+which the critical condition clears, not the hysteresis delta from the
+critical limit.
 
-Due to insufficient memory, vm_map_ram() may generate memory
-swapping I/O, which can cause submit_bio_wait to deadlock
-in some scenarios.
+The peci cputemp driver currently returns tjmax - tcontrol for
+crit_hyst_type, which is the hysteresis margin rather than the
+corresponding absolute temperature.
 
-Trimmed down the call stack, as follows:
+Return tcontrol directly, and update the documentation accordingly.
 
-f2fs_submit_read_io
-  submit_bio                      //bio_list is initialized.
-    mmc_blk_mq_recovery
-      z_erofs_endio
-        vm_map_ram
-          __pte_alloc_kernel
-            __alloc_pages_direct_reclaim
-              shrink_folio_list
-                __swap_writepage
-                  submit_bio_wait  //bio_list is non-NULL, hang!!!
-
-Use memalloc_noio_{save,restore}() to wrap up this path.
-
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260323002352.93417-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zdata.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/hwmon/peci-cputemp.rst |   10 ++++++----
+ drivers/hwmon/peci/cputemp.c         |    2 +-
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1415,6 +1415,7 @@ static void z_erofs_decompress_kickoff(s
- 				       int bios)
- {
- 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
-+	int gfp_flag;
+--- a/Documentation/hwmon/peci-cputemp.rst
++++ b/Documentation/hwmon/peci-cputemp.rst
+@@ -51,8 +51,9 @@ temp1_max		Provides thermal control temp
+ temp1_crit		Provides shutdown temperature of the CPU package which
+ 			is also known as the maximum processor junction
+ 			temperature, Tjmax or Tprochot.
+-temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+-			the CPU package.
++temp1_crit_hyst		Provides the hysteresis temperature of the CPU
++			package. Returns Tcontrol, the temperature at which
++			the critical condition clears.
  
- 	/* wake up the caller thread for sync decompression */
- 	if (io->sync) {
-@@ -1447,7 +1448,9 @@ static void z_erofs_decompress_kickoff(s
- 			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
- 		return;
- 	}
-+	gfp_flag = memalloc_noio_save();
- 	z_erofs_decompressqueue_work(&io->u.work);
-+	memalloc_noio_restore(gfp_flag);
- }
+ temp2_label		"DTS"
+ temp2_input		Provides current temperature of the CPU package scaled
+@@ -62,8 +63,9 @@ temp2_max		Provides thermal control temp
+ temp2_crit		Provides shutdown temperature of the CPU package which
+ 			is also known as the maximum processor junction
+ 			temperature, Tjmax or Tprochot.
+-temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+-			the CPU package.
++temp2_crit_hyst		Provides the hysteresis temperature of the CPU
++			package. Returns Tcontrol, the temperature at which
++			the critical condition clears.
  
- static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+ temp3_label		"Tcontrol"
+ temp3_input		Provides current Tcontrol temperature of the CPU
+--- a/drivers/hwmon/peci/cputemp.c
++++ b/drivers/hwmon/peci/cputemp.c
+@@ -133,7 +133,7 @@ static int get_temp_target(struct peci_c
+ 		*val = priv->temp.target.tjmax;
+ 		break;
+ 	case crit_hyst_type:
+-		*val = priv->temp.target.tjmax - priv->temp.target.tcontrol;
++		*val = priv->temp.target.tcontrol;
+ 		break;
+ 	default:
+ 		ret = -EOPNOTSUPP;
 
 
 
