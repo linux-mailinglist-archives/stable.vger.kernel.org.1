@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2G6NHLICzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:21:54 +0200
+	id WHZeFBn9y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7168236E8D7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:21:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCA136D89D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B74273155078
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 234CC3197339
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B71425CC6;
-	Tue, 31 Mar 2026 16:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82E04266B9;
+	Tue, 31 Mar 2026 16:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePzMhYr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOq4603B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F013F8E04;
-	Tue, 31 Mar 2026 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A765402BA9;
+	Tue, 31 Mar 2026 16:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976000; cv=none; b=dd2oXDZXR9XBw/eBMnplDJb8UTxlQbdji4KfpcIP9QD+U82uEUWOPlihHIiVFCA2axOoNdHLoQsNAwlj8rzlArLHhpcI5MkNoHC9EiKmBUPeIRkynV/C61DE4isyXjAHBfGlIJi1kEYOkogbiTeTU1JDl0oynPnv6Vr+kUpqNpY=
+	t=1774975344; cv=none; b=FATzvOY4psutOFRi3DC+UP4Kktq3pfY03y75TLo4JXYztXN0zuiz/uC+0t4CUT3cij1x5KIZ6GmC0xHLAKWcc49ea+Y16fX/jmfoaChxTlj+uKLIsuGeVtzylyRCGXj91LbHyUluL+jgKBD+bPY58cCHbYEYCVc7s8c2hD+oM2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976000; c=relaxed/simple;
-	bh=rnQspb9WcOul58Fe4uJ9D6FbtaYmKoBHHPRnA9DIAzs=;
+	s=arc-20240116; t=1774975344; c=relaxed/simple;
+	bh=zsZ5gYxIt0lNI9kjlshpNVS+P8HOOky5AdD4qf2ASLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9zJ6OI7KBxs/DDH7PP4nQlTNOSxIfHhhwZmdiikCRDzmTYHv1KLl2sj9g/yfemxyHuGE7siIB5D8RRWlKNxk7bxS+/DchReZQI0ilkY5w9hdo3kn2zCVMa1NDYqcPaRvphkG3ibuYZf3f+07lqPaaKvmOL0ZWxDvGRSSzrWn7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePzMhYr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B96C19423;
-	Tue, 31 Mar 2026 16:53:19 +0000 (UTC)
+	 MIME-Version; b=XgaGH8svoGXDb3lu710GG0/YQVDsycPxYb9I1xzGuQSsoG0bfCkmA0mkVvKFejcBhC8dZWiHFJQme9LlQAr4dGQP3v7HKqgwgg58Khywyuqzh5Z/Lm4xBbj2XT/AoQhtu1sX14ShYKEnQV5Zz34JgLLfh6O2OaF5hYA1ULTS2Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOq4603B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13105C19423;
+	Tue, 31 Mar 2026 16:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975999;
-	bh=rnQspb9WcOul58Fe4uJ9D6FbtaYmKoBHHPRnA9DIAzs=;
+	s=korg; t=1774975344;
+	bh=zsZ5gYxIt0lNI9kjlshpNVS+P8HOOky5AdD4qf2ASLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePzMhYr3NjPb2jBSTvmkE5sF8dHdf6fbB0DHYrheGZzd9aOTuVk81qHNmq3UwZX6R
-	 JN6QP1mXy+phuN47eOmIBok9dbcZH9SinoRReUeoA7WCJfZQ9YlWCtUwMo140iHAK/
-	 cfaw4nt/2pjPmswg6WXDCgZ1WjnaRnsz8WVys+yM=
+	b=yOq4603BhmFXn6r5gC3F5Ra4LKNm4vomKrlmPB4SKhGEuyR1iE1ztDcdc14aTWt2R
+	 MMds6/QNXTCrK6p1X4hk/UL+xYwnjx6Q8jzX9UFootXwaBOkvC2UGvq909pW0Z8DHX
+	 dHd/Ch6++O5C+M0bYWmCAY8ylZ1rY8id+xP2TnwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 141/244] ksmbd: do not expire session on binding failure
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.19 258/342] i2c: imx: ensure no clock is generated after last read
 Date: Tue, 31 Mar 2026 18:21:31 +0200
-Message-ID: <20260331161746.976665039@linuxfoundation.org>
+Message-ID: <20260331161808.448264029@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +65,165 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232148-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231895-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7168236E8D7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,0.0.0.0:email]
+X-Rspamd-Queue-Id: 9FCA136D89D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 9bbb19d21ded7d78645506f20d8c44895e3d0fb9 upstream.
+commit 13101db735bdb29c5f60e95fb578690bd178b30f upstream.
 
-When a multichannel session binding request fails (e.g. wrong password),
-the error path unconditionally sets sess->state = SMB2_SESSION_EXPIRED.
-However, during binding, sess points to the target session looked up via
-ksmbd_session_lookup_slowpath() -- which belongs to another connection's
-user. This allows a remote attacker to invalidate any active session by
-simply sending a binding request with a wrong password (DoS).
+When reading from the I2DR register, right after releasing the bus by
+clearing MSTA and MTX, the I2C controller might still generate an
+additional clock cycle which can cause devices to misbehave. Ensure to
+only read from I2DR after the bus is not busy anymore. Because this
+requires polling, the read of the last byte is moved outside of the
+interrupt handler.
 
-Fix this by skipping session expiration when the failed request was
-a binding attempt, since the session does not belong to the current
-connection. The reference taken by ksmbd_session_lookup_slowpath() is
-still correctly released via ksmbd_user_session_put().
+An example for such a failing transfer is this:
+i2ctransfer -y -a 0 w1@0x00 0x02 r1
+Error: Sending messages failed: Connection timed out
+It does not happen with every device because not all devices react to
+the additional clock cycle.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260218150940.131354-3-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-imx.c |   51 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 19 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1945,8 +1945,14 @@ out_err:
- 			if (sess->user && sess->user->flags & KSMBD_USER_FLAG_DELAY_SESSION)
- 				try_delay = true;
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1018,8 +1018,9 @@ static inline int i2c_imx_isr_read(struc
+ 	return 0;
+ }
  
--			sess->last_active = jiffies;
--			sess->state = SMB2_SESSION_EXPIRED;
-+			/*
-+			 * For binding requests, session belongs to another
-+			 * connection. Do not expire it.
-+			 */
-+			if (!(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
-+				sess->last_active = jiffies;
-+				sess->state = SMB2_SESSION_EXPIRED;
-+			}
- 			ksmbd_user_session_put(sess);
- 			work->sess = NULL;
- 			if (try_delay) {
+-static inline void i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
++static inline enum imx_i2c_state i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
+ {
++	enum imx_i2c_state next_state = IMX_I2C_STATE_READ_CONTINUE;
+ 	unsigned int temp;
+ 
+ 	if ((i2c_imx->msg->len - 1) == i2c_imx->msg_buf_idx) {
+@@ -1033,18 +1034,20 @@ static inline void i2c_imx_isr_read_cont
+ 				i2c_imx->stopped =  1;
+ 			temp &= ~(I2CR_MSTA | I2CR_MTX);
+ 			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+-		} else {
+-			/*
+-			 * For i2c master receiver repeat restart operation like:
+-			 * read -> repeat MSTA -> read/write
+-			 * The controller must set MTX before read the last byte in
+-			 * the first read operation, otherwise the first read cost
+-			 * one extra clock cycle.
+-			 */
+-			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+-			temp |= I2CR_MTX;
+-			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
++
++			return IMX_I2C_STATE_DONE;
+ 		}
++		/*
++		 * For i2c master receiver repeat restart operation like:
++		 * read -> repeat MSTA -> read/write
++		 * The controller must set MTX before read the last byte in
++		 * the first read operation, otherwise the first read cost
++		 * one extra clock cycle.
++		 */
++		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
++		temp |= I2CR_MTX;
++		imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
++		next_state = IMX_I2C_STATE_DONE;
+ 	} else if (i2c_imx->msg_buf_idx == (i2c_imx->msg->len - 2)) {
+ 		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+ 		temp |= I2CR_TXAK;
+@@ -1052,6 +1055,7 @@ static inline void i2c_imx_isr_read_cont
+ 	}
+ 
+ 	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
++	return next_state;
+ }
+ 
+ static inline void i2c_imx_isr_read_block_data_len(struct imx_i2c_struct *i2c_imx)
+@@ -1088,11 +1092,9 @@ static irqreturn_t i2c_imx_master_isr(st
+ 		break;
+ 
+ 	case IMX_I2C_STATE_READ_CONTINUE:
+-		i2c_imx_isr_read_continue(i2c_imx);
+-		if (i2c_imx->msg_buf_idx == i2c_imx->msg->len) {
+-			i2c_imx->state = IMX_I2C_STATE_DONE;
++		i2c_imx->state = i2c_imx_isr_read_continue(i2c_imx);
++		if (i2c_imx->state == IMX_I2C_STATE_DONE)
+ 			wake_up(&i2c_imx->queue);
+-		}
+ 		break;
+ 
+ 	case IMX_I2C_STATE_READ_BLOCK_DATA:
+@@ -1490,6 +1492,7 @@ static int i2c_imx_read(struct imx_i2c_s
+ 			bool is_lastmsg)
+ {
+ 	int block_data = msgs->flags & I2C_M_RECV_LEN;
++	int ret = 0;
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev,
+ 		"<%s> write slave address: addr=0x%x\n",
+@@ -1522,10 +1525,20 @@ static int i2c_imx_read(struct imx_i2c_s
+ 		dev_err(&i2c_imx->adapter.dev, "<%s> read timedout\n", __func__);
+ 		return -ETIMEDOUT;
+ 	}
+-	if (i2c_imx->is_lastmsg && !i2c_imx->stopped)
+-		return i2c_imx_bus_busy(i2c_imx, 0, false);
++	if (i2c_imx->is_lastmsg) {
++		if (!i2c_imx->stopped)
++			ret = i2c_imx_bus_busy(i2c_imx, 0, false);
++		/*
++		 * Only read the last byte of the last message after the bus is
++		 * not busy. Else the controller generates another clock which
++		 * might confuse devices.
++		 */
++		if (!ret)
++			i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx,
++										     IMX_I2C_I2DR);
++	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
 
 
 
