@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCmsNDr+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:50 +0200
+	id 4KVTHCX/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4643936DB87
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA24036DE39
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D0B83176491
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AC2730EB66E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099AD423A8E;
-	Tue, 31 Mar 2026 16:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA33423A89;
+	Tue, 31 Mar 2026 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drI6aNn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+GqgPHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D8F3F7867;
-	Tue, 31 Mar 2026 16:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6192EE262;
+	Tue, 31 Mar 2026 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976096; cv=none; b=ZOoY02hl+UMgyQBV4Myu2w3p2YS4LRmlulTFXVshs2fM+KMlgcAf0x98Fh+/9d7AGBF7d7ZY0hTVlEHWqmj4hiOW6pTqykfwMXiRO4foDoyWJil/9qNQRrO26iB+5VOeJTMFTMF2N8hxvZvRwC6brDtiY+a+CoVvydrsMmk9hTE=
+	t=1774974662; cv=none; b=BZHNWp02KU4PiRpDlaEuAgFGm9m/2ewV4adkXaPiKhkEAznAlJorjYQiFBFPEMJZuAFVwC1TlvAsjHLJiHVaHPDhw2UJh7qV/U+ja0ofa1Mvg8Nq6wFgBa8IkPNhPWAqeGBZKogAjUfDND30dkBWFE0FBe44nRhAwYGqlrDDcEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976096; c=relaxed/simple;
-	bh=AaJC0taeB7rOZ3yr/JIrjRjZxq2szyHWF32yQPnqnP4=;
+	s=arc-20240116; t=1774974662; c=relaxed/simple;
+	bh=Gb/wc2QVodlRqeQpDWDY6geFskVz+eqb4edX05Xikgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jo/CjMbV5cIzxPzJUV+iDGUyBePiu5dJOPtWCCaWC7HAorDbhW7NlM9T35xiqlEJIJYNSlr9I+bKJULZhCVPu5tI41kTdQwTsyswa9/5StWvsAbRNt9AeJVxitnx1o55QfaOKnHL3b69rQb4u7tI5KSeeM8YDDv911K9O4YjpA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drI6aNn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31365C19423;
-	Tue, 31 Mar 2026 16:54:56 +0000 (UTC)
+	 MIME-Version; b=lXJ+DGIbBg9kamHnsGph4Scfvg1b/Va5GdforhLV22S5CXfsw+ZwoHYX6ZPv914UDQTf6zIjhRpuMZiy0duafMhaS0ek9oK8ag5mkoledInIg4sZNaKc0/blBl/ZJ/eFEtZkMyMjzspJ4IhucE5wFII6lv0zwuWkGSo+0J97sec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+GqgPHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B829DC19423;
+	Tue, 31 Mar 2026 16:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976096;
-	bh=AaJC0taeB7rOZ3yr/JIrjRjZxq2szyHWF32yQPnqnP4=;
+	s=korg; t=1774974662;
+	bh=Gb/wc2QVodlRqeQpDWDY6geFskVz+eqb4edX05Xikgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drI6aNn3sYdSqJVsseW+cdvoePQcxLHS1rtXKa/k9U+3aKh7BJNCmBvw7UgBdxaAz
-	 IYRNMB2/YGaiOqfmnPCcKUOY/Bqu6ZXr8tRPT2Ihfq8TkPGDUlTpKjgJ01ptUMJI9S
-	 U+C/+QxyinqE0rN8Jn1h61slM5dfuWr6KhKuCkBM=
+	b=z+GqgPHDgunxz2gWg4mNd2mW/Nr2OXWLgrLYNd3Nt2ISYXuLa6xZ2sjfuq9t7M0wY
+	 hkvFGn08KJSJwVyDFTjOFHguTHgCRTvz/zalUtuVnlgm68M36k9ncXBf5SxV074Obf
+	 xCWYQHaX9Mh0spyXofqOcSdgg/zlf69y9e8Xv1JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 204/244] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Date: Tue, 31 Mar 2026 18:22:34 +0200
-Message-ID: <20260331161749.285158688@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 171/175] btrfs: fix lost error when running device stats on multiple devices fs
+Date: Tue, 31 Mar 2026 18:22:35 +0200
+Message-ID: <20260331161736.076871405@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,230 +78,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232185-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231630-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,loongson.cn:email,gnu.org:url]
-X-Rspamd-Queue-Id: 4643936DB87
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CA24036DE39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit e4878c37f6679fdea91b27a0f4e60a871f0b7bad upstream.
+[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
 
-With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
-of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
-empty.  This is not valid, as the current DWARF specification mandates
-the first byte of the EH frame to be the version number 1.  It causes
-some unwinders to complain, for example the ClickHouse query profiler
-spams the log with messages:
+Whenever we get an error updating the device stats item for a device in
+btrfs_run_dev_stats() we allow the loop to go to the next device, and if
+updating the stats item for the next device succeeds, we end up losing
+the error we had from the previous device.
 
-    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
-    version: 127 at 7ffffffb0000
+Fix this by breaking out of the loop once we get an error and make sure
+it's returned to the caller. Since we are in the transaction commit path
+(and in the critical section actually), returning the error will result
+in a transaction abort.
 
-Here "127" is just the byte located at the p_vaddr (0, i.e. the
-beginning of the vDSO) of the empty GNU_EH_FRAME segment. Cross-
-checking with /proc/365854/maps has also proven 7ffffffb0000 is the
-start of vDSO in the process VM image.
-
-In LoongArch the -fno-asynchronous-unwind-tables option seems just a
-MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
-"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
-use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
-limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
-we can simply flip it over to -fasynchronous-unwind-tables and pass
---eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
-stack for statistics even if the sample point is taken when the PC is in
-the vDSO.
-
-However simply adjusting the options above would exploit an issue: when
-the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
-falled back to a machine-specific routine to match the code pattern of
-rt_sigreturn() and extract the registers saved in the sigframe if the
-code pattern is matched.  As unwinding from signal handlers is vital for
-libgcc to support pthread cancellation etc., the fall-back routine had
-been silently keeping the LoongArch Linux systems functioning since
-Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
-format, fall-back routine will no longer be used and libgcc will fail
-to unwind the sigframe, and unwinding from signal handlers will no
-longer work, causing dozens of glibc test failures.  To make it possible
-to unwind from signal handlers again, it's necessary to code the unwind
-info in __vdso_rt_sigreturn via .cfi_* directives.
-
-The offsets in the .cfi_* directives depend on the layout of struct
-sigframe, notably the offset of sigcontext in the sigframe.  To use the
-offset in the assembly file, factor out struct sigframe into a header to
-allow asm-offsets.c to output the offset for assembly.
-
-To work around a long-term issue in the libgcc unwinder (the pc is
-unconditionally substracted by 1: doing so is technically incorrect for
-a signal frame), a nop instruction is included with the two real
-instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
-hack has been used on x86 for a long time.
-
-Cc: stable@vger.kernel.org
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/linkage.h  |   36 ++++++++++++++++++++++++++++++++++
- arch/loongarch/include/asm/sigframe.h |    9 ++++++++
- arch/loongarch/kernel/asm-offsets.c   |    2 +
- arch/loongarch/kernel/signal.c        |    6 -----
- arch/loongarch/vdso/Makefile          |    4 +--
- arch/loongarch/vdso/sigreturn.S       |    6 ++---
- 6 files changed, 53 insertions(+), 10 deletions(-)
- create mode 100644 arch/loongarch/include/asm/sigframe.h
+ fs/btrfs/volumes.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -41,4 +41,40 @@
- 	.cfi_endproc;					\
- 	SYM_END(name, SYM_T_NONE)
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 23756f1464013..f5e4b8f3dcb7f 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -7641,8 +7641,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
+ 		smp_rmb();
  
-+/*
-+ * This is for the signal handler trampoline, which is used as the return
-+ * address of the signal handlers in userspace instead of called normally.
-+ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
-+ * nop between .cfi_startproc and the actual address of the trampoline, so
-+ * we cannot simply use SYM_FUNC_START.
-+ *
-+ * This wrapper also contains all the .cfi_* directives for recovering
-+ * the content of the GPRs and the "return address" (where the rt_sigreturn
-+ * syscall will jump to), assuming there is a struct rt_sigframe (where
-+ * a struct sigcontext containing those information we need to recover) at
-+ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
-+ * column 0 is for $zero, but it does not make too much sense to
-+ * save/restore the hardware zero register.  Repurpose this column here
-+ * for the return address (here it's not the content of $ra we cannot use
-+ * the default column 3).
-+ */
-+#define SYM_SIGFUNC_START(name)				\
-+	.cfi_startproc;					\
-+	.cfi_signal_frame;				\
-+	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
-+	.cfi_return_column 0;				\
-+	.cfi_offset 0, SC_PC;				\
-+							\
-+	.irp num, 1,  2,  3,  4,  5,  6,  7,  8, 	\
-+		  9,  10, 11, 12, 13, 14, 15, 16,	\
-+		  17, 18, 19, 20, 21, 22, 23, 24,	\
-+		  25, 26, 27, 28, 29, 30, 31;		\
-+	.cfi_offset \num, SC_REGS + \num * SZREG;	\
-+	.endr;						\
-+							\
-+	nop;						\
-+	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
-+
-+#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
-+
- #endif
---- /dev/null
-+++ b/arch/loongarch/include/asm/sigframe.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+
-+#include <asm/siginfo.h>
-+#include <asm/ucontext.h>
-+
-+struct rt_sigframe {
-+	struct siginfo rs_info;
-+	struct ucontext rs_uctx;
-+};
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -16,6 +16,7 @@
- #include <asm/ptrace.h>
- #include <asm/processor.h>
- #include <asm/ftrace.h>
-+#include <asm/sigframe.h>
+ 		ret = update_dev_stat_item(trans, device);
+-		if (!ret)
+-			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
++		if (ret)
++			break;
++		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
  
- static void __used output_ptreg_defines(void)
- {
-@@ -219,6 +220,7 @@ static void __used output_sc_defines(voi
- 	COMMENT("Linux sigcontext offsets.");
- 	OFFSET(SC_REGS, sigcontext, sc_regs);
- 	OFFSET(SC_PC, sigcontext, sc_pc);
-+	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
- 	BLANK();
- }
- 
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -35,6 +35,7 @@
- #include <asm/cpu-features.h>
- #include <asm/fpu.h>
- #include <asm/lbt.h>
-+#include <asm/sigframe.h>
- #include <asm/ucontext.h>
- #include <asm/vdso.h>
- 
-@@ -51,11 +52,6 @@
- #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
- 
--struct rt_sigframe {
--	struct siginfo rs_info;
--	struct ucontext rs_uctx;
--};
--
- struct _ctx_layout {
- 	struct sctx_info *addr;
- 	unsigned int size;
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -21,7 +21,7 @@ cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
- 	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
--	$(call cc-option, -fno-asynchronous-unwind-tables) \
-+	$(call cc-option, -fasynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
- aflags-vdso := $(ccflags-vdso) \
- 	-D__ASSEMBLY__ -Wa,-gdwarf-2
-@@ -36,7 +36,7 @@ endif
- 
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
- 
- #
- # Shared build commands.
---- a/arch/loongarch/vdso/sigreturn.S
-+++ b/arch/loongarch/vdso/sigreturn.S
-@@ -12,13 +12,13 @@
- 
- #include <asm/regdef.h>
- #include <asm/asm.h>
-+#include <asm/asm-offsets.h>
- 
- 	.section	.text
--	.cfi_sections	.debug_frame
- 
--SYM_FUNC_START(__vdso_rt_sigreturn)
-+SYM_SIGFUNC_START(__vdso_rt_sigreturn)
- 
- 	li.w	a7, __NR_rt_sigreturn
- 	syscall	0
- 
--SYM_FUNC_END(__vdso_rt_sigreturn)
-+SYM_SIGFUNC_END(__vdso_rt_sigreturn)
+-- 
+2.53.0
+
 
 
 
