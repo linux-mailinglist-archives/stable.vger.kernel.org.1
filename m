@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFv5CuUGzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:49 +0200
+	id yEBVKXX/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9754C36F186
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD6D36DEF6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55C2531D5AC6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8462630A6699
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93FC31985D;
-	Tue, 31 Mar 2026 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE1B3FADEE;
+	Tue, 31 Mar 2026 16:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5S5B35+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyzOIUZ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20517313E21;
-	Tue, 31 Mar 2026 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E358A3A4F34;
+	Tue, 31 Mar 2026 16:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976924; cv=none; b=PW3oaN8rwbz5hzVLJ3/du94EjkhHHf9od9zm019QMrUCc/BFqGn8R/3jPmN8k0iF22Pu1mohSBLPcM0W4FjtUzA3ViffLcJlWrUpJ6eFWbSUON5X5w9DFimHjlykpavS+iKq0+gtZlm2fFjYFxsDRzNRMn+H8JGfoosWDsz10yI=
+	t=1774976174; cv=none; b=qnPUDO0oauszqnrltLd5Jram97Uv3kOJMpe63P29dB4iUQ7evHYBDw+2C/FsNhWYzUxOZ8hHvWdSCThG7n3izSFsKPNMuedXv+dP620AQaDDc20kmonD2Z9yn9oIipxBHzqQ+UXCfDysNNOH931fY130IaxdI8IPkubB62NFKqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976924; c=relaxed/simple;
-	bh=Wfxmrbz1zOzdAxTMol2sQzv8EQZXhLnl6dARCboIZyc=;
+	s=arc-20240116; t=1774976174; c=relaxed/simple;
+	bh=f7FdtSOlVrLfM+4HcRn5ck0eV0OHh6BBg1lLlvjyMEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geXSqII6pPxmCzPSy9wrWk7qHZZWBCNWY4E4JUHV7YfUllXGMIfwQB44qWNInk7TBwsnQ6hgMEWMqX7y5fYvS3rqU2AEVyAI28KaIb7ISn1xcVlMDdeUc4M0A2Vxed18dWqpkhOpd5FBQ7J+RLHpvBF4bYiu3sAXfHKZQXPLv9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5S5B35+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE0BC19423;
-	Tue, 31 Mar 2026 17:08:43 +0000 (UTC)
+	 MIME-Version; b=gevX7b0daYOKaKEWJ5EU9N5XSu3SkE6iYG5QAprqhX5wZDC3dqZdutkYDbP/bXL3gE9Q0GhbmMgHWEN7bxvNnbh3st+c3BlbT2pw/+i9XgohUF5CaAiU+738NLX6EN0Z5DJUbcH/Nae1Y3eqR8wdXI2q1HkGqvSMSDxOgvbhcuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyzOIUZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7137EC19423;
+	Tue, 31 Mar 2026 16:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976923;
-	bh=Wfxmrbz1zOzdAxTMol2sQzv8EQZXhLnl6dARCboIZyc=;
+	s=korg; t=1774976173;
+	bh=f7FdtSOlVrLfM+4HcRn5ck0eV0OHh6BBg1lLlvjyMEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5S5B35+I2Coi58Q05xgaE8tNpnvS/5v/x/y/S/+a5g4bT2IiNbKO3CMijIzcX8OX
-	 zk3wlkNtiLhTXqHAmZim2zx0WdznSBt1TgISD6WQyr6yak0X/DN1lsk2WkzJDmLf+1
-	 WsyVBVhRv22KjzkzsbYsU1eEn6NWMvt5K3xwk6qY=
+	b=ZyzOIUZ9VkWl3v0MLz52i1ArjUrRZnabkqiOkhdRUIUiF4MrkNay+utjI/IfpGjXd
+	 5sEbKTpDN7S/qFkfnXOwOgx1yOIhgRgQRrd7sz/z8KZdCXdlPomc1RLu4yaZHm1A2y
+	 zs1sh6mVMAYqfgL/GM64bMalDkqnnZUzJ+DDAfmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Kasselman <werner@verivus.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 281/309] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
-Date: Tue, 31 Mar 2026 18:23:04 +0200
-Message-ID: <20260331161803.910995559@linuxfoundation.org>
+Subject: [PATCH 6.12 235/244] dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA
+Date: Tue, 31 Mar 2026 18:23:05 +0200
+Message-ID: <20260331161750.440317034@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,207 +68,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232506-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232215-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,verivus.com:email]
-X-Rspamd-Queue-Id: 9754C36F186
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,ideasonboard.com:email]
+X-Rspamd-Queue-Id: 6CD6D36DEF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Kasselman <werner@verivus.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 48623ec358c1c600fa1e38368746f933e0f1a617 ]
+[ Upstream commit a17ce4bc6f4f9acf77ba416c36791a15602e53aa ]
 
-smb_grant_oplock() has two issues in the oplock publication sequence:
+A single AXIDMA controller can have one or two channels. When it has two
+channels, the reset for both are tied together: resetting one channel
+resets the other as well. This creates a problem where resetting one
+channel will reset the registers for both channels, including clearing
+interrupt enable bits for the other channel, which can then lead  to
+timeouts as the driver is waiting for an interrupt which never comes.
 
-1) opinfo is linked into ci->m_op_list (via opinfo_add) before
-   add_lease_global_list() is called.  If add_lease_global_list()
-   fails (kmalloc returns NULL), the error path frees the opinfo
-   via __free_opinfo() while it is still linked in ci->m_op_list.
-   Concurrent m_op_list readers (opinfo_get_list, or direct iteration
-   in smb_break_all_levII_oplock) dereference the freed node.
+The driver currently has a probe-time work around for this: when a
+channel is created, the driver also resets and enables the
+interrupts. With two channels the reset for the second channel will
+clear the interrupt enables for the first one. The work around in the
+driver is just to manually enable the interrupts again in
+xilinx_dma_alloc_chan_resources().
 
-2) opinfo->o_fp is assigned after add_lease_global_list() publishes
-   the opinfo on the global lease list.  A concurrent
-   find_same_lease_key() can walk the lease list and dereference
-   opinfo->o_fp->f_ci while o_fp is still NULL.
+This workaround only addresses the probe-time issue. When channels are
+reset at runtime (e.g., in xilinx_dma_terminate_all() or during error
+recovery), there's no corresponding mechanism to restore the other
+channel's interrupt enables. This leads to one channel having its
+interrupts disabled while the driver expects them to work, causing
+timeouts and DMA failures.
 
-Fix by restructuring the publication sequence to eliminate post-publish
-failure:
+A proper fix is a complicated matter, as we should not reset the other
+channel when it's operating normally. So, perhaps, there should be some
+kind of synchronization for a common reset, which is not trivial to
+implement. To add to the complexity, the driver also supports other DMA
+types, like VDMA, CDMA and MCDMA, which don't have a shared reset.
 
-- Set opinfo->o_fp before any list publication (fixes NULL deref).
-- Preallocate lease_table via alloc_lease_table() before opinfo_add()
-  so add_lease_global_list() becomes infallible after publication.
-- Keep the original m_op_list publication order (opinfo_add before
-  lease list) so concurrent opens via same_client_has_lease() and
-  opinfo_get_list() still see the in-flight grant.
-- Use opinfo_put() instead of __free_opinfo() on err_out so that
-  the RCU-deferred free path is used.
+However, when the two-channel AXIDMA is used in the (assumably) normal
+use case, providing DMA for a single memory-to-memory device, the common
+reset is a bit smaller issue: when something bad happens on one channel,
+or when one channel is terminated, the assumption is that we also want
+to terminate the other channel. And thus resetting both at the same time
+is "ok".
 
-This also requires splitting add_lease_global_list() to take a
-preallocated lease_table and changing its return type from int to void,
-since it can no longer fail.
+With that line of thinking we can implement a bit better work around
+than just the current probe time work around: let's enable the
+AXIDMA interrupts at xilinx_dma_start_transfer() instead.
+This ensures interrupts are enabled whenever a transfer starts,
+regardless of any prior resets that may have cleared them.
 
-Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Kasselman <werner@verivus.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
+This approach is also more logical: enable interrupts only when needed
+for a transfer, rather than at resource allocation time, and, I think,
+all the other DMA types should also use this model, but I'm reluctant to
+do such changes as I cannot test them.
+
+The reset function still enables interrupts even though it's not needed
+for AXIDMA anymore, but it's common code for all DMA types (VDMA, CDMA,
+MCDMA), so leave it unchanged to avoid affecting other variants.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Link: https://patch.msgid.link/20260311-xilinx-dma-fix-v2-1-a725abb66e3c@ideasonboard.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   72 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 27 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -82,11 +82,19 @@ static void lease_del_list(struct oplock
- 	spin_unlock(&lb->lb_lock);
- }
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index b1c540fbcd716..a0361bcee1201 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1216,14 +1216,6 @@ static int xilinx_dma_alloc_chan_resources(struct dma_chan *dchan)
  
--static void lb_add(struct lease_table *lb)
-+static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
- {
--	write_lock(&lease_list_lock);
--	list_add(&lb->l_entry, &lease_table_list);
--	write_unlock(&lease_list_lock);
-+	struct lease_table *lb;
-+
-+	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
-+	if (!lb)
-+		return NULL;
-+
-+	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-+	       SMB2_CLIENT_GUID_SIZE);
-+	INIT_LIST_HEAD(&lb->lease_list);
-+	spin_lock_init(&lb->lb_lock);
-+	return lb;
- }
+ 	dma_cookie_init(dchan);
  
- static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
-@@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_inf
- 	lease2->version = lease1->version;
- }
- 
--static int add_lease_global_list(struct oplock_info *opinfo)
-+static void add_lease_global_list(struct oplock_info *opinfo,
-+				  struct lease_table *new_lb)
- {
- 	struct lease_table *lb;
- 
--	read_lock(&lease_list_lock);
-+	write_lock(&lease_list_lock);
- 	list_for_each_entry(lb, &lease_table_list, l_entry) {
- 		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			opinfo->o_lease->l_lb = lb;
- 			lease_add_list(opinfo);
--			read_unlock(&lease_list_lock);
--			return 0;
-+			write_unlock(&lease_list_lock);
-+			kfree(new_lb);
-+			return;
- 		}
- 	}
--	read_unlock(&lease_list_lock);
- 
--	lb = kmalloc(sizeof(struct lease_table), KSMBD_DEFAULT_GFP);
--	if (!lb)
--		return -ENOMEM;
+-	if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
+-		/* For AXI DMA resetting once channel will reset the
+-		 * other channel as well so enable the interrupts here.
+-		 */
+-		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+-			      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
+-	}
 -
--	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
--	       SMB2_CLIENT_GUID_SIZE);
--	INIT_LIST_HEAD(&lb->lease_list);
--	spin_lock_init(&lb->lb_lock);
--	opinfo->o_lease->l_lb = lb;
-+	opinfo->o_lease->l_lb = new_lb;
- 	lease_add_list(opinfo);
--	lb_add(lb);
--	return 0;
-+	list_add(&new_lb->l_entry, &lease_table_list);
-+	write_unlock(&lease_list_lock);
- }
+ 	if ((chan->xdev->dma_config->dmatype == XDMA_TYPE_CDMA) && chan->has_sg)
+ 		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+ 			     XILINX_CDMA_CR_SGMODE);
+@@ -1591,6 +1583,7 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 			     head_desc->async_tx.phys);
+ 	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
+ 	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
++	reg |= XILINX_DMA_DMAXR_ALL_IRQ_MASK;
+ 	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
  
- static void set_oplock_level(struct oplock_info *opinfo, int level,
-@@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *
- 	int err = 0;
- 	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
- 	struct ksmbd_inode *ci = fp->f_ci;
-+	struct lease_table *new_lb = NULL;
- 	bool prev_op_has_lease;
- 	__le32 prev_op_state = 0;
- 
-@@ -1291,21 +1293,37 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	opinfo_count_inc(fp);
--	opinfo_add(opinfo, fp);
--
-+	/*
-+	 * Set o_fp before any publication so that concurrent readers
-+	 * (e.g. find_same_lease_key() on the lease list) that
-+	 * dereference opinfo->o_fp don't hit a NULL pointer.
-+	 *
-+	 * Keep the original publication order so concurrent opens can
-+	 * still observe the in-flight grant via ci->m_op_list, but make
-+	 * everything after opinfo_add() no-fail by preallocating any new
-+	 * lease_table first.
-+	 */
-+	opinfo->o_fp = fp;
- 	if (opinfo->is_lease) {
--		err = add_lease_global_list(opinfo);
--		if (err)
-+		new_lb = alloc_lease_table(opinfo);
-+		if (!new_lb) {
-+			err = -ENOMEM;
- 			goto err_out;
-+		}
- 	}
- 
-+	opinfo_count_inc(fp);
-+	opinfo_add(opinfo, fp);
-+
-+	if (opinfo->is_lease)
-+		add_lease_global_list(opinfo, new_lb);
-+
- 	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
- 
- 	return 0;
- err_out:
--	__free_opinfo(opinfo);
-+	kfree(new_lb);
-+	opinfo_put(opinfo);
- 	return err;
- }
- 
+ 	xilinx_dma_start(chan);
+-- 
+2.53.0
+
 
 
 
