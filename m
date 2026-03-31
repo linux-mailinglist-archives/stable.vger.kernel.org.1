@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-232298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCBrK07/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:26 +0200
+	id oFCAFpn6y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:47:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B89C36DEAD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E49D336D240
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6029330CAE28
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4019306FE9A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738A2425CD7;
-	Tue, 31 Mar 2026 16:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C6B42E01F;
+	Tue, 31 Mar 2026 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7j9PAEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqHBsCQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361033A1E8C;
-	Tue, 31 Mar 2026 16:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1415042B749;
+	Tue, 31 Mar 2026 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976388; cv=none; b=MRrryQX+N6j9+5rNM4V4KkMy4dHDnzkGi09QadD7WCjuLPn0becypcRAO9PPEv2W8/Epg906N3uN898l0zKKWgdMUCh22OMjNKBxqtRyWmgY09VLOc2lUK3PMbxOwe+TzhiBF1nxzdsnL/F6fdMdjBsc0VSzSape7oIE8EQKYKI=
+	t=1774975050; cv=none; b=Ubunj/W90LZkSFEo8DF90hw67k730OVNtPQUqDkHodHt0IK7SDytFkTLxnh2Ihca01hotPfkRihLQ8w45B/woMmf6/28S9hjaAZKvhPsYPH3efNyJKj8sX6PewVgYdS7acYevG1QNO11NtUzAlc62AJCraJX23QDU7PgwzsJOic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976388; c=relaxed/simple;
-	bh=6P31AoUHd9wGKr3GtdQ53IeYIMl4mOGrgM0LR659aUc=;
+	s=arc-20240116; t=1774975050; c=relaxed/simple;
+	bh=cpvaPajKKb7Hg0NhcM1DOLUywA/3Rjd3v093csPUYek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRnyPVxu7hD8ajUwt4T9bxVEluf9ZXO4CaArpveENGAopTNPWxHLjs6NNvCbmRKVzQJLXkuFmIXxIW1sbTIAO+/sDt55Ff58/eZVdEqYLglyT5Mz4jNa75NvUeIqSwuGa2bqckmyO90TnaQozI6IbmzTu0+v/QaZF4NIqZ/kIzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7j9PAEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01B4C19423;
-	Tue, 31 Mar 2026 16:59:47 +0000 (UTC)
+	 MIME-Version; b=g+7vT+9iPMhLUKoMWJk9GIJlhlvLYlDUze5DMiNe/rP6kLEDwK6JRSQ/s76bc14cqFoC0GNC2EH9Hn0o+t1C/g9FzJGaz/gCbGVZSkyMp5XvtnGSzfjghdoypttuCZyrESmS/CwvExdWGozQppr20bqPQtA1+PZGGpxjQksREus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqHBsCQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73745C19423;
+	Tue, 31 Mar 2026 16:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976388;
-	bh=6P31AoUHd9wGKr3GtdQ53IeYIMl4mOGrgM0LR659aUc=;
+	s=korg; t=1774975050;
+	bh=cpvaPajKKb7Hg0NhcM1DOLUywA/3Rjd3v093csPUYek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7j9PAEfTQpnrQLd4HOJJgr8jWeRVgDMev8xPqVjp8yU8iiDugY3b64HNxJUd+9kG
-	 +K8dahcargQAMPDXBvY6D3m2kEwfcGtwSWpRWlVhYZl5MMgdPjVLfsClNl6wrtO9oM
-	 5F3DEJKyDg6Remo3dGGPjQ50zo8FgNqJYkuWDxew=
+	b=vqHBsCQDh/DJJ+YK0bNCwyxFOuFLuNWLSm7vQzgv/zsdOlMfhoK8UA/+NlZyIz8jV
+	 6biubrnIJFnMMc5uscmwiOnjcXX86PrscAh/kx5zKxVrh6u8lIMUo4e1Vvy2mz7VOW
+	 +HwJ3Im6oTJX02/IH4tPvJUmPkAkUesEopyDTfTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 074/309] pinctrl: renesas: rza1: Normalize return value of gpio_get()
+Subject: [PATCH 6.19 144/342] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
 Date: Tue, 31 Mar 2026 18:19:37 +0200
-Message-ID: <20260331161756.213251264@linuxfoundation.org>
+Message-ID: <20260331161804.306524900@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +66,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232298-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,oss.qualcomm.com,kernel.org,glider.be];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231780-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,glider.be:email,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2B89C36DEAD
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email]
+X-Rspamd-Queue-Id: E49D336D240
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit fb22bb9701d48c4b0e81fe204c2f96a37a520568 ]
+[ Upstream commit 6a2b724460cb67caed500c508c2ae5cf012e4db4 ]
 
-The GPIO .get() callback is expected to return 0 or 1 (or a negative
-error code).  Ensure that the value returned by rza1_gpio_get() is
-normalized to the [0, 1] range.
+process_sdp() declares union nf_inet_addr rtp_addr on the stack and
+passes it to the nf_nat_sip sdp_session hook after walking the SDP
+media descriptions. However rtp_addr is only initialized inside the
+media loop when a recognized media type with a non-zero port is found.
 
-Fixes: 86ef402d805d606a ("gpiolib: sanitize the return value of gpio_chip::get()")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/aZYnyl-Nf4S1U2yj@google.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+If the SDP body contains no m= lines, only inactive media sections
+(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
+assigned. Despite that, the function still calls hooks->sdp_session()
+with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
+value as an IP address and rewrite the SDP session owner and connection
+lines with it.
+
+With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
+results in the session-level o= and c= addresses being rewritten to
+0.0.0.0 for inactive SDP sessions. Without stack auto-init the
+rewritten address is whatever happened to be on the stack.
+
+Fix this by pre-initializing rtp_addr from the session-level connection
+address (caddr) when available, and tracking via a have_rtp_addr flag
+whether any valid address was established. Skip the sdp_session hook
+entirely when no valid address exists.
+
+Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rza1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rza1.c b/drivers/pinctrl/renesas/pinctrl-rza1.c
-index f24e5915cbe4b..2677ee7035fce 100644
---- a/drivers/pinctrl/renesas/pinctrl-rza1.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rza1.c
-@@ -590,7 +590,7 @@ static inline unsigned int rza1_get_bit(struct rza1_port *port,
- {
- 	void __iomem *mem = RZA1_ADDR(port->base, reg, port->id);
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 4ab5ef71d96db..17af0ff4ea7ab 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	unsigned int port;
+ 	const struct sdp_media_type *t;
+ 	int ret = NF_ACCEPT;
++	bool have_rtp_addr = false;
  
--	return ioread16(mem) & BIT(bit);
-+	return !!(ioread16(mem) & BIT(bit));
- }
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
  
- /**
+@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	caddr_len = 0;
+ 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
+ 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
+-				  &matchoff, &matchlen, &caddr) > 0)
++				  &matchoff, &matchlen, &caddr) > 0) {
+ 		caddr_len = matchlen;
++		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
++		have_rtp_addr = true;
++	}
+ 
+ 	mediaoff = sdpoff;
+ 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
+@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 					  &matchoff, &matchlen, &maddr) > 0) {
+ 			maddr_len = matchlen;
+ 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
+-		} else if (caddr_len)
++			have_rtp_addr = true;
++		} else if (caddr_len) {
+ 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
+-		else {
++			have_rtp_addr = true;
++		} else {
+ 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
+ 			return NF_DROP;
+ 		}
+@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	/* Update session connection and owner addresses */
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
+-	if (hooks && ct->status & IPS_NAT_MASK)
++	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
+ 		ret = hooks->sdp_session(skb, protoff, dataoff,
+ 					 dptr, datalen, sdpoff,
+ 					 &rtp_addr);
 -- 
 2.51.0
 
