@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJq6FosBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-231866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:59 +0200
+	id SC1MEX0AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C577336E660
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF46836E2AB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78728311BFA6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2C63307F3AF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28EF426EBB;
-	Tue, 31 Mar 2026 16:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39412FF669;
+	Tue, 31 Mar 2026 17:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g67NmNa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7baDZT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650F0425CE7;
-	Tue, 31 Mar 2026 16:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B736D2D63E8;
+	Tue, 31 Mar 2026 17:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975270; cv=none; b=IFEBxjOM/HPOLUkRWogGxoEu99RiOeQb+lpgLvjrAy7IPu7Nx3vAa2xYa5q6Um9AI1JQsQKOCR/iEw5HCQsj7H5/PL0mIk9C82E5qHHOdQ2UVsu3KgPIAA9RSNjrx1pGJvfKt8XYaeNmf9WZn+7Fsw8HxEQeGHdAMrTLTbjwmys=
+	t=1774976610; cv=none; b=ugSV1WWNASoo4OEUgCJy6La8ylKREKRwikhKkqdFvsKpXQ0DCFiaQFJUopKUCv/1xW3L16IrfZETBi6BTARyjbx4WHCXOEHGzbrK0ybM8lQNuKhnZGmdUWMw78sUeBRCWm4yVNeDGnLS/2XRzmuUojoEpWT8i3rFSC3NWcO5k1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975270; c=relaxed/simple;
-	bh=bWsHUIrdk2PqkAi/pI2DblEf9ucFbl6/hQSkdJteGJE=;
+	s=arc-20240116; t=1774976610; c=relaxed/simple;
+	bh=9AbhmYnavbjXMdIB10mh+JVQNfcspX/J4B9fhFhxQKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNe0iOqwrQWQm6Ya7RfV7G3z0sPQoCPeu/+jic/DnBTlUmQwsKsOA8NKgyV78MKCm2CyyZVTjHpMi/K8YkRAY+7m2Q8iwoq2p/4BFv0V2iVxxnXDGCDVmkLjW/4TyoXvCIv3tDd1w50mjNBwEcupFs9sEUgHbqFIrGl8mFK5eo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g67NmNa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0063C19423;
-	Tue, 31 Mar 2026 16:41:09 +0000 (UTC)
+	 MIME-Version; b=iV2E1nJiMW7J8jG8ZemzO/SwO+BznrGx10cfwhbmMK//CjNBnJbctPc9dERyH6Go/m92b8Ha9NooKeIJ9cB0H5fn12sR6wh9s7eTWdwzriQ69im/JiojJewWiS1Ow9QeD+D5U+RsSOIJUIARfPnRSUREl+jG5foHQ/h3yWkXw18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7baDZT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A12C19423;
+	Tue, 31 Mar 2026 17:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975270;
-	bh=bWsHUIrdk2PqkAi/pI2DblEf9ucFbl6/hQSkdJteGJE=;
+	s=korg; t=1774976610;
+	bh=9AbhmYnavbjXMdIB10mh+JVQNfcspX/J4B9fhFhxQKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g67NmNa16K3clnqQ9818SFvLtjNp/aqWnG1h2agg8VF3XEvVRFyaaUNnJucy4LJcU
-	 WLABHksTVlGvr+IMdw6OOKGNv7I0iRzBBUeRDHuXcCz+RPua0nvd3astnHaqnljDwP
-	 LIggf9xDLB2BF7rzFAD624bwRLjsZyr2buwIn3aQ=
+	b=C7baDZT6Oq1BS26XD37RGg4kSJ4Vy3xgsfSaan207CAqVaZo+Pc6O5KmJiyCCqyoI
+	 8ZcTOIo8NQP2pHcAePeS/IdbzrSrszz6JMPVvpjb6yiVCi0SqyKFezBiY1Tvq9c8he
+	 +Wwxd1KtbgydsoyryNHgg0DWFiLDfRkWauwMhPKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuchan Nam <entropy1110@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.19 228/342] media: mc, v4l2: serialize REINIT and REQBUFS with req_queue_mutex
+	Felix Gu <ustc.gu@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 158/309] spi: meson-spicc: Fix double-put in remove path
 Date: Tue, 31 Mar 2026 18:21:01 +0200
-Message-ID: <20260331161807.355718132@linuxfoundation.org>
+Message-ID: <20260331161759.283929687@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +68,77 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231866-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-232385-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.992];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: C577336E660
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DF46836E2AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuchan Nam <entropy1110@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit bef4f4a88b73e4cc550d25f665b8a9952af22773 upstream.
+[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
 
-MEDIA_REQUEST_IOC_REINIT can run concurrently with VIDIOC_REQBUFS(0)
-queue teardown paths. This can race request object cleanup against vb2
-queue cancellation and lead to use-after-free reports.
+meson_spicc_probe() registers the controller with
+devm_spi_register_controller(), so teardown already drops the
+controller reference via devm cleanup.
 
-We already serialize request queueing against STREAMON/OFF with
-req_queue_mutex. Extend that serialization to REQBUFS, and also take
-the same mutex in media_request_ioctl_reinit() so REINIT is in the
-same exclusion domain.
+Calling spi_controller_put() again in meson_spicc_remove()
+causes a double-put.
 
-This keeps request cleanup and queue cancellation from running in
-parallel for request-capable devices.
-
-Fixes: 6093d3002eab ("media: vb2: keep a reference to the request until dqbuf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-request.c        |    5 +++++
- drivers/media/v4l2-core/v4l2-ioctl.c |    5 +++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-meson-spicc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/media/mc/mc-request.c
-+++ b/drivers/media/mc/mc-request.c
-@@ -190,6 +190,8 @@ static long media_request_ioctl_reinit(s
- 	struct media_device *mdev = req->mdev;
- 	unsigned long flags;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 6b91373075334..c99fab392add1 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -1102,8 +1102,6 @@ static void meson_spicc_remove(struct platform_device *pdev)
  
-+	mutex_lock(&mdev->req_queue_mutex);
-+
- 	spin_lock_irqsave(&req->lock, flags);
- 	if (req->state != MEDIA_REQUEST_STATE_IDLE &&
- 	    req->state != MEDIA_REQUEST_STATE_COMPLETE) {
-@@ -197,6 +199,7 @@ static long media_request_ioctl_reinit(s
- 			"request: %s not in idle or complete state, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	if (req->access_count) {
-@@ -204,6 +207,7 @@ static long media_request_ioctl_reinit(s
- 			"request: %s is being accessed, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	req->state = MEDIA_REQUEST_STATE_CLEANING;
-@@ -214,6 +218,7 @@ static long media_request_ioctl_reinit(s
- 	spin_lock_irqsave(&req->lock, flags);
- 	req->state = MEDIA_REQUEST_STATE_IDLE;
- 	spin_unlock_irqrestore(&req->lock, flags);
-+	mutex_unlock(&mdev->req_queue_mutex);
- 
- 	return 0;
+ 	/* Disable SPI */
+ 	writel(0, spicc->base + SPICC_CONREG);
+-
+-	spi_controller_put(spicc->host);
  }
---- a/drivers/media/v4l2-core/v4l2-ioctl.c
-+++ b/drivers/media/v4l2-core/v4l2-ioctl.c
-@@ -3081,13 +3081,14 @@ static long __video_do_ioctl(struct file
- 	}
  
- 	/*
--	 * We need to serialize streamon/off with queueing new requests.
-+	 * We need to serialize streamon/off/reqbufs with queueing new requests.
- 	 * These ioctls may trigger the cancellation of a streaming
- 	 * operation, and that should not be mixed with queueing a new
- 	 * request at the same time.
- 	 */
- 	if (v4l2_device_supports_requests(vfd->v4l2_dev) &&
--	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF)) {
-+	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF ||
-+	     cmd == VIDIOC_REQBUFS)) {
- 		req_queue_lock = &vfd->v4l2_dev->mdev->req_queue_mutex;
- 
- 		if (mutex_lock_interruptible(req_queue_lock))
+ static const struct meson_spicc_data meson_spicc_gx_data = {
+-- 
+2.53.0
+
 
 
 
