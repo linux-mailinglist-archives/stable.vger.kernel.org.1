@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-231743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKudHGH6y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:25 +0200
+	id SDkrKyz/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE15336D1D3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528F436DE56
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08F053149273
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1279130C14A5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C5A425CEF;
-	Tue, 31 Mar 2026 16:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309AB425CD6;
+	Tue, 31 Mar 2026 16:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xi9wgebe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSAm72jI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8767B425CC6;
-	Tue, 31 Mar 2026 16:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7791423A9B;
+	Tue, 31 Mar 2026 16:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974953; cv=none; b=YyNrOBVvdxJaikK31jRBKTBb7NfMoQirHwFK7GiZTucx+zCpjOi/0W+yyr6tzuwUhX2+MikTzxd0p4B6Zmy68GG3/J0xPsLOK7CLAkkKK4aLJjoA2t6H4YsJWUJ8vHhFIzNGgLCpyLw7oBfyRgRbEx8pTEbegH/g5mEKQq5O9EE=
+	t=1774976365; cv=none; b=tnMhMlKetzde52Moa9WeEmi77ksvosugcht7/F7Hb4DPXop/0V0fbEUkO2k2hIiPNypSfQ/hP58LH+57G80PXePyB7D78vJsvwrw35VvKzcWH4Wuy6rB/WSdDxrIa/8U+UL91nKRRzlE9a8ez3T4CTnxa3mkbU/Xt4qARoYgALM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974953; c=relaxed/simple;
-	bh=3Cuj2mNxv2WSj7tr94O2WHccRHgUbvSK0mNKGndP+/w=;
+	s=arc-20240116; t=1774976365; c=relaxed/simple;
+	bh=iMT3rwbCNcoleWwrLLbYHTrKTPy8nsn7RhJ37ochWD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Asqx5tEp7Xh4C/+NRk9HXhPK6q7XFitq/u514mvVVPwpVZ1oxQisSqfEwSjqwuGBoE1tvcgWQMHqgKpAk6SEsq1WxFObFHvCEF1H+HLYljxm73Hsrf4YuIcPjYuQGqeBqIQqhRv4TXYs/z409VeHel4/U9yetJO6MYdmHladcqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xi9wgebe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D177C19423;
-	Tue, 31 Mar 2026 16:35:52 +0000 (UTC)
+	 MIME-Version; b=t+/O3YppFEEvSdTLn7Hps5Aofwwb69FP0djNvGTJT70hZ/IgHlFxeZCuJx0bjNY9aY2pyqgFxCO8NLTeEVrmOjXGR+Lzjmk1FDR2VTW1l5+35BWRlf5GgWesh2M9A4Ivvcjo5YFWZQqJvI306Sn2a6KZ69V5u7CGEKNiuTX5JV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSAm72jI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F072C19423;
+	Tue, 31 Mar 2026 16:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974953;
-	bh=3Cuj2mNxv2WSj7tr94O2WHccRHgUbvSK0mNKGndP+/w=;
+	s=korg; t=1774976364;
+	bh=iMT3rwbCNcoleWwrLLbYHTrKTPy8nsn7RhJ37ochWD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xi9wgebeAHUeIPrStarKhI1grH5zikgK2/X415Gumw6hrC/PyU6DUCLTvayx/TYuz
-	 SUIgMZnX5V8IwkVLgN36c3B0Wb7HEHfHlGS9ATVoQgo54tpqttPXh9gbYhLzTY+eEG
-	 aKpntV3o9KIuq5/k35DIyx2oc7WQ1pyYxYtvO8is=
+	b=CSAm72jItbyoyWT8WcSsBtnOWEznWEoHKHAM1p8aSv6EJbiQsX/0JPK5oEJQ6FEgs
+	 +qSQ5eF0vutXy1J7oSS8/d99nWARCoMTUSXWocLM4seqdtRbwKqXgAbh710iq9MtUx
+	 FHdr9vyg3TRd5TS1UL6+K8+/cM5NjpSP8bu/6vQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenguanyou <chenguanyou@xiaomi.com>,
-	Yunlei He <heyunlei@xiaomi.com>,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 090/342] erofs: set fileio bio failed in short read case
-Date: Tue, 31 Mar 2026 18:18:43 +0200
-Message-ID: <20260331161802.332690080@linuxfoundation.org>
+Subject: [PATCH 6.18 021/309] nvme-pci: cap queue creation to used queues
+Date: Tue, 31 Mar 2026 18:18:44 +0200
+Message-ID: <20260331161754.259839133@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231743-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232289-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,72 +86,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,xiaomi.com:email]
-X-Rspamd-Queue-Id: DE15336D1D3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 528F436DE56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong1@xiaomi.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit eade54040384f54b7fb330e4b0975c5734850b3c ]
+[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
 
-For file-backed mount, IO requests are handled by vfs_iocb_iter_read().
-However, it can be interrupted by SIGKILL, returning the number of
-bytes actually copied. Unused folios in bio are unexpectedly marked
-as uptodate.
+If the user reduces the special queue count at runtime and resets the
+controller, we need to reduce the number of queues and interrupts
+requested accordingly rather than start with the pre-allocated queue
+count.
 
-  vfs_read
-    filemap_read
-      filemap_get_pages
-        filemap_readahead
-          erofs_fileio_readahead
-            erofs_fileio_rq_submit
-              vfs_iocb_iter_read
-                filemap_read
-                  filemap_get_pages  <= detect signal
-              erofs_fileio_ki_complete  <= set all folios uptodate
-
-This patch addresses this by setting short read bio with an error
-directly.
-
-Fixes: bc804a8d7e86 ("erofs: handle end of filesystem properly for file-backed mounts")
-Reported-by: chenguanyou <chenguanyou@xiaomi.com>
-Signed-off-by: Yunlei He <heyunlei@xiaomi.com>
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Tested-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/fileio.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index 2a778a02681a0..aa580c59fe645 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -25,10 +25,8 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
- 			container_of(iocb, struct erofs_fileio_rq, iocb);
- 	struct folio_iter fi;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 9987b711091f0..4459687eb7bb6 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2707,7 +2707,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
  
--	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size) {
--		bio_advance(&rq->bio, ret);
--		zero_fill_bio(&rq->bio);
--	}
-+	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size)
-+		ret = -EIO;
- 	if (!rq->bio.bi_end_io) {
- 		bio_for_each_folio_all(fi, &rq->bio) {
- 			DBG_BUGON(folio_test_uptodate(fi.folio));
+-	nr_io_queues = dev->nr_allocated_queues - 1;
++	/*
++	 * The initial number of allocated queue slots may be too large if the
++	 * user reduced the special queue parameters. Cap the value to the
++	 * number we need for this round.
++	 */
++	nr_io_queues = min(nvme_max_io_queues(dev),
++			   dev->nr_allocated_queues - 1);
+ 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
+ 	if (result < 0)
+ 		return result;
 -- 
 2.51.0
 
