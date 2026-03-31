@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-232064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIwFGTECzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:45 +0200
+	id wLRvNH8AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF7636E7EB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDEE36E2B2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B814631D9547
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EFB13072BE4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9AC413225;
-	Tue, 31 Mar 2026 16:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F502D63E8;
+	Tue, 31 Mar 2026 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNhPj8Uc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lD6moatx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35D32C15B2;
-	Tue, 31 Mar 2026 16:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EB92E1C7C;
+	Tue, 31 Mar 2026 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975783; cv=none; b=EFR51zQBTyBneDkONAlX8P+V45SS6DcWyeyLZL7CCiZVsOK4dlMvTbdloYdofXst9TkthJGeqHOfwEYNBbogFbiatGZsj1q9a9zCvwA4LyWFSexBkIElVdA0XIKtD9l5AbeJZG+3EHfOa+v4GNyUIgv1/PbrLQQZSp3Z4c6AzUk=
+	t=1774976623; cv=none; b=gzjOmzg4d24uCaZCnMM1jFjNypJqrQ6ltF3R2u9VRDJrjq0qvYjGTrJMpzGwIKqit/1HK3g3Ko+J6/u8+ZpAEg5q0Xd6uLBjSVwzMicahlsrej3vnh9T962xbFB5DI4VskxOlp68v7Xrc3GWzUPOGC5PG6jb5qR/o66HAg5bahs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975783; c=relaxed/simple;
-	bh=+vmAX3mbGBVq2CVJ9Jviwd+o7nh7mKw1aXUGPtoRmQA=;
+	s=arc-20240116; t=1774976623; c=relaxed/simple;
+	bh=30HU1ZKTYxsXghdRU46y2sbfPyPEK1Ia/3bxeyiiVcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFHW8n20d4DfUe1LOXjTZgnE50Cz90j8am1yprva/Tkit5qhXs25fiwrlBT3GfVu7U4sFwFJ9yyYAdTUUWTjXwpbmB7hxY1MyNoTLk02Q9PFqB0HdO2kzYynrPkCp9ELXAyGt96ziLXaEPdBDYPZ3lPqXphGDqN8AFX7NlkUWTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNhPj8Uc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CAFC19423;
-	Tue, 31 Mar 2026 16:49:42 +0000 (UTC)
+	 MIME-Version; b=g+zgYiZOzrsJZNJH0fHtnLv4k9lJJu3QFi0BrvQJGMLfiT0RPCaDZgf4WMwehJv0ui2oOCZm2P55TWybm8qql2wDkdqCRU9aJFJ1cFcrqJVSq06NngrsIb9tFIvCc6bKI7UUAWdwMl/4g8x1J5Ml+Gdm2T6sBmcw4ruY+Nowies=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lD6moatx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDA8C19423;
+	Tue, 31 Mar 2026 17:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975782;
-	bh=+vmAX3mbGBVq2CVJ9Jviwd+o7nh7mKw1aXUGPtoRmQA=;
+	s=korg; t=1774976623;
+	bh=30HU1ZKTYxsXghdRU46y2sbfPyPEK1Ia/3bxeyiiVcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNhPj8Uc66RsCCPaDbNAwOShtQItKNZD3DI6UpFBkaH2YxMoN16vxYYrgFVdFnIIn
-	 QV2NgBHYtGK1ohk4BC+lYz5Q97pYFQgTFzg8tEP0jJgsPyX4gvOEPRmA+p2ez66rTh
-	 8oi12k8GVV06KKIgUjmJ5Qtu7ixpJkGrh5mPTpS8=
+	b=lD6moatx44/OZadRqjuY+7Y2ApPSvQaeZr5rKFWRFTgi/HoSYyIoL/OOUeLBMa32y
+	 uC7gzCVL5cCAX7azLXdhFsYzMM+hFsl21UHGJ8ceweix2QgR2YzFELKzR1b/JsrxCS
+	 Wh3i7mewoqBruv+yBXOm2obus7sMKRRYucG+uT+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Valerio <pvalerio@redhat.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/244] ipv6: Remove permanent routes from tb6_gc_hlist when all exceptions expire.
+Subject: [PATCH 6.18 132/309] net: macb: use the current queue number for stats
 Date: Tue, 31 Mar 2026 18:20:35 +0200
-Message-ID: <20260331161744.820145606@linuxfoundation.org>
+Message-ID: <20260331161758.336249845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +65,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232064-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232390-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: BEF7636E7EB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6CDEE36E2B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Paolo Valerio <pvalerio@redhat.com>
 
-[ Upstream commit 6af51e9f31336632263c4680b2a3712295103e1f ]
+[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
 
-Commit 5eb902b8e719 ("net/ipv6: Remove expired routes with a
-separated list of routes.") introduced a per-table GC list and
-changed GC to iterate over that list instead of traversing
-the entire route table.
+There's a potential mismatch between the memory reserved for statistics
+and the amount of memory written.
 
-However, it forgot to add permanent routes to tb6_gc_hlist
-when exception routes are added.
+gem_get_sset_count() correctly computes the number of stats based on the
+active queues, whereas gem_get_ethtool_stats() indiscriminately copies
+data using the maximum number of queues, and in the case the number of
+active queues is less than MACB_MAX_QUEUES, this results in a OOB write
+as observed in the KASAN splat.
 
-Commit cfe82469a00f ("ipv6: add exception routes to GC list
-in rt6_insert_exception") fixed that issue but introduced
-another one.
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
+  [macb]
+Write of size 760 at addr ffff80008080b000 by task ethtool/1027
 
-Even after all exception routes expire, the permanent routes
-remain in tb6_gc_hlist, potentially negating the performance
-benefits intended by the initial change.
+CPU: [...]
+Tainted: [E]=UNSIGNED_MODULE
+Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
+Call trace:
+ show_stack+0x20/0x38 (C)
+ dump_stack_lvl+0x80/0xf8
+ print_report+0x384/0x5e0
+ kasan_report+0xa0/0xf0
+ kasan_check_range+0xe8/0x190
+ __asan_memcpy+0x54/0x98
+ gem_get_ethtool_stats+0x54/0x78 [macb
+   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
+ dev_ethtool+0x1220/0x38c0
+ dev_ioctl+0x4ac/0xca8
+ sock_do_ioctl+0x170/0x1d8
+ sock_ioctl+0x484/0x5d8
+ __arm64_sys_ioctl+0x12c/0x1b8
+ invoke_syscall+0xd4/0x258
+ el0_svc_common.constprop.0+0xb4/0x240
+ do_el0_svc+0x48/0x68
+ el0_svc+0x40/0xf8
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1b0/0x1b8
 
-Let's count gc_args->more before and after rt6_age_exceptions()
-and remove the permanent route when the delta is 0.
+The buggy address belongs to a 1-page vmalloc region starting at
+  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000
+  index:0xffff00000a333000 pfn:0xa333
+flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
+raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
+raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
 
-Note that the next patch will reuse fib6_age_exceptions().
+Memory state around the buggy address:
+ ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                                  ^
+ ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+==================================================================
 
-Fixes: cfe82469a00f ("ipv6: add exception routes to GC list in rt6_insert_exception")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260320072317.2561779-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix it by making sure the copied size only considers the active number of
+queues.
+
+Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
+Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 01c953a39211a..fca68fb1b74c2 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -2314,6 +2314,17 @@ static void fib6_flush_trees(struct net *net)
- /*
-  *	Garbage collection
-  */
-+static void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
-+				unsigned long now)
-+{
-+	bool may_expire = rt->fib6_flags & RTF_EXPIRES && rt->expires;
-+	int old_more = gc_args->more;
-+
-+	rt6_age_exceptions(rt, gc_args, now);
-+
-+	if (!may_expire && old_more == gc_args->more)
-+		fib6_remove_gc_list(rt);
-+}
- 
- static int fib6_age(struct fib6_info *rt, struct fib6_gc_args *gc_args)
- {
-@@ -2336,7 +2347,7 @@ static int fib6_age(struct fib6_info *rt, struct fib6_gc_args *gc_args)
- 	 *	Note, that clones are aged out
- 	 *	only if they are not in use now.
- 	 */
--	rt6_age_exceptions(rt, gc_args, now);
-+	fib6_age_exceptions(rt, gc_args, now);
- 
- 	return 0;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 4624db166a27b..55a0258c2eaa5 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -3258,7 +3258,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
+ 	spin_lock_irq(&bp->stats_lock);
+ 	gem_update_stats(bp);
+ 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
+-			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
++			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
+ 	spin_unlock_irq(&bp->stats_lock);
  }
+ 
 -- 
 2.51.0
 
