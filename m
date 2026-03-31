@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIvWEe/2y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:43 +0200
+	id eN06AS7+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FB236CB5A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66A036DB4E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09ACC3067CA0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A1F930B3974
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7E73F99EA;
-	Tue, 31 Mar 2026 16:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75D6425CD9;
+	Tue, 31 Mar 2026 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYCzImex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnLMi6nw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5223DD507;
-	Tue, 31 Mar 2026 16:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3E1425CD4;
+	Tue, 31 Mar 2026 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974436; cv=none; b=Exi2ejTP4O/BzEsBtIM+5c1IHFNxhF4edhwBE+0cynsaiMSRm1+u1MHp8zNWUk587jq1UJK7K+NU0A2Wx8Xkbchbz6LYaS/jXU/BK/5RBZ2gaoj1V4ugZwNF5dJDaK/dUZVc91oy+RA51Wou0UL0UsEtuYGgbBLIgoRU3OBMnIE=
+	t=1774975870; cv=none; b=gpu7KKEHGTR1OSgyA/0jh5WnKlTyj07c4THIfee2ibn04ipRsI/78IS8QIgJtwUhtridJqBvHZUwW9YbK0ei3/HyZ0g0DOO4zs8+9oUOI171GmmoC+XRisf+uY1C/gPxG23IwHx7Jx+85mf1GDyq9f/xAgsBXnKDvgjos2jU87M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974436; c=relaxed/simple;
-	bh=mF+H9r87XSDDP4ZRmDpCK8Q7Fy2TeQOQZ9nuR1Argis=;
+	s=arc-20240116; t=1774975870; c=relaxed/simple;
+	bh=n80LRVviTYEzo4LI23v1fxRkF9f5wtZXY9GhDqewReo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqO6+Ikp/V3H5FH+tHOEPjRyPyU1RjWf9kHjRpA7l2PNWCV23BA7atTBWEIDldrl1V8tmRMiwgJ6pdINrDkdgpo3GzLzhKpFEQ5D3uhVLY7d+CBnO/zmGxXeo4bihhMczeHcA7lrjaPTC/QWezQzJS3vBL5kr3gIhuUDxmXWfS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYCzImex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69B2C19423;
-	Tue, 31 Mar 2026 16:27:15 +0000 (UTC)
+	 MIME-Version; b=KBZRRxpEHQbfjuTa0OVNyMGMmpayHEP1smZr4x8HgizrsyRwEm7YfA845NP012onO6evbU1sOlgVfoD0D1EIrBRUWNvDzf5w0cm+eAihTktBcuDbOPK3P8/9lkEOK7Oh9zgZHRYrACpDRG5K/JZoSmzpCR8SE0OOMYSgeasP00s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnLMi6nw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D10C19423;
+	Tue, 31 Mar 2026 16:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974436;
-	bh=mF+H9r87XSDDP4ZRmDpCK8Q7Fy2TeQOQZ9nuR1Argis=;
+	s=korg; t=1774975870;
+	bh=n80LRVviTYEzo4LI23v1fxRkF9f5wtZXY9GhDqewReo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYCzImexdiIQgP7dBoPEGWqutnu8JETWKwsVU0LYeZOj6l2VXY2yaGIKHdfTkiYSD
-	 Fr/fHOiOmXjzRFp4pC89HFZGA0A4sB+HAmb+rx/B4dUmUQsWdnXjaGH+lThvE//OZP
-	 UUdI4Mcj1cUu96BqQ0XkZcRR5N8VNVEQa1CcinsE=
+	b=gnLMi6nwvWlKfnYgjn20wZh6I9FU97PzP9TekhBhvK3Yj4FUxBdz+AXHSyX5BbKhW
+	 6r2Ea2xi4Orfhehe9I0URifXCJrhvJ9NqdjU6NU7phms9ypgYWUPsoZxzb9IJZJzqI
+	 0mx1q/Gvx6fZvxfsDVVpaXxmmQfq/bOZIh5q9elM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/175] x86/efi: efi_unmap_boot_services: fix calculation of ranges_to_free size
+Subject: [PATCH 6.12 119/244] spi: sn-f-ospi: Fix resource leak in f_ospi_probe()
 Date: Tue, 31 Mar 2026 18:21:09 +0200
-Message-ID: <20260331161732.895039751@linuxfoundation.org>
+Message-ID: <20260331161746.056406396@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +64,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231541-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232098-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.988];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email]
-X-Rspamd-Queue-Id: D3FB236CB5A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D66A036DB4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 217c0a5c177a3d4f7c8497950cbf5c36756e8bbb ]
+[ Upstream commit ef3d549e1deb3466c61f3b01d22fc3fe3e5efb08 ]
 
-ranges_to_free array should have enough room to store the entire EFI
-memmap plus an extra element for NULL entry.
-The calculation of this array size wrongly adds 1 to the overall size
-instead of adding 1 to the number of elements.
+In f_ospi_probe(), when num_cs validation fails, it returns without
+calling spi_controller_put() on the SPI controller, which causes a
+resource leak.
 
-Add parentheses to properly size the array.
+Use devm_spi_alloc_host() instead of spi_alloc_host() to ensure the
+SPI controller is properly freed when probe fails.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: a4b0bf6a40f3 ("x86/efi: defer freeing of boot services memory")
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Link: https://patch.msgid.link/20260319-sn-f-v1-1-33a6738d2da8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/efi/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sn-f-ospi.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index df3b45ef1420c..a29efaf6fe411 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -424,7 +424,7 @@ void __init efi_unmap_boot_services(void)
- 	if (efi_enabled(EFI_DBG))
- 		return;
+diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
+index fd8c8eb37d01d..2d6d50b6f4dc9 100644
+--- a/drivers/spi/spi-sn-f-ospi.c
++++ b/drivers/spi/spi-sn-f-ospi.c
+@@ -609,7 +609,7 @@ static int f_ospi_probe(struct platform_device *pdev)
+ 	u32 num_cs = OSPI_NUM_CS;
+ 	int ret;
  
--	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	sz = sizeof(*ranges_to_free) * (efi.memmap.nr_map + 1);
- 	ranges_to_free = kzalloc(sz, GFP_KERNEL);
- 	if (!ranges_to_free) {
- 		pr_err("Failed to allocate storage for freeable EFI regions\n");
+-	ctlr = spi_alloc_host(dev, sizeof(*ospi));
++	ctlr = devm_spi_alloc_host(dev, sizeof(*ospi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+@@ -632,16 +632,12 @@ static int f_ospi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, ospi);
+ 
+ 	ospi->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(ospi->base)) {
+-		ret = PTR_ERR(ospi->base);
+-		goto err_put_ctlr;
+-	}
++	if (IS_ERR(ospi->base))
++		return PTR_ERR(ospi->base);
+ 
+ 	ospi->clk = devm_clk_get_enabled(dev, NULL);
+-	if (IS_ERR(ospi->clk)) {
+-		ret = PTR_ERR(ospi->clk);
+-		goto err_put_ctlr;
+-	}
++	if (IS_ERR(ospi->clk))
++		return PTR_ERR(ospi->clk);
+ 
+ 	mutex_init(&ospi->mlock);
+ 
+@@ -658,9 +654,6 @@ static int f_ospi_probe(struct platform_device *pdev)
+ err_destroy_mutex:
+ 	mutex_destroy(&ospi->mlock);
+ 
+-err_put_ctlr:
+-	spi_controller_put(ctlr);
+-
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
