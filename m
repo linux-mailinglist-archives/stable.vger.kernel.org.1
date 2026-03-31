@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLVZLuwEzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:24 +0200
+	id qMEYIwcJzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:48:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC0936EDD4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123E136F58C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCC1232F13A2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6308B31450C7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE3A423149;
-	Tue, 31 Mar 2026 16:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D0B3168FB;
+	Tue, 31 Mar 2026 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jppMS4AI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdZ/iM0t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226FE3E4C6C;
-	Tue, 31 Mar 2026 16:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D2A315D50;
+	Tue, 31 Mar 2026 17:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976148; cv=none; b=kR/CzEDx5n0kgfXx1q51d197x923O1EVs0qb3DNUJ2vIWDxnHrZaxaudPcX110xPQx0eB9h9TIItRxgJXCWbvgXdTf2HCvS94OFi/SeSZ4yV2dajdkNcjiQoSfEI3lR1qQP79EKmCV7IvD2FXTa7g+sec5+Rd/9sQDaOWi/9Hqc=
+	t=1774976991; cv=none; b=CqhIIH7zI2pZeJF6NV6wvXMmBx9CQFbAUnqUVE4zGLYg2HS2F3S/doZwU6/d/ocenIeLe5LV73PEdcHT6TJhkVx+BRlfE9iGsfwBNHU42vtH8hJmxSBopFKuyKz+HaQPRl7IH8U6fK5AoRfXeOYe4ogMP3hITM/6difhBRLzBUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976148; c=relaxed/simple;
-	bh=+WyitdCjyHxjQtzt56ZmCpI1/x5LCQYTLcc0lQKdT2o=;
+	s=arc-20240116; t=1774976991; c=relaxed/simple;
+	bh=W9WkA/yifFZGKNwgUvsG3Yn2hAvkQtL3nS5lBfOWXPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q17+iBW6htHpO/YX6Sdlv7RfMalJe1yGk6BT7xRJpZcg7xV5HBLEjSMX1yixvfeHsKa3YgIb/Rz4AQ456Sbw2FlSMvmD3CWSNbetErASDjUPtQDINjI28fgtc+0e3mHjL7Yh/o3WohkfCQRVcC5j2dhYoVOnK4liSaft1m3P4t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jppMS4AI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4CAC19423;
-	Tue, 31 Mar 2026 16:55:47 +0000 (UTC)
+	 MIME-Version; b=PE5UTaTnNDUryhJowExHWmbCPxh8TLQ+fTH5oNJX1REraMhwA/VI0KiHTE4jevhz3jXu+/ukVGkoztHQL35B0KFB0xHUWpjcpddRcnbWZQuNHKjC0A0jI2Dgmd6yvkfzmFV4arWqOwgvWOyTO1UhkZZNtoAqFlfF+GT4/piOAkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdZ/iM0t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE282C2BCB3;
+	Tue, 31 Mar 2026 17:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976148;
-	bh=+WyitdCjyHxjQtzt56ZmCpI1/x5LCQYTLcc0lQKdT2o=;
+	s=korg; t=1774976991;
+	bh=W9WkA/yifFZGKNwgUvsG3Yn2hAvkQtL3nS5lBfOWXPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jppMS4AIoFYs7tc0c5Gka3B719+GifkoPwD0mg6Rb8RbCIXht22t8kjwBUK7Z8j2f
-	 LnXdwBd87JQOZanVfbdFDk2gB0ghldbtU1FQwR4bLFHg/9YLeJXBcX7IzfWKNAI2fr
-	 6fN+MhTXf6ybl5vKyqspc4c5ws68zWRXYC9rTNWs=
+	b=qdZ/iM0tLvZRRAOfJe366iHoEhojMAjoLuxcwj/eaXjKg+ioOUL2XxigdROwvXsom
+	 G6Ip+72MFIQKeAMZ6nTxd97XLWVh7tOUyMlTVLgQQ2n+QrZFsHIi208Ei1Yp2FXOk/
+	 1TuehOH7pr5zH4jU97o/2hYpS2j9x/HlBFN1c0mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/244] dmaengine: idxd: Fix freeing the allocated ida too late
-Date: Tue, 31 Mar 2026 18:22:56 +0200
-Message-ID: <20260331161750.113359745@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.18 274/309] unwind_user/x86: Fix arch=um build
+Date: Tue, 31 Mar 2026 18:22:57 +0200
+Message-ID: <20260331161803.646394395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,87 +73,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232205-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232534-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4EC0936EDD4
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,infradead.org:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 123E136F58C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit c311f5e9248471a950f0a524c2fd736414d98900 ]
+commit aa7387e79a5cff0585cd1b9091944142a06872b6 upstream.
 
-It can happen that when the cdev .release() is called, the driver
-already called ida_destroy(). Move ida_free() to the _del() path.
+Add CONFIG_HAVE_UNWIND_USER_FP guards to make sure this code
+doesn't break arch=um builds.
 
-We see with DEBUG_KOBJECT_RELEASE enabled and forcing an early PCI
-unbind.
-
-Fixes: 04922b7445a1 ("dmaengine: idxd: fix cdev setup and free device lifetime issues")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-9-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510291919.FFGyU7nq-lkp@intel.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/cdev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/unwind_user.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index 8b27bd545685a..8dcd2331bb1ac 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -161,11 +161,7 @@ static const struct device_type idxd_cdev_file_type = {
- static void idxd_cdev_dev_release(struct device *dev)
- {
- 	struct idxd_cdev *idxd_cdev = dev_to_cdev(dev);
--	struct idxd_cdev_context *cdev_ctx;
--	struct idxd_wq *wq = idxd_cdev->wq;
+--- a/arch/x86/include/asm/unwind_user.h
++++ b/arch/x86/include/asm/unwind_user.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_UNWIND_USER_H
+ #define _ASM_X86_UNWIND_USER_H
  
--	cdev_ctx = &ictx[wq->idxd->data->type];
--	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
- 	kfree(idxd_cdev);
- }
- 
-@@ -585,11 +581,15 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
- 
- void idxd_wq_del_cdev(struct idxd_wq *wq)
- {
-+	struct idxd_cdev_context *cdev_ctx;
- 	struct idxd_cdev *idxd_cdev;
- 
- 	idxd_cdev = wq->idxd_cdev;
- 	wq->idxd_cdev = NULL;
- 	cdev_device_del(&idxd_cdev->cdev, cdev_dev(idxd_cdev));
++#ifdef CONFIG_HAVE_UNWIND_USER_FP
 +
-+	cdev_ctx = &ictx[wq->idxd->data->type];
-+	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
- 	put_device(cdev_dev(idxd_cdev));
+ #include <asm/ptrace.h>
+ #include <asm/uprobes.h>
+ 
+@@ -34,4 +36,6 @@ static inline bool unwind_user_at_functi
+ 	return is_uprobe_at_func_entry(regs);
  }
  
--- 
-2.53.0
-
++#endif /* CONFIG_HAVE_UNWIND_USER_FP */
++
+ #endif /* _ASM_X86_UNWIND_USER_H */
 
 
 
