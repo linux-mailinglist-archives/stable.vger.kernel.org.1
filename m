@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGAEONIAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:54 +0200
+	id YEEqFhL+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30A136E3B7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82A436DAF9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9E048305DCF9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 496A932828A8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFEF30276A;
-	Tue, 31 Mar 2026 17:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3AE42668F;
+	Tue, 31 Mar 2026 16:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2URPBnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivNjs2d/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10393301471;
-	Tue, 31 Mar 2026 17:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52D0425CD4;
+	Tue, 31 Mar 2026 16:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976766; cv=none; b=SmeLN40qsMbKGDIhzDYsDxZ76p5tPRqUgQ3J4rZ7DuRmSA59WeDsYeCNNgkvLSjgwPbGMlS+BtYsljABDFW0XbyNjzJtXq+NHYb4nd7S1OZYm3ndRezOfReZ2VEkLN6pn4vwCqDYUGlB+ufDRYVI9TPO4qs+EosjjV59MBxp7VQ=
+	t=1774976013; cv=none; b=OnmkGGB76+df2y8S9tgglAyRw7NkbTLvuxurQsrvdsdAD5f/nIEuOxeJYEOGO7ZBaBaxqIm6aYVnbU83vpU9sPU7SiEWqCsTY72tQoGJgCThqJboxd6qds/B/8IRimUyAwNk7IUMRSCjoL3xNYeG4KgizoDdAQwhH8nBVr08Yuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976766; c=relaxed/simple;
-	bh=J6E2+TF+8ePoO6X497RM3G/62fvW0TtLLovy+PCtaDY=;
+	s=arc-20240116; t=1774976013; c=relaxed/simple;
+	bh=kgUKUvhlJftUzun5mpgDiGvInCVCJoRyvrqt7xVJMxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JbCmpm1OZ4NK74mhGMHD0Q+sTEMB2TajFXmDmvphngohg7KZr6sFYJhaZ5QeRDNcuqMZiycihqdiEr6gLO/7j5m4ogFDq2SRsVMwo7DsUqpgdjXV1WYkngkqYOK+myhGTDe6qSW6Gu4DyPHJxXF6KmsYmYqDy5pbAw90rGdMboM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2URPBnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBCC19423;
-	Tue, 31 Mar 2026 17:06:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=coAzZPKttDtZMD4YxhshikGuLA//V5aBglexcCAUn9PzgrhFhP2cnVivu9/NPcl1hBVVM+G3FnPSPzBcj2+Zyzmsi+VgRyFf3ucDG87KG+CoAJ9HQwaPIXMpgnaA6/5Z9xDUCd/rbCeOHSl9LNfTtfCmMm2Q2voufmSQK7BCIxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivNjs2d/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A130C2BCB1;
+	Tue, 31 Mar 2026 16:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976766;
-	bh=J6E2+TF+8ePoO6X497RM3G/62fvW0TtLLovy+PCtaDY=;
+	s=korg; t=1774976013;
+	bh=kgUKUvhlJftUzun5mpgDiGvInCVCJoRyvrqt7xVJMxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2URPBnmrNwEUTDk5YureqB2wMGG4lTuw0WQPt/inr2Cx3FcA+GLATvjmwrv0wBhW
-	 hRR+nBK2FssmnjTVkGpMwvgl11XqFfBYJ41Ba0WQKNiHQdEp6dRSlabBKnCFWeoCRu
-	 78gKuBzIK4Xkj6uis3dqeMMK4R6f73hjEhKDDoEY=
+	b=ivNjs2d/KWjvIXr0Zr/BmtlRb1jcqngKZ+weVLq2HdXtuDoU5JTPgdVFuYanccRpH
+	 UgnyjvNyNvnoCy3m80bPBptZqq165eEzYVQtEhm9+rG6sJ/XbtAFtLiHCuMtumq4GW
+	 E7hEKTMSY5tWLWWuz+G5JZy6xD7CZ+2JCWbLlFOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 219/309] net: macb: Move devm_{free,request}_irq() out of spin lock area
+	Eric Huang <jinhuieric.huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 172/244] drm/amdgpu: prevent immediate PASID reuse case
 Date: Tue, 31 Mar 2026 18:22:02 +0200
-Message-ID: <20260331161801.509172436@linuxfoundation.org>
+Message-ID: <20260331161748.111698852@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,174 +68,161 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232445-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232153-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.981];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: A30A136E3B7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: D82A436DAF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Eric Huang <jinhuieric.huang@amd.com>
 
-commit 317e49358ebbf6390fa439ef3c142f9239dd25fb upstream.
+commit 14b81abe7bdc25f8097906fc2f91276ffedb2d26 upstream.
 
-The devm_free_irq() and devm_request_irq() functions should not be
-executed in an atomic context.
+PASID resue could cause interrupt issue when process
+immediately runs into hw state left by previous
+process exited with the same PASID, it's possible that
+page faults are still pending in the IH ring buffer when
+the process exits and frees up its PASID. To prevent the
+case, it uses idr cyclic allocator same as kernel pid's.
 
-During device suspend, all userspace processes and most kernel threads
-are frozen. Additionally, we flush all tx/rx status, disable all macb
-interrupts, and halt rx operations. Therefore, it is safe to split the
-region protected by bp->lock into two independent sections, allowing
-devm_free_irq() and devm_request_irq() to run in a non-atomic context.
-This modification resolves the following lockdep warning:
-  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
-  preempt_count: 1, expected: 0
-  RCU nest depth: 1, expected: 0
-  7 locks held by rtcwake/501:
-   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
-   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
-   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
-   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
-   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
-   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
-   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
-  irq event stamp: 8682
-  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
-  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
-  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
-  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
-  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
-  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
-  Call trace:
-   show_stack+0x24/0x38 (C)
-   __dump_stack+0x28/0x38
-   dump_stack_lvl+0x64/0x88
-   dump_stack+0x18/0x24
-   __might_resched+0x200/0x218
-   __might_sleep+0x38/0x98
-   __mutex_lock_common+0x7c/0x1378
-   mutex_lock_nested+0x38/0x50
-   free_irq+0x68/0x2b0
-   devm_irq_release+0x24/0x38
-   devres_release+0x40/0x80
-   devm_free_irq+0x48/0x88
-   macb_suspend+0x298/0x558
-   device_suspend+0x218/0x4f0
-   dpm_suspend+0x244/0x3a0
-   dpm_suspend_start+0x50/0x78
-   suspend_devices_and_enter+0xec/0x560
-   pm_suspend+0x194/0x290
-   state_store+0x110/0x158
-   kobj_attr_store+0x1c/0x30
-   sysfs_kf_write+0xa8/0xd0
-   kernfs_fop_write_iter+0x11c/0x1c8
-   vfs_write+0x248/0x368
-   ksys_write+0x7c/0xf8
-   __arm64_sys_write+0x28/0x40
-   invoke_syscall+0x4c/0xe8
-   el0_svc_common+0x98/0xf0
-   do_el0_svc+0x28/0x40
-   el0_svc+0x54/0x1e0
-   el0t_64_sync_handler+0x84/0x130
-   el0t_64_sync+0x198/0x1a0
-
-Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8f1de51f49be692de137c8525106e0fce2d1912d)
 Cc: stable@vger.kernel.org
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   45 ++++++++++++++++++++++----------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c  |    1 
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5832,6 +5832,7 @@ static int __maybe_unused macb_suspend(s
- 			/* write IP address into register */
- 			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
- 		}
-+		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		/* Change interrupt handler and
- 		 * Enable WoL IRQ on queue 0
-@@ -5844,11 +5845,12 @@ static int __maybe_unused macb_suspend(s
- 				dev_err(dev,
- 					"Unable to request IRQ %d (error %d)\n",
- 					bp->queues[0].irq, err);
--				spin_unlock_irqrestore(&bp->lock, flags);
- 				return err;
- 			}
-+			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
- 			gem_writel(bp, WOL, tmp);
-+			spin_unlock_irqrestore(&bp->lock, flags);
- 		} else {
- 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
- 					       IRQF_SHARED, netdev->name, bp->queues);
-@@ -5856,13 +5858,13 @@ static int __maybe_unused macb_suspend(s
- 				dev_err(dev,
- 					"Unable to request IRQ %d (error %d)\n",
- 					bp->queues[0].irq, err);
--				spin_unlock_irqrestore(&bp->lock, flags);
- 				return err;
- 			}
-+			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
- 			macb_writel(bp, WOL, tmp);
-+			spin_unlock_irqrestore(&bp->lock, flags);
- 		}
--		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		enable_irq_wake(bp->queues[0].irq);
- 	}
-@@ -5929,6 +5931,8 @@ static int __maybe_unused macb_resume(st
- 		queue_readl(bp->queues, ISR);
- 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 			queue_writel(bp->queues, ISR, -1);
-+		spin_unlock_irqrestore(&bp->lock, flags);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -35,10 +35,13 @@
+  * PASIDs are global address space identifiers that can be shared
+  * between the GPU, an IOMMU and the driver. VMs on different devices
+  * may use the same PASID if they share the same address
+- * space. Therefore PASIDs are allocated using a global IDA. VMs are
+- * looked up from the PASID per amdgpu_device.
++ * space. Therefore PASIDs are allocated using IDR cyclic allocator
++ * (similar to kernel PID allocation) which naturally delays reuse.
++ * VMs are looked up from the PASID per amdgpu_device.
+  */
+-static DEFINE_IDA(amdgpu_pasid_ida);
 +
- 		/* Replace interrupt handler on queue 0 */
- 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
- 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
-@@ -5937,10 +5941,8 @@ static int __maybe_unused macb_resume(st
- 			dev_err(dev,
- 				"Unable to request IRQ %d (error %d)\n",
- 				bp->queues[0].irq, err);
--			spin_unlock_irqrestore(&bp->lock, flags);
- 			return err;
++static DEFINE_IDR(amdgpu_pasid_idr);
++static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
+ 
+ /* Helper to free pasid from a fence callback */
+ struct amdgpu_pasid_cb {
+@@ -50,8 +53,8 @@ struct amdgpu_pasid_cb {
+  * amdgpu_pasid_alloc - Allocate a PASID
+  * @bits: Maximum width of the PASID in bits, must be at least 1
+  *
+- * Allocates a PASID of the given width while keeping smaller PASIDs
+- * available if possible.
++ * Uses kernel's IDR cyclic allocator (same as PID allocation).
++ * Allocates sequentially with automatic wrap-around.
+  *
+  * Returns a positive integer on success. Returns %-EINVAL if bits==0.
+  * Returns %-ENOSPC if no PASID was available. Returns %-ENOMEM on
+@@ -59,14 +62,15 @@ struct amdgpu_pasid_cb {
+  */
+ int amdgpu_pasid_alloc(unsigned int bits)
+ {
+-	int pasid = -EINVAL;
++	int pasid;
+ 
+-	for (bits = min(bits, 31U); bits > 0; bits--) {
+-		pasid = ida_alloc_range(&amdgpu_pasid_ida, 1U << (bits - 1),
+-					(1U << bits) - 1, GFP_KERNEL);
+-		if (pasid != -ENOSPC)
+-			break;
+-	}
++	if (bits == 0)
++		return -EINVAL;
++
++	spin_lock(&amdgpu_pasid_idr_lock);
++	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
++				 1U << bits, GFP_KERNEL);
++	spin_unlock(&amdgpu_pasid_idr_lock);
+ 
+ 	if (pasid >= 0)
+ 		trace_amdgpu_pasid_allocated(pasid);
+@@ -81,7 +85,10 @@ int amdgpu_pasid_alloc(unsigned int bits
+ void amdgpu_pasid_free(u32 pasid)
+ {
+ 	trace_amdgpu_pasid_freed(pasid);
+-	ida_free(&amdgpu_pasid_ida, pasid);
++
++	spin_lock(&amdgpu_pasid_idr_lock);
++	idr_remove(&amdgpu_pasid_idr, pasid);
++	spin_unlock(&amdgpu_pasid_idr_lock);
+ }
+ 
+ static void amdgpu_pasid_free_cb(struct dma_fence *fence,
+@@ -635,3 +642,15 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
  		}
--		spin_unlock_irqrestore(&bp->lock, flags);
+ 	}
+ }
++
++/**
++ * amdgpu_pasid_mgr_cleanup - cleanup PASID manager
++ *
++ * Cleanup the IDR allocator.
++ */
++void amdgpu_pasid_mgr_cleanup(void)
++{
++	spin_lock(&amdgpu_pasid_idr_lock);
++	idr_destroy(&amdgpu_pasid_idr);
++	spin_unlock(&amdgpu_pasid_idr_lock);
++}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
+@@ -75,6 +75,7 @@ int amdgpu_pasid_alloc(unsigned int bits
+ void amdgpu_pasid_free(u32 pasid);
+ void amdgpu_pasid_free_delayed(struct dma_resv *resv,
+ 			       u32 pasid);
++void amdgpu_pasid_mgr_cleanup(void);
  
- 		disable_irq_wake(bp->queues[0].irq);
+ bool amdgpu_vmid_had_gpu_reset(struct amdgpu_device *adev,
+ 			       struct amdgpu_vmid *id);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2721,6 +2721,7 @@ void amdgpu_vm_manager_fini(struct amdgp
+ 	xa_destroy(&adev->vm_manager.pasids);
  
+ 	amdgpu_vmid_mgr_fini(adev);
++	amdgpu_pasid_mgr_cleanup();
+ }
+ 
+ /**
 
 
 
