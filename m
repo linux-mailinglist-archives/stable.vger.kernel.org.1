@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DoTO7r7y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:10 +0200
+	id MMEoEy0CzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DB836D486
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B757836E7D6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F15A73277073
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4027731C0C8D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A43425CCD;
-	Tue, 31 Mar 2026 16:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2DC346E7F;
+	Tue, 31 Mar 2026 16:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewh2Alou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+kA0NRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E41421A1D;
-	Tue, 31 Mar 2026 16:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9E7423A91;
+	Tue, 31 Mar 2026 16:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975078; cv=none; b=TjoE7J6uCrvlo/sYYjK53th/9ns7zZO3c7rhtk/6oTH2RRZRUAEhoF89tMybT5MtzjCgB2crsm8jWiJ5n+u+awQH576/sTEbjsdCg9rlJGP/oZA7LIr2gYxYsrE2HxFwlrJPh/kUitztq4N6LsoqWsbgAzUHXMa8D0A/dJKyPGY=
+	t=1774975746; cv=none; b=ocMKrHEv9cLUaztjD8xAGDxF3Bfu7G52Gkcc0QNL0FeflSpr3ZDcAtNah7lU1GqzvTyHtZIu9aJtkTvCHaEVbpOV36ctA3gz5lUa/KSX1Zj9XxeK6iy66xOwILPHV199R+BTYOSyXDnJvl87g7OCTM86H6p72F5DzIXvMjRGssQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975078; c=relaxed/simple;
-	bh=W3MQPQQd+msDjCqgfo0WCWsydHgSVqHODBQWdONKWA8=;
+	s=arc-20240116; t=1774975746; c=relaxed/simple;
+	bh=nSv6+szENdFWQ+ng/6M5QiDXeHPKyEi7QpEBu7OE83U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ss2Hb7/uvgMC3nEeCYydu6I9xkf+dhEWPLnRse1uOMyCxA4vMCrvBtScMDBRM20YXggGMFlZLakj8OoaiK1+DyHMemEFuQVvk8hV1B/wCp1Bbf3NUvPB5wEsFpQhZ9h464ENgZ563w4JhOOyXdBlD3JLEbsIAhINMOmMZr81+ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewh2Alou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CAFC4AF09;
-	Tue, 31 Mar 2026 16:37:57 +0000 (UTC)
+	 MIME-Version; b=ivOrGYURon+dUc1IdGhSZRLqslVAl7BcJWZg3ItZlP0jIxmNoQxyhkmxCNu6RKh3OCzfatzpr954zcYahVBZZJPRadHbIB9tHefynuEa0s77ki03rU7VoI5nOQyMxyRSOH/0Qtlp45VjmCAQJTgeLkiUgEAZvQNbK57xCJEQk1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+kA0NRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB634C19423;
+	Tue, 31 Mar 2026 16:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975078;
-	bh=W3MQPQQd+msDjCqgfo0WCWsydHgSVqHODBQWdONKWA8=;
+	s=korg; t=1774975746;
+	bh=nSv6+szENdFWQ+ng/6M5QiDXeHPKyEi7QpEBu7OE83U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewh2AlouuRvGmknVLHurKJArKBMZPRiS5wZc7GY/wqyMbxMffQuJyWMoTW2o6mTYg
-	 9TFQOrwNR9f2bShnblV84rV/hACSQRhmL3C4jSg16cWfUU7Ndt43M9Xo1NQb4yBotR
-	 HOOa7SHW4mBPjEvHHMAympGwrn03/tBcFor+IeaY=
+	b=y+kA0NRWMAAEe4lfdh5y6khwAaCd9xijsm4pW6F/6QmwqRaIROef5a4ZXlhW9u4Z/
+	 C0xlXqMaLy4F2tPxV57JSGZgVbRjUCctUN7/rTwhGL+8FbFOjjLWMSdCqcqPWoiQ7V
+	 TQ5rv0aN1HHUQFJC6w0AdVCh413f6QNbCCe2SUhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 154/342] RDMA/efa: Fix possible deadlock
+Subject: [PATCH 6.12 037/244] btrfs: set BTRFS_ROOT_ORPHAN_CLEANUP during subvol create
 Date: Tue, 31 Mar 2026 18:19:47 +0200
-Message-ID: <20260331161804.675931906@linuxfoundation.org>
+Message-ID: <20260331161743.070015752@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +67,229 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231791-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232050-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 84DB836D486
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: B757836E7D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 0f2055db7b630559870afb40fc84490816ab8ec5 ]
+[ Upstream commit 5131fa077f9bb386a1b901bf5b247041f0ec8f80 ]
 
-In the error path for efa_com_alloc_comp_ctx() the semaphore assigned to
-&aq->avail_cmds is not released.
+We have recently observed a number of subvolumes with broken dentries.
+ls-ing the parent dir looks like:
 
-Detected by Smatch:
-drivers/infiniband/hw/efa/efa_com.c:662 efa_com_cmd_exec() warn:
-inconsistent returns '&aq->avail_cmds'
+drwxrwxrwt 1 root root 16 Jan 23 16:49 .
+drwxr-xr-x 1 root root 24 Jan 23 16:48 ..
+d????????? ? ?    ?     ?            ? broken_subvol
 
-Add release for &aq->avail_cmds in efa_com_alloc_comp_ctx() error path.
+and similarly stat-ing the file fails.
 
-Fixes: ef3b06742c8a2 ("RDMA/efa: Fix use of completion ctx after free")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Link: https://patch.msgid.link/20260314045730.1143862-1-ethantidmore06@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+In this state, deleting the subvol fails with ENOENT, but attempting to
+create a new file or subvol over it errors out with EEXIST and even
+aborts the fs. Which leaves us a bit stuck.
+
+dmesg contains a single notable error message reading:
+"could not do orphan cleanup -2"
+
+2 is ENOENT and the error comes from the failure handling path of
+btrfs_orphan_cleanup(), with the stack leading back up to
+btrfs_lookup().
+
+btrfs_lookup
+btrfs_lookup_dentry
+btrfs_orphan_cleanup // prints that message and returns -ENOENT
+
+After some detailed inspection of the internal state, it became clear
+that:
+- there are no orphan items for the subvol
+- the subvol is otherwise healthy looking, it is not half-deleted or
+  anything, there is no drop progress, etc.
+- the subvol was created a while ago and does the meaningful first
+  btrfs_orphan_cleanup() call that sets BTRFS_ROOT_ORPHAN_CLEANUP much
+  later.
+- after btrfs_orphan_cleanup() fails, btrfs_lookup_dentry() returns -ENOENT,
+  which results in a negative dentry for the subvolume via
+  d_splice_alias(NULL, dentry), leading to the observed behavior. The
+  bug can be mitigated by dropping the dentry cache, at which point we
+  can successfully delete the subvolume if we want.
+
+i.e.,
+btrfs_lookup()
+  btrfs_lookup_dentry()
+    if (!sb_rdonly(inode->vfs_inode)->vfs_inode)
+    btrfs_orphan_cleanup(sub_root)
+      test_and_set_bit(BTRFS_ROOT_ORPHAN_CLEANUP)
+      btrfs_search_slot() // finds orphan item for inode N
+      ...
+      prints "could not do orphan cleanup -2"
+  if (inode == ERR_PTR(-ENOENT))
+    inode = NULL;
+  return d_splice_alias(NULL, dentry) // NEGATIVE DENTRY for valid subvolume
+
+btrfs_orphan_cleanup() does test_and_set_bit(BTRFS_ROOT_ORPHAN_CLEANUP)
+on the root when it runs, so it cannot run more than once on a given
+root, so something else must run concurrently. However, the obvious
+routes to deleting an orphan when nlinks goes to 0 should not be able to
+run without first doing a lookup into the subvolume, which should run
+btrfs_orphan_cleanup() and set the bit.
+
+The final important observation is that create_subvol() calls
+d_instantiate_new() but does not set BTRFS_ROOT_ORPHAN_CLEANUP, so if
+the dentry cache gets dropped, the next lookup into the subvolume will
+make a real call into btrfs_orphan_cleanup() for the first time. This
+opens up the possibility of concurrently deleting the inode/orphan items
+but most typical evict() paths will be holding a reference on the parent
+dentry (child dentry holds parent->d_lockref.count via dget in
+d_alloc(), released in __dentry_kill()) and prevent the parent from
+being removed from the dentry cache.
+
+The one exception is delayed iputs. Ordered extent creation calls
+igrab() on the inode. If the file is unlinked and closed while those
+refs are held, iput() in __dentry_kill() decrements i_count but does
+not trigger eviction (i_count > 0). The child dentry is freed and the
+subvol dentry's d_lockref.count drops to 0, making it evictable while
+the inode is still alive.
+
+Since there are two races (the race between writeback and unlink and
+the race between lookup and delayed iputs), and there are too many moving
+parts, the following three diagrams show the complete picture.
+(Only the second and third are races)
+
+Phase 1:
+Create Subvol in dentry cache without BTRFS_ROOT_ORPHAN_CLEANUP set
+
+btrfs_mksubvol()
+  lookup_one_len()
+    __lookup_slow()
+      d_alloc_parallel()
+        __d_alloc() // d_lockref.count = 1
+  create_subvol(dentry)
+    // doesn't touch the bit..
+    d_instantiate_new(dentry, inode) // dentry in cache with d_lockref.count == 1
+
+Phase 2:
+Create a delayed iput for a file in the subvol but leave the subvol in
+state where its dentry can be evicted (d_lockref.count == 0)
+
+T1 (task)                    T2 (writeback)                   T3 (OE workqueue)
+
+write() // dirty pages
+                              btrfs_writepages()
+                                btrfs_run_delalloc_range()
+                                  cow_file_range()
+                                    btrfs_alloc_ordered_extent()
+                                      igrab() // i_count: 1 -> 2
+btrfs_unlink_inode()
+  btrfs_orphan_add()
+close()
+  __fput()
+    dput()
+      finish_dput()
+        __dentry_kill()
+          dentry_unlink_inode()
+            iput() // 2 -> 1
+          --parent->d_lockref.count // 1 -> 0; evictable
+                                                                finish_ordered_fn()
+                                                                  btrfs_finish_ordered_io()
+                                                                    btrfs_put_ordered_extent()
+                                                                      btrfs_add_delayed_iput()
+
+Phase 3:
+Once the delayed iput is pending and the subvol dentry is evictable,
+the shrinker can free it, causing the next lookup to go through
+btrfs_lookup() and call btrfs_orphan_cleanup() for the first time.
+If the cleaner kthread processes the delayed iput concurrently, the
+two race:
+
+  T1 (shrinker)              T2 (cleaner kthread)                          T3 (lookup)
+
+  super_cache_scan()
+    prune_dcache_sb()
+      __dentry_kill()
+      // subvol dentry freed
+                              btrfs_run_delayed_iputs()
+                                iput()  // i_count -> 0
+                                  evict()  // sets I_FREEING
+                                    btrfs_evict_inode()
+                                      // truncation loop
+                                                                            btrfs_lookup()
+                                                                              btrfs_lookup_dentry()
+                                                                                btrfs_orphan_cleanup()
+                                                                                  // first call (bit never set)
+                                                                                  btrfs_iget()
+                                                                                    // blocks on I_FREEING
+
+                                      btrfs_orphan_del()
+                                      // inode freed
+                                                                                    // returns -ENOENT
+                                                                                  btrfs_del_orphan_item()
+                                                                                    // -ENOENT
+                                                                                // "could not do orphan cleanup -2"
+                                                                            d_splice_alias(NULL, dentry)
+                                                                            // negative dentry for valid subvol
+
+The most straightforward fix is to ensure the invariant that a dentry
+for a subvolume can exist if and only if that subvolume has
+BTRFS_ROOT_ORPHAN_CLEANUP set on its root (and is known to have no
+orphans or ran btrfs_orphan_cleanup()).
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/ioctl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index 56caba612139f..e97b5f0d70038 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -629,6 +629,7 @@ int efa_com_cmd_exec(struct efa_com_admin_queue *aq,
- 	comp_ctx = efa_com_alloc_comp_ctx(aq);
- 	if (!comp_ctx) {
- 		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
-+		up(&aq->avail_cmds);
- 		return -EINVAL;
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 72d73953d1b77..9a548f2eec3af 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -766,6 +766,13 @@ static noinline int create_subvol(struct mnt_idmap *idmap,
+ 		goto out;
  	}
  
++	/*
++	 * Subvolumes have orphans cleaned on first dentry lookup. A new
++	 * subvolume cannot have any orphans, so we should set the bit before we
++	 * add the subvolume dentry to the dentry cache, so that it is in the
++	 * same state as a subvolume after first lookup.
++	 */
++	set_bit(BTRFS_ROOT_ORPHAN_CLEANUP, &new_root->state);
+ 	d_instantiate_new(dentry, new_inode_args.inode);
+ 	new_inode_args.inode = NULL;
+ 
 -- 
-2.53.0
+2.51.0
 
 
 
