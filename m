@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMpeMloBzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:10 +0200
+	id aOj8AuD2y2kGNAYAu9opvQ
+	(envelope-from <stable+bounces-231475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D119536E58F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF4036CB1C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7F895310A8DE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 044593014412
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E6F423149;
-	Tue, 31 Mar 2026 16:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302F33EE1DD;
+	Tue, 31 Mar 2026 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YY1ynr/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWC6Dc6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EC1413225;
-	Tue, 31 Mar 2026 16:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D263E316C;
+	Tue, 31 Mar 2026 16:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975704; cv=none; b=N03Jj9zbDGj0EeVifKDGkS7BBs9muF6iD88KfX9wkOIGNgYGFCswicKr7DuI0/pGyABi4FRJ3+j7NqVC1T9cVhoH8DvvICpM93/AP5W55suY34z5Q6z5MG05Y3cRJa38cEoGmAI3DQBomMng1JRT2nuvfbtWr1prH4+mGE7MiSg=
+	t=1774974269; cv=none; b=GZN7FOG6gpMvgKHssG7nsdnjOBiAZMy8SjSSogkw7IS694vhUtYP08eGFyLcYFNRLoELcC545yb+qNgz5VKbYdyncAEu9fkoI1guRhpAADWGAIG/KDt1kfBPVBPwEwL+txwakjejyXwbzqlOABWbHqeBhieNvaEa3F61kZXlCU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975704; c=relaxed/simple;
-	bh=8nulmUvszqb2gbY2Jf2y4UvwzA0fb1c3j9nc576DaPA=;
+	s=arc-20240116; t=1774974269; c=relaxed/simple;
+	bh=QEG+0Q0ppKwcfuE10gp7u3ntqKZH+Tszv1YbaKB0gj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3qMp+JdwHzj2QkX7NYcaS/Vr+0HEAuonPrRYdwRXp0MQryz0iB75KyOZYebHVjZcNoXm01rw+sa3hgATQMc3U3Qk3mOIbclpxsFefpQIf6wsWgrk/RD4aquFe3KlkHDTK4zjXfD6Y6vvcw7DII89PSg9FNOE+mo81bxmfpd4MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YY1ynr/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB9AC19423;
-	Tue, 31 Mar 2026 16:48:24 +0000 (UTC)
+	 MIME-Version; b=AztqSyOLxJIigylyfS9XqmWHeGzkQC9c0Ru9EtarwSLtJ+N1FApcbvBFVP7Sa+NWxbv8rdgxKxyxRgvBJwrHvtok9GRfJK15fAb/G4P+QEi/08DbOUTH8Hx1xXVKeUxD01oOYQ05EOpxN8xOaLiZaVHrctK9e/EJa6VB/qDRNeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWC6Dc6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C669C19423;
+	Tue, 31 Mar 2026 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975704;
-	bh=8nulmUvszqb2gbY2Jf2y4UvwzA0fb1c3j9nc576DaPA=;
+	s=korg; t=1774974268;
+	bh=QEG+0Q0ppKwcfuE10gp7u3ntqKZH+Tszv1YbaKB0gj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YY1ynr/aUWGz4+x0cxDVKoEE9QOyDwcfB0FlxEN5RtzY2qivF66fqEa6eyk0S8qWn
-	 66ootYy06yCBQt5FA6VBGu/ZhOqsUGt+J8jUBIWHNwfPXaOXKSoa3LEgGg7XaZiGW0
-	 lkdheWuRTrZwg/mHPyrlsfQ/Epe88uz3ZRGJ5MVY=
+	b=sWC6Dc6wd6134jyNndp7dvQIVsmClwYT8hOw4R6JNhEkp+8S4DgTuTnALiQ2xcmxn
+	 LTaBeYAVtA8qlHG04YmnzQZslNWHY3a0cqK0d6YKdMnP/2Ct2OgOrwKnWvinYuSNqJ
+	 3xREN/1AVQSaVvUZU8YBQNy0zj7x6kZ1QWRpgIqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Romain Sioen <romain.sioen@microchip.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/244] af_key: validate families in pfkey_send_migrate()
+Subject: [PATCH 6.6 020/175] HID: mcp2221: cancel last I2C command on read error
 Date: Tue, 31 Mar 2026 18:20:04 +0200
-Message-ID: <20260331161743.689188008@linuxfoundation.org>
+Message-ID: <20260331161730.525364622@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,118 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232034-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b518dfc8e021988fbd55];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231475-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email]
-X-Rspamd-Queue-Id: D119536E58F
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6DF4036CB1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Romain Sioen <romain.sioen@microchip.com>
 
-[ Upstream commit eb2d16a7d599dc9d4df391b5e660df9949963786 ]
+[ Upstream commit e31b556c0ba21f20c298aa61181b96541140b7b9 ]
 
-syzbot was able to trigger a crash in skb_put() [1]
+When an I2C SMBus read operation fails, the MCP2221 internal state machine
+may not reset correctly, causing subsequent transactions to fail.
 
-Issue is that pfkey_send_migrate() does not check old/new families,
-and that set_ipsecrequest() @family argument was truncated,
-thus possibly overfilling the skb.
+By adding a short delay and explicitly cancelling the last command,
+we ensure the device is ready for the next operation.
 
-Validate families early, do not wait set_ipsecrequest().
+Fix an issue where i2cdetect was not able to detect all devices correctly
+on the bus.
 
-[1]
-
-skbuff: skb_over_panic: text:ffffffff8a752120 len:392 put:16 head:ffff88802a4ad040 data:ffff88802a4ad040 tail:0x188 end:0x180 dev:<NULL>
- kernel BUG at net/core/skbuff.c:214 !
-Call Trace:
- <TASK>
-  skb_over_panic net/core/skbuff.c:219 [inline]
-  skb_put+0x159/0x210 net/core/skbuff.c:2655
-  skb_put_zero include/linux/skbuff.h:2788 [inline]
-  set_ipsecrequest net/key/af_key.c:3532 [inline]
-  pfkey_send_migrate+0x1270/0x2e50 net/key/af_key.c:3636
-  km_migrate+0x155/0x260 net/xfrm/xfrm_state.c:2848
-  xfrm_migrate+0x2140/0x2450 net/xfrm/xfrm_policy.c:4705
-  xfrm_do_migrate+0x8ff/0xaa0 net/xfrm/xfrm_user.c:3150
-
-Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
-Reported-by: syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69b5933c.050a0220.248e02.00f2.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/key/af_key.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/hid/hid-mcp2221.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index 9dea2b26e5069..6d7848b824d9b 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3518,7 +3518,7 @@ static int set_sadb_kmaddress(struct sk_buff *skb, const struct xfrm_kmaddress *
- 
- static int set_ipsecrequest(struct sk_buff *skb,
- 			    uint8_t proto, uint8_t mode, int level,
--			    uint32_t reqid, uint8_t family,
-+			    uint32_t reqid, sa_family_t family,
- 			    const xfrm_address_t *src, const xfrm_address_t *dst)
- {
- 	struct sadb_x_ipsecrequest *rq;
-@@ -3583,12 +3583,17 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 
- 	/* ipsecrequests */
- 	for (i = 0, mp = m; i < num_bundles; i++, mp++) {
--		/* old locator pair */
--		size_pol += sizeof(struct sadb_x_ipsecrequest) +
--			    pfkey_sockaddr_pair_size(mp->old_family);
--		/* new locator pair */
--		size_pol += sizeof(struct sadb_x_ipsecrequest) +
--			    pfkey_sockaddr_pair_size(mp->new_family);
-+		int pair_size;
-+
-+		pair_size = pfkey_sockaddr_pair_size(mp->old_family);
-+		if (!pair_size)
-+			return -EINVAL;
-+		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
-+
-+		pair_size = pfkey_sockaddr_pair_size(mp->new_family);
-+		if (!pair_size)
-+			return -EINVAL;
-+		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
- 	}
- 
- 	size += sizeof(struct sadb_msg) + size_pol;
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index d2d413c829f44..99af0b541316b 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -337,6 +337,8 @@ static int mcp_i2c_smbus_read(struct mcp2221 *mcp,
+ 				usleep_range(90, 100);
+ 				retries++;
+ 			} else {
++				usleep_range(980, 1000);
++				mcp_cancel_last_cmd(mcp);
+ 				return ret;
+ 			}
+ 		} else {
 -- 
 2.51.0
 
