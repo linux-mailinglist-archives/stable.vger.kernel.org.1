@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-232502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MK7bDtsGzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:39 +0200
+	id SHkzGrkEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF94036F16D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF57436ED56
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4DE431C95BD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89198316A6C7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A942312826;
-	Tue, 31 Mar 2026 17:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71FD425CD9;
+	Tue, 31 Mar 2026 16:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtNqv5T2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+yNcFRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD3531715F;
-	Tue, 31 Mar 2026 17:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89949425CC4;
+	Tue, 31 Mar 2026 16:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976913; cv=none; b=GIn0YR6BetJmB4nHHSfSxNQPI4wLpsRBbImIfXtsQ3el/xZBQuhUP4AR/4bGAGUnAowGN4whjIrfDfX9E5sGRhiqlFscOYFzXTz3wsUPO2/T8E91sSsazl8LoGhWvo4qeP2jOowB3ZdBe6OEJu+IP1uwpgYxAcf11ECTrWtec+Q=
+	t=1774976073; cv=none; b=UqMDihncywB3VM7xtHl1bZa9ZcodorsqncoscCigX2nO7cJOi/4HTcfACLQzImufAJcmE9JwBN0kTNHK6LbynzgE8wtVfwlaW/4+QTRzEhqSQuDmbhYahu0UYk/SeWnzC4QXfRjIt/A7qHy2/8Qv0zmPD0H8Upj7scw57nbcGhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976913; c=relaxed/simple;
-	bh=F/JmbEEaJyX7ZD9CgnBmQeQ9Ks3zeQqmL4OFis5Twug=;
+	s=arc-20240116; t=1774976073; c=relaxed/simple;
+	bh=iHiGLpshrG+gVPVmcggKISqFHAgZi/4sE3q08QASZBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xly3qVBLB7uJDZP+UJ8w84CX1UQlFx8iLJdnziJFLnDh1jbu9ouQ9+Omdz1Nkf9gwIsWzsmy1tcY/96wMQqc6kDWM3Xesmuv7+RkduvJel2qTaNtee6ch67ptcIgtxpk50u8fOe7YjW6i36UR6M5SXR/eHZGLylKYm4qSvkZo2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtNqv5T2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E952C19423;
-	Tue, 31 Mar 2026 17:08:32 +0000 (UTC)
+	 MIME-Version; b=Oh9N/FKSXrBBpEcmEbyp+EmgeTveiCs2sxmCXQVFTkYsgcCCOvU4iqprTrp8CHAQoeQ+lVTKgC/YC3XXQtK1AxEQfEOA6A5DqiqyhxrCtS5DDKlopgQM541s/93fSjgQkpfdHwj0NPOz9uXbWUwYbjqEn+3u9vZijElMTwMtba4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+yNcFRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F1FC19423;
+	Tue, 31 Mar 2026 16:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976913;
-	bh=F/JmbEEaJyX7ZD9CgnBmQeQ9Ks3zeQqmL4OFis5Twug=;
+	s=korg; t=1774976073;
+	bh=iHiGLpshrG+gVPVmcggKISqFHAgZi/4sE3q08QASZBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtNqv5T2Sk+5oyI87g0ow3jlJSi5FKlg9esp9SUTnZWwrBxe1CZYyCDbpuDAR7INU
-	 RsKsij0EI2hCWxYSjZfvVRGFyy+uZKyqWB5evDCgDqg/6QFHGscbkb4DJKgGfC34Q3
-	 EdYu95e+OEJfC3sB+dRS2/UILOLWyWcWs9Ul7/Us=
+	b=P+yNcFRkXLQNusg1nMFQcPVBAshImYWdi8/iR4Ofv8e2cP7mAHnXI7UG6zbsmVJtX
+	 c64jgbFMDXMWhXWZSd8hsHASV+jy+w/rn6dcp9/gztiuwCPTwTN6Df+9q079DosR1K
+	 n/me/f8v/34+rtrZ030hRkAN02b+OnHSPs+JyWVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asad Kamal <asad.kamal@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 243/309] drm/amd/pm: Return -EOPNOTSUPP for unsupported OD_MCLK on smu_v13_0_6
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 196/244] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
 Date: Tue, 31 Mar 2026 18:22:26 +0200
-Message-ID: <20260331161802.516375710@linuxfoundation.org>
+Message-ID: <20260331161748.988768533@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,62 +76,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232176-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232502-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BF94036F16D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,alibaba.com:email,suse.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BF57436ED56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-commit 2f0e491faee43181b6a86e90f34016b256042fe1 upstream.
+commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
 
-When SET_UCLK_MAX capability is absent, return -EOPNOTSUPP from
-smu_v13_0_6_emit_clk_levels() for OD_MCLK instead of 0. This makes
-unsupported OD_MCLK reporting consistent with other clock types
-and allows callers to skip the entry cleanly.
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
 
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d82e0a72d9189e8acd353988e1a57f85ce479e37)
-Cc: stable@vger.kernel.org
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
+
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
+
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
+
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
+
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/fast_commit.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -1494,7 +1494,7 @@ static int smu_v13_0_6_print_clk_levels(
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1601,19 +1601,21 @@ static int ext4_fc_replay_inode(struct s
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
  
- 	case SMU_OD_MCLK:
- 		if (!smu_v13_0_6_cap_supported(smu, SMU_CAP(SET_UCLK_MAX)))
--			return 0;
-+			return -EOPNOTSUPP;
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		ext4_debug("Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
  
- 		size += sysfs_emit_at(buf, size, "%s:\n", "OD_MCLK");
- 		size += sysfs_emit_at(buf, size, "0: %uMhz\n1: %uMhz\n",
+ 	/*
+@@ -1630,13 +1632,14 @@ static int ext4_fc_replay_inode(struct s
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 
 
 
