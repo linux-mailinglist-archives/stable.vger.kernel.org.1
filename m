@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-231993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPX1IFv9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:07 +0200
+	id MDPrLi/7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0A636D965
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEB636D340
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F012030D6E9C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D2F530A1B14
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95325423A93;
-	Tue, 31 Mar 2026 16:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7400F426EA2;
+	Tue, 31 Mar 2026 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j48PcsXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihGKlJcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5220C423A8A;
-	Tue, 31 Mar 2026 16:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3580D425CFF;
+	Tue, 31 Mar 2026 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975598; cv=none; b=Lx/d44mHLk3FUp38Fa9hZbwxX0tyEpe6tg1mLHV7ZuCr35qDlNlo1Tr4z2erggTK5c0JiZjGjGc9LN66rmeU1Sfg17rF9/NYYGbfNI62tMYLBYIBSVbl89kmUh8CDNmK9D7IUg1hOK0WNG48cbwJ8dsY2zCDIOlZMYK57zGQa/Q=
+	t=1774975099; cv=none; b=tnznALe+KH2wN0rbIdWzyPFfF5i+usvr99tcp0h5b0JDoznXKs8hLCXkg73D5d603d9M8AC+p5lQuWxt0XPe8O1BW5PIsMoA8EXX2wXu+TgYRXFk4YUIGWG65IsBRd56G8+aHXcEBmMUiDsXaM2xfA//iKCVttdrSJ+Fbbhhli4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975598; c=relaxed/simple;
-	bh=17D0YnUcqPluj68DR8ET6o3bMlCeOVVf+9lDSwmZ1U8=;
+	s=arc-20240116; t=1774975099; c=relaxed/simple;
+	bh=+JXU/DUJfqf/nzKdKTT9IyHPfGBnZiBfqk/VU9I9exE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsCJbET6dDuHqH+LYIZAi2K9QN1OjU4m474i7opBEkKWmbuNGVBXBfgU0vSv+x/Xs4KLhsQiQMsxe0d5+cr0oVg/pVVGgw3WBuuFP4sMblUZbdrcEw4vGCRDzfFWrPc0C7mtk88YW/8H6b5MFu94PFDTcXQNGuWquWKOtKC7Tvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j48PcsXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE389C2BCB1;
-	Tue, 31 Mar 2026 16:46:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eF0DqjkioY/hVMT4DUdyiA2OG3WhHjNqTBfpK6jAAne0pmpVLMENVgCC2i2w0tV/aa7zejkhRyGk5K15XWlspAssbtIFKEqp79q0OMiT+uSJ/rGzeb5ANixy0BVmFm5krAmKxE8iUkJXGEOp7/ePv1D53xs4LWJLS7R8VldR/3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihGKlJcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D66C19423;
+	Tue, 31 Mar 2026 16:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975598;
-	bh=17D0YnUcqPluj68DR8ET6o3bMlCeOVVf+9lDSwmZ1U8=;
+	s=korg; t=1774975099;
+	bh=+JXU/DUJfqf/nzKdKTT9IyHPfGBnZiBfqk/VU9I9exE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j48PcsXWh+X3vUc08RrYIYA9Lpln5k9KJjLPx61IsbQBEsRdT6xLmH4bKILtre6Hs
-	 gnchqGbW0wvkPtKrabIdDhanU7Kyzw4uNYSJS6iuLcJetqeS6oyOwKjjnKhGHGKpsK
-	 Efq6WmtcyAwgSvmU9rmGPc4Ahdlt3ko3uBBycJkE=
+	b=ihGKlJcQF0Cr0/mzuxJJI/NNbGN6qw2BD4cww76iiHf5suguB1Ru9diUnQNgREe0R
+	 jK5aDZa4UMEzkR8CFTeyOLi+7rqaXZnEld79JaS+chDwg1inOs52YTPgLFzj4sa8pF
+	 oNFidJHAVBbasJYoXiBsxlxD2pBrK35rw6yPBrfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	=?UTF-8?q?Jonas=20K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+	Chris Arges <carges@cloudflare.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/244] nvme-pci: cap queue creation to used queues
+Subject: [PATCH 6.19 131/342] net_sched: codel: fix stale state for empty flows in fq_codel
 Date: Tue, 31 Mar 2026 18:19:24 +0200
-Message-ID: <20260331161742.232688437@linuxfoundation.org>
+Message-ID: <20260331161803.827752150@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +67,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231993-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231799-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AB0A636D965
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5CEB636D340
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Jonas Köppeler <j.koeppeler@tu-berlin.de>
 
-[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
+[ Upstream commit 815980fe6dbb01ad4007e8b260a45617f598b76d ]
 
-If the user reduces the special queue count at runtime and resets the
-controller, we need to reduce the number of queues and interrupts
-requested accordingly rather than start with the pre-allocated queue
-count.
+When codel_dequeue() finds an empty queue, it resets vars->dropping
+but does not reset vars->first_above_time.  The reference CoDel
+algorithm (Nichols & Jacobson, ACM Queue 2012) resets both:
 
-Tested-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+  dodeque_result codel_queue_t::dodeque(time_t now) {
+      ...
+      if (r.p == NULL) {
+          first_above_time = 0;   // <-- Linux omits this
+      }
+      ...
+  }
+
+Note that codel_should_drop() does reset first_above_time when called
+with a NULL skb, but codel_dequeue() returns early before ever calling
+codel_should_drop() in the empty-queue case.  The post-drop code paths
+do reach codel_should_drop(NULL) and correctly reset the timer, so a
+dropped packet breaks the cycle -- but the next delivered packet
+re-arms first_above_time and the cycle repeats.
+
+For sparse flows such as ICMP ping (one packet every 200ms-1s), the
+first packet arms first_above_time, the flow goes empty, and the
+second packet arrives after the interval has elapsed and gets dropped.
+The pattern repeats, producing sustained loss on flows that are not
+actually congested.
+
+Test: veth pair, fq_codel, BQL disabled, 30000 iptables rules in the
+consumer namespace (NAPI-64 cycle ~14ms, well above fq_codel's 5ms
+target), ping at 5 pps under UDP flood:
+
+  Before fix:  26% ping packet loss
+  After fix:    0% ping packet loss
+
+Fix by resetting first_above_time to zero in the empty-queue path
+of codel_dequeue(), matching the reference algorithm.
+
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Fixes: d068ca2ae2e6 ("codel: split into multiple files")
+Co-developed-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
+Reported-by: Chris Arges <carges@cloudflare.com>
+Tested-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/all/20260318134826.1281205-7-hawk@kernel.org/
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260323174920.253526-1-hawk@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/net/codel_impl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 6bd02c9116501..7a58ba05484bf 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2456,7 +2456,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	dev->nr_write_queues = write_queues;
- 	dev->nr_poll_queues = poll_queues;
+diff --git a/include/net/codel_impl.h b/include/net/codel_impl.h
+index 78a27ac730700..b2c359c6dd1b8 100644
+--- a/include/net/codel_impl.h
++++ b/include/net/codel_impl.h
+@@ -158,6 +158,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
+ 	bool drop;
  
--	nr_io_queues = dev->nr_allocated_queues - 1;
-+	/*
-+	 * The initial number of allocated queue slots may be too large if the
-+	 * user reduced the special queue parameters. Cap the value to the
-+	 * number we need for this round.
-+	 */
-+	nr_io_queues = min(nvme_max_io_queues(dev),
-+			   dev->nr_allocated_queues - 1);
- 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
- 	if (result < 0)
- 		return result;
+ 	if (!skb) {
++		vars->first_above_time = 0;
+ 		vars->dropping = false;
+ 		return skb;
+ 	}
 -- 
 2.51.0
 
