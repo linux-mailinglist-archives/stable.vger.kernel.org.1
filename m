@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yF5vD1oAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:54 +0200
+	id mAHVJ93+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9701436E215
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F83536DD70
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7F453198A5B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81DF030A9386
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47392402B9B;
-	Tue, 31 Mar 2026 16:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF68425CD2;
+	Tue, 31 Mar 2026 16:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPWOA1cM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htdoTzfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0B93FA5D9;
-	Tue, 31 Mar 2026 16:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E11423A8E;
+	Tue, 31 Mar 2026 16:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974990; cv=none; b=S7KJOYwZdDkhMsqc8VQA77iB+9sL7mvQp87xus0E4k+wHzDH9JELHtHz6n3sHm5v/pRE7qfWFJjdkuCAsKYESFib3J7QYe6J4aqtaEavkqkGCSM+OaMj/d2SZZEiDgi4e/bC5eKvhr7WmuDXKZy763ew+p5hKCjDzAWi/S4vy5A=
+	t=1774976328; cv=none; b=H5Ucuv+Zu3VnKRe1LNkcKZm0YL7GiLrsfG5yYKGfCkzZRJ0p1Cu/cV/tTOh1jzquTf6LteWAWSROowuGHALSIusuOxpnUPkJaaKbfvjF2bGH71DsSAJ1BhF0CN+C1Sgc01alO6Zpg3/mIJtFJtINowLkWSsCPqs1sB4FaMTUX0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974990; c=relaxed/simple;
-	bh=vnvzq/xjXnIu48UofLCpxP7aQH7NToKroy42DRnP3fc=;
+	s=arc-20240116; t=1774976328; c=relaxed/simple;
+	bh=P/U05GB+kR5iqDvlZ4Teoy3a5CT5xkjL4yRubZ7MC40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3JfEzKshS6AbwJ9ZOExIawNjRYOzSjEkzqIxsB7NlgCHlF4MDTCkvEcw5LIjC75OUQX1yyd8lzSowYoTw/fO9b2SiZvsvzt9PwfK7Xl+aP7GPp+zXdQtmSFXcwDB6xdXRyzH8ekyKf1pZC+NGtsBZD9mtGtZXeNRV8QEVtrwqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPWOA1cM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3D4C2BCB1;
-	Tue, 31 Mar 2026 16:36:29 +0000 (UTC)
+	 MIME-Version; b=oY+azrFbDIjhtFxs9pqZ2Ud/LOsJJEhaJc7L45K/fXbavdtr1wHPx7K5r0VwEF/eAO2KYJSL9nipXC71vyrR83GF/8CAdyrw082z0eS2Bmdxbah8E16kINU/M5bpgRDwvP2nXrWBHHrImz6a4nDFQGrG8RmcQamnWOfm0HUu9hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htdoTzfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C68C19423;
+	Tue, 31 Mar 2026 16:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974989;
-	bh=vnvzq/xjXnIu48UofLCpxP7aQH7NToKroy42DRnP3fc=;
+	s=korg; t=1774976328;
+	bh=P/U05GB+kR5iqDvlZ4Teoy3a5CT5xkjL4yRubZ7MC40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPWOA1cMGz+//75oK/s5MawEM6gwRN9JK64QqunH3uRyzH4UspXGxXJQ+wCdvViuG
-	 0nLBEdD7SKi2V8bM6WX9R+b/q3mbrobOWfn1EGf7w9aaaMjoIMUUVqEgZQE6PUf9K9
-	 0nuclioYvb/eBixJc573Cr30JBIXi03XfbcL+KKo=
+	b=htdoTzfPT+kFvy2Mzb0UVbVU2pI5UTLbVsT4lGvM9VyhTKWxZbhCU8oaSxEMlgBT1
+	 zASqmtXnM58KLj47QlHyt+T0Rk9TzqxehrDt3r+/OUtRVF2YRWxWseylGnSa4/jcpb
+	 eYR/M/q+nSusiB2Ph6Kz8ThVgMnhA0eTXy4dWmug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yochai Eisenrich <echelonh@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 120/342] net: fix fanout UAF in packet_release() via NETDEV_UP race
+Subject: [PATCH 6.18 050/309] ALSA: hda/senary: Ensure EAPD is enabled during init
 Date: Tue, 31 Mar 2026 18:19:13 +0200
-Message-ID: <20260331161803.425038810@linuxfoundation.org>
+Message-ID: <20260331161755.327694393@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +68,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231757-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-232275-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9701436E215
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1F83536DD70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yochai Eisenrich <echelonh@gmail.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-[ Upstream commit 42156f93d123436f2a27c468f18c966b7e5db796 ]
+[ Upstream commit 7ae0d8f1abbbba6f98cac735145e1206927c67d9 ]
 
-`packet_release()` has a race window where `NETDEV_UP` can re-register a
-socket into a fanout group's `arr[]` array. The re-registration is not
-cleaned up by `fanout_release()`, leaving a dangling pointer in the fanout
-array.
-`packet_release()` does NOT zero `po->num` in its `bind_lock` section.
-After releasing `bind_lock`, `po->num` is still non-zero and `po->ifindex`
-still matches the bound device. A concurrent `packet_notifier(NETDEV_UP)`
-that already found the socket in `sklist` can re-register the hook.
-For fanout sockets, this re-registration calls `__fanout_link(sk, po)`
-which adds the socket back into `f->arr[]` and increments `f->num_members`,
-but does NOT increment `f->sk_ref`.
+The driver sets spec->gen.own_eapd_ctl to take manual control of the
+EAPD (External Amplifier). However, senary_init does not turn on the
+EAPD, while senary_shutdown turns it off.
 
-The fix sets `po->num` to zero in `packet_release` while `bind_lock` is
-held to prevent NETDEV_UP from linking, preventing the race window.
+Since the generic driver skips EAPD handling when own_eapd_ctl is set,
+the EAPD remains off after initialization (e.g., after resume), leaving
+the codec in a non-functional state.
 
-This bug was found following an additional audit with Claude Code based
-on CVE-2025-38617.
+Explicitly call senary_auto_turn_eapd in senary_init to ensure the EAPD
+is enabled and the codec is functional.
 
-Fixes: ce06b03e60fc ("packet: Add helpers to register/unregister ->prot_hook")
-Link: https://blog.calif.io/p/a-race-within-a-race-exploiting-cve
-Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260319200610.25101-1-echelonh@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Link: https://patch.msgid.link/20260303081516.583438-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/hda/codecs/senarytech.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 494d628d10a51..070f7eba6b837 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3135,6 +3135,7 @@ static int packet_release(struct socket *sock)
+diff --git a/sound/hda/codecs/senarytech.c b/sound/hda/codecs/senarytech.c
+index 9aa1e9bcd9ec0..601b7eb38eb13 100644
+--- a/sound/hda/codecs/senarytech.c
++++ b/sound/hda/codecs/senarytech.c
+@@ -25,6 +25,7 @@ struct senary_spec {
+ 	/* extra EAPD pins */
+ 	unsigned int num_eapds;
+ 	hda_nid_t eapds[4];
++	bool dynamic_eapd;
+ 	hda_nid_t mute_led_eapd;
  
- 	spin_lock(&po->bind_lock);
- 	unregister_prot_hook(sk, false);
-+	WRITE_ONCE(po->num, 0);
- 	packet_cached_dev_reset(po);
+ 	unsigned int parse_flags; /* flag for snd_hda_parse_pin_defcfg() */
+@@ -131,8 +132,12 @@ static void senary_init_gpio_led(struct hda_codec *codec)
  
- 	if (po->prot_hook.dev) {
+ static int senary_init(struct hda_codec *codec)
+ {
++	struct senary_spec *spec = codec->spec;
++
+ 	snd_hda_gen_init(codec);
+ 	senary_init_gpio_led(codec);
++	if (!spec->dynamic_eapd)
++		senary_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, true);
+ 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
+ 
+ 	return 0;
 -- 
 2.51.0
 
