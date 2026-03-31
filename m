@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCTWAKkGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:49 +0200
+	id 2DITMsL2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB5E36F125
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B136936CADC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 33188304C2D8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7ABD8305C710
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206B53019D6;
-	Tue, 31 Mar 2026 17:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62423E3174;
+	Tue, 31 Mar 2026 16:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yt0GwCpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6z3AJMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BBC2FE042;
-	Tue, 31 Mar 2026 17:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A37D3DB62F;
+	Tue, 31 Mar 2026 16:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976510; cv=none; b=mYRSgKmWyxDGVRbwSZHNPzMxs5sPY+3ryqwPL8a9bZYVMCdPbwAfWFDDMcPsipYAZLeNwSV8EM4GGexQ21xQWerRxQCLRwdDkjrKIEukJ/OIxNKezZEPF4tB5LiE/L3dLC0yEXXqQazi4oI82SoDn6kcy/l7NX1dotq+3dToevk=
+	t=1774974338; cv=none; b=QM63+vfecGLJLaYV1fTsORqECBaz3RQPWOI6W7YV/ID8x0ZUwuSUVNmJwGmKXNz+a5dy8yG5bhKvFdRcbej3D2zhPAoPlwtJ+kGKPz+vYS1H8x5cwnxM77cGqYukSrYYpa2fqhyJdRDGWpJ+WqmxFdSE6oFRjlwekXSwYoCVoBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976510; c=relaxed/simple;
-	bh=OO4JQApIj+O+IIiwdtetKPUm4AtvUv15MOn2qyCqkbM=;
+	s=arc-20240116; t=1774974338; c=relaxed/simple;
+	bh=5JOkLw2mSP9GaRewlEWX33YNxIWYK1aGXCV/hqwLfAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWmu7hhKuTvbCzgpmiXmHQsi+XOiHSuSWf6Z6koFmAk2KvgqUVj3WPSAwY5qbfgxXwOWac+q+rGDh4uEpvMEOTnxNrlCo2loB1S406lVt69H2+y+/xn0pKGlFZQ7PecEnM11WXGQoSSQKDIHlMQLUBT+Feox2scBV7mKLGboZTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yt0GwCpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F01CC19423;
-	Tue, 31 Mar 2026 17:01:50 +0000 (UTC)
+	 MIME-Version; b=lo/bpmXwhJxDkVf0vSFnSJDnNdCZCF2MBiZc5HnLBE8OF08cJpqGsSHIxClBzC/8uwXWvz8dMrwKC4yohfm3mDkqp/SRbjQ76EqI5fOUyRgsZMtYReGdEuKPeR8ZZT6Cfz3fIXhRYZ2SiD6tjVffFuy0ppotQyLvNe7JxTE9LAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6z3AJMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9F3C19423;
+	Tue, 31 Mar 2026 16:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976510;
-	bh=OO4JQApIj+O+IIiwdtetKPUm4AtvUv15MOn2qyCqkbM=;
+	s=korg; t=1774974338;
+	bh=5JOkLw2mSP9GaRewlEWX33YNxIWYK1aGXCV/hqwLfAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yt0GwCpCrWspXFUjewe4yz5vuW6WqGExhbqoLxGI29Cz8javyh2CaJ9d17Zj88PT0
-	 r0IpIZvnpqzVGzxXSfMcIKBeJG8F8fkSnUluIsY5ZRfW//KDT30UxdlbABnrbsZhUJ
-	 cUY5gWSpimLAyfpveezg2e7Rl6qXOLIfs2mt7eFo=
+	b=W6z3AJMVGk3cXe/GNpGHAXEFx+8DEcbcEPwXxN4oxkxd3n/ELXZ4rN5RZxOZ/wwxD
+	 mNmvMda3LfFheP8EGWSJnUP07v+QrQAj+bdAn4pQnsYELyumLw1LtZo+YsSgaqVv8w
+	 SoSm7Q9NuHWsKNPE4ZayxPn60zZHQOi5UjG96i5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cen Zhang <zzzccc427@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 120/309] Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock
+Subject: [PATCH 6.6 039/175] Bluetooth: L2CAP: Validate PDU length before reading SDU length in l2cap_ecred_data_rcv()
 Date: Tue, 31 Mar 2026 18:20:23 +0200
-Message-ID: <20260331161757.898587862@linuxfoundation.org>
+Message-ID: <20260331161731.221556874@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,11 +69,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232345-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231503-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,106 +91,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FB5E36F125
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B136936CADC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 94d8e6fe5d0818e9300e514e095a200bd5ff93ae ]
+[ Upstream commit c65bd945d1c08c3db756821b6bf9f1c4a77b29c6 ]
 
-btintel_hw_error() issues two __hci_cmd_sync() calls (HCI_OP_RESET
-and Intel exception-info retrieval) without holding
-hci_req_sync_lock().  This lets it race against
-hci_dev_do_close() -> btintel_shutdown_combined(), which also runs
-__hci_cmd_sync() under the same lock.  When both paths manipulate
-hdev->req_status/req_rsp concurrently, the close path may free the
-response skb first, and the still-running hw_error path hits a
-slab-use-after-free in kfree_skb().
+l2cap_ecred_data_rcv() reads the SDU length field from skb->data using
+get_unaligned_le16() without first verifying that skb contains at least
+L2CAP_SDULEN_SIZE (2) bytes. When skb->len is less than 2, this reads
+past the valid data in the skb.
 
-Wrap the whole recovery sequence in hci_req_sync_lock/unlock so it
-is serialized with every other synchronous HCI command issuer.
+The ERTM reassembly path correctly calls pskb_may_pull() before reading
+the SDU length (l2cap_reassemble_sdu, L2CAP_SAR_START case). Apply the
+same validation to the Enhanced Credit Based Flow Control data path.
 
-Below is the data race report and the kasan report:
-
-  BUG: data-race in __hci_cmd_sync_sk / btintel_shutdown_combined
-
-  read of hdev->req_rsp at net/bluetooth/hci_sync.c:199
-  by task kworker/u17:1/83:
-   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
-   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
-   btintel_hw_error+0x114/0x670 drivers/bluetooth/btintel.c:254
-   hci_error_reset+0x348/0xa30 net/bluetooth/hci_core.c:1030
-
-  write/free by task ioctl/22580:
-   btintel_shutdown_combined+0xd0/0x360
-    drivers/bluetooth/btintel.c:3648
-   hci_dev_close_sync+0x9ae/0x2c10 net/bluetooth/hci_sync.c:5246
-   hci_dev_do_close+0x232/0x460 net/bluetooth/hci_core.c:526
-
-  BUG: KASAN: slab-use-after-free in
-   sk_skb_reason_drop+0x43/0x380 net/core/skbuff.c:1202
-  Read of size 4 at addr ffff888144a738dc
-  by task kworker/u17:1/83:
-   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
-   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
-   btintel_hw_error+0x186/0x670 drivers/bluetooth/btintel.c:260
-
-Fixes: 973bb97e5aee ("Bluetooth: btintel: Add generic function for handling hardware errors")
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 9d29ab811f802..5e0a05edcbfd1 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -251,11 +251,13 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 16cc5c878305b..59cbb8cee6ee7 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6636,6 +6636,11 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 	if (!chan->sdu) {
+ 		u16 sdu_len;
  
- 	bt_dev_err(hdev, "Hardware error 0x%2.2x", code);
- 
-+	hci_req_sync_lock(hdev);
++		if (!pskb_may_pull(skb, L2CAP_SDULEN_SIZE)) {
++			err = -EINVAL;
++			goto failed;
++		}
 +
- 	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
- 	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Reset after hardware error failed (%ld)",
- 			   PTR_ERR(skb));
--		return;
-+		goto unlock;
- 	}
- 	kfree_skb(skb);
- 
-@@ -263,18 +265,21 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
- 	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Retrieving Intel exception info failed (%ld)",
- 			   PTR_ERR(skb));
--		return;
-+		goto unlock;
- 	}
- 
- 	if (skb->len != 13) {
- 		bt_dev_err(hdev, "Exception info size mismatch");
- 		kfree_skb(skb);
--		return;
-+		goto unlock;
- 	}
- 
- 	bt_dev_err(hdev, "Exception info %s", (char *)(skb->data + 1));
- 
- 	kfree_skb(skb);
-+
-+unlock:
-+	hci_req_sync_unlock(hdev);
- }
- EXPORT_SYMBOL_GPL(btintel_hw_error);
+ 		sdu_len = get_unaligned_le16(skb->data);
+ 		skb_pull(skb, L2CAP_SDULEN_SIZE);
  
 -- 
 2.51.0
