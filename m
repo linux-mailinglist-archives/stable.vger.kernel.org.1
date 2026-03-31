@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-232328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CnPFFYAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:50 +0200
+	id CCqIImv4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269F036E1F9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E8C36CE18
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4506E30A3E3E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A375C305A14F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019572D949B;
-	Tue, 31 Mar 2026 17:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4076E3E3C5C;
+	Tue, 31 Mar 2026 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQ6ngKw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmqFFQW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514CE2C21F8;
-	Tue, 31 Mar 2026 17:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A613E3174;
+	Tue, 31 Mar 2026 16:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976467; cv=none; b=EiyaoFDz+u5oH6ZvLBkFuwTOGTkrDjBokcBuj2FnpwrLF3svtfZPGHQxTqm/yzrK4XEskN14s+dslkTsd+lu6PqQtfYOX/7xlI6NYv/fz2piUM9xCaTHe4uZMPpj/owziIWfzY0WDoUxIYumggEniSDkZ8Q3StqhXV8B5h+eG8s=
+	t=1774974279; cv=none; b=RH46qu/8JTK14KOapnjm0XBN/jewLo68XdaguMBKVz51677G4oLnSgW35fl3rraQgsHf7hOyoKUp5BTo+bsNVJhS9ymXPd2jMx1oLfiAU41ee/CzvQSZm27/86jFD6Ch0ECB3jXwJZkKgXXu+tTUW/b3Smiy/TGWs6lCKGLvimI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976467; c=relaxed/simple;
-	bh=bJ0BQPDv5EXgo8ixCwzupy2N429mcg91JwBNiDpIKPg=;
+	s=arc-20240116; t=1774974279; c=relaxed/simple;
+	bh=KN6ubHPkOeIztEfNHXMQM8aw7KsktfPaOzGpufkm4d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuIKqwbEYTrhX2R6kXzbktQI9fAQW2R/Oa5ULZ1z9g8HuSeOKt+RtCbcB0UFJndkqf1coSFXa+xVoKVs/T/7QB8pZBmyJAWOMa68/W3Cq0KlQVZmn2YNwjxHxouOXcLaU8bZ6knpJTJlb+i+DBn4hL3ZrG///gFnavbZHc7BQRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQ6ngKw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618DCC19423;
-	Tue, 31 Mar 2026 17:01:06 +0000 (UTC)
+	 MIME-Version; b=cbbV/XKrz0qyRxXGgKq90vZFXrEzfdOX67cxHe0Qj31RPZ7tCIyYpCUcm9Peu0D0ziobRsLDq9xcgsJlJrM5rRWObsGdRVl31hbqgbBVW+1Tz33gRiRbWPAiMUOMEYjwz+GXlTmJEctH25t0z9W528c839fDjgYCbjMMDpipzWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmqFFQW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B42FC19423;
+	Tue, 31 Mar 2026 16:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976466;
-	bh=bJ0BQPDv5EXgo8ixCwzupy2N429mcg91JwBNiDpIKPg=;
+	s=korg; t=1774974278;
+	bh=KN6ubHPkOeIztEfNHXMQM8aw7KsktfPaOzGpufkm4d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQ6ngKw/kp0DneujxUlMlfB4/M5Qa0IX1E7ZAWy2o/yW8pcyOP1Z7iZ+f/iRdAvDa
-	 KG61diy84G3mYZ2jV89ZB5j5TRMx3+AfWfEpYfEIKk/LBGvYWBbcVpO2uIYOs3bRzU
-	 WPeEGUP+GS2WDVHueyYzP8TGwbLJX7JXqpxr8zYs=
+	b=NmqFFQW5e7oG8Zt9LbqtQ4X/uV36W9z1+o+37VaJm/w3edyqBjfw+HTNgYtog8Wtv
+	 76vVTvmBsaPHOx4PKMGCDdNjwZVsWGdvCZC3YvDMNPM8EqE7MtVuQi94D/RnAT+Yc4
+	 l9TnqgQZTNKvqds7Pe1lNQsOiqt5CI5JYWB7EH50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Patryk Holda <patryk.holda@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 104/309] ice: fix inverted ready check for VF representors
+Subject: [PATCH 6.6 023/175] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_set_reg()
 Date: Tue, 31 Mar 2026 18:20:07 +0200
-Message-ID: <20260331161757.314926047@linuxfoundation.org>
+Message-ID: <20260331161730.634104428@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,79 +67,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232328-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231479-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 269F036E1F9
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 88E8C36CE18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit ad85de0fc09eb3236e73df5acb2bc257625103f5 ]
+[ Upstream commit 31ddc62c1cd92e51b9db61d7954b85ae2ec224da ]
 
-Commit 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
-refactored the VF readiness check into a generic repr->ops.ready()
-callback but implemented ice_repr_ready_vf() with inverted logic:
+ALSA controls should return 1 if the value in the control changed but the
+control put operation fsl_easrc_set_reg() only returns 0 or a negative
+error code, causing ALSA to not generate any change events. Add a suitable
+check by using regmap_update_bits_check() with the underlying regmap, this
+is more clearly and simply correct than trying to verify that one of the
+generic ops is exactly equivalent to this one.
 
-  return !ice_check_vf_ready_for_cfg(repr->vf);
-
-ice_check_vf_ready_for_cfg() returns 0 on success, so the negation
-makes ready() return non-zero when the VF is ready. All callers treat
-non-zero as "not ready, skip", causing ndo_get_stats64, get_drvinfo,
-get_strings and get_ethtool_stats to always bail out in switchdev mode.
-
-Remove the erroneous negation. The SF variant ice_repr_ready_sf() is
-already correct (returns !active, i.e. non-zero when not active).
-
-Fixes: 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-2-39d4c766918b@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_repr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_easrc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index cb08746556a67..2a84f65640582 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -315,7 +315,7 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index ec53bda46a467..c3d81cab2556d 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -93,14 +93,17 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
+ 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
++	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
+ 	unsigned int regval = ucontrol->value.integer.value[0];
++	bool changed;
+ 	int ret;
  
- static int ice_repr_ready_vf(struct ice_repr *repr)
- {
--	return !ice_check_vf_ready_for_cfg(repr->vf);
-+	return ice_check_vf_ready_for_cfg(repr->vf);
+-	ret = snd_soc_component_write(component, mc->regbase, regval);
+-	if (ret < 0)
++	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
++				       GENMASK(31, 0), regval, &changed);
++	if (ret != 0)
+ 		return ret;
+ 
+-	return 0;
++	return changed;
  }
  
- static int ice_repr_ready_sf(struct ice_repr *repr)
+ #define SOC_SINGLE_REG_RW(xname, xreg) \
 -- 
 2.51.0
 
