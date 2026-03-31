@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEq4GbAGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:56 +0200
+	id YKaaBC8CzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA7636F134
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E03836E7DD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10866315ABB6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB1F31D331A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C802FB632;
-	Tue, 31 Mar 2026 17:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53842413225;
+	Tue, 31 Mar 2026 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kp9AX1+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR3OiMfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A8D2D595D;
-	Tue, 31 Mar 2026 17:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B7E23507B;
+	Tue, 31 Mar 2026 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976526; cv=none; b=SrJEV1QXyVEI2hK/9xiHd3WFyJtFD3TDoJScsZ5Z2lDKnTWKqDo58Da6ZcNOXfyZjJ6AG2K0gJeFKdOBa8ReP5w20ylYiFRJ43BWMzEEbKec4lToewvJKnnrPJKmi+tzDQOxUWYhqjs0Ec12C7LzlH4EEasrei/XFynTgGQlSwY=
+	t=1774975767; cv=none; b=vEiODWv8O6h9hihWSxuJAE3bnlBlp5tgefJJXj8gAmClCMuh766XGOre61mGzBjBXTbvojI25kemYx8MA57Gwh7wZiBHLJAELPBwbClqOszYpooII/VT3TABGBLpBeEzIQf3D4M87q21apB9b9WXiKyJQYZBYx9PSeYLCbECIqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976526; c=relaxed/simple;
-	bh=aOunsHxHpPZp8p3GjGzYXLUr9Rl78pwmW8vy8dfSCC4=;
+	s=arc-20240116; t=1774975767; c=relaxed/simple;
+	bh=cgewbzyzyjSnUAGoTQtXPiBUOVIr3TQjn4nA6WEHqQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYzeVH87QIRo7g3i96+722fePttAtg0t6vM9CHkWAcFRcehfm3NRxj4JXOnO8pXhxU5/NHMgHFpPCRBrxbJJmw1wB41WK1XP5prfy7WSMRMX3OToAV+NEhyTCDbC6o3vuBwJ2KKDnOFB0m3vz/oAarsdqqXV216l4dKpn5H+Ae8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kp9AX1+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48B6C19423;
-	Tue, 31 Mar 2026 17:02:05 +0000 (UTC)
+	 MIME-Version; b=pvTY6pUObFIr/buvbbltkcNc4R4Ze5YAGpxCYLEPkUB3kAO25vtC5JNykYExwDWmESwFuevgpOpchcIFsXH6htc+C0EWGeWVZBwIsZ+sZO+LaBkfwReSax/JSeOBOmZ8da0RIUaqOy9mCzylK3z8vGSOjilUvIqrJD5+F9q8WHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR3OiMfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24A4C19423;
+	Tue, 31 Mar 2026 16:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976526;
-	bh=aOunsHxHpPZp8p3GjGzYXLUr9Rl78pwmW8vy8dfSCC4=;
+	s=korg; t=1774975767;
+	bh=cgewbzyzyjSnUAGoTQtXPiBUOVIr3TQjn4nA6WEHqQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kp9AX1+9YrGWr+wermJbx0C7Y/K76mqVkGul/O6vhEZiRkIEavwLyvwV2jF4ZVCi4
-	 jcreLF6rWH2Fya7PW3SR8F2cyegxdZ/vq/thqYDcfvDs2926RzyQr6REqf5cVTOXOl
-	 WZRbdf/WpmO2quPs26onQYO9wTdmTzg32BeX48lE=
+	b=YR3OiMfHoVbfhZKGgb8oH5kf867IgKXx1rQN4wDnYntxV+VXLTwX3bluRavxImJiq
+	 OsAXGIlU7xYETsWYD4w+UVLy013npA4RqwUCwdH3jAVFNJ6n2SRDp18wC7QkYn2JGj
+	 378T7z8ywTpo4vQnLpX7T/GfFYGNMZLGVXy+Q3Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 125/309] tls: Purge async_hold in tls_decrypt_async_wait()
-Date: Tue, 31 Mar 2026 18:20:28 +0200
-Message-ID: <20260331161758.081076147@linuxfoundation.org>
+Subject: [PATCH 6.12 079/244] net: bcmasp: fix double disable of clk
+Date: Tue, 31 Mar 2026 18:20:29 +0200
+Message-ID: <20260331161744.602687692@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,91 +74,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232351-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232058-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: EAA7636F134
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email]
+X-Rspamd-Queue-Id: 8E03836E7DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit 84a8335d8300576f1b377ae24abca1d9f197807f ]
+[ Upstream commit 27dfe9030acbc601c260b42ecdbb4e5858a97b53 ]
 
-The async_hold queue pins encrypted input skbs while
-the AEAD engine references their scatterlist data. Once
-tls_decrypt_async_wait() returns, every AEAD operation
-has completed and the engine no longer references those
-skbs, so they can be freed unconditionally.
+Switch to devm_clk_get_optional() so we can manage the clock ourselves.
+We dynamically control the clocks depending on the state of the interface
+for power savings. The default state is clock disabled, so unbinding the
+driver causes a double disable.
 
-A subsequent patch adds batch async decryption to
-tls_sw_read_sock(), introducing a new call site that
-must drain pending AEAD operations and release held
-skbs. Move __skb_queue_purge(&ctx->async_hold) into
-tls_decrypt_async_wait() so the purge is centralized
-and every caller -- recvmsg's drain path, the -EBUSY
-fallback in tls_do_decryption(), and the new read_sock
-batch path -- releases held skbs on synchronization
-without each site managing the purge independently.
-
-This fixes a leak when tls_strp_msg_hold() fails part-way through,
-after having added some cloned skbs to the async_hold
-queue. tls_decrypt_sg() will then call tls_decrypt_async_wait() to
-process all pending decrypts, and drop back to synchronous mode, but
-tls_sw_recvmsg() only flushes the async_hold queue when one record has
-been processed in "fully-async" mode, which may not be the case here.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Fixes: b8a6ff84abbc ("tls: wait for pending async decryptions if tls_strp_msg_hold fails")
-Link: https://patch.msgid.link/20260324-tls-read-sock-v5-1-5408befe5774@oracle.com
-[pabeni@redhat.com: added leak comment]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260319234813.1937315-3-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 33 ++++++++++++++-------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index c6a708ee21dc8..eecf1146c34f2 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -246,6 +246,7 @@ static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
- 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
- 	atomic_inc(&ctx->decrypt_pending);
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 9f2947d2d41f0..2ef5f49beab86 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -1253,7 +1253,7 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	if (priv->irq <= 0)
+ 		return -EINVAL;
  
-+	__skb_queue_purge(&ctx->async_hold);
- 	return ctx->async_wait.err;
+-	priv->clk = devm_clk_get_optional_enabled(dev, "sw_asp");
++	priv->clk = devm_clk_get_optional(dev, "sw_asp");
+ 	if (IS_ERR(priv->clk))
+ 		return dev_err_probe(dev, PTR_ERR(priv->clk),
+ 				     "failed to request clock\n");
+@@ -1281,6 +1281,10 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	bcmasp_set_pdata(priv, pdata);
+ 
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to start clock\n");
++
+ 	/* Enable all clocks to ensure successful probing */
+ 	bcmasp_core_clock_set(priv, ASP_CTRL_CLOCK_CTRL_ASP_ALL_DISABLE, 0);
+ 
+@@ -1292,8 +1296,10 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_request_irq(&pdev->dev, priv->irq, bcmasp_isr, 0,
+ 			       pdev->name, priv);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "failed to request ASP interrupt: %d", ret);
++	if (ret) {
++		dev_err(dev, "Failed to request ASP interrupt: %d", ret);
++		goto err_clock_disable;
++	}
+ 
+ 	/* Register mdio child nodes */
+ 	of_platform_populate(dev->of_node, bcmasp_mdio_of_match, NULL, dev);
+@@ -1305,13 +1311,17 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	priv->mda_filters = devm_kcalloc(dev, priv->num_mda_filters,
+ 					 sizeof(*priv->mda_filters), GFP_KERNEL);
+-	if (!priv->mda_filters)
+-		return -ENOMEM;
++	if (!priv->mda_filters) {
++		ret = -ENOMEM;
++		goto err_clock_disable;
++	}
+ 
+ 	priv->net_filters = devm_kcalloc(dev, priv->num_net_filters,
+ 					 sizeof(*priv->net_filters), GFP_KERNEL);
+-	if (!priv->net_filters)
+-		return -ENOMEM;
++	if (!priv->net_filters) {
++		ret = -ENOMEM;
++		goto err_clock_disable;
++	}
+ 
+ 	bcmasp_core_init_filters(priv);
+ 
+@@ -1320,7 +1330,8 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
+ 	if (!ports_node) {
+ 		dev_warn(dev, "No ports found\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_clock_disable;
+ 	}
+ 
+ 	i = 0;
+@@ -1342,8 +1353,6 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	 */
+ 	bcmasp_core_clock_set(priv, 0, ASP_CTRL_CLOCK_CTRL_ASP_ALL_DISABLE);
+ 
+-	clk_disable_unprepare(priv->clk);
+-
+ 	/* Now do the registration of the network ports which will take care
+ 	 * of managing the clock properly.
+ 	 */
+@@ -1356,12 +1365,16 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 		count++;
+ 	}
+ 
++	clk_disable_unprepare(priv->clk);
++
+ 	dev_info(dev, "Initialized %d port(s)\n", count);
+ 
+ 	return ret;
+ 
+ err_cleanup:
+ 	bcmasp_remove_intfs(priv);
++err_clock_disable:
++	clk_disable_unprepare(priv->clk);
+ 
+ 	return ret;
  }
- 
-@@ -2225,7 +2226,6 @@ int tls_sw_recvmsg(struct sock *sk,
- 
- 		/* Wait for all previously submitted records to be decrypted */
- 		ret = tls_decrypt_async_wait(ctx);
--		__skb_queue_purge(&ctx->async_hold);
- 
- 		if (ret) {
- 			if (err >= 0 || err == -EINPROGRESS)
 -- 
 2.51.0
 
