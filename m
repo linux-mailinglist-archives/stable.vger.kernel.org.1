@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-232066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ChOCH4DzGmPNQYAu9opvQ
-	(envelope-from <stable+bounces-232066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:18 +0200
+	id SDDQLxL2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7687936EAB0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4729636C9D6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D130131A009B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1759A30B461C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EE73F8E04;
-	Tue, 31 Mar 2026 16:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CD23FADEE;
+	Tue, 31 Mar 2026 16:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRDtbaVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x43xVD9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBDB2C15B2;
-	Tue, 31 Mar 2026 16:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95712329E4B;
+	Tue, 31 Mar 2026 16:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975788; cv=none; b=X/JWRIAdDJdyDmtUnUQL5W4R21emIp0HN8VkW9bqLTXbPhy45Qh0IzKzT0iKNP54NALcdSPShHXjVgYNgQnSGE9dbfW6cLKKXzjHSa0DLpU6zTx54G3MGQIaqnV0504QilkHF8gwdNeOqvnFcYD+IE9XZSd6oqmsFHqVsC+lipg=
+	t=1774974312; cv=none; b=R0E0mS61HAFMBlmy+23z0cFeCQfB3a22TJNo6ToOEs4sYGwEqoLkQ2pk3zrzJGI2DCTsH9YSe5QSa9XEy2OfPrX42BJ7CahyypnzI1y7c0t33cu70y2OU1KIWOXGQ7b33pko4GnSpv3LpMqPdN0LWRkQXVnhJ4UChZHpgxkQxJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975788; c=relaxed/simple;
-	bh=Bo+6YlrdnryGMCwVmcGVKfOl/PchQMVuYaA5NkCyqXQ=;
+	s=arc-20240116; t=1774974312; c=relaxed/simple;
+	bh=UZpOYb94TcREFhk2q/fVyU+Ly2cBprIA4HD3pnS5/2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JgZ+vUZSgKIUs6Kcgle7nTcuU5u+aZ3QEP5Wqc2VymYnFTtlr9tjZwL5DpW5kgUgazGUSvizPR9gUncUGfzg3ptYoebRHBmBVVyaGhGKuXZ3OqIjuISx22l3XscOg9MizpdLUMz4psXnQhji+l18tEGXkbL1ybX4C1KBbcaCT6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRDtbaVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FB2C19423;
-	Tue, 31 Mar 2026 16:49:47 +0000 (UTC)
+	 MIME-Version; b=pEojrCq8t+p/zPZ5tpW6/UAByJ/PYYV0y5Sh3ghI6sY2rhq32AuD9pZXZbUxFJVHRlGAA0/edzso7fMaLfs8ZVUCGoh9nS83T3oEktNgzzzIwjjUdFfpbRDCwUY1UlRsh3ugHj8ysph2aO1p/hvatld6koBQ3Y5KdkU7iJCgEtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x43xVD9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A3AC19423;
+	Tue, 31 Mar 2026 16:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975787;
-	bh=Bo+6YlrdnryGMCwVmcGVKfOl/PchQMVuYaA5NkCyqXQ=;
+	s=korg; t=1774974312;
+	bh=UZpOYb94TcREFhk2q/fVyU+Ly2cBprIA4HD3pnS5/2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRDtbaVtbZelGZi0aBTegH8/IjrcErPX+7KDubtJ7FG1ouW2qXL0kEApTL73mj7FL
-	 TrbflUARGDfqUTtgKub849fSKXAPO5uKYgF8qyUiyLMQAf8gNbOGFMkRXc/mR5j66z
-	 lfihK4dFJRroWOISG8CAkjl+g6gJDL5rF4KteOVU=
+	b=x43xVD9QAhRuchczjP9ynyTD9fAcUryMF1XQPGa9QM+SiFokOudlSHvmSRYscNTvx
+	 l4A+0VvhW4VIlyuXlmOncVqwWY4oly8DNbEWpjiO6ajUbQDEWdch6H/HJI+6tKAbqE
+	 0aNRsHrKKpLoeuMXYuGITENGmpI9x9N+oZk1Ad80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/244] openvswitch: validate MPLS set/set_masked payload length
+Subject: [PATCH 6.6 035/175] esp: fix skb leak with espintcp and async crypto
 Date: Tue, 31 Mar 2026 18:20:19 +0200
-Message-ID: <20260331161744.236234917@linuxfoundation.org>
+Message-ID: <20260331161731.075270641@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,80 +69,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232066-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231492-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,ovn.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 7687936EAB0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email]
+X-Rspamd-Queue-Id: 4729636C9D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 546b68ac893595877ffbd7751e5c55fd1c43ede6 ]
+[ Upstream commit 0c0eef8ccd2413b0a10eb6bbd3442333b1e64dd2 ]
 
-validate_set() accepted OVS_KEY_ATTR_MPLS as variable-sized payload for
-SET/SET_MASKED actions. In action handling, OVS expects fixed-size
-MPLS key data (struct ovs_key_mpls).
+When the TX queue for espintcp is full, esp_output_tail_tcp will
+return an error and not free the skb, because with synchronous crypto,
+the common xfrm output code will drop the packet for us.
 
-Use the already normalized key_len (masked case included) and reject
-non-matching MPLS action key sizes.
+With async crypto (esp_output_done), we need to drop the skb when
+esp_output_tail_tcp returns an error.
 
-Reject invalid MPLS action payload lengths early.
-
-Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-Link: https://patch.msgid.link/20260319080228.3423307-1-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/esp4.c | 9 ++++++---
+ net/ipv6/esp6.c | 9 ++++++---
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 7d5490ea23e1d..3d2dbe963813d 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2953,6 +2953,8 @@ static int validate_set(const struct nlattr *a,
- 	case OVS_KEY_ATTR_MPLS:
- 		if (!eth_p_mpls(eth_type))
- 			return -EINVAL;
-+		if (key_len != sizeof(struct ovs_key_mpls))
-+			return -EINVAL;
- 		break;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 85e24dc42f2f3..4256c7ee59397 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -233,10 +233,13 @@ static void esp_output_done(void *data, int err)
+ 		xfrm_dev_resume(skb);
+ 	} else {
+ 		if (!err &&
+-		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+-			esp_output_tail_tcp(x, skb);
+-		else
++		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
++			err = esp_output_tail_tcp(x, skb);
++			if (err != -EINPROGRESS)
++				kfree_skb(skb);
++		} else {
+ 			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
++		}
+ 	}
+ }
  
- 	case OVS_KEY_ATTR_SCTP:
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index be8e2e5b439ed..f3305154745ec 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -269,10 +269,13 @@ static void esp_output_done(void *data, int err)
+ 		xfrm_dev_resume(skb);
+ 	} else {
+ 		if (!err &&
+-		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+-			esp_output_tail_tcp(x, skb);
+-		else
++		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
++			err = esp_output_tail_tcp(x, skb);
++			if (err != -EINPROGRESS)
++				kfree_skb(skb);
++		} else {
+ 			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
++		}
+ 	}
+ }
+ 
 -- 
 2.51.0
 
