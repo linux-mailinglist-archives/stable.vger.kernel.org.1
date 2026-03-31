@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MujJ/z8y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:32 +0200
+	id MBAqIsgAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DCF36D7F9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8DE36E398
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6D60315C108
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9C373087EA1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEAD421A1D;
-	Tue, 31 Mar 2026 16:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE2E2D63E8;
+	Tue, 31 Mar 2026 17:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKIGEu7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdnpnTeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60E73FA5E6;
-	Tue, 31 Mar 2026 16:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA852E11A6;
+	Tue, 31 Mar 2026 17:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975314; cv=none; b=M3Ukp65kKzPq4FNsloO/Hsu+eS2jbTekVzmqCWXZL3UEYSrYlEGAOWO3I3bEjaAT/bu4NM650FjUGSpHDBbOnAxI7uyQwfPcl+UArluvmRHk8ZAYV6BKuutaVkNM83VLBAo7p9lSTGnS0hfGrBHh7YjOltyM3NlLUEaqQafrnMo=
+	t=1774976654; cv=none; b=su0iY0eRJu84ARQ65bLLfnKqE4GjRoRaALJ/4mA+rgGRo5aEG4DnVG1HJfVgyxlhy7QrTQuDmxJYbK98ay0k+CcmDkaV+u41Gz/EuVfyMsfOZ00XUcZJZVJDYsrlZujbLi5lOwCJpvPtaiBasSjoBO9reND3P53GHZSJB7WGnSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975314; c=relaxed/simple;
-	bh=eTb6K6AflYd/bg/Xv7726AJOmVq7AgP/ZJze0uDUIUs=;
+	s=arc-20240116; t=1774976654; c=relaxed/simple;
+	bh=8+DWUzfcnS0j4YpiRRzEIZ+Jbhtqo2hUZkX0ZxecEsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n/ViULLzXCCICb0QBjCKmNnzv5F9uYGUAH9l5KyGXW31pF4YmbaHUqmKnwSzk5Km73fq93njGDXtn5gA0IkWP34VI7iTBaFTmdqLPhKytb6tmwyzL09eIQi/JwXCWj9hkSq62j3N64FYDRUlDjQl0HqR7okIT1u0qbapUR64IpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKIGEu7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E91EC19423;
-	Tue, 31 Mar 2026 16:41:53 +0000 (UTC)
+	 MIME-Version; b=t35U4hFjNvhDHA7Ilk8l7G3YMQnJQ73xtMR7lfaX7f75l5pxFuAjswnQwYTpW3zp3AECS4ZxX1KCyzeV4rruTe2OeLUFyj8F/Za/59kyrpjcjv98dwlgRi665b8Tr36CVn21AX+4kFS1BzOh0G+XLUE9hK+MbU6e1ZsbHxYd3Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdnpnTeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36108C19423;
+	Tue, 31 Mar 2026 17:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975313;
-	bh=eTb6K6AflYd/bg/Xv7726AJOmVq7AgP/ZJze0uDUIUs=;
+	s=korg; t=1774976654;
+	bh=8+DWUzfcnS0j4YpiRRzEIZ+Jbhtqo2hUZkX0ZxecEsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKIGEu7XFWMmZF8ypSz57x2z1LN82havbO6sPD4S+E8iwbHmS0j1Lg+n6bMtJCgNo
-	 Ccuuu0SxGljf7Io6A69lwyinQ8R6avP/X1loLoecVcAgY3qx6e09rn3g5HpxeJDdmG
-	 ALRp2+4S5iZwjciNJc3mX6wsqE+3OZ4mhPGFfxGs=
+	b=AdnpnTeHTe0gV1aFD3LhmwQrT3cEXeyK8ylhHFjulvh5DTswdRqUFN5a7et8G+dPV
+	 VfPw98+bi6qZTpNB+tOL8yt3IFYRhrIv9zwaTvmyHPvk6kLcj8cxBIUfJkOWwHQkf1
+	 mdDXZUE6aNWEY/TLr7quyzb12cBGsod9y7TkIMbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 247/342] net: macb: Move devm_{free,request}_irq() out of spin lock area
+	stable@kernel.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.18 177/309] s390/entry: Scrub r12 register on kernel entry
 Date: Tue, 31 Mar 2026 18:21:20 +0200
-Message-ID: <20260331161808.051363450@linuxfoundation.org>
+Message-ID: <20260331161759.980779635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,179 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231883-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.977];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232402-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email]
-X-Rspamd-Queue-Id: 31DCF36D7F9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3F8DE36E398
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit 317e49358ebbf6390fa439ef3c142f9239dd25fb upstream.
+commit 0738d395aab8fae3b5a3ad3fc640630c91693c27 upstream.
 
-The devm_free_irq() and devm_request_irq() functions should not be
-executed in an atomic context.
+Before commit f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP"),
+all entry handlers loaded r12 with the current task pointer
+(lg %r12,__LC_CURRENT) for use by the BPENTER/BPEXIT macros. That
+commit removed TIF_ISOLATE_BP, dropping both the branch prediction
+macros and the r12 load, but did not add r12 to the register clearing
+sequence.
 
-During device suspend, all userspace processes and most kernel threads
-are frozen. Additionally, we flush all tx/rx status, disable all macb
-interrupts, and halt rx operations. Therefore, it is safe to split the
-region protected by bp->lock into two independent sections, allowing
-devm_free_irq() and devm_request_irq() to run in a non-atomic context.
-This modification resolves the following lockdep warning:
-  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
-  preempt_count: 1, expected: 0
-  RCU nest depth: 1, expected: 0
-  7 locks held by rtcwake/501:
-   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
-   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
-   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
-   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
-   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
-   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
-   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
-  irq event stamp: 8682
-  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
-  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
-  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
-  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
-  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
-  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
-  Call trace:
-   show_stack+0x24/0x38 (C)
-   __dump_stack+0x28/0x38
-   dump_stack_lvl+0x64/0x88
-   dump_stack+0x18/0x24
-   __might_resched+0x200/0x218
-   __might_sleep+0x38/0x98
-   __mutex_lock_common+0x7c/0x1378
-   mutex_lock_nested+0x38/0x50
-   free_irq+0x68/0x2b0
-   devm_irq_release+0x24/0x38
-   devres_release+0x40/0x80
-   devm_free_irq+0x48/0x88
-   macb_suspend+0x298/0x558
-   device_suspend+0x218/0x4f0
-   dpm_suspend+0x244/0x3a0
-   dpm_suspend_start+0x50/0x78
-   suspend_devices_and_enter+0xec/0x560
-   pm_suspend+0x194/0x290
-   state_store+0x110/0x158
-   kobj_attr_store+0x1c/0x30
-   sysfs_kf_write+0xa8/0xd0
-   kernfs_fop_write_iter+0x11c/0x1c8
-   vfs_write+0x248/0x368
-   ksys_write+0x7c/0xf8
-   __arm64_sys_write+0x28/0x40
-   invoke_syscall+0x4c/0xe8
-   el0_svc_common+0x98/0xf0
-   do_el0_svc+0x28/0x40
-   el0_svc+0x54/0x1e0
-   el0t_64_sync_handler+0x84/0x130
-   el0t_64_sync+0x198/0x1a0
+Add the missing xgr %r12,%r12 to make the register scrub consistent
+across all entry points.
 
-Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
-Cc: stable@vger.kernel.org
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f33f2d4c7c80 ("s390/bp: remove TIF_ISOLATE_BP")
+Cc: stable@kernel.org
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/s390/kernel/entry.S |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5832,6 +5832,7 @@ static int __maybe_unused macb_suspend(s
- 			/* write IP address into register */
- 			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
- 		}
-+		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		/* Change interrupt handler and
- 		 * Enable WoL IRQ on queue 0
-@@ -5844,11 +5845,12 @@ static int __maybe_unused macb_suspend(s
- 				dev_err(dev,
- 					"Unable to request IRQ %d (error %d)\n",
- 					bp->queues[0].irq, err);
--				spin_unlock_irqrestore(&bp->lock, flags);
- 				return err;
- 			}
-+			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
- 			gem_writel(bp, WOL, tmp);
-+			spin_unlock_irqrestore(&bp->lock, flags);
- 		} else {
- 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
- 					       IRQF_SHARED, netdev->name, bp->queues);
-@@ -5856,13 +5858,13 @@ static int __maybe_unused macb_suspend(s
- 				dev_err(dev,
- 					"Unable to request IRQ %d (error %d)\n",
- 					bp->queues[0].irq, err);
--				spin_unlock_irqrestore(&bp->lock, flags);
- 				return err;
- 			}
-+			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
- 			macb_writel(bp, WOL, tmp);
-+			spin_unlock_irqrestore(&bp->lock, flags);
- 		}
--		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		enable_irq_wake(bp->queues[0].irq);
- 	}
-@@ -5929,6 +5931,8 @@ static int __maybe_unused macb_resume(st
- 		queue_readl(bp->queues, ISR);
- 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 			queue_writel(bp->queues, ISR, -1);
-+		spin_unlock_irqrestore(&bp->lock, flags);
-+
- 		/* Replace interrupt handler on queue 0 */
- 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
- 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
-@@ -5937,10 +5941,8 @@ static int __maybe_unused macb_resume(st
- 			dev_err(dev,
- 				"Unable to request IRQ %d (error %d)\n",
- 				bp->queues[0].irq, err);
--			spin_unlock_irqrestore(&bp->lock, flags);
- 			return err;
- 		}
--		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		disable_irq_wake(bp->queues[0].irq);
- 
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -254,6 +254,7 @@ SYM_CODE_START(system_call)
+ 	xgr	%r9,%r9
+ 	xgr	%r10,%r10
+ 	xgr	%r11,%r11
++	xgr	%r12,%r12
+ 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
+ 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
+ 	MBEAR	%r2,%r13
+@@ -390,6 +391,7 @@ SYM_CODE_START(\name)
+ 	xgr	%r6,%r6
+ 	xgr	%r7,%r7
+ 	xgr	%r10,%r10
++	xgr	%r12,%r12
+ 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
+ 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
+ 	MBEAR	%r11,%r13
+@@ -479,6 +481,7 @@ SYM_CODE_START(mcck_int_handler)
+ 	xgr	%r6,%r6
+ 	xgr	%r7,%r7
+ 	xgr	%r10,%r10
++	xgr	%r12,%r12
+ 	stmg	%r8,%r9,__PT_PSW(%r11)
+ 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
+ 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
 
 
 
