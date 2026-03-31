@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBN0JC8BzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:27 +0200
+	id yKJKNlj9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4E236E529
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C7136D957
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ECE0C30EB0F6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0753C30A1B81
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD55D425CC5;
-	Tue, 31 Mar 2026 16:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DD73EF0A2;
+	Tue, 31 Mar 2026 16:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rw+18k6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbAi3+in"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81072423A9F;
-	Tue, 31 Mar 2026 16:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFFE2D1F40;
+	Tue, 31 Mar 2026 16:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975660; cv=none; b=Cnpns9ylqX61c328agkalr2lnNSR++/CjTJXrimF/TWgqz3x3GZZSoq5NZ7t2qVsOQnrtZehbxxmMAFQndFP3AHT00pE/d9epUNOjrtGctIqMAR8FbGyPQsEq1ST6k978fhI2EPxlOKiOxNIMBDTARsJW8OUYYG4N/LPUbRo1zY=
+	t=1774975588; cv=none; b=SRU2a3CkQwwgPiTRbBA3CUdZP1XXoTprLBT7NzqVY3c/AbQegNPRXzl0btjWh6uWp2TUn02DCQgQKsk+S/fdp7xnvxIe2zGw+dR1x0eo3ManMqhu3I9PCd+6SzEut7JKGWBl/Q2oa8yqLGvvEYza6b7gCwBGLG/VRLlGSKI4IZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975660; c=relaxed/simple;
-	bh=4jP8GGJMBbwTfTDFRMMAAPLHTTga3NKG6sEI6EP/F2U=;
+	s=arc-20240116; t=1774975588; c=relaxed/simple;
+	bh=0el4LM025nn2evVJRDYoTJoRW9kB0ZHomt8xNBgfMxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/hnrGXZSW1Nhk8UzQknrkYukweim5PYyeNKGWKm/Nsd7vzn7A6BLhZYNA6rliIkgQ6Uz1hiiVxgJyUrqo01zbDoMMJZGX3KbKZsa144hvFM1tHulY0/BbLci6WfYLmPk7o1dvgedimh8XNofkfEjCcpH7za3PrKxYY94Eywgu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rw+18k6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196CEC2BCB1;
-	Tue, 31 Mar 2026 16:47:39 +0000 (UTC)
+	 MIME-Version; b=A7BsbwWFGO8TvgFeHWMLLQtFruEv4qj6Lp1eYkmlcCv9oy+Mwof0uetbhekGHU78GeNoM7Kd53zZs8tu9ODVHfUEjFWKBT1LbDAkvYAYUUN0isapSLJG9zfvT4Meh3VQpsKKNiXfuyLlnhDj49eOkvqn2kk56lpdhqMOlamISnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbAi3+in; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961CDC19423;
+	Tue, 31 Mar 2026 16:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975660;
-	bh=4jP8GGJMBbwTfTDFRMMAAPLHTTga3NKG6sEI6EP/F2U=;
+	s=korg; t=1774975587;
+	bh=0el4LM025nn2evVJRDYoTJoRW9kB0ZHomt8xNBgfMxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rw+18k6NnwJLaYnBOQtyPE5kHz+/GTOCY88YykbCyFUb55Nd523o8/Jv3V94VHD5K
-	 ryLrvEim1psosHlBLsoMJeN3VH8Z8FMKzU2IUun1OJ7EQaLHdk0fabSHbY2WwU3nFf
-	 B8/i3vb7TRMgSwULyilz1umxJUo7ZLkxgv+tKDPY=
+	b=IbAi3+intkpSzbk556iuCVdyoX+vNIvewj+wlYE0K1gz94NZ2MenZg2B7NZF7PK3Z
+	 5ZuytHBpcibk24+W/Jh+Lc/d1mA1VsQMyx++mJOV+IdYLn9Ougw02l2ew6/Rx1llGE
+	 N6J4Bur75IPBSD6YYvqX38SDH/Qztyq0F+ri4mFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Gregory Bell <grbell@redhat.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/244] bpf: Release module BTF IDR before module unload
-Date: Tue, 31 Mar 2026 18:19:19 +0200
-Message-ID: <20260331161742.048625606@linuxfoundation.org>
+Subject: [PATCH 6.12 010/244] bpf: Fix undefined behavior in interpreter sdiv/smod for INT_MIN
+Date: Tue, 31 Mar 2026 18:19:20 +0200
+Message-ID: <20260331161742.085567930@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
 References: <20260331161741.651718120@linuxfoundation.org>
@@ -77,8 +76,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-232017-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,meta.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231989-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,14 +87,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,etsalapatis.com:email]
-X-Rspamd-Queue-Id: 7F4E236E529
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,meta.com:email]
+X-Rspamd-Queue-Id: B6C7136D957
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,126 +102,102 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
+[ Upstream commit c77b30bd1dcb61f66c640ff7d2757816210c7cb0 ]
 
-Gregory reported in [0] that the global_map_resize test when run in
-repeatedly ends up failing during program load. This stems from the fact
-that BTF reference has not dropped to zero after the previous run's
-module is unloaded, and the older module's BTF is still discoverable and
-visible. Later, in libbpf, load_module_btfs() will find the ID for this
-stale BTF, open its fd, and then it will be used during program load
-where later steps taking module reference using btf_try_get_module()
-fail since the underlying module for the BTF is gone.
+The BPF interpreter's signed 32-bit division and modulo handlers use
+the kernel abs() macro on s32 operands. The abs() macro documentation
+(include/linux/math.h) explicitly states the result is undefined when
+the input is the type minimum. When DST contains S32_MIN (0x80000000),
+abs((s32)DST) triggers undefined behavior and returns S32_MIN unchanged
+on arm64/x86. This value is then sign-extended to u64 as
+0xFFFFFFFF80000000, causing do_div() to compute the wrong result.
 
-Logically, once a module is unloaded, it's associated BTF artifacts
-should become hidden. The BTF object inside the kernel may still remain
-alive as long its reference counts are alive, but it should no longer be
-discoverable.
+The verifier's abstract interpretation (scalar32_min_max_sdiv) computes
+the mathematically correct result for range tracking, creating a
+verifier/interpreter mismatch that can be exploited for out-of-bounds
+map value access.
 
-To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
-for the module unload to free the BTF associated IDR entry, and disable
-its discovery once module unload returns to user space. If a race
-happens during unload, the outcome is non-deterministic anyway. However,
-user space should be able to rely on the guarantee that once it has
-synchronously established a successful module unload, no more stale
-artifacts associated with this module can be obtained subsequently.
+Introduce abs_s32() which handles S32_MIN correctly by casting to u32
+before negating, avoiding signed overflow entirely. Replace all 8
+abs((s32)...) call sites in the interpreter's sdiv32/smod32 handlers.
 
-Note that we must be careful to not invoke btf_free_id() in btf_put()
-when btf_is_module() is true now. There could be a window where the
-module unload drops a non-terminal reference, frees the IDR, but the
-same ID gets reused and the second unconditional btf_free_id() ends up
-releasing an unrelated entry.
+s32 is the only affected case -- the s64 division/modulo handlers do
+not use abs().
 
-To avoid a special case for btf_is_module() case, set btf->id to zero to
-make btf_free_id() idempotent, such that we can unconditionally invoke it
-from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
-an invalid IDR, the idr_remove() should be a noop.
-
-Note that we can be sure that by the time we reach final btf_put() for
-btf_is_module() case, the btf_free_id() is already done, since the
-module itself holds the BTF reference, and it will call this function
-for the BTF before dropping its own reference.
-
-  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
-
-Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reported-by: Gregory Bell <grbell@redhat.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
+Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Link: https://lore.kernel.org/r/20260311011116.2108005-2-qguanni@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ kernel/bpf/core.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index f83bd019db141..cd523ad72838a 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -1657,7 +1657,16 @@ static void btf_free_id(struct btf *btf)
- 	 * of the _bh() version.
- 	 */
- 	spin_lock_irqsave(&btf_idr_lock, flags);
--	idr_remove(&btf_idr, btf->id);
-+	if (btf->id) {
-+		idr_remove(&btf_idr, btf->id);
-+		/*
-+		 * Clear the id here to make this function idempotent, since it will get
-+		 * called a couple of times for module BTFs: on module unload, and then
-+		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
-+		 * 0 as sentinel value.
-+		 */
-+		WRITE_ONCE(btf->id, 0);
-+	}
- 	spin_unlock_irqrestore(&btf_idr_lock, flags);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index fbd5d292d8bf9..b58833e99969a 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1735,6 +1735,12 @@ bool bpf_opcode_in_insntable(u8 code)
  }
  
-@@ -7805,7 +7814,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
- {
- 	const struct btf *btf = filp->private_data;
- 
--	seq_printf(m, "btf_id:\t%u\n", btf->id);
-+	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
- }
- #endif
- 
-@@ -7892,7 +7901,7 @@ int btf_get_info_by_fd(const struct btf *btf,
- 	if (copy_from_user(&info, uinfo, info_copy))
- 		return -EFAULT;
- 
--	info.id = btf->id;
-+	info.id = READ_ONCE(btf->id);
- 	ubtf = u64_to_user_ptr(info.btf);
- 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
- 	if (copy_to_user(ubtf, btf->data, btf_copy))
-@@ -7955,7 +7964,7 @@ int btf_get_fd_by_id(u32 id)
- 
- u32 btf_obj_id(const struct btf *btf)
- {
--	return btf->id;
-+	return READ_ONCE(btf->id);
- }
- 
- bool btf_is_kernel(const struct btf *btf)
-@@ -8088,6 +8097,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
- 			if (btf_mod->module != module)
- 				continue;
- 
-+			/*
-+			 * For modules, we do the freeing of BTF IDR as soon as
-+			 * module goes away to disable BTF discovery, since the
-+			 * btf_try_get_module() on such BTFs will fail. This may
-+			 * be called again on btf_put(), but it's ok to do so.
-+			 */
-+			btf_free_id(btf_mod->btf);
- 			list_del(&btf_mod->list);
- 			if (btf_mod->sysfs_attr)
- 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
++/* Absolute value of s32 without undefined behavior for S32_MIN */
++static u32 abs_s32(s32 x)
++{
++	return x >= 0 ? (u32)x : -(u32)x;
++}
++
+ /**
+  *	___bpf_prog_run - run eBPF program on a given context
+  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
+@@ -1899,8 +1905,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = do_div(AX, (u32) SRC);
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			AX = do_div(AX, abs((s32)SRC));
++			AX = abs_s32((s32)DST);
++			AX = do_div(AX, abs_s32((s32)SRC));
+ 			if ((s32)DST < 0)
+ 				DST = (u32)-AX;
+ 			else
+@@ -1927,8 +1933,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = do_div(AX, (u32) IMM);
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			AX = do_div(AX, abs((s32)IMM));
++			AX = abs_s32((s32)DST);
++			AX = do_div(AX, abs_s32((s32)IMM));
+ 			if ((s32)DST < 0)
+ 				DST = (u32)-AX;
+ 			else
+@@ -1954,8 +1960,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = (u32) AX;
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			do_div(AX, abs((s32)SRC));
++			AX = abs_s32((s32)DST);
++			do_div(AX, abs_s32((s32)SRC));
+ 			if (((s32)DST < 0) == ((s32)SRC < 0))
+ 				DST = (u32)AX;
+ 			else
+@@ -1981,8 +1987,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = (u32) AX;
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			do_div(AX, abs((s32)IMM));
++			AX = abs_s32((s32)DST);
++			do_div(AX, abs_s32((s32)IMM));
+ 			if (((s32)DST < 0) == ((s32)IMM < 0))
+ 				DST = (u32)AX;
+ 			else
 -- 
 2.51.0
 
